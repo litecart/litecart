@@ -9,22 +9,27 @@
 
 					<h1><?php echo t('title_contact_us', 'Contact Us'); ?></h1>
 
-					<?php echo functions::form_begin('contact_form', 'post'); ?>
+					<?php echo functions::form_begin('contact_form', 'post', null, true); ?>
 
 						<div class="grid">
 							<div class="col-md-6">
 								<div class="form-group">
-									<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
-									<?php echo functions::form_input_text('name', true, 'required'); ?>
+									<div class="form-label"><?php echo t('title_firstname', 'First Name'); ?></div>
+									<?php echo functions::form_input_text('firstname', true, 'required'); ?>
 								 </div>
 							</div>
 
 							<div class="col-md-6">
 								<div class="form-group">
-									<div class="form-label"><?php echo t('title_email_address', 'Email Address'); ?></div>
-									<?php echo functions::form_input_email('email', true, 'required'); ?>
+									<div class="form-label"><?php echo t('title_lastname', 'Last Name'); ?></div>
+									<?php echo functions::form_input_text('lastname', true, 'required'); ?>
 								 </div>
 							</div>
+						</div>
+
+						<div class="form-group">
+							<div class="form-label"><?php echo t('title_email_address', 'Email Address'); ?></div>
+							<?php echo functions::form_input_email('email', true, 'required'); ?>
 						</div>
 
 						<div class="form-group">
@@ -36,6 +41,11 @@
 							<div class="form-label"><?php echo t('title_message', 'Message'); ?></div>
 							<?php echo functions::form_textarea('message', true, 'required style="height: 250px;"'); ?>
 						 </div>
+
+						<div class="form-group">
+							<div class="form-label"><?php echo t('title_attachments', 'Attachments'); ?></div>
+							<?php echo functions::form_input_file('attachments[]', 'multiple accept="*/*"'); ?>
+						</div>
 
 						<?php if (settings::get('captcha_enabled')) { ?>
 						<div class="form-group" style="max-width: 250px;">
