@@ -61,6 +61,7 @@ waitFor('jQuery', ($) => {
 
 			this.$instance.on('mouseup.litebox', (e) => {
 				if (mousedownOutsideModal && isOutsideModal(e) && this.closeOnClick === 'backdrop') {
+					if ($(e.target).closest('.litebox-previous, .litebox-next').length) return;
 					this.close(e);
 					e.preventDefault();
 				}
@@ -166,18 +167,6 @@ waitFor('jQuery', ($) => {
 					regex: /^\s*<[\w!][^<]*>/,
 					process: (html) => $(html)
 				},
-				ajax: {
-					regex: /./,
-					process: function (url) {
-						const deferred = $.Deferred();
-						const $container = $('<div>');
-						$container.load(url.replace('#', ' #'), (_, status) => {
-							if (status === 'error') deferred.reject();
-							else deferred.resolve($container.contents());
-						});
-						return deferred.promise();
-					}
-				},
 				iframe: {
 					process: function (url) {
 						const deferred = $.Deferred();
@@ -189,12 +178,89 @@ waitFor('jQuery', ($) => {
 						return deferred.promise();
 					}
 				},
+				video: {
+					regex: /\.(mp4|webm)(\?\S*)?(\?|$)/i,
+					process: function (url) {
+						const deferred = $.Deferred();
+						const ext = url.match(/\.(mp4|webm)(\?|$)/i)?.[1] || 'mp4';
+						const $video = $('<video controls>');
+						$video.append($('<source>', { src: url, type: `video/${ext}` }));
+						$video.on('loadeddata', () => deferred.resolve($video));
+						$video.on('error', () => deferred.resolve($('<div>Failed to load video</div>')));
+						return deferred.promise();
+					}
+				},
+			   youtube: {
+				   regex: /^(https?:\/\/)?(www\.)?(youtube\.com|youtube-nocookie\.com|youtu\.?be)\//,
+				   process: function (url) {
+							// Improved videoId extraction for various YouTube URL formats
+							let videoId = null;
+							// youtu.be/VIDEOID
+							let match = url.match(/youtu\.be\/([\w-]{11})/);
+							if (match) videoId = match[1];
+							// youtube.com/watch?v=VIDEOID
+							if (!videoId) {
+								match = url.match(/[?&]v=([\w-]{11})/);
+								if (match) videoId = match[1];
+							}
+							// youtube.com/embed/VIDEOID
+							if (!videoId) {
+								match = url.match(/embed\/([\w-]{11})/);
+								if (match) videoId = match[1];
+							}
+							// youtube.com/v/VIDEOID
+							if (!videoId) {
+								match = url.match(/\/v\/([\w-]{11})/);
+								if (match) videoId = match[1];
+							}
+							// fallback: try to extract last 11-char id
+							if (!videoId) {
+								match = url.match(/([\w-]{11})/);
+								if (match) videoId = match[1];
+							}
+							const deferred = $.Deferred();
+							let $iframe;
+							if (videoId) {
+								$iframe = $('<iframe/>', {
+									src: `https://www.youtube-nocookie.com/embed/${videoId}`,
+									allowfullscreen: true,
+									style: 'display: none; height: 50vh; aspect-ratio: 16/9;'
+								});
+							} else {
+								$iframe = $('<div>Failed to extract YouTube video ID</div>');
+							}
+							// Always append to modal before resolving
+							this.$instance.find('.litebox-modal').append($iframe);
+							if ($iframe.is('iframe')) {
+								$iframe.on('load', () => {
+									$iframe.show();
+									deferred.resolve($iframe);
+								});
+							} else {
+								$iframe.show();
+								deferred.resolve($iframe);
+							}
+							return deferred.promise();
+				   }
+			   },
 				raw: {
-					regex: /\.(log|md|txt)(\?\S*)?$/i,
+					regex: /\.(log|md|txt)(\?\S*)?(\?|$)/i,
 					process: function(url) {
 						const deferred = $.Deferred();
 						const $content = $('<div>').css({ "white-space": 'pre-wrap', "max-width": '90vw' });
 						$.get(url, raw => $content.text(raw)).done(() => deferred.resolve($content)).fail(() => deferred.resolve($('<div>Failed to load file</div>')));
+						return deferred.promise();
+					}
+				},
+				ajax: {
+					regex: /./,
+					process: function (url) {
+						const deferred = $.Deferred();
+						const $container = $('<div>');
+						$container.load(url.replace('#', ' #'), (_, status) => {
+							if (status === 'error') deferred.reject();
+							else deferred.resolve($container.contents());
+						});
 						return deferred.promise();
 					}
 				},
@@ -238,7 +304,6 @@ waitFor('jQuery', ($) => {
 
 		// Before opening the Litebox
 		beforeOpen(e) {
-
 			this._previouslyActive = document.activeElement;
 			this._$previouslyTabbable = $('a, input, select, textarea, iframe, button, [contentEditable=true]')
 				.not('[tabindex]').not(this.$instance.find('button'));

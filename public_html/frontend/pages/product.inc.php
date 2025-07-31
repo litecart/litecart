@@ -148,6 +148,7 @@
 		'stock_options' => [],
 		'keywords' => $product->keywords,
 		'image' => $product->images ? 'storage://images/' . $product->image : '',
+		'video_url' => $product->video_url,
 		'sticker' => '',
 		'extra_images' => [],
 		'main_category' => [],

@@ -86,6 +86,7 @@
 				'quantity_max',
 				'quantity_step',
 				'quantity_unit_id',
+				'video_url',
 				'valid_from',
 				'valid_to',
 			] as $field) {
@@ -327,6 +328,11 @@
 								<button name="add_image" type="button" class="add btn btn-default btn-sm">
 									<?php echo functions::draw_fonticon('add'); ?> <?php echo t('text_add_image', 'Add Image'); ?>
 								</button>
+							</label>
+
+							<label class="form-group">
+								<div class="form-label"><?php echo t('title_video_url', 'Video URL'); ?></div>
+								<?php echo functions::form_input_url('video_url', true); ?>
 							</label>
 						</div>
 					</div>

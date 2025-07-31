@@ -884,6 +884,7 @@
 				"recommended_price": { "type": "FLOAT", "length": "10,4", "unsigned": true, "default": 0.0000 },
 				"tax_class_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
 				"image": { "type": "VARCHAR", "length": 255, "default": "''" },
+				"video_url": { "type": "VARCHAR", "length": 255, "default": "''" },
 				"valid_from": { "type": "TIMESTAMP", "nullable": true },
 				"valid_to": { "type": "TIMESTAMP", "nullable": true },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },

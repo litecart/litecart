@@ -17,14 +17,14 @@ form[name="buy_now_form"] .dropdown-menu .image {
 			<div class="grid" style="margin-bottom: 0;">
 				<div class="col-sm-4">
 					<div class="images">
-
-						<a class="main-image" href="<?php echo document::href_rlink($image); ?>" data-toggle="lightbox" data-gallery="product">
-							<?php echo functions::draw_thumbnail($image, 320, 0, 'product', 'alt="'. functions::escape_attr($name) .'"'); ?>
-							{{sticker}}
-						</a>
-
-						<?php if ($extra_images) { ?>
 						<div class="grid">
+							<div class="col-12">
+									<a class="main-image" href="<?php echo document::href_rlink($image); ?>" data-toggle="lightbox" data-gallery="product">
+									<?php echo functions::draw_thumbnail($image, 320, 0, 'product', 'alt="'. functions::escape_attr($name) .'"'); ?>
+									{{sticker}}
+								</a>
+							</div>
+
 							<?php foreach ($extra_images as $extra_image) { ?>
 							<div class="col-6">
 								<a class="extra-image" href="<?php echo document::href_rlink($extra_image); ?>" data-toggle="lightbox" data-gallery="product">
@@ -32,9 +32,17 @@ form[name="buy_now_form"] .dropdown-menu .image {
 								</a>
 							</div>
 							<?php } ?>
-						</div>
-						<?php } ?>
 
+							<?php if ($video_url) { ?>
+							<div class="col-4">
+								<a class="video" href="<?php echo document::href_rlink($video_url); ?>" data-toggle="lightbox" data-gallery="product">
+									<?php echo functions::draw_thumbnail($image, 320, 0, 'product', 'alt="'. functions::escape_attr($name) .'"'); ?>
+									<span class="video-icon"><?php echo functions::draw_fonticon('icon-play'); ?></span>
+								</a>
+							</div>
+							<?php } ?>
+
+						</div>
 					</div>
 				</div>
 

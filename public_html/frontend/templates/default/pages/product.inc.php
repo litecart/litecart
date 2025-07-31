@@ -8,6 +8,23 @@ form[name="buy_now_form"] .dropdown-menu .image {
 	border: 1px solid var(--default-border-color);
 	vertical-align: middle;
 }
+.video {
+	position: relative;
+}
+.video-icon {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	font-size: 2em;
+	color: #fff;
+	background-color: rgba(0, 0, 0, 0.5);
+	border-radius: 50%;
+	padding: 0.5em;
+}
+.video-icon:hover {
+	background-color: rgba(0, 0, 0, 0.7);
+}
 </style>
 
 <main id="main" class="container">
@@ -33,6 +50,15 @@ form[name="buy_now_form"] .dropdown-menu .image {
 						<div class="col-4">
 							<a class="extra-image" href="<?php echo document::href_rlink($extra_image); ?>" data-toggle="lightbox" data-gallery="product">
 								<?php echo functions::draw_thumbnail($extra_image, 320, 0, 'product', 'alt="'. functions::escape_attr($name) .'"'); ?>
+							</a>
+						</div>
+						<?php } ?>
+
+						<?php if ($video_url) { ?>
+						<div class="col-4">
+							<a class="video" href="<?php echo document::href_rlink($video_url); ?>" data-toggle="lightbox" data-gallery="product">
+								<?php echo functions::draw_thumbnail($image, 320, 0, 'product', 'alt="'. functions::escape_attr($name) .'"'); ?>
+								<span class="video-icon"><?php echo functions::draw_fonticon('icon-play'); ?></span>
 							</a>
 						</div>
 						<?php } ?>
