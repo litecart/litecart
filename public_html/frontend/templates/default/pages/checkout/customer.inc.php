@@ -29,16 +29,16 @@
 
 			<?php echo functions::form_begin('customer_form', 'post'); ?>
 
+				<?php if (settings::get('customer_field_company') || settings::get('customer_field_tax_id')) { ?>
 				<div class="grid">
-					<?php if (settings::get('customer_field_company') || settings::get('customer_field_tax_id')) { ?>
 					<div class="col-6">
 						<div class="form-group">
 							<div class="form-label"><?php echo t('title_customer_type', 'Customer Type'); ?></div>
-							<?php echo functions::form_toggle('customer[type]', ['business' => t('title_business', 'Business'), 'individual' => t('title_individual', 'Individual')], empty($_POST['type']) ? 'individual' : true); ?>
+							<?php echo functions::form_toggle('customer[type]', ['business' => t('title_business', 'Business'), 'individual' => t('title_individual', 'Individual')], true); ?>
 						</div>
 					</div>
-					<?php } ?>
 				</div>
+				<?php } ?>
 
 				<div id="business-details"<?php echo (isset($_POST['customer']['type']) && $_POST['customer']['type'] == 'individual') ? ' style="display: none;"' : ''; ?>>
 					<div class="grid">
@@ -55,7 +55,7 @@
 						<div class="col-sm-6">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_tax_id', 'Tax ID'); ?> / <?php echo t('title_vat_number', 'VAT Number'); ?></div>
-								<?php echo functions::form_input_text('tax_id', true, (isset($_POST['customer']['type']) && $_POST['customer']['type'] == 'individual') ? 'disabled' : ''); ?>
+								<?php echo functions::form_input_text('customer[tax_id]', true, (isset($_POST['customer']['type']) && $_POST['customer']['type'] == 'individual') ? 'disabled' : ''); ?>
 							</label>
 						</div>
 						<?php } ?>

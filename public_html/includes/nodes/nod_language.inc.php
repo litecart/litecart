@@ -214,11 +214,11 @@
 
 			self::$_accessed_translations[] = $code;
 
-			if (empty($language_code)) {
+			if (!$language_code) {
 				$language_code = self::$selected['code'];
 			}
 
-			if (empty($language_code) || empty(self::$languages[$language_code])) {
+			if (!$language_code || empty(self::$languages[$language_code])) {
 				trigger_error('Unknown language code for translation ('. $language_code .')', E_USER_WARNING);
 				return;
 			}

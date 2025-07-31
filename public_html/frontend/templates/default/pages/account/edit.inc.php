@@ -65,26 +65,23 @@
 					<div class="card-body">
 						<?php echo functions::form_begin('customer_details_form', 'post', null, false, 'style="max-width: 720px;"'); ?>
 
-							<div class="form-grid">
-								<?php if (settings::get('customer_field_company') || settings::get('customer_field_tax_id')) { ?>
+							<?php if (settings::get('customer_field_company') || settings::get('customer_field_tax_id')) { ?>
+							<div class="grid">
 								<div class="col-6">
 									<div class="form-group">
 										<div class="form-label"><?php echo t('title_customer_type', 'Customer Type'); ?></div>
-										<?php echo functions::form_toggle('type', ['business' => t('title_business', 'Business'), 'individual' => t('title_individual', 'Individual')], empty($_POST['type']) ? 'individual' : true); ?>
+										<?php echo functions::form_toggle('customer[type]', ['business' => t('title_business', 'Business'), 'individual' => t('title_individual', 'Individual')], true); ?>
 									</div>
 								</div>
-
-								<div class="col-6">
-								</div>
-								<?php } ?>
 							</div>
+							<?php } ?>
 
-							<div id="company-details" class="form-grid">
+							<div id="business-details" class="grid"<?php echo (isset($_POST['customer']['type']) && $_POST['customer']['type'] == 'individual') ? ' style="display: none;"' : ''; ?>>
 								<?php if (settings::get('customer_field_company')) { ?>
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_company_name', 'Company Name'); ?></div>
-										<?php echo functions::form_input_text('company', true, 'required'); ?>
+										<?php echo functions::form_input_text('customer[company]', true, 'required' . ((isset($_POST['customer']['type']) && $_POST['customer']['type'] == 'individual') ? ' disabled' : '')); ?>
 									</label>
 								</div>
 								<?php } ?>
@@ -93,13 +90,13 @@
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_tax_id', 'Tax ID'); ?></div>
-										<?php echo functions::form_input_text('tax_id', true); ?>
+										<?php echo functions::form_input_text('tax_id', true, (isset($_POST['customer']['type']) && $_POST['customer']['type'] == 'individual') ? 'disabled' : ''); ?>
 									</label>
 								</div>
 								<?php } ?>
 							</div>
 
-							<div class="form-grid">
+							<div class="grid">
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_firstname', 'First Name'); ?></div>
@@ -115,7 +112,7 @@
 								</div>
 							</div>
 
-							<div class="form-grid">
+							<div class="grid">
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_address1', 'Address 1'); ?></div>
@@ -131,7 +128,7 @@
 								</div>
 							</div>
 
-							<div class="form-grid">
+							<div class="grid">
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_postcode', 'Postal Code'); ?></div>
@@ -147,7 +144,7 @@
 								</div>
 							</div>
 
-							<div class="form-grid">
+							<div class="grid">
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_country', 'Country'); ?></div>
@@ -163,7 +160,7 @@
 								</div>
 							</div>
 
-							<div class="form-grid">
+							<div class="grid">
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_phone_number', 'Phone Number'); ?></div>
@@ -189,15 +186,15 @@
 </main>
 
 <script>
-	$('input[name="type"]').on('change', function() {
+	$('input[name="customer[type]"]').on('change', function() {
 		if ($(this).val() == 'business') {
-			$('.business-details :input').prop('disabled', false);
-			$('.business-details').slideDown('fast');
+			$('#business-details :input').prop('disabled', false);
+			$('#business-details').slideDown('fast');
 		} else {
-			$('.business-details :input').prop('disabled', true);
-			$('.business-details').slideUp('fast');
+			$('#business-details :input').prop('disabled', true);
+			$('#business-details').slideUp('fast');
 		}
-	}).first().trigger('change');
+	});
 
 	$('form[name="customer_form"]').on('input', ':input', function() {
 		if ($(this).val() == '') return;

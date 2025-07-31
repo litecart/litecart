@@ -23,18 +23,19 @@
 							<div class="grid">
 								<div class="col-sm-6">
 									<label class="form-group">
-										<?php echo functions::form_toggle('type', ['individual' => t('title_individual', 'Individual'), 'business' => t('title_business', 'Business')], empty($_POST['type']) ? 'individual' : true); ?>
+										<?php echo functions::form_toggle('type', ['business' => t('title_business', 'Business'), 'individual' => t('title_individual', 'Individual')], true); ?>
 									</label>
 								</div>
 							</div>
 							<?php } ?>
 
-							<div class="grid">
+							<?php if (settings::get('customer_field_company')) { ?>
+							<div id="business-details" class="grid"<?php echo (isset($_POST['type']) && $_POST['type'] == 'individual') ? ' style="display: none;"' : ''; ?>>
 								<?php if (settings::get('customer_field_company')) { ?>
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_company_name', 'Company Name'); ?></div>
-										<?php echo functions::form_input_text('company', true, 'required'); ?>
+										<?php echo functions::form_input_text('company', true, 'required' . ((isset($_POST['type']) && $_POST['type'] == 'individual') ? ' disabled' : '')); ?>
 									</label>
 								</div>
 								<?php } ?>
@@ -43,11 +44,12 @@
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_tax_id', 'Tax ID'); ?></div>
-										<?php echo functions::form_input_text('tax_id', true); ?>
+										<?php echo functions::form_input_text('tax_id', true, (isset($_POST['type']) && $_POST['type'] == 'individual') ? 'disabled' : ''); ?>
 									</label>
 								</div>
 								<?php } ?>
 							</div>
+							<?php } ?>
 
 							<div class="grid">
 								<div class="col-sm-6">
@@ -179,13 +181,13 @@
 <script>
 	$('input[name="type"]').on('change', function() {
 		if ($(this).val() == 'business') {
-			$('.business-details :input').prop('disabled', false);
-			$('.business-details').slideDown('fast');
+			$('#business-details :input').prop('disabled', false);
+			$('#business-details').slideDown('fast');
 		} else {
-			$('.business-details :input').prop('disabled', true);
-			$('.business-details').slideUp('fast');
+			$('#business-details :input').prop('disabled', true);
+			$('#business-details').slideUp('fast');
 		}
-	}).first().trigger('change');
+	});
 
 	$('#box-create-account').on('change', ':input', function() {
 		if ($(this).val() == '') return;

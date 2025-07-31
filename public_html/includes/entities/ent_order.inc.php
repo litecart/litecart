@@ -456,11 +456,11 @@
 						$message .= functions::datetime_format('datetime', $comment['created_at']) ." – ". trim($comment['text']) . "\r\n\r\n";
 					}
 
-					$email = new ent_email();
-					$email->add_recipient($this->data['customer']['email'], $this->data['customer']['firstname'] .' '. $this->data['customer']['lastname'])
-								->set_subject($subject)
-								->add_body($message)
-								->send();
+					(new ent_email())
+						->add_recipient($this->data['customer']['email'], $this->data['customer']['firstname'] .' '. $this->data['customer']['lastname'])
+						->set_subject($subject)
+						->add_body($message)
+						->send();
 				}
 			}
 
@@ -950,11 +950,11 @@
 				]);
 			}
 
-			$email = new ent_email();
-			$email->add_recipient($this->data['customer']['email'], $this->data['customer']['firstname'] .' '. $this->data['customer']['lastname'])
-						->set_subject($subject)
-						->add_body($message, true)
-						->send();
+			(new ent_email())
+				->add_recipient($this->data['customer']['email'], $this->data['customer']['firstname'] .' '. $this->data['customer']['lastname'])
+				->set_subject($subject)
+				->add_body($message, true)
+				->send();
 		}
 
 		public function adjust_stock_quantity($product_id, $combination, $quantity_adjustment) {

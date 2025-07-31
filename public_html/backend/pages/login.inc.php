@@ -31,7 +31,7 @@
 				or lower(email) = '". database::input(strtolower($_POST['username'])) ."'
 				limit 1;"
 			)->fetch(function($administrator){
-				$administrator['known_ips'] = preg_split('#\s*,\s*#', $administrator['known_ips'], -1, PREG_SPLIT_NO_EMPTY);
+				$administrator['known_ips'] = functions::string_split($administrator['known_ips']);
 				return $administrator;
 			});
 
@@ -44,11 +44,15 @@
 			}
 
 			if (!empty($administrator['valid_from']) && date('Y-m-d H:i:s') < $administrator['valid_from']) {
-				throw new Exception(sprintf(t('error_account_is_blocked', 'The account is blocked until %s'), functions::datetime_format('datetime', $administrator['valid_from'])));
+				throw new Exception(strtr(t('error_account_is_blocked', 'The account is blocked until {datetime}'), [
+					'{datetime}' => functions::datetime_format('datetime', $administrator['valid_from'])
+				]));
 			}
 
 			if (!empty($administrator['valid_to']) && date('Y-m-d H:i:s') > $administrator['valid_to']) {
-				throw new Exception(sprintf(t('error_account_expired', 'The account expired %s'), functions::datetime_format('datetime', $administrator['valid_to'])));
+				throw new Exception(strtr(t('error_account_expired', 'The account expired {datetime}'), [
+					'{datetime}' => functions::datetime_format('datetime', $administrator['valid_to'])
+				]));
 			}
 
 			if (!password_verify($_POST['password'], $administrator['password_hash'])) {
@@ -77,34 +81,36 @@
 					if (!empty($administrator['email'])) {
 
 						$aliases = [
-							'%store_name' => settings::get('store_name'),
-							'%store_link' => document::ilink(''),
-							'%username' => $administrator['username'],
-							'%expires' => date('Y-m-d H:i:00', strtotime('+15 minutes')),
-							'%ip_address' => $_SERVER['REMOTE_ADDR'],
-							'%hostname' => gethostbyaddr($_SERVER['REMOTE_ADDR']),
-							'%user_agent' => $_SERVER['HTTP_USER_AGENT'],
+							'{store_name}' => settings::get('store_name'),
+							'{store_link}' => document::ilink(''),
+							'{username}' => $administrator['username'],
+							'{expires}' => date('Y-m-d H:i:00', strtotime('+15 minutes')),
+							'{ip_address}' => $_SERVER['REMOTE_ADDR'],
+							'{hostname}' => gethostbyaddr($_SERVER['REMOTE_ADDR']),
+							'{user_agent}' => $_SERVER['HTTP_USER_AGENT'],
 						];
 
 						$subject = t('title_administrator_account_blocked', 'Administrator Account Blocked');
 						$message = strtr(t('administrator_account_blocked:email_body', implode("\r\n", [
-							'Your administrator account %username has been blocked until %expires because of too many invalid login attempts.',
+							'Your administrator account {username} has been blocked until {expires} because of too many invalid login attempts.',
 							'',
-							'Client: %ip_address (%hostname)',
-							'%user_agent',
+							'Client: {ip_address} ({hostname})',
+							'{user_agent}',
 							'',
-							'%store_name',
-							'%store_link',
+							'{store_name}',
+							'{store_link}',
 						])), $aliases);
 
-						$email = new ent_email();
-						$email->add_recipient($administrator['email'], $administrator['username'])
-									->set_subject($subject)
-									->add_body($message)
-									->send();
+						(new ent_email())
+							->add_recipient($administrator['email'], $administrator['username'])
+							->set_subject($subject)
+							->add_body($message)
+							->send();
 					}
 
-					throw new Exception(strtr(t('error_account_has_been_blocked', 'This account has been temporary blocked %n minutes'), ['%n' => 15, '%d' => 15]));
+					throw new Exception(strtr(t('error_account_has_been_blocked', 'This account has been temporary blocked {n} minutes'), [
+						'{n}' => 15
+					]));
 				}
 
 				throw new Exception(t('error_wrong_username_password_combination', 'Wrong combination of username and password or the account does not exist.'));
@@ -120,10 +126,10 @@
 			}
 
 			if (!empty($administrator['last_ip_address']) && $administrator['last_ip_address'] != $_SERVER['REMOTE_ADDR']) {
-				notices::add('warnings', strtr(t('warning_account_previously_used_by_another_ip', 'Your account was previously used by another IP address %ip_address (%hostname). If this was not you then your login credentials might be compromised.'), [
-					'%username' => $administrator['username'],
-					'%ip_address' => $administrator['last_ip_address'],
-					'%hostname' => $administrator['last_hostname'],
+				notices::add('warnings', strtr(t('warning_account_previously_used_by_another_ip', 'Your account was previously used by another IP address {ip_address} ({hostname}). If this was not you then your login credentials might be compromised.'), [
+					'{username}' => $administrator['username'],
+					'{ip_address}' => $administrator['last_ip_address'],
+					'{hostname}' => $administrator['last_hostname'],
 				]));
 			}
 
@@ -154,11 +160,13 @@
 					'attempts' => 0,
 				];
 
-				$email = new ent_email();
-				$email->add_recipient($administrator['email'])
-							->set_subject(t('title_verification_code', 'Verification Code'))
-							->add_body(strtr(t('email_verification_code', 'Verification code: %code'), ['%code' => session::$data['security_verification']['code']]))
-							->send();
+				(new ent_email())
+					->add_recipient($administrator['email'])
+					->set_subject(t('title_verification_code', 'Verification Code'))
+					->add_body(strtr(t('email_verification_code', 'Verification code: {code}'), [
+						'{code}' => session::$data['security_verification']['code']
+					]))
+					->send();
 
 				notices::add('notices', t('notice_verification_code_sent_via_email', 'A verification code was sent via email'));
 
@@ -201,7 +209,10 @@
 				$redirect_url = document::ilink('b:');
 			}
 
-			notices::add('success', str_replace(['%username'], [administrator::$data['username']], t('success_now_logged_in_as', 'You are now logged in as %username')));
+			notices::add('success', strtr(t('success_now_logged_in_as', 'You are now logged in as {username}'), [
+				'{username}' => administrator::$data['username']
+			]));
+
 			redirect($redirect_url);
 			exit;
 

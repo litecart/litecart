@@ -57,7 +57,7 @@
 			if (!$email) {
 				throw new Exception('Could not find email (ID: '. (int)$id .') in database.');
 			}
-			
+
 			$this->data = array_replace($this->data, array_intersect_key($email, $this->data));
 
 			$this->data['sender'] = json_decode($email['sender'], true);
@@ -130,23 +130,17 @@
 		}
 
 		public function set_language($language_code) {
-
 			$this->data['language_code'] = $language_code;
-
 			return $this;
 		}
 
 		public function set_subject($subject) {
-
 			$this->data['subject'] = trim(preg_replace('#(\R|\t|%0A|%0D)*#', '', $subject));
-
 			return $this;
 		}
 
 		public function set_reference($id) {
-
 			$this->data['reference'] = $id;
-
 			return $this;
 		}
 

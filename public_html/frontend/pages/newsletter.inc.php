@@ -21,11 +21,6 @@
 
 			$_POST['email'] = strtolower($_POST['email']);
 
- 	  	// Collect scraps
-			if (!customer::check_login()) {
-				customer::$data = array_replace(customer::$data, array_intersect_key(array_filter(array_diff_key($_POST, array_flip(['id']))), customer::$data));
-			}
-
 			if (database::query(
 				"select * from ". DB_TABLE_PREFIX ."newsletter_recipients
 				where email = '". database::input($_POST['email']) ."'
@@ -106,11 +101,6 @@
 				limit 1;"
 			)->num_rows) {
 				throw new Exception(t('error_given_email_not_subscribed_to_newsletter', 'The given email address is not subscribed to our newsletter'));
-			}
-
-		// Collect scraps
-			if (!customer::check_login()) {
-				customer::$data = array_replace(customer::$data, array_intersect_key(array_filter(array_diff_key($_POST, array_flip(['id']))), customer::$data));
 			}
 
 			$newsletter_recipient = new ent_newsletter_recipient($_POST['email']);

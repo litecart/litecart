@@ -6,8 +6,8 @@
 			$keywords = preg_split('#\s*,\s*#', $keywords, -1, PREG_SPLIT_NO_EMPTY);
 		}
 
-		$sql_where_keywords = "(". implode(" or ", array_map(function($k){
-			return "find_in_set('". database::input($k) ."', keywords)";
+		$sql_where_keywords = "(". implode(" or ", array_map(function($keyword){
+			return "find_in_set('". database::input($keyword) ."', keywords)";
 		}, $keywords)) .")";
 
 		$banners = database::query(
@@ -90,6 +90,10 @@
 		}
 
 		switch(true) {
+
+			// Graphics elements
+			case (preg_match('#\.(avif|gif|jpe?g|png|webp|svg)$#', $icon)):
+				return '<img class="icon" src="'. document::href_rlink($icon) .'"'. ($parameters ? ' ' . $parameters : '') .'>';
 
 			// LiteCore Fonticons
 			case (preg_match('#^icon-#', $icon)):

@@ -1,6 +1,6 @@
-// Form Input Tags
 waitFor('jQuery', ($) => {
 
+	// Form Input Tags
 	$('input[data-toggle="tags"]').each(function() {
 
 		let $originalInput = $(this);

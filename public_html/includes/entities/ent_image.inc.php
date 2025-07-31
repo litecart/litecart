@@ -111,7 +111,9 @@
 
 					switch ($this->library) {
 						case 'imagick':
-							$this->_data['type'] = strtr(strtolower($this->_image->getImageFormat()), ['jpeg' => 'jpg']);
+							$this->_data['type'] = strtr(strtolower($this->_image->getImageFormat()), [
+								'jpeg' => 'jpg'
+							]);
 							break 2;
 
 						case 'gd':
@@ -259,7 +261,9 @@
 						Imagick::setResourceLimit(imagick::RESOURCETYPE_DISK, 256e6);
 
 						$this->_image = new Imagick($this->_file);
-						$this->_data['type'] = strtr(strtolower($this->_image->getImageFormat()), ['jpeg' => 'jpg']);
+						$this->_data['type'] = strtr(strtolower($this->_image->getImageFormat()), [
+							'jpeg' => 'jpg'
+						]);
 
 						return true;
 

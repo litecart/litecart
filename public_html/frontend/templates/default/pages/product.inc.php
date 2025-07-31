@@ -70,7 +70,9 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 					<?php if ($cheapest_shipping_fee !== null) { ?>
 					<div class="cheapest-shipping" style="margin: 1em 0;">
-						<?php echo functions::draw_fonticon('icon-truck'); ?> <?php echo strtr(t('text_cheapest_shipping_from_price', 'Cheapest shipping from <strong class="value">%price</strong>'), ['%price' => currency::format($cheapest_shipping_fee)]); ?>
+						<?php echo functions::draw_fonticon('icon-truck'); ?> <?php echo strtr(t('text_cheapest_shipping_from_price', 'Cheapest shipping from <strong class="value">{price}</strong>'), [
+							'{price}' => currency::format($cheapest_shipping_fee)
+						]); ?>
 					</div>
 					<?php } ?>
 

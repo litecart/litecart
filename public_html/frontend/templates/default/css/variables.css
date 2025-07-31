@@ -39,21 +39,11 @@
   /* General */
   --site-background: #f2f2f7;
   --listing-border: 1px solid #d3d3e1;
-  /* Important Message */
+  /* Important Notice */
   --important-notice-background: #e7e2c8;
   --important-notice-text-color: var(--default-text-color);
   --important-notice-border-color: transparent;
   --important-notice-border-size: 0px;
-  /* Footer */
-  --footer-background: #dedee5;
-  --footer-title-color: #333;
-  --footer-text-color: #333;
-  --footer-shadow: inset 0 0.5em 1em 0 rgba(0, 0, 0, 0.05);
-  /* Copyright */
-  --copyright-background: transparent;
-  --copyright-text-color: var(--footer-text-color);
-  --cookie-notice-background: #334c;
-  --cookie-notice-text-color: #fff;
   /* Framework */
   --gutter-x: 15px;
   /* See additional for media queries */
@@ -61,6 +51,7 @@
   /* See additional for media queries */
   --border-radius: 10px;
   --whitespace-color: #fff;
+  /* Defaults */
   --default-text-font: 'Fira Sans', Arial, 'Helvetica Neue', Helvetica, sans-serif;
   --default-text-color: #444;
   --default-text-size: 15px;
@@ -69,23 +60,6 @@
   --default-border-color: #ececf1;
   --default-shadow: 0 0 0 0 #0000, 0 0 0 0 #0000, 0 1px 3px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
   --link-text-color: #5292b1;
-  /* Forms */
-  --input-padding-x: 1.25em;
-  --input-padding-y: 0.66em;
-  --input-background: #ececf1;
-  --input-text-color: #000;
-  --input-border-color: #e5e6e9;
-  --input-border-width: 0;
-  --input-outline-color: #ccc;
-  --input-outline-color--hover: #e0e0e6;
-  --input-outline-width: 1px;
-  --input-shadow: none;
-  --input-addon-background: #e9ebf1;
-  --input-checkbox-background: #e6e7eb;
-  --input-checkbox-background--active: #7052c2;
-  --input-toggle-background: #fff;
-  --input-code-background: #313b50;
-  --input-code-text-color: #fff;
   /* Badges */
   --badge-background: #c00;
   --badge-text-color: #fff;
@@ -106,7 +80,15 @@
   --button-padding-y: 0.66em;
   --button-border-width: 1px;
   --button-shadow: 0 2px 2px 0 rgba(37, 44, 97, 0.15), 0 1px 3px 0 rgba(93, 100, 148, 0.2);
-  /* Default Button */
+  /* Button: Primary */
+  --button-primary-background: #4772a1;
+  --button-primary-background--hover: #4377b1;
+  --button-primary-background--active: #39679b;
+  --button-primary-text-color: #fff;
+  --button-primary-border-color: transparent;
+  --button-primary-border-color--hover: transparent;
+  --button-primary-border-color--active: transparent;
+  /* Button: Default */
   --button-default-background: #ecedf1;
   --button-default-background--hover: #e3e4e9;
   --button-default-background--active: #dddde9;
@@ -114,7 +96,7 @@
   --button-default-border-color: transparent;
   --button-default-border-color--hover: transparent;
   --button-default-border-color--active: transparent;
-  /* Success Button */
+  /* Button: Success */
   --button-success-background: #91C231;
   --button-success-background--hover: #90c920;
   --button-success-background--active: #81b123;
@@ -122,7 +104,7 @@
   --button-success-border-color: #6da500;
   --button-success-border-color--hover: #91C231;
   --button-success-border-color--active: #81b123;
-  /* Danger Button */
+  /* Button: Danger */
   --button-danger-background: #d9534f;
   --button-danger-background--hover: #d9534f;
   --button-danger-background--active: #db5d59;
@@ -139,6 +121,7 @@
   --card-border-width: 1px;
   --card-shadow: var(--default-shadow);
   --card-footer-background: #f2f3f6;
+  /* Carousel */
   --carousel-shadow: var(--default-shadow);
   /* Dropdowns */
   --dropdown-background: #fff;
@@ -150,6 +133,23 @@
   --dropdown-item-text-color: var(--dropdown-text-color);
   --dropdown-item-background--hover: #f1f2f5;
   --dropdown-item-text-color--hover: #f1f2f5;
+  /* Forms */
+  --input-padding-x: 1.25em;
+  --input-padding-y: 0.66em;
+  --input-background: #ececf1;
+  --input-text-color: #000;
+  --input-border-color: #e5e6e9;
+  --input-border-width: 0;
+  --input-outline-color: #ccc;
+  --input-outline-color--hover: #e0e0e6;
+  --input-outline-width: 1px;
+  --input-shadow: none;
+  --input-addon-background: #e9ebf1;
+  --input-checkbox-background: #e6e7eb;
+  --input-checkbox-background--active: #7052c2;
+  --input-toggle-background: #fff;
+  --input-code-background: #313b50;
+  --input-code-text-color: #fff;
   /* Navigation */
   --navbar-background: linear-gradient(to bottom, #dadbe3, #cdcdd8, #dcdae5);
   --navbar-text-color: #4e4e55;
@@ -209,6 +209,16 @@
   --table-link-background--hover: #cfddeb;
   --table-footer-background: #fbfcfd;
   --table-footer-text-color: var(--default-text-color);
+  /* Footer */
+  --footer-background: #dedee5;
+  --footer-title-color: #333;
+  --footer-text-color: #333;
+  --footer-shadow: inset 0 0.5em 1em 0 rgba(0, 0, 0, 0.05);
+  /* Copyright */
+  --copyright-background: transparent;
+  --copyright-text-color: var(--footer-text-color);
+  --cookie-notice-background: #334c;
+  --cookie-notice-text-color: #fff;
 }
 @media (min-width: 576px) {
   :root {

@@ -27,9 +27,9 @@
 	if (!$_POST) {
 		$_POST = $customer->data;
 		if (!empty($_POST['company'])) {
-			$_POST['type'] = 'business';
+			$_POST['customer']['type'] = 'business';
 		} else {
-			$_POST['type'] = 'individual';
+			$_POST['customer']['type'] = 'individual';
 		}
 	}
 

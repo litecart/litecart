@@ -78,10 +78,10 @@
 
 			echo 'Sending report to '. $this->settings['email_recipient'];
 
-			$email = new ent_email();
-			$email->add_recipient($this->settings['email_recipient'])
-						->set_subject('[Error Report] '. settings::get('store_name'))
-						->add_body(PLATFORM_NAME .' '. PLATFORM_VERSION ."\r\n\r\n". $buffer);
+			$email = (new ent_email())
+				->add_recipient($this->settings['email_recipient'])
+				->set_subject('[Error Report] '. settings::get('store_name'))
+				->add_body(PLATFORM_NAME .' '. PLATFORM_VERSION ."\r\n\r\n". $buffer);
 
 			if ($email->send() !== true) {
 				echo ' [Failed]';

@@ -76,10 +76,18 @@
 								<?php echo t('title_subtotal', 'Subtotal'); ?>: <strong class="formatted-value"><?php echo !empty(customer::$data['display_prices_including_tax']) ?  currency::format($subtotal['value'] + $subtotal['tax']) : currency::format($subtotal['value']); ?></strong>
 							</div>
 
+							<?php if (!empty($cheapest_shipping)) { ?>
+							<div class="subtotal text-lg text-end">
+								<?php echo t('title_cheapest_shipping', 'Cheapest Shipping'); ?>: <strong class="formatted-value"><?php echo !empty(customer::$data['display_prices_including_tax']) ?  currency::format($cheapest_shipping['fee'] + $cheapest_shipping['tax']) : currency::format($cheapest_shipping['fee']); ?></strong>
+							</div>
+							<?php } ?>
+
 						<?php echo functions::form_end(); ?>
 					</div>
 
 				</section>
+
+				<?php echo $box_also_purchased_products; ?>
 
 			</div>
 

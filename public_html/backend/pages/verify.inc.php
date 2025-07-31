@@ -17,11 +17,13 @@
 			'attempts' => 0,
 		];
 
-		$email = new ent_email();
-		$email->add_recipient(administrator::$data['email'])
-					->set_subject(t('title_verification_code', 'Verification Code'))
-					->add_body(strtr(t('email_verification_code', 'Verification code: %code'), ['%code' => session::$data['security_verification']['code']]))
-					->send();
+		(new ent_email())
+			->add_recipient(administrator::$data['email'])
+			->set_subject(t('title_verification_code', 'Verification Code'))
+			->add_body(strtr(t('email_verification_code', 'Verification code: {code}'), [
+				'{code}' => session::$data['security_verification']['code']
+			]))
+			->send();
 
 		notices::add('notices', t('notice_verification_code_sent_via_email', 'A verification code was sent via email'));
 	};
@@ -66,7 +68,10 @@
 				$redirect_url = document::ilink('b:');
 			}
 
-			notices::add('success', str_replace(['%username'], [administrator::$data['username']], t('success_now_logged_in_as', 'You are now logged in as %username')));
+			notices::add('success', strtr(t('success_now_logged_in_as', 'You are now logged in as {username}'), [
+				'{username}' => administrator::$data['username']
+			]));
+
 			redirect($redirect_url);
 			exit;
 

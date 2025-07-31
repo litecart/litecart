@@ -123,7 +123,7 @@
 			}
 
 			// Collect scraps
-			if (file_get_contents('php://input')) {
+			if (route::$selected['endpoint'] == 'frontend' && file_get_contents('php://input')) {
 				foreach ([
 					'#^(given|first)[ _-]?name$#i' => 'firstname',
 					'#^(family|sur|last)[ _-]?name$#i' => 'lastname',

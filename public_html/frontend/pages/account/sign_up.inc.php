@@ -20,6 +20,11 @@
 
 	if (!$_POST) {
 		$_POST = customer::$data;
+		if (!empty($_POST['company'])) {
+			$_POST['type'] = 'business';
+		} else {
+			$_POST['type'] = 'individual';
+		}
 	}
 
 	if (customer::check_login()) {
