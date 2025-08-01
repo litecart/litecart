@@ -30,8 +30,8 @@
 
 				echo implode(PHP_EOL, [
 					functions::draw_progress_bar($progress, 15),
-					'Estimated time remaining: '. $time_remaining .' s',
-					'Memory usage: '. $memory_usage .' MB',
+					'Estimated Time Remaining: '. $time_remaining .' s',
+					'Memory Usage: '. $memory_usage .' MB',
 					'',
 					'',
 				]);

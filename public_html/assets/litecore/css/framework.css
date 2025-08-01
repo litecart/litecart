@@ -1131,7 +1131,7 @@ html[dir="rtl"] .dropdown label:has([data-toggle="dropdown"]) {
   font-family: "LiteCore";
   font-style: normal;
   font-weight: 400;
-  src: url("../fonts/fonticons.woff2?1753698835") format("woff2");
+  src: url("../fonts/fonticons.woff2?1754082626") format("woff2");
 }
 [class^="icon-"],
 [class*=" icon-"] {
@@ -1533,7 +1533,7 @@ html[dir="rtl"] .dropdown label:has([data-toggle="dropdown"]) {
 .icon-home:before {
   content: "\e07f";
 }
-.icon-icon-play:before {
+.icon-play:before {
   content: "\e080";
 }
 .icon-heart-o:before {
