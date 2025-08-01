@@ -937,6 +937,7 @@ body {
 		position: relative;
 		display: block;
 		overflow: hidden;
+		margin-bottom: 2em;
 
 		.sticker {
 			color: #fff;
@@ -954,6 +955,25 @@ body {
 
 			&.sale {
 				background: rgba(237, 60, 50, 0.85);
+			}
+		}
+	}
+
+	.video {
+		position: relative;
+		.video-icon {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			font-size: 2em;
+			color: #fff;
+			background-color: rgba(0, 0, 0, 0.5);
+			border-radius: 50%;
+			padding: 0.25em;
+			line-height: 1;
+			.video-icon:hover {
+				background-color: rgba(0, 0, 0, 0.7);
 			}
 		}
 	}

@@ -782,6 +782,7 @@ body {
   position: relative;
   display: block;
   overflow: hidden;
+  margin-bottom: 2em;
 }
 #box-product .main-image .sticker {
   color: #fff;
@@ -798,6 +799,24 @@ body {
 }
 #box-product .main-image .sticker.sale {
   background: rgba(237, 60, 50, 0.85);
+}
+#box-product .video {
+  position: relative;
+}
+#box-product .video .video-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2em;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  padding: 0.25em;
+  line-height: 1;
+}
+#box-product .video .video-icon .video-icon:hover {
+  background-color: rgba(0, 0, 0, 0.7);
 }
 #box-product .price-tag {
   font-size: 1.75em;

@@ -17,14 +17,14 @@ form[name="buy_now_form"] .dropdown-menu .image {
 			<div class="grid" style="margin-bottom: 0;">
 				<div class="col-sm-4">
 					<div class="images">
-						<div class="grid">
-							<div class="col-12">
-									<a class="main-image" href="<?php echo document::href_rlink($image); ?>" data-toggle="lightbox" data-gallery="product">
-									<?php echo functions::draw_thumbnail($image, 320, 0, 'product', 'alt="'. functions::escape_attr($name) .'"'); ?>
-									{{sticker}}
-								</a>
-							</div>
 
+						<a class="main-image" href="<?php echo document::href_rlink($image); ?>" data-toggle="lightbox" data-gallery="product">
+							<?php echo functions::draw_thumbnail($image, 320, 0, 'product', 'alt="'. functions::escape_attr($name) .'"'); ?>
+							{{sticker}}
+						</a>
+
+						<?php if ($extra_images || $video_url) { ?>
+						<div class="grid">
 							<?php foreach ($extra_images as $extra_image) { ?>
 							<div class="col-6">
 								<a class="extra-image" href="<?php echo document::href_rlink($extra_image); ?>" data-toggle="lightbox" data-gallery="product">
@@ -41,8 +41,9 @@ form[name="buy_now_form"] .dropdown-menu .image {
 								</a>
 							</div>
 							<?php } ?>
-
 						</div>
+						<?php } ?>
+
 					</div>
 				</div>
 
