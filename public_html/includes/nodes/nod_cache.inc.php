@@ -62,7 +62,7 @@
 
 		public static function token($keyword, $dependencies=[], $storage='memory', $ttl=900) {
 
-			if (!in_array($storage, ['file', 'memory', 'session'])) {
+			if (!in_array($storage, ['file', 'memory'])) {
 				trigger_error('The storage type is not supported ('. $storage .')', E_USER_WARNING);
 				return;
 			}
@@ -232,14 +232,6 @@
 							break;
 					}
 
-				case 'session':
-
-					if (isset(self::$_data[$token['id']]['mtime']) && self::$_data[$token['id']]['mtime'] > strtotime('-'.$max_age .' seconds')) {
-						$data = self::$_data[$token['id']]['data'];
-					}
-
-					break;
-
 				default:
 
 					trigger_error('Invalid cache storage ('. $token['storage'] .')', E_USER_WARNING);
@@ -293,14 +285,6 @@
 							break;
 					}
 
-				case 'session':
-
-					self::$_data[$token['id']] = [
-						'mtime' => time(),
-						'data' => $data,
-					];
-
-					$result = true;
 					break;
 
 				default:
