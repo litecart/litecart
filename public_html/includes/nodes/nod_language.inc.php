@@ -95,6 +95,16 @@
 				session::$data['backend']['language'] = self::$languages[$code];
 			} else {
 				session::$data['language'] = self::$languages[$code];
+
+				// Update customer language
+				if (class_exists('customer', false) && customer::check_login()) {
+					database::query(
+						"update ". DB_TABLE_PREFIX ."customers
+						set language_code = '". database::input(self::$data['language_code']) ."'
+						where id = ". (int)session::$data['customer']['id'] ."
+						limit 1;"
+					);
+				}
 			}
 
 			// Sort by relevance / fallback order

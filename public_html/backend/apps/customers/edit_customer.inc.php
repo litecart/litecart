@@ -73,6 +73,7 @@
 				'group_id',
 				'email',
 				'password',
+				'language_code',
 				'tax_id',
 				'company',
 				'firstname',
@@ -275,6 +276,13 @@
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_newsletter', 'Newsletter'); ?></div>
 										<?php echo functions::form_checkbox('newsletter', ['1', t('title_subscribe', 'Subscribe')], true); ?>
+									</label>
+								</div>
+
+								<div class="col-md-12">
+									<label class="form-group">
+										<div class="form-label"><?php echo t('title_language', 'Language'); ?></div>
+										<?php echo functions::form_select_language('language_code', true); ?>
 									</label>
 								</div>
 							</div>

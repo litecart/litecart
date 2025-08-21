@@ -374,6 +374,7 @@ CHANGE COLUMN `last_agent` `last_user_agent` VARCHAR(255) NOT NULL DEFAULT '',
 CHANGE COLUMN `date_login` `last_login` TIMESTAMP NULL DEFAULT NULL AFTER `last_user_agent`,
 CHANGE COLUMN `date_blocked_until` `blocked_until` TIMESTAMP NULL DEFAULT NULL AFTER `last_login`,
 ADD COLUMN `shipping_email` VARCHAR(64) NOT NULL DEFAULT '' AFTER `shipping_phone`,
+ADD COLUMN `language_code` CHAR(2) NOT NULL DEFAULT '' AFTER `shipping_email`,
 ADD COLUMN `group_id` INT UNSIGNED NULL AFTER `id`,
 ADD COLUMN `known_ips` VARCHAR(512) NOT NULL DEFAULT '' AFTER `total_logins`,
 ADD COLUMN `last_active` TIMESTAMP NULL DEFAULT NULL AFTER `last_login`,
@@ -801,6 +802,15 @@ SET name = '{}',
 	head_title = '{}',
 	h1_title = '{}',
 	meta_description = '{}';
+-- -----
+UPDATE `lc_customers` c
+LEFT JOIN (
+	SELECT customer_id, language_code FROM `lc_orders`
+	WHERE customer_id
+	GROUP BY customer_id
+) o ON (o.customer_id = c.id)
+SET c.language_code = o.language_code
+WHERE c.language_code IS NULL;
 -- -----
 UPDATE `lc_delivery_statuses`
 SET name = '{}',

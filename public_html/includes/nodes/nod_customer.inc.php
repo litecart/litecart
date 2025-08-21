@@ -348,6 +348,10 @@
 			if ($customer) {
 				session::$data['customer'] = array_replace(session::$data['customer'], array_intersect_key($customer, session::$data['customer']));
 			}
+
+			if (!empty(self::$data['language_code']) && self::$data['language_code'] == language::$selected['code']) {
+				language::set(self::$data['language_code']);
+			}
 		}
 
 		public static function require_login() {

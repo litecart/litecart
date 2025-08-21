@@ -401,6 +401,7 @@
 				"shipping_zone_code": { "type": "VARCHAR", "length": 8, "default": "''" },
 				"shipping_phone": { "type": "VARCHAR", "length": 16, "default": "''" },
 				"shipping_email": { "type": "VARCHAR", "length": 64, "default": "''" },
+				"language_code": { "type": "CHAR", "length": 2, "nullable": true },
 				"notes": { "type": "TEXT", "default": "''" },
 				"password_hash": { "type": "VARCHAR", "length": 255, "default": "''" },
 				"password_reset_token": { "type": "VARCHAR", "length": 128, "default": "''" },
