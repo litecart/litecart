@@ -9,7 +9,7 @@
 	}
 
 	// Add site manifest
-	document::$head_tags['manifest'] = '<link rel="manifest" href="'. document::href_ilink('manifest.json') .'">';
+	document::$head_tags['manifest'] = '<link rel="manifest" href="'. document::href_ilink('manifest.json') .'" crossorigin="use-credentials">';
 
 	// Assign backend favicons
 	document::$head_tags['favicon'] = implode(PHP_EOL, [
