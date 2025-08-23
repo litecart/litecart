@@ -45,19 +45,24 @@
 
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$stock_items = database::query(
-		"select si.*, json_value(si.name, '$.". database::input(language::$selected['code']) ."') as name,
-		oi.total_reserved, stt.total_deposited, oit.total_withdrawn from ". DB_TABLE_PREFIX ."stock_items si
+		"select si.*,
+			json_value(si.name, '$.". database::input(language::$selected['code']) ."') as name,
+			oi.quantity_reserved,
+			stt.quantity_deposited,
+			oit.quantity_withdrawn
+
+		from ". DB_TABLE_PREFIX ."stock_items si
 
 		left join (
-			select stock_item_id, sum(quantity_adjustment) as total_deposited
+			select stock_item_id, sum(quantity_adjustment) as quantity_deposited
 			from ". DB_TABLE_PREFIX ."stock_transactions_contents
 			group by stock_item_id
 		) stt on (stt.stock_item_id = si.id)
 
 		left join (
-			select pso.stock_item_id, sum(oi.quantity) as total_reserved
+			select oi.stock_item_id, sum(ol.quantity * oi.quantity) as quantity_reserved
 			from ". DB_TABLE_PREFIX ."orders_items oi
-			left join ". DB_TABLE_PREFIX ."products_stock_options pso on (pso.id = oi.stock_option_id)
+			left join ". DB_TABLE_PREFIX ."orders_lines ol on (ol.id = oi.line_id)
 			where oi.order_id in (
 				select id from ". DB_TABLE_PREFIX ."orders o
 				where order_status_id in (
@@ -65,13 +70,13 @@
 					where stock_action = 'reserve'
 				)
 			)
-			group by pso.stock_item_id
+			group by oi.stock_item_id
 		) oi on (oi.stock_item_id = si.id)
 
 		left join (
-			select pso.stock_item_id, sum(oi.quantity) as total_withdrawn
+			select oi.stock_item_id, sum(ol.quantity * oi.quantity) as quantity_withdrawn
 			from ". DB_TABLE_PREFIX ."orders_items oi
-			left join ". DB_TABLE_PREFIX ."products_stock_options pso on (pso.id = oi.stock_option_id)
+			left join ". DB_TABLE_PREFIX ."orders_lines ol on (ol.id = oi.line_id)
 			where oi.order_id in (
 				select id from ". DB_TABLE_PREFIX ."orders o
 				where order_status_id in (
@@ -79,7 +84,7 @@
 					where stock_action = 'withdraw'
 				)
 			)
-			group by pso.stock_item_id
+			group by oi.stock_item_id
 		) oit on (oi.stock_item_id = si.id)
 
 		where si.id
@@ -88,7 +93,7 @@
 	)->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
 
 	foreach ($stock_items as $i => $stock_item) {
-		if ($stock_item['quantity'] != $stock_item['total_deposited'] - $stock_item['total_withdrawn']) {
+		if ($stock_item['quantity'] != $stock_item['quantity_deposited'] - $stock_item['quantity_withdrawn']) {
 			$stock_items[$i]['warning'] = t('text_stock_inconsistency_detected', 'Stock inconsistency detected');
 		}
 	}
@@ -114,10 +119,10 @@
 	</div>
 
 	<?php echo functions::form_begin('search_form', 'get'); ?>
-		<div class="card-filter">
-			<div class="expandable"><?php echo functions::form_input_search('query', true, 'placeholder="'. t('text_search_items', 'Search items').'"'); ?></div>
-			<?php echo functions::form_button('filter', t('title_search', 'Search'), 'submit'); ?>
-		</div>
+	<div class="card-filter">
+		<div class="expandable"><?php echo functions::form_input_search('query', true, 'placeholder="'. t('text_search_items', 'Search items').'"'); ?></div>
+		<?php echo functions::form_button('filter', t('title_search', 'Search'), 'submit'); ?>
+	</div>
 	<?php echo functions::form_end(); ?>
 
 	<?php echo functions::form_begin('stock_items_form', 'post'); ?>
@@ -152,7 +157,7 @@
 					<td><?php echo $stock_item['gtin']; ?></td>
 					<td><?php echo $stock_item['mpn']; ?></td>
 					<td class="text-end"><?php echo (float)$stock_item['quantity']; ?></td>
-					<td class="text-end"><?php echo (float)$stock_item['total_reserved']; ?></td>
+					<td class="text-end"><?php echo (float)$stock_item['quantity_reserved']; ?></td>
 					<td class="text-end"><?php echo (float)$stock_item['backordered']; ?></td>
 					<td><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['stock_item_id' => $stock_item['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
 				</tr>

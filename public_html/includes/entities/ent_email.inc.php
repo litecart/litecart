@@ -95,8 +95,8 @@
 					subject = '". database::input($this->data['subject']) ."',
 					multiparts = '". database::input(json_encode($this->data['multiparts'], JSON_UNESCAPED_SLASHES), true) ."',
 					language_code = '". database::input($this->data['language_code']) ."',
-					date_scheduled = ". (!empty($this->data['date_scheduled']) ? "'". database::input($this->data['date_scheduled']) ."'" : "null") .",
-					date_sent = ". (!empty($this->data['date_sent']) ? "'". database::input($this->data['date_sent']) ."'" : "null") .",
+					scheduled_at = ". (!empty($this->data['scheduled_at']) ? "'". database::input($this->data['scheduled_at']) ."'" : "null") .",
+					sent_at = ". (!empty($this->data['sent_at']) ? "'". database::input($this->data['sent_at']) ."'" : "null") .",
 					updated_at = '". ($this->data['updated_at'] = date('Y-m-d H:i:s')) ."'
 				where id = ". (int)$this->data['id'] .";"
 			);
@@ -293,7 +293,7 @@
 		public function queue($scheduled, $code=null) {
 
 			$this->data['status'] = 'scheduled';
-			$this->data['date_scheduled'] = date('Y-m-d H:i:s', strtotime($scheduled));
+			$this->data['scheduled_at'] = date('Y-m-d H:i:s', strtotime($scheduled));
 			$this->data['code'] = $code;
 			$this->save();
 
@@ -418,8 +418,7 @@
 						$v = "$k: $v";
 					});
 
-					$data = implode("\r\n", $headers) . "\r\n"
-						. "\r\n"
+					$data = implode("\r\n", $headers) . "\r\n\r\n"
 					 . $body;
 
 					$result = $smtp->send(settings::get('store_email'), $recipients, $data);
@@ -459,7 +458,7 @@
 
 			if ($result) {
 				$this->data['status'] = 'sent';
-				$this->data['date_sent'] = date('Y-m-d H:i:s');
+				$this->data['sent_at'] = date('Y-m-d H:i:s');
 			} else {
 				$this->data['status'] = 'error';
 			}

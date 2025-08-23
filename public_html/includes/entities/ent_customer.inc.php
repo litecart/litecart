@@ -129,10 +129,11 @@
 					shipping_country_code = '". database::input($this->data['shipping_address']['country_code']) ."',
 					shipping_zone_code = '". database::input($this->data['shipping_address']['zone_code']) ."',
 					shipping_phone = '". database::input($this->data['shipping_address']['phone']) ."',
+					language_code = '". database::input($this->data['language_code']) ."',
 					notes = '". database::input($this->data['notes']) ."',
 					password_reset_token = '". database::input($this->data['password_reset_token']) ."',
 					blocked_until = ". (!empty($this->data['blocked_until']) ? "'". database::input($this->data['blocked_until']) ."'" : "null") .",
-					date_expire_sessions = ". (!empty($this->data['date_expire_sessions']) ? "'". database::input($this->data['date_expire_sessions']) ."'" : "null") .",
+					sessions_expiry = ". (!empty($this->data['sessions_expiry']) ? "'". database::input($this->data['sessions_expiry']) ."'" : "null") .",
 					updated_at = '". ($this->data['updated_at'] = date('Y-m-d H:i:s')) ."'
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"

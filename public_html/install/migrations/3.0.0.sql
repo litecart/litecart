@@ -74,6 +74,26 @@ CREATE TABLE IF NOT EXISTS `lc_customers_activity` (
 	INDEX `expires_at` (`expires_at`)
 );
 -- -----
+CREATE TABLE `lc_orders_lines` (
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`order_id` INT(10) UNSIGNED NOT NULL,
+	`product_id` INT(10) UNSIGNED NULL DEFAULT NULL,
+	`code` VARCHAR(32) NULL DEFAULT NULL,
+	`name` VARCHAR(128) NOT NULL DEFAULT '',
+	`customizations` VARCHAR(4096) NOT NULL DEFAULT '{}',
+	`quantity` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
+	`price` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
+	`discount` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
+	`tax_class_id` INT(10) UNSIGNED NULL DEFAULT NULL,
+	`tax_rate` FLOAT(6,4) NOT NULL DEFAULT '0.0000',
+	`tax` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
+	PRIMARY KEY (`id`) USING BTREE,
+	INDEX `order_id` (`order_id`) USING BTREE,
+	INDEX `order_line_to_tax_class` (`tax_class_id`) USING BTREE,
+	INDEX `product_id` (`product_id`) USING BTREE,
+	INDEX `code` (`code`) USING BTREE,
+);
+-- -----
 CREATE TABLE `lc_products_references` (
 	`id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	`product_id` INT UNSIGNED NOT NULL,
@@ -236,17 +256,18 @@ ALTER TABLE `lc_administrators`
 CHANGE COLUMN `status` `status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
 CHANGE COLUMN `last_ip` `last_ip_address` VARCHAR(39) NOT NULL DEFAULT '',
 CHANGE COLUMN `last_host` `last_hostname` VARCHAR(64) NOT NULL DEFAULT '',
-ADD COLUMN `firstname` VARCHAR(32) NOT NULL DEFAULT '' AFTER `username`,
-ADD COLUMN `lastname` VARCHAR(32) NOT NULL DEFAULT '' AFTER `firstname`,
-ADD COLUMN `two_factor_auth` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0 AFTER `widgets`,
-ADD COLUMN `last_user_agent` VARCHAR(255) NOT NULL DEFAULT '' AFTER `last_hostname`,
-ADD COLUMN `known_ips` VARCHAR(512) NOT NULL DEFAULT '' AFTER `two_factor_auth`,
 CHANGE COLUMN `login_attempts` `login_attempts` INT(10) UNSIGNED NOT NULL DEFAULT '0' AFTER `two_factor_auth`,
 CHANGE COLUMN `total_logins` `total_logins` INT(10) UNSIGNED NOT NULL DEFAULT '0' AFTER `login_attempts`,
 CHANGE COLUMN `date_active` `last_active` TIMESTAMP NULL DEFAULT NULL AFTER `last_user_agent`,
 CHANGE COLUMN `date_login` `last_login` TIMESTAMP NULL DEFAULT NULL AFTER `last_active`,
 CHANGE COLUMN `date_valid_from` `valid_from` TIMESTAMP NULL DEFAULT NULL AFTER `known_ips`,
-CHANGE COLUMN `date_valid_to` `valid_to` TIMESTAMP NULL DEFAULT NULL AFTER `valid_from`;
+CHANGE COLUMN `date_valid_to` `valid_to` TIMESTAMP NULL DEFAULT NULL AFTER `valid_from`,
+ADD COLUMN `firstname` VARCHAR(32) NOT NULL DEFAULT '' AFTER `username`,
+ADD COLUMN `lastname` VARCHAR(32) NOT NULL DEFAULT '' AFTER `firstname`,
+ADD COLUMN `two_factor_auth` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0 AFTER `widgets`,
+ADD COLUMN `last_user_agent` VARCHAR(255) NOT NULL DEFAULT '' AFTER `last_hostname`,
+ADD COLUMN `known_ips` VARCHAR(512) NOT NULL DEFAULT '' AFTER `two_factor_auth`,
+ADD COLUMN `sessions_expiry` TIMESTAMP NULL AFTER `last_login`;
 -- ------
 ALTER TABLE `lc_attribute_groups`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -373,6 +394,7 @@ CHANGE COLUMN `last_host` `last_hostname` VARCHAR(64) NOT NULL DEFAULT '',
 CHANGE COLUMN `last_agent` `last_user_agent` VARCHAR(255) NOT NULL DEFAULT '',
 CHANGE COLUMN `date_login` `last_login` TIMESTAMP NULL DEFAULT NULL AFTER `last_user_agent`,
 CHANGE COLUMN `date_blocked_until` `blocked_until` TIMESTAMP NULL DEFAULT NULL AFTER `last_login`,
+CHANGE COLUMN `date_expire_sessions` `sessions_expiry` TIMESTAMP NULL DEFAULT NULL AFTER `blocked_until`,
 ADD COLUMN `shipping_email` VARCHAR(64) NOT NULL DEFAULT '' AFTER `shipping_phone`,
 ADD COLUMN `language_code` CHAR(2) NOT NULL DEFAULT '' AFTER `shipping_email`,
 ADD COLUMN `group_id` INT UNSIGNED NULL AFTER `id`,
@@ -392,6 +414,8 @@ CHANGE COLUMN `language_code` `language_code` CHAR(2) NOT NULL;
 -- -----
 ALTER TABLE `lc_emails`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+CHANGE COLUMN `date_scheduled` `scheduled_at` TIMESTAMP NULL DEFAULT NULL AFTER `multiparts`,
+CHANGE COLUMN `date_sent` `sent_at` TIMESTAMP NULL DEFAULT NULL AFTER `scheduled_at`,
 ADD COLUMN `ip_address` VARCHAR(39) NOT NULL DEFAULT '' AFTER `multiparts`,
 ADD COLUMN `hostname` VARCHAR(128) NOT NULL DEFAULT '' AFTER `ip_address`,
 ADD COLUMN `user_agent` VARCHAR(248) NOT NULL DEFAULT '' AFTER `hostname`,
@@ -497,6 +521,7 @@ CHANGE COLUMN `dim_class` `length_unit` VARCHAR(2) NOT NULL DEFAULT '',
 CHANGE COLUMN `options` `userdata` VARCHAR(2048) NULL AFTER `name`,
 CHANGE COLUMN `option_stock_combination` `attributes` VARCHAR(32) NOT NULL DEFAULT '',
 CHANGE COLUMN `priority` `priority` INT NOT NULL DEFAULT '0',
+ADD COLUMN `line_id` INT(10) UNSIGNED NULL AFTER `order_id`,
 ADD COLUMN `stock_option_id` INT(10) UNSIGNED NULL AFTER `product_id`,
 ADD COLUMN `stock_items` VARCHAR(255) DEFAULT '[]' AFTER `stock_option_id`,
 ADD COLUMN `serial_number` VARCHAR(32) NOT NULL DEFAULT '' AFTER `name`,

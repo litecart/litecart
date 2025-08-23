@@ -573,10 +573,10 @@ body.trumbowyg-body-fullscreen {
 
 .trumbowyg-fullscreen {
 	position: fixed;
-	top: 1em;
-	left: 1em;
-	bottom: 1em;
-	right: 1em;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
 	box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.3);
 	width: auto;
 	z-index: 99999;
@@ -587,7 +587,7 @@ body.trumbowyg-body-fullscreen {
 	}
 	.trumbowyg-editor,
 	.trumbowyg-textarea {
-		height: calc(100% - 37px) !important;
+		height: 100vh;
 		overflow: auto;
 	}
 	.trumbowyg-overlay {

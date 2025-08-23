@@ -44,7 +44,6 @@ body {
 }
 
 #site-navigation {
-	margin-top: .5em;
 	.regional-settings {
 		text-decoration: none;
 		color: var(--navigation-text-color);
@@ -628,7 +627,7 @@ body {
 			grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
 
 			@media (min-width: 576px) {
-				grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+				grid-template-columns: repeat(auto-fill, minmax(195px, 1fr));
 			}
 		}
 
@@ -831,62 +830,59 @@ body {
 			}
 		}
 
+
+	}
+	&.products.columns {
+		.product .short-description {
+			display: none;
+		}
 		@media (min-width: 576px) {
-			&:hover .actions {
+			.product:hover .actions {
 				display: flex;
 				flex-direction: column;
 				gap: 0.5em;
 			}
 		}
+	}
+	&.rows {
+		.link {
+			flex-direction: row;
+			min-height: 175px;
+		}
 
-		&.rows {
-			.link {
-				flex-direction: row;
-				min-height: 175px;
-			}
-
-			.info {
-				padding: 0.5rem;
-
-				@media (min-width: 576px) {
-					inset-inline-start: calc(160px + 1rem);
-				}
-			}
-
-			.name {
-				margin: 0;
-			}
-
-			.short-description {
-				margin: 1rem;
-				font-size: 0.85em;
-			}
-
-			.image-wrapper {
-				display: inline-block;
-				max-width: 100px;
-
-				@media (min-width: 576px) {
-					max-width: 175px;
-				}
-			}
-
-			.price {
-				background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, #ffffff 20%, #ffffff 100%);
-			}
+		.info {
+			padding: 0.5rem;
 
 			@media (min-width: 576px) {
-				height: auto;
-
-				.description {
-					margin-top: 1rem;
-				}
+				inset-inline-start: 200px;
 			}
 		}
-	}
-	&.products.columns {
-		.product .short-description {
-			display: none;
+		.name {
+			margin: 0;
+		}
+		.short-description {
+			margin: 1rem 0;
+		}
+		.image-wrapper {
+			display: inline-block;
+			max-width: 100px;
+			@media (min-width: 576px) {
+			max-width: 175px;
+			}
+		}
+		.price {
+			background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, #ffffff 20%, #ffffff 100%);
+		}
+		@media (min-width: 576px) {
+			height: auto;
+			.description {
+				margin-top: 1rem;
+			}
+			.product:hover .actions {
+				display: flex;
+				flex-direction: row;
+				gap: 0.5em;
+			}
 		}
 	}
 }

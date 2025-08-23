@@ -152,14 +152,14 @@
 			$this->data['stock_options'] = database::query(
 				"select si.*, pso.*,
 					json_value(si.name, '$.". database::input(language::$selected['code']) ."') as name,
-					ifnull(oi.reserved, 0) as quantity_reserved,
-					si.quantity - ifnull(oi.reserved, 0) as quantity_available
+					ifnull(ol.reserved, 0) as quantity_reserved,
+					si.quantity - ifnull(ol.reserved, 0) as quantity_available
 				from ". DB_TABLE_PREFIX ."products_stock_options pso
 				left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
 
 				left join (
 					select product_id, stock_option_id, sum(quantity) as reserved
-					from ". DB_TABLE_PREFIX ."orders_items
+					from ". DB_TABLE_PREFIX ."orders_lines
 					where order_id in (
 						select id from ". DB_TABLE_PREFIX ."orders
 						where order_status_id in (
@@ -168,7 +168,7 @@
 						)
 					)
 					group by stock_option_id
-				) oi on (oi.product_id = pso.product_id and oi.stock_option_id = pso.id)
+				) ol on (ol.product_id = pso.product_id and ol.stock_option_id = pso.id)
 				where pso.product_id = ". (int)$this->data['id'] ."
 				order by pso.priority;"
 			)->fetch_all(function($stock_item){

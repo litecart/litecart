@@ -39,6 +39,10 @@
 		"phplint": "^2.0.5",
 		"sass": "^1.89.2"
 	},
+	"type": "module",
+	"engines": {
+		"node": ">=24"
+	},
 	"scripts": {
 		"iconly": "gulp iconly && gulp less-framework",
 		"archive": "git archive --format=zip --output latest.zip",

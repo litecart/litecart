@@ -36,19 +36,19 @@
 
 	$result = database::query(
 		"select
-			oi.product_id, oi.quantity, oi.sku, oi.name,
+			ol.product_id, ol.quantity, ol.code, ol.name,
 			o.id as order_id, o.created_at as order_created_at,
 			if(o.customer_company, o.customer_company, concat(o.customer_firstname, ' ', o.customer_lastname)) as customer_name, o.customer_country_code, o.customer_email
-		from ". DB_TABLE_PREFIX ."orders_items oi
-		left join ". DB_TABLE_PREFIX ."orders o on (o.id = oi.order_id)
+		from ". DB_TABLE_PREFIX ."orders_lines ol
+		left join ". DB_TABLE_PREFIX ."orders o on (o.id = ol.order_id)
 		where o.order_status_id in (
 			select id from ". DB_TABLE_PREFIX ."order_statuses where is_sale
 		)
-		". (!empty($_GET['query']) ? "and (oi.product_id = '". database::input($_GET['query']) ."' or oi.sku like '". database::input($_GET['query']) ."' or oi.name like '%". addcslashes(database::input($_GET['query']), '%_') ."%')" : null) ."
+		". (!empty($_GET['query']) ? "and (ol.product_id = '". database::input($_GET['query']) ."' or ol.code like '". database::input($_GET['query']) ."' or ol.name like '%". addcslashes(database::input($_GET['query']), '%_') ."%')" : null) ."
 		and o.created_at >= '". date('Y-m-d H:i:s', mktime(0, 0, 0, date('m', $timestamp_from), date('d', $timestamp_from), date('Y', $timestamp_from))) ."'
 		and o.created_at <= '". date('Y-m-d H:i:s', mktime(23, 59, 59, date('m', $timestamp_to), date('d', $timestamp_to), date('Y', $timestamp_to))) ."'
 		having quantity > 0
-		order by oi.name asc, o.created_at desc, customer_name asc;"
+		order by ol.name asc, o.created_at desc, customer_name asc;"
 	);
 
 	if (isset($_GET['download'])) {
@@ -79,7 +79,7 @@
 		<div class="card-filter">
 
 			<div class="expandable">
-				<?php echo functions::form_input_search('query', true, 'placeholder="'. functions::escape_html(t('title_item_name_or_sku', 'Item Name or SKU')) .'"'); ?>
+				<?php echo functions::form_input_search('query', true, 'placeholder="'. functions::escape_html(t('text_item_name_or_code', 'Item name or code')) .'"'); ?>
 			</div>
 
 			<div class="input-group" style="width: 450px;">
@@ -103,7 +103,7 @@
 			<tr>
 				<th style="width: 0;"><?php echo t('title_product_id', 'Product ID'); ?></th>
 				<th><?php echo t('title_product_name', 'Product Name'); ?></th>
-				<th><?php echo t('title_sku', 'SKU'); ?></th>
+				<th><?php echo t('title_code', 'Code'); ?></th>
 				<th><?php echo t('title_customer_name', 'Customer Name'); ?></th>
 				<th><?php echo t('title_country', 'Country'); ?></th>
 				<th><?php echo t('title_email', 'Email'); ?></th>
@@ -117,7 +117,7 @@
 			<tr>
 				<td class="text-center"><?php echo $row['product_id']; ?></td>
 				<td><?php echo $row['name']; ?></td>
-				<td><?php echo $row['sku']; ?></td>
+				<td><?php echo $row['code']; ?></td>
 				<td><a class="link" href="<?php echo document::link(null, ['app' => 'orders', 'doc' => 'edit_order', 'order_id' => (float)$row['order_id']], false); ?>"><?php echo $row['customer_name']; ?></a></td>
 				<td><?php echo reference::country($row['customer_country_code'])->name; ?></td>
 				<td><?php echo $row['customer_email']; ?></td>

@@ -20,6 +20,9 @@ public_html/php.ini
 public_html/robots.txt
 package-lock.json
 
+google*.html
+BingSiteAuth.xml
+
 #####################
 # Development files #
 #####################

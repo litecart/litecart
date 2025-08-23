@@ -230,6 +230,7 @@ html {
 
 body {
 	display: flex;
+	flex-direction: column;
 	width: 100vw;
 	height: 100vh;
 	background: url(<?php echo document::href_rlink('app://backend/template/images/background.svg'); ?>);

@@ -19,10 +19,10 @@
 							<ul class="items list-unstyled">
 								<?php foreach ($items as $key => $item) { ?>
 								<li class="item" data-id="<?php echo $item['product_id']; ?>" data-sku="<?php echo $item['sku']; ?>" data-name="<?php echo functions::escape_html($item['name']); ?>" data-price="<?php echo currency::format_raw($item['price']); ?>" data-quantity="<?php echo currency::format_raw($item['quantity']); ?>">
-									<div class="grid">
-										<div class="col-8">
+									<div class="grid" style="align-items: center;">
+										<div class="col-11">
 
-											<div class="grid">
+											<div class="grid" style="align-items: center;">
 												<div class="col-4 col-md-3">
 													<a href="<?php echo functions::escape_html($item['link']); ?>" class="float-start" style="max-width: 96px; margin-inline-end: 1em;">
 														<?php echo functions::draw_thumbnail($item['image']['original'], 96, 0, 'product'); ?>
@@ -35,6 +35,13 @@
 															<div><strong><a href="<?php echo functions::escape_html($item['link']); ?>" style="color: inherit;"><?php echo $item['name']; ?></a></strong></div>
 															<?php if (!empty($item['sku'])) echo '<div class="sku">'. $item['sku'] .'</div>'; ?>
 															<?php if (!empty($item['error'])) echo '<div class="error">'. $item['error'] .'</div>'; ?>
+															<div class="price">
+																<?php if ($item['price'] != $item['final_price']) { ?>
+																<del class="regular-price"><?php echo currency::format($item['price'] * $item['quantity']); ?></del> <strong class="final-price"><?php echo currency::format($item['final_price'] * $item['quantity']); ?></strong>
+																<?php } else { ?>
+																<span class="price"><?php echo currency::format($item['price'] * $item['quantity']); ?></span>
+																<?php } ?>
+															</div>
 														</div>
 
 														<div class="col-md-6 text-center">
@@ -56,15 +63,7 @@
 
 										</div>
 
-										<div class="col-2 text-end">
-											<?php if ($item['price'] != $item['final_price']) { ?>
-											<del class="regular-price"><?php echo currency::format($item['price'] * $item['quantity']); ?></del> <strong class="final-price"><?php echo currency::format($item['final_price'] * $item['quantity']); ?></strong>
-											<?php } else { ?>
-											<span class="price"><?php echo currency::format($item['price'] * $item['quantity']); ?></span>
-											<?php } ?>
-										</div>
-
-										<div class="col-2 text-end">
+										<div class="col-1 text-end">
 											<td><?php echo functions::form_button('remove_cart_item', [$key, functions::draw_fonticon('icon-trash')], 'submit', 'class="btn btn-danger" title="'. functions::escape_attr(t('title_remove', 'Remove')) .'" formnovalidate'); ?></td>
 										</div>
 									</div>

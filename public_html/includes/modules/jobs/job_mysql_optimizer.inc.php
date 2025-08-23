@@ -4,7 +4,7 @@
 
 		public $id = __CLASS__;
 		public $name = 'MySQL Optimizer';
-		public $description = 'Defragment your MySQL database';
+		public $description = 'Optimize your MySQL database.';
 		public $author = 'LiteCart Dev Team';
 		public $version = '1.0';
 		public $website = 'https://www.litecart.net';

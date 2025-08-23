@@ -717,6 +717,42 @@
 		);
 	}
 
+	// Migrate order items to line items
+	database::query(
+		"select * from ". DB_TABLE_PREFIX ."orders_items
+		order by id asc;"
+	)->each(function($item){
+
+		$item['userdata'] = unserialize($item['userdata']);
+
+		database::query(
+			"insert into ". DB_TABLE_PREFIX ."orders_lines (order_id, product_id, code, name, userdata, quantity, price, tax_class_id, discount, priority)
+			values (
+				". (int)$item['order_id'] .",
+				". (int)$item['product_id'] .",
+				'". database::input($item['name']) ."',
+				". json_encode($item['userdata'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) .",
+				". (int)$item['quantity'] .",
+				". (float)$item['price'] .",
+				". ($item['tax_class_id'] ? (int)$item['tax_class_id'] : "NULL") .",
+				". (($item['tax'] > 0) ? round($item['tax'] / $item['price'], 2) : "NULL") .",
+				". (float)$item['discount'] .",
+				". ($item['price'] * (float)$item['quantity']) .",
+				". ($item['tax'] * (float)$item['quantity']) .",
+				". (int)$item['priority'] ."
+			);"
+		);
+
+		$line_id = database::insert_id();
+
+		database::query(
+			"update ". DB_TABLE_PREFIX ."orders_items
+			set line_id = ". (int)$line_id ."
+			where id = ". (int)$item['id'] ."
+			limit 1;"
+		);
+	});
+
 	// Separate product customizations from stock options
 	database::query(
 		"select * from ". DB_TABLE_PREFIX ."products_stock_options;"

@@ -68,7 +68,7 @@
 						$this->_data['library'] = 'gd';
 
 					} else {
-						throw new Exception('No image processing library available');
+						throw new Exception('No image processing library available. Please enable either GD or Imagick for PHP.');
 					}
 
 					break;

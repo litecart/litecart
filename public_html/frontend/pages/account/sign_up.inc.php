@@ -145,6 +145,9 @@
 			$customer->data['default_billing_address_id'] = $address->data['id'];
 			$customer->data['default_shipping_address_id'] = $address->data['id'];
 
+			// Set customer's preferred language (2-letter code)
+			$customer->data['language_code'] = language::$selected['code'];
+
 			foreach ([
 				'email',
 				'newsletter',

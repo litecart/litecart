@@ -40,7 +40,7 @@ gulp.task('less-framework', function() {
 		.pipe(cleancss())
 		.pipe(header(banner, { pkg: packageData }))
 		.pipe(rename({ extname: '.min.css' }))
-		.pipe(sourcemaps.write('.'))
+		.pipe(sourcemaps.write('.', { includeContent: false }))
 		.pipe(gulp.dest('public_html/assets/litecore/css/', { overwrite: true }));
 });
 
@@ -54,7 +54,7 @@ gulp.task('js-framework', function() {
 		.pipe(sourcemaps.init())
 		.pipe(uglify())
 		.pipe(rename({ extname: '.min.js' }))
-		//.pipe(sourcemaps.write('.'))
+		//.pipe(sourcemaps.write('.', { includeContent: false }))
 		.pipe(gulp.dest('public_html/assets/litecore/js/', { overwrite: true }));
 });
 
@@ -80,7 +80,7 @@ gulp.task('less-backend', function() {
 		.pipe(header(banner, { pkg: packageData }))
 		.pipe(cleancss())
 		.pipe(rename({ extname: '.min.css' }))
-		.pipe(sourcemaps.write('.'))
+		.pipe(sourcemaps.write('.', { includeContent: false }))
 		.pipe(gulp.dest('public_html/backend/template/css', { overwrite: true }));
 });
 
@@ -94,7 +94,7 @@ gulp.task('js-backend', function() {
 		.pipe(sourcemaps.init())
 		.pipe(uglify())
 		.pipe(rename({ extname: '.min.js' }))
-		//.pipe(sourcemaps.write('.'))
+		//.pipe(sourcemaps.write('.', { includeContent: false }))
 		.pipe(gulp.dest('public_html/backend/template/js/', { overwrite: true }));
 });
 
@@ -120,7 +120,7 @@ gulp.task('less-frontend', function() {
 		.pipe(cleancss())
 		.pipe(header(banner, { pkg: packageData }))
 		.pipe(rename({ extname: '.min.css' }))
-		.pipe(sourcemaps.write('.'))
+		.pipe(sourcemaps.write('.', { includeContent: false }))
 		.pipe(gulp.dest('public_html/frontend/templates/default/css/', { overwrite: true }));
 });
 
@@ -132,7 +132,7 @@ gulp.task('js-frontend', function() {
 		//.pipe(sourcemaps.init())
 		.pipe(uglify())
 		.pipe(rename({ extname: '.min.js' }))
-		//.pipe(sourcemaps.write('.'))
+		//.pipe(sourcemaps.write('.', { includeContent: false }))
 		.pipe(gulp.dest('public_html/frontend/templates/default/js/', { overwrite: true }));
 });
 
@@ -141,10 +141,10 @@ gulp.task('sass-chartist', function() {
 	return gulp.src('public_html/assets/chartist/chartist.scss', { allowEmpty: true })
 		.pipe(sass().on('error', sass.logError))
 		//.pipe(gulp.dest('public_html/assets/chartist/', { overwrite: true }))
-		//.pipe(sourcemaps.write('.'))
+		//.pipe(sourcemaps.write('.', { includeContent: false }))
 		.pipe(cleancss())
 		.pipe(rename({ extname: '.min.css' }))
-		.pipe(sourcemaps.write('.'))
+		.pipe(sourcemaps.write('.', { includeContent: false }))
 		.pipe(gulp.dest('public_html/assets/chartist/', { overwrite: true }));
 });
 
@@ -152,14 +152,14 @@ gulp.task('sass-chartist', function() {
 gulp.task('sass-trumbowyg', function() {
 	return gulp
 		.src('public_html/assets/trumbowyg/ui/*.scss')
-	.pipe(sass({ silenceDeprecations: ['legacy-js-api'] })
+		.pipe(sass({ silenceDeprecations: ['legacy-js-api'] })
 		.on('error', sass.logError))
 		//.pipe(gulp.dest('public_html/assets/trumbowyg/ui/'))
-		//.pipe(sourcemaps.write('.'))
+		//.pipe(sourcemaps.write('.', { includeContent: false }))
 		.pipe(cleancss())
 		.pipe(rename({ extname: '.min.css' }))
 		.pipe(gulp.dest('public_html/assets/trumbowyg/ui/'))
-		.pipe(sourcemaps.write('.'));
+		.pipe(sourcemaps.write('.', { includeContent: false }));
 });
 
 // Lint PHP files
@@ -197,7 +197,7 @@ gulp.task('iconly', function() {
 			'	vertical-align: middle;',
 			'	line-height: 1;',
 			'	width: 1em;',
-			'\theight: 1em;',
+			'	height: 1em;',
 			'	-moz-osx-font-smoothing: grayscale;',
 			'	-webkit-font-smoothing: antialiased;',
 			'}',
@@ -212,6 +212,7 @@ gulp.task('watch', function() {
 	gulp.watch('public_html/assets/chartist/chartist.scss', gulp.series('sass-chartist'))
 	gulp.watch('public_html/assets/litecore/less/**/*.less', gulp.series('less-framework'))
 	gulp.watch('public_html/assets/litecore/js/components/*.js', gulp.series('js-framework'))
+	gulp.watch('public_html/assets/trumbowyg/trumbowyg.js', gulp.series('js-trumbowyg'))
 	gulp.watch('public_html/assets/trumbowyg/**/*.scss', gulp.series('sass-trumbowyg'))
 	gulp.watch('public_html/backend/template/less/**/*.less', gulp.series('less-backend'))
 	gulp.watch('public_html/backend/template/js/components/*.js', gulp.series('js-backend'))

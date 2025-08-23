@@ -186,9 +186,12 @@
 			"o.shipping_option_name like '%". database::input($_GET['query']) ."%'",
 			"o.shipping_tracking_id like '". database::input($_GET['query']) ."'",
 			"o.id in (
+				select order_id from ". DB_TABLE_PREFIX ."orders_lines
+				where name like '%". database::input($_GET['query']) ."%'
+			)",
+			"o.id in (
 				select order_id from ". DB_TABLE_PREFIX ."orders_items
 				where name like '%". database::input($_GET['query']) ."%'
-				or sku like '%". database::input($_GET['query']) ."%'
 			)",
 		];
 	}
@@ -291,28 +294,34 @@
 			$order['tags'][] = $order['shipping_country_code'];
 		}
 
-		// Order Items
-		$order['items'] = database::query(
-			"select oi.*, si.quantity as stock_quantity
-			from ". DB_TABLE_PREFIX ."orders_items oi
-			left join ". DB_TABLE_PREFIX ."products_stock_options pso on (pso.id = oi.stock_option_id)
-			left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
-			where oi.order_id = ". (int)$order['id'] .";"
-		)->fetch_all(function($item){
-			if ($item['stock_quantity'] !== null) {
-				$item['sufficient_stock'] = null;
-			} else if ($item['quantity'] <= $item['stock_quantity']) {
-				$item['sufficient_stock'] = true;
-			} else {
-				$item['sufficient_stock'] = false;
-			}
+		// Order Lines
+		$order['lines'] = database::query(
+			"select * from ". DB_TABLE_PREFIX ."orders_lines ol
+			where order_id = ". (int)$order['id'] .";"
+		)->fetch_all(function(&$line){
+
+			$line['items'] = database::query(
+				"select oi.*, si.quantity as stock_quantity
+				from ". DB_TABLE_PREFIX ."orders_items oi
+				left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = oi.stock_item_id)
+				where oi.order_id = ". (int)$line['order_id'] ."
+				and oi.line_id = ". (int)$line['id'] .";"
+			)->fetch_all(function(&$item){
+				if ($item['stock_quantity'] !== null) {
+					$item['sufficient_stock'] = null;
+				} else if ($item['quantity'] <= $item['stock_quantity']) {
+					$item['sufficient_stock'] = true;
+				} else {
+					$item['sufficient_stock'] = false;
+				}
+			});
 		});
 
-		if (in_array(false, array_column($order['items'], 'sufficient_stock'), true)) {
+		if (in_array(false, array_column($order['lines'], 'sufficient_stock'), true)) {
 			$order['sufficient_stock'] = false;
 			$order['sufficient_stock_icon'] = functions::draw_fonticon('icon-check', 'style="color: #88cc44;"');
 
-		} else if (array_unique(array_column($order['items'], 'sufficient_stock'), true) == [true]) {
+		} else if (array_unique(array_column($order['lines'], 'sufficient_stock'), true) == [true]) {
 			$order['sufficient_stock'] = true;
 			$order['sufficient_stock_icon'] = functions::draw_fonticon('icon-times', 'style="color: #ff6644;"');
 		} else {

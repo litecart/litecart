@@ -9,6 +9,8 @@
 
 			foreach (scandir('app://backend/apps/') as $folder_name) {
 
+				if (preg_match('#\.disabled$#', $folder_name)) continue;
+
 				$id = basename($folder_name);
 				$directory = 'app://backend/apps/'. $folder_name .'/';
 
@@ -19,7 +21,7 @@
 					'icon' => fallback($config['theme']['icon'], 'icon-plus'),
 					'color' => fallback($config['theme']['color'], '#97a3b5'),
 				];
-				
+
 				if (empty($config['group'])) {
 					$config['group'] = 'other';
 				}
@@ -72,6 +74,8 @@
 			$widgets = [];
 
 			foreach (scandir('app://backend/widgets/') as $folder_name) {
+
+				if (preg_match('#\.disabled$#', $folder_name)) continue;
 
 				$id = basename($folder_name);
 				$directory = 'app://backend/widgets/'. $folder_name .'/';

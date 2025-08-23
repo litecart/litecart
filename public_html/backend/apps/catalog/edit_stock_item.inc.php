@@ -140,7 +140,44 @@
 		}
 	}
 
+	if (isset($_POST['repair']) && $stock_item) {
+
+		try {
+
+			if ($stock_item->data['quantity_expected'] != $stock_item->data['quantity']) {
+
+				database::query(
+					"update ". DB_TABLE_PREFIX ."stock_items
+					set quantity = ". (int)$stock_item->data['quantity_expected'] ."
+					where id = ". (int)$stock_item->data['id'] ."
+					limit 1;"
+				);
+
+				notices::add('success', t('success_stock_repaired', 'Stock repaired'));
+			} else {
+				notices::add('info', t('info_no_repair_needed', 'No repair needed'));
+			}
+
+			reload();
+			exit;
+
+		} catch (Exception $e) {
+			notices::add('errors', $e->getMessage());
+		}
+	}
+
 ?>
+<style>
+	.inconsistency-warning {
+		border: 1px solid #f0ad4e;
+		background-color: #fcf8e3;
+		color: #8a6d3b;
+		padding: 12px;
+		margin-bottom: 20px;
+		border-radius: var(--border-radius);
+	}
+</style>
+
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
@@ -153,6 +190,14 @@
 	<div class="card-body">
 
 		<?php echo functions::form_begin('stock_item_form', 'post', false, true); ?>
+
+		<?php if ($stock_item->data['quantity_expected'] != $stock_item->data['quantity']) { ?>
+		<div class="inconsistency-warning">
+			<?php echo functions::draw_fonticon('icon-exclamation-triangle'); ?>
+			<?php echo strtr(t('text_expected_quantity_mismatch', 'The expected quantity {expected} does not match the actual quantity {actual} set in the database. This can happen if there is a malfunction while items are withdrawn or reinserted to the stock.'), ['{expected}' => $stock_item->data['quantity_expected'], '{actual}' => $stock_item->data['quantity']]); ?>
+			<?php echo functions::form_button('repair', t('button_repair', 'Repair'), 'submit', 'class="btn btn-default btn-sm float-end"'); ?>
+		</div>
+		<?php } ?>
 
 			<div class="grid">
 				<div class="<?php echo (is_ajax_request()) ? 'col-xl-12' : 'col-xl-7'; ?>">

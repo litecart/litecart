@@ -513,7 +513,7 @@ table .icon-folder-open {
 				$products = database::query(
 					"select p.id, p.status, p.code, p.sold_out_status_id, p.image, p.valid_from, p.valid_to,
 						json_value(p.name, '$.". database::input(language::$selected['code']) ."') as name,
-						pp.price, pc.campaign_price, pso.num_stock_options, pso.total_quantity, oi.total_reserved, pso.total_quantity - oi.total_reserved as quantity_available,
+						pp.price, pc.campaign_price, pso.num_stock_options, pso.total_quantity, oi.quantity_reserved, pso.total_quantity - oi.quantity_reserved as quantity_available,
 						ptc.category_id
 
 					from ". DB_TABLE_PREFIX ."products p
@@ -547,14 +547,15 @@ table .icon-folder-open {
 					) pso on (pso.product_id = p.id)
 
 					left join (
-						select oi.product_id, sum(oi.quantity) as total_reserved
+						select ol.product_id, sum(oi.quantity) as quantity_reserved
 						from ". DB_TABLE_PREFIX ."orders_items oi
+						left join ". DB_TABLE_PREFIX ."orders_lines ol on (ol.id = oi.line_id)
 						left join ". DB_TABLE_PREFIX ."orders o on (o.id = oi.order_id)
 						where o.order_status_id in (
 							select id from ". DB_TABLE_PREFIX ."order_statuses
 							where stock_action = 'reserve'
 						)
-						group by oi.product_id
+						group by ol.product_id
 					) oi on (oi.product_id = p.id)
 
 					where ". (!empty($category['id']) ? "p.id in (

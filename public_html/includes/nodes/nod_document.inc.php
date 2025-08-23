@@ -128,7 +128,7 @@
 					break;
 			}
 
-			self::$jsenv['session']['id'] = session::get_id();
+			self::$jsenv['session']['id'] = session::$data['id'];
 
 			document::$jsenv['currency'] = [
 				'code' => &currency::$selected['code'],

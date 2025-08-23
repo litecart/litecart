@@ -10,7 +10,9 @@
 
 	function form_reinsert_value($name) {
 
-		if (!$name) return '';
+		if ($name == '') {
+			return '';
+		}
 
 		foreach ([$_POST, $_GET] as $superglobal) {
 
@@ -27,7 +29,7 @@
 				$node = $node[$part];
 			}
 
-			return $node ?: '';
+			return ($node != '') ? $node : '';
 		}
 
 		return preg_match('#\[\]$#', $name) ? [] : '';
@@ -650,7 +652,7 @@
 			'    }',
 			'  },',
 			'  lang: "'. language::$selected['code'] .'",',
-			'  autogrowOnEnter: true,',
+			//'  autogrowOnEnter: true,',
 			'  imageWidthModalEdit: true,',
 			'  removeformatPasted: true,',
 			'  semantic: false',

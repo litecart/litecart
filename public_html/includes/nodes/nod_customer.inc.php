@@ -99,8 +99,8 @@
 						throw new Exception(t('error_your_account_is_disabled', 'Your account is disabled'));
 					}
 
-					if (!empty($customer['date_expire_sessions'])) {
-						if (!isset(session::$data['customer_security_timestamp']) || session::$data['customer_security_timestamp'] < strtotime($customer['date_expire_sessions'])) {
+					if (!empty($customer['sessions_expiry'])) {
+						if (!isset(session::$data['customer_security_timestamp']) || session::$data['customer_security_timestamp'] < strtotime($customer['sessions_expiry'])) {
 							throw new Exception(t('error_session_expired_due_to_account_changes', 'Session expired due to changes in the account'));
 						}
 					}
@@ -371,7 +371,7 @@
 		public static function log($event) {
 
 			$event = [
-				'session_id' => isset($event['session_id']) ? $event['session_id'] : session::get_id(),
+				'session_id' => isset($event['session_id']) ? $event['session_id'] : session::$data['id'],
 				'customer_id' => isset($event['customer_id']) ? $event['customer_id'] : self::$data['id'],
 				'type' => isset($event['type']) ? $event['type'] : 'unknown',
 				'description' => isset($event['description']) ? $event['description'] : null,

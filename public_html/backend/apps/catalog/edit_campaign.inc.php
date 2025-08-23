@@ -82,7 +82,7 @@
 		</div>
 	</div>
 
-	<?php echo functions::form_begin('campaigns_form', 'post', '', false, 'data-track-changes'); ?>
+	<?php echo functions::form_begin('campaigns_form', 'post'); ?>
 
 		<div class="card-body">
 			<div style="max-width: 720px;">

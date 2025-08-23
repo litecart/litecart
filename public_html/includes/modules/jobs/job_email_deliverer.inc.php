@@ -12,7 +12,7 @@
 
 		public function process($force, $last_run) {
 
-			if (empty($force)) {
+			if (!$force) {
 				if (empty($this->settings['status'])) return;
 
 				if (!empty($this->settings['working_hours'])) {
@@ -32,8 +32,8 @@
 			database::query(
 				"select * from ". DB_TABLE_PREFIX ."emails
 				where status = 'scheduled'
-				and date_scheduled < '". date('Y-m-d H:i:s') ."'
-				order by date_scheduled, id
+				and scheduled_at < '". date('Y-m-d H:i:s') ."'
+				order by scheduled_at, id
 				limit ". (int)$this->settings['delivery_limit'] .";"
 			)->each(function($email) use (&$sent) {
 				$email = new ent_email($email['id']);

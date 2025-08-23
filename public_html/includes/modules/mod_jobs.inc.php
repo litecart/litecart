@@ -2,10 +2,6 @@
 
 	class mod_jobs extends abs_modules {
 
-		public function __construct() {
-			$this->load();
-		}
-
 		public function process($modules=null, $force=false) {
 
 			if (empty($this->modules)) return;

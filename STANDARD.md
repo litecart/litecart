@@ -73,12 +73,15 @@
 
 	Incorrect:
 
-		echo "<p>Hello World!<br>\r\nThis is a new row</p>";
+		echo "<p>Hello World!<br>\r\nThis is a new row</p>\r\n<p>And here is more</p>";
 
 	Correct:
 
-		echo '<p>Hello World!</br>' . PHP_EOL
-			 . 'This is a new row</p>';
+		echo implode(PHP_EOL, [
+			'<p>Hello World!<br>',
+			'This is a new row</p>',
+			'<p>And here is more</p>',
+		]);
 
 	For emails and HTTP headers we always use Windows style Carriage Return + Line Feed (CRLF) \r\n
 	for new lines because the standard tells us to.
@@ -240,7 +243,7 @@
 
 	Correct:
 
-		<img src="..." alt="<?php echo htmlspecialchars($title); ?>">
+ 		<img src="..." alt="<?php echo htmlspecialchars($title); ?>">
 
 
 ## PHP Variable Scope

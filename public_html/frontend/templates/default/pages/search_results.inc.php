@@ -17,6 +17,7 @@
 	}
 }
 </style>
+
 <main id="main" class="container">
 	{{breadcrumbs}}
 	{{notices}}

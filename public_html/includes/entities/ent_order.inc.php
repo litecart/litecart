@@ -120,26 +120,34 @@
 
 			$this->data['utm_data'] = json_decode($this->data['utm_data'], true) ?: [];
 
-			$this->data['items'] = database::query(
-				"select oi.*, si.quantity as stock_quanity, p.sold_out_status_id
-				from ". DB_TABLE_PREFIX ."orders_items oi
-				left join ". DB_TABLE_PREFIX ."products p on (p.id = oi.product_id)
-				left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = oi.stock_item_id)
-				where oi.order_id = ". (int)$id ."
-				order by oi.id;"
-			)->fetch_all(function($item) {
-				$item['userdata'] = $item['userdata'] ? json_decode($item['userdata'], true) : '';
-				$item['sufficient_stock'] = null;
+			$this->data['lines'] = database::query(
+				"select *	from ". DB_TABLE_PREFIX ."orders_lines
+				where order_id = ". (int)$id ."
+				order by priority;"
+			)->fetch_all(function(&$line) {
 
-				if (isset($item['stock_quanity'])) {
-					if ($item['quantity'] >= $item['stock_quanity']) {
-						$item['sufficient_stock'] = true;
-					} else {
-						$item['sufficient_stock'] = false;
+				$line['userdata'] = $line['userdata'] ? json_decode($line['userdata'], true) : '';
+
+				$line['items'] = database::query(
+					"select oi.*, (ol.quantity * oi.quantity) as ordered_quantity, si.quantity as stock_quanity
+					from ". DB_TABLE_PREFIX ."orders_lines ol
+					left join ". DB_TABLE_PREFIX ."orders_items oi on (oi.line_id = ol.id)
+					left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = oi.stock_item_id)
+					where oi.line_id = ". (int)$line['id'] ."
+					and oi.order_id = ". (int)$line['order_id'] ."
+					order by priority;"
+				)->fetch_all(function(&$item) {
+
+					$item['sufficient_stock'] = null;
+
+					if (isset($item['stock_quanity'])) {
+						if ($item['ordered_quantity'] >= $item['stock_quanity']) {
+							$item['sufficient_stock'] = true;
+						} else {
+							$item['sufficient_stock'] = false;
+						}
 					}
-				}
-
-				return $item;
+				});
 			});
 
 			$this->data['comments'] = database::query(
@@ -309,93 +317,106 @@
 				);
 			}
 
-			// Delete order items
+			// Delete order lines
 			database::query(
-				"delete from ". DB_TABLE_PREFIX ."orders_items
+				"delete from ". DB_TABLE_PREFIX ."orders_lines
 				where order_id = ". (int)$this->data['id'] ."
-				and id not in ('". implode("', '", array_column($this->data['items'], 'id')) ."');"
+				and id not in ('". implode("', '", array_column($this->data['lines'], 'id')) ."');"
 			);
 
-			// Insert/update order items
+			// Insert/update order lines
 			$i = 0;
-			foreach ($this->data['items'] as $key => $item) {
+			foreach ($this->data['lines'] as $key => $line) {
 
-				if (empty($item['id'])) {
+				if (empty($line['id'])) {
 
 					database::query(
-						"insert into ". DB_TABLE_PREFIX ."orders_items
+						"insert into ". DB_TABLE_PREFIX ."orders_lines
 						(order_id)
 						values (". (int)$this->data['id'] .");"
 					);
 
-					$this->data['items'][$key]['id'] = $item['id'] = database::insert_id();
-
-					// Update purchase count
-					if (!empty($item['product_id'])) {
-						database::query(
-							"update ". DB_TABLE_PREFIX ."products
-							set purchases = purchases + ". (float)$item['quantity'] ."
-							where id = ". (int)$item['product_id'] ."
-							limit 1;"
-						);
-					}
-				}
-
-				// Withdraw stock
-				if ($this->data['order_status_id'] && !empty(reference::order_status($this->data['order_status_id'])->is_sale) && !empty($item['product_id'])) {
-					$this->adjust_stock_quantity($item['product_id'], $item['option_stock_combination'], -(float)$item['quantity']);
+					$this->data['lines'][$key]['id'] = $line['id'] = database::insert_id();
 				}
 
 				database::query(
-					"update ". DB_TABLE_PREFIX ."orders_items
-					set product_id = ". (int)$item['product_id'] .",
-						stock_item_id = ". (int)$item['stock_item_id'] .",
-						name = '". database::input($item['name']) ."',
-						userdata = '". (!empty($item['userdata']) ? database::input(json_encode($item['userdata'], JSON_UNESCAPED_SLASHES)) : '') ."',
-						serial_number = '". database::input($item['serial_number']) ."',
-						sku = '". database::input($item['sku']) ."',
-						gtin = '". database::input($item['gtin']) ."',
-						taric = '". database::input($item['taric']) ."',
-						quantity = ". (float)$item['quantity'] .",
-						price = ". (float)$item['price'] .",
-						tax = ". (float)$item['tax'] .",
-						tax_class_id = ". (int)$item['tax_class_id'] .",
-						tax_rate = ". ($item['tax_rate'] ? (float)$item['tax_rate'] : "null") .",
-						discount = ". (float)$item['discount'] .",
-						discount_tax = ". (float)$item['discount_tax'] .",
-						sum = ". (float)$item['sum'] .",
-						sum_tax = ". (float)$item['sum_tax'] .",
-						weight = ". (float)$item['weight'] .",
-						weight_unit = '". database::input($item['weight_unit']) ."',
-						length = ". (float)$item['length'] .",
-						width = ". (float)$item['width'] .",
-						height = ". (float)$item['height'] .",
-						length_unit = '". database::input($item['length_unit']) ."',
+					"update ". DB_TABLE_PREFIX ."orders_lines
+					set product_id = ". (int)$line['product_id'] .",
+						name = '". database::input($line['name']) ."',
+						userdata = '". (!empty($line['userdata']) ? database::input(json_encode($line['userdata'], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) : '') ."',
+						serial_number = '". database::input($line['serial_number']) ."',
+						quantity = ". (float)$line['quantity'] .",
+						price = ". (float)$line['price'] .",
+						tax_class_id = ". (int)$line['tax_class_id'] .",
+						tax_rate = ". ($line['tax_rate'] ? (float)$line['tax_rate'] : "null") .",
+						discount = ". (float)$line['discount'] .",
+						sum = ". (float)$line['sum'] .",
+						sum_tax = ". (float)$line['sum_tax'] .",
 						priority = ". ++$i ."
-					where id = ". (int)$item['id'] ."
+					where id = ". (int)$line['id'] ."
 					and order_id = ". (int)$this->data['id'] ."
 					limit 1;"
 				);
+			}
 
-				// Withdraw stock
-				if ($this->data['order_status_id'] && reference::order_status($this->data['order_status_id'])->stock_action == 'commit') {
+			// Insert/update order items
+			$i = 0;
+			foreach ($this->data['lines'] as $key => $line) {
+				foreach ($line['items'] as $key2 => $item) {
 
-					if (!empty($item['stock_item_id'])) {
+					if (empty($line['id'])) {
+
+						database::query(
+							"insert into ". DB_TABLE_PREFIX ."orders_items
+							(order_id, line_id)
+							values (". (int)$this->data['id'] .", ". (int)$line['id'] .");"
+						);
+
+						$this->data['lines'][$key]['items'][$key2]['id'] = $item['id'] = database::insert_id();
+					}
+
+					// Withdraw stock
+					if ($this->data['order_status_id'] && !empty(reference::order_status($this->data['order_status_id'])->is_sale) && !empty($item['stock_item_id'])) {
 						database::query(
 							"update ". DB_TABLE_PREFIX ."stock_items
-							set quantity = quantity - ". (float)$item['quantity'] ."
+							set quantity = quantity + ". ($line['quantity'] * (float)$item['quantity']) ."
 							where id = ". (int)$item['stock_item_id'] ."
-							and product_id = ". (int)$item['product_id'] ."
 							limit 1;"
 						);
 					}
 
 					database::query(
-						"update ". DB_TABLE_PREFIX ."products
-						set quantity = quantity - ". (float)$item['quantity'] ."
-						where id = ". (int)$item['product_id'] ."
+						"update ". DB_TABLE_PREFIX ."orders_items
+						set line_id = ". (int)$line['id'] .",
+							stock_item_id = ". (int)$item['stock_item_id'] .",
+							name = '". database::input($item['name']) ."',
+							serial_number = '". database::input($item['serial_number']) ."',
+							sku = '". database::input($item['sku']) ."',
+							gtin = '". database::input($item['gtin']) ."',
+							taric = '". database::input($item['taric']) ."',
+							quantity = ". (float)$item['quantity'] .",
+							weight = ". (float)$item['weight'] .",
+							weight_unit = '". database::input($item['weight_unit']) ."',
+							length = ". (float)$item['length'] .",
+							width = ". (float)$item['width'] .",
+							height = ". (float)$item['height'] .",
+							length_unit = '". database::input($item['length_unit']) ."',
+							priority = ". ++$i ."
+						where id = ". (int)$item['id'] ."
+						and line_id = ". (int)$line['id'] ."
+						and order_id = ". (int)$this->data['id'] ."
 						limit 1;"
 					);
+
+					// Withdraw stock
+					if ($this->data['order_status_id'] && reference::order_status($this->data['order_status_id'])->stock_action == 'commit') {
+						database::query(
+							"update ". DB_TABLE_PREFIX ."stock_items
+							set quantity = quantity - ". ($line['quantity'] * (float)$item['quantity']) ."
+							where id = ". (int)$item['stock_item_id'] ."
+							limit 1;"
+						);
+					}
 				}
 			};
 
@@ -539,34 +560,54 @@
 			$this->data['no'] = preg_replace('#\{.*?\}#', '', $order_no);
 		}
 
-		public function add_item($item) {
+		public function add_line($line, $stock_items=[]) {
 
 			$structure = [];
 
 			database::query(
-				"show fields from ". DB_TABLE_PREFIX ."orders_items;"
+				"show fields from ". DB_TABLE_PREFIX ."orders_lines;"
 			)->each(function($field) use (&$structure) {
 				$structure[$field['Field']] = database::create_variable($field);
 			});
 
 			// Stripe some fields
-			$item = array_diff_assoc($item, ['id', 'order_id']);
+			$line = array_diff_assoc($line, ['id', 'order_id']);
 
 			// Merge with structure
-			$item = array_replace($structure, array_intersect_key($item, $structure));
+			$line = array_replace($structure, array_intersect_key($line, $structure));
 
-			$item['sum'] = ($item['price'] - $item['discount']) * $item['quantity'];
-			$item['sum_tax'] = ($item['tax'] - $item['discount_tax']) * $item['quantity'];
+			$line['sum'] = ($line['price'] - $line['discount']) * $line['quantity'];
+			$line['sum_tax'] = ($line['tax'] - $line['discount_tax']) * $line['quantity'];
 
-			$this->data['items'][] = $item;
+			// Merge stock items
+			$line['items'] = [];
+			foreach ($stock_items as $stock_item) {
+				$line['items'][] = [
+					'stock_item_id' => $stock_item['id'],
+					'quantity' => $stock_item['quantity'],
+					'name' => $stock_item['name'],
+					'serial_number' => $stock_item['serial_number'],
+					'sku' => $stock_item['sku'],
+					'gtin' => $stock_item['gtin'],
+					'taric' => $stock_item['taric'],
+					'length' => $stock_item['length'],
+					'width' => $stock_item['width'],
+					'height' => $stock_item['height'],
+					'length_unit' => $stock_item['length_unit'],
+					'weight' => $stock_item['weight'],
+					'weight_unit' => $stock_item['weight_unit'],
+				];
+			}
 
-			$this->data['subtotal'] += $item['price'] * $item['quantity'];
-			$this->data['subtotal_tax'] += $item['tax'] * $item['quantity'];
-			$this->data['discount'] += $item['discount'] * $item['quantity'];
-			$this->data['discount_tax'] += $item['discount_tax'] * $item['quantity'];
-			$this->data['total'] += ($item['price'] + $item['tax']) * $item['quantity'];
-			$this->data['total_tax'] += $item['tax'] * $item['quantity'];
-			$this->data['weight_total'] += weight::convert($item['weight'], $item['weight_unit'], $this->data['weight_unit']) * $item['quantity'];
+			$this->data['lines'][] = $line;
+
+			$this->data['subtotal'] += $line['price'] * $line['quantity'];
+			$this->data['subtotal_tax'] += $line['tax'] * $line['quantity'];
+			$this->data['discount'] += $line['discount'] * $line['quantity'];
+			$this->data['discount_tax'] += $line['discount_tax'] * $line['quantity'];
+			$this->data['total'] += ($line['price'] + $line['tax']) * $line['quantity'];
+			$this->data['total_tax'] += $line['tax'] * $line['quantity'];
+			$this->data['weight_total'] += weight::convert($line['weight'], $line['weight_unit'], $this->data['weight_unit']) * $line['quantity'];
 		}
 
 		public function validate($filters=[], $shipping = null, $payment = null) {
@@ -971,8 +1012,9 @@
 			$order_modules->delete($this->previous);
 
 			database::query(
-				"delete o, oi, oc
+				"delete o, ol, oi, oc
 				from ". DB_TABLE_PREFIX ."orders o
+				left join ". DB_TABLE_PREFIX ."orders_lines ol on (ol.order_id = o.id)
 				left join ". DB_TABLE_PREFIX ."orders_items oi on (oi.order_id = o.id)
 				left join ". DB_TABLE_PREFIX ."orders_comments oc on (oc.order_id = o.id)
 				where o.id = ". (int)$this->data['id'] .";"

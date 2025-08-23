@@ -77,17 +77,42 @@
 
 			// Reserved Quantity
 			$this->data['quantity_reserved'] = database::query(
-				"select sum(oi.quantity) as total_reserved from ". DB_TABLE_PREFIX ."orders_items oi
+				"select sum(ol.quantity * oi.quantity) as quantity_reserved
+				from ". DB_TABLE_PREFIX ."orders_items oi
+				left join ". DB_TABLE_PREFIX ."orders_lines ol on (ol.id = oi.line_id and ol.order_id = oi.order_id)
 				left join ". DB_TABLE_PREFIX ."orders o on (o.id = oi.order_id)
 				where o.order_status_id in (
 					select id from ". DB_TABLE_PREFIX ."order_statuses
 					where stock_action = 'reserve'
-				)
-				and oi.stock_option_id in (
-					select id from ". DB_TABLE_PREFIX ."products_stock_options
-					where stock_item_id = ". (int)$this->data['id'] ."
 				);"
-			)->fetch('total_reserved');
+			)->fetch('quantity_reserved');
+
+			// Deposited Quantity
+			$this->data['quantity_deposited'] = database::query(
+				"select stock_item_id, sum(quantity_adjustment) as quantity_deposited
+				from ". DB_TABLE_PREFIX ."stock_transactions_contents
+				where stock_item_id = ". (int)$this->data['id'] ."
+				group by stock_item_id;"
+			)->fetch('quantity_deposited');
+
+			// Withdrawn Quantity
+			$this->data['quantity_withdrawn'] = database::query(
+				"select oi.stock_item_id, sum(ol.quantity * oi.quantity) as quantity_withdrawn
+				from ". DB_TABLE_PREFIX ."orders_items oi
+				left join ". DB_TABLE_PREFIX ."orders_lines ol on (ol.id = oi.line_id and ol.order_id = oi.order_id)
+				where oi.stock_item_id = ". (int)$this->data['id'] ."
+				and oi.order_id in (
+					select id from ". DB_TABLE_PREFIX ."orders o
+					where order_status_id in (
+						select id from ". DB_TABLE_PREFIX ."order_statuses os
+						where stock_action = 'withdraw'
+					)
+				)
+				group by oi.stock_item_id;"
+			)->fetch('quantity_withdrawn');
+
+			// Expected Quantity
+			$this->data['quantity_expected'] = $this->data['quantity_deposited'] - $this->data['quantity_withdrawn'];
 
 			// References
 			$this->data['references'] = database::query(

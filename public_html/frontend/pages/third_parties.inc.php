@@ -15,8 +15,8 @@
 	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/third_parties.inc.php');
 
 	$_page->snippets['third_parties'] =  database::query(
-		"select tpi.*, tp.* from ". DB_TABLE_PREFIX ."third_parties tp
-		left join ". DB_TABLE_PREFIX ."third_parties_info tpi on (tpi.third_party_id = tp.id and tpi.language_code = '". database::input(language::$selected['code']) ."')
+		"select *, JSON_VALUE(name, '$.". language::$selected['code'] ."') as name
+		from ". DB_TABLE_PREFIX ."third_parties
 		where status
 		order by name;"
 	)->fetch_all(function($party) {

@@ -29,7 +29,7 @@
 		"select p.id, p.code, pp.price, p.created_at,
 			json_value(p.name, '$.". database::input($_GET['language_code']) ."') as name,
 			pso.total_quantity as quantity,
-			oi.total_reserved as reserved
+			oi.quantity_reserved as reserved
 		from ". DB_TABLE_PREFIX ."products p
 
 		left join (
@@ -45,15 +45,15 @@
 		) pso on (pso.product_id = p.id)
 
 		left join (
-			select oi.product_id, sum(oi.quantity) as total_reserved
-			from ". DB_TABLE_PREFIX ."orders_items oi
-			left join ". DB_TABLE_PREFIX ."orders o on (o.id = oi.order_id)
+			select ol.product_id, sum(ol.quantity) as quantity_reserved
+			from ". DB_TABLE_PREFIX ."orders_lines ol
+			left join ". DB_TABLE_PREFIX ."orders o on (o.id = ol.order_id)
 			where o.order_status_id in (
 				select id from ". DB_TABLE_PREFIX ."order_statuses
 				where stock_action = 'reserve'
 			)
-			group by oi.product_id
-		) oi on (oi.product_id = p.id)
+			group by ol.product_id
+		) ol on (ol.product_id = p.id)
 
 		". (!empty($sql_find) ? "where (". implode(" or ", $sql_find) .")" : "") ."
 		order by name

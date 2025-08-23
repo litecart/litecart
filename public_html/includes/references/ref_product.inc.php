@@ -43,15 +43,15 @@
 				case 'also_purchased_products':
 
 					$this->_data['also_purchased_products'] = database::query(
-						"select oi.product_id, sum(oi.quantity) as num_purchases from ". DB_TABLE_PREFIX ."orders_items oi
-						left join ". DB_TABLE_PREFIX ."products p on (p.id = oi.product_id)
+						"select ol.product_id, sum(ol.quantity) as num_purchases from ". DB_TABLE_PREFIX ."orders_lines ol
+						left join ". DB_TABLE_PREFIX ."products p on (p.id = ol.product_id)
 						where p.status
-						and (oi.product_id != 0 and oi.product_id != ". (int)$this->_data['id'] .")
+						and (ol.product_id != 0 and ol.product_id != ". (int)$this->_data['id'] .")
 						and order_id in (
-							select distinct order_id as id from ". DB_TABLE_PREFIX ."orders_items
+							select distinct order_id from ". DB_TABLE_PREFIX ."orders_lines
 							where product_id = ". (int)$this->_data['id'] ."
 						)
-						group by oi.product_id
+						group by ol.product_id
 						order by num_purchases desc;"
 					)->fetch_all(function($product) {
 						return reference::product($product['product_id'], $this->_language_codes[0]);
@@ -365,7 +365,7 @@
 				case 'total_quantity':
 				case 'num_stock_options':
 
-					$this->_data['quantity'] = null;
+					$this->_data['total_quantity'] = null;
 					$this->_data['num_stock_options'] = null;
 
 					$stock_options = database::query(
@@ -376,10 +376,12 @@
 						group by pso.product_id;"
 					)->fetch();
 
-					$this->_data['num_stock_options'] = $stock_options['num_stock_options'];
+					$this->_data['num_stock_options'] = $stock_options['num_stock_options'] ?: 0;
 
 					if ($stock_options['num_stock_options']) {
 						$this->_data['total_quantity'] = $stock_options['total_quantity'];
+					} else {
+						$this->_data['total_quantity'] = 0;
 					}
 
 					break;
@@ -389,42 +391,21 @@
 
 					$this->_data['quantity_available'] = null;
 
-					if (!database::query(
-						"select id from ". DB_TABLE_PREFIX ."products_stock_options
-						where product_id = ". (int)$this->_data['id'] ."
-						limit 1;"
-					)->num_rows) {
+					if (!$this->stock_options) {
 						break;
 					}
 
-					$this->_data['quantity_reserved'] = database::query(
-						"select sum(quantity) as total_reserved from ". DB_TABLE_PREFIX ."orders_items oi
-						left join ". DB_TABLE_PREFIX ."orders o on (o.id = oi.order_id)
-						where oi.product_id = ". (int)$this->_data['id'] ."
-						and o.order_status_id in (
-							select id from ". DB_TABLE_PREFIX ."order_statuses
-							where stock_action = 'reserve'
-						);"
-					)->fetch('total_reserved');
+					if ($this->stock_option_type == 'variants') {
+						$this->_data['quantity_available'] = array_sum(array_column($this->stock_options, 'quantity_available'));
+					}
 
-					$this->_data['quantity_available'] = $this->total_quantity - $this->_data['quantity_reserved'];
+					if ($this->stock_option_type == 'bundle') {
+						$this->_data['quantity_available'] = min(array_column($this->stock_options, 'quantity_available'));
+					}
 
-					break;
-
-				case 'quantity_available':
-				case 'quantity_reserved':
-
-					$this->_data['quantity_reserved'] = database::query(
-						"select sum(quantity) as total_reserved from ". DB_TABLE_PREFIX ."orders_items oi
-						left join ". DB_TABLE_PREFIX ."orders o on (o.id = oi.order_id)
-						where oi.product_id = ". (int)$this->_data['id'] ."
-						and o.order_status_id in (
-							select id from ". DB_TABLE_PREFIX ."order_statuses
-							where stock_action = 'reserve'
-						);"
-					)->fetch('total_reserved');
-
-					$this->_data['quantity_available'] = $this->quantity - $this->quantity_reserved;
+					if ($this->_data['quantity_available'] < 0) {
+						$this->_data['quantity_available'] = 0;
+					}
 
 					break;
 
@@ -441,7 +422,42 @@
 
 					break;
 
-				case 'stock_options':
+				case 'stock_items': // For bundles
+
+					$this->_data['stock_items'] = [];
+
+					if ($this->stock_option_type != 'bundle') {
+						break;
+					}
+
+					$this->_data['stock_items'] = database::query(
+						"select si.*, ifnull(ol.quantity_reserved, 0) as quantity_reserved, si.quantity - ifnull(ol.quantity_reserved, 0) as quantity_available
+						from ". DB_TABLE_PREFIX ."stock_items si
+
+						left join (
+							select product_id, stock_item_id, sum(ol.quantity * oi.quantity) as quantity_reserved
+							from ". DB_TABLE_PREFIX ."orders_items oi
+							left join ". DB_TABLE_PREFIX ."orders_lines ol on (ol.id = oi.line_id and ol.order_id = oi.order_id)
+							where oi.order_id in (
+								select id from ". DB_TABLE_PREFIX ."orders
+								where order_status_id in (
+									select id from ". DB_TABLE_PREFIX ."order_statuses
+									where stock_action = 'reserve'
+								)
+							)
+							group by stock_item_id
+						) ol on (ol.product_id = ". (int)$this->_data['id'] ." and ol.stock_item_id = si.id)
+
+						where si.id in (
+							select pso.stock_item_id from ". DB_TABLE_PREFIX ."products_stock_options pso
+							where pso.product_id = ". (int)$this->_data['id'] ."
+						)
+						order by si.name;"
+					)->fetch_all();
+
+					break;
+
+				case 'stock_options': // For variants
 
 					$this->_data['stock_options'] = [];
 
@@ -452,17 +468,18 @@
 					$this->_data['stock_options'] = database::query(
 						"select si.*, pso.*,
 							json_value(si.name, '$.".database::input(language::$selected['code'])."') as name,
-							ifnull(oi.quantity_reserved, 0) as quantity_reserved,
-							si.quantity - ifnull(oi.quantity_reserved, 0) as quantity_available
+							ifnull(ol.quantity_reserved, 0) as quantity_reserved,
+							si.quantity - ifnull(ol.quantity_reserved, 0) as quantity_available
 
 						from ". DB_TABLE_PREFIX ."products_stock_options pso
 
 						left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
 
 						left join (
-							select product_id, stock_option_id, sum(quantity) as quantity_reserved
-							from ". DB_TABLE_PREFIX ."orders_items
-							where order_id in (
+							select product_id, stock_option_id, sum(ol.quantity * oi.quantity) as quantity_reserved
+							from ". DB_TABLE_PREFIX ."orders_items oi
+							left join ". DB_TABLE_PREFIX ."orders_lines ol on (ol.id = oi.line_id and ol.order_id = oi.order_id)
+							where oi.order_id in (
 								select id from ". DB_TABLE_PREFIX ."orders
 								where order_status_id in (
 									select id from ". DB_TABLE_PREFIX ."order_statuses
@@ -470,7 +487,8 @@
 								)
 							)
 							group by stock_option_id
-						) oi on (oi.product_id = pso.product_id and oi.stock_option_id = pso.id)
+						) ol on (ol.product_id = pso.product_id and ol.stock_option_id = pso.id)
+
 						where pso.product_id = ". (int)$this->_data['id'] ."
 						order by pso.priority asc;"
 					)->fetch_all();

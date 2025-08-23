@@ -35,9 +35,6 @@ body {
   background: #bcbccb;
   padding: 0.25em 1em;
 }
-#site-navigation {
-  margin-top: 0.5em;
-}
 #site-navigation .regional-settings {
   text-decoration: none;
   color: var(--navigation-text-color);
@@ -518,7 +515,7 @@ body {
 }
 @media (min-width: 576px) {
   .listing.products.columns {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(195px, 1fr));
   }
 }
 .listing.products.rows {
@@ -688,54 +685,58 @@ body {
   line-height: 1;
   margin: 0;
 }
+.listing.products.columns .product .short-description {
+  display: none;
+}
 @media (min-width: 576px) {
-  .listing .product:hover .actions {
+  .listing.products.columns .product:hover .actions {
     display: flex;
     flex-direction: column;
     gap: 0.5em;
   }
 }
-.listing .product.rows .link {
+.listing.rows .link {
   flex-direction: row;
   min-height: 175px;
 }
-.listing .product.rows .info {
+.listing.rows .info {
   padding: 0.5rem;
 }
 @media (min-width: 576px) {
-  .listing .product.rows .info {
-    inset-inline-start: calc(160px + 1rem);
+  .listing.rows .info {
+    inset-inline-start: 200px;
   }
 }
-.listing .product.rows .name {
+.listing.rows .name {
   margin: 0;
 }
-.listing .product.rows .short-description {
-  margin: 1rem;
-  font-size: 0.85em;
+.listing.rows .short-description {
+  margin: 1rem 0;
 }
-.listing .product.rows .image-wrapper {
+.listing.rows .image-wrapper {
   display: inline-block;
   max-width: 100px;
 }
 @media (min-width: 576px) {
-  .listing .product.rows .image-wrapper {
+  .listing.rows .image-wrapper {
     max-width: 175px;
   }
 }
-.listing .product.rows .price {
+.listing.rows .price {
   background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, #ffffff 20%, #ffffff 100%);
 }
 @media (min-width: 576px) {
-  .listing .product.rows {
+  .listing.rows {
     height: auto;
   }
-  .listing .product.rows .description {
+  .listing.rows .description {
     margin-top: 1rem;
   }
-}
-.listing.products.columns .product .short-description {
-  display: none;
+  .listing.rows .product:hover .actions {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5em;
+  }
 }
 [data-toggle="momentum-scroll"] .listing {
   display: flex;

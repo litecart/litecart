@@ -105,6 +105,8 @@
 										</div>
 									</div>
 
+									<?php echo functions::form_input_hidden('sort', ''); ?>
+
 							<?php echo functions::form_end(); ?>
 						</section>
 
@@ -281,5 +283,17 @@
 			$(':input[name="price_range[min]"]').val('').trigger('input');
 			$(':input[name="price_range[max]"]').val('').trigger('input');
 		}
+	});
+
+	$('#box-category').on('change', ':input[name="list_style"]', function() {
+		if ($(this).val() == 'rows') {
+			$('#box-category .listing.products').removeClass('columns').addClass('rows');
+		} else {
+			$('#box-category .listing.products').removeClass('rows').addClass('columns');
+		}
+	});
+
+	$('#box-category').on('change', ':input[name="sort"]', function() {
+		$('form[name="filter_form"] :input[name="sort"]').not(this).val($(this).val()).trigger('input');
 	});
 </script>

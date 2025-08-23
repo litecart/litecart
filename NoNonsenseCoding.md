@@ -1,7 +1,8 @@
 
 # No Nonsense Coding
 
-No Nonsense Coding is a provocative coding concept that probably upsets many. Used and promoted by T. Almroth - author of LiteCart and the LiteCore framework. The purpose is to make as much sense as possible with as little effort as possible when writing program code.
+No Nonsense Coding is a provocative coding concept that probably upsets many. Used and promoted by T. Almroth - author of LiteCart and the LiteCore framework.
+The purpose is to make as much sense as possible with as little effort as possible when writing program code.
 
 
 ## Overcomplications - That's total nonsense
@@ -148,6 +149,23 @@ Better:
 		$_POST['countryCode'] = strtoupper($_POST['countryCode']);
 
 		doSomethingWith($_POST['countryCode']);
+
+
+# No Yoda Conditions - Strange nonsense this is
+
+Unless a galaxy far from, you are. Expressions like Yoda, you do should not.
+
+Avoid:
+
+		if ('orange' == $fruit) {
+			...
+		}
+
+Better:
+
+		if ($fruit == 'orange') {
+			...
+		}
 
 
 ## Fat third party libraries for small features - Stay away from other people's nonsense
