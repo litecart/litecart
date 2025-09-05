@@ -13,9 +13,6 @@
     // Neutralize request path (removes logical prefixes)
       self::$request = self::strip_url_logic($_SERVER['REQUEST_URI']);
 
-    // Identify the request to a route destination
-      self::identify();
-
     // Load cached links (url rewrites)
       self::$_links_cache_token = cache::token('links', ['site', 'language'], 'memory');
 
