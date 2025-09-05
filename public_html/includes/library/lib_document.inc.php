@@ -272,7 +272,7 @@
     public static function ilink($route=null, $new_params=[], $inherit_params=null, $skip_params=[], $language_code=null) {
 
       if ($route === null) {
-        $route = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        $route = strtok($_SERVER['REQUEST_URI'], '?');
         if ($inherit_params === null) $inherit_params = true;
       } else {
         $route = WS_DIR_APP . $route;
@@ -288,7 +288,7 @@
     public static function link($path=null, $new_params=[], $inherit_params=null, $skip_params=[], $language_code=null) {
 
       if (empty($path)) {
-        $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        $path = strtok($_SERVER['REQUEST_URI'], '?');
         if ($inherit_params === null) $inherit_params = true;
       }
 

@@ -180,7 +180,7 @@
     // Return language from root path
       foreach ($enabled_languages as $language_code) {
         if (self::$languages[$language_code]['url_type'] == 'none') {
-          $webpath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+          $webpath = strtok($_SERVER['REQUEST_URI'], '?');
           if (!$webpath || !preg_match('#^'. preg_quote(WS_DIR_APP, '#') .'[a-z]{2}(/|$)#', $webpath)) {
             return $language_code;
           }

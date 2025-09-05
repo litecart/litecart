@@ -90,7 +90,7 @@
       if (!empty(self::$route['page']) && is_file(vmod::check($page))) {
         $rewritten_url = document::ilink(self::$route['page'], $_GET);
 
-        if (urldecode(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)) != parse_url($rewritten_url, PHP_URL_PATH)) {
+        if (urldecode(strtok($_SERVER['REQUEST_URI'], '?')) != parse_url($rewritten_url, PHP_URL_PATH)) {
 
           $do_redirect = true;
 
@@ -110,7 +110,7 @@
           if ($do_redirect) {
 
           // Send HTTP 302 if it's the start page
-            if (parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) == WS_DIR_APP) {
+            if (strtok($_SERVER['REQUEST_URI'], '?') == WS_DIR_APP) {
               header('Location: '. $rewritten_url, true, 302);
               exit;
             }
@@ -167,7 +167,7 @@
       $link = new ent_link((string)$path);
 
       if ($path === null && $inherit_params === null) {
-        $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        $path = strtok($_SERVER['REQUEST_URI'], '?');
         $inherit_params = true;
       }
 
