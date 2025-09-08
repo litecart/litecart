@@ -678,7 +678,7 @@
           <td>
             <?php if (!empty($_POST['items'][$key]['product_id'])) { ?>
             <a href="<?php echo document::href_link(WS_DIR_ADMIN, ['app' => 'catalog', 'doc' => 'edit_product', 'product_id' => $_POST['items'][$key]['product_id']]); ?>" target="_blank">
-              <?php functions::escape_html($_POST['items'][$key]['name']); ?>
+              <?php echo functions::escape_html($_POST['items'][$key]['name']); ?>
             </a>
             <a class="float-end" href="<?php echo document::href_ilink('product', ['product_id' => $_POST['items'][$key]['product_id']]); ?>" target="_blank">
               <?php echo functions::draw_fonticon('fa-external-link'); ?>
