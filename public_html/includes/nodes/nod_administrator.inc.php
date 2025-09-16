@@ -158,7 +158,7 @@
 		public static function require_login() {
 
 			if (!self::check_login()) {
-				$redirect_url = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) . (!empty($_SERVER['QUERY_STRING']) ? '?' . $_SERVER['QUERY_STRING'] : '');
+				$redirect_url = strtok($_SERVER['REQUEST_URI'], '?') . (!empty($_SERVER['QUERY_STRING']) ? '?' . $_SERVER['QUERY_STRING'] : '');
 				header('Location: ' . document::ilink('b:login', ['redirect_url' => $redirect_url]));
 				exit;
 			}

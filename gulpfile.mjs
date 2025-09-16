@@ -98,6 +98,17 @@ gulp.task('js-backend', function() {
 		.pipe(gulp.dest('public_html/backend/template/js/', { overwrite: true }));
 });
 
+// Build and uglify JS files
+gulp.task('js-trumbowyg', function() {
+	return gulp
+		.src('public_html/assets/trumbowyg/trumb*wyg.js')
+		.pipe(sourcemaps.init())
+		.pipe(uglify())
+		.pipe(rename({ extname: '.min.js' }))
+		//.pipe(sourcemaps.write('.', { includeContent: false }))
+		.pipe(gulp.dest('public_html/assets/trumbowyg/', { overwrite: true }));
+});
+
 gulp.task('less-frontend', function() {
 
 	gulp.src('public_html/frontend/templates/default/less/vari*bles.less') // non-globstar pattern will fail on some windows paths
@@ -225,6 +236,7 @@ gulp.task('build', gulp.series(
 	'js-framework',
 	'js-backend',
 	'js-frontend',
+	'js-trumbowyg',
 	'less-framework',
 	'less-backend',
 	'less-frontend',

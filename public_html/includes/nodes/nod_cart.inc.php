@@ -195,6 +195,7 @@
 				'id' => null,
 				'product_id' => (int)$product->id,
 				'stock_option_id' => $stock_option_id ? (int)$stock_option_id : null,
+				'stock_items' => [],
 				'userdata' => $userdata,
 				'image' => $product->image,
 				'name' => $product->name,
@@ -223,6 +224,27 @@
 				'length_unit' => $product->length_unit,
 				'error' => '',
 			];
+
+			if ($product->stock_option_type == 'bundle') {
+				foreach ($product->stock_items as $stock_item) {
+					$item['stock_items'][] = [
+						'stock_item_id' => $stock_item['id'],
+						'name' => $stock_item['name'],
+						'quantity' => $stock_item['quantity'],
+					];
+				}
+			} else if ($product->stock_options) {
+				foreach ($product->stock_options as $option) {
+					if ($option['id'] == $stock_option_id) {
+						$item['stock_items'][] = [
+							'stock_item_id' => $option['id'],
+							'name' => $option['name'],
+							'quantity' => 1,
+						];
+						break;
+					}
+				}
+			}
 
 			try {
 

@@ -246,7 +246,7 @@
 		if ($_SERVER['SERVER_SOFTWARE'] != 'CLI') {
 			echo '<p>Checking $_SERVER["DOCUMENT_ROOT"]... ';
 
-			if (DOCUMENT_ROOT . preg_replace('#/index\.php$#', '', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)) != str_replace('\\', '/', __DIR__)) {
+			if (DOCUMENT_ROOT . preg_replace('#/index\.php$#', '', strtok($_SERVER['REQUEST_URI'], '?')) != str_replace('\\', '/', __DIR__)) {
 				echo $_SERVER['DOCUMENT_ROOT'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 
 			} else {

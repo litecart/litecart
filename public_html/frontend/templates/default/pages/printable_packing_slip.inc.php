@@ -96,14 +96,16 @@ table.items tbody tr:nth-child(11) {
 			<thead>
 				<tr>
 					<th><?php echo t('title_qty', 'Qty'); ?></th>
-					<th><?php echo t('title_sku', 'SKU'); ?></th>
 					<th class="main"><?php echo t('title_item', 'Item'); ?></th>
+					<th><?php echo t('title_sku', 'SKU'); ?></th>
+					<th><?php echo t('title_gtin', 'GTIN'); ?></th>
+					<th><?php echo t('title_taric', 'TARIC'); ?></th>
 				</tr>
 			</thead>
 
 <?php
 	$i = 0;
-	foreach ($order['items'] as $item) {
+	foreach ($items as $item) {
 		if (in_array($i++, $page_breaks)) {
 ?>
 			</tbody>
@@ -120,8 +122,10 @@ table.items tbody tr:nth-child(11) {
 			<thead>
 				<tr>
 					<th><?php echo t('title_qty', 'Qty'); ?></th>
-					<th><?php echo t('title_sku', 'SKU'); ?></th>
 					<th class="main"><?php echo t('title_item', 'Item'); ?></th>
+					<th><?php echo t('title_sku', 'SKU'); ?></th>
+					<th><?php echo t('title_gtin', 'GTIN'); ?></th>
+					<th><?php echo t('title_taric', 'TARIC'); ?></th>
 				</tr>
 			</thead>
 <?php
@@ -129,9 +133,11 @@ table.items tbody tr:nth-child(11) {
 ?>
 			<tbody>
 				<tr>
-					<td><?php echo ($item['quantity'] > 1) ? '<strong>'. (float)$item['quantity'].'</strong>' : (float)$item['quantity']; ?></td>
-					<td><?php echo $item['sku']; ?></td>
+					<td><?php echo ($item['total_quantity'] > 1) ? '<strong>'. (float)$item['total_quantity'].'</strong>' : (float)$item['total_quantity']; ?></td>
 					<td style="white-space: normal;"><?php echo $item['name']; ?></td>
+					<td><?php echo $item['sku']; ?></td>
+					<td><?php echo $item['gtin']; ?></td>
+					<td><?php echo $item['taric']; ?></td>
 				</tr>
 <?php
 	}

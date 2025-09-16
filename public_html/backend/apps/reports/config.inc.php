@@ -2,7 +2,7 @@
 
 	return [
 		'name' => t('title_reports', 'Reports'),
-		'group' => 'ecommerce',
+		'group' => 'website',
 		'default' => 'monthly_sales',
 		'priority' => 0,
 

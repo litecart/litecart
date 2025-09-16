@@ -68,7 +68,6 @@
 	}
 
 	// Run operations before processing the route
-	event::fire('before_capture');
 
 	// Process the route
 	route::process();

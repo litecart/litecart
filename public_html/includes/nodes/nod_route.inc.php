@@ -350,7 +350,7 @@
 			$link = new ent_link((string)$path);
 
 			if ($path === null && $inherit_params === null) {
-				$path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+				$path = strtok($_SERVER['REQUEST_URI'], '?');
 				$inherit_params = true;
 			}
 

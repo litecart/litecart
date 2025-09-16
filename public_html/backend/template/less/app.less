@@ -127,7 +127,6 @@ h4 { font-size: 1.10em; }
 	margin-bottom: var(--gutter-y);
 	background: var(--toolbar-background);
 	color: var(--toolbar-text-color);
-	border-bottom: var(--toolbar-border-width) solid var(--default-border-color);
 
 	> li {
 		align-self: center;
@@ -251,10 +250,11 @@ h4 { font-size: 1.10em; }
 	.app {
 		position: relative;
 		display: block;
-		border: var(--sidebar-app-border-size) solid var(--sidebar-app-border-color);
-		border-inline-start: 5px solid transparent;
+		border: var(--sidebar-app-border-size) solid transparent;
+		//border-inline-start: 5px solid transparent;
 		border-radius: var(--border-radius);
 		transition: all 100ms linear;
+		overflow: hidden;
 
 		&:hover:not(.active) {
 			background: var(--sidebar-app-background--hover);
@@ -262,8 +262,10 @@ h4 { font-size: 1.10em; }
 		}
 
 		> a {
-			padding: .25em .5em;
+			padding: .25em 0em;
+			transition: linear 100ms all;
 			&:hover {
+				padding: .25em .5em;
 				background: var(--sidebar-app-background--hover);
 				color: var(--sidebar-text-color--hover);
 			}
@@ -279,29 +281,32 @@ h4 { font-size: 1.10em; }
 		}
 
 		> a > .name {
-			margin-inline-start: .5em;
+			font-weight: 500;
+  		color: #555;
 		}
 
 		&.active {
-			border-color: var(--app-color);
-			background: var(--sidebar-app-background--active);
+			a {
+				padding: .25em .5em;
+			}
+			//background: var(--sidebar-app-background--active);
+			background: color-mix(in lab,var(--app-color) 1%, #efefef 100%);
 			border-radius: var(--border-radius);
 			margin-bottom: .25em;
 
 			.docs {
 				display: block;
-				padding-bottom: .5em;
 			}
 
 			.doc {
 				&:hover,
 				&:active {
 					background: var(--sidebar-doc-background--hover);
-					border-radius: var(--border-radius);
 				}
 				&.active {
-					background: var(--sidebar-doc-background--active);
-					border-radius: var(--border-radius);
+					//background: var(--sidebar-doc-background--active);
+					background: color-mix(in lab, var(--app-color) 25%, transparent);
+					//border-radius: var(--border-radius);
 				}
 				a {
 					padding: .5em;
@@ -312,8 +317,6 @@ h4 { font-size: 1.10em; }
 
 	.docs {
 		display: none;
-		padding-left: .5em !important;
-		padding-right: .5em !important;
 	}
 
 	.bullet {
@@ -337,15 +340,31 @@ h4 { font-size: 1.10em; }
 	.app-icon {
 		border: 0px solid var(--app-color);
 	}
+
+	/*
+	> .card:before {
+		content: '.';
+		top: -1px;
+		position: absolute;
+		background: radial-gradient(circle at bottom right, transparent 75%, #b34095 100%);
+		width: 400px;
+		z-index: -1;
+		left: -1px;
+		border-radius: calc(var(--border-radius) + 2px);
+		height: 400px;
+	}
+	*/
 }
 
 .app-icon {
 	display: inline-flex;
-	padding: .5em;
-	margin-inline-end: .33em;
+	padding: .25em;
 	line-height: 100%;
-	color: var(--app-color);
-	background: var(--app-icon-background);
+	font-size: 1.25em;
+	//color: var(--app-color);
+	//color: #555;
+	color: color-mix(in srgb, var(--app-color) 100%, #777 100%);
+	//background: var(--app-icon-background);
 	//clip-path: circle(50%);
 	//clip-path: polygon(50% 0%, 83% 12%, 100% 43%, 94% 78%, 68% 100%, 32% 100%, 6% 78%, 0% 43%, 17% 12%);
 	//clip-path: xywh(0 0 100% 100% round var(--border-radius) 0); // 2-rounded corners

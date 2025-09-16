@@ -44,8 +44,6 @@
 				$resume_id = session::$data['checkout']['order']->data['id'];
 			}
 
-			$order = new ent_order();
-
 			// Resume incomplete order in session
 			if (!empty($resume_id)) {
 				if (database::query(
@@ -57,11 +55,14 @@
 				)->num_rows) {
 					session::$data['checkout']['order'] = new ent_order($resume_id);
 					session::$data['checkout']['order']->reset();
-					session::$data['checkout']['order']->data['id'] = $resume_id;
+				} else {
+					session::$data['checkout']['order'] = new ent_order();
 				}
+			} else {
+				session::$data['checkout']['order'] = new ent_order();
 			}
 
-			$order->data['utm_data'] = session::$data['utm'] ?? [];
+			$order = &session::$data['checkout']['order'];
 
 			// Build Order
 			$order->data['weight_unit'] = settings::get('store_weight_unit');
@@ -70,6 +71,7 @@
 			$order->data['language_code'] = language::$selected['code'];
 			$order->data['customer'] = customer::$data;
 			$order->data['display_prices_including_tax'] = !empty(customer::$data['display_prices_including_tax']) ? true : false;
+			$order->data['utm_data'] = session::$data['utm'] ?? [];
 
 			foreach ([
 				'email',
@@ -82,11 +84,8 @@
 			}
 
 			foreach (cart::$items as $item) {
-				$order->add_item($item);
+				$order->add_line($item, $item['stock_items']);
 			}
-
-			session::$data['checkout']['order'] = $order;
-			$order = &session::$data['checkout']['order'];
 
 			if ($_POST['checkout'] == 'standard') {
 
@@ -223,15 +222,15 @@
 		$box_also_purchased_products = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/box_also_purchased_products.inc.php');
 
 		$product_ids = database::query(
-			"select oi.product_id, sum(oi.quantity) as num_purchases from ". DB_TABLE_PREFIX ."orders_items oi
-			left join ". DB_TABLE_PREFIX ."products p on (p.id = oi.product_id)
+			"select ol.product_id, sum(ol.quantity) as num_purchases from ". DB_TABLE_PREFIX ."orders_lines ol
+			left join ". DB_TABLE_PREFIX ."products p on (p.id = ol.product_id)
 			where p.status
-			and (oi.product_id != 0 and oi.product_id not in ('". implode("', '", database::input(array_column(cart::$items, 'product_id'))) ."'))
+			and (ol.product_id != 0 and ol.product_id not in ('". implode("', '", database::input(array_column(cart::$items, 'product_id'))) ."'))
 			and order_id in (
-				select distinct order_id as id from ". DB_TABLE_PREFIX ."orders_items
+				select distinct order_id as id from ". DB_TABLE_PREFIX ."orders_lines
 				where product_id in ('". implode("', '", database::input(array_column(cart::$items, 'product_id'))) ."')
 			)
-			group by oi.product_id
+			group by ol.product_id
 			order by num_purchases desc
 			limit ". (settings::get('box_also_purchased_products_num_items') * 3) .";"
 		)->fetch_all('product_id');

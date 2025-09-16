@@ -2,7 +2,7 @@
 
 	return [
 		'name' => t('title_webtools', 'Webtools'),
-		'group' => 'website',
+		'group' => 'system',
 		'default' => 'redirects',
 		'priority' => 0,
 

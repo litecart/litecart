@@ -112,8 +112,8 @@
 					<th><?php echo t('title_archived', 'Archived'); ?></th>
 					<th><?php echo t('title_track', 'Track'); ?></th>
 					<th><?php echo t('title_notify', 'Notify'); ?></th>
-					<th><?php echo t('title_priority', 'Priority'); ?></th>
 					<th><?php echo t('title_orders', 'Orders'); ?></th>
+					<th><?php echo t('title_priority', 'Priority'); ?></th>
 					<th></th>
 				</tr>
 			</thead>
@@ -132,9 +132,17 @@
 					<td class="text-center"><?php echo !empty($order_status['is_archived']) ? functions::draw_fonticon('icon-check') : '-'; ?></td>
 					<td class="text-center"><?php echo !empty($order_status['is_trackable']) ? functions::draw_fonticon('icon-check') : '-'; ?></td>
 					<td class="text-center"><?php echo !empty($order_status['notify']) ? functions::draw_fonticon('icon-check') : '-'; ?></td>
-					<td class="text-center"><?php echo language::number_format($order_status['num_orders'], 0); ?></td>
-					<td class="text-center"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/orders', ['order_status_id' => $order_status['id']]); ?>" title="<?php echo t('title_view', 'View'); ?>"><?php echo functions::draw_fonticon('icon-square-out'); ?></a></td>
-					<td><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_order_status', ['order_status_id' => $order_status['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+					<td class="text-center">
+						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/orders', ['order_status_id' => $order_status['id']]); ?>" title="<?php echo t('title_view', 'View'); ?>">
+							<?php echo functions::draw_fonticon('icon-square-out'); ?> <?php echo language::number_format($order_status['num_orders'], 0); ?>
+						</a>
+					</td>
+					<td class="text-center"><?php echo (int)$order_status['priority']; ?></td>
+					<td>
+						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_order_status', ['order_status_id' => $order_status['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>">
+							<?php echo functions::draw_fonticon('edit'); ?>
+						</a>
+					</td>
 				</tr>
 				<?php } ?>
 			</tbody>
