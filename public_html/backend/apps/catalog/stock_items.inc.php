@@ -36,7 +36,7 @@
 	if (!empty($_GET['query'])) {
 		$sql_where_query = [
 			"si.id = '". database::input($_GET['query']) ."'",
-			"sii.name like '%". database::input($_GET['query']) ."%'",
+			"json_value(si.name, '$.". database::input($_GET['language_code']) ."') like '%". database::input($_GET['query']) ."%'",
 			"si.sku regexp '^". database::input(implode('([ -\./]+)?', str_split(preg_replace('#[ -\./]+#', '', $_GET['query'])))) ."$'",
 			"si.mpn regexp '^". database::input(implode('([ -\./]+)?', str_split(preg_replace('#[ -\./]+#', '', $_GET['query'])))) ."$'",
 			"si.gtin regexp '^". database::input(implode('([ -\./]+)?', str_split(preg_replace('#[ -\./]+#', '', $_GET['query'])))) ."$'",

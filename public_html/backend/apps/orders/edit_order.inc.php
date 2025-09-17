@@ -9,6 +9,8 @@
 		$order->data['created_at'] = date('Y-m-d H:i:s');
 	}
 
+	if (empty($_POST['lines'])) $_POST['lines'] = [];
+
 	if (!$_POST) {
 
 		$_POST = $order->data;
@@ -916,26 +918,27 @@
 				<div id="box-comments">
 					<div class="bubbles">
 <?php
-	foreach (array_keys($_POST['comments']) as $key) {
+	if (isset($_POST['comments'])) {
+		foreach (array_keys($_POST['comments']) as $key) {
 
-		switch($_POST['comments'][$key]['author']) {
+			switch($_POST['comments'][$key]['author']) {
 
-			case 'customer':
-				$type = 'remote';
-				break;
+				case 'customer':
+					$type = 'remote';
+					break;
 
-			case 'staff':
-				$type = 'local';
-				break;
+				case 'staff':
+					$type = 'local';
+					break;
 
-			default:
-				$type = 'event';
-				break;
-		}
+				default:
+					$type = 'event';
+					break;
+			}
 
-		if (!empty($_POST['comments'][$key]['hidden'])) {
-			$type .= ' semi-transparent';
-		}
+			if (!empty($_POST['comments'][$key]['hidden'])) {
+				$type .= ' semi-transparent';
+			}
 ?>
 						<div class="bubble <?php echo $type; ?>">
 							<?php echo functions::form_input_hidden('comments['.$key.'][id]', true); ?>
@@ -952,6 +955,7 @@
 								<label class="private" title="<?php echo functions::escape_html(t('title_hidden', 'Hidden')); ?>"><?php echo functions::form_checkbox('comments['.$key .'][hidden]', '1', true); ?> <?php echo functions::draw_fonticon('icon-eye-slash'); ?></label>
 							</div>
 						</div>
+						<?php } ?>
 						<?php } ?>
 
 						<div class="text-end">
@@ -1072,35 +1076,35 @@
 				<div class="col-md-2">
 					<div id="subtotal" class="summary">
 						<div class="title"><?php echo t('title_subtotal', 'Subtotal'); ?></div>
-						<div class="amount"><?php echo currency::format($_POST['discount'], false, $_POST['currency_code'], $_POST['currency_value']); ?></div>
+						<div class="amount"><?php if (isset($_POST['discount'])) echo currency::format($_POST['discount'], false, $_POST['currency_code'], $_POST['currency_value']); ?></div>
 					</div>
 				</div>
 
 				<div class="col-md-2">
 				<div id="total-discount" class="summary">
 						<div class="title"><?php echo t('title_total_discount', 'Total Discount'); ?></div>
-						<div class="amount"><?php echo currency::format($_POST['discount'], false, $_POST['currency_code'], $_POST['currency_value']); ?></div>
+						<div class="amount"><?php if (isset($_POST['discount'])) echo currency::format($_POST['discount'], false, $_POST['currency_code'], $_POST['currency_value']); ?></div>
 					</div>
 				</div>
 
 				<div class="col-md-2">
 					<div id="total-fees" class="summary">
 						<div class="title"><?php echo t('title_total_fees', 'Total Fees'); ?></div>
-						<div class="amount"><?php echo currency::format(0, false, $_POST['currency_code'], $_POST['currency_value']); ?></div>
+						<div class="amount"><?php if (isset($_POST['currency_code'])) echo currency::format(0, false, $_POST['currency_code'], $_POST['currency_value']); ?></div>
 					</div>
 				</div>
 
 				<div class="col-md-2">
 					<div id="total-tax" class="summary">
 						<div class="title"><?php echo t('title_total_tax', 'Total Tax'); ?></div>
-						<div class="amount"><?php echo currency::format($_POST['total_tax'], false, $_POST['currency_code'], $_POST['currency_value']); ?></div>
+						<div class="amount"><?php if (isset($_POST['total_tax'])) echo currency::format($_POST['total_tax'], false, $_POST['currency_code'], $_POST['currency_value']); ?></div>
 					</div>
 				</div>
 
 				<div class="col-md-2">
 					<div id="order-total" class="summary">
 						<div class="title"><?php echo t('title_grand_total', 'Grand Total'); ?></div>
-						<div class="amount"><?php echo currency::format_html($_POST['total'], false, $_POST['currency_code'], $_POST['currency_value']); ?></div>
+						<div class="amount"><?php if (isset($_POST['total'])) echo currency::format_html($_POST['total'], false, $_POST['currency_code'], $_POST['currency_value']); ?></div>
 					</div>
 				</div>
 			</div>

@@ -21,7 +21,7 @@
 		from ". DB_TABLE_PREFIX ."orders
 		limit 1;"
 	)->fetch(function($result){
-		return date('Y-m-d', strtotime($result['min_date']));
+		return date('Y-m-d', strtotime($result['min_date'] ?? ''));
 	});
 
 	if (empty($date_first_order)) {

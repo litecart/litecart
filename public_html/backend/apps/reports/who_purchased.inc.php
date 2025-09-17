@@ -31,8 +31,8 @@
 
 	$items = [];
 
-	$timestamp_from = strtotime($_GET['date_from']);
-	$timestamp_to = strtotime($_GET['date_to']);
+	$timestamp_from = strtotime($_GET['date_from'] ?? '');
+	$timestamp_to = strtotime($_GET['date_to'] ?? '');
 
 	$result = database::query(
 		"select
