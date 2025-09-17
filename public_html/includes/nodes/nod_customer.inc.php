@@ -375,7 +375,7 @@
 				'customer_id' => isset($event['customer_id']) ? $event['customer_id'] : self::$data['id'],
 				'type' => isset($event['type']) ? $event['type'] : 'unknown',
 				'description' => isset($event['description']) ? $event['description'] : null,
-				'data' => !empty($event['data']) ? functions::json_format($event['data']) : null,
+				'data' => !empty($event['data']) ? functions::format_json($event['data']) : null,
 				'url' => isset($event['url']) ? $event['url'] : document::link(),
 				'ip_address' => isset($event['ip_address']) ? $event['ip_address'] : $_SERVER['REMOTE_ADDR'],
 				'hostname' => isset($event['hostname']) ? $event['hostname'] : gethostbyaddr(isset($event['ip_address']) ? $event['ip_address'] : $_SERVER['REMOTE_ADDR']),

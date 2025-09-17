@@ -37,5 +37,5 @@
 	}
 
 	header('Content-Type: application/json; charset='. mb_http_output());
-	echo functions::json_format($search_results);
+	echo functions::format_json($search_results);
 	exit;

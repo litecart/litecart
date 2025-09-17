@@ -37,5 +37,5 @@
 	}
 
 	header('Content-Type: application/json');
-	echo functions::json_format($results);
+	echo functions::format_json($results);
 	exit;

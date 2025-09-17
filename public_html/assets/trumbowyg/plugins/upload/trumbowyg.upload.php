@@ -31,7 +31,7 @@
 
 			unlink($_FILES['fileToUpload']['tmp_name']);
 
-			echo functions::json_format([
+			echo functions::format_json([
 				'success' => true,
 				'file' => preg_replace('#^'. preg_quote(FS_DIR_STORAGE, '#') .'#', '', $upload_directory . $filename),
 				'message' => 'uploadSuccess',
@@ -39,7 +39,7 @@
 		}
 
 	} catch (Exception $e) {
-		echo functions::json_format([
+		echo functions::format_json([
 			'success' => false,
 			'message' => 'uploadError',
 		]);

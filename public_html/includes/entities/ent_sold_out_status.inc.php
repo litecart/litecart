@@ -79,8 +79,8 @@
 				"update ". DB_TABLE_PREFIX ."sold_out_statuses
 				set orderable = ". (int)$this->data['orderable'] .",
 					hidden = ". (int)$this->data['hidden'] .",
-					name = '". database::input(functions::json_format($this->data['name'])) ."',
-					description = '". database::input(functions::json_format($this->data['description'])) ."',
+					name = '". database::input(functions::format_json($this->data['name'])) ."',
+					description = '". database::input(functions::format_json($this->data['description'])) ."',
 					updated_at = '". ($this->data['updated_at'] = date('Y-m-d H:i:s')) ."'
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"

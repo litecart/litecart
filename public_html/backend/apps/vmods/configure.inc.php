@@ -59,7 +59,7 @@
 
 			$vmods_settings[$id] = $_POST['settings'];
 
-			file_put_contents('storage://vmods/' . '.settings', functions::json_format($vmods_settings), LOCK_EX);
+			file_put_contents('storage://vmods/' . '.settings', functions::format_json($vmods_settings), LOCK_EX);
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			redirect(document::ilink(__APP__.'/vmods'));

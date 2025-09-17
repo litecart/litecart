@@ -69,11 +69,11 @@
 			database::query(
 				"update ". DB_TABLE_PREFIX ."sessions
 				set customer_id = ". (!empty($this->data['customer_id']) ? (int)$this->data['customer_id'] : "null") .",
-					data = '". database::input(functions::json_format($this->data['data'])) ."',
+					data = '". database::input(functions::format_json($this->data['data'])) ."',
 					ip_address = '". database::input($this->data['ip_address']) ."',
 					hostname = '". database::input($this->data['hostname']) ."',
 					user_agent = '". database::input($this->data['user_agent']) ."',
-					data = '". database::input(functions::json_format($this->data['data'])) ."',
+					data = '". database::input(functions::format_json($this->data['data'])) ."',
 					last_request = '". database::input($this->data['last_request']) ."',
 					last_active = '". ($this->data['last_active'] = date('Y-m-d H:i:s')) ."',
 					expires_at = '". ($this->data['expires_at'] = date('Y-m-d H:i:s', strtotime('+15 minutes'))) ."',

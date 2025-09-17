@@ -7,7 +7,7 @@
 
 		public static function register($event, $callback) {
 
-			$checksum = crc32(functions::json_format($callback, false));
+			$checksum = crc32(functions::format_json($callback, false));
 
 			if (!empty(self::$_callbacks[$event][$checksum])) {
 				trigger_error("Callback already registered ($event)", E_USER_WARNING);

@@ -187,7 +187,7 @@
 				if (!empty($product->quantity_unit['separate'])) {
 					$item_key = uniqid();
 				} else {
-					$item_key = crc32(functions::json_format([$product->id, $userdata], false));
+					$item_key = crc32(functions::format_json([$product->id, $userdata], false));
 				}
 			}
 
@@ -360,7 +360,7 @@
 					database::query(
 						"insert into ". DB_TABLE_PREFIX ."cart_items
 						(customer_id, cart_uid, `key`, product_id, stock_option_id, userdata, image, quantity, updated_at, created_at)
-						values (". (customer::$data['id'] ? (int)customer::$data['id'] : "null") .", '". database::input(self::$data['uid']) ."', '". database::input($item_key) ."', ". ($item['product_id'] ? (int)$item['product_id'] : "null") .", ". ($item['stock_option_id'] ? (int)$item['stock_option_id'] : "null") .", '". database::input(functions::json_format($item['userdata'])) ."', '". database::input($item['image']) ."', ". (float)$item['quantity'] .", '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
+						values (". (customer::$data['id'] ? (int)customer::$data['id'] : "null") .", '". database::input(self::$data['uid']) ."', '". database::input($item_key) ."', ". ($item['product_id'] ? (int)$item['product_id'] : "null") .", ". ($item['stock_option_id'] ? (int)$item['stock_option_id'] : "null") .", '". database::input(functions::format_json($item['userdata'])) ."', '". database::input($item['image']) ."', ". (float)$item['quantity'] .", '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
 					);
 
 					self::$items[$item_key]['id'] = database::insert_id();

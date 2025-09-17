@@ -183,8 +183,8 @@
 
 <script>
 	const store_currency_code = '<?php echo settings::get('store_currency_code'); ?>';
-	const currencies = <?php echo functions::json_format(currency::$currencies); ?>;
-	const currency_codes = <?php echo functions::json_format($currency_codes); ?>;
+	const currencies = <?php echo functions::format_json(currency::$currencies); ?>;
+	const currency_codes = <?php echo functions::format_json($currency_codes); ?>;
 
 	$('#campaigns').on('focus', 'input[name^="campaigns"]', function(e) {
 		if ($(this).attr('name').match(/\[[A-Z]{3}\]$/)) {

@@ -105,7 +105,7 @@
 
 			if (is_ajax_request()) {
 				header('Content-Type: application/json; charset='. language::$selected['code']);
-				echo functions::json_format(['status' => 'ok', 'data' => $stock_item->data]);
+				echo functions::format_json(['status' => 'ok', 'data' => $stock_item->data]);
 				exit;
 			}
 
@@ -117,7 +117,7 @@
 
 			if (is_ajax_request()) {
 				header('Content-Type: application/json; charset='. language::$selected['code']);
-				echo functions::json_format(['status' => 'error', 'error' =>  $e->getMessage()]);
+				echo functions::format_json(['status' => 'error', 'error' =>  $e->getMessage()]);
 				exit;
 			}
 

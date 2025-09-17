@@ -89,7 +89,7 @@
 			database::query(
 				"update ". DB_TABLE_PREFIX ."attribute_groups
 				set code = '". database::input($this->data['code']) ."',
-					name = '". database::input(functions::json_format($this->data['name'])) ."',
+					name = '". database::input(functions::format_json($this->data['name'])) ."',
 					sort = '". database::input($this->data['sort']) ."',
 					updated_at = '". ($this->data['updated_at'] = date('Y-m-d H:i:s')) ."'
 				where id = ". (int)$this->data['id'] ."
@@ -144,7 +144,7 @@
 
 				database::query(
 					"update ". DB_TABLE_PREFIX ."attribute_values
-					set name = '". database::input(functions::json_format($value['name'])) ."',
+					set name = '". database::input(functions::format_json($value['name'])) ."',
 						priority = ". (int)$i++ .",
 						updated_at = '". ($this->data['values'][$key]['updated_at'] = date('Y-m-d H:i:s')) ."'
 					where id = ". (int)$value['id'] ."

@@ -37,5 +37,5 @@
 
 	ob_clean();
 	header('Content-Type: application/json');
-	echo functions::json_format($customers);
+	echo functions::format_json($customers);
 	exit;

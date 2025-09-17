@@ -119,7 +119,7 @@
 				database::query(
 					"update ". DB_TABLE_PREFIX ."campaigns_products
 					set product_id = ". (int)$campaign_product['product_id'] .",
-						price = ". (!empty($campaign_product['price']) ? "'". database::input(functions::json_format($campaign_product['price'])) ."'" : "null") ."
+						price = ". (!empty($campaign_product['price']) ? "'". database::input(functions::format_json($campaign_product['price'])) ."'" : "null") ."
 					where campaign_id = ". (int)$this->data['id'] ."
 					and id = ". (int)$campaign_product['id'] ."
 					limit 1;"

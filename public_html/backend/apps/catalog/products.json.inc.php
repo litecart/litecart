@@ -79,5 +79,5 @@
 
 	ob_clean();
 	header('Content-Type: application/json');
-	echo functions::json_format($products);
+	echo functions::format_json($products);
 	exit;

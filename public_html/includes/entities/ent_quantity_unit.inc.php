@@ -70,8 +70,8 @@
 
 			database::query(
 				"update ". DB_TABLE_PREFIX ."quantity_units
-				set name = '". database::input(functions::json_format($this->data['name'])) ."',
-					description = '". database::input(functions::json_format($this->data['description'])) ."',
+				set name = '". database::input(functions::format_json($this->data['name'])) ."',
+					description = '". database::input(functions::format_json($this->data['description'])) ."',
 					decimals = ". (int)$this->data['decimals'] .",
 					separate = ". (int)$this->data['separate'] .",
 					priority = ". (int)$this->data['priority'] .",

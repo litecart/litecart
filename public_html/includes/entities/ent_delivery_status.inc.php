@@ -79,8 +79,8 @@
 
 			database::query(
 				"update ". DB_TABLE_PREFIX ."delivery_statuses
-				set name = '". database::input(functions::json_format($this->data['name'])) ."',
-					description = '". database::input(functions::json_format($this->data['description'])) ."',
+				set name = '". database::input(functions::format_json($this->data['name'])) ."',
+					description = '". database::input(functions::format_json($this->data['description'])) ."',
 					updated_at = '". ($this->data['updated_at'] = date('Y-m-d H:i:s')) ."'
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"

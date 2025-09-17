@@ -30,5 +30,5 @@
 
 	ob_clean();
 	header('Content-type: application/json; charset='. mb_http_output());
-	echo functions::json_format($result);
+	echo functions::format_json($result);
 	exit;

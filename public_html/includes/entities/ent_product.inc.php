@@ -224,13 +224,13 @@
 					sold_out_status_id = ". (int)$this->data['sold_out_status_id'] .",
 					default_category_id = ". (int)$this->data['default_category_id'] .",
 					code = '". database::input($this->data['code']) ."',
-					name = '". database::input(functions::json_format($this->data['name'])) ."',
-					short_description = '". database::input(functions::json_format($this->data['short_description'])) ."',
-					description = '". database::input(functions::json_format($this->data['description'])) ."',
-					technical_data = '". database::input(functions::json_format($this->data['technical_data'])) ."',
-					synonyms = '". database::input(functions::json_format($this->data['synonyms'])) ."',
-					head_title = '". database::input(functions::json_format($this->data['head_title'])) ."',
-					meta_description = '". database::input(functions::json_format($this->data['meta_description'])) ."',
+					name = '". database::input(functions::format_json($this->data['name'])) ."',
+					short_description = '". database::input(functions::format_json($this->data['short_description'])) ."',
+					description = '". database::input(functions::format_json($this->data['description'])) ."',
+					technical_data = '". database::input(functions::format_json($this->data['technical_data'])) ."',
+					synonyms = '". database::input(functions::format_json($this->data['synonyms'])) ."',
+					head_title = '". database::input(functions::format_json($this->data['head_title'])) ."',
+					meta_description = '". database::input(functions::format_json($this->data['meta_description'])) ."',
 					keywords = '". database::input($this->data['keywords']) ."',
 					stock_option_type = '". database::input($this->data['stock_option_type']) ."',
 					quantity_min = ". (float)$this->data['quantity_min'] .",
@@ -291,7 +291,7 @@
 					"update ". DB_TABLE_PREFIX ."products_prices
 					set customer_group_id = ". (!empty($price['customer_group_id']) ? (int)$price['customer_group_id'] : "null") .",
 						min_quantity = ". (!empty($price['min_quantity']) ? (int)$price['min_quantity'] : 1) .",
-						price = '". database::input(functions::json_format($prices)) ."'
+						price = '". database::input(functions::format_json($prices)) ."'
 					where product_id = ". (int)$this->data['id'] ."
 					and id = ". (int)$price['id'] ."
 					limit 1;"
@@ -324,7 +324,7 @@
 				database::query(
 					"update ". DB_TABLE_PREFIX ."campaigns_products
 					set campaign_id = ". (!empty($campaign_price['campaign_id']) ? (int)$campaign_price['campaign_id'] : "null") .",
-						price = '". database::input(functions::json_format($campaign_price['price'])) ."'
+						price = '". database::input(functions::format_json($campaign_price['price'])) ."'
 					where product_id = ". (int)$this->data['id'] ."
 					and id = ". (int)$campaign_price['id'] ."
 					limit 1;"
@@ -500,7 +500,7 @@
 									value_id = ". (int)$value['value_id'] .",
 									custom_value = '". database::input($value['custom_value']) ."',
 									price_modifier = '". database::input($value['price_modifier']) ."',
-									price_adjustment = '". database::input(functions::json_format($prices)) ."',
+									price_adjustment = '". database::input(functions::format_json($prices)) ."',
 									priority = ". ++$j ."
 								where product_id = ". (int)$this->data['id'] ."
 								and group_id = ". (int)$option['group_id'] ."
@@ -542,7 +542,7 @@
 						"update ". DB_TABLE_PREFIX ."products_stock_options
 						set stock_item_id = ". (int)$stock_option['stock_item_id'] .",
 							price_modifier = '". database::input($stock_option['price_modifier']) ."',
-							price_adjustment = '". database::input(functions::json_format($stock_option['price_adjustment'])) ."',
+							price_adjustment = '". database::input(functions::format_json($stock_option['price_adjustment'])) ."',
 							priority = ". (int)$i++ ."
 						where id = ". (int)$stock_option['id'] ."
 						and product_id = ". (int)$this->data['id'] ."

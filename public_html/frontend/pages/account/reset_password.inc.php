@@ -82,7 +82,7 @@
 
 				database::query(
 					"update ". DB_TABLE_PREFIX ."customers
-					set password_reset_token = '". database::input(functions::json_format($reset_token, false)) ."'
+					set password_reset_token = '". database::input(functions::format_json($reset_token, false)) ."'
 					where id = ". (int)$customer['id'] ."
 					limit 1;"
 				);

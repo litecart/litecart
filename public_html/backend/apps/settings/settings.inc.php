@@ -29,7 +29,7 @@
 				}
 
 				if (substr($setting['function'], 0, 8) == 'regional') {
-					$value = functions::json_format($_POST['settings'][$key]);
+					$value = functions::format_json($_POST['settings'][$key]);
 				} else {
 					$value = $_POST['settings'][$key];
 				}

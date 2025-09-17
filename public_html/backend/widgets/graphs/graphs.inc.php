@@ -182,8 +182,8 @@
 
 	// Monthly Sales
 	var data = {
-		labels: <?php echo functions::json_format(array_column($monthly_sales[date('Y')], 'label')); ?>,
-		series: <?php echo functions::json_format([array_column($monthly_sales[date('Y')-2], 'total_sales'), array_column($monthly_sales[date('Y')-1], 'total_sales'), array_column($monthly_sales[date('Y')], 'total_sales')]); ?>
+		labels: <?php echo functions::format_json(array_column($monthly_sales[date('Y')], 'label')); ?>,
+		series: <?php echo functions::format_json([array_column($monthly_sales[date('Y')-2], 'total_sales'), array_column($monthly_sales[date('Y')-1], 'total_sales'), array_column($monthly_sales[date('Y')], 'total_sales')]); ?>
 	};
 
 	var options = {
@@ -233,8 +233,8 @@
 	// Daily Sales
 
 	var data = {
-		labels: <?php echo functions::json_format(array_column($daily_sales, 'label')); ?>,
-		series: <?php echo functions::json_format([array_column($daily_sales, 'average_sales'), array_column($daily_sales, 'total_sales')]); ?>
+		labels: <?php echo functions::format_json(array_column($daily_sales, 'label')); ?>,
+		series: <?php echo functions::format_json([array_column($daily_sales, 'average_sales'), array_column($daily_sales, 'total_sales')]); ?>
 	};
 
 	var options = {

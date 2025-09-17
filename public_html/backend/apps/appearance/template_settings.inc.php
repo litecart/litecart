@@ -62,7 +62,7 @@
 
 			database::query(
 				"update ". DB_TABLE_PREFIX ."settings
-				set `value` = '". database::input(functions::json_format($new_settings)) ."',
+				set `value` = '". database::input(functions::format_json($new_settings)) ."',
 					updated_at = '". date('Y-m-d H:i:s') ."'
 				where `key` = 'template_settings'
 				limit 1;"

@@ -165,7 +165,7 @@
 
 			database::query(
 				"update ". DB_TABLE_PREFIX ."stock_items
-				set name = '". database::input(functions::json_format($this->data['name'])) ."',
+				set name = '". database::input(functions::format_json($this->data['name'])) ."',
 					sku = '". database::input(strtoupper($this->data['sku'])) ."',
 					mpn = '". database::input($this->data['mpn']) ."',
 					gtin = '". database::input($this->data['gtin']) ."',
