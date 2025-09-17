@@ -14,7 +14,7 @@
 			"si.sku like '". database::input($_REQUEST['query']) ."%'",
 			"si.mpn like '". database::input($_REQUEST['query']) ."%'",
 			"si.gtin like '". database::input($_REQUEST['query']) ."%'",
-			"sii.name like '%". database::input($_REQUEST['query']) ."%'",
+			"si.name like '%". database::input($_REQUEST['query']) ."%'",
 			"b.name like '%". database::input($_REQUEST['query']) ."%'",
 		];
 	}
