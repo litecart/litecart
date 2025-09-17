@@ -26,5 +26,5 @@
 	];
 
 	header('Content-Type: application/manifest+json; charset='. mb_http_output());
-	echo json_encode($manifest, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+	echo functions::json_format($manifest);
 	exit;

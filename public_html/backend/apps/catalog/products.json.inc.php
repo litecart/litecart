@@ -79,5 +79,5 @@
 
 	ob_clean();
 	header('Content-Type: application/json');
-	echo json_encode($products, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+	echo functions::json_format($products);
 	exit;

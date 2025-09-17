@@ -37,5 +37,5 @@
 	}
 
 	header('Content-Type: application/json; charset='. mb_http_output());
-	echo json_encode($search_results, JSON_UNESCAPED_SLASHES);
+	echo functions::json_format($search_results);
 	exit;

@@ -60,5 +60,5 @@
 
 	ob_clean();
 	header('Content-Type: application/json');
-	echo json_encode($json, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+	echo functions::json_format($json);
 	exit;

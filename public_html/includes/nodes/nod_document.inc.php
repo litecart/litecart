@@ -151,7 +151,7 @@
 				'email' => customer::$data['email'] ?: null,
 			];
 
-			self::$head_tags[] = '<script>window._env='. json_encode(self::$jsenv, JSON_UNESCAPED_SLASHES) .'</script>';
+			self::$head_tags[] = '<script>window._env='. functions::json_format(self::$jsenv, false) .'</script>';
 		}
 
 		public static function optimize(&$output) {
@@ -342,7 +342,7 @@
 			if (!empty(self::$schema)) {
 				$_page->snippets['head_tags']['schema_json'] = implode(PHP_EOL, [
 					'<script type="application/ld+json">',
-					json_encode(array_values(self::$schema), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
+					functions::json_format(array_values(self::$schema), false),
 					'</script>',
 				]);
 			}
@@ -366,7 +366,7 @@
 			// Prepare console log
 			if (!empty(self::$console)) {
 				self::$javascript[] = implode(PHP_EOL, array_map(function($log) {
-					return 'console.'. $log['type'] .'("'. functions::escape_attr($log['message']) .'", '. json_encode($log['data'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) .');';
+					return 'console.'. $log['type'] .'("'. functions::escape_attr($log['message']) .'", '. functions::json_format($log['data']) .');';
 				}, self::$console));
 			}
 

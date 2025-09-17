@@ -37,5 +37,5 @@
 
 	ob_clean();
 	header('Content-Type: application/json');
-	echo json_encode($customers, JSON_UNESCAPED_SLASHES);
+	echo functions::json_format($customers);
 	exit;

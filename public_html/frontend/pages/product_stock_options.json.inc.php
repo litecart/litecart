@@ -91,12 +91,12 @@
 				$notice = strtr(t('text_there_are_n_items_in_stock_for_option', 'There are {n} items remaining in stock for this option'), [
 					'{n}' => (int)$stock_option['quantity'],
 				]);
-				echo json_encode(['status' => 'ok', 'notice' => $notice]);
+				echo functions::json_format(['status' => 'ok', 'notice' => $notice]);
 				exit;
 
 			} else if (empty($product->sold_out_status['orderable'])) {
 				$notice = t('notice_option_out_of_stock', 'We are out of stock for this option');
-				echo json_encode(['status' => 'warning', 'notice' => $notice]);
+				echo functions::json_format(['status' => 'warning', 'notice' => $notice]);
 				exit;
 			}
 
@@ -116,5 +116,5 @@
 	}
 
 	header('Content-Type: application/json');
-	echo json_encode($json, JSON_UNESCAPED_SLASHES);
+	echo functions::json_format($json);
 	exit;

@@ -122,12 +122,12 @@
 				(id, data, updated_at, created_at)
 				values (
 					'". database::input(self::$data['id']) ."',
-					'". database::input(json_encode(self::$data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."',
+					'". database::input(functions::json_format(self::$data)) ."',
 					'". database::input(date('Y-m-d H:i:s')) ."',
 					'". database::input(date('Y-m-d H:i:s')) ."'
 				)
 				on duplicate key update
-					data = '". database::input(json_encode(self::$data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."',
+					data = '". database::input(functions::json_format(self::$data)) ."',
 					expires_at = '". database::input(date('Y-m-d H:i:s', strtotime('+1 hour'))) ."',
 					updated_at = '". database::input(date('Y-m-d H:i:s')) ."';"
 			);

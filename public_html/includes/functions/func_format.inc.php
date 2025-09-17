@@ -47,6 +47,23 @@
 		return reference::country($address['country_code'])->format_address($address);
 	}
 
+	function format_json($data, $indent="\t") {
+
+		$json = json_encode($data, ($indent ? JSON_PRETTY_PRINT : 0) | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+
+		if (json_last_error() !== JSON_ERROR_NONE) {
+			throw new Exception('JSON encode error: '. json_last_error_msg());
+		}
+
+		if ($indent) {
+			$json = preg_replace_callback('#^( +)#m', function ($m) {
+				return str_repeat("\t", strlen($m[1]) / 4);
+			}, $json);
+		}
+
+		return $json;
+	}
+
 	function format_path_friendly($text, $language_code='') {
 
 		if (empty($text)) return '';

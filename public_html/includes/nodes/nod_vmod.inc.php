@@ -118,7 +118,7 @@
 			// Load modifications from disk
 			if (!self::$_modifications) {
 
-				foreach (glob(FS_DIR_STORAGE . 'vmods/*.xml') as $file) {
+				foreach (glob(FS_DIR_STORAGE . 'vmods/*.{xml,hjson}', GLOB_BRACE) as $file) {
 					self::load($file);
 				}
 
@@ -126,8 +126,7 @@
 				$serialized = json_encode([
 					'modifications' => self::$_modifications,
 					'index' => self::$_files_to_modifications,
-					//), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
-				], JSON_UNESCAPED_SLASHES);
+				], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 
 				file_put_contents($cache_file, $serialized, LOCK_EX);
 			}

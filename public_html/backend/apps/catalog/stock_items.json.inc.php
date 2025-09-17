@@ -36,5 +36,5 @@
 
 	ob_clean();
 	header('Content-Type: application/json');
-	echo json_encode($stock_items, JSON_UNESCAPED_SLASHES);
+	echo functions::format_json($stock_items);
 	exit;

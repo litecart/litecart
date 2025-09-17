@@ -45,7 +45,7 @@
 		}
 
 		private function _encode_settings($data) {
-			return json_encode($data, JSON_UNESCAPED_SLASHES);
+			return functions::json_format($data);
 		}
 
 		private function _decode_settings($data) {

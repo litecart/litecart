@@ -37,5 +37,5 @@
 	}
 
 	header('Content-Type: application/json');
-	echo json_encode($results, JSON_UNESCAPED_SLASHES);
+	echo functions::json_format($results);
 	exit;

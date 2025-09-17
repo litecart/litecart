@@ -48,6 +48,6 @@
 	ob_clean();
 	header('Content-Type: application/manifest+json; charset='. mb_http_output());
 
-	echo json_encode($manifest,  JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+	echo functions::json_format($manifest);
 
 	exit; // As we don't need app_footer to process this with a template
