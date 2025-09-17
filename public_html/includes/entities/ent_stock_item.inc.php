@@ -26,6 +26,9 @@
 			$this->data['name'] = array_fill_keys(array_keys(language::$languages), '');
 			$this->data['quantity_reserved'] = 0;
 			$this->data['quantity_adjustment'] = 0;
+			$this->data['quantity_withdrawn'] = 0;
+			$this->data['quantity_deposited'] = 0;
+			$this->data['quantity_expected'] = 0;
 			$this->data['references'] = [];
 
 			$this->previous = $this->data;

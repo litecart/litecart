@@ -67,8 +67,6 @@
 		require 'app://frontend/init.inc.php';
 	}
 
-	// Run operations before processing the route
-
 	// Process the route
 	route::process();
 

@@ -101,7 +101,7 @@
 		'image' => $product->image ? 'storage://images/'.$product->image : '',
 	];
 
-	$schema_json = [
+	document::$schema = [
 		'@context' => 'http://schema.org/',
 		'@type' => 'Product',
 		'productID' => $product->id,
@@ -208,7 +208,7 @@
 
 	// Category
 	if (!empty($category->id)) {
-		$schema_json['category'] = $category->name;
+		document::$schema['category'] = $category->name;
 		$_page->snippets['category'] = [
 			'id' => $category->id,
 			'name' => $category->name,
@@ -219,7 +219,7 @@
 
 	// Brand
 	if (!empty($product->brand)) {
-		$schema_json['brand']['name'] = $product->brand->name;
+		document::$schema['brand']['name'] = $product->brand->name;
 		$_page->snippets['brand'] = [
 			'id' => $product->brand->id,
 			'name' => $product->brand->name,
@@ -379,7 +379,5 @@
 			$_page->snippets['cheapest_shipping_fee'] = tax::get_price($cheapest_shipping['fee'], $cheapest_shipping['tax_class_id']);
 		}
 	}
-
-	document::$head_tags['schema_json'] = '<script type="application/ld+json">'. json_encode($schema_json, JSON_UNESCAPED_SLASHES) .'</script>';
 
 	echo $_page;

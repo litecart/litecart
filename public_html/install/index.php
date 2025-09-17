@@ -4,12 +4,16 @@
 	define('FS_DIR_APP', rtrim(str_replace('\\', '/', realpath(__DIR__.'/../')), '/') . '/');
 	define('FS_DIR_STORAGE', rtrim(str_replace('\\', '/', realpath(__DIR__.'/../storage')), '/') . '/');
 	define('WS_DIR_APP', preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '', FS_DIR_APP));
+	define('WS_DIR_STORAGE', preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '', FS_DIR_STORAGE));
 
 	define('VMOD_DISABLED', 'true');
 
-	require FS_DIR_APP . 'includes/app_header.inc.php';
-	require __DIR__ . '/includes/header.inc.php';
-	require __DIR__ . '/includes/functions.inc.php';
+	require_once FS_DIR_APP . 'includes/autoloader.inc.php';
+	require_once FS_DIR_APP . 'includes/error_handler.inc.php';
+	require_once FS_DIR_APP . 'includes/functions.inc.php';
+	require_once FS_DIR_APP . 'includes/shorthand.inc.php';
+	require_once __DIR__ . '/includes/header.inc.php';
+	require_once __DIR__ . '/includes/functions.inc.php';
 
 	ini_set('display_errors', 'On');
 	ini_set('memory_limit', '64M');

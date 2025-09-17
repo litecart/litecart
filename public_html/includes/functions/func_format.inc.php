@@ -68,7 +68,9 @@
 
 		if (empty($text)) return '';
 
-		if (empty($language_code)) $language_code = language::$selected['code'];
+		if (empty($language_code)) {
+			$language_code = language::$selected['code'];
+		}
 
 		$text = strip_tags($text);  // Remove HTML tags
 		$text = html_entity_decode($text, ENT_QUOTES, 'UTF-8');  // Decode special characters
