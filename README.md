@@ -7,7 +7,15 @@ LiteCart is a lightweight e-commerce platform for online merchants. Developed in
 LiteCart is a registered trademark, property of founder T. Almroth - [LiteCart AB](http://www.litecart.net/).
 
 
-# How To Install
+## Tech Stack
+
+- **Application**: PHP, HTML5, CSS3, JavaScript
+- **Server**: Apache2, Nginx, Caddy, IIS or compatible web server
+- **Database**: MySQL or MariaDB
+- **Build Tools**: Node.js (via package.json), Grunt (gruntfile.js)
+
+
+## How To Install
 
 For an updated version of the upgrade documentation, visit https://www.litecart.net/wiki/how_to_install
 
@@ -17,9 +25,9 @@ What you need:
   * A MySQL 5.7+ or MariaDB database.
 
 
-## Instructions
+### Instructions
 
-Please note running your own website requires some common sense of web knowledge. If this is not your area of expertise, ask a friend or collegue to assist you.
+Please note: Running your own website requires some common sense and basic webmastering skills. If this is not your area of expertise, ask a collegue or friend to assist you.
 
 1. Connect to your web host via FTP using your favourite FTP software.
 
@@ -44,18 +52,60 @@ If everything went well LiteCart should be successfully installed.
 For community written installation instructions see https://www.litecart.net/en/wiki/how_to_install.
 
 
-# How To Get Started
+## How To Get Started
 
 To get your store up and running, see our [step list](https://www.litecart.net/en/wiki/how_to_install) for best practise.
 
 
-# How To Change The Look Of Your Store
+## Folder Structure
+
+```
+/                   – Root
+├── admin/          – Backend
+│   ├── *.app/      – Admin apps
+│   └── *.widget/   – Dashboard widgets
+├── cache/          – Cache Directory
+├── data/           – Data Storage
+├── ext/            – Extensions/Extras/External/Vendors/Assets
+│   ├── jquery/
+│   └── ...
+├── images/         – Graphics
+├── includes/
+│   ├── abstracts/  – Class templates
+│   ├── boxes/      – Partials
+│   ├── entities/   – Entity objects
+│   ├── functions/  – Helper functions, called via lib_func.inc.php using functions::name()
+│   ├── library/    – System nodes and events
+│   ├── modules/    – Modules
+│   ├── references/ – Read-only factory model reference objects
+│   ├── routes/     – Route mapping
+│   ├── templates/  – HTML and Output
+│   └── wrappers/   – Wrappers, Service Layers, and Clients
+├── install/        – Installation wizard
+├── logs/           – Application logs
+├── pages/          – Documents
+└── vmods/          – Virtual Modifcations
+```
+
+
+## How To Change The Look Of Your Store
 
 Navigate to the folder ~/includes/templates/default.catalog/ and you will find all HTML content and CSS files to edit. If you want to adapt your work with LESS instead of CSS you will need a LESS compiler. We recommend downloading our [Developer Kit](https://www.litecart.net/addons/163/developer-kit) that has a preconfigured LESS compiler and JavaScript minifyer.
 
 See our wiki article [How To Create a Template](https://www.litecart.net/en/wiki/how_to_create_a_template).
 
-# Links
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on contributing to the project.
+
+
+## License
+
+This project is licensed under the terms specified in [LICENSE.md](LICENSE.md).
+
+
+## Links
 
   * [Official Website](http://www.litecart.net)
   * [GitHub Repository](https://github.com/litecart/litecart)
