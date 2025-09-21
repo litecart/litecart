@@ -155,7 +155,7 @@
 
 											database::query(
 												"update `$table`
-												set `{$column['Field']}` = '". database::input(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."'
+												set `{$column['Field']}` = '". database::input(functions::format_json($data)) ."'
 												where id = ". (int)$row['id'] ."
 												limit 1;"
 											);
@@ -248,7 +248,7 @@
 
 								database::query(
 									"update $table
-									set `{$column['Field']}` = '". database::input(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."'
+									set `{$column['Field']}` = '". database::input(functions::format_json($data)) ."'
 									where id = ". (int)$row['id'] ."
 									limit 1;"
 								);

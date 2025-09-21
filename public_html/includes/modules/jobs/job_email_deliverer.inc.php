@@ -32,7 +32,7 @@
 			database::query(
 				"select * from ". DB_TABLE_PREFIX ."emails
 				where status = 'scheduled'
-				and scheduled_at < '". date('Y-m-d H:i:s') ."'
+				and (scheduled_at is null or scheduled_at < '". date('Y-m-d H:i:s') ."')
 				order by scheduled_at, id
 				limit ". (int)$this->settings['delivery_limit'] .";"
 			)->each(function($email) use (&$sent) {

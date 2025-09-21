@@ -77,8 +77,8 @@
 
 <script>
 	try {
-		const privacy_classes = <?php echo json_encode($privacy_classes, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE); ?>;
-		const consents = <?php echo json_encode($consents, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE); ?>;
+		const privacy_classes = <?php echo functions::format_json($privacy_classes); ?>;
+		const consents = <?php echo functions::format_json($consents); ?>;
 		$('#site-privacy-consent').privacyConsent(privacy_classes, consents);
 	} catch (e) {
 		console.error('Could not initiate privacy consent manager:' + e.message);

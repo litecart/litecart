@@ -1,10 +1,16 @@
 <?php
 
+	define('FS_DIR_APP',     rtrim(str_replace('\\', '/', realpath(__DIR__.'/../')), '/') . '/');
+	define('FS_DIR_STORAGE', FS_DIR_APP .'/storage/');
+
+	define('WS_DIR_APP',     preg_replace('#^'. preg_quote(rtrim(DOCUMENT_ROOT, '/'), '#') .'#', '', FS_DIR_APP));
+	define('WS_DIR_STORAGE', WS_DIR_APP .'storage/');
+
 	ini_set('display_errors', 'On');
 	mb_internal_encoding('UTF-8');
 	mb_http_output('UTF-8');
 
-	include __DIR__ . '/../includes/compatibility.inc.php';
+	require_once FS_DIR_APP . 'includes/compatibility.inc.php';
 
 	if ($_SERVER['SERVER_SOFTWARE'] == 'CLI') {
 
@@ -62,8 +68,12 @@
 
 	define('VMOD_DISABLED', 'true');
 
-	require __DIR__ . '/includes/header.inc.php';
-	require __DIR__ . '/includes/functions.inc.php';
+	require_once FS_DIR_APP . 'includes/autoloader.inc.php';
+	require_once FS_DIR_APP . 'includes/error_handler.inc.php';
+	require_once FS_DIR_APP . 'includes/functions.inc.php';
+	require_once FS_DIR_APP . 'includes/shorthand.inc.php';
+	require_once __DIR__ . '/includes/header.inc.php';
+	require_once __DIR__ . '/includes/functions.inc.php';
 
 	$requirements = json_decode(file_get_contents(__DIR__ . '/requirements.json'), true);
 
@@ -82,19 +92,15 @@
 
 		if (!empty($_SERVER['DOCUMENT_ROOT'])) {
 			define('DOCUMENT_ROOT', rtrim(str_replace('\\', '/', realpath($_SERVER['DOCUMENT_ROOT'])), '/') . '/');
+
 		} else if ($_SERVER['SERVER_SOFTWARE'] == 'CLI' && !empty($_REQUEST['document_root'])) {
 			define('DOCUMENT_ROOT', rtrim(str_replace('\\', '/', realpath($_REQUEST['document_root'])), '/') . '/');
+
 		} else {
 			throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . ' Could not detect \$_SERVER[\'DOCUMENT_ROOT\']. If you are using CLI, make sure you pass the parameter "document_root" e.g. --document_root="/var/www/mysite.com/public_html"</p>' . PHP_EOL  . PHP_EOL);
 		}
 
-		define('FS_DIR_APP',     rtrim(str_replace('\\', '/', realpath(__DIR__.'/../')), '/') . '/');
-		define('FS_DIR_STORAGE', FS_DIR_APP .'/storage/');
 
-		define('WS_DIR_APP',     preg_replace('#^'. preg_quote(rtrim(DOCUMENT_ROOT, '/'), '#') .'#', '', FS_DIR_APP));
-		define('WS_DIR_STORAGE', WS_DIR_APP .'storage/');
-
-		require __DIR__ . '/../includes/app_header.inc.php';
 
 		if (!defined('PLATFORM_NAME')) {
 			throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . 'Could not get platform name</p>' . PHP_EOL  . PHP_EOL);
@@ -246,7 +252,7 @@
 		if ($_SERVER['SERVER_SOFTWARE'] != 'CLI') {
 			echo '<p>Checking $_SERVER["DOCUMENT_ROOT"]... ';
 
-			if (DOCUMENT_ROOT . preg_replace('#/index\.php$#', '', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)) != str_replace('\\', '/', __DIR__)) {
+			if (DOCUMENT_ROOT . preg_replace('#/index\.php$#', '', strtok($_SERVER['REQUEST_URI'], '?')) != str_replace('\\', '/', __DIR__)) {
 				echo $_SERVER['DOCUMENT_ROOT'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 
 			} else {

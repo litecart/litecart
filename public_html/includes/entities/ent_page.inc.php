@@ -93,10 +93,10 @@
 				set status = ". (int)$this->data['status'] .",
 					parent_id = ". ($this->data['parent_id'] ? (int)$this->data['parent_id'] : "null") .",
 					dock = '". database::input($this->data['dock']) ."',
-					title = '". database::input(json_encode($this->data['title'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."',
-					content = '". database::input(json_encode($this->data['content'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."',
-					head_title = '". database::input(json_encode($this->data['head_title'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."',
-					meta_description = '". database::input(json_encode($this->data['meta_description'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."',
+					title = '". database::input(functions::format_json($this->data['title'])) ."',
+					content = '". database::input(functions::format_json($this->data['content'])) ."',
+					head_title = '". database::input(functions::format_json($this->data['head_title'])) ."',
+					meta_description = '". database::input(functions::format_json($this->data['meta_description'])) ."',
 					priority = ". (int)$this->data['priority'] .",
 					updated_at = '". ($this->data['updated_at'] = date('Y-m-d H:i:s')) ."'
 				where id = ". (int)$this->data['id'] ."

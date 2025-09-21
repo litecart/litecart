@@ -2,7 +2,7 @@
 
 	return [
 		'name' => t('title_appearance', 'Appearance'),
-		'group' => 'website',
+		'group' => 'system',
 		'default' => 'edit_styling',
 		'priority' => 0,
 

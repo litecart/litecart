@@ -2,7 +2,7 @@
 
 	return [
 		'name' => t('title_orders', 'Orders'),
-		'group' => 'ecommerce',
+		'group' => 'website',
 		'default' => 'orders',
 		'priority' => 0,
 

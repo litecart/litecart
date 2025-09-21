@@ -1130,7 +1130,7 @@ html[dir="rtl"] .dropdown label:has([data-toggle="dropdown"]) {
   font-family: "LiteCore";
   font-style: normal;
   font-weight: 400;
-  src: url("../fonts/fonticons.woff2?1754082626") format("woff2");
+  src: url("../fonts/fonticons.woff2?1757153321") format("woff2");
 }
 [class^="icon-"],
 [class*=" icon-"] {
@@ -1537,6 +1537,9 @@ html[dir="rtl"] .dropdown label:has([data-toggle="dropdown"]) {
 }
 .icon-heart-o:before {
   content: "\e081";
+}
+.icon-bankgirot:before {
+  content: "\e082";
 }
 .icon-heart:before {
   content: "\e083";

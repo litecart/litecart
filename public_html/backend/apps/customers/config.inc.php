@@ -2,7 +2,7 @@
 
 	return [
 		'name' => t('title_customers', 'Customers'),
-		'group' => 'ecommerce',
+		'group' => 'website',
 		'default' => 'customers',
 		'priority' => 0,
 

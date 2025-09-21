@@ -45,7 +45,7 @@
 			if (!$campaign) {
 				throw new Exception('Could not find campaign ('. functions::escape_html($id) .') in the database.');
 			}
-			
+
 			$this->data = array_replace($this->data, array_intersect_key($campaign, $this->data));
 
 			$this->data['products'] = database::query(
@@ -119,7 +119,7 @@
 				database::query(
 					"update ". DB_TABLE_PREFIX ."campaigns_products
 					set product_id = ". (int)$campaign_product['product_id'] .",
-						price = ". (!empty($campaign_product['price']) ? "'". database::input(json_encode($campaign_product['price'])) ."'" : "null") ."
+						price = ". (!empty($campaign_product['price']) ? "'". database::input(functions::format_json($campaign_product['price'])) ."'" : "null") ."
 					where campaign_id = ". (int)$this->data['id'] ."
 					and id = ". (int)$campaign_product['id'] ."
 					limit 1;"

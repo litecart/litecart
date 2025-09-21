@@ -427,13 +427,14 @@ table .tag {
 				<tr>
 					<th><?php echo functions::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th></th>
+					<th class="text-end"><?php echo t('title_id', 'ID'); ?></th>
 					<th data-sort="id" class="text-end"><?php echo t('title_order_no', 'Order No'); ?></th>
 					<th></th>
+					<th data-sort="order_status"><?php echo t('title_order_status', 'Order Status'); ?></th>
 					<th data-sort="customer" class="main"><?php echo t('title_customer', 'Customer'); ?></th>
 					<th><?php echo t('title_in_stock', 'In Stock'); ?></th>
 					<th data-sort="payment_method"><?php echo t('title_payment_method', 'Payment Method'); ?></th>
 					<th class="text-center"><?php echo t('title_amount', 'Amount'); ?></th>
-					<th data-sort="order_status" class="text-center"><?php echo t('title_order_status', 'Order Status'); ?></th>
 					<th class="text-end" data-sort="created_at"><?php echo t('title_created_at', 'Created At'); ?></th>
 					<th></th>
 					<th></th>
@@ -444,9 +445,15 @@ table .tag {
 				<?php foreach ($orders as $order) { ?>
 				<tr class="<?php echo implode(' ', $order['css_classes']); ?>" data-id="<?php echo $order['id']; ?>">
 					<td><?php echo functions::form_checkbox('orders[]', $order['id'], true); ?></td>
-					<td><?php echo functions::draw_fonticon($order['order_status_icon'], 'style="color: '. $order['order_status_color'] .';"'); ?></td>
-					<td class="text-center"><?php echo $order['no']; ?></td>
 					<td><?php echo !empty($order['starred']) ? functions::draw_fonticon('icon-star', 'style="color: #f2b01e;"') : functions::draw_fonticon('icon-star-o', 'style="color: #ccc;"'); ?></td>
+					<td><?php echo (int)$order['id']; ?></td>
+					<td>
+						<a class="link" href="<?php echo document::href_ilink(__APP__.'/order', ['order_id' => $order['id'], 'redirect_url' => $_SERVER['REQUEST_URI']]); ?>">
+							<?php echo functions::draw_fonticon('icon-file-text', 'style="color: #ccc;"'); ?> <?php echo $order['no']; ?>
+						</a>
+					</td>
+					<td></td>
+					<td><?php echo functions::draw_fonticon($order['order_status_icon'], 'style="color: '. $order['order_status_color'] .';"'); ?> <?php echo $order['order_status_id'] ? $order['order_status_name'] : t('title_uncompleted', 'Uncompleted'); ?></td>
 					<td>
 						<a class="link" href="<?php echo document::href_ilink(__APP__.'/order', ['order_id' => $order['id'], 'redirect_url' => $_SERVER['REQUEST_URI']]); ?>">
 							<?php echo functions::draw_fonticon($order['customer_company'] ? 'icon-building' : 'icon-user', 'style="opacity: .5;"'); ?>
@@ -462,7 +469,6 @@ table .tag {
 					<td class="text-center"><?php $order['sufficient_stock_icon'] ?: '-'; ?></td>
 					<td><?php echo $order['payment_option_name']; ?></td>
 					<td class="text-end"><?php echo currency::format($order['total'], false, $order['currency_code'], $order['currency_value']); ?></td>
-					<td class="text-center"><?php echo $order['order_status_id'] ? $order['order_status_name'] : t('title_uncompleted', 'Uncompleted'); ?></td>
 					<td class="text-end"><?php echo functions::datetime_when($order['created_at']); ?></td>
 					<td>
 						<div class="dropdown dropdown-end">

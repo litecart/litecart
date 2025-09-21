@@ -4,9 +4,9 @@
 
 		$result = [
 			'items' => [],
-			'num_items' => cart::$total['num_items'],
-			'total_value' => !empty(customer::$data['display_prices_including_tax']) ? cart::$total['subtotal'] + cart::$total['subtotal_tax'] : cart::$total['subtotal'],
-			'formatted_total_value' => !empty(customer::$data['display_prices_including_tax']) ? currency::format(cart::$total['subtotal'] + cart::$total['subtotal_tax']) : currency::format(cart::$total['subtotal']),
+			'num_items' => cart::$total['items'],
+			'total_value' => !empty(customer::$data['display_prices_including_tax']) ? cart::$total['value'] + cart::$total['tax'] : cart::$total['value'],
+			'formatted_total_value' => !empty(customer::$data['display_prices_including_tax']) ? currency::format(cart::$total['value'] + cart::$total['tax']) : currency::format(cart::$total['value']),
 			'text_total' => t('title_total', 'Total'),
 		];
 
@@ -58,5 +58,5 @@
 
 	ob_clean();
 	header('Content-type: application/json; charset='. mb_http_output());
-	echo json_encode($result, JSON_UNESCAPED_SLASHES);
+	echo functions::format_json($result);
 	exit;

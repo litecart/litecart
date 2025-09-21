@@ -8,8 +8,8 @@
 
 			$_SESSION = &self::$data;
 
+			event::register('before_output', [__CLASS__, 'save']);
 			register_shutdown_function([__CLASS__, 'save']);
-			//event::register('shutdown', [__CLASS__, 'save']);
 
 			if (!empty($_COOKIE['LCSESSID']) && self::validate_id($_COOKIE['LCSESSID'])) {
 				self::load($_COOKIE['LCSESSID']);
@@ -31,6 +31,10 @@
 					self::$data['last_ip_address'] = $_SERVER['REMOTE_ADDR'];
 					self::$data['last_user_agent'] = $_SERVER['HTTP_USER_AGENT'];
 					self::regenerate_id();
+				}
+
+				if (empty($_COOKIE['LCSESSID'])) {
+					self::generate_id();
 				}
 
 				// Collect Urchin Tracking Module (UTM) data
@@ -118,12 +122,12 @@
 				(id, data, updated_at, created_at)
 				values (
 					'". database::input(self::$data['id']) ."',
-					'". database::input(json_encode(self::$data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."',
+					'". database::input(functions::format_json(self::$data)) ."',
 					'". database::input(date('Y-m-d H:i:s')) ."',
 					'". database::input(date('Y-m-d H:i:s')) ."'
 				)
 				on duplicate key update
-					data = '". database::input(json_encode(self::$data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."',
+					data = '". database::input(functions::format_json(self::$data)) ."',
 					expires_at = '". database::input(date('Y-m-d H:i:s', strtotime('+1 hour'))) ."',
 					updated_at = '". database::input(date('Y-m-d H:i:s')) ."';"
 			);

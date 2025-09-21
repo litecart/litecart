@@ -151,7 +151,7 @@
 				'email' => customer::$data['email'] ?: null,
 			];
 
-			self::$head_tags[] = '<script>window._env='. json_encode(self::$jsenv, JSON_UNESCAPED_SLASHES) .'</script>';
+			self::$head_tags[] = '<script>window._env='. functions::format_json(self::$jsenv, false) .'</script>';
 		}
 
 		public static function optimize(&$output) {
@@ -342,7 +342,7 @@
 			if (!empty(self::$schema)) {
 				$_page->snippets['head_tags']['schema_json'] = implode(PHP_EOL, [
 					'<script type="application/ld+json">',
-					json_encode(array_values(self::$schema), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
+					functions::format_json(array_values(self::$schema), false),
 					'</script>',
 				]);
 			}
@@ -366,7 +366,7 @@
 			// Prepare console log
 			if (!empty(self::$console)) {
 				self::$javascript[] = implode(PHP_EOL, array_map(function($log) {
-					return 'console.'. $log['type'] .'("'. functions::escape_attr($log['message']) .'", '. json_encode($log['data'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) .');';
+					return 'console.'. $log['type'] .'("'. functions::escape_attr($log['message']) .'", '. functions::format_json($log['data']) .');';
 				}, self::$console));
 			}
 
@@ -545,7 +545,7 @@
 		public static function link($path=null, $new_params=[], $inherit_params=null, $skip_params=[], $language_code=null) {
 
 			if (!$path) {
-				$path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+				$path = strtok($_SERVER['REQUEST_URI'], '?');
 
 				if ($inherit_params === null) {
 					$inherit_params = true;

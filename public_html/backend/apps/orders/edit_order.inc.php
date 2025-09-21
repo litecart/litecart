@@ -9,6 +9,8 @@
 		$order->data['created_at'] = date('Y-m-d H:i:s');
 	}
 
+	if (empty($_POST['lines'])) $_POST['lines'] = [];
+
 	if (!$_POST) {
 
 		$_POST = $order->data;

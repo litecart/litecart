@@ -19,8 +19,8 @@
 		}
 
 		// Halt on no items
-		if (empty(session::$data['checkout']['order']->data['items'])) {
-			throw new Exception(t('error_order_has_no_items', 'The order has no items to checkout'), 404);
+		if (empty(session::$data['checkout']['order']->data['lines'])) {
+			throw new Exception(t('error_order_appears_empty', 'The order appears empty'), 404);
 		}
 
 		// Redirect to customer details if not sufficient

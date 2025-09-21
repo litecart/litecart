@@ -44,7 +44,7 @@
 
 						<div class="form-group">
 							<div class="form-label"><?php echo t('title_attachments', 'Attachments'); ?></div>
-							<?php echo functions::form_input_file('attachments[]', 'multiple accept="*/*"'); ?>
+							<?php echo functions::form_input_file('attachments[]', 'multiple accept=".jpg,.jpeg,.png,.gif,.webp,.avif,.txt,.doc,.docx,.pdf,.mp4"'); ?>
 						</div>
 
 						<?php if (settings::get('captcha_enabled')) { ?>

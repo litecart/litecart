@@ -1280,6 +1280,34 @@
 				"immediate": ["immediate"]
 			}
 		},
+		"lc_sessions": {
+			"columns": {
+				"id": { "type": "VARCHAR", "length": 128 },
+				"customer_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
+				"data": { "type": "TEXT", "default": "''" },
+				"language_code": { "type": "CHAR", "length": 2, "default": "''" },
+				"country_code": { "type": "CHAR", "length": 2, "default": "''" },
+				"currency_code": { "type": "CHAR", "length": 3, "default": "''" },
+				"ip_address": { "type": "VARCHAR", "length": 45 },
+				"ip_country": { "type": "CHAR", "length": 2, "default": "''" },
+				"fingerprint": { "type": "VARCHAR", "length": 128 },
+				"hostname": { "type": "VARCHAR", "length": 128 },
+				"user_agent": { "type": "VARCHAR", "length": 256, "default": "''" },
+				"referrer": { "type": "VARCHAR", "length": 256, "default": "''" },
+				"page_views": { "type": "INT", "length": 11, "default": 0 },
+				"last_url": { "type": "VARCHAR", "length": 255, "default": "''" },
+				"last_request": { "type": "VARCHAR", "length": 255, "default": "''" },
+				"last_active": { "type": "TIMESTAMP", "nullable": true },
+				"expires_at": { "type": "TIMESTAMP", "nullable": true },
+				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
+				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
+			},
+			"primary_key": ["id"],
+			"keys": {
+				"customer_id": ["customer_id"],
+				"fingerprint": ["fingerprint"]
+			}
+		},
 		"lc_settings": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },

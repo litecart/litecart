@@ -26,6 +26,9 @@
 			$this->data['name'] = array_fill_keys(array_keys(language::$languages), '');
 			$this->data['quantity_reserved'] = 0;
 			$this->data['quantity_adjustment'] = 0;
+			$this->data['quantity_withdrawn'] = 0;
+			$this->data['quantity_deposited'] = 0;
+			$this->data['quantity_expected'] = 0;
 			$this->data['references'] = [];
 
 			$this->previous = $this->data;
@@ -162,7 +165,7 @@
 
 			database::query(
 				"update ". DB_TABLE_PREFIX ."stock_items
-				set name = '". database::input(json_encode($this->data['name'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."',
+				set name = '". database::input(functions::format_json($this->data['name'])) ."',
 					sku = '". database::input(strtoupper($this->data['sku'])) ."',
 					mpn = '". database::input($this->data['mpn']) ."',
 					gtin = '". database::input($this->data['gtin']) ."',

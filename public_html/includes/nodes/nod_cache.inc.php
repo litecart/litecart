@@ -121,7 +121,7 @@
 						break;
 
 					case 'get':
-						$hash_string .= json_encode($_GET, JSON_UNESCAPED_SLASHES);
+						$hash_string .= json_encode($_GET, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 						break;
 
 					case 'language':
@@ -144,7 +144,7 @@
 						break;
 
 					case 'post':
-						$hash_string .= json_encode($_POST, JSON_UNESCAPED_SLASHES);
+						$hash_string .= json_encode($_POST, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 						break;
 
 					case 'region':
@@ -171,7 +171,7 @@
 						break;
 
 					case 'webpath':
-						$hash_string .= parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+						$hash_string .= strtok($_SERVER['REQUEST_URI'], '?');
 						break;
 
 					default:

@@ -14,7 +14,7 @@
 			"si.sku like '". database::input($_REQUEST['query']) ."%'",
 			"si.mpn like '". database::input($_REQUEST['query']) ."%'",
 			"si.gtin like '". database::input($_REQUEST['query']) ."%'",
-			"sii.name like '%". database::input($_REQUEST['query']) ."%'",
+			"json_value(si.name, '$.". database::input($_GET['language_code']) ."') like '%". database::input($_REQUEST['query']) ."%'",
 			"b.name like '%". database::input($_REQUEST['query']) ."%'",
 		];
 	}
@@ -36,5 +36,5 @@
 
 	ob_clean();
 	header('Content-Type: application/json');
-	echo json_encode($stock_items, JSON_UNESCAPED_SLASHES);
+	echo functions::format_json($stock_items);
 	exit;

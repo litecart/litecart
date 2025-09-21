@@ -41,5 +41,5 @@
 
 	ob_clean();
 	header('Content-type: text/plain; charset='. mb_http_output());
-	echo json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+	echo functions::format_json($result);
 	exit;

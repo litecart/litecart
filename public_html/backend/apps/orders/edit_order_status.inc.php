@@ -57,6 +57,7 @@
 				'description',
 				'email_subject',
 				'email_message',
+				'stock_action',
 			] as $field) {
 				if (isset($_POST[$field])) {
 					$order_status->data[$field] = $_POST[$field];

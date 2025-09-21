@@ -67,7 +67,7 @@
 				$subtotal['tax'] += $item['tax'] * $item['quantity'];
 			}
 
-			$checksum = crc32(json_encode($this->_shopping_cart->data['items']));
+			$checksum = crc32(functions::format_json($this->_shopping_cart->data['items'], false));
 
 			if (!empty($this->_cache[$checksum]['options'])) {
 				return $this->_cache[$checksum]['options'];

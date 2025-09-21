@@ -2,7 +2,7 @@
 
 	return [
 		'name' => t('title_catalog', 'Catalog'),
-		'group' => 'ecommerce',
+		'group' => 'website',
 		'default' => 'category_tree',
 		'priority' => 0,
 

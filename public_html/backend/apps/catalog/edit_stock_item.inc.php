@@ -105,7 +105,7 @@
 
 			if (is_ajax_request()) {
 				header('Content-Type: application/json; charset='. language::$selected['code']);
-				echo json_encode(['status' => 'ok', 'data' => $stock_item->data], JSON_UNESCAPED_SLASHES);
+				echo functions::format_json(['status' => 'ok', 'data' => $stock_item->data]);
 				exit;
 			}
 
@@ -117,7 +117,7 @@
 
 			if (is_ajax_request()) {
 				header('Content-Type: application/json; charset='. language::$selected['code']);
-				echo json_encode(['status' => 'error', 'error' =>  $e->getMessage()], JSON_UNESCAPED_SLASHES);
+				echo functions::format_json(['status' => 'error', 'error' =>  $e->getMessage()]);
 				exit;
 			}
 

@@ -5,13 +5,12 @@
 	 *  upgrade.php?upgrade=true&redirect={url}
 	*/
 
-	@set_time_limit(900);
 	ini_set('memory_limit', -1);
-	ini_set('display_errors', 'On');
 	mb_internal_encoding('UTF-8');
 	mb_http_output('UTF-8');
+	@set_time_limit(900);
 
-	include __DIR__ . '/../includes/compatibility.inc.php';
+	require_once __DIR__ . '/../includes/compatibility.inc.php';
 
 	if ($_SERVER['SERVER_SOFTWARE'] == 'CLI') {
 
@@ -65,11 +64,18 @@
 			'<p><a class="btn btn-default" href="index.php">Click here to install instead</a></p>',
 		]);
 
-		require('includes/footer.inc.php');
+		require_once 'includes/footer.inc.php';
 		return;
 	}
 
+	error_reporting(E_ALL);
+	ini_set('ignore_repeated_errors', 'On');
+	ini_set('log_errors', 'Off');
+	ini_set('display_errors', 'On');
+	ini_set('html_errors', 'On');
+
 	if ($_SERVER['SERVER_SOFTWARE'] != 'CLI') {
+		ini_set('display_errors', 'Off');
 		require_once __DIR__ . '/includes/header.inc.php';
 	}
 
@@ -86,12 +92,6 @@
 	if (!defined('WS_DIR_STORAGE')) {
 		define('WS_DIR_STORAGE', WS_DIR_APP. 'storage/'); // Prior to 2.5.x
 	}
-
-	error_reporting(E_ALL);
-	ini_set('ignore_repeated_errors', 'On');
-	ini_set('log_errors', 'Off');
-	ini_set('display_errors', 'On');
-	ini_set('html_errors', 'On');
 
 	require_once FS_DIR_APP . 'includes/error_handler.inc.php';
 	require_once FS_DIR_APP . 'includes/functions/func_file.inc.php';

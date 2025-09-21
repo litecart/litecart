@@ -90,7 +90,7 @@
 
 				if (isset($vmods_settings[$vmod->data['id']])) {
 					unset($vmods_settings[$vmod->data['id']]);
-					file_put_contents('storage://vmods/.settings', json_encode($vmods_settings, JSON_UNESCAPED_SLASHES), LOCK_EX);
+					file_put_contents('storage://vmods/.settings', functions::format_json($vmods_settings), LOCK_EX);
 				}
 
 				$vmod->delete(true);

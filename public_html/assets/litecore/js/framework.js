@@ -638,6 +638,14 @@ waitFor('jQuery', ($) => {
 
 });
 
+waitFor(jQuery, ($) => {
+	$('.blob').on('mousemove', function(e){
+		var x = e.clientX;
+		var y = e.clientY;
+		$(this).css('transform', `translate3d(calc(${e.clientX}px - 50%), calc(${e.clientY}px - 50%), 0)`);
+	});
+});
+
 waitFor('jQuery', ($) => {
 
 	$('form[data-track-changes]').each(function() {
