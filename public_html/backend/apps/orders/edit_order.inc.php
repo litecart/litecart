@@ -15,6 +15,9 @@
 
 		$_POST = $order->data;
 
+	if (empty($_POST['lines'])) $_POST['lines'] = [];
+	if (empty($_POST['currency_code'])) $_POST['currency_code'] = settings::get('default_currency_code');
+
 		// Convert to local currency
 		foreach (array_keys($_POST['lines']) as $key) {
 			$_POST['lines'][$key]['price'] = $_POST['lines'][$key]['price'] ? $_POST['lines'][$key]['price'] / $_POST['currency_value'] : 0;
@@ -1090,7 +1093,7 @@
 				<div class="col-md-2">
 					<div id="total-fees" class="summary">
 						<div class="title"><?php echo t('title_total_fees', 'Total Fees'); ?></div>
-						<div class="amount"><?php if (isset($_POST['currency_code'])) echo currency::format(0, false, $_POST['currency_code'], $_POST['currency_value']); ?></div>
+						<div class="amount"><?php if (isset($_POST['currency_value'])) echo currency::format(0, false, $_POST['currency_code'], $_POST['currency_value']); ?></div>
 					</div>
 				</div>
 
