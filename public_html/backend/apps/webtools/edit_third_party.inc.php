@@ -6,11 +6,15 @@
 		$third_party = new ent_third_party();
 	}
 
+	document::$title[] = !empty($third_party->data['id']) ? t('title_edit_third_party', 'Edit Third Party') : t('title_create_new_third_party', 'Create New Third Party');
+
+	breadcrumbs::add(t('title_webtools', 'Webtools'));
+	breadcrumbs::add(t('title_third_parties', 'Third Parties'), document::ilink(__APP__.'/third_parties'));
+	breadcrumbs::add(!empty($third_party->data['id']) ? t('title_edit_third_party', 'Edit Third Party') : t('title_create_new_third_party', 'Create New Third Party'));
+
 	if (!$_POST) {
 		$_POST = $third_party->data;
 	}
-
-	breadcrumbs::add(!empty($third_party->data['id']) ? t('title_edit_third_party', 'Edit Third Party') : t('title_create_new_third_party', 'Create New Third Party'));
 
 	if (isset($_POST['save'])) {
 

@@ -6,15 +6,15 @@
 		$attribute_group = new ent_attribute_group();
 	}
 
-	if (!$_POST) {
-		$_POST = $attribute_group->data;
-	}
-
 	document::$title[] = !empty($attribute_group->data['id']) ? t('title_edit_attribute_group', 'Edit Attribute Group') : t('title_create_new_attribute_group', 'Create New Attribute Group');
 
 	breadcrumbs::add(t('title_catalog', 'Catalog'));
 	breadcrumbs::add(t('title_attribute_groups', 'Attribute Groups'), document::ilink(__APP__.'/attribute_groups'));
 	breadcrumbs::add(!empty($attribute_group->data['id']) ? t('title_edit_attribute_group', 'Edit Attribute Group') : t('title_create_new_attribute_group', 'Create New Attribute Group'), document::ilink());
+
+	if (!$_POST) {
+		$_POST = $attribute_group->data;
+	}
 
 	if (isset($_POST['save'])) {
 

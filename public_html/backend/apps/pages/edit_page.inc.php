@@ -7,6 +7,11 @@
 		$page = new ent_page();
 	}
 
+	document::$title[] = !empty($page->data['id']) ? t('title_edit_page', 'Edit Page') : t('title_create_new_page', 'Create New Page');
+
+	breadcrumbs::add(t('title_pages', 'Pages'), document::ilink(__APP__.'/pages'));
+	breadcrumbs::add(!empty($page->data['id']) ? t('title_edit_page', 'Edit Page') : t('title_create_new_page', 'Create New Page'), document::ilink());
+
 	if (!$_POST) {
 		$_POST = $page->data;
 
@@ -16,11 +21,6 @@
 			$_POST['parent'] = '';
 		}
 	}
-
-	document::$title[] = !empty($page->data['id']) ? t('title_edit_page', 'Edit Page') : t('title_create_new_page', 'Create New Page');
-
-	breadcrumbs::add(t('title_pages', 'Pages'), document::ilink(__APP__.'/pages'));
-	breadcrumbs::add(!empty($page->data['id']) ? t('title_edit_page', 'Edit Page') : t('title_create_new_page', 'Create New Page'), document::ilink());
 
 	if (isset($_POST['save'])) {
 

@@ -1,5 +1,10 @@
 <?php
 
+	document::$title[] = t('title_edit_robots_txt', 'Edit robots.txt');
+
+	breadcrumbs::add(t('title_webtools', 'Webtools'));
+	breadcrumbs::add(t('title_edit_robots_txt', 'Edit robots.txt'), document::ilink());
+
 	$file = 'storage://robots.txt';
 
 	if (!$_POST) {

@@ -6,6 +6,12 @@
 		$category = new ent_category();
 	}
 
+	document::$title[] = !empty($category->data['id']) ? t('title_edit_category', 'Edit Category') : t('title_create_new_category', 'Create New Category');
+
+	breadcrumbs::add(t('title_catalog', 'Catalog'));
+	breadcrumbs::add(t('title_category_tree', 'Category Tree'), document::ilink(__APP__.'/category_tree'));
+	breadcrumbs::add(!empty($category->data['id']) ? t('title_edit_category', 'Edit Category') : t('title_create_new_category', 'Create New Category'), document::ilink());
+
 	if (!$_POST) {
 		$_POST = $category->data;
 
@@ -13,12 +19,6 @@
 			$_POST['parent_id'] = $_GET['parent_id'];
 		}
 	}
-
-	document::$title[] = !empty($category->data['id']) ? t('title_edit_category', 'Edit Category') : t('title_create_new_category', 'Create New Category');
-
-	breadcrumbs::add(t('title_catalog', 'Catalog'));
-	breadcrumbs::add(t('title_category_tree', 'Category Tree'), document::ilink(__APP__.'/category_tree'));
-	breadcrumbs::add(!empty($category->data['id']) ? t('title_edit_category', 'Edit Category') : t('title_create_new_category', 'Create New Category'), document::ilink());
 
 	if (isset($_POST['save'])) {
 

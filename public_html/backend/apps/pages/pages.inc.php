@@ -1,5 +1,9 @@
 <?php
 
+	document::$title[] = t('title_pages', 'Pages');
+
+	breadcrumbs::add(t('title_pages', 'Pages'), document::ilink());
+
 	if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
 		$_GET['page'] = 1;
 	}
@@ -11,10 +15,6 @@
 	if (empty($_GET['expanded'])) {
 		$_GET['expanded'] = [];
 	}
-
-	document::$title[] = t('title_pages', 'Pages');
-
-	breadcrumbs::add(t('title_pages', 'Pages'), document::ilink());
 
 	if (isset($_POST['enable']) || isset($_POST['disable'])) {
 

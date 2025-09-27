@@ -46,6 +46,11 @@
 			throw new Error('Unknown module type ('. __DOC__ .')');
 	}
 
+	document::$title[] = $title;
+
+	breadcrumbs::add(t('title_modules', 'Modules'));
+	breadcrumbs::add($title, document::ilink());
+
 	if (isset($_POST['enable']) || isset($_POST['disable'])) {
 
 		try {
@@ -68,11 +73,6 @@
 			notices::add('errors', $e->getMessage());
 		}
 	}
-
-	document::$title[] = $title;
-
-	breadcrumbs::add(t('title_modules', 'Modules'));
-	breadcrumbs::add($title, document::ilink());
 
 	// Installed Modules
 	$installed_modules = database::query(

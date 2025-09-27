@@ -6,14 +6,14 @@
 		$vmod = new ent_vmod();
 	}
 
-	if (!$_POST) {
-		$_POST = $vmod->data;
-	}
-
 	document::$title[] = !empty($vmod->data['id']) ? t('title_edit_vmod', 'Edit vMod') : t('title_create_new_vmod', 'Create New vMod');
 
 	breadcrumbs::add(t('title_vmods', 'vMods'), document::ilink(__APP__.'/vmods'));
 	breadcrumbs::add(!empty($vmod->data['id']) ? t('title_edit_vmod', 'Edit vMod') : t('title_create_new_vmod', 'Create New vMod'), document::ilink());
+
+	if (!$_POST) {
+		$_POST = $vmod->data;
+	}
 
 	if (isset($_POST['save']) || isset($_POST['quicksave'])) {
 

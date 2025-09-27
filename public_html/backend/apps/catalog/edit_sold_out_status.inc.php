@@ -6,15 +6,15 @@
 		$sold_out_status = new ent_sold_out_status();
 	}
 
-	if (!$_POST) {
-		$_POST = $sold_out_status->data;
-	}
-
 	document::$title[] = !empty($sold_out_status->data['id']) ? t('title_edit_sold_out_status', 'Edit Sold Out Status') : t('title_create_new_sold_out_status', 'Create New Sold Out Status');
 
 	breadcrumbs::add(t('title_catalog', 'Catalog'));
 	breadcrumbs::add(t('title_sold_out_statuses', 'Sold-Out Statuses'), document::ilink(__APP__.'/sold_out_statuses'));
 	breadcrumbs::add(!empty($sold_out_status->data['id']) ? t('title_edit_sold_out_status', 'Edit Sold Out Status') : t('title_create_new_sold_out_status', 'Create New Sold Out Status'), document::ilink());
+
+	if (!$_POST) {
+		$_POST = $sold_out_status->data;
+	}
 
 	if (isset($_POST['save'])) {
 

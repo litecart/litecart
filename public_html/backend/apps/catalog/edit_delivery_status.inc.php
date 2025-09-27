@@ -6,15 +6,15 @@
 		$delivery_status = new ent_delivery_status();
 	}
 
-	if (!$_POST) {
-		$_POST = $delivery_status->data;
-	}
-
 	document::$title[] = !empty($delivery_status->data['id']) ? t('title_edit_delivery_status', 'Edit Delivery Status') : t('title_create_new_delivery_status', 'Create New Delivery Status');
 
 	breadcrumbs::add(t('title_catalog', 'Catalog'));
 	breadcrumbs::add(t('title_delivery_statuses', 'Delivery Statuses'), document::ilink(__APP__.'/delivery_statuses'));
 	breadcrumbs::add(!empty($delivery_status->data['id']) ? t('title_edit_delivery_status', 'Edit Delivery Status') : t('title_create_new_delivery_status', 'Create New Delivery Status'), document::ilink());
+
+	if (!$_POST) {
+		$_POST = $delivery_status->data;
+	}
 
 	if (isset($_POST['save'])) {
 

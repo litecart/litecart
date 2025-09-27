@@ -10,14 +10,14 @@
 		$customer = new ent_customer();
 	}
 
-	if (!$_POST) {
-		$_POST = $customer->data;
-	}
-
 	document::$title[] = !empty($customer->data['id']) ? t('title_edit_customer', 'Edit Customer') : t('title_create_new_customer', 'Create New Customer');
 
 	breadcrumbs::add(t('title_customers', 'Customers'), document::ilink(__APP__.'/customers'));
 	breadcrumbs::add(!empty($customer->data['id']) ? t('title_edit_customer', 'Edit Customer') : t('title_create_new_customer', 'Create New Customer'), document::ilink());
+
+	if (!$_POST) {
+		$_POST = $customer->data;
+	}
 
 	if (isset($_POST['sign_in'])) {
 

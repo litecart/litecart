@@ -1,5 +1,9 @@
 <?php
 
+	document::$title[] = t('title_customers', 'Customers');
+
+	breadcrumbs::add(t('title_customers', 'Customers'), document::ilink());
+
 	if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
 		$_GET['page'] = 1;
 	}
@@ -7,10 +11,6 @@
 	if (empty($_GET['sort'])) {
 		$_GET['sort'] = 'created_at';
 	}
-
-	document::$title[] = t('title_customers', 'Customers');
-
-	breadcrumbs::add(t('title_customers', 'Customers'), document::ilink());
 
 	if (isset($_POST['enable']) || isset($_POST['disable'])) {
 

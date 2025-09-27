@@ -1,12 +1,12 @@
 <?php
 
-	if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
-		$_GET['page'] = 1;
-	}
-
 	document::$title[] = t('title_settings', 'Settings');
 
 	breadcrumbs::add(t('title_settings', 'Settings'), document::ilink());
+
+	if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
+		$_GET['page'] = 1;
+	}
 
 	if (isset($_POST['save'])) {
 

@@ -1,11 +1,11 @@
 <?php
 
-	$_GET['vmod'] = basename($_GET['vmod']);
+	document::$title[] = t('title_view_vmod', 'View vMod');
 
 	breadcrumbs::add(t('title_vMods', 'vMods'), document::href_ilink(__APP__.'/vmods'));
 	breadcrumbs::add(t('title_view_vMod', 'View vMod') .' '. basename($_GET['vmod']), document::href_ilink());
 
-	document::$title[] = t('title_view_vmod', 'View vMod');
+	$_GET['vmod'] = basename($_GET['vmod']);
 
 	try {
 

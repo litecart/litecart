@@ -6,15 +6,15 @@
 		$brand = new ent_brand();
 	}
 
-	if (!$_POST) {
-		$_POST = $brand->data;
-	}
-
 	document::$title[] = !empty($brand->data['id']) ? t('title_edit_brand', 'Edit Brand') :  t('title_create_new_brand', 'Create New Brand');
 
 	breadcrumbs::add(t('title_catalog', 'Catalog'));
 	breadcrumbs::add(t('title_brands', 'Brands'), document::ilink(__APP__.'/brands'));
 	breadcrumbs::add(!empty($brand->data['id']) ? t('title_edit_brand', 'Edit Brand') :  t('title_create_new_brand', 'Create New Brand'), document::ilink());
+
+	if (!$_POST) {
+		$_POST = $brand->data;
+	}
 
 	if (isset($_POST['save'])) {
 

@@ -6,6 +6,12 @@
 		$campaign = new ent_campaign();
 	}
 
+	document::$title[] = !empty($campaign->data['id']) ? t('title_edit_campaign', 'Edit Campaign') :  t('title_create_new_campaign', 'Create New Campaign');
+
+	breadcrumbs::add(t('title_catalog', 'Catalog'));
+	breadcrumbs::add(t('title_campaigns', 'Campaigns'), document::ilink(__APP__.'/campaigns'));
+	breadcrumbs::add(!empty($campaign->data['id']) ? t('title_edit_campaign', 'Edit Campaign') :  t('title_create_new_campaign', 'Create New Campaign'), document::ilink());
+
 	if (!$_POST) {
 		$_POST = $campaign->data;
 	}

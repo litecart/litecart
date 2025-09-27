@@ -6,13 +6,15 @@
 		$stock_item = new ent_stock_item();
 	}
 
-	if (!$_POST) {
-		$_POST = $stock_item->data;
-	}
+	document::$title[] = !empty($stock_item->data['id']) ? t('title_edit_stock_item', 'Edit Stock Item') : t('title_create_new_stock_item', 'Create New Stock Item');
 
 	breadcrumbs::add(t('title_catalog', 'Catalog'));
 	breadcrumbs::add(t('title_stock_items', 'Stock Items'), document::ilink(__APP__.'/stock_items'));
 	breadcrumbs::add(!empty($stock_item->data['id']) ? t('title_edit_stock_item', 'Edit Stock Item') : t('title_create_new_stock_item', 'Create New Stock Item'), document::ilink());
+
+	if (!$_POST) {
+		$_POST = $stock_item->data;
+	}
 
 	if (isset($_POST['save'])) {
 

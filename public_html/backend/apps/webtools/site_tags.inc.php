@@ -1,5 +1,10 @@
 <?php
 
+	document::$title[] = t('title_site_tags', 'Site Tags');
+
+	breadcrumbs::add(t('title_webtools', 'Webtools'));
+	breadcrumbs::add(t('title_site_tags', 'Site Tags'), document::ilink());
+
 	if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
 		$_GET['page'] = 1;
 	}

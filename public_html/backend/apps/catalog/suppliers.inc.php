@@ -1,13 +1,13 @@
 <?php
 
-	if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
-		$_GET['page'] = 1;
-	}
-
 	document::$title[] = t('title_suppliers', 'Suppliers');
 
 	breadcrumbs::add(t('title_catalog', 'Catalog'));
 	breadcrumbs::add(t('title_suppliers', 'Suppliers'), document::ilink());
+
+	if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
+		$_GET['page'] = 1;
+	}
 
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$suppliers = database::query(

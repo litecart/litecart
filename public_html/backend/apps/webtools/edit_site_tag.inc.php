@@ -6,11 +6,15 @@
 		$site_tag = new ent_site_tag();
 	}
 
+	document::$title[] = !empty($site_tag->data['id']) ? t('title_edit_site_tag', 'Edit Site Tag') : t('title_create_new_site_tag', 'Create New Site Tag');
+
+	breadcrumbs::add(t('title_webtools', 'Webtools'));
+	breadcrumbs::add(t('title_site_tags', 'Site Tags'), document::ilink(__APP__.'/site_tags'));
+	breadcrumbs::add(!empty($site_tag->data['id']) ? t('title_edit_site_tag', 'Edit Site Tag') : t('title_create_new_site_tag', 'Create New Site Tag'));
+
 	if (!$_POST) {
 		$_POST = $site_tag->data;
 	}
-
-	breadcrumbs::add(!empty($site_tag->data['id']) ? t('title_edit_site_tag', 'Edit Site Tag') : t('title_create_new_site_tag', 'Create New Site Tag'));
 
 	if (isset($_POST['save'])) {
 

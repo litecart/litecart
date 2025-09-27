@@ -6,15 +6,15 @@
 		$quantity_unit = new ent_quantity_unit();
 	}
 
-	if (!$_POST) {
-		$_POST = $quantity_unit->data;
-	}
-
 	document::$title[] = !empty($quantity_unit->data['id']) ? t('title_edit_quantity_unit', 'Edit Quantity Unit') : t('title_create_new_quantity_unit', 'Create New Quantity Unit');
 
 	breadcrumbs::add(t('title_catalog', 'Catalog'));
 	breadcrumbs::add(t('title_quantity_units', 'Quantity Units'), document::ilink(__APP__.'/quantity_units'));
 	breadcrumbs::add(!empty($quantity_unit->data['id']) ? t('title_edit_quantity_unit', 'Edit Quantity Unit') : t('title_create_new_quantity_unit', 'Create New Quantity Unit'), document::ilink());
+
+	if (!$_POST) {
+		$_POST = $quantity_unit->data;
+	}
 
 	if (isset($_POST['save'])) {
 

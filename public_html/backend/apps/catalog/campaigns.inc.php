@@ -1,13 +1,13 @@
 <?php
 
-	if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
-		$_GET['page'] = 1;
-	}
-
 	document::$title[] = t('title_campaigns', 'Campaigns');
 
 	breadcrumbs::add(t('title_catalog', 'Catalog'));
 	breadcrumbs::add(t('title_campaigns', 'Campaigns'), document::ilink());
+
+	if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
+		$_GET['page'] = 1;
+	}
 
 	if (isset($_POST['enable']) || isset($_POST['disable'])) {
 

@@ -1,5 +1,10 @@
 <?php
 
+	document::$title[] = t('title_redirects', 'Redirects');
+
+	breadcrumbs::add(t('title_webtools', 'Webtools'));
+	breadcrumbs::add(t('title_redirects', 'Redirects'), document::ilink());
+	
 	if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
 		$_GET['page'] = 1;
 	}

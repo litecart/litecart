@@ -1,12 +1,12 @@
 <?php
 
-	if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
-		$_GET['page'] = 1;
-	}
-
 	document::$title[] = t('title_products', 'Products');
 
 	breadcrumbs::add(t('title_products', 'Products'));
+
+	if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
+		$_GET['page'] = 1;
+	}
 
 	if (isset($_POST['star']) || isset($_POST['unstar'])) {
 

@@ -6,14 +6,14 @@
 		$order_status = new ent_order_status();
 	}
 
-	if (!$_POST) {
-		$_POST = $order_status->data;
-	}
-
 	document::$title[] = !empty($order_status->data['id']) ? t('title_edit_order_status', 'Edit Order Status') : t('title_create_new_order_status', 'Create New Order Status');
 
 	breadcrumbs::add(t('title_order_statuses', 'Order Statuses'), document::ilink(__APP__.'/order_statuses'));
 	breadcrumbs::add(!empty($order_status->data['id']) ? t('title_edit_order_status', 'Edit Order Status') : t('title_create_new_order_status', 'Create New Order Status'), document::ilink());
+
+	if (!$_POST) {
+		$_POST = $order_status->data;
+	}
 
 	if (isset($_POST['save'])) {
 

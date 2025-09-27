@@ -1,5 +1,10 @@
 <?php
 
+	document::$title[] = t('title_customer_groups', 'Customer Groups');
+
+	breadcrumbs::add(t('title_customers', 'Customers'), document::ilink(__APP__.'/customers'));
+	breadcrumbs::add(t('title_customer_groups', 'Customer Groups'), document::ilink());
+
 	if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
 		$_GET['page'] = 1;
 	}

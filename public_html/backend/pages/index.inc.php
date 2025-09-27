@@ -30,8 +30,6 @@
 			return;
 		}
 
-		breadcrumbs::add($app_config['name'], document::ilink(__APP__ .'/'. $app_config['default']));
-
 		// Render the app document
 		$_content = new ent_view('app://backend/apps/'. __APP__ .'/'. $app_config['docs'][__DOC__]);
 

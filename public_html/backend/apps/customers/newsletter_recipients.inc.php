@@ -1,5 +1,10 @@
 <?php
 
+	document::$title[] = t('title_newsletter_recipients', 'Newsletter Recipients');
+
+	breadcrumbs::add(t('title_customers', 'Customers'), document::ilink(__APP__.'/customers'));
+	breadcrumbs::add(t('title_newsletter_recipients', 'Newsletter Recipients'), document::ilink());
+
 	if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
 		$_GET['page'] = 1;
 	}
@@ -50,7 +55,7 @@
 			notices::add('success', strtr(t('success_added_n_new_recipients', 'Added {n} new recipients'), [
 				'{n}' => $added
 			]));
-			
+
 			reload();
 			exit;
 

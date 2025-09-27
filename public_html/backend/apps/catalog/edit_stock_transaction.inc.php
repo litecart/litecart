@@ -6,15 +6,15 @@
 		$stock_transaction = new ent_stock_transaction();
 	}
 
-	if (!$_POST) {
-		$_POST = $stock_transaction->data;
-	}
-
 	document::$title[] = !empty($stock_transaction->data['id']) ? t('title_edit_stock_transaction', 'Edit Stock Transaction') : t('title_create_new_transaction', 'Create New Transaction');
 
 	breadcrumbs::add(t('title_catalog', 'Catalog'));
 	breadcrumbs::add(t('title_stock_transactions', 'Stock Transactions'), document::ilink(__APP__.'/stock_transactions'));
 	breadcrumbs::add(!empty($stock_transaction->data['id']) ? t('title_edit_stock_transaction', 'Edit Stock Transaction') : t('title_create_new_transaction', 'Create New Transaction'), document::ilink());
+
+	if (!$_POST) {
+		$_POST = $stock_transaction->data;
+	}
 
 	if (isset($_POST['save'])) {
 

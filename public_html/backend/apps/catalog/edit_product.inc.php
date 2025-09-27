@@ -6,6 +6,12 @@
 		$product = new ent_product();
 	}
 
+	document::$title[] = !empty($product->data['id']) ? t('title_edit_product', 'Edit Product') . ': '. $product->data['name'][language::$selected['code']] : t('title_create_new_product', 'Create New Product');
+
+	breadcrumbs::add(t('title_catalog', 'Catalog'));
+	breadcrumbs::add(t('title_products', 'Products'), document::ilink(__APP__.'/products'));
+	breadcrumbs::add(!empty($product->data['id']) ? t('title_edit_product', 'Edit Product') . ': '. $product->data['name'][language::$selected['code']] : t('title_create_new_product', 'Create New Product'), document::ilink());
+
 	if (!$_POST) {
 		$_POST = $product->data;
 
@@ -13,12 +19,6 @@
 			$_POST['categories'][] = $_GET['category_id'];
 		}
 	}
-
-	document::$title[] = !empty($product->data['id']) ? t('title_edit_product', 'Edit Product') . ': '. $product->data['name'][language::$selected['code']] : t('title_create_new_product', 'Create New Product');
-
-	breadcrumbs::add(t('title_catalog', 'Catalog'));
-	breadcrumbs::add(t('title_products', 'Products'), document::ilink(__APP__.'/products'));
-	breadcrumbs::add(!empty($product->data['id']) ? t('title_edit_product', 'Edit Product') . ': '. $product->data['name'][language::$selected['code']] : t('title_create_new_product', 'Create New Product'), document::ilink());
 
 	if (isset($_POST['save'])) {
 

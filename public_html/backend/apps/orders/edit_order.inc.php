@@ -9,14 +9,14 @@
 		$order->data['created_at'] = date('Y-m-d H:i:s');
 	}
 
-	if (empty($_POST['lines'])) $_POST['lines'] = [];
+	document::$title[] = !empty($order->data['id']) ? t('title_edit_order', 'Edit Order') .' #'. $order->data['id'] : t('title_create_new_order', 'Create New Order');
+
+	breadcrumbs::add(t('title_orders', 'Orders'), document::ilink(__APP__.'/orders'));
+	breadcrumbs::add(!empty($order->data['id']) ? t('title_edit_order', 'Edit Order') .' #'. $order->data['id'] : t('title_create_new_order', 'Create New Order'), document::ilink());
 
 	if (!$_POST) {
 
 		$_POST = $order->data;
-
-	if (empty($_POST['lines'])) $_POST['lines'] = [];
-	if (empty($_POST['currency_code'])) $_POST['currency_code'] = settings::get('default_currency_code');
 
 		// Convert to local currency
 		foreach (array_keys($_POST['lines']) as $key) {
@@ -42,10 +42,13 @@
 		}
 	}
 
-	document::$title[] = !empty($order->data['id']) ? t('title_edit_order', 'Edit Order') .' #'. $order->data['id'] : t('title_create_new_order', 'Create New Order');
+	if (empty($_POST['currency_code'])) {
+		$_POST['currency_code'] = $order->data['currency_code'] ?: settings::get('store_currency_code');
+	}
 
-	breadcrumbs::add(t('title_orders', 'Orders'), document::ilink(__APP__.'/orders'));
-	breadcrumbs::add(!empty($order->data['id']) ? t('title_edit_order', 'Edit Order') .' #'. $order->data['id'] : t('title_create_new_order', 'Create New Order'), document::ilink());
+	if (empty($_POST['lines'])) {
+		$_POST['lines'] = [];
+	}
 
 	// Mark as read
 	if (!empty($order->data['id'])) {

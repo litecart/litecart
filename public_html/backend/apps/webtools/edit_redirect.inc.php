@@ -6,11 +6,15 @@
 		$redirect = new ent_redirect();
 	}
 
+	document::$title[] = !empty($redirect->data['id']) ? t('title_edit_redirect', 'Edit Redirect') : t('title_create_new_redirect', 'Create New Redirect');
+
+	breadcrumbs::add(t('title_webtools', 'Webtools'));
+	breadcrumbs::add(t('title_redirects', 'Redirects'), document::ilink(__APP__.'/redirects'));
+	breadcrumbs::add(!empty($redirect->data['id']) ? t('title_edit_redirect', 'Edit Redirect') : t('title_create_new_redirect', 'Create New Redirect'));
+
 	if (!$_POST) {
 		$_POST = $redirect->data;
 	}
-
-	breadcrumbs::add(!empty($redirect->data['id']) ? t('title_edit_redirect', 'Edit Redirect') : t('title_create_new_redirect', 'Create New Redirect'));
 
 	if (isset($_POST['save'])) {
 

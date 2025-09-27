@@ -1,13 +1,13 @@
 <?php
 
+	document::$title[] = t('title_order_statuses', 'Order Statuses');
+
+	breadcrumbs::add(t('title_orders', 'Orders'), document::ilink(__APP__.'/orders'));
+	breadcrumbs::add(t('title_order_statuses', 'Order Statuses'), document::ilink());
+
 	if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
 		$_GET['page'] = 1;
 	}
-
-	document::$title[] = t('title_order_statuses', 'Order Statuses');
-
-	breadcrumbs::add(t('title_orders', 'Orders'), document::ilink('orders'));
-	breadcrumbs::add(t('title_order_statuses', 'Order Statuses'), document::ilink());
 
 	if (!empty($_POST['change'])) {
 

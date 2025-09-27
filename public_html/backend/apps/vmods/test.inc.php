@@ -1,8 +1,13 @@
 <?php
-	$_GET['debug'] = true;
-	$_GET['vmod'] = basename($_GET['vmod']);
 
-	breadcrumbs::add($_GET['vmod']);
+	$_GET['debug'] = true;
+	$_GET['vmod'] = isset($_GET['vmod']) ? basename($_GET['vmod']) : null;
+
+	document::$title[] = t('title_test_vmod', 'Test vMod');
+
+	breadcrumbs::add(t('title_vmods', 'vMods'), document::ilink(__APP__.'/vmods'));
+	breadcrumbs::add($_GET['vmod'], document::ilink(__APP__.'/view', ['vmod' => $_GET['vmod']]));
+	breadcrumbs::add(t('title_test_vmod', 'Test vMod'), document::ilink());
 
 	try {
 

@@ -1,5 +1,10 @@
 <?php
 
+	document::$title[] = t('title_stock_transactions', 'Stock Transactions');
+
+	breadcrumbs::add(t('title_catalog', 'Catalog'));
+	breadcrumbs::add(t('title_stock_transactions', 'Stock Transactions'), document::ilink());
+
 	if (!isset($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
 		$_GET['page'] = 1;
 	}

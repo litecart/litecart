@@ -3,6 +3,7 @@
 	document::$layout = 'ajax';
 
 	$breadcrumbs = [];
+
 	if (!empty($_GET['parent_id'])) {
 		foreach (reference::category($_GET['parent_id'])->path as $id => $category) {
 			$breadcrumbs[] = [

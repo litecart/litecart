@@ -1,13 +1,13 @@
 <?php
 
-	if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
-		$_GET['page'] = 1;
-	}
-
 	document::$title[] = t('title_attribute_groups', 'Attribute Groups');
 
 	breadcrumbs::add(t('title_catalog', 'Catalog'));
 	breadcrumbs::add(t('title_attribute_groups', 'Attribute Groups'), document::ilink(__APP__.'/attribute_groups'));
+
+	if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
+		$_GET['page'] = 1;
+	}
 
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$attribute_groups = database::query(

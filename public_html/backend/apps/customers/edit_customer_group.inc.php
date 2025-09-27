@@ -10,6 +10,8 @@
 		$_POST = $customer_group->data;
 	}
 
+	document::$title[] = !empty($customer_group->data['id']) ? t('title_edit_customer_group', 'Edit Customer Group') : t('title_add_new_customer_group', 'Add New Customer Group');
+
 	breadcrumbs::add(!empty($customer_group->data['id']) ? t('title_edit_customer_group', 'Edit Customer Group') : t('title_add_new_customer_group', 'Add New Customer Group'));
 
 	if (isset($_POST['save'])) {

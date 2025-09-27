@@ -6,15 +6,15 @@
 		$supplier = new ent_supplier();
 	}
 
-	if (!$_POST) {
-		$_POST = $supplier->data;
-	}
-
 	document::$title[] = !empty($supplier->data['id']) ? t('title_edit_supplier', 'Edit Supplier') : t('title_create_new_supplier', 'Create New Supplier');
 
 	breadcrumbs::add(t('title_catalog', 'Catalog'));
 	breadcrumbs::add(t('title_suppliers', 'Suppliers'), document::ilink(__APP__.'/suppliers'));
 	breadcrumbs::add(!empty($supplier->data['id']) ? t('title_edit_supplier', 'Edit Supplier') : t('title_create_new_supplier', 'Create New Supplier'), document::ilink());
+
+	if (!$_POST) {
+		$_POST = $supplier->data;
+	}
 
 	if (isset($_POST['save'])) {
 

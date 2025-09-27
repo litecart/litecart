@@ -1,5 +1,9 @@
 <?php
 
+	document::$title[] = t('title_vmods', 'vMods');
+
+	breadcrumbs::add(t('title_vmods', 'vMods'), document::ilink());
+
 	if (isset($_POST['enable']) || isset($_POST['disable'])) {
 
 		try {
