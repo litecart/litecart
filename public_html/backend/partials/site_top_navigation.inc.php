@@ -84,7 +84,7 @@
 	};
 
 	$_partial->snippets['draw_menu_item'] = $draw_menu_item;
-	
+
 	if (is_file('app://backend/template/partials/site_top_navigation.inc.php')) {
 		echo $_partial->render();
 		return;

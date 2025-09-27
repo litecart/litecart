@@ -927,7 +927,7 @@
 	if (isset($_POST['comments'])) {
 		foreach (array_keys($_POST['comments']) as $key) {
 
-			switch($_POST['comments'][$key]['author']) {
+			switch ($_POST['comments'][$key]['author']) {
 
 				case 'customer':
 					$type = 'remote';
@@ -1390,7 +1390,7 @@
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_tax_rate', 'Tax Rate'); ?></div>
 							<div class="input-group">
-								<?php echo functions::form_input_decimal('lines['.$key.'][tax_rate]', true, 2, 'readonly'); ?>
+								<?php echo functions::form_input_decimal('tax_rate', true, 2, 'readonly'); ?>
 								<span class="input-group-text">%</span>
 							</div>
 						</label>

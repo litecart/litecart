@@ -289,19 +289,26 @@ h4 { font-size: 1.10em; }
 			a {
 				padding: .25em .5em;
 			}
+			> a .name {
+				font-weight: 700;
+			}
 			//background: var(--sidebar-app-background--active);
 			background: color-mix(in lab,var(--app-color) 1%, #efefef 100%);
+			background: color-mix(in lab, var(--app-color) 3%, #fff 100%);
 			border-radius: var(--border-radius);
 			margin-bottom: .25em;
 
 			.docs {
 				display: block;
+				border: var(--sidebar-app-border-size) solid color-mix(in lab, var(--app-color) 50%, transparent 100%);
+				border-radius: var(--border-radius);
 			}
 
 			.doc {
 				&:hover,
 				&:active {
 					background: var(--sidebar-doc-background--hover);
+
 				}
 				&.active {
 					//background: var(--sidebar-doc-background--active);

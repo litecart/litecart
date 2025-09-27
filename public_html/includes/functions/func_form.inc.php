@@ -83,13 +83,13 @@
 
 	function form_dropdown($name, $options=[], $input=true, $parameters='') {
 
-		$html = implode(PHP_EOL, [
+		$html = [
 			'<div class="dropdown"'. ($parameters ? ' ' . $parameters : '') .' data-placeholder="-- '. functions::escape_attr(t('title_select', 'Select')) .' --">',
 			'  <div class="form-select" data-toggle="dropdown">',
 			'    -- '. t('title_select', 'Select') .' --',
 			'  </div>',
 			'  <ul class="dropdown-menu">',
-		]);
+		];
 
 		$is_numerical_index = array_is_list($options);
 
@@ -104,16 +104,16 @@
 			}
 
 			if (preg_match('#\[\]$#', $name)) {
-				$html .= '<li class="dropdown-item">' . functions::form_checkbox($name, $option, $input, isset($option[2]) ? $option[2] : '') .'</li>' . PHP_EOL;
+				$html[] = '<li class="dropdown-item">' . functions::form_checkbox($name, $option, $input, isset($option[2]) ? $option[2] : '') .'</li>' . PHP_EOL;
 			} else {
-				$html .= '<li class="dropdown-item">' . functions::form_radio_button($name, $option, $input, isset($option[2]) ? $option[2] : '') .'</li>' . PHP_EOL;
+				$html[] = '<li class="dropdown-item">' . functions::form_radio_button($name, $option, $input, isset($option[2]) ? $option[2] : '') .'</li>' . PHP_EOL;
 			}
 		}
 
-		$html .= '  </ul>' . PHP_EOL
-		       . '</div>';
+		$html[] = '  </ul>';
+		$html[] = '</div>';
 
-		return $html;
+		return implode(PHP_EOL, $html);
 	}
 
 	function form_checkbox($name, $value, $input=true, $parameters='') {

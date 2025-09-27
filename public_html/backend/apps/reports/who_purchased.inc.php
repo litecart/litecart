@@ -5,12 +5,12 @@
 	breadcrumbs::add(t('title_reports', 'Reports'));
 	breadcrumbs::add(t('title_who_purchased', 'Who Purchased?'), document::ilink());
 
-	if (!isset($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
+	if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
 		$_GET['page'] = 1;
 	}
 
-	$_GET['date_from'] = !empty($_GET['date_from']) ? date('Y-m-d 00:00:00', strtotime($_GET['date_from'])) : null;
-	$_GET['date_to'] = !empty($_GET['date_to']) ? date('Y-m-d 23:59:59', strtotime($_GET['date_to'])) : date('Y-m-d 23:59:59');
+	$_GET['date_from'] = !empty($_GET['date_from']) ? date('Y-m-d', strtotime($_GET['date_from'])) : null;
+	$_GET['date_to'] = !empty($_GET['date_to']) ? date('Y-m-d', strtotime($_GET['date_to'])) : date('Y-m-d');
 
 	if ($_GET['date_from'] > $_GET['date_to']) {
 		list($_GET['date_from'], $_GET['date_to']) = [$_GET['date_to'], $_GET['date_from']];
@@ -26,18 +26,18 @@
 		$_GET['date_from'] = $date_first_order;
 	}
 
-	if ($_GET['date_from'] > date('Y-m-d H:i:s')) {
-		$_GET['date_from'] = date('Y-m-d H:i:s');
+	if ($_GET['date_from'] > date('Y-m-d')) {
+		$_GET['date_from'] = date('Y-m-d');
 	}
 
-	if ($_GET['date_to'] > date('Y-m-d H:i:s')) {
-		$_GET['date_to'] = date('Y-m-d H:i:s');
+	if ($_GET['date_to'] > date('Y-m-d')) {
+		$_GET['date_to'] = date('Y-m-d');
 	}
 
 	$items = [];
 
-	$timestamp_from = strtotime($_GET['date_from'] ?? '');
-	$timestamp_to = strtotime($_GET['date_to'] ?? '');
+	$timestamp_from = isset($_GET['date_from']) ? strtotime($_GET['date_from']) : null;
+	$timestamp_to = isset($_GET['date_to']) ? strtotime($_GET['date_to']) : null;
 
 	$result = database::query(
 		"select

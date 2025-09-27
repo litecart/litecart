@@ -71,7 +71,7 @@
 			$order->data['language_code'] = language::$selected['code'];
 			$order->data['customer'] = customer::$data;
 			$order->data['display_prices_including_tax'] = !empty(customer::$data['display_prices_including_tax']) ? true : false;
-			$order->data['utm_data'] = session::$data['utm'] ?? [];
+			$order->data['utm_data'] = fallback(session::$data['utm'], []);
 
 			foreach ([
 				'email',
