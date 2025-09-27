@@ -39,6 +39,7 @@
 					//"style-src 'self'",
 					//"base-uri 'self'",
 					//"form-action 'self'",
+					'report-uri '. self::ilink('f:csp_report'),
 			]));
 
 			header('Permissions-Policy: ', implode(',', [
