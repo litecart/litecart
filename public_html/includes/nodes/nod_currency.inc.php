@@ -71,13 +71,6 @@
 				}
 			}
 
-			// Return chained currency with language
-			if (!empty(language::$selected['currency_code'])) {
-				if (in_array(language::$selected['currency_code'], $all_currencies)) {
-					return language::$selected['currency_code'];
-				}
-			}
-
 			// Return currency from URI query
 			if (!empty($_GET['currency'])) {
 				if (in_array($_GET['currency'], $all_currencies)){

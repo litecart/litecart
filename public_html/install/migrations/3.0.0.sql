@@ -429,6 +429,7 @@ CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 CHANGE COLUMN `locale` `locale` VARCHAR(64) NOT NULL DEFAULT '' AFTER `name`,
 ADD COLUMN `locale_intl` VARCHAR(16) NOT NULL DEFAULT '' AFTER `locale`,
 ADD COLUMN `mysql_collation` VARCHAR(32) NOT NULL DEFAULT '' AFTER `locale_intl`,
+DROP COLUMN `currency_code`,
 ADD INDEX `code` (`code`),
 ADD INDEX `code2` (`code2`);
 -- -----

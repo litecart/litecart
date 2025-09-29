@@ -103,7 +103,6 @@
 					format_datetime = '". database::input($this->data['format_datetime']) ."',
 					decimal_point = '". database::input($this->data['decimal_point']) ."',
 					thousands_sep = '". database::input($this->data['thousands_sep'], false, false) ."',
-					currency_code = '". database::input($this->data['currency_code']) ."',
 					priority = ". (int)$this->data['priority'] .",
 					updated_at = '". ($this->data['updated_at'] = date('Y-m-d H:i:s')) ."'
 				where id = ". (int)$this->data['id'] ."
