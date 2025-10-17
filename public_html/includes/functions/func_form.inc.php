@@ -315,7 +315,7 @@
   function form_draw_link_button($url, $title, $parameters='', $icon='') {
 
     if (empty($url)) {
-      $url = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+      $url = strtok($_SERVER['REQUEST_URI'], '?');
     }
 
     return '<a '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="btn btn-default"' : '') .' href="'. functions::escape_html($url) .'"'. (($parameters) ? ' ' . $parameters : '') .'>'. (!empty($icon) ? functions::draw_fonticon($icon) . ' ' : '') . $title .'</a>';

@@ -110,7 +110,7 @@
     public static function after_capture() {
 
     // Load regional settings screen
-      if (!preg_match('#^('. preg_quote(WS_DIR_ADMIN, '#') .')#', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH))) {
+      if (!preg_match('#^('. preg_quote(WS_DIR_ADMIN, '#') .')#', strtok($_SERVER['REQUEST_URI'], '?'))) {
         if (settings::get('regional_settings_screen')) {
           if (empty(customer::$data['id']) && empty(session::$data['skip_regional_settings_screen']) && empty($_COOKIE['skip_regional_settings_screen'])) {
             functions::draw_lightbox(document::ilink('regional_settings'), ['seamless' => true]);
@@ -121,7 +121,7 @@
 
     public static function before_output() {
 
-      if (!preg_match('#^('. preg_quote(WS_DIR_ADMIN, '#') .')#', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH))) {
+      if (!preg_match('#^('. preg_quote(WS_DIR_ADMIN, '#') .')#', strtok($_SERVER['REQUEST_URI'], '?'))) {
         if (settings::get('regional_settings_screen')) {
           if (empty(session::$data['skip_regional_settings_screen']) && empty($_COOKIE['skip_regional_settings_screen'])) {
             session::$data['skip_regional_settings_screen'] = true;
@@ -311,7 +311,7 @@
     public static function require_login() {
       if (!self::check_login()) {
         notices::add('warnings', language::translate('warning_must_login_page', 'You must be logged in to view the page.'));
-        $redirect_url = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) . (!empty($_SERVER['QUERY_STRING']) ? '?' . $_SERVER['QUERY_STRING'] : '');
+        $redirect_url = strtok($_SERVER['REQUEST_URI'], '?') . (!empty($_SERVER['QUERY_STRING']) ? '?' . $_SERVER['QUERY_STRING'] : '');
         header('Location: ' . document::ilink('login', ['redirect_url' => $redirect_url]));
         exit;
       }

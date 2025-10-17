@@ -7,7 +7,7 @@
     '--' => '-', // double dash
   ] as $char => $replacement) {
 
-    $files = functions::file_search(FS_DIR_STORAGE . 'images/products/*'.$char.'*');
+    $files = file_search(FS_DIR_STORAGE . 'images/products/*'.$char.'*');
 
     if (empty($files)) continue;
 

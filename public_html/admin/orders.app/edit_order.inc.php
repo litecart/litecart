@@ -18,6 +18,7 @@
       $_POST['items'][$key]['price'] = $_POST['items'][$key]['price'] / $_POST['currency_value'];
       $_POST['items'][$key]['tax'] = $_POST['items'][$key]['tax'] / $_POST['currency_value'];
     }
+
     foreach (array_keys($_POST['order_total']) as $key) {
       $_POST['order_total'][$key]['value'] = $_POST['order_total'][$key]['value'] / $_POST['currency_value'];
       $_POST['order_total'][$key]['tax'] = $_POST['order_total'][$key]['tax'] / $_POST['currency_value'];
@@ -678,7 +679,7 @@
           <td>
             <?php if (!empty($_POST['items'][$key]['product_id'])) { ?>
             <a href="<?php echo document::href_link(WS_DIR_ADMIN, ['app' => 'catalog', 'doc' => 'edit_product', 'product_id' => $_POST['items'][$key]['product_id']]); ?>" target="_blank">
-              <?php functions::escape_html($_POST['items'][$key]['name']); ?>
+              <?php echo functions::escape_html($_POST['items'][$key]['name']); ?>
             </a>
             <a class="float-end" href="<?php echo document::href_ilink('product', ['product_id' => $_POST['items'][$key]['product_id']]); ?>" target="_blank">
               <?php echo functions::draw_fonticon('fa-external-link'); ?>

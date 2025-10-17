@@ -238,7 +238,7 @@
     if ($_SERVER['SERVER_SOFTWARE'] != 'CLI') {
       echo '<p>Checking $_SERVER["DOCUMENT_ROOT"]... ';
 
-      if (rtrim(str_replace('\\', '/', $_SERVER['DOCUMENT_ROOT']) . '/') . preg_replace('#index\.php$#', '', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)) != str_replace('\\', '/', __DIR__)) {
+      if (rtrim(str_replace('\\', '/', $_SERVER['DOCUMENT_ROOT']) . '/') . preg_replace('#index\.php$#', '', strtok($_SERVER['REQUEST_URI'], '?')) != str_replace('\\', '/', __DIR__)) {
         echo $_SERVER['DOCUMENT_ROOT'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
       } else {
         echo $_SERVER['DOCUMENT_ROOT'] . ' <span class="warning">[Warning]</span> There is a problem with your web server configuration causing $_SERVER["DOCUMENT_ROOT"] and __DIR__ to return conflicting paths. Contact your web host and have them correcting this.</p>' . PHP_EOL  . PHP_EOL;

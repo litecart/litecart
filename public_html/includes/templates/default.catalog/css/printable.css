@@ -11,7 +11,7 @@
   font-size: 12px;
   font-family: var(--default-text-font);
   color: #000;
-  overflow: hidden;
+  /*overflow: hidden;*/
 }
 .page[data-size="A4"] {
   page: A4;

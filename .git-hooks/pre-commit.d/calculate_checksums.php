@@ -1,8 +1,8 @@
 <?php
 
   $checksums_file = 'public_html/install/checksums.md5';
-  $tracked_files = preg_split('#(\r\n?|\n)#', shell_exec('git ls-files'), -1, PREG_SPLIT_NO_EMPTY);
-  $committed_files = preg_split('#(\r\n?|\n)#', shell_exec('git diff --cached --name-only 2>&1'), -1, PREG_SPLIT_NO_EMPTY);
+  $tracked_files = preg_split('#(\r\n?|\n)#', shell_exec('git ls-files') ?: '', -1, PREG_SPLIT_NO_EMPTY);
+  $committed_files = preg_split('#(\r\n?|\n)#', shell_exec('git diff --cached --name-only 2>&1') ?: '', -1, PREG_SPLIT_NO_EMPTY);
 
 // Create list of files for checksums
   $checksums = [];

@@ -38,10 +38,6 @@
     limit 1;"
   );
 
-  document::$snippets['title'][] = $product->head_title ? $product->head_title : $product->name;
-  document::$snippets['description'] = $product->meta_description ? $product->meta_description : strip_tags($product->short_description);
-  document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('product', ['product_id' => (int)$product->id], ['category_id']) .'">';
-
   if (!empty($product->image)) {
     $og_image = functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $product->image, 1200, 630, 'FIT_USE_WHITESPACING');
     document::$snippets['head_tags'][] = '<meta property="og:image" content="'. document::href_rlink(FS_DIR_STORAGE . $og_image) .'">';
@@ -61,6 +57,10 @@
     breadcrumbs::add($product->manufacturer->name, document::ilink('manufacturer', ['manufacturer_id' => $product->manufacturer->id]));
   }
   breadcrumbs::add($product->name);
+
+  document::$snippets['title'][] = $product->head_title ? $product->head_title : $product->name;
+  document::$snippets['description'] = $product->meta_description ? $product->meta_description : strip_tags($product->short_description);
+  document::$snippets['head_tags']['canonical'] = '<link rel="canonical" href="'. document::href_ilink('product', ['product_id' => (int)$product->id], ['category_id']) .'">';
 
   functions::draw_lightbox();
 
