@@ -52,9 +52,14 @@ If everything went well LiteCart should be successfully installed.
 For community written installation instructions see https://www.litecart.net/en/wiki/how_to_install.
 
 
+## Documentation
+
+See our wiki for guides, examples and documentation. [https://www.litecart.net/wiki/](https://www.litecart.net/wiki/)
+
+
 ## How To Get Started
 
-To get your store up and running, see our [step list](https://www.litecart.net/en/wiki/how_to_install) for best practise.
+Get your store up and running, by following our [step list](https://www.litecart.net/en/wiki/get_started) for best practise.
 
 
 ## Folder Structure
@@ -86,6 +91,19 @@ To get your store up and running, see our [step list](https://www.litecart.net/e
 ├── pages/          – Documents
 └── vmods/          – Virtual Modifcations
 ```
+
+## Data Collections and Entities
+
+This is an alphabetical list of different types of data objects or entities that you will come across when using the platform:
+
+[Attributes](https://www.litecart.net/wiki/attributes), [Categories](https://www.litecart.net/wiki/categories), [Countries](https://www.litecart.net/wiki/countries), [Currencies](https://www.litecart.net/wiki/currencies), [Customers](https://www.litecart.net/wiki/customers), [Delivery Statuses](https://www.litecart.net/wiki/delivery_statuses), [Emails](https://www.litecart.net/wiki/emails), [Geo Zones](https://www.litecart.net/wiki/geo_zones), [Languages](https://www.litecart.net/wiki/languages), [Manufacturers](https://www.litecart.net/wiki/manufacturers), [Modules](https://www.litecart.net/wiki/modules), [Orders](https://www.litecart.net/wiki/orders), [Order Statuses](https://www.litecart.net/wiki/order_statuses),  [Pages](https://www.litecart.net/wiki/pages), [Products](https://www.litecart.net/wiki/products),  [Quantity Units](https://www.litecart.net/wiki/quantity_units), [Slides](https://www.litecart.net/wiki/slides), [Sold Out Statuses](https://www.litecart.net/wiki/sold_out_statuses),  [Suppliers](https://www.litecart.net/wiki/suppliers),  [Tax Classes](https://www.litecart.net/wiki/tax_classes), [Tax Rates](https://www.litecart.net/wiki/tax_rates),  [Translations](https://www.litecart.net/wiki/translations),  [Users/Administrators](administrators).
+
+
+## Framework Components
+
+An alphabetical list of framework components that you can find in LiteCart.
+
+[Backend](https://www.litecart.net/wiki/backend), [Backend Apps](https://www.litecart.net/wiki/apps), [Backend Widgets](https://www.litecart.net/wiki/widgets), [Breadcrumbs](https://www.litecart.net/wiki/breadcrumbs), [Cache](https://www.litecart.net/wiki/cache), [Cart](https://www.litecart.net/wiki/cart), [CSV](https://www.litecart.net/wiki/csv), [Database](https://www.litecart.net/wiki/database), [Document](https://www.litecart.net/wiki/document), [Entities](https://www.litecart.net/wiki/entities), [Events](https://www.litecart.net/wiki/events), [HTTP Client](https://www.litecart.net/wiki/http_client), [Functions/Helpers](https://www.litecart.net/wiki/functions), [Frontend](https://www.litecart.net/wiki/frontend), [Length](https://www.litecart.net/wiki/length), [Nodes](https://www.litecart.net/wiki/nodes), [Notices](https://www.litecart.net/wiki/notices), [Pages/Controllers](https://www.litecart.net/wiki/controllers), [Partials](https://www.litecart.net/wiki/partials), [Reference Model](https://www.litecart.net/wiki/references), [Routing System](https://www.litecart.net/wiki/routes), [Session](https://www.litecart.net/wiki/sessions), [Settings](https://www.litecart.net/wiki/settings), [SMTP Client](https://www.litecart.net/wiki/smtp_client), [Stylesheets](https://www.litecart.net/wiki/stylesheets), [Stats](https://www.litecart.net/wiki/stats), [Templates](https://www.litecart.net/wiki/templates), [Template Layouts](https://www.litecart.net/wiki/layouts), [Template Views](https://www.litecart.net/wiki/views), [vMod](https://www.litecart.net/wiki/vmod), [Weight](https://www.litecart.net/wiki/weight), [Volume](https://www.litecart.net/wiki/volume).
 
 
 ## How To Change The Look Of Your Store
