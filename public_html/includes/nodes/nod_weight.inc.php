@@ -75,14 +75,14 @@
 				if ($value > 0) {
 					trigger_error('Invalid weight unit ('. $unit .')', E_USER_WARNING);
 				}
-				
+
 				return language::number_format((float)$value, 2);
 			}
 
 			$decimals = self::$units[$unit]['decimals'];
 
-			$formatted_value = language::number_format((float)$value, $decimals) .' '. self::$units[$unit]['unit'];
+			$formatted = language::number_format((float)$value, $decimals) .' '. self::$units[$unit]['unit'];
 
-			return $formatted_value;
+			return $formatted;
 		}
 	}

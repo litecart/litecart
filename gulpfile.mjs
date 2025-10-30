@@ -245,4 +245,7 @@ gulp.task('build', gulp.series(
 	'watch',
 ));
 
-gulp.task('default', gulp.series('build'));
+gulp.task('default', gulp.series(
+	'build',
+	'watch'
+));

@@ -12,7 +12,7 @@
 	 * LiteCart is a registered trademark, property of T. Almroth.
 	 */
 
-	require_once 'includes/app_header.inc.php';
+	require_once __DIR__ . '/includes/app_header.inc.php';
 
 	// Process a CLI request
 	if ($_SERVER['SERVER_SOFTWARE'] == 'CLI') {

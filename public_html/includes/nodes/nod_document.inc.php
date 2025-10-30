@@ -4,13 +4,14 @@
 
 		public static $canonical = '';
 		public static $content = [];
+		public static $console = [];
 		public static $description = '';
 		public static $head_tags = [];
 		public static $foot_tags = [];
 		public static $javascript = [];
 		public static $jsenv = [];
 		public static $layout = 'default';
-		public static $console = [];
+		public static $nonce = '';
 		public static $opengraph = [];
 		public static $preloads = [];
 		public static $schema = [];
@@ -20,6 +21,15 @@
 		public static $title = [];
 
 		public static function init() {
+
+			// Default to AJAX layout on AJAX request
+			if (is_ajax_request()) {
+				self::$layout = 'ajax';
+			}
+
+			// Generate a cryptographic nonce for Content Security Policy
+			self::$nonce = bin2hex(random_bytes(16));
+
 			event::register('before_capture', [__CLASS__, 'before_capture']);
 			event::register('after_capture', [__CLASS__, 'after_capture']);
 		}
@@ -32,14 +42,13 @@
 			header('Referrer-Policy: strict-origin-when-cross-origin'); // Referrer Policy
 			header('X-Content-Type-Options: nosniff'); // Prevent MIME type sniffing
 
-			header('Content-Security-Policy: '. implode(';', [
+			//header('Content-Security-Policy-Report-Only: '. implode('; ', [
+			header('Content-Security-Policy: '. implode('; ', [
+				"default-src 'self' https://www.litecart.net 'unsafe-inline' 'unsafe-eval' data:", // Default policy
 				"frame-ancestors 'self'", // Clickjacking Protection
-					//"script-src 'nonce-". self::$snippets['nonce'] ."' 'strict-dynamic'",
-					//"img-src 'self'",
-					//"style-src 'self'",
-					//"base-uri 'self'",
-					//"form-action 'self'",
-					'report-uri '. self::ilink('f:csp_report'),
+				//"script-src 'self' 'unsafe-inline'",
+				//"style-src 'self' 'unsafe-inline'",
+				'report-uri '. self::ilink('f:csp_report'),
 			]));
 
 			header('Permissions-Policy: ', implode(',', [
@@ -51,11 +60,6 @@
 					'geolocation=()',
 					'browsing-topics()',
 			]));
-
-			// Default to AJAX layout on AJAX request
-			if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
-				self::$layout = 'ajax';
-			}
 
 			self::$title = [settings::get('store_name')];
 
@@ -76,16 +80,16 @@
 					break;
 			}
 
-			// Alert errors to administrator
+			// Alert errors if administrator
 			if (administrator::check_login()) {
 				self::add_head_tags(implode(PHP_EOL, [
-					'<script>let _alertedErrors=0;window.onerror=(c,r,a,p)=>{_alertedErrors++<5&&alert(c+" in "+r.split("/").pop().split("?")[0]+" on line "+a)};</script>',
+					'<script nonce="'. self::$nonce .'">let _alertedErrors=0;window.onerror=(c,r,a,p)=>{_alertedErrors++<5&&alert(c+" in "+r.split("/").pop().split("?")[0]+" on line "+a)};</script>',
 				]), 'alert_errors');
 			}
 
 			// Wait For (Mini version)
 			self::add_head_tags(implode(PHP_EOL, [
-				'<script>window.waitFor=window.waitFor||((i,o)=>{void 0!==window[i]?o(window[i]):setTimeout((()=>waitFor(i,o)),50)});</script>',
+				'<script nonce="'. self::$nonce .'">window.waitFor=window.waitFor||((i,o)=>{void 0!==window[i]?o(window[i]):setTimeout((()=>waitFor(i,o)),50)});</script>',
 			]), 'waitFor');
 
 			// Load jQuery
@@ -107,7 +111,7 @@
 
 		public static function after_capture() {
 
-			// JavaScript Environment
+			// Add data for JavaScript environment
 
 			self::$jsenv['platform'] = [
 				'path' => WS_DIR_APP,
@@ -152,10 +156,13 @@
 				'email' => customer::$data['email'] ?: null,
 			];
 
-			self::$head_tags[] = '<script>window._env='. functions::format_json(self::$jsenv, false) .'</script>';
+			self::$head_tags[] = '<script nonce="'. self::$nonce .'">window._env='. functions::format_json(self::$jsenv, false) .'</script>';
 		}
 
 		public static function optimize(&$output) {
+
+      // Strip HTML comments
+      $output = preg_replace('#<!--[\s\S]*?-->#', '', $output);
 
 			// Extract styling
 			$output = preg_replace_callback('#(<html[^>]*>)(.*)(</html>)#is', function($matches) use (&$stylesheets, &$style, &$javascripts, &$javascript) {
@@ -207,7 +214,7 @@
 			if (!empty($style)) {
 
 				// Convert to string
-				$style = implode(PHP_EOL . PHP_EOL, $style);
+				$style = implode(PHP_EOL, $style);
 
 				// Minify internal CSS
 				foreach([
@@ -221,18 +228,12 @@
 					$style = preg_replace($search, $replace, $style);
 				}
 
-				$style = implode(PHP_EOL, [
-					//'<!--/*--><![CDATA[/*><!--*/', // Do we still benefit from parser bypassing?
-					$style,
-					//'/*]]>*/-->',
-				]);
-
 				// Build integrity hash
 				$checksum = hash('sha256', $style, true);
 
 				// Prepare style tag
 				$style = implode(PHP_EOL, [
-					'<style integrity="sha256-'. base64_encode($checksum) .'" crossorigin="anonymous">',
+					'<style nonce="'. self::$nonce .'" integrity="sha256-'. base64_encode($checksum) .'" crossorigin="anonymous">',
 					$style,
 					'</style>',
 				]);
@@ -252,11 +253,9 @@
 
 				// Convert to string
 				$javascript = implode(PHP_EOL, [
-					//'<!--/*--><![CDATA[/*><!--*/', // Do we still benefit from parser bypassing?
-					'+waitFor(\'jQuery\', function($) {',
+					'waitFor(\'jQuery\', function($) {',
 					implode(PHP_EOL . PHP_EOL, $javascript),
 					'});',
-					//'/*]]>*/-->',
 				]);
 
 				// Build integrity hash
@@ -264,7 +263,7 @@
 
 				// Prepare script tag
 				$javascript = implode(PHP_EOL, [
-					'<script integrity="sha256-'. base64_encode($checksum) .'" crossorigin="anonymous">',
+					'<script nonce="'. self::$nonce .'" integrity="sha256-'. base64_encode($checksum) .'" crossorigin="anonymous">',
 					$javascript,
 					'</script>',
 				]) . PHP_EOL;
@@ -272,11 +271,6 @@
 				// Insert javascript before </body>
 				$output = preg_replace('#</body>#is', addcslashes($javascript . '</body>', '\\$'), $output, 1);
 			}
-
-			// Remove HTML comments
-			$output = preg_replace_callback('#(<html[^>]*>)(.*)(</html>)#is', function($matches) {
-				return preg_replace('#<!--.*?-->#ms', '', $matches[0]);
-			}, $output);
 
 			// Static domain
 			if ($static_domain = settings::get('static_domain')) {
@@ -342,7 +336,7 @@
 			// Prepare JSON Schema
 			if (!empty(self::$schema)) {
 				$_page->snippets['head_tags']['schema_json'] = implode(PHP_EOL, [
-					'<script type="application/ld+json">',
+					'<script type="application/ld+json" nonce="'. self::$nonce .'">',
 					functions::format_json(array_values(self::$schema), false),
 					'</script>',
 				]);
@@ -374,7 +368,7 @@
 			// Prepare internal javascript
 			if (!empty(self::$javascript)) {
 				$_page->snippets['foot_tags'][] = implode(PHP_EOL, [
-					'<script>',
+					'<script nonce="'. self::$nonce .'">',
 					implode(PHP_EOL . PHP_EOL, self::$javascript),
 					'</script>',
 				]);
@@ -446,9 +440,9 @@
 
 			foreach ($resources as $resource) {
 				if (preg_match('#^(app|storage)://#', $resource) && is_file($resource)) {
-					$scripts[] = '<script defer integrity="sha256-'. base64_encode(hash_file('sha256', $resource, true)) .'" crossorigin="anonymous" src="'. self::href_rlink($resource) .'"></script>';
+					$scripts[] = '<script defer nonce="'. self::$nonce .'" integrity="sha256-'. base64_encode(hash_file('sha256', $resource, true)) .'" crossorigin="anonymous" src="'. self::href_rlink($resource) .'"></script>';
 				} else {
-					$scripts[] = '<script src="'. self::href_link($resource) .'"></script>';
+					$scripts[] = '<script nonce="'. self::$nonce .'" src="'. self::href_link($resource) .'"></script>';
 				}
 			}
 
@@ -521,6 +515,7 @@
 				default:
 
 					switch (fallback(route::$selected['endpoint'])) {
+
 						case 'backend':
 							$resource = WS_DIR_APP . BACKEND_ALIAS .'/'. $resource;
 							break;

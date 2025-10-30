@@ -4,7 +4,7 @@
 	<div id="content">
 		<div class="grid">
 
-			<div class="col-md-8">
+			<div class="col-md-7">
 
 				<section id="box-shopping-cart" class="card">
 
@@ -90,7 +90,7 @@
 
 			</div>
 
-			<div class="col-md-4">
+			<div class="col-md-5">
 
 				<section id="box-shopping-cart" class="card">
 
@@ -111,7 +111,7 @@
 
 								<div class="form-group flex-grow">
 									<div class="form-label"><?php echo t('title_currency', 'Currency'); ?></div>
-									<div style="line-height: 2;"><?php echo currency::$selected['code']; ?></div>
+									<div style="line-height: 2;"><?php echo functions::escape_html(currency::$selected['name']); ?> (<?php echo functions::escape_html(currency::$selected['code']); ?>)</div>
 								</div>
 
 								<div>

@@ -10,11 +10,6 @@
 		echo '<script>console.log("'. addcslashes($output, "\"\r\n") .'");</script>';
 	}
 
-
-
-
-
-
 	// Return the first non-nil variable
 	function coalesce() {
 		foreach (func_get_args() as $arg) {

@@ -381,6 +381,17 @@
 		FS_DIR_APP . 'install/data/default/storage/images/no_image.svg' => FS_DIR_APP . 'storage/images/',
 	]);
 
+	// Copy/Move robots.txt
+	if (is_file(FS_DIR_APP . 'storage/robots.txt')) {
+		perform_action('move', [
+			FS_DIR_APP . 'robots.txt' => FS_DIR_STORAGE . 'robots.txt',
+		]);
+	} else {
+		perform_action('copy', [
+			FS_DIR_APP . 'install/data/default/storage/robots.txt' => FS_DIR_APP . 'storage/robots.txt',
+		]);
+	}
+
 	// Move files to trash
 	mkdir(FS_DIR_APP . '.deleteme', 0777, true);
 
@@ -716,6 +727,18 @@
 			DROP INDEX `brand_info`;"
 		);
 	}
+
+	// Lowercase admin usernames
+	database::query(
+		"select id, username from ". DB_TABLE_PREFIX ."administrators;"
+	)->each(function($admin) {
+		database::query(
+			"update ". DB_TABLE_PREFIX ."administrators
+			set username = '". database::input(strtolower($admin['username'])) ."'
+			where id = ". (int)$admin['id'] ."
+			limit 1;"
+		);
+	});
 
 	// Migrate order items to line items
 	database::query(

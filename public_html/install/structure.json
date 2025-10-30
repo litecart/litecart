@@ -375,8 +375,8 @@
 		"lc_customers": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
+				"group_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
 				"status": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 1 },
-				"group_id": { "type": "INT", "length": 1, "unsigned": true, "nullable": true },
 				"code": { "type": "VARCHAR", "length": 32, "default": "''" },
 				"email": { "type": "VARCHAR", "length": 64, "default": "''" },
 				"tax_id": { "type": "VARCHAR", "length": 24, "default": "''" },
@@ -587,7 +587,8 @@
 			},
 			"primary_key": ["id"],
 			"keys": {
-				"subscribed": ["subscribed"]
+				"subscribed": ["subscribed"],
+				"email": ["email"]
 			},
 			"unique_keys": {
 				"email": ["email"]
@@ -730,9 +731,7 @@
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"order_id": { "type": "INT", "length": 10, "unsigned": true },
 				"line_id": { "type": "INT", "length": 10, "unsigned": true },
-				"product_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
-				"stock_items": { "type": "VARCHAR", "length": 256, "default": "'[]'" },
-				"userdata": { "type": "VARCHAR", "length": 2048, "nullable": true },
+				"stock_item_id": { "type": "INT", "length": 10, "unsigned": true },
 				"name": { "type": "VARCHAR", "length": 128, "default": "''" },
 				"serial_number": { "type": "VARCHAR", "length": 32, "default": "''" },
 				"sku": { "type": "VARCHAR", "length": 32, "default": "''" },

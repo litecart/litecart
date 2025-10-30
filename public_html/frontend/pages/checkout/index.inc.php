@@ -19,7 +19,7 @@
 		}
 
 		// Halt on no items
-		if (empty(session::$data['checkout']['order']->data['lines'])) {
+		if (empty(session::$data['checkout']['order']->data['items'])) {
 			throw new Exception(t('error_order_appears_empty', 'The order appears empty'), 404);
 		}
 

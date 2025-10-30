@@ -22,7 +22,7 @@
 
 					$administrator = database::query(
 						"select * from ". DB_TABLE_PREFIX ."administrators
-						where lower(username) = lower('". database::input($username) ."')
+						where username = '". database::input(strtolower($username)) ."'
 						and status
 						and (valid_from is null or valid_from < '". date('Y-m-d H:i:s') ."')
 						and (valid_to is null or valid_to > '". date('Y-m-d H:i:s') ."')

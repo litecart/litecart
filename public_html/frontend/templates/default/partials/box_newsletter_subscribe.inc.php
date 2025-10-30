@@ -18,7 +18,7 @@
 
 		<div class="flex-columns" style="place-content: center;">
 			<div class="hidden-xs" style="flex: 0 1 170px;">
-				<img class="responsive" src="<?php echo document::href_rlink('storage://images/illustration/letter.svg'); ?>" >
+				<img class="responsive" src="<?php echo document::href_rlink('storage://images/illustration/letter.svg'); ?>" style="max-height: 150px;">
 			</div>
 
 			<?php echo functions::form_begin('newsletter_subscribe_form', 'post'); ?>

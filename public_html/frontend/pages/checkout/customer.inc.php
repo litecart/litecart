@@ -193,17 +193,17 @@
 			if (settings::get('customer_shipping_address') && !empty($order->data['different_shipping_address'])) {
 
 				if (isset($_POST['shipping_address'][$field])) {
-						$order->data['customer']['shipping_address'][$field] = $_POST['shipping_address'][$field];
+					$order->data['customer']['shipping_address'][$field] = $_POST['shipping_address'][$field];
 				} else {
-						$order->data['customer']['shipping_address'][$field] = null;
+					$order->data['customer']['shipping_address'][$field] = null;
 				}
 
 			} else {
 
 				if (isset($_POST['customer'][$field])) {
-						$order->data['customer']['shipping_address'][$field] = $_POST['customer'][$field];
+					$order->data['customer']['shipping_address'][$field] = $_POST['customer'][$field];
 				} else {
-						$order->data['customer']['shipping_address'][$field] = null;
+					$order->data['customer']['shipping_address'][$field] = null;
 				}
 			}
 		}
@@ -296,7 +296,7 @@
 	if (!empty($order->data['customer']['email'])) {
 		if (database::query(
 			"select id from ". DB_TABLE_PREFIX ."newsletter_recipients
-			where lower(email) = lower('". database::input($order->data['customer']['email']) ."')
+			where email = '". database::input(strtolower($order->data['customer']['email'])) ."'
 			limit 1;"
 		)->num_rows) {
 			$subscribed_to_newsletter = true;

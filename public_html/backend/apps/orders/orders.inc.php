@@ -190,7 +190,7 @@
 				where name like '%". database::input($_GET['query']) ."%'
 			)",
 			"o.id in (
-				select order_id from ". DB_TABLE_PREFIX ."orders_items
+				select order_id from ". DB_TABLE_PREFIX ."orders_lines
 				where name like '%". database::input($_GET['query']) ."%'
 			)",
 		];

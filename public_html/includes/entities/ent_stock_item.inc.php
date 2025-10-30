@@ -56,7 +56,7 @@
 
 					$stock_item = database::query(
 						"select * from ". DB_TABLE_PREFIX ."stock_items
-						where lower(nullif($column, '')) = '". database::input(strtolower($id)) ."'
+						where nullif($column, '') = '". database::input(strtoupper($id)) ."'
 						limit 1;"
 					)->fetch();
 

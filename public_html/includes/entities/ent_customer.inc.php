@@ -45,7 +45,7 @@
 			$customer = database::query(
 				"select * from ". DB_TABLE_PREFIX ."customers
 				". (preg_match('#^[0-9]+$#', $id) ? "where id = ". (int)$id : "") ."
-				". (preg_match('#@#', $id) ? "where lower(email) = '". database::input(strtolower($id)) ."'" : "") ."
+				". (preg_match('#@#', $id) ? "where email = '". database::input(strtolower($id)) ."'" : "") ."
 				limit 1;"
 			)->fetch(function($customer){
 
@@ -96,7 +96,7 @@
 				database::query(
 					"update ". DB_TABLE_PREFIX ."orders
 					set customer_id = ". (int)$this->data['id'] ."
-					where lower(customer_email) = '". database::input(strtolower($this->data['email'])) ."'
+					where customer_email = '". database::input(strtolower($this->data['email'])) ."'
 					and customer_id = 0;"
 				);
 			}
@@ -145,7 +145,7 @@
 					set email = '". database::input(strtolower($this->data['email'])) ."',
 						firstname = '". database::input($this->data['firstname']) ."',
 						lastname = '". database::input($this->data['lastname']) ."'
-					where lower(email) = '". database::input(strtolower($this->previous['email'])) ."';"
+					where email = '". database::input(strtolower($this->previous['email'])) ."';"
 				);
 			}
 
@@ -158,7 +158,7 @@
 			} else if (!empty($this->previous['id'])) {
 				database::query(
 					"delete from ". DB_TABLE_PREFIX ."newsletter_recipients
-					where lower(email) = '". database::input(strtolower($this->data['email'])) ."';"
+					where email = '". database::input(strtolower($this->data['email'])) ."';"
 				);
 			}
 

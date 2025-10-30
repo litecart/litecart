@@ -1465,7 +1465,7 @@
 			return form_select($name, $options, $input, $parameters);
 		}
 	}
-
+/*
 	function form_select_customer($name, $input=true, $parameters='') {
 
 		if (empty(administrator::$data['id'])) {
@@ -1508,6 +1508,162 @@
 			'</div>',
 		]);
 	}
+*/
+
+  function form_select_customer($name, $value = true, $parameters = '') {
+
+		if (empty(administrator::$data['id'])) {
+			throw new Error('Must be logged in to use form_select_customer()');
+		}
+
+		if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
+			trigger_error('Passing $multiple as 3rd parameter in form_select_customer() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
+			if (isset($args[3])) $parameters = $args[2];
+		}
+
+		if (preg_match('#\[\]$#', $name)) {
+			return form_select_multiple_customers($name, $input, $parameters);
+		}
+
+		if ($input === true) {
+			$input = form_reinsert_value($name);
+		}
+
+		$account_name = t('title_guest', 'Guest');
+
+		if ($input) {
+			$customer = database::query(
+				"select * from ". DB_TABLE_PREFIX ."customers
+				where id = ". (int)$input ."
+				limit 1;"
+			)->fetch();
+
+			if ($customer) {
+				$account_name = $customer['company'] ?: $customer['firstname'] .' '. $customer['lastname'];
+			} else {
+				$account_name = '<em>'. t('title_unknown', 'Unknown') .'</em>';
+			}
+		}
+
+		document::add_style(implode(PHP_EOL, [
+			'	.customer-dropdown {',
+			'		position: relative;',
+			'	}',
+			'	.customer-dropdown .search-input {',
+			'		width: 100%;',
+			'		margin-bottom: 5px;',
+			'	}',
+			'	.customer-dropdown .dropdown-results {',
+			'		position: absolute;',
+			'		top: 100%;',
+			'		left: 0;',
+			'		right: 0;',
+			'		max-height: 200px;',
+			'		overflow-y: auto;',
+			'		background: #fff;',
+			'		border: 1px solid #ccc;',
+			'		z-index: 1000;',
+			'	}',
+			'	.customer-dropdown .dropdown-results li {',
+			'		padding: 8px;',
+			'		cursor: pointer;',
+			'	}',
+			'	.customer-dropdown .dropdown-results li:hover,',
+			'	.customer-dropdown .dropdown-results li.active {',
+			'		background: #f5f5f5;',
+			'	}',
+			'	.customer-dropdown .selected-customer {',
+			'		display: inline-block;',
+			'		margin-top: 5px;',
+			'	}',
+		]), 'select-customer');
+
+		document::add_javascript(implode(PHP_EOL, [
+			'	var xhr_customer_search = null;',
+			'	var $dropdown = $(".customer-dropdown");',
+			'	var $searchInput = $dropdown.find(".search-input");',
+			'	var $results = $dropdown.find(".dropdown-results");',
+			'	var $list = $results.find("ul");',
+			'',
+			'	// Preselect the current customer if exists',
+			'	if ($searchInput.val() && ' . (int)$value . ') {',
+			'		$list.prepend(\'<li class="active" data-id="' . (int)$value . '">' . functions::escape_js($account_name) . ' (ID: ' . (int)$value . ')</li>\');',
+			'	}',
+			'',
+			'	$searchInput.on("input", function() {',
+			'		var query = $(this).val();',
+			'		$results.show();',
+			'',
+			'		if (query === "") {',
+			'			$list.html(\'<li class="set-guest' . (!empty($value) ? '' : ' active') . '" data-id="0">(' . functions::escape_js(t('title_guest', 'Guest')) . ')</li>\');',
+			'			return;',
+			'		}',
+			'',
+			'		if (xhr_customer_search) xhr_customer_search.abort();',
+			'',
+			'		xhr_customer_search = $.ajax({',
+			'			type: "get",',
+			'			async: true,',
+			'			cache: false,',
+			'			url: "' . document::ilink('customers/customers.json') . '?query=" + encodeURIComponent(query),',
+			'			dataType: "json",',
+			'			beforeSend: function(jqXHR) {',
+			'				jqXHR.overrideMimeType("text/html;charset=" + $("html meta[charset]").attr("charset"));',
+			'			},',
+			'			error: function(jqXHR, textStatus, errorThrown) {',
+			'				if (textStatus !== "abort") console.error(textStatus + ": " + errorThrown);',
+			'			},',
+			'			success: function(json) {',
+			'				$list.html(\'<li class="set-guest" data-id="0">(' . functions::escape_js(t('title_guest', 'Guest')) . ')</li>\');',
+			'				$.each(json, function(i, row) {',
+			'					if (row) {',
+			'						var isActive = (row.id == ' . (int)$value . ');',
+			'						$list.append(',
+			'							\'<li class="\' + (isActive ? "active" : "") + \'" data-id="\' + row.id + \'">\' +',
+			'							row.id + \' &ndash; \' + row.name + \' (\' + row.email + \')</li>\'',
+			'						);',
+			'					}',
+			'				});',
+			'				if ($list.find("li").length === 1) {',
+			'					$list.append(\'<li><em>' . functions::escape_js(t('text_no_results', 'No results')) . '</em></li>\');',
+			'				}',
+			'			}',
+			'		});',
+			'	});',
+			'',
+			'	$dropdown.on("click", ".dropdown-results li", function() {',
+			'		var id = $(this).data("id");',
+			'		var name = $(this).text();',
+			'		$dropdown.find(":input[name=\'' . functions::escape_js($name) . '\']").val(id).trigger("change");',
+			'		$searchInput.val(name);',
+			'		$list.find("li").removeClass("active");',
+			'		$(this).addClass("active");',
+			'		$results.hide();',
+			'	});',
+			'',
+			'	$(document).on("click", function(e) {',
+			'		if (!$(e.target).closest(".customer-dropdown").length) {',
+			'			$results.hide();',
+			'		}',
+			'	});',
+			'',
+			'	$searchInput.on("focus", function() {',
+			'		$results.show();',
+			'	});',
+		]));
+
+		return implode(PHP_EOL, [
+			'<div class="customer-dropdown"' . ($parameters ? ' ' . $parameters : '') . '>',
+			'  <input type="hidden" name="' . functions::escape_html($name) . '" value="' . (int)$value . '" />',
+			'  <input type="text" class="form-control search-input" placeholder="' . functions::escape_html(t('title_search', 'Search')) . '" autocomplete="off" value="' . functions::escape_html($value ? $account_name : '') . '">',
+			'  <div class="dropdown-results" style="display: none;">',
+			'    <ul class="list-unstyled">',
+			'      <li class="set-guest' . ($value ? '' : ' active') . '" data-id="0">(' . functions::escape_html(t('title_guest', 'Guest')) . ')</li>',
+			'    </ul>',
+			'  </div>',
+			'</div>',
+		]);
+}
 
 	function form_select_customer_group($name, $input=true, $parameters='') {
 

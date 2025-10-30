@@ -22,7 +22,7 @@
 
 		$item = database::query(
 			"select oi.id, oi.product_id, p.file, p.filename, p.mime_type
-			from ". DB_TABLE_PREFIX ."order_items
+			from ". DB_TABLE_PREFIX ."orders_lines oi
 			left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = oi.product_id)
 			where oi.order_id = ". (int)$order['id'] ."
 			and oi.id = ". (int)$_GET['order_item_id'] ."
@@ -42,7 +42,7 @@
 		}
 
 		database::query(
-			"update ". DB_TABLE_PREFIX ."orders_items
+			"update ". DB_TABLE_PREFIX ."orders_lines
 			set downloads = downloads + 1
 			where id = ". (int)$item['id'] ."
 			limit 1;"

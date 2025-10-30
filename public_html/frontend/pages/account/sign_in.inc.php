@@ -40,7 +40,7 @@
 
 			$customer = database::query(
 				"select * from ". DB_TABLE_PREFIX ."customers
-				where lower(email) = '". database::input(strtolower($_POST['email'])) ."'
+				where email = '". database::input(strtolower($_POST['email'])) ."'
 				limit 1;"
 			)->fetch(function($customer){
 				$customer['known_ips'] = preg_split('#\s*,\s*#', $customer['known_ips'], -1, PREG_SPLIT_NO_EMPTY);

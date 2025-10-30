@@ -41,7 +41,7 @@
 				". (preg_match('#^[0-9]+$#', $country_code) ? "where id = ". (int)$country_code : "") ."
 				". (preg_match('#^[A-Z]{2}$#i', $country_code) ? "where iso_code_2 = '". database::input(strtoupper($country_code)) ."'" : "") ."
 				". (preg_match('#^[A-Z]{3}$#i', $country_code) ? "where iso_code_3 = '". database::input(strtoupper($country_code)) ."'" : "") ."
-				". (preg_match('#^[a-z ]{4,}$#i', $country_code) ? "where (lower(name) = '". database::input(mb_strtolower($country_code)) ."' or lower(domestic_name) = '". database::input(mb_strtolower($country_code)) ."')" : "") ."
+				". (preg_match('#^[a-z ]{4,}$#i', $country_code) ? "where (name like '". database::input_like($country_code) ."' or domestic_name like '". database::input_like($country_code) ."')" : "") ."
 				limit 1;"
 			)->fetch();
 

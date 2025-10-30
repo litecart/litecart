@@ -230,7 +230,7 @@
 				". (!empty($filter['keywords']) ? "and (". implode(" or ", array_map(function($s){ return "find_in_set('$s', p.keywords)"; }, database::input($filter['keywords']))) .")" : null) ."
 				and (p.valid_from is null or p.valid_from <= '". date('Y-m-d H:i:s') ."')
 				and (p.valid_to is null or p.valid_to >= '". date('Y-m-d H:i:s') ."')
-				". (!empty($filter['purchased']) ? "and p.id in (select product_id from ". DB_TABLE_PREFIX ."orders_items group by product_id)" : "") ."
+				". (!empty($filter['purchased']) ? "and p.id in (select product_id from ". DB_TABLE_PREFIX ."orders_lines group by product_id)" : "") ."
 				". (!empty($filter['exclude_products']) ? "and p.id not in ('". implode("', '", $filter['exclude_products']) ."')" : "") ."
 
 				". ((!empty($sql_inner_sort) && !empty($filter['limit'])) ? "order by " . implode(",", $sql_inner_sort) : "") ."

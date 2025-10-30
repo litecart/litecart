@@ -65,6 +65,9 @@
 				'domain' => fallback($_SERVER['HTTP_HOST']),
 			]);
 
+			$this->data['customer']['country_code'] = settings::get('default_country_code');
+			$this->data['customer']['shipping_address']['country_code'] = settings::get('default_country_code');
+
 			$this->data['shipping_option']['userdata'] = [];
 			$this->data['payment_option']['userdata'] = [];
 

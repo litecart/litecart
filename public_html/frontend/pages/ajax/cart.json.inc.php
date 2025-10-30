@@ -6,7 +6,6 @@
 			'items' => [],
 			'num_items' => cart::$total['items'],
 			'total_value' => !empty(customer::$data['display_prices_including_tax']) ? cart::$total['value'] + cart::$total['tax'] : cart::$total['value'],
-			'formatted_total_value' => !empty(customer::$data['display_prices_including_tax']) ? currency::format(cart::$total['value'] + cart::$total['tax']) : currency::format(cart::$total['value']),
 			'text_total' => t('title_total', 'Total'),
 		];
 
@@ -28,7 +27,6 @@
 				'gtin' => $item['gtin'],
 				'taric' => $item['taric'],
 				'price' => !empty(customer::$data['display_prices_including_tax']) ? $item['price'] + $item['tax']: $item['price'],
-				'formatted_price' => currency::format(!empty(customer::$data['display_prices_including_tax']) ? $item['price'] + $item['tax'] : $item['price']),
 				'tax' => $item['tax'],
 				'tax_class_id' => $item['tax_class_id'],
 				'quantity' => $item['quantity'],

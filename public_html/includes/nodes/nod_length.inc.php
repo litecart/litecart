@@ -99,8 +99,8 @@
 
 			$decimals = self::$units[$unit]['decimals'];
 
-			$formatted_value = language::number_format((float)$value, (int)$decimals) .' '. self::$units[$unit]['unit'];
+			$formatted = language::number_format((float)$value, (int)$decimals) .' '. self::$units[$unit]['unit'];
 
-			return $formatted_value;
+			return $formatted;
 		}
 	}

@@ -27,8 +27,8 @@
 
 			$administrator = database::query(
 				"select * from ". DB_TABLE_PREFIX ."administrators
-				where lower(username) = '". database::input(strtolower($_POST['username'])) ."'
-				or lower(email) = '". database::input(strtolower($_POST['username'])) ."'
+				where username = '". database::input(strtolower($_POST['username'])) ."'
+				or email = '". database::input(strtolower($_POST['username'])) ."'
 				limit 1;"
 			)->fetch(function($administrator){
 				$administrator['known_ips'] = functions::string_split($administrator['known_ips']);

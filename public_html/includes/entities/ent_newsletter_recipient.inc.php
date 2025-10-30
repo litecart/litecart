@@ -41,7 +41,7 @@
 			$recipient = database::query(
 				"select * from ". DB_TABLE_PREFIX ."newsletter_recipients
 				". (preg_match('#^[0-9]+$#', $id) ? "where id = ". (int)$id ."" : "") ."
-				". (preg_match('#@#', $id) ? "where lower(email) = '". database::input(strtolower($id)) ."'" : "") ."
+				". (preg_match('#@#', $id) ? "where email = '". database::input(strtolower($id)) ."'" : "") ."
 				limit 1;"
 			)->fetch();
 

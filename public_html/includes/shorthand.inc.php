@@ -5,8 +5,8 @@
 		return forward_static_call_array(['database', 'query'], $args);
 	}
 
-	// Output a translation
-	function t(...$args){
+	// Shorthand t() for language::translate()
+	function t(...$args) {
 		return forward_static_call_array(['language', 'translate'], $args);
 	}
 
@@ -44,10 +44,12 @@
 		return !0;
 	}
 
-	// Returns value for variable or falls back to a substituting value on nil(). Similar to $var ?? $fallback ?: $fallback
-	function fallback(&$var, $fallback=null) {
+	// Returns value for variable or falls back to a substituting value on nil(). Similar to !empty($var) ? $var : $fallback1 ?: $fallback2
+	function fallback(&$var, ...$fallbacks) {  // ... as of PHP 5.6
 		if (!nil($var)) return $var;
-		return $fallback;
+		foreach ($fallbacks as $fallback) {
+			if (!nil($fallback)) return $fallback;
+		}
 	}
 
 	// Check if variable indicates a truthy value
@@ -58,7 +60,7 @@
 
 	// Check if variable indicates a falsy value
 	function is_false($string) {
-		//return (empty($string) || preg_match('#^(0|false|no|off|inactive|disabled)$#i', $string));
+		//return (empty($string) || preg_match('#^(0|false|no|none|off|inactive|disabled)$#i', $string));
 		return !filter_var($string, FILTER_VALIDATE_BOOLEAN);
 	}
 

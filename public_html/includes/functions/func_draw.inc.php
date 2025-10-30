@@ -185,9 +185,9 @@
 	function draw_script($src) {
 
 		if (preg_match('#^(app|storage)://#', $src)) {
-			$tag = '<script defer integrity="sha256-'. base64_encode(hash_file('sha256', $src, true)) .'" src="'. document::href_rlink($src) .'"></script>';
+			$tag = '<script defer nonce="'. document::$nonce .'" integrity="sha256-'. base64_encode(hash_file('sha256', $src, true)) .'" src="'. document::href_rlink($src) .'"></script>';
 		} else {
-			$tag = '<script src="'. document::href_link($src) .'">'. $content .'</script>';
+			$tag = '<script nonce="'. document::$nonce .'" src="'. document::href_link($src) .'">'. $content .'</script>';
 		}
 
 		return $tag;
@@ -196,9 +196,9 @@
 	function draw_style($href) {
 
 		if (preg_match('#^(app|storage)://#', $href)) {
-			$tag = '<link rel="stylesheet" integrity="sha256-'. base64_encode(hash_file('sha256', $href, true)) .'" href="'. document::href_rlink($href) .'">';
+			$tag = '<link rel="stylesheet" nonce="'. document::$nonce .'" integrity="sha256-'. base64_encode(hash_file('sha256', $href, true)) .'" href="'. document::href_rlink($href) .'">';
 		} else {
-			$tag = '<link rel="stylesheet" href="'. document::href_link($href) .'">';
+			$tag = '<link rel="stylesheet" nonce="'. document::$nonce .'" href="'. document::href_link($href) .'">';
 		}
 
 		return $tag;
