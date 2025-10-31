@@ -63,14 +63,14 @@
 			}
 
 			database::query(
-				"update ". DB_TABLE_PREFIX ."site_tags set
-				status = '". (empty($this->data['status']) ? 0 : 1) ."',
-				position = '". database::input($this->data['position']) ."',
-				name = '". database::input($this->data['name']) ."',
-				content = '". database::input($this->data['content'], true) ."',
-				require_consent = ". (!empty($this->data['require_consent']) ? "'". database::input($this->data['require_consent']) ."'" : "null") .",
-				priority = ". (int)$this->data['priority'] .",
-				updated_at = '". ($this->data['updated_at'] = date('Y-m-d H:i:s')) ."'
+				"update ". DB_TABLE_PREFIX ."site_tags
+				set status = '". (empty($this->data['status']) ? 0 : 1) ."',
+					position = '". database::input($this->data['position']) ."',
+					name = '". database::input($this->data['name']) ."',
+					content = '". database::input($this->data['content'], true) ."',
+					require_consent = ". (!empty($this->data['require_consent']) ? "'". database::input($this->data['require_consent']) ."'" : "null") .",
+					priority = ". (int)$this->data['priority'] .",
+					updated_at = '". ($this->data['updated_at'] = date('Y-m-d H:i:s')) ."'
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"
 			);

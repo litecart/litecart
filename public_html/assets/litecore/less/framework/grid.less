@@ -36,6 +36,51 @@
 	grid-gap: var(--gutter-y) calc(var(--gutter-x)/2);
 }
 
+.make-row-columns(@device: ~'') {
+	.col-@{device}1 { flex: 0 0 8.333333%; max-width: 8.333333%; }
+	.col-@{device}2 { flex: 0 0 16.666667%; max-width: 16.666667%; }
+	.col-@{device}3 { flex: 0 0 25%; max-width: 25%; }
+	.col-@{device}4 { flex: 0 0 33.333333%; max-width: 33.333333%; }
+	.col-@{device}5 { flex: 0 0 41.666667%; max-width: 41.666667%; }
+	.col-@{device}6 { flex: 0 0 50%; max-width: 50%; }
+	.col-@{device}7 { flex: 0 0 58.333333%; max-width: 58.333333%; }
+	.col-@{device}8 { flex: 0 0 66.666667%; max-width: 66.666667%; }
+	.col-@{device}9 { flex: 0 0 75%; max-width: 75%; }
+	.col-@{device}10 { flex: 0 0 83.333333%; max-width: 83.333333%; }
+	.col-@{device}11 { flex: 0 0 91.666667%; max-width: 91.666667%; }
+	.col-@{device}12 { flex: 0 0 100%; max-width: 100%; }
+}
+
+.row:has(.col) {
+	display: flex;
+	.col {
+		flex: 1;
+	}
+
+	.make-row-columns();
+
+	@media (min-width: @media-breakpoint-sm) {
+		.make-row-columns(sm-);
+	}
+
+	@media (min-width: @media-breakpoint-md) {
+		.make-row-columns(md-);
+	}
+
+	@media (min-width: @media-breakpoint-lg) {
+		.make-row-columns(lg-);
+	}
+
+	@media (min-width: @media-breakpoint-xl) {
+		.make-row-columns(xl-);
+	}
+
+	@media (min-width: @media-breakpoint-xxl) {
+		.make-row-columns(xxl-);
+	}
+}
+
+
 .make-grid-columns(@device: ~'') {
 	.col-@{device}1 { grid-column: span 1 !important; }
 	.col-@{device}2 { grid-column: span 2 !important; }

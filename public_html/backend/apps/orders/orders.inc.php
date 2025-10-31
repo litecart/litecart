@@ -447,11 +447,7 @@ table .tag {
 					<td><?php echo functions::form_checkbox('orders[]', $order['id'], true); ?></td>
 					<td><?php echo !empty($order['starred']) ? functions::draw_fonticon('icon-star', 'style="color: #f2b01e;"') : functions::draw_fonticon('icon-star-o', 'style="color: #ccc;"'); ?></td>
 					<td><?php echo (int)$order['id']; ?></td>
-					<td>
-						<a class="link" href="<?php echo document::href_ilink(__APP__.'/order', ['order_id' => $order['id'], 'redirect_url' => $_SERVER['REQUEST_URI']]); ?>">
-							<?php echo functions::draw_fonticon('icon-file-text', 'style="color: #ccc;"'); ?> <?php echo $order['no']; ?>
-						</a>
-					</td>
+					<td class="text-end"><?php echo $order['no']; ?></td>
 					<td></td>
 					<td><?php echo functions::draw_fonticon($order['order_status_icon'], 'style="color: '. $order['order_status_color'] .';"'); ?> <?php echo $order['order_status_id'] ? $order['order_status_name'] : t('title_uncompleted', 'Uncompleted'); ?></td>
 					<td>

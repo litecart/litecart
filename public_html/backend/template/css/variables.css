@@ -34,11 +34,11 @@
 /* Variables */
 :root {
   /* General */
-  --site-background: #edf0f9;
+  --site-background: #eeeef1;
   --top-background: var(--card-background);
   --top-text-color: var(--card-text-color);
   --sidebar-background: #fff;
-  --sidebar-group-background: #edf0f9;
+  --sidebar-group-background: var(var(--site-background));
   --sidebar-app-background: transparent;
   --sidebar-app-background--hover: transparent;
   --sidebar-app-background--active: #e5e7ef66;
@@ -71,8 +71,8 @@
   --border-radius: 10px;
   --whitespace-color: #fff;
   --default-text-font: Inter, Arial, 'Helvetica Neue', Helvetica, sans-serif;
-  --default-text-color: #444;
-  --default-text-size: 14px;
+  --default-text-color: #222;
+  --default-text-size: 13px;
   --default-line-height: 1.2;
   --default-title-color: #333;
   --default-border-color: #f2f3f7;
@@ -81,7 +81,7 @@
   /* Forms */
   --input-padding-x: 1.5em;
   --input-padding-y: 0.66em;
-  --input-background: #f6f7fb;
+  --input-background: #ededee;
   --input-text-color: #000;
   --input-border-color: transparent;
   --input-border-width: 1px;
@@ -89,7 +89,7 @@
   --input-outline-color--hover: #dcdcdc;
   --input-outline-width: 1px;
   --input-shadow: none;
-  --input-addon-background: #e9ebf1;
+  --input-addon-background: #dadbdf;
   --input-checkbox-background: #e6e7eb;
   --input-checkbox-background--active: #7152e5;
   --input-toggle-background: #fff;
@@ -100,7 +100,7 @@
   --badge-background: #c00;
   --badge-text-color: #fff;
   /* Breadcrumbs */
-  --breadcrumbs-background: #e1e4ef;
+  --breadcrumbs-background: #f7f8fb;
   --breadcrumbs-border-color: #e7e7e7;
   --breadcrumbs-border-width: 1px;
   --breadcrumb-item-background: #3c3c3c;
@@ -121,7 +121,7 @@
   --button-primary-border-color--active: rgba(0, 0, 0, 0.1);
   --button-primary-border-color--hover: rgba(0, 0, 0, 0.1);
   /* Default Button */
-  --button-default-background: #ecedf1;
+  --button-default-background: #ededee;
   --button-default-background--hover: #e3e4e9;
   --button-default-background--active: #dddde9;
   --button-default-text-color: #444;
@@ -223,9 +223,9 @@
   --table-body-background--even: #fff;
   --table-body-background--hover: #e4e6eb;
   --table-body-text-color: var(--default-text-color);
-  --table-link-background: #e3ebf3;
+  --table-link-background: #e4e7eb;
   --table-link-text-color: var(--default-text-color);
-  --table-link-background--hover: #cfddeb;
+  --table-link-background--hover: #b9bfc6;
   --table-link-shadow: 0 0 1px 0 rgba(37, 44, 97, 0.15), 0 1px 1px 0 rgba(93, 100, 148, 0.2);
   --table-link-shadow--active: inset 0px 1px 0 0 rgba(0, 0, 0, 0.05);
   --table-footer-background: #fbfcfd;
@@ -239,8 +239,8 @@
 }
 @media (min-width: 768px) {
   :root {
-    --gutter-x: 30px;
-    --gutter-y: 30px;
+    --gutter-x: 25px;
+    --gutter-y: 25px;
   }
 }
 /******************** Dark Mode ********************/

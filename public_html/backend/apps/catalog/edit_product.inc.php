@@ -425,7 +425,7 @@
 						<?php echo t('title_prices', 'Prices'); ?>
 					</h2>
 
-					<div style="margin: 0 -2em">
+					<div style="margin: 0 -25px;">
 						<table id="prices" class="table data-table">
 							<thead>
 								<tr>

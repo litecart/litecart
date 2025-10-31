@@ -404,8 +404,8 @@
 					}
 
 					database::query(
-						"update ". DB_TABLE_PREFIX ."products_customizations set
-							group_id = ". (int)$option['group_id'] .",
+						"update ". DB_TABLE_PREFIX ."products_customizations
+						set group_id = ". (int)$option['group_id'] .",
 							`function` = '". database::input($option['function']) ."',
 							required = ". (!empty($option['required']) ? 1 : 0) .",
 							sort = '". (!empty($option['sort']) ? database::input($option['sort']) : 'alphabetical') ."',
@@ -443,8 +443,8 @@
 							$prices = array_filter($value['price']);
 
 							database::query(
-								"update ". DB_TABLE_PREFIX ."products_customizations_values set
-									group_id = ". (int)$option['group_id'] .",
+								"update ". DB_TABLE_PREFIX ."products_customizations_values
+								set group_id = ". (int)$option['group_id'] .",
 									value_id = ". (int)$value['value_id'] .",
 									custom_value = '". database::input($value['custom_value']) ."',
 									price_modifier = '". database::input($value['price_modifier']) ."',
