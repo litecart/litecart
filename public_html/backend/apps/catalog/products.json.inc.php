@@ -25,16 +25,29 @@
 		];
 	}
 
+	$sql_column_price = "coalesce(". implode(", ", array_map(function($currency) {
+		return "if(json_value(price, '$.". database::input($currency['code']) ."') != 0, json_value(price, '$.". database::input($currency['code']) ."') * ". $currency['value'] .", null)";
+	}, currency::$currencies)) .")";				$sql_column_price = "coalesce(". implode(", ", array_map(function($currency) {
+		return "if(json_value(price, '$.". database::input($currency['code']) ."') != 0, json_value(price, '$.". database::input($currency['code']) ."') * ". $currency['value'] .", null)";
+	}, currency::$currencies)) .")";
+
 	$products = database::query(
-		"select p.id, p.code, pp.price, p.created_at,
+		"select p.id, p.code, pp.regular_price, pp.final_price, p.created_at,
 			json_value(p.name, '$.". database::input($_GET['language_code']) ."') as name,
 			pso.total_quantity as quantity,
 			oi.quantity_reserved as reserved
 		from ". DB_TABLE_PREFIX ."products p
 
 		left join (
-			select product_id, if(json_value(price, '$.". database::input($_GET['currency_code']) ."') != 0, json_value(price, '$.". database::input($_GET['currency_code']) ."') * ". (float)$_GET['currency_value'] .", json_value(price, '$.". database::input(settings::get('store_currency_code')) ."')) as price
+			select product_id, max($sql_column_price) as regular_price, min($sql_column_price) as final_price
 			from ". DB_TABLE_PREFIX ."products_prices
+			where (campaign_id is null or campaign_id in (
+				select id from ". DB_TABLE_PREFIX ."campaigns
+				where status
+				and (valid_from is not null and valid_from > '". date('Y-m-d H:i:s') ."')
+				and (valid_to is not null and valid_to < '". date('Y-m-d H:i:s') ."')
+			) or campaign_id is null)
+			and (customer_group_id is null)
 		) pp on (pp.product_id = p.id)
 
 		left join (
@@ -65,10 +78,8 @@
 			'code' => $product['code'],
 			'sku' => $product['sku'],
 			'gtin' => $product['gtin'],
-			'price' => [
-				'formatted' => currency::format($product['price'], true, $_GET['currency_code'], $_GET['currency_value']),
-				'value' => (float)$product['price'],
-			],
+			'regular_price' => (float)$product['regular_price'],
+			'final_price' => (float)$product['final_price'],
 			'thumbnail_url' => document::rlink(functions::image_thumbnail('storage://images/'. $product['image'], 64, 64)),
 			'quantity' => (float)$product['quantity'],
 			'reserved' => (float)$product['reserved'],

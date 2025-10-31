@@ -48,7 +48,6 @@
 			$this->data['feeds'] = [];
 			$this->data['images'] = [];
 			$this->data['prices'] = [];
-			$this->data['campaigns'] = [];
 			$this->data['attributes'] = [];
 			$this->data['customizations'] = [];
 			$this->data['stock_options'] = [];
@@ -99,35 +98,16 @@
 
 			// Prices
 			database::query(
-				"select pp.*, cg.name as customer_group_name
+				"select pp.*, cg.name as customer_group_name, c.name as campaign_name, c.valid_from, c.valid_to
 				from ". DB_TABLE_PREFIX ."products_prices pp
+				left join ". DB_TABLE_PREFIX ."campaigns c on (c.id = pp.campaign_id)
 				left join ". DB_TABLE_PREFIX ."customer_groups cg on (cg.id = pp.customer_group_id)
-				where pp.product_id = ". (int)$this->data['id'] .";"
-			)->each(function($product_price){
-				$product_price['price'] = !empty($product_price['price']) ? json_decode($product_price['price'], true) : [];
-				$this->data['prices'][] = $product_price;
+				where pp.product_id = ". (int)$this->data['id'] ."
+				order by c.valid_from, c.valid_to, customer_group_name, pp.min_quantity;"
+			)->each(function($price){
+				$price['price'] = !empty($price['price']) ? json_decode($price['price'], true) : [];
+				$this->data['prices'][] = $price;
 			});
-
-			// Sort prices
-			uasort($this->data['prices'], function($a, $b) {
-
-				if ($a['customer_group_id'] != $b['customer_group_id']) {
-					return ($a['customer_group_id'] > $b['customer_group_id']) ? -1 : 1;
-				}
-
-				if ($a['min_quantity'] != $b['min_quantity']) {
-					return ($a['min_quantity'] > $b['min_quantity']) ? -1 : 1;
-				}
-			});
-
-			// Campaigns
-			$this->data['campaigns'] = database::query(
-				"select cp.*, c.name, c.valid_from, c.valid_to
-				from ". DB_TABLE_PREFIX ."campaigns_products cp
-				left join ". DB_TABLE_PREFIX ."campaigns c on (c.id = cp.campaign_id)
-				where cp.product_id = ". (int)$this->data['id'] ."
-				order by c.valid_from;"
-			)->fetch_all();
 
 			// Images
 			$this->data['images'] = database::query(
@@ -289,44 +269,12 @@
 
 				database::query(
 					"update ". DB_TABLE_PREFIX ."products_prices
-					set customer_group_id = ". (!empty($price['customer_group_id']) ? (int)$price['customer_group_id'] : "null") .",
+					set campaign_id = ". (!empty($price['campaign_id']) ? (int)$price['campaign_id'] : "null") .",
+						customer_group_id = ". (!empty($price['customer_group_id']) ? (int)$price['customer_group_id'] : "null") .",
 						min_quantity = ". (!empty($price['min_quantity']) ? (int)$price['min_quantity'] : 1) .",
 						price = '". database::input(functions::format_json($prices)) ."'
 					where product_id = ". (int)$this->data['id'] ."
 					and id = ". (int)$price['id'] ."
-					limit 1;"
-				);
-			}
-
-			// Delete campaigns
-			database::query(
-				"delete from ". DB_TABLE_PREFIX ."campaigns_products
-				where product_id = ". (int)$this->data['id'] ."
-				and id not in ('". implode("', '", array_column($this->data['campaigns'], 'id')) ."');"
-			);
-
-			// Update campaigns
-			foreach ($this->data['campaigns'] as $key => $campaign_price) {
-
-				if (empty($campaign_price['id'])) {
-
-					database::query(
-						"insert into ". DB_TABLE_PREFIX ."campaigns_products
-						(campaign_id, product_id)
-						values (". (!empty($campaign_price['campaign_id']) ? (int)$campaign_price['campaign_id'] : "null") .", ". (int)$this->data['id'] .");"
-					);
-
-					$this->data['campaigns'][$key]['id'] = $campaign_price['id'] = database::insert_id();
-				}
-
-				$campaign_price['price'] = array_filter($campaign_price['price']);
-
-				database::query(
-					"update ". DB_TABLE_PREFIX ."campaigns_products
-					set campaign_id = ". (!empty($campaign_price['campaign_id']) ? (int)$campaign_price['campaign_id'] : "null") .",
-						price = '". database::input(functions::format_json($campaign_price['price'])) ."'
-					where product_id = ". (int)$this->data['id'] ."
-					and id = ". (int)$campaign_price['id'] ."
 					limit 1;"
 				);
 			}
@@ -635,9 +583,8 @@
 			$this->save();
 
 			database::query(
-				"delete p, cp, ci, pa, pp, pcu, pso, ptc
+				"delete p, ci, pa, pp, pcu, pso, ptc
 				from ". DB_TABLE_PREFIX ."products p
-				left join ". DB_TABLE_PREFIX ."campaigns_products cp on (cp.product_id = p.id)
 				left join ". DB_TABLE_PREFIX ."cart_items ci on (ci.product_id = p.id)
 				left join ". DB_TABLE_PREFIX ."products_attributes pa on (pa.product_id = p.id)
 				left join ". DB_TABLE_PREFIX ."products_prices pp on (pp.product_id = p.id)

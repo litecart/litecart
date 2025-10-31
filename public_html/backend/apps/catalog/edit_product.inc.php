@@ -49,7 +49,6 @@
 
 			if (empty($_POST['categories'])) $_POST['categories'] = [];
 			if (empty($_POST['images'])) $_POST['images'] = [];
-			if (empty($_POST['campaigns'])) $_POST['campaigns'] = [];
 			if (empty($_POST['attributes'])) $_POST['attributes'] = [];
 			if (empty($_POST['customizations'])) $_POST['customizations'] = [];
 			if (empty($_POST['stock_options'])) $_POST['stock_options'] = [];
@@ -74,7 +73,6 @@
 				'keywords',
 				'attributes',
 				'prices',
-				'campaigns',
 				'tax_class_id',
 				'recommended_price',
 				'images',
@@ -180,7 +178,7 @@
 	padding: 0.25em 0;
 }
 
-#campaigns .dropdown-menu {
+#prices .dropdown-menu {
 	background: transparent;
 }
 
@@ -432,6 +430,9 @@
 							<thead>
 								<tr>
 									<th style="width: 250px;"><?php echo t('title_customer_group', 'Customer Group'); ?></th>
+									<th style="width: 250px;"><?php echo t('title_campaign', 'Campaign'); ?></th>
+									<th style="width: 250px;"><?php echo t('title_valid_from', 'Valid From'); ?></th>
+									<th style="width: 250px;"><?php echo t('title_valid_to', 'Valid To'); ?></th>
 									<th style="width: 50px;"><?php echo t('title_min_quantity', 'Min. Quantity'); ?></th>
 									<th style="width: 200px;" class="text-center"><?php echo t('title_net_price', 'Net Price'); ?></th>
 									<th style="width: 200px;" class="text-center"><?php echo t('title_gross_price', 'Gross Price'); ?>  <a href="#" id="price-incl-tax-tooltip"><?php echo functions::draw_fonticon('icon-question'); ?></a></th>
@@ -445,8 +446,11 @@
 								<tr>
 									<td>
 										<?php echo functions::form_input_hidden('prices['.$key.'][id]', true); ?>
-										<?php echo functions::form_select_campaign('customer_group_id', true); ?>
+										<?php echo functions::form_select_customer_group('prices['.$key.'][customer_group_id]', true); ?>
 									</td>
+									<td><?php echo functions::form_select_campaign('prices['.$key.'][campaign_id]', true); ?></td>
+									<td><span class="date-valid-from"><?php echo $price['valid_from'] ? functions::datetime_when($price['valid_from']) : '-'; ?></span></td>
+									<td><span class="date-valid-to"><?php echo $price['valid_to'] ? functions::datetime_when($price['valid_to']) : '-'; ?></span></td>
 									<td><?php echo functions::form_input_decimal('prices['.$key.'][min_quantity]', true, 'min="0"'); ?></td>
 									<td>
 										<div class="dropdown dropdown-end">
@@ -476,68 +480,6 @@
 									<td colspan="99">
 										<button class="btn btn-default add" type="button">
 											<?php echo functions::draw_fonticon('add'); ?> <?php echo t('text_add_price', 'Add Price'); ?>
-										</button>
-									</td>
-								</tr>
-							</tfoot>
-						</table>
-					</div>
-
-					<h2 style="margin-top: 2em;">
-						<?php echo t('title_campaigns', 'Campaigns'); ?>
-					</h2>
-
-					<div style="margin: 0 -2em">
-						<table id="campaigns" class="table data-table">
-							<thead>
-								<tr>
-									<th style="width: 250px;"><?php echo t('title_campaign', 'Campaign'); ?></th>
-									<th style="width: 200px;"><?php echo t('title_valid_from', 'Valid From'); ?></th>
-									<th style="width: 200px;"><?php echo t('title_valid_to', 'Valid To'); ?></th>
-									<th style="width: 200px;"><?php echo t('title_price', 'Price'); ?></th>
-									<th style="width: 200px;"><?php echo t('title_discount', 'Discount'); ?></th>
-									<th></th>
-									<th style="width: 50px;"></th>
-								</tr>
-							</thead>
-
-							<tbody>
-								<?php if (!empty($_POST['campaigns'])) foreach ($_POST['campaigns'] as $key => $campaign) { ?>
-								<tr>
-									<td>
-										<?php echo functions::form_input_hidden('campaigns['.$key.'][id]', true); ?>
-										<?php echo functions::form_select_campaign('campaigns['.$key.'][campaign_id]', true); ?>
-									</td>
-									<td><span class="date-valid-from"><?php echo $campaign['valid_from'] ? functions::datetime_when($campaign['valid_from']) : '-'; ?></span></td>
-									<td><span class="date-valid-to"><?php echo $campaign['valid_to'] ? functions::datetime_when($campaign['valid_to']) : '-'; ?></span></td>
-									<td>
-										<div class="dropdown dropdown-end">
-											<?php echo functions::form_input_money('campaigns['.$key.'][price]['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), true, 'style="width: 125px;"'); ?>
-											<ul class="dropdown-menu">
-												<?php foreach (array_diff($currency_codes, [settings::get('store_currency_code')]) as $currency_code) { ?>
-												<li>
-													<?php echo functions::form_input_money('campaigns['.$key.'][price]['. $currency_code .']', $currency_code, true, 'style="width: 125px;"'); ?>
-												</li>
-												<?php } ?>
-											</ul>
-										</div>
-									</td>
-									<td><?php echo functions::form_input_percent('campaigns['.$key.'][percentage]', '', 2, 'min="0"'); ?></td>
-									<td></td>
-									<td>
-										<a class="btn btn-default btn-sm remove" href="#" title="<?php echo t('title_remove', 'Remove'); ?>">
-											<?php echo functions::draw_fonticon('remove'); ?>
-										</a>
-									</td>
-								</tr>
-							<?php } ?>
-							</tbody>
-
-							<tfoot>
-								<tr>
-									<td colspan="7">
-										<button class="btn btn-default add" type="button">
-											<?php echo functions::draw_fonticon('add'); ?> <?php echo t('text_add_campaign', 'Add Campaign'); ?>
 										</button>
 									</td>
 								</tr>
@@ -1217,6 +1159,9 @@
 			'    <?php echo functions::escape_js(functions::form_input_hidden('prices[__index__][id]', '')); ?>',
 			'    <?php echo functions::escape_js(functions::form_select_customer_group('prices[__index__][customer_group_id]', '')); ?>',
 			'  </td>',
+			'  <td><?php echo functions::escape_js(functions::form_select_campaign('prices[__index__][campaign_id]', '', 'style="width: 200px;"')); ?></td>',
+			'  <td><span class="date-valid-from"></span></td>',
+			'  <td><span class="date-valid-to"></span></td>',
 			'  <td><?php echo functions::escape_js(functions::form_input_decimal('prices[__index__][min_quantity]', '1', 'min="1"')); ?></td>',
 			'  <td>',
 			'    <div class="dropdown">',
@@ -1262,9 +1207,7 @@
 		}
 	});
 
-	// Campaigns
-
-	$('#campaigns').on('change', 'select[name$="[campaign_id]"]', function(e) {
+	$('#prices').on('change', 'select[name$="[campaign_id]"]', function(e) {
 		let $row = $(this).closest('tr');
 		$option = $(this).find('option:selected');
 
@@ -1274,117 +1217,6 @@
 		} else {
 			$('.date-valid-from', $row).text('-');
 			$('.date-valid-to', $row).text('-');
-		}
-	});
-
-	$('#campaigns').on('focus', 'input[name^="campaigns"]', function(e) {
-		if ($(this).attr('name').match(/\[[A-Z]{3}\]$/)) {
-			$(this).closest('.dropdown').addClass('open');
-		}
-	});
-
-	$('#campaigns').on('blur', '.dropdown', function(e) {
-		$(this).removeClass('open');
-	});
-
-	$('#campaigns').on('input', 'input[name^="campaigns"][name$="[percentage]"]', function() {
-		let parent = $(this).closest('tr'),
-			value = 0;
-
-		<?php foreach (currency::$currencies as $currency) { ?>
-		if ($('input[name^="prices"][name$="[<?php echo $currency['code']; ?>]"]').val() > 0) {
-			value = parseFloat($('input[name="prices[<?php echo $currency['code']; ?>]"]').val() * (100 - $(this).val()) / 100).toFixed(<?php echo $currency['decimals']; ?>);
-			$(parent).find('input[name$="[<?php echo $currency['code']; ?>]"]').val(value);
-		} else {
-			$(parent).find('input[name$="[<?php echo $currency['code']; ?>]"]').val('');
-		}
-		<?php } ?>
-
-		<?php foreach (currency::$currencies as $currency) { ?>
-		value = parseFloat($(parent).find('input[name^="campaigns"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').val() / <?php echo $currency['value']; ?>).toFixed(<?php echo $currency['decimals']; ?>);
-		$(parent).find('input[name^="campaigns"][name$="[<?php echo $currency['code']; ?>]"]').attr('placeholder', value);
-		<?php } ?>
-	});
-
-	$('#campaigns').on('input', 'input[name^="campaigns"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]', function() {
-		let parent = $(this).closest('tr');
-		let percentage = ($('input[name="prices[<?php echo settings::get('store_currency_code'); ?>]"]').val() - $(this).val()) / $('input[name="prices[<?php echo settings::get('store_currency_code'); ?>]"]').val() * 100;
-		percentage = percentage.toFixed(2);
-		$(parent).find('input[name$="[percentage]"]').val(percentage);
-
-		<?php foreach (currency::$currencies as $currency) { ?>
-		value = $(parent).find('input[name^="campaigns"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').val() / <?php echo $currency['value']; ?>;
-		value = value.toFixed(<?php echo $currency['decimals']; ?>);
-		$(parent).find('input[name^="campaigns"][name$="[<?php echo $currency['code']; ?>]"]').attr("placeholder", value);
-		if ($(parent).find('input[name^="campaigns"][name$="[<?php echo $currency['code']; ?>]"]').val() == 0) {
-			$(parent).find('input[name^="campaigns"][name$="[<?php echo $currency['code']; ?>]"]').val('');
-		}
-		<?php } ?>
-	});
-
-	$('input[name^="campaigns"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').trigger('input');
-
-	$('#campaigns').on('click', '.remove', function(e) {
-		e.preventDefault();
-		$(this).closest('tr').remove();
-	});
-
-
-	$('#campaigns').on('click', '.add', function(e) {
-		e.preventDefault();
-
-		let __index__ = 0;
-		while ($(':input[name^="campaigns[' + __index__ + ']"]').length) __index__++;
-
-		let $output = $([
-			'<tr>',
-			'  <td>',
-			'    <?php echo functions::escape_js(functions::form_input_hidden('campaigns[__index__][id]', '')); ?>',
-			'    <?php echo functions::escape_js(functions::form_select_campaign('campaigns[__index__][campaign_id]', '', 'style="width: 200px;"')); ?>',
-			'  </td>',
-			'  <td><span class="date-valid-from"></span></td>',
-			'  <td><span class="date-valid-to"></span></td>',
-			'  <td>',
-			'    <div class="dropdown">',
-			'      <?php echo functions::escape_js(functions::form_input_money('campaigns[__index__][price]['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), true, 'style="width: 125px;"')); ?>',
-			'      <ul class="dropdown-menu" style="right:0;">',
-			<?php echo implode(PHP_EOL, array_map(
-				function($currency_code) {
-					return '\'      <li>'. functions::escape_js(functions::form_input_money('campaigns[__index__]price['. $currency_code .']', $currency_code, true, 'style="width: 125px;"')) .'</li>\',';
-				}, array_diff($currency_codes, [settings::get('store_currency_code')])
-			)); ?>
-			'      </ul>',
-			'    </div>',
-			'  </td>',
-			'  <td><?php echo functions::escape_js(functions::form_input_percent('campaigns[__index__][percentage]', '', 2)); ?></td>',
-			'  <td></td>',
-			'  <td>',
-			'    <a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_js(t('title_remove', 'Remove'), true); ?>">',
-			'      <?php echo functions::escape_js(functions::draw_fonticon('remove')); ?>',
-			'    </a>',
-			'  </td>',
-			'</tr>'
-		].join('\n')
-			.replace(/__index__/g, 'new_' + __index__)
-		);
-
-		$('.campaign-name', $output).text();
-		$('.campaign-valid-from', $output).text();
-		$('.campaign-valid-to', $output).text();
-
-		$('#campaigns tbody').append($output);
-	});
-
-	$('#campaigns select[name$="[campaign_id]"]').on('change', function() {
-		let $row = $(this).closest('tr');
-		$option = $(this).find('option:selected');
-
-		if ($(this).val() != '') {
-			$('.campaign-valid-from', $row).text($option.data('valid-from'));
-			$('.campaign-valid-to', $row).text($option.data('valid-to'));
-		} else {
-			$('.campaign-valid-from', $row).text('');
-			$('.campaign-valid-to', $row).text('');
 		}
 	});
 

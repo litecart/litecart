@@ -18,9 +18,6 @@ INSERT INTO `lc_brands` (`id`, `status`, `featured`, `code`, `name`, `keywords`,
 INSERT INTO `lc_campaigns` (`id`, `status`, `name`, `updated_at`, `created_at`) VALUES
 (1, 1, 'Super Sale', NOW(), NOW());
 -- -----
-INSERT INTO `lc_campaigns_products` (`id`, `product_id`, `price`) VALUES
-(1, 1, '{"USD": 18.00}');
--- -----
 INSERT INTO `lc_categories` (`id`, `parent_id`, `status`, `code`, `name`, `priority`, `updated_at`, `created_at`) VALUES
 (1, 0, 1, '', '{"en": "Rubber Ducks"}', 0, NOW(), NOW()),
 (2, 1, 1, '', '{"en": "Subcategory"}', 0, NOW(), NOW());
@@ -100,12 +97,13 @@ INSERT INTO `lc_products_stock_options` (`id`, `product_id`, `stock_item_id`, `p
 (2, 1, 2, '+', 0.00),
 (3, 1, 3, '+', 0.00);
 -- -----
-INSERT INTO `lc_products_prices` (`id`, `product_id`, `price`) VALUES
-(1, 1, '{"USD": 20.00}'),
-(2, 2, '{"USD": 20.00}'),
-(3, 3, '{"USD": 20.00}'),
-(4, 4, '{"USD": 20.00}'),
-(5, 5, '{"USD": 20.00}');
+INSERT INTO `lc_products_prices` (`id`, `product_id`, `campaign_id`, `price`) VALUES
+(1, 1, null, '{"USD": 20.00}'),
+(2, 2, null, '{"USD": 20.00}'),
+(3, 3, null, '{"USD": 20.00}'),
+(4, 4, null, '{"USD": 20.00}'),
+(5, 5, null, '{"USD": 20.00}'),
+(6, 1, 1, '{"USD": 18.00}');
 -- -----
 INSERT INTO `lc_stock_items` (`id`, `brand_id`, `sku`, `gtin`, `name`, `image`, `weight`, `weight_unit`, `length`, `width`, `height`, `length_unit`, `quantity`, `backordered`, `priority`, `updated_at`, `created_at`) VALUES
 (1, 1, 'RD001-S', '4006381333931', '{"en": "Yellow Duck (Small)"}', 'stock_items/1-yellow-duck-small.webp', 1.0000, 'kg', 10.0000, 10.0000, 10.0000, 'cm', 50.0000, 0.0000, 1, NOW(), NOW()),

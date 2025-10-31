@@ -30,16 +30,6 @@ CREATE TABLE `lc_campaigns` (
 	INDEX `status` (`status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 -- -----
-CREATE TABLE `lc_campaigns_products` (
-	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`campaign_id` INT(10) UNSIGNED NOT NULL,
-	`product_id` INT(10) UNSIGNED NOT NULL,
-	`price` VARCHAR(512) NOT NULL DEFAULT '{}',
-	PRIMARY KEY (`id`),
-	INDEX `product_id` (`product_id`),
-	INDEX `campaign_id` (`campaign_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
--- -----
 CREATE TABLE `lc_customer_groups` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`type` ENUM('retail', 'wholesale') NOT NULL DEFAULT 'retail',
@@ -652,10 +642,12 @@ CHANGE COLUMN `language_code` `language_code` CHAR(2) NOT NULL;
 ALTER TABLE `lc_products_prices`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT FIRST,
 CHANGE COLUMN `product_id` `product_id` INT(10) UNSIGNED NOT NULL AFTER `id`,
-ADD COLUMN `customer_group_id` INT(10) UNSIGNED NULL DEFAULT NULL AFTER `product_id`,
+ADD COLUMN `campaign_id` INT(10) UNSIGNED NULL DEFAULT NULL AFTER `product_id`,
+ADD COLUMN `customer_group_id` INT(10) UNSIGNED NULL DEFAULT NULL AFTER `campaign_id`,
 ADD COLUMN `min_quantity` FLOAT(10,4) UNSIGNED NOT NULL DEFAULT '1' AFTER `customer_group_id`,
 ADD COLUMN `price` VARCHAR(512) NOT NULL DEFAULT '{}' AFTER `min_quantity`,
 ADD INDEX `customer_group_id` (`customer_group_id`),
+ADD INDEX `campaign_id` (`campaign_id`),
 ADD INDEX `min_quantity` (`min_quantity`);
 -- -----
 ALTER TABLE `lc_products_stock_options`

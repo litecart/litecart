@@ -113,7 +113,6 @@
 						case 'products':
 
 							database::multi_query(implode(PHP_EOL, [
-								"truncate ". DB_TABLE_PREFIX ."campaigns_products;",
 								"truncate ". DB_TABLE_PREFIX ."cart_items;",
 								"truncate ". DB_TABLE_PREFIX ."products;",
 								"truncate ". DB_TABLE_PREFIX ."products_attributes;",
@@ -359,9 +358,9 @@
 						}
 
 						database::query(
-							"insert into ". DB_TABLE_PREFIX ."campaigns_products
-							(campaign_id, product_id, price)
-							on duplicate key update price = '". database::input($row['price']) ."';"
+							"insert into ". DB_TABLE_PREFIX ."products_prices
+							(product_id, campaign_id, price)
+							values (". (int)$row['product_id'] .", ". (int)$row['campaign_id'] .", '". database::input($row['price']) ."');"
 						);
 
 						break;
@@ -1251,21 +1250,20 @@
 
 					break;
 
-				case 'campaigns':
+			case 'campaigns':
 
-					$csv = database::query(
-						"select * from ". DB_TABLE_PREFIX ."campaigns_products cp
-						left join ". DB_TABLE_PREFIX ."campaigns c on (c.id = cp.campaign_id)
-						order by c.valid_from, c.valid_to, cp.product_id;"
-					)->export($result)->fetch_all();
+				$csv = database::query(
+					"select pp.* from ". DB_TABLE_PREFIX ."products_prices pp
+					left join ". DB_TABLE_PREFIX ."campaigns c on (c.id = pp.campaign_id)
+					where pp.campaign_id is not null
+					order by c.valid_from, c.valid_to, pp.product_id;"
+				)->export($result)->fetch_all();
 
-					if (!$csv) {
-						$csv = [array_fill_keys($result->fields(), '')];
-					}
+				if (!$csv) {
+					$csv = [array_fill_keys($result->fields(), '')];
+				}
 
-					break;
-
-				case 'categories':
+				break;				case 'categories':
 
 					if (empty($_POST['language_code'])) {
 						throw new Exception(t('error_must_select_language', 'You must select a language'));

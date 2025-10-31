@@ -2242,18 +2242,29 @@
 		$product_name = '('. t('title_no_product', 'No Product') .')';
 
 		if ($input) {
+
+			$sql_column_price = "coalesce(". implode(", ", array_map(function($currency) {
+				return "if(json_value(price, '$.". database::input($currency['code']) ."') != 0, json_value(price, '$.". database::input($currency['code']) ."') * ". $currency['value'] .", null)";
+			}, currency::$currencies)) .")";
+
 			$product = database::query(
-				"select p.id, p.code, pp.price, json_value(p.name, '$.". database::input(language::$selected['code']) ."') as name
+				"select p.id, p.code, pp.regular_price, pp.final_price, json_value(p.name, '$.". database::input(language::$selected['code']) ."') as name
 				from ". DB_TABLE_PREFIX ."products p
 				left join (
-					select product_id, if(json_value(price, '$.". database::input(currency::$selected['code']) ."'), json_value(price, '$.". database::input(currency::$selected['code']) ."') * ". (float)currency::$selected['value'] .", json_value(price, '$.". database::input(settings::get('store_currency_code')) ."')) as price
+					select product_id, max($sql_column_price) as regular_price, min($sql_column_price) as final_price
 					from ". DB_TABLE_PREFIX ."products_prices
+					where (campaign_id is null or campaign_id in (
+						select id from ". DB_TABLE_PREFIX ."campaigns
+						where status
+						and (valid_from is not null and valid_from > '". date('Y-m-d H:i:s') ."')
+						and (valid_to is not null and valid_to < '". date('Y-m-d H:i:s') ."')
+					) or campaign_id is null)
+					and (customer_group_id is null)
 				) pp on (pp.product_id = p.id)
 				where p.id = ". (int)$input ."
 				limit 1;"
 			)->fetch();
 		}
-
 
 		return implode(PHP_EOL, [
 			'<div class="input-group"' . ($parameters ? ' ' . $parameters : '') . '>',

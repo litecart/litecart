@@ -49,20 +49,19 @@
 			$this->data = array_replace($this->data, array_intersect_key($campaign, $this->data));
 
 			$this->data['products'] = database::query(
-				"select cp.*,
+				"select pp.id, pp.product_id, pp.campaign_id, pp.price,
 					json_value(p.name, '$.". database::input(language::$selected['code']) ."') as name,
-				 	json_value(pp.price, '$.". database::input(settings::get('store_currency_code')) ."') as regular_price
-				from ". DB_TABLE_PREFIX ."campaigns_products cp
-				left join ". DB_TABLE_PREFIX ."products p on (p.id = cp.product_id)
-				left join ". DB_TABLE_PREFIX ."products_prices pp on (pp.product_id = cp.product_id)
-				where cp.campaign_id = ". (int)$this->data['id'] ."
-				order by cp.id;"
+					json_value(pp_regular.price, '$.". database::input(settings::get('store_currency_code')) ."') as regular_price
+				from ". DB_TABLE_PREFIX ."products_prices pp
+				left join ". DB_TABLE_PREFIX ."products p on (p.id = pp.product_id)
+				left join ". DB_TABLE_PREFIX ."products_prices pp_regular on (pp_regular.product_id = pp.product_id and pp_regular.campaign_id is null and pp_regular.customer_group_id is null)
+				where pp.campaign_id = ". (int)$this->data['id'] ."
+				order by pp.id;"
 			)->fetch_all(function($row){
 
 				$row['price'] = $row['price'] ? json_decode($row['price'], true) : [];
 
 				if ($row['regular_price'] && $row['price'][settings::get('store_currency_code')]) {
-
 					$row['percentage'] = ($row['regular_price'] - $row['price'][settings::get('store_currency_code')]) / $row['regular_price'] * 100;
 				} else {
 					$row['percentage'] = 0;
@@ -97,18 +96,18 @@
 			);
 
 			database::query(
-				"delete from ". DB_TABLE_PREFIX ."campaigns_products
+				"delete from ". DB_TABLE_PREFIX ."products_prices
 				where campaign_id = ". (int)$this->data['id'] ."
 				and id not in ('". implode("', '", database::input(array_column($this->data['products'], 'id'))) ."');"
 			);
 
 			foreach ($this->data['products'] as $key => $campaign_product) {
 
-				if (empty($product['id'])) {
+				if (empty($campaign_product['id'])) {
 					database::query(
-						"insert into ". DB_TABLE_PREFIX ."campaigns_products
-						(campaign_id, product_id)
-						values (". (int)$this->data['id'] .", ". (int)$campaign_product['product_id'] .");"
+						"insert into ". DB_TABLE_PREFIX ."products_prices
+						(product_id, campaign_id)
+						values (". (int)$campaign_product['product_id'] .", ". (int)$this->data['id'] .");"
 					);
 
 					$this->data['products'][$key]['id'] = $campaign_product['id'] = database::insert_id();
@@ -117,11 +116,11 @@
 				$campaign_product['price'] = array_filter($campaign_product['price']);
 
 				database::query(
-					"update ". DB_TABLE_PREFIX ."campaigns_products
+					"update ". DB_TABLE_PREFIX ."products_prices
 					set product_id = ". (int)$campaign_product['product_id'] .",
-						price = ". (!empty($campaign_product['price']) ? "'". database::input(functions::format_json($campaign_product['price'])) ."'" : "null") ."
-					where campaign_id = ". (int)$this->data['id'] ."
-					and id = ". (int)$campaign_product['id'] ."
+						campaign_id = ". (int)$this->data['id'] .",
+						price = ". (!empty($campaign_product['price']) ? "'". database::input(functions::format_json($campaign_product['price'])) ."'" : "{}") ."
+					where id = ". (int)$campaign_product['id'] ."
 					limit 1;"
 				);
 			}

@@ -886,19 +886,6 @@
 		$campaigns[$valid_from.'-'.$valid_to][] = $campaign_product;
 	});
 
-	// Migrate product campaign prices to campaigns
-	$campaigns = [];
-
-	database::query(
-		"select * from ". DB_TABLE_PREFIX ."products_campaigns;"
-	)->each(function($campaign_product) use (&$campaigns) {
-
-		$valid_from = $campaign_product['start_date'] ? date('YmdHis', strtotime($campaign_product['start_date'])) : '0';
-		$valid_to = $campaign_product['end_date'] ? date('YmdHis', strtotime($campaign_product['end_date'])) : '0';
-
-		$campaigns[$valid_from.'-'.$valid_to][] = $campaign_product;
-	});
-
 	foreach ($campaigns as $campaign_products) {
 
 		database::query(
@@ -916,9 +903,9 @@
 			}, ARRAY_FILTER_USE_KEY);
 
 			database::query(
-				"insert into ". DB_TABLE_PREFIX ."campaigns_products
-				(campaign_id, product_id, price)
-				values (". (int)$campaign_id .", ". (int)$campaign_product['product_id'] .", '". database::input(json_encode($prices)) ."');"
+				"insert into ". DB_TABLE_PREFIX ."products_prices
+				(product_id, campaign_id, price)
+				values (". (int)$campaign_product['product_id'] .", ". (int)$campaign_id .", '". database::input(json_encode($prices)) ."');"
 			);
 		}
 	}

@@ -97,31 +97,29 @@
 
 					$this->_data['brand'] = reference::brand($this->brand_id, $this->_language_codes[0]);
 
-				case 'campaign':
+			case 'campaign':
 
-					$this->_data['campaign'] = database::query(
-						"select *, min(
-							coalesce(
-								". implode(', ', array_map(function($currency_code){
-									return "if(json_value(price, '$.". database::input($currency_code) ."') != 0, json_value(price, '$.". database::input($currency_code) ."') * ". currency::$currencies[$currency_code]['value'] .", null)";
-								}, $this->_currency_codes)) ."
-							)
-						) as price
-						from ". DB_TABLE_PREFIX ."campaigns_products
-						where product_id = ". (int)$this->_data['id'] ."
-						and campaign_id in (
-							select id from ". DB_TABLE_PREFIX ."campaigns
-							where status
-							and (valid_from is null or valid_from <= '". date('Y-m-d H:i:s') ."')
-							and (valid_to is null or valid_to >= '". date('Y-m-d H:i:s') ."')
+				$this->_data['campaign'] = database::query(
+					"select *, min(
+						coalesce(
+							". implode(', ', array_map(function($currency_code){
+								return "if(json_value(price, '$.". database::input($currency_code) ."') != 0, json_value(price, '$.". database::input($currency_code) ."') * ". currency::$currencies[$currency_code]['value'] .", null)";
+							}, $this->_currency_codes)) ."
 						)
-						group by product_id
-						limit 1;"
-					)->fetch();
+					) as price
+					from ". DB_TABLE_PREFIX ."products_prices
+					where product_id = ". (int)$this->_data['id'] ."
+					and campaign_id in (
+						select id from ". DB_TABLE_PREFIX ."campaigns
+						where status
+						and (valid_from is null or valid_from <= '". date('Y-m-d H:i:s') ."')
+						and (valid_to is null or valid_to >= '". date('Y-m-d H:i:s') ."')
+					)
+					group by product_id
+					limit 1;"
+				)->fetch();
 
-					break;
-
-				case 'categories':
+				break;				case 'categories':
 
 					$this->_data['categories'] = [];
 

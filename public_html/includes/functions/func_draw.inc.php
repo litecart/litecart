@@ -330,7 +330,7 @@
 		$listing_product = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/listing_product.inc.php');
 
 		$sticker = '';
-		if ($product['campaign_price']) {
+		if ($product['final_price'] && $product['final_price'] < $product['regular_price']) {
 			$sticker = '<div class="sticker sale" title="'. t('title_on_sale', 'On Sale') .'">'. t('sticker_sale', 'Sale') .'</div>';
 		} else if ($product['created_at'] > date('Y-m-d', strtotime('-'.settings::get('new_products_max_age')))) {
 			$sticker = '<div class="sticker new" title="'. t('title_new', 'New') .'">'. t('sticker_new', 'New') .'</div>';
@@ -355,10 +355,9 @@
 			'quantity_unit_id' => $product['quantity_unit_id'],
 			'quantity_available' => isset($product['quantity_available']) ? $product['quantity_available'] : null,
 			'recommended_price' => isset($product['recommended_price']) ? tax::get_price($product['recommended_price'], $product['tax_class_id']) : null,
-			'regular_price' => isset($product['price']) ? tax::get_price($product['price'], $product['tax_class_id']) : null,
-			'campaign_price' => isset($product['campaign_price']) ? tax::get_price($product['campaign_price'], $product['tax_class_id']) : null,
+			'regular_price' => isset($product['regular_price']) ? tax::get_price($product['regular_price'], $product['tax_class_id']) : null,
 			'final_price' => isset($product['final_price']) ? tax::get_price($product['final_price'], $product['tax_class_id']) : null,
-			'tax' => isset($product['price']) ? tax::get_tax($product['price'], $product['tax_class_id']) : null,
+			'tax' => isset($product['regular_price']) ? tax::get_tax($product['regular_price'], $product['tax_class_id']) : null,
 			'tax_class_id' => $product['tax_class_id'],
 			'delivery_status_id' => $product['delivery_status_id'],
 			'sold_out_status_id' => $product['sold_out_status_id'],

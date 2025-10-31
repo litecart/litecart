@@ -137,42 +137,6 @@
 				"status": ["status"]
 			}
 		},
-		"lc_campaigns_products": {
-			"columns": {
-				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
-				"campaign_id": { "type": "INT", "length": 10, "unsigned": true },
-				"product_id": { "type": "INT", "length": 10, "unsigned": true },
-				"price": { "type": "VARCHAR", "length": "512", "default": "'{}'" }
-			},
-			"primary_key": ["id"],
-			"keys": {
-				"product_id": ["product_id"],
-				"campaign_id": ["campaign_id"]
-			},
-			"foreign_keys": {
-				"campaign_price_to_campaign": {
-					"columns": ["campaign_id"],
-					"references": {
-						"table": "lc_campaigns",
-						"columns": ["id"],
-						"on_update": "CASCADE",
-						"on_delete": "CASCADE"
-					}
-				},
-				"campaign_price_to_product": {
-					"columns": ["product_id"],
-					"references": {
-						"table": "lc_products",
-						"columns": ["id"],
-						"on_update": "CASCADE",
-						"on_delete": "CASCADE"
-					}
-				}
-			},
-			"check_constraints": {
-				"chk_name": "JSON_VALID(price)"
-			}
-		},
 		"lc_cart_items": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
@@ -1140,6 +1104,7 @@
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"product_id": { "type": "INT", "length": 10, "unsigned": true },
 				"customer_group_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
+				"campaign_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
 				"min_quantity": { "type": "FLOAT", "length": "10,4", "unsigned": true, "default": 1 },
 				"price": { "type": "VARCHAR", "length": "512", "default": "'{}'" }
 			},
@@ -1147,6 +1112,7 @@
 			"keys": {
 				"product_id": ["product_id"],
 				"customer_group_id": ["customer_group_id"],
+				"campaign_id": ["campaign_id"],
 				"min_quantity": ["min_quantity"]
 			},
 			"foreign_keys": {
@@ -1163,6 +1129,15 @@
 					"columns": ["customer_group_id"],
 					"references": {
 						"table": "lc_customer_groups",
+						"columns": ["id"],
+						"on_update": "CASCADE",
+						"on_delete": "CASCADE"
+					}
+				},
+				"product_price_to_campaign": {
+					"columns": ["campaign_id"],
+					"references": {
+						"table": "lc_campaigns",
 						"columns": ["id"],
 						"on_update": "CASCADE",
 						"on_delete": "CASCADE"

@@ -38,7 +38,8 @@
 		from ". DB_TABLE_PREFIX ."campaigns c
 		left join (
 			select campaign_id, count(*) as num_products
-			from ". DB_TABLE_PREFIX ."campaigns_products
+			from ". DB_TABLE_PREFIX ."products_prices
+			where campaign_id is not null
 			group by campaign_id
 		) cp on (cp.campaign_id = c.id)
 		order by c.status desc, c.valid_from, c.valid_to;"

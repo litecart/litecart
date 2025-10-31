@@ -148,7 +148,7 @@
 		$sql_outer_sort = [];
 
 		if (!empty($filter['campaigns_first'])) {
-			$sql_outer_sort[] = "if(pc.campaign_price, 0, 1)";
+			$sql_outer_sort[] = "if(pp.final_price is not null and pp.final_price < pp.regular_price, 0, 1)";
 		}
 
 		switch ($filter['sort']) {
@@ -208,7 +208,7 @@
 
 		$query = (
 			"select p.*, b.id as brand_id, b.name as brand_name,
-				pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price) as final_price,
+				pp.regular_price, pp.final_price,
 				ifnull(pso.num_stock_options, 0) as num_stock_options, pso.total_quantity, pso.quantity_available,
 				pa.attributes, ss.hidden
 
@@ -257,25 +257,16 @@
 			) pa on (p.id = pa.product_id)
 
 			left join (
-				select product_id, $sql_column_price as price
+				select product_id, max($sql_column_price) as regular_price, min($sql_column_price) as final_price
 				from ". DB_TABLE_PREFIX ."products_prices
-				where customer_group_id is null
-				and min_quantity = 1
-			) pp on (pp.product_id = p.id)
-
-			left join (
-				select product_id, $sql_column_price as campaign_price
-				from ". DB_TABLE_PREFIX ."campaigns_products
-				where campaign_id in (
+				where (campaign_id is null or campaign_id in (
 					select id from ". DB_TABLE_PREFIX ."campaigns
 					where status
-					and (valid_from is null or valid_from <= '". date('Y-m-d H:i:s') ."')
-					and (valid_to is null or valid_to >= '". date('Y-m-d H:i:s') ."')
-				)
-				group by product_id
-				order by $sql_column_price asc
-				limit 1
-			) pc on (pc.product_id = p.id)
+					and (valid_from is not null and valid_from > '". date('Y-m-d H:i:s') ."')
+					and (valid_to is not null and valid_to < '". date('Y-m-d H:i:s') ."')
+				) or campaign_id is null)
+				and (customer_group_id is null or customer_group_id = ". (int)customer::$data['group_id'] .")
+			) pp on (pp.product_id = p.id)
 
 			left join (
 				select
@@ -306,9 +297,9 @@
 			where (
 				(ifnull(pso.num_stock_options, 0) = 0 or pso.quantity_available > 0 or ss.hidden != 1)
 				". (!empty($filter['sql_where']) ? "and (". $filter['sql_where'] .")" : "") ."
-				". (!empty($filter['campaign']) ? "and campaign_price > 0" : "") ."
-				". (!empty($filter['price_range']['min']) ? "and final_price >= ". (float)$filter['price_range']['min'] : "") ."
-				". (!empty($filter['price_range']['max']) ? "and final_price <= ". (float)$filter['price_range']['max'] : "") ."
+				". (!empty($filter['campaign']) ? "and (pp.final_price is not null and pp.final_price > 0)" : "") ."
+				". (!empty($filter['price_range']['min']) ? "and pp.final_price >= ". (float)$filter['price_range']['min'] : "") ."
+				". (!empty($filter['price_range']['max']) ? "and pp.final_price <= ". (float)$filter['price_range']['max'] : "") ."
 			)
 
 			group by p.id
@@ -432,7 +423,7 @@
 
 		if (!empty($filter['campaigns'])) {
 			$sql_where['campaigns'] = (
-				"campaign_price > 0"
+				"(pp.final_price is not null and pp.final_price > 0)"
 			);
 		}
 
@@ -466,7 +457,7 @@
 		}, currency::$currencies)) . ")";
 
 		$query = (
-			"select	p.*, b.name as brand_name, pp.price, pc.campaign_price, if(pc.campaign_price, pc.campaign_price, pp.price) as final_price,
+			"select p.*, b.name as brand_name, pp.regular_price, pp.final_price,
 				ifnull(pso.num_stock_options, 0) as num_stock_options, pso.total_quantity, pso.quantity_available, pa.attributes
 
 			from (
@@ -504,25 +495,16 @@
 			) pa on (p.id = pa.product_id)
 
 			left join (
-				select product_id, $sql_column_price as price
+				select product_id, max($sql_column_price) as regular_price, min($sql_column_price) as final_price
 				from ". DB_TABLE_PREFIX ."products_prices
-				where customer_group_id is null
-				and min_quantity = 1
-			) pp on (pp.product_id = p.id)
-
-			left join (
-				select product_id, $sql_column_price as campaign_price
-				from ". DB_TABLE_PREFIX ."campaigns_products
-				where campaign_id in (
+				where (campaign_id is null or campaign_id in (
 					select id from ". DB_TABLE_PREFIX ."campaigns
 					where status
-					and (valid_from is null or valid_from <= '". date('Y-m-d H:i:s') ."')
-					and (valid_to is null or valid_to >= '". date('Y-m-d H:i:s') ."')
-				)
-				group by product_id
-				order by $sql_column_price asc
-				limit 1
-			) pc on (pc.product_id = p.id)
+					and (valid_from is not null and valid_from > '". date('Y-m-d H:i:s') ."')
+					and (valid_to is not null and valid_to < '". date('Y-m-d H:i:s') ."')
+				) or campaign_id is null)
+				and (customer_group_id is null or customer_group_id = ". (int)customer::$data['group_id'] .")
+			) pp on (pp.product_id = p.id)
 
 			left join (
 				select

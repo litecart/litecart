@@ -513,7 +513,8 @@ table .icon-folder-open {
 				$products = database::query(
 					"select p.id, p.status, p.code, p.sold_out_status_id, p.image, p.valid_from, p.valid_to,
 						json_value(p.name, '$.". database::input(language::$selected['code']) ."') as name,
-						pp.price, pc.campaign_price, pso.num_stock_options, pso.total_quantity, oi.quantity_reserved, pso.total_quantity - oi.quantity_reserved as quantity_available,
+						pp.regular_price, pp.final_price, pso.num_stock_options, pso.total_quantity,
+						oi.quantity_reserved, pso.total_quantity - oi.quantity_reserved as quantity_available,
 						ptc.category_id
 
 					from ". DB_TABLE_PREFIX ."products p
@@ -521,23 +522,16 @@ table .icon-folder-open {
 					left join ". DB_TABLE_PREFIX ."products_to_categories ptc on (ptc.product_id = p.id)
 
 					left join (
-						select product_id, $sql_column_price as price
+						select product_id, min($sql_column_price) as regular_price, max($sql_column_price) as final_price
 						from ". DB_TABLE_PREFIX ."products_prices
-					) pp on (pp.product_id = p.id)
-
-					left join (
-						select product_id, $sql_column_price as campaign_price
-						from ". DB_TABLE_PREFIX ."campaigns_products
-						where campaign_id in (
+						where (campaign_id is null or campaign_id in (
 							select id from ". DB_TABLE_PREFIX ."campaigns
 							where status
-							and (valid_from is null or valid_from <= '". date('Y-m-d H:i:s') ."')
-							and (valid_to is null or valid_to >= '". date('Y-m-d H:i:s') ."')
-						)
-						group by product_id
-						order by $sql_column_price asc
-						limit 1
-					) pc on (pc.product_id = p.id)
+							and (valid_from is not null and valid_from > '". date('Y-m-d H:i:s') ."')
+							and (valid_to is not null and valid_to < '". date('Y-m-d H:i:s') ."')
+						) or campaign_id is null)
+						and (customer_group_id is null)
+					) pp on (pp.product_id = p.id)
 
 					left join (
 						select pso.id, pso.product_id, pso.stock_item_id, count(pso.stock_item_id) as num_stock_options, sum(si.quantity) as total_quantity
@@ -606,7 +600,7 @@ table .icon-folder-open {
 						'      '. ($product['name'] ?: '['. t('title_untitled', 'Untitled') .']'),
 						'    </a>',
 						'  </td>',
-						'  <td class="text-end">'. functions::draw_price_tag($product['price'], $product['campaign_price'], settings::get('store_currency_code')) .'</td>',
+						'  <td class="text-end">'. functions::draw_price_tag($product['regular_price'], $product['final_price'], settings::get('store_currency_code')) .'</td>',
 						'  <td>',
 						'    <a class="btn btn-default btn-sm" href="'. document::href_ilink('f:product', ['product_id' => $product['id']]) .'" title="'. t('title_view', 'View') .'" target="_blank">',
 						'    '. functions::draw_fonticon('icon-square-out'),

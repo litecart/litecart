@@ -183,7 +183,7 @@
 	$products = database::query(
 		"select p.id, p.status, p.featured, p.code, p.image, p.sold_out_status_id, p.valid_from, p.valid_to, p.created_at,
 			json_value(p.name, '$.". database::input(language::$selected['code']) ."') as name,
-		 	pp.price, pc.campaign_price, pso.num_stock_options, pso.quantity, quantity_reserved, pso.quantity - ol.quantity_reserved as quantity_available
+		 	pp.regular_price, pp.final_price, pso.num_stock_options, pso.quantity, quantity_reserved, pso.quantity - ol.quantity_reserved as quantity_available
 			". (!empty($sql_select_relevance) ? ", " . $sql_select_relevance : "") ."
 
 		from ". DB_TABLE_PREFIX ."products p
@@ -193,23 +193,19 @@
 		left join ". DB_TABLE_PREFIX ."suppliers s on (s.id = p.supplier_id)
 
 		left join (
-			select product_id, $sql_column_price as price
+			select product_id, max($sql_column_price) as regular_price, min($sql_column_price) as final_price
 			from ". DB_TABLE_PREFIX ."products_prices
-		) pp on (pp.product_id = p.id)
 
-		left join (
-			select product_id, $sql_column_price as campaign_price
-			from ". DB_TABLE_PREFIX ."campaigns_products
-			where campaign_id in (
+			where (campaign_id is null or campaign_id in (
 				select id from ". DB_TABLE_PREFIX ."campaigns
 				where status
-				and (valid_from is null or valid_from <= '". date('Y-m-d H:i:s') ."')
-				and (valid_to is null or valid_to >= '". date('Y-m-d H:i:s') ."')
-			)
-			group by product_id
-			order by $sql_column_price asc
-			limit 1
-		) pc on (pc.product_id = p.id)
+				and (valid_from is not null and valid_from > '". date('Y-m-d H:i:s') ."')
+				and (valid_to is not null and valid_to < '". date('Y-m-d H:i:s') ."')
+			) or campaign_id is null)
+
+			and (customer_group_id is null or customer_group_id = ". (int)customer::$data['group_id'] .")
+
+		) pp on (pp.product_id = p.id)
 
 		left join (
 			select pso.id, pso.product_id, pso.stock_item_id, count(pso.stock_item_id) as num_stock_options, sum(si.quantity) as quantity
@@ -335,7 +331,7 @@ table .icon-star-o:hover {
 					<td><?php echo !empty($product['featured']) ? functions::draw_fonticon('icon-star', 'style="color: #f2b01e;"') : functions::draw_fonticon('icon-star-o', 'style="color: #ccc;"'); ?></td>
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_product', ['product_id' => $product['id']]); ?>"><?php echo $product['name'] ?: '('. t('title_untitled', 'Untitled') .')'; ?></a></td>
 					<td><?php echo $product['code']; ?></td>
-					<td class="text-end"><?php echo functions::draw_price_tag($product['price'], $product['campaign_price'], settings::get('store_currency_code')); ?></td>
+					<td class="text-end"><?php echo functions::draw_price_tag($product['regular_price'], $product['final_price'], settings::get('store_currency_code')); ?></td>
 					<td class="text-center"><?php echo $product['num_stock_options']; ?></td>
 					<td class="text-center"><?php echo $product['quantity_reserved']; ?></td>
 					<td class="text-end"><?php echo functions::datetime_when($product['created_at']); ?></td>
