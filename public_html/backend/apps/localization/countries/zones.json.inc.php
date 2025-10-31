@@ -13,5 +13,5 @@
 
 	ob_clean();
 	header('Content-type: application/json; charset='. mb_http_output());
-	echo json_encode($zones, JSON_UNESCAPED_SLASHES);
+	echo functions::format_json($zones);
 	exit;

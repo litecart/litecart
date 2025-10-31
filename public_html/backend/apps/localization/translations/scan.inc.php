@@ -2,6 +2,7 @@
 
 	document::$title[] = t('title_scan_translations', 'Scan Translations');
 
+	breadcrumbs::add(t('title_localization', 'Localization'));
 	breadcrumbs::add(t('title_translations', 'Translations'), document::ilink('translations'));
 	breadcrumbs::add(t('title_scan_translations', 'Scan Translations'), document::ilink());
 

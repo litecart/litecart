@@ -1,5 +1,10 @@
 <?php
 
+	document::$snippets['title'][] = t('title_translations', 'Translations');
+
+	breadcrumbs::add(t('title_localization', 'Localization'));
+	breadcrumbs::add(t('title_translations', 'Translations'), document::ilink());
+
 	if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
 		$_GET['page'] = 1;
 	}
@@ -10,11 +15,7 @@
 		$_GET['languages'] = array_slice(array_unique(array_merge($defined_languages, $all_languages)), 0, 2);
 	}
 
-	document::$snippets['title'][] = t('title_translations', 'Translations');
-
-	breadcrumbs::add(t('title_translations', 'Translations'), document::ilink());
-
-	$collections = include __DIR__.'/collections.inc.php';
+	$collections = include 'app://backend/apps/localization/translations/collections.inc.php';
 
 	if (isset($_POST['save'])) {
 		try {

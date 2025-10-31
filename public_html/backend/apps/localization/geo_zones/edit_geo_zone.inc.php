@@ -6,14 +6,15 @@
 		$geo_zone = new ent_geo_zone();
 	}
 
+	document::$title[] = !empty($geo_zone->data['id']) ? t('title_edit_geo_zone', 'Edit Geo Zone') : t('title_new_geo_zone', 'Create New Geo Zone');
+
+	breadcrumbs::add(t('title_localization', 'Localization'));
+	breadcrumbs::add(t('title_geo_zones', 'Geo Zones'), document::ilink(__APP__.'/geo_zones'));
+	breadcrumbs::add(!empty($geo_zone->data['id']) ? t('title_edit_geo_zone', 'Edit Geo Zone') : t('title_new_geo_zone', 'Create New Geo Zone'), document::ilink());
+
 	if (!$_POST) {
 		$_POST = $geo_zone->data;
 	}
-
-	document::$title[] = !empty($geo_zone->data['id']) ? t('title_edit_geo_zone', 'Edit Geo Zone') : t('title_new_geo_zone', 'Create New Geo Zone');
-
-	breadcrumbs::add(t('title_geo_zones', 'Geo Zones'), document::ilink(__APP__.'/geo_zones'));
-	breadcrumbs::add(!empty($geo_zone->data['id']) ? t('title_edit_geo_zone', 'Edit Geo Zone') : t('title_new_geo_zone', 'Create New Geo Zone'), document::ilink());
 
 	if (isset($_POST['save'])) {
 
@@ -29,7 +30,7 @@
 				'description',
 				'zones',
 			] as $field) {
-				if (isset($_POST[$field])) {
+				if (array_key_exists($field, $_POST)) {
 					$geo_zone->data[$field] = $_POST[$field];
 				}
 			}
@@ -37,7 +38,7 @@
 			$geo_zone->save();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink(__APP__.'/geo_zones'));
+			redirect(document::ilink(__APP__.'/geo_zones/geo_zones'));
 			exit;
 
 		} catch (Exception $e) {
@@ -53,7 +54,7 @@
 			$geo_zone->delete();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink(__APP__.'/geo_zones'));
+			redirect(document::ilink(__APP__.'/geo_zones/geo_zones'));
 			exit;
 
 		} catch (Exception $e) {

@@ -6,14 +6,15 @@
 		$tax_class = new ent_tax_class();
 	}
 
+	document::$title[] = !empty($tax_class->data['id']) ? t('title_edit_tax_class', 'Edit Tax Class') : t('title_create_new_tax_class', 'Create New Tax Class');
+
+	breadcrumbs::add(t('title_localization', 'Localization'));
+	breadcrumbs::add(t('title_tax_classes', 'Tax Classes'), document::ilink(__APP__.'/tax_classes'));
+	breadcrumbs::add(!empty($tax_class->data['id']) ? t('title_edit_tax_class', 'Edit Tax Class') : t('title_create_new_tax_class', 'Create New Tax Class'), document::ilink());
+
 	if (!$_POST) {
 		$_POST = $tax_class->data;
 	}
-
-	document::$title[] = !empty($tax_class->data['id']) ? t('title_edit_tax_class', 'Edit Tax Class') : t('title_create_new_tax_class', 'Create New Tax Class');
-
-	breadcrumbs::add(t('title_tax_classes', 'Tax Classes'), document::ilink(__APP__.'/tax_classes'));
-	breadcrumbs::add(!empty($tax_class->data['id']) ? t('title_edit_tax_class', 'Edit Tax Class') : t('title_create_new_tax_class', 'Create New Tax Class'), document::ilink());
 
 	if (isset($_POST['save'])) {
 
@@ -28,7 +29,7 @@
 				'name',
 				'description',
 			] as $field) {
-				if (isset($_POST[$field])) {
+				if (array_key_exists($field, $_POST)) {
 					$tax_class->data[$field] = $_POST[$field];
 				}
 			}
@@ -36,7 +37,7 @@
 			$tax_class->save();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink(__APP__.'/tax_classes'));
+			redirect(document::ilink(__APP__.'/tax_classes/tax_classes'));
 			exit;
 
 		} catch (Exception $e) {
@@ -55,7 +56,7 @@
 			$tax_class->delete();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink(__APP__.'/tax_classes'));
+			redirect(document::ilink(__APP__.'/tax_classes/tax_classes'));
 			exit;
 
 		} catch (Exception $e) {

@@ -6,14 +6,15 @@
 		$country = new ent_country();
 	}
 
+	document::$title[] = !empty($country->data['id']) ? t('title_edit_country', 'Edit Country') : t('title_create_new_country', 'Create New Country');
+
+	breadcrumbs::add(t('title_localization', 'Localization'));
+	breadcrumbs::add(t('title_countries', 'Countries'), document::ilink(__APP__.'/countries'));
+	breadcrumbs::add(!empty($country->data['id']) ? t('title_edit_country', 'Edit Country') : t('title_create_new_country', 'Create New Country'), document::ilink());
+
 	if (!$_POST) {
 		$_POST = $country->data;
 	}
-
-	document::$title[] = !empty($country->data['id']) ? t('title_edit_country', 'Edit Country') : t('title_create_new_country', 'Create New Country');
-
-	breadcrumbs::add(t('title_countries', 'Countries'), document::ilink(__APP__.'/countries'));
-	breadcrumbs::add(!empty($country->data['id']) ? t('title_edit_country', 'Edit Country') : t('title_create_new_country', 'Create New Country'), document::ilink());
 
 	if (isset($_POST['save'])) {
 
@@ -55,7 +56,7 @@
 				'phone_code',
 				'zones',
 			] as $field) {
-				if (isset($_POST[$field])) {
+				if (array_key_exists($field, $_POST)) {
 					$country->data[$field] = $_POST[$field];
 				}
 			}
@@ -63,7 +64,7 @@
 			$country->save();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink(__APP__.'/countries'));
+			redirect(document::ilink(__APP__.'/countries/countries'));
 			exit;
 
 		} catch (Exception $e) {
@@ -82,7 +83,7 @@
 			$country->delete();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink(__APP__.'/countries'));
+			redirect(document::ilink(__APP__.'/countries/countries'));
 			exit;
 
 		} catch (Exception $e) {

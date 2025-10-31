@@ -6,14 +6,15 @@
 		$currency = new ent_currency();
 	}
 
+	document::$title[] = !empty($currency->data['id']) ? t('title_edit_currency', 'Edit Currency') : t('title_create_new_currency', 'Create New Currency');
+
+	breadcrumbs::add(t('title_localization', 'Localization'));
+	breadcrumbs::add(t('title_currencies', 'Currencies'), document::ilink(__APP__.'/currencies'));
+	breadcrumbs::add(!empty($currency->data['id']) ? t('title_edit_currency', 'Edit Currency') : t('title_create_new_currency', 'Create New Currency'), document::ilink());
+
 	if (!$_POST) {
 		$_POST = $currency->data;
 	}
-
-	document::$title[] = !empty($currency->data['id']) ? t('title_edit_currency', 'Edit Currency') : t('title_create_new_currency', 'Create New Currency');
-
-	breadcrumbs::add(t('title_currencies', 'Currencies'), document::ilink(__APP__.'/currencies'));
-	breadcrumbs::add(!empty($currency->data['id']) ? t('title_edit_currency', 'Edit Currency') : t('title_create_new_currency', 'Create New Currency'), document::ilink());
 
 	if (isset($_POST['save'])) {
 
@@ -64,7 +65,7 @@
 				'decimals',
 				'priority',
 			] as $field) {
-				if (isset($_POST[$field])) {
+				if (array_key_exists($field, $_POST)) {
 					$currency->data[$field] = $_POST[$field];
 				}
 			}
@@ -90,7 +91,7 @@
 			}
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink(__APP__.'/currencies'));
+			redirect(document::ilink(__APP__.'/currencies/currencies'));
 			exit;
 
 		} catch (Exception $e) {
@@ -109,7 +110,7 @@
 			$currency->delete();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink(__APP__.'/currencies'));
+			redirect(document::ilink(__APP__.'/currencies/currencies'));
 			exit;
 
 		} catch (Exception $e) {

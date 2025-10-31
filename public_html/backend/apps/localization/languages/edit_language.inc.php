@@ -8,14 +8,15 @@
 		$language->data['url_type'] = 'path';
 	}
 
+	document::$title[] = !empty($language->data['id']) ? t('title_edit_language', 'Edit Language') : t('title_create_new_language', 'Create New Language');
+
+	breadcrumbs::add(t('title_localization', 'Localization'));
+	breadcrumbs::add(t('title_languages', 'Languages'), document::ilink(__APP__.'/languages'));
+	breadcrumbs::add(!empty($language->data['id']) ? t('title_edit_language', 'Edit Language') : t('title_create_new_language', 'Create New Language'), document::ilink());
+
 	if (!$_POST) {
 		$_POST = $language->data;
 	}
-
-	document::$title[] = !empty($language->data['id']) ? t('title_edit_language', 'Edit Language') : t('title_create_new_language', 'Create New Language');
-
-	breadcrumbs::add(t('title_languages', 'Languages'), document::ilink(__APP__.'/languages'));
-	breadcrumbs::add(!empty($language->data['id']) ? t('title_edit_language', 'Edit Language') : t('title_create_new_language', 'Create New Language'), document::ilink());
 
 	if (isset($_POST['save'])) {
 
@@ -104,10 +105,9 @@
 				'format_datetime',
 				'decimal_point',
 				'thousands_sep',
-				'currency_code',
 				'priority',
 			] as $field) {
-				if (isset($_POST[$field])) {
+				if (array_key_exists($field, $_POST)) {
 					$language->data[$field] = $_POST[$field];
 				}
 			}
@@ -133,7 +133,7 @@
 			}
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink(__APP__.'/languages'));
+			redirect(document::ilink(__APP__.'/languages/languages'));
 			exit;
 
 		} catch (Exception $e) {
@@ -152,7 +152,7 @@
 			$language->delete();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink(__APP__.'/languages'));
+			redirect(document::ilink(__APP__.'/languages/languages'));
 			exit;
 
 		} catch (Exception $e) {
@@ -434,13 +434,6 @@
 			</div>
 
 			<div class="grid">
-				<div class="col-md-6">
-					<label class="form-group">
-						<div class="form-label"><?php echo t('title_force_currency_code', 'Force Currency Code'); ?></div>
-						<?php echo functions::form_input_text('currency_code', true); ?>
-					</label>
-				</div>
-
 				<div class="col-md-6">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_priority', 'Priority'); ?></div>

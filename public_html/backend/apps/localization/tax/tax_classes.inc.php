@@ -1,12 +1,13 @@
 <?php
 
+	document::$title[] = t('title_tax_classes', 'Tax Classes');
+
+	breadcrumbs::add(t('title_localization', 'Localization'));
+	breadcrumbs::add(t('title_tax_classes', 'Tax Classes'), document::ilink());
+
 	if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
 		$_GET['page'] = 1;
 	}
-
-	document::$title[] = t('title_tax_classes', 'Tax Classes');
-
-	breadcrumbs::add(t('title_tax_classes', 'Tax Classes'), document::ilink());
 
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$tax_classes = database::query(
@@ -23,7 +24,7 @@
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_tax_class'), t('title_create_new_tax_class', 'Create New Tax Class'), '', 'create'); ?>
+		<?php echo functions::form_button_link(document::ilink(__APP__.'/tax/edit_tax_class'), t('title_create_new_tax_class', 'Create New Tax Class'), '', 'create'); ?>
 	</div>
 
 	<?php echo functions::form_begin('tax_classs_form', 'post'); ?>
@@ -44,9 +45,9 @@
 				<tr>
 					<td><?php echo functions::form_checkbox('tax_classes[]', $tax_class['id']); ?></td>
 					<td><?php echo $tax_class['id']; ?></td>
-					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_tax_class', ['tax_class_id' => $tax_class['id']]); ?>"><?php echo $tax_class['name']; ?></a></td>
+					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/tax/edit_tax_class', ['tax_class_id' => $tax_class['id']]); ?>"><?php echo $tax_class['name']; ?></a></td>
 					<td style="color: #999;"><?php echo $tax_class['description']; ?></td>
-					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_tax_class', ['tax_class_id' => $tax_class['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/tax/edit_tax_class', ['tax_class_id' => $tax_class['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
 				</tr>
 				<?php } ?>
 			</tbody>

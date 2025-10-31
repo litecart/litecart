@@ -1,12 +1,13 @@
 <?php
 
+	document::$title[] = t('title_geo_zones', 'Geo Zones');
+
+	breadcrumbs::add(t('title_localization', 'Localization'));
+	breadcrumbs::add(t('title_geo_zones', 'Geo Zones'), document::ilink());
+
 	if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
 		$_GET['page'] = 1;
 	}
-
-	document::$title[] = t('title_geo_zones', 'Geo Zones');
-
-	breadcrumbs::add(t('title_geo_zones', 'Geo Zones'), document::ilink());
 
 	if (isset($_POST['clone'])) {
 
@@ -64,7 +65,7 @@
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_geo_zone'), t('title_create_new_geo_zone', 'Create New Geo Zone'), '', 'create'); ?>
+		<?php echo functions::form_button_link(document::ilink(__APP__.'/geo_zones/edit_geo_zone'), t('title_create_new_geo_zone', 'Create New Geo Zone'), '', 'create'); ?>
 	</div>
 
 	<?php echo functions::form_begin('geo_zones_form', 'post'); ?>
@@ -85,9 +86,9 @@
 				<tr>
 					<td><?php echo functions::form_checkbox('geo_zones[]', $geo_zone['id']); ?></td>
 					<td><?php echo $geo_zone['id']; ?></td>
-					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_geo_zone', ['geo_zone_id' => $geo_zone['id']]); ?>"><?php echo $geo_zone['name']; ?></a></td>
+					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/geo_zones/edit_geo_zone', ['geo_zone_id' => $geo_zone['id']]); ?>"><?php echo $geo_zone['name']; ?></a></td>
 					<td class="text-center"><?php echo $geo_zone['num_zones']; ?></td>
-					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_geo_zone', ['geo_zone_id' => $geo_zone['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/geo_zones/edit_geo_zone', ['geo_zone_id' => $geo_zone['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
 				</tr>
 				<?php } ?>
 			</tbody>

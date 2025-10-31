@@ -6,14 +6,15 @@
 		$tax_rate = new ent_tax_rate();
 	}
 
+	document::$title[] = !empty($tax_rate->data['id']) ? t('title_edit_tax_rate', 'Edit Tax Rate') : t('title_create_new_tax_rate', 'Create New Tax Rate');
+
+	breadcrumbs::add(t('title_localization', 'Localization'));
+	breadcrumbs::add(t('title_tax_rates', 'Tax Rates'), document::ilink(__APP__.'/tax_rates'));
+	breadcrumbs::add(!empty($tax_rate->data['id']) ? t('title_edit_tax_rate', 'Edit Tax Rate') : t('title_create_new_tax_rate', 'Create New Tax Rate'), document::ilink());
+
 	if (!$_POST) {
 		$_POST = $tax_rate->data;
 	}
-
-	document::$title[] = !empty($tax_rate->data['id']) ? t('title_edit_tax_rate', 'Edit Tax Rate') : t('title_create_new_tax_rate', 'Create New Tax Rate');
-
-	breadcrumbs::add(t('title_tax_rates', 'Tax Rates'), document::ilink(__APP__.'/tax_rates'));
-	breadcrumbs::add(!empty($tax_rate->data['id']) ? t('title_edit_tax_rate', 'Edit Tax Rate') : t('title_create_new_tax_rate', 'Create New Tax Rate'), document::ilink());
 
 	if (isset($_POST['save'])) {
 
@@ -64,7 +65,7 @@
 				'rule_individuals_with_tax_id',
 				'rule_individuals_without_tax_id',
 			] as $field) {
-				if (isset($_POST[$field])) {
+				if (array_key_exists($field, $_POST)) {
 					$tax_rate->data[$field] = $_POST[$field];
 				}
 			}
@@ -72,7 +73,7 @@
 			$tax_rate->save();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink(__APP__.'/tax_rates'));
+			redirect(document::ilink(__APP__.'/tax_rates/tax_rates'));
 			exit;
 
 		} catch (Exception $e) {
@@ -91,7 +92,7 @@
 			$tax_rate->delete();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink(__APP__.'/tax_rates'));
+			redirect(document::ilink(__APP__.'/tax_rates/tax_rates'));
 			exit;
 
 		} catch (Exception $e) {

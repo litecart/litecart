@@ -2,6 +2,7 @@
 
 	document::$title[] = t('title_storage_encoding', 'Storage Encoding');
 
+	breadcrumbs::add(t('title_localization', 'Localization'));
 	breadcrumbs::add(t('title_languages', 'Languages'), document::ilink(__APP__.'/languages'));
 	breadcrumbs::add(t('title_storage_encoding', 'Storage Encoding'), document::ilink());
 

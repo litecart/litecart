@@ -2,6 +2,7 @@
 
 	document::$title[] = t('title_import_export_csv', 'Import/Export CSV');
 
+	breadcrumbs::add(t('title_localization', 'Localization'));
 	breadcrumbs::add(t('title_import_export_csv', 'Import/Export CSV'), document::ilink());
 
 	$collections = include __DIR__.'/collections.inc.php';

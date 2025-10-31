@@ -1,12 +1,13 @@
 <?php
 
+	document::$title[] = t('title_languages', 'Languages');
+
+	breadcrumbs::add(t('title_localization', 'Localization'));
+	breadcrumbs::add(t('title_languages', 'Languages'), document::ilink());
+
 	if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
 		$_GET['page'] = 1;
 	}
-
-	document::$title[] = t('title_languages', 'Languages');
-
-	breadcrumbs::add(t('title_languages', 'Languages'), document::ilink());
 
 	if (isset($_POST['enable']) || isset($_POST['disable'])) {
 
@@ -15,6 +16,7 @@
 			if (empty($_POST['languages'])) {
 				throw new Exception(t('error_must_select_languages', 'You must select languages'));
 			}
+			
 
 			foreach (array_keys($_POST['languages']) as $language_code) {
 
@@ -55,7 +57,7 @@
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_language'), t('title_create_new_language', 'Create New Language'), '', 'create'); ?>
+		<?php echo functions::form_button_link(document::ilink(__APP__.'/languages/edit_language'), t('title_create_new_language', 'Create New Language'), '', 'create'); ?>
 	</div>
 
 	<?php echo functions::form_begin('languages_form', 'post'); ?>
@@ -83,14 +85,14 @@
 					<td><?php echo functions::form_checkbox('languages[]', $language['code']); ?></td>
 					<td><?php echo functions::draw_fonticon(($language['status'] == 1) ? 'on' : (($language['status'] == -1) ? 'semi-off' : 'off')); ?></td>
 					<td><?php echo $language['id']; ?></td>
-					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_language', ['language_code' => $language['code']]); ?>"><?php echo $language['name']; ?></a></td>
+					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/languages/edit_language', ['language_code' => $language['code']]); ?>"><?php echo $language['name']; ?></a></td>
 					<td class="text-center"><?php echo $language['code']; ?></td>
 					<td class="text-center"><?php echo $language['code2']; ?></td>
 					<td class="text-center"><?php echo $language['url_type']; ?></td>
 					<td class="text-center"><?php echo ($language['code'] == settings::get('default_language_code')) ? functions::draw_fonticon('icon-check') : ''; ?></td>
 					<td class="text-center"><?php echo ($language['code'] == settings::get('store_language_code')) ? functions::draw_fonticon('icon-check') : ''; ?></td>
 					<td class="text-center"><?php echo $language['priority']; ?></td>
-					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_language', ['language_code' => $language['code']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/languages/edit_language', ['language_code' => $language['code']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
 				</tr>
 				<?php } ?>
 			</tbody>

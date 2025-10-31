@@ -1,12 +1,13 @@
 <?php
 
+	document::$title[] = t('title_currencies', 'Currencies');
+
+	breadcrumbs::add(t('title_localization', 'Localization'));
+	breadcrumbs::add(t('title_currencies', 'Currencies'), document::ilink());
+
 	if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
 		$_GET['page'] = 1;
 	}
-
-	document::$title[] = t('title_currencies', 'Currencies');
-
-	breadcrumbs::add(t('title_currencies', 'Currencies'), document::ilink());
 
 	if (isset($_POST['enable']) || isset($_POST['disable'])) {
 
@@ -58,7 +59,7 @@
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_currency'), t('title_create_new_currency', 'Create New Currency'), '', 'create'); ?>
+		<?php echo functions::form_button_link(document::ilink(__APP__.'/currencies/edit_currency'), t('title_create_new_currency', 'Create New Currency'), '', 'create'); ?>
 	</div>
 
 	<?php echo functions::form_begin('currencies_form', 'post'); ?>
@@ -69,8 +70,8 @@
 					<th><?php echo functions::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th></th>
 					<th><?php echo t('title_id', 'ID'); ?></th>
-					<th><?php echo t('title_code', 'Code'); ?></th>
 					<th class="main"><?php echo t('title_name', 'Name'); ?></th>
+					<th><?php echo t('title_code', 'Code'); ?></th>
 					<th><?php echo t('title_value', 'Value'); ?></th>
 					<th><?php echo t('title_format_example', 'Format Example'); ?></th>
 					<th><?php echo t('title_default_currency', 'Default Currency'); ?></th>
@@ -86,15 +87,15 @@
 					<td><?php echo functions::form_checkbox('currencies[]', $currency['code']); ?></td>
 					<td><?php echo functions::draw_fonticon(($currency['status'] == 1) ? 'on' : (($currency['status'] == -1) ? 'semi-off' : 'off')); ?></td>
 					<td><?php echo $currency['id']; ?></td>
+					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/currencies/edit_currency', ['currency_code' => $currency['code']]); ?>"><?php echo $currency['name']; ?></a></td>
 					<td><?php echo $currency['code']; ?></td>
-					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_currency', ['currency_code' => $currency['code']]); ?>"><?php echo $currency['name']; ?></a></td>
 					<td class="text-end"><?php echo language::number_format($currency['value'], 4); ?></td>
 					<td class="text-center"><?php echo currency::format_html(1234.56, false, $currency['code'], 1); ?></td>
 					<td class="text-center"><?php echo ($currency['code'] == settings::get('default_currency_code')) ? functions::draw_fonticon('icon-check') : ''; ?></td>
 					<td class="text-center"><?php echo ($currency['code'] == settings::get('store_currency_code')) ? functions::draw_fonticon('icon-check') : ''; ?></td>
 					<td class="text-center"><?php echo $currency['priority']; ?></td>
 					<td class="text-end">
-						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_currency', ['currency_code' => $currency['code']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>">
+						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/currencies/edit_currency', ['currency_code' => $currency['code']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>">
 							<?php echo functions::draw_fonticon('edit'); ?>
 						</a>
 					</td>

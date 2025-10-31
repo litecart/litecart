@@ -1,12 +1,13 @@
 <?php
 
+	document::$title[] = t('title_tax_rates', 'Tax Rates');
+
+	breadcrumbs::add(t('title_localization', 'Localization'));
+	breadcrumbs::add(t('title_tax_rates', 'Tax Rates'), document::ilink());
+
 	if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
 		$_GET['page'] = 1;
 	}
-
-	document::$title[] = t('title_tax_rates', 'Tax Rates');
-
-	breadcrumbs::add(t('title_tax_rates', 'Tax Rates'), document::ilink());
 
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$tax_rates = database::query(
@@ -25,7 +26,7 @@
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_tax_rate'), t('title_create_new_tax_rate', 'Create New Tax Rate'), '', 'create'); ?>
+		<?php echo functions::form_button_link(document::ilink(__APP__.'/tax/edit_tax_rate'), t('title_create_new_tax_rate', 'Create New Tax Rate'), '', 'create'); ?>
 	</div>
 
 	<?php echo functions::form_begin('tax_rates_form', 'post'); ?>
@@ -51,10 +52,10 @@
 					<td><?php echo $tax_rate['id']; ?></td>
 					<td><?php echo $tax_rate['tax_class']; ?></td>
 					<td><?php echo $tax_rate['geo_zone']; ?></td>
-					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_tax_rate', ['tax_rate_id' => $tax_rate['id']], true); ?>"><?php echo $tax_rate['name']; ?></a></td>
+					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/tax/edit_tax_rate', ['tax_rate_id' => $tax_rate['id']], true); ?>"><?php echo $tax_rate['name']; ?></a></td>
 					<td><?php echo $tax_rate['description']; ?></td>
 					<td><?php echo language::number_format($tax_rate['rate'], 4); ?></td>
-					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_tax_rate', ['tax_rate_id' => $tax_rate['id']], true); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/tax/edit_tax_rate', ['tax_rate_id' => $tax_rate['id']], true); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
 				</tr>
 				<?php } ?>
 			</tbody>
