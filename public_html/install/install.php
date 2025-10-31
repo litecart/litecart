@@ -1,14 +1,30 @@
 <?php
 
+	ini_set('display_errors', 'On');
+	mb_internal_encoding('UTF-8');
+	mb_http_output('UTF-8');
+	
+  define('DOCUMENT_ROOT',    str_replace('\\', '/', rtrim(realpath(!empty($_SERVER['DOCUMENT_ROOT']) ? $_SERVER['DOCUMENT_ROOT'] : __DIR__.'/..'), '/')));
+	
 	define('FS_DIR_APP',     rtrim(str_replace('\\', '/', realpath(__DIR__.'/../')), '/') . '/');
 	define('FS_DIR_STORAGE', FS_DIR_APP .'/storage/');
 
 	define('WS_DIR_APP',     preg_replace('#^'. preg_quote(rtrim(DOCUMENT_ROOT, '/'), '#') .'#', '', FS_DIR_APP));
 	define('WS_DIR_STORAGE', WS_DIR_APP .'storage/');
 
-	ini_set('display_errors', 'On');
-	mb_internal_encoding('UTF-8');
-	mb_http_output('UTF-8');
+	// Set platform name
+	if (preg_match('#define\(\'PLATFORM_NAME\', \'([^\']+)\'\);#', file_get_contents(FS_DIR_APP . 'includes/app_header.inc.php'), $matches)) {
+    define('PLATFORM_NAME', isset($matches[1]) ? $matches[1] : false);
+  } else {
+    throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . 'Could not get platform name</p>' . PHP_EOL  . PHP_EOL);
+  }
+
+  // Set platform version
+  if (preg_match('#define\(\'PLATFORM_VERSION\', \'([^\']+)\'\);#', file_get_contents(FS_DIR_APP . 'includes/app_header.inc.php'), $matches)) {
+    define('PLATFORM_VERSION', isset($matches[1]) ? $matches[1] : false);
+  } else {
+    throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . 'Could not get platform version</p>' . PHP_EOL  . PHP_EOL);
+  }
 
 	require_once FS_DIR_APP . 'includes/compatibility.inc.php';
 
@@ -17,7 +33,7 @@
 		if (!isset($argv[1]) || (in_array($argv[1], ['help', '-h', '--help', '/?']))) {
 			echo implode(PHP_EOL, [
 				'',
-				'LiteCart® 3.0.0',
+				PLATFORM_NAME .'® '. PLATFORM_VERSION,
 				'Copyright (c) '. date('Y') .' LiteCart AB',
 				'https://www.litecart.net/',
 				'Usage: php '. basename(__FILE__) .' [options]',
@@ -98,16 +114,6 @@
 
 		} else {
 			throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . ' Could not detect \$_SERVER[\'DOCUMENT_ROOT\']. If you are using CLI, make sure you pass the parameter "document_root" e.g. --document_root="/var/www/mysite.com/public_html"</p>' . PHP_EOL  . PHP_EOL);
-		}
-
-
-
-		if (!defined('PLATFORM_NAME')) {
-			throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . 'Could not get platform name</p>' . PHP_EOL  . PHP_EOL);
-		}
-
-		if (!defined('PLATFORM_VERSION')) {
-			throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . 'Could not get platform version</p>' . PHP_EOL  . PHP_EOL);
 		}
 
 		if (!empty($_REQUEST['admin_folder'])) {
