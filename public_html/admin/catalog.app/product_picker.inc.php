@@ -21,6 +21,7 @@
         <thead>
           <tr>
             <th><?php echo language::translate('title_id', 'ID'); ?></th>
+            <th></th>
             <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
             <th><?php echo language::translate('title_sku', 'SKU'); ?></th>
             <th><?php echo language::translate('title_quantity', 'Quantity'); ?></th>
@@ -62,20 +63,27 @@
         $('#modal-product-picker .results tbody').html('');
         $.each(json, function(i, row){
           if (row) {
-            $('#modal-product-picker .results tbody').append(
-              '<tr data-id="' + row.id + '" data-sku="' + row.name + '" data-name="' + row.name + '" data-price="' + row.price.value + '" data-price-formatted="' + row.price.formatted + '" data-quantity="' + row.quantity + '">' +
-              '  <td class="id">' + row.id + '</td>' +
-              '  <td class="name">' + row.name + '</td>' +
-              '  <td class="sku">' + row.sku + '</td>' +
-              '  <td class="text-right">' + row.quantity + '</td>' +
-              '  <td class="text-right">' + row.price.formatted + '</td>' +
-              '  <td>' + row.date_created + '</td>' +
+            $('#modal-product-picker .results tbody').append([
+              '<tr>',
+              '  <td class="id">' + row.id + '</td>',
+              '  <td><i class="fa fa-circle" style="color: ' + (row.status ? '#88cc44' : '#ff6644') + ';"></i></td>',
+              '  <td class="name">' + row.name + '</td>',
+              '  <td class="sku">' + row.sku + '</td>',
+              '  <td class="quantity text-end">' + row.quantity + '</td>',
+              '  <td class="price text-end">' + row.price.formatted + '</td>',
+              '  <td class="date-created">' + row.date_created + '</td>',
               '</tr>'
-            );
+            ].join('\n'));
           }
         });
         if ($('#modal-product-picker .results tbody').html() == '') {
-          $('#modal-product-picker .results tbody').html('<tr><td colspan="6"><em><?php echo functions::escape_js(language::translate('text_no_results', 'No results')); ?></em></td></tr>');
+          $('#modal-product-picker .results tbody').html([
+            '<tr>',
+            '  <td colspan="6">',
+            '    <em><?php echo functions::escape_js(language::translate('text_no_results', 'No results')); ?></em>',
+            '  </td>',
+            '</tr>'
+          ].join('\n'));
         }
       },
     });
