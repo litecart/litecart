@@ -26,8 +26,8 @@ d533cb0cc85920b7cfc97c8b4001a3ed	admin/catalog.app/edit_delivery_status.inc.php
 d9926a9dcf952d605a1fe12fc78269f2	admin/catalog.app/edit_supplier.inc.php
 d41d8cd98f00b204e9800998ecf8427e	admin/catalog.app/index.html
 6c6b334f6e8246ab135849067e25e0c0	admin/catalog.app/manufacturers.inc.php
-d8c39740714b832e153ec0a9d47997ad	admin/catalog.app/product_picker.inc.php
-7bc62acc1df78526828e8d31d4d8f468	admin/catalog.app/products.json.inc.php
+bdce33426711ab3a9cae7725f981b27d	admin/catalog.app/product_picker.inc.php
+2a00a9cf7f5c91392a409ed411ee5f50	admin/catalog.app/products.json.inc.php
 2fab8913150b522bbfe61bf993d520f0	admin/catalog.app/quantity_units.inc.php
 7927308d8c546f48444aae5e809dcf55	admin/catalog.app/sold_out_statuses.inc.php
 58fd3d33dcce7d827dced52961088637	admin/catalog.app/suppliers.inc.php
@@ -528,7 +528,7 @@ d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/views/index.
 3abee986a224a60b1d4848a8d84c9012	includes/templates/default.catalog/views/pagination.inc.php
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/index.html
 d41d8cd98f00b204e9800998ecf8427e	includes/wrappers/index.html
-f9d8be06239f09f565a93421d9643fff	includes/wrappers/wrap_http.inc.php
+f4c4574be46f27067a197e01813b44a7	includes/wrappers/wrap_http.inc.php
 f4541a15a651c94be795c0cfbf33e471	includes/wrappers/wrap_smtp.inc.php
 5a73bee1a5716c59f5ea4e1a3d5599c8	index.php
 db7b7a833baf1b6f47160530e9a9bc9f	install/clean.sql
@@ -692,7 +692,7 @@ c84802588edcf08935a6b2a68c3dbc33	install/upgrade_patches/2.6.0.inc.php
 7b4bafa25947467027c750c9aea527d3	install/upgrade_patches/2.6.1.inc.php
 cd37a7f25119ad9ac30f171d57ef6db2	install/upgrade_patches/2.6.1.sql
 92ec5c9565eaa4393fb77f7e15fe8574	install/upgrade_patches/2.6.2.sql
-76dcde30b3e77f3deac5f8143c1fe418	install/upgrade_patches/2.6.3.inc.php
+30c3e5bcc89bac50022777666f8fd35e	install/upgrade_patches/2.6.3.inc.php
 f90a56242d3956dc3dcf217afc5cb09e	install/upgrade_patches/2.6.3.sql
 62bac9360222fee7de79173307177c9e	logs/.htaccess
 d41d8cd98f00b204e9800998ecf8427e	logs/index.html
