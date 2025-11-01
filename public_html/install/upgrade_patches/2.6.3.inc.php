@@ -33,7 +33,7 @@
     });
 
     database::query(
-      "select * ". DB_TABLE_PREFIX ."products_images
+      "select * from ". DB_TABLE_PREFIX ."products_images
       where filename like '%$char%';"
     )->each(function($image) use ($char, $replacement) {
       database::query(
