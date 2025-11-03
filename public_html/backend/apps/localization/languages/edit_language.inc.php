@@ -4,8 +4,6 @@
 		$language = new ent_language($_GET['language_code']);
 	} else {
 		$language = new ent_language();
-		$language->data['direction'] = 'ltr';
-		$language->data['url_type'] = 'path';
 	}
 
 	document::$title[] = !empty($language->data['id']) ? t('title_edit_language', 'Edit Language') : t('title_create_new_language', 'Create New Language');

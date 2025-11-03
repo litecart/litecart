@@ -111,7 +111,7 @@
 
 		public static function after_capture() {
 
-			// Add data for JavaScript environment
+			// JavaScript environment
 
 			self::$jsenv['platform'] = [
 				'path' => WS_DIR_APP,
@@ -535,7 +535,7 @@
 		}
 
 		public static function href_ilink($resource=null, $new_params=[], $inherit_params=null, $skip_params=[], $language_code=null) {
-			return functions::escape_html(self::ilink($resource, $new_params, $inherit_params, $skip_params, $language_code));
+			return functions::escape_attr(self::ilink($resource, $new_params, $inherit_params, $skip_params, $language_code));
 		}
 
 		public static function link($path=null, $new_params=[], $inherit_params=null, $skip_params=[], $language_code=null) {
@@ -556,10 +556,10 @@
 		}
 
 		public static function href_link($path=null, $new_params=[], $inherit_params=null, $skip_params=[], $language_code=null) {
-			return functions::escape_html(self::link($path, $new_params, $inherit_params, $skip_params, $language_code));
+			return functions::escape_attr(self::link($path, $new_params, $inherit_params, $skip_params, $language_code));
 		}
 
-		public static function rlink($resource) {
+		public static function rlink($resource, $new_params=[], $inherit_params=null, $skip_params=[]) {
 
 			if (!$resource) {
 				return '';
@@ -576,13 +576,13 @@
 			}
 
 			if (is_file($resource)) {
-				return self::link($webpath, ['_' => filemtime($resource)]);
+				$new_params = array_merge(['_' => filemtime($resource)], $new_params);
 			}
 
-			return self::link($webpath);
+			return self::link($webpath, $new_params, $inherit_params, $skip_params);
 		}
 
-		public static function href_rlink($resource) {
-			return functions::escape_html(self::rlink($resource));
+		public static function href_rlink($resource, $new_params=[], $inherit_params=null, $skip_params=[]) {
+			return functions::escape_attr(self::rlink($resource, $new_params, $inherit_params, $skip_params));
 		}
 	}

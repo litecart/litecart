@@ -30,9 +30,15 @@
 	// Compatibility and Polyfills
 	require_once 'app://includes/compatibility.inc.php';
 
+	// Load shorthand functions
+	require_once 'app://includes/shorthand.inc.php';
+
+	// General functions
+	require_once 'app://includes/functions.inc.php';
+
 	// 3rd party autoloader (If present)
 	if (is_file(FS_DIR_APP . 'vendor/autoload.php')) {
-		require FS_DIR_APP . 'vendor/autoload.php';
+		require_once FS_DIR_APP . 'vendor/autoload.php';
 	}
 
 	// Autoloader
@@ -40,12 +46,6 @@
 
 	// Set error handler
 	require_once 'app://includes/error_handler.inc.php';
-
-	// General functions
-	require_once 'app://includes/functions.inc.php';
-
-	// Load shorthand functions
-	require_once 'app://includes/shorthand.inc.php';
 
 	// Jump-start some nodes
 	class_exists('notices');

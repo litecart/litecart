@@ -23,6 +23,11 @@
 				$this->data[$field['Field']] = database::create_variable($field);
 			});
 
+			foreach ([
+				'name',
+			] as $field) {
+				$this->data['field'] = array_fill_keys(array_keys(language::$languages), '');
+			}
 			$this->data['values'] = [];
 
 			$this->previous = $this->data;
@@ -47,15 +52,26 @@
 			}
 
 			$this->data = array_replace($this->data, array_intersect_key($group, $this->data));
-			$this->data['name'] = json_decode($this->data['name'], true) ?: [];
+			
+			foreach ([
+				'name',
+			] as $column) {
+				$this->data[$column] = json_decode($this->data[$column], true) ?: [];
+				$this->data[$column] += array_fill_keys(array_keys(language::$languages), '');
+			}
 
 			database::query(
 				"select * from ". DB_TABLE_PREFIX ."attribute_values
 				where group_id = ". (int)$id ."
 				order by priority;"
 			)->each(function($value) {
-
-				$value['name'] = json_decode($value['name'], true) ?: [];
+				
+				foreach ([
+					'name',
+				] as $column) {
+					$value[$column] = json_decode($value[$column], true) ?: [];
+					$value[$column] += array_fill_keys(array_keys(language::$languages), '');
+				}
 
 				$value['in_use'] = database::query(
 					"select id from ". DB_TABLE_PREFIX ."products_attributes

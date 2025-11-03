@@ -8,5 +8,5 @@
 		header('Set-Cookie: remember_me=; Path='. WS_DIR_APP .'; Max-Age=-1; HttpOnly; SameSite=Lax', false);
 	}
 
-	header('Location: ' . document::ilink('login'));
+	redirect(document::ilink('login'));
 	exit;

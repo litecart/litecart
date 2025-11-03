@@ -7,7 +7,7 @@
 		'priority' => 0,
 
 		'theme' => [
-			'color' => '#b34095',
+			'color' => '#4093b3',
 			'icon' => 'icon-banner',
 		],
 

@@ -50,6 +50,7 @@
 			}
 
 			$this->data = array_replace($this->data, array_intersect_key($administrator, $this->data));
+			
 			$this->data['apps'] = !empty($this->data['apps']) ? json_decode($this->data['apps'], true) : [];
 			$this->data['widgets'] = !empty($this->data['widgets']) ? json_decode($this->data['widgets'], true) : [];
 

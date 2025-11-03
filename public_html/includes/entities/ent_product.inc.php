@@ -76,12 +76,6 @@
 
 			$this->data = array_replace($this->data, array_intersect_key($product, $this->data));
 
-			// Categories
-			$this->data['categories'] = database::query(
-				"select category_id from ". DB_TABLE_PREFIX ."products_to_categories
-				 where product_id = ". (int)$id .";"
-			)->fetch_all('category_id');
-
 			// Info
 			foreach ([
 				'name',
@@ -96,6 +90,31 @@
 				$this->data[$column] += array_fill_keys(array_keys(language::$languages), '');
 			}
 
+			// Attributes
+			$this->data['attributes'] = database::query(
+				"select pa.*,
+					json_value(ag.name, '$.". database::input(language::$selected['code']) ."') as group_name,
+					json_value(avi.name, '$.". database::input(language::$selected['code']) ."') as value_name
+				from ". DB_TABLE_PREFIX ."products_attributes pa
+				left join ". DB_TABLE_PREFIX ."attribute_groups ag on (ag.id = pa.group_id)
+				left join ". DB_TABLE_PREFIX ."attribute_values avi on (avi.id = pa.value_id)
+				where product_id = ". (int)$id ."
+				order by priority, group_name, value_name, custom_value;"
+			)->fetch_all();
+
+			// Categories
+			$this->data['categories'] = database::query(
+				"select category_id from ". DB_TABLE_PREFIX ."products_to_categories
+				 where product_id = ". (int)$id .";"
+			)->fetch_all('category_id');
+
+			// Images
+			$this->data['images'] = database::query(
+				"select * from ". DB_TABLE_PREFIX ."products_images
+				where product_id = ". (int)$this->data['id'] ."
+				order by priority asc, id asc;"
+			)->fetch_all();
+
 			// Prices
 			database::query(
 				"select pp.*, cg.name as customer_group_name, c.name as campaign_name, c.valid_from, c.valid_to
@@ -108,25 +127,6 @@
 				$price['price'] = !empty($price['price']) ? json_decode($price['price'], true) : [];
 				$this->data['prices'][] = $price;
 			});
-
-			// Images
-			$this->data['images'] = database::query(
-				"select * from ". DB_TABLE_PREFIX ."products_images
-				where product_id = ". (int)$this->data['id'] ."
-				order by priority asc, id asc;"
-			)->fetch_all();
-
-			// Attributes
-			$this->data['attributes'] = database::query(
-				"select pa.*,
-					json_value(ag.name, '$.". database::input(language::$selected['code']) ."') as group_name,
-					json_value(avi.name, '$.". database::input(language::$selected['code']) ."') as value_name
-				from ". DB_TABLE_PREFIX ."products_attributes pa
-				left join ". DB_TABLE_PREFIX ."attribute_groups ag on (ag.id = pa.group_id)
-				left join ". DB_TABLE_PREFIX ."attribute_values avi on (avi.id = pa.value_id)
-				where product_id = ". (int)$id ."
-				order by priority, group_name, value_name, custom_value;"
-			)->fetch_all();
 
 			// Stock Options
 			$this->data['stock_options'] = database::query(
@@ -587,8 +587,8 @@
 				from ". DB_TABLE_PREFIX ."products p
 				left join ". DB_TABLE_PREFIX ."cart_items ci on (ci.product_id = p.id)
 				left join ". DB_TABLE_PREFIX ."products_attributes pa on (pa.product_id = p.id)
-				left join ". DB_TABLE_PREFIX ."products_prices pp on (pp.product_id = p.id)
 				left join ". DB_TABLE_PREFIX ."products_customizations pcu on (pcu.product_id = p.id)
+				left join ". DB_TABLE_PREFIX ."products_prices pp on (pp.product_id = p.id)
 				left join ". DB_TABLE_PREFIX ."products_stock_options pso on (pso.product_id = p.id)
 				left join ". DB_TABLE_PREFIX ."products_to_categories ptc on (ptc.product_id = p.id)
 				where p.id = ". (int)$this->data['id'] .";"

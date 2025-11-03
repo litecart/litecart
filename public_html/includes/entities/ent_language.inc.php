@@ -22,6 +22,9 @@
 			)->each(function($field){
 				$this->data[$field['Field']] = database::create_variable($field);
 			});
+			
+			$this->data['direction'] = 'ltr';
+			$this->data['url_type'] = 'path';
 
 			$this->previous = $this->data;
 		}
@@ -134,7 +137,7 @@
 							DB_TABLE_PREFIX . "sold_out_statuses",
 						] as $table) {
 
-							$columns = database::query(
+							database::query(
 								"show fields from $table;"
 							)->each(function($column) use ($table) {
 
@@ -146,19 +149,12 @@
 										where `{$column['Field']}` like '%\"". database::input($this->previous['code']) ."\"%';"
 									)->each(function($row) use ($table, $column) {
 
-										$data = json_decode($row[$column['Field']], true);
-
-										if (json_last_error() === JSON_ERROR_NONE && isset($data[$this->previous['code']])) {
-											$data[$this->data['code']] = $data[$this->previous['code']];
-											unset($data[$this->previous['code']]);
-
-											database::query(
-												"update `$table`
-												set `{$column['Field']}` = '". database::input(functions::format_json($data)) ."'
-												where id = ". (int)$row['id'] ."
-												limit 1;"
-											);
-										}
+										database::query(
+											"update `$table`
+											set `{$column['Field']}` = if(json_contains_path(`{$column['Field']}`, 'one', '$.". database::input($this->previous['code']) ."'), json_set(json_remove(`{$column['Field']}`, '$.". database::input($this->previous['code']) ."'), '$.". database::input($this->data['code']) ."', json_value(`{$column['Field']}`, '$.". database::input($this->previous['code']) ."')), `{$column['Field']}`),
+											where id = ". (int)$row['id'] ."
+											limit 1;"
+										);
 									});
 								}
 
@@ -228,7 +224,7 @@
 				DB_TABLE_PREFIX . "sold_out_statuses",
 			] as $table) {
 
-				$columns = database::query(
+				database::query(
 					"show fields from $table;"
 				)->each(function($column) use ($table) {
 
@@ -239,19 +235,12 @@
 							where `{$column['Field']}` like '%\"". database::input($this->data['code']) ."\"%';"
 						)->each(function($row) use ($table, $column) {
 
-							// Remove the language code from the JSON data
-							$data = json_decode($row[$column['Field']], true);
-
-							if (json_last_error() === JSON_ERROR_NONE && isset($data[$this->data['code']])) {
-								unset($data[$this->data['code']]);
-
-								database::query(
-									"update $table
-									set `{$column['Field']}` = '". database::input(functions::format_json($data)) ."'
-									where id = ". (int)$row['id'] ."
-									limit 1;"
-								);
-							}
+							database::query(
+								"update $table
+								set `{$column['Field']}` = json_remove(`{$column['Field']}`, '$.". database::input($this->data['code']) ."')
+								where id = ". (int)$row['id'] ."
+								limit 1;"
+							);
 						});
 					}
 				});

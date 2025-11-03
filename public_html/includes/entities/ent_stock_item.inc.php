@@ -173,12 +173,12 @@
 					quantity_unit_id = ". (int)$this->data['quantity_unit_id'] .",
 					purchase_price = '". (float)$this->data['purchase_price'] ."',
 					purchase_price_currency_code = '". database::input($this->data['purchase_price_currency_code']) ."',
-					weight = '". (float)$this->data['weight'] ."',
-					weight_unit = '". database::input($this->data['weight_unit']) ."',
 					length = ". (float)$this->data['length'] .",
 					width = ". (float)$this->data['width'] .",
 					height = ". (float)$this->data['height'] .",
 					length_unit = '". database::input($this->data['length_unit']) ."',
+					weight = '". (float)$this->data['weight'] ."',
+					weight_unit = '". database::input($this->data['weight_unit']) ."',
 					updated_at = '". ($this->data['updated_at'] = date('c')) ."'
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"

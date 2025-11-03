@@ -35,7 +35,7 @@
 
 			if ($key) {
 				self::$data[$type][$key] = $msg;
-			}	else {
+			} else {
 				self::$data[$type][] = $msg;
 			}
 		}

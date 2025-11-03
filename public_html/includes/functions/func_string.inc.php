@@ -7,8 +7,20 @@
 
 	// Turns string into str... or ...str
 	function string_ellipsis($string, $length=0, $ellipsis='…') {
+
 		if (!$string) return '';
-		if (mb_strlen($string) <= $length) return $string;
-		if ($length <= 0) return $ellipsis . mb_substr($string, $length);
+
+		if ($length < 0) {
+			return $ellipsis . mb_substr($string, $length);
+		}
+
+		if (mb_strlen($string) <= $length) {
+			return $string;
+		}
+
+		if ($length <= 0) {
+			return $ellipsis . mb_substr($string, $length);
+		}
+
 		return mb_substr($string, 0, $length) . $ellipsis;
 	}

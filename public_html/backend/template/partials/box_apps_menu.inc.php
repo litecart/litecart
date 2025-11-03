@@ -26,7 +26,7 @@
 						<?php foreach ($app['menu'] as $item) { ?>
 						<li class="doc<?php echo $item['active'] ? ' active' : ''; ?>" data-id="<?php echo $item['doc']; ?>">
 							<a href="<?php echo functions::escape_html($item['link']); ?>">
-								<span class="bullet">&bullet;</span> <span class="name"><?php echo $item['title']; ?></span>
+								<span class="name"><?php echo $item['title']; ?></span>
 							</a>
 						</li>
 						<?php } ?>

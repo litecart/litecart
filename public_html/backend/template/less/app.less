@@ -278,7 +278,6 @@ h4 { font-size: 1.10em; }
 
 		.app-icon {
 			background: none;
-			margin-inline-end: 0;
 		}
 
 		> a > .name {
@@ -287,37 +286,42 @@ h4 { font-size: 1.10em; }
 		}
 
 		&.active {
+			//background: var(--sidebar-app-background--active);
+			background: color-mix(in lab, var(--app-color) 5%, transparent 100%);
+			border-radius: var(--border-radius);
+			border: var(--sidebar-app-border-size) solid color-mix(in lab, var(--app-color) 50%, transparent 100%);
+			margin-bottom: .25em;
+
 			a {
 				padding: .25em .5em;
 			}
-			> a .name {
-				font-weight: 700;
+
+			> a {
+				background: color-mix(in lab,var(--app-color) 25%,transparent);
+				.name {
+					font-weight: 700;
+				}
 			}
-			//background: var(--sidebar-app-background--active);
-			background: color-mix(in lab,var(--app-color) 1%, #efefef 100%);
-			background: color-mix(in lab, var(--app-color) 3%, #fff 100%);
-			border-radius: var(--border-radius);
-			margin-bottom: .25em;
 
 			.docs {
 				display: block;
-				border: var(--sidebar-app-border-size) solid color-mix(in lab, var(--app-color) 50%, transparent 100%);
+				padding: .5em;
 				border-radius: var(--border-radius);
 			}
 
 			.doc {
+				border-radius: var(--border-radius);
 				&:hover,
 				&:active {
 					background: var(--sidebar-doc-background--hover);
-
 				}
 				&.active {
-					//background: var(--sidebar-doc-background--active);
-					background: color-mix(in lab, var(--app-color) 25%, transparent);
+					background: var(--sidebar-doc-background--active);
+					//background: color-mix(in lab, var(--app-color) 25%, transparent);
 					//border-radius: var(--border-radius);
 				}
 				a {
-					padding: .5em;
+					padding: .5em 1em;
 				}
 			}
 		}
@@ -326,13 +330,6 @@ h4 { font-size: 1.10em; }
 	.docs {
 		display: none;
 	}
-
-	.bullet {
-		display: inline-block;
-		margin-inline-end: .5em;
-		opacity: .5;
-	}
-
 }
 
 /* Content */
@@ -367,11 +364,12 @@ h4 { font-size: 1.10em; }
 .app-icon {
 	display: inline-flex;
 	padding: .25em;
+	margin-inline-end: .5em;
 	line-height: 100%;
 	font-size: 1.25em;
 	//color: var(--app-color);
 	//color: #555;
-	color: color-mix(in srgb, var(--app-color) 100%, #777 100%);
+	color: color-mix(in srgb, var(--app-color) 100%, #777 50%);
 	//background: var(--app-icon-background);
 	//clip-path: circle(50%);
 	//clip-path: polygon(50% 0%, 83% 12%, 100% 43%, 94% 78%, 68% 100%, 32% 100%, 6% 78%, 0% 43%, 17% 12%);

@@ -1130,7 +1130,7 @@ html[dir="rtl"] .dropdown label:has([data-toggle="dropdown"]) {
   font-family: "LiteCore";
   font-style: normal;
   font-weight: 400;
-  src: url("../fonts/fonticons.woff2?1757153321") format("woff2");
+  src: url("../fonts/fonticons.woff2?1762201076") format("woff2");
 }
 [class^="icon-"],
 [class*=" icon-"] {
@@ -1141,6 +1141,7 @@ html[dir="rtl"] .dropdown label:has([data-toggle="dropdown"]) {
   font-variant: normal;
   text-rendering: auto;
   text-align: center;
+  vertical-align: middle;
   line-height: 1;
   width: 1em;
   height: 1em;
@@ -1542,6 +1543,9 @@ html[dir="rtl"] .dropdown label:has([data-toggle="dropdown"]) {
 }
 .icon-heart:before {
   content: "\e083";
+}
+.icon-barcode-scanner:before {
+  content: "\e084";
 }
 .icon-grid-view:before {
   content: "\e085";
