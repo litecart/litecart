@@ -198,6 +198,7 @@
 				"update ". DB_TABLE_PREFIX ."products
 				set status = ". (int)$this->data['status'] .",
 					featured = ". (int)$this->data['featured'] .",
+					pinned = ". (int)$this->data['pinned'] .",
 					brand_id = ". (int)$this->data['brand_id'] .",
 					supplier_id = ". (int)$this->data['supplier_id'] .",
 					delivery_status_id = ". (int)$this->data['delivery_status_id'] .",
