@@ -3,7 +3,7 @@
 	return [
 		'name' => t('title_appearance', 'Appearance'),
 		'group' => 'system',
-		'default' => 'edit_styling',
+		'default' => 'images',
 		'priority' => 0,
 
 		'theme' => [
@@ -13,8 +13,8 @@
 
 		'menu' => [
 			[
-				'title' => t('title_edit_styling', 'Edit Styling'),
-				'doc' => 'edit_styling',
+				'title' => t('title_images', 'Images'),
+				'doc' => 'images',
 				'params' => [],
 			],
 			[
@@ -23,8 +23,8 @@
 				'params' => [],
 			],
 			[
-				'title' => t('title_images', 'Images'),
-				'doc' => 'images',
+				'title' => t('title_edit_styling', 'Edit Styling'),
+				'doc' => 'edit_styling',
 				'params' => [],
 			],
 			[
