@@ -1,0 +1,4 @@
+License
+
+Icons by Font Awesome is licensed under the SIL OFL 1.1:
+https://scripts.sil.org/OFL
