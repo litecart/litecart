@@ -429,6 +429,17 @@
 				"fingerprint": ["fingerprint"],
 				"expires_at": ["expires_at"]
 			},
+			"foreign_keys": {
+				"event_log_to_customer": {
+					"columns": ["customer_id"],
+					"references": {
+						"table": "lc_customers",
+						"columns": ["id"],
+						"on_update": "CASCADE",
+						"on_delete": "CASCADE"
+					}
+				}
+			},
 			"check_constraints": {
 				"chk_data": "JSON_VALID(data)"
 			}
@@ -551,8 +562,7 @@
 			},
 			"primary_key": ["id"],
 			"keys": {
-				"subscribed": ["subscribed"],
-				"email": ["email"]
+				"subscribed": ["subscribed"]
 			},
 			"unique_keys": {
 				"email": ["email"]
@@ -721,9 +731,7 @@
 			},
 			"primary_key": ["id"],
 			"keys": {
-				"order_id": ["order_id"],
-				"product_id": ["product_id"],
-				"stock_items": ["stock_items"]
+				"order_id": ["order_id"]
 			},
 			"foreign_keys": {
 				"order_item_to_order": {
@@ -801,9 +809,6 @@
 						"on_delete": "SET NULL"
 					}
 				}
-			},
-			"check_constraints": {
-				"chk_customizations": "JSON_VALID(customizations)"
 			}
 		},
 		"lc_order_statuses": {
@@ -922,9 +927,7 @@
 				"gtin": ["gtin"],
 				"taric": ["taric"],
 				"valid_from": ["valid_from"],
-				"valid_to": ["valid_to"],
-				"purchases": ["purchases"],
-				"views": ["views"]
+				"valid_to": ["valid_to"]
 			},
 			"fulltext_keys": {
 				"name": ["name"],
@@ -1645,6 +1648,31 @@
 				"frontend": ["frontend"],
 				"backend": ["backend"],
 				"created_at": ["created_at"]
+			}
+		},
+		"lc_visitors": {
+			"columns": {
+				"id": { "type": "BIGINT", "length": 20, "unsigned": true, "auto_increment": true },
+				"uid": { "type": "VARCHAR", "length": 13, "default": "''" },
+				"cart_uid": { "type": "VARCHAR", "length": 13, "default": "''" },
+				"referrer": { "type": "VARCHAR", "length": 256, "default": "''" },
+				"ip_address": { "type": "VARCHAR", "length": 39, "default": "''" },
+				"hostname": { "type": "VARCHAR", "length": 64, "default": "''" },
+				"user_agent": { "type": "VARCHAR", "length": 256, "default": "''" },
+				"language": { "type": "VARCHAR", "length": 2, "default": "''" },
+				"country": { "type": "VARCHAR", "length": 2, "default": "''" },
+				"pageviews": { "type": "INT", "length": 11, "unsigned": true, "default": 0 },
+				"last_page": { "type": "VARCHAR", "length": 128, "default": "''" },
+				"date_updated": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
+				"date_created": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
+			},
+			"primary_key": ["id"],
+			"keys": {
+				"uid": ["uid"],
+				"date_updated": ["date_updated"],
+				"date_created": ["date_created"],
+				"country": ["country"],
+				"language": ["language"]
 			}
 		},
 		"lc_zones": {

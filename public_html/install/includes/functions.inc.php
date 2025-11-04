@@ -1,6 +1,6 @@
 <?php
 
-	include __DIR__.'/../../includes/functions/func_file.inc.php';
+	include_once __DIR__.'/../../includes/functions/func_file.inc.php';
 
 	function br($output) {
 		if (is_array($output)) {

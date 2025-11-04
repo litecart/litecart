@@ -788,7 +788,7 @@
 				exit;
 			}
 
-		} catch (Exception $e) {
+		} catch (Throwable $t) {
 
 			// Rollback if we are in a transaction
 			if (defined('PLATFORM_DATABASE_VERSION') && version_compare(PLATFORM_DATABASE_VERSION, '3.0.0', '>=')) {

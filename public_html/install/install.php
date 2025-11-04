@@ -3,9 +3,17 @@
 	ini_set('display_errors', 'On');
 	mb_internal_encoding('UTF-8');
 	mb_http_output('UTF-8');
-	
-  define('DOCUMENT_ROOT',    str_replace('\\', '/', rtrim(realpath(!empty($_SERVER['DOCUMENT_ROOT']) ? $_SERVER['DOCUMENT_ROOT'] : __DIR__.'/..'), '/')));
-	
+
+	if (!empty($_SERVER['DOCUMENT_ROOT'])) {
+		define('DOCUMENT_ROOT', rtrim(str_replace('\\', '/', realpath($_SERVER['DOCUMENT_ROOT'])), '/') . '/');
+
+	} else if ($_SERVER['SERVER_SOFTWARE'] == 'CLI' && !empty($_REQUEST['document_root'])) {
+		define('DOCUMENT_ROOT', rtrim(str_replace('\\', '/', realpath($_REQUEST['document_root'])), '/') . '/');
+
+	} else {
+		throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . ' Could not detect \$_SERVER[\'DOCUMENT_ROOT\']. If you are using CLI, make sure you pass the parameter "document_root" e.g. --document_root="/var/www/mysite.com/public_html"</p>' . PHP_EOL  . PHP_EOL);
+	}
+
 	define('FS_DIR_APP',     rtrim(str_replace('\\', '/', realpath(__DIR__.'/../')), '/') . '/');
 	define('FS_DIR_STORAGE', FS_DIR_APP .'/storage/');
 
@@ -84,10 +92,15 @@
 
 	define('VMOD_DISABLED', 'true');
 
-	require_once FS_DIR_APP . 'includes/autoloader.inc.php';
-	require_once FS_DIR_APP . 'includes/error_handler.inc.php';
 	require_once FS_DIR_APP . 'includes/functions.inc.php';
 	require_once FS_DIR_APP . 'includes/shorthand.inc.php';
+
+	require_once FS_DIR_APP . 'includes/nodes/nod_database.inc.php';
+	require_once FS_DIR_APP . 'includes/nodes/nod_functions.inc.php';
+	require_once FS_DIR_APP . 'includes/clients/http_client.inc.php';
+	require_once FS_DIR_APP . 'includes/functions/func_file.inc.php';
+	require_once FS_DIR_APP . 'includes/error_handler.inc.php';
+
 	require_once __DIR__ . '/includes/header.inc.php';
 	require_once __DIR__ . '/includes/functions.inc.php';
 
@@ -105,16 +118,6 @@
 		### Parameters > Check ########################################
 
 		echo '<p>Checking installation parameters...';
-
-		if (!empty($_SERVER['DOCUMENT_ROOT'])) {
-			define('DOCUMENT_ROOT', rtrim(str_replace('\\', '/', realpath($_SERVER['DOCUMENT_ROOT'])), '/') . '/');
-
-		} else if ($_SERVER['SERVER_SOFTWARE'] == 'CLI' && !empty($_REQUEST['document_root'])) {
-			define('DOCUMENT_ROOT', rtrim(str_replace('\\', '/', realpath($_REQUEST['document_root'])), '/') . '/');
-
-		} else {
-			throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . ' Could not detect \$_SERVER[\'DOCUMENT_ROOT\']. If you are using CLI, make sure you pass the parameter "document_root" e.g. --document_root="/var/www/mysite.com/public_html"</p>' . PHP_EOL  . PHP_EOL);
-		}
 
 		if (!empty($_REQUEST['admin_folder'])) {
 			$_REQUEST['admin_folder'] = basename(trim(str_replace('\\', '/', $_REQUEST['admin_folder']), '/'));
@@ -885,10 +888,10 @@
 			]);
 		}
 
-	} catch (Exception $e) {
+	} catch (Throwable $t) {
 		echo implode(PHP_EOL, [
 			'',
-			'[ABORTED] ' . $e->getMessage(),
+			'[ABORTED] ' . $t->getMessage(),
 			'',
 		]);
 	}
