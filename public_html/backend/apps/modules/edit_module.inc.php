@@ -61,7 +61,7 @@
 			$module->save();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink(__APP__.'/'.$return_doc));
+			redirect(document::ilink(__APP__.'/'.$return_doc), 303);
 			exit;
 
 		} catch (Exception $e) {
@@ -75,7 +75,7 @@
 			$module->delete();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink(__APP__.'/'.$return_doc));
+			redirect(document::ilink(__APP__.'/'.$return_doc), 303);
 			exit;
 
 		} catch (Exception $e) {

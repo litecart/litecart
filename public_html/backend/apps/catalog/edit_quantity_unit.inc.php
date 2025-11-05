@@ -41,7 +41,7 @@
 			$quantity_unit->save();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink(__APP__.'/quantity_units'));
+			redirect(document::ilink(__APP__.'/quantity_units'), 303);
 			exit;
 
 		} catch (Exception $e) {
@@ -60,7 +60,7 @@
 			$quantity_unit->delete();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink(__APP__.'/quantity_units'));
+			redirect(document::ilink(__APP__.'/quantity_units'), 303);
 			exit;
 
 		} catch (Exception $e) {

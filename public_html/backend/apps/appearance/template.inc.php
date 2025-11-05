@@ -54,7 +54,7 @@
 				$redirect_url = document::link();
 			}
 
-			redirect($redirect_url);
+			redirect($redirect_url, 303);
 			exit;
 
 		} catch (Exception $e) {

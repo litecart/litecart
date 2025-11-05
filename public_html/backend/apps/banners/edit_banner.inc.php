@@ -60,7 +60,7 @@
 			$banner->save();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink(__APP__.'/banners'));
+			redirect(document::ilink(__APP__.'/banners'), 303);
 			exit;
 
 		} catch (Exception $e) {
@@ -75,7 +75,7 @@
 			$banner->delete();
 
 			notices::add('success', t('success_changes_saved', 'Changes were successfully saved.'));
-			redirect(document::ilink(__APP__.'/banners'));
+			redirect(document::ilink(__APP__.'/banners'), 303);
 			exit;
 
 		} catch (Exception $e) {

@@ -31,7 +31,7 @@
 			$customer_group->save();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::link(__APP__.'/customer_groups'));
+			redirect(document::link(__APP__.'/customer_groups'), 303);
 			exit;
 
 		} catch (Exception $e) {
@@ -45,7 +45,7 @@
 			$customer_group->delete();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::link(__APP__.'/customer_groups'));
+			redirect(document::link(__APP__.'/customer_groups'), 303);
 			exit;
 
 		} catch (Exception $e) {

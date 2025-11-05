@@ -20,7 +20,7 @@
 	}
 
 	if (empty($_GET['brand_id'])) {
-		redirect(document::ilink('brands'));
+		redirect(document::ilink('brands'), 301);
 		exit;
 	}
 

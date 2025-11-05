@@ -208,7 +208,7 @@
 				->send();
 
 			notices::add('success', t('success_your_customer_account_has_been_created', 'Your customer account has been created.'));
-			redirect(document::ilink(''));
+			redirect(document::ilink(''), 303);
 			exit;
 
 		} catch (Exception $e) {

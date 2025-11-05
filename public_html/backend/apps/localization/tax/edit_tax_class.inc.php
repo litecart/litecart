@@ -37,7 +37,7 @@
 			$tax_class->save();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink(__APP__.'/tax_classes/tax_classes'));
+			redirect(document::ilink(__APP__.'/tax_classes/tax_classes'), 303);
 			exit;
 
 		} catch (Exception $e) {
@@ -56,7 +56,7 @@
 			$tax_class->delete();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink(__APP__.'/tax_classes/tax_classes'));
+			redirect(document::ilink(__APP__.'/tax_classes/tax_classes'), 303);
 			exit;
 
 		} catch (Exception $e) {

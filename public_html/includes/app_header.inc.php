@@ -7,7 +7,7 @@
 	// Get config
 	if (!defined('FS_DIR_APP')) {
 		if (!file_exists(__DIR__ . '/../storage/config.inc.php')) {
-			header('Location: ./install/');
+			redirect('./install/', 302);
 			exit;
 		}
 		require_once __DIR__ . '/../storage/config.inc.php';

@@ -78,7 +78,7 @@
 	}
 
 	if (empty($_REQUEST['install'])) {
-		header('Location: index.php');
+		header('Location: index.php', 302);
 		exit;
 	}
 
@@ -897,7 +897,7 @@
 	}
 
 	if (!empty($_REQUEST['redirect'])) {
-		header('Location: '. $_REQUEST['redirect']);
+		header('Location: '. $_REQUEST['redirect'], 303);
 		exit;
 	}
 

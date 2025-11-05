@@ -47,7 +47,7 @@
 			$campaign->save();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink(__APP__.'/campaigns'));
+			redirect(document::ilink(__APP__.'/campaigns'), 303);
 			exit;
 
 		} catch (Exception $e) {
@@ -66,7 +66,7 @@
 			$campaign->delete();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink(__APP__.'/campaigns'));
+			redirect(document::ilink(__APP__.'/campaigns'), 303);
 			exit;
 
 		} catch (Exception $e) {

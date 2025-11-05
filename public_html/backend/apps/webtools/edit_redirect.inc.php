@@ -1,9 +1,9 @@
 <?php
 
 	if (!empty($_GET['redirect_id'])) {
-		$redirect = new ent_redirect($_GET['redirect_id']);
+		$redirect = new ent_redirect($_GET['redirect_id'], 303);
 	} else {
-		$redirect = new ent_redirect();
+		$redirect = new ent_redirect(, 303);
 	}
 
 	document::$title[] = !empty($redirect->data['id']) ? t('title_edit_redirect', 'Edit Redirect') : t('title_create_new_redirect', 'Create New Redirect');
@@ -41,7 +41,7 @@
 			$redirect->save();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::link('', ['doc' => 'redirects'], ['app']));
+			redirect(document::link('', ['doc' => 'redirects'], ['app']), 303);
 			exit;
 
 		} catch (Exception $e) {
@@ -60,7 +60,7 @@
 			$redirect->delete();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::link('', ['doc' => 'redirects'], ['app']));
+			redirect(document::link('', ['doc' => 'redirects'], ['app']), 303);
 			exit;
 
 		} catch (Exception $e) {
@@ -108,8 +108,10 @@
 	}
 
 	$type_options = [
-		[302, 'Redirect'],
-		[301, 'Moved Permanently'],
+		[301, '301 Moved Permanently'],
+		[302, '302 Found (Redirect)'],
+		[307, '307 Temporary Redirect'],
+		[308, '308 Permanent Redirect'],
 	];
 
 ?>

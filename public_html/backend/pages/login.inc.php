@@ -171,9 +171,9 @@
 				notices::add('notices', t('notice_verification_code_sent_via_email', 'A verification code was sent via email'));
 
 				if (!empty($_POST['redirect_url'])) {
-					redirect(document::ilink('verify', ['redirect_url' => $_POST['redirect_url']]));
+					redirect(document::ilink('verify', ['redirect_url' => $_POST['redirect_url']]), 303);
 				} else {
-					redirect(document::ilink('verify'));
+					redirect(document::ilink('verify'), 303);
 				}
 
 				exit;
@@ -213,7 +213,7 @@
 				'{username}' => administrator::$data['username']
 			]));
 
-			redirect($redirect_url);
+			redirect($redirect_url, 303);
 			exit;
 
 		} catch (Exception $e) {

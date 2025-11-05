@@ -48,7 +48,7 @@
 			$attribute_group->save();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink(__APP__.'/attribute_groups'));
+			redirect(document::ilink(__APP__.'/attribute_groups'), 303);
 			exit;
 
 		} catch (Exception $e) {
@@ -67,7 +67,7 @@
 			$attribute_group->delete();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink(__APP__.'/attribute_groups'));
+			redirect(document::ilink(__APP__.'/attribute_groups'), 303);
 			exit;
 
 		} catch (Exception $e) {

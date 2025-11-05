@@ -5,7 +5,7 @@
 	document::$head_tags[] = '<meta name="viewport" content="width=device-width, initial-scale=1">';
 
 	if (empty(session::$data['security_verification'])) {
-		redirect(document::ilink(''));
+		redirect(document::ilink(''), 303);
 		exit;
 	}
 
@@ -72,7 +72,7 @@
 				'{username}' => administrator::$data['username']
 			]));
 
-			redirect($redirect_url);
+			redirect($redirect_url, 303);
 			exit;
 
 		} catch (Exception $e) {

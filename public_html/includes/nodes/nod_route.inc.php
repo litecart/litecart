@@ -43,9 +43,8 @@
 					limit 1;"
 				);
 
-				http_response_code($redirect['http_response_code']);
 				header('X-Redirect-Id: '. $redirect['id']);
-				redirect(preg_replace("'$redirect[pattern]'", $redirect['destination'], $requested_url)); // MySQL regex wrapper ''
+				redirect(preg_replace("'$redirect[pattern]'", $redirect['destination'], $requested_url), $redirect['http_response_code']); // MySQL regex wrapper ''
 				exit;
 			}
 
@@ -284,9 +283,8 @@
 					limit 1;"
 				);
 
-				http_response_code($redirect['http_response_code']);
 				header('X-Redirect-Id: '. $redirect['id']);
-				redirect(preg_replace("'$redirect[pattern]'", $redirect['destination'], $requested_url)); // MySQL regex wrapper ''
+				redirect(preg_replace("'$redirect[pattern]'", $redirect['destination'], $requested_url), $redirect['http_response_code']); // MySQL regex wrapper ''
 				exit;
 			}
 

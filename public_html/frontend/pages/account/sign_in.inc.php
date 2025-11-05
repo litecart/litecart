@@ -142,7 +142,7 @@
 				$redirect_url = document::ilink('f:');
 			}
 
-			redirect($redirect_url);
+			redirect($redirect_url, 303);
 			exit;
 
 		} catch (Exception $e) {

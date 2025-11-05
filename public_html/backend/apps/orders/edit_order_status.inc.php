@@ -67,7 +67,7 @@
 			$order_status->save();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink(__APP__.'/order_statuses'));
+			redirect(document::ilink(__APP__.'/order_statuses'), 303);
 			exit;
 
 		} catch (Exception $e) {
@@ -86,7 +86,7 @@
 			$order_status->delete();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink(__APP__.'/order_statuses'));
+			redirect(document::ilink(__APP__.'/order_statuses'), 303);
 			exit;
 
 		} catch (Exception $e) {

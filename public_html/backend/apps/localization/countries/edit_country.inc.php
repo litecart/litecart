@@ -64,7 +64,7 @@
 			$country->save();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink(__APP__.'/countries/countries'));
+			redirect(document::ilink(__APP__.'/countries/countries'), 303);
 			exit;
 
 		} catch (Exception $e) {
@@ -83,7 +83,7 @@
 			$country->delete();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink(__APP__.'/countries/countries'));
+			redirect(document::ilink(__APP__.'/countries/countries'), 303);
 			exit;
 
 		} catch (Exception $e) {

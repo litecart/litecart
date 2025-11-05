@@ -112,7 +112,7 @@
 			}
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink(__APP__.'/stock_items'));
+			redirect(document::ilink(__APP__.'/stock_items'), 303);
 			exit;
 
 		} catch (Exception $e) {
@@ -134,7 +134,7 @@
 			$stock_item->delete();
 
 			notices::add('success', t('success_post_deleted', 'Post deleted'));
-			redirect(document::ilink(__APP__.'/stock_items'));
+			redirect(document::ilink(__APP__.'/stock_items'), 303);
 			exit;
 
 		} catch (Exception $e) {

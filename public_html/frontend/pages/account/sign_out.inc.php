@@ -22,5 +22,5 @@
 
 	notices::add('success', t('description_logged_out', 'You are now logged out.'));
 
-	header('Location: ' . document::ilink(''));
+	redirect(document::ilink(''), 303);
 	exit;

@@ -61,7 +61,7 @@
 			}
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink(__APP__.'/brands'));
+			redirect(document::ilink(__APP__.'/brands'), 303);
 			exit;
 
 		} catch (Exception $e) {
@@ -80,7 +80,7 @@
 			$brand->delete();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink(__APP__.'/brands'));
+			redirect(document::ilink(__APP__.'/brands'), 303);
 			exit;
 
 		} catch (Exception $e) {

@@ -784,7 +784,7 @@
 				 . '<p style="font-weight: bold;">Upgrade complete! Please delete the <strong>~/install/</strong> folder.</p>' . PHP_EOL . PHP_EOL;
 
 			if (!empty($_REQUEST['redirect'])) {
-				header('Location: '. $_REQUEST['redirect']);
+				header('Location: '. $_REQUEST['redirect'], 303);
 				exit;
 			}
 

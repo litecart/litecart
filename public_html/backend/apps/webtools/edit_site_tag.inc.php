@@ -48,7 +48,7 @@
 			$site_tag->save();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink(__APP__.'/site_tags'));
+			redirect(document::ilink(__APP__.'/site_tags'), 303);
 			exit;
 
 		} catch (Exception $e) {
@@ -67,7 +67,7 @@
 			$site_tag->delete();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink(__APP__.'/site_tags'));
+			redirect(document::ilink(__APP__.'/site_tags'), 303);
 			exit;
 
 		} catch (Exception $e) {

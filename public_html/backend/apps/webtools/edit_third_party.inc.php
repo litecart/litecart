@@ -50,7 +50,7 @@
 			$third_party->save();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink(__APP__.'/third_parties'));
+			redirect(document::ilink(__APP__.'/third_parties'), 303);
 			exit;
 
 		} catch (Exception $e) {
@@ -69,7 +69,7 @@
 			$third_party->delete();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::link(__APP__.'/third_parties'));
+			redirect(document::link(__APP__.'/third_parties'), 303);
 			exit;
 
 		} catch (Exception $e) {

@@ -103,7 +103,7 @@
 			notices::add('success', strtr(t('success_cloned_d_products', 'Cloned {n} products'), [
 				'{n}' => count($_POST['products'])
 			]));
-			redirect(document::ilink(null, ['category_id' => $_POST['category_id']]));
+			redirect(document::ilink(null, ['category_id' => $_POST['category_id']]), 303);
 			exit;
 
 		} catch (Exception $e) {

@@ -22,8 +22,8 @@
 	}
 
 	// Stop script execution and reload the current page
-	function reload() {
-		header('Location: '. $_SERVER['REQUEST_URI'], 302);
+	function reload($status_code=302) {
+		header('Location: '. $_SERVER['REQUEST_URI'], $status_code);
 		exit;
 	}
 

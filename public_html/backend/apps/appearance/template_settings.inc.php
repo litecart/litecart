@@ -70,7 +70,7 @@
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
 
-			redirect(document::ilink(null, [], true, ['action']));
+			redirect(document::ilink(null, [], true, ['action']), 303);
 			exit;
 
 		} catch (Exception $e) {

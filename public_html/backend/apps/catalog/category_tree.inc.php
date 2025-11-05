@@ -101,7 +101,7 @@
 			}
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink(null, ['category_id' => $_POST['category_id']]));
+			redirect(document::ilink(null, ['category_id' => $_POST['category_id']]), 303);
 			exit;
 
 		} catch (Exception $e) {
@@ -136,7 +136,7 @@
 				'{n}' => count($_POST['products'])
 			]));
 
-			redirect(document::ilink(null, ['category_id' => $_POST['category_id']]));
+			redirect(document::ilink(null, ['category_id' => $_POST['category_id']]), 303);
 			exit;
 
 		} catch (Exception $e) {
@@ -185,7 +185,7 @@
 			}
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink(null, ['category_id' => $_POST['category_id']]));
+			redirect(document::ilink(null, ['category_id' => $_POST['category_id']]), 303);
 			exit;
 
 		} catch (Exception $e) {

@@ -38,7 +38,7 @@
 			$geo_zone->save();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink(__APP__.'/geo_zones/geo_zones'));
+			redirect(document::ilink(__APP__.'/geo_zones/geo_zones'), 303);
 			exit;
 
 		} catch (Exception $e) {
@@ -54,7 +54,7 @@
 			$geo_zone->delete();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink(__APP__.'/geo_zones/geo_zones'));
+			redirect(document::ilink(__APP__.'/geo_zones/geo_zones'), 303);
 			exit;
 
 		} catch (Exception $e) {

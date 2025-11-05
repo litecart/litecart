@@ -73,7 +73,7 @@
 			$tax_rate->save();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink(__APP__.'/tax_rates/tax_rates'));
+			redirect(document::ilink(__APP__.'/tax_rates/tax_rates'), 303);
 			exit;
 
 		} catch (Exception $e) {
@@ -92,7 +92,7 @@
 			$tax_rate->delete();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink(__APP__.'/tax_rates/tax_rates'));
+			redirect(document::ilink(__APP__.'/tax_rates/tax_rates'), 303);
 			exit;
 
 		} catch (Exception $e) {

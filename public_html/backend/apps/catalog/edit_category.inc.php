@@ -81,7 +81,7 @@
 			$category->save();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink('catalog/category_tree', ['parent_id' => $category->data['id']]));
+			redirect(document::ilink('catalog/category_tree', ['parent_id' => $category->data['id']]), 303);
 			exit;
 
 		} catch (Exception $e) {
@@ -101,7 +101,7 @@
 			$category->delete();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink('catalog/category_tree'));
+			redirect(document::ilink('catalog/category_tree'), 303);
 			exit;
 
 		} catch (Exception $e) {

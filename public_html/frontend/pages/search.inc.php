@@ -22,7 +22,7 @@
 	$_GET['query'] = trim($_GET['query']);
 
 	if (empty($_GET['query'])) {
-		redirect(document::ilink(''));
+		redirect(document::ilink(''), 301);
 		exit;
 	}
 
@@ -65,7 +65,7 @@
 
 	if (count($products) == 1) {
 		$product = current($products);
-		redirect(document::ilink('product', ['product_id' => $product['id']]), true, 302);
+		redirect(document::ilink('product', ['product_id' => $product['id']]), 302);
 		exit;
 	}
 

@@ -66,7 +66,7 @@
 				]));
 			}
 
-			redirect(document::ilink(null, ['page_id' => $_POST['page_id']]));
+			redirect(document::ilink(null, ['page_id' => $_POST['page_id']]), 303);
 			exit;
 
 		} catch (Exception $e) {

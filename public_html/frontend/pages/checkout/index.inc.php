@@ -26,7 +26,7 @@
 		// Redirect to customer details if not sufficient
 		if ($validation_error = session::$data['checkout']['order']->validate('customer')) {
 			notices::add('notices', t('error_we_need_some_additional_info_from_you', 'We need some additional information from you'));
-			redirect(document::ilink('checkout/customer'));
+			redirect(document::ilink('checkout/customer'), 303);
 			exit;
 		}
 

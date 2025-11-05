@@ -68,7 +68,7 @@
 			file_put_contents('storage://vmods/' . '.settings', functions::format_json($vmods_settings), LOCK_EX);
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink(__APP__.'/vmods'));
+			redirect(document::ilink(__APP__.'/vmods'), 303);
 			exit;
 
 		} catch (Exception $e) {

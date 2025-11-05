@@ -110,7 +110,7 @@
 					if (!isset(session::$data['administrator_security_timestamp']) || session::$data['administrator_security_timestamp'] < strtotime($administrator['sessions_expiry'])) {
 						self::reset();
 						notices::add('errors', t('error_session_expired_due_to_account_changes', 'Session expired due to changes in the account'));
-						redirect(document::ilink('b:login'));
+						redirect(document::ilink('b:login'), 302);
 						exit;
 					}
 				}
@@ -159,13 +159,13 @@
 
 			if (!self::check_login()) {
 				$redirect_url = strtok($_SERVER['REQUEST_URI'], '?') . (!empty($_SERVER['QUERY_STRING']) ? '?' . $_SERVER['QUERY_STRING'] : '');
-				header('Location: ' . document::ilink('b:login', ['redirect_url' => $redirect_url]));
+				redirect(document::ilink('b:login', ['redirect_url' => $redirect_url]), 302);
 				exit;
 			}
 
 			if (!empty(session::$data['security_verification'])) {
 				if (!in_array(route::$selected['resource'], ['b:login', 'b:logout', 'b:verify'])) {
-					header('Location: ' . document::ilink('b:verify', ['redirect_url' => $_SERVER['REQUEST_URI']]));
+					redirect(document::ilink('b:verify', ['redirect_url' => $_SERVER['REQUEST_URI']]), 302);
 					exit;
 				}
 			}

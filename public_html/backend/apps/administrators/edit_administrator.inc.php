@@ -74,7 +74,7 @@
 			$administrator->save();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink(__APP__.'/administrators'));
+			redirect(document::ilink(__APP__.'/administrators'), 303);
 			exit;
 
 		} catch (Exception $e) {
@@ -93,7 +93,7 @@
 			$administrator->delete();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink(__APP__.'/administrators'));
+			redirect(document::ilink(__APP__.'/administrators'), 303);
 			exit;
 
 		} catch (Exception $e) {

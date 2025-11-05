@@ -42,7 +42,7 @@
 			$supplier->save();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink(__APP__.'/suppliers'));
+			redirect(document::ilink(__APP__.'/suppliers'), 303);
 			exit;
 
 		} catch (Exception $e) {
@@ -61,7 +61,7 @@
 			$supplier->delete();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink(__APP__.'/suppliers'));
+			redirect(document::ilink(__APP__.'/suppliers'), 303);
 			exit;
 
 		} catch (Exception $e) {

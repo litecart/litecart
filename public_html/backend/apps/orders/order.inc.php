@@ -29,7 +29,7 @@
 			$order->save();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved successfully'));
-			header('Location: ' . document::ilink(__APP__.'/orders'));
+			redirect(document::ilink(__APP__.'/orders'), 303);
 			exit;
 
 		} catch (Exception $e) {

@@ -20,7 +20,7 @@
 	}
 
 	if (empty($_GET['category_id'])) {
-		redirect(document::ilink('categories'));
+		redirect(document::ilink('categories'), 301);
 		exit;
 	}
 

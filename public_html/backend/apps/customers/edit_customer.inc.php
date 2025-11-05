@@ -117,7 +117,7 @@
 			}
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink(__APP__.'/customers'));
+			redirect(document::ilink(__APP__.'/customers'), 303);
 			exit;
 
 		} catch (Exception $e) {
@@ -136,7 +136,7 @@
 			$customer->delete();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink(__APP__.'/customers'));
+			redirect(document::ilink(__APP__.'/customers'), 303);
 			exit;
 
 		} catch (Exception $e) {

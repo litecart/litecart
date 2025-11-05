@@ -117,7 +117,7 @@
 
 					notices::add('errors', $e->getMessage());
 
-					redirect(document::ilink('f:account/sign_in'));
+					redirect(document::ilink('f:account/sign_in'), 303);
 					exit;
 				}
 			}
@@ -359,7 +359,7 @@
 			if (!self::check_login()) {
 				notices::add('warnings', t('warning_must_login_page', 'You must be logged in to view the page.'));
 				$redirect_url = strtok($_SERVER['REQUEST_URI'], '?') . (!empty($_SERVER['QUERY_STRING']) ? '?' . $_SERVER['QUERY_STRING'] : '');
-				header('Location: ' . document::ilink('f:account/sign_in', ['redirect_url' => $redirect_url]));
+				redirect(document::ilink('f:account/sign_in', ['redirect_url' => $redirect_url]), 302);
 				exit;
 			}
 		}

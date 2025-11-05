@@ -43,7 +43,7 @@
 			$stock_transaction->save();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink(__APP__.'/stock_transactions'));
+			redirect(document::ilink(__APP__.'/stock_transactions'), 303);
 			exit;
 
 		} catch (Exception $e) {
@@ -58,7 +58,7 @@
 			$stock_transaction->delete();
 
 			notices::add('success', t('success_post_deleted', 'Post deleted'));
-			redirect(document::ilink(__APP__.'/stock_transactions'));
+			redirect(document::ilink(__APP__.'/stock_transactions'), 303);
 			exit;
 
 		} catch (Exception $e) {

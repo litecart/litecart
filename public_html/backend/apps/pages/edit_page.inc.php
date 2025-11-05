@@ -54,7 +54,7 @@
 			$page->save();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink(__APP__.'/pages'));
+			redirect(document::ilink(__APP__.'/pages'), 303);
 			exit;
 
 		} catch (Exception $e) {
@@ -70,7 +70,7 @@
 			$page->delete();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink(__APP__.'/pages'));
+			redirect(document::ilink(__APP__.'/pages'), 303);
 			exit;
 
 		} catch (Exception $e) {

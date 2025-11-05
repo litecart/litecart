@@ -91,7 +91,7 @@
 			}
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink(__APP__.'/currencies/currencies'));
+			redirect(document::ilink(__APP__.'/currencies/currencies'), 303);
 			exit;
 
 		} catch (Exception $e) {
@@ -110,7 +110,7 @@
 			$currency->delete();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink(__APP__.'/currencies/currencies'));
+			redirect(document::ilink(__APP__.'/currencies/currencies'), 303);
 			exit;
 
 		} catch (Exception $e) {

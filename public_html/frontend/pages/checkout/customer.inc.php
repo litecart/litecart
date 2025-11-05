@@ -21,7 +21,7 @@
 	$order = &session::$data['checkout']['order'];
 
 	if (empty($order->data['items'])) {
-		redirect(document::ilink('shopping_cart'));
+		redirect(document::ilink('shopping_cart'), 302);
 		exit;
 	}
 
@@ -269,7 +269,7 @@
 				);
 			}
 
-			redirect(document::ilink('checkout/index'));
+			redirect(document::ilink('checkout/index'), 303);
 			exit;
 
 		} catch(Exception $e) {

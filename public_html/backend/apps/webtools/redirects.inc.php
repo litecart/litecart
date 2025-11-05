@@ -19,7 +19,7 @@
 
 			foreach ($_POST['redirects'] as $redirect_id) {
 
-				$redirect = new ent_redirect($redirect_id);
+				$redirect = new ent_redirect($redirect_id, 303);
 				$redirect->data['status'] = !empty($_POST['enable']) ? 1 : 0;
 				$redirect->save();
 			}
@@ -46,12 +46,12 @@
 			}
 
 			foreach ($_POST['redirects'] as $redirect_id) {
-				$redirect = new ent_redirect($redirect_id);
+				$redirect = new ent_redirect($redirect_id, 303);
 				$redirect->delete();
 			}
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink(__APP__.'/redirects'));
+			redirect(document::ilink(__APP__.'/redirects'), 303);
 			exit;
 
 		} catch (Exception $e) {
