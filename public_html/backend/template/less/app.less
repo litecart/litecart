@@ -258,8 +258,8 @@ h4 { font-size: 1.10em; }
 		overflow: hidden;
 
 		&:hover:not(.active) {
-			background: var(--sidebar-app-background--hover);
-			border: var(--sidebar-app-border-size) solid var(--sidebar-app-border-color--hover);
+			background: transparent;
+			border: var(--sidebar-app-border-size) solid var(--default-border-color);
 		}
 
 		> a {
@@ -267,7 +267,7 @@ h4 { font-size: 1.10em; }
 			transition: linear 100ms all;
 			&:hover {
 				padding: .25em .5em;
-				background: var(--sidebar-app-background--hover);
+				background: transparent;
 				color: var(--sidebar-text-color--hover);
 			}
 
@@ -286,7 +286,6 @@ h4 { font-size: 1.10em; }
 		}
 
 		&.active {
-			//background: var(--sidebar-app-background--active);
 			background: color-mix(in lab, var(--app-color) 5%, transparent 100%);
 			border-radius: var(--border-radius);
 			border: var(--sidebar-app-border-size) solid color-mix(in lab, var(--app-color) 50%, transparent 100%);
@@ -310,15 +309,15 @@ h4 { font-size: 1.10em; }
 			}
 
 			.doc {
+				border: 1px solid transparent;
 				border-radius: var(--border-radius);
 				&:hover,
 				&:active {
-					background: var(--sidebar-doc-background--hover);
+					border-color: color-mix(in lab, var(--app-color) 50%, transparent 100%);
 				}
 				&.active {
-					background: var(--sidebar-doc-background--active);
-					//background: color-mix(in lab, var(--app-color) 25%, transparent);
-					//border-radius: var(--border-radius);
+					background: color-mix(in lab, var(--app-color) 15%, transparent 100%);
+					border-color: color-mix(in lab, var(--app-color) 50%, transparent 100%);
 				}
 				a {
 					padding: .5em 1em;

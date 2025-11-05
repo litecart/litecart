@@ -57,7 +57,7 @@
 			$foreign_keys = [];
 
 			foreach ($_POST['tables'] as $table) {
-				$foreign_keys_query = database::query(
+				database::query(
 					"select
 						`TABLE_NAME`,
 						`CONSTRAINT_NAME`,
@@ -68,16 +68,14 @@
 					where TABLE_SCHEMA = '". DB_DATABASE ."'
 					and TABLE_NAME = '". database::input($table) ."'
 					and REFERENCED_TABLE_NAME is not null;"
-				);
-
-				while ($foreign_key = database::fetch($foreign_keys_query)) {
+				)->each(function($row) use (&$foreign_keys) {
 					$foreign_keys[] = $foreign_key;
 
 					database::query(
 						"alter table `". DB_DATABASE ."`.`". database::input($table) ."`
 						drop foreign key `". $foreign_key['CONSTRAINT_NAME'] ."`;"
 					);
-				}
+				});
 			}
 
 

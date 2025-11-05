@@ -169,13 +169,13 @@
 		)->fetch();
 
 		$ip_addresses = database::query(
-			"select ip_address from ". DB_TABLE_PREFIX ."customers_activity
+			"select ip_address from ". DB_TABLE_PREFIX ."event_logs
 			where customer_id = ". (int)$customer->data['id'] ."
 			and (ip_address is not null and ip_address != '');"
 		)->fetch_all('ip_address');
 
 		$fingerprints = database::query(
-			"select fingerprint from ". DB_TABLE_PREFIX ."customers_activity
+			"select fingerprint from ". DB_TABLE_PREFIX ."event_logs
 			where (
 				customer_id = ". (int)$customer->data['id'] ."
 				or ip_address in ('". implode("', '", database::input($ip_addresses)) ."')
@@ -184,7 +184,7 @@
 		)->fetch_all('fingerprint');
 
 		$session_ids = database::query(
-			"select session_id from ". DB_TABLE_PREFIX ."customers_activity
+			"select session_id from ". DB_TABLE_PREFIX ."event_logs
 			where (
 				customer_id = ". (int)$customer->data['id'] ."
 				or ip_address in ('". implode("', '", database::input($ip_addresses)) ."')
@@ -194,7 +194,7 @@
 		)->fetch_all('session_id');
 
 		$activity = database::query(
-			"select * from ". DB_TABLE_PREFIX ."customers_activity
+			"select * from ". DB_TABLE_PREFIX ."event_logs
 			where (
 				customer_id = ". (int)$customer->data['id'] ."
 				". (!empty($ip_addresses) ? "or ip_address in ('". implode("', '", database::input($ip_addresses)) ."')" : '') ."
@@ -213,8 +213,8 @@
 		<?php echo t('title_customers', 'Customers'); ?>
 	</a>
 
-	<a class="tab-item" href="#tab-activity" data-toggle="tab">
-		<?php echo t('title_activity', 'Activity'); ?>
+	<a class="tab-item" href="#tab-event-logs" data-toggle="tab">
+		<?php echo t('title_event_logs', 'Event Logs'); ?>
 	</a>
 
 </nav>
@@ -536,12 +536,12 @@
 
 	</div>
 
-	<div id="tab-activity">
+	<div id="tab-event-logs">
 
 		<div class="card">
 			<div class="card-header">
 				<div class="card-title">
-					<?php echo $app_icon; ?> <?php echo t('title_activity', 'Activity'); ?>
+					<?php echo $app_icon; ?> <?php echo t('title_event_logs', 'Event Logs'); ?>
 				</div>
 			</div>
 

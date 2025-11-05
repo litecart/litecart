@@ -1150,7 +1150,9 @@
 							'phone',
 							'link',
 						] as $field) {
-							if (isset($row[$field])) $supplier->data[$field] = $row[$field];
+							if (array_key_exists($field, $row)) {
+								$supplier->data[$field] = $row[$field];
+							}
 						}
 
 						$supplier->save();
@@ -1263,7 +1265,9 @@
 					$csv = [array_fill_keys($result->fields(), '')];
 				}
 
-				break;				case 'categories':
+				break;
+
+			case 'categories':
 
 					if (empty($_POST['language_code'])) {
 						throw new Exception(t('error_must_select_language', 'You must select a language'));
@@ -1318,17 +1322,20 @@
 							group by product_id
 							order by category_id
 						) ptc on (ptc.product_id = p.id)
+
 						left join (
 							select product_id, group_concat(concat(group_id, ':', if(custom_value != '', concat('\"', custom_value, '\"'), value_id)) separator '\r\n') as attributes
 							from ". DB_TABLE_PREFIX ."products_attributes
 							group by product_id
 						) pa on (p.id = pa.product_id)
+
 						left join (
 							select product_id, group_concat(filename separator ';') as images
 							from ". DB_TABLE_PREFIX ."products_images
 							group by product_id
 							order by priority
 						) pim on (pim.product_id = p.id)
+
 						order by name, pi.id;"
 					)->export($result)->fetch_all();
 

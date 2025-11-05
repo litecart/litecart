@@ -94,7 +94,7 @@
 			$return_order->save();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink(__APP__.'/edit_order', ['order_id' => $return_order->data['id']]));
+			redirect(document::ilink(__APP__.'/edit_order', ['order_id' => $return_order->data['id']]), 303);
 			exit;
 
 		} catch (Exception $e) {

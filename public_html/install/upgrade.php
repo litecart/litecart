@@ -265,11 +265,13 @@
 
 				$separator = '-- -----';
 
-				$tables_query = database::query('SHOW TABLES');
-				while ($table = database::fetch($tables_query)) {
+				database::query('SHOW TABLES')->each(function($table) {
+
 					$table = array_shift($table);
 
-					if (!preg_match('#^'. preg_quote(DB_TABLE_PREFIX, '#') .'#', $table)) continue;
+					if (!preg_match('#^'. preg_quote(DB_TABLE_PREFIX, '#') .'#', $table)) {
+						return;
+					}
 
 					if (!empty($use_initial_separator)) {
 						$output .= $separator . PHP_EOL;
@@ -288,24 +290,27 @@
 
 					fwrite($backup_handle, $output);
 
-					if (!empty($ignore_tables) && in_array($table, $ignore_tables)) continue;
+					if (!empty($ignore_tables) && in_array($table, $ignore_tables)) {
+						return;
+					}
 
 					// Insert Data
 					$columns = database::query(
 						"SHOW COLUMNS FROM `" . $table ."`"
 					)->fetch_all('Field');
 
-					$rows_query = database::query(
+					$rows = database::query(
 						"SELECT `" . implode('`, `', $columns) . "` FROM `" . $table ."`"
-					);
+					)->fetch_all();
 
-					if (!database::num_rows($rows_query)) continue;
+					if (!$rows) {
+						return;
+					}
 
 					$output = $separator . PHP_EOL
 									. "INSERT INTO `" . $table . "` (`" . implode("`, `", $columns) . "`) VALUES " . PHP_EOL;
 
-					while ($row = database::fetch($rows_query)) {
-
+					foreach ($rows as $row) {
 						foreach ($columns as $column) {
 							if (!isset($row[$column])) {
 								$row[$column] = "NULL, ";
@@ -322,7 +327,7 @@
 					$output = rtrim($output, ", ") . ";" . PHP_EOL;
 
 					fwrite($backup_handle, $output);
-				}
+				});
 
 				flock($backup_handle, LOCK_UN);
 				fclose($backup_handle);
