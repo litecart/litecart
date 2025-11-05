@@ -393,7 +393,7 @@
 			}
 
 			database::query(
-				"insert into ". DB_TABLE_PREFIX ."customers_activity
+				"insert into ". DB_TABLE_PREFIX ."event_logs
 				(`". implode("`, `", database::input(array_keys($event))) ."`)
 				values ('". implode("', '", database::input($event)) ."');"
 			);

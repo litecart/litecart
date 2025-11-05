@@ -402,7 +402,45 @@
 				}
 			}
 		},
-		"lc_customers_activity": {
+		"lc_delivery_statuses": {
+			"columns": {
+				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
+				"name": { "type": "TEXT", "default": "'{}'" },
+				"description": { "type": "TEXT", "default": "'{}'" },
+				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
+				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
+			},
+			"primary_key": ["id"],
+			"check_constraints": {
+				"chk_name": "JSON_VALID(name)",
+				"chk_description": "JSON_VALID(description)"
+			}
+		},
+		"lc_emails": {
+			"columns": {
+				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
+				"status": { "type": "ENUM('draft','scheduled','sent','error')", "default": "'draft'" },
+				"code": { "type": "VARCHAR", "length": 255, "default": "''" },
+				"sender": { "type": "VARCHAR", "length": 255, "default": "''" },
+				"recipients": { "type": "TEXT", "default": "''" },
+				"ccs": { "type": "TEXT", "default": "''" },
+				"bccs": { "type": "TEXT", "default": "''" },
+				"subject": { "type": "VARCHAR", "length": 255, "default": "''" },
+				"multiparts": { "type": "MEDIUMTEXT", "default": "''" },
+				"scheduled_at": { "type": "TIMESTAMP", "nullable": true },
+				"sent_at": { "type": "TIMESTAMP", "nullable": true },
+				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
+				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
+			},
+			"primary_key": ["id"],
+			"keys": {
+				"scheduled_at": ["scheduled_at"],
+				"code": ["code"],
+				"created_at": ["created_at"],
+				"sender_email": ["sender"]
+			}
+		},
+		"lc_event_logs": {
 			"columns": {
 				"id": { "type": "BIGINT", "length": 20, "unsigned": true, "auto_increment": true },
 				"session_id": { "type": "VARCHAR", "length": 64, "nullable": true },
@@ -442,44 +480,6 @@
 			},
 			"check_constraints": {
 				"chk_data": "JSON_VALID(data)"
-			}
-		},
-		"lc_delivery_statuses": {
-			"columns": {
-				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
-				"name": { "type": "TEXT", "default": "'{}'" },
-				"description": { "type": "TEXT", "default": "'{}'" },
-				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
-				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
-			},
-			"primary_key": ["id"],
-			"check_constraints": {
-				"chk_name": "JSON_VALID(name)",
-				"chk_description": "JSON_VALID(description)"
-			}
-		},
-		"lc_emails": {
-			"columns": {
-				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
-				"status": { "type": "ENUM('draft','scheduled','sent','error')", "default": "'draft'" },
-				"code": { "type": "VARCHAR", "length": 255, "default": "''" },
-				"sender": { "type": "VARCHAR", "length": 255, "default": "''" },
-				"recipients": { "type": "TEXT", "default": "''" },
-				"ccs": { "type": "TEXT", "default": "''" },
-				"bccs": { "type": "TEXT", "default": "''" },
-				"subject": { "type": "VARCHAR", "length": 255, "default": "''" },
-				"multiparts": { "type": "MEDIUMTEXT", "default": "''" },
-				"scheduled_at": { "type": "TIMESTAMP", "nullable": true },
-				"sent_at": { "type": "TIMESTAMP", "nullable": true },
-				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
-				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
-			},
-			"primary_key": ["id"],
-			"keys": {
-				"scheduled_at": ["scheduled_at"],
-				"code": ["code"],
-				"created_at": ["created_at"],
-				"sender_email": ["sender"]
 			}
 		},
 		"lc_geo_zones": {

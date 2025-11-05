@@ -40,7 +40,7 @@ CREATE TABLE `lc_customer_groups` (
 	PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 -- -----
-CREATE TABLE IF NOT EXISTS `lc_customers_activity` (
+CREATE TABLE IF NOT EXISTS `lc_event_logs` (
 	`id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`session_id` VARCHAR(64) NULL,
 	`customer_id` INT(10) UNSIGNED NULL,

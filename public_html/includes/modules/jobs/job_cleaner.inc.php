@@ -17,12 +17,12 @@
 				if (strtotime($last_run) > functions::datetime_last_by_interval('Hourly', $last_run)) return;
 			}
 
-			// Customer Activity
+			// Event Logs
 
-			echo 'Remove old and expired customer activity...' . PHP_EOL;
+			echo 'Remove old and expired event logs...' . PHP_EOL;
 
 			database::query(
-				"delete from ". DB_TABLE_PREFIX ."customers_activity
+				"delete from ". DB_TABLE_PREFIX ."event_logs
 				where (expires_at is not null and expires_at < '". date('Y-m-d H:i:s') ."')
 				or (expires_at is null and created_at < '". date('Y-m-d H:i:s', strtotime('-12 months')) ."');"
 			);
