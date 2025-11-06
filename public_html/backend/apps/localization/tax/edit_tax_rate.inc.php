@@ -65,7 +65,7 @@
 				'rule_individuals_with_tax_id',
 				'rule_individuals_without_tax_id',
 			] as $field) {
-				if (array_key_exists($field, $_POST)) {
+				if (isset($_POST[$field])) {
 					$tax_rate->data[$field] = $_POST[$field];
 				}
 			}

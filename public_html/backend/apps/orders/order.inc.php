@@ -21,7 +21,7 @@
 				'shipping_tracking_id',
 				'shipping_tracking_url',
 			] as $field) {
-				if (array_key_exists($field, $_POST)) {
+				if (isset($_POST[$field])) {
 					$order->data[$field] = $_POST[$field];
 				}
 			}

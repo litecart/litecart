@@ -10,7 +10,7 @@
 
 	if (empty(session::$data['checkout']['order'])) {
 		notices::add('errors', t('error_no_order_in_session', 'No order in session'));
-		redirect(document::ilink('checkout/index'));
+		redirect(document::ilink('checkout/index'), 302);
 		exit;
 	}
 
@@ -18,13 +18,13 @@
 
 	if (empty($order->data['processable'])) {
 		notices::add('errors', 'The shopping cart is not yet processable for creating an order');
-		redirect(document::ilink('checkout/index'));
+		redirect(document::ilink('checkout/index'), 302);
 		exit;
 	}
 
 	if ($error_message = $order->validate()) {
 		notices::add('errors', $error_message);
-		redirect(document::ilink('checkout/index'));
+		redirect(document::ilink('checkout/index'), 303);
 		exit;
 	}
 
@@ -60,7 +60,7 @@
 				]);
 
 				notices::add('errors', $result['error']);
-				redirect(document::ilink('checkout/index'));
+				redirect(document::ilink('checkout/index'), 303);
 				exit;
 			}
 		}
@@ -151,5 +151,5 @@
 
 	$order_modules->after_process($order);
 
-	redirect(document::ilink('checkout/success', ['order_id' => $order->data['id'], 'public_key' => $order->data['public_key']]));
+	redirect(document::ilink('checkout/success', ['order_id' => $order->data['id'], 'public_key' => $order->data['public_key']]), 303);
 	exit;

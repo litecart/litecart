@@ -56,7 +56,7 @@
 				'phone_code',
 				'zones',
 			] as $field) {
-				if (array_key_exists($field, $_POST)) {
+				if (isset($_POST[$field])) {
 					$country->data[$field] = $_POST[$field];
 				}
 			}

@@ -105,7 +105,7 @@
 				'thousands_sep',
 				'priority',
 			] as $field) {
-				if (array_key_exists($field, $_POST)) {
+				if (isset($_POST[$field])) {
 					$language->data[$field] = $_POST[$field];
 				}
 			}

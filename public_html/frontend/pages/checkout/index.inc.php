@@ -26,7 +26,7 @@
 		// Redirect to customer details if not sufficient
 		if ($validation_error = session::$data['checkout']['order']->validate('customer')) {
 			notices::add('notices', t('error_we_need_some_additional_info_from_you', 'We need some additional information from you'));
-			redirect(document::ilink('checkout/customer'), 303);
+			redirect(document::ilink('checkout/customer'), 302);
 			exit;
 		}
 
@@ -36,7 +36,7 @@
 	} catch (Exception $e) {
 		http_response_code($e->getCode() ?: 500);
 		notices::add('errors', $e->getMessage());
-		redirect(document::ilink('shopping_cart'));
+		redirect(document::ilink('shopping_cart'), 303);
 	}
 
 	if (settings::get('catalog_only_mode')) {
@@ -118,7 +118,7 @@
 
 			if (empty(session::$data['checkout']['order'])) {
 				notices::add('errors', t('error_no_order_in_session', 'No order in session'));
-				redirect(document::ilink('checkout/index'));
+				redirect(document::ilink('checkout/index'), 303);
 				exit;
 			}
 
@@ -145,7 +145,7 @@
 			ob_clean();
 
 			if (!empty(notices::$data['errors'])) {
-				redirect(document::ilink('checkout/index'));
+				redirect(document::ilink('checkout/index'), 303);
 				exit;
 			}
 
@@ -154,13 +154,13 @@
 
 				if (empty($payment->selected)) {
 					notices::add('errors', t('error_no_payment_method_selected', 'No payment method selected'));
-					redirect(document::ilink('checkout/index'));
+					redirect(document::ilink('checkout/index'), 303);
 					exit;
 				}
 
 				if ($payment_error = $payment->pre_check($session_order)) {
 					notices::add('errors', $payment_error);
-					redirect(document::ilink('checkout/index'));
+					redirect(document::ilink('checkout/index'), 303);
 					exit;
 				}
 
@@ -175,7 +175,7 @@
 
 					if (!empty($gateway['error'])) {
 						notices::add('errors', $gateway['error']);
-						redirect(document::ilink('checkout/index'));
+						redirect(document::ilink('checkout/index'), 303);
 						exit;
 					}
 
@@ -221,7 +221,7 @@
 							case 'GET':
 							default:
 
-								redirect(fallback($gateway['action'], document::ilink('checkout/process')));
+								redirect(fallback($gateway['action'], document::ilink('checkout/process')), 303);
 								exit;
 						}
 					}
@@ -229,7 +229,7 @@
 			}
 
 			$session_order->data['processable'] = true;
-			redirect(document::ilink('checkout/process'));
+			redirect(document::ilink('checkout/process'), 303);
 			exit;
 
 		} catch (Exception $e) {
@@ -278,7 +278,7 @@
 
 			session::$data['checkout']['order'] = $order;
 
-			redirect(document::ilink('checkout/index'));
+			redirect(document::ilink('checkout/index'), 303);
 			exit;
 
 		} catch (Exception $e) {

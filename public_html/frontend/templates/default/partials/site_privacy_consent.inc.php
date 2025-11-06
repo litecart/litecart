@@ -9,6 +9,14 @@
 	};
 
 ?>
+<style>
+#site-privacy-consent button[name="customize"] {
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+</style>
+
 <div id="site-privacy-consent"<?php if (isset($_COOKIE['privacy_consents'])) echo ' style="display: none;"'; ?>>
 	<div class="fourteen-forty">
 

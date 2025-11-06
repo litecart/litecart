@@ -70,7 +70,7 @@
 
 			self::query("SET SESSION sql_mode = '". database::input(implode(',', $sql_modes)) ."';", [], $link);
 			self::query("SET names '". database::input($charset) ."';", [], $link);
-			self::query("SET SESSION storage_engine = InnoDB;", [], $link);
+			self::query("SET SESSION default_storage_engine = InnoDB;", [], $link);
 
 			return self::$_links[$link];
 		}

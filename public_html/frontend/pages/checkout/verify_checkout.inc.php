@@ -2,13 +2,13 @@
 
 	if (empty(session::$data['checkout']['order'])) {
 		notices::add('errors', t('error_missing_order_in_session', 'Missing order in session'));
-		redirect(document::ilink('checkout/index'));
+		redirect(document::ilink('checkout/index'), 302);
 		exit;
 	}
 
 	if (empty(session::$data['checkout']['type']) || session::$data['checkout']['type'] != 'express') {
 		notices::add('errors', 'Invalid checkout type');
-		redirect(document::ilink('shopping_cart'));
+		redirect(document::ilink('shopping_cart'), 302);
 		exit;
 	}
 
@@ -36,7 +36,7 @@
 
 		notices::add('errors', $error_message);
 
-		redirect(document::ilink('shopping_cart'));
+		redirect(document::ilink('shopping_cart'), 303);
 		exit;
 	}
 
@@ -105,5 +105,5 @@
 	$order->payment->after_process($order);
 	$order_modules->after_process($order);
 
-	redirect(document::ilink('checkout/success', ['order_id' => $order->data['id'], 'public_key' => $order->data['public_key']]));
+	redirect(document::ilink('checkout/success', ['order_id' => $order->data['id'], 'public_key' => $order->data['public_key']]), 303);
 	exit;

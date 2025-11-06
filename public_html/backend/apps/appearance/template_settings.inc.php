@@ -23,7 +23,7 @@
 			case (substr($setting['function'], 0, 8) == 'regional'):
 
 				foreach (array_keys(language::$languages) as $language_code) {
-					if (isset($saved_settings[$setting['key']][$language_code])) {
+					if (array_key_exists($setting['key'], $saved_settings) && array_key_exists($language_code, $saved_settings[$setting['key']])) {
 						$settings[$key]['value'][$language_code] = $saved_settings[$setting['key']][$language_code];
 					} else {
 						$settings[$key]['value'][$language_code] = fallback($saved_settings[$setting['key']]['en'], $setting['default_value']);
@@ -34,7 +34,7 @@
 
 			default:
 
-				if (isset($saved_settings[$setting['key']])) {
+				if (array_key_exists($setting['key'], $saved_settings)) {
 					$settings[$key]['value'] = $saved_settings[$setting['key']];
 				} else {
 					$settings[$key]['value'] = $setting['default_value'];
