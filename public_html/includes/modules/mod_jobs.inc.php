@@ -52,6 +52,8 @@
 						str_repeat('#', 72),
 					]);
 
+					$output .= $log . PHP_EOL . PHP_EOL;
+
 					database::query(
 						"update ". DB_TABLE_PREFIX ."modules
 						set last_log = '". database::input($log) ."',
@@ -62,6 +64,6 @@
 				}
 			}
 
-			return $log;
+			return $output;
 		}
 	}

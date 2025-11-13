@@ -13,24 +13,36 @@
 
 			if (!$this->settings['status']) return;
 
-			if ($last_run || !$force) {
+			if ($last_run && !$force) {
 				if (strtotime($last_run) > functions::datetime_last_by_interval('Hourly', $last_run)) return;
 			}
 
-			// Event Logs
-
-			echo 'Remove old and expired event logs...' . PHP_EOL;
-
+			// Expired Event Logs
 			database::query(
 				"delete from ". DB_TABLE_PREFIX ."event_logs
 				where (expires_at is not null and expires_at < '". date('Y-m-d H:i:s') ."')
 				or (expires_at is null and created_at < '". date('Y-m-d H:i:s', strtotime('-12 months')) ."');"
 			);
 
-			// Logs
+			echo 'Removed '. language::number_format(database::affected_rows()) .' old and expired event logs.' . PHP_EOL . PHP_EOL;
 
-			echo 'Wiping out old log files...' . PHP_EOL;
+			// Expired Sessions
+			database::query(
+				"delete from ". DB_TABLE_PREFIX ."sessions
+				where expires_at < '". date('Y-m-d H:i:s') ."';"
+			);
 
+			echo 'Removed '. language::number_format(database::affected_rows()) .' expired sessions.' . PHP_EOL . PHP_EOL;
+
+			// Old Visitor Statistics
+			database::query(
+				"delete from ". DB_TABLE_PREFIX ."visitors
+				where created_at < '". date('Y-m-d 00:00:00', strtotime('-1 month')) ."';"
+			);
+
+			echo 'Removed '. language::number_format(database::affected_rows()) .' old visitor statistics.' . PHP_EOL . PHP_EOL;
+
+			// Old Log Files
 			$deleted_files = 0;
 			$max_age = strtotime('-30 days');
 
@@ -40,16 +52,13 @@
 
 				if (filemtime($file) > $max_age) continue;
 
-				echo '  Deleting ' . basename($file) . PHP_EOL;
 				unlink($file);
-
 				$deleted_files++;
 			}
 
-			// Cache
+			echo 'Removed '. language::number_format($deleted_files) .' old log files.' . PHP_EOL . PHP_EOL;
 
-			echo 'Wiping out old cache files...' . PHP_EOL;
-
+			// Old Cache Files
 			$deleted_files = 0;
 			$deleted_dirs = 0;
 			$max_age = strtotime('-24 hours');
@@ -63,9 +72,7 @@
 					if (!is_file($file)) continue;
 					if (filemtime($file) > $max_age) continue;
 
-					echo '  Deleting ' . basename($file) . PHP_EOL;
 					unlink($file);
-
 					$deleted_files++;
 				}
 
@@ -77,7 +84,9 @@
 				}
 			}
 
-			echo PHP_EOL . "Cleaned up $deleted_files files and $deleted_dirs directories" . PHP_EOL;
+			echo 'Removed '. language::number_format($deleted_files) .' cached files and '. language::number_format($deleted_dirs) .' directories' . PHP_EOL . PHP_EOL;
+
+			echo 'Job completed successfully.';
 		}
 
 		function settings() {

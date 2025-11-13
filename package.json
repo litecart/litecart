@@ -19,11 +19,11 @@
 	},
 	"type": "module",
 	"engines": {
-		"node": ">=22"
+		"node": ">=24"
 	},
 	"devDependencies": {
-		"@sequencemedia/gulp-clean-css": "^1.0.251",
-		"@sequencemedia/gulp-sourcemaps": "^1.0.265",
+		"@sequencemedia/gulp-clean-css": "^1.0.284",
+		"@sequencemedia/gulp-sourcemaps": "^1.0.300",
 		"gulp": "^5.0.1",
 		"gulp-clean-css": "^4.3.0",
 		"gulp-concat": "^2.6.1",
@@ -37,11 +37,7 @@
 		"gulp-uglify": "^3.0.2",
 		"gulp-watch": "^5.0.1",
 		"phplint": "^2.0.5",
-		"sass": "^1.89.2"
-	},
-	"type": "module",
-	"engines": {
-		"node": ">=24"
+		"sass": "^1.94.0"
 	},
 	"scripts": {
 		"iconly": "gulp iconly && gulp less-framework",

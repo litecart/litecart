@@ -83,36 +83,20 @@
 	// Table Rows
 	$modules = [];
 
-	if (is_array($mod_class->modules) && count($mod_class->modules)) {
-		foreach ($mod_class->modules as $module) {
-			$modules[] = [
-				'id' => $module->id,
-				'status' => $module->status,
-				'name' => $module->name,
-				'version' => $module->version,
-				'priority' => $module->priority,
-				'author' => $module->author,
-				'website' => $module->website,
-				'installed' => true,
-			];
-		}
-	}
-
 	foreach ($files as $file) {
 		$module_id = substr(basename($file), 0, -8);
-		if (in_array($module_id, $installed_modules)) continue;
 
 		$module = new $module_id;
 
 		$modules[] = [
 			'id' => $module_id,
-			'status' => null,
+			'status' => $module->status,
 			'name' => $module->name,
 			'version' => $module->version,
-			'priority' => null,
+			'priority' => $module->priority,
 			'author' => $module->author,
 			'website' => $module->website,
-			'installed' => false,
+			'installed' => in_array($module_id, $installed_modules) ? true : false,
 		];
 	}
 

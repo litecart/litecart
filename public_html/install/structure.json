@@ -1653,14 +1653,14 @@
 		"lc_visitors": {
 			"columns": {
 				"id": { "type": "BIGINT", "length": 20, "unsigned": true, "auto_increment": true },
-				"uid": { "type": "VARCHAR", "length": 13, "default": "''" },
+				"session_id": { "type": "VARCHAR", "length": 13, "default": "''" },
 				"cart_uid": { "type": "VARCHAR", "length": 13, "default": "''" },
 				"referrer": { "type": "VARCHAR", "length": 256, "default": "''" },
 				"ip_address": { "type": "VARCHAR", "length": 39, "default": "''" },
 				"hostname": { "type": "VARCHAR", "length": 64, "default": "''" },
 				"user_agent": { "type": "VARCHAR", "length": 256, "default": "''" },
 				"language": { "type": "VARCHAR", "length": 2, "default": "''" },
-				"country": { "type": "VARCHAR", "length": 2, "default": "''" },
+				"country_code": { "type": "VARCHAR", "length": 2, "default": "''" },
 				"pageviews": { "type": "INT", "length": 11, "unsigned": true, "default": 0 },
 				"last_page": { "type": "VARCHAR", "length": 128, "default": "''" },
 				"date_updated": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },

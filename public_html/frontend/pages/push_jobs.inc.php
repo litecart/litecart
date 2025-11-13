@@ -13,8 +13,6 @@
 		}
 	}
 
-	session::close();
-
 	database::query(
 		"update ". DB_TABLE_PREFIX ."settings
 		set value = '". date('Y-m-d H:i:s') ."'

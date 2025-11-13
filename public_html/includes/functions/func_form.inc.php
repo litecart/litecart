@@ -81,6 +81,40 @@
 		return form_button($name, $value, 'submit', $parameters);
 	}
 
+	function form_captcha($id, $config=[], $parameters='') {
+
+		$config = [
+			'width' => fallback($config['width'], 100),
+			'height' => fallback($config['height'], 40),
+			'length' => fallback($config['length'], 4),
+			'set' => fallback($config['set'], 'numbers'),
+		];
+
+		return functions::captcha_draw($id, $config, $parameters);
+	}
+
+	function form_checkbox($name, $value, $input=true, $parameters='') {
+
+		if (is_array($value)) {
+			return implode(PHP_EOL, [
+				'<label'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-check"' : '') .'>',
+				'  ' . form_checkbox($name, $value[0], $input, $parameters),
+				'  ' . (isset($value[1]) ? $value[1] : $value[0]),
+				'</label>',
+			]);
+		}
+
+		if ($input === true) {
+			$input = form_reinsert_value($name);
+		}
+
+		if (preg_match('#\[\]$#', $name)) {
+			return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-check"' : '') .' type="checkbox" name="'. functions::escape_attr($name) .'" value="'. functions::escape_attr($value) .'" '. ((is_array($input) && in_array($value, $input)) ? ' checked' : '') . ($parameters ? ' ' . $parameters : '') .'>';
+		} else {
+			return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-check"' : '') .' type="checkbox" name="'. functions::escape_attr($name) .'" value="'. functions::escape_attr($value) .'" '. (!strcmp($input, $value) ? ' checked' : '') . ($parameters ? ' ' . $parameters : '') .'>';
+		}
+	}
+
 	function form_dropdown($name, $options=[], $input=true, $parameters='') {
 
 		$html = [
@@ -114,40 +148,6 @@
 		$html[] = '</div>';
 
 		return implode(PHP_EOL, $html);
-	}
-
-	function form_checkbox($name, $value, $input=true, $parameters='') {
-
-		if (is_array($value)) {
-			return implode(PHP_EOL, [
-				'<label'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-check"' : '') .'>',
-				'  ' . form_checkbox($name, $value[0], $input, $parameters),
-				'  ' . (isset($value[1]) ? $value[1] : $value[0]),
-				'</label>',
-			]);
-		}
-
-		if ($input === true) {
-			$input = form_reinsert_value($name);
-		}
-
-		if (preg_match('#\[\]$#', $name)) {
-			return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-check"' : '') .' type="checkbox" name="'. functions::escape_attr($name) .'" value="'. functions::escape_attr($value) .'" '. ((is_array($input) && in_array($value, $input)) ? ' checked' : '') . ($parameters ? ' ' . $parameters : '') .'>';
-		} else {
-			return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-check"' : '') .' type="checkbox" name="'. functions::escape_attr($name) .'" value="'. functions::escape_attr($value) .'" '. (!strcmp($input, $value) ? ' checked' : '') . ($parameters ? ' ' . $parameters : '') .'>';
-		}
-	}
-
-	function form_captcha($id, $config=[], $parameters='') {
-
-		$config = [
-			'width' => fallback($config['width'], 100),
-			'height' => fallback($config['height'], 40),
-			'length' => fallback($config['length'], 4),
-			'set' => fallback($config['set'], 'numbers'),
-		];
-
-		return functions::captcha_draw($id, $config, $parameters);
 	}
 
 	function form_input_code($name, $input=true, $parameters='') {

@@ -175,4 +175,8 @@
 
 			header('Set-Cookie: LCSESSID='. rawurlencode(self::$data['id']) .';Path=/;'. ($is_secure ? 'Secure;' : '') .'HttpOnly;SameSite=' . $samesite);
 		}
+
+		public static function close() {
+			trigger_error('Calling '.__CLASS__.'::close() is deprecated and can be removed.', E_USER_DEPRECATED);
+		}
 	}
