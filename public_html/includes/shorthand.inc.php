@@ -1,7 +1,11 @@
 <?php
 
-  // Shorthand f:: for f::
-	class_alias('functions', 'f', false);
+  // Shorthand f:: for functions:: (class_alias() doesn't work here)
+	class f {
+		public static function __callstatic($function, $arguments) {
+			return forward_static_call_array(['functions', $function], $arguments);
+		}
+	}
 
 	// Shorthand q() for database::query()
 	function q(...$args){
