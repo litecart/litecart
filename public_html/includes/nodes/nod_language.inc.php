@@ -123,7 +123,7 @@
 			}
 
 			// Set system locale
-			if (self::$selected['locale'] && !setlocale(LC_TIME, functions::string_split(self::$selected['locale']))) {
+			if (self::$selected['locale'] && !setlocale(LC_TIME, f::string_split(self::$selected['locale']))) {
 				trigger_error('Warning: Failed setting locale '. self::$selected['locale'] .' for '. self::$selected['name'], E_USER_WARNING);
 			}
 
@@ -296,8 +296,8 @@
 		}
 
 		public static function strftime($format, $timestamp=null) {
-			trigger_error('Method language::strftime() is deprecated. Instead, use functions::datetime_format()', E_USER_DEPRECATED);
-			return functions::datetime_format($format, $timestamp);
+			trigger_error('Method language::strftime() is deprecated. Instead, use f::datetime_format()', E_USER_DEPRECATED);
+			return f::datetime_format($format, $timestamp);
 		}
 
 		public static function convert_characters($variable, $from_charset=null, $to_charset=null) {

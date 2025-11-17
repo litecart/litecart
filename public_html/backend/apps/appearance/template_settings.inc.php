@@ -62,7 +62,7 @@
 
 			database::query(
 				"update ". DB_TABLE_PREFIX ."settings
-				set `value` = '". database::input(functions::format_json($new_settings)) ."',
+				set `value` = '". database::input(f::format_json($new_settings)) ."',
 					updated_at = '". date('Y-m-d H:i:s') ."'
 				where `key` = 'template_settings'
 				limit 1;"
@@ -120,7 +120,7 @@
 		</div>
 	</div>
 
-	<?php echo functions::form_begin('template_settings_form', 'post'); ?>
+	<?php echo f::form_begin('template_settings_form', 'post'); ?>
 
 		<table class="table data-table">
 			<tbody>
@@ -130,7 +130,7 @@
 						<u><?php echo t(settings::get('template').':title_'.$setting['key'], $setting['title']); ?></u><br>
 						<?php echo t(settings::get('template').':description_'.$setting['key'], $setting['description']); ?>
 					</td>
-					<td><?php echo functions::form_function('settings['.$setting['key'].']', $setting['function'], true); ?></td>
+					<td><?php echo f::form_function('settings['.$setting['key'].']', $setting['function'], true); ?></td>
 
 				</tr>
 				<?php } ?>
@@ -146,8 +146,8 @@
 		</table>
 
 		<div class="card-action">
-			<?php echo functions::form_button_predefined('save'); ?>
+			<?php echo f::form_button_predefined('save'); ?>
 		</div>
 
-	<?php echo functions::form_end(); ?>
+	<?php echo f::form_end(); ?>
 </div>

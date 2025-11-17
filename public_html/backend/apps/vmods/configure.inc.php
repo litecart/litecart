@@ -65,7 +65,7 @@
 
 			$vmods_settings[$id] = $_POST['settings'];
 
-			file_put_contents('storage://vmods/' . '.settings', functions::format_json($vmods_settings), LOCK_EX);
+			file_put_contents('storage://vmods/' . '.settings', f::format_json($vmods_settings), LOCK_EX);
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			redirect(document::ilink(__APP__.'/vmods'), 303);
@@ -103,7 +103,7 @@ pre {
 
 		<h1><?php echo $xml->name; ?></h1>
 
-		<?php echo functions::form_begin('settings_form', 'post', false, false, 'style="max-width: 960px;"'); ?>
+		<?php echo f::form_begin('settings_form', 'post', false, false, 'style="max-width: 960px;"'); ?>
 
 			<table class="table">
 				<tbody>
@@ -114,7 +114,7 @@ pre {
 							<?php if (!empty($setting->description)) echo '<div>'. $setting->description .'</div>'; ?>
 						</td>
 						<td style="width: 50%">
-							<?php echo functions::form_function($setting->function, 'settings['.$setting->key.']', true); ?>
+							<?php echo f::form_function($setting->function, 'settings['.$setting->key.']', true); ?>
 						</td>
 					</tr>
 					<?php } ?>
@@ -122,10 +122,10 @@ pre {
 			</table>
 
 			<div class="card-action">
-				<?php echo functions::form_button_predefined('save'); ?>
-				<?php echo functions::form_button('cancel', t('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1)"', 'cancel'); ?>
+				<?php echo f::form_button_predefined('save'); ?>
+				<?php echo f::form_button('cancel', t('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1)"', 'cancel'); ?>
 			</div>
 
-		<?php echo functions::form_end(); ?>
+		<?php echo f::form_end(); ?>
 	</div>
 </div>

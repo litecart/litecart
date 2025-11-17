@@ -10,7 +10,7 @@
 
 		$result = [];
 
-		$result['categories'] = functions::catalog_categories_search_query([
+		$result['categories'] = f::catalog_categories_search_query([
 			'query' => $_GET['query'],
 			'limit' => 5,
 		])->fetch_all(function($category) {
@@ -20,13 +20,13 @@
 				'link' => document::ilink('category', ['category_id' => $category['id']]),
 				'image' => [
 					'original' => document::rlink('storage://images' . $category['image'] ?: 'no_image.svg'),
-					'thumbnail' => document::rlink(functions::image_thumbnail('storage://images/'. $category['image'], 128, 0, 'category')),
-					'thumbnail_2x' => document::rlink(functions::image_thumbnail('storage://images/'. $category['image'], 256, 0, 'category')),
+					'thumbnail' => document::rlink(f::image_thumbnail('storage://images/'. $category['image'], 128, 0, 'category')),
+					'thumbnail_2x' => document::rlink(f::image_thumbnail('storage://images/'. $category['image'], 256, 0, 'category')),
 				],
 			];
 		});
 
-		$result['products'] = functions::catalog_products_search_query([
+		$result['products'] = f::catalog_products_search_query([
 			'query' => $_GET['query'],
 			'limit' => 5,
 		])->fetch_all(function($product) {
@@ -36,8 +36,8 @@
 				'link' => document::ilink('product', ['product_id' => $product['id']]),
 				'image' => [
 					'original' => document::rlink('storage://images' . $product['image'] ?: 'no_image.svg'),
-					'thumbnail' => document::rlink(functions::image_thumbnail('storage://images/'. $product['image'], 128, 0, 'product')),
-					'thumbnail_2x' => document::rlink(functions::image_thumbnail('storage://images/'. $product['image'], 256, 0, 'product')),
+					'thumbnail' => document::rlink(f::image_thumbnail('storage://images/'. $product['image'], 128, 0, 'product')),
+					'thumbnail_2x' => document::rlink(f::image_thumbnail('storage://images/'. $product['image'], 256, 0, 'product')),
 				],
 			];
 		});
@@ -49,5 +49,5 @@
 
 	ob_clean();
 	header('Content-Type: application/json; charset=utf-8');
-	echo functions::format_json($result);
+	echo f::format_json($result);
 	exit;

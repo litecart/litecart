@@ -18,7 +18,7 @@
 
 		error_log(implode(PHP_EOL, [
 			'CSP Violation for '. $report['document-uri'],
-			functions::format_json($report),
+			f::format_json($report),
 			!empty($_SERVER['REMOTE_ADDR']) ? 'Client: '. $_SERVER['REMOTE_ADDR'] .' ('. gethostbyaddr($_SERVER['REMOTE_ADDR']) .')' : '',
 			!empty($_SERVER['HTTP_USER_AGENT']) ? 'User Agent: '. $_SERVER['HTTP_USER_AGENT'] : '',
 		]) . PHP_EOL);

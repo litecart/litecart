@@ -35,7 +35,7 @@
 
 		$tree = [];
 
-		$categories = functions::catalog_categories_query($parent_id)->fetch_all();
+		$categories = f::catalog_categories_query($parent_id)->fetch_all();
 
 		foreach ($categories as $category) {
 
@@ -54,7 +54,7 @@
 			}
 
 			if (in_array($category['id'], $trail)) {
-				if (functions::catalog_categories_query($category['id'])->num_rows) {
+				if (f::catalog_categories_query($category['id'])->num_rows) {
 					$tree[$category['id']]['subcategories'] = $iterator($category['id']);
 				}
 			}

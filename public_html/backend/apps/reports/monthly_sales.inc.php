@@ -52,7 +52,7 @@
 	if (isset($_GET['download'])) {
 		header('Content-Type: application/csv; charset='. mb_http_output());
 		header('Content-Disposition: filename="monthly_sales_'. date('Ymd', strtotime($_GET['date_from'])) .'-'. date('Ymd', strtotime($_GET['date_to'])) .'.csv"');
-		echo functions::csv_encode($rows);
+		echo f::csv_encode($rows);
 		exit;
 	}
 ?>
@@ -70,19 +70,19 @@ form[name="filter_form"] li {
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_begin('filter_form', 'get'); ?>
+		<?php echo f::form_begin('filter_form', 'get'); ?>
 			<ul class="list-inline">
 				<li>
 					<div class="input-group" style="max-width: 380px;">
-						<?php echo functions::form_input_date('date_from'); ?>
+						<?php echo f::form_input_date('date_from'); ?>
 						<span class="input-group-text"> - </span>
-						<?php echo functions::form_input_date('date_to'); ?>
+						<?php echo f::form_input_date('date_to'); ?>
 					</div>
 				</li>
-				<li><?php echo functions::form_button('filter', ['true', functions::draw_fonticon('icon-funnel') .' '. t('title_filter_now', 'Filter')]); ?></li>
-				<li><?php echo functions::form_button('download', ['true', functions::draw_fonticon('icon-download') .' '. t('title_download', 'Download')]); ?></li>
+				<li><?php echo f::form_button('filter', ['true', f::draw_fonticon('icon-funnel') .' '. t('title_filter_now', 'Filter')]); ?></li>
+				<li><?php echo f::form_button('download', ['true', f::draw_fonticon('icon-download') .' '. t('title_download', 'Download')]); ?></li>
 			</ul>
-		<?php echo functions::form_end(); ?>
+		<?php echo f::form_end(); ?>
 	</div>
 
 	<table class="table data-table">
@@ -100,7 +100,7 @@ form[name="filter_form"] li {
 		<tbody>
 			<?php foreach ($rows as $row) { ?>
 			<tr>
-				<td><?php echo ucfirst(functions::datetime_format('%B, %Y', strtotime($row['year_month'].'-01'))); ?></td>
+				<td><?php echo ucfirst(f::datetime_format('%B, %Y', strtotime($row['year_month'].'-01'))); ?></td>
 				<td class="border-start text-end"><?php echo currency::format($row['total_subtotal'], false, settings::get('store_currency_code')); ?></td>
 				<td class="border-start text-end"><?php echo currency::format($row['total_shipping_fees'], false, settings::get('store_currency_code')); ?></td>
 				<td class="border-start text-end"><?php echo currency::format($row['total_payment_fees'], false, settings::get('store_currency_code')); ?></td>

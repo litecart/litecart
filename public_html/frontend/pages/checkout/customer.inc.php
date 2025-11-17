@@ -49,7 +49,7 @@
 
 			if (settings::get('accounts_enabled') && !empty($_POST['sign_up'])) {
 
-				if (!functions::validate_email($_POST['customer']['email'])) {
+				if (!f::validate_email($_POST['customer']['email'])) {
 					throw new Exception(t('error_invalid_email', 'The email address is invalid'));
 				}
 

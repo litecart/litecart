@@ -25,7 +25,7 @@
 
 		// Create a new entity
 		$page = new ent_page();
-		$page->data = functions::array_update($page->data, $data);
+		$page->data = f::array_update($page->data, $data);
 		$page->save();
 
 		// Check if the entity was created
@@ -46,7 +46,7 @@
 		}
 
 		// Check if data was set correctly
-		if (!functions::array_intersect_compare($data, $page->data)) {
+		if (!f::array_intersect_compare($data, $page->data)) {
 			throw new Exception('The page data was not stored correctly');
 		}
 
@@ -62,13 +62,13 @@
 		];
 
 		// Update some data
-		$page->data = functions::array_update($page->data, $data);
+		$page->data = f::array_update($page->data, $data);
 
 		// Save changes to database
 		$page->save();
 
 		// Check if data was set correctly
-		if (!functions::array_intersect_compare($data, $page->data)) {
+		if (!f::array_intersect_compare($data, $page->data)) {
 			throw new Exception('The page data was not updated correctly ('. $key .')');
 		}
 

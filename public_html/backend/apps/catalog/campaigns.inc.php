@@ -54,15 +54,15 @@
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_campaign'), t('title_create_new_campaign', 'Create New Campaign'), '', 'create'); ?>
+		<?php echo f::form_button_link(document::ilink(__APP__.'/edit_campaign'), t('title_create_new_campaign', 'Create New Campaign'), '', 'create'); ?>
 	</div>
 
-	<?php echo functions::form_begin('campaigns_form', 'post'); ?>
+	<?php echo f::form_begin('campaigns_form', 'post'); ?>
 
 		<table class="table data-table">
 			<thead>
 				<tr>
-					<th><?php echo functions::draw_fonticon('icon-square-check checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th><?php echo f::draw_fonticon('icon-square-check checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th><?php echo t('title_ID', 'ID'); ?></th>
 					<th class="main"><?php echo t('title_Name', 'Name'); ?></th>
 					<th class="text-end"><?php echo t('title_valid_from', 'Valid From'); ?></th>
@@ -75,15 +75,15 @@
 			<tbody>
 				<?php foreach ($campaigns as $campaign) { ?>
 				<tr class="<?php if (!empty($campaign['end_date']) && $campaign['end_date'] < date('Y-m-d H:i:s')) echo 'semi-transparent'; ?>">
-					<td><?php echo functions::form_checkbox('campaigns[]', $campaign['id']); ?></td>
+					<td><?php echo f::form_checkbox('campaigns[]', $campaign['id']); ?></td>
 					<td><?php echo $campaign['id']; ?></td>
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_campaign', ['campaign_id' => $campaign['id']]); ?>"><?php echo $campaign['name']; ?></a></td>
-					<td class="text-end"><?php echo $campaign['valid_from'] ? functions::datetime_format('datetime', $campaign['valid_from']) : ''; ?></td>
-					<td class="text-end"><?php echo $campaign['valid_to'] ? functions::datetime_format('datetime', $campaign['valid_to']) : ''; ?></td>
+					<td class="text-end"><?php echo $campaign['valid_from'] ? f::datetime_format('datetime', $campaign['valid_from']) : ''; ?></td>
+					<td class="text-end"><?php echo $campaign['valid_to'] ? f::datetime_format('datetime', $campaign['valid_to']) : ''; ?></td>
 					<td class="text-center"><?php echo language::number_format($campaign['num_products']); ?></td>
 					<td class="text-end">
 						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_campaign', ['campaign_id' => $campaign['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>">
-							<?php echo functions::draw_fonticon('edit'); ?>
+							<?php echo f::draw_fonticon('edit'); ?>
 						</a>
 					</td>
 				</tr>
@@ -99,11 +99,11 @@
 			</tfoot>
 		</table>
 
-	<?php echo functions::form_end(); ?>
+	<?php echo f::form_end(); ?>
 
 	<?php if ($num_pages > 1) { ?>
 	<div class="card-body">
-		<?php echo functions::draw_pagination($num_pages); ?>
+		<?php echo f::draw_pagination($num_pages); ?>
 	</div>
 	<?php } ?>
 

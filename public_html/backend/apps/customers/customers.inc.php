@@ -118,25 +118,25 @@
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink('customers/edit_customer'), t('title_create_new_customer', 'Create New Customer'), '', 'create'); ?>
+		<?php echo f::form_button_link(document::ilink('customers/edit_customer'), t('title_create_new_customer', 'Create New Customer'), '', 'create'); ?>
 	</div>
 
-	<?php echo functions::form_begin('search_form', 'get'); ?>
+	<?php echo f::form_begin('search_form', 'get'); ?>
 
 		<div class="card-filter">
-			<div><?php echo functions::form_select_customer_group('group_id', true, 'style="min-width: 200px;"'); ?></div>
-			<div class="expandable"><?php echo functions::form_input_search('query', true, 'placeholder="'. t('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"'); ?></div>
-			<?php echo functions::form_button('filter', t('title_search', 'Search'), 'submit'); ?>
+			<div><?php echo f::form_select_customer_group('group_id', true, 'style="min-width: 200px;"'); ?></div>
+			<div class="expandable"><?php echo f::form_input_search('query', true, 'placeholder="'. t('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"'); ?></div>
+			<?php echo f::form_button('filter', t('title_search', 'Search'), 'submit'); ?>
 		</div>
 
-	<?php echo functions::form_end(); ?>
+	<?php echo f::form_end(); ?>
 
-	<?php echo functions::form_begin('customers_form', 'post'); ?>
+	<?php echo f::form_begin('customers_form', 'post'); ?>
 
 		<table class="table data-table">
 			<thead>
 				<tr>
-					<th style="width: 40px;"><?php echo functions::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th style="width: 40px;"><?php echo f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th style="width: 40px;"></th>
 					<th data-sort="id" style="width: 50px;"><?php echo t('title_id', 'ID'); ?></th>
 					<th data-sort="name"><?php echo t('title_name', 'Name'); ?></th>
@@ -152,19 +152,19 @@
 			<tbody>
 				<?php foreach ($customers as $customer) { ?>
 				<tr class="<?php echo empty($customer['status']) ? 'semi-transparent' : ''; ?>">
-					<td><?php echo functions::form_checkbox('customers[]', $customer['id']); ?></td>
-					<td><?php echo functions::draw_fonticon($customer['status'] ? 'on' : 'off'); ?></td>
+					<td><?php echo f::form_checkbox('customers[]', $customer['id']); ?></td>
+					<td><?php echo f::draw_fonticon($customer['status'] ? 'on' : 'off'); ?></td>
 					<td><?php echo $customer['id']; ?></td>
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_customer', ['customer_id' => $customer['id']]); ?>">
-						<?php echo functions::draw_fonticon($customer['company'] ? 'icon-building' : 'icon-user', 'style="opacity: .5;"'); ?>
+						<?php echo f::draw_fonticon($customer['company'] ? 'icon-building' : 'icon-user', 'style="opacity: .5;"'); ?>
 						<?php echo $customer['company'] ?: $customer['firstname'] .' '. $customer['lastname']; ?>
 					</td>
 					<td><?php echo $customer['email']; ?></a></td>
 					<td><?php echo $customer['company']; ?></td>
 					<td><?php echo $customer['last_hostname']; ?></td>
 					<td class="text-center"><?php echo $customer['group_name']; ?></td>
-					<td class="text-end"><?php echo functions::datetime_when($customer['created_at']); ?></td>
-					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_customer', ['customer_id' => $customer['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+					<td class="text-end"><?php echo f::datetime_when($customer['created_at']); ?></td>
+					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_customer', ['customer_id' => $customer['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo f::draw_fonticon('edit'); ?></a></td>
 				</tr>
 				<?php } ?>
 			</tbody>
@@ -188,21 +188,21 @@
 				<div class="flex">
 
 					<div div class="btn-group">
-						<?php echo functions::form_button_predefined('enable'); ?>
-						<?php echo functions::form_button_predefined('disable'); ?>
+						<?php echo f::form_button_predefined('enable'); ?>
+						<?php echo f::form_button_predefined('disable'); ?>
 					</div>
 
-					<?php echo functions::form_button_predefined('delete'); ?>
+					<?php echo f::form_button_predefined('delete'); ?>
 
 				</div>
 			</fieldset>
 		</div>
 
-	<?php echo functions::form_end(); ?>
+	<?php echo f::form_end(); ?>
 
 	<?php if ($num_pages > 1) { ?>
 	<div class="card-footer">
-		<?php echo functions::draw_pagination($num_pages); ?>
+		<?php echo f::draw_pagination($num_pages); ?>
 	</div>
 	<?php } ?>
 </div>

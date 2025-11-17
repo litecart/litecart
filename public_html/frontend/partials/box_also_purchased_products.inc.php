@@ -21,7 +21,7 @@
 
 			$also_purchased_products = array_slice($also_purchased_products, 0, settings::get('box_also_purchased_products_num_items')*3, true);
 
-			$box_also_purchased_products->snippets['products'] = functions::catalog_products_query([
+			$box_also_purchased_products->snippets['products'] = f::catalog_products_query([
 				'products' => array_keys($also_purchased_products),
 				'sort' => 'random',
 				'limit' => settings::get('box_also_purchased_products_num_items'),

@@ -27,7 +27,7 @@
 		########################################################################
 
 		$customer = new ent_customer();
-		$customer->data = functions::array_update($customer->data, $data);
+		$customer->data = f::array_update($customer->data, $data);
 		$customer->save();
 
 		if (!$customer_id = $customer->data['id']) {
@@ -44,7 +44,7 @@
 			throw new Exception('Failed to load customer');
 		}
 
-		if (!functions::array_intersect_compare($data, $customer->data)) {
+		if (!f::array_intersect_compare($data, $customer->data)) {
 			throw new Exception('The customer data was not stored correctly');
 		}
 
@@ -58,11 +58,11 @@
 			'password' => 'newpassword123',
 		];
 
-		$customer->data = functions::array_update($customer->data, $data);
+		$customer->data = f::array_update($customer->data, $data);
 
 		$customer->save();
 
-		if (!functions::array_intersect_compare($data, $customer->data)) {
+		if (!f::array_intersect_compare($data, $customer->data)) {
 			throw new Exception('The customer data was not updated correctly');
 		}
 
@@ -72,7 +72,7 @@
 
 		customer::load($administrator->data['id']);
 
-		if (!functions::array_intersect_compare($customer->data, customer::$data)) {
+		if (!f::array_intersect_compare($customer->data, customer::$data)) {
 			throw new Exception('customer::$data does not match $customer->data');
 		}
 

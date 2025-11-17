@@ -1,6 +1,9 @@
 <?php
 
-	// Query the database
+  // Shorthand f:: for f::
+	class_alias('functions', 'f', false);
+
+	// Shorthand q() for database::query()
 	function q(...$args){
 		return forward_static_call_array(['database', 'query'], $args);
 	}

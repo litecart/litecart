@@ -9,56 +9,56 @@
 
 					<h1><?php echo t('title_contact_us', 'Contact Us'); ?></h1>
 
-					<?php echo functions::form_begin('contact_form', 'post', null, true); ?>
+					<?php echo f::form_begin('contact_form', 'post', null, true); ?>
 
 						<div class="grid">
 							<div class="col-md-6">
 								<div class="form-group">
 									<div class="form-label"><?php echo t('title_firstname', 'First Name'); ?></div>
-									<?php echo functions::form_input_text('firstname', true, 'required'); ?>
+									<?php echo f::form_input_text('firstname', true, 'required'); ?>
 								 </div>
 							</div>
 
 							<div class="col-md-6">
 								<div class="form-group">
 									<div class="form-label"><?php echo t('title_lastname', 'Last Name'); ?></div>
-									<?php echo functions::form_input_text('lastname', true, 'required'); ?>
+									<?php echo f::form_input_text('lastname', true, 'required'); ?>
 								 </div>
 							</div>
 						</div>
 
 						<div class="form-group">
 							<div class="form-label"><?php echo t('title_email_address', 'Email Address'); ?></div>
-							<?php echo functions::form_input_email('email', true, 'required'); ?>
+							<?php echo f::form_input_email('email', true, 'required'); ?>
 						</div>
 
 						<div class="form-group">
 							<div class="form-label"><?php echo t('title_subject', 'Subject'); ?></div>
-							<?php echo functions::form_input_text('subject', true, 'required'); ?>
+							<?php echo f::form_input_text('subject', true, 'required'); ?>
 						 </div>
 
 						<div class="form-group">
 							<div class="form-label"><?php echo t('title_message', 'Message'); ?></div>
-							<?php echo functions::form_textarea('message', true, 'required style="height: 250px;"'); ?>
+							<?php echo f::form_textarea('message', true, 'required style="height: 250px;"'); ?>
 						 </div>
 
 						<div class="form-group">
 							<div class="form-label"><?php echo t('title_attachments', 'Attachments'); ?></div>
-							<?php echo functions::form_input_file('attachments[]', 'multiple accept=".jpg,.jpeg,.png,.gif,.webp,.avif,.txt,.doc,.docx,.pdf,.mp4"'); ?>
+							<?php echo f::form_input_file('attachments[]', 'multiple accept=".jpg,.jpeg,.png,.gif,.webp,.avif,.txt,.doc,.docx,.pdf,.mp4"'); ?>
 						</div>
 
 						<?php if (settings::get('captcha_enabled')) { ?>
 						<div class="form-group" style="max-width: 250px;">
 							<div class="form-label"><?php echo t('title_captcha', 'CAPTCHA'); ?></div>
-							<?php echo functions::form_captcha('contact_us'); ?>
+							<?php echo f::form_captcha('contact_us'); ?>
 						 </div>
 						<?php } ?>
 
 						<div>
-							<?php echo functions::form_button('send', t('title_send', 'Send'), 'submit', 'style="font-weight: bold;"'); ?>
+							<?php echo f::form_button('send', t('title_send', 'Send'), 'submit', 'style="font-weight: bold;"'); ?>
 						</div>
 
-					<?php echo functions::form_end(); ?>
+					<?php echo f::form_end(); ?>
 				</div>
 			</section>
 		</div>
@@ -78,12 +78,12 @@
 
 					<?php if (settings::get('store_phone')) { ?>
 					<div class="phone">
-						<?php echo functions::draw_fonticon('icon-phone'); ?> <a href="tel:<?php echo settings::get('store_phone'); ?>"><?php echo settings::get('store_phone'); ?></a>
+						<?php echo f::draw_fonticon('icon-phone'); ?> <a href="tel:<?php echo settings::get('store_phone'); ?>"><?php echo settings::get('store_phone'); ?></a>
 					</div>
 					<?php } ?>
 
 					<div class="email">
-						<?php echo functions::draw_fonticon('icon-envelope'); ?> <a href="mailto:<?php echo settings::get('store_email'); ?>"><?php echo settings::get('store_email'); ?></a>
+						<?php echo f::draw_fonticon('icon-envelope'); ?> <a href="mailto:<?php echo settings::get('store_email'); ?>"><?php echo settings::get('store_email'); ?></a>
 					</div>
 
 				</div>

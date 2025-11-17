@@ -32,7 +32,7 @@
 			$month = date('m', $timestamp);
 			$monthly_sales[$year][$month]['year'] = $year;
 			$monthly_sales[$year][$month]['month'] = $month;
-			$monthly_sales[$year][$month]['label'] = functions::datetime_format('%b', $timestamp);
+			$monthly_sales[$year][$month]['label'] = f::datetime_format('%b', $timestamp);
 			if (!isset($monthly_sales[$year][$month]['num_orders'])) {
 				$monthly_sales[$year][$month]['num_orders'] = 0;
 			}
@@ -99,7 +99,7 @@
 		});
 
 		for ($timestamp=time(); strtotime('-7 days') < $timestamp; $timestamp = strtotime('-1 day', $timestamp)) {
-			$daily_sales[date('N', $timestamp)]['label'] = functions::datetime_format('%a', $timestamp);
+			$daily_sales[date('N', $timestamp)]['label'] = f::datetime_format('%a', $timestamp);
 
 			if (!isset($daily_sales[date('N', $timestamp)]['total_sales'])) {
 				$daily_sales[date('N', $timestamp)]['total_sales'] = 0;
@@ -177,7 +177,7 @@
 				</div>
 
 				<div class="card-body">
-					<div id="chart-sales-monthly" style="width: 100%; height: 250px;" title="<?php echo functions::escape_html(t('title_monthly_sales', 'Monthly Sales')); ?>"></div>
+					<div id="chart-sales-monthly" style="width: 100%; height: 250px;" title="<?php echo f::escape_html(t('title_monthly_sales', 'Monthly Sales')); ?>"></div>
 				</div>
 			</div>
 		</div>
@@ -189,7 +189,7 @@
 				</div>
 
 				<div class="card-body">
-					<div id="chart-sales-daily" style="width: 100%; height: 250px" title="<?php echo functions::escape_html(t('title_daily_sales', 'Daily Sales')); ?>"></div>
+					<div id="chart-sales-daily" style="width: 100%; height: 250px" title="<?php echo f::escape_html(t('title_daily_sales', 'Daily Sales')); ?>"></div>
 				</div>
 			</div>
 		</div>
@@ -200,8 +200,8 @@
 
 	// Monthly Sales
 	var data = {
-		labels: <?php echo functions::format_json(array_column($monthly_sales[date('Y')], 'label')); ?>,
-		series: <?php echo functions::format_json([array_column($monthly_sales[date('Y')-2], 'total_sales'), array_column($monthly_sales[date('Y')-1], 'total_sales'), array_column($monthly_sales[date('Y')], 'total_sales')]); ?>
+		labels: <?php echo f::format_json(array_column($monthly_sales[date('Y')], 'label')); ?>,
+		series: <?php echo f::format_json([array_column($monthly_sales[date('Y')-2], 'total_sales'), array_column($monthly_sales[date('Y')-1], 'total_sales'), array_column($monthly_sales[date('Y')], 'total_sales')]); ?>
 	};
 
 	var options = {
@@ -251,8 +251,8 @@
 	// Daily Sales
 
 	var data = {
-		labels: <?php echo functions::format_json(array_column($daily_sales, 'label')); ?>,
-		series: <?php echo functions::format_json([array_column($daily_sales, 'total_sales'), array_column($daily_sales, 'average_sales')]); ?>
+		labels: <?php echo f::format_json(array_column($daily_sales, 'label')); ?>,
+		series: <?php echo f::format_json([array_column($daily_sales, 'total_sales'), array_column($daily_sales, 'average_sales')]); ?>
 	};
 
 	var options = {

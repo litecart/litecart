@@ -45,7 +45,7 @@
 		}
 
 		private function _encode_settings($data) {
-			return functions::format_json($data);
+			return f::format_json($data);
 		}
 
 		private function _decode_settings($data) {

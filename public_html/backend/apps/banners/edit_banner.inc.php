@@ -101,44 +101,44 @@ table th:last-child {
 	</div>
 
 	<div class="card-body">
-		<?php echo functions::form_begin('banner_form', 'post', '', true, 'style="max-width: 640px;"'); ?>
+		<?php echo f::form_begin('banner_form', 'post', '', true, 'style="max-width: 640px;"'); ?>
 
 			<div class="grid">
 				<div class="col-md-6">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_status', 'Status'); ?></div>
-						<?php echo functions::form_toggle('status', 'e/d', true); ?>
+						<?php echo f::form_toggle('status', 'e/d', true); ?>
 					</label>
 				</div>
 
 				<div class="col-md-6">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
-						<?php echo functions::form_input_text('name', true); ?>
+						<?php echo f::form_input_text('name', true); ?>
 					</label>
 				</div>
 			</div>
 
 			<label class="form-group">
 				<div class="form-label"><?php echo t('title_languages', 'Languages'); ?> <em>(<?php echo t('text_leave_blank_for_all', 'Leave blank for all'); ?>)</em></div>
-				<div><?php echo functions::form_select_language('languages[]', true); ?></div>
+				<div><?php echo f::form_select_language('languages[]', true); ?></div>
 			</label>
 
 			<label class="form-group">
 				<div class="form-label"><?php echo t('title_image', 'Image'); ?></div>
-				<?php echo functions::form_input_file('image', 'accept="image/*"'); ?>
+				<?php echo f::form_input_file('image', 'accept="image/*"'); ?>
 				<?php if (!empty($banner->data['image'])) echo '<div>' . $banner->data['image'] .'</div>'; ?>
 			</label>
 
 			<label class="form-group">
 				<div class="form-label"><?php echo t('title_link', 'Link'); ?></div>
-				<?php echo functions::form_input_url('link', true); ?>
+				<?php echo f::form_input_url('link', true); ?>
 			</label>
 
 			<label class="form-group">
 				<div class="form-label"><?php echo t('title_html', 'HTML'); ?></div>
 				<div class="form-input" style="padding: 0;">
-					<?php echo functions::form_input_code('html', true, 'placeholder="'. functions::escape_attr('<a href="$target_url"><img class="responsive" src="$image_url"></a>') .'" style="height: 150px;"'); ?>
+					<?php echo f::form_input_code('html', true, 'placeholder="'. f::escape_attr('<a href="$target_url"><img class="responsive" src="$image_url"></a>') .'" style="height: 150px;"'); ?>
 					<div style="padding: 0.5em; background: #efefef;">
 						<?php echo t('title_aliases', 'Aliases'); ?>: <em>$uid, $key, $language_code, $image_url, $target_url</em>
 					</div>
@@ -147,32 +147,32 @@ table th:last-child {
 
 			<label class="form-group">
 				<div class="form-label"><?php echo t('title_keywords', 'Keywords'); ?></div>
-				<?php echo functions::form_input_tags('keywords', true); ?>
+				<?php echo f::form_input_tags('keywords', true); ?>
 			</label>
 
 			<div class="grid">
 				<div class="col-md-6">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_valid_from', 'Date Valid From'); ?></div>
-						<?php echo functions::form_input_datetime('valid_from', true); ?>
+						<?php echo f::form_input_datetime('valid_from', true); ?>
 					</label>
 				</div>
 
 				<div class="col-md-6">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_valid_to', 'Date Valid To'); ?></div>
-						<?php echo functions::form_input_datetime('valid_to', true); ?>
+						<?php echo f::form_input_datetime('valid_to', true); ?>
 					</label>
 				</div>
 			</div>
 
 			<div class="card-action">
-				<?php echo functions::form_button_predefined('save'); ?>
-				<?php if (!empty($banner->data['id'])) echo functions::form_button_predefined('delete'); ?>
-				<?php echo functions::form_button_predefined('cancel'); ?>
+				<?php echo f::form_button_predefined('save'); ?>
+				<?php if (!empty($banner->data['id'])) echo f::form_button_predefined('delete'); ?>
+				<?php echo f::form_button_predefined('cancel'); ?>
 			</div>
 
-		<?php echo functions::form_end(); ?>
+		<?php echo f::form_end(); ?>
 	</div>
 </div>
 
@@ -198,11 +198,11 @@ table th:last-child {
 
 		let $output = $([
 			'<tr>',
-			'  <td><?php echo functions::form_input_text('keys[__index__]', '__index__', 'required pattern="[0-9A-Za-z_-]+" placeholder="keyname"'); ?></td>',
+			'  <td><?php echo f::form_input_text('keys[__index__]', '__index__', 'required pattern="[0-9A-Za-z_-]+" placeholder="keyname"'); ?></td>',
 			<?php foreach (language::$languages as $language) { ?>
-			'  <td><?php echo functions::form_input_text('values['. $language['code'] .'][__index__]', true); ?></td>',
+			'  <td><?php echo f::form_input_text('values['. $language['code'] .'][__index__]', true); ?></td>',
 			<?php } ?>
-			'  <td><a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(t('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('icon-times', 'style="color: #cc3333;"'); ?></a></td>',
+			'  <td><a class="btn btn-default btn-sm remove" href="#" title="<?php echo f::escape_html(t('title_remove', 'Remove')); ?>"><?php echo f::draw_fonticon('icon-times', 'style="color: #cc3333;"'); ?></a></td>',
 			'</tr>'
 		].join('\n')
 			.replace(/__index__/g, 'new_' + __index__)

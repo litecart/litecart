@@ -84,12 +84,12 @@
 			<?php foreach ($addons as $item) { ?>
 			<div class="addon">
 				<div class="title">
-					<a href="<?php echo functions::escape_attr($item['link']); ?>" target="_blank">
-						<?php echo functions::escape_html($item['title']); ?>
+					<a href="<?php echo f::escape_attr($item['link']); ?>" target="_blank">
+						<?php echo f::escape_html($item['title']); ?>
 					</a>
 				</div>
 				<div class="description">
-					<?php echo functions::escape_html($item['description']); ?>
+					<?php echo f::escape_html($item['description']); ?>
 				</div>
 			</div>
 			<?php } ?>

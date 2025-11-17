@@ -75,7 +75,7 @@
 
 				// Escape Special HTML Characters
 				if (in_array('escape', $modifiers)) {
-					$output = functions::escape_html($output);
+					$output = f::escape_html($output);
 				}
 
 				return $output;

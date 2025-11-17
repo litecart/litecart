@@ -31,7 +31,7 @@
 		public function load($id) {
 
 			if (!preg_match('#^(system|[0-9]+)$#', $id)) {
-				throw new Exception('Invalid stock transaction (ID: '. functions::escape_html($id) .')');
+				throw new Exception('Invalid stock transaction (ID: '. f::escape_html($id) .')');
 			}
 
 			$this->reset();

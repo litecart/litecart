@@ -172,7 +172,7 @@
 					if (empty(session::$data['skip_regional_settings_screen'])) {
 
 						if (!customer::check_login()) {
-							functions::draw_lightbox(document::ilink('regional_settings'));
+							f::draw_lightbox(document::ilink('regional_settings'));
 						}
 						session::$data['skip_regional_settings_screen'] = true;
 					}
@@ -378,7 +378,7 @@
 				'customer_phone' => isset($event['customer_phone']) ? $event['customer_phone'] : fallback(self::$data['phone'], null),
 				'type' => isset($event['type']) ? $event['type'] : 'unknown',
 				'description' => isset($event['description']) ? $event['description'] : null,
-				'data' => !empty($event['data']) ? functions::format_json($event['data']) : null,
+				'data' => !empty($event['data']) ? f::format_json($event['data']) : null,
 				'url' => isset($event['url']) ? $event['url'] : document::link(),
 				'ip_address' => isset($event['ip_address']) ? $event['ip_address'] : $_SERVER['REMOTE_ADDR'],
 				'hostname' => isset($event['hostname']) ? $event['hostname'] : gethostbyaddr(isset($event['ip_address']) ? $event['ip_address'] : $_SERVER['REMOTE_ADDR']),

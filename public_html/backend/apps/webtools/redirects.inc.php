@@ -74,16 +74,16 @@
 
 	<div class="card-action">
 		<ul class="list-inline pull-right">
-			<li><?php echo functions::form_button_link(document::ilink(__APP__.'/edit_redirect'), t('title_create_new_redirect', 'Create New Redirect'), '', 'create'); ?></li>
+			<li><?php echo f::form_button_link(document::ilink(__APP__.'/edit_redirect'), t('title_create_new_redirect', 'Create New Redirect'), '', 'create'); ?></li>
 		</ul>
 	</div>
 
-	<?php echo functions::form_begin('redirects_form', 'post'); ?>
+	<?php echo f::form_begin('redirects_form', 'post'); ?>
 
 		<table class="table data-table">
 			<thead>
 				<tr>
-					<th><?php echo functions::draw_fonticon('icon-square-check checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th><?php echo f::draw_fonticon('icon-square-check checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th></th>
 					<th><?php echo t('title_pattern', 'Pattern'); ?> (Regex)</th>
 					<th class="main"><?php echo t('title_destination', 'Destination'); ?></th>
@@ -96,13 +96,13 @@
 			<tbody>
 				<?php foreach ($redirects as $redirect) { ?>
 				<tr class="<?php echo empty($redirect['status']) ? 'semi-transparent' : null; ?>">
-					<td><?php echo functions::form_checkbox('redirects[]', $redirect['id']); ?></td>
-					<td><?php echo functions::draw_fonticon(!empty($redirect['status']) ? 'on' : 'off'); ?></td>
+					<td><?php echo f::form_checkbox('redirects[]', $redirect['id']); ?></td>
+					<td><?php echo f::draw_fonticon(!empty($redirect['status']) ? 'on' : 'off'); ?></td>
 					<td><a href="<?php echo document::href_ilink(__APP__.'/edit_redirect', ['redirect_id' => $redirect['id']]); ?>"><?php echo $redirect['pattern']; ?></a></td>
 					<td><?php echo $redirect['destination']; ?></td>
 					<td class="text-end"><?php echo $redirect['redirects']; ?></td>
-					<td class="text-end"><?php echo $redirect['last_redirected'] ? functions::datetime_when($redirect['last_redirected']) : '-'; ?></td>
-					<td class="text-end"><a href="<?php echo document::href_ilink(__APP__.'/edit_redirect', ['redirect_id' => $redirect['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+					<td class="text-end"><?php echo $redirect['last_redirected'] ? f::datetime_when($redirect['last_redirected']) : '-'; ?></td>
+					<td class="text-end"><a href="<?php echo document::href_ilink(__APP__.'/edit_redirect', ['redirect_id' => $redirect['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo f::draw_fonticon('edit'); ?></a></td>
 				</tr>
 				<?php } ?>
 			</tbody>
@@ -126,21 +126,21 @@
 				<div class="flex">
 
 					<div class="btn-group">
-						<?php echo functions::form_button('enable', t('title_enable', 'Enable'), 'submit', '', 'on'); ?>
-						<?php echo functions::form_button('disable', t('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+						<?php echo f::form_button('enable', t('title_enable', 'Enable'), 'submit', '', 'on'); ?>
+						<?php echo f::form_button('disable', t('title_disable', 'Disable'), 'submit', '', 'off'); ?>
 					</div>
 
-					<?php echo functions::form_button_predefined('delete'); ?>
+					<?php echo f::form_button_predefined('delete'); ?>
 
 				</div>
 			</fieldset>
 		</div>
 
-	<?php echo functions::form_end(); ?>
+	<?php echo f::form_end(); ?>
 
 	<?php if ($num_pages > 1) { ?>
 		<div class="card-footer">
-			<?php echo functions::draw_pagination($num_pages); ?>
+			<?php echo f::draw_pagination($num_pages); ?>
 		</div>
 	<?php } ?>
 </div>

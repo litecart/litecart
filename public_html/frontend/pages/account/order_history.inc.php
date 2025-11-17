@@ -54,11 +54,11 @@
 			'printable_link' => document::ilink('printable_order_copy', ['order_id' => $order['id'], 'public_key' => $order['public_key']]),
 			'order_status' => $order['order_status_name'],
 			'num_downloads' => $num_downloads,
-			'created_at' => functions::datetime_when($order['created_at']),
+			'created_at' => f::datetime_when($order['created_at']),
 			'total' => currency::format($order['total'], false, $order['currency_code'], $order['currency_value']),
 		];
 	}
 
-	$_page->snippets['pagination'] = functions::draw_pagination($num_pages);
+	$_page->snippets['pagination'] = f::draw_pagination($num_pages);
 
 	echo $_page->render();

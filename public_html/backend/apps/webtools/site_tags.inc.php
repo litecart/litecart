@@ -48,16 +48,16 @@
 
 	<div class="card-action">
 		<ul class="list-inline">
-			<li><?php echo functions::form_button_link(document::ilink(__APP__.'/edit_site_tag'), t('title_create_new_site_tag', 'Create New Site Tag'), '', 'create'); ?></li>
+			<li><?php echo f::form_button_link(document::ilink(__APP__.'/edit_site_tag'), t('title_create_new_site_tag', 'Create New Site Tag'), '', 'create'); ?></li>
 		</ul>
 	</div>
 
-	<?php echo functions::form_begin('site_tags_form', 'post'); ?>
+	<?php echo f::form_begin('site_tags_form', 'post'); ?>
 
 		<table class="table data-table">
 			<thead>
 				<tr>
-					<th><?php echo functions::draw_fonticon('icon-square-check checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th><?php echo f::draw_fonticon('icon-square-check checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th></th>
 					<th class="main"><?php echo t('title_name', 'Name'); ?></th>
 					<th><?php echo t('title_require_consent', 'Require Consent'); ?></th>
@@ -70,13 +70,13 @@
 			<tbody>
 				<?php foreach ($site_tags as $site_tag) { ?>
 				<tr class="<?php echo empty($site_tag['status']) ? 'semi-transparent' : null; ?>">
-					<td><?php echo functions::form_checkbox('site_tags[]', $site_tag['id']); ?></td>
-					<td><?php echo functions::draw_fonticon(!empty($site_tag['status']) ? 'on' : 'off'); ?></td>
+					<td><?php echo f::form_checkbox('site_tags[]', $site_tag['id']); ?></td>
+					<td><?php echo f::draw_fonticon(!empty($site_tag['status']) ? 'on' : 'off'); ?></td>
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_site_tag', ['site_tag_id' => $site_tag['id']]); ?>"><?php echo $site_tag['name']; ?></a></td>
-					<td class="text-center"><?php echo $site_tag['require_consent'] ? functions::draw_fonticon('icon-check') : ''; ?></td>
+					<td class="text-center"><?php echo $site_tag['require_consent'] ? f::draw_fonticon('icon-check') : ''; ?></td>
 					<td class="text-center"><?php echo $site_tag['position']; ?></td>
 					<td class="text-center"><?php echo (int)$site_tag['priority']; ?></td>
-					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_site_tag', ['site_tag_id' => $site_tag['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_site_tag', ['site_tag_id' => $site_tag['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo f::draw_fonticon('edit'); ?></a></td>
 				</tr>
 				<?php }?>
 			</tbody>
@@ -98,17 +98,17 @@
 				</legend>
 
 				<div class="btn-group">
-					<?php echo functions::form_button('enable', t('title_enable', 'Enable'), 'submit', '', 'on'); ?>
-					<?php echo functions::form_button('disable', t('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+					<?php echo f::form_button('enable', t('title_enable', 'Enable'), 'submit', '', 'on'); ?>
+					<?php echo f::form_button('disable', t('title_disable', 'Disable'), 'submit', '', 'off'); ?>
 				</div>
 			</fieldset>
 		</div>
 
-	<?php echo functions::form_end(); ?>
+	<?php echo f::form_end(); ?>
 
 	<?php if ($num_pages > 1) { ?>
 	<div class="card-footer">
-		<?php echo functions::draw_pagination($num_pages); ?>
+		<?php echo f::draw_pagination($num_pages); ?>
 	</div>
 	<?php } ?>
 </div>

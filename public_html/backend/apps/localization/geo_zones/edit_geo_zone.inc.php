@@ -69,28 +69,28 @@
 		</div>
 	</div>
 
-	<?php echo functions::form_begin('form_geo_zone', 'post'); ?>
+	<?php echo f::form_begin('form_geo_zone', 'post'); ?>
 		<div class="card-body">
 
 			<div class="grid" style="max-width: 720px;">
 				<div class="col-md-6">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_code', 'Code'); ?></div>
-						<?php echo functions::form_input_text('code', true); ?>
+						<?php echo f::form_input_text('code', true); ?>
 					</label>
 				</div>
 
 				<div class="col-md-6">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
-						<?php echo functions::form_input_text('name', true); ?>
+						<?php echo f::form_input_text('name', true); ?>
 					</label>
 				</div>
 
 				<div class="col-md-12">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_description', 'Description'); ?></div>
-						<?php echo functions::form_input_text('description', true); ?>
+						<?php echo f::form_input_text('description', true); ?>
 					</label>
 				</div>
 			</div>
@@ -112,13 +112,13 @@
 			<tbody>
 				<?php if (!empty($_POST['zones'])) foreach (array_keys($_POST['zones']) as $key) { ?>
 				<tr>
-					<td><?php echo functions::form_input_hidden('zones['. $key .'][id]', true); ?><?php echo $_POST['zones'][$key]['id']; ?></td>
-					<td><?php echo functions::form_input_hidden('zones['. $key .'][country_code]', true); ?> <?php echo reference::country($_POST['zones'][$key]['country_code'])->name; ?></td>
-					<td><?php echo functions::form_input_hidden('zones['. $key .'][zone_code]', true); ?> <?php echo !empty($_POST['zones'][$key]['zone_code']) ? reference::country($_POST['zones'][$key]['country_code'])->zones[$_POST['zones'][$key]['zone_code']]['name'] : '-- '.t('title_all_zones', 'All Zones') .' --'; ?></td>
-					<td><?php echo functions::form_input_hidden('zones['. $key .'][city]', true); ?> <?php echo fallback($_POST['zones'][$key]['city'], '-- '.t('title_all_cities'), 'All Cities') .' --'; ?></td>
+					<td><?php echo f::form_input_hidden('zones['. $key .'][id]', true); ?><?php echo $_POST['zones'][$key]['id']; ?></td>
+					<td><?php echo f::form_input_hidden('zones['. $key .'][country_code]', true); ?> <?php echo reference::country($_POST['zones'][$key]['country_code'])->name; ?></td>
+					<td><?php echo f::form_input_hidden('zones['. $key .'][zone_code]', true); ?> <?php echo !empty($_POST['zones'][$key]['zone_code']) ? reference::country($_POST['zones'][$key]['country_code'])->zones[$_POST['zones'][$key]['zone_code']]['name'] : '-- '.t('title_all_zones', 'All Zones') .' --'; ?></td>
+					<td><?php echo f::form_input_hidden('zones['. $key .'][city]', true); ?> <?php echo fallback($_POST['zones'][$key]['city'], '-- '.t('title_all_cities'), 'All Cities') .' --'; ?></td>
 					<td class="text-end">
 						<a class="remove btn btn-default btn-sm" href="#" title="<?php echo t('title_remove', 'Remove'); ?>">
-							<?php echo functions::draw_fonticon('icon-times', 'style="color: #cc3333;"'); ?>
+							<?php echo f::draw_fonticon('icon-times', 'style="color: #cc3333;"'); ?>
 						</a>
 					</td>
 				</tr>
@@ -127,27 +127,27 @@
 
 			<tfoot>
 				<tr>
-					<td><?php echo functions::form_input_hidden('new_zone[id]', ''); ?></td>
-					<td><?php echo functions::form_select_country('new_zone[country_code]', ''); ?></td>
-					<td><?php echo functions::form_select_zone('', 'new_zone[zone_code]', '', '', 'all'); ?></td>
-					<td><?php echo functions::form_input_text('new_zone[city]', '', 'placeholder="-- '. t('text_all_cities', 'All cities') .' --"'); ?></td>
-					<td><?php echo functions::form_button('add', ['', t('title_add', 'Add')], 'button'); ?></td>
+					<td><?php echo f::form_input_hidden('new_zone[id]', ''); ?></td>
+					<td><?php echo f::form_select_country('new_zone[country_code]', ''); ?></td>
+					<td><?php echo f::form_select_zone('', 'new_zone[zone_code]', '', '', 'all'); ?></td>
+					<td><?php echo f::form_input_text('new_zone[city]', '', 'placeholder="-- '. t('text_all_cities', 'All cities') .' --"'); ?></td>
+					<td><?php echo f::form_button('add', ['', t('title_add', 'Add')], 'button'); ?></td>
 				</tr>
 			</tfoot>
 		</table>
 
 		<div class="card-action">
-			<?php echo functions::form_button_predefined('save'); ?>
-			<?php if (!empty($geo_zone->data['id'])) echo functions::form_button_predefined('delete'); ?>
-			<?php echo functions::form_button_predefined('cancel'); ?>
+			<?php echo f::form_button_predefined('save'); ?>
+			<?php if (!empty($geo_zone->data['id'])) echo f::form_button_predefined('delete'); ?>
+			<?php echo f::form_button_predefined('cancel'); ?>
 		</div>
 
-	<?php echo functions::form_end(); ?>
+	<?php echo f::form_end(); ?>
 </div>
 
 <script>
 	$('select[name$="new_zone[zone_code]"][disabled]').each(function() {
-		$(this).html('<option value="">-- <?php echo functions::escape_js(t('title_all_zones', 'All Zones')); ?> --</option>');
+		$(this).html('<option value="">-- <?php echo f::escape_js(t('title_all_zones', 'All Zones')); ?> --</option>');
 	});
 
 	$('select[name="new_zone[country_code]"]').on('change', function() {
@@ -162,13 +162,13 @@
 			success: function(data) {
 				$(zone_field).html('');
 				if (data) {
-					$(zone_field).append('<option value="">-- <?php echo functions::escape_js(t('title_all_zones', 'All Zones')); ?> --</option>');
+					$(zone_field).append('<option value="">-- <?php echo f::escape_js(t('title_all_zones', 'All Zones')); ?> --</option>');
 					$.each(data, function(i, zone) {
 						$(zone_field).append('<option value="'+ zone.code +'">'+ zone.name +'</option>');
 					});
 					$(zone_field).prop('disabled', false);
 				} else {
-					$(zone_field).append('<option value="">-- <?php echo functions::escape_js(t('title_all_zones', 'All Zones')); ?> --</option>');
+					$(zone_field).append('<option value="">-- <?php echo f::escape_js(t('title_all_zones', 'All Zones')); ?> --</option>');
 					$(zone_field).prop('disabled', true);
 				}
 			}
@@ -180,7 +180,7 @@
 		e.preventDefault();
 
 		if ($('select[name="new_zone[country_code]"]').val() == '') {
-			alert('<?php echo functions::escape_js(t('error_must_select_country', 'You must select a country')); ?>');
+			alert('<?php echo f::escape_js(t('error_must_select_country', 'You must select a country')); ?>');
 			return;
 		}
 
@@ -197,7 +197,7 @@
 		});
 
 		if (found) {
-			alert('<?php echo functions::escape_js(t('error_zone_already_exists', 'This zone already exists in the list'), true); ?>');
+			alert('<?php echo f::escape_js(t('error_zone_already_exists', 'This zone already exists in the list'), true); ?>');
 			return;
 		}
 
@@ -217,13 +217,13 @@
 
 		let $output = $([
 			'<tr>',
-			'  <td><?php echo functions::escape_js(functions::form_input_hidden('zones[__index__][id]', '')); ?></td>',
-			'  <td><?php echo functions::escape_js(functions::form_input_hidden('zones[__index__][country_code]', '')); ?>' + $('select[name="new_zone[country_code]"] option:selected').text() + '</td>',
-			'  <td><?php echo functions::escape_js(functions::form_input_hidden('zones[__index__][zone_code]', '')); ?>' + zone_name + '</td>',
-			'  <td><?php echo functions::escape_js(functions::form_input_hidden('zones[__index__][city]', '')); ?>' + city_name + '</td>',
+			'  <td><?php echo f::escape_js(f::form_input_hidden('zones[__index__][id]', '')); ?></td>',
+			'  <td><?php echo f::escape_js(f::form_input_hidden('zones[__index__][country_code]', '')); ?>' + $('select[name="new_zone[country_code]"] option:selected').text() + '</td>',
+			'  <td><?php echo f::escape_js(f::form_input_hidden('zones[__index__][zone_code]', '')); ?>' + zone_name + '</td>',
+			'  <td><?php echo f::escape_js(f::form_input_hidden('zones[__index__][city]', '')); ?>' + city_name + '</td>',
 			'  <td class="text-end">',
-			'		<a class="remove btn btn-default btn-sm" href="#" title="<?php echo functions::escape_js(t('title_remove', 'Remove'), true); ?>">',
-			'			<?php echo functions::escape_js(functions::draw_fonticon('icon-times', 'style="color: #cc3333;"')); ?>',
+			'		<a class="remove btn btn-default btn-sm" href="#" title="<?php echo f::escape_js(t('title_remove', 'Remove'), true); ?>">',
+			'			<?php echo f::escape_js(f::draw_fonticon('icon-times', 'style="color: #cc3333;"')); ?>',
 			'		</a>',
 			'	</td>',
 			'</tr>'

@@ -65,7 +65,7 @@
 				$this->data[$column] += array_fill_keys(array_keys(language::$languages), '');
 			}
 
-			$this->data['privacy_classes'] = functions::string_split($this->data['privacy_classes']);
+			$this->data['privacy_classes'] = f::string_split($this->data['privacy_classes']);
 
 			$this->previous = $this->data;
 		}
@@ -88,9 +88,9 @@
 				set status = ". (int)$this->data['status'] .",
 					privacy_classes = '". implode(',', database::input($this->data['privacy_classes'])) ."',
 					name = '". database::input($this->data['name']) ."',
-					description = '". database::input(functions::format_json($this->data['description'])) ."',
-					collected_data = '". database::input(functions::format_json($this->data['collected_data'])) ."',
-					purposes = '". database::input(functions::format_json($this->data['purposes'])) ."',
+					description = '". database::input(f::format_json($this->data['description'])) ."',
+					collected_data = '". database::input(f::format_json($this->data['collected_data'])) ."',
+					purposes = '". database::input(f::format_json($this->data['purposes'])) ."',
 					country_code = '". database::input($this->data['country_code']) ."',
 					homepage = '". database::input($this->data['homepage']) ."',
 					cookie_policy_url = '". database::input($this->data['cookie_policy_url']) ."',

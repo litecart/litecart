@@ -17,7 +17,7 @@
 
 				$category = reference::category($link->query['category_id'], $language_code);
 				foreach ($category->path as $parent_id => $parent) {
-					$link->path .= '/'. functions::format_path_friendly($parent->name, $language_code);
+					$link->path .= '/'. f::format_path_friendly($parent->name, $language_code);
 				}
 
 				$link->unset_query('category_id');

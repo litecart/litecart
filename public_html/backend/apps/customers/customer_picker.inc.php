@@ -17,7 +17,7 @@
 
 	<div class="modal-body">
 		<label class="form-group">
-			<div class="form-label"><?php echo functions::form_input_search('query', true, 'placeholder="'. functions::escape_attr(t('title_search', 'Search')) .'" autocomplete="off"'); ?></div>
+			<div class="form-label"><?php echo f::form_input_search('query', true, 'placeholder="'. f::escape_attr(t('title_search', 'Search')) .'" autocomplete="off"'); ?></div>
 		</label>
 
 		<div class="form-group results table-responsive">
@@ -88,7 +88,7 @@
 					$('#modal-customer-picker .results tbody').html([
 						'<tr>',
 						'	<td colspan="99">',
-						'		<em><?php echo functions::escape_js(t('text_no_results', 'No results')); ?></em>',
+						'		<em><?php echo f::escape_js(t('text_no_results', 'No results')); ?></em>',
 						'	</td>',
 						'</tr>'
 					].join('\n'));
@@ -107,7 +107,7 @@
 		if (!customer.id) {
 			customer = {
 				id: 0,
-				name: '(<?php echo functions::escape_js(t('title_guest', 'Guest')); ?>)',
+				name: '(<?php echo f::escape_js(t('title_guest', 'Guest')); ?>)',
 			};
 		}
 
@@ -134,7 +134,7 @@
 
 		$(field).find(':input').val('0').trigger('change');
 		$(field).find('.id').text('0');
-		$(field).find('.name').text('(<?php echo functions::escape_js(t('title_guest', 'Guest')); ?>)');
+		$(field).find('.name').text('(<?php echo f::escape_js(t('title_guest', 'Guest')); ?>)');
 		$.litebox.close();
 	});
 </script>

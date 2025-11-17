@@ -30,7 +30,7 @@
 
 		// Create a new entity
 		$supplier = new ent_supplier();
-		$supplier->data = functions::array_update($supplier->data, $data);
+		$supplier->data = f::array_update($supplier->data, $data);
 		$supplier->save();
 
 		// Check if the entity was created
@@ -51,7 +51,7 @@
 		}
 
 		// Check if data was set correctly
-		if (!functions::array_intersect_compare($data, $supplier->data)) {
+		if (!f::array_intersect_compare($data, $supplier->data)) {
 			throw new Exception('The supplier data was not stored correctly');
 		}
 
@@ -80,7 +80,7 @@
 		$supplier->save();
 
 		// Check if data was set correctly
-		if (!functions::array_intersect_compare($data, $supplier->data)) {
+		if (!f::array_intersect_compare($data, $supplier->data)) {
 			throw new Exception('The supplier data was not updated correctly');
 		}
 

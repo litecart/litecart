@@ -26,15 +26,15 @@
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_quantity_unit'), t('title_create_new_unit', 'Create New Unit'), '', 'create'); ?>
+		<?php echo f::form_button_link(document::ilink(__APP__.'/edit_quantity_unit'), t('title_create_new_unit', 'Create New Unit'), '', 'create'); ?>
 	</div>
 
-	<?php echo functions::form_begin('quantity_units_form', 'post'); ?>
+	<?php echo f::form_begin('quantity_units_form', 'post'); ?>
 
 		<table class="table data-table">
 			<thead>
 				<tr>
-					<th><?php echo functions::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th><?php echo f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th><?php echo t('title_id', 'ID'); ?></th>
 					<th><?php echo t('title_name', 'Name'); ?></th>
 					<th class="main"><?php echo t('title_description', 'Description'); ?></th>
@@ -45,11 +45,11 @@
 			<tbody>
 				<?php foreach ($quantity_units as $quantity_unit) { ?>
 				<tr>
-					<td><?php echo functions::form_checkbox('quantity_units[]', $quantity_unit['id']); ?></td>
+					<td><?php echo f::form_checkbox('quantity_units[]', $quantity_unit['id']); ?></td>
 					<td><?php echo $quantity_unit['id']; ?></td>
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_quantity_unit', ['quantity_unit_id' => $quantity_unit['id']]); ?>"><?php echo $quantity_unit['name']; ?></a></td>
 					<td><?php echo $quantity_unit['description']; ?></td>
-					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_quantity_unit', ['quantity_unit_id' => $quantity_unit['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_quantity_unit', ['quantity_unit_id' => $quantity_unit['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo f::draw_fonticon('edit'); ?></a></td>
 				</tr>
 				<?php } ?>
 			</tbody>
@@ -63,11 +63,11 @@
 			</tfoot>
 		</table>
 
-	<?php echo functions::form_end(); ?>
+	<?php echo f::form_end(); ?>
 
 	<?php if ($num_pages > 1) { ?>
 	<div class="card-footer">
-		<?php echo functions::draw_pagination($num_pages); ?>
+		<?php echo f::draw_pagination($num_pages); ?>
 	</div>
 	<?php } ?>
 </div>

@@ -14,7 +14,7 @@
 			if (!$this->settings['status']) return;
 
 			if ($last_run && !$force) {
-				if (strtotime($last_run) > functions::datetime_last_by_interval('Hourly', $last_run)) return;
+				if (strtotime($last_run) > f::datetime_last_by_interval('Hourly', $last_run)) return;
 			}
 
 			// Expired Event Logs
@@ -48,7 +48,7 @@
 
 			clearstatcache();
 
-			foreach (functions::file_search(FS_DIR_STORAGE .'logs/**/*.log') as $file) {
+			foreach (f::file_search(FS_DIR_STORAGE .'logs/**/*.log') as $file) {
 
 				if (filemtime($file) > $max_age) continue;
 
@@ -65,9 +65,9 @@
 
 			clearstatcache();
 
-			foreach (functions::file_search(FS_DIR_STORAGE .'cache/*', GLOB_ONLYDIR) as $dir) {
+			foreach (f::file_search(FS_DIR_STORAGE .'cache/*', GLOB_ONLYDIR) as $dir) {
 
-				foreach (functions::file_search($dir.'/*.cache') as $file) {
+				foreach (f::file_search($dir.'/*.cache') as $file) {
 
 					if (!is_file($file)) continue;
 					if (filemtime($file) > $max_age) continue;

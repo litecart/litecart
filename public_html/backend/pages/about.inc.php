@@ -434,7 +434,7 @@
 			</div>
 
 			<div class="card-action">
-				<?php echo functions::form_input_search('filter', true, 'placeholder="'. t('title_filter', 'Filter') .'"'); ?>
+				<?php echo f::form_input_search('filter', true, 'placeholder="'. t('title_filter', 'Filter') .'"'); ?>
 			</div>
 
 			<table id="php-config" class="table data-table">
@@ -448,8 +448,8 @@
 				<tbody>
 					<?php foreach ($php['ini'] as $key => $value) { ?>
 					<tr>
-						<td><tt><?php echo functions::escape_html($key); ?></tt></td>
-						<td><?php echo functions::escape_html($value); ?></td>
+						<td><tt><?php echo f::escape_html($key); ?></tt></td>
+						<td><?php echo f::escape_html($value); ?></td>
 					</tr>
 					<?php } ?>
 				</tbody>
@@ -465,12 +465,12 @@
 				</div>
 			</div>
 
-			<?php echo functions::form_begin('errors_form', 'post'); ?>
+			<?php echo f::form_begin('errors_form', 'post'); ?>
 
 			<table class="table data-table">
 				<thead>
 					<tr>
-						<th><?php echo functions::draw_fonticon('icon-square-check checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
+						<th><?php echo f::draw_fonticon('icon-square-check checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
 						<th class="main"><?php echo t('title_error', 'Error'); ?></th>
 						<th><?php echo t('title_occurrences', 'Occurrences'); ?></th>
 						<th><?php echo t('title_last_occurrence', 'Last Occurrence'); ?></th>
@@ -480,13 +480,13 @@
 				<tbody>
 					<?php foreach ($errors as $error) { ?>
 					<tr<?php echo $error['critical'] ? ' class="critical"' : ''; ?>>
-						<td><?php echo functions::form_checkbox('errors[]', $error['error']); ?></td>
+						<td><?php echo f::form_checkbox('errors[]', $error['error']); ?></td>
 						<td style="white-space: normal;">
-							<?php echo functions::escape_html($error['error']); ?><br>
-							<div class="backtrace"><?php echo functions::escape_html($error['backtrace']); ?></div>
+							<?php echo f::escape_html($error['error']); ?><br>
+							<div class="backtrace"><?php echo f::escape_html($error['backtrace']); ?></div>
 						</td>
 						<td class="text-center"><?php echo $error['occurrences']; ?></td>
-						<td><?php echo functions::datetime_when($error['last_occurrence']); ?></td>
+						<td><?php echo f::datetime_when($error['last_occurrence']); ?></td>
 					</tr>
 					<?php } ?>
 				</tbody>
@@ -495,17 +495,17 @@
 			<div class="card-body">
 				<fieldset id="actions">
 					<legend><?php echo t('title_with_selected', 'With Selected'); ?></legend>
-					<?php echo functions::form_button_predefined('delete'); ?>
+					<?php echo f::form_button_predefined('delete'); ?>
 				</fieldset>
 			</div>
 
 			<?php if ($num_pages > 1) { ?>
 			<div class="card-body">
-				<?php echo functions::draw_pagination($num_pages); ?>
+				<?php echo f::draw_pagination($num_pages); ?>
 			</div>
 			<?php } ?>
 
-			<?php echo functions::form_end(); ?>
+			<?php echo f::form_end(); ?>
 		</div>
 	</div>
 </div>

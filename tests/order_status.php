@@ -24,7 +24,7 @@
 
 		// Create a new entity
 		$order_status = new ent_order_status();
-		$order_status->data = functions::array_update($order_status->data, $data);
+		$order_status->data = f::array_update($order_status->data, $data);
 		$order_status->save();
 
 		// Check if the entity was created
@@ -45,7 +45,7 @@
 		}
 
 		// Check if data was set correctly
-		if (!functions::array_intersect_compare($data, $order_status->data)) {
+		if (!f::array_intersect_compare($data, $order_status->data)) {
 			throw new Exception('The order status data was not stored correctly');
 		}
 
@@ -60,13 +60,13 @@
 		];
 
 		// Update some data
-		$order_status->data = functions::array_update($order_status->data, $data);
+		$order_status->data = f::array_update($order_status->data, $data);
 
 		// Save changes to database
 		$order_status->save();
 
 		// Check if data was set correctly
-		if (!functions::array_intersect_compare($data, $order_status->data)) {
+		if (!f::array_intersect_compare($data, $order_status->data)) {
 			throw new Exception('The order status data was not updated correctly');
 		}
 

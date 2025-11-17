@@ -18,7 +18,7 @@
 
 				if (empty($page)) return false;
 
-				$link->path = functions::format_path_friendly($page->title, $language_code) .'-i-'. $page->id;
+				$link->path = f::format_path_friendly($page->title, $language_code) .'-i-'. $page->id;
 				$link->unset_query('page_id');
 
 				return $link;

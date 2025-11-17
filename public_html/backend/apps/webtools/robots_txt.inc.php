@@ -38,7 +38,7 @@
 
 	<div class="card-body">
 
-		<?php echo functions::form_begin('file_form', 'post'); ?>
+		<?php echo f::form_begin('file_form', 'post'); ?>
 
 			<label class="form-group" style="max-width: 800px;">
 				<div class="form-label"><?php echo t('title_file', 'File'); ?></div>
@@ -47,14 +47,14 @@
 
 			<label class="form-group">
 				<div class="form-label"><?php echo t('title_content', 'Content'); ?></div>
-				<?php echo functions::form_input_code('content', true); ?>
+				<?php echo f::form_input_code('content', true); ?>
 			</label>
 
 			<div class="card-action">
-				<?php echo functions::form_button_predefined('save'); ?>
-				<?php echo functions::form_button_predefined('cancel'); ?>
+				<?php echo f::form_button_predefined('save'); ?>
+				<?php echo f::form_button_predefined('cancel'); ?>
 			</div>
 
-		<?php echo functions::form_end(); ?>
+		<?php echo f::form_end(); ?>
 	</div>
 </div>

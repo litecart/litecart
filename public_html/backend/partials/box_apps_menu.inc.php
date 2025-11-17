@@ -30,7 +30,7 @@
 		],
 	];
 
-	$apps = functions::admin_get_apps();
+	$apps = f::admin_get_apps();
 
 	foreach ($apps as $app) {
 

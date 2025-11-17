@@ -24,7 +24,7 @@
 
 		// Create a new entity
 		$site_tag = new ent_site_tag();
-		$site_tag->data = functions::array_update($site_tag->data, $data);
+		$site_tag->data = f::array_update($site_tag->data, $data);
 		$site_tag->save();
 
 		// Check if the entity was created
@@ -45,7 +45,7 @@
 		}
 
 		// Check if data was set correctly
-		if (!functions::array_intersect_compare($data, $site_tag->data)) {
+		if (!f::array_intersect_compare($data, $site_tag->data)) {
 			throw new Exception('The site tag data was not stored correctly');
 		}
 
@@ -60,13 +60,13 @@
 		];
 
 		// Update some data
-		$site_tag->data = functions::array_update($site_tag->data, $data);
+		$site_tag->data = f::array_update($site_tag->data, $data);
 
 		// Save changes to database
 		$site_tag->save();
 
 		// Check if data was set correctly
-		if (!functions::array_intersect_compare($data, $site_tag->data)) {
+		if (!f::array_intersect_compare($data, $site_tag->data)) {
 			throw new Exception('The site tag data was not updated correctly');
 		}
 

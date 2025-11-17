@@ -26,7 +26,7 @@
 
 		// Create a new entity
 		$stock_transaction = new ent_stock_transaction();
-		$stock_transaction->data = functions::array_update($stock_transaction->data, $data);
+		$stock_transaction->data = f::array_update($stock_transaction->data, $data);
 		$stock_transaction->save();
 
 		// Check if the entity was created
@@ -47,7 +47,7 @@
 		}
 
 		// Check if data was set correctly
-		if (!functions::array_intersect_compare($data, $stock_transaction->data)) {
+		if (!f::array_intersect_compare($data, $stock_transaction->data)) {
 			throw new Exception('The stock transaction data was not stored correctly');
 		}
 
@@ -70,7 +70,7 @@
 		$stock_transaction->save();
 
 		// Check if data was set correctly
-		if (!functions::array_intersect_compare($data, $stock_transaction->data)) {
+		if (!f::array_intersect_compare($data, $stock_transaction->data)) {
 			throw new Exception('The stock transaction data was not updated correctly');
 		}
 

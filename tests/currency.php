@@ -29,7 +29,7 @@
 
 		// Create a new entity
 		$currency = new ent_currency();
-		$currency->data = functions::array_update($currency->data, $data);
+		$currency->data = f::array_update($currency->data, $data);
 		$currency->save();
 
 		// Check if the entity was created
@@ -45,7 +45,7 @@
 		$currency = new ent_currency($currency_id);
 
 		// Check if data was set correctly
-		if (!functions::array_intersect_compare($data, $currency->data)) {
+		if (!f::array_intersect_compare($data, $currency->data)) {
 			throw new Exception('The currency data was not stored correctly');
 		}
 
@@ -65,13 +65,13 @@
 		];
 
 		// Update some data
-		$currency->data = functions::array_update($currency->data, $data);
+		$currency->data = f::array_update($currency->data, $data);
 
 		// Save changes to database
 		$currency->save();
 
 		// Check if data was set correctly
-		if (!functions::array_intersect_compare($data, $currency->data)) {
+		if (!f::array_intersect_compare($data, $currency->data)) {
 			throw new Exception('The currency data was not updated correctly');
 		}
 

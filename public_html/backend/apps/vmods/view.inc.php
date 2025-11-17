@@ -89,7 +89,7 @@ pre {
 					<?php if (!empty($operation->find->attributes()['offset-before'])) echo ' (Offset Before: '. $operation->find->attributes()['offset-before'] .')'; ?>
 					<?php if (!empty($operation->find->attributes()['offset-after'])) echo ' (Offset After: '. $operation->find->attributes()['offset-after'] .')'; ?>
 
-						<pre><code><?php echo functions::escape_html($operation->find); ?></code></pre>
+						<pre><code><?php echo f::escape_html($operation->find); ?></code></pre>
 					</div>
 
 					<div class="insert">
@@ -111,7 +111,7 @@ pre {
 			break;
 	}
 ?>
-						<pre><code><?php echo functions::escape_html($operation->insert); ?></code></pre>
+						<pre><code><?php echo f::escape_html($operation->insert); ?></code></pre>
 					</div>
 				</div>
 				<?php } ?>

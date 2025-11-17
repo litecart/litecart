@@ -100,27 +100,27 @@
 	</div>
 
 	<div class="card-body">
-		<?php echo functions::form_begin('third_party_form', 'post', false, false, 'autocomplete="off" style="max-width: 720px;"'); ?>
+		<?php echo f::form_begin('third_party_form', 'post', false, false, 'autocomplete="off" style="max-width: 720px;"'); ?>
 
 			<div class="grid">
 				<div class="col-md-6">
 					<div class="form-group">
 						<div class="form-label"><?php echo t('title_status', 'Status'); ?></div>
-						<?php echo functions::form_toggle('status', 'e/d', true); ?>
+						<?php echo f::form_toggle('status', 'e/d', true); ?>
 					</div>
 				</div>
 
 				<div class="col-md-6">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
-						<?php echo functions::form_input_text('name', true, 'required'); ?>
+						<?php echo f::form_input_text('name', true, 'required'); ?>
 					</label>
 				</div>
 			</div>
 
 			<label class="form-group">
 				<div class="form-label"><?php echo t('title_privacy_classes', 'Privacy Classes'); ?></div>
-				<?php echo functions::form_select('privacy_classes[]', $privacy_classes_options, true); ?>
+				<?php echo f::form_select('privacy_classes[]', $privacy_classes_options, true); ?>
 			</label>
 
 			<nav class="tabs">
@@ -136,17 +136,17 @@
 
 					<div class="form-group">
 						<div class="form-label"><?php echo t('title_description', 'Description'); ?></div>
-						<?php echo functions::form_regional_wysiwyg('description['. $language_code .']', $language_code, true); ?>
+						<?php echo f::form_regional_wysiwyg('description['. $language_code .']', $language_code, true); ?>
 					</div>
 
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_collected_data', 'Collected Data'); ?></div>
-						<?php echo functions::form_regional_textarea('collected_data['. $language_code .']', $language_code, true); ?>
+						<?php echo f::form_regional_textarea('collected_data['. $language_code .']', $language_code, true); ?>
 					</label>
 
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_purposes', 'Purposes'); ?></div>
-						<?php echo functions::form_regional_textarea('purposes['. $language_code .']', $language_code, true); ?>
+						<?php echo f::form_regional_textarea('purposes['. $language_code .']', $language_code, true); ?>
 					</label>
 
 				</div>
@@ -157,49 +157,49 @@
 				<div class="col-md-6">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_country_of_juristiction', 'Country of Juristiction'); ?></div>
-						<?php echo functions::form_select_country('country_code', true); ?>
+						<?php echo f::form_select_country('country_code', true); ?>
 					</label>
 				</div>
 
 				<div class="col-md-6">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_homepage', 'Homepage'); ?></div>
-						<?php echo functions::form_input_url('homepage', true, 'placeholder="https://..."'); ?>
+						<?php echo f::form_input_url('homepage', true, 'placeholder="https://..."'); ?>
 					</label>
 				</div>
 			</div>
 
 			<label class="form-group">
 				<div class="form-label"><?php echo t('title_third_policy', 'Cookie Policy'); ?></div>
-				<?php echo functions::form_input_url('cookie_policy_url', true, 'placeholder="https://..."'); ?>
+				<?php echo f::form_input_url('cookie_policy_url', true, 'placeholder="https://..."'); ?>
 			</label>
 
 			<label class="form-group">
 				<div class="form-label"><?php echo t('title_privacy_policy', 'Privacy Policy'); ?></div>
-				<?php echo functions::form_input_url('privacy_policy_url', true, 'placeholder="https://..."'); ?>
+				<?php echo f::form_input_url('privacy_policy_url', true, 'placeholder="https://..."'); ?>
 			</label>
 
 			<label class="form-group">
 				<div class="form-label"><?php echo t('title_opt_out', 'Opt Out'); ?></div>
-				<?php echo functions::form_input_url('opt_out_url', true, 'placeholder="https://..."'); ?>
+				<?php echo f::form_input_url('opt_out_url', true, 'placeholder="https://..."'); ?>
 			</label>
 
 			<label class="form-group">
 				<div class="form-label"><?php echo t('title_do_not_sell', 'Do Not Sell'); ?></div>
-				<?php echo functions::form_input_url('do_not_sell_url', true, 'placeholder="https://..."'); ?>
+				<?php echo f::form_input_url('do_not_sell_url', true, 'placeholder="https://..."'); ?>
 			</label>
 
 			<div class="card-action">
-				<?php echo functions::form_button_predefined('save'); ?>
-				<?php echo (!empty($third_party->data['id'])) ? functions::form_button_predefined('delete') : ''; ?>
-				<?php echo functions::form_button_predefined('cancel'); ?>
+				<?php echo f::form_button_predefined('save'); ?>
+				<?php echo (!empty($third_party->data['id'])) ? f::form_button_predefined('delete') : ''; ?>
+				<?php echo f::form_button_predefined('cancel'); ?>
 			</div>
 
-		<?php echo functions::form_end(); ?>
+		<?php echo f::form_end(); ?>
 
 		<?php if (!empty($third_party->data['id'])) { ?>
 		<div class="form-code" style="min-height: unset;">
-		<?php echo functions::escape_html(implode(PHP_EOL, [
+		<?php echo f::escape_html(implode(PHP_EOL, [
 			'<script type="application/x-privacy-script" data-privacy-class="..." data-third-party-id="'. $third_party->data['id'] .'">',
 			'  ...',
 			'</script>',
@@ -207,7 +207,7 @@
 		</div>
 
 		<div class="form-code" style="min-height: unset;">
-		<?php echo functions::escape_html(implode(PHP_EOL, [
+		<?php echo f::escape_html(implode(PHP_EOL, [
 			'<script type="application/x-privacy-content" data-privacy-class="functional|personalization|security|measurement|marketing" data-third-party-id="'. $third_party->data['id'] .'">',
 			'<![CDATA[',
 			'  <iframe>...</iframe>',
@@ -217,7 +217,7 @@
 		</div>
 
 		<div class="form-code" style="min-height: unset;">
-		<?php echo functions::escape_html(implode(PHP_EOL, [
+		<?php echo f::escape_html(implode(PHP_EOL, [
 			'<div class="require-consent" data-privacy-class="functional|personalization|security|measurement|marketing" data-third-party-id="'. $third_party->data['id'] .'" data-content="&lt;iframe src=&quot;...&quot;&gt;&lt;/iframe&gt;"></div>',
 		])); ?>
 		</div>

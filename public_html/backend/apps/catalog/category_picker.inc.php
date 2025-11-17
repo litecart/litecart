@@ -52,13 +52,13 @@
 
 			<?php if (!empty($_GET['parent_id'])) { ?>
 			<a class="pill-item" href="<?php echo document::href_ilink(null, ['parent_id' => reference::category($_GET['parent_id'])->parent_id]); ?>">
-				<?php echo functions::draw_fonticon('icon-arrow-left'); ?> <?php echo t('title_back', 'Back'); ?>
+				<?php echo f::draw_fonticon('icon-arrow-left'); ?> <?php echo t('title_back', 'Back'); ?>
 			</a>
 			<?php } ?>
 
 			<?php foreach ($categories as $category) { ?>
 			<a class="pill-item" href="<?php echo document::href_ilink(null, ['parent_id' => $category['id']]); ?>">
-				<?php echo functions::draw_fonticon('icon-folder', 'style="color: #cccc66;"'); ?> <?php echo $category['name']; ?>
+				<?php echo f::draw_fonticon('icon-folder', 'style="color: #cccc66;"'); ?> <?php echo $category['name']; ?>
 			</a>
 			<?php } ?>
 

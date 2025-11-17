@@ -51,7 +51,7 @@ table.items tbody tr:nth-child(11) {
 	<header class="header">
 		<div class="grid">
 			<div class="col-6">
-				<?php echo functions::draw_image('storage://images/logotype.png', 0, 0, null, 'class="logotype" alt="'. functions::escape_attr(settings::get('store_name')) .'"'); ?>
+				<?php echo f::draw_image('storage://images/logotype.png', 0, 0, null, 'class="logotype" alt="'. f::escape_attr(settings::get('store_name')) .'"'); ?>
 			</div>
 
 			<div class="col-6 text-end">
@@ -80,7 +80,7 @@ table.items tbody tr:nth-child(11) {
 				<div class="col-6 shipping-address">
 					<div class="rounded-rectangle">
 						<div class="label"><?php echo t('title_shipping_address', 'Shipping Address'); ?></div>
-						<div class="value"><?php echo nl2br(functions::format_address($order['customer']['shipping_address'])); ?></div>
+						<div class="value"><?php echo nl2br(f::format_address($order['customer']['shipping_address'])); ?></div>
 					</div>
 
 					<div class="label"><?php echo t('title_email', 'Email'); ?></div>
@@ -188,7 +188,7 @@ table.items tbody tr:nth-child(11) {
 	<ul class="list-unstyled">
 		<li>
 			<button name="print" class="btn btn-default btn-lg">
-				<?php echo functions::draw_fonticon('icon-print'); ?> <?php echo t('title_print', 'Print'); ?>
+				<?php echo f::draw_fonticon('icon-print'); ?> <?php echo t('title_print', 'Print'); ?>
 			</button>
 		</li>
 	</ul>

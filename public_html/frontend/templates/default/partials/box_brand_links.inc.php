@@ -4,7 +4,7 @@
 
 	<nav class="pills">
 		<?php foreach ($brands as $brand) { ?>
-		<a class="pill-item<?php if (!empty($brand['active'])) echo ' active'; ?>" href="<?php echo functions::escape_html($brand['link']); ?>">
+		<a class="pill-item<?php if (!empty($brand['active'])) echo ' active'; ?>" href="<?php echo f::escape_html($brand['link']); ?>">
 			<?php echo $brand['name']; ?>
 		</a>
 		<?php } ?>

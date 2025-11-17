@@ -62,7 +62,7 @@
 
 		header('Content-Type: application/csv; charset='. mb_http_output());
 		header('Content-Disposition: filename="most_shopping_customers_'. date('Ymd', strtotime($_GET['date_from'])) .'-'. date('Ymd', strtotime($_GET['date_to'])) .'.csv"');
-		echo functions::csv_encode($customers);
+		echo f::csv_encode($customers);
 		exit;
 
 	} else {
@@ -84,19 +84,19 @@ form[name="filter_form"] li {
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_begin('filter_form', 'get'); ?>
+		<?php echo f::form_begin('filter_form', 'get'); ?>
 			<ul class="list-inline">
 				<li>
 					<div class="input-group" style="max-width: 380px;">
-						<?php echo functions::form_input_date('date_from', true); ?>
+						<?php echo f::form_input_date('date_from', true); ?>
 						<span class="input-group-text"> - </span>
-						<?php echo functions::form_input_date('date_to', true); ?>
+						<?php echo f::form_input_date('date_to', true); ?>
 					</div>
 				</li>
-				<li><?php echo functions::form_button('filter', ['true', functions::draw_fonticon('icon-funnel') .' '. t('title_filter_now', 'Filter')]); ?></li>
-				<li><?php echo functions::form_button('download', ['true', functions::draw_fonticon('icon-download') .' '. t('title_download', 'Download')]); ?></li>
+				<li><?php echo f::form_button('filter', ['true', f::draw_fonticon('icon-funnel') .' '. t('title_filter_now', 'Filter')]); ?></li>
+				<li><?php echo f::form_button('download', ['true', f::draw_fonticon('icon-download') .' '. t('title_download', 'Download')]); ?></li>
 			</ul>
-		<?php echo functions::form_end(); ?>
+		<?php echo f::form_end(); ?>
 	</div>
 
 	<table class="table data-table">
@@ -121,7 +121,7 @@ form[name="filter_form"] li {
 
 	<?php if ($num_pages > 1) { ?>
 	<div class="card-footer">
-		<?php echo functions::draw_pagination($num_pages); ?>
+		<?php echo f::draw_pagination($num_pages); ?>
 	</div>
 	<?php } ?>
 </div>

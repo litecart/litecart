@@ -125,7 +125,7 @@
 	</div>
 
 	<div class="card-body">
-		<?php echo functions::form_begin('order_status_form', 'post'); ?>
+		<?php echo f::form_begin('order_status_form', 'post'); ?>
 
 			<div class="grid">
 				<div class="col-md-6">
@@ -133,7 +133,7 @@
 						<div class="col-md-6">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
-								<?php foreach ($language_codes as $language_code) echo functions::form_regional_text('name['. $language_code .']', $language_code, true); ?>
+								<?php foreach ($language_codes as $language_code) echo f::form_regional_text('name['. $language_code .']', $language_code, true); ?>
 							</label>
 						</div>
 
@@ -143,14 +143,14 @@
 								<div class="col-md-8">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_order_state', 'State'); ?></div>
-										<?php echo functions::form_select('state', $states, true); ?>
+										<?php echo f::form_select('state', $states, true); ?>
 									</label>
 								</div>
 
 								<div class="col-md-4">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_priority', 'Priority'); ?></div>
-										<?php echo functions::form_input_number('priority', true); ?>
+										<?php echo f::form_input_number('priority', true); ?>
 									</label>
 								</div>
 							</div>
@@ -159,14 +159,14 @@
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_font_icon', 'Font Icon'); ?></div>
-										<?php echo functions::form_input_text('icon', true, 'placeholder="icon-circle-thin"'); ?>
+										<?php echo f::form_input_text('icon', true, 'placeholder="icon-circle-thin"'); ?>
 									</label>
 								</div>
 
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_color', 'Color'); ?></div>
-										<?php echo functions::form_input_color('color', empty($_POST['color']) ? '#cccccc' : true, 'placeholder="#cccccc"'); ?>
+										<?php echo f::form_input_color('color', empty($_POST['color']) ? '#cccccc' : true, 'placeholder="#cccccc"'); ?>
 									</label>
 								</div>
 							</div>
@@ -175,7 +175,7 @@
 
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_description', 'Description'); ?></div>
-						<?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_regional_textarea('description['. $language_code .']', $language_code, true, 'style="height: 50px;"'); ?>
+						<?php foreach (array_keys(language::$languages) as $language_code) echo f::form_regional_textarea('description['. $language_code .']', $language_code, true, 'style="height: 50px;"'); ?>
 					</label>
 
 					<div class="grid">
@@ -184,22 +184,22 @@
 								<div class="form-label"><?php echo t('title_properties', 'Properties'); ?></div>
 
 								<div>
-									<strong><?php echo functions::form_checkbox('hidden', ['1', t('text_hidden', 'Hidden')], empty($_POST['hidden']) ? '0' : '1'); ?></strong>
+									<strong><?php echo f::form_checkbox('hidden', ['1', t('text_hidden', 'Hidden')], empty($_POST['hidden']) ? '0' : '1'); ?></strong>
 									<?php echo t('text_hidden_from_customer', 'Hidden from the customer\'s order history'); ?>
 								</div>
 
 								<div>
-									<strong><?php echo functions::form_checkbox('is_sale', ['1', t('text_is_sale', 'Is sale')], empty($_POST['is_sale']) ? '0' : '1'); ?></strong>
+									<strong><?php echo f::form_checkbox('is_sale', ['1', t('text_is_sale', 'Is sale')], empty($_POST['is_sale']) ? '0' : '1'); ?></strong>
 									<?php echo t('text_include_in_sales_reports', 'Include in sales reports'); ?>
 								</div>
 
 								<div>
-									<strong><?php echo functions::form_checkbox('is_archived', ['1', t('text_is_archived', 'Is archived')], empty($_POST['is_archived']) ? '0' : '1'); ?></strong>
+									<strong><?php echo f::form_checkbox('is_archived', ['1', t('text_is_archived', 'Is archived')], empty($_POST['is_archived']) ? '0' : '1'); ?></strong>
 									<?php echo t('text_exclude_from_list_of_orders', 'Exclude from the default list of orders'); ?>
 								</div>
 
 								<div class="checkbox">
-									<strong><?php echo functions::form_checkbox('is_trackable', ['1', t('text_is_trackable', 'Is trackable')], empty($_POST['is_trackable']) ? '0' : '1'); ?> </strong>
+									<strong><?php echo f::form_checkbox('is_trackable', ['1', t('text_is_trackable', 'Is trackable')], empty($_POST['is_trackable']) ? '0' : '1'); ?> </strong>
 									<?php echo t('text_will_send_tracking_event_to_shipping_module', 'Will send a request to the shipping module for tracking the shipment.'); ?></label>
 								</div>
 							</label>
@@ -210,17 +210,17 @@
 								<div class="form-label"><?php echo t('title_stock_action', 'Stock Action'); ?></div>
 
 								<div>
-									<strong><?php echo functions::form_radio_button('stock_action', ['none', t('title_none', 'None')], empty($_POST['stock_action']) ? 'none' : true); ?></strong>
+									<strong><?php echo f::form_radio_button('stock_action', ['none', t('title_none', 'None')], empty($_POST['stock_action']) ? 'none' : true); ?></strong>
 									<?php echo t('text_stock_remains_without_an_action', 'Stock remains without an action.'); ?>
 								</div>
 
 								<div>
-									<strong><?php echo functions::form_radio_button('stock_action', ['reserve', t('title_reserve_stock', 'Reserve Stock')], true); ?></strong>
+									<strong><?php echo f::form_radio_button('stock_action', ['reserve', t('title_reserve_stock', 'Reserve Stock')], true); ?></strong>
 									<?php echo t('text_reserve_stock_for_orders_having_this_status', 'Reserve stock for orders having this status.'); ?>
 								</div>
 
 								<div class="checkbox">
-									<strong><?php echo functions::form_radio_button('stock_action', ['commit', t('title_commit_changes', 'Commit Changes')], true); ?> </strong>
+									<strong><?php echo f::form_radio_button('stock_action', ['commit', t('title_commit_changes', 'Commit Changes')], true); ?> </strong>
 									<?php echo t('text_commit_changes_to_the_stock', 'Commit changes to stock withdrawing or depositing quantities determined by if an order is a sale or return.'); ?></label>
 								</div>
 							</label>
@@ -231,7 +231,7 @@
 						<div class="col-md-6">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_priority', 'Priority'); ?></div>
-									<?php echo functions::form_input_number('priority', true); ?>
+									<?php echo f::form_input_number('priority', true); ?>
 								</label>
 						</div>
 					</div>
@@ -240,7 +240,7 @@
 				<div class="col-md-6">
 					<fieldset>
 						<legend>
-							<?php echo functions::form_checkbox('notify', ['1', t('title_email_notification', 'Email Notification')], empty($_POST['notify']) ? '0' : '1'); ?>
+							<?php echo f::form_checkbox('notify', ['1', t('title_email_notification', 'Email Notification')], empty($_POST['notify']) ? '0' : '1'); ?>
 						</legend>
 
 						<?php if (count(language::$languages) > 1) { ?>
@@ -256,12 +256,12 @@
 							<div id="<?php echo $language_code; ?>" class="tab-content<?php if ($language_code == language::$selected['code']) echo ' active'; ?>">
 								<div class="form-group">
 									<div class="form-label"><?php echo t('title_subject', 'Subject'); ?></div>
-									<?php echo functions::form_regional_text('email_subject['. $language_code .']', $language_code, true); ?>
+									<?php echo f::form_regional_text('email_subject['. $language_code .']', $language_code, true); ?>
 								</div>
 
 								<div class="form-group">
 									<div class="form-label"><?php echo t('title_message', 'Message'); ?></div>
-									<?php echo functions::form_regional_wysiwyg('email_message['. $language_code .']', $language_code, true); ?>
+									<?php echo f::form_regional_wysiwyg('email_message['. $language_code .']', $language_code, true); ?>
 								</div>
 							</div>
 							<?php } ?>
@@ -273,11 +273,11 @@
 			</div>
 
 			<div class="card-action">
-				<?php echo functions::form_button_predefined('save'); ?>
-				<?php if (!empty($order_status->data['id'])) echo functions::form_button_predefined('delete'); ?>
-				<?php echo functions::form_button_predefined('cancel'); ?>
+				<?php echo f::form_button_predefined('save'); ?>
+				<?php if (!empty($order_status->data['id'])) echo f::form_button_predefined('delete'); ?>
+				<?php echo f::form_button_predefined('cancel'); ?>
 			</div>
 
-		<?php echo functions::form_end(); ?>
+		<?php echo f::form_end(); ?>
 	</div>
 </div>

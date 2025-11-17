@@ -16,13 +16,13 @@
 			<div class="grid">
 
 				<div class="col-2">
-					<?php echo functions::draw_thumbnail($item['image'], 64, 0, 'product', 'alt="'. functions::escape_attr($item['name']) .'"'); ?>
+					<?php echo f::draw_thumbnail($item['image'], 64, 0, 'product', 'alt="'. f::escape_attr($item['name']) .'"'); ?>
 				</div>
 
 				<div class="col-8">
 					<div>
-						<a href="<?php echo functions::escape_html($item['link']); ?>" class="name">
-							<?php echo functions::escape_html($item['name']); ?>
+						<a href="<?php echo f::escape_html($item['link']); ?>" class="name">
+							<?php echo f::escape_html($item['name']); ?>
 						</a>
 					</div>
 
@@ -32,7 +32,7 @@
 				</div>
 
 				<div class="col-2 text-end">
-					<button class="btn btn-danger btn-sm" name="remove_cart_item" type="submit" value="<?php echo functions::escape_html($key); ?>"><?php echo functions::draw_fonticon('delete'); ?></button>
+					<button class="btn btn-danger btn-sm" name="remove_cart_item" type="submit" value="<?php echo f::escape_html($key); ?>"><?php echo f::draw_fonticon('delete'); ?></button>
 				</div>
 			</div>
 

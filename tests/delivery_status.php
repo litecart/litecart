@@ -29,7 +29,7 @@
 
 		// Create a new entity
 		$delivery_status = new ent_delivery_status();
-		$delivery_status->data = functions::array_update($delivery_status->data, $data);
+		$delivery_status->data = f::array_update($delivery_status->data, $data);
 		$delivery_status->save();
 
 		// Check if the entity was created
@@ -50,7 +50,7 @@
 		}
 
 		// Check if data was set correctly
-		if (!functions::array_intersect_compare($data, $delivery_status->data)) {
+		if (!f::array_intersect_compare($data, $delivery_status->data)) {
 			throw new Exception('The delivery status data was not stored correctly');
 		}
 
@@ -70,13 +70,13 @@
 		];
 
 		// Update some data
-		$delivery_status->data = functions::array_update($delivery_status->data, $data);
+		$delivery_status->data = f::array_update($delivery_status->data, $data);
 
 		// Save changes to database
 		$delivery_status->save();
 
 		// Check if data was set correctly
-		if (!functions::array_intersect_compare($data, $delivery_status->data)) {
+		if (!f::array_intersect_compare($data, $delivery_status->data)) {
 			throw new Exception('The delivery status data was not updated correctly');
 		}
 

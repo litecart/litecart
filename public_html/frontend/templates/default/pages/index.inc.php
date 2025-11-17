@@ -4,22 +4,22 @@
 
 		<div class="grid">
 
-			<?php if ($jumbotron = functions::draw_banner('jumbotron')) { ?>
+			<?php if ($jumbotron = f::draw_banner('jumbotron')) { ?>
 			<div id="box-jumbotron" class="col-12">
 				<?php echo $jumbotron; ?>
 			</div>
 			<?php } ?>
 
 			<div class="col-12 col-md-4">
-				<?php echo functions::draw_banner('left'); ?>
+				<?php echo f::draw_banner('left'); ?>
 			</div>
 
 			<div class="col-6 col-md-4">
-				<?php echo functions::draw_banner('middle'); ?>
+				<?php echo f::draw_banner('middle'); ?>
 			</div>
 
 			<div class="col-6 col-md-4">
-				<?php echo functions::draw_banner('right'); ?>
+				<?php echo f::draw_banner('right'); ?>
 			</div>
 		</div>
 

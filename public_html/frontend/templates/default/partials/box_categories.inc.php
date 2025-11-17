@@ -9,7 +9,7 @@
 	<h2><?php echo t('title_browse_by_category', 'Browse By Category'); ?></h2>
 
 	<div class="listing categories">
-		<?php foreach ($categories as $category) echo functions::draw_listing_category($category); ?>
+		<?php foreach ($categories as $category) echo f::draw_listing_category($category); ?>
 	</div>
 
 </section>

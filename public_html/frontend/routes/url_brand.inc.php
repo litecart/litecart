@@ -30,7 +30,7 @@
 				$brand = reference::brand($link->query['brand_id'], $language_code);
 				if (empty($brand->id)) return $link;
 
-				$link->path = 'brands/'. $brand->id .'/'. functions::format_path_friendly($brand->name, $language_code);
+				$link->path = 'brands/'. $brand->id .'/'. f::format_path_friendly($brand->name, $language_code);
 				$link->unset_query('brand_id');
 
 				return $link;

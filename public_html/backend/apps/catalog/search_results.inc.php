@@ -4,8 +4,8 @@
 
 	// Products
 
-	$code_regex = functions::format_regex_code($query);
-	$query_fulltext = functions::escape_mysql_fulltext($_GET['query']);
+	$code_regex = f::format_regex_code($query);
+	$query_fulltext = f::escape_mysql_fulltext($_GET['query']);
 
 	$products = database::query(
 		"select p.id, p.default_category_id, json_value(p.name, '$.". database::input(language::$selected['code']) ."') as name, (
@@ -60,8 +60,8 @@
 		'results' => [],
 	];
 
-	$code_regex = functions::format_regex_code($query);
-	$query_fulltext = functions::escape_mysql_fulltext($_GET['query']);
+	$code_regex = f::format_regex_code($query);
+	$query_fulltext = f::escape_mysql_fulltext($_GET['query']);
 
 	$stock_items = database::query(
 		"select si.id, si.sku, json_value(si.name, '$.". database::input(language::$selected['code']) ."') as name, (

@@ -47,8 +47,8 @@
 
 		if (!empty($filter['query'])) {
 
-			$code_regex = functions::format_regex_code($_GET['query']);
-			$query_fulltext = functions::escape_mysql_fulltext($_GET['query']);
+			$code_regex = f::format_regex_code($_GET['query']);
+			$query_fulltext = f::escape_mysql_fulltext($_GET['query']);
 
 			$sql_select_relevance[] = (
 				"if(json_value(c.name, '$.". database::input(language::$selected['code']) ."') like '%". database::input($query_fulltext) ."%', 10, 0)"
@@ -342,8 +342,8 @@
 
 		if (!empty($filter['query'])) {
 
-			$code_regex = functions::format_regex_code($_GET['query']);
-			$query_fulltext = functions::escape_mysql_fulltext($_GET['query']);
+			$code_regex = f::format_regex_code($_GET['query']);
+			$query_fulltext = f::escape_mysql_fulltext($_GET['query']);
 
 			$sql_select_relevance[] = "if(p.code regexp '". database::input($code_regex) ."', 5, 0)";
 

@@ -30,7 +30,7 @@
 					</div>
 
 					<div class="card-body">
-						<?php echo functions::form_begin('region_form', 'post', document::ilink(), false, 'style="max-width: 640px;"'); ?>
+						<?php echo f::form_begin('region_form', 'post', document::ilink(), false, 'style="max-width: 640px;"'); ?>
 
 							<div class="grid">
 
@@ -38,7 +38,7 @@
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_language', 'Language'); ?></div>
-										<?php echo functions::form_select('language_code', $language_options, language::$selected['code']); ?>
+										<?php echo f::form_select('language_code', $language_options, language::$selected['code']); ?>
 									</label>
 								</div>
 								<?php } ?>
@@ -47,7 +47,7 @@
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_currency', 'Currency'); ?></div>
-										<?php echo functions::form_select('currency_code', $currency_options, currency::$selected['code']); ?>
+										<?php echo f::form_select('currency_code', $currency_options, currency::$selected['code']); ?>
 									</label>
 								</div>
 								<?php } ?>
@@ -57,14 +57,14 @@
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_country', 'Country'); ?></div>
-										<?php echo functions::form_select_country('country_code', customer::$data['country_code']); ?>
+										<?php echo f::form_select_country('country_code', customer::$data['country_code']); ?>
 									</label>
 								</div>
 
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_zone_state_province', 'Zone/State/Province'); ?></div>
-										<?php echo functions::form_select_zone('zone_code', customer::$data['country_code'], customer::$data['zone_code']); ?>
+										<?php echo f::form_select_zone('zone_code', customer::$data['country_code'], customer::$data['zone_code']); ?>
 									</label>
 								</div>
 							</div>
@@ -73,21 +73,21 @@
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_postcode', 'Postal Code'); ?></div>
-										<?php echo functions::form_input_text('postcode', customer::$data['postcode']); ?>
+										<?php echo f::form_input_text('postcode', customer::$data['postcode']); ?>
 									</label>
 								</div>
 
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_display_prices_including_tax', 'Display Prices Including Tax'); ?></div>
-										<?php echo functions::form_toggle('display_prices_including_tax', 'y/n', customer::$data['display_prices_including_tax']); ?>
+										<?php echo f::form_toggle('display_prices_including_tax', 'y/n', customer::$data['display_prices_including_tax']); ?>
 									</label>
 								</div>
 							</div>
 
-							<?php echo functions::form_button('save', t('title_save', 'Save')); ?>
+							<?php echo f::form_button('save', t('title_save', 'Save')); ?>
 
-						<?php echo functions::form_end(); ?>
+						<?php echo f::form_end(); ?>
 					</div>
 				</section>
 

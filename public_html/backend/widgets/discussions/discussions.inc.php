@@ -80,13 +80,13 @@
 			<?php foreach ($discussions as $discussion) { ?>
 			<div class="topic">
 				<div class="title">
-					<a href="<?php echo functions::escape_attr($discussion['link']); ?>" target="_blank">
-						<?php echo functions::escape_html($discussion['title']); ?>
+					<a href="<?php echo f::escape_attr($discussion['link']); ?>" target="_blank">
+						<?php echo f::escape_html($discussion['title']); ?>
 					</a>
 				</div>
 				<div class="description">
 					<?php echo strtr(t('text_posted_date_by_author', 'Posted {date} by {author}'), [
-						'{date}' => functions::datetime_format('%e %b', strtotime($discussion['date'])),
+						'{date}' => f::datetime_format('%e %b', strtotime($discussion['date'])),
 						'{author}' => $discussion['author']
 					]); ?>
 				</div>

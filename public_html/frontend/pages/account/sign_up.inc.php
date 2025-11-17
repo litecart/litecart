@@ -57,7 +57,7 @@
 				throw new Exception(t('error_must_provide_password', 'You must provide a password'));
 			}
 
-			if (!functions::password_check_strength($_POST['password'])) {
+			if (!f::password_check_strength($_POST['password'])) {
 				throw new Exception(t('error_password_not_strong_enough', 'The password is not strong enough'));
 			}
 
@@ -109,7 +109,7 @@
 				}
 			}
 
-			if (settings::get('captcha_enabled') && !functions::captcha_validate('sign_up')) {
+			if (settings::get('captcha_enabled') && !f::captcha_validate('sign_up')) {
 				throw new Exception(t('error_invalid_captcha', 'Invalid CAPTCHA given'));
 			}
 

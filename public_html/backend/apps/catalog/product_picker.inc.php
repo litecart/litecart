@@ -14,7 +14,7 @@
 	<div class="modal-body">
 		<label class="form-group">
 			<div class="form-label"><?php echo t('title_search', 'Search'); ?></div>
-			<?php echo functions::form_input_text('query', true, 'placeholder="'. functions::escape_attr(t('title_search', 'Search')) .'" autocomplete="off"'); ?>
+			<?php echo f::form_input_text('query', true, 'placeholder="'. f::escape_attr(t('title_search', 'Search')) .'" autocomplete="off"'); ?>
 		 </label>
 
 		<table class="table data-table">
@@ -67,7 +67,7 @@
 					var $output = $([
 						'<tr>',
 						'  <td colspan="99">',
-						'    <em><?php echo functions::escape_js(t('text_no_results', 'No results')); ?></em>',
+						'    <em><?php echo f::escape_js(t('text_no_results', 'No results')); ?></em>',
 						'  </td>',
 						'</tr>'
 					].join('\n'));

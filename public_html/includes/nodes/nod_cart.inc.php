@@ -187,7 +187,7 @@
 				if (!empty($product->quantity_unit['separate'])) {
 					$item_key = uniqid();
 				} else {
-					$item_key = crc32(functions::format_json([$product->id, $userdata], false));
+					$item_key = crc32(f::format_json([$product->id, $userdata], false));
 				}
 			}
 
@@ -258,13 +258,13 @@
 
 				if ($product->valid_from && $product->valid_from > date('Y-m-d H:i:s')) {
 					throw new Exception(strtr(t('error_product_cannot_be_purchased_until_date', 'The product cannot be purchased until {date}'), [
-						'{date}' => functions::datetime_format('date', $product->valid_from)
+						'{date}' => f::datetime_format('date', $product->valid_from)
 					]));
 				}
 
 				if ($product->valid_to && $product->valid_to < date('Y-m-d H:i:s')) {
 					throw new Exception(strtr(t('error_product_can_no_longer_be_purchased', 'The product can no longer be purchased as of {date}'), [
-						'{date}' => functions::datetime_format('date', $product->valid_to)
+						'{date}' => f::datetime_format('date', $product->valid_to)
 					]));
 				}
 
@@ -360,7 +360,7 @@
 					database::query(
 						"insert into ". DB_TABLE_PREFIX ."cart_items
 						(customer_id, cart_uid, `key`, product_id, stock_option_id, userdata, image, quantity, updated_at, created_at)
-						values (". (customer::$data['id'] ? (int)customer::$data['id'] : "null") .", '". database::input(self::$data['uid']) ."', '". database::input($item_key) ."', ". ($item['product_id'] ? (int)$item['product_id'] : "null") .", ". ($item['stock_option_id'] ? (int)$item['stock_option_id'] : "null") .", '". database::input(functions::format_json($item['userdata'])) ."', '". database::input($item['image']) ."', ". (float)$item['quantity'] .", '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
+						values (". (customer::$data['id'] ? (int)customer::$data['id'] : "null") .", '". database::input(self::$data['uid']) ."', '". database::input($item_key) ."', ". ($item['product_id'] ? (int)$item['product_id'] : "null") .", ". ($item['stock_option_id'] ? (int)$item['stock_option_id'] : "null") .", '". database::input(f::format_json($item['userdata'])) ."', '". database::input($item['image']) ."', ". (float)$item['quantity'] .", '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
 					);
 
 					self::$items[$item_key]['id'] = database::insert_id();

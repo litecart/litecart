@@ -4,7 +4,7 @@
 
 		case 'customer':
 			$title = t('title_customer_modules', 'Customer Modules');
-			$files = functions::file_search('app://includes/modules/customer/*.inc.php');
+			$files = f::file_search('app://includes/modules/customer/*.inc.php');
 			$mod_class = new mod_customer();
 			$type = 'customer';
 			$edit_doc = 'edit_customer';
@@ -12,7 +12,7 @@
 
 		case 'jobs':
 			$title = t('title_job_modules', 'Job Modules');
-			$files = functions::file_search('app://includes/modules/jobs/*.inc.php');
+			$files = f::file_search('app://includes/modules/jobs/*.inc.php');
 			$mod_class = new mod_jobs();
 			$type = 'job';
 			$edit_doc = 'edit_job';
@@ -20,7 +20,7 @@
 
 		case 'order':
 			$title = t('title_order_modules', 'Order Modules');
-			$files = functions::file_search('app://includes/modules/order/*.inc.php');
+			$files = f::file_search('app://includes/modules/order/*.inc.php');
 			$mod_class = new mod_order();
 			$type = 'order';
 			$edit_doc = 'edit_order';
@@ -28,7 +28,7 @@
 
 		case 'payment':
 			$title = t('title_payment_modules', 'Payment Modules');
-			$files = functions::file_search('app://includes/modules/payment/*.inc.php');
+			$files = f::file_search('app://includes/modules/payment/*.inc.php');
 			$mod_class = new mod_payment();
 			$type = 'payment';
 			$edit_doc = 'edit_payment';
@@ -36,7 +36,7 @@
 
 		case 'shipping':
 			$title = t('title_shipping_modules', 'Shipping Modules');
-			$files = functions::file_search('app://includes/modules/shipping/*.inc.php');
+			$files = f::file_search('app://includes/modules/shipping/*.inc.php');
 			$mod_class = new mod_shipping();
 			$type = 'shipping';
 			$edit_doc = 'edit_shipping';
@@ -114,21 +114,21 @@
 
 		<?php if ($type == 'job') { ?>
 		<button id="cron-example" class="btn btn-default" type="button" style="margin-inline-end: 1em;">
-			<?php echo functions::draw_fonticon('icon-info'); ?> <?php echo t('title_cron_job', 'Cron Job'); ?>
+			<?php echo f::draw_fonticon('icon-info'); ?> <?php echo t('title_cron_job', 'Cron Job'); ?>
 		</button>
 		<?php } ?>
 
 		<a class="btn btn-default" href="https://www.litecart.net/addons" target="_blank">
-			<?php echo functions::draw_fonticon('icon-globe'); ?> LiteCart Add-ons
+			<?php echo f::draw_fonticon('icon-globe'); ?> LiteCart Add-ons
 		</a>
 	</div>
 
-	<?php echo functions::form_begin('modules_form', 'post'); ?>
+	<?php echo f::form_begin('modules_form', 'post'); ?>
 
 		<table class="table data-table">
 			<thead>
 				<tr>
-					<th><?php echo functions::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th><?php echo f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th></th>
 					<th class="main"><?php echo t('title_name', 'Name'); ?></th>
 					<th></th>
@@ -144,8 +144,8 @@
 				<?php foreach ($modules as $module) { ?>
 				<?php if (!empty($module['installed'])) { ?>
 				<tr class="<?php echo empty($module['status']) ? 'semi-transparent' : ''; ?>">
-					<td><?php echo functions::form_checkbox('modules[]', $module['id']); ?></td>
-					<td><?php echo functions::draw_fonticon($module['status'] ? 'on' : 'off'); ?></td>
+					<td><?php echo f::form_checkbox('modules[]', $module['id']); ?></td>
+					<td><?php echo f::draw_fonticon($module['status'] ? 'on' : 'off'); ?></td>
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_'.$type, ['module_id' => $module['id']]); ?>"><?php echo $module['name']; ?></a></td>
 					<?php if (__DOC__ == 'jobs' && !empty($module['status'])) { ?>
 					<td class="text-center">
@@ -158,9 +158,9 @@
 					<?php } ?>
 					<td><?php echo $module['id']; ?></td>
 					<td class="text-end"><?php echo $module['version']; ?></td>
-					<td><?php echo !empty($module['website']) ? '<a href="'. functions::escape_attr($module['website']) .'" target="_blank">'. $module['author'] .'</a>' : $module['author']; ?></td>
+					<td><?php echo !empty($module['website']) ? '<a href="'. f::escape_attr($module['website']) .'" target="_blank">'. $module['author'] .'</a>' : $module['author']; ?></td>
 					<td class="text-center"><?php echo $module['priority']; ?></td>
-					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/'.$edit_doc, ['module_id' => $module['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/'.$edit_doc, ['module_id' => $module['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo f::draw_fonticon('edit'); ?></a></td>
 				</tr>
 				<?php } else { ?>
 				<tr class="semi-transparent">
@@ -174,11 +174,11 @@
 					<td class="text-center"></td>
 					<td><?php echo $module['id']; ?></td>
 					<td class="text-end"><?php echo $module['version']; ?></td>
-					<td><?php echo !empty($module['website']) ? '<a href="'. functions::escape_attr($module['website']) .'" target="_blank">'. $module['author'] .'</a>' : $module['author']; ?></td>
+					<td><?php echo !empty($module['website']) ? '<a href="'. f::escape_attr($module['website']) .'" target="_blank">'. $module['author'] .'</a>' : $module['author']; ?></td>
 					<td class="text-center">-</td>
 					<td class="text-end">
 						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_'.$type, ['module_id' => $module['id']]); ?>">
-							<?php echo functions::draw_fonticon('add'); ?> <?php echo t('title_install', 'Install'); ?>
+							<?php echo f::draw_fonticon('add'); ?> <?php echo t('title_install', 'Install'); ?>
 						</a>
 					</td>
 				</tr>
@@ -203,14 +203,14 @@
 				</legend>
 
 				<div class="btn-group">
-					<?php echo functions::form_button('enable', t('title_enable', 'Enable'), 'submit', '', 'on'); ?>
-					<?php echo functions::form_button('disable', t('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+					<?php echo f::form_button('enable', t('title_enable', 'Enable'), 'submit', '', 'on'); ?>
+					<?php echo f::form_button('disable', t('title_disable', 'Disable'), 'submit', '', 'off'); ?>
 				</div>
 
 			</fieldset>
 		</div>
 
-	<?php echo functions::form_end(); ?>
+	<?php echo f::form_end(); ?>
 </div>
 
 <script>

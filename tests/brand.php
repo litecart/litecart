@@ -41,7 +41,7 @@
 		########################################################################
 
 		$brand = new ent_brand();
-		$brand->data = functions::array_update($brand->data, $data);
+		$brand->data = f::array_update($brand->data, $data);
 		$brand->save();
 
 		if (!$brand_id = $brand->data['id']) {
@@ -58,7 +58,7 @@
 			throw new Exception('Failed to load brand');
 		}
 
-		if (!functions::array_intersect_compare($data, $brand->data)) {
+		if (!f::array_intersect_compare($data, $brand->data)) {
 			throw new Exception('The brand data was not stored correctly');
 		}
 		// Define some example data
@@ -85,11 +85,11 @@
 			'image' => '',
 		];
 
-		$brand->data = functions::array_update($brand->data, $data);
+		$brand->data = f::array_update($brand->data, $data);
 
 		$brand->save();
 
-		if (!functions::array_intersect_compare($data, $brand->data)) {
+		if (!f::array_intersect_compare($data, $brand->data)) {
 			throw new Exception('The brand data was not updated correctly');
 		}
 

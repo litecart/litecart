@@ -29,7 +29,7 @@
 
 		// Create a new entity
 		$sold_out_status = new ent_sold_out_status();
-		$sold_out_status->data = functions::array_update($sold_out_status->data, $data);
+		$sold_out_status->data = f::array_update($sold_out_status->data, $data);
 		$sold_out_status->save();
 
 		// Check if the entity was created
@@ -50,7 +50,7 @@
 		}
 
 		// Check if data was set correctly
-		if (!functions::array_intersect_compare($data, $sold_out_status->data)) {
+		if (!f::array_intersect_compare($data, $sold_out_status->data)) {
 			throw new Exception('The sold out status data was not stored correctly');
 		}
 
@@ -66,13 +66,13 @@
 		];
 
 		// Update some data
-		$sold_out_status->data = functions::array_update($sold_out_status->data, $data);
+		$sold_out_status->data = f::array_update($sold_out_status->data, $data);
 
 		// Save changes to database
 		$sold_out_status->save();
 
 		// Check if data was set correctly
-		if (!functions::array_intersect_compare($data, $sold_out_status->data)) {
+		if (!f::array_intersect_compare($data, $sold_out_status->data)) {
 			throw new Exception('The sold out status data was not updated correctly');
 		}
 

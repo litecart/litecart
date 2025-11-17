@@ -31,21 +31,21 @@
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_customer_group'), t('title_create_new_customer_group', 'Create New Customer Group'), '', 'create'); ?>
+		<?php echo f::form_button_link(document::ilink(__APP__.'/edit_customer_group'), t('title_create_new_customer_group', 'Create New Customer Group'), '', 'create'); ?>
 	</div>
 
 	<div class="card-filter">
-		<?php echo functions::form_begin('search_form', 'get'); ?>
-			<?php echo functions::form_input_search('query', true, 'placeholder="'. t('text_search_phrase_or_keyword', 'Search phrase or keyword') .'" style="width: 400px;"'); ?>
-		<?php echo functions::form_end(); ?>
+		<?php echo f::form_begin('search_form', 'get'); ?>
+			<?php echo f::form_input_search('query', true, 'placeholder="'. t('text_search_phrase_or_keyword', 'Search phrase or keyword') .'" style="width: 400px;"'); ?>
+		<?php echo f::form_end(); ?>
 	</div>
 
-	<?php echo functions::form_begin('customer_groups_form', 'post'); ?>
+	<?php echo f::form_begin('customer_groups_form', 'post'); ?>
 
 		<table class="table data-table">
 			<thead>
 				<tr>
-					<th><?php echo functions::draw_fonticon('icon-square-check checkbox-toggle'); ?></th>
+					<th><?php echo f::draw_fonticon('icon-square-check checkbox-toggle'); ?></th>
 					<th><?php echo t('title_id', 'ID'); ?></th>
 					<th class="main"><?php echo t('title_name', 'Name'); ?></th>
 					<th class="tect-center"><?php echo t('title_customers', 'Customers'); ?></th>
@@ -56,11 +56,11 @@
 			<tbody>
 				<?php foreach ($customer_groups as $group)  { ?>
 				<tr>
-					<td><?php echo functions::form_checkbox('customer_groups[]', $group['id']); ?></td>
+					<td><?php echo f::form_checkbox('customer_groups[]', $group['id']); ?></td>
 					<td><?php echo $group['id']; ?></td>
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_customer_group', ['group_id' => $group['id']]); ?>"><?php echo $group['name']; ?></a></td>
 					<td><?php echo language::number_format($group['num_customers']); ?></td>
-					<td><a class="btn btn-default btn-sm" href="<?php echo document::href_link(__APP__.'/edit_customer_group', ['group_id' => $group['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+					<td><a class="btn btn-default btn-sm" href="<?php echo document::href_link(__APP__.'/edit_customer_group', ['group_id' => $group['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo f::draw_fonticon('edit'); ?></a></td>
 				</tr>
 				<?php } ?>
 			</tbody>
@@ -74,11 +74,11 @@
 			</tfoot>
 		</table>
 
-	<?php echo functions::form_end(); ?>
+	<?php echo f::form_end(); ?>
 
 	<?php if ($num_pages > 1) { ?>
 	<div class="card-footer">
-		<?php echo functions::draw_pagination($num_pages); ?>
+		<?php echo f::draw_pagination($num_pages); ?>
 	</div>
 	<?php } ?>
 </div>

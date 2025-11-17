@@ -43,13 +43,13 @@
 
 			if ($administrator['valid_from'] && $administrator['valid_from'] > date('Y-m-d H:i:s')) {
 				throw new Exception(strtr(t('text_acount_cannot_be_used_until_x', 'The account cannot be used until {datetime}'), [
-					'{datetime}' => functions::datetime_format('datetime', $administrator['valid_from'])
+					'{datetime}' => f::datetime_format('datetime', $administrator['valid_from'])
 				]));
 			}
 
 			if ($administrator['valid_to'] && $administrator['valid_to'] < date('Y-m-d H:i:s')) {
 				throw new Exception(strtr(t('text_account_expired_at_x', 'The account expired at {datetime} and can no longer be used'), [
-					'{datetime}' => functions::datetime_format('datetime', $administrator['valid_to'])
+					'{datetime}' => f::datetime_format('datetime', $administrator['valid_to'])
 				]));
 			}
 
@@ -78,15 +78,15 @@
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_administrator'), t('title_create_new_administrator', 'Create New Administrator'), '', 'create'); ?>
+		<?php echo f::form_button_link(document::ilink(__APP__.'/edit_administrator'), t('title_create_new_administrator', 'Create New Administrator'), '', 'create'); ?>
 	</div>
 
-	<?php echo functions::form_begin('administrators_form', 'post'); ?>
+	<?php echo f::form_begin('administrators_form', 'post'); ?>
 
 		<table class="table data-table">
 			<thead>
 				<tr>
-					<th><?php echo functions::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th><?php echo f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th></th>
 					<th></th>
 					<th><?php echo t('title_username', 'Username'); ?></th>
@@ -103,17 +103,17 @@
 			<tbody>
 				<?php foreach ($administrators as $administrator) { ?>
 				<tr class="<?php echo empty($administrator['status']) ? 'semi-transparent' : ''; ?>">
-					<td><?php echo functions::form_checkbox('administrators[]', $administrator['id']); ?></td>
-					<td><?php echo functions::draw_fonticon($administrator['status'] ? 'on' : 'off'); ?></td>
-					<td class="warning"><?php echo !empty($administrator['warning']) ? functions::draw_fonticon('icon-exclamation-triangle', 'title="'. functions::escape_html($administrator['warning']) .'"') : ''; ?></td>
+					<td><?php echo f::form_checkbox('administrators[]', $administrator['id']); ?></td>
+					<td><?php echo f::draw_fonticon($administrator['status'] ? 'on' : 'off'); ?></td>
+					<td class="warning"><?php echo !empty($administrator['warning']) ? f::draw_fonticon('icon-exclamation-triangle', 'title="'. f::escape_html($administrator['warning']) .'"') : ''; ?></td>
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_administrator', ['administrator_id' => $administrator['id']]); ?>"><?php echo $administrator['username']; ?></a></td>
 					<td><?php echo $administrator['name']; ?></td>
 					<td><?php echo $administrator['email']; ?></td>
 					<td><?php echo (json_decode($administrator['apps'], true)) ? t('title_restricted', 'Restricted') : '-'; ?></td>
-					<td class="text-end"><?php echo $administrator['valid_from'] ? functions::datetime_when($administrator['valid_from']) : '-'; ?></td>
-					<td class="text-end"><?php echo $administrator['valid_to'] ? functions::datetime_when($administrator['valid_to']) : '-'; ?></td>
-					<td class="text-end"><?php echo $administrator['last_login'] ? functions::datetime_when($administrator['last_login']) : '-'; ?></td>
-					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_administrator', ['administrator_id' => $administrator['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+					<td class="text-end"><?php echo $administrator['valid_from'] ? f::datetime_when($administrator['valid_from']) : '-'; ?></td>
+					<td class="text-end"><?php echo $administrator['valid_to'] ? f::datetime_when($administrator['valid_to']) : '-'; ?></td>
+					<td class="text-end"><?php echo $administrator['last_login'] ? f::datetime_when($administrator['last_login']) : '-'; ?></td>
+					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_administrator', ['administrator_id' => $administrator['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo f::draw_fonticon('edit'); ?></a></td>
 				</tr>
 				<?php } ?>
 			</tbody>
@@ -135,18 +135,18 @@
 				</legend>
 
 				<div class="btn-group">
-					<?php echo functions::form_button('enable', t('title_enable', 'Enable'), 'submit', '', 'on'); ?>
-					<?php echo functions::form_button('disable', t('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+					<?php echo f::form_button('enable', t('title_enable', 'Enable'), 'submit', '', 'on'); ?>
+					<?php echo f::form_button('disable', t('title_disable', 'Disable'), 'submit', '', 'off'); ?>
 				</div>
 
 			</fieldset>
 		</div>
 
-	<?php echo functions::form_end(); ?>
+	<?php echo f::form_end(); ?>
 
 	<?php if ($num_pages > 1) { ?>
 	<div class="card-footer">
-		<?php echo functions::draw_pagination($num_pages); ?>
+		<?php echo f::draw_pagination($num_pages); ?>
 	</div>
 	<?php } ?>
 </div>

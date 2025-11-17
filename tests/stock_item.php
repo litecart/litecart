@@ -25,7 +25,7 @@
 
 		// Create a new entity
 		$stock_item = new ent_stock_item();
-		//$stock_item->data = functions::array_update($stock_item->data, $data);
+		//$stock_item->data = f::array_update($stock_item->data, $data);
 		foreach ($data as $key => $value) {
 			$stock_item->data[$key] = $value;
 		}
@@ -50,7 +50,7 @@
 		}
 
 		// Check if data was set correctly
-		if (!functions::array_intersect_compare($data, $stock_item->data)) {
+		if (!f::array_intersect_compare($data, $stock_item->data)) {
 			print_r($data);
 			print_r($stock_item->data);
 			throw new Exception('The stock item data was not stored correctly');
@@ -68,7 +68,7 @@
 		];
 
 		// Update some data
-		//$stock_item->data = functions::array_update($stock_item->data, $data);
+		//$stock_item->data = f::array_update($stock_item->data, $data);
 		foreach ($data as $key => $value) {
 			$stock_item->data[$key] = $value;
 		}
@@ -77,7 +77,7 @@
 		$stock_item->save();
 
 		// Check if data was set correctly
-		if (!functions::array_intersect_compare($data, $stock_item->data)) {
+		if (!f::array_intersect_compare($data, $stock_item->data)) {
 			throw new Exception('The stock item data was not updated correctly');
 		}
 

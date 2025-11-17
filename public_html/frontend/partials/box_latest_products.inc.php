@@ -14,7 +14,7 @@
 	$box_latest_products_cache_token = cache::token('box_latest_products', ['language', 'currency', 'prices']);
 	if (!$box_latest_products->snippets['products'] = cache::get($box_latest_products_cache_token)) {
 
-			$box_latest_products->snippets['products'] = functions::catalog_products_query([
+			$box_latest_products->snippets['products'] = f::catalog_products_query([
 				'sort' => 'date',
 				'limit' => settings::get('box_latest_products_num_items'),
 			])->fetch_all();

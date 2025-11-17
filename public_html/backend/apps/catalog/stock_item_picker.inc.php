@@ -18,13 +18,13 @@
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_stock_item', [], ['js_callback']), t('title_create_new_stock_item', 'Create New Stock Item'), 'class="btn btn-default" data-toggle="lightbox" data-seamless=true data-width="980px"', 'add'); ?>
+		<?php echo f::form_button_link(document::ilink(__APP__.'/edit_stock_item', [], ['js_callback']), t('title_create_new_stock_item', 'Create New Stock Item'), 'class="btn btn-default" data-toggle="lightbox" data-seamless=true data-width="980px"', 'add'); ?>
 	</div>
 
 	<div class="card-body">
 		<label class="form-group">
 			<div class="form-label"><?php echo t('title_search', 'Search'); ?></div>
-			<?php echo functions::form_input_text('query', true, 'placeholder="'. functions::escape_attr(t('title_search', 'Search')) .'" autocomplete="off"'); ?>
+			<?php echo f::form_input_text('query', true, 'placeholder="'. f::escape_attr(t('title_search', 'Search')) .'" autocomplete="off"'); ?>
 		 </label>
 	</div>
 
@@ -99,7 +99,7 @@
 					$('#stock-item-picker tbody').html([
 						'<tr>',
 						'  <td colspan="99">',
-						'    <em><?php echo functions::escape_js(t('text_no_results', 'No results')); ?></em>',
+						'    <em><?php echo f::escape_js(t('text_no_results', 'No results')); ?></em>',
 						'</td>',
 						'</tr>',
 					].join('\n'));
@@ -111,7 +111,7 @@
 	$('#stock-item-picker tbody').on('click', 'td', function() {
 
 		let $row = $(this).closest('tr'),
-			callback = '<?php echo !empty($_GET['js_callback']) ? functions::escape_js($_GET['js_callback']) : ''; ?>',
+			callback = '<?php echo !empty($_GET['js_callback']) ? f::escape_js($_GET['js_callback']) : ''; ?>',
 			stock_item = $row.data();
 
 		if (callback) {

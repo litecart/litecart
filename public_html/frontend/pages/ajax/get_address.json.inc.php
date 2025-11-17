@@ -41,5 +41,5 @@
 
 	ob_clean();
 	header('Content-type: text/plain; charset='. mb_http_output());
-	echo functions::format_json($result);
+	echo f::format_json($result);
 	exit;

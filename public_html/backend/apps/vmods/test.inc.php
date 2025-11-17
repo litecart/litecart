@@ -123,7 +123,7 @@
 	</div>
 
 	<div class="card-body">
-		<h2><?php echo functions::escape_html($vmod['name']); ?></h2>
+		<h2><?php echo f::escape_html($vmod['name']); ?></h2>
 	</div>
 
 	<table class="table data-table">
@@ -137,18 +137,18 @@
 			<?php foreach ($result['pathfiles'] as $pathfile) { ?>
 			<tr>
 				<td>
-					<h3><?php echo functions::escape_html($pathfile['pathfile']); ?></h3>
+					<h3><?php echo f::escape_html($pathfile['pathfile']); ?></h3>
 					<?php foreach ($pathfile['files'] as $file) { ?>
-					<div><?php echo functions::escape_html($file['file']); ?> <?php echo empty($file['error']) ? functions::draw_fonticon('icon-check', 'style="color: #7ccc00;"') : functions::draw_fonticon('icon-times', 'style="color: #c00;"'); ?></div>
+					<div><?php echo f::escape_html($file['file']); ?> <?php echo empty($file['error']) ? f::draw_fonticon('icon-check', 'style="color: #7ccc00;"') : f::draw_fonticon('icon-times', 'style="color: #c00;"'); ?></div>
 					<ul>
 						<?php foreach ($file['operations'] as $i => $operation) { ?>
-						<li>Operation #<?php echo $i+1; ?> <?php echo empty($operation['error']) ? functions::draw_fonticon('icon-check', 'style="color: #7ccc00;"') : functions::draw_fonticon('icon-times', 'style="color: #c00;"') .'<br>'. $operation['error']; ?></li>
+						<li>Operation #<?php echo $i+1; ?> <?php echo empty($operation['error']) ? f::draw_fonticon('icon-check', 'style="color: #7ccc00;"') : f::draw_fonticon('icon-times', 'style="color: #c00;"') .'<br>'. $operation['error']; ?></li>
 						<?php } ?>
 					</ul>
 					<?php } ?>
 				</td>
 				<td style="font-size: 3em;">
-					<?php echo empty($pathfile['error']) ? functions::draw_fonticon('icon-check', 'style="color: #7ccc00;"') : functions::draw_fonticon('icon-times', 'style="color: #c00;"'); ?>
+					<?php echo empty($pathfile['error']) ? f::draw_fonticon('icon-check', 'style="color: #7ccc00;"') : f::draw_fonticon('icon-times', 'style="color: #c00;"'); ?>
 				</td>
 			</tr>
 			<?php } ?>

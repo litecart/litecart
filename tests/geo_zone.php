@@ -25,7 +25,7 @@
 
 		// Create a new entity
 		$geo_zone = new ent_geo_zone();
-		$geo_zone->data = functions::array_update($geo_zone->data, $data);
+		$geo_zone->data = f::array_update($geo_zone->data, $data);
 		$geo_zone->save();
 
 		// Check if the entity was created
@@ -46,7 +46,7 @@
 		}
 
 		// Check if data was set correctly
-		if (!functions::array_intersect_compare($data, $geo_zone->data)) {
+		if (!f::array_intersect_compare($data, $geo_zone->data)) {
 			throw new Exception('The geo zone data was not stored correctly');
 		}
 
@@ -62,13 +62,13 @@
 		];
 
 		// Update some data
-		$geo_zone->data = functions::array_update($geo_zone->data, $data);
+		$geo_zone->data = f::array_update($geo_zone->data, $data);
 
 		// Save changes to database
 		$geo_zone->save();
 
 		// Check if data was set correctly
-		if (!functions::array_intersect_compare($data, $geo_zone->data)) {
+		if (!f::array_intersect_compare($data, $geo_zone->data)) {
 			throw new Exception('The geo zone data was not updated correctly');
 		}
 

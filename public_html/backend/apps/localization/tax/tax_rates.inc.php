@@ -26,15 +26,15 @@
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink(__APP__.'/tax/edit_tax_rate'), t('title_create_new_tax_rate', 'Create New Tax Rate'), '', 'create'); ?>
+		<?php echo f::form_button_link(document::ilink(__APP__.'/tax/edit_tax_rate'), t('title_create_new_tax_rate', 'Create New Tax Rate'), '', 'create'); ?>
 	</div>
 
-	<?php echo functions::form_begin('tax_rates_form', 'post'); ?>
+	<?php echo f::form_begin('tax_rates_form', 'post'); ?>
 
 		<table class="table data-table">
 			<thead>
 				<tr>
-					<th><?php echo functions::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th><?php echo f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th><?php echo t('title_id', 'ID'); ?></th>
 					<th><?php echo t('title_tax_class', 'Tax Class'); ?></th>
 					<th><?php echo t('title_geo_zone', 'Geo Zone'); ?></th>
@@ -48,14 +48,14 @@
 			<tbody>
 				<?php foreach ($tax_rates as $tax_rate) { ?>
 				<tr>
-					<td><?php echo functions::form_checkbox('tax_rates[]', $tax_rate['id']); ?></td>
+					<td><?php echo f::form_checkbox('tax_rates[]', $tax_rate['id']); ?></td>
 					<td><?php echo $tax_rate['id']; ?></td>
 					<td><?php echo $tax_rate['tax_class']; ?></td>
 					<td><?php echo $tax_rate['geo_zone']; ?></td>
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/tax/edit_tax_rate', ['tax_rate_id' => $tax_rate['id']], true); ?>"><?php echo $tax_rate['name']; ?></a></td>
 					<td><?php echo $tax_rate['description']; ?></td>
 					<td><?php echo language::number_format($tax_rate['rate'], 4); ?></td>
-					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/tax/edit_tax_rate', ['tax_rate_id' => $tax_rate['id']], true); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/tax/edit_tax_rate', ['tax_rate_id' => $tax_rate['id']], true); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo f::draw_fonticon('edit'); ?></a></td>
 				</tr>
 				<?php } ?>
 			</tbody>
@@ -69,11 +69,11 @@
 			</tfoot>
 		</table>
 
-	<?php echo functions::form_end(); ?>
+	<?php echo f::form_end(); ?>
 
 	<?php if ($num_pages > 1) { ?>
 	<div class="card-footer">
-		<?php echo functions::draw_pagination($num_pages); ?>
+		<?php echo f::draw_pagination($num_pages); ?>
 	</div>
 	<?php } ?>
 </div>

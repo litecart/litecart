@@ -25,7 +25,7 @@
 
 		// Create a new entity
 		$redirect = new ent_redirect();
-		$redirect->data = functions::array_update($redirect->data, $data);
+		$redirect->data = f::array_update($redirect->data, $data);
 		$redirect->save();
 
 		// Check if the entity was created
@@ -46,7 +46,7 @@
 		}
 
 		// Check if data was set correctly
-		if (!functions::array_intersect_compare($data, $redirect->data)) {
+		if (!f::array_intersect_compare($data, $redirect->data)) {
 			throw new Exception('The redirect data was not stored correctly' . print_r($redirect->data, true) . print_r($data, true));
 		}
 
@@ -62,13 +62,13 @@
 		];
 
 		// Update some data
-		$redirect->data = functions::array_update($redirect->data, $data);
+		$redirect->data = f::array_update($redirect->data, $data);
 
 		// Save changes to database
 		$redirect->save();
 
 		// Check if data was set correctly
-		if (!functions::array_intersect_compare($data, $redirect->data)) {
+		if (!f::array_intersect_compare($data, $redirect->data)) {
 			throw new Exception('The redirect data was not updated correctly');
 		}
 

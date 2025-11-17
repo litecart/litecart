@@ -103,7 +103,7 @@
 	</div>
 
 	<div class="card-body">
-		<?php echo functions::form_begin('favicon_form', 'post', false, true); ?>
+		<?php echo f::form_begin('favicon_form', 'post', false, true); ?>
 
 			<div class="icons">
 
@@ -128,8 +128,8 @@
 			<div class="form-group" style="max-width: 480px;">
 				<label><?php echo t('title_new_icon', 'New Icon'); ?></label>
 				<div class="input-group">
-					<?php echo functions::form_input_file('image', 'accept=".ico,.png,.svg"'); ?>
-					<?php echo functions::form_button('upload', t('title_upload', 'Upload'), 'submit'); ?>
+					<?php echo f::form_input_file('image', 'accept=".ico,.png,.svg"'); ?>
+					<?php echo f::form_button('upload', t('title_upload', 'Upload'), 'submit'); ?>
 				</div>
 			</div>
 
@@ -137,6 +137,6 @@
 				'{size}' => '256x256'
 			]); ?></p>
 
-		<?php echo functions::form_end(); ?>
+		<?php echo f::form_end(); ?>
 	</div>
 </div>

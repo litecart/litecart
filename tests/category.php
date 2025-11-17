@@ -32,7 +32,7 @@
 		########################################################################
 
 		$category = new ent_category();
-		$category->data = functions::array_update($category->data, $data);
+		$category->data = f::array_update($category->data, $data);
 		$category->save();
 
 		if (!$category_id = $category->data['id']) {
@@ -45,7 +45,7 @@
 
 		$category = new ent_category($category_id);
 
-		if (!functions::array_intersect_compare($data, $category->data)) {
+		if (!f::array_intersect_compare($data, $category->data)) {
 			throw new Exception('The category data was not stored correctly');
 		}
 
@@ -69,15 +69,15 @@
 			'priority' => 1,
 		];
 
-		$category->data = functions::array_update($category->data, $data);
+		$category->data = f::array_update($category->data, $data);
 		$category->save();
 
 		try {
-			if (!functions::array_intersect_compare($data, $category->data)) {
+			if (!f::array_intersect_compare($data, $category->data)) {
 				throw new Exception('The category data was not updated correctly');
 			}
 		} catch (Exception $e) {
-			throw new Exception('Error in functions::array_intersect_compare function: ' . $e->getMessage());
+			throw new Exception('Error in f::array_intersect_compare function: ' . $e->getMessage());
 		}
 
 		########################################################################

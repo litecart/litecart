@@ -55,7 +55,7 @@
 
 		// Create a new entity
 		$order = new ent_order();
-		$order->data = functions::array_update($order->data, $data);
+		$order->data = f::array_update($order->data, $data);
 		foreach ($items as $item) $order->add_item($item);
 		$order->save();
 
@@ -77,7 +77,7 @@
 		}
 
 		// Check if data was set correctly
-		if (!functions::array_intersect_compare($data, $order->data)) {
+		if (!f::array_intersect_compare($data, $order->data)) {
 			throw new Exception('The order data was not stored correctly');
 		}
 
@@ -107,13 +107,13 @@
 		];
 
 		// Update some data
-		$order->data = functions::array_update($order->data, $data);
+		$order->data = f::array_update($order->data, $data);
 
 		// Save changes to database
 		$order->save();
 
 		// Check if data was set correctly
-		if (!functions::array_intersect_compare($data, $order->data)) {
+		if (!f::array_intersect_compare($data, $order->data)) {
 			throw new Exception('The order data was not updated correctly');
 		}
 

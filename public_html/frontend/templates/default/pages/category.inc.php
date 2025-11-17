@@ -43,7 +43,7 @@
 
 				<nav class="pills" style="margin-bottom: 2em;">
 					<a class="pill-item" href="<?php echo document::href_ilink(''); ?>">
-						<?php echo functions::draw_fonticon('icon-chevron-left'); ?> <?php echo t('title_back', 'Back'); ?>
+						<?php echo f::draw_fonticon('icon-chevron-left'); ?> <?php echo t('title_back', 'Back'); ?>
 					</a>
 				</nav>
 
@@ -57,11 +57,11 @@
 						<?php include 'app://frontend/partials/box_category_tree.inc.php'; ?>
 
 						<section id="box-category-filter">
-							<?php echo functions::form_begin('filter_form', 'get'); ?>
+							<?php echo f::form_begin('filter_form', 'get'); ?>
 
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_product_name', 'Product Name'); ?></div>
-										<?php echo functions::form_input_search('product_name', true, 'autocomplete="off" data-token-group="name" data-token-title="'. t('title_name', 'Name') .'" placeholder="'. functions::escape_attr(t('text_filter_by_product_name', 'Filter by product name')) .'"'); ?>
+										<?php echo f::form_input_search('product_name', true, 'autocomplete="off" data-token-group="name" data-token-title="'. t('title_name', 'Name') .'" placeholder="'. f::escape_attr(t('text_filter_by_product_name', 'Filter by product name')) .'"'); ?>
 									</label>
 
 									<?php if ($brands) { ?>
@@ -73,7 +73,7 @@
 											</div>
 											<ul class="dropdown-content">
 												<?php foreach ($brands as $brand) { ?>
-												<li><?php echo functions::form_checkbox('brands[]', [$brand['id'], $brand['name']], true, 'data-token-group="brand" data-token-title="'. t('title_brand', 'Brand') .'" data-token-value="'. $brand['name'] .'"'); ?></li>
+												<li><?php echo f::form_checkbox('brands[]', [$brand['id'], $brand['name']], true, 'data-token-group="brand" data-token-title="'. t('title_brand', 'Brand') .'" data-token-value="'. $brand['name'] .'"'); ?></li>
 												<?php } ?>
 											</ul>
 										</div>
@@ -89,7 +89,7 @@
 											</div>
 											<ul class="dropdown-content">
 												<?php foreach ($attribute['values'] as $value) { ?>
-												<li><?php echo !empty($attribute['select_multiple']) ? functions::form_checkbox('attributes['. $attribute['id'] .'][]', [$value['id'], $value['value']], true, 'data-token-group="attribute-'. $attribute['id'] .'" data-token-title="'. functions::escape_attr($attribute['name']) .'" data-token-value="'. functions::escape_attr($value['value']) .'"') : functions::form_radio_button('attributes['. $group['id'] .'][]', [$value['id'], $value['value']], true, 'data-token-group="attribute-'. $attribute['id'] .'" data-token-title="'. functions::escape_attr($attribute['name']) .'" data-token-value="'. functions::escape_attr($value['value']) .'"'); ?></li>
+												<li><?php echo !empty($attribute['select_multiple']) ? f::form_checkbox('attributes['. $attribute['id'] .'][]', [$value['id'], $value['value']], true, 'data-token-group="attribute-'. $attribute['id'] .'" data-token-title="'. f::escape_attr($attribute['name']) .'" data-token-value="'. f::escape_attr($value['value']) .'"') : f::form_radio_button('attributes['. $group['id'] .'][]', [$value['id'], $value['value']], true, 'data-token-group="attribute-'. $attribute['id'] .'" data-token-title="'. f::escape_attr($attribute['name']) .'" data-token-value="'. f::escape_attr($value['value']) .'"'); ?></li>
 												<?php } ?>
 											</ul>
 										</div>
@@ -99,15 +99,15 @@
 									<div class="form-group">
 										<div class="form-label"><?php echo t('title_price_range', 'Price Range'); ?></div>
 										<div class="input-group">
-											<?php echo functions::form_input_number('price_range[min]', true, 'placeholder="'. t('title_min', 'Min') .'"'); ?>
+											<?php echo f::form_input_number('price_range[min]', true, 'placeholder="'. t('title_min', 'Min') .'"'); ?>
 											<span class="input-group-text"> &ndash; </span>
-											<?php echo functions::form_input_number('price_range[max]', true, 'placeholder="'. t('title_max', 'Max') .'"'); ?>
+											<?php echo f::form_input_number('price_range[max]', true, 'placeholder="'. t('title_max', 'Max') .'"'); ?>
 										</div>
 									</div>
 
-									<?php echo functions::form_input_hidden('sort', ''); ?>
+									<?php echo f::form_input_hidden('sort', ''); ?>
 
-							<?php echo functions::form_end(); ?>
+							<?php echo f::form_end(); ?>
 						</section>
 
 					</div>
@@ -144,7 +144,7 @@
 
 							<?php if ($image) { ?>
 							<div style="flex: 0 0 320px;">
-								<?php echo functions::draw_thumbnail($image, 480, 0, 'category'); ?>
+								<?php echo f::draw_thumbnail($image, 480, 0, 'category'); ?>
 							</div>
 							<?php } ?>
 
@@ -170,13 +170,13 @@
 
 									<ul class="dropdown-content">
 										<?php foreach ($sort_alternatives as $key => $title) { ?>
-										<li><?php echo functions::form_radio_button('sort', [$key, $title], true); ?></li>
+										<li><?php echo f::form_radio_button('sort', [$key, $title], true); ?></li>
 										<?php } ?>
 									</ul>
 								</div>
 
 								<div style="display: inline-block;">
-									<?php echo functions::form_toggle('list_style', ['columns' => functions::draw_fonticon('icon-th-large'), 'rows' => functions::draw_fonticon('icon-bars')], true, 'data-token-group="list_style" data-token-title="'. t('title_list_style', 'List Style') .'"'); ?>
+									<?php echo f::form_toggle('list_style', ['columns' => f::draw_fonticon('icon-th-large'), 'rows' => f::draw_fonticon('icon-bars')], true, 'data-token-group="list_style" data-token-title="'. t('title_list_style', 'List Style') .'"'); ?>
 								</div>
 							</div>
 						</div>
@@ -189,13 +189,13 @@
 
 <?php /*
 						<nav class="pills hidden-xs" style="margin-bottom: 1em;">
-							<a class="pill-item" href="<?php echo !empty($parent_id) ? document::href_ilink('category', ['category_id' => $parent_id]) : document::href_ilink(''); ?>"><?php echo functions::draw_fonticon('icon-chevron-left'); ?> <?php echo t('title_back', 'Back'); ?></a>
+							<a class="pill-item" href="<?php echo !empty($parent_id) ? document::href_ilink('category', ['category_id' => $parent_id]) : document::href_ilink(''); ?>"><?php echo f::draw_fonticon('icon-chevron-left'); ?> <?php echo t('title_back', 'Back'); ?></a>
 							<?php foreach ($subcategories as $subcategory) { ?><a class="nav-item" href="<?php echo document::href_ilink('category', ['category_id' => $subcategory['id']]); ?>"><?php echo $subcategory['name']; ?></a><?php } ?>
 						</nav>
 */ ?>
 
 						<section class="listing products <?php echo (isset($_GET['list_style']) && $_GET['list_style'] == 'rows') ? 'rows' : 'columns'; ?>">
-							<?php foreach ($products as $product) echo functions::draw_listing_product($product, ['category_id']); ?>
+							<?php foreach ($products as $product) echo f::draw_listing_product($product, ['category_id']); ?>
 						</section>
 
 						<?php } ?>
@@ -229,7 +229,7 @@
 		if ($('input[name="price_range[min]"]').val() || $('input[name="price_range[max]"]').val()) {
 			$('#filter-tokens').append([
 				'<span class="token" data-group="price-range" data-name="price_range[min]" data-value="'+ $('input[name="price_range[min]"]').val() +'">',
-				'<?php echo functions::escape_js(t('title_price_range', 'Price Range')) ; ?>: '+ $('input[name="price_range[min]"]').val() +' &ndash; '+ $('input[name="price_range[max]"]').val(),
+				'<?php echo f::escape_js(t('title_price_range', 'Price Range')) ; ?>: '+ $('input[name="price_range[min]"]').val() +' &ndash; '+ $('input[name="price_range[max]"]').val(),
 				'<a href="#" class="remove">×</a>',
 				'</span>'
 			].join('\n'));

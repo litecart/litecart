@@ -686,7 +686,7 @@
 		if (!empty($_REQUEST['country_code'])) {
 			echo '<p>Patching installation with regional data...' . PHP_EOL;
 
-			$directories = functions::file_search('data/*{'. $_REQUEST['country_code'] .',XX}*/', GLOB_BRACE);
+			$directories = f::file_search('data/*{'. $_REQUEST['country_code'] .',XX}*/', GLOB_BRACE);
 
 			if (!empty($directories)) {
 				foreach ($directories as $dir) {

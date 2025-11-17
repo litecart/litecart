@@ -121,20 +121,20 @@
 	</div>
 
 	<div class="card-body">
-		<?php echo functions::form_begin('site_tag_form', 'post', false, false, 'autocomplete="off" style="max-width: 960px;"'); ?>
+		<?php echo f::form_begin('site_tag_form', 'post', false, false, 'autocomplete="off" style="max-width: 960px;"'); ?>
 
 			<div class="grid">
 				<div class="col-md-6">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_status', 'Status'); ?></div>
-						<?php echo functions::form_toggle('status', 'e/d', true); ?>
+						<?php echo f::form_toggle('status', 'e/d', true); ?>
 					</label>
 				</div>
 
 				<div class="col-sm-6">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
-						<?php echo functions::form_input_text('name', true, 'required'); ?>
+						<?php echo f::form_input_text('name', true, 'required'); ?>
 					</label>
 				</div>
 			</div>
@@ -143,34 +143,34 @@
 				<div class="col-md-6">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_position', 'Position'); ?></div>
-						<?php echo functions::form_select('position', $position_options, true); ?>
+						<?php echo f::form_select('position', $position_options, true); ?>
 					</label>
 				</div>
 
 				<div class="col-md-6">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_priority', 'Priority'); ?></div>
-						<?php echo functions::form_input_number('priority', true); ?>
+						<?php echo f::form_input_number('priority', true); ?>
 					</label>
 				</div>
 			</div>
 
 			<label class="form-group">
 				<div class="form-label"><?php echo t('title_require_consent', 'Require Consent'); ?></div>
-				<?php echo functions::form_select_optgroup('require_consent', $consent_options, true); ?>
+				<?php echo f::form_select_optgroup('require_consent', $consent_options, true); ?>
 			</label>
 
 			<label class="form-group">
 				<div class="form-label"><?php echo t('title_html_content', 'HTML Content'); ?></div>
-				<?php echo functions::form_input_code('content', true, 'required style="height: 480px;"'); ?>
+				<?php echo f::form_input_code('content', true, 'required style="height: 480px;"'); ?>
 			</label>
 
 			<div class="card-action">
-				<?php echo functions::form_button_predefined('save'); ?>
-				<?php echo (!empty($site_tag->data['id'])) ? functions::form_button_predefined('delete') : ''; ?>
-				<?php echo functions::form_button_predefined('cancel'); ?>
+				<?php echo f::form_button_predefined('save'); ?>
+				<?php echo (!empty($site_tag->data['id'])) ? f::form_button_predefined('delete') : ''; ?>
+				<?php echo f::form_button_predefined('cancel'); ?>
 			</div>
 
-		<?php echo functions::form_end(); ?>
+		<?php echo f::form_end(); ?>
 	</div>
 </div>

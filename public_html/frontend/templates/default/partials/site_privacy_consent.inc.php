@@ -2,9 +2,9 @@
 
 	$draw_checkbox = function($class_id, $value, $parameters='') use ($consents) {
 		if (!isset($_COOKIE['privacy_consents']) || (isset($consents[$class_id]) && in_array($value, $consents[$class_id]))) {
-			return functions::form_checkbox('consents['. $class_id .'][]', $value, $value, $parameters);
+			return f::form_checkbox('consents['. $class_id .'][]', $value, $value, $parameters);
 		} else {
-			return functions::form_checkbox('consents['. $class_id .'][]', $value, true, $parameters);
+			return f::form_checkbox('consents['. $class_id .'][]', $value, true, $parameters);
 		}
 	};
 
@@ -30,7 +30,7 @@
 			]); ?>
 		</div>
 
-		<?php echo functions::form_begin('cookies_form', 'post'); ?>
+		<?php echo f::form_begin('cookies_form', 'post'); ?>
 
 			<div class="privacy-classes">
 
@@ -42,8 +42,8 @@
 							<div class="grid">
 								<div class="col-1 text-center">
 									<?php if ($class['id'] == 'necessary') { ?>
-									<?php echo functions::form_draw_hidden_field('consents['. $class['id'] .'][]', 'all'); ?>
-									<?php echo functions::form_draw_checkbox('consents['. $class['id'] .'][]', 'all', 'all', 'disabled'); ?>
+									<?php echo f::form_draw_hidden_field('consents['. $class['id'] .'][]', 'all'); ?>
+									<?php echo f::form_draw_checkbox('consents['. $class['id'] .'][]', 'all', 'all', 'disabled'); ?>
 									<?php } else { ?>
 									<?php echo $draw_checkbox($class['id'], 'all', 'all'); ?>
 									<?php } ?>
@@ -62,7 +62,7 @@
 								<label>
 									<?php echo $draw_checkbox($class['id'], $third_party['id'], 'disabled'); ?>
 									<a class="name" href="<?php echo document::href_ilink('third_parties', ['third_party_id' => $third_party['id']]); ?>">
-										<?php echo functions::escape_html($third_party['name']); ?>
+										<?php echo f::escape_html($third_party['name']); ?>
 									</a>
 								</label>
 							</div>
@@ -75,18 +75,18 @@
 			</div>
 
 			<div class="buttons text-center">
-				<?php echo functions::form_button('privacy_consent', ['1', t('text_accept', 'Accept')], 'submit', 'style="font-weight: bold;"'); ?>
-				<?php echo functions::form_button('privacy_consent', ['0', t('text_reject', 'Reject')], 'submit'); ?>
+				<?php echo f::form_button('privacy_consent', ['1', t('text_accept', 'Accept')], 'submit', 'style="font-weight: bold;"'); ?>
+				<?php echo f::form_button('privacy_consent', ['0', t('text_reject', 'Reject')], 'submit'); ?>
 			</div>
 
-		<?php echo functions::form_end(); ?>
+		<?php echo f::form_end(); ?>
 	</div>
 </div>
 
 <script>
 	try {
-		const privacy_classes = <?php echo functions::format_json($privacy_classes); ?>;
-		const consents = <?php echo functions::format_json($consents); ?>;
+		const privacy_classes = <?php echo f::format_json($privacy_classes); ?>;
+		const consents = <?php echo f::format_json($consents); ?>;
 		$('#site-privacy-consent').privacyConsent(privacy_classes, consents);
 	} catch (e) {
 		console.error('Could not initiate privacy consent manager:' + e.message);

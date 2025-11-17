@@ -22,7 +22,7 @@
 
 		// Categories
 
-		$site_navigation->snippets['categories'] = functions::catalog_categories_query(0)->fetch_all(function($category) {
+		$site_navigation->snippets['categories'] = f::catalog_categories_query(0)->fetch_all(function($category) {
 			return [
 				'type' => 'category',
 				'id' => $category['id'],

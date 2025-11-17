@@ -136,7 +136,7 @@
 				'bytes' => strlen($response_headers . "\r\n" . $response_body),
 			];
 
-			file_put_contents(functions::file_realpath('storage://logs/http_request_last-'. $parts['host'] .'.log'), implode("\r\n", [
+			file_put_contents(f::file_realpath('storage://logs/http_request_last-'. $parts['host'] .'.log'), implode("\r\n", [
 				'##'. str_pad(' ['. date('Y-m-d H:i:s', $this->last_request['timestamp']) .'] Request ', 70, '#', STR_PAD_RIGHT),
 				'',
 				$this->last_request['headers'],

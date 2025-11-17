@@ -12,7 +12,7 @@
 	if (!settings::get('box_recently_viewed_products_num_items')) return;
 
 	// Get from catalog
-	$recently_viewed_products = functions::catalog_products_query([
+	$recently_viewed_products = f::catalog_products_query([
 		'products' => array_reverse(array_column(session::$data['recently_viewed_products'], 'id'))
 	])->fetch_all();
 
@@ -29,7 +29,7 @@
 	$box_recently_viewed_products = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/box_recently_viewed_products.inc.php');
 	$box_recently_viewed_products->snippets['products'] = [];
 
-	list($width, $height) = functions::image_scale_by_width(160, settings::get('product_image_ratio'));
+	list($width, $height) = f::image_scale_by_width(160, settings::get('product_image_ratio'));
 
 	$count = 0;
 	foreach ($recently_viewed_products as $product) {

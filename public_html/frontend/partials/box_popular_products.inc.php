@@ -14,7 +14,7 @@
 	$box_popular_products_cache_token = cache::token('box_popular_products', ['language', 'prices'], 'file');
 	if (!$box_popular_products->snippets['products'] = cache::get($box_popular_products_cache_token)) {
 
-		$products = functions::catalog_products_query([
+		$products = f::catalog_products_query([
 			'sort' => 'popularity',
 			'limit' => settings::get('box_popular_products_num_items') * 2,
 		])->fetch_all();

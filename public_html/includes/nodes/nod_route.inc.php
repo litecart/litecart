@@ -59,7 +59,7 @@
 
 		public static function load($pattern) {
 
-			foreach (functions::file_search($pattern) as $file) {
+			foreach (f::file_search($pattern) as $file) {
 
 				$routes = include $file;
 				if (!$routes) continue;
@@ -209,7 +209,7 @@
 			}
 
 			// Resolve a static resource
-			$static_path = functions::file_resolve_path(parse_url(self::$request, PHP_URL_PATH));
+			$static_path = f::file_resolve_path(parse_url(self::$request, PHP_URL_PATH));
 
 			// Create whitelist of static folder content
 			$static_folders = [
@@ -318,7 +318,7 @@
 				$path = preg_replace($pattern, $replace, $path);
 			}
 
-			$path = functions::file_resolve_path($path);
+			$path = f::file_resolve_path($path);
 
 			// URL decode any encoded path segments
 			$path = urldecode(parse_url($path, PHP_URL_PATH));

@@ -6,8 +6,8 @@
 
 		<?php foreach ($products as $product) { ?>
 		<div class="product">
-			<a class="link" href="<?php echo functions::escape_html($product['link']); ?>" title="<?php echo functions::escape_html($product['name']); ?>">
-				<?php echo functions::draw_thumbnail($product['image'], 64, 0, 'product', 'alt=""'); ?>
+			<a class="link" href="<?php echo f::escape_html($product['link']); ?>" title="<?php echo f::escape_html($product['name']); ?>">
+				<?php echo f::draw_thumbnail($product['image'], 64, 0, 'product', 'alt=""'); ?>
 			</a>
 		</div>
 		<?php } ?>

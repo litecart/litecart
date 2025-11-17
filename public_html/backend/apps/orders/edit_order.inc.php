@@ -460,7 +460,7 @@
 }
 </style>
 
-<?php echo functions::form_begin('form_order', 'post'); ?>
+<?php echo f::form_begin('form_order', 'post'); ?>
 
 	<div class="card">
 		<div class="card-header">
@@ -472,15 +472,15 @@
 		<div class="card-action">
 			<ul class="list-inline">
 				<li>
-					<?php echo functions::form_checkbox('send_order_copy', ['1', t('text_send_order_copy_email', 'Send order copy email')], true); ?>
+					<?php echo f::form_checkbox('send_order_copy', ['1', t('text_send_order_copy_email', 'Send order copy email')], true); ?>
 				</li>
 				<li>
-					<?php echo functions::form_checkbox('unread', ['1', t('title_mark_as_unread', 'Mark as unread')], false); ?>
+					<?php echo f::form_checkbox('unread', ['1', t('title_mark_as_unread', 'Mark as unread')], false); ?>
 				</li>
 				<li>
-					<?php echo functions::form_button_predefined('save'); ?>
-					<?php if (!empty($order->data['id'])) echo functions::form_button('delete', t('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!confirm(\''. t('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete'); ?>
-					<?php echo functions::form_button_predefined('cancel'); ?>
+					<?php echo f::form_button_predefined('save'); ?>
+					<?php if (!empty($order->data['id'])) echo f::form_button('delete', t('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!confirm(\''. t('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete'); ?>
+					<?php echo f::form_button_predefined('cancel'); ?>
 				</li>
 			</ul>
 		</div>
@@ -493,21 +493,21 @@
 						<div class="col-md-4">
 							<div class="form-group">
 								<div class="form-label"><?php echo t('title_order_status', 'Order Status'); ?></div>
-								<?php echo functions::form_select_order_status('order_status_id', true); ?>
+								<?php echo f::form_select_order_status('order_status_id', true); ?>
 							</div>
 						</div>
 
 						<div class="col-md-4">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_date', 'Date'); ?></div>
-								<div class="form-input" readonly><?php echo functions::datetime_when($order->data['created_at']); ?></div>
+								<div class="form-input" readonly><?php echo f::datetime_when($order->data['created_at']); ?></div>
 							</label>
 						</div>
 
 						<div class="col-md-4">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_reference', 'Reference'); ?></div>
-								<?php echo functions::form_input_text('reference', true); ?>
+								<?php echo f::form_input_text('reference', true); ?>
 							</label>
 						</div>
 					</div>
@@ -516,21 +516,21 @@
 						<div class="col-md-4">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_language', 'Language'); ?></div>
-								<?php echo functions::form_select_language('language_code', true); ?>
+								<?php echo f::form_select_language('language_code', true); ?>
 							</label>
 						</div>
 
 						<div class="col-md-4">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_currency', 'Currency'); ?></div>
-								<?php echo functions::form_select_currency('currency_code', true); ?>
+								<?php echo f::form_select_currency('currency_code', true); ?>
 							</label>
 						</div>
 
 						<div class="col-md-4">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_currency_value', 'Currency Value'); ?></div>
-								<?php echo functions::form_input_decimal('currency_value', true, 4); ?>
+								<?php echo f::form_input_decimal('currency_value', true, 4); ?>
 							</label>
 						</div>
 					</div>
@@ -539,7 +539,7 @@
 						<div class="col-md-4">
 							<div class="form-group">
 								<label class="form-label"><?php echo t('title_tax_display', 'Tax Display'); ?></label>
-								<?php echo functions::form_toggle('display_prices_including_tax', ['1' => t('title_incl_tax', 'Incl. Tax'), '0' => t('title_excl_tax', 'Excl. Tax')], true); ?>
+								<?php echo f::form_toggle('display_prices_including_tax', ['1' => t('title_incl_tax', 'Incl. Tax'), '0' => t('title_excl_tax', 'Excl. Tax')], true); ?>
 							</div>
 						</div>
 
@@ -551,7 +551,7 @@
 										<?php echo $order->data['ip_address']; ?> <?php echo !empty($order->data['hostname']) ? '('. $order->data['hostname'] .')' : ''; ?>
 										<?php if (!empty($order->data['ip_address'])) { ?>
 										<a class="btn btn-default btn-sm" href="https://ip-api.com/#<?php echo $order->data['ip_address']; ?>" target="_blank" style="margin: -.5em 0; margin-inline-start: 1em;">
-											<?php echo functions::draw_fonticon('icon-square-out', ''); ?>
+											<?php echo f::draw_fonticon('icon-square-out', ''); ?>
 										</a>
 										<?php } ?>
 									</div>
@@ -564,7 +564,7 @@
 				<div class="col-md-4">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_notes', 'Notes'); ?></div>
-						<?php echo functions::form_textarea('notes', true, 'style="height: 191px;"'); ?>
+						<?php echo f::form_textarea('notes', true, 'style="height: 191px;"'); ?>
 					</label>
 				</div>
 			</div>
@@ -584,8 +584,8 @@
 							<div class="form-group">
 								<div class="input-group">
 									<div class="selected-account form-input"><?php echo t('title_id', 'ID'); ?>: <span class="id"><?php if (isset($_POST['customer']['id'])) echo (int)$_POST['customer']['id']; ?></span> &ndash; <span class="name"><?php echo $account_name; ?></span> <a href="<?php echo document::href_ilink('customers/customer_picker'); ?>" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin-inline-start: 5px;"><?php echo t('title_change', 'Change'); ?></a></div>
-									<?php echo functions::form_input_hidden('customer[id]', true); ?>
-									<?php echo functions::form_button('get_address', t('title_get_address', 'Get Address'), 'button'); ?>
+									<?php echo f::form_input_hidden('customer[id]', true); ?>
+									<?php echo f::form_button('get_address', t('title_get_address', 'Get Address'), 'button'); ?>
 								</div>
 							</div>
 
@@ -593,14 +593,14 @@
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_company_name', 'Company Name'); ?></div>
-										<?php echo functions::form_input_text('customer[company]', true); ?>
+										<?php echo f::form_input_text('customer[company]', true); ?>
 									</label>
 								</div>
 
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_tax_id', 'Tax ID / VATIN'); ?></div>
-										<?php echo functions::form_input_text('customer[tax_id]', true); ?>
+										<?php echo f::form_input_text('customer[tax_id]', true); ?>
 									</label>
 								</div>
 							</div>
@@ -609,14 +609,14 @@
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_firstname', 'First Name'); ?></div>
-										<?php echo functions::form_input_text('customer[firstname]', true); ?>
+										<?php echo f::form_input_text('customer[firstname]', true); ?>
 									</label>
 								</div>
 
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_lastname', 'Last Name'); ?></div>
-										<?php echo functions::form_input_text('customer[lastname]', true); ?>
+										<?php echo f::form_input_text('customer[lastname]', true); ?>
 									</label>
 								</div>
 							</div>
@@ -625,14 +625,14 @@
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_address1', 'Address 1'); ?></div>
-										<?php echo functions::form_input_text('customer[address1]', true); ?>
+										<?php echo f::form_input_text('customer[address1]', true); ?>
 									</label>
 								</div>
 
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_address2', 'Address 2'); ?></div>
-										<?php echo functions::form_input_text('customer[address2]', true); ?>
+										<?php echo f::form_input_text('customer[address2]', true); ?>
 									</label>
 								</div>
 							</div>
@@ -641,14 +641,14 @@
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_postcode', 'Postal Code'); ?></div>
-										<?php echo functions::form_input_text('customer[postcode]', true); ?>
+										<?php echo f::form_input_text('customer[postcode]', true); ?>
 									</label>
 								</div>
 
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_city', 'City'); ?></div>
-										<?php echo functions::form_input_text('customer[city]', true); ?>
+										<?php echo f::form_input_text('customer[city]', true); ?>
 									</label>
 								</div>
 							</div>
@@ -657,7 +657,7 @@
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_country', 'Country'); ?></div>
-										<?php echo functions::form_select_country('customer[country_code]', true); ?>
+										<?php echo f::form_select_country('customer[country_code]', true); ?>
 									</label>
 								</div>
 
@@ -673,20 +673,20 @@
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_phone_number', 'Phone Number'); ?></div>
-										<?php echo functions::form_input_phone('customer[phone]', true); ?>
+										<?php echo f::form_input_phone('customer[phone]', true); ?>
 									</label>
 								</div>
 
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_email_address', 'Email Address'); ?></div>
-										<?php echo functions::form_input_email('customer[email]', true); ?>
+										<?php echo f::form_input_email('customer[email]', true); ?>
 									</label>
 								</div>
 							</div>
 
 							<div class="form-group">
-								<?php echo functions::form_checkbox('customer[save]', ['1', t('text_save_details_to_customer_database', 'Save details to customer database')], true); ?>
+								<?php echo f::form_checkbox('customer[save]', ['1', t('text_save_details_to_customer_database', 'Save details to customer database')], true); ?>
 							</div>
 						</div>
 
@@ -694,21 +694,21 @@
 							<h2><?php echo t('title_shipping_address', 'Shipping Address'); ?></h2>
 
 							<div class="form-group">
-								<?php echo functions::form_button('copy_billing_address', t('title_copy_billing_address', 'Copy Billing Address'), 'button', 'class="btn btn-default btn-block" style="margin: 3px 0;"'); ?>
+								<?php echo f::form_button('copy_billing_address', t('title_copy_billing_address', 'Copy Billing Address'), 'button', 'class="btn btn-default btn-block" style="margin: 3px 0;"'); ?>
 							</div>
 
 							<div class="grid">
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_company_name', 'Company Name'); ?></div>
-										<?php echo functions::form_input_text('shipping_address[company]', true); ?>
+										<?php echo f::form_input_text('shipping_address[company]', true); ?>
 									</label>
 								</div>
 
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_tax_id', 'Tax ID / VATIN'); ?></div>
-										<?php echo functions::form_input_text('customer[tax_id]', true); ?>
+										<?php echo f::form_input_text('customer[tax_id]', true); ?>
 									</label>
 								</div>
 							</div>
@@ -717,14 +717,14 @@
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_firstname', 'First Name'); ?></div>
-										<?php echo functions::form_input_text('shipping_address[firstname]', true); ?>
+										<?php echo f::form_input_text('shipping_address[firstname]', true); ?>
 									</label>
 								</div>
 
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_lastname', 'Last Name'); ?></div>
-										<?php echo functions::form_input_text('shipping_address[lastname]', true); ?>
+										<?php echo f::form_input_text('shipping_address[lastname]', true); ?>
 									</label>
 								</div>
 							</div>
@@ -733,14 +733,14 @@
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_address1', 'Address 1'); ?></div>
-										<?php echo functions::form_input_text('shipping_address[address1]', true); ?>
+										<?php echo f::form_input_text('shipping_address[address1]', true); ?>
 									</label>
 								</div>
 
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_address2', 'Address 2'); ?></div>
-										<?php echo functions::form_input_text('shipping_address[address2]', true); ?>
+										<?php echo f::form_input_text('shipping_address[address2]', true); ?>
 									</label>
 								</div>
 							</div>
@@ -749,14 +749,14 @@
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_postcode', 'Postal Code'); ?></div>
-										<?php echo functions::form_input_text('shipping_address[postcode]', true); ?>
+										<?php echo f::form_input_text('shipping_address[postcode]', true); ?>
 									</label>
 								</div>
 
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_city', 'City'); ?></div>
-										<?php echo functions::form_input_text('shipping_address[city]', true); ?>
+										<?php echo f::form_input_text('shipping_address[city]', true); ?>
 									</label>
 								</div>
 							</div>
@@ -765,7 +765,7 @@
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_country', 'Country'); ?></div>
-										<?php echo functions::form_select_country('shipping_address[country_code]', true); ?>
+										<?php echo f::form_select_country('shipping_address[country_code]', true); ?>
 									</label>
 								</div>
 
@@ -781,20 +781,20 @@
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_phone_number', 'Phone Number'); ?></div>
-										<?php echo functions::form_input_phone('shipping_address[phone]', true); ?>
+										<?php echo f::form_input_phone('shipping_address[phone]', true); ?>
 									</label>
 								</div>
 
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_email_address', 'Email Address'); ?></div>
-										<?php echo functions::form_input_email('shipping_address[email]', true, 'required'); ?>
+										<?php echo f::form_input_email('shipping_address[email]', true, 'required'); ?>
 									</label>
 								</div>
 							</div>
 
 							<div class="form-group">
-								<?php echo functions::form_checkbox('shipping_address[save]', ['1', t('text_save_details_to_customer_database', 'Save details to customer database')], true); ?>
+								<?php echo f::form_checkbox('shipping_address[save]', ['1', t('text_save_details_to_customer_database', 'Save details to customer database')], true); ?>
 							</div>
 						</div>
 					</div>
@@ -811,14 +811,14 @@
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_option_id', 'Option ID'); ?></div>
-										<?php echo functions::form_input_text('payment_option[id]', true); ?>
+										<?php echo f::form_input_text('payment_option[id]', true); ?>
 									</label>
 								</div>
 
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
-										<?php echo functions::form_input_text('payment_option[name]', true); ?>
+										<?php echo f::form_input_text('payment_option[name]', true); ?>
 									</label>
 								</div>
 							</div>
@@ -827,35 +827,35 @@
 								<div class="col-md-7">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_transaction_id', 'Transaction ID'); ?></div>
-										<?php echo functions::form_input_text('payment_transaction_id', true); ?>
+										<?php echo f::form_input_text('payment_transaction_id', true); ?>
 									</label>
 								</div>
 
 								<div class="col-md-5">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_transaction_fee', 'Transaction Fee'); ?></div>
-										<?php echo functions::form_input_money('payment_transaction_fee', settings::get('store_currency_code'), true); ?>
+										<?php echo f::form_input_money('payment_transaction_fee', settings::get('store_currency_code'), true); ?>
 									</label>
 								</div>
 							</div>
 
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_receipt_url', 'Receipt URL'); ?></div>
-								<?php echo functions::form_input_url('payment_receipt_url', true); ?>
+								<?php echo f::form_input_url('payment_receipt_url', true); ?>
 							</label>
 
 							<div class="grid">
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_payment_terms', 'Payment Terms'); ?></div>
-										<?php echo functions::form_select_payment_term('payment_terms', true); ?>
+										<?php echo f::form_select_payment_term('payment_terms', true); ?>
 									</label>
 								</div>
 
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_date_paid', 'Date Paid'); ?></div>
-										<?php echo functions::form_input_datetime('date_paid', true); ?>
+										<?php echo f::form_input_datetime('date_paid', true); ?>
 									</label>
 								</div>
 							</div>
@@ -868,14 +868,14 @@
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_option_id', 'Option ID'); ?></div>
-										<?php echo functions::form_input_text('shipping_option[id]', true); ?>
+										<?php echo f::form_input_text('shipping_option[id]', true); ?>
 									</label>
 								</div>
 
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
-										<?php echo functions::form_input_text('shipping_option[name]', true); ?>
+										<?php echo f::form_input_text('shipping_option[name]', true); ?>
 									</label>
 								</div>
 							</div>
@@ -884,14 +884,14 @@
 								<div class="col-md-8">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_tracking_id', 'Tracking ID'); ?></div>
-										<?php echo functions::form_input_text('shipping_tracking_id', true); ?>
+										<?php echo f::form_input_text('shipping_tracking_id', true); ?>
 									</label>
 								</div>
 
 								<div class="col-md-4">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_purchase_cost', 'Purchase Cost'); ?></div>
-										<?php echo functions::form_input_money('shipping_purchase_cost', settings::get('store_currency_code'), true); ?>
+										<?php echo f::form_input_money('shipping_purchase_cost', settings::get('store_currency_code'), true); ?>
 									</label>
 								</div>
 							</div>
@@ -900,7 +900,7 @@
 								<div class="col-md-7">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_tracking_url', 'Tracking URL'); ?></div>
-										<?php echo functions::form_input_url('shipping_tracking_url', true); ?>
+										<?php echo f::form_input_url('shipping_tracking_url', true); ?>
 									</label>
 								</div>
 
@@ -916,14 +916,14 @@
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_incoterm', 'Incoterm'); ?></div>
-										<?php echo functions::form_select_incoterm('incoterm', true); ?>
+										<?php echo f::form_select_incoterm('incoterm', true); ?>
 									</label>
 								</div>
 
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_date_dispatched', 'Date Dispatched'); ?></div>
-										<?php echo functions::form_input_datetime('date_dispatched', true); ?>
+										<?php echo f::form_input_datetime('date_dispatched', true); ?>
 									</label>
 								</div>
 							</div>
@@ -966,25 +966,25 @@
 			}
 ?>
 						<div class="bubble <?php echo $type; ?>">
-							<?php echo functions::form_input_hidden('comments['.$key.'][id]', true); ?>
-							<?php echo functions::form_input_hidden('comments['.$key.'][order_id]', true); ?>
-							<?php echo functions::form_input_hidden('comments['.$key.'][author]', true); ?>
-							<?php echo functions::form_input_hidden('comments['.$key.'][text]', true); ?>
+							<?php echo f::form_input_hidden('comments['.$key.'][id]', true); ?>
+							<?php echo f::form_input_hidden('comments['.$key.'][order_id]', true); ?>
+							<?php echo f::form_input_hidden('comments['.$key.'][author]', true); ?>
+							<?php echo f::form_input_hidden('comments['.$key.'][text]', true); ?>
 
 							<?php echo nl2br($_POST['comments'][$key]['text']); ?>
 
-							<div class="date"><?php echo functions::datetime_when($_POST['comments'][$key]['created_at']); ?></div>
+							<div class="date"><?php echo f::datetime_when($_POST['comments'][$key]['created_at']); ?></div>
 
 							<div class="actions">
-								<a class="remove" href="#" title="<?php echo t('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('icon-times'); ?></a>
-								<label class="private" title="<?php echo functions::escape_html(t('title_hidden', 'Hidden')); ?>"><?php echo functions::form_checkbox('comments['.$key .'][hidden]', '1', true); ?> <?php echo functions::draw_fonticon('icon-eye-slash'); ?></label>
+								<a class="remove" href="#" title="<?php echo t('title_remove', 'Remove'); ?>"><?php echo f::draw_fonticon('icon-times'); ?></a>
+								<label class="private" title="<?php echo f::escape_html(t('title_hidden', 'Hidden')); ?>"><?php echo f::form_checkbox('comments['.$key .'][hidden]', '1', true); ?> <?php echo f::draw_fonticon('icon-eye-slash'); ?></label>
 							</div>
 						</div>
 						<?php } ?>
 						<?php } ?>
 
 						<div class="text-end">
-							<button class="add btn btn-default" type="button" title="<?php echo t('title_add', 'Add'); ?>"><?php echo functions::draw_fonticon('add'); ?> <?php echo t('title_add_comment', 'Add Comment'); ?></button>
+							<button class="add btn btn-default" type="button" title="<?php echo t('title_add', 'Add'); ?>"><?php echo f::draw_fonticon('add'); ?> <?php echo t('title_add_comment', 'Add Comment'); ?></button>
 						</div>
 					</div>
 
@@ -1001,7 +1001,7 @@
 		<table id="order-lines" class="table table-input data-table">
 			<thead>
 				<tr>
-					<th style="width: 50px;"><?php echo functions::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th style="width: 50px;"><?php echo f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th><?php echo t('title_item', 'Item'); ?></th>
 					<th><?php echo t('title_sku', 'SKU'); ?></th>
 					<th style="width: 100px;" class="text-center"><?php echo t('title_in_stock', 'In Stock'); ?></th>
@@ -1019,33 +1019,33 @@
 				<?php if (!empty($_POST['lines'])) foreach (array_keys($_POST['lines']) as $key) { ?>
 				<div draggable="true" class="line">
 					<tr>
-						<td><?php echo functions::form_checkbox('selected_lines[]', $key, true); ?></td>
+						<td><?php echo f::form_checkbox('selected_lines[]', $key, true); ?></td>
 						<td>
 							<?php echo !empty($_POST['lines'][$key]['product_id']) ? '<a class="link" href="'. document::href_ilink('f:product', ['product_id' => $_POST['lines'][$key]['product_id']]) .'" target="_blank">'. $_POST['lines'][$key]['name'] .'</a>' : $_POST['lines'][$key]['name']; ?>
-							<?php echo functions::form_input_hidden('lines['.$key.'][id]', true); ?>
-							<?php echo functions::form_input_hidden('lines['.$key.'][product_id]', true); ?>
-							<?php echo functions::form_input_hidden('lines['.$key.'][stock_option_id]', true); ?>
-							<?php echo functions::form_input_hidden('lines['.$key.'][name]', true); ?>
-							<?php echo functions::form_input_hidden('lines['.$key.'][userdata]', true); ?>
-							<?php echo functions::form_input_hidden('lines['.$key.'][tax_class_id]', true); ?>
-							<?php echo functions::form_input_hidden('lines['.$key.'][tax_rate]', true); ?>
+							<?php echo f::form_input_hidden('lines['.$key.'][id]', true); ?>
+							<?php echo f::form_input_hidden('lines['.$key.'][product_id]', true); ?>
+							<?php echo f::form_input_hidden('lines['.$key.'][stock_option_id]', true); ?>
+							<?php echo f::form_input_hidden('lines['.$key.'][name]', true); ?>
+							<?php echo f::form_input_hidden('lines['.$key.'][userdata]', true); ?>
+							<?php echo f::form_input_hidden('lines['.$key.'][tax_class_id]', true); ?>
+							<?php echo f::form_input_hidden('lines['.$key.'][tax_rate]', true); ?>
 						</td>
-						<td class="sku"><?php echo functions::escape_html($_POST['lines'][$key]['sku']); ?></td>
-						<td class="text-center"><?php if (isset($_POST['lines'][$key]['sufficient_stock'])) echo $line['sufficient_stock'] ? '<span style="color: #88cc44;">'. functions::draw_fonticon('icon-check') .' '. $line['stock_quantity'] .'</span>' : '<span style="color: #ff6644;">'. functions::draw_fonticon('icon-times') .' '. $line['stock_quantity'] .'</span>'; ?></td>
-						<td><?php echo functions::form_input_decimal('lines['.$key.'][quantity]', true, 2); ?></td>
-						<td><?php echo functions::form_input_decimal('lines['.$key.'][price]', true); ?></td>
-						<td><?php echo functions::form_input_decimal('lines['.$key.'][discount]', true); ?></td>
+						<td class="sku"><?php echo f::escape_html($_POST['lines'][$key]['sku']); ?></td>
+						<td class="text-center"><?php if (isset($_POST['lines'][$key]['sufficient_stock'])) echo $line['sufficient_stock'] ? '<span style="color: #88cc44;">'. f::draw_fonticon('icon-check') .' '. $line['stock_quantity'] .'</span>' : '<span style="color: #ff6644;">'. f::draw_fonticon('icon-times') .' '. $line['stock_quantity'] .'</span>'; ?></td>
+						<td><?php echo f::form_input_decimal('lines['.$key.'][quantity]', true, 2); ?></td>
+						<td><?php echo f::form_input_decimal('lines['.$key.'][price]', true); ?></td>
+						<td><?php echo f::form_input_decimal('lines['.$key.'][discount]', true); ?></td>
 						<td class="text-end sum"><?php echo currency::format($_POST['lines'][$key]['sum'], false, $_POST['currency_code'], $_POST['currency_value']); ?></td>
 						<td class="text-end sum_tax"><?php echo currency::format($_POST['lines'][$key]['sum_tax'], false, $_POST['currency_code'], $_POST['currency_value']); ?></td>
 						<td class="grabbable">
-							<?php echo functions::draw_fonticon('icon-arrows-v'); ?>
+							<?php echo f::draw_fonticon('icon-arrows-v'); ?>
 						</td>
 						<td>
 							<a class="btn btn-default btn-sm remove" href="#" title="<?php echo t('title_remove', 'Remove'); ?>">
-								<?php echo functions::draw_fonticon('remove'); ?>
+								<?php echo f::draw_fonticon('remove'); ?>
 							</a>
 							<a class="btn btn-default btn-sm edit" href="#" title="<?php echo t('title_edit', 'Edit'); ?>">
-								<?php echo functions::draw_fonticon('edit'); ?>
+								<?php echo f::draw_fonticon('edit'); ?>
 							</a>
 						</td>
 					</tr>
@@ -1053,24 +1053,24 @@
 					<div class="items">
 						<div draggable="true" class="item">
 							<tr>
-								<td class="text-center"><?php echo functions::form_checkbox('selected_items[]', $item['id']); ?></td>
+								<td class="text-center"><?php echo f::form_checkbox('selected_items[]', $item['id']); ?></td>
 								<td class="name">
-									<?php echo functions::form_input_hidden('lines['.$key.'][name]', true); ?>
-									<?php echo functions::form_input_hidden('lines['.$key.'][serial_number]', true); ?>
-									<?php echo functions::form_input_hidden('lines['.$key.'][sku]', true); ?>
-									<?php echo functions::form_input_hidden('lines['.$key.'][gtin]', true); ?>
-									<?php echo functions::form_input_hidden('lines['.$key.'][taric]', true); ?>
-									<?php echo functions::form_input_hidden('lines['.$key.'][weight]', true); ?>
-									<?php echo functions::form_input_hidden('lines['.$key.'][weight_unit]', true); ?>
-									<?php echo functions::form_input_hidden('lines['.$key.'][length]', true); ?>
-									<?php echo functions::form_input_hidden('lines['.$key.'][width]', true); ?>
-									<?php echo functions::form_input_hidden('lines['.$key.'][height]', true); ?>
-									<?php echo functions::form_input_hidden('lines['.$key.'][length_unit]', true); ?>
-									<?php echo functions::escape_html($item['name']); ?>
+									<?php echo f::form_input_hidden('lines['.$key.'][name]', true); ?>
+									<?php echo f::form_input_hidden('lines['.$key.'][serial_number]', true); ?>
+									<?php echo f::form_input_hidden('lines['.$key.'][sku]', true); ?>
+									<?php echo f::form_input_hidden('lines['.$key.'][gtin]', true); ?>
+									<?php echo f::form_input_hidden('lines['.$key.'][taric]', true); ?>
+									<?php echo f::form_input_hidden('lines['.$key.'][weight]', true); ?>
+									<?php echo f::form_input_hidden('lines['.$key.'][weight_unit]', true); ?>
+									<?php echo f::form_input_hidden('lines['.$key.'][length]', true); ?>
+									<?php echo f::form_input_hidden('lines['.$key.'][width]', true); ?>
+									<?php echo f::form_input_hidden('lines['.$key.'][height]', true); ?>
+									<?php echo f::form_input_hidden('lines['.$key.'][length_unit]', true); ?>
+									<?php echo f::escape_html($item['name']); ?>
 								</td>
-								<td class="sku"><?php echo functions::escape_html($item['sku']); ?></td>
-								<td class="text-center"><?php if (isset($item['sufficient_stock'])) echo $item['sufficient_stock'] ? '<span style="color: #88cc44;">'. functions::draw_fonticon('icon-check') .' '. $item['stock_quantity'] .'</span>' : '<span style="color: #ff6644;">'. functions::draw_fonticon('icon-times') .' '. $item['stock_quantity'] .'</span>'; ?></td>
-								<td><?php echo functions::form_input_decimal('lines['.$key.'][items]['.$key2.'][quantity]', true, 2); ?></td>
+								<td class="sku"><?php echo f::escape_html($item['sku']); ?></td>
+								<td class="text-center"><?php if (isset($item['sufficient_stock'])) echo $item['sufficient_stock'] ? '<span style="color: #88cc44;">'. f::draw_fonticon('icon-check') .' '. $item['stock_quantity'] .'</span>' : '<span style="color: #ff6644;">'. f::draw_fonticon('icon-times') .' '. $item['stock_quantity'] .'</span>'; ?></td>
+								<td><?php echo f::form_input_decimal('lines['.$key.'][items]['.$key2.'][quantity]', true, 2); ?></td>
 								<td></td>
 							</tr>
 						</div>
@@ -1083,10 +1083,10 @@
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<button name="add_product" class="btn btn-default" href="<?php echo document::href_ilink('catalog/product_picker'); ?>" data-toggle="lightbox" data-callback="selectProduct"><?php echo functions::draw_fonticon('add'); ?> <?php echo t('title_add_product', 'Add Product'); ?></button>
-						<?php echo functions::form_button('add', t('title_add_line', 'Add Line'), 'button', '', 'add'); ?>
-						<?php echo functions::form_button('return', t('title_return_items', 'Return Items'), 'submit', 'formnovalidate onclick="if (!confirm(\''. t('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'icon-reply'); ?>
-						<?php echo functions::form_button('split', t('title_split_lines_from_order', 'Split Lines From Order'), 'submit', 'formnovalidate onclick="if (!confirm(\''. t('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'icon-clone'); ?>
+						<button name="add_product" class="btn btn-default" href="<?php echo document::href_ilink('catalog/product_picker'); ?>" data-toggle="lightbox" data-callback="selectProduct"><?php echo f::draw_fonticon('add'); ?> <?php echo t('title_add_product', 'Add Product'); ?></button>
+						<?php echo f::form_button('add', t('title_add_line', 'Add Line'), 'button', '', 'add'); ?>
+						<?php echo f::form_button('return', t('title_return_items', 'Return Items'), 'submit', 'formnovalidate onclick="if (!confirm(\''. t('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'icon-reply'); ?>
+						<?php echo f::form_button('split', t('title_split_lines_from_order', 'Split Lines From Order'), 'submit', 'formnovalidate onclick="if (!confirm(\''. t('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'icon-clone'); ?>
 					</td>
 				</tr>
 			</tfoot>
@@ -1136,7 +1136,7 @@
 	 	</div>
 	</div>
 
-<?php echo functions::form_end(); ?>
+<?php echo f::form_end(); ?>
 
 <div id="modal-edit-line" class="modal fade" style="max-width: 980px; display: none;">
 
@@ -1149,21 +1149,21 @@
 
 				<label class="form-group">
 					<div class="form-label"><?php echo t('title_type', 'Type'); ?></div>
-					<?php echo functions::form_toggle('type', ['product' => t('title_product', 'Product'), 'custom' => t('title_custom', 'Custom'), 'fee' => t('title_fee', 'Fee')], true); ?>
+					<?php echo f::form_toggle('type', ['product' => t('title_product', 'Product'), 'custom' => t('title_custom', 'Custom'), 'fee' => t('title_fee', 'Fee')], true); ?>
 				</label>
 
 				<div class="grid">
 					<div class="col-md-8">
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
-							<?php echo functions::form_input_text('name', ''); ?>
+							<?php echo f::form_input_text('name', ''); ?>
 						</label>
 					</div>
 
 					<div class="col-md-4">
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_product', 'Product'); ?></div>
-							<?php echo functions::form_select_product('product_id', ''); ?>
+							<?php echo f::form_select_product('product_id', ''); ?>
 						</label>
 					</div>
 				</div>
@@ -1172,21 +1172,21 @@
 					<div class="col-md-4">
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_sku', 'SKU'); ?></div>
-							<?php echo functions::form_input_text('sku', ''); ?>
+							<?php echo f::form_input_text('sku', ''); ?>
 						</label>
 					</div>
 
 					<div class="col-md-4">
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_gtin', 'GTIN'); ?></div>
-							<?php echo functions::form_input_text('gtin', ''); ?>
+							<?php echo f::form_input_text('gtin', ''); ?>
 						</label>
 					</div>
 
 					<div class="col-md-4">
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_taric', 'TARIC'); ?></div>
-							<?php echo functions::form_input_text('taric', ''); ?>
+							<?php echo f::form_input_text('taric', ''); ?>
 						</label>
 					</div>
 				</div>
@@ -1196,8 +1196,8 @@
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_weight', 'Weight'); ?></div>
 							<div class="input-group">
-								<?php echo functions::form_input_decimal('weight', true, 3, 'min="0"'); ?>
-								<?php echo functions::form_select_weight_unit('weight_unit', true); ?>
+								<?php echo f::form_input_decimal('weight', true, 3, 'min="0"'); ?>
+								<?php echo f::form_select_weight_unit('weight_unit', true); ?>
 							</div>
 						</label>
 					</div>
@@ -1206,12 +1206,12 @@
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_dimensions', 'Dimensions'); ?></div>
 							<div class="input-group">
-								<?php echo functions::form_input_decimal('length', true, 3, 'min="0"'); ?>
+								<?php echo f::form_input_decimal('length', true, 3, 'min="0"'); ?>
 								<span class="input-group-text">x</span>
-								<?php echo functions::form_input_decimal('width', true, 3, 'min="0"'); ?>
+								<?php echo f::form_input_decimal('width', true, 3, 'min="0"'); ?>
 								<span class="input-group-text">x</span>
-								<?php echo functions::form_input_decimal('height', true, 3, 'min="0"'); ?>
-								<?php echo functions::form_select_length_unit('length_unit', true); ?>
+								<?php echo f::form_input_decimal('height', true, 3, 'min="0"'); ?>
+								<?php echo f::form_select_length_unit('length_unit', true); ?>
 							</div>
 						</label>
 					</div>
@@ -1222,8 +1222,8 @@
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_quantity', 'Quantity'); ?></div>
 							<div class="input-group">
-								<?php echo functions::form_input_decimal('quantity', true, 2); ?>
-								<?php echo functions::form_select_quantity_unit('quantity_unit_id', true); ?>
+								<?php echo f::form_input_decimal('quantity', true, 2); ?>
+								<?php echo f::form_select_quantity_unit('quantity_unit_id', true); ?>
 							</div>
 						</label>
 					</div>
@@ -1231,14 +1231,14 @@
 					<div class="col-md-4">
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_price', 'Price'); ?></div>
-							<?php echo functions::form_input_money('price', $_POST['currency_code'], ''); ?>
+							<?php echo f::form_input_money('price', $_POST['currency_code'], ''); ?>
 						</label>
 					</div>
 
 					<div class="col-md-4">
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_discount', 'Discount'); ?></div>
-							<?php echo functions::form_input_money('discount', $_POST['currency_code'], ''); ?>
+							<?php echo f::form_input_money('discount', $_POST['currency_code'], ''); ?>
 						</label>
 					</div>
 				</div>
@@ -1247,7 +1247,7 @@
 					<div class="col-md-4">
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_tax_class', 'Tax Class'); ?></div>
-							<?php echo functions::form_select_tax_class('tax_class_id', ''); ?>
+							<?php echo f::form_select_tax_class('tax_class_id', ''); ?>
 						</label>
 					</div>
 
@@ -1255,7 +1255,7 @@
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_tax_rate', 'Tax Rate'); ?></div>
 							<div class="input-group">
-								<?php echo functions::form_input_decimal('tax_rate', true, 2, 'readonly'); ?>
+								<?php echo f::form_input_decimal('tax_rate', true, 2, 'readonly'); ?>
 								<span class="input-group-text">%</span>
 							</div>
 						</label>
@@ -1264,7 +1264,7 @@
 					<div class="col-md-4">
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_tax', 'Tax'); ?></div>
-							<?php echo functions::form_input_money('tax', $_POST['currency_code'], true, 'readonly'); ?>
+							<?php echo f::form_input_money('tax', $_POST['currency_code'], true, 'readonly'); ?>
 						</label>
 					</div>
 				</div>
@@ -1273,14 +1273,14 @@
 			<div class="col-md-4">
 				<label class="form-group">
 					<div class="form-label"><?php echo t('title_stock_items', 'Stock Items'); ?></div>
-					<?php echo functions::form_select_stock_item('stock_items', true, 'style="height: 490px;"'); ?>
+					<?php echo f::form_select_stock_item('stock_items', true, 'style="height: 490px;"'); ?>
 				</label>
 			</div>
 		</div>
 
 		<div class="card-action">
-			<?php echo functions::form_button('ok', t('title_ok', 'OK'), 'button', '', 'ok'); ?>
-			<?php echo functions::form_button('cancel', t('title_cancel', 'Cancel'), 'button', 'onclick="$.litebox.close();"', 'cancel'); ?>
+			<?php echo f::form_button('ok', t('title_ok', 'OK'), 'button', '', 'ok'); ?>
+			<?php echo f::form_button('cancel', t('title_cancel', 'Cancel'), 'button', 'onclick="$.litebox.close();"', 'cancel'); ?>
 		</div>
 	</div>
 </div>
@@ -1296,21 +1296,21 @@
 
 				<label class="form-group">
 					<div class="form-label"><?php echo t('title_type', 'Type'); ?></div>
-					<?php echo functions::form_toggle('type', ['product' => t('title_product', 'Product'), 'custom' => t('title_custom', 'Custom'), 'fee' => t('title_fee', 'Fee')], true); ?>
+					<?php echo f::form_toggle('type', ['product' => t('title_product', 'Product'), 'custom' => t('title_custom', 'Custom'), 'fee' => t('title_fee', 'Fee')], true); ?>
 				</label>
 
 				<div class="grid">
 					<div class="col-md-8">
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
-							<?php echo functions::form_input_text('name', ''); ?>
+							<?php echo f::form_input_text('name', ''); ?>
 						</label>
 					</div>
 
 					<div class="col-md-4">
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_product', 'Product'); ?></div>
-							<?php echo functions::form_select_product('product_id', ''); ?>
+							<?php echo f::form_select_product('product_id', ''); ?>
 						</label>
 					</div>
 				</div>
@@ -1319,28 +1319,28 @@
 					<div class="col-md-3">
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_serial_number', 'Serial Number'); ?></div>
-							<?php echo functions::form_input_text('serial_number', ''); ?>
+							<?php echo f::form_input_text('serial_number', ''); ?>
 						</label>
 					</div>
 
 					<div class="col-md-3">
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_sku', 'SKU'); ?></div>
-							<?php echo functions::form_input_text('sku', ''); ?>
+							<?php echo f::form_input_text('sku', ''); ?>
 						</label>
 					</div>
 
 					<div class="col-md-3">
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_gtin', 'GTIN'); ?></div>
-							<?php echo functions::form_input_text('gtin', ''); ?>
+							<?php echo f::form_input_text('gtin', ''); ?>
 						</label>
 					</div>
 
 					<div class="col-md-3">
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_taric', 'TARIC'); ?></div>
-							<?php echo functions::form_input_text('taric', ''); ?>
+							<?php echo f::form_input_text('taric', ''); ?>
 						</label>
 					</div>
 				</div>
@@ -1350,8 +1350,8 @@
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_weight', 'Weight'); ?></div>
 							<div class="input-group">
-								<?php echo functions::form_input_decimal('weight', true, 3, 'min="0"'); ?>
-								<?php echo functions::form_select_weight_unit('weight_unit', true); ?>
+								<?php echo f::form_input_decimal('weight', true, 3, 'min="0"'); ?>
+								<?php echo f::form_select_weight_unit('weight_unit', true); ?>
 							</div>
 						</label>
 					</div>
@@ -1360,12 +1360,12 @@
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_dimensions', 'Dimensions'); ?></div>
 							<div class="input-group">
-								<?php echo functions::form_input_decimal('length', true, 3, 'min="0"'); ?>
+								<?php echo f::form_input_decimal('length', true, 3, 'min="0"'); ?>
 								<span class="input-group-text">x</span>
-								<?php echo functions::form_input_decimal('width', true, 3, 'min="0"'); ?>
+								<?php echo f::form_input_decimal('width', true, 3, 'min="0"'); ?>
 								<span class="input-group-text">x</span>
-								<?php echo functions::form_input_decimal('height', true, 3, 'min="0"'); ?>
-								<?php echo functions::form_select_length_unit('length_unit', true); ?>
+								<?php echo f::form_input_decimal('height', true, 3, 'min="0"'); ?>
+								<?php echo f::form_select_length_unit('length_unit', true); ?>
 							</div>
 						</label>
 					</div>
@@ -1376,8 +1376,8 @@
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_quantity', 'Quantity'); ?></div>
 							<div class="input-group">
-								<?php echo functions::form_input_decimal('quantity', true); ?>
-								<?php echo functions::form_select_quantity_unit('quantity_unit_id', true); ?>
+								<?php echo f::form_input_decimal('quantity', true); ?>
+								<?php echo f::form_select_quantity_unit('quantity_unit_id', true); ?>
 							</div>
 						</label>
 					</div>
@@ -1385,14 +1385,14 @@
 					<div class="col-md-4">
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_price', 'Price'); ?></div>
-							<?php echo functions::form_input_money('price', $_POST['currency_code'], ''); ?>
+							<?php echo f::form_input_money('price', $_POST['currency_code'], ''); ?>
 						</label>
 					</div>
 
 					<div class="col-md-4">
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_discount', 'Discount'); ?></div>
-							<?php echo functions::form_input_money('discount', $_POST['currency_code'], ''); ?>
+							<?php echo f::form_input_money('discount', $_POST['currency_code'], ''); ?>
 						</label>
 					</div>
 				</div>
@@ -1401,7 +1401,7 @@
 					<div class="col-md-4">
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_tax_class', 'Tax Class'); ?></div>
-							<?php echo functions::form_select_tax_class('tax_class_id', ''); ?>
+							<?php echo f::form_select_tax_class('tax_class_id', ''); ?>
 						</label>
 					</div>
 
@@ -1409,7 +1409,7 @@
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_tax_rate', 'Tax Rate'); ?></div>
 							<div class="input-group">
-								<?php echo functions::form_input_decimal('tax_rate', true, 2, 'readonly'); ?>
+								<?php echo f::form_input_decimal('tax_rate', true, 2, 'readonly'); ?>
 								<span class="input-group-text">%</span>
 							</div>
 						</label>
@@ -1418,7 +1418,7 @@
 					<div class="col-md-4">
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_tax', 'Tax'); ?></div>
-							<?php echo functions::form_input_money('tax', $_POST['currency_code'], true, 'readonly'); ?>
+							<?php echo f::form_input_money('tax', $_POST['currency_code'], true, 'readonly'); ?>
 						</label>
 					</div>
 				</div>
@@ -1427,14 +1427,14 @@
 			<div class="col-md-4">
 				<label class="form-group">
 					<div class="form-label"><?php echo t('title_stock_items', 'Stock Items'); ?></div>
-					<?php echo functions::form_select_stock_item('stock_items[]', true, 'style="height: 490px;"'); ?>
+					<?php echo f::form_select_stock_item('stock_items[]', true, 'style="height: 490px;"'); ?>
 				</label>
 			</div>
 		</div>
 
 		<div class="card-action">
-			<?php echo functions::form_button('ok', t('title_ok', 'OK'), 'button', '', 'ok'); ?>
-			<?php echo functions::form_button('cancel', t('title_cancel', 'Cancel'), 'button', 'onclick="$.litebox.close();"', 'cancel'); ?>
+			<?php echo f::form_button('ok', t('title_ok', 'OK'), 'button', '', 'ok'); ?>
+			<?php echo f::form_button('cancel', t('title_cancel', 'Cancel'), 'button', 'onclick="$.litebox.close();"', 'cancel'); ?>
 		</div>
 	</div>
 </div>
@@ -1671,15 +1671,15 @@
 
 		let $output = $([
 			'<div class="bubble local me">',
-			'  <?php echo functions::form_input_hidden('comments[__index__][id]', ''); ?>',
-			'  <?php echo functions::form_input_hidden('comments[__index__][author]', 'staff'); ?>',
-			'  <?php echo functions::form_input_hidden('comments[__index__][created_at]', functions::datetime_format('datetime')); ?>',
-			'  <?php echo functions::escape_js(functions::form_textarea('comments[__index__][text]', '')); ?>',
-			'  <div class="date"><?php echo functions::datetime_format('datetime'); ?></div>',
+			'  <?php echo f::form_input_hidden('comments[__index__][id]', ''); ?>',
+			'  <?php echo f::form_input_hidden('comments[__index__][author]', 'staff'); ?>',
+			'  <?php echo f::form_input_hidden('comments[__index__][created_at]', f::datetime_format('datetime')); ?>',
+			'  <?php echo f::escape_js(f::form_textarea('comments[__index__][text]', '')); ?>',
+			'  <div class="date"><?php echo f::datetime_format('datetime'); ?></div>',
 			'  <div class="actions">',
-			'    <label class="notify" title="<?php echo functions::escape_html(t('title_notify', 'Notify')); ?>"><?php echo functions::escape_js(functions::form_checkbox('comments[__index__][notify]', [1, functions::draw_fonticon('icon-envelope')], true)); ?> </label>',
-			'    <label class="private" title="<?php echo functions::escape_html(t('title_hidden', 'Hidden')); ?>"><?php echo functions::escape_js(functions::form_checkbox('comments[__index__][hidden]', [1, functions::draw_fonticon('icon-eye-slash')], true)); ?></label>',
-			'    <a class="btn btn-default btn-sm remove" href="#" title="<?php echo t('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('icon-times'); ?></a>',
+			'    <label class="notify" title="<?php echo f::escape_html(t('title_notify', 'Notify')); ?>"><?php echo f::escape_js(f::form_checkbox('comments[__index__][notify]', [1, f::draw_fonticon('icon-envelope')], true)); ?> </label>',
+			'    <label class="private" title="<?php echo f::escape_html(t('title_hidden', 'Hidden')); ?>"><?php echo f::escape_js(f::form_checkbox('comments[__index__][hidden]', [1, f::draw_fonticon('icon-eye-slash')], true)); ?></label>',
+			'    <a class="btn btn-default btn-sm remove" href="#" title="<?php echo t('title_remove', 'Remove'); ?>"><?php echo f::draw_fonticon('icon-times'); ?></a>',
 			'  </div>',
 			'</div>'
 		].join('\n')
@@ -1779,7 +1779,7 @@
 		$modal.data('row', $row);
 
 			// Set modal title
-		$modal.find('h2').text("<?php echo functions::escape_js(t('title_edit_line', 'Edit Line Item')); ?>");
+		$modal.find('h2').text("<?php echo f::escape_js(t('title_edit_line', 'Edit Line Item')); ?>");
 
 			// Insert values into modal
 		$.each($modal.find(':input'), function(i, element) {
@@ -1892,22 +1892,22 @@
 				'  <tr draggable="true" class="line">',
 				'    <td></td>',
 				'    <td class="grabbable">' + line.name,
-				'      <?php echo functions::escape_js(functions::form_input_hidden('lines[__index__][id]', '')); ?>',
-				'      <?php echo functions::escape_js(functions::form_input_hidden('lines[__index__][product_id]', '')); ?>',
-				'      <?php echo functions::escape_js(functions::form_input_hidden('lines[__index__][stock_item_id]', '')); ?>',
-				'      <?php echo functions::escape_js(functions::form_input_hidden('lines[__index__][name]', '')); ?>',
-				'      <?php echo functions::escape_js(functions::form_input_hidden('lines[__index__][description]', '')); ?>',
-				'      <?php echo functions::escape_js(functions::form_input_hidden('lines[__index__][data]', '')); ?>',
-				'      <?php echo functions::escape_js(functions::form_input_hidden('lines[__index__][serial_number]', '')); ?>',
-				'      <?php echo functions::escape_js(functions::form_input_hidden('lines[__index__][sku]', '')); ?>',
-				'      <?php echo functions::escape_js(functions::form_input_hidden('lines[__index__][gtin]', '')); ?>',
-				'      <?php echo functions::escape_js(functions::form_input_hidden('lines[__index__][taric]', '')); ?>',
-				'      <?php echo functions::escape_js(functions::form_input_hidden('lines[__index__][weight]', '')); ?>',
-				'      <?php echo functions::escape_js(functions::form_input_hidden('lines[__index__][weight_unit]', '')); ?>',
-				'      <?php echo functions::escape_js(functions::form_input_hidden('lines[__index__][length]', '')); ?>',
-				'      <?php echo functions::escape_js(functions::form_input_hidden('lines[__index__][width]', '')); ?>',
-				'      <?php echo functions::escape_js(functions::form_input_hidden('lines[__index__][height]', '')); ?>',
-				'      <?php echo functions::escape_js(functions::form_input_hidden('lines[__index__][length_unit]', '')); ?>',
+				'      <?php echo f::escape_js(f::form_input_hidden('lines[__index__][id]', '')); ?>',
+				'      <?php echo f::escape_js(f::form_input_hidden('lines[__index__][product_id]', '')); ?>',
+				'      <?php echo f::escape_js(f::form_input_hidden('lines[__index__][stock_item_id]', '')); ?>',
+				'      <?php echo f::escape_js(f::form_input_hidden('lines[__index__][name]', '')); ?>',
+				'      <?php echo f::escape_js(f::form_input_hidden('lines[__index__][description]', '')); ?>',
+				'      <?php echo f::escape_js(f::form_input_hidden('lines[__index__][data]', '')); ?>',
+				'      <?php echo f::escape_js(f::form_input_hidden('lines[__index__][serial_number]', '')); ?>',
+				'      <?php echo f::escape_js(f::form_input_hidden('lines[__index__][sku]', '')); ?>',
+				'      <?php echo f::escape_js(f::form_input_hidden('lines[__index__][gtin]', '')); ?>',
+				'      <?php echo f::escape_js(f::form_input_hidden('lines[__index__][taric]', '')); ?>',
+				'      <?php echo f::escape_js(f::form_input_hidden('lines[__index__][weight]', '')); ?>',
+				'      <?php echo f::escape_js(f::form_input_hidden('lines[__index__][weight_unit]', '')); ?>',
+				'      <?php echo f::escape_js(f::form_input_hidden('lines[__index__][length]', '')); ?>',
+				'      <?php echo f::escape_js(f::form_input_hidden('lines[__index__][width]', '')); ?>',
+				'      <?php echo f::escape_js(f::form_input_hidden('lines[__index__][height]', '')); ?>',
+				'      <?php echo f::escape_js(f::form_input_hidden('lines[__index__][length_unit]', '')); ?>',
 				'    </td>',
 				'    <td class="grabbable sku">'+ line.sku +'</td>',
 				'    <td class="grabbable">',
@@ -1916,16 +1916,16 @@
 				'    <td class="grabbable">',
 				'      <span class="length"></span> x <span class="width"></span> x <span class="height"></span> <span class="length_unit"></span>',
 				'    </td>',
-				'    <td><?php echo functions::escape_js(functions::form_input_decimal('lines[__index__][quantity]', '')); ?></td>',
-				'    <td><?php echo functions::escape_js(functions::form_input_money('lines[__index__][price]', $_POST['currency_code'], '')); ?></td>',
-				'    <td><?php echo functions::escape_js(functions::form_input_money('lines[__index__][discount]', $_POST['currency_code'], '')); ?></td>',
+				'    <td><?php echo f::escape_js(f::form_input_decimal('lines[__index__][quantity]', '')); ?></td>',
+				'    <td><?php echo f::escape_js(f::form_input_money('lines[__index__][price]', $_POST['currency_code'], '')); ?></td>',
+				'    <td><?php echo f::escape_js(f::form_input_money('lines[__index__][discount]', $_POST['currency_code'], '')); ?></td>',
 				'    <td class="sum"><?php echo currency::format(0, true, $_POST['currency_code'], $_POST['currency_value']); ?></td>',
 				'    <td class="sum_tax"><?php echo currency::format(0, true, $_POST['currency_code'], $_POST['currency_value']); ?></td>',
 				'    <td class="text-end">',
-				'      <a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_js(t('title_remove', 'Remove'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('remove')); ?></a>',
+				'      <a class="btn btn-default btn-sm remove" href="#" title="<?php echo f::escape_js(t('title_remove', 'Remove'), true); ?>"><?php echo f::escape_js(f::draw_fonticon('remove')); ?></a>',
 				'    </td>',
 				'    <td class="text-end">',
-				'      <a class="btn btn-default btn-sm edit" href="#" title="<?php echo functions::escape_js(t('title_edit', 'Edit'), true); ?>"><?php echo functions::escape_js(functions::draw_fonticon('edit')); ?></a>',
+				'      <a class="btn btn-default btn-sm edit" href="#" title="<?php echo f::escape_js(t('title_edit', 'Edit'), true); ?>"><?php echo f::escape_js(f::draw_fonticon('edit')); ?></a>',
 				'    </td>',
 				'  </tr>'
 			].join('\n')

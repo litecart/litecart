@@ -60,5 +60,5 @@
 
 	ob_clean();
 	header('Content-Type: application/json');
-	echo functions::format_json($json);
+	echo f::format_json($json);
 	exit;

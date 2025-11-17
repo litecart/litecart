@@ -18,8 +18,8 @@
 				'link' => document::ilink('product', ['product_id' => $item['product_id']]),
 				'image' => [
 					'original' => document::href_rlink('storage://images/'. ($item['image'] ?  $item['image'] : 'no_image.svg')),
-					'thumbnail' => document::href_rlink(functions::image_thumbnail('storage://images/'. ($item['image'] ?  $item['image'] : 'no_image.svg'), 64, 0, 'product')),
-					'thumbnail_2x' => document::href_rlink(functions::image_thumbnail('storage://images/'. ($item['image'] ?  $item['image'] : 'no_image.svg'), 128, 0, 'product')),
+					'thumbnail' => document::href_rlink(f::image_thumbnail('storage://images/'. ($item['image'] ?  $item['image'] : 'no_image.svg'), 64, 0, 'product')),
+					'thumbnail_2x' => document::href_rlink(f::image_thumbnail('storage://images/'. ($item['image'] ?  $item['image'] : 'no_image.svg'), 128, 0, 'product')),
 				],
 				'name' => $item['name'],
 				'code' => $item['code'],
@@ -56,5 +56,5 @@
 
 	ob_clean();
 	header('Content-type: application/json; charset='. mb_http_output());
-	echo functions::format_json($result);
+	echo f::format_json($result);
 	exit;

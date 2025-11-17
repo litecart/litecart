@@ -27,7 +27,7 @@
 		########################################################################
 
 		$attribute_group = new ent_attribute_group();
-		$attribute_group->data = functions::array_update($attribute_group->data, $data);
+		$attribute_group->data = f::array_update($attribute_group->data, $data);
 		$attribute_group->save();
 
 		if (!$attribute_group_id = $attribute_group->data['id']) {
@@ -44,7 +44,7 @@
 			throw new Exception('Failed to load attribute group');
 		}
 
-		if (!functions::array_intersect_compare($data, $attribute_group->data)) {
+		if (!f::array_intersect_compare($data, $attribute_group->data)) {
 			throw new Exception('The attribute group data was not stored correctly');
 		}
 		// Define some example data
@@ -57,7 +57,7 @@
 			],
 		];
 
-		$attribute_group->data = functions::array_update($attribute_group->data, $data);
+		$attribute_group->data = f::array_update($attribute_group->data, $data);
 
 		// Save changes
 		$attribute_group->save();
@@ -65,7 +65,7 @@
 		// Reload the attribute group
 		$attribute_group = new ent_attribute_group($attribute_group_id);
 
-		if (!functions::array_intersect_compare($data, $attribute_group->data)) {
+		if (!f::array_intersect_compare($data, $attribute_group->data)) {
 			throw new Exception('The attribute group data was not updated correctly');
 		}
 

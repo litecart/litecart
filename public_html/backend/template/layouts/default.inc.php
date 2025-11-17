@@ -5,9 +5,9 @@
 <meta charset="{{charset}}">
 <meta name="robots" content="noindex, nofollow">
 <meta name="viewport" content="width=1600">
-<?php echo functions::draw_style('app://backend/template/css/variables.css'); ?>
-<?php echo functions::draw_style('app://assets/litecore/css/framework.min.css'); ?>
-<?php echo functions::draw_style('app://backend/template/css/app.min.css'); ?>
+<?php echo f::draw_style('app://backend/template/css/variables.css'); ?>
+<?php echo f::draw_style('app://assets/litecore/css/framework.min.css'); ?>
+<?php echo f::draw_style('app://backend/template/css/app.min.css'); ?>
 {{head_tags}}
 <style>
 :root {
@@ -28,7 +28,7 @@
 		</a>
 
 		<div class="filter">
-			<?php echo functions::form_input_search('filter', false, 'placeholder="'. functions::escape_attr(t('title_filter', 'Filter')) .'&hellip;" autocomplete="off"'); ?>
+			<?php echo f::form_input_search('filter', false, 'placeholder="'. f::escape_attr(t('title_filter', 'Filter')) .'&hellip;" autocomplete="off"'); ?>
 		</div>
 
 		<?php include 'app://backend/partials/box_apps_menu.inc.php'; ?>
@@ -67,8 +67,8 @@
 </div>
 
 {{foot_tags}}
-<?php echo functions::draw_script('app://assets/litecore/js/framework.min.js'); ?>
-<?php echo functions::draw_script('app://backend/template/js/app.min.js'); ?>
+<?php echo f::draw_script('app://assets/litecore/js/framework.min.js'); ?>
+<?php echo f::draw_script('app://backend/template/js/app.min.js'); ?>
 
 </body>
 </html>

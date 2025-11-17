@@ -33,7 +33,7 @@
 
 				database::query(
 					"update ". DB_TABLE_PREFIX ."settings
-					set `value` = '". database::input(functions::format_json($settings)) ."',
+					set `value` = '". database::input(f::format_json($settings)) ."',
 						updated_at = '". date('Y-m-d H:i:s') ."'
 					where `key` = '". database::input('template_settings') ."'
 					limit 1;"
@@ -71,21 +71,21 @@
 	</div>
 
 	<div class="card-body">
-		<?php echo functions::form_begin('template_form', 'post', null, false, 'style="max-width: 320px;"'); ?>
+		<?php echo f::form_begin('template_form', 'post', null, false, 'style="max-width: 320px;"'); ?>
 
 			<label class="form-group">
 				<div class="form-label"><?php echo t('title_frontend_template', 'Frontend Template'); ?></div>
 				<div class="input-group">
-					<?php echo functions::form_select_template('template', empty($_POST['template']) ? settings::get('template') : true); ?>
-					<a class="btn btn-default" href="<?php echo document::href_ilink('appearance/template_settings'); ?>" title="<?php echo t('title_settings', 'Settings'); ?>"><?php echo functions::draw_fonticon('icon-wrench'); ?></a>
+					<?php echo f::form_select_template('template', empty($_POST['template']) ? settings::get('template') : true); ?>
+					<a class="btn btn-default" href="<?php echo document::href_ilink('appearance/template_settings'); ?>" title="<?php echo t('title_settings', 'Settings'); ?>"><?php echo f::draw_fonticon('icon-wrench'); ?></a>
 				</div>
 			</label>
 
 			<div class="card-action">
-				<?php echo functions::form_button_predefined('save'); ?>
-				<?php echo functions::form_button_predefined('cancel'); ?>
+				<?php echo f::form_button_predefined('save'); ?>
+				<?php echo f::form_button_predefined('cancel'); ?>
 			</div>
 
-		<?php echo functions::form_end(); ?>
+		<?php echo f::form_end(); ?>
 	</div>
 </div>

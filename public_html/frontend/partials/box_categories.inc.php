@@ -12,7 +12,7 @@
 	$box_categories_cache_token = cache::token('box_categories', ['language']);
 	if (!$box_categories->snippets['categories'] = cache::get($box_categories_cache_token)) {
 
-		$box_categories->snippets['categories'] = functions::catalog_categories_query()->fetch_all();
+		$box_categories->snippets['categories'] = f::catalog_categories_query()->fetch_all();
 
 		cache::set($box_categories_cache_token, $box_categories->snippets['categories']);
 	}

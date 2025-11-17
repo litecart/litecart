@@ -37,7 +37,7 @@
 					$link->unset_query('category_id');
 				}
 
-				$new_path .= 'products/'. $product->id .'/'. functions::format_path_friendly($product->name, $language_code);
+				$new_path .= 'products/'. $product->id .'/'. f::format_path_friendly($product->name, $language_code);
 
 				$link->path = $new_path;
 				$link->unset_query('product_id');

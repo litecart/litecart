@@ -28,7 +28,7 @@
 
 		// Create a new entity
 		$tax_rate = new ent_tax_rate();
-		$tax_rate->data = functions::array_update($tax_rate->data, $data);
+		$tax_rate->data = f::array_update($tax_rate->data, $data);
 		$tax_rate->save();
 
 		// Check if the entity was created
@@ -49,7 +49,7 @@
 		}
 
 		// Check if data was set correctly
-		if (!functions::array_intersect_compare($data, $tax_rate->data)) {
+		if (!f::array_intersect_compare($data, $tax_rate->data)) {
 			throw new Exception('The tax rate data was not stored correctly');
 		}
 
@@ -76,7 +76,7 @@
 		$tax_rate->save();
 
 		// Check if data was set correctly
-		if (!functions::array_intersect_compare($data, $tax_rate->data)) {
+		if (!f::array_intersect_compare($data, $tax_rate->data)) {
 			throw new Exception('The tax rate data was not updated correctly');
 		}
 

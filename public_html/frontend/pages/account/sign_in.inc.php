@@ -57,7 +57,7 @@
 
 			if ($customer['blocked_until'] && strtotime($customer['blocked_until']) > time()) {
 				throw new Exception(strtr(t('error_account_is_blocked', 'The account is blocked until {datetime}'), [
-					'{datetime}' => functions::datetime_format('datetime', $customer['blocked_until'])
+					'{datetime}' => f::datetime_format('datetime', $customer['blocked_until'])
 				]));
 			}
 

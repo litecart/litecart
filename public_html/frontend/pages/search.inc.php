@@ -27,7 +27,7 @@
 	}
 
 	document::$title[] = !empty($_GET['query']) ? strtr(t('title_search_results_for_s', 'Search Results for &quot;{query}&quot;'), [
-		'{query}' => functions::escape_html($_GET['query'])
+		'{query}' => f::escape_html($_GET['query'])
 	]) : t('title_search_results', 'Search Results');
 
 	breadcrumbs::add(t('title_search_results', 'Search Results'), document::ilink('search'));
@@ -37,7 +37,7 @@
 
 	$_page->snippets = [
 		'title' => strtr(t('title_search_results_for_s', 'Search Results for &quot;{query}&quot;'), [
-			'{query}' => functions::escape_html($_GET['query'])
+			'{query}' => f::escape_html($_GET['query'])
 		]),
 		'categories' => [],
 		'products' => [],
@@ -51,14 +51,14 @@
 		'pagination' => null,
 	];
 
-	$categories = functions::catalog_categories_search_query([
+	$categories = f::catalog_categories_search_query([
 		'query' => $_GET['query'],
 		'limit' => 5,
 	])->fetch_all();
 
 	$_page->snippets['categories'] = $categories;
 
-	$products = functions::catalog_products_search_query([
+	$products = f::catalog_products_search_query([
 		'query' => $_GET['query'],
 		'sort' => $_GET['sort'],
 	])->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
@@ -70,6 +70,6 @@
 	}
 
 	$_page->snippets['products'] = $products;
-	$_page->snippets['pagination'] = functions::draw_pagination($num_pages);
+	$_page->snippets['pagination'] = f::draw_pagination($num_pages);
 
 	echo $_page->render();

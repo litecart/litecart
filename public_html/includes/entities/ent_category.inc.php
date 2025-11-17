@@ -127,13 +127,13 @@
 					status = ". (int)$this->data['status'] .",
 					code = '". database::input($this->data['code']) ."',
 					google_taxonomy_id = ". (int)$this->data['google_taxonomy_id'] .",
-					name = '". database::input(functions::format_json($this->data['name'])) ."',
-					short_description = '". database::input(functions::format_json($this->data['short_description'])) ."',
-					description = '". database::input(functions::format_json($this->data['description'])) ."',
-					head_title = '". database::input(functions::format_json($this->data['head_title'])) ."',
-					h1_title = '". database::input(functions::format_json($this->data['h1_title'])) ."',
-					meta_description = '". database::input(functions::format_json($this->data['meta_description'])) ."',
-					synonyms = '". database::input(functions::format_json($this->data['synonyms'])) ."',
+					name = '". database::input(f::format_json($this->data['name'])) ."',
+					short_description = '". database::input(f::format_json($this->data['short_description'])) ."',
+					description = '". database::input(f::format_json($this->data['description'])) ."',
+					head_title = '". database::input(f::format_json($this->data['head_title'])) ."',
+					h1_title = '". database::input(f::format_json($this->data['h1_title'])) ."',
+					meta_description = '". database::input(f::format_json($this->data['meta_description'])) ."',
+					synonyms = '". database::input(f::format_json($this->data['synonyms'])) ."',
 					keywords = '". database::input($this->data['keywords']) ."',
 					priority = ". (int)$this->data['priority'] .",
 					updated_at = '". ($this->data['updated_at'] = date('Y-m-d H:i:s')) ."'
@@ -208,7 +208,7 @@
 			if (!empty($filename)) {
 				$filename = 'categories/'. $filename;
 			} else {
-				$filename = 'categories/'. $this->data['id'] .'-'. functions::format_path_friendly($this->data['name'][settings::get('store_language_code')], settings::get('store_language_code')) .'.'. $image->type;
+				$filename = 'categories/'. $this->data['id'] .'-'. f::format_path_friendly($this->data['name'][settings::get('store_language_code')], settings::get('store_language_code')) .'.'. $image->type;
 			}
 
 			if (!is_dir('storage://images/categories/')) {
@@ -230,7 +230,7 @@
 				throw new Exception('Failed saving image');
 			}
 
-			functions::image_delete_cache('storage://images/' . $filename);
+			f::image_delete_cache('storage://images/' . $filename);
 
 			database::query(
 				"update ". DB_TABLE_PREFIX ."categories
@@ -249,7 +249,7 @@
 				unlink('storage://images/' . $this->data['image']);
 			}
 
-			functions::image_delete_cache('storage://images/' . $this->data['image']);
+			f::image_delete_cache('storage://images/' . $this->data['image']);
 
 			database::query(
 				"update ". DB_TABLE_PREFIX ."categories

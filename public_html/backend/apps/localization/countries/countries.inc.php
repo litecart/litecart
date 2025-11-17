@@ -58,15 +58,15 @@
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink(__APP__.'/countries/edit_country'), t('title_create_new_country', 'Create New Country'), '', 'create'); ?>
+		<?php echo f::form_button_link(document::ilink(__APP__.'/countries/edit_country'), t('title_create_new_country', 'Create New Country'), '', 'create'); ?>
 	</div>
 
-	<?php echo functions::form_begin('countries_form', 'post'); ?>
+	<?php echo f::form_begin('countries_form', 'post'); ?>
 
 		<table class="table data-table">
 			<thead>
 				<tr>
-					<th><?php echo functions::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th><?php echo f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th></th>
 					<th><?php echo t('title_id', 'ID'); ?></th>
 					<th class="main"><?php echo t('title_name', 'Name'); ?></th>
@@ -81,15 +81,15 @@
 			<tbody>
 				<?php foreach ($countries as $country) { ?>
 				<tr class="<?php echo empty($country['status']) ? 'semi-transparent' : ''; ?>">
-					<td><?php echo functions::form_checkbox('countries[]', $country['iso_code_2']); ?></td>
-					<td><?php echo functions::draw_fonticon($country['status'] ? 'on' : 'off'); ?></td>
+					<td><?php echo f::form_checkbox('countries[]', $country['iso_code_2']); ?></td>
+					<td><?php echo f::draw_fonticon($country['status'] ? 'on' : 'off'); ?></td>
 					<td><?php echo $country['id']; ?></td>
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/countries/edit_country', ['country_code' => $country['iso_code_2']]); ?>"><?php echo $country['name']; ?></a></td>
 					<td class="text-center"><?php echo $country['iso_code_1']; ?></td>
 					<td class="text-center"><?php echo $country['iso_code_2']; ?></td>
 					<td class="text-center"><?php echo $country['iso_code_3']; ?></td>
 					<td class="text-center"><?php echo $country['num_zones'] ?: '-'; ?></td>
-					<td><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/countries/edit_country', ['country_code' => $country['iso_code_2']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+					<td><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/countries/edit_country', ['country_code' => $country['iso_code_2']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo f::draw_fonticon('edit'); ?></a></td>
 				</tr>
 				<?php } ?>
 			</tbody>
@@ -111,14 +111,14 @@
 				</legend>
 
 				<div class="btn-group">
-					<?php echo functions::form_button('enable', t('title_enable', 'Enable'), 'submit', '', 'on'); ?>
-					<?php echo functions::form_button('disable', t('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+					<?php echo f::form_button('enable', t('title_enable', 'Enable'), 'submit', '', 'on'); ?>
+					<?php echo f::form_button('disable', t('title_disable', 'Disable'), 'submit', '', 'off'); ?>
 				</div>
 
 			</fieldset>
 		</div>
 
-	<?php echo functions::form_end(); ?>
+	<?php echo f::form_end(); ?>
 </div>
 
 <script>

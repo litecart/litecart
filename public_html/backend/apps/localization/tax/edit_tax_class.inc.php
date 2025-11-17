@@ -72,20 +72,20 @@
 	</div>
 
 	<div class="card-body">
-		<?php echo functions::form_begin('tax_class_form', 'post', false, false, 'style="max-width: 720px;"'); ?>
+		<?php echo f::form_begin('tax_class_form', 'post', false, false, 'style="max-width: 720px;"'); ?>
 
 			<div class="grid">
 				<div class="col-md-6">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_code', 'Code'); ?></div>
-						<?php echo functions::form_input_text('code', true); ?>
+						<?php echo f::form_input_text('code', true); ?>
 					</label>
 				</div>
 
 				<div class="col-md-6">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
-						<?php echo functions::form_input_text('name', true); ?>
+						<?php echo f::form_input_text('name', true); ?>
 					</label>
 				</div>
 			</div>
@@ -94,18 +94,18 @@
 				<div class="col-md-12">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_description', 'Description'); ?></div>
-						<?php echo functions::form_input_text('description', true); ?>
+						<?php echo f::form_input_text('description', true); ?>
 					</label>
 				</div>
 			</div>
 
 			<div class="card-action">
-				<?php echo functions::form_button_predefined('save'); ?>
-				<?php if ($tax_class->data['id']) echo functions::form_button_predefined('delete'); ?>
-				<?php echo functions::form_button_predefined('cancel'); ?>
+				<?php echo f::form_button_predefined('save'); ?>
+				<?php if ($tax_class->data['id']) echo f::form_button_predefined('delete'); ?>
+				<?php echo f::form_button_predefined('cancel'); ?>
 			</div>
 
-		<?php echo functions::form_end(); ?>
+		<?php echo f::form_end(); ?>
 
 	</div>
 </div>

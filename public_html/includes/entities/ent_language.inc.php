@@ -22,7 +22,7 @@
 			)->each(function($field){
 				$this->data[$field['Field']] = database::create_variable($field);
 			});
-			
+
 			$this->data['direction'] = 'ltr';
 			$this->data['url_type'] = 'path';
 
@@ -47,7 +47,7 @@
 			)->fetch();
 
 			if (!$language) {
-				throw new Exception('Could not find language ('. functions::escape_html($language_code) .') in database.');
+				throw new Exception('Could not find language ('. f::escape_html($language_code) .') in database.');
 			}
 
 			$this->data = array_intersect_key(array_merge($this->data, $language), $this->data);

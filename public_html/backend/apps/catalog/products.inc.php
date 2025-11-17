@@ -137,8 +137,8 @@
 
 	if (!empty($_GET['query'])) {
 
-		$code_regex = functions::format_regex_code($_GET['query']);
-		$query_fulltext = functions::escape_mysql_fulltext($_GET['query']);
+		$code_regex = f::format_regex_code($_GET['query']);
+		$query_fulltext = f::escape_mysql_fulltext($_GET['query']);
 
 		$sql_select_relevance = (
 			"(
@@ -242,13 +242,13 @@
 
 			if (!empty($product['valid_from']) && $product['valid_from'] < date('Y-m-d H:i:s')) {
 				throw new Exception(strtr(t('text_product_cannot_be_purchased_until_x', 'The product cannot be purchased until {date}'), [
-					'{date}' => functions::datetime_format('date', $product['valid_from'])
+					'{date}' => f::datetime_format('date', $product['valid_from'])
 				]));
 			}
 
 			if (!empty($product['valid_to']) && $product['valid_to'] < date('Y-m-d H:i:s')) {
 				throw new Exception(strtr(t('text_product_expired_at_x', 'The product expired at {date} and can no longer be purchased'), [
-					'{date}' => functions::datetime_format('date', $product['valid_to'])
+					'{date}' => f::datetime_format('date', $product['valid_to'])
 				]));
 			}
 
@@ -288,23 +288,23 @@ table .icon-star-o:hover {
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_product'), t('title_create_new_product', 'Create New Product'), '', 'create'); ?>
+		<?php echo f::form_button_link(document::ilink(__APP__.'/edit_product'), t('title_create_new_product', 'Create New Product'), '', 'create'); ?>
 	</div>
 
-	<?php echo functions::form_begin('search_form', 'get'); ?>
+	<?php echo f::form_begin('search_form', 'get'); ?>
 		<div class="card-filter">
-			<div style="min-width: 300px;"><?php echo functions::form_select_category('category_id', true); ?></div>
-			<div class="expandable"><?php echo functions::form_input_search('query', true, 'placeholder="'. t('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"  onkeydown=" if (event.keyCode == 13) location=(\''. document::ilink(null, [], true, ['page', 'query']) .'&query=\' + encodeURIComponent(this.value))"'); ?></div>
-			<div><?php echo functions::form_button('filter', t('title_search', 'Search'), 'submit'); ?></div>
+			<div style="min-width: 300px;"><?php echo f::form_select_category('category_id', true); ?></div>
+			<div class="expandable"><?php echo f::form_input_search('query', true, 'placeholder="'. t('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"  onkeydown=" if (event.keyCode == 13) location=(\''. document::ilink(null, [], true, ['page', 'query']) .'&query=\' + encodeURIComponent(this.value))"'); ?></div>
+			<div><?php echo f::form_button('filter', t('title_search', 'Search'), 'submit'); ?></div>
 		</div>
-	<?php echo functions::form_end(); ?>
+	<?php echo f::form_end(); ?>
 
-	<?php echo functions::form_begin('products_form', 'post'); ?>
+	<?php echo f::form_begin('products_form', 'post'); ?>
 
 		<table class="table data-table">
 			<thead>
 				<tr>
-					<th><?php echo functions::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th><?php echo f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th></th>
 					<th></th>
 					<th class="text-center"><?php echo t('title_id', 'ID'); ?></th>
@@ -323,19 +323,19 @@ table .icon-star-o:hover {
 			<tbody>
 				<?php foreach ($products as $product) { ?>
 				<tr class="<?php if (empty($product['status'])) echo 'semi-transparent'; ?>" data-id="<?php echo (int)$product['id']; ?>">
-					<td><?php echo functions::form_checkbox('products[]', $product['id']); ?></td>
-					<td><?php echo functions::draw_fonticon($product['status'] ? 'on' : 'off'); ?></td>
-					<td class="warning"><?php if (!empty($product['warning'])) echo functions::draw_fonticon('icon-exclamation-triangle', 'title="'. functions::escape_attr($product['warning']) .'"'); ?></td>
+					<td><?php echo f::form_checkbox('products[]', $product['id']); ?></td>
+					<td><?php echo f::draw_fonticon($product['status'] ? 'on' : 'off'); ?></td>
+					<td class="warning"><?php if (!empty($product['warning'])) echo f::draw_fonticon('icon-exclamation-triangle', 'title="'. f::escape_attr($product['warning']) .'"'); ?></td>
 					<td class="text-center"><?php echo $product['id']; ?></td>
-					<td><?php echo functions::draw_thumbnail('storage://images/' . ($product['image'] ?: 'no_image.svg'), 64, 64, settings::get('product_image_clipping')); ?></td>
-					<td><?php echo !empty($product['featured']) ? functions::draw_fonticon('icon-star', 'style="color: #f2b01e;"') : functions::draw_fonticon('icon-star-o', 'style="color: #ccc;"'); ?></td>
+					<td><?php echo f::draw_thumbnail('storage://images/' . ($product['image'] ?: 'no_image.svg'), 64, 64, settings::get('product_image_clipping')); ?></td>
+					<td><?php echo !empty($product['featured']) ? f::draw_fonticon('icon-star', 'style="color: #f2b01e;"') : f::draw_fonticon('icon-star-o', 'style="color: #ccc;"'); ?></td>
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_product', ['product_id' => $product['id']]); ?>"><?php echo $product['name'] ?: '('. t('title_untitled', 'Untitled') .')'; ?></a></td>
 					<td><?php echo $product['code']; ?></td>
-					<td class="text-end"><?php echo functions::draw_price_tag($product['regular_price'], $product['final_price'], settings::get('store_currency_code')); ?></td>
+					<td class="text-end"><?php echo f::draw_price_tag($product['regular_price'], $product['final_price'], settings::get('store_currency_code')); ?></td>
 					<td class="text-center"><?php echo $product['num_stock_options']; ?></td>
 					<td class="text-center"><?php echo $product['quantity_reserved']; ?></td>
-					<td class="text-end"><?php echo functions::datetime_when($product['created_at']); ?></td>
-					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_product', ['product_id' => $product['id'], 'redirect_url' => document::link()]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+					<td class="text-end"><?php echo f::datetime_when($product['created_at']); ?></td>
+					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_product', ['product_id' => $product['id'], 'redirect_url' => document::link()]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo f::draw_fonticon('edit'); ?></a></td>
 				</tr>
 				<?php } ?>
 			</tbody>
@@ -358,23 +358,23 @@ table .icon-star-o:hover {
 				<div class="flex">
 
 					<div class="btn-group">
-						<?php echo functions::form_button_predefined('enable'); ?>
-						<?php echo functions::form_button_predefined('disable'); ?>
+						<?php echo f::form_button_predefined('enable'); ?>
+						<?php echo f::form_button_predefined('disable'); ?>
 					</div>
 
-					<?php echo functions::form_button('clone', t('title_clone', 'Clone'), 'submit', '', 'icon-copy'); ?>
+					<?php echo f::form_button('clone', t('title_clone', 'Clone'), 'submit', '', 'icon-copy'); ?>
 
-					<?php echo functions::form_button_predefined('delete'); ?>
+					<?php echo f::form_button_predefined('delete'); ?>
 
 				</div>
 			</fieldset>
 		</div>
 
-	<?php echo functions::form_end(); ?>
+	<?php echo f::form_end(); ?>
 
 	<?php if ($num_pages > 1) { ?>
 	<div class="card-footer">
-		<?php echo functions::draw_pagination($num_pages); ?>
+		<?php echo f::draw_pagination($num_pages); ?>
 	</div>
 	<?php } ?>
 </div>
@@ -401,7 +401,7 @@ table .icon-star-o:hover {
 		e.stopPropagation();
 		let $star = $(this);
 		$.post('', 'star&product_id='+$star.closest('tr').data('id'), function(data) {
-			$star.replaceWith('<?php echo functions::draw_fonticon('icon-star', 'style="color: #f2b01e;"'); ?>');
+			$star.replaceWith('<?php echo f::draw_fonticon('icon-star', 'style="color: #f2b01e;"'); ?>');
 		});
 		return false;
 	});
@@ -410,7 +410,7 @@ table .icon-star-o:hover {
 		e.stopPropagation();
 		let $star = $(this);
 		$.post('', 'unstar&product_id='+$star.closest('tr').data('id'), function(data) {
-			$star.replaceWith('<?php echo functions::draw_fonticon('icon-star-o', 'style="color: #ccc;"'); ?>');
+			$star.replaceWith('<?php echo f::draw_fonticon('icon-star-o', 'style="color: #ccc;"'); ?>');
 		});
 		return false;
 	});

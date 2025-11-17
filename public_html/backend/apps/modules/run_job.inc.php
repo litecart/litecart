@@ -6,7 +6,7 @@
 	breadcrumbs::add(t('title_job_modules', 'Job Modules'), document::ilink(__APP__.'/jobs'));
 
 	if (empty($_GET['module_id'])) {
-		breadcrumbs::add(t('title_run_job', 'Run Job') .' '. functions::escape_html($_GET['module_id']));
+		breadcrumbs::add(t('title_run_job', 'Run Job') .' '. f::escape_html($_GET['module_id']));
 	} else {
 		breadcrumbs::add(t('title_run_all_jobs', 'Run All Jobs'));
 	}
@@ -31,7 +31,7 @@
 
 	<div class="card-body">
 		<div class="form-code">
-			<pre><?php echo functions::escape_html($log); ?></pre>
+			<pre><?php echo f::escape_html($log); ?></pre>
 		</div>
 	</div>
 </div>

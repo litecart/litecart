@@ -32,7 +32,7 @@
 
 		// Create a new entity
 		$third_party = new ent_third_party();
-		$third_party->data = functions::array_update($third_party->data, $data);
+		$third_party->data = f::array_update($third_party->data, $data);
 		$third_party->save();
 
 		// Check if the entity was created
@@ -53,7 +53,7 @@
 		}
 
 		// Check if data was set correctly
-		if (!functions::array_intersect_compare($data, $third_party->data)) {
+		if (!f::array_intersect_compare($data, $third_party->data)) {
 			throw new Exception('The third party data was not stored correctly');
 		}
 
@@ -68,13 +68,13 @@
 		];
 
 		// Update some data
-		$third_party->data = functions::array_update($third_party->data, $data);
+		$third_party->data = f::array_update($third_party->data, $data);
 
 		// Save changes to database
 		$third_party->save();
 
 		// Check if data was set correctly
-		if (!functions::array_intersect_compare($data, $third_party->data)) {
+		if (!f::array_intersect_compare($data, $third_party->data)) {
 			throw new Exception('The third party data was not updated correctly');
 		}
 

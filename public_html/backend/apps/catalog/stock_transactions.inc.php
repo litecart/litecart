@@ -39,35 +39,35 @@
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_stock_transaction'), t('title_create_new_transaction', 'Create New Transaction'), '', 'create'); ?>
+		<?php echo f::form_button_link(document::ilink(__APP__.'/edit_stock_transaction'), t('title_create_new_transaction', 'Create New Transaction'), '', 'create'); ?>
 	</div>
 
-	<?php echo functions::form_begin('search_form', 'get'); ?>
+	<?php echo f::form_begin('search_form', 'get'); ?>
 		<div class="card-filter">
 
 			<div class="expandable">
-				<?php echo functions::form_input_search('query', true, 'placeholder="'. t('text_search_phrase_or_keyword', 'Search phrase or keyword').'"'); ?>
+				<?php echo f::form_input_search('query', true, 'placeholder="'. t('text_search_phrase_or_keyword', 'Search phrase or keyword').'"'); ?>
 			</div>
 
 			<div class="input-group">
-				<?php echo functions::form_input_datetime('date_from', true, 'style="width: 50%;"'); ?>
+				<?php echo f::form_input_datetime('date_from', true, 'style="width: 50%;"'); ?>
 				<span class="input-group-text">-</span>
-				<?php echo functions::form_input_datetime('date_to', true, 'style="width: 50%;"'); ?>
+				<?php echo f::form_input_datetime('date_to', true, 'style="width: 50%;"'); ?>
 			</div>
 
 			<div>
-				<?php echo functions::form_button('search', t('title_filter', 'Filter'), 'submit'); ?>
+				<?php echo f::form_button('search', t('title_filter', 'Filter'), 'submit'); ?>
 			</div>
 
 		</div>
-	<?php echo functions::form_end(); ?>
+	<?php echo f::form_end(); ?>
 
-	<?php echo functions::form_begin('stock_transactions_form', 'post'); ?>
+	<?php echo f::form_begin('stock_transactions_form', 'post'); ?>
 
 		<table class="table data-table">
 			<thead>
 				<tr>
-					<th><?php echo functions::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th><?php echo f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th><?php echo t('title_id', 'ID'); ?></th>
 					<th class="main"><?php echo t('title_name', 'Name'); ?></th>
 					<th class="text-end"><?php echo t('title_date', 'Date'); ?></th>
@@ -78,11 +78,11 @@
 			<tbody>
 			<?php foreach ($transactions as $transaction) { ?>
 			<tr>
-				<td><?php echo functions::form_checkbox('stock_transactions[]', $transaction['id']); ?></td>
+				<td><?php echo f::form_checkbox('stock_transactions[]', $transaction['id']); ?></td>
 				<td><?php echo $transaction['id']; ?></td>
 				<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_stock_transaction', ['transaction_id' => $transaction['id']]); ?>"><?php echo $transaction['name']; ?></a></td>
-				<td class="text-end"><?php echo functions::datetime_when($transaction['created_at']); ?></td>
-				<td><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_stock_transaction', ['transaction_id' => $transaction['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+				<td class="text-end"><?php echo f::datetime_when($transaction['created_at']); ?></td>
+				<td><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_stock_transaction', ['transaction_id' => $transaction['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo f::draw_fonticon('edit'); ?></a></td>
 			</tr>
 			<?php } ?>
 			</tbody>
@@ -96,11 +96,11 @@
 			</tfoot>
 		</table>
 
-	<?php echo functions::form_end(); ?>
+	<?php echo f::form_end(); ?>
 
 	<?php if ($num_pages > 1) { ?>
 	<div class="card-footer">
-		<?php echo functions::draw_pagination($num_pages); ?>
+		<?php echo f::draw_pagination($num_pages); ?>
 	</div>
 	<?php } ?>
 </div>

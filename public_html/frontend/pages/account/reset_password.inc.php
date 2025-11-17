@@ -62,12 +62,12 @@
 					throw new Exception(t('error_passwords_did_not_match', 'Passwords did not match'));
 				}
 
-				if (!functions::password_check_strength($_POST['new_password'], 6)) {
+				if (!f::password_check_strength($_POST['new_password'], 6)) {
 					throw new Exception(t('error_password_not_strong_enough', 'The password is not strong enough'));
 				}
 			}
 
-			if (settings::get('captcha_enabled') && !functions::captcha_validate('reset_password')) {
+			if (settings::get('captcha_enabled') && !f::captcha_validate('reset_password')) {
 				throw new Exception(t('error_invalid_captcha', 'Invalid CAPTCHA given'));
 			}
 
@@ -82,7 +82,7 @@
 
 				database::query(
 					"update ". DB_TABLE_PREFIX ."customers
-					set password_reset_token = '". database::input(functions::format_json($reset_token, false)) ."'
+					set password_reset_token = '". database::input(f::format_json($reset_token, false)) ."'
 					where id = ". (int)$customer['id'] ."
 					limit 1;"
 				);

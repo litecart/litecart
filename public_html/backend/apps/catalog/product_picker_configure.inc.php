@@ -75,12 +75,12 @@
 
 	<div class="modal-body">
 
-		<?php echo functions::form_begin('form_add_product', 'post'); ?>
-			<?php echo functions::form_input_hidden('product_id', $product->id); ?>
+		<?php echo f::form_begin('form_add_product', 'post'); ?>
+			<?php echo f::form_input_hidden('product_id', $product->id); ?>
 
 			<div class="grid">
 				<div class="col-md-4">
-					<?php echo functions::draw_thumbnail('storage://images/' . $product->image, 320, 0, 'product'); ?>
+					<?php echo f::draw_thumbnail('storage://images/' . $product->image, 320, 0, 'product'); ?>
 				</div>
 
 				<div class="col-md-8">
@@ -89,7 +89,7 @@
 						<div class="col-md-4">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
-								<?php echo functions::form_input_text('name', true, (!isset($_GET['collect']) || !in_array('name', $_GET['collect'])) ? 'readonly' : ''); ?>
+								<?php echo f::form_input_text('name', true, (!isset($_GET['collect']) || !in_array('name', $_GET['collect'])) ? 'readonly' : ''); ?>
 							</label>
 						</div>
 					</div>
@@ -99,7 +99,7 @@
 						<div class="col-md-4">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_quantity', 'Quantity'); ?></div>
-								<?php echo functions::form_input_decimal('quantity', 1); ?>
+								<?php echo f::form_input_decimal('quantity', 1); ?>
 							</label>
 						</div>
 						<?php } ?>
@@ -108,14 +108,14 @@
 						<div class="col-md-4">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_price', 'Price'); ?></div>
-								<?php echo functions::form_input_money('price', $_GET['currency_code'], true); ?>
+								<?php echo f::form_input_money('price', $_GET['currency_code'], true); ?>
 							</label>
 						</div>
 
 						<div class="col-md-4">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_tax', 'Tax'); ?></div>
-								<?php echo functions::form_input_money('tax', $_GET['currency_code'], true); ?>
+								<?php echo f::form_input_money('tax', $_GET['currency_code'], true); ?>
 							</label>
 						</div>
 						<?php } ?>
@@ -136,7 +136,7 @@
 							<tbody>
 								<?php foreach ($product->stock_options as $stock_option) { ?>
 								<tr>
-									<td><?php echo functions::form_radio_button('stock_item_id', $stock_option['stock_item_id'], true, 'required'); ?></td>
+									<td><?php echo f::form_radio_button('stock_item_id', $stock_option['stock_item_id'], true, 'required'); ?></td>
 									<td><?php echo $stock_option['name']; ?></td>
 									<td><?php echo $stock_option['sku']; ?></td>
 									<td class="text-end"><?php echo (float)$stock_option['quantity']; ?></td>
@@ -156,14 +156,14 @@
 					<?php } ?>
 
 					<div class="card-action">
-						<?php echo functions::form_button('ok', t('title_ok', 'OK'), 'button', '', 'ok'); ?>
-						<?php echo functions::form_button('cancel', t('title_cancel', 'Cancel'), 'button', 'onclick="$.litebox.close();"', 'cancel'); ?>
+						<?php echo f::form_button('ok', t('title_ok', 'OK'), 'button', '', 'ok'); ?>
+						<?php echo f::form_button('cancel', t('title_cancel', 'Cancel'), 'button', 'onclick="$.litebox.close();"', 'cancel'); ?>
 					</div>
 
 				</div>
 			</div>
 
-		<?php echo functions::form_end(); ?>
+		<?php echo f::form_end(); ?>
 	</div>
 
 </div>

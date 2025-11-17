@@ -2,7 +2,7 @@
 
 	<?php if ($important_notice) { ?>
 	<div id="important-notice">
-		<?php echo functions::escape_html($important_notice); ?>
+		<?php echo f::escape_html($important_notice); ?>
 	</div>
 	<?php } ?>
 
@@ -27,7 +27,7 @@
 					<ul class="dropdown-menu">
 						<?php foreach ($categories as $item) { ?>
 						<li>
-							<a class="navbar-item" href="<?php echo functions::escape_html($item['link']); ?>">
+							<a class="navbar-item" href="<?php echo f::escape_html($item['link']); ?>">
 								<?php echo $item['title']; ?>
 							</a>
 						</li>
@@ -45,14 +45,14 @@
 				<?php }*/ ?>
 			</ul>
 
-			<div class="navbar-search" data-hint="<?php echo functions::escape_html(''); ?>">
-				<?php echo functions::form_begin('search_form', 'get', document::ilink('search')); ?>
+			<div class="navbar-search" data-hint="<?php echo f::escape_html(''); ?>">
+				<?php echo f::form_begin('search_form', 'get', document::ilink('search')); ?>
 				<div class="navbar-link dropdown">
-					<?php echo functions::form_input_search('query', true, 'autocomplete="off" placeholder="'. t('title_search', 'Search') .'&hellip;"'); ?>
+					<?php echo f::form_input_search('query', true, 'autocomplete="off" placeholder="'. t('title_search', 'Search') .'&hellip;"'); ?>
 					<ul class="dropdown-menu" style="left: 0; right: 0;">
 					</ul>
 				</div>
-				<?php echo functions::form_end(); ?>
+				<?php echo f::form_end(); ?>
 			</div>
 
 			<ul class="navbar-nav">
@@ -66,7 +66,7 @@
 					<ul class="dropdown-menu">
 						<?php foreach ($pages as $item) { ?>
 						<li>
-							<a class="navbar-item" href="<?php echo functions::escape_html($item['link']); ?>">
+							<a class="navbar-item" href="<?php echo f::escape_html($item['link']); ?>">
 								<?php echo $item['title']; ?>
 							</a>
 						</li>
@@ -77,7 +77,7 @@
 
 				<li class="contact">
 					<a class="navbar-item" href="<?php echo document::href_ilink('contact'); ?>">
-						<?php echo functions::draw_fonticon('icon-envelope hidden-xs hidden-sm hidden-md hidden-lg'); ?> <?php echo t('title_contact', 'Contact'); ?>
+						<?php echo f::draw_fonticon('icon-envelope hidden-xs hidden-sm hidden-md hidden-lg'); ?> <?php echo t('title_contact', 'Contact'); ?>
 					</a>
 				</li>
 
@@ -86,7 +86,7 @@
 				<li class="account dropdown dropdown-end">
 
 					<div class="navbar-item" data-toggle="dropdown">
-						<?php echo functions::draw_fonticon('icon-user hidden-xs hidden-sm hidden-md hidden-lg'); ?>
+						<?php echo f::draw_fonticon('icon-user hidden-xs hidden-sm hidden-md hidden-lg'); ?>
 						<span class="hidden-sm"><?php echo customer::check_login() ? customer::$data['firstname'] : t('title_sign_in', 'Sign In'); ?></span>
 					</div>
 
@@ -121,7 +121,7 @@
 				<?php } else { ?>
 				<li class="account">
 					<a class="navbar-item" href="<?php echo document::href_ilink('account/sign_in'); ?>">
-						<?php echo functions::draw_fonticon('icon-user hidden-xs hidden-sm hidden-md hidden-lg'); ?> <?php echo t('title_sign_in', 'Sign In'); ?>
+						<?php echo f::draw_fonticon('icon-user hidden-xs hidden-sm hidden-md hidden-lg'); ?> <?php echo t('title_sign_in', 'Sign In'); ?>
 					</a>
 				</li>
 				<?php } ?>
@@ -129,8 +129,8 @@
 
 				<?php if (!empty($regional_settings)) { ?>
 				<li class="regional-settings">
-					<a class="navbar-item" href="<?php echo functions::escape_attr($regional_settings['link']); ?>">
-					<?php echo functions::draw_fonticon('icon-world hidden-xs hidden-sm hidden-md hidden-lg'); ?> <?php echo $regional_settings['title']; ?>
+					<a class="navbar-item" href="<?php echo f::escape_attr($regional_settings['link']); ?>">
+					<?php echo f::draw_fonticon('icon-world hidden-xs hidden-sm hidden-md hidden-lg'); ?> <?php echo $regional_settings['title']; ?>
 					</a>
 				</li>
 				<?php } ?>
@@ -150,7 +150,7 @@
 
 								<div class="grid">
 									<div class="col-2">
-										<?php echo functions::draw_thumbnail($item['image'], 64, 0, 'product', 'alt="'. functions::escape_attr($item['name']) .'"'); ?>
+										<?php echo f::draw_thumbnail($item['image'], 64, 0, 'product', 'alt="'. f::escape_attr($item['name']) .'"'); ?>
 									</div>
 
 									<div class="col-7">
@@ -166,7 +166,7 @@
 									</div>
 
 									<div class="col-3 text-end">
-										<?php echo functions::form_button('remove_cart_item', [$key, functions::draw_fonticon('delete',)], 'submit', 'class="btn btn-danger btn-sm"'); ?>
+										<?php echo f::form_button('remove_cart_item', [$key, f::draw_fonticon('delete',)], 'submit', 'class="btn btn-danger btn-sm"'); ?>
 									</div>
 								</div>
 
@@ -180,7 +180,7 @@
 
 						<div class="checkout" style="margin-top: 2em;">
 							<a class="btn btn-success btn-block btn-lg" href="<?php echo document::href_ilink('shopping_cart'); ?>">
-								<?php echo t('title_go_to_checkout', 'Go To Checkout'); ?> <?php echo functions::draw_fonticon('icon-arrow-right'); ?>
+								<?php echo t('title_go_to_checkout', 'Go To Checkout'); ?> <?php echo f::draw_fonticon('icon-arrow-right'); ?>
 							</a>
 						</div>
 

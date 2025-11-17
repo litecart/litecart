@@ -28,7 +28,7 @@
 		########################################################################
 
 		$banner = new ent_banner();
-		$banner->data = functions::array_update($banner->data, $data);
+		$banner->data = f::array_update($banner->data, $data);
 		$banner->save();
 
 		if (!$banner_id = $banner->data['id']) {
@@ -45,7 +45,7 @@
 			throw new Exception('Failed to load banner');
 		}
 
-		if (!functions::array_intersect_compare($data, $banner->data)) {
+		if (!f::array_intersect_compare($data, $banner->data)) {
 			throw new Exception('The banner data was not stored correctly');
 		}
 
@@ -60,10 +60,10 @@
 			'valid_to' => '2024-12-31 23:59:59',
 		];
 
-		$banner->data = functions::array_update($banner->data, $data);
+		$banner->data = f::array_update($banner->data, $data);
 		$banner->save();
 
-		if (!functions::array_intersect_compare($data, $banner->data)) {
+		if (!f::array_intersect_compare($data, $banner->data)) {
 			throw new Exception('The banner data was not updated correctly');
 		}
 

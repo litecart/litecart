@@ -80,15 +80,15 @@
 			'gtin' => $product['gtin'],
 			'regular_price' => (float)$product['regular_price'],
 			'final_price' => (float)$product['final_price'],
-			'thumbnail_url' => document::rlink(functions::image_thumbnail('storage://images/'. $product['image'], 64, 64)),
+			'thumbnail_url' => document::rlink(f::image_thumbnail('storage://images/'. $product['image'], 64, 64)),
 			'quantity' => (float)$product['quantity'],
 			'reserved' => (float)$product['reserved'],
 			'num_stock_options' => (float)$product['num_stock_options'],
-			'created_at' => functions::datetime_format('date', $product['created_at']),
+			'created_at' => f::datetime_format('date', $product['created_at']),
 		];
 	});
 
 	ob_clean();
 	header('Content-Type: application/json');
-	echo functions::format_json($products);
+	echo f::format_json($products);
 	exit;

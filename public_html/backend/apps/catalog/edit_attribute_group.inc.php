@@ -87,7 +87,7 @@
 		</div>
 	</div>
 
-	<?php echo functions::form_begin('attribute_form', 'post', false, false, 'style="max-width: 720px;"'); ?>
+	<?php echo f::form_begin('attribute_form', 'post', false, false, 'style="max-width: 720px;"'); ?>
 
 	<div class="card-body">
 
@@ -95,21 +95,21 @@
 			<div class="col-md-6">
 				<label class="form-group">
 					<div class="form-label"><?php echo t('title_code', 'Code'); ?></div>
-					<?php echo functions::form_input_text('code', true); ?>
+					<?php echo f::form_input_text('code', true); ?>
 				</label>
 			</div>
 
 			<div class="col-md-6">
 				<label class="form-group">
 					<div class="form-label"><?php echo t('title_sort_values', 'Sort Values'); ?></div>
-					<?php echo functions::form_select('sort', $sort_options, true); ?>
+					<?php echo f::form_select('sort', $sort_options, true); ?>
 				</label>
 			</div>
 		</div>
 
 		<label class="form-group">
 			<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
-			<?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_regional_text('name['. $language_code .']', $language_code, true); ?>
+			<?php foreach (array_keys(language::$languages) as $language_code) echo f::form_regional_text('name['. $language_code .']', $language_code, true); ?>
 		</label>
 
 		<h2><?php echo t('title_values', 'Values'); ?></h2>
@@ -127,11 +127,11 @@
 			<tbody>
 				<?php if (!empty($_POST['values'])) foreach ($_POST['values'] as $key => $group_value) { ?>
 				<tr draggable="true">
-					<td><?php echo $group_value['id']; ?><?php echo functions::form_input_hidden('values['. $key .'][id]', $group_value['id']); ?></td>
-					<td><?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_regional_text( 'values['. $key .'][name]['. $language_code .']', $language_code, true); ?></td>
+					<td><?php echo $group_value['id']; ?><?php echo f::form_input_hidden('values['. $key .'][id]', $group_value['id']); ?></td>
+					<td><?php foreach (array_keys(language::$languages) as $language_code) echo f::form_regional_text( 'values['. $key .'][name]['. $language_code .']', $language_code, true); ?></td>
 					<td class="text-center"><?php echo !empty($group_value['in_use']) ? t('title_yes', 'Yes') : t('title_no', 'No'); ?></td>
-					<td class="grabbable"><?php echo functions::draw_fonticon('icon-arrows-vertical'); ?></td>
-					<td class="text-end"><?php if (empty($group_value['in_use'])) echo '<a href="#" class="remove btn btn-default btn-sm" title="'. t('title_remove', 'Remove') .'">'. functions::draw_fonticon('icon-times', 'style="color: #c33;"') .'</a>'; ?></td>
+					<td class="grabbable"><?php echo f::draw_fonticon('icon-arrows-vertical'); ?></td>
+					<td class="text-end"><?php if (empty($group_value['in_use'])) echo '<a href="#" class="remove btn btn-default btn-sm" title="'. t('title_remove', 'Remove') .'">'. f::draw_fonticon('icon-times', 'style="color: #c33;"') .'</a>'; ?></td>
 				</tr>
 				<?php } ?>
 			</tbody>
@@ -140,7 +140,7 @@
 				<tr>
 					<td colspan="99">
 						<a class="add btn btn-default btn-sm" href="#">
-							<?php echo functions::draw_fonticon('icon-plus'); ?>
+							<?php echo f::draw_fonticon('icon-plus'); ?>
 						</a>
 					</td>
 				</tr>
@@ -148,13 +148,13 @@
 		</table>
 
 		<div class="card-action">
-			<?php echo functions::form_button_predefined('save'); ?>
-			<?php if (!empty($attribute_group->data['id'])) echo functions::form_button_predefined('delete'); ?>
-			<?php echo functions::form_button_predefined('cancel'); ?>
+			<?php echo f::form_button_predefined('save'); ?>
+			<?php if (!empty($attribute_group->data['id'])) echo f::form_button_predefined('delete'); ?>
+			<?php echo f::form_button_predefined('cancel'); ?>
 		</div>
 	</div>
 
-	<?php echo functions::form_end(); ?>
+	<?php echo f::form_end(); ?>
 </div>
 
 <script>
@@ -167,18 +167,18 @@
 <?php
 		$name_fields = '';
 		foreach (array_keys(language::$languages) as $language_code) {
-			$name_fields .= functions::form_regional_text('values[__index__][name]['. $language_code .']', $language_code, '', '');
+			$name_fields .= f::form_regional_text('values[__index__][name]['. $language_code .']', $language_code, '', '');
 		}
 ?>
 		let $output = $([
 			'<tr draggable="true">',
-			'  <td><?php echo functions::escape_js(functions::form_input_hidden('values[__index__][id]', '')); ?></td>',
-			'  <td><?php echo functions::escape_js($name_fields); ?></td>',
+			'  <td><?php echo f::escape_js(f::form_input_hidden('values[__index__][id]', '')); ?></td>',
+			'  <td><?php echo f::escape_js($name_fields); ?></td>',
 			'  <td class="text-center"><?php echo t('title_no', 'No'); ?></td>',
-			'  <td class="grabbable"><?php echo functions::escape_js(functions::draw_fonticon('icon-arrows-vertical')); ?></td>',
+			'  <td class="grabbable"><?php echo f::escape_js(f::draw_fonticon('icon-arrows-vertical')); ?></td>',
 			'  <td class="text-end">',
-			'		<a class="remove btn btn-default btn-sm" href="#" title="<?php echo functions::escape_js(t('title_remove', 'Remove'), true); ?>">',
-			'			<?php echo functions::escape_js(functions::draw_fonticon('icon-times', 'style="color: #c33;"')); ?>',
+			'		<a class="remove btn btn-default btn-sm" href="#" title="<?php echo f::escape_js(t('title_remove', 'Remove'), true); ?>">',
+			'			<?php echo f::escape_js(f::draw_fonticon('icon-times', 'style="color: #c33;"')); ?>',
 			'		</a>',
 			'	</td>',
 			'</tr>'

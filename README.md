@@ -78,7 +78,7 @@ litecart/
 │   ├── abstracts/              - Class templates
 │   ├── clients/                – Clients, Service Layers, and Wrappers
 │   ├── entities/               - Entity objects
-│   ├── functions/              - Helper functions, called via lib_func.inc.php using functions::name()
+│   ├── functions/              - Helper functions, called via lib_func.inc.php using f::name()
 │   ├── nodes/                  – System nodes and event based hook events
 │   ├── modules/                - Plug 'n play modules
 │   │   ├── customer/

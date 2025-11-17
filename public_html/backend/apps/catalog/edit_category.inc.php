@@ -135,7 +135,7 @@
 	</nav>
 
 	<div class="card-body">
-		<?php echo functions::form_begin('category_form', 'post', false, true); ?>
+		<?php echo f::form_begin('category_form', 'post', false, true); ?>
 
 			<div class="tab-content">
 				<div id="tab-general" class="tab active" style="max-width: 1200px;">
@@ -144,17 +144,17 @@
 						<div class="col-md-4">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_status', 'Status'); ?></div>
-								<?php echo functions::form_toggle('status', 'e/d', true); ?>
+								<?php echo f::form_toggle('status', 'e/d', true); ?>
 							</label>
 
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_parent_category', 'Parent Category'); ?></div>
-								<?php echo functions::form_select_category('parent_id', true); ?>
+								<?php echo f::form_select_category('parent_id', true); ?>
 							</label>
 
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_google_taxonomy_id', 'Google Taxonomy ID'); ?> <a href="https://www.google.com/basepages/producttype/taxonomy-with-ids.en-US.txt" target="_blank"><?php echo functions::draw_fonticon('icon-square-out'); ?></a></div>
-								<?php echo functions::form_input_number('google_taxonomy_id', true); ?>
+								<div class="form-label"><?php echo t('title_google_taxonomy_id', 'Google Taxonomy ID'); ?> <a href="https://www.google.com/basepages/producttype/taxonomy-with-ids.en-US.txt" target="_blank"><?php echo f::draw_fonticon('icon-square-out'); ?></a></div>
+								<?php echo f::form_input_number('google_taxonomy_id', true); ?>
 							</label>
 
 							<?php if (!empty($category->data['id'])) { ?>
@@ -162,13 +162,13 @@
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_updated_at', 'Updated At'); ?></div>
-										<div><?php echo functions::datetime_when($category->data['updated_at']); ?></div>
+										<div><?php echo f::datetime_when($category->data['updated_at']); ?></div>
 									</label>
 								</div>
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_created_at', 'Created At'); ?></div>
-										<div><?php echo functions::datetime_when($category->data['created_at']); ?></div>
+										<div><?php echo f::datetime_when($category->data['created_at']); ?></div>
 									</label>
 								</div>
 							</div>
@@ -176,44 +176,44 @@
 
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_priority', 'Priority'); ?></div>
-								<?php echo functions::form_input_number('priority', true); ?>
+								<?php echo f::form_input_number('priority', true); ?>
 							</label>
 						</div>
 
 						<div class="col-md-4">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
-								<?php echo functions::form_regional_text('name['. settings::get('store_language_code') .']', settings::get('store_language_code'), true, ''); ?>
+								<?php echo f::form_regional_text('name['. settings::get('store_language_code') .']', settings::get('store_language_code'), true, ''); ?>
 							</label>
 
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_code', 'Code'); ?></div>
-								<?php echo functions::form_input_text('code', true); ?>
+								<?php echo f::form_input_text('code', true); ?>
 							</label>
 
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_list_style', 'List Style'); ?></div>
-								<?php echo functions::form_select('list_style', $list_style_options, true); ?>
+								<?php echo f::form_select('list_style', $list_style_options, true); ?>
 							</label>
 
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_keywords', 'Keywords'); ?></div>
-								<?php echo functions::form_input_tags('keywords', true); ?>
+								<?php echo f::form_input_tags('keywords', true); ?>
 							</label>
 						</div>
 
 						<div class="col-md-4">
 							<div id="image">
 								<div style="margin-bottom: 15px;">
-									<?php echo functions::draw_thumbnail('storage://images/' . $category->data['image'], 480, 0, 'category'); ?>
+									<?php echo f::draw_thumbnail('storage://images/' . $category->data['image'], 480, 0, 'category'); ?>
 								</div>
 
 								<label class="form-group">
 									<div class="form-label"><?php echo ((isset($category->data['image']) && $category->data['image'] != '') ? t('title_new_image', 'New Image') : t('title_image', 'Image')); ?></div>
-									<?php echo functions::form_input_file('image', ''); ?>
+									<?php echo f::form_input_file('image', ''); ?>
 									<?php if (!empty($category->data['image'])) { ?><br>
 									<div><?php echo $category->data['image']; ?></div>
-									<div><?php echo functions::form_checkbox('delete_image', 'true', true); ?> <?php echo t('title_delete', 'Delete'); ?></div>
+									<div><?php echo f::form_checkbox('delete_image', 'true', true); ?> <?php echo t('title_delete', 'Delete'); ?></div>
 									<?php } ?>
 								</label>
 							</div>
@@ -241,40 +241,40 @@
 
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
-								<?php echo functions::form_regional_text('name['. $language_code .']', $language_code, true, ''); ?>
+								<?php echo f::form_regional_text('name['. $language_code .']', $language_code, true, ''); ?>
 							</label>
 
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_h1_title', 'H1 Title'); ?></div>
-								<?php echo functions::form_regional_text('h1_title['. $language_code .']', $language_code, true, ''); ?>
+								<?php echo f::form_regional_text('h1_title['. $language_code .']', $language_code, true, ''); ?>
 							</label>
 
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_short_description', 'Short Description'); ?></div>
-								<?php echo functions::form_regional_text('short_description['. $language_code .']', $language_code, true); ?>
+								<?php echo f::form_regional_text('short_description['. $language_code .']', $language_code, true); ?>
 							</label>
 
 							<div class="form-group">
 								<div class="form-label"><?php echo t('title_description', 'Description'); ?></div>
-								<?php echo functions::form_regional_wysiwyg('description['. $language_code .']', $language_code, true, 'style="height: 240px;"'); ?>
+								<?php echo f::form_regional_wysiwyg('description['. $language_code .']', $language_code, true, 'style="height: 240px;"'); ?>
 							</div>
 
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_synonyms', 'Synonyms'); ?></div>
-								<?php echo functions::form_regional_text('synonyms['. $language_code .']', $language_code, true); ?>
+								<?php echo f::form_regional_text('synonyms['. $language_code .']', $language_code, true); ?>
 							</label>
 
 							<div class="grid">
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_head_title', 'Head Title'); ?></div>
-										<?php echo functions::form_regional_text('head_title['. $language_code .']', $language_code, true); ?>
+										<?php echo f::form_regional_text('head_title['. $language_code .']', $language_code, true); ?>
 									</label>
 								</div>
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_meta_description', 'Meta Description'); ?></div>
-										<?php echo functions::form_regional_text('meta_description['. $language_code .']', $language_code, true); ?>
+										<?php echo f::form_regional_text('meta_description['. $language_code .']', $language_code, true); ?>
 									</label>
 								</div>
 							</div>
@@ -300,21 +300,21 @@
 							<?php if (!empty($_POST['filters'])) foreach (array_keys($_POST['filters']) as $key) { ?>
 							<tr draggable="true">
 								<td class="grabbable">
-									<?php echo functions::form_input_hidden('filters['.$key.'][id]', true); ?>
-									<?php echo functions::form_input_hidden('filters['.$key.'][attribute_group_id]', true); ?>
-									<?php echo functions::form_input_hidden('filters['.$key.'][attribute_group_name]', true); ?>
-									<?php echo functions::escape_html($_POST['filters'][$key]['attribute_group_name']); ?>
+									<?php echo f::form_input_hidden('filters['.$key.'][id]', true); ?>
+									<?php echo f::form_input_hidden('filters['.$key.'][attribute_group_id]', true); ?>
+									<?php echo f::form_input_hidden('filters['.$key.'][attribute_group_name]', true); ?>
+									<?php echo f::escape_html($_POST['filters'][$key]['attribute_group_name']); ?>
 								</td>
-								<td class="grabbable"><?php echo functions::form_checkbox('filters['.$key.'][select_multiple]', '1', true); ?></td>
+								<td class="grabbable"><?php echo f::form_checkbox('filters['.$key.'][select_multiple]', '1', true); ?></td>
 								<td>
 									<div class="btn-group">
-										<a class="btn btn-default btn-sm move-up" href="#" title="<?php echo functions::escape_html(t('title_move_up', 'Move Up')); ?>"><?php echo functions::draw_fonticon('move-up'); ?></a>
-										<a class="btn btn-default btn-sm move-down" href="#" title="<?php echo functions::escape_html(t('title_move_down', 'Move Down')); ?>"><?php echo functions::draw_fonticon('move-down'); ?></a>
+										<a class="btn btn-default btn-sm move-up" href="#" title="<?php echo f::escape_html(t('title_move_up', 'Move Up')); ?>"><?php echo f::draw_fonticon('move-up'); ?></a>
+										<a class="btn btn-default btn-sm move-down" href="#" title="<?php echo f::escape_html(t('title_move_down', 'Move Down')); ?>"><?php echo f::draw_fonticon('move-down'); ?></a>
 									</div>
 								</td>
 								<td>
-									<a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(t('title_remove', 'Remove')); ?>">
-										<?php echo functions::draw_fonticon('remove'); ?>
+									<a class="btn btn-default btn-sm remove" href="#" title="<?php echo f::escape_html(t('title_remove', 'Remove')); ?>">
+										<?php echo f::draw_fonticon('remove'); ?>
 									</a>
 								</td>
 							</tr>
@@ -323,8 +323,8 @@
 
 						<tfoot>
 							<tr>
-								<td><?php echo functions::form_select_attribute_group('new_attribute_group', true); ?></td>
-								<td><?php echo functions::form_button('add', t('title_add', 'Add'), 'button'); ?></td>
+								<td><?php echo f::form_select_attribute_group('new_attribute_group', true); ?></td>
+								<td><?php echo f::form_button('add', t('title_add', 'Add'), 'button'); ?></td>
 								<td></td>
 								<td></td>
 							</tr>
@@ -335,12 +335,12 @@
 			</div>
 
 			<div class="card-action">
-				<?php echo functions::form_button_predefined('save'); ?>
-				<?php if (!empty($category->data['id'])) echo functions::form_button_predefined('delete'); ?>
-				<?php echo functions::form_button_predefined('cancel'); ?>
+				<?php echo f::form_button_predefined('save'); ?>
+				<?php if (!empty($category->data['id'])) echo f::form_button_predefined('delete'); ?>
+				<?php echo f::form_button_predefined('cancel'); ?>
 			</div>
 
-		<?php echo functions::form_end(); ?>
+		<?php echo f::form_end(); ?>
 	</div>
 </div>
 
@@ -368,7 +368,7 @@
 				$('#image img').attr('src', e.target.result);
 			};
 		} else {
-			$('#image img').attr('src', '<?php echo document::rlink(functions::image_thumbnail(FS_DIR_STORAGE . $category->data['image'], 480, 0)); ?>');
+			$('#image img').attr('src', '<?php echo document::rlink(f::image_thumbnail(FS_DIR_STORAGE . $category->data['image'], 480, 0)); ?>');
 		}
 	});
 
@@ -394,7 +394,7 @@
 	$('#tab-filters button[name="add"]').on('click', function() {
 
 		if ($('select[name="new_attribute_group"]').val() == '') {
-			alert("<?php echo functions::escape_html(t('error_must_select_attribute_group', 'You must select an attribute group')); ?>");
+			alert("<?php echo f::escape_html(t('error_must_select_attribute_group', 'You must select an attribute group')); ?>");
 			return;
 		}
 
@@ -403,19 +403,19 @@
 
 		let $output = $([
 			'<tr class="grabbable">',
-			'	<?php echo functions::escape_js(functions::form_input_hidden('filters[__index__][id]', '')); ?>',
-			'	<?php echo functions::escape_js(functions::form_input_hidden('filters[__index__][attribute_group_id]', 'new_attribute_group_id')); ?>',
-			'	<?php echo functions::escape_js(functions::form_input_hidden('filters[__index__][attribute_group_name]', 'new_attribute_group_name')); ?>',
+			'	<?php echo f::escape_js(f::form_input_hidden('filters[__index__][id]', '')); ?>',
+			'	<?php echo f::escape_js(f::form_input_hidden('filters[__index__][attribute_group_id]', 'new_attribute_group_id')); ?>',
+			'	<?php echo f::escape_js(f::form_input_hidden('filters[__index__][attribute_group_name]', 'new_attribute_group_name')); ?>',
 			'	<td>new_attribute_group_name</td>',
-			'	<td><?php echo functions::form_checkbox('filters[__index__][select_multiple]', true); ?></td>',
+			'	<td><?php echo f::form_checkbox('filters[__index__][select_multiple]', true); ?></td>',
 			'	<td class="text-end">',
 			'		<div class="btn-group">',
-			'			<a class="btn btn-default btn-sm move-up" href="#" title="<?php echo functions::escape_html(t('title_move_up', 'Move Up')); ?>"><?php echo functions::draw_fonticon('move-up'); ?></a>',
-			'			<a class="btn btn-default btn-sm move-down" href="#" title="<?php echo functions::escape_html(t('title_move_down', 'Move Down')); ?>"><?php echo functions::draw_fonticon('move-down'); ?></a>',
+			'			<a class="btn btn-default btn-sm move-up" href="#" title="<?php echo f::escape_html(t('title_move_up', 'Move Up')); ?>"><?php echo f::draw_fonticon('move-up'); ?></a>',
+			'			<a class="btn btn-default btn-sm move-down" href="#" title="<?php echo f::escape_html(t('title_move_down', 'Move Down')); ?>"><?php echo f::draw_fonticon('move-down'); ?></a>',
 			'		</div>',
 			'	</td>',
 			'	<td>',
-			'		<a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(t('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a>',
+			'		<a class="btn btn-default btn-sm remove" href="#" title="<?php echo f::escape_html(t('title_remove', 'Remove')); ?>"><?php echo f::draw_fonticon('remove'); ?></a>',
 			'	</td>',
 			'</tr>',
 		].join('\n')

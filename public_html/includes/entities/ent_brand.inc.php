@@ -85,7 +85,7 @@
 				$this->data['id'] = database::insert_id();
 			}
 
-			$this->data['keywords'] = functions::string_split($this->data['keywords']);
+			$this->data['keywords'] = f::string_split($this->data['keywords']);
 			$this->data['keywords'] = array_unique($this->data['keywords']);
 			$this->data['keywords'] = implode(',', $this->data['keywords']);
 
@@ -95,12 +95,12 @@
 					featured = '". database::input($this->data['featured']) ."',
 					code = '". database::input($this->data['code']) ."',
 					name = '". database::input($this->data['name']) ."',
-					short_description = '". database::input(functions::format_json($this->data['short_description'])) ."',
-					description = '". database::input(functions::format_json($this->data['description'])) ."',
-					head_title = '". database::input(functions::format_json($this->data['head_title'])) ."',
-					h1_title = '". database::input(functions::format_json($this->data['h1_title'])) ."',
-					meta_description = '". database::input(functions::format_json($this->data['meta_description'])) ."',
-					link = '". database::input(functions::format_json($this->data['link'])) ."',
+					short_description = '". database::input(f::format_json($this->data['short_description'])) ."',
+					description = '". database::input(f::format_json($this->data['description'])) ."',
+					head_title = '". database::input(f::format_json($this->data['head_title'])) ."',
+					h1_title = '". database::input(f::format_json($this->data['h1_title'])) ."',
+					meta_description = '". database::input(f::format_json($this->data['meta_description'])) ."',
+					link = '". database::input(f::format_json($this->data['link'])) ."',
 					image = '". database::input($this->data['image']) ."',
 					keywords = '". database::input($this->data['keywords']) ."'
 				where id = ". (int)$this->data['id'] ."
@@ -129,16 +129,16 @@
 			$image = new ent_image($file);
 
 			// 456-12345_Fancy-title.jpg
-			$filename = 'brands/' . $this->data['id'] .'-'. functions::format_path_friendly($this->data['name'], settings::get('store_language_code')) .'.'. $image->type;
+			$filename = 'brands/' . $this->data['id'] .'-'. f::format_path_friendly($this->data['name'], settings::get('store_language_code')) .'.'. $image->type;
 
 			if (is_file('storage://images/' . $this->data['image'])) {
 				unlink('storage://images/' . $this->data['image']);
 			}
 
-			functions::image_delete_cache('storage://images/' . $filename);
+			f::image_delete_cache('storage://images/' . $filename);
 
 			if (settings::get('image_downsample_size')) {
-				list($width, $height) = functions::string_split(settings::get('image_downsample_size'));
+				list($width, $height) = f::string_split(settings::get('image_downsample_size'));
 				$image->resample($width, $height, 'FIT_ONLY_BIGGER');
 			}
 
@@ -161,7 +161,7 @@
 				unlink('storage://images/' . $this->data['image']);
 			}
 
-			functions::image_delete_cache('storage://images/' . $this->data['image']);
+			f::image_delete_cache('storage://images/' . $this->data['image']);
 
 			database::query(
 				"update ". DB_TABLE_PREFIX ."brands

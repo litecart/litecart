@@ -108,41 +108,41 @@
 	</div>
 
 	<div class="card-body">
-		<?php echo functions::form_begin('tax_rate_form', 'post', false, false, 'style="max-width: 720px;"'); ?>
+		<?php echo f::form_begin('tax_rate_form', 'post', false, false, 'style="max-width: 720px;"'); ?>
 
 			<div class="grid">
 				<div class="col-md-6">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_code', 'Code'); ?></div>
-						<?php echo functions::form_input_text('code', true); ?>
+						<?php echo f::form_input_text('code', true); ?>
 					</label>
 				</div>
 
 				<div class="col-md-6">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
-						<?php echo functions::form_input_text('name', true); ?>
+						<?php echo f::form_input_text('name', true); ?>
 					</label>
 				</div>
 			</div>
 
 			<label class="form-group">
 				<div class="form-label"><?php echo t('title_description', 'Description'); ?></div>
-				<?php echo functions::form_input_text('description', true); ?>
+				<?php echo f::form_input_text('description', true); ?>
 			</label>
 
 			<div class="grid">
 				<div class="col-md-4">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_tax_class', 'Tax Class'); ?></div>
-						<?php echo functions::form_select_tax_class('tax_class_id', true); ?>
+						<?php echo f::form_select_tax_class('tax_class_id', true); ?>
 					</label>
 				</div>
 
 				<div class="col-md-5">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_geo_zone', 'Geo Zone'); ?></div>
-						<?php echo functions::form_select_geo_zone('geo_zone_id', true); ?>
+						<?php echo f::form_select_geo_zone('geo_zone_id', true); ?>
 					</label>
 				</div>
 
@@ -150,7 +150,7 @@
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_rate', 'Rate'); ?></div>
 						<div class="input-group">
-							<?php echo functions::form_input_decimal('rate', true, 4); ?>
+							<?php echo f::form_input_decimal('rate', true, 4); ?>
 							<span class="input-group-text">%</span>
 						</div>
 					</label>
@@ -162,8 +162,8 @@
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_address_type', 'Address Type'); ?></div>
 						<div>
-							<?php echo functions::form_radio_button('address_type', ['shipping', t('title_shipping_address', 'Shipping Address')], true); ?>
-							<?php echo functions::form_radio_button('address_type', ['payment', t('title_payment_address', 'Payment Address')], true); ?>
+							<?php echo f::form_radio_button('address_type', ['shipping', t('title_shipping_address', 'Shipping Address')], true); ?>
+							<?php echo f::form_radio_button('address_type', ['payment', t('title_payment_address', 'Payment Address')], true); ?>
 						</div>
 					</label>
 				</div>
@@ -172,27 +172,27 @@
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_conditions', 'Conditions'); ?></div>
 						<div class="radio">
-							<label><?php echo functions::form_checkbox('rule_companies_with_tax_id', ['1', t('text_applies_to_companies_with_tax_id', 'Applies to companies with a tax ID')], true); ?></label>
+							<label><?php echo f::form_checkbox('rule_companies_with_tax_id', ['1', t('text_applies_to_companies_with_tax_id', 'Applies to companies with a tax ID')], true); ?></label>
 						</div>
 						<div class="radio">
-							<label><?php echo functions::form_checkbox('rule_companies_without_tax_id', ['1', t('rule_applies_to_companies_without_tax_id', 'Applies to companies without a tax ID')], true); ?></label>
+							<label><?php echo f::form_checkbox('rule_companies_without_tax_id', ['1', t('rule_applies_to_companies_without_tax_id', 'Applies to companies without a tax ID')], true); ?></label>
 						</div>
 						<div class="radio">
-							<label><?php echo functions::form_checkbox('rule_individuals_with_tax_id', ['1', t('text_applies_to_individuals_with_tax_id', 'Applies to individuals with a tax ID')], true); ?></label>
+							<label><?php echo f::form_checkbox('rule_individuals_with_tax_id', ['1', t('text_applies_to_individuals_with_tax_id', 'Applies to individuals with a tax ID')], true); ?></label>
 						</div>
 						<div class="radio">
-							<label><?php echo functions::form_checkbox('rule_individuals_without_tax_id', ['1', t('rule_applies_to_individuals_without_tax_id', 'Applies to individuals without a tax ID')], true); ?></label>
+							<label><?php echo f::form_checkbox('rule_individuals_without_tax_id', ['1', t('rule_applies_to_individuals_without_tax_id', 'Applies to individuals without a tax ID')], true); ?></label>
 						</div>
 					</label>
 				</div>
 			</div>
 
 			<div class="card-action">
-				<?php echo functions::form_button_predefined('save'); ?>
-				<?php if ($tax_rate->data['id']) echo functions::form_button_predefined('delete'); ?>
-				<?php echo functions::form_button_predefined('cancel'); ?>
+				<?php echo f::form_button_predefined('save'); ?>
+				<?php if ($tax_rate->data['id']) echo f::form_button_predefined('delete'); ?>
+				<?php echo f::form_button_predefined('cancel'); ?>
 			</div>
 
-		<?php echo functions::form_end(); ?>
+		<?php echo f::form_end(); ?>
 	</div>
 </div>

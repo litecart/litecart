@@ -6,7 +6,7 @@
 		</li>
 		<?php } else { ?>
 		<li class="pagination-item<?php if ($item['active']) echo ' active'; ?>" data-page="<?php echo $item['page']; ?>">
-			<a href="<?php echo functions::escape_html($item['link']); ?>">
+			<a href="<?php echo f::escape_html($item['link']); ?>">
 				<?php echo $item['title']; ?>
 			</a>
 		</li>

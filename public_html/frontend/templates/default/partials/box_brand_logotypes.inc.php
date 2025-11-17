@@ -7,8 +7,8 @@
 <section id="box-brand-logotypes" class="card hidden-xs hidden-sm" style="margin-bottom: 2em;">
 	<div class="card-body text-center">
 		<?php foreach ($brands as $brand) { ?>
-		<a href="<?php echo functions::escape_html($brand['link']); ?>">
-			<?php echo functions::draw_thumbnail($brand['image'], 240, 80, '', 'alt="'. functions::escape_attr($brand['name']) .'" style="margin: 0px 15px;"'); ?>
+		<a href="<?php echo f::escape_html($brand['link']); ?>">
+			<?php echo f::draw_thumbnail($brand['image'], 240, 80, '', 'alt="'. f::escape_attr($brand['name']) .'" style="margin: 0px 15px;"'); ?>
 		</a>
 		<?php } ?>
 	</div>

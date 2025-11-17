@@ -379,7 +379,7 @@
 				})($tmp_file);
 			}
 
-			functions::file_delete($this->previous['location'], true);
+			f::file_delete($this->previous['location'], true);
 
 			$this->reset();
 

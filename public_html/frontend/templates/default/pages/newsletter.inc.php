@@ -13,41 +13,41 @@
 						<?php echo t('box_newsletter_subscribe:description', 'Get the latest news and offers straight to your inbox. Subscribe now.'); ?>
 					</p>
 
-					<?php echo functions::form_begin('newsletter_subscribe_form', 'post', document::ilink('newsletter')); ?>
+					<?php echo f::form_begin('newsletter_subscribe_form', 'post', document::ilink('newsletter')); ?>
 
 						<div class="grid">
 							<div class="col-md-6">
 								<label class="form-group">
 									<div class="form-label"><?php echo t('title_firstname', 'First Name'); ?></div>
-									<?php echo functions::form_input_text('firstname', true); ?>
+									<?php echo f::form_input_text('firstname', true); ?>
 								 </label>
 							</div>
 
 							<div class="col-md-6">
 								<label class="form-group">
 									<div class="form-label"><?php echo t('title_lastname', 'Last Name'); ?></div>
-									<?php echo functions::form_input_text('lastname', true); ?>
+									<?php echo f::form_input_text('lastname', true); ?>
 								 </label>
 							</div>
 						</div>
 
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_email_address', 'Email Address'); ?></div>
-							<?php echo functions::form_input_email('email', true, 'required'); ?>
+							<?php echo f::form_input_email('email', true, 'required'); ?>
 						 </label>
 
 						<div class="grid">
 							<div class="col-md-6">
 								<label class="form-group">
 									<div class="form-label"><?php echo t('title_country', 'Country'); ?></div>
-									<?php echo functions::form_select_country('country_code', true); ?>
+									<?php echo f::form_select_country('country_code', true); ?>
 								 </label>
 							</div>
 
 							<div class="col-md-6">
 								<label class="form-group">
 									<div class="form-label"><?php echo t('title_language', 'Language'); ?></div>
-									<?php echo functions::form_select_language('language_code', true); ?>
+									<?php echo f::form_select_language('language_code', true); ?>
 								 </label>
 							</div>
 						</div>
@@ -57,7 +57,7 @@
 							<div class="col-xs-6">
 								<label class="form-group">
 									<div class="form-label"><?php echo t('title_captcha', 'CAPTCHA'); ?></div>
-									<?php echo functions::form_captcha('newsletter_subscribe'); ?>
+									<?php echo f::form_captcha('newsletter_subscribe'); ?>
 								 </label>
 							</div>
 						</div>
@@ -65,13 +65,13 @@
 
 						<?php if ($consent) { ?>
 						<div class="form-group consent">
-							<?php echo functions::form_checkbox('terms_agreed', ['1', $consent], true, 'required') .'</label>'; ?>
+							<?php echo f::form_checkbox('terms_agreed', ['1', $consent], true, 'required') .'</label>'; ?>
 						</div>
 						<?php } ?>
 
-						<?php echo functions::form_button('subscribe', t('title_subscribe', 'Subscribe')); ?>
+						<?php echo f::form_button('subscribe', t('title_subscribe', 'Subscribe')); ?>
 
-					<?php echo functions::form_end(); ?>
+					<?php echo f::form_end(); ?>
 				</div>
 			</section>
 		</div>
@@ -81,21 +81,21 @@
 				<div class="card-body">
 					<h2><?php echo t('box_newsletter_unsubscribe:title', 'Unsubscribe from our newsletter'); ?></h2>
 
-					<?php echo functions::form_begin('newsletter_unsubscribe_form', 'post', document::ilink('newsletter')); ?>
+					<?php echo f::form_begin('newsletter_unsubscribe_form', 'post', document::ilink('newsletter')); ?>
 
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_email_address', 'Email Address'); ?></div>
-							<?php echo functions::form_input_email('email', true, 'required'); ?>
+							<?php echo f::form_input_email('email', true, 'required'); ?>
 						 </label>
 
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_captcha', 'CAPTCHA'); ?></div>
-							<?php echo functions::form_captcha('newsletter_unsubscribe'); ?>
+							<?php echo f::form_captcha('newsletter_unsubscribe'); ?>
 						 </label>
 
-						<?php echo functions::form_button('unsubscribe', t('title_unsubscribe', 'Unsubscribe')); ?>
+						<?php echo f::form_button('unsubscribe', t('title_unsubscribe', 'Unsubscribe')); ?>
 
-					<?php echo functions::form_end(); ?>
+					<?php echo f::form_end(); ?>
 				</div>
 			</section>
 		</div>

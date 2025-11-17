@@ -74,7 +74,7 @@
 						</h3>
 
 						<ul class="list-unstyled">
-							<?php foreach ($pages as $page) echo '<li><a href="'. functions::escape_attr($page['link']) .'">'. $page['title'] .'</a></li>' . PHP_EOL; ?>
+							<?php foreach ($pages as $page) echo '<li><a href="'. f::escape_attr($page['link']) .'">'. $page['title'] .'</a></li>' . PHP_EOL; ?>
 						</ul>
 
 					</section>
@@ -91,12 +91,12 @@
 
 						<?php if (settings::get('store_phone')) { ?>
 						<p class="phone">
-							<?php echo functions::draw_fonticon('icon-phone'); ?> <a href="tel:<?php echo settings::get('store_phone'); ?>"><?php echo settings::get('store_phone'); ?></a>
+							<?php echo f::draw_fonticon('icon-phone'); ?> <a href="tel:<?php echo settings::get('store_phone'); ?>"><?php echo settings::get('store_phone'); ?></a>
 						<p>
 						<?php } ?>
 
 						<p class="email">
-							<?php echo functions::draw_fonticon('icon-envelope'); ?> <a href="mailto:<?php echo settings::get('store_email'); ?>"><?php echo settings::get('store_email'); ?></a>
+							<?php echo f::draw_fonticon('icon-envelope'); ?> <a href="mailto:<?php echo settings::get('store_email'); ?>"><?php echo settings::get('store_email'); ?></a>
 						</p>
 
 					</section>
@@ -125,8 +125,8 @@
 					<?php if ($social_bookmarks) { ?>
 					<div id="social-bookmarks" class="buttons">
 						<?php foreach ($social_bookmarks as $bookmark) { ?>
-						<a href="<?php echo functions::escape_html($bookmark['link']); ?>" target="_blank">
-							<?php echo functions::draw_fonticon($bookmark['icon'] .'', 'title="'. functions::escape_attr($bookmark['title']) .'"'); ?>
+						<a href="<?php echo f::escape_html($bookmark['link']); ?>" target="_blank">
+							<?php echo f::draw_fonticon($bookmark['icon'] .'', 'title="'. f::escape_attr($bookmark['title']) .'"'); ?>
 						</a>
 						<?php } ?>
 					</div>

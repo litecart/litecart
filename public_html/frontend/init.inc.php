@@ -37,7 +37,7 @@
 	]);
 
 	// Breadcrumbs
-	breadcrumbs::add(functions::draw_fonticon('icon-home', 'title="'. functions::escape_attr(t('title_home', 'Home')) .'"'), WS_DIR_APP);
+	breadcrumbs::add(f::draw_fonticon('icon-home', 'title="'. f::escape_attr(t('title_home', 'Home')) .'"'), WS_DIR_APP);
 
 	// Hreflang
 	(function() {

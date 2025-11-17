@@ -75,7 +75,7 @@
 			if ($value == '') {
 				return $key;
 			} else {
-				return $key .'="'. functions::escape_attr($value) .'"';
+				return $key .'="'. f::escape_attr($value) .'"';
 			}
 
 		}, array_keys($parameters, $parameters)));
@@ -106,7 +106,7 @@
 
 			// Fontawesome 4
 			case (preg_match('#^fa-#', $icon)):
-				trigger_error('Fontawesome 4 icon `'. functions::escape_html($icon) .'` is deprecated. Please use Fontawesome 5 instead.', E_USER_DEPRECATED);
+				trigger_error('Fontawesome 4 icon `'. f::escape_html($icon) .'` is deprecated. Please use Fontawesome 5 instead.', E_USER_DEPRECATED);
 				document::$head_tags['fontawesome4'] = '<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/v4-shims.css">';
 				document::$head_tags['fontawesome5'] = '<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">';
 				return '<i class="fa '. $icon .'"'. ($parameters ? ' ' . $parameters : '') .'></i>';
@@ -173,13 +173,13 @@
 
 		if ($width && $height) {
 			if (preg_match('#style="#', $parameters)) {
-				$parameters = preg_replace('#style="(.*?)"#', 'style="$1 aspect-ratio: '. functions::image_aspect_ratio($width, $height) .';"', $parameters);
+				$parameters = preg_replace('#style="(.*?)"#', 'style="$1 aspect-ratio: '. f::image_aspect_ratio($width, $height) .';"', $parameters);
 			} else {
-				$parameters .= ' style="aspect-ratio: '. functions::image_aspect_ratio($width, $height) .';"';
+				$parameters .= ' style="aspect-ratio: '. f::image_aspect_ratio($width, $height) .';"';
 			}
 		}
 
-		return '<img '. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="'. functions::escape_attr($clipping) .'"' : '') .' src="'. document::href_rlink($image) .'" '. ($parameters ? ' '. $parameters : '') .'>';
+		return '<img '. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="'. f::escape_attr($clipping) .'"' : '') .' src="'. document::href_rlink($image) .'" '. ($parameters ? ' '. $parameters : '') .'>';
 	}
 
 	function draw_script($src) {
@@ -218,28 +218,28 @@
 
 		if (!$width) {
 			if ($clipping == 'product') {
-				list($width, $height) = functions::image_scale_by_height($height, settings::get('product_image_ratio'));
+				list($width, $height) = f::image_scale_by_height($height, settings::get('product_image_ratio'));
 			} else if ($clipping == 'category') {
-				list($width, $height) = functions::image_scale_by_height($height, settings::get('category_image_ratio'));
+				list($width, $height) = f::image_scale_by_height($height, settings::get('category_image_ratio'));
 			} else {
 				$aspect_ratio = (new ent_image($image))->aspect_ratio;
-				list($width, $height) = functions::image_scale_by_height($height, $aspect_ratio);
+				list($width, $height) = f::image_scale_by_height($height, $aspect_ratio);
 			}
 		}
 
 		if (!$height) {
 			if ($clipping == 'product') {
-				list($width, $height) = functions::image_scale_by_width($width, settings::get('product_image_ratio'));
+				list($width, $height) = f::image_scale_by_width($width, settings::get('product_image_ratio'));
 			} else if ($clipping == 'category') {
-				list($width, $height) = functions::image_scale_by_width($width, settings::get('category_image_ratio'));
+				list($width, $height) = f::image_scale_by_width($width, settings::get('category_image_ratio'));
 			} else {
 				$aspect_ratio = (new ent_image($image))->aspect_ratio;
-				list($width, $height) = functions::image_scale_by_width($width, $aspect_ratio);
+				list($width, $height) = f::image_scale_by_width($width, $aspect_ratio);
 			}
 		}
 
 		if (empty($aspect_ratio)) {
-			$aspect_ratio = functions::image_aspect_ratio($width, $height);
+			$aspect_ratio = f::image_aspect_ratio($width, $height);
 		}
 
 		switch (strtolower($clipping)) {
@@ -269,8 +269,8 @@
 				break;
 		}
 
-		$thumbnail = functions::image_thumbnail($image, $width, $height);
-		$thumbnail_2x = functions::image_thumbnail($image, $width*2, $height*2);
+		$thumbnail = f::image_thumbnail($image, $width, $height);
+		$thumbnail_2x = f::image_thumbnail($image, $width*2, $height*2);
 
 		if ($width && $height) {
 			if (preg_match('#style="#', $parameters)) {
@@ -280,7 +280,7 @@
 			}
 		}
 
-		return '<img '. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="thumbnail '. functions::escape_attr($clipping) .'"' : '') .' src="'. document::href_rlink($thumbnail) .'" srcset="'. document::href_rlink($thumbnail) .' 1x, '. document::href_rlink($thumbnail_2x) .' 2x"'. ($parameters ? ' '. $parameters : '') .'>';
+		return '<img '. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="thumbnail '. f::escape_attr($clipping) .'"' : '') .' src="'. document::href_rlink($thumbnail) .'" srcset="'. document::href_rlink($thumbnail) .' 1x, '. document::href_rlink($thumbnail_2x) .' 2x"'. ($parameters ? ' '. $parameters : '') .'>';
 	}
 
 	function draw_price_tag($regular_price, $final_price=null, $currency_code=null) {
@@ -336,7 +336,7 @@
 			$sticker = '<div class="sticker new" title="'. t('title_new', 'New') .'">'. t('sticker_new', 'New') .'</div>';
 		}
 
-		list($width, $height) = functions::image_scale_by_width(320, settings::get('product_image_ratio'));
+		list($width, $height) = f::image_scale_by_width(320, settings::get('product_image_ratio'));
 
 		$listing_product->snippets = [
 			'product_id' => $product['id'],
@@ -372,7 +372,7 @@
 
 		// Watermark Original Image
 		if (settings::get('product_image_watermark')) {
-			$listing_product->snippets['image']['original'] = functions::image_process(FS_DIR_APP . $listing_product->snippets['image']['original'], ['watermark' => true]);
+			$listing_product->snippets['image']['original'] = f::image_process(FS_DIR_APP . $listing_product->snippets['image']['original'], ['watermark' => true]);
 		}
 
 		return $listing_product->render();

@@ -97,20 +97,20 @@
 	</div>
 
 	<div class="card-body">
-		<?php echo functions::form_begin('brand_form', 'post', false, true, 'style="max-width: 720px;"'); ?>
+		<?php echo f::form_begin('brand_form', 'post', false, true, 'style="max-width: 720px;"'); ?>
 
 			<div class="grid">
 				<div class="col-md-6">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_status', 'Status'); ?></div>
-						<?php echo functions::form_toggle('status', 'e/d', (file_get_contents('php://input') != '') ? true : '1'); ?>
+						<?php echo f::form_toggle('status', 'e/d', (file_get_contents('php://input') != '') ? true : '1'); ?>
 					</label>
 				</div>
 
 				<div class="col-md-6">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
-						<?php echo functions::form_input_text('name', true); ?>
+						<?php echo f::form_input_text('name', true); ?>
 					</label>
 				</div>
 			</div>
@@ -119,14 +119,14 @@
 				<div class="col-md-6">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_featured', 'Featured'); ?></div>
-						<?php echo functions::form_toggle('featured', 'y/n', fallback($_POST['featured'], '1')); ?>
+						<?php echo f::form_toggle('featured', 'y/n', fallback($_POST['featured'], '1')); ?>
 					</label>
 				</div>
 
 				<div class="col-md-6">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_code', 'Code'); ?></div>
-						<?php echo functions::form_input_text('code', true); ?>
+						<?php echo f::form_input_text('code', true); ?>
 					</label>
 				</div>
 			</div>
@@ -136,15 +136,15 @@
 					<div id="image">
 						<?php if (!empty($brand->data['image'])) { ?>
 						<div style="margin-bottom: 15px;">
-						<?php echo functions::draw_thumbnail('storage://images/' . $brand->data['image'], 360, 120); ?>
+						<?php echo f::draw_thumbnail('storage://images/' . $brand->data['image'], 360, 120); ?>
 						</div>
 						<?php } ?>
 
 						<label class="form-group">
 							<div class="form-label"><?php echo !empty($brand->data['image']) ? t('title_new_image', 'New Image') : t('title_image', 'Image'); ?></div>
-							<?php echo functions::form_input_file('image', 'accept="image/*"'); ?>
+							<?php echo f::form_input_file('image', 'accept="image/*"'); ?>
 							<?php if (!empty($brand->data['image'])) { ?>
-							<?php echo functions::form_checkbox('delete_image', ['true', t('title_delete', 'Delete')], true); ?>
+							<?php echo f::form_checkbox('delete_image', ['true', t('title_delete', 'Delete')], true); ?>
 							<?php } ?>
 						</label>
 					</div>
@@ -153,7 +153,7 @@
 				<div class="col-md-6">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_keywords', 'Keywords'); ?></div>
-						<?php echo functions::form_input_tags('keywords', true); ?>
+						<?php echo f::form_input_tags('keywords', true); ?>
 					</label>
 				</div>
 			</div>
@@ -171,36 +171,36 @@
 
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_h1_title', 'H1 Title'); ?></div>
-						<?php echo functions::form_regional_text('h1_title['. $language_code .']', $language_code, true, ''); ?>
+						<?php echo f::form_regional_text('h1_title['. $language_code .']', $language_code, true, ''); ?>
 					</label>
 
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_short_description', 'Short Description'); ?></div>
-						<?php echo functions::form_regional_text('short_description['. $language_code .']', $language_code, true); ?>
+						<?php echo f::form_regional_text('short_description['. $language_code .']', $language_code, true); ?>
 					</label>
 
 					<div class="form-group">
 						<div class="form-label"><?php echo t('title_description', 'Description'); ?></div>
-						<?php echo functions::form_regional_wysiwyg('description['. $language_code .']', $language_code, true, 'style="height: 240px;"'); ?>
+						<?php echo f::form_regional_wysiwyg('description['. $language_code .']', $language_code, true, 'style="height: 240px;"'); ?>
 					</div>
 
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_link', 'Link'); ?></div>
-						<?php echo functions::form_regional_text('link['. $language_code .']', $language_code, true); ?>
+						<?php echo f::form_regional_text('link['. $language_code .']', $language_code, true); ?>
 					</label>
 
 					<div class="grid">
 						<div class="col-md-6">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_head_title', 'Head Title'); ?></div>
-								<?php echo functions::form_regional_text('head_title['. $language_code .']', $language_code, true, ''); ?>
+								<?php echo f::form_regional_text('head_title['. $language_code .']', $language_code, true, ''); ?>
 							</label>
 						</div>
 
 						<div class="col-md-6">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_meta_description', 'Meta Description'); ?></div>
-								<?php echo functions::form_regional_text('meta_description['. $language_code .']', $language_code, true); ?>
+								<?php echo f::form_regional_text('meta_description['. $language_code .']', $language_code, true); ?>
 							</label>
 						</div>
 					</div>
@@ -209,12 +209,12 @@
 			</div>
 
 			<div class="card-action">
-				<?php echo functions::form_button_predefined('save'); ?>
-				<?php if (!empty($brand->data['id'])) echo functions::form_button_predefined('delete'); ?>
-				<?php echo functions::form_button_predefined('cancel'); ?>
+				<?php echo f::form_button_predefined('save'); ?>
+				<?php if (!empty($brand->data['id'])) echo f::form_button_predefined('delete'); ?>
+				<?php echo f::form_button_predefined('cancel'); ?>
 			</div>
 
-		<?php echo functions::form_end(); ?>
+		<?php echo f::form_end(); ?>
 	</div>
 </div>
 
@@ -232,7 +232,7 @@
 				$('#image img').attr('src', e.target.result)
 			}
 		} else {
-			$('#image img').attr('src', '<?php echo functions::draw_thumbnail('storage://images/' . $brand->data['image'], 400, 100); ?>')
+			$('#image img').attr('src', '<?php echo f::draw_thumbnail('storage://images/' . $brand->data['image'], 400, 100); ?>')
 		}
 	})
 

@@ -34,7 +34,7 @@ body {
 	<div id="sidebar" class="hidden-print shadow">
 
 		<ul id="actions" class="list-unstyled">
-			<li><button id="print" class="btn btn-default btn-block btn-lg" type="button"><?php echo functions::draw_fonticon('icon-print'); ?> <?php echo t('title_print', 'Print'); ?></button></li>
+			<li><button id="print" class="btn btn-default btn-block btn-lg" type="button"><?php echo f::draw_fonticon('icon-print'); ?> <?php echo t('title_print', 'Print'); ?></button></li>
 		</ul>
 
 		<h1 style="margin-top: 0;"><?php echo t('title_comments', 'Comments'); ?></h1>
@@ -43,7 +43,7 @@ body {
 			<?php foreach ($comments as $comment) { ?>
 			<div class="bubble <?php echo $comment['type']; ?>">
 				<div class="text"><?php echo nl2br($comment['text']); ?></div>
-				<div class="date"><?php echo functions::datetime_when($comment['created_at']); ?></div>
+				<div class="date"><?php echo f::datetime_when($comment['created_at']); ?></div>
 			</div>
 			<?php } ?>
 		</div>

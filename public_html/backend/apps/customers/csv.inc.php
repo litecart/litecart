@@ -19,7 +19,7 @@
 
 			$csv = file_get_contents($_FILES['file']['tmp_name']);
 
-			if (!$csv = functions::csv_decode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'])) {
+			if (!$csv = f::csv_decode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'])) {
 				throw new Exception(t('error_failed_decoding_csv', 'Failed decoding CSV'));
 			}
 
@@ -367,14 +367,14 @@
 
 			switch($_POST['eol']) {
 				case 'Linux':
-					echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\r");
+					echo f::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\r");
 					break;
 				case 'Mac':
-					echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\n");
+					echo f::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\n");
 					break;
 				case 'Win':
 				default:
-					echo functions::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\r\n");
+					echo f::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\r\n");
 					break;
 			}
 
@@ -398,7 +398,7 @@
 		<div class="grid">
 
 			<div class="col-sm-6 col-lg-4">
-				<?php echo functions::form_begin('import_form', 'post', '', true); ?>
+				<?php echo f::form_begin('import_form', 'post', '', true); ?>
 
 					<fieldset>
 						<legend><?php echo t('title_import', 'Import'); ?></legend>
@@ -406,62 +406,62 @@
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_type', 'Type'); ?></div>
 							<div class="form-input">
-								<?php echo functions::form_radio_button('type', ['addresses', t('title_addresses', 'Addresses')], true); ?>
-								<?php echo functions::form_radio_button('type', ['customer_groups', t('title_customer Groups', 'Customer Groups')], true); ?>
-								<?php echo functions::form_radio_button('type', ['customers', t('title_customers', 'Customers')], true); ?>
-								<?php echo functions::form_radio_button('type', ['newsletter_recipients', t('title_newsletter_recipients', 'Newsletter Recipients')], true); ?>
+								<?php echo f::form_radio_button('type', ['addresses', t('title_addresses', 'Addresses')], true); ?>
+								<?php echo f::form_radio_button('type', ['customer_groups', t('title_customer Groups', 'Customer Groups')], true); ?>
+								<?php echo f::form_radio_button('type', ['customers', t('title_customers', 'Customers')], true); ?>
+								<?php echo f::form_radio_button('type', ['newsletter_recipients', t('title_newsletter_recipients', 'Newsletter Recipients')], true); ?>
 							</div>
 						</label>
 
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_csv_file', 'CSV File'); ?></div>
-							<?php echo functions::form_input_file('file', 'accept=".csv, .dsv, .tab, .tsv"'); ?>
+							<?php echo f::form_input_file('file', 'accept=".csv, .dsv, .tab, .tsv"'); ?>
 						</label>
 
 						<div class="grid">
 							<div class="col-sm-6">
 								<label class="form-group">
 									<div class="form-label"><?php echo t('title_delimiter', 'Delimiter'); ?></div>
-									<?php echo functions::form_select('delimiter', ['' => t('title_auto', 'Auto') .' ('. t('text_default', 'default') .')', ',' => ',',  ';' => ';', "\t" => 'TAB', '|' => '|'], true); ?>
+									<?php echo f::form_select('delimiter', ['' => t('title_auto', 'Auto') .' ('. t('text_default', 'default') .')', ',' => ',',  ';' => ';', "\t" => 'TAB', '|' => '|'], true); ?>
 								</label>
 							</div>
 
 							<div class="col-sm-6">
 								<label class="form-group">
 									<div class="form-label"><?php echo t('title_enclosure', 'Enclosure'); ?></div>
-									<?php echo functions::form_select('enclosure', ['"' => '" ('. t('text_default', 'default') .')'], true); ?>
+									<?php echo f::form_select('enclosure', ['"' => '" ('. t('text_default', 'default') .')'], true); ?>
 								</label>
 							</div>
 
 							<div class="col-sm-6">
 								<label class="form-group">
 									<div class="form-label"><?php echo t('title_escape_character', 'Escape Character'); ?></div>
-									<?php echo functions::form_select('escapechar', ['"' => '" ('. t('text_default', 'default') .')', '\\' => '\\'], true); ?>
+									<?php echo f::form_select('escapechar', ['"' => '" ('. t('text_default', 'default') .')', '\\' => '\\'], true); ?>
 								</label>
 							</div>
 
 							<div class="col-sm-6">
 								<label class="form-group">
 									<div class="form-label"><?php echo t('title_charset', 'Charset'); ?></div>
-									<?php echo functions::form_select_encoding('charset', !empty($_POST['charset']) ? true : 'UTF-8'); ?>
+									<?php echo f::form_select_encoding('charset', !empty($_POST['charset']) ? true : 'UTF-8'); ?>
 								</label>
 							</div>
 						</div>
 
 						<div class="form-group">
-							<?php echo functions::form_checkbox('insert', ['1', t('text_insert_new_entries', 'Insert new entries')], true); ?>
-							<?php echo functions::form_checkbox('reset', ['1', t('text_wipe_storage_clean_before_inserting_data', 'Wipe storage clean before inserting data')], true); ?>
-							<?php echo functions::form_checkbox('overwrite', ['1', t('text_overwrite_existing_entries', 'Overwrite existing entries')], true); ?>
+							<?php echo f::form_checkbox('insert', ['1', t('text_insert_new_entries', 'Insert new entries')], true); ?>
+							<?php echo f::form_checkbox('reset', ['1', t('text_wipe_storage_clean_before_inserting_data', 'Wipe storage clean before inserting data')], true); ?>
+							<?php echo f::form_checkbox('overwrite', ['1', t('text_overwrite_existing_entries', 'Overwrite existing entries')], true); ?>
 						</div>
 
-						<?php echo functions::form_button('import', t('title_import', 'Import'), 'submit'); ?>
+						<?php echo f::form_button('import', t('title_import', 'Import'), 'submit'); ?>
 					</fieldset>
 
-				<?php echo functions::form_end(); ?>
+				<?php echo f::form_end(); ?>
 			</div>
 
 			<div class="col-sm-6 col-lg-4">
-				<?php echo functions::form_begin('export_form', 'post'); ?>
+				<?php echo f::form_begin('export_form', 'post'); ?>
 
 					<fieldset>
 						<legend><?php echo t('title_export', 'Export'); ?></legend>
@@ -469,10 +469,10 @@
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_type', 'Type'); ?></div>
 							<div class="form-input">
-								<?php echo functions::form_radio_button('type', ['addresses', t('title_addresses', 'Addresses')], true); ?>
-								<?php echo functions::form_radio_button('type', ['customer_groups', t('title_customer Groups', 'Customer Groups')], true); ?>
-								<?php echo functions::form_radio_button('type', ['customers', t('title_customers', 'Customers')], true); ?>
-								<?php echo functions::form_radio_button('type', ['newsletter_recipients', t('title_newsletter_recipients', 'Newsletter Recipients')], true); ?>
+								<?php echo f::form_radio_button('type', ['addresses', t('title_addresses', 'Addresses')], true); ?>
+								<?php echo f::form_radio_button('type', ['customer_groups', t('title_customer Groups', 'Customer Groups')], true); ?>
+								<?php echo f::form_radio_button('type', ['customers', t('title_customers', 'Customers')], true); ?>
+								<?php echo f::form_radio_button('type', ['newsletter_recipients', t('title_newsletter_recipients', 'Newsletter Recipients')], true); ?>
 							</div>
 						</label>
 
@@ -480,50 +480,50 @@
 							<div class="col-sm-6">
 								<label class="form-group">
 									<div class="form-label"><?php echo t('title_delimiter', 'Delimiter'); ?></div>
-									<?php echo functions::form_select('delimiter', [',' => ', ('. t('text_default', 'default') .')', ';' => ';', "\t" => 'TAB', '|' => '|'], true); ?>
+									<?php echo f::form_select('delimiter', [',' => ', ('. t('text_default', 'default') .')', ';' => ';', "\t" => 'TAB', '|' => '|'], true); ?>
 								</label>
 							</div>
 
 							<div class="col-sm-6">
 								<label class="form-group">
 									<div class="form-label"><?php echo t('title_enclosure', 'Enclosure'); ?></div>
-									<?php echo functions::form_select('enclosure', ['"' => '" ('. t('text_default', 'default') .')'], true); ?>
+									<?php echo f::form_select('enclosure', ['"' => '" ('. t('text_default', 'default') .')'], true); ?>
 								</label>
 							</div>
 
 							<div class="col-sm-6">
 								<label class="form-group">
 									<div class="form-label"><?php echo t('title_escape_character', 'Escape Character'); ?></div>
-									<?php echo functions::form_select('escapechar', ['"' => '" ('. t('text_default', 'default') .')', '\\' => '\\'], true); ?>
+									<?php echo f::form_select('escapechar', ['"' => '" ('. t('text_default', 'default') .')', '\\' => '\\'], true); ?>
 								</label>
 							</div>
 
 							<div class="col-sm-6">
 								<label class="form-group">
 									<div class="form-label"><?php echo t('title_charset', 'Charset'); ?></div>
-									<?php echo functions::form_select_encoding('charset', !empty($_POST['charset']) ? true : 'UTF-8'); ?>
+									<?php echo f::form_select_encoding('charset', !empty($_POST['charset']) ? true : 'UTF-8'); ?>
 								</label>
 							</div>
 
 							<div class="col-sm-6">
 								<label class="form-group">
 									<div class="form-label"><?php echo t('title_line_ending', 'Line Ending'); ?></div>
-									<?php echo functions::form_select('eol', ['Win', 'Mac', 'Linux'], true); ?>
+									<?php echo f::form_select('eol', ['Win', 'Mac', 'Linux'], true); ?>
 								</label>
 							</div>
 
 							<div class="col-sm-6">
 								<label class="form-group">
 									<div class="form-label"><?php echo t('title_output', 'Output'); ?></div>
-									<?php echo functions::form_select('output', ['screen' => t('title_screen', 'Screen'), 'file' => t('title_file', 'File')], true); ?>
+									<?php echo f::form_select('output', ['screen' => t('title_screen', 'Screen'), 'file' => t('title_file', 'File')], true); ?>
 								</label>
 							</div>
 						</div>
 
-						<?php echo functions::form_button('export', t('title_export', 'Export'), 'submit'); ?>
+						<?php echo f::form_button('export', t('title_export', 'Export'), 'submit'); ?>
 					</fieldset>
 
-				<?php echo functions::form_end(); ?>
+				<?php echo f::form_end(); ?>
 			</div>
 		</div>
 	</div>

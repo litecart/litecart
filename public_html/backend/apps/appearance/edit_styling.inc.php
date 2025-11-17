@@ -49,11 +49,11 @@
 
 		<?php if (preg_match('#\.less$#', $stylesheet)) { ?>
 		<div class="notices">
-			<div class="notice notice-default"><?php echo functions::draw_fonticon('icon-info'); ?> <?php echo t('notice_detected_less_version_of_variables', 'We detected a LESS version present in this installation that will be used. A LESS compiler is needed to compile the CSS versions (e.g. Developer Kit add-on).'); ?></div>
+			<div class="notice notice-default"><?php echo f::draw_fonticon('icon-info'); ?> <?php echo t('notice_detected_less_version_of_variables', 'We detected a LESS version present in this installation that will be used. A LESS compiler is needed to compile the CSS versions (e.g. Developer Kit add-on).'); ?></div>
 		</div>
 		<?php } ?>
 
-		<?php echo functions::form_begin('file_form', 'post'); ?>
+		<?php echo f::form_begin('file_form', 'post'); ?>
 
 			<label class="form-group" style="max-width: 800px;">
 				<div class="form-label"><?php echo t('title_file', 'File'); ?></div>
@@ -62,14 +62,14 @@
 
 			<label class="form-group">
 				<div class="form-label"><?php echo t('title_content', 'Content'); ?></div>
-				<?php echo functions::form_input_code('content', true, 'style="height: 600px;"'); ?>
+				<?php echo f::form_input_code('content', true, 'style="height: 600px;"'); ?>
 			</label>
 
 			<div class="card-action">
-				<?php echo functions::form_button_predefined('save'); ?>
-				<?php echo functions::form_button_predefined('cancel'); ?>
+				<?php echo f::form_button_predefined('save'); ?>
+				<?php echo f::form_button_predefined('cancel'); ?>
 			</div>
 
-		<?php echo functions::form_end(); ?>
+		<?php echo f::form_end(); ?>
 	</div>
 </div>

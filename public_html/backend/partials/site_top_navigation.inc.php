@@ -17,21 +17,21 @@
 			],
 			[
 				'title' => t('title_webmail', 'Webmail'),
-				'link' => ($webmail_link = settings::get('webmail_link')) ? functions::escape_html($webmail_link) : document::ilink('settings/advanced', ['key' => 'webmail_link', 'action' => 'edit']),
+				'link' => ($webmail_link = settings::get('webmail_link')) ? f::escape_html($webmail_link) : document::ilink('settings/advanced', ['key' => 'webmail_link', 'action' => 'edit']),
 				'icon' => 'icon-envelope',
 				'target' => '_blank',
 				'icon_only' => true,
 			],
 			[
 				'title' => t('title_control_panel', 'Control Panel'),
-				'link' => ($control_panel_link = settings::get('control_panel_link')) ? functions::escape_html($control_panel_link) : document::ilink('settings/advanced', ['key' => 'control_panel_link', 'action' => 'edit']),
+				'link' => ($control_panel_link = settings::get('control_panel_link')) ? f::escape_html($control_panel_link) : document::ilink('settings/advanced', ['key' => 'control_panel_link', 'action' => 'edit']),
 				'icon' => 'icon-cogs',
 				'target' => '_blank',
 				'icon_only' => true,
 			],
 			[
 				'title' => t('title_database_manager', 'Database Manager'),
-				'link' => ($database_admin_link = settings::get('database_admin_link')) ? functions::escape_html($database_admin_link) : document::ilink('settings/advanced', ['key' => 'database_admin_link', 'action' => 'edit']),
+				'link' => ($database_admin_link = settings::get('database_admin_link')) ? f::escape_html($database_admin_link) : document::ilink('settings/advanced', ['key' => 'database_admin_link', 'action' => 'edit']),
 				'icon' => 'icon-database',
 				'target' => '_blank',
 				'icon_only' => true,
@@ -59,7 +59,7 @@
 
 		if (!empty($item['subitems'])) {
 			return implode(PHP_EOL, [
-				'<li class="'. ($is_dropdown_item ? 'dropdown-item' : 'nav-item') .' dropdown'. (!empty($item['hidden-xs']) ? ' hidden-xs' : '') .'"'. (!empty($item['id']) ? ' data-id="'. functions::escape_attr($item['id']) .'"' : '') .'>',
+				'<li class="'. ($is_dropdown_item ? 'dropdown-item' : 'nav-item') .' dropdown'. (!empty($item['hidden-xs']) ? ' hidden-xs' : '') .'"'. (!empty($item['id']) ? ' data-id="'. f::escape_attr($item['id']) .'"' : '') .'>',
 				'	<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">',
 				'		'. $item['title'],
 				!empty($item['badge']) ? '		<div class="badge">'. $item['badge'] .'</div>' : '',
@@ -74,9 +74,9 @@
 		}
 
 		return implode(PHP_EOL, [
-			'<li class="'. ($is_dropdown_item ? 'dropdown-item' : 'nav-item') . (!empty($item['hidden-xs']) ? ' hidden-xs' : '') .'"'. (!empty($item['id']) ? ' data-id="'. functions::escape_attr($item['id']) .'"' : '') .'>',
-			'	<a class="nav-link" href="'. functions::escape_attr($item['link']) .'" target="'. (!empty($item['target']) ? 'target="'. functions::escape_attr($item['target']) .'"' : '') .'">',
-			'		'. (!empty($item['icon']) ? functions::draw_fonticon($item['icon']) : '') . (empty($item['icon_only']) ? ' '. functions::escape_html($item['title']) : ''),
+			'<li class="'. ($is_dropdown_item ? 'dropdown-item' : 'nav-item') . (!empty($item['hidden-xs']) ? ' hidden-xs' : '') .'"'. (!empty($item['id']) ? ' data-id="'. f::escape_attr($item['id']) .'"' : '') .'>',
+			'	<a class="nav-link" href="'. f::escape_attr($item['link']) .'" target="'. (!empty($item['target']) ? 'target="'. f::escape_attr($item['target']) .'"' : '') .'">',
+			'		'. (!empty($item['icon']) ? f::draw_fonticon($item['icon']) : '') . (empty($item['icon_only']) ? ' '. f::escape_html($item['title']) : ''),
 			!empty($item['badge']) ? '		<div class="badge">'. $item['badge'] .'</div>' : '',
 			'	</a>',
 			'</li>',
@@ -104,14 +104,14 @@
 	<li>
 		<div>
 			<label class="nav-toggle btn btn-default" for="sidebar-compact">
-				<?php echo functions::draw_fonticon('icon-sidebar', 'style="font-size: 1.5em;"'); ?>
+				<?php echo f::draw_fonticon('icon-sidebar', 'style="font-size: 1.5em;"'); ?>
 			</label>
 		</div>
 	</li>
 
 	<li style="flex-grow: 1;">
 		<div id="search" class="dropdown">
-			<?php echo functions::form_input_search('query', false, 'placeholder="'. functions::escape_attr(t('title_search_entire_platform', 'Search entire platform')) .'&hellip;" autocomplete="off"'); ?>
+			<?php echo f::form_input_search('query', false, 'placeholder="'. f::escape_attr(t('title_search_entire_platform', 'Search entire platform')) .'&hellip;" autocomplete="off"'); ?>
 			<div class="results dropdown-menu"></div>
 		</div>
 	</li>
@@ -124,7 +124,7 @@
 	</li>
 
 	<li class="brightness">
-		<?php echo functions::form_toggle('dark_mode', ['0' => functions::draw_fonticon('icon-sun'), '1' => functions::draw_fonticon('icon-moon')]); ?>
+		<?php echo f::form_toggle('dark_mode', ['0' => f::draw_fonticon('icon-sun'), '1' => f::draw_fonticon('icon-moon')]); ?>
 	</li>
 
 	<?php foreach ($items as $item) echo $draw_menu_item($item); ?>
@@ -132,6 +132,6 @@
 </ul>
 
 <script>
-	$('label:has(input[name="dark_mode"][value="0"])').attr('title', '<?php echo functions::escape_js(t('title_light_mode', 'Light Mode')); ?>');
-	$('label:has(input[name="dark_mode"][value="1"])').attr('title', '<?php echo functions::escape_js(t('title_dark_mode', 'Dark Mode')); ?>');
+	$('label:has(input[name="dark_mode"][value="0"])').attr('title', '<?php echo f::escape_js(t('title_light_mode', 'Light Mode')); ?>');
+	$('label:has(input[name="dark_mode"][value="1"])').attr('title', '<?php echo f::escape_js(t('title_dark_mode', 'Dark Mode')); ?>');
 </script>

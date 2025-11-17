@@ -107,7 +107,7 @@
 
 			if (is_ajax_request()) {
 				header('Content-Type: application/json; charset='. language::$selected['code']);
-				echo functions::format_json(['status' => 'ok', 'data' => $stock_item->data]);
+				echo f::format_json(['status' => 'ok', 'data' => $stock_item->data]);
 				exit;
 			}
 
@@ -119,7 +119,7 @@
 
 			if (is_ajax_request()) {
 				header('Content-Type: application/json; charset='. language::$selected['code']);
-				echo functions::format_json(['status' => 'error', 'error' =>  $e->getMessage()]);
+				echo f::format_json(['status' => 'error', 'error' =>  $e->getMessage()]);
 				exit;
 			}
 
@@ -191,13 +191,13 @@
 
 	<div class="card-body">
 
-		<?php echo functions::form_begin('stock_item_form', 'post', false, true); ?>
+		<?php echo f::form_begin('stock_item_form', 'post', false, true); ?>
 
 		<?php if ($stock_item->data['quantity_expected'] != $stock_item->data['quantity']) { ?>
 		<div class="inconsistency-warning">
-			<?php echo functions::draw_fonticon('icon-exclamation-triangle'); ?>
+			<?php echo f::draw_fonticon('icon-exclamation-triangle'); ?>
 			<?php echo strtr(t('text_expected_quantity_mismatch', 'The expected quantity {expected} does not match the actual quantity {actual} set in the database. This can happen if there is a malfunction while items are withdrawn or reinserted to the stock.'), ['{expected}' => $stock_item->data['quantity_expected'], '{actual}' => $stock_item->data['quantity']]); ?>
-			<?php echo functions::form_button('repair', t('button_repair', 'Repair'), 'submit', 'class="btn btn-default btn-sm float-end"'); ?>
+			<?php echo f::form_button('repair', t('button_repair', 'Repair'), 'submit', 'class="btn btn-default btn-sm float-end"'); ?>
 		</div>
 		<?php } ?>
 
@@ -209,13 +209,13 @@
 							<div class="form-group">
 								<div class="form-label"><?php echo t('title_image', 'Image'); ?></div>
 
-								<?php echo functions::draw_thumbnail('storage://images/' . ($stock_item->data['image'] ?: 'no_image.svg'), 360, 0, 'product'); ?>
+								<?php echo f::draw_thumbnail('storage://images/' . ($stock_item->data['image'] ?: 'no_image.svg'), 360, 0, 'product'); ?>
 
 								<?php if ($stock_item->data['image']) { ?>
-								<small class="float-end"><?php echo functions::form_checkbox('delete_image', ['1', t('text_delete', 'Delete')], true); ?></small>
+								<small class="float-end"><?php echo f::form_checkbox('delete_image', ['1', t('text_delete', 'Delete')], true); ?></small>
 								<?php } ?>
 
-								<?php echo functions::form_input_file('image', 'accept="image/*"'); ?>
+								<?php echo f::form_input_file('image', 'accept="image/*"'); ?>
 							</div>
 						</div>
 
@@ -223,29 +223,29 @@
 
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
-								<?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_regional_text('name['. $language_code .']', $language_code, true, ''); ?>
+								<?php foreach (array_keys(language::$languages) as $language_code) echo f::form_regional_text('name['. $language_code .']', $language_code, true, ''); ?>
 							</label>
 
 							<label class="form-group references">
 								<div class="form-label"><?php echo t('title_references', 'References'); ?></div>
 								<div class="input-group">
-									<label class="input-group-text" style="width: 125px;"><?php echo t('title_sku', 'SKU'); ?> <a href="https://en.wikipedia.org/wiki/Stock_keeping_unit" target="_blank"><?php echo functions::draw_fonticon('icon-square-out'); ?></a></label>
-									<?php echo functions::form_input_text('sku', true, 'style="text-transform: uppercase;"'); ?>
+									<label class="input-group-text" style="width: 125px;"><?php echo t('title_sku', 'SKU'); ?> <a href="https://en.wikipedia.org/wiki/Stock_keeping_unit" target="_blank"><?php echo f::draw_fonticon('icon-square-out'); ?></a></label>
+									<?php echo f::form_input_text('sku', true, 'style="text-transform: uppercase;"'); ?>
 								</div>
 
 								<div class="input-group">
-									<label class="input-group-text" style="width: 125px;"><?php echo t('title_gtin', 'GTIN'); ?> <a href="https://en.wikipedia.org/wiki/Global_Trade_Item_Number" target="_blank"><?php echo functions::draw_fonticon('icon-square-out'); ?></a></label>
-									<?php echo functions::form_input_text('gtin', true); ?>
+									<label class="input-group-text" style="width: 125px;"><?php echo t('title_gtin', 'GTIN'); ?> <a href="https://en.wikipedia.org/wiki/Global_Trade_Item_Number" target="_blank"><?php echo f::draw_fonticon('icon-square-out'); ?></a></label>
+									<?php echo f::form_input_text('gtin', true); ?>
 								</div>
 
 								<div class="input-group">
-									<label class="input-group-text" style="width: 125px;"><?php echo t('title_mpn', 'MPN'); ?> <a href="https://en.wikipedia.org/wiki/Manufacturer_part_number" target="_blank"><?php echo functions::draw_fonticon('icon-square-out'); ?></a></label>
-									<?php echo functions::form_input_text('mpn', true); ?>
+									<label class="input-group-text" style="width: 125px;"><?php echo t('title_mpn', 'MPN'); ?> <a href="https://en.wikipedia.org/wiki/Manufacturer_part_number" target="_blank"><?php echo f::draw_fonticon('icon-square-out'); ?></a></label>
+									<?php echo f::form_input_text('mpn', true); ?>
 								</div>
 
 								<div class="input-group">
-									<label class="input-group-text" style="width: 125px;"><?php echo t('title_taric', 'TARIC'); ?> <a href="https://en.wikipedia.org/wiki/TARIC_code" target="_blank"><?php echo functions::draw_fonticon('icon-square-out'); ?></a></label>
-									<?php echo functions::form_input_text('taric', true); ?>
+									<label class="input-group-text" style="width: 125px;"><?php echo t('title_taric', 'TARIC'); ?> <a href="https://en.wikipedia.org/wiki/TARIC_code" target="_blank"><?php echo f::draw_fonticon('icon-square-out'); ?></a></label>
+									<?php echo f::form_input_text('taric', true); ?>
 								</div>
 							</label>
 
@@ -253,7 +253,7 @@
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_shelf_location', 'Shelf Location'); ?></div>
-										<?php echo functions::form_input_text('shelf', true); ?>
+										<?php echo f::form_input_text('shelf', true); ?>
 									</label>
 								</div>
 
@@ -261,8 +261,8 @@
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_purchase_price', 'Purchase Price'); ?></div>
 										<div class="input-group">
-											<?php echo functions::form_input_decimal('purchase_price', true, 2, 'min="0"'); ?>
-											<?php echo functions::form_select_currency('purchase_price_currency_code', true); ?>
+											<?php echo f::form_input_decimal('purchase_price', true, 2, 'min="0"'); ?>
+											<?php echo f::form_select_currency('purchase_price_currency_code', true); ?>
 										</div>
 									</label>
 								</div>
@@ -284,8 +284,8 @@
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_stock_quantity', 'Stock Quantity'); ?></div>
 								<div class="input-group">
-									<?php echo functions::form_input_decimal('quantity', true, 2, 'data-quantity="'. (!empty($stock_item->data['id']) ? (float)$stock_item->data['quantity'] : '0') .'"'); ?>
-									<?php echo functions::form_select_quantity_unit('quantity_unit_id', true); ?>
+									<?php echo f::form_input_decimal('quantity', true, 2, 'data-quantity="'. (!empty($stock_item->data['id']) ? (float)$stock_item->data['quantity'] : '0') .'"'); ?>
+									<?php echo f::form_select_quantity_unit('quantity_unit_id', true); ?>
 								</div>
 							</label>
 						</div>
@@ -295,7 +295,7 @@
 								<div class="form-label"><?php echo t('title_quantity_adjustment', 'Quantity Adjustment'); ?></div>
 								<div class="input-group">
 									<span class="input-group-text">&plusmn;</span>
-									<?php echo functions::form_input_decimal('quantity_adjustment', true, 2); ?>
+									<?php echo f::form_input_decimal('quantity_adjustment', true, 2); ?>
 								</div>
 							</label>
 						</div>
@@ -304,8 +304,8 @@
 							<div class="form-group">
 								<div class="form-label"><?php echo t('title_backordered', 'Backordered'); ?></div>
 								<div class="input-group">
-									<?php echo functions::form_button('transfer', functions::draw_fonticon('icon-arrow-left'), 'button'); ?>
-									<?php echo functions::form_input_decimal('backordered', true, 2, 'min="0"'); ?>
+									<?php echo f::form_button('transfer', f::draw_fonticon('icon-arrow-left'), 'button'); ?>
+									<?php echo f::form_input_decimal('backordered', true, 2, 'min="0"'); ?>
 								</div>
 							</div>
 						</div>
@@ -316,8 +316,8 @@
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_weight', 'Weight'); ?></div>
 								<div class="input-group">
-									<?php echo functions::form_input_decimal('weight', true, 3, 'min="0"'); ?>
-									<?php echo functions::form_select_weight_unit('weight_unit', true); ?>
+									<?php echo f::form_input_decimal('weight', true, 3, 'min="0"'); ?>
+									<?php echo f::form_select_weight_unit('weight_unit', true); ?>
 								</div>
 							</label>
 						</div>
@@ -326,12 +326,12 @@
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_dimensions', 'Dimensions'); ?></div>
 								<div class="input-group">
-									<?php echo functions::form_input_decimal('length', true, 3, 'min="0"'); ?>
+									<?php echo f::form_input_decimal('length', true, 3, 'min="0"'); ?>
 									<span class="input-group-text">x</span>
-									<?php echo functions::form_input_decimal('width', true, 3, 'min="0"'); ?>
+									<?php echo f::form_input_decimal('width', true, 3, 'min="0"'); ?>
 									<span class="input-group-text">x</span>
-									<?php echo functions::form_input_decimal('height', true, 3, 'min="0"'); ?>
-									<?php echo functions::form_select_length_unit('length_unit', true); ?>
+									<?php echo f::form_input_decimal('height', true, 3, 'min="0"'); ?>
+									<?php echo f::form_select_length_unit('length_unit', true); ?>
 								</div>
 							</label>
 						</div>
@@ -341,9 +341,9 @@
 						<div class="col-md-10">
 							<div class="form-group">
 								<div class="form-label"><?php echo t('title_digital_item', 'Digital Item'); ?></div>
-								<?php echo functions::form_input_file('file'); ?>
+								<?php echo f::form_input_file('file'); ?>
 								<?php if (!empty($stock_item->data['file'])) { ?>
-								<div><?php echo functions::form_checkbox('delete_file', ['1', t('text_delete', 'Delete') .' '. $stock_item->data['filename']], true); ?></div>
+								<div><?php echo f::form_checkbox('delete_file', ['1', t('text_delete', 'Delete') .' '. $stock_item->data['filename']], true); ?></div>
 								<?php } ?>
 							</div>
 						</div>
@@ -351,7 +351,7 @@
 						<div class="col-md-2">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_downloads', 'Downloads'); ?></div>
-								<?php echo functions::form_input_number('downloads', true, 'readonly'); ?>
+								<?php echo f::form_input_number('downloads', true, 'readonly'); ?>
 							</label>
 						</div>
 					</div>
@@ -372,11 +372,11 @@
 								<?php if (!empty($_POST['references'])) foreach (array_keys($_POST['references']) as $key) { ?>
 								<tr>
 									<td>
-										<?php echo functions::form_input_hidden('references['.$key.'][id]', true); ?>
-										<?php echo functions::form_select_supplier('references['.$key.'][source]', true); ?>
+										<?php echo f::form_input_hidden('references['.$key.'][id]', true); ?>
+										<?php echo f::form_select_supplier('references['.$key.'][source]', true); ?>
 									</td>
-									<td><?php echo functions::form_input_text('references['.$key.'][code]', true); ?></td>
-									<td><a class="remove btn btn-default btn-sm" href="#" title="<?php echo t('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>
+									<td><?php echo f::form_input_text('references['.$key.'][code]', true); ?></td>
+									<td><a class="remove btn btn-default btn-sm" href="#" title="<?php echo t('title_remove', 'Remove'); ?>"><?php echo f::draw_fonticon('remove'); ?></a></td>
 								</tr>
 							<?php } ?>
 							</tbody>
@@ -385,7 +385,7 @@
 								<tr>
 									<td colspan="99">
 										<button class="btn btn-default add" type="button">
-											<?php echo functions::draw_fonticon('add'); ?> <?php echo t('text_create_new_reference', 'Create New Reference'); ?>
+											<?php echo f::draw_fonticon('add'); ?> <?php echo t('text_create_new_reference', 'Create New Reference'); ?>
 										</button>
 									</td>
 								</tr>
@@ -397,12 +397,12 @@
 			</div>
 
 			<div class="card-action">
-				<?php echo functions::form_button_predefined('save'); ?>
-				<?php if ($stock_item->data['id']) echo functions::form_button_predefined('delete'); ?>
-				<?php echo functions::form_button_predefined('cancel'); ?>
+				<?php echo f::form_button_predefined('save'); ?>
+				<?php if ($stock_item->data['id']) echo f::form_button_predefined('delete'); ?>
+				<?php echo f::form_button_predefined('cancel'); ?>
 			</div>
 
-		<?php echo functions::form_end(); ?>
+		<?php echo f::form_end(); ?>
 	</div>
 </div>
 
@@ -480,10 +480,10 @@
 						return;
 					}
 					<?php if (!empty($_GET['js_callback'])) { ?>
-					if (typeof window["<?php echo functions::escape_js($_GET['js_callback']); ?>"] === 'function') {
-						window["<?php echo functions::escape_js($_GET['js_callback']); ?>"](result.data);
+					if (typeof window["<?php echo f::escape_js($_GET['js_callback']); ?>"] === 'function') {
+						window["<?php echo f::escape_js($_GET['js_callback']); ?>"](result.data);
 					} else {
-						alert("Unknown callback function <?php echo functions::escape_js($_GET['js_callback']); ?>");
+						alert("Unknown callback function <?php echo f::escape_js($_GET['js_callback']); ?>");
 					}
 					<?php } ?>
 					$.litebox.close();
@@ -511,11 +511,11 @@
 		let $output = $([
 			'<tr>',
 			'  <td>',
-			'    <?php echo functions::escape_js(functions::form_input_hidden('references[__index__][id]', true)); ?>',
-			'    <?php echo functions::escape_js(functions::form_select_supplier('references[__index__][source]', true)); ?>',
+			'    <?php echo f::escape_js(f::form_input_hidden('references[__index__][id]', true)); ?>',
+			'    <?php echo f::escape_js(f::form_select_supplier('references[__index__][source]', true)); ?>',
 			'  </td>',
-			'  <td><?php echo functions::escape_js(functions::form_input_text('references[__index__][code]', true)); ?></td>',
-			'  <td><a class="remove btn btn-default btn-sm" href="#" title="<?php echo functions::escape_js(t('title_remove', 'Remove')); ?>"><?php echo functions::escape_js(functions::draw_fonticon('remove')); ?></a></td>',
+			'  <td><?php echo f::escape_js(f::form_input_text('references[__index__][code]', true)); ?></td>',
+			'  <td><a class="remove btn btn-default btn-sm" href="#" title="<?php echo f::escape_js(t('title_remove', 'Remove')); ?>"><?php echo f::escape_js(f::draw_fonticon('remove')); ?></a></td>',
 			'</tr>',
 		].join('\n')
 			.replace(/__index__/g, 'new_' + __index__)

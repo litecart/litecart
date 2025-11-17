@@ -33,7 +33,7 @@
 		########################################################################
 
 		$country = new ent_country();
-		$country->data = functions::array_update($country->data, $data);
+		$country->data = f::array_update($country->data, $data);
 		$country->save();
 
 		if (!$country_id = $country->data['id']) {
@@ -46,7 +46,7 @@
 
 		$country = new ent_country($country_id);
 
-		if (!functions::array_intersect_compare($data, $country->data)) {
+		if (!f::array_intersect_compare($data, $country->data)) {
 			throw new Exception('The country data was not stored correctly');
 		}
 
@@ -70,11 +70,11 @@
 			'phone_code' => '456',
 		];
 
-		$country->data = functions::array_update($country->data, $data);
+		$country->data = f::array_update($country->data, $data);
 
 		$country->save();
 
-		if (!functions::array_intersect_compare($data, $country->data)) {
+		if (!f::array_intersect_compare($data, $country->data)) {
 			throw new Exception('The country data was not updated correctly');
 		}
 

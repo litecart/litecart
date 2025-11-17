@@ -24,7 +24,7 @@
 
 		// Create a new entity
 		$tax_class = new ent_tax_class();
-		$tax_class->data = functions::array_update($tax_class->data, $data);
+		$tax_class->data = f::array_update($tax_class->data, $data);
 		$tax_class->save();
 
 		// Check if the entity was created
@@ -45,7 +45,7 @@
 		}
 
 		// Check if data was set correctly
-		if (!functions::array_intersect_compare($data, $tax_class->data)) {
+		if (!f::array_intersect_compare($data, $tax_class->data)) {
 			throw new Exception('The tax class data was not stored correctly');
 		}
 
@@ -68,7 +68,7 @@
 		$tax_class->save();
 
 		// Check if data was set correctly
-		if (!functions::array_intersect_compare($data, $tax_class->data)) {
+		if (!f::array_intersect_compare($data, $tax_class->data)) {
 			throw new Exception('The tax class data was not updated correctly');
 		}
 

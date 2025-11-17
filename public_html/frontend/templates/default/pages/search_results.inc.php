@@ -33,11 +33,11 @@
 				<?php if ($products) { ?>
 
 					<section id="box-filter">
-					<?php echo functions::form_begin('filter_form', 'get'); ?>
+					<?php echo f::form_begin('filter_form', 'get'); ?>
 
 						<div class="filter">
 							<div>
-								<?php echo functions::form_input_search('query', true, 'autocomplete="off" placeholder="'. functions::escape_attr(t('text_search_products', 'Search products')) .' ..."'); ?>
+								<?php echo f::form_input_search('query', true, 'autocomplete="off" placeholder="'. f::escape_attr(t('text_search_products', 'Search products')) .' ..."'); ?>
 							</div>
 
 							<div>
@@ -50,7 +50,7 @@
 									<ul class="dropdown-menu">
 										<?php foreach ($sort_alternatives as $key => $title) { ?>
 										<li class="dropdown-item">
-											<?php echo functions::form_radio_button('sort', [$key, $title], true); ?>
+											<?php echo f::form_radio_button('sort', [$key, $title], true); ?>
 										</li>
 										<?php } ?>
 									</ul>
@@ -58,14 +58,14 @@
 							</div>
 						</div>
 
-					<?php echo functions::form_end(); ?>
+					<?php echo f::form_end(); ?>
 				</section>
 				<?php } ?>
 
 				<?php if ($categories) { ?>
 				<nav class="pills" style="margin-bottom: 1em;">
 					<a class="pill-item" href="<?php echo !empty($parent_id) ? document::href_ilink('category', ['category_id' => $parent_id]) : document::href_ilink(''); ?>">
-						<?php echo functions::draw_fonticon('icon-chevron-left'); ?> <?php echo t('title_back', 'Back'); ?>
+						<?php echo f::draw_fonticon('icon-chevron-left'); ?> <?php echo t('title_back', 'Back'); ?>
 					</a>
 
 					<?php foreach ($subcategories as $subcategory) { ?>
@@ -78,7 +78,7 @@
 
 				<?php if ($products) { ?>
 				<section class="listing products columns">
-					<?php foreach ($products as $product) echo functions::draw_listing_product($product, null); ?>
+					<?php foreach ($products as $product) echo f::draw_listing_product($product, null); ?>
 				</section>
 				<?php } ?>
 

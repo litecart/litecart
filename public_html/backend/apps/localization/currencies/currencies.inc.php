@@ -59,15 +59,15 @@
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink(__APP__.'/currencies/edit_currency'), t('title_create_new_currency', 'Create New Currency'), '', 'create'); ?>
+		<?php echo f::form_button_link(document::ilink(__APP__.'/currencies/edit_currency'), t('title_create_new_currency', 'Create New Currency'), '', 'create'); ?>
 	</div>
 
-	<?php echo functions::form_begin('currencies_form', 'post'); ?>
+	<?php echo f::form_begin('currencies_form', 'post'); ?>
 
 		<table class="table data-table">
 			<thead>
 				<tr>
-					<th><?php echo functions::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th><?php echo f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th></th>
 					<th><?php echo t('title_id', 'ID'); ?></th>
 					<th class="main"><?php echo t('title_name', 'Name'); ?></th>
@@ -84,19 +84,19 @@
 			<tbody>
 				<?php foreach ($currencies as $currency) { ?>
 				<tr class="<?php echo empty($currency['status']) ? 'semi-transparent' : ''; ?>">
-					<td><?php echo functions::form_checkbox('currencies[]', $currency['code']); ?></td>
-					<td><?php echo functions::draw_fonticon(($currency['status'] == 1) ? 'on' : (($currency['status'] == -1) ? 'semi-off' : 'off')); ?></td>
+					<td><?php echo f::form_checkbox('currencies[]', $currency['code']); ?></td>
+					<td><?php echo f::draw_fonticon(($currency['status'] == 1) ? 'on' : (($currency['status'] == -1) ? 'semi-off' : 'off')); ?></td>
 					<td><?php echo $currency['id']; ?></td>
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/currencies/edit_currency', ['currency_code' => $currency['code']]); ?>"><?php echo $currency['name']; ?></a></td>
 					<td><?php echo $currency['code']; ?></td>
 					<td class="text-end"><?php echo language::number_format($currency['value'], 4); ?></td>
 					<td class="text-center"><?php echo currency::format_html(1234.56, false, $currency['code'], 1); ?></td>
-					<td class="text-center"><?php echo ($currency['code'] == settings::get('default_currency_code')) ? functions::draw_fonticon('icon-check') : ''; ?></td>
-					<td class="text-center"><?php echo ($currency['code'] == settings::get('store_currency_code')) ? functions::draw_fonticon('icon-check') : ''; ?></td>
+					<td class="text-center"><?php echo ($currency['code'] == settings::get('default_currency_code')) ? f::draw_fonticon('icon-check') : ''; ?></td>
+					<td class="text-center"><?php echo ($currency['code'] == settings::get('store_currency_code')) ? f::draw_fonticon('icon-check') : ''; ?></td>
 					<td class="text-center"><?php echo $currency['priority']; ?></td>
 					<td class="text-end">
 						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/currencies/edit_currency', ['currency_code' => $currency['code']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>">
-							<?php echo functions::draw_fonticon('edit'); ?>
+							<?php echo f::draw_fonticon('edit'); ?>
 						</a>
 					</td>
 				</tr>
@@ -120,14 +120,14 @@
 				</legend>
 
 				<div class="btn-group">
-					<?php echo functions::form_button('enable', t('title_enable', 'Enable'), 'submit', '', 'on'); ?>
-					<?php echo functions::form_button('disable', t('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+					<?php echo f::form_button('enable', t('title_enable', 'Enable'), 'submit', '', 'on'); ?>
+					<?php echo f::form_button('disable', t('title_disable', 'Disable'), 'submit', '', 'off'); ?>
 				</div>
 
 			</fieldset>
 		</div>
 
-	<?php echo functions::form_end(); ?>
+	<?php echo f::form_end(); ?>
 </div>
 
 <script>

@@ -16,7 +16,7 @@
 </style>
 
 <main id="box-checkout">
-	<?php echo functions::form_begin('checkout_form', 'post', '', false, 'autocomplete="off"'); ?>
+	<?php echo f::form_begin('checkout_form', 'post', '', false, 'autocomplete="off"'); ?>
 
 		{{notices}}
 
@@ -32,7 +32,7 @@
 
 						<div class="col-md-6 text-end">
 							<a class="navigate-back btn btn-default" href="<?php echo document::ilink(''); ?>" >
-								<?php echo functions::draw_fonticon('icon-arrow-left'); ?> <?php echo t('title_back_to_store', 'Back To Store'); ?>
+								<?php echo f::draw_fonticon('icon-arrow-left'); ?> <?php echo t('title_back_to_store', 'Back To Store'); ?>
 							</a>
 						</div>
 					</div>
@@ -42,7 +42,7 @@
 						<div class="card-header">
 							<div class="float-end">
 								<a href="<?php echo document::ilink('checkout/customer'); ?>" class="btn btn-default btn-sm" style="margin-inline-start: 1em;">
-									<?php echo functions::draw_fonticon('icon-pencil'); ?> <?php echo t('title_change', 'Change'); ?>
+									<?php echo f::draw_fonticon('icon-pencil'); ?> <?php echo t('title_change', 'Change'); ?>
 								</a>
 							</div>
 							<h2 class="card-title">
@@ -57,7 +57,7 @@
 								<div class="col-md-6 detail">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_buyer', 'Buyer'); ?></div>
-										<div class="billing-address"><?php echo nl2br(functions::format_address($order['customer'])); ?></div>
+										<div class="billing-address"><?php echo nl2br(f::format_address($order['customer'])); ?></div>
 									</label>
 
 									<label class="form-group">
@@ -74,7 +74,7 @@
 								<div class="col-md-6 detail">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_deliver_to', 'Deliver To'); ?></div>
-										<div class="shipping-address"><?php echo nl2br(functions::format_address($order['customer']['shipping_address'])); ?></div>
+										<div class="shipping-address"><?php echo nl2br(f::format_address($order['customer']['shipping_address'])); ?></div>
 									</label>
 
 									<label class="form-group">
@@ -115,7 +115,7 @@
 
 									<div class="header row" style="margin: 0;">
 										<div class="col-3">
-											<?php echo functions::draw_thumbnail($option['icon'], 160, 80, 'fit'); ?>
+											<?php echo f::draw_thumbnail($option['icon'], 160, 80, 'fit'); ?>
 										</div>
 
 										<div class="col-9" style="align-self: center;">
@@ -162,7 +162,7 @@
 
 										<div class="header row" style="margin: 0;">
 											<div class="col-3" style="margin: 0;">
-												<?php echo functions::draw_thumbnail('storage://' . $option['icon'], 160, 80, 'fit'); ?>
+												<?php echo f::draw_thumbnail('storage://' . $option['icon'], 160, 80, 'fit'); ?>
 											</div>
 
 											<div class="col-9" style="align-self: center;">
@@ -244,7 +244,7 @@
 
 							<div class="comments form-group">
 								<label><?php echo t('title_comments', 'Comments'); ?></label>
-								<?php echo functions::form_textarea('comments', true, 'maxlength="250" rows="2"'); ?>
+								<?php echo f::form_textarea('comments', true, 'maxlength="250" rows="2"'); ?>
 								<small class="remaining"></small>
 							</div>
 
@@ -255,7 +255,7 @@
 
 								<?php if (!$error && $consent) { ?>
 								<div class="consent text-center" style="font-size: 1.25em; margin-top: 0.5em;">
-									<?php echo '<label>'. functions::form_checkbox('terms_agreed', ['1', $consent], true, 'required') .'</label>'; ?>
+									<?php echo '<label>'. f::form_checkbox('terms_agreed', ['1', $consent], true, 'required') .'</label>'; ?>
 								</div>
 								<?php } ?>
 
@@ -271,7 +271,7 @@
 			</div>
 		</div>
 
-	<?php echo functions::form_end(); ?>
+	<?php echo f::form_end(); ?>
 </main>
 
 <script>
@@ -425,7 +425,7 @@
 
 	// Replace submit button with spinner when form is submitting
 	$('form[name="checkout_form"]').submit(function(e) {
-		let new_button = '<div class="btn btn-block btn-default btn-lg disabled"><?php echo functions::draw_fonticon('icon-spinner'); ?> <?php echo functions::escape_js(t('text_please_wait', 'Please wait')); ?>&hellip;</div>';
+		let new_button = '<div class="btn btn-block btn-default btn-lg disabled"><?php echo f::draw_fonticon('icon-spinner'); ?> <?php echo f::escape_js(t('text_please_wait', 'Please wait')); ?>&hellip;</div>';
 		$('#box-checkout-summary button[name="confirm"]').css('display', 'none').before(new_button);
 	});
 </script>

@@ -68,36 +68,36 @@
 
 	<div class="card-body">
 
-		<?php echo functions::form_begin('customer_group_form', 'post', null, false, 'style="max-width: 720px;"'); ?>
+		<?php echo f::form_begin('customer_group_form', 'post', null, false, 'style="max-width: 720px;"'); ?>
 
 			<div class="grid">
 				<div class="col-md-4">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_type', 'Type'); ?></div>
-						<?php echo functions::form_select('type', $type_options, true); ?>
+						<?php echo f::form_select('type', $type_options, true); ?>
 					</label>
 				</div>
 
 				<div class="col-md-8">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
-						<?php echo functions::form_input_text('name', true); ?>
+						<?php echo f::form_input_text('name', true); ?>
 					</label>
 				</div>
 			</div>
 
 			<label class="form-group">
 				<div class="form-label"><?php echo t('title_description', 'Description'); ?></div>
-				<?php echo functions::form_textarea('description', true); ?>
+				<?php echo f::form_textarea('description', true); ?>
 			</label>
 
 			<div class="card-action">
-				<?php echo functions::form_button_predefined('save'); ?>
-				<?php echo !empty($customer_group->data['id']) ? functions::form_button_predefined('delete') : ''; ?>
-				<?php echo functions::form_button_predefined('cancel'); ?>
+				<?php echo f::form_button_predefined('save'); ?>
+				<?php echo !empty($customer_group->data['id']) ? f::form_button_predefined('delete') : ''; ?>
+				<?php echo f::form_button_predefined('cancel'); ?>
 			</div>
 
-		<?php echo functions::form_end(); ?>
+		<?php echo f::form_end(); ?>
 
 	</div>
 </div>

@@ -25,13 +25,13 @@
 	]);
 
 	$category_iterator = function($parent_id=0) use (&$category_iterator, &$output) {
-		functions::catalog_categories_query($parent_id)->each(function($category) use (&$category_iterator, &$output) {
+		f::catalog_categories_query($parent_id)->each(function($category) use (&$category_iterator, &$output) {
 
 			$output[] .= implode(PHP_EOL, array_filter([
 				'  <url>',
 				'    <loc>'. document::ilink('category', ['category_id' => $category['id']]) .'</loc>',
 
-				implode(PHP_EOL, functions::array_each(language::$languages, function($language) use ($category) {
+				implode(PHP_EOL, f::array_each(language::$languages, function($language) use ($category) {
 					if ($language['url_type'] == 'none') return;
 					return '    <xhtml:link rel="alternate" hreflang="'. $language['code'] .'" href="'. document::href_ilink('category', ['category_id' => $category['id']], false, [], $language['code']) .'" />';
 				})),
@@ -64,7 +64,7 @@
 			'  <url>',
 			'    <loc>'. document::ilink('product', ['product_id' => $product['id']]) .'</loc>',
 
-			implode(PHP_EOL, functions::array_each(language::$languages, function($language) use ($product) {
+			implode(PHP_EOL, f::array_each(language::$languages, function($language) use ($product) {
 				if ($language['url_type'] == 'none') return;
 				return '    <xhtml:link rel="alternate" hreflang="'. $language['code'] .'" href="'. document::href_ilink('product', ['product_id' => $product['id']], false, [], $language['code']) .'" />';
 			})),

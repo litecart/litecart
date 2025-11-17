@@ -31,7 +31,7 @@
 				or email = '". database::input(strtolower($_POST['username'])) ."'
 				limit 1;"
 			)->fetch(function($administrator){
-				$administrator['known_ips'] = functions::string_split($administrator['known_ips']);
+				$administrator['known_ips'] = f::string_split($administrator['known_ips']);
 				return $administrator;
 			});
 
@@ -45,13 +45,13 @@
 
 			if (!empty($administrator['valid_from']) && date('Y-m-d H:i:s') < $administrator['valid_from']) {
 				throw new Exception(strtr(t('error_account_is_blocked', 'The account is blocked until {datetime}'), [
-					'{datetime}' => functions::datetime_format('datetime', $administrator['valid_from'])
+					'{datetime}' => f::datetime_format('datetime', $administrator['valid_from'])
 				]));
 			}
 
 			if (!empty($administrator['valid_to']) && date('Y-m-d H:i:s') > $administrator['valid_to']) {
 				throw new Exception(strtr(t('error_account_expired', 'The account expired {datetime}'), [
-					'{datetime}' => functions::datetime_format('datetime', $administrator['valid_to'])
+					'{datetime}' => f::datetime_format('datetime', $administrator['valid_to'])
 				]));
 			}
 
@@ -277,9 +277,9 @@ html.dark-mode body {
 
 <div id="box-login">
 
-	<?php echo functions::form_begin('login_form', 'post'); ?>
-		<?php echo functions::form_input_hidden('login', 'true'); ?>
-		<?php echo functions::form_input_hidden('redirect_url', true); ?>
+	<?php echo f::form_begin('login_form', 'post'); ?>
+		<?php echo f::form_input_hidden('login', 'true'); ?>
+		<?php echo f::form_input_hidden('redirect_url', true); ?>
 
 		<div class="card" style="margin: 0;">
 			<div class="card-header text-center">
@@ -295,17 +295,17 @@ html.dark-mode body {
 				<h1><?php echo t('title_sign_in', 'Sign In'); ?></h1>
 
 				<label class="form-group">
-					<?php echo functions::form_input_username('username', true, 'placeholder="'. t('title_username_or_email_address', 'Username or Email Address') .'"'); ?>
+					<?php echo f::form_input_username('username', true, 'placeholder="'. t('title_username_or_email_address', 'Username or Email Address') .'"'); ?>
 					<div class="form-label"></div>
 				</label>
 
 				<label class="form-group">
-					<?php echo functions::form_input_password('password', '', 'placeholder="'. t('title_password', 'Password') .'" autocomplete="current-password"'); ?>
+					<?php echo f::form_input_password('password', '', 'placeholder="'. t('title_password', 'Password') .'" autocomplete="current-password"'); ?>
 					<div class="form-label"></div>
 				</label>
 
 				<div class="form-group">
-					<?php echo functions::form_checkbox('remember_me', ['1', t('title_remember_me', 'Remember Me')], true); ?>
+					<?php echo f::form_checkbox('remember_me', ['1', t('title_remember_me', 'Remember Me')], true); ?>
 				</div>
 			</div>
 
@@ -313,18 +313,18 @@ html.dark-mode body {
 				<div class="grid">
 					<div class="col-md-6 text-start">
 						<a class="btn btn-unstyled btn-lg" href="<?php echo document::href_ilink('f:'); ?>">
-							<?php echo functions::draw_fonticon('icon-chevron-left'); ?> <?php echo t('title_frontend', 'Frontend'); ?>
+							<?php echo f::draw_fonticon('icon-chevron-left'); ?> <?php echo t('title_frontend', 'Frontend'); ?>
 						</a>
 					</div>
 					<div class="col-md-6 text-end">
-						<?php echo functions::form_button('login', t('title_login', 'Login'), 'submit', 'class="btn btn-default btn-lg"'); ?>
+						<?php echo f::form_button('login', t('title_login', 'Login'), 'submit', 'class="btn btn-default btn-lg"'); ?>
 					</div>
 				</div>
 			</div>
 
 		</div>
 
-	<?php echo functions::form_end(); ?>
+	<?php echo f::form_end(); ?>
 </div>
 
 <script>

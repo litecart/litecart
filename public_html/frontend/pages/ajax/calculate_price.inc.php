@@ -47,5 +47,5 @@
 
 	ob_clean();
 	header('Content-Type: application/json; charset=utf-8');
-	echo functions::format_json($result);
+	echo f::format_json($result);
 	exit;

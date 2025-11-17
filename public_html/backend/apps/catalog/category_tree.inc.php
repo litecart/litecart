@@ -277,7 +277,7 @@
 	// Search Filter
 	if (!empty($_GET['query'])) {
 
-		$code_regex = functions::format_regex_code($_GET['query']);
+		$code_regex = f::format_regex_code($_GET['query']);
 
 		$matched_products = database::query(
 			"select id from ". DB_TABLE_PREFIX ."products
@@ -385,24 +385,24 @@ table .icon-folder-open {
 
 	<div class="card-action">
 		<ul class="list-inline">
-			<li><?php echo functions::form_button_link(document::ilink(__APP__.'/edit_category', isset($_GET['category_id']) ? ['parent_id' => $_GET['category_id']] : []), t('title_create_new_category', 'Create New Category'), '', 'create'); ?></li>
-			<li><?php echo functions::form_button_link(document::ilink(__APP__.'/edit_product', [], ['category_id']), t('title_create_new_product', 'Create New Product'), '', 'create'); ?></li>
+			<li><?php echo f::form_button_link(document::ilink(__APP__.'/edit_category', isset($_GET['category_id']) ? ['parent_id' => $_GET['category_id']] : []), t('title_create_new_category', 'Create New Category'), '', 'create'); ?></li>
+			<li><?php echo f::form_button_link(document::ilink(__APP__.'/edit_product', [], ['category_id']), t('title_create_new_product', 'Create New Product'), '', 'create'); ?></li>
 		</ul>
 	</div>
 
-	<?php echo functions::form_begin('search_form', 'get'); ?>
+	<?php echo f::form_begin('search_form', 'get'); ?>
 		<div class="card-filter">
-			<div class="expandable"><?php echo functions::form_input_search('query', true, 'placeholder="'. t('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"  onkeydown=" if (event.keyCode == 13) location=(\''. document::ilink('', [], true, ['page', 'query']) .'&query=\' + encodeURIComponent(this.value))"'); ?></div>
-			<div><?php echo functions::form_button('filter', t('title_search', 'Search'), 'submit'); ?></div>
+			<div class="expandable"><?php echo f::form_input_search('query', true, 'placeholder="'. t('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"  onkeydown=" if (event.keyCode == 13) location=(\''. document::ilink('', [], true, ['page', 'query']) .'&query=\' + encodeURIComponent(this.value))"'); ?></div>
+			<div><?php echo f::form_button('filter', t('title_search', 'Search'), 'submit'); ?></div>
 		</div>
-	<?php echo functions::form_end(); ?>
+	<?php echo f::form_end(); ?>
 
-	<?php echo functions::form_begin('catalog_form', 'post'); ?>
+	<?php echo f::form_begin('catalog_form', 'post'); ?>
 
 		<table class="table data-table">
 			<thead>
 				<tr>
-					<th><?php echo functions::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th><?php echo f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th></th>
 					<th></th>
 					<th class="main"><?php echo t('title_name', 'Name'); ?></th>
@@ -418,7 +418,7 @@ table .icon-folder-open {
 					<td></td>
 					<td></td>
 					<td>
-						<?php echo functions::draw_fonticon('icon-folder-open', 'style="color: #cc6;"'); ?>
+						<?php echo f::draw_fonticon('icon-folder-open', 'style="color: #cc6;"'); ?>
 						<a href="'. document::href_ilink(null, [], [], []) .'">
 							<strong>[<?php echo t('title_root', 'Root'); ?>]</strong>
 						</a>
@@ -453,11 +453,11 @@ table .icon-folder-open {
 
 		$output .= implode(PHP_EOL, [
 			'<tr class="'. ($category['status'] ? null : ' semi-transparent') .'">',
-			'  <td>'. functions::form_checkbox('categories[]', $category['id'], true) .'</td>',
-			'  <td>'. functions::draw_fonticon($category['status'] ? 'on' : 'off') .'</td>',
+			'  <td>'. f::form_checkbox('categories[]', $category['id'], true) .'</td>',
+			'  <td>'. f::draw_fonticon($category['status'] ? 'on' : 'off') .'</td>',
 			'  <td></td>',
 			'  <td style="padding-inline-start: '. ($depth+1) .'em;">',
-			'    '. functions::draw_fonticon(in_array('opened', $category['properties']) ? 'icon-folder-open' : 'icon-folder', 'style="color: #cc6;"'),
+			'    '. f::draw_fonticon(in_array('opened', $category['properties']) ? 'icon-folder-open' : 'icon-folder', 'style="color: #cc6;"'),
 			'    '. (in_array('active', $category['properties']) ? '<strong>' : '<a class="link" href="'. document::href_ilink(null, ['category_id' => $category['id']]) .'">'),
 			'      ' . ($category['name'] ?: '[untitled]'),
 			'    '. (in_array('opened', $category['properties']) ? '</strong>' : '</a>'),
@@ -465,12 +465,12 @@ table .icon-folder-open {
 			'  <td></td>',
 			'  <td>',
 			'    <a class="btn btn-default btn-sm" href="'. document::href_ilink('f:category', ['category_id' => $category['id']]) .'" target="_blank">',
-			'    '.  functions::draw_fonticon('icon-square-out'),
+			'    '.  f::draw_fonticon('icon-square-out'),
 			'    </a>',
 			'  </td>',
 			'  <td class="text-end">',
 			'    <a class="btn btn-default btn-sm" href="'. document::href_ilink(__APP__.'/edit_category', ['category_id' => $category['id']]) .'" title="'. t('title_edit', 'Edit') .'">',
-			'    '. functions::draw_fonticon('edit'),
+			'    '. f::draw_fonticon('edit'),
 			'    </a>',
 			'  </td>',
 			'</tr>',
@@ -571,13 +571,13 @@ table .icon-folder-open {
 
 						if (!empty($product['valid_from']) && strtotime($product['valid_from']) > time()) {
 							throw new Exception(strtr(t('text_product_cannot_be_purchased_until_x', 'The product cannot be purchased until {date}'), [
-								'{date}' => functions::datetime_format('date', $product['valid_from']),
+								'{date}' => f::datetime_format('date', $product['valid_from']),
 							]));
 						}
 
 						if (!empty($product['valid_to']) && strtotime($product['valid_to']) < time()) {
 							throw new Exception(strtr(t('text_product_expired_at_x', 'The product expired at {date} and can no longer be purchased'), [
-								'{date}' => functions::datetime_format('date', $product['valid_to']),
+								'{date}' => f::datetime_format('date', $product['valid_to']),
 							]));
 						}
 
@@ -591,24 +591,24 @@ table .icon-folder-open {
 
 					$output .= implode(PHP_EOL, [
 						'<tr class="'. (!$product['status'] ? ' semi-transparent' : '') .'">',
-						'  <td>'. functions::form_checkbox('products[]', $product['id'], true) .'</td>',
-						'  <td>'. functions::draw_fonticon(!empty($product['status']) ? 'on' : 'off') .'</td>',
-						'  <td class="warning">'. (!empty($warning) ? functions::draw_fonticon('icon-exclamation-triangle', 'title="'. functions::escape_attr($warning) .'"') : '') .'</td>',
+						'  <td>'. f::form_checkbox('products[]', $product['id'], true) .'</td>',
+						'  <td>'. f::draw_fonticon(!empty($product['status']) ? 'on' : 'off') .'</td>',
+						'  <td class="warning">'. (!empty($warning) ? f::draw_fonticon('icon-exclamation-triangle', 'title="'. f::escape_attr($warning) .'"') : '') .'</td>',
 						'  <td style="padding-inline-start: '. ($depth+2) .'em;">',
-						'    '. empty($display_images) ? functions::draw_thumbnail('storage://images/' . $product['image'], 24, 24, 'fit') : '<span style="margin-inline-start: '. (($depth+1)*16) .'px;"></span>',
+						'    '. empty($display_images) ? f::draw_thumbnail('storage://images/' . $product['image'], 24, 24, 'fit') : '<span style="margin-inline-start: '. (($depth+1)*16) .'px;"></span>',
 						'    <a class="link" href="'. document::href_ilink(__APP__.'/edit_product', ['category_id' => $category_id, 'product_id' => $product['id']]) .'">',
 						'      '. ($product['name'] ?: '['. t('title_untitled', 'Untitled') .']'),
 						'    </a>',
 						'  </td>',
-						'  <td class="text-end">'. functions::draw_price_tag($product['regular_price'], $product['final_price'], settings::get('store_currency_code')) .'</td>',
+						'  <td class="text-end">'. f::draw_price_tag($product['regular_price'], $product['final_price'], settings::get('store_currency_code')) .'</td>',
 						'  <td>',
 						'    <a class="btn btn-default btn-sm" href="'. document::href_ilink('f:product', ['product_id' => $product['id']]) .'" title="'. t('title_view', 'View') .'" target="_blank">',
-						'    '. functions::draw_fonticon('icon-square-out'),
+						'    '. f::draw_fonticon('icon-square-out'),
 						'    </a>',
 						'  </td>',
 						'  <td class="text-end">',
 						'    <a class="btn btn-default btn-sm" href="'. document::href_ilink(__APP__.'/edit_product', ['category_id' => $category_id, 'product_id' => $product['id']]) .'" title="'. t('title_edit', 'Edit') .'">',
-						'    '. functions::draw_fonticon('edit'),
+						'    '. f::draw_fonticon('edit'),
 						'    </a>',
 						'  </td>',
 						'</tr>',
@@ -659,30 +659,30 @@ table .icon-folder-open {
 				<div class="flex">
 
 					<div class="btn-group">
-						<?php echo functions::form_button_predefined('enable'); ?>
-						<?php echo functions::form_button_predefined('disable'); ?>
+						<?php echo f::form_button_predefined('enable'); ?>
+						<?php echo f::form_button_predefined('disable'); ?>
 					</div>
 
 					<div style="min-width: 250px;">
-						<?php echo functions::form_select_category('category_id', true); ?>
+						<?php echo f::form_select_category('category_id', true); ?>
 					</div>
 
 					<div class="btn-group">
-						<?php echo functions::form_button('move', t('title_move', 'Move'), 'submit', 'onclick="if (!window.confirm(\''. str_replace("'", "\\\'", t('warning_previous_mount_points_will_be_reset', 'Warning: All previous mount points will be reset.')) .'\')) return false;"'); ?>
-						<?php echo functions::form_button('copy', t('title_copy', 'Copy'), 'submit'); ?>
-						<?php echo functions::form_button('clone', t('title_clone', 'Clone'), 'submit', '', 'icon-copy'); ?>
+						<?php echo f::form_button('move', t('title_move', 'Move'), 'submit', 'onclick="if (!window.confirm(\''. str_replace("'", "\\\'", t('warning_previous_mount_points_will_be_reset', 'Warning: All previous mount points will be reset.')) .'\')) return false;"'); ?>
+						<?php echo f::form_button('copy', t('title_copy', 'Copy'), 'submit'); ?>
+						<?php echo f::form_button('clone', t('title_clone', 'Clone'), 'submit', '', 'icon-copy'); ?>
 					</div>
 
-					<?php echo functions::form_button('unmount', t('title_unmount', 'Unmount'), 'submit'); ?>
+					<?php echo f::form_button('unmount', t('title_unmount', 'Unmount'), 'submit'); ?>
 
-					<?php echo functions::form_button_predefined('delete'); ?>
+					<?php echo f::form_button_predefined('delete'); ?>
 
 				</div>
 
 			</fieldset>
 		</div>
 
-	<?php echo functions::form_end(); ?>
+	<?php echo f::form_end(); ?>
 </div>
 
 <script>

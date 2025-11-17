@@ -176,14 +176,14 @@
 			$this->data['categories'] = array_filter($this->data['categories'], function($var) { return ($var != ''); }); // Don't filter root ('0')
 			$this->data['categories'] = array_unique($this->data['categories']);
 
-			$this->data['keywords'] = functions::string_split($this->data['keywords']);
+			$this->data['keywords'] = f::string_split($this->data['keywords']);
 			$this->data['keywords'] = array_map('trim', $this->data['keywords']);
 			$this->data['keywords'] = array_filter($this->data['keywords']);
 			$this->data['keywords'] = array_unique($this->data['keywords']);
 			$this->data['keywords'] = implode(',', $this->data['keywords']);
 
 			foreach (array_keys($this->data['synonyms']) as $language_code) {
-				$this->data['synonyms'][$language_code] = functions::string_split($this->data['synonyms'][$language_code]);
+				$this->data['synonyms'][$language_code] = f::string_split($this->data['synonyms'][$language_code]);
 				$this->data['synonyms'][$language_code] = array_map('trim', $this->data['synonyms'][$language_code]);
 				$this->data['synonyms'][$language_code] = array_filter($this->data['synonyms'][$language_code]);
 				$this->data['synonyms'][$language_code] = array_unique($this->data['synonyms'][$language_code]);
@@ -205,13 +205,13 @@
 					sold_out_status_id = ". (int)$this->data['sold_out_status_id'] .",
 					default_category_id = ". (int)$this->data['default_category_id'] .",
 					code = '". database::input($this->data['code']) ."',
-					name = '". database::input(functions::format_json($this->data['name'])) ."',
-					short_description = '". database::input(functions::format_json($this->data['short_description'])) ."',
-					description = '". database::input(functions::format_json($this->data['description'])) ."',
-					technical_data = '". database::input(functions::format_json($this->data['technical_data'])) ."',
-					synonyms = '". database::input(functions::format_json($this->data['synonyms'])) ."',
-					head_title = '". database::input(functions::format_json($this->data['head_title'])) ."',
-					meta_description = '". database::input(functions::format_json($this->data['meta_description'])) ."',
+					name = '". database::input(f::format_json($this->data['name'])) ."',
+					short_description = '". database::input(f::format_json($this->data['short_description'])) ."',
+					description = '". database::input(f::format_json($this->data['description'])) ."',
+					technical_data = '". database::input(f::format_json($this->data['technical_data'])) ."',
+					synonyms = '". database::input(f::format_json($this->data['synonyms'])) ."',
+					head_title = '". database::input(f::format_json($this->data['head_title'])) ."',
+					meta_description = '". database::input(f::format_json($this->data['meta_description'])) ."',
 					keywords = '". database::input($this->data['keywords']) ."',
 					stock_option_type = '". database::input($this->data['stock_option_type']) ."',
 					quantity_min = ". (float)$this->data['quantity_min'] .",
@@ -273,7 +273,7 @@
 					set campaign_id = ". (!empty($price['campaign_id']) ? (int)$price['campaign_id'] : "null") .",
 						customer_group_id = ". (!empty($price['customer_group_id']) ? (int)$price['customer_group_id'] : "null") .",
 						min_quantity = ". (!empty($price['min_quantity']) ? (int)$price['min_quantity'] : 1) .",
-						price = '". database::input(functions::format_json($prices)) ."'
+						price = '". database::input(f::format_json($prices)) ."'
 					where product_id = ". (int)$this->data['id'] ."
 					and id = ". (int)$price['id'] ."
 					limit 1;"
@@ -291,7 +291,7 @@
 					unlink('storage://images/' . $image['filename']);
 				}
 
-				functions::image_delete_cache('storage://images/' . $image['filename']);
+				f::image_delete_cache('storage://images/' . $image['filename']);
 
 				database::query(
 					"delete from ". DB_TABLE_PREFIX ."products_images
@@ -319,8 +319,8 @@
 						rename('storage://images/' . $image['filename'], FS_DIR_STORAGE . 'images/' . $image['new_filename']);
 						$this->data['images'][$key]['filename'] = $image['new_filename'];
 
-						functions::image_delete_cache('storage://images/' . $image['filename']);
-						functions::image_delete_cache('storage://images/' . $image['new_filename']);
+						f::image_delete_cache('storage://images/' . $image['filename']);
+						f::image_delete_cache('storage://images/' . $image['new_filename']);
 					}
 
 					database::query(
@@ -449,7 +449,7 @@
 									value_id = ". (int)$value['value_id'] .",
 									custom_value = '". database::input($value['custom_value']) ."',
 									price_modifier = '". database::input($value['price_modifier']) ."',
-									price_adjustment = '". database::input(functions::format_json($prices)) ."',
+									price_adjustment = '". database::input(f::format_json($prices)) ."',
 									priority = ". ++$j ."
 								where product_id = ". (int)$this->data['id'] ."
 								and group_id = ". (int)$option['group_id'] ."
@@ -491,7 +491,7 @@
 						"update ". DB_TABLE_PREFIX ."products_stock_options
 						set stock_item_id = ". (int)$stock_option['stock_item_id'] .",
 							price_modifier = '". database::input($stock_option['price_modifier']) ."',
-							price_adjustment = '". database::input(functions::format_json($stock_option['price_adjustment'])) ."',
+							price_adjustment = '". database::input(f::format_json($stock_option['price_adjustment'])) ."',
 							priority = ". (int)$i++ ."
 						where id = ". (int)$stock_option['id'] ."
 						and product_id = ". (int)$this->data['id'] ."
@@ -542,7 +542,7 @@
 			// 456-Fancy-product-title-N.jpg
 			$i=1;
 			while (empty($filename) || is_file('storage://images/' . $filename)) {
-				$filename = 'products/' . $this->data['id'] .'-'. functions::format_path_friendly($this->data['name'][settings::get('store_language_code')], settings::get('store_language_code')) .'-'. $i++ .'.'. $image->type;
+				$filename = 'products/' . $this->data['id'] .'-'. f::format_path_friendly($this->data['name'][settings::get('store_language_code')], settings::get('store_language_code')) .'-'. $i++ .'.'. $image->type;
 			}
 
 			$priority = count($this->data['images'])+1;
@@ -554,7 +554,7 @@
 
 			if (!$image->save('storage://images/' . $filename, 90)) return false;
 
-			functions::image_delete_cache('storage://images/' . $filename);
+			f::image_delete_cache('storage://images/' . $filename);
 
 			database::query(
 				"insert into ". DB_TABLE_PREFIX ."products_images

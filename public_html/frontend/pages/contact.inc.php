@@ -44,7 +44,7 @@
 				throw new Exception(t('error_must_provide_message', 'You must provide a message'));
 			}
 
-			if (settings::get('captcha_enabled') && !functions::captcha_validate('contact_us')) {
+			if (settings::get('captcha_enabled') && !f::captcha_validate('contact_us')) {
 				throw new Exception(t('error_invalid_captcha', 'Invalid CAPTCHA given'));
 			}
 

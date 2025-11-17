@@ -88,12 +88,12 @@
 				set status = '". (!empty($this->data['status']) ? database::input($this->data['status']) : 'draft') ."',
 					code = '". database::input($this->data['code']) ."',
 					reference = '". database::input($this->data['reference']) ."',
-					sender = '". database::input(functions::format_json($this->data['sender'])) ."',
-					recipients = '". database::input(functions::format_json($this->data['recipients'])) ."',
-					ccs = '". database::input(functions::format_json($this->data['ccs'])) ."',
-					bccs = '". database::input(functions::format_json($this->data['bccs'])) ."',
+					sender = '". database::input(f::format_json($this->data['sender'])) ."',
+					recipients = '". database::input(f::format_json($this->data['recipients'])) ."',
+					ccs = '". database::input(f::format_json($this->data['ccs'])) ."',
+					bccs = '". database::input(f::format_json($this->data['bccs'])) ."',
 					subject = '". database::input($this->data['subject']) ."',
-					multiparts = '". database::input(functions::format_json($this->data['multiparts'])) ."',
+					multiparts = '". database::input(f::format_json($this->data['multiparts'])) ."',
 					language_code = '". database::input($this->data['language_code']) ."',
 					scheduled_at = ". (!empty($this->data['scheduled_at']) ? "'". database::input($this->data['scheduled_at']) ."'" : "null") .",
 					sent_at = ". (!empty($this->data['sent_at']) ? "'". database::input($this->data['sent_at']) ."'" : "null") .",
@@ -117,7 +117,7 @@
 			$email = trim(preg_replace('#^.*\s<([^>]+)>$#', '$1', $email));
 			$name = trim(preg_replace('#(\R|\t|%0A|%0D)*#', '', $name));
 
-			if (!functions::validate_email($email)){
+			if (!f::validate_email($email)){
 				throw new Exception('Invalid email address ('. $email .')');
 			}
 
@@ -188,7 +188,7 @@
 			$data = $parse_as_string ? $file : file_get_contents($file);
 
 			if ($parse_as_string) {
-				$tmp_file = functions::file_create_tempfile();
+				$tmp_file = f::file_create_tempfile();
 				file_put_contents($tmp_file, $data);
 				$mime_type = mime_content_type($tmp_file);
 			} else {
@@ -216,7 +216,7 @@
 			$email = trim(preg_replace('#^.*\s<([^>]+)>$#', '$1', $email));
 			$name = trim(preg_replace('#(\R|\t|%0A|%0D)*#', '', $name));
 
-			if (!functions::validate_email($email)) {
+			if (!f::validate_email($email)) {
 				throw new Exception('Invalid email address ('. $email .')');
 			}
 
@@ -237,7 +237,7 @@
 			$email = trim(preg_replace('#^.*\s<([^>]+)>$#', '$1', $email));
 			$name = trim(preg_replace('#(\R|\t|%0A|%0D)*#', '', $name));
 
-			if (!functions::validate_email($email)) {
+			if (!f::validate_email($email)) {
 				throw new Exception('Invalid email address ('. $email .')');
 			}
 
@@ -258,7 +258,7 @@
 			$email = trim(preg_replace('#^.*\s<([^>]+)>$#', '$1', $email));
 			$name = trim(preg_replace('#(\R|\t|%0A|%0D)*#', '', $name));
 
-			if (!functions::validate_email($email)) {
+			if (!f::validate_email($email)) {
 				throw new Exception('Invalid email address ('. $email .')');
 			}
 

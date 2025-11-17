@@ -19,7 +19,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 					<div class="images">
 
 						<a class="main-image" href="<?php echo document::href_rlink($image); ?>" data-toggle="lightbox" data-gallery="product">
-							<?php echo functions::draw_thumbnail($image, 320, 0, 'product', 'alt="'. functions::escape_attr($name) .'"'); ?>
+							<?php echo f::draw_thumbnail($image, 320, 0, 'product', 'alt="'. f::escape_attr($name) .'"'); ?>
 							{{sticker}}
 						</a>
 
@@ -28,7 +28,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 							<?php foreach ($extra_images as $extra_image) { ?>
 							<div class="col-6">
 								<a class="extra-image" href="<?php echo document::href_rlink($extra_image); ?>" data-toggle="lightbox" data-gallery="product">
-									<?php echo functions::draw_thumbnail($extra_image, 160, 0, 'product', 'alt="'. functions::escape_attr($name) .'"'); ?>
+									<?php echo f::draw_thumbnail($extra_image, 160, 0, 'product', 'alt="'. f::escape_attr($name) .'"'); ?>
 								</a>
 							</div>
 							<?php } ?>
@@ -36,8 +36,8 @@ form[name="buy_now_form"] .dropdown-menu .image {
 							<?php if ($video_url) { ?>
 							<div class="col-4">
 								<a class="video" href="<?php echo document::href_rlink($video_url); ?>" data-toggle="lightbox" data-gallery="product">
-									<?php echo functions::draw_thumbnail($image, 320, 0, 'product', 'alt="'. functions::escape_attr($name) .'"'); ?>
-									<span class="video-icon"><?php echo functions::draw_fonticon('icon-play'); ?></span>
+									<?php echo f::draw_thumbnail($image, 320, 0, 'product', 'alt="'. f::escape_attr($name) .'"'); ?>
+									<span class="video-icon"><?php echo f::draw_fonticon('icon-play'); ?></span>
 								</a>
 							</div>
 							<?php } ?>
@@ -58,9 +58,9 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 					<?php if (!empty($brand)) { ?>
 					<div class="brand">
-						<a href="<?php echo functions::escape_html($brand['link']); ?>">
+						<a href="<?php echo f::escape_html($brand['link']); ?>">
 							<?php if ($brand['image']) { ?>
-							<?php echo functions::draw_thumbnail($brand['image'], 0, 40, '', 'style="max-height: 40px; margin-inline-start: 0;"'); ?>
+							<?php echo f::draw_thumbnail($brand['image'], 0, 40, '', 'style="max-height: 40px; margin-inline-start: 0;"'); ?>
 							<?php } else { ?>
 							<h3><?php echo $brand['name']; ?></h3>
 							<?php } ?>
@@ -77,7 +77,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 					<?php if ($cheapest_shipping_fee !== null) { ?>
 					<div class="cheapest-shipping" style="margin: 1em 0;">
-						<?php echo functions::draw_fonticon('icon-truck'); ?> <?php echo strtr(t('text_cheapest_shipping_from_price', 'Cheapest shipping from <strong class="value">{price}</strong>'), [
+						<?php echo f::draw_fonticon('icon-truck'); ?> <?php echo strtr(t('text_cheapest_shipping_from_price', 'Cheapest shipping from <strong class="value">{price}</strong>'), [
 							'{price}' => currency::format($cheapest_shipping_fee)
 						]); ?>
 					</div>
@@ -141,9 +141,9 @@ form[name="buy_now_form"] .dropdown-menu .image {
 					<?php } ?>
 
 					<?php if (isset($final_price)) { ?>
-					<?php echo functions::form_begin('buy_now_form', 'post'); ?>
+					<?php echo f::form_begin('buy_now_form', 'post'); ?>
 
-						<?php echo functions::form_input_hidden('product_id', $product_id); ?>
+						<?php echo f::form_input_hidden('product_id', $product_id); ?>
 						<fieldset class="buy_now" style="margin: 2em 0;">
 
 							<legend><?php echo t('title_purchase_now', 'Purchase Now'); ?></legend>
@@ -163,7 +163,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 										<div class="form-label"><?php echo t('title_quantity', 'Quantity'); ?></div>
 										<div style="display: flex">
 											<div class="input-group" style="flex: 0 1 150px;">
-												<?php echo !empty($quantity_unit['decimals']) ? functions::form_input_decimal('quantity', isset($_POST['quantity']) ? true : 1, $quantity_unit['decimals'], 'min="'. ($quantity_min ?: '1') .'" max="'. ($quantity_max ?: '') .'" step="'. ($quantity_step ?: '') .'"') : functions::form_input_number('quantity', isset($_POST['quantity']) ? true : 1, 'min="'. ($quantity_min ?: '1') .'" max="'. ($quantity_max ?: '') .'" step="'. ($quantity_step ?: '') .'"'); ?>
+												<?php echo !empty($quantity_unit['decimals']) ? f::form_input_decimal('quantity', isset($_POST['quantity']) ? true : 1, $quantity_unit['decimals'], 'min="'. ($quantity_min ?: '1') .'" max="'. ($quantity_max ?: '') .'" step="'. ($quantity_step ?: '') .'"') : f::form_input_number('quantity', isset($_POST['quantity']) ? true : 1, 'min="'. ($quantity_min ?: '1') .'" max="'. ($quantity_max ?: '') .'" step="'. ($quantity_step ?: '') .'"'); ?>
 												<?php if (!empty($quantity_unit['name'])) echo '<div class="input-group-text">'. $quantity_unit['name'] .'</div>'; ?>
 											</div>
 
@@ -177,7 +177,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 								<div class="col-xl-4">
 									<br>
-									<?php echo functions::draw_price_tag($regular_price, $final_price, currency::$selected['code']); ?>
+									<?php echo f::draw_price_tag($regular_price, $final_price, currency::$selected['code']); ?>
 
 									<div class="tax" style="margin: 0 0 1em 0;">
 									<?php if ($tax_rates) { ?>
@@ -191,39 +191,39 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 						</fieldset>
 
-					<?php echo functions::form_end(); ?>
+					<?php echo f::form_end(); ?>
 					<?php } ?>
 
 					<div class="social-bookmarks">
 
-						<a class="link btn btn-default" href="#" title="<?php echo functions::escape_html(t('text_share_link', 'Share Link')); ?>">
-							<?php echo functions::draw_fonticon('icon-link', 'style="color: #333;"'); ?>
+						<a class="link btn btn-default" href="#" title="<?php echo f::escape_html(t('text_share_link', 'Share Link')); ?>">
+							<?php echo f::draw_fonticon('icon-link', 'style="color: #333;"'); ?>
 						</a>
 
-						<a class="btn btn-default" href="<?php echo 'mailto:user@email.com?', http_build_query(['subject' => t('text_is_this_a_product_for_you', 'Is this a product for you?'), 'body' => document::ilink()]); ?>" title="<?php echo functions::escape_html(t('text_share_via_email', 'Share via Email')); ?>">
-							<?php echo functions::draw_fonticon('icon-envelope', 'style="color: #333;"'); ?>
+						<a class="btn btn-default" href="<?php echo 'mailto:user@email.com?', http_build_query(['subject' => t('text_is_this_a_product_for_you', 'Is this a product for you?'), 'body' => document::ilink()]); ?>" title="<?php echo f::escape_html(t('text_share_via_email', 'Share via Email')); ?>">
+							<?php echo f::draw_fonticon('icon-envelope', 'style="color: #333;"'); ?>
 						</a>
 
 						<?php /* Requires appId
-						<a class="x btn btn-default" href="<?php echo document::href_link('fb-messenger://share/', ['link' => $link]); ?>" target="_blank" title="<?php echo functions::escape_html(strtr(t('text_share_via_s', 'Share via {s}'), ['{s}' => 'Messenger'])); ?>">
-							<?php echo functions::draw_fonticon('icon-brand-messenger', 'style="color: #000;"'); ?>
+						<a class="x btn btn-default" href="<?php echo document::href_link('fb-messenger://share/', ['link' => $link]); ?>" target="_blank" title="<?php echo f::escape_html(strtr(t('text_share_via_s', 'Share via {s}'), ['{s}' => 'Messenger'])); ?>">
+							<?php echo f::draw_fonticon('icon-brand-messenger', 'style="color: #000;"'); ?>
 						</a>
 						*/ ?>
 
-						<a class="x btn btn-default" href="<?php echo document::href_link('https://wa.me/', ['text' => $name .' - '. $link]); ?>" target="_blank" title="<?php echo functions::escape_html(strtr(t('text_share_via_s', 'Share via {s}'), ['{s}' => 'WhatsApp'])); ?>">
-							<?php echo functions::draw_fonticon('icon-brand-whatsapp', 'style="color: #000;"'); ?>
+						<a class="x btn btn-default" href="<?php echo document::href_link('https://wa.me/', ['text' => $name .' - '. $link]); ?>" target="_blank" title="<?php echo f::escape_html(strtr(t('text_share_via_s', 'Share via {s}'), ['{s}' => 'WhatsApp'])); ?>">
+							<?php echo f::draw_fonticon('icon-brand-whatsapp', 'style="color: #000;"'); ?>
 						</a>
 
-						<a class="facebook btn btn-default" href="<?php echo document::href_link('https://www.facebook.com/sharer.php', ['u' => $link]); ?>" target="_blank" title="<?php echo functions::escape_html(strtr(t('text_share_on_s', 'Share on {s}'), ['{s}' => 'Facebook'])); ?>">
-							<?php echo functions::draw_fonticon('icon-brand-facebook', 'style="color: #3b5998;"'); ?>
+						<a class="facebook btn btn-default" href="<?php echo document::href_link('https://www.facebook.com/sharer.php', ['u' => $link]); ?>" target="_blank" title="<?php echo f::escape_html(strtr(t('text_share_on_s', 'Share on {s}'), ['{s}' => 'Facebook'])); ?>">
+							<?php echo f::draw_fonticon('icon-brand-facebook', 'style="color: #3b5998;"'); ?>
 						</a>
 
-						<a class="x btn btn-default" href="<?php echo document::href_link('https://x.com/intent/tweet/', ['text' => $name .' - '. $link]); ?>" target="_blank" title="<?php echo functions::escape_html(strtr(t('text_share_on_s', 'Share on {s}'), ['{s}' => 'X'])); ?>">
-							<?php echo functions::draw_fonticon('icon-brand-x', 'style="color: #000;"'); ?>
+						<a class="x btn btn-default" href="<?php echo document::href_link('https://x.com/intent/tweet/', ['text' => $name .' - '. $link]); ?>" target="_blank" title="<?php echo f::escape_html(strtr(t('text_share_on_s', 'Share on {s}'), ['{s}' => 'X'])); ?>">
+							<?php echo f::draw_fonticon('icon-brand-x', 'style="color: #000;"'); ?>
 						</a>
 
-						<a class="pinterest btn btn-default" href="<?php echo document::href_link('https://pinterest.com/pin/create/button/', ['url' => $link]); ?>" target="_blank" title="<?php echo functions::escape_html(strtr(t('text_share_on_s', 'Share on {s}'), ['{s}' => 'Pinterest'])); ?>">
-							<?php echo functions::draw_fonticon('icon-brand-pinterest', 'style="color: #bd081c;"'); ?>
+						<a class="pinterest btn btn-default" href="<?php echo document::href_link('https://pinterest.com/pin/create/button/', ['url' => $link]); ?>" target="_blank" title="<?php echo f::escape_html(strtr(t('text_share_on_s', 'Share on {s}'), ['{s}' => 'Pinterest'])); ?>">
+							<?php echo f::draw_fonticon('icon-brand-pinterest', 'style="color: #bd081c;"'); ?>
 						</a>
 					</div>
 

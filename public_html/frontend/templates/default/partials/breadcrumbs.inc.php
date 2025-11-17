@@ -3,7 +3,7 @@
 	<li>
 		<?php
 			if (!empty($breadcrumb['link'])) {
-					echo '<a class="breadcrumb-item" href="'. functions::escape_attr($breadcrumb['link']) .'">'. $breadcrumb['title'] .'</a>';
+					echo '<a class="breadcrumb-item" href="'. f::escape_attr($breadcrumb['link']) .'">'. $breadcrumb['title'] .'</a>';
 				} else {
 					echo '<span class="breadcrumb-item">'. $breadcrumb['title'] .'</span>';
 			}

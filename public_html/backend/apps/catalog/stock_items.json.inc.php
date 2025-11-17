@@ -29,12 +29,12 @@
 	)->fetch_all();
 
 	foreach ($stock_items as $i => $stock_item) {
-		$stock_item['updated_at'] = functions::datetime_format('date', $stock_item['updated_at']);
-		$stock_item['created_at'] = functions::datetime_format('date', $stock_item['created_at']);
+		$stock_item['updated_at'] = f::datetime_format('date', $stock_item['updated_at']);
+		$stock_item['created_at'] = f::datetime_format('date', $stock_item['created_at']);
 		$stock_items[$i] = $stock_item;
 	}
 
 	ob_clean();
 	header('Content-Type: application/json');
-	echo functions::format_json($stock_items);
+	echo f::format_json($stock_items);
 	exit;

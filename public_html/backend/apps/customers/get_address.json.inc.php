@@ -27,5 +27,5 @@
 
 	ob_clean();
 	header('Content-type: application/json; charset='. mb_http_output());
-	echo functions::format_json($json);
+	echo f::format_json($json);
 	exit;

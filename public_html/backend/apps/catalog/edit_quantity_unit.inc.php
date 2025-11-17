@@ -77,51 +77,51 @@
 	</div>
 
 	<div class="card-body">
-		<?php echo functions::form_begin('quantity_unit_form', 'post', false, false, 'style="max-width: 720px;"'); ?>
+		<?php echo f::form_begin('quantity_unit_form', 'post', false, false, 'style="max-width: 720px;"'); ?>
 
 			<div class="grid">
 				<div class="col-md-8">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
-						<?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_regional_text('name['. $language_code .']', $language_code, true); ?>
+						<?php foreach (array_keys(language::$languages) as $language_code) echo f::form_regional_text('name['. $language_code .']', $language_code, true); ?>
 					 </label>
 				</div>
 
 				<div class="col-md-4">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_priority', 'Priority'); ?></div>
-						<?php echo functions::form_input_number('priority', true); ?>
+						<?php echo f::form_input_number('priority', true); ?>
 					</label>
 				</div>
 			</div>
 
 			<label class="form-group">
 				<div class="form-label"><?php echo t('title_description', 'Description'); ?></div>
-				<?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_regional_text('description['. $language_code .']', $language_code, true); ?>
+				<?php foreach (array_keys(language::$languages) as $language_code) echo f::form_regional_text('description['. $language_code .']', $language_code, true); ?>
 			 </label>
 
 			<div class="grid">
 				<div class="col-md-4">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_decimals', 'Decimals'); ?></div>
-						<?php echo functions::form_input_number('decimals', true); ?>
+						<?php echo f::form_input_number('decimals', true); ?>
 					</label>
 				</div>
 
 				<div class="col-md-8">
 					<div class="form-group">
 						<div class="form-label">&nbsp;</div>
-						<?php echo functions::form_checkbox('separate', ['1', t('text_separate_added_cart_items', 'Separate added cart items')], true); ?>
+						<?php echo f::form_checkbox('separate', ['1', t('text_separate_added_cart_items', 'Separate added cart items')], true); ?>
 					</div>
 				</div>
 			</div>
 
 			<div class="card-action">
-				<?php echo functions::form_button_predefined('save'); ?>
-				<?php if (!empty($quantity_unit->data['id'])) echo functions::form_button_predefined('delete'); ?>
-				<?php echo functions::form_button_predefined('cancel'); ?>
+				<?php echo f::form_button_predefined('save'); ?>
+				<?php if (!empty($quantity_unit->data['id'])) echo f::form_button_predefined('delete'); ?>
+				<?php echo f::form_button_predefined('cancel'); ?>
 			</div>
 
-		<?php echo functions::form_end(); ?>
+		<?php echo f::form_end(); ?>
 	</div>
 </div>

@@ -115,22 +115,22 @@
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_stock_item'), t('title_create_new_stock_item', 'Create New Stock Item'), '', 'create'); ?>
+		<?php echo f::form_button_link(document::ilink(__APP__.'/edit_stock_item'), t('title_create_new_stock_item', 'Create New Stock Item'), '', 'create'); ?>
 	</div>
 
-	<?php echo functions::form_begin('search_form', 'get'); ?>
+	<?php echo f::form_begin('search_form', 'get'); ?>
 	<div class="card-filter">
-		<div class="expandable"><?php echo functions::form_input_search('query', true, 'placeholder="'. t('text_search_items', 'Search items').'"'); ?></div>
-		<?php echo functions::form_button('filter', t('title_search', 'Search'), 'submit'); ?>
+		<div class="expandable"><?php echo f::form_input_search('query', true, 'placeholder="'. t('text_search_items', 'Search items').'"'); ?></div>
+		<?php echo f::form_button('filter', t('title_search', 'Search'), 'submit'); ?>
 	</div>
-	<?php echo functions::form_end(); ?>
+	<?php echo f::form_end(); ?>
 
-	<?php echo functions::form_begin('stock_items_form', 'post'); ?>
+	<?php echo f::form_begin('stock_items_form', 'post'); ?>
 
 		<table class="table data-table">
 			<thead>
 				<tr>
-					<th><?php echo functions::draw_fonticon('icon-square-check'); ?></th>
+					<th><?php echo f::draw_fonticon('icon-square-check'); ?></th>
 					<th></th>
 					<th><?php echo t('title_id', 'ID'); ?></th>
 					<th style="min-width: 52px;"></th>
@@ -148,10 +148,10 @@
 			<tbody>
 				<?php foreach ($stock_items as $stock_item) { ?>
 				<tr>
-					<td><?php echo functions::form_checkbox('stock_items[]', $stock_item['id']); ?></td>
-					<td><?php if (!empty($stock_item['warning'])) echo functions::draw_fonticon('icon-exclamation-triangle', 'title="'. functions::escape_attr($stock_item['warning']) .'"'); ?></td>
+					<td><?php echo f::form_checkbox('stock_items[]', $stock_item['id']); ?></td>
+					<td><?php if (!empty($stock_item['warning'])) echo f::draw_fonticon('icon-exclamation-triangle', 'title="'. f::escape_attr($stock_item['warning']) .'"'); ?></td>
 					<td><?php echo $stock_item['id']; ?></td>
-					<td><?php echo functions::draw_thumbnail('storage://images/' . ($stock_item['image'] ?: 'no_image.svg'), 64, 64, settings::get('product_image_clipping')); ?></td>
+					<td><?php echo f::draw_thumbnail('storage://images/' . ($stock_item['image'] ?: 'no_image.svg'), 64, 64, settings::get('product_image_clipping')); ?></td>
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['stock_item_id' => $stock_item['id']]); ?>"><?php echo $stock_item['name']; ?></a></td>
 					<td><?php echo $stock_item['sku']; ?></td>
 					<td><?php echo $stock_item['gtin']; ?></td>
@@ -159,7 +159,7 @@
 					<td class="text-end"><?php echo (float)$stock_item['quantity']; ?></td>
 					<td class="text-end"><?php echo (float)$stock_item['quantity_reserved']; ?></td>
 					<td class="text-end"><?php echo (float)$stock_item['backordered']; ?></td>
-					<td><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['stock_item_id' => $stock_item['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+					<td><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['stock_item_id' => $stock_item['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo f::draw_fonticon('edit'); ?></a></td>
 				</tr>
 				<?php } ?>
 			</tbody>
@@ -180,16 +180,16 @@
 					<?php echo t('text_with_selected', 'With selected'); ?>:
 				</legend>
 
-				<?php echo functions::form_button_predefined('delete'); ?>
+				<?php echo f::form_button_predefined('delete'); ?>
 
 			</fieldset>
 		</div>
 
-	<?php echo functions::form_end(); ?>
+	<?php echo f::form_end(); ?>
 
 	<?php if ($num_pages > 1) { ?>
 	<div class="card-footer">
-		<?php echo functions::draw_pagination($num_pages); ?>
+		<?php echo f::draw_pagination($num_pages); ?>
 	</div>
 	<?php } ?>
 </div>

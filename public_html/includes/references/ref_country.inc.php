@@ -51,8 +51,8 @@
 		}
 
 		public function format_address($address) {
-			trigger_error('The method format_address() is deprecated. Use functions::format_address() instead.', E_USER_DEPRECATED);
-			return functions::format_address($address);
+			trigger_error('The method format_address() is deprecated. Use f::format_address() instead.', E_USER_DEPRECATED);
+			return f::format_address($address);
 		}
 
 		public function in_geo_zone($geo_zones, $address=[]) {

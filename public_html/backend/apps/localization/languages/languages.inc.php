@@ -16,7 +16,7 @@
 			if (empty($_POST['languages'])) {
 				throw new Exception(t('error_must_select_languages', 'You must select languages'));
 			}
-			
+
 
 			foreach (array_keys($_POST['languages']) as $language_code) {
 
@@ -57,15 +57,15 @@
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink(__APP__.'/languages/edit_language'), t('title_create_new_language', 'Create New Language'), '', 'create'); ?>
+		<?php echo f::form_button_link(document::ilink(__APP__.'/languages/edit_language'), t('title_create_new_language', 'Create New Language'), '', 'create'); ?>
 	</div>
 
-	<?php echo functions::form_begin('languages_form', 'post'); ?>
+	<?php echo f::form_begin('languages_form', 'post'); ?>
 
 		<table class="table data-table">
 			<thead>
 				<tr>
-					<th><?php echo functions::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th><?php echo f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th></th>
 					<th><?php echo t('title_id', 'ID'); ?></th>
 					<th class="main"><?php echo t('title_name', 'Name'); ?></th>
@@ -82,17 +82,17 @@
 			<tbody>
 			<?php foreach ($languages as $language) { ?>
 				<tr class="<?php echo empty($language['status']) ? 'semi-transparent' : ''; ?>">
-					<td><?php echo functions::form_checkbox('languages[]', $language['code']); ?></td>
-					<td><?php echo functions::draw_fonticon(($language['status'] == 1) ? 'on' : (($language['status'] == -1) ? 'semi-off' : 'off')); ?></td>
+					<td><?php echo f::form_checkbox('languages[]', $language['code']); ?></td>
+					<td><?php echo f::draw_fonticon(($language['status'] == 1) ? 'on' : (($language['status'] == -1) ? 'semi-off' : 'off')); ?></td>
 					<td><?php echo $language['id']; ?></td>
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/languages/edit_language', ['language_code' => $language['code']]); ?>"><?php echo $language['name']; ?></a></td>
 					<td class="text-center"><?php echo $language['code']; ?></td>
 					<td class="text-center"><?php echo $language['code2']; ?></td>
 					<td class="text-center"><?php echo $language['url_type']; ?></td>
-					<td class="text-center"><?php echo ($language['code'] == settings::get('default_language_code')) ? functions::draw_fonticon('icon-check') : ''; ?></td>
-					<td class="text-center"><?php echo ($language['code'] == settings::get('store_language_code')) ? functions::draw_fonticon('icon-check') : ''; ?></td>
+					<td class="text-center"><?php echo ($language['code'] == settings::get('default_language_code')) ? f::draw_fonticon('icon-check') : ''; ?></td>
+					<td class="text-center"><?php echo ($language['code'] == settings::get('store_language_code')) ? f::draw_fonticon('icon-check') : ''; ?></td>
 					<td class="text-center"><?php echo $language['priority']; ?></td>
-					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/languages/edit_language', ['language_code' => $language['code']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/languages/edit_language', ['language_code' => $language['code']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo f::draw_fonticon('edit'); ?></a></td>
 				</tr>
 				<?php } ?>
 			</tbody>
@@ -114,18 +114,18 @@
 				</legend>
 
 				<div class="btn-group">
-					<?php echo functions::form_button('enable', t('title_enable', 'Enable'), 'submit', '', 'on'); ?>
-					<?php echo functions::form_button('disable', t('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+					<?php echo f::form_button('enable', t('title_enable', 'Enable'), 'submit', '', 'on'); ?>
+					<?php echo f::form_button('disable', t('title_disable', 'Disable'), 'submit', '', 'off'); ?>
 				</div>
 
 			</fieldset>
 		</div>
 
-	<?php echo functions::form_end(); ?>
+	<?php echo f::form_end(); ?>
 
 	<?php if ($num_pages > 1) { ?>
 	<div class="card-footer">
-		<?php echo functions::draw_pagination($num_pages); ?>
+		<?php echo f::draw_pagination($num_pages); ?>
 	</div>
 	<?php } ?>
 </div>

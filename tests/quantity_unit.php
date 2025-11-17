@@ -25,7 +25,7 @@
 
 		// Create a new entity
 		$quantity_unit = new ent_quantity_unit();
-		$quantity_unit->data = functions::array_update($quantity_unit->data, $data);
+		$quantity_unit->data = f::array_update($quantity_unit->data, $data);
 		$quantity_unit->save();
 
 		// Check if the entity was created
@@ -46,7 +46,7 @@
 		}
 
 		// Check if data was set correctly
-		if (!functions::array_intersect_compare($data, $quantity_unit->data)) {
+		if (!f::array_intersect_compare($data, $quantity_unit->data)) {
 			throw new Exception('The quantity unit data was not stored correctly');
 		}
 
@@ -62,13 +62,13 @@
 		];
 
 		// Update some data
-		$quantity_unit->data = functions::array_update($quantity_unit->data, $data);
+		$quantity_unit->data = f::array_update($quantity_unit->data, $data);
 
 		// Save changes to database
 		$quantity_unit->save();
 
 		// Check if data was set correctly
-		if (!functions::array_intersect_compare($data, $quantity_unit->data)) {
+		if (!f::array_intersect_compare($data, $quantity_unit->data)) {
 			throw new Exception('The quantity unit data was not updated correctly ');
 		}
 

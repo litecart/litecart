@@ -194,8 +194,8 @@
 			'sku' => $item['sku'],
 			'image' => [
 				'original' => 'storage://images/'. ($item['image'] ?  $item['image'] : 'no_image.svg'),
-				'thumbnail' => functions::image_thumbnail('storage://images/'. ($item['image'] ?  $item['image'] : 'no_image.svg'), 64, 0, 'product'),
-				'thumbnail_2x' => functions::image_thumbnail('storage://images/'. ($item['image'] ?  $item['image'] : 'no_image.svg'), 128, 0, 'product'),
+				'thumbnail' => f::image_thumbnail('storage://images/'. ($item['image'] ?  $item['image'] : 'no_image.svg'), 64, 0, 'product'),
+				'thumbnail_2x' => f::image_thumbnail('storage://images/'. ($item['image'] ?  $item['image'] : 'no_image.svg'), 128, 0, 'product'),
 			],
 			'link' => document::ilink('product', ['product_id' => $item['product_id']]),
 			'display_price' => customer::$data['display_prices_including_tax'] ? $item['price'] + $item['tax'] : $item['price'],
@@ -236,7 +236,7 @@
 		)->fetch_all('product_id');
 
 		if ($product_ids) {
-			$box_also_purchased_products->snippets['products'] = functions::catalog_products_query([
+			$box_also_purchased_products->snippets['products'] = f::catalog_products_query([
 				'products' => array_keys($product_ids),
 				'sort' => 'random',
 				'limit' => settings::get('box_also_purchased_products_num_items'),

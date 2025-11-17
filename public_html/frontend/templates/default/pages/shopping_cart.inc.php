@@ -14,25 +14,25 @@
 
 					<div class="card-body">
 
-						<?php echo functions::form_begin('shopping_cart_form', 'post'); ?>
+						<?php echo f::form_begin('shopping_cart_form', 'post'); ?>
 
 							<ul class="items list-unstyled">
 								<?php foreach ($items as $key => $item) { ?>
-								<li class="item" data-id="<?php echo $item['product_id']; ?>" data-sku="<?php echo $item['sku']; ?>" data-name="<?php echo functions::escape_html($item['name']); ?>" data-price="<?php echo currency::format_raw($item['price']); ?>" data-quantity="<?php echo currency::format_raw($item['quantity']); ?>">
+								<li class="item" data-id="<?php echo $item['product_id']; ?>" data-sku="<?php echo $item['sku']; ?>" data-name="<?php echo f::escape_html($item['name']); ?>" data-price="<?php echo currency::format_raw($item['price']); ?>" data-quantity="<?php echo currency::format_raw($item['quantity']); ?>">
 									<div class="grid" style="align-items: center;">
 										<div class="col-11">
 
 											<div class="grid" style="align-items: center;">
 												<div class="col-4 col-md-3">
-													<a href="<?php echo functions::escape_html($item['link']); ?>" class="float-start" style="max-width: 96px; margin-inline-end: 1em;">
-														<?php echo functions::draw_thumbnail($item['image']['original'], 96, 0, 'product'); ?>
+													<a href="<?php echo f::escape_html($item['link']); ?>" class="float-start" style="max-width: 96px; margin-inline-end: 1em;">
+														<?php echo f::draw_thumbnail($item['image']['original'], 96, 0, 'product'); ?>
 													</a>
 												</div>
 
 												<div class="col-8 col-md-9">
 													<div class="grid">
 														<div class="col-md-6">
-															<div><strong><a href="<?php echo functions::escape_html($item['link']); ?>" style="color: inherit;"><?php echo $item['name']; ?></a></strong></div>
+															<div><strong><a href="<?php echo f::escape_html($item['link']); ?>" style="color: inherit;"><?php echo $item['name']; ?></a></strong></div>
 															<?php if (!empty($item['sku'])) echo '<div class="sku">'. $item['sku'] .'</div>'; ?>
 															<?php if (!empty($item['error'])) echo '<div class="error">'. $item['error'] .'</div>'; ?>
 															<div class="price">
@@ -48,13 +48,13 @@
 															<div style="display: inline-flex;">
 																<?php if (!empty($item['quantity_unit']->name)) { ?>
 																<div class="input-group" style="max-width: 150px;">
-																	<?php echo !empty($item['quantity_unit']->decimals) ? functions::form_input_decimal('item['.$key.'][quantity]', $item['quantity'], $item['quantity_unit']->decimals, 'min="0" max="'. ($item['quantity_max'] ?: '') .'" step="'. ($item['quantity_step'] ?: '') .'"') : functions::form_input_number('item['.$key.'][quantity]', $item['quantity'], 'min="0" max="'. ($item['quantity_max'] ?: '') .'" step="'. ($item['quantity_step'] ?: '') .'"'); ?>
+																	<?php echo !empty($item['quantity_unit']->decimals) ? f::form_input_decimal('item['.$key.'][quantity]', $item['quantity'], $item['quantity_unit']->decimals, 'min="0" max="'. ($item['quantity_max'] ?: '') .'" step="'. ($item['quantity_step'] ?: '') .'"') : f::form_input_number('item['.$key.'][quantity]', $item['quantity'], 'min="0" max="'. ($item['quantity_max'] ?: '') .'" step="'. ($item['quantity_step'] ?: '') .'"'); ?>
 																	<?php echo $item['quantity_unit_name']; ?>
 																</div>
 																<?php } else { ?>
-																<?php echo !empty($item['quantity_unit']->decimals) ? functions::form_input_decimal('item['.$key.'][quantity]', $item['quantity'], $item['quantity_unit']->decimals, 'min="0"') : functions::form_input_number('item['.$key.'][quantity]', $item['quantity'], 'min="0" style="width: 125px;"'); ?>
+																<?php echo !empty($item['quantity_unit']->decimals) ? f::form_input_decimal('item['.$key.'][quantity]', $item['quantity'], $item['quantity_unit']->decimals, 'min="0"') : f::form_input_number('item['.$key.'][quantity]', $item['quantity'], 'min="0" style="width: 125px;"'); ?>
 																<?php } ?>
-																<?php echo functions::form_button('update_cart_item', [$key, functions::draw_fonticon('icon-sync')], 'submit', 'title="'. functions::escape_attr(t('title_update', 'Update')) .'" formnovalidate style="margin-inline-start: 0.5em;"'); ?>
+																<?php echo f::form_button('update_cart_item', [$key, f::draw_fonticon('icon-sync')], 'submit', 'title="'. f::escape_attr(t('title_update', 'Update')) .'" formnovalidate style="margin-inline-start: 0.5em;"'); ?>
 															</div>
 														</div>
 													</div>
@@ -64,7 +64,7 @@
 										</div>
 
 										<div class="col-1 text-end">
-											<td><?php echo functions::form_button('remove_cart_item', [$key, functions::draw_fonticon('icon-trash')], 'submit', 'class="btn btn-danger" title="'. functions::escape_attr(t('title_remove', 'Remove')) .'" formnovalidate'); ?></td>
+											<td><?php echo f::form_button('remove_cart_item', [$key, f::draw_fonticon('icon-trash')], 'submit', 'class="btn btn-danger" title="'. f::escape_attr(t('title_remove', 'Remove')) .'" formnovalidate'); ?></td>
 										</div>
 									</div>
 								</li>
@@ -81,7 +81,7 @@
 							</div>
 							<?php } ?>
 
-						<?php echo functions::form_end(); ?>
+						<?php echo f::form_end(); ?>
 					</div>
 
 				</section>
@@ -100,7 +100,7 @@
 
 					<div class="card-body">
 
-						<?php echo functions::form_begin('shopping_cart_form', 'post'); ?>
+						<?php echo f::form_begin('shopping_cart_form', 'post'); ?>
 
 							<div class="flex">
 
@@ -111,7 +111,7 @@
 
 								<div class="form-group flex-grow">
 									<div class="form-label"><?php echo t('title_currency', 'Currency'); ?></div>
-									<div style="line-height: 2;"><?php echo functions::escape_html(currency::$selected['name']); ?> (<?php echo functions::escape_html(currency::$selected['code']); ?>)</div>
+									<div style="line-height: 2;"><?php echo f::escape_html(currency::$selected['name']); ?> (<?php echo f::escape_html(currency::$selected['code']); ?>)</div>
 								</div>
 
 								<div>
@@ -125,14 +125,14 @@
 								<div class="col-8">
 									<div class="form-group">
 										<div class="form-label"><?php echo t('title_country', 'Country'); ?></div>
-										<div style="line-height: 2;"><?php echo functions::form_select_country('country_code', true); ?></div>
+										<div style="line-height: 2;"><?php echo f::form_select_country('country_code', true); ?></div>
 									</div>
 								</div>
 
 								<div class="col-4">
 									<div class="form-group">
 										<div class="form-label"><?php echo t('title_postcode', 'Postal Code'); ?></div>
-										<div style="line-height: 2;"><?php echo functions::form_input_text('postcode', true); ?></div>
+										<div style="line-height: 2;"><?php echo f::form_input_text('postcode', true); ?></div>
 									</div>
 								</div>
 							</div>
@@ -140,12 +140,12 @@
 							<?php if (empty(customer::$data['email'])) { ?>
 							<div class="form-group">
 								<div class="form-label"><?php echo t('title_email_address', 'Email Address'); ?></div>
-								<?php echo functions::form_input_email('email', true, 'required'. (!empty($shopping_cart->data['customer']['id']) ? ' readonly' : '')); ?>
+								<?php echo f::form_input_email('email', true, 'required'. (!empty($shopping_cart->data['customer']['id']) ? ' readonly' : '')); ?>
 							</div>
 							<?php } ?>
 
 							<div class="">
-								<?php echo functions::form_button('checkout', ['standard', t('title_continue_to_checkout', 'Continue To Checkout') .' '. functions::draw_fonticon('icon-arrow-right')], 'submit', 'class="btn btn-success btn-block btn-lg"'); ?>
+								<?php echo f::form_button('checkout', ['standard', t('title_continue_to_checkout', 'Continue To Checkout') .' '. f::draw_fonticon('icon-arrow-right')], 'submit', 'class="btn btn-success btn-block btn-lg"'); ?>
 							</div>
 
 							<?php if ($checkouts) { ?>
@@ -155,12 +155,12 @@
 
 							<?php foreach ($checkouts as $checkout) { ?>
 							<div id="alternative-checkout">
-								<?php echo functions::form_button('checkout', [$checkout['module_id'], $checkout['label']], 'button', 'class="option btn btn-default btn-lg btn-block" title="'. functions::escape_attr($checkout['description']) .'"'); ?>
+								<?php echo f::form_button('checkout', [$checkout['module_id'], $checkout['label']], 'button', 'class="option btn btn-default btn-lg btn-block" title="'. f::escape_attr($checkout['description']) .'"'); ?>
 							</div>
 							<?php } ?>
 							<?php } ?>
 
-						<?php echo functions::form_end(); ?>
+						<?php echo f::form_end(); ?>
 
 					</div>
 
@@ -173,7 +173,7 @@
 
 <script>
 	<?php if (!empty(notices::$data['errors'])) { ?>
-	alert("<?php echo functions::escape_js(notices::$data['errors'][0]); notices::$data['errors'] = []; ?>");
+	alert("<?php echo f::escape_js(notices::$data['errors'][0]); notices::$data['errors'] = []; ?>");
 	<?php } ?>
 
 	$('input[name="customer[type]"]').on('change', function() {

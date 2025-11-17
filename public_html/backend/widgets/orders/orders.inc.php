@@ -58,11 +58,11 @@
 		<tbody>
 			<?php foreach ($orders as $order) { ?>
 			<tr class="<?php echo implode(' ', $order['classes']); ?>">
-				<td><?php echo functions::draw_fonticon($order['order_status_icon'], 'style="color: '. $order['order_status_color'] .';"'); ?></td>
+				<td><?php echo f::draw_fonticon($order['order_status_icon'], 'style="color: '. $order['order_status_color'] .';"'); ?></td>
 				<td class="text-center"><?php echo $order['no']; ?></td>
 				<td>
 					<a class="link" href="<?php echo document::href_ilink('orders/order', ['order_id' => $order['id']]); ?>">
-						<?php echo functions::draw_fonticon($order['customer_company'] ? 'icon-building' : 'icon-user', 'style="opacity: .5;"'); ?>
+						<?php echo f::draw_fonticon($order['customer_company'] ? 'icon-building' : 'icon-user', 'style="opacity: .5;"'); ?>
 						<?php echo $order['customer_company'] ?: $order['customer_firstname'] .' '. $order['customer_lastname']; ?>
 					</a>
 				</td>
@@ -70,25 +70,25 @@
 				<td><?php echo $order['payment_option_name']; ?></td>
 				<td><?php echo $order['order_status_id'] ? $order['order_status_name'] : t('title_uncompleted', 'Uncompleted'); ?></td>
 				<td class="text-end"><?php echo currency::format($order['total'], false, $order['currency_code'], $order['currency_value']); ?></td>
-				<td class="text-end"><?php echo functions::datetime_when($order['created_at']); ?></td>
+				<td class="text-end"><?php echo f::datetime_when($order['created_at']); ?></td>
 				<td class="text-end">
 				<td>
 					<div class="dropdown dropdown-end">
 						<div class="btn btn-default btn-sm dropdown-toggle"  data-toggle="dropdown">
-							<?php echo functions::draw_fonticon('icon-print'); ?>
+							<?php echo f::draw_fonticon('icon-print'); ?>
 						</div>
 						<nav class="dropdown-menu">
 							<a class="dropdown-item" href="<?php echo  document::href_ilink('f:printable_packing_slip', ['order_id' => $order['id'], 'public_key' => $order['public_key']]); ?>" target="_blank">
-								<?php echo functions::escape_html(t('title_packing_slip', 'Packing Slip')); ?>
+								<?php echo f::escape_html(t('title_packing_slip', 'Packing Slip')); ?>
 							</a>
 							<a class="dropdown-item" href="<?php echo document::href_ilink('f:printable_order_copy', ['order_id' => $order['id'], 'public_key' => $order['public_key']]); ?>" target="_blank" title="">
-								<?php echo functions::escape_html(t('title_order_copy', 'Order Copy')); ?>
+								<?php echo f::escape_html(t('title_order_copy', 'Order Copy')); ?>
 							</a>
 						</nav>
 					</div>
 				</td>
 				<td class="text-end">
-					<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink('orders/edit_order', ['order_id' => $order['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a>
+					<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink('orders/edit_order', ['order_id' => $order['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo f::draw_fonticon('edit'); ?></a>
 				</td>
 			</tr>
 			<?php } ?>

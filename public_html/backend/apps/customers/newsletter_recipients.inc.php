@@ -21,7 +21,7 @@
 			$updated = 0;
 
 			foreach (preg_split('#\R+#', $_POST['recipients']) as $recipient) {
-				if (!functions::validate_email($recipient)) continue;
+				if (!f::validate_email($recipient)) continue;
 
 				if (database::query(
 					"select *, concat(firstname, ' ', lastname) as name
@@ -147,23 +147,23 @@
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button('add_recipients', t('title_add_recipients', 'Add Recipients'), 'button', '', 'create'); ?>
-		<?php echo functions::form_button_link(document::ilink(null, ['action' => 'export']), t('title_export', 'Export'), 'target="_blank"', 'icon-output'); ?>
+		<?php echo f::form_button('add_recipients', t('title_add_recipients', 'Add Recipients'), 'button', '', 'create'); ?>
+		<?php echo f::form_button_link(document::ilink(null, ['action' => 'export']), t('title_export', 'Export'), 'target="_blank"', 'icon-output'); ?>
 	</div>
 
-	<?php echo functions::form_begin('search_form', 'get'); ?>
+	<?php echo f::form_begin('search_form', 'get'); ?>
 		<div class="card-filter">
-			<div class="expandable"><?php echo functions::form_input_search('query', true, 'placeholder="'. t('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"'); ?></div>
-			<div><?php echo functions::form_button('filter', t('title_search', 'Search'), 'submit'); ?></div>
+			<div class="expandable"><?php echo f::form_input_search('query', true, 'placeholder="'. t('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"'); ?></div>
+			<div><?php echo f::form_button('filter', t('title_search', 'Search'), 'submit'); ?></div>
 		</div>
-	<?php echo functions::form_end(); ?>
+	<?php echo f::form_end(); ?>
 
-	<?php echo functions::form_begin('recipients_form', 'post'); ?>
+	<?php echo f::form_begin('recipients_form', 'post'); ?>
 
 		<table class="table data-table">
 			<thead>
 				<tr>
-					<th style="width: 50px;"><?php echo functions::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th style="width: 50px;"><?php echo f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th><?php echo t('title_subscribed', 'Subscribed'); ?></th>
 					<th style="width: 480px;"><?php echo t('title_email', 'Email'); ?></th>
 					<th class="main"><?php echo t('title_name', 'Name'); ?></th>
@@ -177,14 +177,14 @@
 			<tbody>
 				<?php foreach ($recipients as $recipient) { ?>
 				<tr>
-					<td><?php echo functions::form_checkbox('recipients[]', $recipient['id']); ?></td>
-					<td class="text-center"><?php echo !empty($recipient['subscribed']) ? functions::draw_fonticon('icon-check', 'style="color: #88cc44;"') : functions::draw_fonticon('icon-times', 'style="color: #ff6644;"'); ?></td>
+					<td><?php echo f::form_checkbox('recipients[]', $recipient['id']); ?></td>
+					<td class="text-center"><?php echo !empty($recipient['subscribed']) ? f::draw_fonticon('icon-check', 'style="color: #88cc44;"') : f::draw_fonticon('icon-times', 'style="color: #ff6644;"'); ?></td>
 					<td><?php echo $recipient['email']; ?></td>
-					<td><?php echo functions::escape_html($recipient['name']); ?></td>
+					<td><?php echo f::escape_html($recipient['name']); ?></td>
 					<td><?php echo $recipient['ip_address']; ?></td>
 					<td><?php echo $recipient['hostname']; ?></td>
-					<td class="text-end"><?php echo functions::datetime_when($recipient['updated_at']); ?></td>
-					<td class="text-end"><?php echo functions::datetime_when($recipient['created_at']); ?></td>
+					<td class="text-end"><?php echo f::datetime_when($recipient['updated_at']); ?></td>
+					<td class="text-end"><?php echo f::datetime_when($recipient['created_at']); ?></td>
 				</tr>
 				<?php } ?>
 			</tbody>
@@ -208,41 +208,41 @@
 				<div class="flex">
 
 					<div class="btn-group">
-						<?php echo functions::form_button('subscribe', t('title_set_as_subscribed', 'Set As Subscribed'), 'submit', 'class="btn btn-default"', 'icon-check'); ?>
-						<?php echo functions::form_button('unsubscribe', t('title_set_as_unsubscribed', 'Set As Unsubscribed'), 'submit', 'class="btn btn-default"', 'icon-times'); ?>
+						<?php echo f::form_button('subscribe', t('title_set_as_subscribed', 'Set As Subscribed'), 'submit', 'class="btn btn-default"', 'icon-check'); ?>
+						<?php echo f::form_button('unsubscribe', t('title_set_as_unsubscribed', 'Set As Unsubscribed'), 'submit', 'class="btn btn-default"', 'icon-times'); ?>
 					</div>
 
-					<?php echo functions::form_button_predefined('delete'); ?>
+					<?php echo f::form_button_predefined('delete'); ?>
 
 				</div>
 			</fieldset>
 		</div>
 
-	<?php echo functions::form_end(); ?>
+	<?php echo f::form_end(); ?>
 
 	<?php if ($num_pages > 1) { ?>
 	<div class="card-footer">
-		<?php echo functions::draw_pagination($num_pages); ?>
+		<?php echo f::draw_pagination($num_pages); ?>
 	</div>
 	<?php } ?>
 </div>
 
 <div id="modal-add-recipients" class="modal fade" style="width: 640px; display: none;">
-	<?php echo functions::form_begin('recipients_form', 'post'); ?>
+	<?php echo f::form_begin('recipients_form', 'post'); ?>
 
 		<label class="form-group">
 			<div class="form-label"><?php echo t('title_recipients', 'Recipients'); ?></div>
-			<?php echo functions::form_textarea('recipients', '', 'style="height: 480px;"'); ?>
+			<?php echo f::form_textarea('recipients', '', 'style="height: 480px;"'); ?>
 		</label>
 
 		<label class="form-group">
 			<div class="form-label"><?php echo t('title_subscribed', 'Subscribed'); ?></div>
-			<?php echo functions::form_toggle('subscribe', [1 => t('title_subscribe', 'Subscribed'), 0 => t('title_unsubscribe', 'Unsubscribed')], '1'); ?>
+			<?php echo f::form_toggle('subscribe', [1 => t('title_subscribe', 'Subscribed'), 0 => t('title_unsubscribe', 'Unsubscribed')], '1'); ?>
 		</label>
 
-		<?php echo functions::form_button('add', t('title_add', 'Add'), 'submit', 'class="btn btn-default btn-block"'); ?>
+		<?php echo f::form_button('add', t('title_add', 'Add'), 'submit', 'class="btn btn-default btn-block"'); ?>
 
-	<?php echo functions::form_end(); ?>
+	<?php echo f::form_end(); ?>
 </div>
 
 <script>

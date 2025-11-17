@@ -62,7 +62,7 @@
 
 		header('Content-Type: application/csv; charset='. language::$selected['charset']);
 		header('Content-Disposition: filename="who_purchased_'. date('Ymd', strtotime($_GET['date_from'])) .'-'. date('Ymd', strtotime($_GET['date_to'])) .'.csv"');
-		echo functions::csv_encode($rows);
+		echo f::csv_encode($rows);
 		exit;
 	}
 
@@ -76,32 +76,32 @@
 		</div>
 	</div>
 
-	<?php echo functions::form_begin('filter_form', 'get'); ?>
+	<?php echo f::form_begin('filter_form', 'get'); ?>
 
-		<?php echo functions::form_input_hidden('app'); ?>
-		<?php echo functions::form_input_hidden('doc'); ?>
+		<?php echo f::form_input_hidden('app'); ?>
+		<?php echo f::form_input_hidden('doc'); ?>
 
 		<div class="card-filter">
 
 			<div class="expandable">
-				<?php echo functions::form_input_search('query', true, 'placeholder="'. functions::escape_html(t('text_item_name_or_code', 'Item name or code')) .'"'); ?>
+				<?php echo f::form_input_search('query', true, 'placeholder="'. f::escape_html(t('text_item_name_or_code', 'Item name or code')) .'"'); ?>
 			</div>
 
 			<div class="input-group" style="width: 450px;">
-				<?php echo functions::form_input_month('date_from'); ?>
+				<?php echo f::form_input_month('date_from'); ?>
 				<span class="input-group-text">-</span>
-				<?php echo functions::form_input_month('date_to'); ?>
+				<?php echo f::form_input_month('date_to'); ?>
 			</div>
 
-			<?php echo functions::form_button('filter', ['true', functions::draw_fonticon('icon-funnel') .' '. t('title_filter_now', 'Filter')]); ?>
+			<?php echo f::form_button('filter', ['true', f::draw_fonticon('icon-funnel') .' '. t('title_filter_now', 'Filter')]); ?>
 
 		</div>
 
 		<div class="card-action">
-			<?php echo functions::form_button('download', ['true', functions::draw_fonticon('icon-download') .' '. t('title_download', 'Download')]); ?>
+			<?php echo f::form_button('download', ['true', f::draw_fonticon('icon-download') .' '. t('title_download', 'Download')]); ?>
 		</div>
 
-	<?php echo functions::form_end(); ?>
+	<?php echo f::form_end(); ?>
 
 	<table class="table table-striped data-table">
 		<thead>
@@ -135,7 +135,7 @@
 
 	<?php if ($num_pages > 1) { ?>
 	<div class="card-footer">
-		<?php echo functions::draw_pagination($num_pages); ?>
+		<?php echo f::draw_pagination($num_pages); ?>
 	</div>
 	<?php } ?>
 </div>

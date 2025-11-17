@@ -265,13 +265,13 @@
 					shipping_email = '". database::input($this->data['customer']['shipping_address']['email']) ."',
 					shipping_option_id = '". (!empty($this->shipping->selected['id']) ? database::input($this->data['shipping_option']['id']) : '') ."',
 					shipping_option_name = '". (!empty($this->shipping->selected['id']) ? database::input($this->shipping->selected['name']) : '') ."',
-					shipping_option_userdata = '". (!empty($this->shipping->selected['userdata']) ? database::input(functions::format_json($this->data['shipping_option']['userdata'])) : '') ."',
+					shipping_option_userdata = '". (!empty($this->shipping->selected['userdata']) ? database::input(f::format_json($this->data['shipping_option']['userdata'])) : '') ."',
 					shipping_purchase_cost = ". (float)$this->data['shipping_purchase_cost'] .",
 					shipping_tracking_id = '". database::input($this->data['shipping_tracking_id']) ."',
 					shipping_tracking_url = '". database::input($this->data['shipping_tracking_url']) ."',
 					payment_option_id = '". (!empty($this->data['payment_option']['id']) ? database::input($this->data['payment_option']['id']) : '') ."',
 					payment_option_name = '". (!empty($this->data['payment_option']['name']) ? database::input($this->data['payment_option']['name']) : '') ."',
-					payment_option_userdata = '". (!empty($this->data['payment_option']['userdata']) ? database::input(functions::format_json($this->data['payment_option']['userdata'])) : '') ."',
+					payment_option_userdata = '". (!empty($this->data['payment_option']['userdata']) ? database::input(f::format_json($this->data['payment_option']['userdata'])) : '') ."',
 					payment_transaction_id = '". database::input($this->data['payment_transaction_id']) ."',
 					payment_transaction_fee = ". (float)$this->data['payment_transaction_fee'] .",
 					payment_receipt_url = '". database::input($this->data['payment_receipt_url']) ."',
@@ -291,7 +291,7 @@
 					total = ". (float)$this->data['total'] .",
 					total_tax = ". (float)$this->data['total_tax'] .",
 					notes = '". database::input($this->data['ip_address']) ."',
-					utm_data = '". database::input(functions::format_json($this->data['utm_data'])) ."',
+					utm_data = '". database::input(f::format_json($this->data['utm_data'])) ."',
 					ip_address = '". database::input($this->data['ip_address']) ."',
 					hostname = '". database::input($this->data['hostname']) ."',
 					user_agent = '". database::input($this->data['user_agent']) ."',
@@ -346,7 +346,7 @@
 					"update ". DB_TABLE_PREFIX ."orders_lines
 					set product_id = ". (int)$line['product_id'] .",
 						name = '". database::input($line['name']) ."',
-						userdata = '". (!empty($line['userdata']) ? database::input(functions::format_json($line['userdata'])) : '') ."',
+						userdata = '". (!empty($line['userdata']) ? database::input(f::format_json($line['userdata'])) : '') ."',
 						serial_number = '". database::input($line['serial_number']) ."',
 						quantity = ". (float)$line['quantity'] .",
 						price = ". (float)$line['price'] .",
@@ -477,7 +477,7 @@
 
 					$message = t('text_new_comments_added_to_your_order', 'New comments added to your order', $this->data['language_code']) . ":\r\n\r\n";
 					foreach ($notify_comments as $comment) {
-						$message .= functions::datetime_format('datetime', $comment['created_at']) ." – ". trim($comment['text']) . "\r\n\r\n";
+						$message .= f::datetime_format('datetime', $comment['created_at']) ." – ". trim($comment['text']) . "\r\n\r\n";
 					}
 
 					(new ent_email())
@@ -672,7 +672,7 @@
 						throw new Exception(t('error_must_provide_phone', 'You must provide a phone number'));
 					}
 
-					if (!functions::validate_email($this->data['customer']['email'])) {
+					if (!f::validate_email($this->data['customer']['email'])) {
 						throw new Exception(t('error_invalid_email_address', 'Invalid email address'));
 					}
 
@@ -852,9 +852,9 @@
 				'{order_no}' => $this->data['no'],
 				'{firstname}' => $this->data['customer']['firstname'],
 				'{lastname}' => $this->data['customer']['lastname'],
-				'{billing_address}' => functions::format_address($this->data['customer']),
+				'{billing_address}' => f::format_address($this->data['customer']),
 				'{payment_transaction_id}' => $this->data['payment_transaction_id'] ?: '-',
-				'{shipping_address}' => functions::format_address($this->data['customer']['shipping_address']),
+				'{shipping_address}' => f::format_address($this->data['customer']['shipping_address']),
 				'{shipping_tracking_id}' => $this->data['shipping_tracking_id'] ?: '-',
 				'{shipping_tracking_url}' => $this->data['shipping_tracking_url'] ?: '',
 				'{order_items}' => null,
@@ -941,9 +941,9 @@
 				'{new_status}' => $order_status->name,
 				'{firstname}' => $this->data['customer']['firstname'],
 				'{lastname}' => $this->data['customer']['lastname'],
-				'{billing_address}' => nl2br(functions::format_address($this->data['customer']), false),
+				'{billing_address}' => nl2br(f::format_address($this->data['customer']), false),
 				'{payment_transaction_id}' => $this->data['payment_transaction_id'] ?: '-',
-				'{shipping_address}' => nl2br(functions::format_address($this->data['customer']['shipping_address']), false),
+				'{shipping_address}' => nl2br(f::format_address($this->data['customer']['shipping_address']), false),
 				'{shipping_tracking_id}' => $this->data['shipping_tracking_id'] ?: '-',
 				'{shipping_tracking_url}' => $this->data['shipping_tracking_url'],
 				'{shipping_current_status}' => $this->data['shipping_current_status'],

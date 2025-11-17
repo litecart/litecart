@@ -16,21 +16,21 @@
 					</div>
 
 					<div class="card-body">
-						<?php echo functions::form_begin('customer_account_form', 'post', null, false, 'style="max-width: 720px;"'); ?>
+						<?php echo f::form_begin('customer_account_form', 'post', null, false, 'style="max-width: 720px;"'); ?>
 
 							<div class="form-grid">
 
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_email_address', 'Email Address'); ?></div>
-										<?php echo functions::form_input_email('email', true, 'required'); ?>
+										<?php echo f::form_input_email('email', true, 'required'); ?>
 									</label>
 								</div>
 
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_password', 'Password'); ?></div>
-										<?php echo functions::form_input_password('password', '', 'required'); ?>
+										<?php echo f::form_input_password('password', '', 'required'); ?>
 									</label>
 								</div>
 							</div>
@@ -39,21 +39,21 @@
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_new_password', 'New Password'); ?> (<?php echo t('text_or_leave_blank', 'Or leave blank'); ?>)</div>
-										<?php echo functions::form_input_password('new_password', ''); ?>
+										<?php echo f::form_input_password('new_password', ''); ?>
 									</label>
 								</div>
 
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_confirm_new_password', 'Confirm New Password'); ?></div>
-										<?php echo functions::form_input_password('confirmed_password', ''); ?>
+										<?php echo f::form_input_password('confirmed_password', ''); ?>
 									</label>
 								</div>
 							</div>
 
-							<p><?php echo functions::form_button('save_account', t('title_save', 'Save')); ?></p>
+							<p><?php echo f::form_button('save_account', t('title_save', 'Save')); ?></p>
 
-						<?php echo functions::form_end(); ?>
+						<?php echo f::form_end(); ?>
 					</div>
 				</section>
 
@@ -63,14 +63,14 @@
 					</div>
 
 					<div class="card-body">
-						<?php echo functions::form_begin('customer_details_form', 'post', null, false, 'style="max-width: 720px;"'); ?>
+						<?php echo f::form_begin('customer_details_form', 'post', null, false, 'style="max-width: 720px;"'); ?>
 
 							<?php if (settings::get('customer_field_company') || settings::get('customer_field_tax_id')) { ?>
 							<div class="grid">
 								<div class="col-6">
 									<div class="form-group">
 										<div class="form-label"><?php echo t('title_customer_type', 'Customer Type'); ?></div>
-										<?php echo functions::form_toggle('customer[type]', ['business' => t('title_business', 'Business'), 'individual' => t('title_individual', 'Individual')], true); ?>
+										<?php echo f::form_toggle('customer[type]', ['business' => t('title_business', 'Business'), 'individual' => t('title_individual', 'Individual')], true); ?>
 									</div>
 								</div>
 							</div>
@@ -81,7 +81,7 @@
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_company_name', 'Company Name'); ?></div>
-										<?php echo functions::form_input_text('customer[company]', true, 'required' . ((isset($_POST['customer']['type']) && $_POST['customer']['type'] == 'individual') ? ' disabled' : '')); ?>
+										<?php echo f::form_input_text('customer[company]', true, 'required' . ((isset($_POST['customer']['type']) && $_POST['customer']['type'] == 'individual') ? ' disabled' : '')); ?>
 									</label>
 								</div>
 								<?php } ?>
@@ -90,7 +90,7 @@
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_tax_id', 'Tax ID'); ?></div>
-										<?php echo functions::form_input_text('tax_id', true, (isset($_POST['customer']['type']) && $_POST['customer']['type'] == 'individual') ? 'disabled' : ''); ?>
+										<?php echo f::form_input_text('tax_id', true, (isset($_POST['customer']['type']) && $_POST['customer']['type'] == 'individual') ? 'disabled' : ''); ?>
 									</label>
 								</div>
 								<?php } ?>
@@ -100,14 +100,14 @@
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_firstname', 'First Name'); ?></div>
-										<?php echo functions::form_input_text('firstname', true, 'required'); ?>
+										<?php echo f::form_input_text('firstname', true, 'required'); ?>
 									</label>
 								</div>
 
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_lastname', 'Last Name'); ?></div>
-										<?php echo functions::form_input_text('lastname', true, 'required'); ?>
+										<?php echo f::form_input_text('lastname', true, 'required'); ?>
 									</label>
 								</div>
 							</div>
@@ -116,14 +116,14 @@
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_address1', 'Address 1'); ?></div>
-										<?php echo functions::form_input_text('address1', true); ?>
+										<?php echo f::form_input_text('address1', true); ?>
 									</label>
 								</div>
 
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_address2', 'Address 2'); ?></div>
-										<?php echo functions::form_input_text('address2', true); ?>
+										<?php echo f::form_input_text('address2', true); ?>
 									</label>
 								</div>
 							</div>
@@ -132,14 +132,14 @@
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_postcode', 'Postal Code'); ?></div>
-										<?php echo functions::form_input_text('postcode', true); ?>
+										<?php echo f::form_input_text('postcode', true); ?>
 									</label>
 								</div>
 
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_city', 'City'); ?></div>
-										<?php echo functions::form_input_text('city', true); ?>
+										<?php echo f::form_input_text('city', true); ?>
 									</label>
 								</div>
 							</div>
@@ -148,7 +148,7 @@
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_country', 'Country'); ?></div>
-										<?php echo functions::form_select_country('country_code', true, 'required'); ?>
+										<?php echo f::form_select_country('country_code', true, 'required'); ?>
 									</label>
 								</div>
 
@@ -164,20 +164,20 @@
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_phone_number', 'Phone Number'); ?></div>
-										<?php echo functions::form_input_phone('phone', true, 'placeholder="'. (isset($_POST['country_code']) ? reference::country($_POST['country_code'])->phone_code : '') .'"'); ?>
+										<?php echo f::form_input_phone('phone', true, 'placeholder="'. (isset($_POST['country_code']) ? reference::country($_POST['country_code'])->phone_code : '') .'"'); ?>
 									</label>
 								</div>
 							</div>
 
 							<div class="form-group">
-								<?php echo functions::form_checkbox('newsletter', ['1', t('consent_newsletter', 'I would like to be notified occasionally via email when there are new products or campaigns.')], true); ?>
+								<?php echo f::form_checkbox('newsletter', ['1', t('consent_newsletter', 'I would like to be notified occasionally via email when there are new products or campaigns.')], true); ?>
 							</div>
 
 							<div class="form-group">
-								<?php echo functions::form_button('save_details', t('title_save', 'Save')); ?>
+								<?php echo f::form_button('save_details', t('title_save', 'Save')); ?>
 							</div>
 
-						<?php echo functions::form_end(); ?>
+						<?php echo f::form_end(); ?>
 					</div>
 				</section>
 			</div>

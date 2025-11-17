@@ -17,7 +17,7 @@
 	$box_similar_products_cache_token = cache::token('box_similar_products', [$_GET['product_id'], fallback($_GET['category_id'], implode('), ', array_keys($product->categories))), 'language', 'prices'], 'file');
 	if (!$box_similar_products->snippets['products'] = cache::get($box_similar_products_cache_token)) {
 
-		$box_similar_products->snippets['products'] = functions::catalog_products_search_query([
+		$box_similar_products->snippets['products'] = f::catalog_products_search_query([
 			'product_name' => $product->name,
 			'categories' => isset($_GET['category_id']) ? [$_GET['category_id']] : array_keys($product->categories),
 			'brands' => [$product->brand_id],

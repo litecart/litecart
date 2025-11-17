@@ -171,5 +171,5 @@
 
 		$cache_name = sha1(image_relative_file($file));
 
-		functions::file_delete('storage://cache/'. substr($cache_name, 0, 2) .'/' . $cache_name .'*');
+		f::file_delete('storage://cache/'. substr($cache_name, 0, 2) .'/' . $cache_name .'*');
 	}

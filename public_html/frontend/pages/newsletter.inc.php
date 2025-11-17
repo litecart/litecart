@@ -15,7 +15,7 @@
 				throw new Exception(t('error_must_provide_email', 'You must provide an email address'));
 			}
 
-			if (settings::get('captcha_enabled') && !functions::captcha_validate('newsletter_subscribe')) {
+			if (settings::get('captcha_enabled') && !f::captcha_validate('newsletter_subscribe')) {
 				throw new Exception(t('error_invalid_captcha', 'Invalid CAPTCHA given'));
 			}
 
@@ -51,7 +51,7 @@
 			$aliases = [
 				'{ipaddress}' => $_SERVER['REMOTE_ADDR'],
 				'{hostname}' => gethostbyaddr($_SERVER['REMOTE_ADDR']),
-				'{datetime}' => functions::datetime_format('datetime'),
+				'{datetime}' => f::datetime_format('datetime'),
 				'{store_name}' => settings::get('store_name'),
 				'{store_link}' => document::ilink(),
 				'{unsubscribe_link}' => document::ilink('newsletter', ['email' => $_POST['email']]),
@@ -88,7 +88,7 @@
 				throw new Exception(t('error_must_provide_email', 'You must provide an email address'));
 			}
 
-			if (settings::get('captcha_enabled') && !functions::captcha_validate('newsletter_unsubscribe')) {
+			if (settings::get('captcha_enabled') && !f::captcha_validate('newsletter_unsubscribe')) {
 				throw new Exception(t('error_invalid_captcha', 'Invalid CAPTCHA given'));
 			}
 
@@ -115,7 +115,7 @@
 			$aliases = [
 				'{ipaddress}' => $_SERVER['REMOTE_ADDR'],
 				'{hostname}' => gethostbyaddr($_SERVER['REMOTE_ADDR']),
-				'{datetime}' => functions::datetime_format('datetime'),
+				'{datetime}' => f::datetime_format('datetime'),
 				'{store_name}' => settings::get('store_name'),
 				'{store_link}' => document::ilink(),
 				'{subscribe_link}' => document::ilink('newsletter', ['email' => $_POST['email']]),

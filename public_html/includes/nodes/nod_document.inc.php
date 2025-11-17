@@ -157,7 +157,7 @@
 				'email' => customer::$data['email'] ?: null,
 			];
 
-			self::$head_tags[] = '<script nonce="'. self::$nonce .'">window._env='. functions::format_json(self::$jsenv, false) .'</script>';
+			self::$head_tags[] = '<script nonce="'. self::$nonce .'">window._env='. f::format_json(self::$jsenv, false) .'</script>';
 		}
 
 		public static function optimize(&$output) {
@@ -326,19 +326,19 @@
 
 			// Add meta description
 			if (!empty(self::$description)) {
-				$_page->snippets['head_tags'][] = '<meta name="description" content="'. functions::escape_attr(self::$description) .'">';
+				$_page->snippets['head_tags'][] = '<meta name="description" content="'. f::escape_attr(self::$description) .'">';
 			}
 
 			// Add canonical URL
 			if (!empty(self::$canonical)) {
-				$_page->snippets['head_tags'][] = '<link rel="canonical" href="'. functions::escape_attr(self::$canonical) .'">';
+				$_page->snippets['head_tags'][] = '<link rel="canonical" href="'. f::escape_attr(self::$canonical) .'">';
 			}
 
 			// Prepare JSON Schema
 			if (!empty(self::$schema)) {
 				$_page->snippets['head_tags']['schema_json'] = implode(PHP_EOL, [
 					'<script type="application/ld+json" nonce="'. self::$nonce .'">',
-					functions::format_json(array_values(self::$schema), false),
+					f::format_json(array_values(self::$schema), false),
 					'</script>',
 				]);
 			}
@@ -346,7 +346,7 @@
 			// Prepare OpenGraph Tags
 			if (!empty(self::$opengraph)) {
 				$_page->snippets['head_tags']['opengraph'] = implode(PHP_EOL, array_map(function($property, $content) {
-					return '<meta property="og:'. functions::escape_attr($property) .'" content="'. functions::escape_attr($content) .'">';
+					return '<meta property="og:'. f::escape_attr($property) .'" content="'. f::escape_attr($content) .'">';
 				}, array_keys(self::$opengraph), self::$opengraph));
 			}
 
@@ -362,7 +362,7 @@
 			// Prepare console log
 			if (!empty(self::$console)) {
 				self::$javascript[] = implode(PHP_EOL, array_map(function($log) {
-					return 'console.'. $log['type'] .'("'. functions::escape_attr($log['message']) .'", '. functions::format_json($log['data']) .');';
+					return 'console.'. $log['type'] .'("'. f::escape_attr($log['message']) .'", '. f::format_json($log['data']) .');';
 				}, self::$console));
 			}
 
@@ -536,7 +536,7 @@
 		}
 
 		public static function href_ilink($resource=null, $new_params=[], $inherit_params=null, $skip_params=[], $language_code=null) {
-			return functions::escape_attr(self::ilink($resource, $new_params, $inherit_params, $skip_params, $language_code));
+			return f::escape_attr(self::ilink($resource, $new_params, $inherit_params, $skip_params, $language_code));
 		}
 
 		public static function link($path=null, $new_params=[], $inherit_params=null, $skip_params=[], $language_code=null) {
@@ -550,14 +550,14 @@
 			}
 
 			if (preg_match('#^(app://|storage://|'. preg_quote(DOCUMENT_ROOT, '#') .')#', $path)) {
-				$path = functions::file_webpath($path);
+				$path = f::file_webpath($path);
 			}
 
 			return (string)route::create_link($path, $new_params, $inherit_params, $skip_params, $language_code, false);
 		}
 
 		public static function href_link($path=null, $new_params=[], $inherit_params=null, $skip_params=[], $language_code=null) {
-			return functions::escape_attr(self::link($path, $new_params, $inherit_params, $skip_params, $language_code));
+			return f::escape_attr(self::link($path, $new_params, $inherit_params, $skip_params, $language_code));
 		}
 
 		public static function rlink($resource, $new_params=[], $inherit_params=null, $skip_params=[]) {
@@ -584,6 +584,6 @@
 		}
 
 		public static function href_rlink($resource, $new_params=[], $inherit_params=null, $skip_params=[]) {
-			return functions::escape_attr(self::rlink($resource, $new_params, $inherit_params, $skip_params));
+			return f::escape_attr(self::rlink($resource, $new_params, $inherit_params, $skip_params));
 		}
 	}

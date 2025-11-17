@@ -96,7 +96,7 @@
 	// Table Rows
 	$vmods = [];
 
-	foreach (functions::file_search('storage://vmods/*.{xml,disabled}', GLOB_BRACE) as $file) {
+	foreach (f::file_search('storage://vmods/*.{xml,disabled}', GLOB_BRACE) as $file) {
 
 		$dom = new DOMDocument('1.0', 'UTF-8');
 
@@ -188,16 +188,16 @@
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_link(document::ilink('settings/advanced', ['action' => 'edit', 'key' => 'cache_clear']), t('title_clear_cache', 'Clear Cache'), '', 'icon-square-out'); ?>
-		<?php echo functions::form_button_link(document::ilink(__APP__.'/edit_vmod'), t('title_create_new_vmod', 'Create New vMod'), '', 'create'); ?>
+		<?php echo f::form_button_link(document::ilink('settings/advanced', ['action' => 'edit', 'key' => 'cache_clear']), t('title_clear_cache', 'Clear Cache'), '', 'icon-square-out'); ?>
+		<?php echo f::form_button_link(document::ilink(__APP__.'/edit_vmod'), t('title_create_new_vmod', 'Create New vMod'), '', 'create'); ?>
 	</div>
 
-	<?php echo functions::form_begin('vmod_form', 'post', '', true); ?>
+	<?php echo f::form_begin('vmod_form', 'post', '', true); ?>
 
 		<table class="table data-table">
 			<thead>
 				<tr>
-					<th><?php echo functions::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th><?php echo f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th></th>
 					<th class="main"><?php echo t('title_name', 'Name'); ?></th>
 					<th class="text-center"><?php echo t('title_version', 'Version'); ?></th>
@@ -214,8 +214,8 @@
 			<tbody>
 				<?php foreach ($vmods as $vmod) { ?>
 				<tr class="<?php echo $vmod['status'] ? null : 'semi-transparent'; ?>">
-					<td><?php echo functions::form_checkbox('vmods[]', $vmod['filename']); ?></td>
-					<td><?php echo functions::draw_fonticon($vmod['status'] ? 'on' : 'off'); ?></td>
+					<td><?php echo f::form_checkbox('vmods[]', $vmod['filename']); ?></td>
+					<td><?php echo f::draw_fonticon($vmod['status'] ? 'on' : 'off'); ?></td>
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_vmod', ['vmod' => $vmod['filename']]); ?>"><?php echo $vmod['name']; ?></a></td>
 					<td class="text-center"><?php echo $vmod['version']; ?></td>
 					<td><?php echo $vmod['filename']; ?></td>
@@ -224,25 +224,25 @@
 					<td class="text-center">
 						<a href="<?php echo document::href_ilink(__APP__.'/test', ['vmod' => $vmod['filename']]); ?>">
 							<?php if (empty($vmod['errors'])) { ?>
-							<span style="color: #8c4"><?php echo functions::draw_fonticon('ok'); ?> <?php echo t('title_ok', 'OK'); ?></span>
+							<span style="color: #8c4"><?php echo f::draw_fonticon('ok'); ?> <?php echo t('title_ok', 'OK'); ?></span>
 							<?php } else { ?>
-							<span style="color: #c00" title="<?php echo functions::escape_html($vmod['errors']); ?>"><?php echo functions::draw_fonticon('warning'); ?> <?php echo t('title_failed', 'Failed'); ?></span>
+							<span style="color: #c00" title="<?php echo f::escape_html($vmod['errors']); ?>"><?php echo f::draw_fonticon('warning'); ?> <?php echo t('title_failed', 'Failed'); ?></span>
 							<?php } ?>
 						</a>
 					</td>
 					<td>
 						<?php if (!empty($vmod['settings'])) { ?>
-						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/configure', ['vmod' => $vmod['filename']]); ?>" title="<?php echo t('title_configure', 'Configure'); ?>"><?php echo functions::draw_fonticon('icon-cog'); ?></a>
+						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/configure', ['vmod' => $vmod['filename']]); ?>" title="<?php echo t('title_configure', 'Configure'); ?>"><?php echo f::draw_fonticon('icon-cog'); ?></a>
 						<?php } ?>
 					</td>
 					<td>
 						<?php if ($vmod['type'] == 'vMod') { ?>
-						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/view', ['vmod' => $vmod['filename']]); ?>" title="<?php echo t('title_view', 'View'); ?>"><?php echo functions::draw_fonticon('icon-search'); ?></a>
+						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/view', ['vmod' => $vmod['filename']]); ?>" title="<?php echo t('title_view', 'View'); ?>"><?php echo f::draw_fonticon('icon-search'); ?></a>
 						<?php } ?>
 					</td>
 					<td>
-						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/download', ['vmod' => $vmod['id']]); ?>" title="<?php echo t('title_download', 'Download'); ?>"><?php echo functions::draw_fonticon('icon-download'); ?></a>
-						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_vmod', ['vmod' => $vmod['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a>
+						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/download', ['vmod' => $vmod['id']]); ?>" title="<?php echo t('title_download', 'Download'); ?>"><?php echo f::draw_fonticon('icon-download'); ?></a>
+						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_vmod', ['vmod' => $vmod['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo f::draw_fonticon('edit'); ?></a>
 					</td>
 				</tr>
 				<?php } ?>
@@ -269,11 +269,11 @@
 						<div class="flex">
 
 							<div class="btn-group">
-								<?php echo functions::form_button_predefined('enable'); ?>
-								<?php echo functions::form_button_predefined('disable'); ?>
+								<?php echo f::form_button_predefined('enable'); ?>
+								<?php echo f::form_button_predefined('disable'); ?>
 							</div>
 
-							<?php echo functions::form_button_predefined('delete'); ?>
+							<?php echo f::form_button_predefined('delete'); ?>
 
 						</div>
 					</fieldset>
@@ -284,14 +284,14 @@
 					<legend><?php echo t('title_upload_new_vmod', 'Upload a New vMod'); ?>:</legend>
 
 					<div class="input-group">
-						<?php echo functions::form_input_file('vmod', 'accept="application/zip"'); ?>
-						<?php echo functions::form_button('upload', t('title_upload', 'Upload'), 'submit'); ?>
+						<?php echo f::form_input_file('vmod', 'accept="application/zip"'); ?>
+						<?php echo f::form_button('upload', t('title_upload', 'Upload'), 'submit'); ?>
 					</div>
 				</fieldset>
 			</div>
 		</div>
 
-	<?php echo functions::form_end(); ?>
+	<?php echo f::form_end(); ?>
 </div>
 
 <script>

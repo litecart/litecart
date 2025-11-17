@@ -22,7 +22,7 @@
 	document::$jsenv['backend']['url'] = document::ilink('b:');
 
 	// Fetch apps
-	$apps = functions::admin_get_apps();
+	$apps = f::admin_get_apps();
 
 	// Identify app and document
 	if (preg_match('#'. preg_quote(BACKEND_ALIAS, '#') .'/(?<app>[^/]*)/(?<doc>.*)$#', route::$request, $matches)) {

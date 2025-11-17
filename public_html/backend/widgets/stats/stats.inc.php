@@ -103,7 +103,7 @@
 					<table class="table data-table">
 						<tbody>
 							<tr>
-								<td><?php echo t('title_total_sales', 'Total Sales') .' '. functions::datetime_format('%B'); ?>:</td>
+								<td><?php echo t('title_total_sales', 'Total Sales') .' '. f::datetime_format('%B'); ?>:</td>
 								<td class="text-end"><?php echo currency::format($stats['total_sales_month'], false, settings::get('store_currency_code')); ?></td>
 							</tr>
 							<tr>

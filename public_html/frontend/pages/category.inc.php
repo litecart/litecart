@@ -53,7 +53,7 @@
 	document::$head_tags['canonical'] = '<link rel="canonical" href="'. document::href_ilink('category', ['category_id' => $category->id]) .'">';
 
 	if ($category->image) {
-		$og_image = functions::image_thumbnail(FS_DIR_STORAGE . 'images/' . $category->image, 1200, 630, 'FIT_USE_WHITESPACING');
+		$og_image = f::image_thumbnail(FS_DIR_STORAGE . 'images/' . $category->image, 1200, 630, 'FIT_USE_WHITESPACING');
 		document::$snippets['head_tags'][] = '<meta property="og:image" content="'. document::href_rlink(FS_DIR_STORAGE . $og_image) .'">';
 	}
 
@@ -96,10 +96,10 @@
 	];
 
 	// Subcategories
-	$_page->snippets['subcategories'] = functions::catalog_categories_query($category->id)->fetch_all();
+	$_page->snippets['subcategories'] = f::catalog_categories_query($category->id)->fetch_all();
 
 	// Products
-	$_page->snippets['products'] = functions::catalog_products_query([
+	$_page->snippets['products'] = f::catalog_products_query([
 		'categories' => [$category->id] + array_keys($category->descendants),
 		'brands' => fallback($_GET['brands']),
 		'attributes' => fallback($_GET['attributes']),
@@ -114,7 +114,7 @@
 
 	$_page->snippets['num_products_page'] = count($_page->snippets['products']);
 	$_page->snippets['num_products_total'] = $num_rows;
-	$_page->snippets['pagination'] = functions::draw_pagination($num_pages);
+	$_page->snippets['pagination'] = f::draw_pagination($num_pages);
 
 	// Brands
 	$_page->snippets['brands'] = database::query(

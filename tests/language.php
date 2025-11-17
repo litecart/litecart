@@ -37,7 +37,7 @@
 
 		// Create a new entity
 		$language = new ent_language();
-		$language->data = functions::array_update($language->data, $data);
+		$language->data = f::array_update($language->data, $data);
 		$language->save();
 
 		// Check if the entity was created
@@ -58,7 +58,7 @@
 		}
 
 		// Check if data was set correctly
-		if (!functions::array_intersect_compare($data, $language->data)) {
+		if (!f::array_intersect_compare($data, $language->data)) {
 			throw new Exception('The language data was not stored correctly');
 		}
 
@@ -86,13 +86,13 @@
 		];
 
 		// Update some data
-		$language->data = functions::array_update($language->data, $data);
+		$language->data = f::array_update($language->data, $data);
 
 		// Save changes to database
 		$language->save();
 
 		// Check if data was set correctly
-		if (!functions::array_intersect_compare($data, $language->data)) {
+		if (!f::array_intersect_compare($data, $language->data)) {
 			throw new Exception('The language data was not updated correctly');
 		}
 

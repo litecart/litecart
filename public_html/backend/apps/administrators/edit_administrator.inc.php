@@ -116,7 +116,7 @@
 	</div>
 
 	<div class="card-body">
-		<?php echo functions::form_begin('administrator_form', 'post', false, false, 'autocomplete="off"'); ?>
+		<?php echo f::form_begin('administrator_form', 'post', false, false, 'autocomplete="off"'); ?>
 
 			<div class="grid" style="max-width: 1200px;">
 
@@ -125,14 +125,14 @@
 						<div class="col-md-6">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_status', 'Status'); ?></div>
-								<?php echo functions::form_toggle('status', 'e/d', (isset($_POST['status'])) ? $_POST['status'] : '1'); ?>
+								<?php echo f::form_toggle('status', 'e/d', (isset($_POST['status'])) ? $_POST['status'] : '1'); ?>
 							</label>
 						</div>
 
 						<div class="col-sm-6">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_username', 'Username'); ?></div>
-								<?php echo functions::form_input_text('username', true, 'autocomplete="off" required'); ?>
+								<?php echo f::form_input_text('username', true, 'autocomplete="off" required'); ?>
 							</label>
 						</div>
 					</div>
@@ -141,13 +141,13 @@
 						<div class="col-sm-6">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_firstname', 'Firstname'); ?></div>
-								<?php echo functions::form_input_text('firstname', true, 'required'); ?>
+								<?php echo f::form_input_text('firstname', true, 'required'); ?>
 							</label>
 						</div>
 						<div class="col-sm-6">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_lastname', 'Lastname'); ?></div>
-								<?php echo functions::form_input_text('lastname', true, 'required'); ?>
+								<?php echo f::form_input_text('lastname', true, 'required'); ?>
 							</label>
 						</div>
 					</div>
@@ -156,13 +156,13 @@
 						<div class="col-sm-6">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_email', 'Email'); ?></div>
-								<?php echo functions::form_input_email('email', true, 'autocomplete="off"'); ?>
+								<?php echo f::form_input_email('email', true, 'autocomplete="off"'); ?>
 							</label>
 						</div>
 						<div class="col-md-6">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_two_factor_authentication', 'Two-Factor Authentication'); ?></div>
-								<?php echo functions::form_toggle('two_factor_auth', 'e/d', true); ?>
+								<?php echo f::form_toggle('two_factor_auth', 'e/d', true); ?>
 							</label>
 						</div>
 					</div>
@@ -171,13 +171,13 @@
 						<div class="col-md-6">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_new_password', 'New Password'); ?></div>
-								<?php echo functions::form_input_password_unmaskable('password', '', 'autocomplete="new-password"'); ?>
+								<?php echo f::form_input_password_unmaskable('password', '', 'autocomplete="new-password"'); ?>
 							</label>
 						</div>
 						<div class="col-md-6">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_confirm_password', 'Confirm Password'); ?></div>
-								<?php echo functions::form_input_password_unmaskable('confirmed_password', '', 'autocomplete="new-password"'); ?>
+								<?php echo f::form_input_password_unmaskable('confirmed_password', '', 'autocomplete="new-password"'); ?>
 							</label>
 						</div>
 					</div>
@@ -186,14 +186,14 @@
 						<div class="col-md-6">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_valid_from', 'Valid From'); ?></div>
-								<?php echo functions::form_input_datetime('valid_from', true); ?>
+								<?php echo f::form_input_datetime('valid_from', true); ?>
 							</label>
 						</div>
 
 						<div class="col-md-6">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_valid_to', 'Valid To'); ?></div>
-								<?php echo functions::form_input_datetime('valid_to', true); ?>
+								<?php echo f::form_input_datetime('valid_to', true); ?>
 							</label>
 						</div>
 					</div>
@@ -203,13 +203,13 @@
 						<div class="col-md-6">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_last_ip_address', 'Last IP Address'); ?></div>
-								<?php echo functions::form_input_text('last_ip_address', true, 'readonly'); ?>
+								<?php echo f::form_input_text('last_ip_address', true, 'readonly'); ?>
 							</label>
 						</div>
 						<div class="col-md-6">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_last_hostname', 'Last Hostname'); ?></div>
-								<?php echo functions::form_input_text('last_hostname', true, 'readonly'); ?>
+								<?php echo f::form_input_text('last_hostname', true, 'readonly'); ?>
 							</label>
 						</div>
 					</div>
@@ -218,13 +218,13 @@
 						<div class="col-md-6">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_last_login', 'Last Login'); ?></div>
-								<?php echo functions::form_input_text('last_login', true, 'readonly'); ?>
+								<?php echo f::form_input_text('last_login', true, 'readonly'); ?>
 							</label>
 						</div>
 						<div class="col-md-6">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_last_active', 'Last Active'); ?></div>
-								<?php echo functions::form_input_text('last_active', true, 'readonly'); ?>
+								<?php echo f::form_input_text('last_active', true, 'readonly'); ?>
 							</label>
 						</div>
 					</div>
@@ -244,17 +244,17 @@
 
 				<div class="col-md-4">
 					<div id="app-permissions" class="form-group">
-						<?php echo functions::form_checkbox('apps_toggle', ['1', t('title_apps', 'Apps')]); ?>
+						<?php echo f::form_checkbox('apps_toggle', ['1', t('title_apps', 'Apps')]); ?>
 						<div class="form-input" style="height: 400px; overflow-y: scroll;">
 							<ul class="list-unstyled">
 <?php
-	foreach (functions::admin_get_apps() as $app) {
+	foreach (f::admin_get_apps() as $app) {
 		echo implode(PHP_EOL, [
-			'<li data-app="'. functions::escape_attr($app['id']) .'">',
-			'  '. functions::form_checkbox('apps['.$app['id'].'][status]', ['1', $app['name']], true),
+			'<li data-app="'. f::escape_attr($app['id']) .'">',
+			'  '. f::form_checkbox('apps['.$app['id'].'][status]', ['1', $app['name']], true),
 			'  <ul class="list-unstyled">',
 			implode(PHP_EOL, array_map(function($doc) use ($app) {
-				return '    <li data-doc="'. functions::escape_attr($doc) .'">'. functions::form_checkbox('apps['.$app['id'].'][docs][]', [$doc], true) .'</li>';
+				return '    <li data-doc="'. f::escape_attr($doc) .'">'. f::form_checkbox('apps['.$app['id'].'][docs][]', [$doc], true) .'</li>';
 			}, array_keys($app['docs']))),
 			'  </ul>',
 			'</li>',
@@ -266,14 +266,14 @@
 					</div>
 
 					<div id="widget-permissions" class="form-group">
-						<?php echo functions::form_checkbox('widgets_toggle', ['1', t('title_widgets', 'Widgets')]); ?>
+						<?php echo f::form_checkbox('widgets_toggle', ['1', t('title_widgets', 'Widgets')]); ?>
 						<div class="form-input" style="height: 150px; overflow-y: scroll;">
 							<ul class="list-unstyled">
 <?php
-	foreach (functions::admin_get_widgets() as $widget) {
+	foreach (f::admin_get_widgets() as $widget) {
 		echo implode(PHP_EOL, [
 			'<li>',
-			'  '. functions::form_checkbox('widgets['.$widget['id'].']', ['1', $widget['name']], true),
+			'  '. f::form_checkbox('widgets['.$widget['id'].']', ['1', $widget['name']], true),
 			'</li>',
 		]);
 	}
@@ -285,12 +285,12 @@
 			</div>
 
 			<div class="card-action">
-				<?php echo functions::form_button_predefined('save'); ?>
-				<?php if (!empty($administrator->data['id'])) echo functions::form_button_predefined('delete'); ?>
-				<?php echo functions::form_button_predefined('cancel'); ?>
+				<?php echo f::form_button_predefined('save'); ?>
+				<?php if (!empty($administrator->data['id'])) echo f::form_button_predefined('delete'); ?>
+				<?php echo f::form_button_predefined('cancel'); ?>
 			</div>
 
-		<?php echo functions::form_end(); ?>
+		<?php echo f::form_end(); ?>
 	</div>
 </div>
 

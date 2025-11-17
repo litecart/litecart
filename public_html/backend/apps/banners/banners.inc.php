@@ -50,20 +50,20 @@
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_begin('filter_form', 'get'); ?>
+		<?php echo f::form_begin('filter_form', 'get'); ?>
 			<ul class="list-inline">
-				<li><?php echo functions::form_input_search('query', true, 'placeholder="'. t('text_search_phrase_or_keyword', 'Search phrase or keyword') .'" style="width: 250px;"'); ?></li>
-				<li><?php echo functions::form_button_link(document::ilink(__APP__.'/edit_banner'), t('title_create_new_banner', 'Create New Banner'), '', 'create'); ?></li>
+				<li><?php echo f::form_input_search('query', true, 'placeholder="'. t('text_search_phrase_or_keyword', 'Search phrase or keyword') .'" style="width: 250px;"'); ?></li>
+				<li><?php echo f::form_button_link(document::ilink(__APP__.'/edit_banner'), t('title_create_new_banner', 'Create New Banner'), '', 'create'); ?></li>
 			</ul>
-		<?php echo functions::form_end(); ?>
+		<?php echo f::form_end(); ?>
 	</div>
 
-	<?php echo functions::form_begin('banners_form', 'post'); ?>
+	<?php echo f::form_begin('banners_form', 'post'); ?>
 
 		<table class="table data-table">
 			<thead>
 				<tr>
-					<th><?php echo functions::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th><?php echo f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th></th>
 					<th><?php echo t('title_id', 'ID'); ?></th>
 					<th class="main"><?php echo t('title_name', 'Name'); ?></th>
@@ -80,17 +80,17 @@
 			<tbody>
 				<?php foreach ($banners as $banner) { ?>
 				<tr class="<?php echo $banner['status'] ? false : ' semi-transparent'; ?>">
-					<td><?php echo functions::form_checkbox('banners[]', $banner['id']); ?></td>
-					<td><?php echo functions::draw_fonticon(!empty($banner['status']) ? 'on' : 'off'); ?></td>
+					<td><?php echo f::form_checkbox('banners[]', $banner['id']); ?></td>
+					<td><?php echo f::draw_fonticon(!empty($banner['status']) ? 'on' : 'off'); ?></td>
 					<td><?php echo $banner['id']; ?></td>
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_banner', ['banner_id' => $banner['id']]); ?>"><?php echo $banner['name']; ?></a></td>
 					<td><?php echo $banner['keywords']; ?></td>
 					<td class="text-end"><?php echo $banner['total_clicks']; ?></td>
 					<td class="text-end"><?php echo $banner['total_views']; ?></td>
 					<td class="text-end"><?php echo !empty($banner['total_clicks']) ? '1:'.round($banner['total_views']/$banner['total_clicks']) : '-'; ?></td>
-					<td class="text-center"><?php echo $banner['valid_from'] ? functions::datetime_when($banner['valid_from']) : '-'; ?></td>
-					<td class="text-center"><?php echo $banner['valid_to'] ? functions::datetime_when($banner['valid_to']) : '-'; ?></td>
-					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_banner', ['banner_id' => $banner['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo functions::draw_fonticon('edit'); ?></a></td>
+					<td class="text-center"><?php echo $banner['valid_from'] ? f::datetime_when($banner['valid_from']) : '-'; ?></td>
+					<td class="text-center"><?php echo $banner['valid_to'] ? f::datetime_when($banner['valid_to']) : '-'; ?></td>
+					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_banner', ['banner_id' => $banner['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo f::draw_fonticon('edit'); ?></a></td>
 				</tr>
 				<?php } ?>
 			</tbody>
@@ -112,18 +112,18 @@
 				</legend>
 
 				<div class="btn-group">
-					<?php echo functions::form_button('enable', t('title_enable', 'Enable'), 'submit', '', 'on'); ?>
-					<?php echo functions::form_button('disable', t('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+					<?php echo f::form_button('enable', t('title_enable', 'Enable'), 'submit', '', 'on'); ?>
+					<?php echo f::form_button('disable', t('title_disable', 'Disable'), 'submit', '', 'off'); ?>
 				</div>
 
 			</fieldset>
 		</div>
 
-	<?php echo functions::form_end(); ?>
+	<?php echo f::form_end(); ?>
 
 	<?php if ($num_pages > 1) { ?>
 	<div class="card-footer">
-		<?php echo functions::draw_pagination($num_pages); ?>
+		<?php echo f::draw_pagination($num_pages); ?>
 	</div>
 	<?php } ?>
 </div>

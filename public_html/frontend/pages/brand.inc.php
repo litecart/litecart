@@ -67,7 +67,7 @@
 		'pagination' => null,
 	];
 
-	$_page->snippets['products'] = functions::catalog_products_query([
+	$_page->snippets['products'] = f::catalog_products_query([
 		'brands' => [$brand->id],
 		'product_name' => fallback($_GET['product_name']),
 		'sort' => $_GET['sort'],
@@ -76,6 +76,6 @@
 
 	$_page->snippets['num_products_page'] = count($_page->snippets['products']);
 	$_page->snippets['num_products_total'] = $num_rows;
-	$_page->snippets['pagination'] = functions::draw_pagination($num_pages);
+	$_page->snippets['pagination'] = f::draw_pagination($num_pages);
 
 	echo $_page->render();

@@ -121,31 +121,31 @@
 	</div>
 
 	<div class="card-body">
-		<?php echo functions::form_begin('redirect_form', 'post', false, false, 'autocomplete="off" style="max-width: 720px;"'); ?>
+		<?php echo f::form_begin('redirect_form', 'post', false, false, 'autocomplete="off" style="max-width: 720px;"'); ?>
 
 			<div class="grid">
 				<div class="col-md-6">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_status', 'Status'); ?></div>
-						<?php echo functions::form_toggle('status', 'e/d', true); ?>
+						<?php echo f::form_toggle('status', 'e/d', true); ?>
 					</label>
 				</div>
 			</div>
 
 			<div class="form-group">
-				<?php echo functions::form_radio_button('immediate', ['1', t('title_firstly', 'Firstly')], true); ?>
+				<?php echo f::form_radio_button('immediate', ['1', t('title_firstly', 'Firstly')], true); ?>
 				<div><?php echo t('text_process_rule_firstly', 'Process the rule before processing any logical resource'); ?></div>
 			</div>
 
 			<div class="form-group">
-				<?php echo functions::form_radio_button('immediate', ['0', t('title_lastly', 'Lastly')], !file_get_contents('php://input') ? '0' : true); ?>
+				<?php echo f::form_radio_button('immediate', ['0', t('title_lastly', 'Lastly')], !file_get_contents('php://input') ? '0' : true); ?>
 				<div><?php echo t('text_process_rule_lastly', 'Process the rule as a last destination if no logical resource was found'); ?></div>
 			</div>
 
 			<fieldset id="regex-helper" style="margin-bottom: 2em;">
 				<legend>
 					<strong>
-						<?php echo functions::form_checkbox('use_helper', ['1', t('text_use_regex_helper', 'Use regex helper')]); ?>
+						<?php echo f::form_checkbox('use_helper', ['1', t('text_use_regex_helper', 'Use regex helper')]); ?>
 					</strong>
 				</legend>
 
@@ -154,7 +154,7 @@
 						<?php echo t('title_http_protocol', 'HTTP Protocol'); ?>
 					</div>
 					<div class="col-md-8">
-						<?php echo functions::form_select('regex_helper[protocol][criteria]', $protocol_options, true, 'style="width: auto;"'); ?>
+						<?php echo f::form_select('regex_helper[protocol][criteria]', $protocol_options, true, 'style="width: auto;"'); ?>
 					</div>
 				</div>
 
@@ -164,8 +164,8 @@
 					</div>
 					<div class="col-md-8">
 						<div class="input-group">
-							<?php echo functions::form_select('regex_helper[domain][operator]', $domain_options, true, 'style="width: auto;"'); ?>
-							<?php echo functions::form_input_text('regex_helper[domain][criteria]', true, 'required placeholder="Example: domain.com"'); ?>
+							<?php echo f::form_select('regex_helper[domain][operator]', $domain_options, true, 'style="width: auto;"'); ?>
+							<?php echo f::form_input_text('regex_helper[domain][criteria]', true, 'required placeholder="Example: domain.com"'); ?>
 						</div>
 					</div>
 				</div>
@@ -176,8 +176,8 @@
 					</div>
 					<div class="col-md-8">
 						<div class="input-group">
-							<?php echo functions::form_select('regex_helper[path][operator]', $path_options, true, 'style="width: auto;"'); ?>
-							<?php echo functions::form_input_text('regex_helper[path][criteria]', true, 'required placeholder="Example: /path/to/document"'); ?>
+							<?php echo f::form_select('regex_helper[path][operator]', $path_options, true, 'style="width: auto;"'); ?>
+							<?php echo f::form_input_text('regex_helper[path][criteria]', true, 'required placeholder="Example: /path/to/document"'); ?>
 						</div>
 					</div>
 				</div>
@@ -188,8 +188,8 @@
 					</div>
 					<div class="col-md-8">
 						<div class="input-group">
-							<?php echo functions::form_select('regex_helper[query][operator]', $query_options, true, 'style="width: auto;"'); ?>
-							<?php echo functions::form_input_text('regex_helper[query][criteria]', true, 'required placeholder="Example: foo=bar" disabled'); ?>
+							<?php echo f::form_select('regex_helper[query][operator]', $query_options, true, 'style="width: auto;"'); ?>
+							<?php echo f::form_input_text('regex_helper[query][criteria]', true, 'required placeholder="Example: foo=bar" disabled'); ?>
 						</div>
 					</div>
 				</div>
@@ -198,7 +198,7 @@
 
 			<label class="form-group">
 				<div class="form-label"><?php echo t('title_url_regex_pattern', 'URL Regex Pattern'); ?></div>
-				<?php echo functions::form_input_text('pattern', true, 'list="sources" required'); ?>
+				<?php echo f::form_input_text('pattern', true, 'list="sources" required'); ?>
 				<datalist id="sources">
 					<option value="^https://<?php echo strtr($hostname, ['.' => '\\.']); ?>/path/to/file(\?|$)">Exact match of path with optional query at the end</option>
 					<option value="^https://<?php echo strtr($hostname, ['.' => '\\.']); ?>/path/to/file\?foo=bar$">Exact match of path and query on specific domain and protocol</option>
@@ -217,8 +217,8 @@
 			<label class="form-group">
 				<div class="form-label"><?php echo t('title_destination', 'Destination'); ?></div>
 				<div class="input-group">
-					<?php echo functions::form_input_text('destination', true, 'list="destinations" required'); ?>
-					<?php echo functions::form_select('http_response_code', $type_options, true, 'required'); ?>
+					<?php echo f::form_input_text('destination', true, 'list="destinations" required'); ?>
+					<?php echo f::form_select('http_response_code', $type_options, true, 'required'); ?>
 				</div>
 				<datalist id="destinations">
 					<option value="https://<?php echo $hostname; ?>/path/to/file">Exact URL</option>
@@ -231,14 +231,14 @@
 				<div class="col-md-6">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_valid_from', 'Valid From'); ?></div>
-						<?php echo functions::form_input_datetime('valid_from', true); ?>
+						<?php echo f::form_input_datetime('valid_from', true); ?>
 					</label>
 				</div>
 
 				<div class="col-md-6">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_valid_to', 'Valid To'); ?></div>
-						<?php echo functions::form_input_datetime('valid_to', true); ?>
+						<?php echo f::form_input_datetime('valid_to', true); ?>
 					</label>
 				</div>
 			</div>
@@ -255,19 +255,19 @@
 				<div class="col-md-6">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_last_redirected', 'Last Redirected'); ?></div>
-						<div class="form-input" readonly><?php echo $redirect->data['last_redirected'] ? functions::datetime_when($redirect->data['last_redirected']): '-'; ?></div>
+						<div class="form-input" readonly><?php echo $redirect->data['last_redirected'] ? f::datetime_when($redirect->data['last_redirected']): '-'; ?></div>
 					</label>
 				</div>
 			</div>
 			<?php } ?>
 
-		<?php echo functions::form_end(); ?>
+		<?php echo f::form_end(); ?>
 	</div>
 
 	<div class="card-action">
-		<?php echo functions::form_button_predefined('save'); ?>
-		<?php echo (!empty($redirect->data['id'])) ? functions::form_button_predefined('delete') : ''; ?>
-		<?php echo functions::form_button_predefined('cancel'); ?>
+		<?php echo f::form_button_predefined('save'); ?>
+		<?php echo (!empty($redirect->data['id'])) ? f::form_button_predefined('delete') : ''; ?>
+		<?php echo f::form_button_predefined('cancel'); ?>
 	</div>
 </div>
 

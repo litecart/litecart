@@ -26,7 +26,7 @@
 
 		// Make sure document exists
 		if (!file_exists('app://backend/apps/'. __APP__ .'/'. $app_config['docs'][__DOC__])) {
-			notices::add('errors', __APP__ .'/'. functions::escape_html(__DOC__) . ' is not a valid app document');
+			notices::add('errors', __APP__ .'/'. f::escape_html(__DOC__) . ' is not a valid app document');
 			return;
 		}
 
@@ -36,7 +36,7 @@
 		$_content->snippets = [
 			'app_icon' => implode(PHP_EOL, [
 				'<span class="app-icon">',
-				'	' . functions::draw_fonticon($app_config['theme']['icon']),
+				'	' . f::draw_fonticon($app_config['theme']['icon']),
 				'</span>',
 			]),
 		];
@@ -74,7 +74,7 @@
 		$box_widgets = new ent_view('app://backend/template/partials/box_widgets.inc.php');
 		$box_widgets->snippets['widgets'] = [];
 
-		$widgets = functions::admin_get_widgets();
+		$widgets = f::admin_get_widgets();
 
 		foreach ($widgets as $widget) {
 			if (!empty(administrator::$data['widgets']) && empty(administrator::$data['widgets'][$widget['id']])) continue;

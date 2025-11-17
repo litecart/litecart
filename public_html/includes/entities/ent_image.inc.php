@@ -222,7 +222,7 @@
 				return $this->load_from_string($response);
 
 			} else {
-				$file = functions::file_realpath($file);
+				$file = f::file_realpath($file);
 			}
 
 			if (!is_file($file)) {
@@ -324,7 +324,7 @@
 
 		public function load_from_string($binary) {
 
-			$tmp_file = functions::file_create_tempfile($binary);
+			$tmp_file = f::file_create_tempfile($binary);
 
 			$this->load($tmp_file);
 		}

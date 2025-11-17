@@ -32,7 +32,7 @@
 		$administrator = new ent_administrator();
 
 		// Set data
-		$administrator->data = functions::array_update($administrator->data, $data);
+		$administrator->data = f::array_update($administrator->data, $data);
 
 		$administrator->set_password('123456');
 
@@ -57,7 +57,7 @@
 		}
 
 		// Check if data was set correctly
-		if (!functions::array_intersect_compare($data, $administrator->data)) {
+		if (!f::array_intersect_compare($data, $administrator->data)) {
 			throw new Exception('The administrator data was not stored correctly');
 		}
 
@@ -81,7 +81,7 @@
 		];
 
 		// Update some data
-		$administrator->data = functions::array_update($administrator->data, $data);
+		$administrator->data = f::array_update($administrator->data, $data);
 
 		// Set a new password
 		$administrator->set_password($password = '654321');
@@ -93,7 +93,7 @@
 		$administrator = new ent_administrator($administrator_id);
 
 		// Check if data was set correctly
-		if (!functions::array_intersect_compare($data, $administrator->data)) {
+		if (!f::array_intersect_compare($data, $administrator->data)) {
 			throw new Exception('The administrator data was not updated correctly');
 		}
 
@@ -108,7 +108,7 @@
 
 		administrator::load($administrator->data['id']);
 
-		if (!functions::array_intersect_compare($administrator->data, administrator::$data)) {
+		if (!f::array_intersect_compare($administrator->data, administrator::$data)) {
 			throw new Exception('administrator::$data does not match $administrator->data');
 		}
 

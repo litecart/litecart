@@ -107,7 +107,7 @@
 
 			$image = new ent_image($file);
 
-			$filename = 'banners/' . functions::format_path_friendly($this->data['id'] .'-'. $this->data['name']) .'.'. $image->type;
+			$filename = 'banners/' . f::format_path_friendly($this->data['id'] .'-'. $this->data['name']) .'.'. $image->type;
 
 			if (!file_exists('storage://images/banners/')) {
 				mkdir('storage://images/banners/', 0777);

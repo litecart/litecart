@@ -26,7 +26,7 @@
 
 		// Create a new entity
 		$customer_group = new ent_customer_group();
-		$customer_group->data = functions::array_update($customer_group->data, $data);
+		$customer_group->data = f::array_update($customer_group->data, $data);
 		$customer_group->save();
 
 		// Check if the entity was created
@@ -47,7 +47,7 @@
 		}
 
 		// Check if data was set correctly
-		if (!functions::array_intersect_compare($data, $customer_group->data)) {
+		if (!f::array_intersect_compare($data, $customer_group->data)) {
 			throw new Exception('The customer group data was not stored correctly');
 		}
 
@@ -64,13 +64,13 @@
 		];
 
 		// Update some data
-		$customer_group->data = functions::array_update($customer_group->data, $data);
+		$customer_group->data = f::array_update($customer_group->data, $data);
 
 		// Save changes to database
 		$customer_group->save();
 
 		// Check if data was set correctly
-		if (!functions::array_intersect_compare($data, $customer_group->data)) {
+		if (!f::array_intersect_compare($data, $customer_group->data)) {
 			throw new Exception('The customer group data was not updated correctly');
 		}
 

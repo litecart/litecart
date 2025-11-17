@@ -165,7 +165,7 @@
 
 			database::query(
 				"update ". DB_TABLE_PREFIX ."stock_items
-				set name = '". database::input(functions::format_json($this->data['name'])) ."',
+				set name = '". database::input(f::format_json($this->data['name'])) ."',
 					sku = '". database::input(strtoupper($this->data['sku'])) ."',
 					mpn = '". database::input($this->data['mpn']) ."',
 					gtin = '". database::input($this->data['gtin']) ."',
@@ -270,16 +270,16 @@
 			$image = new ent_image($file);
 
 			// 456-12345_Fancy-title.jpg
-			$filename = 'stock_items/' . $this->data['id'] .'-'. functions::format_path_friendly($this->data['name'][settings::get('store_language_code')], settings::get('store_language_code')) .'.'. $image->type;
+			$filename = 'stock_items/' . $this->data['id'] .'-'. f::format_path_friendly($this->data['name'][settings::get('store_language_code')], settings::get('store_language_code')) .'.'. $image->type;
 
 			if (is_file('storage://images/' . $this->data['image'])) {
 				unlink('storage://images/' . $this->data['image']);
 			}
 
-			functions::image_delete_cache('storage://images/' . $filename);
+			f::image_delete_cache('storage://images/' . $filename);
 
 			if (settings::get('image_downsample_size')) {
-				list($width, $height) = functions::string_split(settings::get('image_downsample_size'));
+				list($width, $height) = f::string_split(settings::get('image_downsample_size'));
 				$image->resample($width, $height, 'FIT_ONLY_BIGGER');
 			}
 
@@ -302,7 +302,7 @@
 				unlink('storage://images/' . $this->data['image']);
 			}
 
-			functions::image_delete_cache('storage://images/' . $this->data['image']);
+			f::image_delete_cache('storage://images/' . $this->data['image']);
 
 			database::query(
 				"update ". DB_TABLE_PREFIX ."brands

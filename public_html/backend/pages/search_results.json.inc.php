@@ -8,7 +8,7 @@
 			throw new Exception('Nothing to search for');
 		}
 
-		$apps = functions::admin_get_apps();
+		$apps = f::admin_get_apps();
 		$app_themes = array_column($apps, 'theme', 'code');
 
 		$search_results = [];
@@ -37,5 +37,5 @@
 	}
 
 	header('Content-Type: application/json; charset='. mb_http_output());
-	echo functions::format_json($search_results);
+	echo f::format_json($search_results);
 	exit;

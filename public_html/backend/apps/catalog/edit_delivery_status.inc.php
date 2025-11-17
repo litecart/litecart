@@ -72,13 +72,13 @@
 	</div>
 
 	<div class="card-body">
-		<?php echo functions::form_begin('delivery_status_form', 'post', false, false, 'style="max-width: 720px;"'); ?>
+		<?php echo f::form_begin('delivery_status_form', 'post', false, false, 'style="max-width: 720px;"'); ?>
 
 			<div class="grid">
 				<div class="col-md-8">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
-						<?php foreach (array_keys(language::$languages) as $language_code)  echo functions::form_regional_text('name['. $language_code .']', $language_code, true, ''); ?>
+						<?php foreach (array_keys(language::$languages) as $language_code)  echo f::form_regional_text('name['. $language_code .']', $language_code, true, ''); ?>
 					</label>
 				</div>
 			</div>
@@ -87,17 +87,17 @@
 				<div class="col-md-8">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_description', 'Description'); ?></div>
-						<?php foreach (array_keys(language::$languages) as $language_code) echo functions::form_regional_textarea('description['. $language_code .']', $language_code, true, 'style="height: 50px;"'); ?>
+						<?php foreach (array_keys(language::$languages) as $language_code) echo f::form_regional_textarea('description['. $language_code .']', $language_code, true, 'style="height: 50px;"'); ?>
 					</label>
 				</div>
 			</div>
 
 			<div class="card-action">
-				<?php echo functions::form_button_predefined('save'); ?>
-				<?php if (!empty($delivery_status->data['id'])) echo functions::form_button_predefined('delete'); ?>
-				<?php echo functions::form_button_predefined('cancel'); ?>
+				<?php echo f::form_button_predefined('save'); ?>
+				<?php if (!empty($delivery_status->data['id'])) echo f::form_button_predefined('delete'); ?>
+				<?php echo f::form_button_predefined('cancel'); ?>
 			</div>
 
-		<?php echo functions::form_end(); ?>
+		<?php echo f::form_end(); ?>
 	</div>
 </div>

@@ -18,26 +18,26 @@
 					</div>
 
 					<div class="card-body">
-						<?php echo functions::form_begin('sign_in_form', 'post', document::ilink('account/sign_in')); ?>
+						<?php echo f::form_begin('sign_in_form', 'post', document::ilink('account/sign_in')); ?>
 
-							<?php echo functions::form_input_hidden('redirect_url', true); ?>
+							<?php echo f::form_input_hidden('redirect_url', true); ?>
 
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_email_address', 'Email Address'); ?></div>
-								<?php echo functions::form_input_email('email', true, 'placeholder="'. t('title_email_address', 'Email Address') .'"'); ?>
+								<?php echo f::form_input_email('email', true, 'placeholder="'. t('title_email_address', 'Email Address') .'"'); ?>
 							</label>
 
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_password', 'Password'); ?></div>
-								<?php echo functions::form_input_password('password', '', 'placeholder="'. t('title_password', 'Password') .'"'); ?>
+								<?php echo f::form_input_password('password', '', 'placeholder="'. t('title_password', 'Password') .'"'); ?>
 							</label>
 
 							<label class="form-group">
-								<?php echo functions::form_checkbox('remember_me', ['1', t('title_remember_me', 'Remember Me')], true); ?>
+								<?php echo f::form_checkbox('remember_me', ['1', t('title_remember_me', 'Remember Me')], true); ?>
 							</label>
 
 							<div class="form-group">
-								<?php echo functions::form_button('sign_in', t('title_sign_in', 'Sign In'), 'submit', 'class="btn btn-default btn-block"'); ?>
+								<?php echo f::form_button('sign_in', t('title_sign_in', 'Sign In'), 'submit', 'class="btn btn-default btn-block"'); ?>
 							</div>
 
 							<div class="text-center">
@@ -46,7 +46,7 @@
 								</a>
 							</div>
 
-						<?php echo functions::form_end(); ?>
+						<?php echo f::form_end(); ?>
 					</div>
 				</section>
 

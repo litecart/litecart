@@ -55,7 +55,7 @@
 			<?php foreach ($third_parties as $third_party) { ?>
 			<article class="third-party">
 				<a class="name" href="<?php echo document::href_ilink('third_parties', ['third_party_id' => $third_party['id']]); ?>">
-					<span class="toggle"><?php echo !empty($third_party['active']) ? functions::draw_fonticon('icon-chevron-up') : functions::draw_fonticon('icon-chevron-down'); ?></span>
+					<span class="toggle"><?php echo !empty($third_party['active']) ? f::draw_fonticon('icon-chevron-up') : f::draw_fonticon('icon-chevron-down'); ?></span>
 					<?php echo htmlspecialchars($third_party['name']); ?>
 				</a>
 
@@ -120,9 +120,9 @@
 
 	$('#box-third-parties .third-party').on('toggled', function() {
 		if ($(this).find('.details').is(':hidden')) {
-			$(this).find('.toggle').hide().html('<?php echo functions::draw_fonticon('icon-chevron-down'); ?>').fadeIn();
+			$(this).find('.toggle').hide().html('<?php echo f::draw_fonticon('icon-chevron-down'); ?>').fadeIn();
 		} else {
-			$(this).find('.toggle').hide().html('<?php echo functions::draw_fonticon('icon-chevron-up'); ?>').fadeIn();
+			$(this).find('.toggle').hide().html('<?php echo f::draw_fonticon('icon-chevron-up'); ?>').fadeIn();
 		}
 	});
 

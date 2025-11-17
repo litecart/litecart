@@ -217,18 +217,18 @@
 		</div>
 	</div>
 
-	<?php echo functions::form_begin('filter_form', 'get'); ?>
+	<?php echo f::form_begin('filter_form', 'get'); ?>
 		<div class="card-filter">
 
-			<?php echo functions::form_dropdown('collections[]', $collection_options, true); ?>
+			<?php echo f::form_dropdown('collections[]', $collection_options, true); ?>
 
 			<div class="expandable">
-				<?php echo functions::form_input_search('query', true, 'placeholder="'. t('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"'); ?>
+				<?php echo f::form_input_search('query', true, 'placeholder="'. t('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"'); ?>
 			</div>
 
-			<?php echo functions::form_dropdown('languages[]', $language_options, true); ?>
+			<?php echo f::form_dropdown('languages[]', $language_options, true); ?>
 
-			<?php echo functions::form_dropdown('endpoint[]', $endpoint_options, true); ?>
+			<?php echo f::form_dropdown('endpoint[]', $endpoint_options, true); ?>
 
 			<div class="dropdown" data-placeholder="-- <?php echo t('title_filters', 'Filters'); ?> --">
 
@@ -239,7 +239,7 @@
 				<ul class="dropdown-menu">
 					<li class="dropdown-item">
 						<label>
-							<?php echo functions::form_checkbox('untranslated', '1', true); ?>
+							<?php echo f::form_checkbox('untranslated', '1', true); ?>
 							<?php echo t('text_untranslated_only', 'Untranslated only'); ?>
 						</label>
 					</li>
@@ -247,21 +247,21 @@
 			</div>
 
 			<div>
-				<?php echo functions::form_button('filter', t('title_search', 'Search'), 'submit'); ?>
+				<?php echo f::form_button('filter', t('title_search', 'Search'), 'submit'); ?>
 			</div>
 		</div>
-	<?php echo functions::form_end(); ?>
+	<?php echo f::form_end(); ?>
 
 	<div class="card-body">
 		<div id="tokens"></div>
 	</div>
 
-	<?php echo functions::form_begin('translations_form', 'post'); ?>
+	<?php echo f::form_begin('translations_form', 'post'); ?>
 
 		<table class="table data-table">
 			<thead>
 				<tr>
-					<th style="width: 50px;"><?php echo functions::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th style="width: 50px;"><?php echo f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th data-sort="id"><?php echo t('title_code', 'code'); ?></th>
 					<?php foreach ($_GET['languages'] as $language_code) { ?><th><?php echo language::$languages[$language_code]['name']; ?></th><?php } ?>
 				</tr>
@@ -271,16 +271,16 @@
 				<?php foreach ($translations as $key => $translation) { ?>
 				<tr>
 					<td>
-						<?php echo functions::form_checkbox('translations['.$key.'][checked]', $translation['code'], true, preg_match('#^\[#', $translation['code']) ? 'disabled' : ''); ?>
-						<?php echo functions::form_input_hidden('translations['.$key.'][entity]', true); ?>
-						<?php echo functions::form_input_hidden('translations['.$key.'][code]', true); ?>
+						<?php echo f::form_checkbox('translations['.$key.'][checked]', $translation['code'], true, preg_match('#^\[#', $translation['code']) ? 'disabled' : ''); ?>
+						<?php echo f::form_input_hidden('translations['.$key.'][entity]', true); ?>
+						<?php echo f::form_input_hidden('translations['.$key.'][code]', true); ?>
 					</td>
 					<td>
-						<pre><?php echo functions::escape_html($translation['code']); ?></pre>
-						<small style="color: #999;"><?php echo functions::form_checkbox('translations['.$key.'][html]', ['1', t('text_html_enabled', 'HTML enabled')], true); ?></small>
+						<pre><?php echo f::escape_html($translation['code']); ?></pre>
+						<small style="color: #999;"><?php echo f::form_checkbox('translations['.$key.'][html]', ['1', t('text_html_enabled', 'HTML enabled')], true); ?></small>
 					</td>
 					<?php foreach ($_GET['languages'] as $language_code) { ?>
-					<td><?php echo functions::form_textarea('translations['.$key.'][text_'. $language_code .']', true); ?></td>
+					<td><?php echo f::form_textarea('translations['.$key.'][text_'. $language_code .']', true); ?></td>
 					<?php } ?>
 				</tr>
 				<?php } ?>
@@ -302,21 +302,21 @@
 					<?php echo t('text_with_selected', 'With selected'); ?>:
 				</legend>
 
-				<?php echo functions::form_button_predefined('delete'); ?>
+				<?php echo f::form_button_predefined('delete'); ?>
 
 			</fieldset>
 		</div>
 
 		<div class="card-action">
-			<?php echo functions::form_button('translator_tool', t('title_translator_tool', 'Translator Tool'), 'button', 'class="btn btn-default translator-tool" data-toggle="lightbox" data-target="#translator-tool" data-width="980px"'); ?>
-			<?php echo functions::form_button_predefined('save'); ?>
+			<?php echo f::form_button('translator_tool', t('title_translator_tool', 'Translator Tool'), 'button', 'class="btn btn-default translator-tool" data-toggle="lightbox" data-target="#translator-tool" data-width="980px"'); ?>
+			<?php echo f::form_button_predefined('save'); ?>
 		</div>
 
-	<?php echo functions::form_end(); ?>
+	<?php echo f::form_end(); ?>
 
 	<?php if ($num_pages > 1) { ?>
 	<div class="card-footer">
-		<?php echo functions::draw_pagination($num_pages); ?>
+		<?php echo f::draw_pagination($num_pages); ?>
 	</div>
 	<?php } ?>
 </div>
@@ -328,12 +328,12 @@
 		<div class="col-md-6">
 			<label class="form-group">
 				<div class="form-label"><?php echo t('title_from_language', 'From Language'); ?></div>
-				<?php echo functions::form_select('from_language_code', $language_options, $_GET['languages'][0]); ?>
+				<?php echo f::form_select('from_language_code', $language_options, $_GET['languages'][0]); ?>
 			</label>
 
 			<label class="form-group">
 				<div class="form-label"><?php echo t('title_to_language', 'To Language'); ?></div>
-				<?php echo functions::form_select('to_language_code', $language_options); ?>
+				<?php echo f::form_select('to_language_code', $language_options); ?>
 			</label>
 
 			<label class="form-group">
@@ -344,11 +344,11 @@
 			<div class="btn-group btn-block">
 
 				<a class="btn btn-default" href="https://translate.google.com" target="_blank">
-					<?php echo functions::draw_fonticon('icon-square-out'); ?> Google Translate
+					<?php echo f::draw_fonticon('icon-square-out'); ?> Google Translate
 				</a>
 
 				<a class="btn btn-default" href="https://www.bing.com/translator" target="_blank">
-					<?php echo functions::draw_fonticon('icon-square-out'); ?> Bing Translate
+					<?php echo f::draw_fonticon('icon-square-out'); ?> Bing Translate
 				</a>
 
 			</div>

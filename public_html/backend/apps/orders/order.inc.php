@@ -149,7 +149,7 @@
 	</div>
 
 	<div class="card-body">
-		<?php echo functions::form_begin('order_form', 'post'); ?>
+		<?php echo f::form_begin('order_form', 'post'); ?>
 
 			<div class="addresses">
 				<div class="grid">
@@ -183,7 +183,7 @@
 								<?php echo $order->data['ip_address']; ?> <?php echo !empty($order->data['hostname']) ? '('. $order->data['hostname'] .')' : ''; ?>
 								<?php if (!empty($order->data['ip_address'])) { ?>
 								<a class="btn btn-default btn-sm" href="https://ip-api.com/#<?php echo $order->data['ip_address']; ?>" target="_blank" style="margin: -.5em 0; margin-inline-start: 1em;">
-									<?php echo functions::draw_fonticon('icon-square-out', ''); ?>
+									<?php echo f::draw_fonticon('icon-square-out', ''); ?>
 								</a>
 								<?php } ?>
 							</div>
@@ -191,12 +191,12 @@
 
 						<div class="form-group">
 							<label><?php echo t('title_order_status', 'Order Status'); ?></label>
-							<div class="detail"><?php echo functions::form_select_order_status('order_status_id', true); ?></div>
+							<div class="detail"><?php echo f::form_select_order_status('order_status_id', true); ?></div>
 						</div>
 
 						<div class="form-group">
 							<label><?php echo t('title_notes', 'Notes'); ?></label>
-							<div class="detail"><?php echo functions::form_textarea('notes', true, 'style="height: 100px;"'); ?></div>
+							<div class="detail"><?php echo f::form_textarea('notes', true, 'style="height: 100px;"'); ?></div>
 						</div>
 					</div>
 
@@ -204,7 +204,7 @@
 
 							<div class="form-group">
 								<label><?php echo t('title_shipping_address', 'Shipping Address'); ?></label>
-								<div class="detail"><?php echo nl2br(functions::format_address($order->data['customer']['shipping_address'])); ?></div>
+								<div class="detail"><?php echo nl2br(f::format_address($order->data['customer']['shipping_address'])); ?></div>
 							</div>
 
 							<div class="form-group">
@@ -214,17 +214,17 @@
 
 							<div class="form-group">
 								<label><?php echo t('title_shipping_option', 'Shipping Option'); ?></label>
-								<?php echo functions::form_input_text('shipping_option[id]', true); ?>
+								<?php echo f::form_input_text('shipping_option[id]', true); ?>
 							</div>
 
 							<div class="form-group">
 								<label><?php echo t('title_shipping_tracking_id', 'Shipping Tracking ID'); ?></label>
-								<?php echo functions::form_input_text('shipping_tracking_id', true); ?>
+								<?php echo f::form_input_text('shipping_tracking_id', true); ?>
 							</div>
 
 							<div class="form-group">
 								<label><?php echo t('title_shipping_tracking_url', 'Shipping Tracking URL'); ?></label>
-								<?php echo functions::form_input_text('shipping_tracking_url', true); ?>
+								<?php echo f::form_input_text('shipping_tracking_url', true); ?>
 							</div>
 					</div>
 
@@ -232,7 +232,7 @@
 
 						<div class="form-group">
 							<label><?php echo t('title_billing_address', 'Billing Address'); ?></label>
-							<div class="detail"><?php echo nl2br(functions::format_address($order->data['customer'])); ?></div>
+							<div class="detail"><?php echo nl2br(f::format_address($order->data['customer'])); ?></div>
 						</div>
 
 						<div class="form-group">
@@ -255,22 +255,22 @@
 					<div class="col-3">
 						<div class="form-group">
 							<a class="btn btn-default btn-block" href="#">
-								<?php echo functions::draw_fonticon('icon-print'); ?>
+								<?php echo f::draw_fonticon('icon-print'); ?>
 								<?php echo t('title_order_copy', 'Order Copy'); ?>
 							</a>
 						</div>
 
 						<div class="form-group">
 							<a class="btn btn-default btn-block" href="#">
-								<?php echo functions::draw_fonticon('icon-print'); ?>
+								<?php echo f::draw_fonticon('icon-print'); ?>
 								<?php echo t('title_packing_slip', 'Packing Slip'); ?>
 							</a>
 						</div>
 
 						<?php foreach ($actions as $action) { ?>
 						<div class="form-group">
-							<a class="btn btn-default btn-block" href="<?php echo document::ilink($action['doc'], $action['params']); ?>" target="_blank" title="<?php echo functions::escape_html($action['description']); ?>">
-								<?php echo functions::draw_fonticon($action['icon']); ?>
+							<a class="btn btn-default btn-block" href="<?php echo document::ilink($action['doc'], $action['params']); ?>" target="_blank" title="<?php echo f::escape_html($action['description']); ?>">
+								<?php echo f::draw_fonticon($action['icon']); ?>
 								<?php echo $action['title']; ?>
 							</a>
 						</div>
@@ -305,8 +305,8 @@
 						<?php foreach ($order->data['lines'] as $line) { ?>
 						<tr>
 							<td><?php echo ($line['quantity'] > 1) ? '<strong>'. (float)$line['quantity'].'</strong>' : (float)$line['quantity']; ?></td>
-							<td colspan="3" style="white-space: normal;"><?php echo functions::escape_html($line['name']); ?></td>
-							<td><?php echo functions::escape_html($line['code']); ?></td>
+							<td colspan="3" style="white-space: normal;"><?php echo f::escape_html($line['name']); ?></td>
+							<td><?php echo f::escape_html($line['code']); ?></td>
 							<td class="text-end"><?php echo currency::format($line['price'], false, $order->data['currency_code'], $order->data['currency_value']); ?></td>
 							<td class="text-end"><?php echo currency::format($line['discount'], false, $order->data['currency_code'], $order->data['currency_value']); ?></td>
 							<td class="text-end"><?php echo currency::format($line['sum_tax'], false, $order->data['currency_code'], $order->data['currency_value']); ?></td>
@@ -338,11 +338,11 @@
 						<tr>
 							<td><?php echo (float)$item['quantity']; ?></td>
 							<td style="white-space: normal;"><?php echo $item['name']; ?></td>
-							<td class="text-end"><?php echo functions::escape_html($item['sku']); ?></td>
-							<td class="text-end"><?php echo functions::escape_html($item['gtin']); ?></td>
-							<td class="text-end"><?php echo functions::escape_html($item['stock_quantity']); ?></td>
-							<td class="text-end"><?php echo functions::escape_html($item['quantity_available']); ?></td>
-							<td class="text-end"><?php echo functions::escape_html($item['quantity_reserved']); ?></td>
+							<td class="text-end"><?php echo f::escape_html($item['sku']); ?></td>
+							<td class="text-end"><?php echo f::escape_html($item['gtin']); ?></td>
+							<td class="text-end"><?php echo f::escape_html($item['stock_quantity']); ?></td>
+							<td class="text-end"><?php echo f::escape_html($item['quantity_available']); ?></td>
+							<td class="text-end"><?php echo f::escape_html($item['quantity_reserved']); ?></td>
 						</tr>
 						<?php } ?>
 				</tbody>
@@ -372,10 +372,10 @@
 			</div>
 
 			<div class="card-action">
-				<?php echo functions::form_button_predefined('save', t('title_save', 'Save'), 'submit'); ?>
-				<?php echo functions::form_button_predefined('cancel', t('title_cancel', 'Cancel'), 'cancel', 'btn-default'); ?>
+				<?php echo f::form_button_predefined('save', t('title_save', 'Save'), 'submit'); ?>
+				<?php echo f::form_button_predefined('cancel', t('title_cancel', 'Cancel'), 'cancel', 'btn-default'); ?>
 			</div>
 
-		<?php echo functions::form_end(); ?>
+		<?php echo f::form_end(); ?>
 	</div>
 </div>

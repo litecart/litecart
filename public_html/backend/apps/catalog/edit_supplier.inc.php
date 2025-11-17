@@ -77,57 +77,57 @@
 	</div>
 
 	<div class="card-body">
-		<?php echo functions::form_begin('supplier_form', 'post', false, false, 'style="max-width: 720px;"'); ?>
+		<?php echo f::form_begin('supplier_form', 'post', false, false, 'style="max-width: 720px;"'); ?>
 
 			<div class="grid">
 				<div class="col-md-6">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_code', 'Code'); ?></div>
-						<?php echo functions::form_input_text('code', true); ?>
+						<?php echo f::form_input_text('code', true); ?>
 					</label>
 				</div>
 
 				<div class="col-md-6">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
-						<?php echo functions::form_input_text('name', true); ?>
+						<?php echo f::form_input_text('name', true); ?>
 					</label>
 				</div>
 			</div>
 
 			<label class="form-group">
 				<div class="form-label"><?php echo t('title_description', 'Description'); ?></div>
-				<?php echo functions::form_textarea('description', true); ?>
+				<?php echo f::form_textarea('description', true); ?>
 			</label>
 
 			<div class="grid">
 				<div class="col-md-6">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_email_address', 'Email Address'); ?></div>
-						<?php echo functions::form_input_email('email', true, 'email', ''); ?>
+						<?php echo f::form_input_email('email', true, 'email', ''); ?>
 					</label>
 				</div>
 
 				<div class="col-md-6">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_phone_number', 'Phone Number'); ?></div>
-						<?php echo functions::form_input_text('phone', true); ?>
+						<?php echo f::form_input_text('phone', true); ?>
 					</label>
 				</div>
 			</div>
 
 			<label class="form-group">
 				<div class="form-label"><?php echo t('title_link', 'Link'); ?></div>
-				<?php echo functions::form_input_text('link', true); ?>
+				<?php echo f::form_input_text('link', true); ?>
 			</label>
 
 			<div class="card-action">
-				<?php echo functions::form_button_predefined('save'); ?>
-				<?php if (!empty($supplier->data['id'])) echo functions::form_button_predefined('delete'); ?>
-				<?php echo functions::form_button_predefined('cancel'); ?>
+				<?php echo f::form_button_predefined('save'); ?>
+				<?php if (!empty($supplier->data['id'])) echo f::form_button_predefined('delete'); ?>
+				<?php echo f::form_button_predefined('cancel'); ?>
 			</div>
 
-		<?php echo functions::form_end(); ?>
+		<?php echo f::form_end(); ?>
 	</div>
 </div>
 
