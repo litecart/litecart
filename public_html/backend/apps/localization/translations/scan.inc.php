@@ -10,9 +10,6 @@
 
 		ob_start();
 
-		$dir_iterator = new RecursiveDirectoryIterator('app:///'); // Root needs an additional / with RecursiveDirectoryIterator
-		$iterator = new RecursiveIteratorIterator($dir_iterator, RecursiveIteratorIterator::SELF_FIRST);
-
 		$files = 0;
 		$found = 0;
 		$new_translations = 0;
@@ -20,16 +17,16 @@
 		$translation_keys = [];
 		$orphan = [];
 
-		foreach ($iterator as $file) {
+		foreach (functions::file_search('app://**/*.php') as $file) {
 
 			if (!preg_match('#\.php$#', $file)) continue;
-			if (!preg_match('#^app://(vendor|storage)/#', $file)) continue;
+			if (preg_match('#^app://(vendor|storage)/#', $file)) continue;
 
 			$files++;
 			$contents = file_get_contents($file);
 
 			$regexp = [
-				'language::translate\((?:(?!\$)',
+				'(?:language::translate|(?<=[\s;(])t)\((?:(?!\$)',
 				'(?:(__CLASS__)?\.)?',
 				'(?:[\'"])([^\'"]+)(?:[\'"])',
 				'(?:,?\s+(?:[\'"])([^\'"]+)?(?:[\'"]))?',

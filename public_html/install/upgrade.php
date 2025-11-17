@@ -415,6 +415,7 @@
 					echo '<p>Upgrading database to '. $version .'...</p>' . PHP_EOL . PHP_EOL;
 					$sql = file_get_contents(__DIR__ . '/migrations/'. $version .'.sql');
 					$sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, $sql);
+					$sql = str_replace("'lc_", "'".DB_TABLE_PREFIX, $sql);
 
 					foreach (preg_split('#^-- -----*$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {
 						$query = preg_replace('#^-- .*?\R+#m', '', $query);

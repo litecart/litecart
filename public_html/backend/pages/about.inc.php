@@ -3,6 +3,10 @@
 	breadcrumbs::add(t('title_dashboard', 'Dashboard'), WS_DIR_ADMIN);
 	breadcrumbs::add(t('title_about', 'About'), document::link());
 
+	if (!isset($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
+		$_GET['page'] = 1;
+	}
+
 	if (isset($_POST['delete'])) {
 
 		try {
@@ -87,18 +91,17 @@
 	}
 
 	$machine = [
-
-			'name' => php_uname('n'),
-			'architecture' => php_uname('m'),
-			'os' => [
-				'name' => php_uname('s') .' '. php_uname('r'),
-				'version' => php_uname('v'),
-			],
-			'ip_address' => $_SERVER['SERVER_ADDR'],
-			'hostname' => gethostbyaddr($_SERVER['SERVER_ADDR']),
-			'cpu_usage' => fallback($cpu_usage, ''),
-			'memory_usage' => fallback($memory_usage, ''),
-			'uptime' =>  fallback($uptime, ''),
+		'name' => php_uname('n'),
+		'architecture' => php_uname('m'),
+		'os' => [
+			'name' => php_uname('s') .' '. php_uname('r'),
+			'version' => php_uname('v'),
+		],
+		'ip_address' => $_SERVER['SERVER_ADDR'],
+		'hostname' => gethostbyaddr($_SERVER['SERVER_ADDR']),
+		'cpu_usage' => fallback($cpu_usage, ''),
+		'memory_usage' => fallback($memory_usage, ''),
+		'uptime' =>  fallback($uptime, ''),
 	];
 
 	$web_server = [
@@ -177,6 +180,11 @@
 
 			return ($a['last_occurrence'] > $b['last_occurrence']) ? -1 : 1;
 		});
+
+		$rows_per_page = settings::get('data_table_rows_per_page');
+		$num_pages = ceil(count($errors) / $rows_per_page);
+
+		$errors = array_slice($errors, ($_GET['page'] - 1) * $rows_per_page, $rows_per_page, true);
 
 		unset($entries);
 
@@ -485,10 +493,17 @@
 			</table>
 
 			<div class="card-body">
-				<div id="actions">
+				<fieldset id="actions">
+					<legend><?php echo t('title_with_selected', 'With Selected'); ?></legend>
 					<?php echo functions::form_button_predefined('delete'); ?>
-				</div>
+				</fieldset>
 			</div>
+
+			<?php if ($num_pages > 1) { ?>
+			<div class="card-body">
+				<?php echo functions::draw_pagination($num_pages); ?>
+			</div>
+			<?php } ?>
 
 			<?php echo functions::form_end(); ?>
 		</div>
@@ -524,7 +539,10 @@
 	});
 
 	// Checkbox toggle
-	$('.data-table :checkbox').on('change', function() {
-		$('#actions').prop('disabled', !$('.data-table :checked').length);
-	}).first().trigger('change');
+	$('#tab-errors .data-table :checkbox').on('change', function() {
+		$('#tab-errors #actions').prop('disabled', !$('#tab-errors .data-table :checked').length);
+	});
+
+	// Initial state
+	$('#tab-errors #actions').prop('disabled', !$('#tab-errors .data-table :checked').length);
 </script>

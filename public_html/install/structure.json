@@ -445,9 +445,12 @@
 				"id": { "type": "BIGINT", "length": 20, "unsigned": true, "auto_increment": true },
 				"session_id": { "type": "VARCHAR", "length": 64, "nullable": true },
 				"customer_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
+				"customer_email": { "type": "VARCHAR", "length": 64, "unsigned": true, "nullable": true },
+				"customer_phone": { "type": "VARCHAR", "length": 16, "unsigned": true, "nullable": true },
 				"type": { "type": "VARCHAR", "length": 64, "nullable": true },
 				"description": { "type": "VARCHAR", "length": 248, "default": "''" },
 				"data": { "type": "VARCHAR", "length": 1024, "default": "'{}'" },
+				"conversions": { "type": "VARCHAR", "length": 1024, "default": "'{}'" },
 				"url": { "type": "VARCHAR", "length": 248, "nullable": true },
 				"ip_address": { "type": "VARCHAR", "length": 47, "nullable": true },
 				"hostname": { "type": "VARCHAR", "length": 128, "nullable": true },
@@ -460,6 +463,8 @@
 			"keys": {
 				"session_id": ["session_id"],
 				"customer_id": ["customer_id"],
+				"customer_email": ["customer_email"],
+				"customer_phone": ["customer_phone"],
 				"type": ["type"],
 				"ip_address": ["ip_address"],
 				"hostname": ["hostname"],
@@ -1663,14 +1668,14 @@
 				"country_code": { "type": "VARCHAR", "length": 2, "default": "''" },
 				"pageviews": { "type": "INT", "length": 11, "unsigned": true, "default": 0 },
 				"last_page": { "type": "VARCHAR", "length": 128, "default": "''" },
-				"date_updated": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
-				"date_created": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
+				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
+				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
 			},
 			"primary_key": ["id"],
 			"keys": {
 				"uid": ["uid"],
-				"date_updated": ["date_updated"],
-				"date_created": ["date_created"],
+				"updated_at": ["updated_at"],
+				"created_at": ["created_at"],
 				"country": ["country"],
 				"language": ["language"]
 			}

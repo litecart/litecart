@@ -3,6 +3,10 @@
 	abstract class abs_modules {
 		public $modules;
 
+		public function __construct() {
+			$this->load();
+		}
+
 		public function reset() {
 			$this->modules = [];
 		}

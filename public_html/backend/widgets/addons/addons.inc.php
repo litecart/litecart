@@ -1,13 +1,16 @@
 <?php
 
 	$widget_addons_cache_token = cache::token('widget_addons', [], 'memory', 43200);
-	if (cache::capture($widget_addons_cache_token, 43200, true)) {
+	if (!$addons = cache::get($widget_addons_cache_token, 43200, true)) {
 
 		try {
 
-			$url = 'https://www.litecart.net/feeds/addons';
+			$addons = [];
 
-			$client_info = [
+			$client = new http_client();
+			$client->timeout = 10;
+
+			$response = $client->call('POST', 'https://www.litecart.net/feeds/addons', [
 				'platform' => PLATFORM_NAME,
 				'version' => PLATFORM_VERSION,
 				'name' => settings::get('store_name'),
@@ -15,27 +18,41 @@
 				'language_code' => settings::get('store_language_code'),
 				'country_code' => settings::get('store_country_code'),
 				'url' => document::ilink('f:'),
-			];
+			]);
 
-			$client = new http_client();
-			$client->timeout = 10;
-
-			$response = $client->call('POST', $url, $client_info);
-
-			if (!$response) throw new Exception('No response');
+			if (!$response) {
+				throw new Exception('No response');
+			}
 
 			libxml_use_internal_errors(true);
 			$rss = simplexml_load_string($response);
 
-			foreach (libxml_get_errors() as $error) throw new Exception($error->message);
+			foreach (libxml_get_errors() as $error) {
+				throw new Exception($error->message);
+			}
 
-			if (!empty($rss->channel->item)) {
+			if (empty($rss->channel->item)) {
+				throw new Exception('No addons found');
+			}
 
-				$addons = [];
-				foreach ($rss->channel->item as $item) {
-					$addons[] = $item;
-					if (count($addons) == 20) break;
-				}
+			foreach ($rss->channel->item as $item) {
+
+				$addons[] = [
+					'title' => (string)$item->title,
+					'description' => (string)$item->description,
+					'link' => (string)$item->link,
+				];
+
+				if (count($addons) == 20) break;
+			}
+
+		} catch (Exception $e) {
+			// Do nothing
+		}
+
+		cache::set($widget_addons_cache_token, $addons);
+	}
+
 ?>
 <style>
 #widget-addons .addons {
@@ -66,19 +83,16 @@
 		<div class="addons">
 			<?php foreach ($addons as $item) { ?>
 			<div class="addon">
-				<div class="title"><a href="<?php echo functions::escape_html((string)$item->link); ?>" target="_blank"><?php echo functions::escape_html((string)$item->title); ?></a></div>
-				<div class="description"><?php echo (string)$item->description; ?></div>
+				<div class="title">
+					<a href="<?php echo functions::escape_attr($item['link']); ?>" target="_blank">
+						<?php echo functions::escape_html($item['title']); ?>
+					</a>
+				</div>
+				<div class="description">
+					<?php echo functions::escape_html($item['description']); ?>
+				</div>
 			</div>
 			<?php } ?>
 		</div>
 	</div>
 </div>
-<?php
-			}
-
-		} catch(Exception $e) {
-				// Do nothing
-		}
-
-		cache::end_capture($widget_addons_cache_token);
-	}

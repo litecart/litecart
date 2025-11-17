@@ -1,35 +1,54 @@
 <?php
 
 	$widget_discussions_cache_token = cache::token('widget_discussions', [], 'memory', 43200);
-	if (cache::capture($widget_discussions_cache_token, 43200, true)) {
+	if (!$discussions = cache::get($widget_discussions_cache_token, 43200, true)) {
 
 		try {
 
-			$url = 'https://www.litecart.net/feeds/discussions.rss';
-
-			$client_info = [
-				'platform' => PLATFORM_NAME,
-				'version' => PLATFORM_VERSION,
-			];
+			$discussions = [];
 
 			$client = new http_client();
 			$client->timeout = 10;
-			$response = $client->call('GET', $url, $client_info);
 
-			if (!$response) throw new Exception('No response');
+			$response = $client->call('GET', 'https://www.litecart.net/feeds/discussions.rss', [
+				'platform' => PLATFORM_NAME,
+				'version' => PLATFORM_VERSION,
+			]);
+
+			if (!$response) {
+				throw new Exception('No response');
+			}
 
 			libxml_use_internal_errors(true);
 			$rss = simplexml_load_string($response);
 
-			foreach (libxml_get_errors() as $error) throw new Exception($error->message);
+			foreach (libxml_get_errors() as $error) {
+				throw new Exception($error->message);
+			}
 
-			if (!empty($rss->channel->item)) {
+			if (empty($rss->channel->item)) {
+				throw new Exception('No discussions found');
+			}
 
-				$discussions = [];
-				foreach ($rss->channel->item as $item) {
-					$discussions[] = $item;
-					if (count($discussions) == 20) break;
-				}
+			foreach ($rss->channel->item as $item) {
+
+				$discussions[] = [
+					'title' => (string)$item->title,
+					'link' => (string)$item->link,
+					'date' => (string)$item->pubDate,
+					'author' => (string)$item->author,
+				];
+
+				if (count($discussions) == 20) break;
+			}
+
+		} catch (Exception $e) {
+			// Do nothing
+		}
+
+		cache::set($widget_discussions_cache_token, $discussions);
+	}
+
 ?>
 <style>
 #widget-discussions .topics {
@@ -58,24 +77,21 @@
 
 	<div class="card-body">
 		<div class="topics">
-			<?php foreach ($discussions as $item) { ?>
+			<?php foreach ($discussions as $discussion) { ?>
 			<div class="topic">
-				<div class="title"><a href="<?php echo functions::escape_html((string)$item->link); ?>" target="_blank"><?php echo functions::escape_html((string)$item->title); ?></a></div>
-				<div class="description"><?php echo strtr(t('text_posted_date_by_author', 'Posted {date} by {author}'), [
-					'{date}' => functions::datetime_format('%e %b', strtotime($item->pubDate)),
-					'{author}' => (string)$item->author
-				]); ?></div>
+				<div class="title">
+					<a href="<?php echo functions::escape_attr($discussion['link']); ?>" target="_blank">
+						<?php echo functions::escape_html($discussion['title']); ?>
+					</a>
+				</div>
+				<div class="description">
+					<?php echo strtr(t('text_posted_date_by_author', 'Posted {date} by {author}'), [
+						'{date}' => functions::datetime_format('%e %b', strtotime($discussion['date'])),
+						'{author}' => $discussion['author']
+					]); ?>
+				</div>
 			</div>
 			<?php } ?>
 		</div>
 	</div>
 </div>
-<?php
-			}
-
-		} catch(Exception $e) {
-				// Do nothing
-		}
-
-		cache::end_capture($widget_discussions_cache_token);
-	}

@@ -222,6 +222,7 @@ h4 { font-size: 1.10em; }
 	display: block;
 	padding: 0;
 	color: var(--sidebar-text-color);
+	line-height: 2;
 
 	ul.groups,
 	ul.apps,
@@ -282,7 +283,6 @@ h4 { font-size: 1.10em; }
 
 		> a > .name {
 			font-weight: 500;
-  		color: #555;
 		}
 
 		&.active {
@@ -320,7 +320,7 @@ h4 { font-size: 1.10em; }
 					border-color: color-mix(in lab, var(--app-color) 50%, transparent 100%);
 				}
 				a {
-					padding: .5em 1em;
+					padding: .25em 1em;
 				}
 			}
 		}
@@ -363,7 +363,6 @@ h4 { font-size: 1.10em; }
 .app-icon {
 	display: inline-flex;
 	padding: .25em;
-	margin-inline-end: .5em;
 	line-height: 100%;
 	font-size: 1.25em;
 	//color: var(--app-color);
@@ -377,6 +376,10 @@ h4 { font-size: 1.10em; }
 	border-radius: var(--border-radius); // Instead of clip path
 	place-items: center;
 	aspect-ratio: 1;
+
+	+ .name {
+		margin-inline-start: .5em;
+	}
 
 	@media print {
 		display: none !important;

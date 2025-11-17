@@ -1130,7 +1130,7 @@ html[dir="rtl"] .dropdown label:has([data-toggle="dropdown"]) {
   font-family: "LiteCore";
   font-style: normal;
   font-weight: 400;
-  src: url("../fonts/fonticons.woff2?1762201076") format("woff2");
+  src: url("../fonts/fonticons.woff2?1763332012") format("woff2");
 }
 [class^="icon-"],
 [class*=" icon-"] {
@@ -1556,14 +1556,23 @@ html[dir="rtl"] .dropdown label:has([data-toggle="dropdown"]) {
 .icon-globe:before {
   content: "\e087";
 }
+.icon-rocket:before {
+  content: "\e088";
+}
 .icon-funnel:before {
   content: "\e089";
 }
 .icon-folder:before {
   content: "\e08b";
 }
+.icon-arrow-northeast:before {
+  content: "\e08c";
+}
 .icon-folder-open:before {
   content: "\e08d";
+}
+.icon-arrow-southeast:before {
+  content: "\e08e";
 }
 .icon-floppy-disk:before {
   content: "\e08f";

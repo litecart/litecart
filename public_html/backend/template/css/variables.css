@@ -40,7 +40,7 @@
   --sidebar-background: #fff;
   --sidebar-group-background: var(--site-background);
   --sidebar-border: var(--default-border-color);
-  --sidebar-text-color: inherit;
+  --sidebar-text-color: #444;
   --sidebar-width: 17rem;
   --sidebar-app-border-size: 1px;
   --app-icon-background: #edf0f9;
@@ -165,7 +165,7 @@
   --dropdown-item-background--hover: #f1f2f5;
   --dropdown-item-text-color--hover: #444;
   /* Notices */
-  --notice-default-background: #e5e5e5;
+  --notice-default-background: #c3dde9;
   --notice-default-text-color: #000;
   --notice-default-border-color: #000;
   --notice-border-width: 0px;
@@ -209,7 +209,7 @@
   /* Tables */
   --table-border-color: var(--default-border-color);
   --table-border-width: 1px;
-  --table-header-background: #fff;
+  --table-header-background: transparent;
   --table-header-text-color: var(--default-text-color);
   --table-body-background: #fff;
   --table-body-background--even: #fff;
@@ -288,7 +288,7 @@ html.dark-mode {
   --tab-item-border-color--active: transparent;
   --tab-item-background--hover: #1c243a;
   --tab-item-background--active: #1c243a;
-  --table-header-background: #283144;
+  --table-header-background: transparent;
   --table-header-text-color: #acb6c2;
   --table-body-background: #283144;
   --table-body-background--even: #283144;

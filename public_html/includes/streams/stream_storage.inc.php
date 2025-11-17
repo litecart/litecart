@@ -24,10 +24,13 @@
 		}
 
 		public function dir_closedir() {
+
 			if (is_resource($this->_directory)) {
 				closedir($this->_directory);
 			}
+
 			$this->_directory = null;
+
 			return true;
 		}
 

@@ -90,7 +90,7 @@
 	if ($stock_items) {
 
 		$result = [
-			'name' => t('title_stok_items', 'Stock Items'),
+			'name' => t('title_stock_items', 'Stock Items'),
 			'results' => [],
 		];
 

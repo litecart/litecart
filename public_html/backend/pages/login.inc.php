@@ -250,7 +250,7 @@ html.dark-mode body {
 }
 
 #box-login {
-	width: 400px;
+	width: 320px;
 	margin: auto;
 	border-radius: var(--border-radius);
 }
@@ -259,7 +259,7 @@ html.dark-mode body {
 }
 #box-login .card-header img {
 	margin: 0 auto;
-	max-width: 250px;
+	max-width: 200px;
 	max-height: 100px;
 }
 
@@ -313,7 +313,7 @@ html.dark-mode body {
 				<div class="grid">
 					<div class="col-md-6 text-start">
 						<a class="btn btn-unstyled btn-lg" href="<?php echo document::href_ilink('f:'); ?>">
-							<?php echo functions::draw_fonticon('icon-chevron-left'); ?> <?php echo t('title_go_to_frontend', 'Go To Frontend'); ?>
+							<?php echo functions::draw_fonticon('icon-chevron-left'); ?> <?php echo t('title_frontend', 'Frontend'); ?>
 						</a>
 					</div>
 					<div class="col-md-6 text-end">

@@ -130,3 +130,8 @@
 	<?php foreach ($items as $item) echo $draw_menu_item($item); ?>
 
 </ul>
+
+<script>
+	$('label:has(input[name="dark_mode"][value="0"])').attr('title', '<?php echo functions::escape_js(t('title_light_mode', 'Light Mode')); ?>');
+	$('label:has(input[name="dark_mode"][value="1"])').attr('title', '<?php echo functions::escape_js(t('title_dark_mode', 'Dark Mode')); ?>');
+</script>

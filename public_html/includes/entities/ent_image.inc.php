@@ -677,7 +677,9 @@
 
 				case 'gd':
 
-					if ($this->type == 'svg') return false;
+					if ($this->type == 'svg') {
+						return false;
+					}
 
 					$_watermark = new ent_image($watermark, $this->library);
 
@@ -699,12 +701,15 @@
 
 					// Align watermark and set horizontal offset
 					switch (strtoupper($align_x)) {
+
 						case 'LEFT':
 							$offset_x = $margin;
 							break;
+
 						case 'CENTER':
 							$offset_x = round(($this->width - $_watermark->width) / 2);
 							break;
+
 						case 'RIGHT':
 						default:
 							$offset_x = $this->width - $_watermark->width - $margin;

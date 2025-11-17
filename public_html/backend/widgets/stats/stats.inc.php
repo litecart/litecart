@@ -1,13 +1,13 @@
 <?php
 
-	$widget_stats_cache_token = cache::token('widget_stats', ['site'], 'file', 300);
-	if (cache::capture($widget_stats_cache_token)) {
+	$widget_stats_cache_token = cache::token('widget_stats', ['site'], 'memory', 60);
+	if (!$stats = cache::get($widget_stats_cache_token)) {
+
+		$stats = [];
 
 		$order_statuses = database::query(
 			"select id from ". DB_TABLE_PREFIX ."order_statuses where is_sale;"
 		)->fetch_all('id');
-
-		$stats = [];
 
 		// Total Sales
 
@@ -23,21 +23,24 @@
 
 		// Total Sales Year
 		$stats['total_sales_year'] = database::query(
-			"select sum(total - total_tax) as total_sales_year from ". DB_TABLE_PREFIX ."orders
+			"select sum(total - total_tax) as total_sales_year
+			from ". DB_TABLE_PREFIX ."orders
 			where order_status_id in ('". implode("', '", $order_statuses) ."')
 			and created_at >= '". date('Y-m-d H:i:s', mktime(0, 0, 0, 1, 1, date('Y'))) ."';"
 		)->fetch('total_sales_year');
 
 		// Total Sales Month
 		$stats['total_sales_month'] = database::query(
-			"select sum(total - total_tax) as total_sales_month from ". DB_TABLE_PREFIX ."orders
+			"select sum(total - total_tax) as total_sales_month
+			from ". DB_TABLE_PREFIX ."orders
 			where order_status_id in ('". implode("', '", $order_statuses) ."')
 			and created_at >= '". date('Y-m-d H:i:s', mktime(0, 0, 0, date('m'), 1, date('Y'))) ."';"
 		)->fetch('total_sales_month');
 
 		// Average order amount
 		$orders = database::query(
-			"select count(id) as num_orders, sum(total - total_tax) as total_sales from ". DB_TABLE_PREFIX ."orders
+			"select count(id) as num_orders, sum(total - total_tax) as total_sales
+			from ". DB_TABLE_PREFIX ."orders
 			where order_status_id in ('". implode("', '", $order_statuses) ."')
 			and created_at >= '". date('Y-m-d', strtotime('-6 months')) ."';"
 		)->fetch();
@@ -46,7 +49,8 @@
 
 		// Average order count
 		$total_orders = database::query(
-			"select count(id) as num_orders from ". DB_TABLE_PREFIX ."orders
+			"select count(id) as num_orders
+			from ". DB_TABLE_PREFIX ."orders
 			where order_status_id in ('". implode("', '", $order_statuses) ."')
 			and created_at >= '". date('Y-m-d', strtotime('-6 months')) ."'
 			group by date_format(created_at, '%Y-%m');"
@@ -56,77 +60,94 @@
 
 		// Num customers
 		$stats['num_customers'] = database::query(
-			"select count(id) as num_customers from ". DB_TABLE_PREFIX ."customers;"
+			"select count(id) as num_customers
+			from ". DB_TABLE_PREFIX ."customers;"
 		)->fetch('num_customers');
 
 		// Num products
 		$stats['num_products'] = database::query(
-			"select count(id) as num_products from ". DB_TABLE_PREFIX ."products;"
+			"select count(id) as num_products
+			from ". DB_TABLE_PREFIX ."products;"
 		)->fetch('num_products');
+
+		cache::set($widget_stats_cache_token, $stats);
+	}
+
+	// Halt if no stats are available
+	if (!$stats) {
+		return;
+	}
+
 ?>
-<div id="widget-stats" class="widget card">
-	<div class="card-header">
-		<div class="card-title">
-			<?php echo t('title_statistics', 'Statistics'); ?>
-		</div>
-	</div>
+<style>
+.text-xxl {
+	font-size: 2rem;
+	font-weight: bold;
+}
+</style>
 
-	<div class="card-body table-responsive">
+<div id="stats" class="widget">
 
-		<div class="grid">
-			<div class="col-md-6">
-
-				<table class="table data-table">
-					<tbody>
-						<tr>
-							<td><?php echo t('title_total_sales', 'Total Sales') .' '. functions::datetime_format('%B'); ?>:</td>
-							<td class="text-end"><?php echo currency::format($stats['total_sales_month'], false, settings::get('store_currency_code')); ?></td>
-						</tr>
-						<tr>
-							<td><?php echo t('title_total_sales', 'Total Sales') .' '. date('Y'); ?>:</td>
-							<td class="text-end"><?php echo currency::format($stats['total_sales_year'], false, settings::get('store_currency_code')); ?></td>
-						</tr>
-						<tr>
-							<td><?php echo t('title_total_sales', 'Total Sales'); ?>:</td>
-							<td class="text-end"><?php echo currency::format($stats['total_sales'], false, settings::get('store_currency_code')); ?></td>
-						</tr>
-						<tr>
-							<td><?php echo t('title_total_number_of_customers', 'Total Number of Customers'); ?>:</td>
-							<td class="text-end"><?php echo (int)$stats['num_customers']; ?></td>
-						</tr>
-					</tbody>
-				</table>
-
+	<div class="card">
+		<div class="card-header">
+			<div class="card-title">
+				<?php echo t('title_statistics', 'Statistics'); ?>
 			</div>
+		</div>
 
-			<div class="col-md-6">
+		<div class="card-body table-responsive">
 
-				<table class="table data-table">
-					<tbody>
-						<tr>
-							<td><?php echo t('title_total_number_of_orders', 'Total Number of Orders'); ?>:</td>
-							<td class="text-end"><?php echo (int)$stats['num_orders']; ?></td>
-						</tr>
-						<tr>
-							<td><?php echo t('title_monthly_average_number_of_orders', 'Monthly Average Number of Orders'); ?>:</td>
-							<td class="text-end"><?php echo $stats['average_order_count']; ?></td>
-						</tr>
-						<tr>
-							<td><?php echo t('title_average_order_amount', 'Average Order Amount'); ?>:</td>
-							<td class="text-end"><?php echo currency::format($stats['average_order_amount'], false, settings::get('store_currency_code')); ?></td>
-						</tr>
-						<tr>
-							<td><?php echo t('title_highest_order_amount', 'Highest Order Amount'); ?>:</td>
-							<td class="text-end"><?php echo currency::format($stats['max_order_amount'], false, settings::get('store_currency_code')); ?></td>
-						</tr>
-					</tbody>
-				</table>
+			<div class="grid">
+				<div class="col-md-6">
 
+					<table class="table data-table">
+						<tbody>
+							<tr>
+								<td><?php echo t('title_total_sales', 'Total Sales') .' '. functions::datetime_format('%B'); ?>:</td>
+								<td class="text-end"><?php echo currency::format($stats['total_sales_month'], false, settings::get('store_currency_code')); ?></td>
+							</tr>
+							<tr>
+								<td><?php echo t('title_total_sales', 'Total Sales') .' '. date('Y'); ?>:</td>
+								<td class="text-end"><?php echo currency::format($stats['total_sales_year'], false, settings::get('store_currency_code')); ?></td>
+							</tr>
+							<tr>
+								<td><?php echo t('title_total_sales', 'Total Sales'); ?>:</td>
+								<td class="text-end"><?php echo currency::format($stats['total_sales'], false, settings::get('store_currency_code')); ?></td>
+							</tr>
+							<tr>
+								<td><?php echo t('title_total_number_of_customers', 'Total Number of Customers'); ?>:</td>
+								<td class="text-end"><?php echo (int)$stats['num_customers']; ?></td>
+							</tr>
+						</tbody>
+					</table>
+
+				</div>
+
+				<div class="col-md-6">
+
+					<table class="table data-table">
+						<tbody>
+							<tr>
+								<td><?php echo t('title_total_number_of_orders', 'Total Number of Orders'); ?>:</td>
+								<td class="text-end"><?php echo (int)$stats['num_orders']; ?></td>
+							</tr>
+							<tr>
+								<td><?php echo t('title_monthly_average_number_of_orders', 'Monthly Average Number of Orders'); ?>:</td>
+								<td class="text-end"><?php echo $stats['average_order_count']; ?></td>
+							</tr>
+							<tr>
+								<td><?php echo t('title_average_order_amount', 'Average Order Amount'); ?>:</td>
+								<td class="text-end"><?php echo currency::format($stats['average_order_amount'], false, settings::get('store_currency_code')); ?></td>
+							</tr>
+							<tr>
+								<td><?php echo t('title_highest_order_amount', 'Highest Order Amount'); ?>:</td>
+								<td class="text-end"><?php echo currency::format($stats['max_order_amount'], false, settings::get('store_currency_code')); ?></td>
+							</tr>
+						</tbody>
+					</table>
+
+				</div>
 			</div>
 		</div>
 	</div>
 </div>
-<?php
-		cache::end_capture($widget_stats_cache_token);
-	}
-?>

@@ -53,16 +53,80 @@
 						self::$data['utm'][$key] = $_GET['utm_'.$key];
 					}
 				}
+			}
 
-				if (empty(self::$data['is_bot'])) { // Needs an addon to detect bots
-					database::query(
-						"insert into ". DB_TABLE_PREFIX ."statistics
-						(type, entity_type, entity_id, measure_group_type, measure_group_value, `count`)
-						values ('page_views', 'domain', '". database::input($_SERVER['HTTP_HOST']) ."', 'day', '". database::input(date('Y-m-d')) ."', 1)
-						on duplicate key update
-						`count` = `count` + 1;"
-					);
+			// Write statistics
+			if (
+				$_SERVER['SERVER_SOFTWARE'] != 'CLI' // Not a CLI request
+				&& strpos($_SERVER['REQUEST_URI'], '/'. BACKEND_ALIAS .'/') === false // Not a backend request
+				&& empty(self::$data['is_bot']) // Not a bot (Needs an addon to detect bots)
+				&& !is_ajax_request() // Not an AJAX request
+			) {
+				database::query(
+					"insert into ". DB_TABLE_PREFIX ."statistics
+					(type, entity_type, entity_id, measure_group_type, measure_group_value, `count`)
+					values ('page_views', 'domain', '". database::input($_SERVER['HTTP_HOST']) ."', 'day', '". database::input(date('Y-m-d')) ."', 1)
+					on duplicate key update
+					`count` = `count` + 1;"
+				);
+			}
+
+			// Track who is online
+			if (
+				$_SERVER['SERVER_SOFTWARE'] != 'CLI' // Not a CLI request
+				&& strpos($_SERVER['REQUEST_URI'], '/'. BACKEND_ALIAS .'/') === false // Not a backend request
+				&& empty(self::$data['is_bot']) // Not a bot (Needs an addon to detect bots)
+				&& !is_ajax_request() // Not an AJAX request
+			) {
+
+				// Find known visitor by session id
+				$visitor = database::query(
+					"select id from ". DB_TABLE_PREFIX ."visitors
+					where session_id = '". database::input(session::$data['id']) ."'
+					and updated_at > '". date('Y-m-d 00:00:00') ."'
+					order by updated_at desc
+					limit 1;"
+				)->fetch();
+
+				// Find known visitor by ip address and user agent
+				if (!$visitor) {
+					$visitor = database::query(
+						"select id from ". DB_TABLE_PREFIX ."visitors
+						where ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."'
+						and user_agent = '". database::input($_SERVER['HTTP_USER_AGENT'])."'
+						and updated_at > '". date('Y-m-d 00:00:00') ."'
+						order by updated_at desc
+						limit 1;"
+					)->fetch();
 				}
+
+				// Create new visitor record
+				if (!$visitor) {
+
+					database::query(
+						"insert into ". DB_TABLE_PREFIX ."visitors
+						(session_id, ip_address, hostname, user_agent, referrer, updated_at, created_at)
+						values ('". database::input(session::$data['id']) ."', '". database::input($_SERVER['REMOTE_ADDR'])."', '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."', '". database::input($_SERVER['HTTP_USER_AGENT'])."', '". @database::input($_SERVER['HTTP_REFERER'])."', '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
+					);
+
+					$visitor['id'] = database::insert_id();
+				}
+
+				// Update visitor record
+				database::query(
+					"update ". DB_TABLE_PREFIX ."visitors
+					set pageviews = pageviews + 1,
+						cart_uid = '". database::input(cart::$data['uid']) ."',
+						language = '". database::input(language::$selected['code']) ."',
+						country_code = '". database::input(customer::$data['country_code']) ."',
+						last_page = '". database::input((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']) ."',
+						ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."',
+						hostname = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
+						user_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."',
+						updated_at = '". date('Y-m-d H:i:s') ."'
+					where id = ". (int)$visitor['id'] ."
+					limit 1;"
+				);
 			}
 
 			// Keep track on some updated information

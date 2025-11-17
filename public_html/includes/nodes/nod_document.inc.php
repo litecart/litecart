@@ -68,6 +68,7 @@
 			self::$snippets['text_direction'] = language::$selected['direction'];
 			self::$snippets['charset'] = mb_http_output();
 			self::$snippets['home_path'] = WS_DIR_APP;
+			self::$snippets['nonce'] = self::$nonce;
 
 			switch (fallback(route::$selected['endpoint'])) {
 
@@ -420,7 +421,7 @@
 
 			$styles = [];
 			foreach ($resources as $resource) {
-				if (preg_match('#^(app|storage)://#', $resource) && is_file($resource)) {
+				if (preg_match('#^(app://|storage://|'. preg_quote(DOCUMENT_ROOT, '#') .')#', $resource) && is_file($resource)) {
 					$styles[] = '<link rel="stylesheet" integrity="sha256-'. base64_encode(hash_file('sha256', $resource, true)) .'" crossorigin="anonymous" href="'. self::href_rlink($resource) .'">';
 				} else {
 					$styles[] = '<link rel="stylesheet" href="'. self::href_link($resource) .'">';
@@ -439,7 +440,7 @@
 			$scripts = [];
 
 			foreach ($resources as $resource) {
-				if (preg_match('#^(app|storage)://#', $resource) && is_file($resource)) {
+				if (preg_match('#^(app://|storage://|'. preg_quote(DOCUMENT_ROOT, '#') .')#', $resource) && is_file($resource)) {
 					$scripts[] = '<script defer nonce="'. self::$nonce .'" integrity="sha256-'. base64_encode(hash_file('sha256', $resource, true)) .'" crossorigin="anonymous" src="'. self::href_rlink($resource) .'"></script>';
 				} else {
 					$scripts[] = '<script nonce="'. self::$nonce .'" src="'. self::href_link($resource) .'"></script>';
