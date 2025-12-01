@@ -798,7 +798,7 @@
 					switch ($type) {
 
 						case 'avif':
-							if (in_array('AVIF', $this->_image->queryFormats())) {
+							if (!in_array('AVIF', $this->_image->queryFormats())) {
 								return $this->save(preg_replace('#\.avif$#i', '.jpg', $destination), $quality, $interlaced);
 							}
 							break;
@@ -808,7 +808,7 @@
 							break;
 
 						case 'webp':
-							if (in_array('WEBP', $this->_image->queryFormats())) {
+							if (!in_array('WEBP', $this->_image->queryFormats())) {
 								return $this->save(preg_replace('#\.webp$#i', '.jpg', $destination), $quality, $interlaced);
 							}
 							break;

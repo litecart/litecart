@@ -10,4 +10,4 @@ ALTER TABLE `lc_order_statuses_info`
 CHANGE COLUMN `email_message` `email_message` TEXT NOT NULL;
 -- -----
 INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, `key`, `value`, `function`, `priority`, `date_updated`, `date_created`) VALUES
-('store_info', 'global', 'Store Postcode', 'The postcode of your store.', 'store_postcode', '', 'text()', 18, NOW(), NOW());
+('store_info', 'global', 'Store Postcode', 'The postcode of your store.', 'store_postcode', '', 'text()', 18, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);

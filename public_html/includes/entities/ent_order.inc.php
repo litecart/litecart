@@ -121,7 +121,7 @@
 				}
 			}
 
-			$this->data['utm_data'] = json_decode($this->data['utm_data'], true) ?: [];
+			$this->data['conversions'] = $this->data['conversions'] ? json_decode($this->data['conversions'], true) : [];
 
 			$this->data['lines'] = database::query(
 				"select *	from ". DB_TABLE_PREFIX ."orders_lines
@@ -291,7 +291,7 @@
 					total = ". (float)$this->data['total'] .",
 					total_tax = ". (float)$this->data['total_tax'] .",
 					notes = '". database::input($this->data['ip_address']) ."',
-					utm_data = '". database::input(f::format_json($this->data['utm_data'])) ."',
+					conversions = '". database::input(f::format_json($this->data['conversions'])) ."',
 					ip_address = '". database::input($this->data['ip_address']) ."',
 					hostname = '". database::input($this->data['hostname']) ."',
 					user_agent = '". database::input($this->data['user_agent']) ."',

@@ -27,23 +27,23 @@ CREATE TABLE IF NOT EXISTS `lc_slides_info` (
 ) ENGINE=MyISAM;
 -- -----
 INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, `key`, `value`, `function`, `priority`, `date_updated`, `date_created`) VALUES
-('', 'local', 'Installed Order Modules', '', 'order_modules', '', '', 0, NOW(), NOW()),
-('images', 'local', 'Category Images: Clipping Method', 'The clipping method used for scaled category thumbnails.', 'category_image_clipping', 'CROP', 'select("CROP","FIT","FIT_USE_WHITESPACING")', '11', NOW(), NOW()),
-('images', 'local', 'Interlaced Thumbnails', 'Generate interlaced thumbnail images for progressive loading. Increases the filesize by 10-20% but improves user experience.', 'image_thumbnail_interlaced', '1', 'toggle()', '42', NOW(), NOW()),
-('images', 'local', 'Product Images: Trim Whitespace', 'Trim whitespace before generating thumbnail images.', 'product_image_trim', '0', 'toggle("y/n")', '33', NOW(), NOW()),
-('listings', 'global', 'Maintenance Mode', 'Setting the store in maintenance mode will prevent users from browsing your site.', 'maintenance_mode', '0', 'toggle()', '2', NOW(), NOW()),
-('listings', 'local', 'Also Purchased Products Box: Number of Items', 'The maximum amount of items to be display in the box.', 'box_also_purchased_products_num_items', '4', 'int()', '20', NOW(), NOW()),
-('security', 'global', 'Bad URLs Access Detection', 'Detect access to commonly attacked URLs.', 'security_bad_urls', '1', 'toggle("e/d")', '14', NOW(), NOW());
+('', 'local', 'Installed Order Modules', '', 'order_modules', '', '', 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('images', 'local', 'Category Images: Clipping Method', 'The clipping method used for scaled category thumbnails.', 'category_image_clipping', 'CROP', 'select("CROP","FIT","FIT_USE_WHITESPACING")', '11', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('images', 'local', 'Interlaced Thumbnails', 'Generate interlaced thumbnail images for progressive loading. Increases the filesize by 10-20% but improves user experience.', 'image_thumbnail_interlaced', '1', 'toggle()', '42', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('images', 'local', 'Product Images: Trim Whitespace', 'Trim whitespace before generating thumbnail images.', 'product_image_trim', '0', 'toggle("y/n")', '33', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('listings', 'global', 'Maintenance Mode', 'Setting the store in maintenance mode will prevent users from browsing your site.', 'maintenance_mode', '0', 'toggle()', '2', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('listings', 'local', 'Also Purchased Products Box: Number of Items', 'The maximum amount of items to be display in the box.', 'box_also_purchased_products_num_items', '4', 'int()', '20', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('security', 'global', 'Bad URLs Access Detection', 'Detect access to commonly attacked URLs.', 'security_bad_urls', '1', 'toggle("e/d")', '14', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 -- -----
 INSERT IGNORE INTO `lc_countries` (`status`, `name`, `domestic_name`, `iso_code_1`, `iso_code_2`, `iso_code_3`, `tax_id_format`, `address_format`, `postcode_format`, `postcode_required`, `language_code`, `currency_code`, `phone_code`, `date_updated`, `date_created`) VALUES
-(1, 'Guernsey', '', '831', 'GG', 'GGY', '', '%company\n%firstname %lastname\n%address1\n%address2\n%postcode %city\n%zone_name\n%country_name', '', 0, 'en', '', '44', NOW(), NOW()),
-(1, 'Montenegro', '', '499', 'ME', 'MNE', '', '%company\n%firstname %lastname\n%address1\n%address2\n%postcode %city\n%zone_name\n%country_name', '', 0, 'en', '', '382', NOW(), NOW()),
-(1, 'Jersey', '', '832', 'JE', 'JEY', '', '%company\n%firstname %lastname\n%address1\n%address2\n%postcode %city\n%zone_name\n%country_name', '', 0, 'en', '', '44', NOW(), NOW()),
-(1, 'Isle of Man', '', '833', 'IM', 'IMN', '', '%company\n%firstname %lastname\n%address1\n%address2\n%postcode %city\n%zone_name\n%country_name', '', 0, 'en', '', '44', NOW(), NOW()),
-(1, 'Åland Islands', '', '248', 'AX', 'ALA', '', '%company\n%firstname %lastname\n%address1\n%address2\n%postcode %city\n%zone_name\n%country_name', '', 0, 'en', 'EUR', '358', NOW(), NOW());
+(1, 'Guernsey', '', '831', 'GG', 'GGY', '', '%company\n%firstname %lastname\n%address1\n%address2\n%postcode %city\n%zone_name\n%country_name', '', 0, 'en', '', '44', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(1, 'Montenegro', '', '499', 'ME', 'MNE', '', '%company\n%firstname %lastname\n%address1\n%address2\n%postcode %city\n%zone_name\n%country_name', '', 0, 'en', '', '382', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(1, 'Jersey', '', '832', 'JE', 'JEY', '', '%company\n%firstname %lastname\n%address1\n%address2\n%postcode %city\n%zone_name\n%country_name', '', 0, 'en', '', '44', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(1, 'Isle of Man', '', '833', 'IM', 'IMN', '', '%company\n%firstname %lastname\n%address1\n%address2\n%postcode %city\n%zone_name\n%country_name', '', 0, 'en', '', '44', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(1, 'Åland Islands', '', '248', 'AX', 'ALA', '', '%company\n%firstname %lastname\n%address1\n%address2\n%postcode %city\n%zone_name\n%country_name', '', 0, 'en', 'EUR', '358', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 -- -----
 INSERT IGNORE INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, `key`, `value`, `function`, `priority`, `date_updated`, `date_created`)
-VALUES ('', 'global', 'Catalog Template Settings', '', 'store_template_catalog_settings', '{"product_modal_window":"1","sidebar_parallax_effect":"1","cookie_acceptance":"1"}', 'smalltext()', 0, NOW(), NOW());
+VALUES ('', 'global', 'Catalog Template Settings', '', 'store_template_catalog_settings', '{"product_modal_window":"1","sidebar_parallax_effect":"1","cookie_acceptance":"1"}', 'smalltext()', 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 -- -----
 ALTER TABLE `lc_categories_info` ADD UNIQUE INDEX `category_info` (`category_id`, `language_code`);
 -- -----

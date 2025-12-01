@@ -57,7 +57,7 @@ CREATE TABLE `lc_users` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 -- -----
 INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, `key`, `value`, `function`, `priority`, `date_updated`, `date_created`) VALUES
-('', 'local', 'Installed Customer Modules', '', 'customer_modules', '', '', 0, NOW(), NOW());
+('', 'local', 'Installed Customer Modules', '', 'customer_modules', '', '', 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 -- -----
 DELETE FROM `lc_settings` where `key` in ('checkout_captcha_enabled', 'checkout_ajax_enabled', 'get_address_modules');
 -- -----

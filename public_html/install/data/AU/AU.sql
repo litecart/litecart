@@ -1,13 +1,13 @@
 INSERT INTO `lc_geo_zones` (`name`, `description`, `updated_at`, `created_at`) VALUES
-('AU GST Zone', 'GST zone for Australia', NOW(), NOW());
+('AU GST Zone', 'GST zone for Australia', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 -- -----
 SET @AU_VAT_ZONE = LAST_INSERT_ID();
 -- -----
 INSERT INTO `lc_zones_to_geo_zones` (`geo_zone_id`, `country_code`, `zone_code`, `updated_at`, `created_at`) VALUES
-(@AU_VAT_ZONE, 'AU', '', NOW(), NOW());
+(@AU_VAT_ZONE, 'AU', '', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 -- -----
 INSERT INTO `lc_tax_classes` (`name`, `description`, `updated_at`, `created_at`) VALUES
-('Goods and Services', '', NOW(), NOW());
+('Goods and Services', '', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 -- -----
 INSERT INTO `lc_tax_rates` (`tax_class_id`, `geo_zone_id`, `name`, `description`, `rate`, `rule_companies_with_tax_id`, `rule_companies_without_tax_id`, `rule_individuals_with_tax_id`, `rule_individuals_without_tax_id`, `updated_at`, `created_at`) VALUES
-(1, @AU_VAT_ZONE, 'Goods and Services Tax 10%', '', 10, 1, 1, 1, 1, NOW(), NOW());
+(1, @AU_VAT_ZONE, 'Goods and Services Tax 10%', '', 10, 1, 1, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);

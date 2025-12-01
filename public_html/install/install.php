@@ -595,7 +595,7 @@
 
 			// Workaround for early MySQL versions (<5.6.5) not supporting multiple DEFAULT CURRENT_TIMESTAMP
 			if (version_compare($database_software['version'], '5.6.5', '<')) {
-				str_replace('`updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,', '`updated_at` TIMESTAMP NOT NULL DEFAULT NOW(),', $sql);
+				str_replace('`updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,', '`updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,', $sql);
 			}
 
 			// Execute SQL statement

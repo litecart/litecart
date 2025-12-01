@@ -1,6 +1,6 @@
 INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, `key`, `value`, `function`, `priority`, `date_updated`, `date_created`)
-VALUES ('', 'global', 'Catalog Template Settings', '', 'store_template_catalog_settings', '', '', '', NOW(), NOW()),
-('listings', 'local', 'Max Age for New Products', 'Display the new sticker for products younger than the give age. Example: 1 month or 14 days', 'new_products_max_age', '1 month', 'input()', 14, NOW(), NOW());
+VALUES ('', 'global', 'Catalog Template Settings', '', 'store_template_catalog_settings', '', '', '', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('listings', 'local', 'Max Age for New Products', 'Display the new sticker for products younger than the give age. Example: 1 month or 14 days', 'new_products_max_age', '1 month', 'input()', 14, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 -- -----
 ALTER TABLE `lc_categories` ADD `list_style` VARCHAR(32) NOT NULL AFTER `code`;
 -- -----

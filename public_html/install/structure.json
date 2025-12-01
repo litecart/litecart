@@ -445,8 +445,8 @@
 				"id": { "type": "BIGINT", "length": 20, "unsigned": true, "auto_increment": true },
 				"session_id": { "type": "VARCHAR", "length": 64, "nullable": true },
 				"customer_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
-				"customer_email": { "type": "VARCHAR", "length": 64, "unsigned": true, "nullable": true },
-				"customer_phone": { "type": "VARCHAR", "length": 16, "unsigned": true, "nullable": true },
+				"customer_email": { "type": "VARCHAR", "length": 64, "nullable": true },
+				"customer_phone": { "type": "VARCHAR", "length": 16, "nullable": true },
 				"type": { "type": "VARCHAR", "length": 64, "nullable": true },
 				"description": { "type": "VARCHAR", "length": 248, "default": "''" },
 				"data": { "type": "VARCHAR", "length": 1024, "default": "'{}'" },
@@ -484,7 +484,8 @@
 				}
 			},
 			"check_constraints": {
-				"chk_data": "JSON_VALID(data)"
+				"chk_data": "JSON_VALID(data)",
+				"chk_conversions": "JSON_VALID(conversions)"
 			}
 		},
 		"lc_geo_zones": {
@@ -576,7 +577,7 @@
 		"lc_orders": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
-				"no": { "type": "VARCHAR", "length": 1, "default": "''" },
+				"no": { "type": "VARCHAR", "length": 16, "nullable": true },
 				"starred": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
 				"unread": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
 				"order_status_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
@@ -640,11 +641,11 @@
 				"total": { "type": "FLOAT", "length": "10,4", "default": 0.0000 },
 				"total_tax": { "type": "FLOAT", "length": "10,4", "default": 0.0000 },
 				"notes": { "type": "VARCHAR", "length": 1024, "default": "''" },
-				"utm_data": { "type": "VARCHAR", "length": 1024, "default": "'{}'" },
+				"conversions": { "type": "VARCHAR", "length": 1024, "default": "'{}'" },
 				"ip_address": { "type": "VARCHAR", "length": 39, "default": "''" },
 				"hostname": { "type": "VARCHAR", "length": 128, "default": "''" },
 				"user_agent": { "type": "VARCHAR", "length": 255, "default": "''" },
-				"domain": { "type": "VARCHAR", "length": 64, "default": "''" },
+				"domain": { "type": "VARCHAR", "length": 64, "nullable": true },
 				"public_key": { "type": "VARCHAR", "length": 32, "default": "''" },
 				"date_paid": { "type": "TIMESTAMP", "nullable": true },
 				"date_dispatched": { "type": "TIMESTAMP", "nullable": true },
@@ -657,6 +658,12 @@
 				"order_status_id": ["order_status_id"],
 				"starred": ["starred"],
 				"unread": ["unread"]
+			},
+			"unique_keys": {
+				"public_key": ["public_key"]
+			},
+			"check_constraints": {
+				"chk_conversions": "JSON_VALID(conversions)"
 			},
 			"foreign_keys": {
 				"order_to_customer": {
@@ -785,6 +792,9 @@
 				"product_id": ["product_id"],
 				"stock_option_id": ["stock_option_id"],
 				"code": ["code"]
+			},
+			"check_constraints": {
+				"chk_userdata": "JSON_VALID(userdata)"
 			},
 			"foreign_keys": {
 				"order_line_to_order": {
@@ -999,9 +1009,9 @@
 		},
 		"lc_products_customizations": {
 			"columns": {
-				"id": { "type": "INT", "length": 11, "unsigned": true, "auto_increment": true },
-				"product_id": { "type": "INT", "length": 11, "unsigned": true, "nullable": true },
-				"group_id": { "type": "INT", "length": 11, "unsigned": true, "nullable": true },
+				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
+				"product_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
+				"group_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
 				"function": { "type": "VARCHAR", "length": 32, "default": "''" },
 				"required": { "type": "TINYINT", "length": 1, "default": 0 },
 				"sort": { "type": "VARCHAR", "length": 16, "default": "''" },
@@ -1038,10 +1048,10 @@
 		},
 		"lc_products_customizations_values": {
 			"columns": {
-				"id": { "type": "INT", "length": 11, "unsigned": true, "auto_increment": true },
-				"product_id": { "type": "INT", "length": 11, "unsigned": true, "nullable": true },
-				"group_id": { "type": "INT", "length": 11, "unsigned": true, "nullable": true },
-				"value_id": { "type": "INT", "length": 11, "unsigned": true, "nullable": true },
+				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
+				"product_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
+				"group_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
+				"value_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
 				"custom_value": { "type": "VARCHAR", "length": 64, "default": "''" },
 				"price_modifier": { "type": "CHAR", "length": 1, "default": "'+'" },
 				"price_adjustment": { "type": "VARCHAR", "length": 1, "default": "''" },
@@ -1166,6 +1176,7 @@
 				}
 			},
 			"check_constraints": {
+				"chk_min_quantity": "min_quantity > 0",
 				"chk_price": "JSON_VALID(price)"
 			}
 		},
@@ -1258,7 +1269,7 @@
 				"pattern": { "type": "VARCHAR", "length": 248, "default": "''" },
 				"destination": { "type": "VARCHAR", "length": 248, "default": "''" },
 				"http_response_code": { "type": "ENUM('301','302')", "default": "'301'" },
-				"redirects": { "type": "INT", "length": 11, "unsigned": true, "default": 0 },
+				"redirects": { "type": "INT", "length": 10, "unsigned": true, "default": 0 },
 				"last_redirected": { "type": "TIMESTAMP", "nullable": true },
 				"valid_from": { "type": "TIMESTAMP", "nullable": true },
 				"valid_to": { "type": "TIMESTAMP", "nullable": true },
@@ -1299,7 +1310,40 @@
 			"primary_key": ["id"],
 			"keys": {
 				"customer_id": ["customer_id"],
+				"language_code": ["language_code"],
+				"country_code": ["country_code"],
+				"currency_code": ["currency_code"],
+				"ip_country": ["ip_country"],
 				"fingerprint": ["fingerprint"]
+			},
+			"foreign_keys": {
+				"session_to_customer": {
+					"columns": ["customer_id"],
+					"references": {
+						"table": "lc_customers",
+						"columns": ["id"],
+						"on_update": "CASCADE",
+						"on_delete": "SET NULL"
+					}
+				},
+				"session_to_language": {
+					"columns": ["language_code"],
+					"references": {
+						"table": "lc_languages",
+						"columns": ["code"],
+						"on_update": "CASCADE",
+						"on_delete": "SET NULL"
+					}
+				},
+				"session_to_currency": {
+					"columns": ["currency_code"],
+					"references": {
+						"table": "lc_currencies",
+						"columns": ["code"],
+						"on_update": "CASCADE",
+						"on_delete": "SET NULL"
+					}
+				}
 			}
 		},
 		"lc_settings": {
@@ -1677,7 +1721,7 @@
 				"user_agent": { "type": "VARCHAR", "length": 256, "default": "''" },
 				"language": { "type": "VARCHAR", "length": 2, "default": "''" },
 				"country_code": { "type": "VARCHAR", "length": 2, "default": "''" },
-				"pageviews": { "type": "INT", "length": 11, "unsigned": true, "default": 0 },
+				"pageviews": { "type": "INT", "length": 10, "unsigned": true, "default": 0 },
 				"last_page": { "type": "VARCHAR", "length": 128, "default": "''" },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
 				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }

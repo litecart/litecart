@@ -37,20 +37,29 @@
 					self::generate_id();
 				}
 
-				// Collect Urchin Tracking Module (UTM) data
-				if (empty(self::$data['utm_data'])) {
-					self::$data['utm_data'] = [];
+				// Collect conversion data (Urchin Tracking Module (UTM) etc.)
+				if (empty(self::$data['conversions'])) {
+					self::$data['conversions'] = [];
 				}
 
 				foreach ([
-					'source',
-					'medium',
-					'campaign',
-					'term',
-					'content',
-				] as $key) {
-					if (!empty($_GET['utm_'.$key])) {
-						self::$data['utm'][$key] = $_GET['utm_'.$key];
+					'affiliate' => ['affid', 'affiliate', 'partner', 'ref', 'referrer', 'clickid'],
+					'facebook' => ['fbclid'],
+					'google' => ['_rck', '_rcn', '_rct', 'dclid', 'gclid', 'gbraid', 'gad_source', 'gad_campaignid', 'wbraid'],
+					'instagram' => ['igshid'],
+					'linkedin' => ['li_fat_id'],
+					'microsoft' => ['msclkid'],
+					'pinterest' => ['epik'],
+					'piwik' => ['pk_campaign', 'pk_source', 'pk_medium', 'pk_content', 'pk_kwd'],
+					'tiktok' => ['ttclid'],
+					'utm' => ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'],
+					'yandex' => ['yclid'],
+					'x' => ['twclid'],
+				] as $provider => $keys) {
+					foreach ($keys as $key) {
+						if (!empty($_GET[$key])) {
+							self::$data['conversions'][$key] = $_GET[$key];
+						}
 					}
 				}
 			}

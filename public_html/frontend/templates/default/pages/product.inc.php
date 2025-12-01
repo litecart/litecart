@@ -112,7 +112,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 					</div>
 					<?php } ?>
 
-					<?php if (isset($quantity_available)) { ?>
+					<?php if ($quantity_available) { ?>
 					<div class="stock-status" style="margin: 1em 0;">
 						<?php if ($quantity_available > 0) { ?>
 						<div class="stock-available">

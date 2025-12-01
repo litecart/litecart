@@ -52,6 +52,12 @@
 
 		switch ($name) {
 
+			case 'cancel':
+				return f::form_button('cancel', t('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"' . ($parameters ? ' '. $parameters : ''), 'cancel');
+
+			case 'delete':
+				return f::form_button('delete', t('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!confirm(&quot;'. t('text_are_you_sure', 'Are you sure?') .'&quot;)) return false;"' . ($parameters ? ' '. $parameters : ''), 'delete');
+
 			case 'enable':
 				return f::form_button('enable', t('title_enable', 'Enable'), 'submit', $parameters, 'on');
 
@@ -69,11 +75,8 @@
 					'</div>',
 				]);
 
-			case 'delete':
-				return f::form_button('delete', t('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!confirm(&quot;'. t('text_are_you_sure', 'Are you sure?') .'&quot;)) return false;"' . ($parameters ? ' '. $parameters : ''), 'delete');
-
-			case 'cancel':
-				return f::form_button('cancel', t('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"' . ($parameters ? ' '. $parameters : ''), 'cancel');
+			case 'send':
+				return f::form_button('send', t('title_send', 'Send'), 'submit', 'class="btn btn-success"' . ($parameters ? ' '. $parameters : ''), 'send');
 		}
 
 		trigger_error('Unknown predefined button ('. f::escape_html($name) .')', E_USER_WARNING);
@@ -871,6 +874,10 @@
 
 		if ($input === true) {
 			$input = form_reinsert_value($name);
+		}
+
+		if ($options === null) {
+			$options = 't/f';
 		}
 
 		if (is_string($options)) {

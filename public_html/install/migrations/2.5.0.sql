@@ -41,43 +41,43 @@ SET os.`state` = 'cancelled', os.icon = 'fa-times', color = '#ff6666', is_sale =
 WHERE osi.name = 'Cancelled';
 -- -----
 INSERT INTO `lc_order_statuses` (`state`, `icon`, `color`, `is_sale`, `is_archived`, `is_trackable`, `stock_action`, `date_updated`, `date_created`) VALUES
-('created', 'fa-plus', '#c0c0c0', 0, 0, 0, 'none', NOW(), NOW());
+('created', 'fa-plus', '#c0c0c0', 0, 0, 0, 'none', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 -- -----
 INSERT INTO `lc_order_statuses_info` (`order_status_id`, `language_code`, `name`, `description`) VALUES
 (LAST_INSERT_ID(), 'en', 'Created', '');
 -- -----
 INSERT INTO `lc_order_statuses` (`state`, `icon`, `color`, `is_sale`, `is_archived`, `is_trackable`, `stock_action`, `date_updated`, `date_created`) VALUES
-('on_hold', 'fa-pause', '#c0c0c0', 1, 0, 0, 'none', NOW(), NOW());
+('on_hold', 'fa-pause', '#c0c0c0', 1, 0, 0, 'none', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 -- -----
 INSERT INTO `lc_order_statuses_info` (`order_status_id`, `language_code`, `name`, `description`) VALUES
 (LAST_INSERT_ID(), 'en', 'On hold', '');
 -- -----
 INSERT INTO `lc_order_statuses` (`state`, `icon`, `color`, `is_sale`, `is_archived`, `is_trackable`, `stock_action`, `date_updated`, `date_created`) VALUES
-('delayed', 'fa-hourglass-half', '#e3ab44', 1, 0, 0, 'reserve', NOW(), NOW());
+('delayed', 'fa-hourglass-half', '#e3ab44', 1, 0, 0, 'reserve', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 -- -----
 INSERT INTO `lc_order_statuses_info` (`order_status_id`, `language_code`, `name`, `description`) VALUES
 (LAST_INSERT_ID(), 'en', 'Delayed', '');
 -- -----
 INSERT INTO `lc_order_statuses` (`state`, `icon`, `color`, `is_sale`, `is_archived`, `is_trackable`, `stock_action`, `date_updated`, `date_created`) VALUES
-('in_transit', 'fa-truck', '#e3ab44', 1, 0, 1, 'commit', NOW(), NOW());
+('in_transit', 'fa-truck', '#e3ab44', 1, 0, 1, 'commit', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 -- -----
 INSERT INTO `lc_order_statuses_info` (`order_status_id`, `language_code`, `name`, `description`) VALUES
 (LAST_INSERT_ID(), 'en', 'In Transit', '');
 -- -----
 INSERT INTO `lc_order_statuses` (`state`, `icon`, `color`, `is_sale`, `is_archived`, `is_trackable`, `stock_action`, `date_updated`, `date_created`) VALUES
-('returning', 'fa-undo', '#e3ab44', 1, 0, 1, 'reserved', NOW(), NOW());
+('returning', 'fa-undo', '#e3ab44', 1, 0, 1, 'reserved', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 -- -----
 INSERT INTO `lc_order_statuses_info` (`order_status_id`, `language_code`, `name`, `description`) VALUES
 (LAST_INSERT_ID(), 'en', 'Returning', '');
 -- -----
 INSERT INTO `lc_order_statuses` (`state`, `icon`, `color`, `is_sale`, `is_archived`, `is_trackable`, `stock_action`, `date_updated`, `date_created`) VALUES
-('returned', 'fa-building', '#99cc66', 1, 1, 0, 'commit', NOW(), NOW());
+('returned', 'fa-building', '#99cc66', 1, 1, 0, 'commit', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 -- -----
 INSERT INTO `lc_order_statuses_info` (`order_status_id`, `language_code`, `name`, `description`) VALUES
 (LAST_INSERT_ID(), 'en', 'Returned', '');
 -- -----
 INSERT INTO `lc_order_statuses` (`state`, `icon`, `color`, `is_sale`, `is_archived`, `is_trackable`, `stock_action`, `date_updated`, `date_created`) VALUES
-('cancelled', 'fa-exclamation', '#ff6666', 0, 1, 0, 'none', NOW(), NOW());
+('cancelled', 'fa-exclamation', '#ff6666', 0, 1, 0, 'none', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 -- -----
 INSERT INTO `lc_order_statuses_info` (`order_status_id`, `language_code`, `name`, `description`) VALUES
 (LAST_INSERT_ID(), 'en', 'Fraud', '');
@@ -99,8 +99,8 @@ SET nr.firstname = COALESCE(c.firstname, o.firstname, ''),
 nr.lastname = COALESCE(c.lastname, o.lastname, '');
 -- -----
 INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, `key`, `value`, `function`, `priority`, `date_updated`, `date_created`) VALUES
-('defaults', 'local', 'Default Incoterm', 'Default Incoterm for new orders if nothing else is set.', 'default_incoterm', 'EXW', 'incoterms()', 19, NOW(), NOW()),
-('listings', 'global', 'Important Notice', 'An important notice to be displayed above your website.', 'important_notice', '', 'regional_text()', 0, NOW(), NOW()),
-('listings', 'global', 'Development Mode', 'Development mode restricts frontend access to backend users only.', 'development_mode', '0', 'toggle()', 2, NOW(), NOW());
+('defaults', 'local', 'Default Incoterm', 'Default Incoterm for new orders if nothing else is set.', 'default_incoterm', 'EXW', 'incoterms()', 19, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('listings', 'global', 'Important Notice', 'An important notice to be displayed above your website.', 'important_notice', '', 'regional_text()', 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('listings', 'global', 'Development Mode', 'Development mode restricts frontend access to backend users only.', 'development_mode', '0', 'toggle()', 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 -- -----
 UPDATE `lc_countries` SET name = 'North Macedonia' WHERE iso_code_2 = 'MK' LIMIT 1;

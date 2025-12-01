@@ -35,7 +35,7 @@
 		}
 	}
 
-	if (!empty($_POST['autosave']) || !empty($_POST['save_customer_details'])) {
+	if (!empty($_POST['autosave']) || !empty($_POST['save'])) {
 
 		if (isset($_POST['customer']['email'])) {
 			$_POST['customer']['email'] = strtolower($_POST['customer']['email']);

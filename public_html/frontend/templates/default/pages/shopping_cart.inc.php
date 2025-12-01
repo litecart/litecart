@@ -369,10 +369,10 @@
 	$('#box-customer-details :input').on('input change', function(e) {
 		if ($('#box-customer-details :input').serialize() != $('#box-customer-details').data('checksum')) {
 			$('#box-customer-details').prop('changed', true);
-			$('#box-customer-details button[name="save_customer_details"]').prop('disabled', false);
+			$('#box-customer-details button[name="save"]').prop('disabled', false);
 		} else {
 			$('#box-customer-details').prop('changed', false);
-			$('#box-customer-details button[name="save_customer_details"]').prop('disabled', true);
+			$('#box-customer-details button[name="save"]').prop('disabled', true);
 		}
 	});
 
@@ -413,10 +413,10 @@
 
 	// Process Data
 
-	$('#box-customer-details button[name="save_customer_details"]').on('click', function(e) {
+	$('#box-customer-details button[name="save"]').on('click', function(e) {
 		e.preventDefault();
 
-		let formdata = $('#box-customer-details :input').serialize() + '&save_customer_details=true';
+		let formdata = $('#box-customer-details :input').serialize() + '&save=true';
 
 		$('#box-checkout')
 			.trigger('update', [{component: 'customer', data: formdata, refresh: true}])

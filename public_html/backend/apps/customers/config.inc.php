@@ -3,7 +3,7 @@
 	return [
 		'name' => t('title_customers', 'Customers'),
 		'group' => 'website',
-		'default' => 'event_logs',
+		'default' => 'customers',
 		'priority' => 0,
 
 		'theme' => [
@@ -13,11 +13,6 @@
 
 		'menu' => [
 			[
-				'title' => t('title_event_logs', 'Event Logs'),
-				'doc' => 'event_logs',
-				'params' => [],
-			],
-			[
 				'title' => t('title_customers', 'Customers'),
 				'doc' => 'customers',
 				'params' => [],
@@ -25,6 +20,11 @@
 			[
 				'title' => t('title_customer_groups', 'Customer Groups'),
 				'doc' => 'customer_groups',
+				'params' => [],
+			],
+			[
+				'title' => t('title_event_logs', 'Event Logs'),
+				'doc' => 'event_logs',
 				'params' => [],
 			],
 			[

@@ -9,8 +9,8 @@ CREATE TABLE `lc_banners` (
 	`keywords` VARCHAR(255) NOT NULL DEFAULT '',
 	`total_views` INT(10) UNSIGNED NOT NULL DEFAULT '0',
 	`total_clicks` INT(10) UNSIGNED NOT NULL DEFAULT '0',
-	`valid_from` TIMESTAMP NULL DEFAULT NULL,
-	`valid_to` TIMESTAMP NULL DEFAULT NULL,
+	`valid_from` TIMESTAMP NULL,
+	`valid_to` TIMESTAMP NULL,
 	`updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	`created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (`id`)
@@ -20,8 +20,8 @@ CREATE TABLE `lc_campaigns` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '1',
 	`name` VARCHAR(32) NOT NULL DEFAULT '',
-	`valid_from` TIMESTAMP NULL DEFAULT NULL,
-	`valid_to` TIMESTAMP NULL DEFAULT NULL,
+	`valid_from` TIMESTAMP NULL,
+	`valid_to` TIMESTAMP NULL,
 	`updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	`created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (`id`),
@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS `lc_event_logs` (
 	`hostname` VARCHAR(128) NULL,
 	`user_agent` VARCHAR(248) NULL,
 	`fingerprint` VARCHAR(32) NULL,
-	`expires_at` TIMESTAMP NULL DEFAULT NULL,
+	`expires_at` TIMESTAMP NULL,
 	`created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (`id`),
 	INDEX `customer_id` (`customer_id`),
@@ -70,14 +70,14 @@ CREATE TABLE IF NOT EXISTS `lc_event_logs` (
 CREATE TABLE `lc_orders_lines` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`order_id` INT(10) UNSIGNED NOT NULL,
-	`product_id` INT(10) UNSIGNED NULL DEFAULT NULL,
-	`code` VARCHAR(32) NULL DEFAULT NULL,
+	`product_id` INT(10) UNSIGNED NULL,
+	`code` VARCHAR(32) NULL,
 	`name` VARCHAR(128) NOT NULL DEFAULT '',
 	`customizations` VARCHAR(4096) NOT NULL DEFAULT '{}',
 	`quantity` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
 	`price` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
 	`discount` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
-	`tax_class_id` INT(10) UNSIGNED NULL DEFAULT NULL,
+	`tax_class_id` INT(10) UNSIGNED NULL,
 	`tax_rate` FLOAT(6,4) NOT NULL DEFAULT '0.0000',
 	`tax` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
 	PRIMARY KEY (`id`) USING BTREE,
@@ -103,13 +103,13 @@ CREATE TABLE `lc_products_references` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 -- -----
 CREATE TABLE `lc_redirects` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
 	`immediate` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
 	`pattern` VARCHAR(248) NOT NULL DEFAULT '',
 	`destination` VARCHAR(248) NOT NULL DEFAULT '',
 	`http_response_code` enum('301','302') NOT NULL DEFAULT '301',
-	`total_redirects` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`total_redirects` INT(10) UNSIGNED NOT NULL DEFAULT '0',
 	`last_redirected` TIMESTAMP NULL,
 	`valid_from` TIMESTAMP NULL,
 	`valid_to` TIMESTAMP NULL,
@@ -122,7 +122,7 @@ CREATE TABLE `lc_redirects` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 -- -----
 CREATE TABLE `lc_site_tags` (
-	`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`status` TINYINT(1) NOT NULL DEFAULT '0',
 	`position` ENUM('head','body') NOT NULL DEFAULT 'head',
 	`name` VARCHAR(128) NOT NULL DEFAULT '',
@@ -140,8 +140,8 @@ CREATE TABLE `lc_site_tags` (
 CREATE TABLE `lc_statistics` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`type` VARCHAR(32) NOT NULL DEFAULT '',
-	`entity_id` INT(10) UNSIGNED NULL DEFAULT NULL,
-	`entity_type` VARCHAR(32) NULL DEFAULT NULL,
+	`entity_id` INT(10) UNSIGNED NULL,
+	`entity_type` VARCHAR(32) NULL,
 	`measure_group_type` VARCHAR(32) NOT NULL DEFAULT '',
 	`measure_group_value` VARCHAR(64) NOT NULL DEFAULT '',
 	`count` INT(10) UNSIGNED NOT NULL DEFAULT '0',
@@ -173,7 +173,7 @@ CREATE TABLE `lc_stock_items` (
 	`height` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
 	`length_unit` VARCHAR(2) NOT NULL DEFAULT '',
 	`quantity` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
-	`quantity_unit_id` INT(11) UNSIGNED NULL,
+	`quantity_unit_id` INT(10) UNSIGNED NULL,
 	`backordered` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
 	`purchase_price` FLOAT(11,4) NOT NULL DEFAULT '0.0000',
 	`purchase_price_currency_code` VARCHAR(3) NOT NULL DEFAULT '',
@@ -225,7 +225,7 @@ CREATE TABLE `lc_third_parties` (
 	`privacy_policy_url` VARCHAR(248) NOT NULL DEFAULT '',
 	`opt_out_url` VARCHAR(248) NOT NULL DEFAULT '',
 	`do_not_sell_url` VARCHAR(248) NOT NULL DEFAULT '',
-	`country_code` CHAR(2) NULL DEFAULT NULL,
+	`country_code` CHAR(2) NULL,
 	`updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	`created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (`id`),
@@ -251,10 +251,10 @@ CHANGE COLUMN `last_ip` `last_ip_address` VARCHAR(39) NOT NULL DEFAULT '',
 CHANGE COLUMN `last_host` `last_hostname` VARCHAR(64) NOT NULL DEFAULT '',
 CHANGE COLUMN `login_attempts` `login_attempts` INT(10) UNSIGNED NOT NULL DEFAULT '0' AFTER `two_factor_auth`,
 CHANGE COLUMN `total_logins` `total_logins` INT(10) UNSIGNED NOT NULL DEFAULT '0' AFTER `login_attempts`,
-CHANGE COLUMN `date_active` `last_active` TIMESTAMP NULL DEFAULT NULL AFTER `last_user_agent`,
-CHANGE COLUMN `date_login` `last_login` TIMESTAMP NULL DEFAULT NULL AFTER `last_active`,
-CHANGE COLUMN `date_valid_from` `valid_from` TIMESTAMP NULL DEFAULT NULL AFTER `known_ips`,
-CHANGE COLUMN `date_valid_to` `valid_to` TIMESTAMP NULL DEFAULT NULL AFTER `valid_from`,
+CHANGE COLUMN `date_active` `last_active` TIMESTAMP NULL AFTER `last_user_agent`,
+CHANGE COLUMN `date_login` `last_login` TIMESTAMP NULL AFTER `last_active`,
+CHANGE COLUMN `date_valid_from` `valid_from` TIMESTAMP NULL AFTER `known_ips`,
+CHANGE COLUMN `date_valid_to` `valid_to` TIMESTAMP NULL AFTER `valid_from`,
 ADD COLUMN `firstname` VARCHAR(32) NOT NULL DEFAULT '' AFTER `username`,
 ADD COLUMN `lastname` VARCHAR(32) NOT NULL DEFAULT '' AFTER `firstname`,
 ADD COLUMN `two_factor_auth` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0 AFTER `widgets`,
@@ -385,14 +385,14 @@ CHANGE COLUMN `total_logins` `total_logins` INT(10) UNSIGNED NOT NULL DEFAULT '0
 CHANGE COLUMN `last_ip` `last_ip_address` VARCHAR(39) NOT NULL DEFAULT '',
 CHANGE COLUMN `last_host` `last_hostname` VARCHAR(64) NOT NULL DEFAULT '',
 CHANGE COLUMN `last_agent` `last_user_agent` VARCHAR(255) NOT NULL DEFAULT '',
-CHANGE COLUMN `date_login` `last_login` TIMESTAMP NULL DEFAULT NULL AFTER `last_user_agent`,
-CHANGE COLUMN `date_blocked_until` `blocked_until` TIMESTAMP NULL DEFAULT NULL AFTER `last_login`,
-CHANGE COLUMN `date_expire_sessions` `sessions_expiry` TIMESTAMP NULL DEFAULT NULL AFTER `blocked_until`,
+CHANGE COLUMN `date_login` `last_login` TIMESTAMP NULL AFTER `last_user_agent`,
+CHANGE COLUMN `date_blocked_until` `blocked_until` TIMESTAMP NULL AFTER `last_login`,
+CHANGE COLUMN `date_expire_sessions` `sessions_expiry` TIMESTAMP NULL AFTER `blocked_until`,
 ADD COLUMN `shipping_email` VARCHAR(64) NOT NULL DEFAULT '' AFTER `shipping_phone`,
 ADD COLUMN `language_code` CHAR(2) NOT NULL DEFAULT '' AFTER `shipping_email`,
 ADD COLUMN `group_id` INT UNSIGNED NULL AFTER `id`,
 ADD COLUMN `known_ips` VARCHAR(512) NOT NULL DEFAULT '' AFTER `total_logins`,
-ADD COLUMN `last_active` TIMESTAMP NULL DEFAULT NULL AFTER `last_login`,
+ADD COLUMN `last_active` TIMESTAMP NULL AFTER `last_login`,
 ADD INDEX `group_id` (`group_id`);
 -- -----
 ALTER TABLE `lc_delivery_statuses`
@@ -407,8 +407,8 @@ CHANGE COLUMN `language_code` `language_code` CHAR(2) NOT NULL;
 -- -----
 ALTER TABLE `lc_emails`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-CHANGE COLUMN `date_scheduled` `scheduled_at` TIMESTAMP NULL DEFAULT NULL AFTER `multiparts`,
-CHANGE COLUMN `date_sent` `sent_at` TIMESTAMP NULL DEFAULT NULL AFTER `scheduled_at`,
+CHANGE COLUMN `date_scheduled` `scheduled_at` TIMESTAMP NULL AFTER `multiparts`,
+CHANGE COLUMN `date_sent` `sent_at` TIMESTAMP NULL AFTER `scheduled_at`,
 ADD COLUMN `ip_address` VARCHAR(39) NOT NULL DEFAULT '' AFTER `multiparts`,
 ADD COLUMN `hostname` VARCHAR(128) NOT NULL DEFAULT '' AFTER `ip_address`,
 ADD COLUMN `user_agent` VARCHAR(248) NOT NULL DEFAULT '' AFTER `hostname`,
@@ -429,8 +429,8 @@ ADD INDEX `code2` (`code2`);
 ALTER TABLE `lc_modules`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 CHANGE COLUMN `status` `status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
-CHANGE COLUMN `date_pushed` `last_pushed` TIMESTAMP NULL DEFAULT NULL AFTER `last_log`,
-CHANGE COLUMN `date_processed` `last_processed` TIMESTAMP NULL DEFAULT NULL AFTER `last_pushed`;
+CHANGE COLUMN `date_pushed` `last_pushed` TIMESTAMP NULL AFTER `last_log`,
+CHANGE COLUMN `date_processed` `last_processed` TIMESTAMP NULL AFTER `last_pushed`;
 -- -----
 ALTER TABLE `lc_newsletter_recipients`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -493,9 +493,9 @@ ADD COLUMN `subtotal_tax` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `subtotal`,
 ADD COLUMN `discount` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `subtotal_tax`,
 ADD COLUMN `discount_tax` FLOAT(11,4) NOT NULL DEFAULT '0' AFTER `discount`,
 ADD COLUMN `notes` VARCHAR(1024) NOT NULL DEFAULT '' AFTER `total_tax`,
-ADD COLUMN `utm_data` VARCHAR(1024) NOT NULL DEFAULT '{}' AFTER `notes`,
+ADD COLUMN `conversions` VARCHAR(1024) NOT NULL DEFAULT '{}' AFTER `notes`,
 ADD COLUMN `hostname` VARCHAR(128) NOT NULL DEFAULT '' AFTER `ip_address`,
-ADD INDEX `no` (`no`);
+ADD UNIQUE INDEX `no` (`no`);
 -- -----
 ALTER TABLE `lc_orders_comments`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -601,8 +601,8 @@ ADD COLUMN `head_title` TEXT NOT NULL DEFAULT '{}' AFTER `synonyms`,
 ADD COLUMN `meta_description` TEXT NOT NULL DEFAULT '{}' AFTER `head_title`,
 ADD COLUMN `stock_option_type` ENUM('variants','bundle') NOT NULL DEFAULT 'variants' AFTER `keywords`,
 ADD COLUMN `video_url` VARCHAR(255) NOT NULL DEFAULT '' AFTER `image`,
-ADD COLUMN `valid_from` TIMESTAMP NULL DEFAULT NULL AFTER `purchases`,
-ADD COLUMN `valid_to` TIMESTAMP NULL DEFAULT NULL AFTER `valid_from`,
+ADD COLUMN `valid_from` TIMESTAMP NULL AFTER `purchases`,
+ADD COLUMN `valid_to` TIMESTAMP NULL AFTER `valid_from`,
 DROP COLUMN `views`,
 DROP COLUMN `purchases`,
 DROP INDEX `manufacturer_id`,
@@ -746,7 +746,7 @@ CHANGE COLUMN `code` `code` VARCHAR(128) NOT NULL DEFAULT '',
 CHANGE COLUMN `html` `html` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
 CHANGE COLUMN `backend` `backend` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
 CHANGE COLUMN `frontend` `frontend` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
-CHANGE COLUMN `date_accessed` `last_accessed` TIMESTAMP NULL DEFAULT NULL AFTER `frontend`;
+CHANGE COLUMN `date_accessed` `last_accessed` TIMESTAMP NULL AFTER `frontend`;
 -- -----
 ALTER TABLE `lc_zones`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
