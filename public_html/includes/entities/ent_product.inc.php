@@ -117,10 +117,11 @@
 
 			// Prices
 			database::query(
-				"select pp.*, cg.name as customer_group_name, c.name as campaign_name, c.valid_from, c.valid_to
+				"select pp.*, cg.name as customer_group_name, c.name as campaign_name, c.valid_from, c.valid_to, gz.name as geo_zone_name
 				from ". DB_TABLE_PREFIX ."products_prices pp
 				left join ". DB_TABLE_PREFIX ."campaigns c on (c.id = pp.campaign_id)
 				left join ". DB_TABLE_PREFIX ."customer_groups cg on (cg.id = pp.customer_group_id)
+				left join ". DB_TABLE_PREFIX ."geo_zones gz on (gz.id = pp.geo_zone_id)
 				where pp.product_id = ". (int)$this->data['id'] ."
 				order by c.valid_from, c.valid_to, customer_group_name, pp.min_quantity;"
 			)->each(function($price){
@@ -270,8 +271,9 @@
 
 				database::query(
 					"update ". DB_TABLE_PREFIX ."products_prices
-					set campaign_id = ". (!empty($price['campaign_id']) ? (int)$price['campaign_id'] : "null") .",
-						customer_group_id = ". (!empty($price['customer_group_id']) ? (int)$price['customer_group_id'] : "null") .",
+					set customer_group_id = ". (!empty($price['customer_group_id']) ? (int)$price['customer_group_id'] : "null") .",
+						campaign_id = ". (!empty($price['campaign_id']) ? (int)$price['campaign_id'] : "null") .",
+						geo_zone_id = ". (!empty($price['geo_zone_id']) ? (int)$price['geo_zone_id'] : "null") .",
 						min_quantity = ". (!empty($price['min_quantity']) ? (int)$price['min_quantity'] : 1) .",
 						price = '". database::input(f::format_json($prices)) ."'
 					where product_id = ". (int)$this->data['id'] ."

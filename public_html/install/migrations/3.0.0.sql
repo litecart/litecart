@@ -647,12 +647,14 @@ CHANGE COLUMN `language_code` `language_code` CHAR(2) NOT NULL;
 ALTER TABLE `lc_products_prices`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT FIRST,
 CHANGE COLUMN `product_id` `product_id` INT(10) UNSIGNED NOT NULL AFTER `id`,
-ADD COLUMN `campaign_id` INT(10) UNSIGNED NULL DEFAULT NULL AFTER `product_id`,
-ADD COLUMN `customer_group_id` INT(10) UNSIGNED NULL DEFAULT NULL AFTER `campaign_id`,
-ADD COLUMN `min_quantity` FLOAT(10,4) UNSIGNED NOT NULL DEFAULT '1' AFTER `customer_group_id`,
+ADD COLUMN `campaign_id` INT(10) UNSIGNED NULL AFTER `product_id`,
+ADD COLUMN `customer_group_id` INT(10) UNSIGNED NULL AFTER `campaign_id`,
+ADD COLUMN `geo_zone_id` INT(10) UNSIGNED NULL AFTER `customer_group_id`,
+ADD COLUMN `min_quantity` FLOAT(10,4) UNSIGNED NOT NULL DEFAULT '1' AFTER `geo_zone_id`,
 ADD COLUMN `price` VARCHAR(512) NOT NULL DEFAULT '{}' AFTER `min_quantity`,
 ADD INDEX `customer_group_id` (`customer_group_id`),
 ADD INDEX `campaign_id` (`campaign_id`),
+ADD INDEX `geo_zone_id` (`geo_zone_id`),
 ADD INDEX `min_quantity` (`min_quantity`);
 -- -----
 ALTER TABLE `lc_products_stock_options`

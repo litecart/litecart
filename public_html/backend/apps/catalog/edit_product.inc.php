@@ -430,6 +430,7 @@
 							<thead>
 								<tr>
 									<th style="width: 250px;"><?php echo t('title_customer_group', 'Customer Group'); ?></th>
+									<th style="width: 250px;"><?php echo t('title_geo_zone', 'Geo Zone'); ?></th>
 									<th style="width: 250px;"><?php echo t('title_campaign', 'Campaign'); ?></th>
 									<th style="width: 250px;"><?php echo t('title_valid_from', 'Valid From'); ?></th>
 									<th style="width: 250px;"><?php echo t('title_valid_to', 'Valid To'); ?></th>
@@ -448,6 +449,7 @@
 										<?php echo f::form_input_hidden('prices['.$key.'][id]', true); ?>
 										<?php echo f::form_select_customer_group('prices['.$key.'][customer_group_id]', true); ?>
 									</td>
+									<td><?php echo f::form_select_geo_zone('prices['.$key.'][geo_zone_id]', true); ?></td>
 									<td><?php echo f::form_select_campaign('prices['.$key.'][campaign_id]', true); ?></td>
 									<td><span class="date-valid-from"><?php echo $price['valid_from'] ? f::datetime_when($price['valid_from']) : '-'; ?></span></td>
 									<td><span class="date-valid-to"><?php echo $price['valid_to'] ? f::datetime_when($price['valid_to']) : '-'; ?></span></td>
@@ -1159,6 +1161,7 @@
 			'    <?php echo f::escape_js(f::form_input_hidden('prices[__index__][id]', '')); ?>',
 			'    <?php echo f::escape_js(f::form_select_customer_group('prices[__index__][customer_group_id]', '')); ?>',
 			'  </td>',
+			'  <td><?php echo f::escape_js(f::form_select_geo_zone('prices[__index__][geo_zone_id]', '')); ?></td>',
 			'  <td><?php echo f::escape_js(f::form_select_campaign('prices[__index__][campaign_id]', '', 'style="width: 200px;"')); ?></td>',
 			'  <td><span class="date-valid-from"></span></td>',
 			'  <td><span class="date-valid-to"></span></td>',

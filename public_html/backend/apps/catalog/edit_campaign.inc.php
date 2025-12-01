@@ -132,6 +132,8 @@
 			<thead>
 				<tr>
 					<th class="main"><?php echo t('title_product', 'Product'); ?></th>
+					<th><?php echo t('title_customer_group', 'Customer Group'); ?></th>
+					<th><?php echo t('title_geo_zone', 'Geo Zone'); ?></th>
 					<th class="text-center"><?php echo t('title_regular_price', 'Regular Price'); ?></th>
 					<th class="text-center"><?php echo t('title_campaign_price', 'Campaign Price'); ?></th>
 					<th class="text-center"><?php echo t('title_percentage', 'Percentage'); ?></th>
@@ -148,6 +150,8 @@
 							<?php echo $product['name']; ?>
 						</a>
 					</td>
+					<td><?php echo f::form_select_customer_group('products['.$key.'][customer_group_id]', true); ?></td>
+					<td><?php echo f::form_select_geo_zone('products['.$key.'][geo_zone_id]', true); ?></td>
 					<td class="text-end"><?php echo currency::format($product['regular_price'], false, settings::get('store_currency_code')); ?></td>
 					<td>
 						<div class="dropdown dropdown-end">
@@ -265,6 +269,8 @@
 			'      ' + product.name,
 			'		 </a>',
 			'  </td>',
+			'  <td><?php echo f::escape_js(f::form_select_customer_group('products[__index__][customer_group_id]', '')); ?></td>',
+			'  <td><?php echo f::escape_js(f::form_select_geo_zone('products[__index__][geo_zone_id]', '')); ?></td>',
 			'  <td class="text-end">'+ Number(product.price.value).toMoney() +'</td>',
 			'  <td>',
 			'    <div class="dropdown dropdown-end">',

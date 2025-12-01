@@ -1115,6 +1115,7 @@
 				"product_id": { "type": "INT", "length": 10, "unsigned": true },
 				"customer_group_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
 				"campaign_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
+				"geo_zone_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
 				"min_quantity": { "type": "FLOAT", "length": "10,4", "unsigned": true, "default": 1 },
 				"price": { "type": "VARCHAR", "length": "512", "default": "'{}'" }
 			},
@@ -1123,6 +1124,7 @@
 				"product_id": ["product_id"],
 				"customer_group_id": ["customer_group_id"],
 				"campaign_id": ["campaign_id"],
+				"geo_zone_id": ["geo_zone_id"],
 				"min_quantity": ["min_quantity"]
 			},
 			"foreign_keys": {
@@ -1148,6 +1150,15 @@
 					"columns": ["campaign_id"],
 					"references": {
 						"table": "lc_campaigns",
+						"columns": ["id"],
+						"on_update": "CASCADE",
+						"on_delete": "CASCADE"
+					}
+				},
+				"product_price_to_geo_zone": {
+					"columns": ["geo_zone_id"],
+					"references": {
+						"table": "lc_geo_zones",
 						"columns": ["id"],
 						"on_update": "CASCADE",
 						"on_delete": "CASCADE"

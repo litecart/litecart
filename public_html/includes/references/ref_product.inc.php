@@ -115,6 +115,12 @@
 						and (valid_from is null or valid_from <= '". date('Y-m-d H:i:s') ."')
 						and (valid_to is null or valid_to >= '". date('Y-m-d H:i:s') ."')
 					)
+					and (customer_group_id is null or customer_group_id = ". (int)$this->_customer_group_id .")
+					and (geo_zone_id is null or geo_zone_id in (
+						select geo_zone_id from ". DB_TABLE_PREFIX ."zones_to_geo_zones
+						where country_code = '". database::input(customer::$data['country_code']) ."'
+						and (zone_code = '' or zone_code is null or zone_code = '". database::input(customer::$data['zone_code']) ."')
+					))
 					group by product_id
 					limit 1;"
 				)->fetch();
@@ -203,6 +209,11 @@
 							from ". DB_TABLE_PREFIX ."products_prices
 							where product_id = ". (int)$this->_data['id'] ."
 							and customer_group_id = ". (int)$this->_customer_group_id ."
+							and (geo_zone_id is null or geo_zone_id in (
+								select geo_zone_id from ". DB_TABLE_PREFIX ."zones_to_geo_zones
+								where country_code = '". database::input(customer::$data['country_code']) ."'
+								and (zone_code = '' or zone_code is null or zone_code = '". database::input(customer::$data['zone_code']) ."')
+							))
 							order by min_quantity asc
 							limit 1;"
 						)->fetch('customer_price');
@@ -354,6 +365,12 @@
 						from ". DB_TABLE_PREFIX ."products_prices
 						where product_id = ". (int)$this->_data['id'] ."
 						and customer_group_id is null
+						and campaign_id is null
+						and (geo_zone_id is null or geo_zone_id in (
+							select geo_zone_id from ". DB_TABLE_PREFIX ."zones_to_geo_zones
+							where country_code = '". database::input(customer::$data['country_code']) ."'
+							and (zone_code = '' or zone_code is null or zone_code = '". database::input(customer::$data['zone_code']) ."')
+						))
 						order by min_quantity asc
 						limit 1;"
 					)->fetch('regular_price');

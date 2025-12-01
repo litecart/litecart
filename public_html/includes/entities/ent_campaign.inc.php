@@ -49,12 +49,16 @@
 			$this->data = array_replace($this->data, array_intersect_key($campaign, $this->data));
 
 			$this->data['products'] = database::query(
-				"select pp.id, pp.product_id, pp.campaign_id, pp.price,
+				"select pp.id, pp.product_id, pp.campaign_id, pp.customer_group_id, pp.geo_zone_id, pp.price,
 					json_value(p.name, '$.". database::input(language::$selected['code']) ."') as name,
-					json_value(pp_regular.price, '$.". database::input(settings::get('store_currency_code')) ."') as regular_price
+					json_value(pp_regular.price, '$.". database::input(settings::get('store_currency_code')) ."') as regular_price,
+					cg.name as customer_group_name,
+					gz.name as geo_zone_name
 				from ". DB_TABLE_PREFIX ."products_prices pp
 				left join ". DB_TABLE_PREFIX ."products p on (p.id = pp.product_id)
 				left join ". DB_TABLE_PREFIX ."products_prices pp_regular on (pp_regular.product_id = pp.product_id and pp_regular.campaign_id is null and pp_regular.customer_group_id is null)
+				left join ". DB_TABLE_PREFIX ."customer_groups cg on (cg.id = pp.customer_group_id)
+				left join ". DB_TABLE_PREFIX ."geo_zones gz on (gz.id = pp.geo_zone_id)
 				where pp.campaign_id = ". (int)$this->data['id'] ."
 				order by pp.id;"
 			)->fetch_all(function($row){
@@ -119,6 +123,8 @@
 					"update ". DB_TABLE_PREFIX ."products_prices
 					set product_id = ". (int)$campaign_product['product_id'] .",
 						campaign_id = ". (int)$this->data['id'] .",
+						customer_group_id = ". (!empty($campaign_product['customer_group_id']) ? (int)$campaign_product['customer_group_id'] : "null") .",
+						geo_zone_id = ". (!empty($campaign_product['geo_zone_id']) ? (int)$campaign_product['geo_zone_id'] : "null") .",
 						price = ". (!empty($campaign_product['price']) ? "'". database::input(f::format_json($campaign_product['price'])) ."'" : "{}") ."
 					where id = ". (int)$campaign_product['id'] ."
 					limit 1;"

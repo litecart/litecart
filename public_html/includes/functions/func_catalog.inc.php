@@ -266,6 +266,12 @@
 					and (valid_to is not null and valid_to < '". date('Y-m-d H:i:s') ."')
 				) or campaign_id is null)
 				and (customer_group_id is null or customer_group_id = ". (int)customer::$data['group_id'] .")
+				and (geo_zone_id is null or geo_zone_id in (
+					select geo_zone_id from ". DB_TABLE_PREFIX ."zones_to_geo_zones
+					where country_code = '". database::input(customer::$data['country_code']) ."'
+					and (zone_code = '' or zone_code is null or zone_code = '". database::input(customer::$data['zone_code']) ."')
+				))
+				group by product_id
 			) pp on (pp.product_id = p.id)
 
 			left join (
@@ -504,6 +510,12 @@
 					and (valid_to is not null and valid_to < '". date('Y-m-d H:i:s') ."')
 				) or campaign_id is null)
 				and (customer_group_id is null or customer_group_id = ". (int)customer::$data['group_id'] .")
+				and (geo_zone_id is null or geo_zone_id in (
+					select geo_zone_id from ". DB_TABLE_PREFIX ."zones_to_geo_zones
+					where country_code = '". database::input(customer::$data['country_code']) ."'
+					and (zone_code = '' or zone_code is null or zone_code = '". database::input(customer::$data['zone_code']) ."')
+				))
+				group by product_id
 			) pp on (pp.product_id = p.id)
 
 			left join (
