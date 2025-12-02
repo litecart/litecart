@@ -3,7 +3,6 @@
 
 	$staged_files = preg_split('#(\r\n?|\n)#', shell_exec('git diff --cached --name-only 2>&1'), -1, PREG_SPLIT_NO_EMPTY);
 	$files_to_check = preg_grep('#\.json$#', $staged_files);
-	var_dump($files_to_check);
 
 	if ($files_to_check) {
 		echo implode(PHP_EOL, [
