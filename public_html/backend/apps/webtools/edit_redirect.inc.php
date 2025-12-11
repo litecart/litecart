@@ -1,9 +1,9 @@
 <?php
 
 	if (!empty($_GET['redirect_id'])) {
-		$redirect = new ent_redirect($_GET['redirect_id'], 303);
+		$redirect = new ent_redirect($_GET['redirect_id']);
 	} else {
-		$redirect = new ent_redirect(, 303);
+		$redirect = new ent_redirect();
 	}
 
 	document::$title[] = !empty($redirect->data['id']) ? t('title_edit_redirect', 'Edit Redirect') : t('title_create_new_redirect', 'Create New Redirect');

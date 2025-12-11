@@ -1517,7 +1517,7 @@
 	}
 */
 
-  function form_select_customer($name, $value = true, $parameters = '') {
+	function form_select_customer($name, $value = true, $parameters = '') {
 
 		if (empty(administrator::$data['id'])) {
 			throw new Error('Must be logged in to use form_select_customer()');
@@ -1670,7 +1670,7 @@
 			'  </div>',
 			'</div>',
 		]);
-}
+	}
 
 	function form_select_customer_group($name, $input=true, $parameters='') {
 
@@ -2122,7 +2122,7 @@
 			database::query(
 				"select p.id, json_value(p.title, '$.". database::input(language::$selected['code']) ."') as title
 				from ". DB_TABLE_PREFIX ."pages p
-				where p.parent_id = ". (int)$parent_id ."
+				where ". (empty($parent_id) ? "p.parent_id is null" : "p.parent_id = ". (int)$parent_id) ."
 				order by p.priority asc, title asc;"
 			)->each(function($page) use(&$options, $iterator, $level) {
 

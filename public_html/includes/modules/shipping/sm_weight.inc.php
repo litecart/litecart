@@ -19,7 +19,7 @@
 				return;
 			}
 
-		// Calculate cart weight
+			// Calculate cart weight
 			$total_weight = 0;
 			foreach ($items as $item) {
 				$total_weight += weight::convert($item['quantity'] * $item['weight'], $item['weight_unit'], $this->settings['weight_unit']);
@@ -40,15 +40,15 @@
 
 					switch (true) {
 
-						case (preg_match('^([A_Z]{2}):?$', $zone, $matches) && $customer['shipping_address']['country_code'] == $matches[1]):
+						case (preg_match('#^([A-Z]{2}):?$#', $zone, $matches) && $customer['shipping_address']['country_code'] == $matches[1]):
 							$table_name = $table;
 							break 2;
 
-						case (preg_match('^([A_Z]{2}):(.+)$', $zone, $matches) && $customer['shipping_address']['country_code'] == $matches[1] && $customer['shipping_address']['zone_code'] == $matches[2]):
+						case (preg_match('#^([A-Z]{2}):(.+)$#', $zone, $matches) && $customer['shipping_address']['country_code'] == $matches[1] && $customer['shipping_address']['zone_code'] == $matches[2]):
 							$table_name = $table;
 							break 2;
 
-						case (preg_match('^([0-9]+)$', $zone, $matches) && reference::country($customer['shipping_address']['country_code'])->in_geo_zone($zone, $customer['shipping_address'])):
+						case (preg_match('#^([0-9]+)$#', $zone, $matches) && reference::country($customer['shipping_address']['country_code'])->in_geo_zone($zone, $customer['shipping_address'])):
 							$table_name = $table;
 							break 2;
 

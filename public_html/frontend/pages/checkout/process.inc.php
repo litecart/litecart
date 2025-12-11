@@ -75,6 +75,7 @@
 		'language_code',
 		'shipping_option',
 		'payment_option',
+		'weight_unit'
 	];
 
 	$order->data = array_replace($order->data, array_intersect_key($order->data, array_flip($fields)));

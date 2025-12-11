@@ -10,7 +10,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 }
 </style>
 
-<article id="box-product" data-id="{{product_id}}" data-name="{{name|escape}}" data-price="<?php echo currency::format_raw($campaign_price ?: $regular_price); ?>">
+<article id="box-product" data-id="{{product_id}}" data-name="{{name|escape}}" data-price="<?php echo currency::format_raw($final_price); ?>">
 
 	<div class="card">
 		<div class="card-body">

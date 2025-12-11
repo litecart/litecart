@@ -84,7 +84,7 @@ CREATE TABLE `lc_orders_lines` (
 	INDEX `order_id` (`order_id`) USING BTREE,
 	INDEX `order_line_to_tax_class` (`tax_class_id`) USING BTREE,
 	INDEX `product_id` (`product_id`) USING BTREE,
-	INDEX `code` (`code`) USING BTREE,
+	INDEX `code` (`code`) USING BTREE
 );
 -- -----
 CREATE TABLE `lc_products_references` (
@@ -1049,6 +1049,10 @@ LIMIT 1;
 UPDATE `lc_settings`
 SET `function` = 'regional_text()'
 WHERE `function` = 'regional_input()';
+-- -----
+UPDATE `lc_settings`
+SET `function` = 'page()'
+WHERE `function` = 'pages()';
 -- -----
 UPDATE `lc_settings`
 SET `key` = 'jobs_last_push',

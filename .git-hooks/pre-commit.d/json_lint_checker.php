@@ -1,20 +1,21 @@
 <?php
 
-
 	$staged_files = preg_split('#(\r\n?|\n)#', shell_exec('git diff --cached --name-only 2>&1'), -1, PREG_SPLIT_NO_EMPTY);
-	$files_to_check = preg_grep('#\.json$#', $staged_files);
+	$json_files = preg_grep('#\.json$#', $staged_files);
 
-	if ($files_to_check) {
-		echo implode(PHP_EOL, [
-			'',
-			'-------------------------------------',
-			'-- JSON Lint Checker Pre-Commit Hook --',
-			'-------------------------------------',
-			''
-		]);
+	if (!$json_files) {
+		exit;
 	}
 
-	foreach ($files_to_check as $file) {
+	echo implode(PHP_EOL, [
+		'',
+		'-------------------------------------',
+		'-- JSON Lint Checker Pre-Commit Hook --',
+		'-------------------------------------',
+		''
+	]);
+
+	foreach ($json_files as $file) {
 
 		// Check if file is a JSON file
 		if (!preg_match('#\.json$#', $file)) continue;

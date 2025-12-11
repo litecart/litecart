@@ -8,11 +8,19 @@ if [ -z "$sql_files" ]; then
 	exit 0
 fi
 
-# Check dpendencies
-if ! command -v sqlfluff &> /dev/null; then
-	echo "sqlfluff could not be found. Please install it with 'pip install sqlfluff'."
+# Check dependencies - try to run sqlfluff directly
+if ! sqlfluff --version &> /dev/null; then
+	echo "ERROR: sqlfluff could not be found or executed."
+	echo "Please install it with: pip install sqlfluff"
+	echo "Or ensure it's in your PATH."
 	exit 1
 fi
+
+echo ""
+echo "---------------------------------------"
+echo "-- SQL Lint Checker Pre-Commit Hook --"
+echo "---------------------------------------"
+echo ""
 
 # Fix SQL files with sqlfluff
 for file in $sql_files
@@ -24,16 +32,18 @@ do
 	git cat-file blob ":$file" > "$tmp_file"
 
 	# Lint the staged content
-	sqlfluff lint --dialect mysql "$tmp_file"
-
+	output=$(sqlfluff lint --dialect mysql "$tmp_file" 2>&1)
 	lint_result=$?
 
 	# Remove temporary file
 	rm -f "$tmp_file"
 
 	if [ $lint_result -ne 0 ]; then
-		echo "[Error]"
-		echo "sqlfluff found errors in $file. Commit aborted."
+		echo "[ERROR]"
+		echo "sqlfluff found errors in $file:"
+		echo "$output"
+		echo ""
+		echo "Commit aborted."
 		exit 1
 	fi
 

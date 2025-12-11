@@ -65,7 +65,7 @@
 }
 </style>
 
-<main id="main">
+<main>
 	<article class="box text-center">
 		<div class="code">HTTP {{code}}</div>
 		<div class="title">{{title}}</div>

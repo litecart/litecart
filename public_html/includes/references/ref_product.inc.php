@@ -125,7 +125,9 @@
 					limit 1;"
 				)->fetch();
 
-				break;				case 'categories':
+				break;
+
+			case 'categories':
 
 					$this->_data['categories'] = [];
 

@@ -1,6 +1,6 @@
 <?php
 
-  // Shorthand f:: for functions:: (class_alias() doesn't work here)
+	// Shorthand f:: for functions:: (class_alias() doesn't work here)
 	class f {
 		public static function __callstatic($function, $arguments) {
 			return forward_static_call_array(['functions', $function], $arguments);
