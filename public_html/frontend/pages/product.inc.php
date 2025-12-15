@@ -36,6 +36,33 @@
 		notices::add('errors', t('text_product_can_no_longer_be_purchased', 'The product can no longer be purchased'));
 	}
 
+	// Handle product notification signup
+	if (!empty($_POST['notify_me'])) {
+		try {
+
+			if (empty($_POST['email'])) {
+				throw new Exception(t('error_must_provide_email', 'You must provide an email address'));
+			}
+
+			if (!f::validate_email($_POST['email'])) {
+				throw new Exception(t('error_invalid_email', 'The email address is invalid'));
+			}
+
+			database::query(
+				"replace into ". DB_TABLE_PREFIX ."product_notification_recipients
+				(product_id, email, language_code, created_at)
+				values (". (int)$_GET['product_id'] .", '". database::input($_POST['email']) ."', '". database::input(language::$selected['code']) ."', '". date('Y-m-d H:i:s') ."')"
+			);
+
+			notices::add('success', t('success_notification_back_in_stock', 'We will notify you when the product is back in stock'));
+			header('Location: '. $_SERVER['REQUEST_URI']);
+			exit;
+
+		} catch (Exception $e) {
+			notices::add('errors', $e->getMessage());
+		}
+	}
+
   if (empty(self::$data['is_bot'])) { // Needs an addon to detect bots
     database::query(
       "insert into ". DB_TABLE_PREFIX ."statistics
