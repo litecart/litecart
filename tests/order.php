@@ -37,7 +37,7 @@
 			'currency_value' => 1.0,
 		];
 
-		$items = [
+		$lines = [
 			[
 				'product_id' => 1,
 				'name' => 'Test Product',
@@ -56,7 +56,7 @@
 		// Create a new entity
 		$order = new ent_order();
 		$order->data = f::array_update($order->data, $data);
-		foreach ($items as $item) $order->add_item($item);
+		foreach ($lines as $line) $order->add_line($line);
 		$order->save();
 
 		// Check if the entity was created

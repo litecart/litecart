@@ -93,10 +93,10 @@ waitFor('jQuery', ($) => {
 
 					if (!$self.find('button[name="left"], button[name="right"]').length) {
 
-						$self.append(
-							'<button name="left" class="btn btn-default" type="button"><i class="icon-chevron-left"></i></button>' +
+						$self.append([
+							'<button name="left" class="btn btn-default" type="button"><i class="icon-chevron-left"></i></button>',
 							'<button name="right" class="btn btn-default" type="button"><i class="icon-chevron-right"></i></button>'
-						);
+						].join('\n'));
 
 						$self.on('click', 'button[name="left"], button[name="right"]', function(e) {
 							if (direction != $(this).attr('name')) {

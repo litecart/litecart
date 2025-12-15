@@ -357,7 +357,7 @@ input[name="development_type"]:checked + div {
 	<ul>
 		<?php foreach ($requirements['databases'] as $database) { ?>
 		<li>
-			<strong><?php echo $database['name']; ?> <?php echo $database['minimumVersion']; ?>+</strong> (Recommended: <?php echo $database['recommendedVersion']; ?>+)
+			<?php echo $database['name']; ?> <?php echo $database['minimumVersion']; ?>+ (Recommended: <?php echo $database['recommendedVersion']; ?>+)
 		</li>
 		<?php } ?>
 	</ul>

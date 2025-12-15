@@ -484,7 +484,7 @@ e3c8a164e0f58eff29a34844727ab30f	frontend/templates/default/pages/page.inc.php
 bebe2da15114b75ea7890d8c4e6147bd	frontend/templates/default/pages/printable_order_copy.inc.php
 1be2eef31937ac111e2ebc7a43020779	frontend/templates/default/pages/printable_packing_slip.inc.php
 34cdbe845f68f103ae616e89b4512f2b	frontend/templates/default/pages/product.ajax.inc.php
-18372ffdc9a901a87a4ada8170349c74	frontend/templates/default/pages/product.inc.php
+43b4e2f04b6b0626c7dddb0405706c15	frontend/templates/default/pages/product.inc.php
 ab5d002b25a6443f6c17ed4db8d414a7	frontend/templates/default/pages/regional_settings.inc.php
 6050ee498f19873e40bdf78666a70d4e	frontend/templates/default/pages/search_results.inc.php
 30145668e65d6f012477952ad4d67aaf	frontend/templates/default/pages/shopping_cart.inc.php
@@ -556,7 +556,7 @@ eb342a9e8f56e9fbaad6ca76ee53052c	includes/entities/ent_order_status.inc.php
 7069103205846f43decce3d1cd38e989	includes/entities/ent_session.inc.php
 dbe95d3ec17e3434c54e15c63768c02f	includes/entities/ent_site_tag.inc.php
 71a5360d8c8f299e91e2d7edfb235918	includes/entities/ent_sold_out_status.inc.php
-93b07c4af38ecbc7cc5a018950081881	includes/entities/ent_stock_item.inc.php
+bb2cb133ca008dccf2c1b977c9d92416	includes/entities/ent_stock_item.inc.php
 d76a5f1992706ac2bcd6fd14273a1b19	includes/entities/ent_stock_transaction.inc.php
 a4bd87002269e3061c48dfd69cc237d6	includes/entities/ent_supplier.inc.php
 db144c3021272ff7adc4b26c1c1a2cc6	includes/entities/ent_tax_class.inc.php
@@ -570,7 +570,7 @@ d41d8cd98f00b204e9800998ecf8427e	includes/entities/index.html
 f9ac528905755f01ddbf395cd61307f3	includes/functions/func_admin.inc.php
 1fe5f5a0d60586da28817ae7241134f5	includes/functions/func_array.inc.php
 78beedcfb7f9a0f76ba24084b0049953	includes/functions/func_captcha.inc.php
-2be6145c8c71bd6938a2b3fe12d5dc6c	includes/functions/func_catalog.inc.php
+8bc97b72f95fedbab0490e7cf75cbc09	includes/functions/func_catalog.inc.php
 2dc45dcfe90b751a96c04d1d97c8de3f	includes/functions/func_csv.inc.php
 85e8b9953d266e62b0b810d5293749e8	includes/functions/func_datetime.inc.php
 c4f31d7d8185e7d35ae03ae374a21d6c	includes/functions/func_draw.inc.php
@@ -608,7 +608,7 @@ d41d8cd98f00b204e9800998ecf8427e	includes/modules/shipping/index.html
 d41d8cd98f00b204e9800998ecf8427e	includes/nodes/index.html
 e1b6d97a02f0e7190aee3304717b7ded	includes/nodes/nod_administrator.inc.php
 bdbb9fa782485076aac8fcf300035015	includes/nodes/nod_breadcrumbs.inc.php
-22f82c75cfb08a0a67bb25fa3bfabbf4	includes/nodes/nod_cache.inc.php
+e8df0358c47cf800966773a7a085d182	includes/nodes/nod_cache.inc.php
 66a5b1d6fb22c43810144c4af8d0bb0f	includes/nodes/nod_cart.inc.php
 d75674e6407d522e84e7b43632873486	includes/nodes/nod_currency.inc.php
 ae3de784caff809bf075f8acc5f54cc3	includes/nodes/nod_customer.inc.php
@@ -645,14 +645,14 @@ c41b6f28730800cd8936eca3b5fb89d1	index.php
 5cfcfd1809a26f27fe7e1641cc8ed0fc	install/data.sql
 2c9293250075147d30a243169e5adc2f	install/data/AU/AU.sql
 868dddfe66b86137c8e0e57e7057eb4d	install/data/CA/CA.sql
-589d0b0a8681e02ead4af0ac8cdd5a43	install/data/DE/DE.sql
-f3472521bd27eb4f1d755a6430ed14c0	install/data/DK/DK.sql
-04bfc9c11af50c3d3a12afbf45e4ca38	install/data/FI/FI.sql
+5b586b832d97b1b9d301b8e28d0cefc2	install/data/DE/DE.sql
+af0905ffce9d065c6281a8d05c872b35	install/data/DK/DK.sql
+c47c54ee340a6ebb83577e637e3539fe	install/data/FI/FI.sql
 c55a42ddce4da50b6c8573a88b1a5f66	install/data/GB/GB.sql
-1421e8da5172b4d66d65186fa1a0bb4c	install/data/LT/LT.sql
-6faab9f37cd132896fdd02461b5d9ee5	install/data/NL/NL.sql
-5cfd22bd6d0ed3f41c9abc7d44a0fdad	install/data/NO/NO.sql
-d929813bb8d47074621ef80420b3fc4a	install/data/SE/SE.sql
+7225f0851eef22aaaee47b9b6cbbe371	install/data/LT/LT.sql
+0280f538a778380ddc49d26e9fd78ad1	install/data/NL/NL.sql
+aa918d5012679e5129afc4b8667dda0d	install/data/NO/NO.sql
+2c7175cfb226e73b4f8e552ecde50ead	install/data/SE/SE.sql
 aea792ab99c3d14c01b78762eaf4036f	install/data/US/US.sql
 df654a7fd102a58f15640b436b2d88df	install/data/XX/zones_au.sql
 e211d87c4a7c287aa080434544cd95ec	install/data/XX/zones_ca.sql
@@ -696,7 +696,7 @@ df4a4d1fdb3fe4e7d6f32afe60d9d958	install/data/default/storage/vmods/.htaccess
 d41d8cd98f00b204e9800998ecf8427e	install/data/default/storage/vmods/.installed
 d41d8cd98f00b204e9800998ecf8427e	install/data/default/storage/vmods/.settings
 d41d8cd98f00b204e9800998ecf8427e	install/data/default/storage/vmods/index.html
-f3d086d61e22b70af723ad2c1210111c	install/data/demo/data.sql
+835eeb5de863b4fcc81da1de62e04d87	install/data/demo/data.sql
 64edb96926583c35c954709a611afb10	install/data/demo/storage/images/brands/1-acme-corp.webp
 f432b4230f113067f3c34ba8f498e9fb	install/data/demo/storage/images/products/1-yellow-duck-1.webp
 a23a6fff6a5e33202e9cac7dd68a1bb0	install/data/demo/storage/images/products/2-green-duck-1.webp
@@ -711,7 +711,7 @@ e18b9f93aa2f9dc49dfd23e0cbd44609	install/htaccess
 670de80c8b659a4d3b8fd122fc26e5d2	install/includes/functions.inc.php
 01452983a06e0ff609bedd37ee8e2d24	install/includes/header.inc.php
 7348f6865517dc29e50ae92a453010d7	install/index.php
-37b1df26b82a7f66aff51f79616bca55	install/install.php
+0b29e7d241fa7091feb71f9374fb616d	install/install.php
 ab2d6e75ed5c3f662b454986013e53a8	install/migrations/1.0.1.3.inc.php
 1850f720b3b51bae747bdcb259144078	install/migrations/1.0.1.4.inc.php
 127d43763a48591e142742e8cf0cbaa9	install/migrations/1.0.1.5.inc.php
@@ -827,9 +827,9 @@ cd37a7f25119ad9ac30f171d57ef6db2	install/migrations/2.6.1.sql
 f6faba2457bf8648c15233eaf3d322e8	install/migrations/2.6.3.inc.php
 189d3f17c08606855d94c30d8f395b8a	install/migrations/2.6.3.sql
 43d0f6bba6490f9292508cb55272c4c1	install/migrations/3.0.0.inc.php
-97aaae5d2808cf6e1b48d709b1f7b88a	install/migrations/3.0.0.sql
+978f38a146367672cdf229e4eff39e36	install/migrations/3.0.0.sql
 a2d964f9475446afe9a063296cd7c696	install/requirements.json
-59c1e5749bf1fbe8567f836703581e8f	install/structure.json
+79160ae1090c28a48cc07b8f3c2aed70	install/structure.json
 24facdea5114cef34b77a9b115bea936	install/upgrade.php
 df4a4d1fdb3fe4e7d6f32afe60d9d958	vendor/.htaccess
 8297b8ccf4c3e90ebbf0e7d79aaae1da	vendor/Composer.txt
