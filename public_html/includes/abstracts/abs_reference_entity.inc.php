@@ -1,6 +1,7 @@
 <?php
 
-	class abs_reference_entity {
+	// ArrayAccess implementation makes it possible to use array-like syntax for accessing entity properties
+	class abs_reference_entity implements ArrayAccess {
 
 		protected $_data = [];
 
@@ -30,4 +31,29 @@
 
 			$this->_data[$name] = $value;
 		}
+
+    // ArrayAccess implementation
+    public function offsetExists($offset): bool {
+			return isset($this->data[$offset]);
+    }
+
+    public function offsetGet($offset): mixed {
+			return fallback($this->data[$offset]);
+    }
+
+    public function offsetSet($offset, $value): void {
+			if (isset($this->_data[$name])) {
+				trigger_error('Overwriting data is prohibited ('.$name.')', E_USER_WARNING);
+				return;
+			}
+			$this->data[$offset] = $value;
+    }
+
+    public function offsetUnset($offset): void {
+			if (isset($this->_data[$name])) {
+				trigger_error('Unsetting data is prohibited ('.$name.')', E_USER_WARNING);
+				return;
+			}
+			//unset($this->data[$offset]);
+    }
 	}
