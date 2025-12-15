@@ -102,6 +102,17 @@ CREATE TABLE `lc_products_references` (
 	UNIQUE INDEX `code` (`product_id`, `code`, `type`, `source`, `source_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 -- -----
+CREATE TABLE `lc_product_notification_recipients` (
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`product_id` INT(10) UNSIGNED NULL,
+	`email` VARCHAR(64) NOT NULL DEFAULT '',
+	`language_code` CHAR(2) NOT NULL DEFAULT '',
+	`created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (`id`),
+	INDEX `product_id` (`product_id`),
+	UNIQUE INDEX `notification_recipient` (`product_id`, `email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+-- -----
 CREATE TABLE `lc_redirects` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',

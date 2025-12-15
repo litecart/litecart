@@ -213,6 +213,52 @@
 				$stock_transaction->save();
 
 				$this->data['quantity_adjustment'] = 0;
+
+				// Send restock notifications
+				if ($this->previous['quantity'] <= 0 && $this->data['quantity'] > 0) {
+
+					$products_query = database::query(
+						"select id from ". DB_TABLE_PREFIX ."products
+						where id in (
+							select product_id from ". DB_TABLE_PREFIX ."products_to_stock_items
+							where stock_item_id = ". (int)$this->data['id'] ."
+						);"
+					);
+
+					while ($product_row = database::fetch($products_query)) {
+
+						$notification_recipients_query = database::query(
+							"select * from ". DB_TABLE_PREFIX ."product_notification_recipients
+							where product_id = ". (int)$product_row['id'] .";"
+						);
+
+						while ($recipient = database::fetch($notification_recipients_query)) {
+
+							$subject = t('email_subject:product_back_in_stock', 'A product is back in stock', $recipient['language_code']);
+							$message = t('email_message:product_back_in_stock', "You are receiving this email because you requested a notification that the following item is now back in stock:\r\n\r\n%item_name\r\n%item_link", $recipient['language_code']);
+
+							$aliases = [
+								'%item_name' => reference::product($product_row['id'], $recipient['language_code'])->name,
+								'%item_link' => document::link('product', ['product_id' => $product_row['id']]),
+							];
+
+							(new ent_email())
+								->add_recipient($recipient['email'])
+								->set_subject(strtr($subject, $aliases))
+								->add_body(strtr($message, $aliases))
+								->send();
+						}
+
+						if (database::num_rows($notification_recipients_query)) {
+							notices::add('success', t('notice_notified_users_of_items_back_in_stock', 'Notified users of items back in stock'));
+						}
+
+						database::query(
+							"delete from ". DB_TABLE_PREFIX ."product_notification_recipients
+							where product_id = ". (int)$product_row['id'] .";"
+						);
+					}
+				}
 			}
 
 			// References

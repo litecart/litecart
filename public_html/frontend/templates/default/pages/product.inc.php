@@ -134,17 +134,32 @@ form[name="buy_now_form"] .dropdown-menu .image {
 								<span class="value"><?php echo $sold_out_status['name']; ?></span>
 							</div>
 
-							<?php } else { ?>
-							<div class="stock-unavailable">
-								<?php echo t('title_stock_status', 'Stock Status'); ?>:
-								<span class="value"><?php echo t('title_sold_out', 'Sold Out'); ?></span>
+					<?php } else { ?>
+					<div class="stock-unavailable">
+						<?php echo t('title_stock_status', 'Stock Status'); ?>:
+						<span class="value"><?php echo t('title_sold_out', 'Sold Out'); ?></span>
+					</div>
+
+					<?php if (!$orderable) { ?>
+					<div class="notify-me" style="margin-top: 1em;">
+						<?php echo f::form_begin('notification_form', 'post'); ?>
+							<div class="form-group">
+								<label><?php echo t('description_get_notified_when_in_stock', 'Would you like to receive a notification when this item is back in stock?'); ?></label>
+								<?php echo f::form_input_email('email', customer::$data['email'] ?? '', 'placeholder="'. t('title_email', 'Email') .'"'); ?>
 							</div>
-							<?php } ?>
-							<?php } ?>
+							<div>
+								<?php echo f::form_button('notify_me', t('title_notify_me', 'Notify Me'), 'submit', 'class="btn btn-success"'); ?>
+							</div>
+						<?php echo f::form_end(); ?>
 					</div>
 					<?php } ?>
 
-					<?php if (isset($final_price)) { ?>
+					<?php } ?>
+					<?php } ?>
+			</div>
+			<?php } ?>
+
+			<?php if ($final_price) { ?>
 					<?php echo f::form_begin('buy_now_form', 'post'); ?>
 
 						<fieldset style="margin: 2em 0;">

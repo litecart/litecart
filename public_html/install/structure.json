@@ -1119,6 +1119,42 @@
 				}
 			}
 		},
+		"lc_product_notification_recipients": {
+			"columns": {
+				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
+				"product_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
+				"email": { "type": "VARCHAR", "length": 64, "default": "''" },
+				"language_code": { "type": "CHAR", "length": 2, "default": "''" },
+				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
+			},
+			"primary_key": ["id"],
+			"keys": {
+				"product_id": ["product_id"]
+			},
+			"unique_keys": {
+				"notification_recipient": ["product_id", "email"]
+			},
+			"foreign_keys": {
+				"notification_to_product": {
+					"columns": ["product_id"],
+					"references": {
+						"table": "lc_products",
+						"columns": ["id"],
+						"on_update": "CASCADE",
+						"on_delete": "CASCADE"
+					}
+				},
+				"notification_to_language": {
+					"columns": ["language_code"],
+					"references": {
+						"table": "lc_languages",
+						"columns": ["code"],
+						"on_update": "CASCADE",
+						"on_delete": "CASCADE"
+					}
+				}
+			}
+		},
 		"lc_products_prices": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
