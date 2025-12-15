@@ -1,5 +1,5 @@
-INSERT INTO `lc_languages` (`status`, `code`, `code2`, `name`, `locale`, `raw_date`, `raw_time`, `raw_datetime`, `format_date`, `format_time`, `format_datetime`, `decimal_point`, `thousands_sep`, `priority`, `updated_at`, `created_at`) VALUES
-(1, 'da', 'dan', 'Danske', 'da_DK.utf8,da_DK.UTF-8,danish', 'Y-m-d', 'H:i', 'Y-m-d H:i', '%b %e %Y', '%H:%M', '%b %e %Y %H:%M', ',', ' ', 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO `lc_languages` (`status`, `code`, `code2`, `name`, `locale`, `locale_intl`, `raw_date`, `raw_time`, `raw_datetime`, `format_date`, `format_time`, `format_datetime`, `decimal_point`, `thousands_sep`, `priority`, `updated_at`, `created_at`) VALUES
+(1, 'da', 'dan', 'Danske', 'da_DK.utf8,da_DK.UTF-8,danish', 'da_DK', 'Y-m-d', 'H:i', 'Y-m-d H:i', '%b %e %Y', '%H:%M', '%b %e %Y %H:%M', ',', ' ', 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 -- -----
 ALTER TABLE `lc_translations` ADD `text_da` text NOT NULL AFTER `text_en`;
 -- -----

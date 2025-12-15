@@ -229,8 +229,9 @@
 							$token['storage'] = 'file';
 							stats::stop_watch('cache');
 							return self::get($token, $max_age, $force_cache);
-							break;
 					}
+
+					break;
 
 				default:
 

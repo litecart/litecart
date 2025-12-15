@@ -157,8 +157,6 @@
 			$_REQUEST['password'] = '';
 		}
 
-		// Start off with a clean slate
-		ini_set('error_log', FS_DIR_STORAGE . 'logs/errors.log');
 
 		if (empty($_REQUEST['timezone']) && !empty($_REQUEST['store_time_zone'])) {
 			$_REQUEST['timezone'] = $_REQUEST['store_time_zone']; // Backwards compatible
@@ -186,7 +184,7 @@
 		ini_set('log_errors', 'On');
 		ini_set('display_errors', 'On');
 		ini_set('html_errors', 'On');
-		ini_set('error_log', FS_DIR_STORAGE . 'logs/errors.log');
+
 		date_default_timezone_set(!empty($_REQUEST['timezone']) ? $_REQUEST['timezone'] : ini_get('date.timezone'));
 
 		### PHP > Check Version #######################################
@@ -290,6 +288,9 @@
 		} else {
 			throw new Exception('<span class="error">[Error]</span></p>' . PHP_EOL . PHP_EOL);
 		}
+
+		file_put_contents(FS_DIR_STORAGE . 'logs/errors.log', '');
+		ini_set('error_log', FS_DIR_STORAGE . 'logs/errors.log');
 
 		### Installer > Update ########################################
 
@@ -657,7 +658,7 @@
 		### Admin > Database > Administrators ##################################
 
 		database::query(
-			"insert into ". str_replace('`lc_', '`'.DB_TABLE_PREFIX, '`lc_administrators`') ."
+			"insert into `". DB_TABLE_PREFIX ."administrators`
 			(`id`, `status`, `username`, `password_hash`, `known_ips`, `updated_at`, `created_at`)
 			values ('1', '1', '". database::input($_REQUEST['username']) ."', '". database::input(password_hash($_REQUEST['password'], PASSWORD_DEFAULT)) ."', '". database::input($_SERVER['REMOTE_ADDR']) ."', '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
 		);
@@ -669,7 +670,7 @@
 		if (defined('PLATFORM_VERSION')) {
 
 			database::query(
-				"update ". str_replace('`lc_', '`'.DB_TABLE_PREFIX, '`lc_settings`') ."
+				"update `". DB_TABLE_PREFIX ."settings`
 				set `value` = '". database::input(PLATFORM_VERSION) ."'
 				where `key` = 'platform_database_version'
 				limit 1;"

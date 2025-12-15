@@ -15,13 +15,13 @@
 
 			left join (
 				select category_id, count(product_id) as num_products
-				from lc_products_to_categories
+				from ". DB_TABLE_PREFIX . "products_to_categories
 				group by category_id
 			) ptc on (ptc.category_id = c.id)
 
 			left join (
 				select parent_id, count(id) as num_subcategories
-				from lc_categories
+				from ". DB_TABLE_PREFIX ."categories
 				where status
 				group by parent_id
 			) c2 on (c2.parent_id = c.id)
@@ -89,13 +89,13 @@
 
 			left join (
 				select category_id, count(product_id) as num_products
-				from lc_products_to_categories
+				from ". DB_TABLE_PREFIX ."products_to_categories
 				group by category_id
 			) ptc on (ptc.category_id = c.id)
 
 			left join (
 				select parent_id, count(id) as num_subcategories
-				from lc_categories
+				from ". DB_TABLE_PREFIX ."categories
 				where status
 				group by parent_id
 			) c2 on (c2.parent_id = c.id)

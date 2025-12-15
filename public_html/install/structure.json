@@ -1728,11 +1728,11 @@
 			},
 			"primary_key": ["id"],
 			"keys": {
-				"uid": ["uid"],
+				"session_id": ["session_id"],
+				"country_code": ["country_code"],
+				"language": ["language"],
 				"updated_at": ["updated_at"],
-				"created_at": ["created_at"],
-				"country": ["country"],
-				"language": ["language"]
+				"created_at": ["created_at"]
 			}
 		},
 		"lc_zones": {
