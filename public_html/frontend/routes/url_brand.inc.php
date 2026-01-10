@@ -16,7 +16,7 @@
 		],
 
 		'f:brand' => [
-			'pattern' => '#^brands/([0-9]+)(/.*|/?$)#',
+			'pattern' => '#^brands/(\d+)(?:/.*)?$#',
 			'controller' => 'app://frontend/pages/brand.inc.php',
 			'params' => 'brand_id=$1',
 			'endpoint' => 'frontend',
@@ -38,7 +38,7 @@
 		],
 
 		null => [
-			'pattern' => '#^.*-m-([0-9]+)/?$#',
+			'pattern' => '#^.*-m-(\d+)/?$#',
 			'controller' => 'app://frontend/pages/brand.inc.php',
 			'params' => 'brand_id=$1',
 			'endpoint' => 'frontend',

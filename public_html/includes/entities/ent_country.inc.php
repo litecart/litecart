@@ -30,7 +30,7 @@
 
 		public function load($country_code) {
 
-			if (!preg_match('#^([0-9]+|[A-Z]{2,3}|[a-z ]{4,})$#i', $country_code)) {
+			if (!preg_match('#^(\d+|[A-Z]{2,3}|[a-z ]{4,})$#i', $country_code)) {
 				throw new Exception('Invalid country ('. $country_code .')');
 			}
 
@@ -38,7 +38,7 @@
 
 			$country = database::query(
 				"select * from ". DB_TABLE_PREFIX ."countries
-				". (preg_match('#^[0-9]+$#', $country_code) ? "where id = ". (int)$country_code : "") ."
+				". (preg_match('#^\d+$#', $country_code) ? "where id = ". (int)$country_code : "") ."
 				". (preg_match('#^[A-Z]{2}$#i', $country_code) ? "where iso_code_2 = '". database::input(strtoupper($country_code)) ."'" : "") ."
 				". (preg_match('#^[A-Z]{3}$#i', $country_code) ? "where iso_code_3 = '". database::input(strtoupper($country_code)) ."'" : "") ."
 				". (preg_match('#^[a-z ]{4,}$#i', $country_code) ? "where (name like '". database::input_like($country_code) ."' or domestic_name like '". database::input_like($country_code) ."')" : "") ."

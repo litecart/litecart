@@ -29,7 +29,7 @@
 
 		public function load($redirect_id) {
 
-			if (!preg_match('#^[0-9]+$#', $redirect_id)) {
+			if (!preg_match('#^\d+$#', $redirect_id)) {
 				throw new Exception('Invalid redirect (ID: '. $redirect_id .')');
 			}
 

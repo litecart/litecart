@@ -76,6 +76,8 @@
 
 			##########
 
+			$is_new_language = empty($language->data['id']) ? true : false;
+
 			if (empty($_POST['domain_name'])) {
 				$_POST['domain_name'] = '';
 			}
@@ -128,6 +130,39 @@
 					where `key` = 'store_language_code'
 					limit 1;"
 				);
+			}
+
+			if ($is_new_language) {
+				try {
+
+					// Download language pack from the web
+
+					$client = new http_client();
+
+					$response = $client->call('POST', document::link('https://litecart.net/en/translations/download', [
+						'locales' => [$language->data['code']],
+					]));
+
+					if ($client->response_code() != 200) {
+						throw new Exception('Language pack not found');
+					}
+
+					$csv = f::csv_decode($response);
+
+					foreach ($csv as $row) {
+						database::query(
+							"insert into ". DB_TABLE_PREFIX ."translations
+							(`code`, `text_". database::input($language->data['code']) ."`)
+							values ('". database::input($row['code']) ."', '". database::input($row['text_'.$language->data['code']]) ."')
+							on duplicate key update `text_". database::input($language->data['code']) ."` = '". database::input($row['text_'.$language->data['code']]) ."');"
+						);
+					}
+
+					language::set($language->data['code']);
+
+				} catch (Exception $e) {
+					// Do nothing
+				}
 			}
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));

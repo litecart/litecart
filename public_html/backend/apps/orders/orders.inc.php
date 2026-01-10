@@ -48,7 +48,7 @@
 
 			switch ($_POST['action']) {
 
-					// Set Order Status
+				// Set Order Status
 				case 'set_order_status':
 
 					if (empty($_POST['order_status_id'])) {
@@ -142,15 +142,16 @@
 
 					list($module_id, $action_id) = explode(':', $_POST['order_action']);
 
-					$actions = (new mod_order())->actions();
+					$mod_order = new mod_order();
+					$actions = $mod_order->actions();
 
-					if (!method_exists($order_action->modules[$module_id], $actions[$module_id]['actions'][$action_id]['function'])) {
+					if (!method_exists($mod_order->modules[$module_id], $actions[$module_id]['actions'][$action_id]['function'])) {
 						throw new Exception(t('error_method_doesnt_exist', 'The method doesn\'t exist'));
 					}
 
 					sort($_POST['orders']);
 
-					if ($result = call_user_func([$order_action->modules[$module_id], $actions[$module_id]['actions'][$action_id]['function']], $_POST['orders'])) {
+					if ($result = call_user_func([$mod_order->modules[$module_id], $actions[$module_id]['actions'][$action_id]['function']], $_POST['orders'])) {
 						echo $result;
 						return;
 					}
@@ -196,7 +197,7 @@
 		];
 	}
 
-	switch($_GET['sort']) {
+	switch ($_GET['sort']) {
 
 		case 'id':
 			$sql_sort = "o.starred desc, o.id desc";
@@ -243,7 +244,9 @@
 
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$orders = database::query(
-		"select o.*, os.color as order_status_color, os.icon as order_status_icon,
+		"select o.*,
+			os.color as order_status_color,
+			os.icon as order_status_icon,
 			json_value(os.name, '$.". database::input(language::$selected['code']) ."') as order_status_name,
 			if (o.notes, 1, 0) as has_notes
 		from ". DB_TABLE_PREFIX ."orders o
@@ -349,7 +352,8 @@
 	];
 
 	database::query(
-		"select os.*, json_value(os.name, '$.". database::input(language::$selected['code']) ."') as name, o.num_orders
+		"select os.*, o.num_orders,
+			json_value(os.name, '$.". database::input(language::$selected['code']) ."') as name
 		from ". DB_TABLE_PREFIX ."order_statuses os
 		left join (
 			select order_status_id, count(id) as num_orders

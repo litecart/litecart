@@ -1141,7 +1141,6 @@ html[dir="rtl"] .dropdown label:has([data-toggle="dropdown"]) {
   font-variant: normal;
   text-rendering: auto;
   text-align: center;
-  vertical-align: middle;
   line-height: 1;
   width: 1em;
   height: 1em;
@@ -3181,11 +3180,11 @@ body.litebox-open {
 }
 [data-toggle="momentum-scroll"] button[name="left"][name="left"],
 [data-toggle="momentum-scroll"] button[name="right"][name="left"] {
-  inset-inline-start: -20px;
+  inset-inline-start: 1em;
 }
 [data-toggle="momentum-scroll"] button[name="left"][name="right"],
 [data-toggle="momentum-scroll"] button[name="right"][name="right"] {
-  inset-inline-end: -20px;
+  inset-inline-end: 1em;
 }
 /* Navigation */
 .nav {

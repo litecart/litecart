@@ -10,7 +10,7 @@
 		private static $_modifications = [];           // Array of modifications to apply
 		private static $_installed = [];               // Array of installed modifications
 		private static $_settings = [];                // Array of modification settings
-		public static  $time_elapsed = 0;               // Integer of time elapsed during operations
+		public static  $time_elapsed = 0;              // Integer of time elapsed during operations
 
 		public static function init() {
 

@@ -38,7 +38,7 @@
 
 		public function load($third_party_id) {
 
-			if (!preg_match('#^[0-9]+$#', $third_party_id)) {
+			if (!preg_match('#^\d+$#', $third_party_id)) {
 				throw new Exception('Invalid third party (ID: '. $third_party_id .')');
 			}
 

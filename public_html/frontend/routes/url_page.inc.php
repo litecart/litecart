@@ -2,7 +2,7 @@
 
 	return [
 		'f:page' => [
-			'pattern' => '#^pages/([0-9]+)(/.*|/?$)$#',
+			'pattern' => '#^pages/(\d+)(?:/.*)?$#',
 			'controller' => 'app://frontend/pages/page.inc.php',
 			'params' => 'page_id=$1',
 			'endpoint' => 'frontend',

@@ -28,7 +28,7 @@
 
 		public function load($site_tag_id) {
 
-			if (!preg_match('#^[0-9]+$#', $site_tag_id)) {
+			if (!preg_match('#^\d+$#', $site_tag_id)) {
 				throw new Exception('Invalid site tag (ID: '. $site_tag_id .')');
 			}
 

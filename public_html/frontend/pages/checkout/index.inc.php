@@ -30,6 +30,27 @@
 			exit;
 		}
 
+		foreach ($order->data['items'] as $item) {
+
+			// If product geo_zone_id is set, check if shipping address is within geo zone
+			if ($geo_zones = reference::product($item['product_id'])->geo_zones) {
+
+				if (!database::query(
+					"select id from ". DB_TABLE_PREFIX ."zones_to_geo_zones
+					where geo_zone_id in ('". implode("', '", database::input($geo_zones)) ."')
+					". (!empty($order->data['customer']['shipping_address']['country_code']) ? "and (country_code = '' or country_code = '". database::input($order->data['customer']['shipping_address']['country_code']) ."')" : "and (country_code = '' or country_code = '". database::input($order->data['customer']['shipping_address']['country_code']) ."')") ."
+					". (!empty($order->data['customer']['shipping_address']['zone_code']) ? "and (zone_code = '' or zone_code = '". database::input($order->data['customer']['shipping_address']['zone_code']) ."')" : "and zone_code = ''") ."
+					". (!empty($order->data['customer']['shipping_address']['city']) ? "and (city = '' or city like '". addcslashes(database::input($order->data['customer']['shipping_address']['city']), '%_') ."')" : "and city = ''") .";"
+				)->num_rows()) {
+					notices::add('errors', strtr(language::translate('error_geo_zone_restriction', 'Your shopping cart contains items that can not be shipped to %country'), [
+						'%country' => reference::country($order->data['customer']['shipping_address']['country_code'])->name,
+					]) .'['.$item['sku'].']');
+					header('Location: '. document::ilink('checkout/customer'), 302);
+					exit;
+				}
+			}
+    }
+
 		// Connect session order to shorthand variable
 		$order = &session::$data['checkout']['order'];
 

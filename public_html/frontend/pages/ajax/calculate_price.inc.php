@@ -2,7 +2,7 @@
 
 	try {
 
-		if (empty($_REQUEST['product_id']) || !preg_match('#^[0-9]+$#', $_REQUEST['quantity'])) {
+		if (empty($_REQUEST['product_id']) || !preg_match('#^\d+$#', $_REQUEST['quantity'])) {
 			throw new Exception('Missing or invalid product_id', 400);
 		}
 

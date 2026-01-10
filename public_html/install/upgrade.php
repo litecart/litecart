@@ -413,6 +413,7 @@
 				if (file_exists(__DIR__ . '/migrations/'. $version .'.sql')) {
 
 					echo '<p>Upgrading database to '. $version .'...</p>' . PHP_EOL . PHP_EOL;
+
 					$sql = file_get_contents(__DIR__ . '/migrations/'. $version .'.sql');
 					$sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, $sql);
 					$sql = str_replace("'lc_", "'".DB_TABLE_PREFIX, $sql);
@@ -467,6 +468,11 @@
 			// Fetch MySQL table structures from structure.json
 			$database_structure = json_decode(file_get_contents(__DIR__ . '/structure.json'), true);
 
+			// Assign table name with table prefix
+			foreach ($database_structure['tables'] as $i => $table) {
+				$database_structure['tables'][$i]['name'] = DB_TABLE_PREFIX . $i;
+			}
+
 			if ($database_structure === null) {
 				throw new Exception('structure.json could not be decoded: ' . json_last_error_msg());
 			}
@@ -475,30 +481,23 @@
 				throw new Exception('structure.json does not contain any tables.');
 			}
 
-			// Replace table prefix in structure.json
-			foreach ($database_structure['tables'] as $table_name => $table) {
-				$platform_table_name = preg_replace('#^lc_#', DB_TABLE_PREFIX, $table_name);
-				$database_structure['tables'][$platform_table_name] = $table;
-				unset($database_structure['tables'][$table_name]);
-			}
-
 			#############################################
 
 			// Iterate through each table (this is to ensure specific table properties)
-			foreach ($database_structure['tables'] as $table_name => $table) {
+			foreach ($database_structure['tables'] as $table) {
 
 				// If table exists
-				if (in_array($table_name, $existing_tables)) {
+				if (in_array($table['name'], $existing_tables)) {
 
 					// Get existing table properties
 					$existing_table = database::query(
-						"SHOW TABLE STATUS LIKE '". database::input($table_name) ."';"
+						"SHOW TABLE STATUS LIKE '". database::input($table['name']) ."';"
 					)->fetch();
 
 					// Convert engine and row format if needed
 					if ($existing_table['Engine'] != 'InnoDB' || $existing_table['Row_format'] != 'Dynamic') {
 						database::query(
-							"ALTER TABLE `". $table_name ."`
+							"ALTER TABLE `". database::input($table['name']) ."`
 							ENGINE='InnoDB' ROW_FORMAT=DYNAMIC;"
 						);
 					}
@@ -506,7 +505,7 @@
 					// Convert charset and collation if needed
 					if ($existing_table['Create_options'] != 'CHARSET=utf8mb4' || $existing_table['Collation'] != $default_collation) {
 						database::query(
-							"ALTER TABLE `". $table_name ."`
+							"ALTER TABLE `". database::input($table['name']) ."`
 							CONVERT TO CHARACTER SET utf8mb4 COLLATE ". database::input($default_collation) .";"
 						);
 					}
@@ -516,22 +515,22 @@
 			########################################################################
 
 			// Iterate through each table and add/change columns and keys
-			foreach ($database_structure['tables'] as $table_name => $table) {
+			foreach ($database_structure['tables'] as $table) {
 
 				if (empty($table['columns'])) {
-					throw new Exception('Table structure for '. $table_name .' in structure.json does not contain any columns');
+					throw new Exception('Table structure for '. $table['name'] .' in structure.json does not contain any columns');
 				}
 
-				if (in_array($table_name, $existing_tables)) {
+				if (in_array($table['name'], $existing_tables)) {
 					$table_exists = true;
 				} else {
 					$table_exists = false;
 				}
 
 				if ($table_exists) {
-					$sql = 'ALTER TABLE `'. $table_name .'`' . PHP_EOL;
+					$sql = 'ALTER TABLE `'. database::input($table['name']) .'`' . PHP_EOL;
 				} else {
-					$sql = 'CREATE TABLE `'. $table_name .'` (' . PHP_EOL;
+					$sql = 'CREATE TABLE `'. database::input($table['name']) .'` (' . PHP_EOL;
 				}
 
 				$last_column = null;
@@ -539,7 +538,7 @@
 				// Drop primary key
 				if ($table_exists && !empty($table['primary_key'])) {
 					if (database::query(
-						"SHOW INDEX FROM `". $table_name ."`
+						"SHOW INDEX FROM `". database::input($table['name']) ."`
 						WHERE Key_name = 'PRIMARY'
 						/*AND non_unique = 0*/;"
 					)->num_rows) {
@@ -551,11 +550,11 @@
 				if ($table_exists && !empty($table['unique_keys'])) {
 					foreach (array_keys($table['unique_keys']) as $key_name) {
 						if (database::query(
-							"SHOW INDEX FROM `". $table_name ."`
+							"SHOW INDEX FROM `". $table['name'] ."`
 							WHERE Key_name = '". database::input($key_name) ."'
 							AND non_unique = 0;"
 						)->num_rows) {
-							$sql .= 'DROP INDEX `'. $key_name .'`,' . PHP_EOL;
+							$sql .= 'DROP INDEX `'. database::input($key_name) .'`,' . PHP_EOL;
 						}
 					}
 				}
@@ -564,26 +563,39 @@
 				if ($table_exists && !empty($table['keys'])) {
 					foreach (array_keys($table['keys']) as $key_name) {
 						if (database::query(
-							"SHOW INDEX FROM `". $table_name ."`
+							"SHOW INDEX FROM `". $table['name'] ."`
 							WHERE Key_name = '". database::input($key_name) ."'
 							AND non_unique = 1;"
 						)->num_rows) {
-							$sql .= 'DROP INDEX `'. $key_name .'`,' . PHP_EOL;
+							$sql .= 'DROP INDEX `'. database::input($key_name) .'`,' . PHP_EOL;
 						}
 					}
 				}
 
+				// Drop fulltext keys
+				if ($table_exists && !empty($table['fulltext_keys'])) {
+					foreach (array_keys($table['fulltext_keys']) as $key_name) {
+						if (database::query(
+							"SHOW INDEX FROM `". database::input($table['name']) ."`
+							WHERE Key_name = '". database::input($key_name) ."'
+							AND Index_type = 'FULLTEXT';"
+						)->num_rows) {
+							$sql .= 'DROP INDEX `'. database::input($key_name) .'`,' . PHP_EOL;
+						}
+					}
+				}
+				
 				// Drop check constraints
 				if ($table_exists && !empty($table['check_constraints'])) {
 					foreach (array_keys($table['check_constraints']) as $name) {
 						if (database::query(
 							"SELECT CONSTRAINT_NAME
 							FROM information_schema.table_constraints
-							WHERE CONSTRAINT_SCHEMA = '". DB_DATABASE ."'
-							AND TABLE_NAME = '". database::input($table_name) ."'
+							WHERE CONSTRAINT_SCHEMA = '". database::input(DB_DATABASE) ."'
+							AND TABLE_NAME = '". database::input($table['name']) ."'
 							AND CONSTRAINT_NAME = '". database::input($name) ."';"
 						)->num_rows) {
-							$sql .= 'DROP CHECK `'. $name .'`,' . PHP_EOL;
+							$sql .= 'DROP CONSTRAINT `'. database::input($name) .'`,' . PHP_EOL;
 						}
 					}
 				}
@@ -592,7 +604,7 @@
 				foreach ($table['columns'] as $column_name => $column) {
 
 					if ($table_exists && database::query(
-						"SHOW COLUMNS FROM `". $table_name ."`
+						"SHOW COLUMNS FROM `". database::input($table['name']) ."`
 						LIKE '". database::input($column_name) ."';"
 					)->num_rows) {
 						$column_exists = true;
@@ -603,13 +615,13 @@
 					if ($table_exists) {
 
 						if ($column_exists) {
-							$sql .= 'CHANGE COLUMN `'. $column_name .'` `'. $column_name .'` '. $column['type'];
+							$sql .= 'CHANGE COLUMN `'. database::input($column_name) .'` `'. database::input($column_name) .'` '. database::input($column['type']);
 						} else {
-							$sql .= 'ADD COLUMN `'. $column_name .'` '. $column['type'];
+							$sql .= 'ADD COLUMN `'. database::input($column_name) .'` '. database::input($column['type']);
 						}
 
 					} else {
-						$sql .= '  `'. $column_name .'` '. $column['type'];
+						$sql .= '  `'. database::input($column_name) .'` '. database::input($column['type']);
 					}
 
 					if (isset($column['length'])) {
@@ -670,7 +682,11 @@
 				// Create fulltext keys
 				if (isset($table['fulltext_keys'])) {
 					foreach ($table['fulltext_keys'] as $key_name => $key_columns) {
-						$sql .= '  FULLTEXT KEY `' . database::input($key_name) . '` (`' . implode('`, `', database::input($key_columns)) . '`),' . PHP_EOL;
+						if ($table_exists) {
+							$sql .= 'ADD FULLTEXT KEY `'. database::input($key_name) .'` (`'. implode('`, `', database::input($key_columns)) .'`),' . PHP_EOL;
+						} else {
+							$sql .= '  FULLTEXT KEY `' . database::input($key_name) . '` (`' . implode('`, `', database::input($key_columns)) . '`),' . PHP_EOL;
+						}
 					}
 				}
 

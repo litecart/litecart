@@ -43,7 +43,7 @@
 
 				} else {
 
-					if (!preg_match('#^\[([a-z_]+):([0-9]+)\](.*)$#', $translation['code'], $matches)) {
+					if (!preg_match('#^\[([a-z_]+):(\d+)\](.*)$#', $translation['code'], $matches)) {
 						throw new Exception('Could not decode entity, id, and column from code');
 					}
 
@@ -453,7 +453,7 @@
 		var $modal = $(this).closest('.litebox'),
 			 translated = $modal.find(':input[name="result"]').val().trim();
 
-		translated = translated.split(/\n(?=\[[0-9]+\])/);
+		translated = translated.split(/\n(?=\[\d+\])/);
 
 		if ($modal.find('select[name="to_language_code"]').val() == '') {
 			alert('You must specify which language you are translating');
@@ -462,7 +462,7 @@
 
 		$.each(translated, function(i) {
 
-			var matches = translated[i].trim().match(/^\[([0-9]+)\] = (.*)$/),
+			var matches = translated[i].trim().match(/^\[(\d+)\] = (.*)$/),
 				index = matches[1],
 				translation = matches[2].trim();
 

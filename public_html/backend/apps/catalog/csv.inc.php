@@ -782,14 +782,14 @@
 
 							foreach (preg_split('#\R+#', $row['attributes'], -1, PREG_SPLIT_NO_EMPTY) as $attribute_row) {
 
-								if (preg_match('#^([0-9]+):([0-9]+)$#', $attribute_row, $matches)) {
+								if (preg_match('#^(\d+):(\d+)$#', $attribute_row, $matches)) {
 									$attribute = [
 										'group_id' => $matches[1],
 										'value_id' => $matches[2],
 										'custom_value' => '',
 									];
 
-								} else if (preg_match('#^([0-9]+):"([^"]*)"#', $attribute_row, $matches)) {
+								} else if (preg_match('#^(\d+):"([^"]*)"#', $attribute_row, $matches)) {
 									$attribute = [
 										'group_id' => $matches[1],
 										'value_id' => 0,

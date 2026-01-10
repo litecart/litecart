@@ -49,7 +49,7 @@
 			foreach ($csv as $row) {
 				$line++;
 
-				if (preg_match('#^\[([a-z_]+):([0-9]+)\](.*)$#', $row['code'], $matches)) {
+				if (preg_match('#^\[([a-z_]+):(\d+)\](.*)$#', $row['code'], $matches)) {
 
 					if (!$collection = $collections[array_search($matches[1], array_column($collections, 'entity'))]) {
 						throw new Exception('Unsupported entity on line '.$line);

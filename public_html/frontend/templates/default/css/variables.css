@@ -76,8 +76,8 @@
   --breadcrumb-item-border-width: 1px;
   --breadcrumb-item-border-color: #d6d6e1;
   /* Buttons */
-  --button-padding-x: 1.25em;
-  --button-padding-y: 0.66em;
+  --button-padding-x: 1em;
+  --button-padding-y: 0.55em;
   --button-border-width: 1px;
   --button-shadow: 0 2px 2px 0 rgba(37, 44, 97, 0.15), 0 1px 3px 0 rgba(93, 100, 148, 0.2);
   /* Button: Primary */

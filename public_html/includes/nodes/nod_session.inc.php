@@ -209,7 +209,7 @@
 		}
 
 		public static function generate_id() {
-			$id = bin2hex(random_bytes(16));
+			$id = bin2hex(random_bytes(24)); // 48 characters
 			self::$data['id'] = $id;
 			self::set_cookie();
 			return $id;

@@ -1,18 +1,8 @@
 <?php
 
 	return [
-		'f:product_old' => [
-			'pattern' => '#^(?:.*-c-([0-9]+)/)?(?:.*-m-([0-9]+)/)?.*-p-([0-9]+)$#',
-			'controller' => 'app://frontend/pages/product.inc.php',
-			'params' => 'category_id=$1&brand_id=$2&product_id=$3',
-			'endpoint' => 'frontend',
-			'options' => [
-				'redirect' => true,
-			],
-		],
-
 		'f:product' => [
-			'pattern' => '#^products/([0-9]+)(/.*|/?$)$#',
+			'pattern' => '#^products/(\d+)(?:/.*)?$#',
 			'controller' => 'app://frontend/pages/product.inc.php',
 			'params' => 'product_id=$1',
 			'endpoint' => 'frontend',
@@ -20,6 +10,10 @@
 				'redirect' => true,
 			],
 			'rewrite' => function(ent_link $link, $language_code) {
+
+				if (!is_array($link->query)) {
+					return;
+				}
 
 				if (empty($link->query['product_id'])) {
 					return;
@@ -44,5 +38,15 @@
 
 				return $link;
 			}
+		],
+
+		null => [
+			'pattern' => '#^(?:.*-c-(\d+)/)?(?:.*-m-(\d+)/)?.*-p-(\d+)$#',
+			'controller' => 'app://frontend/pages/product.inc.php',
+			'params' => 'category_id=$1&brand_id=$2&product_id=$3',
+			'endpoint' => 'frontend',
+			'options' => [
+				'redirect' => true,
+			],
 		],
 	];

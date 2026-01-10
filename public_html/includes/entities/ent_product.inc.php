@@ -66,7 +66,7 @@
 			// Product
 			$product = database::query(
 				"select * from ". DB_TABLE_PREFIX ."products
-				where ". (preg_match('#^[0-9]+$#', $id) ? "id = ". (int)$id : "code = '". database::input($id) ."'") ."
+				where ". (preg_match('#^\d+$#', $id) ? "id = ". (int)$id : "code = '". database::input($id) ."'") ."
 				limit 1;"
 			)->fetch();
 

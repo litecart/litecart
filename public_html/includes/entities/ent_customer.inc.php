@@ -36,7 +36,7 @@
 
 		public function load($id) {
 
-			if (!preg_match('#(^[0-9]+$|@)#', $id)) {
+			if (!preg_match('#(^\d+$|@)#', $id)) {
 				throw new Exception('Invalid customer (ID: '. $id .')');
 			}
 
@@ -44,7 +44,7 @@
 
 			$customer = database::query(
 				"select * from ". DB_TABLE_PREFIX ."customers
-				". (preg_match('#^[0-9]+$#', $id) ? "where id = ". (int)$id : "") ."
+				". (preg_match('#^\d+$#', $id) ? "where id = ". (int)$id : "") ."
 				". (preg_match('#@#', $id) ? "where email = '". database::input(strtolower($id)) ."'" : "") ."
 				limit 1;"
 			)->fetch(function($customer){
@@ -189,6 +189,53 @@
 			);
 
 			$this->previous['password_hash'] = $this->data['password_hash'];
+		}
+
+		public function send_email($type='account_created') {
+
+			if (empty($this->data['email'])) {
+				throw new Exception(t('error_cannot_send_email_to_customer_without_email', 'Cannot send email to customer without an email address'));
+			}
+
+			$aliases = [
+				'{store_name}' => settings::get('store_name'),
+				'{store_link}' => document::ilink(''),
+				'{firstname}' => $this->data['firstname'],
+				'{lastname}' => $this->data['lastname'],
+				'{email}' => $this->data['email'],
+			];
+
+			switch ($type) {
+
+				case 'account_created':
+
+					$subject = t('email_subject_customer_account_created', 'Customer Account Created');
+
+					$message = strtr(t('email_account_created', implode("\r\n", [
+						'Welcome {firstname} {lastname} to {store_name}!',
+						'',
+						'Your account has been created. You can now make purchases in our online store and keep track of history.',
+						'',
+						'Sign in using your email address {email}.',
+						'{store_name}',
+						'{store_link}',
+					]), $aliases));
+
+					break;
+
+				//case 'password_reset':
+				//	$subject = t('email_subject_customer_password_reset', 'Password Reset');
+				//	break;
+
+				default:
+					throw new Exception(t('error_invalid_email_type', 'Invalid email type'));
+			}
+
+			(new ent_email())
+				->add_recipient($this->data['email'], $this->data['firstname'] .' '. $this->data['lastname'])
+				->set_subject($subject)
+				->add_body($message)
+				->send();
 		}
 
 		public function delete() {

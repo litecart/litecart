@@ -169,7 +169,7 @@
 				</div>
 
 				<div class="col-md-7">
-					<label class="form-group">
+					<div class="form-group">
 						<div class="form-label"><?php echo t('title_conditions', 'Conditions'); ?></div>
 						<div class="radio">
 							<label><?php echo f::form_checkbox('rule_companies_with_tax_id', ['1', t('text_applies_to_companies_with_tax_id', 'Applies to companies with a tax ID')], true); ?></label>
@@ -183,7 +183,7 @@
 						<div class="radio">
 							<label><?php echo f::form_checkbox('rule_individuals_without_tax_id', ['1', t('rule_applies_to_individuals_without_tax_id', 'Applies to individuals without a tax ID')], true); ?></label>
 						</div>
-					</label>
+					</div>
 				</div>
 			</div>
 

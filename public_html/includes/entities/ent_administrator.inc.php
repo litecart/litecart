@@ -31,7 +31,7 @@
 
 		public function load($id) {
 
-			if (!preg_match('#(^[0-9]+$|^[0-9a-zA-Z_]$|@)#', $id)){
+			if (!preg_match('#(^\d+$|^[0-9a-zA-Z_]$|@)#', $id)){
 				throw new Exception('Invalid administrator (ID: '. $id .')');
 			}
 
@@ -39,8 +39,8 @@
 
 			$administrator = database::query(
 				"select * from ". DB_TABLE_PREFIX ."administrators
-				". (preg_match('#^[0-9]+$#', $id) ? "where id = ". (int)$id : "") ."
-				". (!preg_match('#^[0-9]+$#', $id) ? "where username = '". database::input(strtolower($id)) ."'" : "") ."
+				". (preg_match('#^\d+$#', $id) ? "where id = ". (int)$id : "") ."
+				". (!preg_match('#^\d+$#', $id) ? "where username = '". database::input(strtolower($id)) ."'" : "") ."
 				". (preg_match('#@#', $id) ? "where email = '". database::input(strtolower($id)) ."'" : "") ."
 				limit 1;"
 			)->fetch();

@@ -17,7 +17,6 @@
 				throw new Exception(t('error_must_select_languages', 'You must select languages'));
 			}
 
-
 			foreach (array_keys($_POST['languages']) as $language_code) {
 
 				if (!empty($_POST['disable']) && $language_code == settings::get('default_language_code')) {

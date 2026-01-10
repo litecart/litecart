@@ -46,6 +46,7 @@
     $sql_find = [
       "el.session_id like '%". database::input($_GET['query']) ."%'",
       "el.customer_id = '". database::input($_GET['query']) ."'",
+      "ca.customer_email like '". database::input($_GET['query']) ."'",
       "el.type like '%". database::input($_GET['query']) ."%'",
       "el.description like '%". database::input($_GET['query']) ."%'",
       "el.url like '%". database::input($_GET['query']) ."%'",
@@ -91,10 +92,21 @@
     "select el.*, c.email, c.firstname, c.lastname from ". DB_TABLE_PREFIX ."event_logs el
     left join ". DB_TABLE_PREFIX ."customers c on (el.customer_id = c.id)
     where el.id
+    ". ((!empty($_GET['type'])) ? "and `type` = '". database::input($_GET['type']) ."'" : "") ."
     ". (!empty($sql_find) ? "and (". implode(" or ", $sql_find) .")" : "") ."
+    ". (!empty($_GET['from']) ? "and ca.date_created >= '". date('Y-m-d H:i:s', strtotime($_GET['from'])) ."'" : "") ."
+    ". (!empty($_GET['to']) ? "and ca.date_created <= '". date('Y-m-d H:i:s', strtotime($_GET['to'])) ."'" : "") ."
     order by $sql_sort;"
   )->fetch_page(null, null, $_GET['page'], settings::get('data_table_rows_per_page'), $num_rows, $num_pages);
 
+  $type_options = database::query(
+    "select distinct type from ". DB_TABLE_PREFIX ."event_logs
+    order by type;"
+  )->fetch_all(function($row) {
+    return [$row['type'], $row['type']];
+  });
+
+  array_unshift($type_options, ['', '-- '. language::translate('title_all', 'All') .' --']);
 ?>
 <div class="card card-app">
   <div class="card-header">
@@ -105,7 +117,15 @@
 
   <?php echo f::form_begin('search_form', 'get'); ?>
     <div class="card-filter">
+      <div style="vertical-align: middle; width: 160px;"><?php echo functions::form_select('type', $type_options, true, 'onchange="'. functions::escape_html('$(this).closest("form").submit();') .'"'); ?></div>
       <div class="expandable"><?php echo f::form_input_search('query', true, 'placeholder="'. t('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"'); ?></div>
+      <div>
+        <div class="input-group" style="max-width: 450px;">
+          <?php echo functions::form_input_datetime('from'); ?>
+          <span class="input-group-text"> - </span>
+          <?php echo functions::form_input_datetime('to'); ?>
+        </div>
+      </div>
       <div><?php echo f::form_button('filter', t('title_search', 'Search'), 'submit'); ?></div>
     </div>
   <?php echo f::form_end(); ?>

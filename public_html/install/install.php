@@ -476,12 +476,9 @@
 		}
 
 		// Iterate through tables and drop them
-		foreach (array_keys($database_structure['tables']) as $table_name) {
-
-			$table_name = preg_replace('#^lc_#', DB_TABLE_PREFIX, $table_name);
-
+		foreach ($database_structure['tables'] as $table) {
 			database::query(
-				"DROP TABLE IF EXISTS `". database::input($table_name) ."`;"
+				"DROP TABLE IF EXISTS `". database::input($table['name']) ."`;"
 			);
 		}
 
@@ -492,17 +489,15 @@
 		echo '<p>Writing database tables... ';
 
 		// Iterate through tables
-		foreach ($database_structure['tables'] as $table_name => $table) {
+		foreach ($database_structure['tables'] as $table) {
 
 			// Check if table contains any columns
 			if (empty($table['columns'])) {
-				throw new Exception('Table ' . $table_name . ' does not contain any columns.');
+				throw new Exception('Table ' . $table['name'] . ' does not contain any columns.');
 			}
 
-			$table_name = preg_replace('#^lc_#', DB_TABLE_PREFIX, $table_name);
-
 			// Create SQL statement
-			$sql = 'CREATE TABLE `' . database::input($table_name) . '` (' . PHP_EOL;
+			$sql = 'CREATE TABLE `' . database::input($table['name']) . '` (' . PHP_EOL;
 
 			foreach ($table['columns'] as $column_name => $column) {
 

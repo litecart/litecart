@@ -152,47 +152,66 @@
 
 			unset(session::$data['security_verification']);
 
-			if (!in_array($_SERVER['REMOTE_ADDR'], $administrator['known_ips']) && !empty($administrator['two_factor_auth']) && !empty($administrator['email'])) {
+			$is_known_ip = false;
+			$is_known_range = false;
 
-				session::$data['security_verification'] = [
-					'code' => mt_rand(100000, 999999),
-					'expires' => strtotime('+15 minutes'),
-					'attempts' => 0,
-				];
+			foreach ($administrator['known_ips'] as $known_ip) {
+				if ($_SERVER['REMOTE_ADDR'] == $known_ip) {
+					$is_known_ip = true;
+					$is_known_range = true;
+					break;
+				} else if (preg_replace('[0-9]{1,3}\.[0-9]{1,3}$', '', $_SERVER['REMOTE_ADDR']) == preg_replace('[0-9]{1,3}\.[0-9]{1,3}$', '', $known_ip)) {
+					$is_known_range = true;
+					break;
+				}
+			}
 
-				(new ent_email())
-					->add_recipient($administrator['email'])
-					->set_subject(t('title_verification_code', 'Verification Code'))
-					->add_body(strtr(t('email_verification_code', 'Verification code: {code}'), [
-						'{code}' => session::$data['security_verification']['code']
-					]))
-					->send();
+			if (!$is_known_ip) {
+				if ($is_known_range) {
 
-				notices::add('notices', t('notice_verification_code_sent_via_email', 'A verification code was sent via email'));
+					array_unshift($administrator['known_ips'], $_SERVER['REMOTE_ADDR']);
+					$administrator['known_ips'] = array_unique($administrator['known_ips']);
 
-				if (!empty($_POST['redirect_url'])) {
-					redirect(document::ilink('verify', ['redirect_url' => $_POST['redirect_url']]), 303);
+					if (count($administrator['known_ips']) > 10) {
+						array_pop($administrator['known_ips']);
+					}
+
+					database::query(
+						"update ". DB_TABLE_PREFIX ."administrators
+						set known_ips = '". database::input(implode(',', $administrator['known_ips'])) ."'
+						where id = ". (int)$administrator['id'] ."
+						limit 1;"
+					);
+
 				} else {
-					redirect(document::ilink('verify'), 303);
+
+					if (!empty($administrator['two_factor_auth']) && !empty($administrator['email'])) {
+
+						session::$data['security_verification'] = [
+							'code' => mt_rand(100000, 999999),
+							'expires' => strtotime('+15 minutes'),
+							'attempts' => 0,
+						];
+
+						(new ent_email())
+							->add_recipient($administrator['email'])
+							->set_subject(t('title_verification_code', 'Verification Code'))
+							->add_body(strtr(t('email_verification_code', 'Verification code: %code'), [
+								'%code' => session::$data['security_verification']['code']
+							]))
+							->send();
+
+						notices::add('notices', t('notice_verification_code_sent_via_email', 'A verification code was sent via email'));
+
+						if (!empty($_POST['redirect_url'])) {
+							redirect(document::ilink('verify', ['redirect_url' => $_POST['redirect_url']]));
+						} else {
+							redirect(document::ilink('verify'));
+						}
+
+						exit;
+					}
 				}
-
-				exit;
-
-			} else {
-
-				array_unshift($administrator['known_ips'], $_SERVER['REMOTE_ADDR']);
-				$administrator['known_ips'] = array_unique($administrator['known_ips']);
-
-				if (count($administrator['known_ips']) > 5) {
-					array_pop($administrator['known_ips']);
-				}
-
-				database::query(
-					"update ". DB_TABLE_PREFIX ."administrators
-					set known_ips = '". database::input(implode(',', $administrator['known_ips'])) ."'
-					where id = ". (int)$administrator['id'] ."
-					limit 1;"
-				);
 			}
 
 			if (!empty($_POST['remember_me'])) {

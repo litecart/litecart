@@ -30,7 +30,7 @@
 
 		preg_replace('#[a-z]#', '', $password, -1, $lowercases);
 		preg_replace('#[A-Z]#', '', $password, -1, $uppercases);
-		preg_replace('#[0-9]#', '', $password, -1, $numbers);
+		preg_replace('#\d#', '', $password, -1, $numbers);
 		preg_replace('#[^\w]#', '', $password, -1, $symbols);
 
 		$score = ($numbers * 9) + ($lowercases * 11.25) + ($uppercases * 11.25) + ($symbols * 15)

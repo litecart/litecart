@@ -32,7 +32,7 @@
 
 		public function load($id) {
 
-			if (!preg_match('#(^[0-9]+$|@)#', $id)) {
+			if (!preg_match('#(^\d+$|@)#', $id)) {
 				throw new Exception('Invalid newsletter recipient (ID: '. $id .')');
 			}
 
@@ -40,7 +40,7 @@
 
 			$recipient = database::query(
 				"select * from ". DB_TABLE_PREFIX ."newsletter_recipients
-				". (preg_match('#^[0-9]+$#', $id) ? "where id = ". (int)$id ."" : "") ."
+				". (preg_match('#^\d+$#', $id) ? "where id = ". (int)$id ."" : "") ."
 				". (preg_match('#@#', $id) ? "where email = '". database::input(strtolower($id)) ."'" : "") ."
 				limit 1;"
 			)->fetch();

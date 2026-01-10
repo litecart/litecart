@@ -16,10 +16,10 @@ main {
 	font-weight: bold;
 }
 #box-error-document .title {
-	font-size: 32px;
+	font-size: 24px;
 }
 #box-error-document .description {
-	font-size: 24px;
+	font-size: 18px;
 	opacity: .65;
 }
 </style>

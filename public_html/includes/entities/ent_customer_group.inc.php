@@ -28,7 +28,7 @@
 
 		public function load($id) {
 
-			if (!preg_match('#^[0-9]+$#', $id)) {
+			if (!preg_match('#^\d+$#', $id)) {
 				throw new Exception('Invalid customer group (ID: '. $id .')');
 			}
 			$this->reset();
@@ -42,7 +42,7 @@
 			if (!$customer_group) {
 				throw new Exception('Could not find customer group (ID: '. (int)$id .') in database.');
 			}
-			
+
 			$this->data = array_replace($this->data, array_intersect_key($customer_group, $this->data));
 
 			$this->previous = $this->data;

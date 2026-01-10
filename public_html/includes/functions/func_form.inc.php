@@ -390,7 +390,7 @@
 			$input = '';
 		}
 
-		return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="month" name="'. f::escape_attr($name) .'" value="'. f::escape_attr($input) .'" maxlength="7" pattern="[0-9]{4}-[0-9]{2}" placeholder="YYYY-MM"'. ($parameters ? ' '. $parameters : '') .'>';
+		return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="month" name="'. f::escape_attr($name) .'" value="'. f::escape_attr($input) .'" maxlength="7" pattern="\d{4}-\d{2}" placeholder="YYYY-MM"'. ($parameters ? ' '. $parameters : '') .'>';
 	}
 
 	function form_input_money($name, $currency_code=null, $input=true, $parameters='') {
@@ -505,7 +505,7 @@
 		return implode(PHP_EOL, [
 			'<div class="input-group">',
 			'  <span class="input-group-icon">'. f::draw_fonticon('icon-phone') .'</span>',
-			'  <input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="tel" name="'. f::escape_attr($name) .'" value="'. f::escape_attr($input) .'" pattern="\+?([0-9]|-| )+"'. ($parameters ? ' '. $parameters : '') .'>',
+			'  <input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="tel" name="'. f::escape_attr($name) .'" value="'. f::escape_attr($input) .'" pattern="\+?(\d|-| )+"'. ($parameters ? ' '. $parameters : '') .'>',
 			'</div>',
 		]);
 	}
@@ -613,7 +613,7 @@
 			$input = '';
 		}
 
-		return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="week" name="'. f::escape_attr($name) .'" value="'. f::escape_attr($input) .'" maxlength="7" pattern="[0-9]{4}-W[0-9]{2}" placeholder="YYYY-WW"'. ($parameters ? ' '. $parameters : '') .'>';
+		return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="week" name="'. f::escape_attr($name) .'" value="'. f::escape_attr($input) .'" maxlength="7" pattern="\d{4}-W\d{2}" placeholder="YYYY-WW"'. ($parameters ? ' '. $parameters : '') .'>';
 	}
 
 	function form_input_wysiwyg($name, $input=true, $parameters='') {

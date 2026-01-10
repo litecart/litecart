@@ -48,7 +48,7 @@
 							$table_name = $table;
 							break 2;
 
-						case (preg_match('#^([0-9]+)$#', $zone, $matches) && reference::country($customer['shipping_address']['country_code'])->in_geo_zone($zone, $customer['shipping_address'])):
+						case (preg_match('#^(\d+)$#', $zone, $matches) && reference::country($customer['shipping_address']['country_code'])->in_geo_zone($zone, $customer['shipping_address'])):
 							$table_name = $table;
 							break 2;
 

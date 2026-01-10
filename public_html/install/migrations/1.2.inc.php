@@ -115,27 +115,27 @@
 				'replace' => "ErrorDocument 410 ". WS_DIR_APP . "index.php/error_document?code=410",
 			],
 			[
-				'search'  => "  RewriteRule ^(?:[a-z]{2}/)?.*-c-([0-9]+)/?$ category.php?category_id=$1&%{QUERY_STRING} [L]",
+				'search'  => "  RewriteRule ^(?:[a-z]{2}/)?.*-c-(\d+)/?$ category.php?category_id=$1&%{QUERY_STRING} [L]",
 				'replace' => "  RewriteRule ^.*$ index.php?%{QUERY_STRING} [L]",
 				'regexp'  => true,
 			],
 			[
-				'search'  => "RewriteRule ^(?:[a-z]{2}/)?.*-m-([0-9]+)/?$ manufacturer.php?manufacturer_id=$1&%{QUERY_STRING} [L]",
+				'search'  => "RewriteRule ^(?:[a-z]{2}/)?.*-m-(\d+)/?$ manufacturer.php?manufacturer_id=$1&%{QUERY_STRING} [L]",
 				'replace' => "",
 				'regexp'  => true,
 			],
 			[
-				'search'  => "RewriteRule ^(?:[a-z]{2}/)?.*-i-([0-9]+)$ information.php?page_id=$1&%{QUERY_STRING} [L]",
+				'search'  => "RewriteRule ^(?:[a-z]{2}/)?.*-i-(\d+)$ information.php?page_id=$1&%{QUERY_STRING} [L]",
 				'replace' => "",
 				'regexp'  => true,
 			],
 			[
-				'search'  => "RewriteRule ^(?:[a-z]{2}/)?.*-s-([0-9]+)$ customer_service.php?page_id=$1&%{QUERY_STRING} [L]",
+				'search'  => "RewriteRule ^(?:[a-z]{2}/)?.*-s-(\d+)$ customer_service.php?page_id=$1&%{QUERY_STRING} [L]",
 				'replace' => "",
 				'regexp'  => true,
 			],
 			[
-				'search'  => "RewriteRule ^(?:[a-z]{2}/)?(?:.*-c-([0-9]+)/)?.*-p-([0-9]+)$ product.php?category_id=$1&product_id=$2&%{QUERY_STRING} [L]",
+				'search'  => "RewriteRule ^(?:[a-z]{2}/)?(?:.*-c-(\d+)/)?.*-p-(\d+)$ product.php?category_id=$1&product_id=$2&%{QUERY_STRING} [L]",
 				'replace' => "",
 				'regexp'  => true,
 			],

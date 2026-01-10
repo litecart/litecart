@@ -38,7 +38,7 @@
 
 			$this->reset();
 
-			if (preg_match('#^[0-9]+$#', $id)) {
+			if (preg_match('#^\d+$#', $id)) {
 
 				$stock_item = database::query(
 					"select * from ". DB_TABLE_PREFIX ."stock_items

@@ -102,7 +102,9 @@
 				$output[] = 'Elapsed Time: '. number_format((microtime(true) - SCRIPT_TIMESTAMP_START) * 1000, 0, '.', ' ') .' ms';
 			}
 
-			$output[] = 'Platform: '. PLATFORM_NAME .'/'. PLATFORM_VERSION;
+			if (defined('PLATFORM_NAME') && defined('PLATFORM_VERSION')) {
+				$output[] = 'Platform: '. PLATFORM_NAME .'/'. PLATFORM_VERSION;
+			}
 
 			error_log(html_entity_decode(strip_tags(
 				implode(PHP_EOL, $output))) . PHP_EOL

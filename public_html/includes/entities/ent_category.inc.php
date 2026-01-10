@@ -43,7 +43,7 @@
 
 		public function load($id) {
 
-			if (!preg_match('#^[0-9]+$#', $id)) {
+			if (!preg_match('#^\d+$#', $id)) {
 				throw new Exception('Invalid category (ID: '. $id .')');
 			}
 
