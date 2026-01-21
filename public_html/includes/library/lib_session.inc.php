@@ -42,6 +42,18 @@
     ######################################################################
 
     public static function start() {
+
+      $session_name = session_name();
+
+      // Validate session ID from cookie to prevent session fixation attacks throwing warnings
+      if (isset($_COOKIE[$session_name])) {
+        $sid = $_COOKIE[$session_name];
+        if (!preg_match('#^[-,a-zA-Z0-9]+$#', $sid)) {
+          setcookie($session_name, '', time() - 3600, '/');
+          session_id('');  // Force new ID
+        }
+      }
+
       return session_start();
     }
 
