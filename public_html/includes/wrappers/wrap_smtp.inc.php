@@ -131,30 +131,55 @@
 
     public function send($sender, $recipients, $data='') {
 
-      if (!is_array($recipients)) $recipients = [$recipients];
+      if (!is_array($recipients)) {
+        $recipients = [$recipients];
+      }
 
-      if (!is_resource($this->_socket)) $this->connect();
+      if (!is_resource($this->_socket)) {
+        $this->connect();
+      }
 
-      $this->write("MAIL FROM: <$sender>\r\n", 250);
+      $this->write("MAIL FROM:<{$sender}>\r\n", 250);
 
       foreach ($recipients as $recipient) {
-        $this->write("RCPT TO: <$recipient>\r\n", 250);
+        $this->write("RCPT TO:<{$recipient}>\r\n", 250);
       }
 
       $this->write("DATA\r\n", 354);
 
-      // Split into segments of data to avoid exceeding the maximum line length
-      $data_lines = preg_split('#\r\n?|\n#', $data);
+      // Split message into lines (CRLF / LF / CR safe)
+      $lines = preg_split('#\R#u', $data);
 
-      foreach ($data_lines as $line) {
-        $line = rtrim($line, "\r\n");
-        while (strlen($line) > 256) {
-          $this->write(substr($line, 0, 256) . "\r\n");
-          $line = substr($line, 256);
+      foreach ($lines as $line) {
+
+        // Dot-stuffing (RFC 5321)
+        if ($line !== '' && $line[0] === '.') {
+          $line = '.' . $line;
         }
+
+        // RFC 5321: max 1000 chars incl. CRLF → 998 bytes payload, safe at 990
+        while (strlen($line) > 990) {
+
+          // UTF-8 safe split
+          $chunk = mb_strcut($line, 0, 990, 'UTF-8');
+          $chunk_len = strlen($chunk);
+
+          // Try to split on space near the end (avoid ugly word breaks)
+          $last_space = strrpos($chunk, ' ');
+          if ($last_space !== false && $last_space > ($chunk_len * 0.75)) {
+            $chunk = substr($chunk, 0, $last_space);
+            $chunk_len = strlen($chunk);
+          }
+
+          $this->write($chunk . "\r\n");
+          $line = substr($line, $chunk_len);
+        }
+
+        // Remainder of the line
         $this->write($line . "\r\n");
       }
 
+      // End of DATA
       $this->write(".\r\n", 250);
 
       return true;
