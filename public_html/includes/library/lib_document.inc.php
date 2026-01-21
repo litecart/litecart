@@ -299,7 +299,7 @@
       return functions::escape_html(self::link($path, $new_params, $inherit_params, $skip_params, $language_code));
     }
 
-    public static function rlink($resource) {
+    public static function rlink($resource, $new_params=[], $inherit_params=null, $skip_params=[]) {
 
       if (!preg_match('#^([a-z]:)?[/\\\\]#i', $resource)) {
         $resource = FS_DIR_APP . $resource;
@@ -307,14 +307,16 @@
 
       if (!is_file($resource)) {
         trigger_error('Could not create link for missing resource ('. $resource.')', E_USER_WARNING);
-        return self::link(preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '', $resource));
+        return self::link(preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '', $resource), $new_params, $inherit_params, $skip_params);
       }
 
       $resource = str_replace('\\', '/', realpath($resource));
-      return self::link(preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '', $resource), ['_' => filemtime($resource)]);
+      $new_params = array_merge(['_' => filemtime($resource)], $new_params);
+
+      return self::link(preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '', $resource), $new_params, $inherit_params, $skip_params);
     }
 
-    public static function href_rlink($resource) {
-      return functions::escape_html(self::rlink($resource));
+    public static function href_rlink($resource, $new_params=[], $inherit_params=null, $skip_params=[]) {
+      return functions::escape_html(self::rlink($resource, $new_params, $inherit_params, $skip_params));
     }
   }
