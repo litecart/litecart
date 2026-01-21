@@ -87,7 +87,7 @@
     '@type' => 'Product',
     'productID' => $product->id,
     'sku' => $product->sku,
-    'gtin14' => $product->gtin,
+    'gtin' => $product->gtin,
     'mpn' => $product->mpn,
     'name' => $product->name,
     'image' => document::link(!empty($product->image) ? 'images/' . $product->image : 'images/no_image.png'),
@@ -99,7 +99,7 @@
       'priceValidUntil' => (!empty($product->campaign['end_date']) && strtotime($product->campaign['end_date']) > time()) ? $product->campaign['end_date'] : null,
       'itemCondition' => 'https://schema.org/NewCondition', // Or RefurbishedCondition, DamagedCondition, UsedCondition
       'availability' => ($product->quantity > 0) ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
-      'url' => document::link(),
+      'url' => document::ilink('product', ['product_id' => $product->id]),
     ],
   ];
 
