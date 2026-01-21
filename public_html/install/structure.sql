@@ -663,7 +663,7 @@ CREATE TABLE `lc_products_prices` (
   `USD` FLOAT(11,4) NOT NULL DEFAULT '0',
   `EUR` FLOAT(11,4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `product_id` (`product_id`)
+  UNIQUE KEY `uniq_product_id` (`product_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
 -- -----
 CREATE TABLE `lc_products_to_categories` (
