@@ -585,6 +585,7 @@ CREATE TABLE `lc_products_images` (
   `checksum` VARCHAR(32) NULL,
   `priority` INT(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
+  UNIQUE KEY `uq_product_id_filename` (`product_id`,`filename`),
   KEY `product_id` (`product_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
 -- -----
