@@ -458,25 +458,46 @@
 			throw new Exception('<span class="error">[Error]</span></p>' . PHP_EOL . PHP_EOL);
 		}
 
-		### Database > Cleaning #######################################
+		### Database > Load Structure #######################################
 
-		echo '<p>Cleaning database... ';
+		if (!$structure = file_get_contents('structure.json')) {
+			throw new Exception('Could not read structure.json file.');
+		}
+
+		// Insert some table prefixes in structure.json
+		$structure = str_replace('"table": "', '"table": "'. DB_TABLE_PREFIX, $structure);
 
 		// Decode database structure defined in structure.json
-		$database_structure = json_decode(file_get_contents('structure.json'), true);
+		$structure = json_decode($structure, true);
 
 		// Check if structure.json could be decoded
-		if ($database_structure === null) {
+		if ($structure === null) {
 			throw new Exception('structure.json could not be decoded: ' . json_last_error_msg());
 		}
 
-		// Check if structure.json contains any tables
-		if (empty($database_structure['tables'])) {
+		// Check if structure.json does not contain any tables
+		if (empty($structure['tables'])) {
 			throw new Exception('structure.json does not contain any tables.');
 		}
 
+		// Assign table name with table prefix
+		foreach ($structure['tables'] as $key => $table) {
+			$structure['tables'][$key]['name'] = DB_TABLE_PREFIX . $key;
+
+			// Assign table prefix to foreign key references
+			if (!empty($table['foreign_keys'])) {
+				foreach ($table['foreign_keys'] as $fk_key => $fk) {
+					$structure['tables'][$key]['foreign_keys'][$fk_key]['references']['table'] = DB_TABLE_PREFIX . $fk['references']['table'];
+				}
+			}
+		}
+
+		### Database > Clean #######################################
+
+		echo '<p>Cleaning database... ';
+
 		// Iterate through tables and drop them
-		foreach ($database_structure['tables'] as $table) {
+		foreach ($structure['tables'] as $table) {
 			database::query(
 				"DROP TABLE IF EXISTS `". database::input($table['name']) ."`;"
 			);
@@ -489,7 +510,7 @@
 		echo '<p>Writing database tables... ';
 
 		// Iterate through tables
-		foreach ($database_structure['tables'] as $table) {
+		foreach ($structure['tables'] as $table) {
 
 			// Check if table contains any columns
 			if (empty($table['columns'])) {

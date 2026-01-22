@@ -1,6 +1,6 @@
 {
 	"tables": {
-		"lc_administrators": {
+		"administrators": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"status": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
@@ -33,7 +33,7 @@
 				"email": ["email"]
 			}
 		},
-		"lc_attribute_groups": {
+		"attribute_groups": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"code": { "type": "VARCHAR", "length": 32, "default": "''" },
@@ -50,7 +50,7 @@
 				"chk_name": "JSON_VALID(name)"
 			}
 		},
-		"lc_attribute_values": {
+		"attribute_values": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"group_id": { "type": "INT", "length": 10, "unsigned": true },
@@ -67,7 +67,7 @@
 				"chk_name": "JSON_VALID(name)"
 			}
 		},
-		"lc_banners": {
+		"banners": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"status": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
@@ -86,7 +86,7 @@
 			},
 			"primary_key": ["id"]
 		},
-		"lc_brands": {
+		"brands": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"status": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
@@ -120,7 +120,7 @@
 				"chk_link": "JSON_VALID(link)"
 			}
 		},
-		"lc_campaigns": {
+		"campaigns": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"status": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 1 },
@@ -137,7 +137,7 @@
 				"status": ["status"]
 			}
 		},
-		"lc_cart_items": {
+		"cart_items": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"cart_uid": { "type": "VARCHAR", "length": 13 },
@@ -160,7 +160,7 @@
 				"cart_item_to_customer": {
 					"columns": ["customer_id"],
 					"references": {
-						"table": "lc_customers",
+						"table": "customers",
 						"columns": ["id"],
 						"on_update": "CASCADE",
 						"on_delete": "CASCADE"
@@ -169,7 +169,7 @@
 				"cart_item_to_product": {
 					"columns": ["product_id"],
 					"references": {
-						"table": "lc_products",
+						"table": "products",
 						"columns": ["id"],
 						"on_update": "CASCADE",
 						"on_delete": "CASCADE"
@@ -178,7 +178,7 @@
 				"cart_item_to_stock_option": {
 					"columns": ["stock_option_id"],
 					"references": {
-						"table": "lc_products_stock_options",
+						"table": "products_stock_options",
 						"columns": ["id"],
 						"on_update": "CASCADE",
 						"on_delete": "CASCADE"
@@ -186,7 +186,7 @@
 				}
 			}
 		},
-		"lc_categories": {
+		"categories": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"parent_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
@@ -222,7 +222,7 @@
 				"category_to_parent": {
 					"columns": ["parent_id"],
 					"references": {
-					"table": "lc_categories",
+					"table": "categories",
 					"columns": ["id"],
 					"on_update": "CASCADE",
 					"on_delete": "RESTRICT"
@@ -238,7 +238,7 @@
 				"chk_meta_description": "JSON_VALID(meta_description)"
 			}
 		},
-		"lc_categories_filters": {
+		"categories_filters": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"category_id": { "type": "INT", "length": 10, "unsigned": true },
@@ -257,7 +257,7 @@
 				"category_filter_to_category": {
 					"columns": ["category_id"],
 					"references": {
-						"table": "lc_categories",
+						"table": "categories",
 						"columns": ["id"],
 						"on_update": "NO ACTION",
 						"on_delete": "CASCADE"
@@ -266,7 +266,7 @@
 				"category_filter_to_attribute_group": {
 					"columns": ["attribute_group_id"],
 					"references": {
-						"table": "lc_attribute_groups",
+						"table": "attribute_groups",
 						"columns": ["id"],
 						"on_update": "NO ACTION",
 						"on_delete": "CASCADE"
@@ -274,7 +274,7 @@
 				}
 			}
 		},
-		"lc_countries": {
+		"countries": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"status": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
@@ -303,7 +303,7 @@
 				"status": ["status"]
 			}
 		},
-		"lc_currencies": {
+		"currencies": {
 			"columns": {
 				"id": { "type": "TINYINT", "length": 2, "unsigned": true, "auto_increment": true },
 				"status": { "type": "TINYINT", "length": 1, "default": 0 },
@@ -325,7 +325,7 @@
 				"number": ["number"]
 			}
 		},
-		"lc_customer_groups": {
+		"customer_groups": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"type": { "type": "ENUM('retail', 'wholesale')", "default": "'retail'" },
@@ -336,7 +336,7 @@
 			},
 			"primary_key": ["id"]
 		},
-		"lc_customers": {
+		"customers": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"group_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
@@ -394,7 +394,7 @@
 				"customer_to_customer_group": {
 					"columns": ["group_id"],
 					"references": {
-						"table": "lc_customer_groups",
+						"table": "customer_groups",
 						"columns": ["id"],
 						"on_update": "CASCADE",
 						"on_delete": "SET NULL"
@@ -402,7 +402,7 @@
 				}
 			}
 		},
-		"lc_delivery_statuses": {
+		"delivery_statuses": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"name": { "type": "TEXT", "default": "'{}'" },
@@ -416,7 +416,7 @@
 				"chk_description": "JSON_VALID(description)"
 			}
 		},
-		"lc_emails": {
+		"emails": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"status": { "type": "ENUM('draft','scheduled','sent','error')", "default": "'draft'" },
@@ -440,7 +440,7 @@
 				"sender_email": ["sender"]
 			}
 		},
-		"lc_event_logs": {
+		"event_logs": {
 			"columns": {
 				"id": { "type": "BIGINT", "length": 20, "unsigned": true, "auto_increment": true },
 				"session_id": { "type": "VARCHAR", "length": 64, "nullable": true },
@@ -476,7 +476,7 @@
 				"event_log_to_customer": {
 					"columns": ["customer_id"],
 					"references": {
-						"table": "lc_customers",
+						"table": "customers",
 						"columns": ["id"],
 						"on_update": "CASCADE",
 						"on_delete": "CASCADE"
@@ -488,7 +488,7 @@
 				"chk_conversions": "JSON_VALID(conversions)"
 			}
 		},
-		"lc_geo_zones": {
+		"geo_zones": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"code": { "type": "VARCHAR", "length": 32, "default": "''" },
@@ -499,7 +499,7 @@
 			},
 			"primary_key": ["id"]
 		},
-		"lc_languages": {
+		"languages": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"status": { "type": "TINYINT", "length": 1, "default": 0 },
@@ -529,7 +529,7 @@
 				"status": ["status"]
 			}
 		},
-		"lc_modules": {
+		"modules": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"module_id": { "type": "VARCHAR", "length": 64, "default": "''" },
@@ -552,7 +552,7 @@
 				"status": ["status"]
 			}
 		},
-		"lc_newsletter_recipients": {
+		"newsletter_recipients": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"subscribed": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 1 },
@@ -574,7 +574,7 @@
 				"email": ["email"]
 			}
 		},
-		"lc_orders": {
+		"orders": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"no": { "type": "VARCHAR", "length": 16, "nullable": true },
@@ -669,7 +669,7 @@
 				"order_to_customer": {
 					"columns": ["customer_id"],
 					"references": {
-						"table": "lc_customers",
+						"table": "customers",
 						"columns": ["id"],
 						"on_update": "CASCADE",
 						"on_delete": "SET NULL"
@@ -678,7 +678,7 @@
 				"order_to_order_status": {
 					"columns": ["order_status_id"],
 					"references": {
-						"table": "lc_order_statuses",
+						"table": "order_statuses",
 						"columns": ["id"],
 						"on_update": "CASCADE",
 						"on_delete": "SET NULL"
@@ -686,7 +686,7 @@
 				}
 			}
 		},
-		"lc_orders_comments": {
+		"orders_comments": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"order_id": { "type": "INT", "length": 10, "unsigned": true },
@@ -704,7 +704,7 @@
 				"order_comment_to_order": {
 					"columns": ["order_id"],
 					"references": {
-						"table": "lc_orders",
+						"table": "orders",
 						"columns": ["id"],
 						"on_update": "NO ACTION",
 						"on_delete": "CASCADE"
@@ -712,7 +712,7 @@
 				}
 			}
 		},
-		"lc_orders_items": {
+		"orders_items": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"order_id": { "type": "INT", "length": 10, "unsigned": true },
@@ -749,7 +749,7 @@
 				"order_item_to_order": {
 					"columns": ["order_id"],
 					"references": {
-						"table": "lc_orders",
+						"table": "orders",
 						"columns": ["id"],
 						"on_update": "NO ACTION",
 						"on_delete": "CASCADE"
@@ -758,7 +758,7 @@
 				"order_item_to_product": {
 					"columns": ["product_id"],
 					"references": {
-						"table": "lc_products",
+						"table": "products",
 						"columns": ["id"],
 						"on_update": "CASCADE",
 						"on_delete": "SET NULL"
@@ -766,7 +766,7 @@
 				}
 			}
 		},
-		"lc_orders_lines": {
+		"orders_lines": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"order_id": { "type": "INT", "length": 10, "unsigned": true },
@@ -800,7 +800,7 @@
 				"order_line_to_order": {
 					"columns": ["order_id"],
 					"references": {
-						"table": "lc_orders",
+						"table": "orders",
 						"columns": ["id"],
 						"on_update": "RESTRICT",
 						"on_delete": "RESTRICT"
@@ -809,7 +809,7 @@
 				"order_line_to_tax_class": {
 					"columns": ["tax_class_id"],
 					"references": {
-						"table": "lc_tax_classes",
+						"table": "tax_classes",
 						"columns": ["id"],
 						"on_update": "RESTRICT",
 						"on_delete": "RESTRICT"
@@ -818,7 +818,7 @@
 				"order_line_to_stock_option": {
 					"columns": ["stock_option_id"],
 					"references": {
-						"table": "lc_products_stock_options",
+						"table": "products_stock_options",
 						"columns": ["id"],
 						"on_update": "CASCADE",
 						"on_delete": "SET NULL"
@@ -826,7 +826,7 @@
 				}
 			}
 		},
-		"lc_order_statuses": {
+		"order_statuses": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"state": { "type": "ENUM('','created','on_hold','ready','delayed','processing','completed','dispatched','in_transit','delivered','returning','returned','cancelled','fraud','other')", "default": "''" },
@@ -858,7 +858,7 @@
 				"chk_email_message": "JSON_VALID(email_message)"
 			}
 		},
-		"lc_pages": {
+		"pages": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"parent_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
@@ -885,7 +885,7 @@
 				"chk_meta_description": "JSON_VALID(meta_description)"
 			}
 		},
-		"lc_products": {
+		"products": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"status": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
@@ -959,7 +959,7 @@
 				"chk_synonyms": "JSON_VALID(synonyms)"
 			}
 		},
-		"lc_products_attributes": {
+		"products_attributes": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"product_id": { "type": "INT", "length": 10, "unsigned": true },
@@ -981,7 +981,7 @@
 				"product_attribute_to_product": {
 					"columns": ["product_id"],
 					"references": {
-						"table": "lc_products",
+						"table": "products",
 						"columns": ["id"],
 						"on_update": "NO ACTION",
 						"on_delete": "CASCADE"
@@ -990,7 +990,7 @@
 				"product_attribute_to_attribute_group": {
 					"columns": ["group_id"],
 					"references": {
-						"table": "lc_attribute_groups",
+						"table": "attribute_groups",
 						"columns": ["id"],
 						"on_update": "NO ACTION",
 						"on_delete": "CASCADE"
@@ -999,7 +999,7 @@
 				"product_attribute_to_attribute_value": {
 					"columns": ["value_id"],
 					"references": {
-						"table": "lc_attribute_values",
+						"table": "attribute_values",
 						"columns": ["id"],
 						"on_update": "NO ACTION",
 						"on_delete": "CASCADE"
@@ -1007,7 +1007,7 @@
 				}
 			}
 		},
-		"lc_products_customizations": {
+		"products_customizations": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"product_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
@@ -1029,7 +1029,7 @@
 				"product_customization_to_product": {
 					"columns": ["product_id"],
 					"references": {
-						"table": "lc_products",
+						"table": "products",
 						"columns": ["id"],
 						"on_update": "CASCADE",
 						"on_delete": "CASCADE"
@@ -1038,7 +1038,7 @@
 				"product_customization_to_attribute_group": {
 					"columns": ["group_id"],
 					"references": {
-						"table": "lc_attribute_groups",
+						"table": "attribute_groups",
 						"columns": ["id"],
 						"on_update": "CASCADE",
 						"on_delete": "CASCADE"
@@ -1046,7 +1046,7 @@
 				}
 			}
 		},
-		"lc_products_customizations_values": {
+		"products_customizations_values": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"product_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
@@ -1069,7 +1069,7 @@
 				"product_customization_value_to_product": {
 					"columns": ["product_id"],
 					"references": {
-						"table": "lc_products",
+						"table": "products",
 						"columns": ["id"],
 						"on_update": "CASCADE",
 						"on_delete": "CASCADE"
@@ -1078,7 +1078,7 @@
 				"product_customization_value_to_attribute_group": {
 					"columns": ["group_id"],
 					"references": {
-						"table": "lc_attribute_groups",
+						"table": "attribute_groups",
 						"columns": ["id"],
 						"on_update": "CASCADE",
 						"on_delete": "CASCADE"
@@ -1087,7 +1087,7 @@
 				"product_customization_value_to_attribute_value": {
 					"columns": ["value_id"],
 					"references": {
-						"table": "lc_attribute_values",
+						"table": "attribute_values",
 						"columns": ["id"],
 						"on_update": "CASCADE",
 						"on_delete": "CASCADE"
@@ -1095,7 +1095,7 @@
 				}
 			}
 		},
-		"lc_products_images": {
+		"products_images": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"product_id": { "type": "INT", "length": 10, "unsigned": true },
@@ -1111,7 +1111,7 @@
 				"product_image_to_product": {
 					"columns": ["product_id"],
 					"references": {
-						"table": "lc_products",
+						"table": "products",
 						"columns": ["id"],
 						"on_update": "NO ACTION",
 						"on_delete": "CASCADE"
@@ -1119,7 +1119,7 @@
 				}
 			}
 		},
-		"lc_product_notification_recipients": {
+		"product_notification_recipients": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"product_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
@@ -1138,7 +1138,7 @@
 				"notification_to_product": {
 					"columns": ["product_id"],
 					"references": {
-						"table": "lc_products",
+						"table": "products",
 						"columns": ["id"],
 						"on_update": "CASCADE",
 						"on_delete": "CASCADE"
@@ -1147,7 +1147,7 @@
 				"notification_to_language": {
 					"columns": ["language_code"],
 					"references": {
-						"table": "lc_languages",
+						"table": "languages",
 						"columns": ["code"],
 						"on_update": "CASCADE",
 						"on_delete": "CASCADE"
@@ -1155,7 +1155,7 @@
 				}
 			}
 		},
-		"lc_products_prices": {
+		"products_prices": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"product_id": { "type": "INT", "length": 10, "unsigned": true },
@@ -1177,7 +1177,7 @@
 				"product_price_to_product": {
 					"columns": ["product_id"],
 					"references": {
-						"table": "lc_products",
+						"table": "products",
 						"columns": ["id"],
 						"on_update": "CASCADE",
 						"on_delete": "CASCADE"
@@ -1186,7 +1186,7 @@
 				"product_price_to_customer_group": {
 					"columns": ["customer_group_id"],
 					"references": {
-						"table": "lc_customer_groups",
+						"table": "customer_groups",
 						"columns": ["id"],
 						"on_update": "CASCADE",
 						"on_delete": "CASCADE"
@@ -1195,7 +1195,7 @@
 				"product_price_to_campaign": {
 					"columns": ["campaign_id"],
 					"references": {
-						"table": "lc_campaigns",
+						"table": "campaigns",
 						"columns": ["id"],
 						"on_update": "CASCADE",
 						"on_delete": "CASCADE"
@@ -1204,7 +1204,7 @@
 				"product_price_to_geo_zone": {
 					"columns": ["geo_zone_id"],
 					"references": {
-						"table": "lc_geo_zones",
+						"table": "geo_zones",
 						"columns": ["id"],
 						"on_update": "CASCADE",
 						"on_delete": "CASCADE"
@@ -1216,7 +1216,7 @@
 				"chk_price": "JSON_VALID(price)"
 			}
 		},
-		"lc_products_stock_options": {
+		"products_stock_options": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"product_id": { "type": "INT", "length": 10, "unsigned": true },
@@ -1236,7 +1236,7 @@
 				"product_stock_option_to_product": {
 					"columns": ["product_id"],
 					"references": {
-						"table": "lc_products",
+						"table": "products",
 						"columns": ["id"],
 						"on_update": "NO ACTION",
 						"on_delete": "CASCADE"
@@ -1245,7 +1245,7 @@
 				"product_stock_option_to_stock_item": {
 					"columns": ["stock_item_id"],
 					"references": {
-						"table": "lc_stock_items",
+						"table": "stock_items",
 						"columns": ["id"],
 						"on_update": "NO ACTION",
 						"on_delete": "CASCADE"
@@ -1253,7 +1253,7 @@
 				}
 			}
 		},
-		"lc_products_to_categories": {
+		"products_to_categories": {
 			"columns": {
 				"product_id": { "type": "INT", "length": 10, "unsigned": true },
 				"category_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true }
@@ -1263,7 +1263,7 @@
 				"product_to_product": {
 					"columns": ["product_id"],
 					"references": {
-						"table": "lc_products",
+						"table": "products",
 						"columns": ["id"],
 						"on_update": "NO ACTION",
 						"on_delete": "CASCADE"
@@ -1272,7 +1272,7 @@
 				"product_to_category": {
 					"columns": ["category_id"],
 					"references": {
-						"table": "lc_categories",
+						"table": "categories",
 						"columns": ["id"],
 						"on_update": "NO ACTION",
 						"on_delete": "CASCADE"
@@ -1280,7 +1280,7 @@
 				}
 			}
 		},
-		"lc_quantity_units": {
+		"quantity_units": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"name": { "type": "TEXT", "default": "'{}'" },
@@ -1297,7 +1297,7 @@
 				"chk_description": "JSON_VALID(description)"
 			}
 		},
-		"lc_redirects": {
+		"redirects": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"status": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
@@ -1321,7 +1321,7 @@
 				"immediate": ["immediate"]
 			}
 		},
-		"lc_sessions": {
+		"sessions": {
 			"columns": {
 				"id": { "type": "VARCHAR", "length": 128 },
 				"customer_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
@@ -1356,7 +1356,7 @@
 				"session_to_customer": {
 					"columns": ["customer_id"],
 					"references": {
-						"table": "lc_customers",
+						"table": "customers",
 						"columns": ["id"],
 						"on_update": "CASCADE",
 						"on_delete": "SET NULL"
@@ -1365,7 +1365,7 @@
 				"session_to_language": {
 					"columns": ["language_code"],
 					"references": {
-						"table": "lc_languages",
+						"table": "languages",
 						"columns": ["code"],
 						"on_update": "CASCADE",
 						"on_delete": "SET NULL"
@@ -1374,7 +1374,7 @@
 				"session_to_currency": {
 					"columns": ["currency_code"],
 					"references": {
-						"table": "lc_currencies",
+						"table": "currencies",
 						"columns": ["code"],
 						"on_update": "CASCADE",
 						"on_delete": "SET NULL"
@@ -1382,7 +1382,7 @@
 				}
 			}
 		},
-		"lc_settings": {
+		"settings": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"group_key": { "type": "VARCHAR", "length": 64, "nullable": true },
@@ -1404,7 +1404,7 @@
 				"group_key": ["group_key"]
 			}
 		},
-		"lc_settings_groups": {
+		"settings_groups": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"key": { "type": "VARCHAR", "length": 32 },
@@ -1417,7 +1417,7 @@
 				"key": ["key"]
 			}
 		},
-		"lc_site_tags": {
+		"site_tags": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"status": { "type": "TINYINT", "length": 1, "default": 0 },
@@ -1436,7 +1436,7 @@
 				"priority": ["priority"]
 			}
 		},
-		"lc_sold_out_statuses": {
+		"sold_out_statuses": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"hidden": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
@@ -1456,7 +1456,7 @@
 				"chk_description": "JSON_VALID(description)"
 			}
 		},
-		"lc_statistics": {
+		"statistics": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"type": { "type": "VARCHAR", "length": 32, "default": "''" },
@@ -1478,7 +1478,7 @@
 				"measure": ["type", "entity_id", "entity_type", "measure_group_type", "measure_group_value"]
 			}
 		},
-		"lc_stock_items": {
+		"stock_items": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"brand_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
@@ -1525,7 +1525,7 @@
 				"chk_name": "JSON_VALID(name)"
 			}
 		},
-		"lc_stock_items_references": {
+		"stock_items_references": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"stock_item_id": { "type": "INT", "length": 10, "unsigned": true },
@@ -1540,7 +1540,7 @@
 				"stock_item": {
 					"columns": ["stock_item_id"],
 					"references": {
-						"table": "lc_stock_items",
+						"table": "stock_items",
 						"columns": ["id"],
 						"on_update": "NO ACTION",
 						"on_delete": "CASCADE"
@@ -1549,7 +1549,7 @@
 				"supplier": {
 					"columns": ["supplier_id"],
 					"references": {
-						"table": "lc_suppliers",
+						"table": "suppliers",
 						"columns": ["id"],
 						"on_update": "NO ACTION",
 						"on_delete": "CASCADE"
@@ -1557,7 +1557,7 @@
 				}
 			}
 		},
-		"lc_stock_transactions": {
+		"stock_transactions": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"name": { "type": "VARCHAR", "length": 128, "default": "''" },
@@ -1567,7 +1567,7 @@
 			},
 			"primary_key": ["id"]
 		},
-		"lc_stock_transactions_contents": {
+		"stock_transactions_contents": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"transaction_id": { "type": "INT", "length": 10, "unsigned": true },
@@ -1586,7 +1586,7 @@
 				"stock_transaction_content_to_transaction": {
 					"columns": ["transaction_id"],
 					"references": {
-						"table": "lc_stock_transactions",
+						"table": "stock_transactions",
 						"columns": ["id"],
 						"on_update": "CASCADE",
 						"on_delete": "CASCADE"
@@ -1595,7 +1595,7 @@
 				"stock_transaction_content_to_product": {
 					"columns": ["product_id"],
 					"references": {
-						"table": "lc_products",
+						"table": "products",
 						"columns": ["id"],
 						"on_update": "CASCADE",
 						"on_delete": "SET NULL"
@@ -1604,7 +1604,7 @@
 				"stock_transaction_content_to_stock_item": {
 					"columns": ["stock_item_id"],
 					"references": {
-						"table": "lc_stock_items",
+						"table": "stock_items",
 						"columns": ["id"],
 						"on_update": "CASCADE",
 						"on_delete": "SET NULL"
@@ -1612,7 +1612,7 @@
 				}
 			}
 		},
-		"lc_suppliers": {
+		"suppliers": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"code": { "type": "VARCHAR", "length": 64, "default": "''" },
@@ -1629,7 +1629,7 @@
 				"code": ["code"]
 			}
 		},
-		"lc_tax_classes": {
+		"tax_classes": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"code": { "type": "VARCHAR", "length": 32, "default": "''" },
@@ -1640,7 +1640,7 @@
 			},
 			"primary_key": ["id"]
 		},
-		"lc_tax_rates": {
+		"tax_rates": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"tax_class_id": { "type": "INT", "length": 10, "unsigned": true },
@@ -1666,7 +1666,7 @@
 				"tax_rate_to_tax_class": {
 					"columns": ["tax_class_id"],
 					"references": {
-						"table": "lc_tax_classes",
+						"table": "tax_classes",
 						"columns": ["id"],
 						"on_update": "NO ACTION",
 						"on_delete": "CASCADE"
@@ -1675,7 +1675,7 @@
 				"tax_rate_to_geo_zone": {
 					"columns": ["geo_zone_id"],
 					"references": {
-						"table": "lc_geo_zones",
+						"table": "geo_zones",
 						"columns": ["id"],
 						"on_update": "NO ACTION",
 						"on_delete": "RESTRICT"
@@ -1683,7 +1683,7 @@
 				}
 			}
 		},
-		"lc_third_parties": {
+		"third_parties": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"status": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
@@ -1711,7 +1711,7 @@
 				"third_party_to_country": {
 					"columns": ["country_code"],
 					"references": {
-						"table": "lc_countries",
+						"table": "countries",
 						"columns": ["iso_code_2"],
 						"on_update": "CASCADE",
 						"on_delete": "SET NULL"
@@ -1724,7 +1724,7 @@
 				"chk_purposes": "JSON_VALID(purposes)"
 			}
 		},
-		"lc_translations": {
+		"translations": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"code": { "type": "VARCHAR", "length": 128, "default": "''" },
@@ -1746,7 +1746,7 @@
 				"created_at": ["created_at"]
 			}
 		},
-		"lc_visitors": {
+		"visitors": {
 			"columns": {
 				"id": { "type": "BIGINT", "length": 20, "unsigned": true, "auto_increment": true },
 				"session_id": { "type": "VARCHAR", "length": 13, "default": "''" },
@@ -1771,7 +1771,7 @@
 				"created_at": ["created_at"]
 			}
 		},
-		"lc_zones": {
+		"zones": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"country_code": { "type": "CHAR", "length": 2 },
@@ -1789,7 +1789,7 @@
 				"zone_to_country": {
 					"columns": ["country_code"],
 					"references": {
-						"table": "lc_countries",
+						"table": "countries",
 						"columns": ["iso_code_2"],
 						"on_update": "NO ACTION",
 						"on_delete": "CASCADE"
@@ -1797,7 +1797,7 @@
 				}
 			}
 		},
-		"lc_zones_to_geo_zones": {
+		"zones_to_geo_zones": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"geo_zone_id": { "type": "INT", "length": 10, "unsigned": true },
@@ -1821,7 +1821,7 @@
 				"zone_entry_to_geo_zone": {
 					"columns": ["geo_zone_id"],
 					"references": {
-						"table": "lc_geo_zones",
+						"table": "geo_zones",
 						"columns": ["id"],
 						"on_update": "NO ACTION",
 						"on_delete": "CASCADE"
@@ -1830,7 +1830,7 @@
 				"zone_entry_to_country": {
 					"columns": ["country_code"],
 					"references": {
-						"table": "lc_countries",
+						"table": "countries",
 						"columns": ["iso_code_2"],
 						"on_update": "NO ACTION",
 						"on_delete": "CASCADE"
@@ -1839,7 +1839,7 @@
 				"zone_entry_to_zone": {
 					"columns": ["zone_code"],
 					"references": {
-						"table": "lc_zones",
+						"table": "zones",
 						"columns": ["code"],
 						"on_update": "CASCADE",
 						"on_delete": "CASCADE"

@@ -466,25 +466,34 @@
 			)->fetch('DEFAULT_COLLATION_NAME');
 
 			// Fetch MySQL table structures from structure.json
-			$database_structure = json_decode(file_get_contents(__DIR__ . '/structure.json'), true);
+			$structure = json_decode(file_get_contents(__DIR__ . '/structure.json'), true);
 
-			// Assign table name with table prefix
-			foreach ($database_structure['tables'] as $i => $table) {
-				$database_structure['tables'][$i]['name'] = DB_TABLE_PREFIX . $i;
-			}
-
-			if ($database_structure === null) {
+			// Check if structure.json could be decoded
+			if ($structure === null) {
 				throw new Exception('structure.json could not be decoded: ' . json_last_error_msg());
 			}
 
-			if (empty($database_structure['tables'])) {
+			// Check if structure.json does not contain any tables
+			if (empty($structure['tables'])) {
 				throw new Exception('structure.json does not contain any tables.');
+			}
+
+			// Assign table name with table prefix
+			foreach ($structure['tables'] as $key => $table) {
+				$structure['tables'][$key]['name'] = DB_TABLE_PREFIX . $key;
+
+				// Assign table prefix to foreign key references
+				if (!empty($table['foreign_keys'])) {
+					foreach ($table['foreign_keys'] as $fk_key => $fk) {
+						$structure['tables'][$key]['foreign_keys'][$fk_key]['references']['table'] = DB_TABLE_PREFIX . $fk['references']['table'];
+					}
+				}
 			}
 
 			#############################################
 
 			// Iterate through each table (this is to ensure specific table properties)
-			foreach ($database_structure['tables'] as $table) {
+			foreach ($structure['tables'] as $table) {
 
 				// If table exists
 				if (in_array($table['name'], $existing_tables)) {
@@ -515,7 +524,7 @@
 			########################################################################
 
 			// Iterate through each table and add/change columns and keys
-			foreach ($database_structure['tables'] as $table) {
+			foreach ($structure['tables'] as $table) {
 
 				if (empty($table['columns'])) {
 					throw new Exception('Table structure for '. $table['name'] .' in structure.json does not contain any columns');
@@ -584,7 +593,7 @@
 						}
 					}
 				}
-				
+
 				// Drop check constraints
 				if ($table_exists && !empty($table['check_constraints'])) {
 					foreach (array_keys($table['check_constraints']) as $name) {
