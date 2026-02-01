@@ -7,6 +7,8 @@
 	 *   ~/frontend/templates/default/pages/search_results.inc.php
 	 */
 
+	header('X-Robots-Tag: noindex');
+
 	if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
 		$_GET['page'] = 1;
 	}

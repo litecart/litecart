@@ -2,6 +2,10 @@
 	$page_breaks = [20, 50, 80, 110, 140];
 ?>
 <style>
+header {
+	margin-bottom: 5mm;
+}
+
 .logotype {
 	max-width: 250px;
 	max-height: 70px;
@@ -17,7 +21,7 @@ h1 {
 }
 
 .rounded-rectangle {
-	border: 1px solid #000;
+	border: 1px solid var(--default-border-color);
 	border-radius: var(--border-radius);
 	padding: 4mm;
 	margin-inline-start: -15px;
@@ -32,7 +36,7 @@ h1 {
 }
 
 .page .label {
-	font-weight: bold;
+	font-weight: 500;
 	margin-bottom: 3pt;
 }
 .page .value {
@@ -42,18 +46,23 @@ h1 {
 	margin-bottom: 0;
 }
 #invoice-total {
+	margin-top: 5mm;
 	gap: 4mm;
 }
 #invoice-total .summary {
 	text-align: end;
-	border: 1px solid #000;
+
+	border: 1px solid var(--default-border-color);
 	border-radius: var(--border-radius);
 	padding: 2mm 4mm;
 	margin: 0;
 }
 #grand-total {
-	font-weight: bold;
+	font-weight: 700;
 	border-width: 2px !important;
+}
+#grand-total .amount {
+	font-size: 1.5em;
 }
 </style>
 
@@ -174,7 +183,7 @@ h1 {
 			</tbody>
 		</table>
 
-		<div id="invoice-total" class="flex flex-columns">
+		<div id="invoice-total" class="flex flex-columns flex-grow">
 
 			<div id="subtotal" class="summary">
 				<div class="title"><?php echo t('title_subtotal', 'Subtotal'); ?></div>

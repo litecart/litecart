@@ -1,6 +1,6 @@
 <?php
 
-	function error_handler($errno, $errstr, $errfile, $errline) {
+	function error_handler($errno, $errstr, $errfile, $errline, $backtraces=[]) {
 
 		if (!(error_reporting() & $errno)) return;
 
@@ -49,30 +49,27 @@
 				break;
 		}
 
-		if ($backtraces = debug_backtrace()) {
+		if ($backtraces) {
 
 			$output[] = 'Backtrace:';
-
-			// Remove self from backtrace
-			array_shift($backtraces);
 
 			// Extract trace from exception_handler
 			if (!empty($backtraces[0]['function']) && $backtraces[0]['function'] == 'exception_handler') {
 				$backtraces = array_slice($backtraces[0]['args'][0]->getTrace(), 1);
 			}
 
-			foreach ($backtraces as $backtrace) {
+			foreach ($backtraces as $trace) {
 
-				if (empty($backtrace['file'])) continue;
+				if (empty($trace['file'])) continue;
 
 				foreach ([
 					FS_DIR_STORAGE => 'storage://',
 					FS_DIR_APP => 'app://',
 				] as $search => $replace) {
-					$backtrace['file'] = preg_replace('#^'. preg_quote($search, '#') .'#', $replace, str_replace('\\', '/', $backtrace['file']));
+					$trace['file'] = preg_replace('#^'. preg_quote($search, '#') .'#', $replace, str_replace('\\', '/', $trace['file']));
 				}
 
-				$output[] = "<div> ↪ <strong>$backtrace[file]</strong> on line <strong>$backtrace[line]</strong> in <strong>$backtrace[function]()</strong></div>";
+				$output[] = "<div> ↪ <strong>$trace[file]</strong> on line <strong>$trace[line]</strong> in <strong>$trace[function]()</strong></div>";
 			}
 		}
 
@@ -117,11 +114,12 @@
 		}
 	}
 
-	set_error_handler('error_handler');
+	set_error_handler(function($errno, $errstr, $errfile, $errline) {
+		$backtrace = array_slice(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS), 1);
+		error_handler($errno, $errstr, $errfile, $errline, $backtrace);
+	}, E_ALL);
 
-	// Pass fatal errors to error handler
-	function exception_handler($e) {
-		error_handler(E_ERROR, $e->getMessage(), $e->getFile(), $e->getLine());
-	}
-
-	set_exception_handler('exception_handler');
+	set_exception_handler(function($e) {
+		$backtrace = array_slice($e->getTrace(), 1);
+		error_handler(E_ERROR, $e->getMessage(), $e->getFile(), $e->getLine(), $backtrace);
+	});

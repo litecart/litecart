@@ -390,9 +390,11 @@ table .tag {
 	font-family: monospace;
 	font-size: 0.8em;
 	opacity: 0.75;
-	border: 1px solid var(--default-border-color);
+	border: 1px solid #b9bfc6;
 	padding: .25em .5em;
-	border-radius: var(--border-radius);
+	border-radius: 8px;
+	margin: 0 .25em;
+	font-family: monospace;
 }
 
 #order-actions li {

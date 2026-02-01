@@ -29,7 +29,15 @@
 			'extension' => 'svg',
 			'mime' => 'image/svg+xml',
 			'max' => ['width' => 800, 'height' => 600],
-		]
+		],
+		[
+			'id' => 'backend',
+			'name' => t('title_backend', 'Backend'),
+			'file' => 'app://backend/template/images/background.svg',
+			'extension' => 'svg',
+			'mime' => 'image/svg+xml',
+			'max' => ['width' => 2048, 'height' => 2048],
+		],
 		// Add more images as needed
 	];
 

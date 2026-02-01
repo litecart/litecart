@@ -56,15 +56,15 @@
   --navigation-background: #f2f3f6;
   --navigation-background--hover: #f2f3f6;
   /* Framework */
-  --gutter-x: 15px;
+  --gutter-x: 12px;
   /* See additional for media queries */
-  --gutter-y: 15px;
+  --gutter-y: 12px;
   /* See additional for media queries */
   --border-radius: 10px;
   --whitespace-color: #fff;
   --default-text-font: Inter, Arial, 'Helvetica Neue', Helvetica, sans-serif;
   --default-text-color: #222;
-  --default-text-size: 13px;
+  --default-text-size: 12px;
   --default-line-height: 1.2;
   --default-title-color: #333;
   --default-border-color: #f2f3f7;
@@ -225,14 +225,14 @@
 }
 @media (min-width: 576px) {
   :root {
-    --gutter-x: 20px;
-    --gutter-y: 20px;
+    --gutter-x: 15px;
+    --gutter-y: 15px;
   }
 }
 @media (min-width: 768px) {
   :root {
-    --gutter-x: 25px;
-    --gutter-y: 25px;
+    --gutter-x: 20px;
+    --gutter-y: 20px;
   }
 }
 /******************** Dark Mode ********************/

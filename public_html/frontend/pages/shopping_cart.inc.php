@@ -58,10 +58,12 @@
 				} else {
 					session::$data['checkout']['order'] = new ent_order();
 				}
+
 			} else {
 				session::$data['checkout']['order'] = new ent_order();
 			}
 
+			// Connect session order to shorthand variable
 			$order = &session::$data['checkout']['order'];
 
 			// Build Order

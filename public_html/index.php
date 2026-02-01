@@ -50,11 +50,11 @@
 	route::load('app://frontend/routes/url_*.inc.php');
 	route::load('app://backend/routes/url_*.inc.php');
 
-	// Append a route for last resort
+	// Append a route for last destination
 	route::add('*', [
-		'pattern' => '#^(.+)$#',
+		'pattern' => '#^.+$#',
 		'endpoint' => 'frontend',
-		'controller' => 'app://frontend/pages/$1.inc.php',
+		'controller' => 'app://frontend/pages/$0.inc.php',
 	]);
 
 	// Find destination for the current request

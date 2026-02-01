@@ -1,5 +1,7 @@
 <?php
 
+	header('X-Robots-Tag: noindex');
+
 	try {
 
 		$result = [
@@ -30,10 +32,7 @@
 				'tax' => $item['tax'],
 				'tax_class_id' => $item['tax_class_id'],
 				'quantity' => $item['quantity'],
-				'quantity_unit' => [
-					'id' => $item['quantity_unit_id'],
-					'name' => $item['quantity_unit_id'] ? reference::quantity_unit($item['quantity_unit_id'])->name : '',
-				],
+				'quantity_unit' => $item['quantity_unit'],
 			];
 		}
 

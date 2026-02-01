@@ -159,6 +159,7 @@
 								<?php echo f::form_input_email('email', true, 'autocomplete="off"'); ?>
 							</label>
 						</div>
+
 						<div class="col-md-6">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_two_factor_authentication', 'Two-Factor Authentication'); ?></div>

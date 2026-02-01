@@ -15,6 +15,10 @@
 		border: var(--pagination-item-border-width) solid var(--pagination-item-border-color);
 		text-decoration: none;
 
+		.pagination-item + 	.pagination-item {
+			margin-inline-start: ~"calc(0 - var(--pagination-item-border-width))";
+		}
+
 		&:first-child {
 			border-start-start-radius: var(--border-radius);
 			border-end-start-radius: var(--border-radius);
@@ -26,11 +30,18 @@
 		}
 
 		&:not(:first-child) {
-			margin-inline-start: calc(0 - var(--border-width));
+			margin-inline-start: calc(0 - var(--pagination-item-border-width));
 		}
 
-		&.active {
+		&:hover:not(.active):not(.disabled) {
+			background: var(--pagination-item-background--hover);
+			text-decoration: none;
+		}
+
+		&.active, &.active {
+			background: var(--pagination-item-background--active);
 			cursor: default;
+			font-weight: 700;
 			z-index: 3;
 		}
 

@@ -38,7 +38,7 @@
 				}
 			}
 
-				// Disable RAM memory limit usage (in case we are dealing with some major big)
+			// Disable RAM memory limit usage (in case we are dealing with some major big)
 			ini_set('memory_limit', -1);
 
 			if (!$contents = file_get_contents($log_file)) return;
@@ -69,7 +69,7 @@
 			$buffer = '';
 			foreach ($errors as $checksum => $error) {
 				$buffer .= "[$error[last_occurrence]] ". ($occurrences[$checksum] > 1 ? "[$occurrences[$checksum] times] " : "") ."$error[error]\n"
-								 . (!empty($error['backtrace']) ? "$error[backtrace]\n\n" : "\n");
+						 . (!empty($error['backtrace']) ? "$error[backtrace]\n\n" : "\n");
 			}
 
 			if (!$this->settings['email_recipient']) {

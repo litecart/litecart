@@ -91,7 +91,7 @@
 				// Find known visitor by session id
 				$visitor = database::query(
 					"select id from ". DB_TABLE_PREFIX ."visitors
-					where session_id = '". database::input(session::$data['id']) ."'
+					where session_id = '". database::input(self::$data['id']) ."'
 					and updated_at > '". date('Y-m-d 00:00:00') ."'
 					order by updated_at desc
 					limit 1;"
@@ -115,7 +115,7 @@
 					database::query(
 						"insert into ". DB_TABLE_PREFIX ."visitors
 						(session_id, ip_address, hostname, user_agent, referrer, updated_at, created_at)
-						values ('". database::input(session::$data['id']) ."', '". database::input($_SERVER['REMOTE_ADDR'])."', '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."', '". database::input($_SERVER['HTTP_USER_AGENT'])."', '". @database::input($_SERVER['HTTP_REFERER'])."', '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
+						values ('". database::input(self::$data['id']) ."', '". database::input($_SERVER['REMOTE_ADDR'])."', '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."', '". database::input($_SERVER['HTTP_USER_AGENT'])."', '". @database::input($_SERVER['HTTP_REFERER'])."', '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
 					);
 
 					$visitor['id'] = database::insert_id();

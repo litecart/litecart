@@ -23,7 +23,9 @@
 			ImageFill($imgCropped, 0, 0, ImageColorAllocateAlpha($imgCropped, $whiteSpace[0], $whiteSpace[1], $whiteSpace[2], 127));
 			ImageCopy($imgCropped, $src_im, 0, 0, $srcX, $srcY, $iSrcWidth-$srcX, $iSrcHeight-$srcY);
 			$result = ImageCopyResampled($dst_im, $imgCropped, 0, 0, 0, 0, $dstW, $dstH, $srcW, $srcH);
-			ImageDestroy($imgCropped);
+			if (PHP_VERSION < '8.0.0') {
+				ImageDestroy($imgCropped);
+			}
 			return $result;
 		}
 	}
@@ -553,7 +555,10 @@
 					$this->_data['height'] = $new_height;
 					unset($this->_data['aspect_ratio']);
 
-					ImageDestroy($this->_image);
+					if (PHP_VERSION < '8.0.0') {
+						ImageDestroy($this->_image);
+					}
+
 					$this->_image = $_resized;
 
 					return $result;
@@ -733,8 +738,10 @@
 					// Create the watermarked image
 					$result = ImageCopy($this->_image, $_watermark->_image, $offset_x, $offset_y, 0, 0, $_watermark->width, $_watermark->height);
 
-					// Free some RAM memory
-					ImageDestroy($_watermark->_image);
+					// Free memory
+					if (PHP_VERSION < '8.0.0') {
+						ImageDestroy($_watermark->_image);
+					}
 
 					return $result;
 			}

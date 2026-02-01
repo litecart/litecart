@@ -3575,6 +3575,9 @@ body.navbar-expanded {
   border: var(--pagination-item-border-width) solid var(--pagination-item-border-color);
   text-decoration: none;
 }
+.pagination .pagination-item .pagination-item + .pagination-item {
+  margin-inline-start: calc(0 - var(--pagination-item-border-width));
+}
 .pagination .pagination-item:first-child {
   border-start-start-radius: var(--border-radius);
   border-end-start-radius: var(--border-radius);
@@ -3584,10 +3587,17 @@ body.navbar-expanded {
   border-end-end-radius: var(--border-radius);
 }
 .pagination .pagination-item:not(:first-child) {
-  margin-inline-start: calc(0 - var(--border-width));
+  margin-inline-start: calc(0 - var(--pagination-item-border-width));
 }
+.pagination .pagination-item:hover:not(.active):not(.disabled) {
+  background: var(--pagination-item-background--hover);
+  text-decoration: none;
+}
+.pagination .pagination-item.active,
 .pagination .pagination-item.active {
+  background: var(--pagination-item-background--active);
   cursor: default;
+  font-weight: 700;
   z-index: 3;
 }
 .pagination .pagination-item.disabled {
@@ -3892,14 +3902,6 @@ body.navbar-expanded {
   border-collapse: collapse;
   font-size: inherit;
   line-height: inherit;
-}
-@media print {
-  .table {
-    --table-border-color: #000c !important;
-  }
-  .table tr th {
-    border-bottom: calc(var(--table-border-width) *2) solid var(--table-border-color);
-  }
 }
 .table thead {
   background: var(--table-header-background);

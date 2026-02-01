@@ -162,8 +162,8 @@
 
 		public static function optimize(&$output) {
 
-      // Strip HTML comments
-      $output = preg_replace('#<!--[\s\S]*?-->#', '', $output);
+			// Strip HTML comments
+			$output = preg_replace('#<!--[\s\S]*?-->#', '', $output);
 
 			// Extract styling
 			$output = preg_replace_callback('#(<html[^>]*>)(.*)(</html>)#is', function($matches) use (&$stylesheets, &$style, &$javascripts, &$javascript) {

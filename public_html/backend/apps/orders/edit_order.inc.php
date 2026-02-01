@@ -264,6 +264,7 @@
 				'date_paid',
 				'date_dispatched',
 				'comments',
+				'notes',
 			] as $field) {
 				if (isset($_POST[$field])) {
 					$order->data[$field] = $_POST[$field];

@@ -110,7 +110,7 @@
 			'min' => fallback($_GET['price_range']['min]']),
 			'max' => fallback($_GET['price_range']['max]']),
 		],
-	])->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
+	])->fetch_page(null, null, $_GET['page'], settings::get('items_per_page'), $num_rows, $num_pages);
 
 	$_page->snippets['num_products_page'] = count($_page->snippets['products']);
 	$_page->snippets['num_products_total'] = $num_rows;

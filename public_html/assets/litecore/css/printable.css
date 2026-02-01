@@ -7,7 +7,7 @@
   flex-direction: column;
   font-size: 13px;
   font-family: var(--default-text-font);
-  color: #000;
+  color: #444;
   overflow: hidden;
 }
 .page[data-size="A4"] {
@@ -65,7 +65,7 @@
   padding-top: 0;
 }
 hr {
-  border-color: #000;
+  border-color: var(--default-border-color);
 }
 @media print {
   @page {
@@ -110,7 +110,7 @@ hr {
   a:visited,
   a:hover,
   a:active {
-    color: #000;
+    /*color: #000;*/
   }
   .page-break {
     page-break-before: always;

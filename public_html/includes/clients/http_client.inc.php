@@ -1,6 +1,7 @@
 <?php
 
 	class http_client {
+
 		public $follow_redirects = false;
 		public $timeout = 20;
 		public $last_request;
@@ -40,12 +41,6 @@
 				$parts['path'] = '/';
 			}
 
-			if ($data) {
-				$data = is_array($data) ? http_build_query($data) : $data;
-			} else {
-				$data = '';
-			}
-
 			if (!empty($parts['user']) && empty($headers['Authorization'])) {
 				$headers['Authorization'] = 'Basic ' . base64_encode($parts['user'] .':'. fallback($parts['pass']));
 			}
@@ -58,8 +53,54 @@
 				$headers['Content-Type'] = 'application/x-www-form-urlencoded';
 			}
 
-			if (empty($headers['Content-Length'])) {
-				$headers['Content-Length'] = ($data != '') ? strlen($data) : 0;
+			if (!empty($data)) {
+
+				// Process data for GET/HEAD requests
+				if (in_array($method, ['GET', 'HEAD'])) {
+
+				switch (true) {
+
+					  case is_array($data):
+					  case is_object($data):
+							$parts['query'] = (isset($parts['query']) ? $parts['query'] . '&' : '') . http_build_query($data);
+							break;
+
+						case is_string($data):
+							$parts['query'] = (isset($parts['query']) ? $parts['query'] . '&' : '') . $data;
+							break;
+
+						default:
+							trigger_error('Unknown data type for GET/HEAD request', E_USER_WARNING);
+							break;
+					}
+
+					$data = '';
+
+				} else {
+
+					// Encode data for other request methods
+					if (is_array($data)) {
+						switch (true) {
+
+							case (preg_match('#(application|text)/json#i', $headers['Content-Type'])):
+								$data = f::format_json($data, "\t");
+								break;
+
+							case (preg_match('#application/x-www-form-urlencoded#i', $headers['Content-Type'])):
+								$data = http_build_query($data);
+								break;
+
+							default:
+								trigger_error('Unknown Content-Type for data encoding: '. $headers['Content-Type'], E_USER_WARNING);
+								$data = http_build_query($data);
+								break;
+						}
+					}
+
+					if (empty($headers['Content-Length'])) {
+						$headers['Content-Length'] = strlen($data);
+					}
+				}
 			}
 
 			if (empty($headers['Connection'])) {

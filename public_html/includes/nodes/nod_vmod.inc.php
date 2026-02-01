@@ -177,7 +177,7 @@
 			$digest = [filemtime($file)];
 
 			foreach (self::$_files_to_modifications[$original_file] as $modification) {
-				$digest[] = strtotime(self::$_modifications[$modification['id']]['date_modified']);
+				$digest[] = strtotime(self::$_modifications[$modification['id']]['updated_at']);
 				$queue[] = $modification;
 			}
 
@@ -466,7 +466,7 @@
 				'name' => $dom->getElementsByTagName('name')->item(0)->textContent,
 				'version' => $dom->getElementsByTagName('version')->item(0)->textContent,
 				'author' => !empty($dom->getElementsByTagName('author')) ? $dom->getElementsByTagName('author')->item(0)->textContent : '',
-				'date_modified' => date('Y-m-d H:i:s', filemtime($file)),
+				'updated_at' => date('Y-m-d H:i:s', filemtime($file)),
 				'files' => [],
 				'install' => null,
 				'upgrades' => [],

@@ -408,19 +408,23 @@
 			$currency_code = settings::get('store_currency_code');
 		}
 
-		$currency = currency::$currencies[$currency_code];
-
+		if (!empty(currency::$currencies[$currency_code])) {
+			$decimals = currency::$currencies[$currency_code]['decimals'];
+		} else {
+			$decimals = 2;
+		}
+	
 		if ($input != '') {
-			$input = number_format((float)$input, $currency['decimals'], '.', '');
+			$input = number_format((float)$input, $decimals, '.', '');
 			//$input = rtrim(preg_replace('#(\.'. str_repeat('\d', 2) .')0{1,2}$#', '$1', $input), '.'); // Auto decimals
 		}
 
-		$parameters = ($parameters ? $parameters .' ' : '') . 'placeholder="'. language::number_format(0, $currency['decimals']) .'"';
+		$parameters = ($parameters ? $parameters .' ' : '') . 'placeholder="'. language::number_format(0, $decimals) .'"';
 
 		return implode(PHP_EOL, [
 			'<div class="input-group">',
-			'  <strong class="input-group-text" style="opacity: 0.75; font-family: monospace;">'. f::escape_html($currency['code']) .'</strong>',
-			'  ' . form_input_decimal($name, $input, $currency['decimals'], ($parameters ? $parameters .' ' : '') .'step="any" data-type="currency"'),
+			'  <strong class="input-group-text" style="opacity: 0.75; font-family: monospace;">'. f::escape_html($currency_code) .'</strong>',
+			'  ' . form_input_decimal($name, $input, $decimals, ($parameters ? $parameters .' ' : '') .'step="any" data-type="currency"'),
 			'</div>',
 		]);
 	}
@@ -1662,7 +1666,7 @@
 		return implode(PHP_EOL, [
 			'<div class="customer-dropdown"' . ($parameters ? ' ' . $parameters : '') . '>',
 			'  <input type="hidden" name="' . f::escape_html($name) . '" value="' . (int)$value . '" />',
-			'  <input type="text" class="form-control search-input" placeholder="' . f::escape_html(t('title_search', 'Search')) . '" autocomplete="off" value="' . f::escape_html($value ? $account_name : '') . '">',
+			'  <input type="text" class="form-input search-input" placeholder="' . f::escape_html(t('title_search', 'Search')) . '" autocomplete="off" value="' . f::escape_html($value ? $account_name : '') . '">',
 			'  <div class="dropdown-results" style="display: none;">',
 			'    <ul class="list-unstyled">',
 			'      <li class="set-guest' . ($value ? '' : ' active') . '" data-id="0">(' . f::escape_html(t('title_guest', 'Guest')) . ')</li>',

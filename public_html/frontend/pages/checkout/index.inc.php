@@ -18,19 +18,23 @@
 			throw new Exception(t('error_no_order_in_session', 'No order in session'), 404);
 		}
 
-		// Halt on no items
-		if (empty(session::$data['checkout']['order']->data['items'])) {
+		// Connect session order to shorthand variable
+		$order = &session::$data['checkout']['order'];
+
+		// Halt on no lines
+		if (empty($order->data['lines'])) {
+			var_dump($order);exit;
 			throw new Exception(t('error_order_appears_empty', 'The order appears empty'), 404);
 		}
 
 		// Redirect to customer details if not sufficient
-		if ($validation_error = session::$data['checkout']['order']->validate('customer')) {
+		if ($validation_error = $order->validate('customer')) {
 			notices::add('notices', t('error_we_need_some_additional_info_from_you', 'We need some additional information from you'));
 			redirect(document::ilink('checkout/customer'), 302);
 			exit;
 		}
 
-		foreach ($order->data['items'] as $item) {
+		foreach ($order->data['lines'] as $item) {
 
 			// If product geo_zone_id is set, check if shipping address is within geo zone
 			if ($geo_zones = reference::product($item['product_id'])->geo_zones) {
@@ -51,8 +55,6 @@
 			}
     }
 
-		// Connect session order to shorthand variable
-		$order = &session::$data['checkout']['order'];
 
 	} catch (Exception $e) {
 		http_response_code($e->getCode() ?: 500);

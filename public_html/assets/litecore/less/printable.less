@@ -6,11 +6,9 @@
 	position: relative;
 	display: flex;
 	flex-direction: column;
-
 	font-size: 13px;
 	font-family: var(--default-text-font);
-	color: #000;
-
+	color: #444;
 	overflow: hidden;
 
 	&[data-size="A4"] {
@@ -71,41 +69,24 @@
 }
 
 hr {
-	border-color: #000;
+	border-color: var(--default-border-color);
 }
 
 @media print {
-
 	@page {
 		margin: 0;
 		zoom: 100%;
 		padding: 0;
 	}
 
-	@page A4 {
-		size: A4 portrait;
-	}
-	@page A4R {
-		size: A4 landscape;
-	}
-	@page A5 {
-		size: A5 portrait;
-	}
-	@page A5R {
-		size: A5 landscape;
-	}
-	@page A6 {
-		size: A6 portrait;
-	}
-	@page A6R {
-		size: A6 landscape;
-	}
-	@page US-Letter {
-		size: letter portrait;
-	}
-	@page US-Legal {
-		size: legal portrait;
-	}
+	@page A4 { size: A4 portrait; }
+	@page A4R { size: A4 landscape; }
+	@page A5 { size: A5 portrait; }
+	@page A5R { size: A5 landscape; }
+	@page A6 { size: A6 portrait; }
+	@page A6R { size: A6 landscape; }
+	@page US-Letter { size: letter portrait; }
+	@page US-Legal { size: legal portrait; }
 
 	.page {
 		position: relative;
@@ -119,7 +100,7 @@ hr {
 	}
 
 	a:link, a:visited, a:hover, a:active {
-		color: #000;
+		/*color: #000;*/
 	}
 
 	.page-break {

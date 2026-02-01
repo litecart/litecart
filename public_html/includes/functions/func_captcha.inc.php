@@ -62,7 +62,9 @@
 		$base64_image = base64_encode(ob_get_clean());
 
 		// Free memory
-		imagedestroy($image);
+		if (PHP_VERSION < '8.0.0') {
+			imagedestroy($image);
+		}
 
 		// Remove expired captchas
 		if (isset(session::$data['lc-captcha']) && is_array(session::$data['lc-captcha'])) {

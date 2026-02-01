@@ -13,18 +13,14 @@
 		public function process($force, $last_run) {
 
 			if (!$force) {
-				if (empty($this->settings['status'])) return;
+				if (!$this->settings['status']) return;
 
-				if (!empty($this->settings['working_hours'])) {
+				if ($this->settings['working_hours']) {
 					list($from_time, $to_time) = explode('-', $this->settings['working_hours']);
 					if (time() < strtotime("Today $from_time") || time() > strtotime("Today $to_time")) return;
 				}
 
-				switch ($this->settings['frequency']) {
-					case 'Hourly':
-						if (date('Ymdh', strtotime($last_run)) == date('Ymdh')) return;
-						break;
-				}
+				if (strtotime($last_run) > f::datetime_last_by_interval($this->settings['frequency'], $last_run)) return;
 			}
 
 			$sent = 0;

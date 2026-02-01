@@ -117,7 +117,7 @@
 			}
 		}
 
-		######################################################################
+		#####
 
 		public static function reset() {
 
@@ -212,6 +212,7 @@
 				'quantity_max' => ($product->quantity_max > 0) ? $product->quantity_max : null,
 				'quantity_step' => ($product->quantity_step > 0) ? $product->quantity_step : null,
 				'quantity_unit' => [
+					'id' => $product->quantity_unit ? $product->quantity_unit['id'] : '',
 					'name' => $product->quantity_unit ? $product->quantity_unit['name'] : '',
 					'decimals' => $product->quantity_unit ? $product->quantity_unit['decimals'] : '',
 					'separate' => $product->quantity_unit ? $product->quantity_unit['separate'] : '',
