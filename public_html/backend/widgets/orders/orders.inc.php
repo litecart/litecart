@@ -16,7 +16,7 @@
 		}
 
 		if (!$order['order_status_color']) {
-			$order['order_status_color'] = '#cccccc';
+			$order['order_status_color'] = '#ccc';
 		}
 
 		$order['classes'] = [];

@@ -21,6 +21,7 @@
 				"last_active": { "type": "TIMESTAMP", "nullable": true },
 				"last_login": { "type": "TIMESTAMP", "nullable": true },
 				"sessions_expiry": { "type": "TIMESTAMP", "nullable": true },
+				"blocked_until": { "type": "TIMESTAMP", "nullable": true },
 				"valid_from": { "type": "TIMESTAMP", "nullable": true },
 				"valid_to": { "type": "TIMESTAMP", "nullable": true },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
@@ -132,9 +133,9 @@
 			},
 			"primary_key": ["id"],
 			"keys": {
+				"status": ["status"],
 				"valid_from": ["valid_from"],
-				"valid_to": ["valid_to"],
-				"status": ["status"]
+				"valid_to": ["valid_to"]
 			}
 		},
 		"cart_items": {
@@ -305,7 +306,7 @@
 		},
 		"currencies": {
 			"columns": {
-				"id": { "type": "TINYINT", "length": 2, "unsigned": true, "auto_increment": true },
+				"id": { "type": "TINYINT", "length": 3, "unsigned": true, "auto_increment": true },
 				"status": { "type": "TINYINT", "length": 1, "default": 0 },
 				"code": { "type": "CHAR", "length": 3, "default": "''" },
 				"number": { "type": "CHAR", "length": 3, "default": "''" },
@@ -833,7 +834,7 @@
 				"hidden": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
 				"icon": { "type": "VARCHAR", "length": 24, "default": "''" },
 				"color": { "type": "VARCHAR", "length": 7, "default": "''" },
-				"name": { "type": "VARCHAR", "length": 64, "default": "''" },
+				"name": { "type": "TEXT", "length": 64, "default": "'{}'" },
 				"description": { "type": "TEXT", "default": "'{}'" },
 				"email_subject": { "type": "TEXT", "default": "'{}'" },
 				"email_message": { "type": "MEDIUMTEXT", "default": "'{}'" },
@@ -848,8 +849,10 @@
 			},
 			"primary_key": ["id"],
 			"keys": {
+				"hidden": ["hidden"],
+				"is_archived": ["is_archived"],
 				"is_sale": ["is_sale"],
-				"is_archived": ["is_archived"]
+				"is_trackable": ["is_trackable"]
 			},
 			"check_constraints": {
 				"chk_name": "JSON_VALID(name)",
@@ -1159,18 +1162,18 @@
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"product_id": { "type": "INT", "length": 10, "unsigned": true },
-				"customer_group_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
 				"campaign_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
+				"customer_group_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
 				"geo_zone_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
-				"min_quantity": { "type": "FLOAT", "length": "10,4", "unsigned": true, "default": 1 },
-				"price": { "type": "VARCHAR", "length": "512", "default": "'{}'" }
+				"min_quantity": { "type": "FLOAT", "length": "10,4", "unsigned": true, "default": 1.0000 },
+				"price": { "type": "VARCHAR", "length": 512, "default": "'{}'" }
 			},
 			"primary_key": ["id"],
 			"keys": {
 				"product_id": ["product_id"],
+				"geo_zone_id": ["geo_zone_id"],
 				"customer_group_id": ["customer_group_id"],
 				"campaign_id": ["campaign_id"],
-				"geo_zone_id": ["geo_zone_id"],
 				"min_quantity": ["min_quantity"]
 			},
 			"foreign_keys": {
@@ -1387,7 +1390,7 @@
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"group_key": { "type": "VARCHAR", "length": 64, "nullable": true },
 				"key": { "type": "VARCHAR", "length": 64, "default": "''" },
-				"value": { "type": "VARCHAR", "length": 255, "default": "''" },
+				"value": { "type": "VARCHAR", "length": 2048, "default": "''" },
 				"title": { "type": "VARCHAR", "length": 128, "default": "''" },
 				"description": { "type": "VARCHAR", "length": 512, "default": "''" },
 				"required": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },

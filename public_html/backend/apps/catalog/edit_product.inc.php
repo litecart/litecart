@@ -50,6 +50,7 @@
 			if (empty($_POST['categories'])) $_POST['categories'] = [];
 			if (empty($_POST['images'])) $_POST['images'] = [];
 			if (empty($_POST['attributes'])) $_POST['attributes'] = [];
+			if (empty($_POST['prices'])) $_POST['prices'] = [];
 			if (empty($_POST['customizations'])) $_POST['customizations'] = [];
 			if (empty($_POST['stock_options'])) $_POST['stock_options'] = [];
 
@@ -71,11 +72,11 @@
 				'meta_description',
 				'synonyms',
 				'keywords',
+				'images',
 				'attributes',
 				'prices',
 				'tax_class_id',
 				'recommended_price',
-				'images',
 				'customizations',
 				'stock_option_type',
 				'stock_options',
@@ -1224,12 +1225,6 @@
 	});
 
 	// Attributes
-
-	$('#attributes button[name="remove"]').on('click', function(e) {
-		e.preventDefault();
-		$(this).closest('tr').remove();
-	});
-
 	$('#attributes select[name="new_attribute[group_id]"]').on('change', function(e) {
 
 		let $newAttributeGroup = $(this),
@@ -1248,7 +1243,7 @@
 		}
 
 		$.ajax({
-			url: '<?php echo document::href_ilink(__APP__.'/attribute_values.json'); ?>',
+			url: '<?php echo document::ilink(__APP__.'/attribute_values.json'); ?>',
 			type: 'get',
 			data: {
 				group_id: $newAttributeGroup.val(),
@@ -1377,8 +1372,9 @@
 		$('#attributes tbody').append($output);
 	});
 
-	$('#tab-attributes').on('click', 'button[name="remove"]', function(e) {
+	$('#attributes').on('click', 'button[name="remove"]', function(e) {
 		e.preventDefault();
+		if (!confirm("<?php echo t('text_are_you_sure', 'Are you sure?'); ?>")) return;
 		$(this).closest('tr').remove();
 	});
 
@@ -1436,17 +1432,6 @@
 		$quantity_adjustment_field.val( quantity_adjustment + backordered ).trigger('input');
 		$backordered_field.val('');
 	});
-
-	// Quantity Unit
-
-	$('select[name="quantity_unit_id"]').on('change', function() {
-		let decimals = parseInt($('select[name="quantity_unit_id"] option:selected').data('decimals'))
-		$('input[name$="[quantity]"], input[name$="[quantity_adjustment]"], input[name$="[backordered]"]').each(function() {
-			if ($(this).val() != '') {
-				$(this).val( parseFloat($(this).val()).toFixed(decimals) )
-			}
-		})
-	}).trigger('change')
 
 	// Customizations
 

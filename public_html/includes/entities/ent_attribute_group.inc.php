@@ -26,8 +26,9 @@
 			foreach ([
 				'name',
 			] as $field) {
-				$this->data['field'] = array_fill_keys(array_keys(language::$languages), '');
+				$this->data[$field] = array_fill_keys(array_keys(language::$languages), '');
 			}
+
 			$this->data['values'] = [];
 
 			$this->previous = $this->data;
@@ -60,11 +61,11 @@
 				$this->data[$column] += array_fill_keys(array_keys(language::$languages), '');
 			}
 
-			database::query(
+			$this->data['values'] = database::query(
 				"select * from ". DB_TABLE_PREFIX ."attribute_values
 				where group_id = ". (int)$id ."
 				order by priority;"
-			)->each(function($value) {
+			)->fetch_all(function($value) {
 
 				foreach ([
 					'name',
@@ -82,7 +83,7 @@
 					limit 1;"
 				)->num_rows ? true : false;
 
-				$this->data['values'][] = $value;
+				return $value;
 			});
 
 			$this->previous = $this->data;

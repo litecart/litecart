@@ -115,6 +115,19 @@ label.form-check > input {
 	}
 }
 
+.form-group {
+	&:has(.form-input-feedback) {
+		position: relative;
+	}
+	.form-input-feedback {
+		position: absolute;
+		inset-inline-end: 1em;
+		top: 3em;
+		transform: translateY(-50%);
+		pointer-events: none;
+	}
+}
+
 .form-select {
 	padding-inline-end: 2.5em;
 	appearance: none;

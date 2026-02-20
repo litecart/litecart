@@ -40,7 +40,7 @@
 			}
 		],
 
-		null => [
+		'' => [
 			'pattern' => '#^(?:.*-c-(\d+)/)?(?:.*-m-(\d+)/)?.*-p-(\d+)$#',
 			'controller' => 'app://frontend/pages/product.inc.php',
 			'params' => 'category_id=$1&brand_id=$2&product_id=$3',

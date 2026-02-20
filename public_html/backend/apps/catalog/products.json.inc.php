@@ -32,7 +32,7 @@
 	}, currency::$currencies)) .")";
 
 	$products = database::query(
-		"select p.id, p.code, pp.regular_price, pp.final_price, p.created_at,
+		"select p.id, p.code, p.image, pp.regular_price, pp.final_price, p.created_at,
 			json_value(p.name, '$.". database::input($_GET['language_code']) ."') as name,
 			pso.total_quantity as quantity,
 			oi.quantity_reserved as reserved

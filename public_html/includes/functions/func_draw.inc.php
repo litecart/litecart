@@ -111,12 +111,13 @@
 				document::$head_tags['fontawesome5'] = '<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">';
 				return '<i class="fa '. $icon .'"'. ($parameters ? ' ' . $parameters : '') .'></i>';
 
-			// Fontawesome 5
-			case (preg_match('#^far fa-#', $icon)):
-			case (preg_match('#^fab fa-#', $icon)):
-			case (preg_match('#^fas fa-#', $icon)):
-				document::$head_tags['fontawesome5'] = '<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">';
-				return '<i class="'. $icon .'"'. ($parameters ? ' ' . $parameters : '') .'></i>';
+			// Fontawesome 7
+			case (substr($icon, 0, 6) == 'fa fa-'):
+			case (substr($icon, 0, 7) == 'far fa-'):
+			case (substr($icon, 0, 7) == 'fab fa-'):
+			case (substr($icon, 0, 7) == 'fas fa-'):
+				document::$foot_tags['fontawesome7'] = '<script src="https://use.fontawesome.com/releases/v7.1.0/js/all.js" crossorigin="anonymous"></script>';
+				return '<i class="'. $icon .'"'. (!empty($parameters) ? ' ' . $parameters : null) .'></i>';
 
 			// Foundation
 			case (preg_match('#^fi-#', $icon)):
@@ -454,6 +455,7 @@
 			'page' => $_GET['page']-1,
 			'title' => t('title_previous', 'Previous'),
 			'link' => document::link($_SERVER['REQUEST_URI'], ['page' => $_GET['page']-1]),
+			'rel'	=> 'prev',
 			'disabled' => ($_GET['page'] <= 1),
 			'active' => false,
 		];
@@ -502,6 +504,7 @@
 			'page' => $_GET['page']+1,
 			'title' => t('title_next', 'Next'),
 			'link' => document::link($_SERVER['REQUEST_URI'], ['page' => $_GET['page']+1]),
+			'rel'	=> 'next',
 			'disabled' => ($_GET['page'] >= $pages) ? true : false,
 			'active' => false,
 		];

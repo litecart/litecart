@@ -217,7 +217,7 @@
 							$category[$field] = '';
 						}
 
-						$category['keywords'] = preg_split('#\s*,\s*#', $category['keywords'], -1, PREG_SPLIT_NO_EMPTY);
+						$category['keywords'] = f::string_split($category['keywords']);
 
 						return $category;
 					});

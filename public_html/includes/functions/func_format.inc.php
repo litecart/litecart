@@ -66,9 +66,9 @@
 
 	function format_path_friendly($text, $language_code='') {
 
-		if (empty($text)) return '';
+		if (!$text) return '';
 
-		if (empty($language_code)) {
+		if (!$language_code) {
 			$language_code = language::$selected['code'];
 		}
 

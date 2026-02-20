@@ -2,8 +2,8 @@
 
 	try {
 
-		if (!isset($_GET['group_id'])) {
-			throw new Exception('Missing group_id');
+		if (empty($_GET['group_id'])) {
+			throw new Exception('Missing group_id', 400);
 		}
 
 		$attribute_group = database::query(
@@ -13,7 +13,7 @@
 		)->fetch();
 
 		if (!$attribute_group) {
-			throw new Exception('Invalid group_id');
+			throw new Exception('Invalid group_id', 404);
 		}
 
 		$result = database::query(
@@ -23,8 +23,8 @@
 			order by ". (($attribute_group['sort'] == 'alphabetical') ? "cast(name as unsigned), name" : "av.priority") .";"
 		)->fetch_all();
 
-	} catch(Exception $e) {
-		http_response_code(400);
+	} catch (Exception $e) {
+		http_response_code($e->getCode() ?: 500);
 		$result = ['error' => $e->getMessage()];
 	}
 

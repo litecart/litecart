@@ -312,7 +312,7 @@
 
 			foreach ([
 				'#[:\'\*"]#' => '', // Remove bad characters
-				'#(?:^|/)\.#' => '', // Remove hidden resource definition
+				'#(?:^|/)\.(?!well-known)#' => '', // Remove hidden resource definition
 				'#//+#' => '/', // Replace multiple directory separators
 			] as $pattern => $replace) {
 				$path = preg_replace($pattern, $replace, $path);

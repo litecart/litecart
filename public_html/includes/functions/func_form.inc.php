@@ -413,7 +413,7 @@
 		} else {
 			$decimals = 2;
 		}
-	
+
 		if ($input != '') {
 			$input = number_format((float)$input, $decimals, '.', '');
 			//$input = rtrim(preg_replace('#(\.'. str_repeat('\d', 2) .')0{1,2}$#', '$1', $input), '.'); // Auto decimals
@@ -991,6 +991,9 @@
 
 			case 'bigtext':
 				return form_textarea($name, $input, $parameters . ' rows="10"');
+
+			case 'campaign':
+				return form_select_campaign($name, $input, $parameters);
 
 			case 'category':
 				if (preg_match('#\[\]$#', $name)) {

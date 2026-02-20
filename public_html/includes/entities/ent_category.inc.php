@@ -51,7 +51,7 @@
 
 			$category = database::query(
 				"select * from ". DB_TABLE_PREFIX ."categories
-				where id=". (int)$id ."
+				where id = ". (int)$id ."
 				limit 1;"
 			)->fetch();
 

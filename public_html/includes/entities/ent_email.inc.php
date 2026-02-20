@@ -466,4 +466,15 @@
 
 			cache::clear_cache('email');
 		}
+	
+		public function cleanup($time_ago='-30 days') {
+
+			database::query(
+				"delete from ". DB_TABLE_PREFIX ."emails
+				where status in ('sent', 'error')
+				and updated_at < '". date('Y-m-d H:i:s', strtotime($time_ago)) ."';"
+			);
+
+			cache::clear_cache('email');
+		}
 	}

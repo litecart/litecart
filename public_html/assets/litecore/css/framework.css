@@ -1998,6 +1998,16 @@ label.form-check > input:is([type="radio"]):checked {
 .input-group [readonly] {
   color: #999;
 }
+.form-group:has(.form-input-feedback) {
+  position: relative;
+}
+.form-group .form-input-feedback {
+  position: absolute;
+  inset-inline-end: 1em;
+  top: 3em;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
 .form-select {
   padding-inline-end: 2.5em;
   appearance: none;

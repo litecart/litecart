@@ -25,7 +25,7 @@
 			}
 		],
 
-		null => [
+		'' => [
 			'pattern' => '#^.*-[is]-(\d+)/?$#',
 			'controller' => 'app://frontend/pages/information.inc.php',
 			'params' => 'page_id=$1',

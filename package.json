@@ -22,8 +22,9 @@
 		"node": ">=24"
 	},
 	"devDependencies": {
-		"@sequencemedia/gulp-clean-css": "^1.0.284",
-		"@sequencemedia/gulp-sourcemaps": "^1.0.300",
+		"@prettier/plugin-php": "^0.24.0",
+		"@sequencemedia/gulp-clean-css": "^1.0.285",
+		"@sequencemedia/gulp-sourcemaps": "^1.0.301",
 		"gulp": "^5.0.1",
 		"gulp-clean-css": "^4.3.0",
 		"gulp-concat": "^2.6.1",
@@ -37,7 +38,8 @@
 		"gulp-uglify": "^3.0.2",
 		"gulp-watch": "^5.0.1",
 		"phplint": "^2.0.5",
-		"sass": "^1.94.0"
+		"prettier": "^3.8.1",
+		"sass": "^1.97.3"
 	},
 	"scripts": {
 		"iconly": "gulp iconly && gulp less-framework",
@@ -49,8 +51,9 @@
 		"test": "php .git-hooks/pre-commit.d/platform_tests.php",
 		"uglify": "gulp replace",
 		"watch": "gulp watch",
-		"update": "ncu -u && npm install",
+		"upgrade": "ncu -u && npm install",
 		"dependencies": "npm list --depth=1",
-		"dedupe": "npm dedupe"
+		"dedupe": "npm dedupe",
+		"prettier": "prettier \"public_html/**/*.{php,less,js}\""
 	}
 }

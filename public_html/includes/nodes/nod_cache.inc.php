@@ -229,6 +229,7 @@
 							$token['storage'] = 'file';
 							stats::stop_watch('cache');
 							return self::get($token, $max_age, $force_cache);
+							break;
 					}
 
 					break;
@@ -267,7 +268,8 @@
 						}
 					}
 
-					return file_put_contents($cache_file, json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+					$result = file_put_contents($cache_file, json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+					break;
 
 				case 'memory':
 
@@ -282,8 +284,8 @@
 
 						default:
 							$token['storage'] = 'file';
-							$result = self::set($token, $data);
 							break;
+							return self::set($token, $data);
 					}
 
 					break;

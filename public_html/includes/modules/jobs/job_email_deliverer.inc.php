@@ -1,5 +1,6 @@
 <?php
 
+	#[AllowDynamicProperties]
 	class job_email_deliverer extends abs_module {
 
 		public $id = __CLASS__;

@@ -155,6 +155,7 @@
 				'id' => customer::check_login() ? customer::$data['id'] : null,
 				'name' => customer::$data['firstname'] ? customer::$data['firstname'] .' '. customer::$data['lastname'] : null,
 				'email' => customer::$data['email'] ?: null,
+				'country_code' => customer::$data['country_code'],
 			];
 
 			self::$head_tags[] = '<script nonce="'. self::$nonce .'">window._env='. f::format_json(self::$jsenv, false) .'</script>';
@@ -294,15 +295,15 @@
 			switch (fallback(route::$selected['endpoint'])) {
 
 				case 'backend':
-					$_page = new ent_view('app://backend/template/layouts/'.self::$layout.'.inc.php');
+					$_layout = new ent_view('app://backend/template/layouts/'.self::$layout.'.inc.php');
 					break;
 
 				default:
-					$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/layouts/'.self::$layout.'.inc.php');
+					$_layout = new ent_view('app://frontend/templates/'.settings::get('template').'/layouts/'.self::$layout.'.inc.php');
 					break;
 			}
 
-			$_page->snippets = array_merge(self::$snippets, [
+			$_layout->snippets = array_merge(self::$snippets, [
 				'head_tags' => self::$head_tags,
 				'style' => self::$style,
 				'breadcrumbs' => breadcrumbs::render(),
@@ -321,22 +322,22 @@
 				}
 
 				self::$title = array_filter(self::$title);
-				$_page->snippets['title'] = implode(' | ', array_reverse(self::$title));
+				$_layout->snippets['title'] = implode(' | ', array_reverse(self::$title));
 			}
 
 			// Add meta description
 			if (!empty(self::$description)) {
-				$_page->snippets['head_tags'][] = '<meta name="description" content="'. f::escape_attr(self::$description) .'">';
+				$_layout->snippets['head_tags'][] = '<meta name="description" content="'. f::escape_attr(self::$description) .'">';
 			}
 
 			// Add canonical URL
 			if (!empty(self::$canonical)) {
-				$_page->snippets['head_tags'][] = '<link rel="canonical" href="'. f::escape_attr(self::$canonical) .'">';
+				$_layout->snippets['head_tags'][] = '<link rel="canonical" href="'. f::escape_attr(self::$canonical) .'">';
 			}
 
 			// Prepare JSON Schema
 			if (!empty(self::$schema)) {
-				$_page->snippets['head_tags']['schema_json'] = implode(PHP_EOL, [
+				$_layout->snippets['head_tags']['schema_json'] = implode(PHP_EOL, [
 					'<script type="application/ld+json" nonce="'. self::$nonce .'">',
 					f::format_json(array_values(self::$schema), false),
 					'</script>',
@@ -345,14 +346,14 @@
 
 			// Prepare OpenGraph Tags
 			if (!empty(self::$opengraph)) {
-				$_page->snippets['head_tags']['opengraph'] = implode(PHP_EOL, array_map(function($property, $content) {
+				$_layout->snippets['head_tags']['opengraph'] = implode(PHP_EOL, array_map(function($property, $content) {
 					return '<meta property="og:'. f::escape_attr($property) .'" content="'. f::escape_attr($content) .'">';
 				}, array_keys(self::$opengraph), self::$opengraph));
 			}
 
 			// Prepare internal styles
 			if (!empty(self::$style)) {
-				$_page->snippets['head_tags'][] = implode(PHP_EOL, [
+				$_layout->snippets['head_tags'][] = implode(PHP_EOL, [
 					'<style>',
 					implode(PHP_EOL . PHP_EOL, self::$style),
 					'</style>',
@@ -368,7 +369,7 @@
 
 			// Prepare internal javascript
 			if (!empty(self::$javascript)) {
-				$_page->snippets['foot_tags'][] = implode(PHP_EOL, [
+				$_layout->snippets['foot_tags'][] = implode(PHP_EOL, [
 					'<script nonce="'. self::$nonce .'">',
 					implode(PHP_EOL . PHP_EOL, self::$javascript),
 					'</script>',
@@ -376,15 +377,15 @@
 			}
 
 			// Prepare snippets
-			foreach ($_page->snippets as $key => $snippet) {
+			foreach ($_layout->snippets as $key => $snippet) {
 				if (is_array($snippet)) {
-					$_page->snippets[$key] = implode(PHP_EOL, $snippet);
+					$_layout->snippets[$key] = implode(PHP_EOL, $snippet);
 				}
 			}
 
-			$_page->cleanup = true;
+			$_layout->cleanup = true;
 
-			$output = $_page->render();
+			$output = $_layout->render();
 
 			self::optimize($output);
 
@@ -420,6 +421,7 @@
 			}
 
 			$styles = [];
+
 			foreach ($resources as $resource) {
 				if (preg_match('#^(app://|storage://|'. preg_quote(DOCUMENT_ROOT, '#') .')#', $resource) && is_file($resource)) {
 					$styles[] = '<link rel="stylesheet" integrity="sha256-'. base64_encode(hash_file('sha256', $resource, true)) .'" crossorigin="anonymous" href="'. self::href_rlink($resource) .'">';
@@ -502,7 +504,7 @@
 
 				case ($resource === null):
 					if ($inherit_params === null) $inherit_params = true;
-					$resource = route::$request;
+					$resource = WS_DIR_APP . route::$request;
 					break;
 
 				case (preg_match('#^b:(.*)$#', $resource, $matches)):

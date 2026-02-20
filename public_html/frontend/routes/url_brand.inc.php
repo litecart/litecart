@@ -37,7 +37,7 @@
 			}
 		],
 
-		null => [
+		'' => [
 			'pattern' => '#^.*-m-(\d+)/?$#',
 			'controller' => 'app://frontend/pages/brand.inc.php',
 			'params' => 'brand_id=$1',

@@ -27,7 +27,7 @@
 			}
 		],
 
-		null => [
+		'' => [
 			'pattern' => '#^.*-c-(\d+)/?$#',
 			'controller' => 'app://frontend/pages/category.inc.php',
 			'params' => 'category_id=$1',

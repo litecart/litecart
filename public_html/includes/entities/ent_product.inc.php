@@ -94,10 +94,10 @@
 			$this->data['attributes'] = database::query(
 				"select pa.*,
 					json_value(ag.name, '$.". database::input(language::$selected['code']) ."') as group_name,
-					json_value(avi.name, '$.". database::input(language::$selected['code']) ."') as value_name
+					json_value(av.name, '$.". database::input(language::$selected['code']) ."') as value_name
 				from ". DB_TABLE_PREFIX ."products_attributes pa
 				left join ". DB_TABLE_PREFIX ."attribute_groups ag on (ag.id = pa.group_id)
-				left join ". DB_TABLE_PREFIX ."attribute_values avi on (avi.id = pa.value_id)
+				left join " . DB_TABLE_PREFIX . "attribute_values av on (av.group_id = pa.group_id and av.id = pa.value)
 				where product_id = ". (int)$id ."
 				order by priority, group_name, value_name, custom_value;"
 			)->fetch_all();
@@ -246,42 +246,6 @@
 				);
 			}
 
-			// Delete prices
-			database::query(
-				"delete from ". DB_TABLE_PREFIX ."products_prices
-				where product_id = ". (int)$this->data['id'] ."
-				and id not in ('". implode("', '", array_column($this->data['prices'], 'id')) ."');"
-			);
-
-			// Update prices
-			foreach ($this->data['prices'] as $key => $price) {
-
-				if (empty($price['id'])) {
-
-					database::query(
-						"insert into ". DB_TABLE_PREFIX ."products_prices
-						(product_id)
-						values (". (int)$this->data['id'] .");"
-					);
-
-					$this->data['prices'][$key]['id'] = $price['id'] = database::insert_id();
-				}
-
-				$prices = array_filter($price['price']);
-
-				database::query(
-					"update ". DB_TABLE_PREFIX ."products_prices
-					set customer_group_id = ". (!empty($price['customer_group_id']) ? (int)$price['customer_group_id'] : "null") .",
-						campaign_id = ". (!empty($price['campaign_id']) ? (int)$price['campaign_id'] : "null") .",
-						geo_zone_id = ". (!empty($price['geo_zone_id']) ? (int)$price['geo_zone_id'] : "null") .",
-						min_quantity = ". (!empty($price['min_quantity']) ? (int)$price['min_quantity'] : 1) .",
-						price = '". database::input(f::format_json($prices)) ."'
-					where product_id = ". (int)$this->data['id'] ."
-					and id = ". (int)$price['id'] ."
-					limit 1;"
-				);
-			}
-
 			// Delete images
 			database::query(
 				"select * from ". DB_TABLE_PREFIX ."products_images
@@ -346,6 +310,42 @@
 				limit 1;"
 			);
 
+			// Delete prices
+			database::query(
+				"delete from ". DB_TABLE_PREFIX ."products_prices
+				where product_id = ". (int)$this->data['id'] ."
+				and id not in ('". implode("', '", array_column($this->data['prices'], 'id')) ."');"
+			);
+
+			// Update prices
+			foreach ($this->data['prices'] as $key => $price) {
+
+				if (empty($price['id'])) {
+
+					database::query(
+						"insert into ". DB_TABLE_PREFIX ."products_prices
+						(product_id)
+						values (". (int)$this->data['id'] .");"
+					);
+
+					$this->data['prices'][$key]['id'] = $price['id'] = database::insert_id();
+				}
+
+				$prices = array_filter($price['price']);
+
+				database::query(
+					"update ". DB_TABLE_PREFIX ."products_prices
+					set customer_group_id = ". (!empty($price['customer_group_id']) ? (int)$price['customer_group_id'] : "null") .",
+						campaign_id = ". (!empty($price['campaign_id']) ? (int)$price['campaign_id'] : "null") .",
+						geo_zone_id = ". (!empty($price['geo_zone_id']) ? (int)$price['geo_zone_id'] : "null") .",
+						min_quantity = ". (!empty($price['min_quantity']) ? (int)$price['min_quantity'] : 1) .",
+						price = '". database::input(f::format_json($prices)) ."'
+					where product_id = ". (int)$this->data['id'] ."
+					and id = ". (int)$price['id'] ."
+					limit 1;"
+				);
+			}
+
 			// Attributes
 			database::query(
 				"delete from ". DB_TABLE_PREFIX ."products_attributes
@@ -353,9 +353,8 @@
 				and id not in ('". implode("', '", array_column($this->data['attributes'], 'id')) ."');"
 			);
 
-			$i = 0;
-			foreach ($this->data['attributes'] as $key => $attribute) {
-				if (empty($attribute['id'])) {
+			// Update attributes
+			if (!empty($this->data['attributes'])) {
 
 					database::query(
 						"insert into ". DB_TABLE_PREFIX ."products_attributes
