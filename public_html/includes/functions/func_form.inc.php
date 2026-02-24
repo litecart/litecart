@@ -106,15 +106,27 @@
 
       if ($input === true) $input = form_reinsert_value($name, $value[0]);
 
+      if (is_array($input)) {
+        $checked = in_array($value[0], $input);
+      } else {
+        $checked = !strcmp($input, $value[0]);
+      }
+
       return '<label'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-check"' : '') .'>' . PHP_EOL
-      . '  <input type="checkbox" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value[0]) .'" '. (!strcmp($input, $value[0]) ? ' checked' : '') . (($parameters) ? ' ' . $parameters : '') .'>' . PHP_EOL
+      . '  <input type="checkbox" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value[0]) .'" '. ($checked ? ' checked' : '') . (($parameters) ? ' ' . $parameters : '') .'>' . PHP_EOL
       . '  ' . (isset($value[1]) ? $value[1] : $value[0]) . PHP_EOL
       . '</label>';
     }
 
     if ($input === true) $input = form_reinsert_value($name, $value);
 
-    return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-check"' : '') .' type="checkbox" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value) .'" '. (!strcmp($input, $value) ? ' checked' : '') . (($parameters) ? ' ' . $parameters : '') .'>';
+    if (is_array($input)) {
+      $checked = in_array($value, $input);
+    } else {
+      $checked = !strcmp($input, $value);
+    }
+
+    return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-check"' : '') .' type="checkbox" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value) .'" '. ($checked ? ' checked' : '') . (($parameters) ? ' ' . $parameters : '') .'>';
   }
 
   function form_draw_code_field($name, $value=true, $parameters='') {
@@ -368,17 +380,30 @@
   function form_draw_radio_button($name, $value, $input=true, $parameters='') {
 
     if (is_array($value)) {
-      if ($input === true) $input = form_reinsert_value($name, $value[0]);
+
+    if ($input === true) $input = form_reinsert_value($name, $value[0]);
+
+      if (is_array($input)) {
+        $checked = in_array($value[0], $input);
+      } else {
+        $checked = !strcmp($input, $value[0]);
+      }
 
       return '<label'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-check"' : '') .'>' . PHP_EOL
-          . '  <input type="radio" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value[0]) .'" '. (!strcmp($input, $value[0]) ? ' checked' : '') . (($parameters) ? ' ' . $parameters : '') .'>' . PHP_EOL
+          . '  <input type="radio" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value[0]) .'" '. ($checked ? ' checked' : '') . (($parameters) ? ' ' . $parameters : '') .'>' . PHP_EOL
           . '  ' . (isset($value[1]) ? $value[1] : $value[0]) . PHP_EOL
           . '</label>';
     }
 
     if ($input === true) $input = form_reinsert_value($name, $value);
 
-    return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-check"' : '') .' type="radio" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value) .'" '. (!strcmp($input, $value) ? ' checked' : '') . (($parameters) ? ' ' . $parameters : '') .'>';
+    if (is_array($input)) {
+      $checked = in_array($value, $input);
+    } else {
+      $checked = !strcmp($input, $value);
+    }
+
+    return '<input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-check"' : '') .' type="radio" name="'. functions::escape_html($name) .'" value="'. functions::escape_html($value) .'" '. ($checked ? ' checked' : '') . (($parameters) ? ' ' . $parameters : '') .'>';
   }
 
   function form_draw_range_slider($name, $value=true, $min='', $max='', $step='', $parameters='') {
@@ -459,7 +484,7 @@
 
   function form_draw_select_multiple_field($name, $options=[], $input=true, $parameters='') {
 
-    $html = '<div class="form-control" style="overflow-y: auto; max-height: 200px;">' . PHP_EOL;
+    $html = '<div class="form-control" '. ($parameters ? $parameters : '') .' style="overflow-y: auto; max-height: 200px;">' . PHP_EOL;
 
     foreach ($options as $option) {
 
