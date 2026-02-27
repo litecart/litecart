@@ -43,8 +43,8 @@
 
 		let $modal = $('#modal-product-picker');
 
-		if ($(this).val() == '') {
-			$modal.find('tbody').html('');
+		if (this.val() == '') {
+			$('tbody', $modal).html('');
 			xhr_product_picker = null;
 			return;
 		}
@@ -53,7 +53,7 @@
 			type: 'get',
 			async: true,
 			cache: false,
-			url: '<?php echo document::ilink('catalog/products.json'); ?>?query=' + $(this).val(),
+			url: '<?php echo document::ilink('catalog/products.json'); ?>?query=' + this.val(),
 			dataType: 'json',
 			beforeSend: function(jqXHR) {
 				jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'));
@@ -92,7 +92,7 @@
 
 					$row.data(product);
 
-					$modal.find('tbody').append($row);
+					$('tbody', $modal).append($row);
 				});
 
 			},
@@ -101,7 +101,7 @@
 
 	$('#modal-product-picker tbody').on('click', 'td', function() {
 
-		let $row = $(this).closest('tr'),
+		let $row = this.closest('tr'),
 			callback = $.litebox.current().$currentTarget.data('callback'),
 			expand = <?php echo (isset($_GET['collect']) && array_intersect(['price', 'stock_option'], $_GET['collect'])) ? 'true' : 'false'; ?>,
 			product = $row.data();
@@ -122,9 +122,9 @@
 
 		} else if ($.litebox.current().$currentTarget.closest('.input-group').length) {
 			let $field = $.litebox.current().$currentTarget.closest('.input-group');
-			$field.find(':input').val(product.id).trigger('change');
-			$field.find('.id').text(product.id);
-			$field.find('.name').text(product.name);
+			$(':input', $field).val(product.id).trigger('change');
+			$('.id', $field).text(product.id);
+			$('.name', $field).text(product.name);
 		}
 
 		if ($.litebox.opened) {

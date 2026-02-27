@@ -864,7 +864,7 @@
 	// Cross Referencing
 
 	$('input[name="name[<?php echo settings::get('store_language_code'); ?>]"]').on('input change', function() {
-		$('input[name="'+ $(this).attr('name') +'"]').not(this).val($(this).val());
+		$('input[name="'+ this.attr('name') +'"]').not(this).val(this.val());
 	});
 
 	// Initiate
@@ -872,14 +872,14 @@
 	$('input[name="name[<?php echo settings::get('store_language_code'); ?>]"]').first().trigger('input');
 
 	$('input[name^="name"]').on('input', function(e) {
-		let language_code = $(this).attr('name').match(/\[(.*)\]$/)[1];
-		$('input[name="head_title['+language_code+']"]').attr('placeholder', $(this).val());
-		$('input[name="h1_title['+language_code+']"]').attr('placeholder', $(this).val());
+		let language_code = this.attr('name').match(/\[(.*)\]$/)[1];
+		$('input[name="head_title['+language_code+']"]').attr('placeholder', this.val());
+		$('input[name="h1_title['+language_code+']"]').attr('placeholder', this.val());
 	});
 
 	$('input[name^="short_description"]').on('input', function(e) {
-		let language_code = $(this).attr('name').match(/\[(.*)\]$/)[1];
-		$('input[name="meta_description['+language_code+']"]').attr('placeholder', $(this).val());
+		let language_code = this.attr('name').match(/\[(.*)\]$/)[1];
+		$('input[name="meta_description['+language_code+']"]').attr('placeholder', this.val());
 	});
 
 	// Default Category
@@ -888,8 +888,8 @@
 		let default_category_id = $('select[name="default_category_id"] option:selected').val();
 
 		$('select[name="default_category_id"]').html('');
-		$.each($(this).find(':input[name="categories[]"]'), function(category) {
-			$('select[name="default_category_id"]').append('<option value="'+ $(this).val() +'">'+ unescape($(this).data('name')) +'</option>');
+		$.each($(':input[name="categories[]"]', this), function(category) {
+			$('select[name="default_category_id"]').append('<option value="'+ this.val() +'">'+ unescape(this.data('name')) +'</option>');
 		});
 
 		if (default_category_id) {
@@ -906,11 +906,11 @@
 	$('#images').on('click', 'button[name="move_up"], button[name="move_down"]', function(e) {
 		e.preventDefault();
 
-		let $row = $(this).closest('.image');
+		let $row = this.closest('.image');
 
-		if ($(this).is('button[name="move_up"]') && $row.prevAll().length > 0) {
+		if (this.is('button[name="move_up"]') && $row.prevAll().length > 0) {
 			$row.insertBefore($row.prev());
-		} else if ($(this).is('button[name="move_down"]') && $row.nextAll().length > 0) {
+		} else if (this.is('button[name="move_down"]') && $row.nextAll().length > 0) {
 			$row.insertAfter($row.next());
 		}
 
@@ -919,7 +919,7 @@
 
 	$('#images').on('click', 'button[name="remove"]', function(e) {
 		e.preventDefault();
-		$(this).closest('.image').remove();
+		this.closest('.image').remove();
 		refreshMainImage();
 	});
 
@@ -945,7 +945,7 @@
 	});
 
 	$('#images').on('change', 'input[type="file"]', function(e) {
-		let $img = $(this).closest('.image').find('img');
+		let $img = this.closest('.image').find('img');
 
 		if ($img.length && this.files && this.files[0]) {
 			let reader = new FileReader();
@@ -982,7 +982,7 @@
 	});
 
 	$('input[name="autogenerate_techdata"]').on('change', function() {
-		if ($(this).is(':checked')) {
+		if (this.is(':checked')) {
 			$('textarea[name^="technical_data"]').prop('disabled', true);
 		} else {
 			$('textarea[name^="technical_data"]').prop('disabled', false);
@@ -992,7 +992,7 @@
 	// Prices
 
 	$('input[name="prices[<?php echo settings::get('store_currency_code'); ?>]"]').on('input', function() {
-		$('input[name="prices[<?php echo settings::get('store_currency_code'); ?>]"]').not(this).val($(this).val());
+		$('input[name="prices[<?php echo settings::get('store_currency_code'); ?>]"]').not(this).val(this.val());
 	});
 
 	function get_tax_rate() {
@@ -1029,15 +1029,15 @@
 	// Update gross price
 	$('input[name^="prices"]').on('input', function() {
 
-		let currency_code = $(this).attr('name').match(/^prices\[([A-Z]{3})\]$/)[1];
+		let currency_code = this.attr('name').match(/^prices\[([A-Z]{3})\]$/)[1];
 		let decimals = get_currency_decimals(currency_code);
 		let gross_field = $('input[name="gross_prices['+ currency_code +']"]');
-		let gross_price = parseFloat(Number($(this).val() * (1+(get_tax_rate()/100))).toFixed(decimals));
+		let gross_price = parseFloat(Number(this.val() * (1+(get_tax_rate()/100))).toFixed(decimals));
 
-		if ($(this).val() == 0) {
-			$(gross_field).val('');
+		if (this.val() == 0) {
+			$gross_field.val('');
 		} else {
-			$(gross_field).val(gross_price);
+			$gross_field.val(gross_price);
 		}
 
 		update_currency_prices();
@@ -1046,15 +1046,15 @@
 	// Update net price
 	$('input[name^="gross_prices"]').on('input', function() {
 
-		let currency_code = $(this).attr('name').match(/^gross_prices\[([A-Z]{3})\]$/)[1];
+		let currency_code = this.attr('name').match(/^gross_prices\[([A-Z]{3})\]$/)[1];
 		let decimals = get_currency_decimals(currency_code);
-		let net_field = $('input[name="prices['+ currency_code +']"]');
-		let net_price = parseFloat(Number($(this).val() / (1+(get_tax_rate()/100))).toFixed(decimals));
+		let $net_field = $('input[name="prices['+ currency_code +']"]');
+		let net_price = parseFloat(Number(this.val() / (1+(get_tax_rate()/100))).toFixed(decimals));
 
-		if ($(this).val() == 0) {
-			$(net_field).val('');
+		if (this.val() == 0) {
+			$net_field.val('');
 		} else {
-			$(net_field).val(net_price);
+			$net_field.val(net_price);
 		}
 
 		update_currency_prices();
@@ -1099,46 +1099,46 @@
 	});
 
 	$('#prices').on('focus', 'input[name^="prices"]', function(e) {
-		if ($(this).attr('name').match(/\[[A-Z]{3}\]$/)) {
-			$(this).closest('.dropdown').addClass('open');
+		if (this.attr('name').match(/\[[A-Z]{3}\]$/)) {
+			this.closest('.dropdown').addClass('open');
 		}
 	});
 
 	$('#prices').on('blur', '.dropdown', function(e) {
-		$(this).removeClass('open');
+		this.removeClass('open');
 	});
 
 	$('#prices').on('input', 'input[name^="prices"][name$="[percentage]"]', function() {
-		let parent = $(this).closest('tr'),
+		let $parent = this.closest('tr'),
 			value = 0;
 
 		<?php foreach (currency::$currencies as $currency) { ?>
 		if ($('input[name^="prices"][name$="[<?php echo $currency['code']; ?>]"]').val() > 0) {
-			value = parseFloat($('input[name="prices[<?php echo $currency['code']; ?>]"]').val() * (100 - $(this).val()) / 100).toFixed(<?php echo $currency['decimals']; ?>);
-			$(parent).find('input[name$="[<?php echo $currency['code']; ?>]"]').val(value);
+			value = parseFloat($('input[name="prices[<?php echo $currency['code']; ?>]"]').val() * (100 - this.val()) / 100).toFixed(<?php echo $currency['decimals']; ?>);
+			$('input[name$="[<?php echo $currency['code']; ?>]"]', $parent).val(value);
 		} else {
-			$(parent).find('input[name$="[<?php echo $currency['code']; ?>]"]').val('');
+			$('input[name$="[<?php echo $currency['code']; ?>]"]', $parent).val('');
 		}
 		<?php } ?>
 
 		<?php foreach (currency::$currencies as $currency) { ?>
-		value = parseFloat($(parent).find('input[name^="prices"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').val() / <?php echo $currency['value']; ?>).toFixed(<?php echo $currency['decimals']; ?>);
-		$(parent).find('input[name^="prices"][name$="[<?php echo $currency['code']; ?>]"]').attr('placeholder', value);
+		value = parseFloat($('input[name^="prices"][name$="[<?php echo settings::get('store_currency_code', $parent); ?>]"]').val() / <?php echo $currency['value']; ?>).toFixed(<?php echo $currency['decimals']; ?>);
+		$('input[name^="prices"][name$="[<?php echo $currency['code']; ?>]"]', $parent).attr('placeholder', value);
 		<?php } ?>
 	});
 
 	$('#prices').on('input', 'input[name^="prices"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]', function() {
-		let parent = $(this).closest('tr');
-		let percentage = ($('input[name="prices[<?php echo settings::get('store_currency_code'); ?>]"]').val() - $(this).val()) / $('input[name="prices[<?php echo settings::get('store_currency_code'); ?>]"]').val() * 100;
+		let $parent = this.closest('tr');
+		let percentage = ($('input[name="prices[<?php echo settings::get('store_currency_code'); ?>]"]').val() - this.val()) / $('input[name="prices[<?php echo settings::get('store_currency_code'); ?>]"]').val() * 100;
 		percentage = percentage.toFixed(2);
-		$(parent).find('input[name$="[percentage]"]').val(percentage);
+		$('input[name$="[percentage]"]', $parent).val(percentage);
 
 		<?php foreach (currency::$currencies as $currency) { ?>
-		value = $(parent).find('input[name^="prices"][name*="[price]"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').val() / <?php echo $currency['value'] . PHP_EOL; ?>
+		value = $('input[name^="prices"][name*="[price]"][name$="[<?php echo settings::get('store_currency_code', $parent); ?>]"]').val() / <?php echo $currency['value'] . PHP_EOL; ?>
 		value = value.toFixed(<?php echo $currency['decimals']; ?>);
-		$(parent).find('input[name^="prices"][name*="[price]"][name$="[<?php echo $currency['code']; ?>]"]').attr("placeholder", value);
-		if ($(parent).find('input[name^="prices"][name*="[price]"][name$="[<?php echo $currency['code']; ?>]"]').val() == 0) {
-			$(parent).find('input[name^="prices"][name*="[price]"][name$="[<?php echo $currency['code']; ?>]"]').val('');
+		$('input[name^="prices"][name*="[price]"][name$="[<?php echo $currency['code']; ?>]"]', $parent).attr("placeholder", value);
+		if ($('input[name^="prices"][name*="[price]"][name$="[<?php echo $currency['code']; ?>]"]', $parent).val() == 0) {
+			$('input[name^="prices"][name*="[price]"][name$="[<?php echo $currency['code']; ?>]"]', $parent).val('');
 		}
 		<?php } ?>
 	});
@@ -1147,7 +1147,7 @@
 
 	$('#prices').on('click', '.remove', function(e) {
 		e.preventDefault();
-		$(this).closest('tr').remove();
+		this.closest('tr').remove();
 	});
 
 	$('#prices').on('click', '.add', function(e) {
@@ -1199,10 +1199,10 @@
 	});
 
 	$('#prices select[name$="[price_id]"]').on('change', function() {
-		let $row = $(this).closest('tr');
-		$option = $(this).find('option:selected');
+		let $row = this.closest('tr');
+		$('option:selected', $option = this);
 
-		if ($(this).val() != '') {
+		if (this.val() != '') {
 			$('.price-valid-from', $row).text($option.data('valid-from'));
 			$('.price-valid-to', $row).text($option.data('valid-to'));
 		} else {
@@ -1212,10 +1212,10 @@
 	});
 
 	$('#prices').on('change', 'select[name$="[campaign_id]"]', function(e) {
-		let $row = $(this).closest('tr');
-		$option = $(this).find('option:selected');
+		let $row = this.closest('tr');
+		$('option:selected', $option = this);
 
-		if ($(this).val() != '') {
+		if (this.val() != '') {
 			$('.date-valid-from', $row).text($option.data('valid-from'));
 			$('.date-valid-to', $row).text($option.data('valid-to'));
 		} else {
@@ -1227,7 +1227,7 @@
 	// Attributes
 	$('#attributes select[name="new_attribute[group_id]"]').on('change', function(e) {
 
-		let $newAttributeGroup = $(this),
+		let $newAttributeGroup = this,
 			$newAttributeValue = $('select[name="new_attribute[value_id]"]'),
 			$newCustomValue = $('input[name="new_attribute[custom_value]"]');
 
@@ -1279,7 +1279,7 @@
 
 	$('#attributes select[name="new_attribute[value_id]"]').on('change', function(e) {
 
-		let $newAttributeGroup = $(this),
+		let $newAttributeGroup = this,
 			$newAttributeValue = $('select[name="new_attribute[value_id]"]'),
 			$newCustomValue = $('input[name="new_attribute[custom_value]"]');
 
@@ -1317,9 +1317,9 @@
 		// Prevent duplicate attribute group/value/custom_value
 		let exists = false;
 		$('#attributes tbody tr').each(function() {
-			let group_id = $(this).find('input[name^="attributes"][name$="[group_id]"]').val();
-			let value_id = $(this).find('input[name^="attributes"][name$="[value_id]"]').val();
-			let custom_value = $(this).find('input[name^="attributes"][name$="[custom_value]"]').val();
+			let group_id = $('input[name^="attributes"][name$="[group_id]"]', this).val();
+			let value_id = $('input[name^="attributes"][name$="[value_id]"]', this).val();
+			let custom_value = $('input[name^="attributes"][name$="[custom_value]"]', this).val();
 
 			if (
 				group_id == $newAttributeGroup.val() &&
@@ -1357,15 +1357,15 @@
 			.replace(/__index__/g, 'new_' + __index__)
 		);
 
-		$output.find(':input[name^="attributes[new_'+__index__+'][group_id]"]')
+		$(':input[name^="attributes[new_'+__index__+'][group_id]"]', $output)
 			.val( $newAttributeGroup.val() )
 			.after( $('select[name="new_attribute[group_id]"] option:selected').text() );
 
-		$output.find(':input[name^="attributes[new_'+__index__+'][value_id]"]')
+		$(':input[name^="attributes[new_'+__index__+'][value_id]"]', $output)
 			.val( $newAttributeValue.val() )
 			.after(  $newAttributeValue.val() ? $('select[name="new_attribute[value_id]"] option:selected').text() : '' );
 
-		$output.find(':input[name^="attributes[new_'+__index__+'][custom_value]"]')
+		$(':input[name^="attributes[new_'+__index__+'][custom_value]"]', $output)
 			.val( $newCustomValue.val() )
 			.after( $newCustomValue.val() );
 
@@ -1375,7 +1375,7 @@
 	$('#attributes').on('click', 'button[name="remove"]', function(e) {
 		e.preventDefault();
 		if (!confirm("<?php echo t('text_are_you_sure', 'Are you sure?'); ?>")) return;
-		$(this).closest('tr').remove();
+		this.closest('tr').remove();
 	});
 
 	// Quantity Unit
@@ -1391,41 +1391,41 @@
 		$('input[name="quantity"]').val( parseFloat($('input[name="quantity"]').val() || 0).toFixed(decimals) );
 
 		$('input[name^="stock_options"][name$="[quantity]"]').each(function() {
-			$(this).val( parseFloat($(this).val() || 0).toFixed(decimals) );
+			this.val( parseFloat(this.val() || 0).toFixed(decimals) );
 		});
 
 		$('input[name^="stock_options"][name$="[quantity_adjustment]"]').each(function() {
-			$(this).val( parseFloat($(this).val() || 0).toFixed(decimals) );
+			this.val( parseFloat(this.val() || 0).toFixed(decimals) );
 		});
 	}).trigger('change');
 
 	// Quantity and Adjustments
 
 	$('body').on('input', ':input[name="quantity"], :input[name$="[quantity]"]', function() {
-		let $quantity_adjustment_field = $(':input[name="' + $(this).attr('name').replace('quantity', 'quantity_adjustment') + '"]'),
-			quantity = parseFloat($(this).val()),
-			quantity_adjustment = parseFloat($(this).val()) - parseFloat($(this).data('quantity')),
+		let $quantity_adjustment_field = $(':input[name="' + this.attr('name').replace('quantity', 'quantity_adjustment') + '"]'),
+			quantity = parseFloat(this.val()),
+			quantity_adjustment = parseFloat(this.val()) - parseFloat(this.data('quantity')),
 			decimals = parseInt($('select[name="quantity_unit_id"] option:selected').data('decimals'));
 
-		$(':input[name="'+ $(this).attr('name')+'"]').not(this).val( quantity.toFixed(decimals) );
+		$(':input[name="'+ this.attr('name')+'"]').not(this).val( quantity.toFixed(decimals) );
 		$quantity_adjustment_field.val( quantity_adjustment.toFixed(decimals) );
 	});
 
 	$('body').on('input', ':input[name="quantity_adjustment"], :input[name$="[quantity_adjustment]"]', function() {
-		let $quantity_field = $(':input[name="' + $(this).attr('name').replace('quantity_adjustment', 'quantity') + '"]'),
+		let $quantity_field = $(':input[name="' + this.attr('name').replace('quantity_adjustment', 'quantity') + '"]'),
 			quantity = parseFloat($quantity_field.data('quantity') || 0),
-			quantity_adjustment = parseFloat($(this).val() || 0),
+			quantity_adjustment = parseFloat(this.val() || 0),
 			decimals = parseInt($('select[name="quantity_unit_id"] option:selected').data('decimals') || 0);
 
-		$(':input[name="'+ $(this).attr('name') +'"]').not(this).val( quantity_adjustment.toFixed(decimals) );
+		$(':input[name="'+ this.attr('name') +'"]').not(this).val( quantity_adjustment.toFixed(decimals) );
 		$quantity_field.val( (quantity + quantity_adjustment).toFixed(decimals) );
 	});
 
 	// Transfer Backordered Quantity
 
 	$('body').on('click', 'button[name*="transfer_backordered"]', function() {
-		let $quantity_adjustment_field = $(':input[name="' + $(this).attr('name').replace('transfer_backordered', 'quantity_adjustment') +'"]'),
-			$backordered_field = $(':input[name="' + $(this).attr('name').replace('transfer_backordered', 'backordered') +'"]'),
+		let $quantity_adjustment_field = $(':input[name="' + this.attr('name').replace('transfer_backordered', 'quantity_adjustment') +'"]'),
+			$backordered_field = $(':input[name="' + this.attr('name').replace('transfer_backordered', 'backordered') +'"]'),
 			quantity_adjustment = parseFloat($quantity_adjustment_field.val() || 0),
 			backordered = parseFloat($backordered_field.val() || 0);
 
@@ -1437,37 +1437,37 @@
 
 	$('#customizations').on('click', '.remove-group', function(e) {
 		e.preventDefault();
-		$(this).closest('li').remove();
+		this.closest('li').remove();
 	});
 
 	$('#customizations').on('click', '.move-group-up, .move-group-down', function(e) {
 		e.preventDefault();
-		var $li = $(this).closest('li');
-		if ($(this).is('.move-group-up') && $li.prevAll().length > 0) {
+		var $li = this.closest('li');
+		if (this.is('.move-group-up') && $li.prevAll().length > 0) {
 			$li.insertBefore($li.prev());
-		} else if ($(this).is('.move-group-down') && $li.nextAll().length > 0) {
+		} else if (this.is('.move-group-down') && $li.nextAll().length > 0) {
 			$li.insertAfter($li.next());
 		}
 	});
 
 	$('#customizations').on('click', 'button[name="remove"]', function(e) {
 		e.preventDefault();
-		$(this).closest('tr').remove();
+		this.closest('tr').remove();
 	});
 
 	$('#customizations').on('click', 'button[name="move-up"], button[name="move-down"]', function(e) {
 		e.preventDefault();
-		var $row = $(this).closest('tr');
-		if ($(this).is('.move-up') && $row.prevAll().length > 0) {
+		var $row = this.closest('tr');
+		if (this.is('.move-up') && $row.prevAll().length > 0) {
 			$row.insertBefore($row.prev());
-		} else if ($(this).is('.move-down') && $row.nextAll().length > 0) {
+		} else if (this.is('.move-down') && $row.nextAll().length > 0) {
 			$row.insertAfter($row.next());
 		}
 	});
 
 	$('body').on('change', '.litebox select[name="new_predefined_customization[group_id]"]', function() {
 		$.ajax({
-			url: '<?php echo document::ilink('b:catalog/attribute_values.json'); ?>?group_id=' + $(this).val(),
+			url: '<?php echo document::ilink('b:catalog/attribute_values.json'); ?>?group_id=' + this.val(),
 			type: 'get',
 			cache: true,
 			async: true,
@@ -1489,7 +1489,7 @@
 
 	$('body').on('change', '.litebox select[name="new_user_input_customization[group_id]"]', function() {
 		$.ajax({
-			url: '<?php echo document::ilink('b:catalog/attribute_values.json'); ?>?group_id=' + $(this).val(),
+			url: '<?php echo document::ilink('b:catalog/attribute_values.json'); ?>?group_id=' + this.val(),
 			type: 'get',
 			cache: true,
 			async: true,
@@ -1525,50 +1525,50 @@
 	$('body').on('click', '.litebox button[name="add_predefined_customization"]', function(e) {
 		e.preventDefault();
 
-		var groupElement = $(this).closest('fieldset').find('select[name="new_predefined_customization[group_id]"]'),
-			valueElement = $(this).closest('fieldset').find('select[name="new_predefined_customization[value_id]"]'),
-			customValueElement = $(this).closest('fieldset').find('input[name="new_predefined_customization[custom_value]"]');
+		var $groupElement = this.closest('fieldset').find('select[name="new_predefined_customization[group_id]"]'),
+			$valueElement = this.closest('fieldset').find('select[name="new_predefined_customization[value_id]"]'),
+			$customValueElement = this.closest('fieldset').find('input[name="new_predefined_customization[custom_value]"]');
 
-		if ($(groupElement).val() == '') {
+		if ($groupElement.val() == '') {
 			alert("<?php echo f::escape_js(t('error_must_select_attribute_group', 'You must select an attribute group')); ?>");
 			return;
 		}
 
-		if ($(valueElement).val() == '' || $(valueElement).val() == '0') {
-			if ($(customValueElement).val() == '') {
+		if ($valueElement.val() == '' || $valueElement.val() == '0') {
+			if ($customValueElement.val() == '') {
 				alert("<?php echo f::escape_js(t('error_must_select_attribute_value', 'You must select an attribute value')); ?>");
 			}
 		} else {
-			if ($(customValueElement).val() != '') {
+			if ($customValueElement.val() != '') {
 				alert("<?php echo f::escape_js(t('error_cannot_define_both_value_and_custom_value', 'You cannot define both a value and a custom value')); ?>");
 				return;
 			}
 		}
 
-		if ($('#customizations :input[name^="customizations"][name$="[group_id]"][value="'+ $(groupElement).val() +'"]').closest('li').find('input[name$="[value_id]"][value="'+ $(valueElement).val() +'"]').length) {
-			if ($(customValueElement).val() != '') {
-				if ($('#customizations :input[name^="customizations"][name$="[group_id]"][value="'+ $(groupElement).val() +'"]').closest('li').find('input[name$="[custom_value]"][value="'+ escape($(customValueElement).val()) +'"]').length) {
+		if ($('#customizations :input[name^="customizations"][name$="[group_id]"][value="'+ $groupElement.val() +'"]').closest('li').find('input[name$="[value_id]"][value="'+ $valueElement.val() +'"]').length) {
+			if ($customValueElement.val() != '') {
+				if ($('#customizations :input[name^="customizations"][name$="[group_id]"][value="'+ $groupElement.val() +'"]').closest('li').find('input[name$="[custom_value]"][value="'+ escape($customValueElement.val()) +'"]').length) {
 					alert("<?php echo f::escape_js(t('error_option_already_defined', 'This option is already defined')); ?>");
 					return;
 				}
 			} else {
-				if ($('#customizations :input[name^="customizations"][name$="[group_id]"][value="'+ $(groupElement).val() +'"]').closest('li').find('input[name$="[value_id]"][value="'+ $(valueElement).val() +'"]').closest('tr').find('input[name$="[custom_value]"]').val() == $(customValueElement).val()) {
+				if ($('#customizations :input[name^="customizations"][name$="[group_id]"][value="'+ $groupElement.val() +'"]').closest('li').find('input[name$="[value_id]"][value="'+ $valueElement.val() +'"]').closest('tr').find('input[name$="[custom_value]"]').val() == $customValueElement.val()) {
 					alert("<?php echo f::escape_js(t('error_option_already_defined', 'This option is already defined')); ?>");
 					return;
 				}
 			}
 		}
 
-		if (!$('#customizations input[name^="customizations"][name$="[group_id]"][value="'+ $(groupElement).val() +'"]').length) {
+		if (!$('#customizations input[name^="customizations"][name$="[group_id]"][value="'+ $groupElement.val() +'"]').length) {
 
 			var $output = $([
-				'<li data-group-id="'+ $(groupElement).val().escapeAttr() +'" data-group-name="'+ $(groupElement).find('option:selected').text().escapeAttr() +'">',
+				'<li data-group-id="'+ $groupElement.val().escapeAttr() +'" data-group-name="'+ $('option:selected', $groupElement).text().escapeAttr() +'">',
 				'  <div class="float-end">',
 				'    <a class="btn btn-default move-group-up" href="#" title="<?php echo f::escape_js(t('text_move_up', 'Move up')); ?>"><?php echo f::draw_fonticon('icon-arrow-up', 'style="color: #3399cc;"'); ?></a>',
 				'    <a class="btn btn-default move-group-down" href="#" title="<?php echo f::escape_js(t('text_move_down', 'Move down')); ?>"><?php echo f::draw_fonticon('icon-arrow-down', 'style="color: #3399cc;"'); ?></a>',
 				'    <a class="btn btn-default remove-group" href="#" title="<?php echo f::escape_js(t('title_remove', 'Remove')); ?>"><?php echo f::draw_fonticon('icon-times', 'style="color: #cc3333;"'); ?></a>',
 				'  </div>',
-				'  <h2>'+ $(this).closest('fieldset').find('select[name="new_predefined_customization[group_id]"] option:selected').text() +'</h2>',
+				'  <h2>'+ $('option:selected', $groupElement).text() +'</h2>',
 				'  <?php echo f::escape_js(f::form_input_hidden('customizations[new_group_id][group_id]', 'new_group_id')); ?>',
 				'  <div class="grid">',
 				'    <div class="col-sm-4 col-md-2">',
@@ -1608,28 +1608,28 @@
 				'</li>'
 			].join('\n')
 				.replace(/new_customization_group_i/g, 'new_' + new_customization_group_i++)
-				.replace(/new_group_id/g, $(groupElement).val())
-				.replace(/new_group_name/g, $(groupElement).find('option:selected').text())
+				.replace(/new_group_id/g, $groupElement.val())
+				.replace(/new_group_name/g, $('option:selected', $groupElement).text())
 			);
 
 			$('#customizations').append($output);
 		}
 
 		var $output = $([
-			'<tr draggable="true" data-value-id="'+ escapeHTML($(valueElement).val()) +'" data-value-name="'+ escapeHTML(($(valueElement).val() != 0) ? $(valueElement).find('option:selected').text() : $(customValueElement).val()) +'">',
-			'  <td class="grabbable"><?php echo f::escape_js(f::form_input_hidden('customizations[new_group_id][values][new_customization_value_i][value_id]', 'new_value_id')) . f::form_input_hidden('customizations[new_group_id][values][new_customization_value_i][custom_value]', 'new_custom_value'); ?>'+ (($.inArray($(valueElement).val(), ['', '0']) !== -1) ? $(customValueElement).val() : $(valueElement).find('option:selected').text()) +'</td>',
+			'<tr draggable="true" data-value-id="'+ escapeHTML($valueElement.val()) +'" data-value-name="'+ escapeHTML(($valueElement.val() != 0) ? $('option:selected', $valueElement).text() : $customValueElement.val()) +'">',
+			'  <td class="grabbable"><?php echo f::escape_js(f::form_input_hidden('customizations[new_group_id][values][new_customization_value_i][value_id]', 'new_value_id')) . f::form_input_hidden('customizations[new_group_id][values][new_customization_value_i][custom_value]', 'new_custom_value'); ?>'+ (($.inArray($valueElement.val(), ['', '0']) !== -1) ? $customValueElement.val() : $('option:selected', $valueElement).text()) +'</td>',
 			'  <td class="text-center"><?php echo f::escape_js(f::form_select('customizations[new_group_id][values][new_customization_value_i][price_modifier]', ['+','%','*','='], true)); ?></td>',
 			'  <?php foreach ($currency_codes as $currency_code) echo '<td style="width: 200px;">'. f::escape_js(f::form_select_currency($currency_code, 'customizations[new_group_id][values][new_customization_value_i]['. $currency_code. ']', '')) .'</td>'; ?>',
 			'  <td class="text-end"><a class="btn btn-default btn-sm move-up" href="#" title="<?php echo f::escape_js(t('text_move_up', 'Move up')); ?>"><?php echo f::draw_fonticon('move-up'); ?></a> <a class="btn btn-default btn-sm move-down" href="#" title="<?php echo f::escape_js(t('text_move_down', 'Move down')); ?>"><?php echo f::draw_fonticon('move-down'); ?></a> <a class="btn btn-default btn-sm remove" href="#" title="<?php echo f::escape_js(t('title_remove', 'Remove')); ?>"><?php echo f::draw_fonticon('remove'); ?></a></td>',
 			'</tr>'
 		].join('\n')
 			.replace(/new_customization_value_i/g, 'new_' + new_customization_value_i++)
-			.replace(/new_group_id/g, $(groupElement).val())
-			.replace(/new_value_id/g, $(valueElement).val())
-			.replace(/new_custom_value/g, $(customValueElement).val().replace('"', '&quot;'))
+			.replace(/new_group_id/g, $groupElement.val())
+			.replace(/new_value_id/g, $valueElement.val())
+			.replace(/new_custom_value/g, $customValueElement.val().replace('"', '&quot;'))
 		);
 
-		$(':input[name^="customizations"][name$="[group_id]"][value="'+ $(groupElement).val() +'"]').closest('li').find('tbody').append($output);
+		$(':input[name^="customizations"][name$="[group_id]"][value="'+ $groupElement.val() +'"]').closest('li').find('tbody').append($output);
 
 		$.litebox.close();
 	});
@@ -1637,26 +1637,26 @@
 	$('body').on('click', '.litebox button[name="add_user_input_option"]', function(e) {
 		e.preventDefault();
 
-		var groupElement = $(this).closest('fieldset').find('select[name="new_user_input_customization[group_id]"]');
+		var $groupElement = this.closest('fieldset').find('select[name="new_user_input_customization[group_id]"]');
 
-		if ($(groupElement).val() == '') {
+		if ($groupElement.val() == '') {
 			alert("<?php echo f::escape_js(t('error_must_select_attribute_group', 'You must select an attribute group')); ?>");
 			return;
 		}
 
-		if ($('#customizations :input[name^="customizations"][name$="[group_id]"][value="'+ $(groupElement).val() +'"]').length) {
+		if ($('#customizations :input[name^="customizations"][name$="[group_id]"][value="'+ $groupElement.val() +'"]').length) {
 			alert("<?php echo f::escape_js(t('error_group_already_defined', 'This group is already defined')); ?>");
 			return;
 		}
 
-		var $output = $([
+		var $output = $([]);
 			'<li>',
 			'  <div class="float-end">',
 			'    <a class="move-group-up btn btn-default" href="#" title="<?php echo f::escape_js(t('text_move_up', 'Move up')); ?>"><?php echo f::draw_fonticon('icon-arrow-up', 'style="color: #3399cc;"'); ?></a>',
 			'    <a class="move-group-down btn btn-default" href="#" title="<?php echo f::escape_js(t('text_move_down', 'Move down')); ?>"><?php echo f::draw_fonticon('icon-arrow-down', 'style="color: #3399cc;"'); ?></a>',
 			'    <a class="remove-group btn btn-default" href="#" title="<?php echo f::escape_js(t('title_remove', 'Remove')); ?>"><?php echo f::draw_fonticon('icon-times', 'style="color: #cc3333;"'); ?></a>',
 			'  </div>',
-			'  <h2>'+ $(this).closest('fieldset').find('select[name="new_user_input_customization[group_id]"] option:selected').text() +'</h2>',
+			'  <h2>'+ $('option:selected', $groupElement).text() +'</h2>',
 			'  <?php echo f::escape_js(f::form_input_hidden('customizations[new_group_id][group_id]', 'new_group_id')); ?>',
 			'  <div class="grid">',
 			'    <div class="col-sm-4 col-md-2">',
@@ -1674,8 +1674,8 @@
 			'  </div>',
 			'</li>'
 		].join('\n')
-			.replace(/new_group_id/g, $(groupElement).val())
-			.replace(/new_group_name/g, $(groupElement).find('option:selected').text())
+			.replace(/new_group_id/g, $groupElement.val())
+			.replace(/new_group_name/g, $('option:selected', $groupElement).text())
 		);
 
 		$('#customizations').append($output);
@@ -1687,45 +1687,45 @@
 
 	<?php if (currency::$currencies > 1) { ?>
 	$('#stock-options').on('focusin', 'input[name^="stock_options"][name*="[price_adjustment]"]', function() {
-		$(this).closest('.dropdown').addClass('open');
+		this.closest('.dropdown').addClass('open');
 	});
 	<?php } ?>
 
 	$('#stock-options').on('input', 'input[name$="[quantity]"]', function() {
-		var adjustment_field = $(this).closest('tr').find('input[name$="[quantity_adjustment]"]');
-		$(adjustment_field).val(parseFloat($(this).val() || 0) - parseFloat($(this).data('quantity') || 0));
+		var $adjustment_element = this.closest('tr').find('input[name$="[quantity_adjustment]"]');
+		$adjustment_element.val(parseFloat(this.val() || 0) - parseFloat(this.data('quantity') || 0));
 	});
 
 	$('#stock-options').on('input', 'input[name$="[quantity_adjustment]"]', function() {
-		var qty_field = $(this).closest('tr').find('input[name$="[quantity]"]');
-		$(qty_field).val(parseFloat($(qty_field).data('quantity') || 0) + parseFloat($(this).val() || 0));
+		var $quantity_element = this.closest('tr').find('input[name$="[quantity]"]');
+		$quantity_element.val(parseFloat($quantity_element.data('quantity') || 0) + parseFloat(this.val() || 0));
 	});
 
 	$('#stock-options button[name="transfer"]').on('click', function() {
-		var $quantity_field = $(this).closest('tr').find('input[name$="[quantity_adjustment]"]'),
-			$backordered_field = $(this).closest('tr').find('input[name$="[backordered]"]');
-		$quantity_field.val(parseFloat($(quantity_field).val() || 0) + parseFloat($(backordered_field).val() || 0)).trigger('input');
+		var $quantity_field = this.closest('tr').find('input[name$="[quantity_adjustment]"]'),
+			$backordered_field = this.closest('tr').find('input[name$="[backordered]"]');
+		$quantity_field.val(parseFloat($quantity_field.val() || 0) + parseFloat($backordered_field.val() || 0)).trigger('input');
 		$backordered_field.val(0);
 	});
 
 	$('#stock-options').on('click', '.move-up, .move-down', function(e) {
 		e.preventDefault();
-		var row = $(this).closest('tr');
+		var $row = this.closest('tr');
 
-		if ($(this).is('.move-up') && $(row).prevAll().length > 1) {
-			$(row).insertBefore($(row).prev());
-		} else if ($(this).is('.move-down') && $(row).nextAll().length > 0) {
-			$(row).insertAfter($(row).next());
+		if (this.is('.move-up') && $row.prevAll().length > 1) {
+			$row.insertBefore($row.prev());
+		} else if (this.is('.move-down') && $row.nextAll().length > 0) {
+			$row.insertAfter($row.next());
 		}
 	});
 
 	$('#stock-options').on('click', '.remove', function(e) {
 		e.preventDefault();
-		$(this).closest('tr').remove();
+		this.closest('tr').remove();
 
 		var total = 0;
-		$(this).closest('tbody').find('input[name$="[quantity]"]').each(function() {
-			total += parseFloat($(this).val() || 0);
+		this.closest('tbody').find('input[name$="[quantity]"]').each(function() {
+			total += parseFloat(this.val() || 0);
 		});
 
 		if (!$('input[name^="stock_options"][name$="[id]"]').length) {
@@ -1739,12 +1739,12 @@
 
 			$('input[name="quantity"]').val(0);
 			$('input[name^="stock_options"][name$="[quantity]"]').each(function() {
-				$('input[name="quantity"]').val( parseFloat($('input[name="quantity"]').val() || 0) + parseFloat($(this).val() || 0) );
+				$('input[name="quantity"]').val( parseFloat($('input[name="quantity"]').val() || 0) + parseFloat(this.val() || 0) );
 			});
 
 			$('input[name="quantity_adjustment"]').val(0);
 			$('input[name^="stock_options"][name$="[quantity_adjustment]"]').each(function() {
-				$('input[name="quantity_adjustment"]').val( parseFloat($('input[name="quantity_adjustment"]').val() || 0) + parseFloat($(this).val() || 0) );
+				$('input[name="quantity_adjustment"]').val( parseFloat($('input[name="quantity_adjustment"]').val() || 0) + parseFloat(this.val() || 0) );
 			});
 		}
 	});
@@ -1833,8 +1833,8 @@
 					break;
 			}
 
-			$output.find(':input[name$="['+ key +']"]').val(value);
-			$output.find('.'+ key).text(value);
+			$(':input[name$="['+ key +']"]', $output).val(value);
+			$('.'+ key, $output).text(value);
 		});
 
 		if ($('#stock-options tbody tr[data-stock-item-id="'+ stock_item.id +'"]').length) {

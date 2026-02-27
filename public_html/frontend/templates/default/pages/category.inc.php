@@ -216,14 +216,14 @@
 	$('form[name="filter_form"] :input').on('input', function() {
 		$('#filter-tokens').html('');
 
-		$.each($('#box-category-filter input[data-token-title][type="search"]'), function(i,el) {
-			if (!$(this).val()) return;
-			$('#filter-tokens').append('<span class="token" data-group="'+ $(el).data('token-group') +'" data-name="'+ $(el).attr('name') +'" data-value="'+ $(el).val() +'">'+ $(el).data('token-title') +': '+ $(el).val() +'<a href="#" class="remove">×</a></span>');
+		$.each($('#box-category-filter input[data-token-title][type="search"]'), function(i,$el) {
+			if (!$el.val()) return;
+			$('#filter-tokens').append('<span class="token" data-group="'+ $el.data('token-group') +'" data-name="'+ $el.attr('name') +'" data-value="'+ $el.val() +'">'+ $el.data('token-title') +': '+ $el.val() +'<a href="#" class="remove">×</a></span>');
 		});
 
-		$.each($('#box-category-filter input[data-token-title]:checkbox:checked, #box-category-filter input[data-token-title][type="radio"]:checked'), function(i,el) {
-			if (!$(this).val()) return;
-			$('#filter-tokens').append('<span class="token" data-group="'+ $(el).data('token-group') +'" data-name="'+ $(el).attr('name') +'" data-value="'+ $(el).val() +'">'+ $(el).data('token-title') +': '+ $(el).data('token-value') +'<a href="#" class="remove">×</a></span>');
+		$.each($('#box-category-filter input[data-token-title]:checkbox:checked, #box-category-filter input[data-token-title][type="radio"]:checked'), function(i,$el) {
+			if (!$el.val()) return;
+			$('#filter-tokens').append('<span class="token" data-group="'+ $el.data('token-group') +'" data-name="'+ $el.attr('name') +'" data-value="'+ $el.val() +'">'+ $el.data('token-title') +': '+ $el.data('token-value') +'<a href="#" class="remove">×</a></span>');
 		});
 
 		if ($('input[name="price_range[min]"]').val() || $('input[name="price_range[max]"]').val()) {
@@ -264,7 +264,7 @@
 	$('#box-category').on('click', '#filter-tokens .remove', function(e) {
 		e.preventDefault();
 
-		let $token = $(this).closest('.token');
+		let $token = this.closest('.token');
 
 		switch ($(':input[name="'+ $token.data('name') +'"]').attr('type')) {
 
@@ -286,7 +286,7 @@
 	});
 
 	$('#box-category').on('change', ':input[name="list_style"]', function() {
-		if ($(this).val() == 'rows') {
+		if (this.val() == 'rows') {
 			$('#box-category .listing.products').removeClass('columns').addClass('rows');
 		} else {
 			$('#box-category .listing.products').removeClass('rows').addClass('columns');
@@ -294,6 +294,6 @@
 	});
 
 	$('#box-category').on('change', ':input[name="sort"]', function() {
-		$('form[name="filter_form"] :input[name="sort"]').not(this).val($(this).val()).trigger('input');
+		$('form[name="filter_form"] :input[name="sort"]').not(this).val(this.val()).trigger('input');
 	});
 </script>

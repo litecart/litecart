@@ -568,12 +568,12 @@ table .tag {
 	$('input[name="query"]').keypress(function(e) {
 		if (e.which == 13) {
 			e.preventDefault();
-			$(this).closest('form').submit();
+			this.closest('form').submit();
 		}
 	});
 
 	$('form[name="search_form"] select').on('change', function() {
-		$(this).closest('form').submit();
+		this.closest('form').submit();
 	});
 
 	$('.data-table :checkbox').on('change', function() {
@@ -582,7 +582,7 @@ table .tag {
 
 	$('table').on('click', '.icon-star-o', function(e) {
 		e.stopPropagation();
-		let $star = $(this);
+		let $star = this;
 		$.post('', 'star&order_id='+$star.closest('tr').data('id'), function(data) {
 			$star.replaceWith('<?php echo f::draw_fonticon('icon-star', 'style="color: #f2b01e;"'); ?>');
 		});
@@ -591,7 +591,7 @@ table .tag {
 
 	$('table').on('click', '.icon-star', function(e) {
 		e.stopPropagation();
-		let $star = $(this);
+		let $star = this;
 		$.post('', 'unstar&order_id='+$star.closest('tr').data('id'), function(data) {
 			$star.replaceWith('<?php echo f::draw_fonticon('icon-star-o', 'style="color: #ccc;"'); ?>');
 		});

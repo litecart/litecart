@@ -210,7 +210,7 @@
 <script>
 	$('select[name="group_id"] option[value=""]').text('-- <?php echo t('title_all', 'All'); ?> --');
 	$('select[name="group_id"]').on('change', function() {
-		$(this).closest('form').submit();
+		this.closest('form').submit();
 	});
 
 	$('.data-table :checkbox').on('change', function() {

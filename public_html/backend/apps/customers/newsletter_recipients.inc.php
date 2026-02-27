@@ -252,7 +252,7 @@
 	});
 
 	$('select[name="subscribed"]').on('change', function() {
-		$(this).closes('form').submit();
+		this.closes('form').submit();
 	});
 
 	$('.data-table :checkbox').on('change', function() {

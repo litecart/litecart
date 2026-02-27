@@ -381,9 +381,8 @@ waitFor('jQuery', ($) => {
 });
 
 // Wishlist
-waitFor('jQuery', ($) => {
-
-	$('.listing .product button[name="add_to_wishlist"]').on('click', function(e) {
+waitFor('jQuery', $ => {
+	$('.listing .product button[name="add_to_wishlist"]').on('click', function (e) {
 		e.preventDefault();
 
 		// Get the form and button
@@ -399,19 +398,17 @@ waitFor('jQuery', ($) => {
 			url: _env.platform.url + 'ajax/wishlist.json',
 			type: 'post',
 			data: {
-				'action': action,
-				'product_id': $product.data('product-id')
+				action: action,
+				product_id: $product.data('product-id'),
 			},
 			cache: false,
 			async: true,
 			dataType: 'json',
-			success: function(result) {
+			success: function (result) {
 				if (result.status == 'ok') {
 					$product.data('in-wishlist', result.added ? '1' : '0');
 				}
-			}
+			},
 		});
-
 	});
-
 });

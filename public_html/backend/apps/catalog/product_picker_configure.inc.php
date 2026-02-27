@@ -172,25 +172,25 @@
 	$('form[name="form_add_product"] button[name="ok"]').off('click').on('click', function(e) {
 		e.preventDefault();
 
-		let $form = $(this).closest('form'),
+		let $form = this.closest('form'),
 			callback = $.litebox.current().$currentTarget.data('callback');
 			item = {
 				id: '',
-				product_id: $form.find(':input[name="product_id"]').val(),
-				stock_option_id: $form.find(':input[name="stock_option_id"]').val(),
-				name: $form.find(':input[name="name"]').val(),
-				sku: $form.find(':input[name="sku"]').val(),
-				gtin: $form.find(':input[name="gtin"]').val(),
-				taric: $form.find(':input[name="taric"]').val(),
-				weight: parseFloat($form.find(':input[name="weight"]').val() || 0),
-				weight_unit: $form.find(':input[name="weight_unit"]').val(),
-				length: parseFloat($form.find(':input[name="length"]').val() || 0),
-				width: parseFloat($form.find(':input[name="width"]').val() || 0),
-				height: parseFloat($form.find(':input[name="height"]').val() || 0),
-				length_unit: $form.find(':input[name="length_unit"]').val(),
-				quantity: parseFloat($form.find(':input[name="quantity"]').val() || 0),
-				price: parseFloat($form.find(':input[name="price"]').val() || 0),
-				tax: parseFloat($form.find(':input[name="tax"]').val() || 0)
+				product_id: $(':input[name="product_id"]', $form).val(),
+				stock_option_id: $(':input[name="stock_option_id"]', $form).val(),
+				name: $(':input[name="name"]', $form).val(),
+				sku: $(':input[name="sku"]', $form).val(),
+				gtin: $(':input[name="gtin"]', $form).val(),
+				taric: $(':input[name="taric"]', $form).val(),
+				weight: parseFloat($(':input[name="weight"]', $form).val() || 0),
+				weight_unit: $(':input[name="weight_unit"]', $form).val(),
+				length: parseFloat($(':input[name="length"]', $form).val() || 0),
+				width: parseFloat($(':input[name="width"]', $form).val() || 0),
+				height: parseFloat($(':input[name="height"]', $form).val() || 0),
+				length_unit: $(':input[name="length_unit"]', $form).val(),
+				quantity: parseFloat($(':input[name="quantity"]', $form).val() || 0),
+				price: parseFloat($(':input[name="price"]', $form).val() || 0),
+				tax: parseFloat($(':input[name="tax"]', $form).val() || 0)
 			};
 
 		window[callback](product);

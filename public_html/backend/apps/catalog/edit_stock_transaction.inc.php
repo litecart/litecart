@@ -211,23 +211,23 @@
 
 <script>
 	$('input[name="new[sku]"]').on('input', function(e) {
-		let row = $(this).closest('tr');
+		let $row = this.closest('tr');
 
-		if ($('datalist#available-stock-items option[value="'+ $(this).val() +'"]').length) {
-			$(row).find('input[name="new[name]"]').val($('datalist#available-stock-items option[value="'+ $(this).val() +'"]:first').data('name')).prop('readonly', true);
-			$(row).find('input[name="new[quantity]"]').val($('datalist#available-stock-items option[value="'+ $(this).val() +'"]:first').data('quantity') || 0);
-			$(row).find('input[name="new[backordered]"]').val($('datalist#available-stock-items option[value="'+ $(this).val() +'"]:first').data('backordered') || '');
+		if ($('datalist#available-stock-items option[value="'+ this.val() +'"]').length) {
+			$('input[name="new[name]"]', $row).val($('datalist#available-stock-items option[value="'+ this.val() +'"]:first').data('name')).prop('readonly', true);
+			$('input[name="new[quantity]"]', $row).val($('datalist#available-stock-items option[value="'+ this.val() +'"]:first').data('quantity') || 0);
+			$('input[name="new[backordered]"]', $row).val($('datalist#available-stock-items option[value="'+ this.val() +'"]:first').data('backordered') || '');
 		} else {
-			$(row).find('input[name="new[name]"]').prop('readonly', false);
+			$('input[name="new[name]"]', $row).prop('readonly', false);
 		}
 	});
 
 	$('body').on('click', 'button[name="transfer"]', function() {
-		let quantity_field = $(this).closest('tr').find('input[name$="[quantity_adjustment]"]'),
-			backordered_field = $(this).closest('tr').find('input[name$="[backordered]"]');
+		let $quantity_field = this.closest('tr').find('input[name$="[quantity_adjustment]"]'),
+			$backordered_field = this.closest('tr').find('input[name$="[backordered]"]');
 
-		$(quantity_field).val(Number($(quantity_field).val()) + Number($(backordered_field).val()));
-		$(backordered_field).val(0);
+		$quantity_field.val(Number($quantity_field.val()) + Number($backordered_field.val()));
+		$backordered_field.val(0);
 	});
 
 	$('table tfoot').keypress(function(e) {
@@ -239,7 +239,7 @@
 
 	$('body').on('click', '#transaction-contents .remove', function(e) {
 		e.preventDefault();
-		$(this).closest('tr').remove();
+		this.closest('tr').remove();
 	});
 
 	$('table tfoot button[name="add"]').on('click', function(e) {
@@ -248,7 +248,7 @@
 		let __index__ = 0;
 		while ($(':input[name^="contents[new_'+__index__+']"]').length) __index__++;
 
-		let row = $(this).closest('tr');
+		let row = this.closest('tr');
 
 		if (!$('datalist#available-stock-items option[value="'+ $('input[name="new[sku]"]').val() +'"]').length) {
 			alert('Unknown stock item');
@@ -286,12 +286,12 @@
 		);
 
 		// Insert values
-		$output.find('[name$="[item_id]"]').val($('input[name="new[id]"]').data('id') || '');
-		$output.find('[name$="[sku]"]').val($('input[name="new[sku]"]').data('sku') || '');
-		$output.find('[name$="[name]"]').val($('input[name="new[name]"]').val() || '');
-		$output.find('[name$="[quantity]"]').val($('input[name="new[quantity]"]').val() || 0);
-		$output.find('[name$="[quantity_adjustment]"]').val($('input[name="new[quantity_adjustment]"]').val() || '');
-		$output.find('[name$="[backordered]"]').val($('input[name="new[backordered]"]').val() || '');
+		$('[name$="[item_id]"]', $output).val($('input[name="new[id]"]').data('id') || '');
+		$('[name$="[sku]"]', $output).val($('input[name="new[sku]"]').data('sku') || '');
+		$('[name$="[name]"]', $output).val($('input[name="new[name]"]').val() || '');
+		$('[name$="[quantity]"]', $output).val($('input[name="new[quantity]"]').val() || 0);
+		$('[name$="[quantity_adjustment]"]', $output).val($('input[name="new[quantity_adjustment]"]').val() || '');
+		$('[name$="[backordered]"]', $output).val($('input[name="new[backordered]"]').val() || '');
 
 		$('#transaction-contents tbody').append($output);
 

@@ -150,15 +150,15 @@
 
 <script>
 	$('input[type="file"]').on('change', function() {
-		$form_group = $(this).closest('.form-group');
+		$form_group = this.closest('.form-group');
 		if (this.files && this.files[0]) {
 			var reader = new FileReader();
 			reader.onload = function(e) {
-				$form_group.find('img').attr('src', e.target.result);
+				$('img', $form_group).attr('src', e.target.result);
 			}
 			reader.readAsDataURL(this.files[0]);
 		} else {
-			$form_group.find('img').attr('src', $form_group.find('img').data('original') );
+			$('img', $form_group).attr('src', $('img', $form_group).data('original') );
 		}
 	});
 </script>

@@ -220,12 +220,12 @@
 
 <script>
 	$('input[name="name"]').on('input', function(e) {
-		$('input[name^="head_title"]').attr('placeholder', $(this).val())
-		$('input[name^="h1_title"]').attr('placeholder', $(this).val())
+		$('input[name^="head_title"]').attr('placeholder', this.val())
+		$('input[name^="h1_title"]').attr('placeholder', this.val())
 	}).trigger('input')
 
 	$('input[name="image"]').on('change', function(e) {
-		if ($(this).val() != '') {
+		if (this.val() != '') {
 			let oFReader = new FileReader()
 			oFReader.readAsDataURL(this.files[0])
 			oFReader.onload = function(e){
@@ -237,7 +237,7 @@
 	})
 
 	$('input[name^="short_description"]').on('input', function(e) {
-		let language_code = $(this).attr('name').match(/\[(.*)\]$/)[1]
-		$('input[name="meta_description['+language_code+']"]').attr('placeholder', $(this).val())
+		let language_code = this.attr('name').match(/\[(.*)\]$/)[1]
+		$('input[name="meta_description['+language_code+']"]').attr('placeholder', this.val())
 	}).trigger('input')
 </script>

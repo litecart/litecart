@@ -56,7 +56,7 @@
 	$('#stock-item-picker input[name="query"]').on('input', function() {
 
 		/*
-		if ($(this).val() == '') {
+		if (this.val() == '') {
 			$('#stock-item-picker tbody').html('');
 			xhr_stock_item_picker = null;
 			return;
@@ -67,7 +67,7 @@
 			type: 'get',
 			async: true,
 			cache: false,
-			url: '<?php echo document::ilink(__APP__.'/stock_items.json'); ?>?query=' + $(this).val(),
+			url: '<?php echo document::ilink(__APP__.'/stock_items.json'); ?>?query=' + this.val(),
 			dataType: 'json',
 			beforeSend: function(jqXHR) {
 				jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'));
@@ -110,7 +110,7 @@
 
 	$('#stock-item-picker tbody').on('click', 'td', function() {
 
-		let $row = $(this).closest('tr'),
+		let $row = this.closest('tr'),
 			callback = '<?php echo !empty($_GET['js_callback']) ? f::escape_js($_GET['js_callback']) : ''; ?>',
 			stock_item = $row.data();
 
@@ -128,9 +128,9 @@
 
 		} else if ($.litebox.current().$currentTarget.closest('.input-group').length) {
 			let $field = $.litebox.current().$currentTarget.closest('.input-group');
-			$field.find(':input').val(stock_item.id).trigger('change');
-			$field.find('.id').text(stock_item.id);
-			$field.find('.name').text(stock_item.name);
+			$(':input', $field).val(stock_item.id).trigger('change');
+			$('.id', $field).text(stock_item.id);
+			$('.name', $field).text(stock_item.name);
 		}
 
 		if ($.litebox.opened) {

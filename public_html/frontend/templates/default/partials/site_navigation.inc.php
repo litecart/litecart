@@ -206,6 +206,6 @@
 	});
 
 	$('#site-navigation .search').on('click', function() {
-		$(this).find('input[name="query"]').trigger('focus');
+		$('input[name="query"]', $(this)).trigger('focus');
 	});
 </script>

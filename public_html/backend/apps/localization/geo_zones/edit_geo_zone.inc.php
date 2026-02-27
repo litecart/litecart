@@ -147,29 +147,29 @@
 
 <script>
 	$('select[name$="new_zone[zone_code]"][disabled]').each(function() {
-		$(this).html('<option value="">-- <?php echo f::escape_js(t('title_all_zones', 'All Zones')); ?> --</option>');
+		this.html('<option value="">-- <?php echo f::escape_js(t('title_all_zones', 'All Zones')); ?> --</option>');
 	});
 
 	$('select[name="new_zone[country_code]"]').on('change', function() {
-		let zone_field = $(this).closest('tr').find('select[name="new_zone[zone_code]"]');
+		let $zone_field = this.closest('tr').find('select[name="new_zone[zone_code]"]');
 
 		$.ajax({
-			url: '<?php echo document::ilink('countries/zones.json'); ?>?country_code=' + $(this).val(),
+			url: '<?php echo document::ilink('countries/zones.json'); ?>?country_code=' + this.val(),
 			type: 'get',
 			cache: true,
 			async: true,
 			dataType: 'json',
 			success: function(data) {
-				$(zone_field).html('');
+				$($zone_field).html('');
 				if (data) {
-					$(zone_field).append('<option value="">-- <?php echo f::escape_js(t('title_all_zones', 'All Zones')); ?> --</option>');
+					$($zone_field).append('<option value="">-- <?php echo f::escape_js(t('title_all_zones', 'All Zones')); ?> --</option>');
 					$.each(data, function(i, zone) {
-						$(zone_field).append('<option value="'+ zone.code +'">'+ zone.name +'</option>');
+						$($zone_field).append('<option value="'+ zone.code +'">'+ zone.name +'</option>');
 					});
-					$(zone_field).prop('disabled', false);
+					$($zone_field).prop('disabled', false);
 				} else {
-					$(zone_field).append('<option value="">-- <?php echo f::escape_js(t('title_all_zones', 'All Zones')); ?> --</option>');
-					$(zone_field).prop('disabled', true);
+					$($zone_field).append('<option value="">-- <?php echo f::escape_js(t('title_all_zones', 'All Zones')); ?> --</option>');
+					$($zone_field).prop('disabled', true);
 				}
 			}
 		});
@@ -185,11 +185,11 @@
 		}
 
 		let found = false;
-		$.each($('form[name="form_geo_zone"] tbody tr'), function(i, current_row) {
+		$.each($('form[name="form_geo_zone"] tbody tr'), function(i, $row) {
 			if (
-				$(current_row).find(':input[name$="[country_code]"]').val() == $(':input[name="new_zone[country_code]"]').val()
-				&& $(current_row).find(':input[name$="[zone_code]"]').val() == $(':input[name="new_zone[zone_code]"]').val()
-				&& $(current_row).find(':input[name$="[city]"]').val() == $(':input[name="new_zone[city]"]').val()
+				$(':input[name$="[country_code]"]', $row).val() == $(':input[name="new_zone[country_code]"]').val()
+				&& $(':input[name$="[zone_code]"]', $row).val() == $(':input[name="new_zone[zone_code]"]').val()
+				&& $(':input[name$="[city]"]', $row).val() == $(':input[name="new_zone[city]"]').val()
 			) {
 				found = true;
 				return;
@@ -246,6 +246,6 @@
 
 	$('#zones').on('click', '.remove', function(e) {
 		e.preventDefault();
-		$(this).closest('tr').remove();
+		this.closest('tr').remove();
 	});
 </script>

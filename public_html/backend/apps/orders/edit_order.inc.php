@@ -1469,14 +1469,14 @@
 	// Order
 
 	$('select[name="order_status_id"]').on('change', function(e) {
-		let color = $(this).find('option:selected').data('color');
-		$(this).css('box-shadow', color ? '0 0 0px 2px'+ color +'cc' : '');
+		let color = $('option:selected', this).data('color');
+		this.css('box-shadow', color ? '0 0 0px 2px'+ color +'cc' : '');
 	}).trigger('change');
 
 	$('select[name="currency_code"]').on('change', function(e) {
-		$('input[type="number"][data-type="currency"]').data('decimals', $(this).find('option:selected').data('decimals'));
-		$('input[name="currency_value"]').val($(this).find('option:selected').data('value'));
-		$('input[data-type="currency"]').closest('.input-group').find('.input-group-text').text($(this).val());
+		$('input[type="number"][data-type="currency"]').data('decimals', $('option:selected', this).data('decimals'));
+		$('input[name="currency_value"]').val($('option:selected', this).data('value'));
+		$('input[data-type="currency"]').closest('.input-group').find('.input-group-text').text(this.val());
 		refresh_total();
 	});
 
@@ -1510,26 +1510,26 @@
 
 	$('#customer-details select[name="customer[country_code]"]').on('change', function() {
 
-		if ($(this).find('option:selected').data('tax-id-format')) {
-			$('input[name="customer[tax_id]"]').attr('pattern', $(this).find('option:selected').data('tax-id-format'));
+		if ($('option:selected', this).data('tax-id-format')) {
+			$('input[name="customer[tax_id]"]').attr('pattern', $('option:selected', this).data('tax-id-format'));
 		} else {
 			$('input[name="customer[tax_id]"]').removeAttr('pattern');
 		}
 
-		if ($(this).find('option:selected').data('postcode-format')) {
-			$('input[name="customer[postcode]"]').attr('pattern', $(this).find('option:selected').data('postcode-format'));
+		if ($('option:selected', this).data('postcode-format')) {
+			$('input[name="customer[postcode]"]').attr('pattern', $('option:selected', this).data('postcode-format'));
 		} else {
 			$('input[name="customer[postcode]"]').removeAttr('pattern');
 		}
 
-		if ($(this).find('option:selected').data('phone-code')) {
-			$('input[name="customer[phone]"]').attr('placeholder', '+' + $(this).find('option:selected').data('phone-code'));
+		if ($('option:selected', this).data('phone-code')) {
+			$('input[name="customer[phone]"]').attr('placeholder', '+' + $('option:selected', this).data('phone-code'));
 		} else {
 			$('input[name="customer[phone]"]').removeAttr('placeholder');
 		}
 
 		$.ajax({
-			url: '<?php echo document::ilink('countries/zones.json'); ?>?country_code=' + $(this).val(),
+			url: '<?php echo document::ilink('countries/zones.json'); ?>?country_code=' + this.val(),
 			type: 'get',
 			cache: true,
 			async: false,
@@ -1557,27 +1557,27 @@
 
 	$('#customer-details select[name="shipping_address[country_code]"]').on('change', function() {
 
-		if ($(this).find('option:selected').data('tax-id-format')) {
-			$('input[name="shipping_address[tax_id]"]').attr('pattern', $(this).find('option:selected').data('tax-id-format'));
+		if ($('option:selected', this).data('tax-id-format')) {
+			$('input[name="shipping_address[tax_id]"]').attr('pattern', $('option:selected', this).data('tax-id-format'));
 		} else {
 			$('input[name="shipping_address[tax_id]"]').removeAttr('pattern');
 		}
 
-		if ($(this).find('option:selected').data('postcode-format')) {
-			$('input[name="shipping_address[postcode]"]').attr('pattern', $(this).find('option:selected').data('postcode-format'));
+		if ($('option:selected', this).data('postcode-format')) {
+			$('input[name="shipping_address[postcode]"]').attr('pattern', $('option:selected', this).data('postcode-format'));
 		} else {
 			$('input[name="shipping_address[postcode]"]').removeAttr('pattern');
 		}
 
-		if ($(this).find('option:selected').data('phone-code')) {
-			$('input[name="shipping_address[phone]"]').attr('placeholder', '+' + $(this).find('option:selected').data('phone-code'));
+		if ($('option:selected', this).data('phone-code')) {
+			$('input[name="shipping_address[phone]"]').attr('placeholder', '+' + $('option:selected', this).data('phone-code'));
 		} else {
 			$('input[name="shipping_address[phone]"]').removeAttr('placeholder');
 		}
 
 		$('body').css('cursor', 'wait');
 		$.ajax({
-			url: '<?php echo document::ilink('countries/zones.json'); ?>?country_code=' + $(this).val(),
+			url: '<?php echo document::ilink('countries/zones.json'); ?>?country_code=' + this.val(),
 			type: 'get',
 			cache: true,
 			async: true,
@@ -1662,7 +1662,7 @@
 	// Comments
 
 	$('#box-comments').on('input', 'textarea[name^="comments"][name$="[text]"]', function() {
-		$(this).height('auto').height('calc(' + $(this).prop('scrollHeight') + 'px + 1em) ');
+		this.height('auto').height('calc(' + this.prop('scrollHeight') + 'px + 1em) ');
 	}).trigger('input');
 
 
@@ -1689,28 +1689,28 @@
 			.replace(/__index__/g, 'new_' + __index__)
 		);
 
-		$(this).before($output);
-		$(this).closest('#box-comments .bubbles textarea:last-child').trigger('focus');
+		this.before($output);
+		this.closest('#box-comments .bubbles textarea:last-child').trigger('focus');
 	});
 
 	$('#box-comments').on('click', ':input[name$="[hidden]"]', function(e) {
-		$(this).closest('.bubble').find(':input[name$="[notify]"]').prop('checked', false).trigger('change');
+		this.closest('.bubble').find(':input[name$="[notify]"]').prop('checked', false).trigger('change');
 	});
 
 	$('#box-comments').on('click', ':input[name$="[notify]"]', function(e) {
-		$(this).closest('.bubble').find(':input[name$="[hidden]"]').prop('checked', false).trigger('change');
+		this.closest('.bubble').find(':input[name$="[hidden]"]').prop('checked', false).trigger('change');
 	});
 
 	$('#box-comments').on('click', '.remove', function(e) {
 		e.preventDefault();
-		$(this).closest('.bubble').remove();
+		this.closest('.bubble').remove();
 	});
 
 	$('#box-comments .bubbles').on('change', 'input[name^="comments"][name$="[hidden]"]', function(e) {
-		if ($(this).is(':checked')) {
-			$(this).closest('.bubble').addClass('semi-transparent');
+		if (this.is(':checked')) {
+			this.closest('.bubble').addClass('semi-transparent');
 		} else {
-			$(this).closest('.bubble').removeClass('semi-transparent');
+			this.closest('.bubble').removeClass('semi-transparent');
 		}
 	});
 
@@ -1744,28 +1744,28 @@
 
 	$('#order-lines').on('input change', ':input[name$="[quantity]"], :input[name$="[price]"], :input[name$="[tax_rate]"], :input[name$="[discount]"]', function() {
 
-		let $row = $(this).closest('tr'),
-			quantity = parseFloat($row.find(':input[name$="[quantity]"]').val() || 0),
-			price = parseFloat($row.find(':input[name$="[price]"]').val() || 0),
-			tax_rate = parseFloat($row.find(':input[name$="[tax_rate]"]').val() || 0),
-			discount = parseFloat($row.find(':input[name$="[discount]"]').val() || 0),
+		let $row = this.closest('tr'),
+			quantity = parseFloat($(':input[name$="[quantity]"]', $row).val() || 0),
+			price = parseFloat($(':input[name$="[price]"]', $row).val() || 0),
+			tax_rate = parseFloat($(':input[name$="[tax_rate]"]', $row).val() || 0),
+			discount = parseFloat($(':input[name$="[discount]"]', $row).val() || 0),
 			sum = quantity * (price - discount),
 			sum_tax = (sum * tax_rate / 100),
 			decimals = $('select[name="currency_code"] option:selected').data('decimals') || 0;
 
-		$row.find(':input[name$="[sum]"]').val(sum.toFixed(decimals)).trigger('change');
-		$row.find('.sum').text(sum.toMoney(false));
+		$(':input[name$="[sum]"]', $row).val(sum.toFixed(decimals)).trigger('change');
+		$('.sum', $row).text(sum.toMoney(false));
 
-		$row.find(':input[name$="[tax]"]').val(sum_tax.toFixed(decimals)).trigger('change');
-		$row.find('.sum_tax').text(sum_tax.toMoney(false));
+		$(':input[name$="[tax]"]', $row).val(sum_tax.toFixed(decimals)).trigger('change');
+		$('.sum_tax', $row).text(sum_tax.toMoney(false));
 
 		refresh_total();
 	});
 
 	$('#order-lines').on('click', '.edit', function() {
 
-		let $row = $(this).closest('tr');
-			type = $row.find(':input[name$="[type]"]').val();
+		let $row = this.closest('tr');
+			type = $(':input[name$="[type]"]', $row).val();
 
 		switch (type) {
 
@@ -1782,19 +1782,19 @@
 		$modal.data('row', $row);
 
 			// Set modal title
-		$modal.find('h2').text("<?php echo f::escape_js(t('title_edit_line', 'Edit Line Item')); ?>");
+		$('h2', $modal).text("<?php echo f::escape_js(t('title_edit_line', 'Edit Line Item')); ?>");
 
 			// Insert values into modal
-		$.each($modal.find(':input'), function(i, element) {
+		$.each($(':input', $modal), function(i, $element) {
 
-			let field = $(element).attr('name');
-			let value = $row.find(':input[name$="['+field+']"]').val();
+			let field = $element.attr('name');
+			let value = $(':input[name$="['+field+']"]', $row).val();
 
-			if ($modal.find(':input[name="'+field+'"]').attr('type') == 'number') {
+			if ($(':input[name="'+field+'"]', $modal).attr('type') == 'number') {
 				value = parseFloat(value || 0);
 			}
 
-			$modal.find(':input[name="'+field+'"]').val(value);
+			$(':input[name="'+field+'"]', $modal).val(value);
 		});
 
 		$.litebox($modal);
@@ -1833,58 +1833,54 @@
 
 	$('#order-lines button[name="add"]').on('click', function() {
 
-		$modal = $([
-
-		].join('\n'));
-
 		$.litebox('#modal-edit-line');
 
-		let modal = $('.litebox.active'),
-				row = $(this).closest('tr');
+		let $modal = $('.litebox.active'),
+			$row = this.closest('tr');
 
-		$(modal).data('row', '');
+		$modal.data('row', '');
 	});
 
 	$('#order-lines').on('click', '.remove', function(e) {
 		e.preventDefault();
-		$(this).closest('tr').remove();
+		this.closest('tr').remove();
 	});
 
 	// Edit Line Item Modal
 
 
 	window.addItem = function(line) {
-		$output.find('*[name$="[product_id]"]').val(line.product_id);
-		$output.find('*[name$="[stock_item_id]"]').val(line.stock_item_id);
-		$output.find('*[name$="[sku]"]').val(line.sku);
-		$output.find('*[name$="[name]"]').val(line.name);
-		$output.find('*[name$="[serial_number]"]').val(line.serial_number);
-		$output.find('*[name$="[gtin]"]').val(line.gtin);
-		$output.find('*[name$="[taric]"]').val(line.taric);
-		$output.find('*[name$="[weight]"]').val(line.weight);
-		$output.find('*[name$="[weight_unit]"]').val(line.weight_unit);
-		$output.find('*[name$="[length]"]').val(line.length);
-		$output.find('*[name$="[width]"]').val(line.width);
-		$output.find('*[name$="[height]"]').val(line.height);
-		$output.find('*[name$="[length_unit]"]').val(line.length_unit);
-		$output.find('*[name$="[quantity]"]').val(line.quantity);
-		$output.find('*[name$="[price]"]').val(line.price);
-		$output.find('*[name$="[tax]"]').val(line.tax);
-		$output.find('*[name$="[tax_rate]"]').val(line.tax_rate);
-		$output.find('*[name$="[tax_class_id]"]').val(line.tax_class_id);
-		$output.find('[data-type="currency"]').parent().find('.input-group-text').text($(':input[name="currency_code"]').val());
-		$output.find('.weight').text(String(line.weight).trim('.0'));
-		$output.find('.weight_unit').text(line.weight_unit);
-		$output.find('.length').text(String(line.length).trim('.0'));
-		$output.find('.width').text(String(line.width).trim('.0'));
-		$output.find('.height').text(String(line.height).trim('.0'));
-		$output.find('.length_unit').text(line.length_unit);
+		$('*[name$="[product_id]"]', $output).val(line.product_id);
+		$('*[name$="[stock_item_id]"]', $output).val(line.stock_item_id);
+		$('*[name$="[sku]"]', $output).val(line.sku);
+		$('*[name$="[name]"]', $output).val(line.name);
+		$('*[name$="[serial_number]"]', $output).val(line.serial_number);
+		$('*[name$="[gtin]"]', $output).val(line.gtin);
+		$('*[name$="[taric]"]', $output).val(line.taric);
+		$('*[name$="[weight]"]', $output).val(line.weight);
+		$('*[name$="[weight_unit]"]', $output).val(line.weight_unit);
+		$('*[name$="[length]"]', $output).val(line.length);
+		$('*[name$="[width]"]', $output).val(line.width);
+		$('*[name$="[height]"]', $output).val(line.height);
+		$('*[name$="[length_unit]"]', $output).val(line.length_unit);
+		$('*[name$="[quantity]"]', $output).val(line.quantity);
+		$('*[name$="[price]"]', $output).val(line.price);
+		$('*[name$="[tax]"]', $output).val(line.tax);
+		$('*[name$="[tax_rate]"]', $output).val(line.tax_rate);
+		$('*[name$="[tax_class_id]"]', $output).val(line.tax_class_id);
+		$('[data-type="currency"]', $output).parent().find('.input-group-text').text($(':input[name="currency_code"]').val());
+		$('.weight', $output).text(String(line.weight).trim('.0'));
+		$('.weight_unit', $output).text(line.weight_unit);
+		$('.length', $output).text(String(line.length).trim('.0'));
+		$('.width', $output).text(String(line.width).trim('.0'));
+		$('.height', $output).text(String(line.height).trim('.0'));
+		$('.length_unit', $output).text(line.length_unit);
 	};
 
 	$('#modal-edit-line button[name="ok"]').on('click', function(e) {
 
 		let $modal = $('.litebox.active');
-		let $row = $(modal).data('row');
+		let $row = $modal.data('row');
 
 		if (!$row) {
 
@@ -1939,11 +1935,11 @@
 			$('#order-lines tbody').append($output);
 		}
 
-		$.each($modal.find(':input'), function(i, $element) {
+		$.each($(':input', $modal), function(i, $element) {
 			let field = $element.attr('name');
-			let value = $modal.find(':input[name="'+field+'"]').val();
-			$row.find(':input[name$="['+field+']"]').val(value).trigger('keyup');
-			$row.find('.'+field).text(value);
+			let value = $(':input[name="'+field+'"]', $modal).val();
+			$(':input[name$="['+field+']"]', $row).val(value).trigger('keyup');
+			$('.'+field, $row).text(value);
 		});
 
 		refresh_total();
@@ -1963,15 +1959,15 @@
 
 		$('#order-lines tbody tr').each(function() {
 
-			let final_price = parseFloat($(this).find(':input[name$="[price]"]').val() || 0) - parseFloat($(this).find(':input[name$="[discount]"]').val() || 0),
-				sum = final_price * parseFloat($(this).find(':input[name$="[quantity]"]').val() || 0),
-				sum_tax = sum * (parseFloat($(this).find(':input[name$="[tax_rate]"]').val() || 0) / 100);
+			let final_price = parseFloat($(':input[name$="[price]"]', this).val() || 0) - parseFloat($(':input[name$="[discount]"]', this).val() || 0),
+				sum = final_price * parseFloat($(':input[name$="[quantity]"]', this).val() || 0),
+				sum_tax = sum * (parseFloat($(':input[name$="[tax_rate]"]', this).val() || 0) / 100);
 
-				$(this).find('.sum').text(sum.toMoney());
-				$(this).find('.sum_tax').text(sum_tax.toMoney());
+				$('.sum', this).text(sum.toMoney());
+				$('.sum_tax', this).text(sum_tax.toMoney());
 
 			subtotal += sum;
-			discount += parseFloat($(this).find(':input[name$="[quantity]"]').val() || 0) * parseFloat($(this).find(':input[name$="[discount]"]').val() || 0);
+			discount += parseFloat($(':input[name$="[quantity]"]', this).val() || 0) * parseFloat($(':input[name$="[discount]"]', this).val() || 0);
 			tax += sum_tax;
 		});
 

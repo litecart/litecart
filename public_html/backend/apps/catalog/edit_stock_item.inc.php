@@ -409,9 +409,9 @@
 <script>
 	<?php if (empty($stock_item->data['id'])) { ?>
 	$('form[name="stock_item_form"] input[name^="name"]').each(function() {
-		if ($(this).val() == '') {
-			var field = 'input[name="' + $(this).attr('name') + '"]';
-			$(this).val( $(field).not(this).val() );
+		if (this.val() == '') {
+			var $field = 'input[name="' + this.attr('name') + '"]';
+			this.val( $field.not(this).val() );
 		}
 	});
 	<?php } ?>
@@ -421,13 +421,13 @@
 		'form[name="stock_item_form"] input[name="quantity_adjustment"]',
 		'form[name="stock_item_form"] input[name="backordered"]'
 	].join(', ')).on('blur', function() {
-		$(this).val(Number($(this).val()).toFixed($('select[name="quantity_unit_id"] option:selected').data('decimals')));
+		this.val(Number(this.val()).toFixed($('select[name="quantity_unit_id"] option:selected').data('decimals')));
 	});
 
 	$('form[name="stock_item_form"] input[name="quantity"]').on('input', function() {
 
 		let decimals = $('select[name="quantity_unit_id"] option:selected').data('decimals'),
-			quantity = Number(parseFloat($(this).val()) - parseFloat($(this).data('quantity'))).toFixed(decimals);
+			quantity = Number(parseFloat(this.val()) - parseFloat(this.data('quantity'))).toFixed(decimals);
 
 		$('input[name="quantity_adjustment"]').val(quantity);
 	});
@@ -435,14 +435,14 @@
 	$('form[name="stock_item_form"] input[name="quantity_adjustment"]').on('input', function() {
 
 		let decimals = $('select[name="quantity_unit_id"] option:selected').data('decimals'),
-			quantity = Number(parseFloat($('input[name="quantity"]').data('quantity')) + parseFloat($(this).val())).toFixed();
+			quantity = Number(parseFloat($('input[name="quantity"]').data('quantity')) + parseFloat(this.val())).toFixed();
 
 		$('input[name="quantity"]').val(quantity);
 	});
 
 	$('form[name="stock_item_form"] select[name="quantity_unit_id"]').on('change', function() {
 
-		let decimals = $(this).find('option:selected').data('decimals');
+		let decimals = $('option:selected', this).data('decimals');
 
 		if ($('input[name="quantity"]').val() != '') {
 			$('input[name="quantity"]').val(Number($('input[name="quantity"]').val()).toFixed(decimals));
@@ -458,10 +458,10 @@
 	});
 
 	$('button[name="transfer"]').on('click', function() {
-		var quantity_field = $(this).closest('form').find('input[name="quantity_adjustment"]');
-		var backordered_field = $(this).closest('form').find('input[name="backordered"]');
-		$(quantity_field).val( Number($(quantity_field).val()) + Number($(backordered_field).val()) ).trigger('input');
-		$(backordered_field).val(0);
+		var $quantity_field = this.closest('form').find('input[name="quantity_adjustment"]');
+		var $backordered_field = this.closest('form').find('input[name="backordered"]');
+		$quantity_field.val( Number($quantity_field.val()) + Number($backordered_field.val()) ).trigger('input');
+		$backordered_field.val(0);
 	});
 
 	if ($.litebox?.opened?.length) {
@@ -472,7 +472,7 @@
 				type: 'post',
 				cache: false,
 				async: true,
-				data: $(this).serialize() + '&save=true',
+				data: this.serialize() + '&save=true',
 				dataType: 'json',
 				success: function(result) {
 					if (result.error) {
@@ -499,7 +499,7 @@
 
 	$('#table-references').on('click', '.remove', function(e) {
 		e.preventDefault();
-		$(this).closest('tr').remove();
+		this.closest('tr').remove();
 	});
 
 	$('#table-references').on('click', '.add', function(e) {

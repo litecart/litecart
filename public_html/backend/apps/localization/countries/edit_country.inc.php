@@ -311,7 +311,7 @@
 	$('form[name="country_form"] .add').on('click', function(e) {
 		e.preventDefault();
 
-		if ($('select[name="country[code]"]').find('option:selected').val() == '') return;
+		if ($('option:selected', $('select[name="country[code]"]')).val() == '') return;
 
 		let __index__ = 0;
 		while ($(':input[name^="zones[new_'+__index__+']"]').length) __index__++;
@@ -329,18 +329,18 @@
 			.replace(/new_zone_name/g, $('input[name="zone[name]"]').val())
 		);
 
-		$(this).closest('table').find('tbody').append($output);
+		this.closest('table').find('tbody').append($output);
 	});
 
 	$('form[name="country_form"]').on('click', '.remove', function(e) {
 		e.preventDefault();
-		$(this).closest('tr').remove();
+		this.closest('tr').remove();
 	});
 
 	<?php if (!empty($available_countries)) { ?>
 	$('select[name="prefill"]').on('change', function() {
 
-		$.each($(this).find('option:selected').data(), function(key, value) {
+		$.each($('option:selected', this).data(), function(key, value) {
 
 			var field_name = key.replace(/([A-Z])/, '_$1').toLowerCase();
 

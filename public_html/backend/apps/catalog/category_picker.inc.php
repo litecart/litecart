@@ -70,16 +70,16 @@
 <script>
 	$('#modal-category-picker').on('click', 'a', function(e) {
 		e.preventDefault();
-		$('.modal-body').load($(this).attr('href')+' .modal-body');
+		$('.modal-body').load(this.attr('href')+' .modal-body');
 	});
 
 	$('#modal-category-picker').on('click', 'button[name="select"]', function() {
-		let field = $.litebox.current().$currentTarget.closest('.input-group'),
-			id = $(this).data('id'), name = $(this).data('name');
+		let $field = $.litebox.current().$currentTarget.closest('.input-group'),
+			id = this.data('id'), name = this.data('name');
 
-		$(field).find(':input').val(id).trigger('change');
-		$(field).find('.name').text(name);
-		$(field).find('a').attr('href', $(field).find('a').attr('href').replace(/(parent_id)=\d*/, '$1='+id));
+		$(':input', $field).val(id).trigger('change');
+		$('.name', $field).text(name);
+		$('a', $field).attr('href', $('a', $field).attr('href').replace(/(parent_id)=\d*/, '$1='+id));
 		$.litebox.close();
 	});
 </script>

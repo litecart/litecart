@@ -753,8 +753,8 @@ textarea.warning {
 <script>
 
 	$('input[name="name"]').on('change', function() {
-		if ($(this).val() != '' && $('input[name="id"]').val() == '') {
-			$('input[name="id"]').val($(this).val().toLowerCase().replace(/[^a-z0-9_\- ]/g, '').replace(/[^a-z0-9_]+/g, '_'));
+		if (this.val() != '' && $('input[name="id"]').val() == '') {
+			$('input[name="id"]').val(this.val().toLowerCase().replace(/[^a-z0-9_\- ]/g, '').replace(/[^a-z0-9_]+/g, '_'));
 		}
 	});
 
@@ -762,7 +762,7 @@ textarea.warning {
 
 
 	$('.tabs').on('click', '[data-toggle="tab"]', function(e) {
-		$($(this).attr('href')).find(':input[name$="[content]"]').trigger('input');
+		$(this.attr('href')).find(':input[name$="[content]"]').trigger('input');
 	});
 
 	$('.tabs .add').on('click', function(e) {
@@ -784,10 +784,10 @@ textarea.warning {
 				.replace(/__index__/g, 'new_'+ __index__)
 		).hide();
 
-		$(this).before($tab);
+		this.before($tab);
 		$('#files').append($tab_pane);
 
-		$(this).prev().trigger('click');
+		this.prev().trigger('click');
 	});
 
 	$('.tabs').on('click', '.remove', function(e) {
@@ -795,8 +795,8 @@ textarea.warning {
 
 		if (!confirm("<?php echo t('text_are_you_sure', 'Are you sure?'); ?>")) return false;
 
-		let $tab = $(this).closest('.nav-link'),
-			tab_pane = $(this).closest('.nav-link').attr('href');
+		let $tab = this.closest('.nav-link'),
+			$tab_pane = $(this.closest('.nav-link').attr('href'));
 
 		if ($tab.prev('[data-toggle="tab"]').length) {
 			$tab.prev('[data-toggle="tab"]').trigger('click');
@@ -805,51 +805,51 @@ textarea.warning {
 			$tab.next('[data-toggle="tab"]').trigger('click');
 		}
 
-		$(tab_pane).remove();
-		$(this).closest('.nav-link').remove();
+		$tab_pane.remove();
+		this.closest('.nav-link').remove();
 	});
 
 	// Operations
 
 	let reindex_operations = function($operations) {
 		let index = 1;
-		$operations.find('.operation').each(function(i, operation){
-			$(operation).find('.number').text(index++);
+		$('.operation', $operations).each(function(i, $operation){
+			$('.number', $operation).text(index++);
 		});
 	};
 
 	$('#files').on('change', ':input[name$="[type]"]', function(e) {
 		e.preventDefault();
-		let match_type = $(this).val();
+		let match_type = this.val();
 
-		$(this).closest('.operation').find(':input[name$="[content]"]').each(function(i, field){
+		this.closest('.operation').find(':input[name$="[content]"]').each(function(i, $field){
 			switch (match_type) {
 
 				case 'inline':
 				case 'regex':
-					var $newfield = $('<input class="form-code" name="'+ $(field).attr('name') +'" type="text">').val($(field).val());
-					$(field).replaceWith($newfield);
+					var $newfield = $('<input class="form-code" name="'+ $field.attr('name') +'" type="text">').val($field.val());
+					$field.replaceWith($newfield);
 					break;
 
 				default:
-					var $newfield = $('<textarea class="form-code" name="'+ $(field).attr('name') +'"></textarea>').val($(field).val());
-					$(field).replaceWith($newfield);
+					var $newfield = $('<textarea class="form-code" name="'+ $field.attr('name') +'"></textarea>').val($field.val());
+					$field.replaceWith($newfield);
 					break;
 			}
 		});
 
-		$(this).closest('.operation').find(':input[name$="[find][content]"]').trigger('input');
+		this.closest('.operation').find(':input[name$="[find][content]"]').trigger('input');
 	});
 
 	$('#files').on('change', ':input[name$="[method]"]', function(e) {
 		e.preventDefault();
 
-		let method = $(this).val();
+		let method = this.val();
 
 		if ($.inArray(method, ['top', 'bottom', 'all']) != -1) {
-			$(this).closest('.operation').find(':input[name*="[find]"]').prop('disabled', true);
+			this.closest('.operation').find(':input[name*="[find]"]').prop('disabled', true);
 		} else {
-			$(this).closest('.operation').find(':input[name*="[find]"]').prop('disabled', false);
+			this.closest('.operation').find(':input[name*="[find]"]').prop('disabled', false);
 		}
 	});
 
@@ -857,24 +857,24 @@ textarea.warning {
 
 	// Auto expand textareas
 	$('body').on('input', 'textarea.form-code', function() {
-		$(this).css('height', '');
-		$(this).css('height', Math.min(this.scrollHeight + 10, 250) + 'px');
+		this.css('height', '');
+		this.css('height', Math.min(this.scrollHeight + 10, 250) + 'px');
 	});
 
 	$('textarea.form-code').trigger('input');
 
 	$('.tab-content').on('input', ':input[name^="files"][name$="[name]"]', function() {
-		let $tab_pane = $(this).closest('.tab-content'),
-			tab_index = $(this).closest('.tab-content').attr('id').replace(/^tab-/, ''),
-			tab_name = $tab_pane.find('input[name$="[name]"]').val();
+		let $tab_pane = this.closest('.tab-content'),
+			tab_index = this.closest('.tab-content').attr('id').replace(/^tab-/, ''),
+			tab_name = $('input[name$="[name]"]', $tab_pane).val();
 
 		$('a[href="#tab-'+ tab_index +'"] .file').text(tab_name);
 
-		let file_pattern = $(this).closest('.grid').find(':input[name^="files"][name$="[name]"]').val(),
+		let file_pattern = this.closest('.grid').find(':input[name^="files"][name$="[name]"]').val(),
 			url = '<?php echo document::ilink(__APP__.'/sources', ['pattern' => 'thepattern']); ?>'.replace(/thepattern/, file_pattern);
 
 		$.get(url, function(result) {
-			$tab_pane.find('.sources').html('');
+			$('.sources', $tab_pane).html('');
 
 			$.each(result, function(file, source_code) {
 
@@ -885,12 +885,12 @@ textarea.warning {
 					'</div>'
 				);
 
-				$script.find('.form-code').text(source_code);
-				$script.find('.filename').text(file);
-				$tab_pane.find('.sources').append($script);
+				$('.form-code', $script).text(source_code);
+				$('.filename', $script).text(file);
+				$('.sources', $tab_pane).append($script);
 			});
 
-			$tab_pane.find(':input[name$="[find][content]"]').trigger('input');
+			$(':input[name$="[find][content]"]', $tab_pane).trigger('input');
 		});
 	});
 
@@ -900,8 +900,8 @@ textarea.warning {
 	$('#files').on('click', '.add', function(e) {
 		e.preventDefault();
 
-		let $operations = $(this).closest('.tab-content').find('.operations'),
-			tab_index = $(this).closest('.tab-content').data('tab-index');
+		let $operations = this.closest('.tab-content').find('.operations'),
+			tab_index = this.closest('.tab-content').data('tab-index');
 
 		let __index__ = $(':input[name$="[find][content]"]').length || 0;
 
@@ -918,12 +918,12 @@ textarea.warning {
 	$('#files').on('click', '.move-up, .move-down', function(e) {
 		e.preventDefault();
 
-		let $row = $(this).closest('.operation'),
-			$operations = $(this).closest('.operations');
+		let $row = this.closest('.operation'),
+			$operations = this.closest('.operations');
 
-		if ($(this).is('.move-up') && $row.prevAll().length > 0) {
+		if (this.is('.move-up') && $row.prevAll().length > 0) {
 			$row.insertBefore($row.prev());
-		} else if ($(this).is('.move-down') && $row.nextAll().length > 0) {
+		} else if (this.is('.move-down') && $row.nextAll().length > 0) {
 			$row.insertAfter($row.next());
 		}
 
@@ -933,28 +933,28 @@ textarea.warning {
 	$('#files').on('click', '.remove', function(e) {
 		e.preventDefault();
 
-		let $operations = $(this).closest('.operations');
+		let $operations = this.closest('.operations');
 
 		if (!confirm("<?php echo t('text_are_you_sure', 'Are you sure?'); ?>")) return;
 
-		$(this).closest('.operation').remove();
+		this.closest('.operation').remove();
 		reindex_operations($operations);
 
-		$operations.find(':input[name$="[find][content]"]').trigger('input');
+		$(':input[name$="[find][content]"]', $operations).trigger('input');
 	});
 
 	// Validate operation
 	$('#files').on('input', ':input[name*="[find]"]', function() {
 
-		let $tab = $(this).closest('.tab-content'),
-			$operation = $(this).closest('.operation'),
-			method = $operation.find(':input[name$="[method]"]').val(),
-			find = $operation.find(':input[name$="[find][content]"]').val(),
-			type = $operation.find(':input[name$="[type]"]:checked').val(),
-			indexes = $operation.find(':input[name$="[index]"]').val().split(/\s*,\s*/).filter(Boolean),
-			offset_before = $operation.find(':input[name$="[offset-before]"]').val(),
-			offset_after = $operation.find(':input[name$="[offset-after]"]').val(),
-			onerror = $operation.find(':input[name$="[onerror]"]').val(),
+		let $tab = this.closest('.tab-content'),
+			$operation = this.closest('.operation'),
+			method = $(':input[name$="[method]"]', $operation).val(),
+			find = $(':input[name$="[find][content]"]', $operation).val(),
+			type = $(':input[name$="[type]"]:checked', $operation).val(),
+			indexes = $(':input[name$="[index]"]', $operation).val().split(/\s*,\s*/).filter(Boolean),
+			offset_before = $(':input[name$="[offset-before]"]', $operation).val(),
+			offset_after = $(':input[name$="[offset-after]"]', $operation).val(),
+			onerror = $(':input[name$="[onerror]"]', $operation).val(),
 			regex_flags = 's';
 
 		try {
@@ -1022,10 +1022,10 @@ textarea.warning {
 					throw new Error('Unknown error');
 			}
 
-			$.each($tab.find('.script'), function() {
+			$.each($('.script', $tab), function() {
 
 				let regex = new RegExp(find, regex_flags),
-					source = $(this).find('.form-code').text(),
+					source = $('.form-code', this).text(),
 					matches = (source.match(regex) || []).length;
 
 				if (!matches) {
@@ -1037,15 +1037,15 @@ textarea.warning {
 				}
 			});
 
-			$operation.find(':input[name$="[find][content]"]').removeAttr('title').removeClass('warning');
+			$(':input[name$="[find][content]"]', $operation).removeAttr('title').removeClass('warning');
 
 		} catch (err) {
 			if (onerror != 'ignore') {
-				$operation.find(':input[name$="[find][content]"]').attr('title', err.message).addClass('warning');
+				$(':input[name$="[find][content]"]', $operation).attr('title', err.message).addClass('warning');
 			}
 		}
 
-		if ($tab.find(':input.warning').length) {
+		if ($(':input.warning', $tab).length) {
 			$('.nav-link[href="#'+ $tab.attr('id') +'"]').addClass('warning');
 		} else {
 			$('.nav-link[href="#'+ $tab.attr('id') +'"]').removeClass('warning');
@@ -1099,11 +1099,11 @@ textarea.warning {
 	$('#aliases').on('click', 'button[name$="[move_up]"], button[name$="[move_down]"]', function(e) {
 		e.preventDefault();
 
-		let $row = $(this).closest('.alias');
+		let $row = this.closest('.alias');
 
-		if ($(this).is('button[name$="[move_up]"]') && $row.prevAll().length > 0) {
+		if (this.is('button[name$="[move_up]"]') && $row.prevAll().length > 0) {
 			$row.insertBefore($row.prev());
-		} else if ($(this).is('button[name$="[move_down]"]') && $row.nextAll().length > 0) {
+		} else if (this.is('button[name$="[move_down]"]') && $row.nextAll().length > 0) {
 			$row.insertAfter($row.next());
 		}
 	});
@@ -1112,7 +1112,7 @@ textarea.warning {
 		e.preventDefault();
 
 		if (!confirm("<?php echo t('text_are_you_sure', 'Are you sure?'); ?>")) return;
-		$(this).closest('.alias').remove();
+		this.closest('.alias').remove();
 	});
 
 	// Settings
@@ -1184,11 +1184,11 @@ textarea.warning {
 	$('#settings').on('click', 'button[name$="[move_up]"], button[name$="[move_down]"]', function(e) {
 		e.preventDefault();
 
-		let $row = $(this).closest('.setting');
+		let $row = this.closest('.setting');
 
-		if ($(this).is('button[name$="[move_up]"]') && $row.prevAll().length > 0) {
+		if (this.is('button[name$="[move_up]"]') && $row.prevAll().length > 0) {
 			$row.insertBefore($row.prev());
-		} else if ($(this).is('button[name$="[move_down]"]') && $row.nextAll().length > 0) {
+		} else if (this.is('button[name$="[move_down]"]') && $row.nextAll().length > 0) {
 			$row.insertAfter($row.next());
 		}
 	});
@@ -1197,7 +1197,7 @@ textarea.warning {
 		e.preventDefault();
 
 		if (!confirm("<?php echo t('text_are_you_sure', 'Are you sure?'); ?>")) return;
-		$(this).closest('.setting').remove();
+		this.closest('.setting').remove();
 	});
 
 	// Upgrade Patches

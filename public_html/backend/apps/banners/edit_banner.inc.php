@@ -179,13 +179,13 @@ table th:last-child {
 <script>
 	$('.data-table').on('input', ':input[name^="keys"]', function() {
 
-		let key = $(this).val();
-		let $row = $(this).closest('tr');
+		let key = this.val();
+		let $row = this.closest('tr');
 
-		$(this).attr('name', $(this).attr('name').replace(/^keys\[([^\]]+)?\]/, 'keys['+ key +']'));
+		this.attr('name', this.attr('name').replace(/^keys\[([^\]]+)?\]/, 'keys['+ key +']'));
 
-		$.each($row.find(':input[name^="values["]'), function(i, $field) {
-			let matches = $(field).attr('name').match(/^values\[(.*?)\]\[(.*?)\]$/);
+		$.each($(':input[name^="values["]', $row), function(i, $field) {
+			let matches = $field.attr('name').match(/^values\[(.*?)\]\[(.*?)\]$/);
 			$field.attr('name', 'values['+ matches[1] +']['+ key +']');
 		});
 	});
@@ -213,7 +213,7 @@ table th:last-child {
 
 	$('.data-table').on('click', '.remove', function(e) {
 		e.preventDefault();
-		$(this).closest('tr').remove();
+		this.closest('tr').remove();
 	});
 
 	$('a.tracker-wrapper-help').on('click', function(e) {

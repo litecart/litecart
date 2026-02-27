@@ -381,7 +381,7 @@ table .icon-star-o:hover {
 
 <script>
 	$('input[name="category_id"]').on('change', function(e) {
-		$(this).closest('form').submit();
+		this.closest('form').submit();
 	});
 
 	$('.data-table :checkbox').on('change', function() {
@@ -390,16 +390,17 @@ table .icon-star-o:hover {
 
 	$('form[name="search_form"]').on('input change', function(e) {
 		e.preventDefault();
-		$.get('', $(this).serialize(), function(response) {
-			$('.data-table tbody').html($(response).find('.data-table tbody').html());
-			$('.data-table tfoot').html($(response).find('.data-table tfoot').html());
-			$('.card-footer').after($(response).find('.card-footer').html()).remove();
+		$.get('', this.serialize(), function(response) {
+			$response = $(response).html();
+			$('.data-table tbody').html($('.data-table tbody', $response).html());
+			$('.data-table tfoot').html($('.data-table tfoot', $response).html());
+			$('.card-footer').after($('.card-footer', $response).html()).remove();
 		});
 	});
 
 	$('table').on('click', '.icon-star-o', function(e) {
 		e.stopPropagation();
-		let $star = $(this);
+		let $star = this;
 		$.post('', 'star&product_id='+$star.closest('tr').data('id'), function(data) {
 			$star.replaceWith('<?php echo f::draw_fonticon('icon-star', 'style="color: #f2b01e;"'); ?>');
 		});
@@ -408,7 +409,7 @@ table .icon-star-o:hover {
 
 	$('table').on('click', '.icon-star', function(e) {
 		e.stopPropagation();
-		let $star = $(this);
+		let $star = this;
 		$.post('', 'unstar&product_id='+$star.closest('tr').data('id'), function(data) {
 			$star.replaceWith('<?php echo f::draw_fonticon('icon-star-o', 'style="color: #ccc;"'); ?>');
 		});

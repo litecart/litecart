@@ -64,7 +64,7 @@ waitFor('jQuery', ($) => {
 	if (typeof _env !== 'undefined' && _env?.platform?.path) {
 		setInterval(function() {
 			$.get({
-				url: _env.platform.path + 'ajax/cart.json',
+				url: _env.platform.path + 'ajax/keep_alive',
 				cache: false
 			});
 		}, 60e3);
@@ -649,24 +649,24 @@ waitFor('jQuery', ($) => {
 
 });
 
-waitFor('jQuery', ($) => {
-	$('.blob').on('mousemove', function(e){
+waitFor('jQuery', $ => {
+	$('.blob').on('mousemove', function (e) {
 		var x = e.clientX;
 		var y = e.clientY;
 		$(this).css('transform', `translate3d(calc(${e.clientX}px - 50%), calc(${e.clientY}px - 50%), 0)`);
 	});
 });
 
-waitFor('jQuery', ($) => {
 
-	$('form[data-track-changes]').each(function() {
+waitFor('jQuery', $ => {
+	$('form[data-track-changes]').each(function () {
 		$(this).data('originalData', $(this).serialize());
 	});
 
-	$(window).on('beforeunload', function() {
+	$(window).on('beforeunload', function () {
 		let hasChanges = false;
 
-		$('form[data-track-changes]').each(function() {
+		$('form[data-track-changes]').each(function () {
 			if ($(this).serialize() != $(this).data('originalData')) {
 				hasChanges = true;
 				return false; // Break out of the each loop
@@ -679,7 +679,7 @@ waitFor('jQuery', ($) => {
 	});
 
 	// Initialize input groups for number and float inputs
-	$('.input-group').on('click', 'button[name="decrease"], button[name="increase"]', function() {
+	$('.input-group').on('click', 'button[name="decrease"], button[name="increase"]', function () {
 		const $input = $(this).siblings('input[type="number"]'),
 			minValue = parseInt($input.attr('min')) || 0,
 			maxValue = parseInt($input.attr('max')) || Infinity;
@@ -690,11 +690,10 @@ waitFor('jQuery', ($) => {
 		}
 	});
 
-	$('.input-group').on('click', '', function() {
+	$('.input-group').on('click', '', function () {
 		const $input = $(this).siblings('input[type="number"]');
 		$input.val(parseInt($input.val()) - 1).trigger('input');
 	});
-
 });
 
 
@@ -747,50 +746,68 @@ waitFor('jQuery', ($) => {
 
 });
 
-waitFor('jQuery', ($) => {
-
+waitFor('jQuery', $ => {
 	// CSV Input
-	$('textarea[data-toggle="csv"] + table').on('click', '.remove', function(e) {
+	$('textarea[data-toggle="csv"] + table').on('click', '.remove', function (e) {
 		e.preventDefault();
 		var parent = $(this).closest('tbody');
 		$(this).closest('tr').remove();
 		$(parent).trigger('keyup');
 	});
 
-	$('textarea[data-toggle="csv"] + table .add-row').on('click', function(e) {
+	$('textarea[data-toggle="csv"] + table .add-row').on('click', function (e) {
 		e.preventDefault();
 		var n = $(this).closest('table').find('thead th:not(:last-child)').length;
-		$(this).closest('table').find('tbody').append(
-			'<tr>' + ('<td contenteditable></td>'.repeat(n)) + '<td><a class="remove" href="#"><i class="icon-times" style="color: #d33;"></i></a></td>' +'</tr>'
-		).trigger('keyup');
+		$(this)
+			.closest('table')
+			.find('tbody')
+			.append(
+				'<tr>' +
+					'<td contenteditable></td>'.repeat(n) +
+					'<td><a class="remove" href="#"><i class="icon-times" style="color: #d33;"></i></a></td>' +
+					'</tr>'
+			)
+			.trigger('keyup');
 	});
 
-	$('textarea[data-toggle="csv"] + table .add-column').on('click', function(e) {
+	$('textarea[data-toggle="csv"] + table .add-column').on('click', function (e) {
 		e.preventDefault();
 		var table = $(this).closest('table');
-		var title = prompt("Column Title");
+		var title = prompt('Column Title');
 		if (!title) return;
-		$(table).find('thead tr th:last-child:last-child').before('<th>'+ title +'</th>');
+		$(table)
+			.find('thead tr th:last-child:last-child')
+			.before('<th>' + title + '</th>');
 		$(table).find('tbody tr td:last-child:last-child').before('<td contenteditable></td>');
-		$(table).find('tfoot tr td').attr('colspan', $(this).closest('table').find('tfoot tr td').attr('colspan') + 1);
+		$(table)
+			.find('tfoot tr td')
+			.attr('colspan', $(this).closest('table').find('tfoot tr td').attr('colspan') + 1);
 		$(this).trigger('keyup');
 	});
 
-	$('textarea[data-toggle="csv"] + table').on('keyup', function(e) {
-		var csv = $(this).find('thead tr, tbody tr').map(function (i, row) {
-				return $(row).find('th:not(:last-child),td:not(:last-child)').map(function (j, col) {
-					var text = $(col).text();
-					if (/('|,)/.test(text)) {
-						return '"'+ text.replace(/"/g, '""') +'"';
-					} else {
-						return text;
-					}
-				}).get().join(',');
-			}).get().join('\r\n');
+	$('textarea[data-toggle="csv"] + table').on('keyup', function (e) {
+		var csv = $(this)
+			.find('thead tr, tbody tr')
+			.map(function (i, row) {
+				return $(row)
+					.find('th:not(:last-child),td:not(:last-child)')
+					.map(function (j, col) {
+						var text = $(col).text();
+						if (/('|,)/.test(text)) {
+							return '"' + text.replace(/"/g, '""') + '"';
+						} else {
+							return text;
+						}
+					})
+					.get()
+					.join(',');
+			})
+			.get()
+			.join('\r\n');
 		$(this).next('textarea').val(csv);
 	});
-
 });
+
 
 waitFor('jQuery', ($) => {
 

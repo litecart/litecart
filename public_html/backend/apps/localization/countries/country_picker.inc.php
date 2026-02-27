@@ -39,7 +39,7 @@
 <script>
 	var xhr_country_picker = null;
 	$('#modal-country-picker input[name="query"]').on('input', function() {
-		if ($(this).val() == '') {
+		if (this.val() == '') {
 			$('#modal-country-picker .results tbody').html('');
 			xhr_country_picker = null;
 			return;
@@ -48,7 +48,7 @@
 			type: 'get',
 			async: true,
 			cache: false,
-			url: '<?php echo document::ilink(__APP__.'/countries.json'); ?>?query=' + $(this).val(),
+			url: '<?php echo document::ilink(__APP__.'/countries.json'); ?>?query=' + this.val(),
 			dataType: 'json',
 			beforeSend: function(jqXHR) {
 				jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'));
@@ -81,24 +81,24 @@
 
 	$('#modal-country-picker tbody').on('click', 'td', function() {
 
-		let row = $(this).closest('tr'),
-			code = $(row).find('.code').text(),
-			name = $(row).find('.name').text(),
+		let $row = this.closest('tr'),
+			code = $('.code', $row).text(),
+			name = $('.name', $row).text(),
 			$field = $.litebox.current().$currentTarget.closest('.form-input');
 
-		$field.find(':input').val(code).trigger('change');
-		$field.find('.code').text(code);
-		$field.find('.name').text(name);
+		$(':input', $field).val(code).trigger('change');
+		$('.code', $field).text(code);
+		$('.name', $field).text(name);
 		$.litebox.close();
 	});
 
 	$('#modal-country-picker .set-guest').on('click', function() {
 
-		let field = $.litebox.current().$currentTarget.closest('.form-input');
+		let $field = $.litebox.current().$currentTarget.closest('.form-input');
 
-		$(field).find(':input').val('0').trigger('change');
-		$(field).find('.code').text('');
-		$(field).find('.name').text('(<?php echo f::escape_js(t('title_guest', 'Guest')); ?>)');
+		$(':input', $field).val('0').trigger('change');
+		$('.code', $field).text('');
+		$('.name', $field).text('(<?php echo f::escape_js(t('title_guest', 'Guest')); ?>)');
 		$.litebox.close();
 	});
 </script>

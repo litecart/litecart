@@ -240,30 +240,30 @@ form[name="buy_now_form"] .dropdown-menu .image {
 			final_price = <?php echo currency::format_raw($final_price ?: $regular_price); ?>,
 			tax = <?php echo currency::format_raw($total_tax); ?>;
 
-		$(this).find('input[type="radio"]:checked, input[type="checkbox"]:checked').each(function() {
-			if ($(this).data('price-adjust')) regular_price += $(this).data('price-adjust');
-			if ($(this).data('price-adjust')) final_price += $(this).data('price-adjust');
-			if ($(this).data('tax-adjust')) tax += $(this).data('tax-adjust');
+		$('input[type="radio"]:checked, input[type="checkbox"]:checked', this).each(function() {
+			if (this.data('price-adjust')) regular_price += this.data('price-adjust');
+			if (this.data('price-adjust')) final_price += this.data('price-adjust');
+			if (this.data('tax-adjust')) tax += this.data('tax-adjust');
 		});
 
-		$(this).find('select option:checked').each(function() {
-			if ($(this).data('price-adjust')) regular_price += $(this).data('price-adjust');
-			if ($(this).data('price-adjust')) final_price += $(this).data('price-adjust');
-			if ($(this).data('tax-adjust')) tax += $(this).data('tax-adjust');
+		$('select option:checked', this).each(function() {
+			if (this.data('price-adjust')) regular_price += this.data('price-adjust');
+			if (this.data('price-adjust')) final_price += this.data('price-adjust');
+			if (this.data('tax-adjust')) tax += this.data('tax-adjust');
 		});
 
-		$(this).find('input[type!="radio"][type!="checkbox"]').each(function() {
-			if ($(this).val() != '') {
-				if ($(this).data('price-adjust')) regular_price += $(this).data('price-adjust');
-				if ($(this).data('price-adjust')) final_price += $(this).data('price-adjust');
-				if ($(this).data('tax-adjust')) tax += $(this).data('tax-adjust');
+		$('input[type!="radio"][type!="checkbox"]', this).each(function() {
+			if (this.val() != '') {
+				if (this.data('price-adjust')) regular_price += this.data('price-adjust');
+				if (this.data('price-adjust')) final_price += this.data('price-adjust');
+				if (this.data('tax-adjust')) tax += this.data('tax-adjust');
 			}
 		});
 
-		$(this).find('.regular-price').text(regular_price.toMoney());
-		$(this).find('.final-price').text(final_price.toMoney());
-		$(this).find('.price').text(final_price.toMoney());
-		$(this).find('.total-tax').text(tax.toMoney());
+		$('.regular-price', this).text(regular_price.toMoney());
+		$('.final-price', this).text(final_price.toMoney());
+		$('.price', this).text(final_price.toMoney());
+		$('.total-tax', this).text(tax.toMoney());
 	});
 
 	$('#box-product form[name="buy_now_form"] .options :input').on('change', function() {
@@ -271,7 +271,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 		$.ajax({
 			type: 'post',
 			url: '<?php echo document::ilink('ajax/product_options_stock.json'); ?>',
-			data: $(this).closest('form').serialize(),
+			data: this.closest('form').serialize(),
 			dataType: 'json',
 			cache: false,
 			success: function(data) {

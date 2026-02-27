@@ -283,7 +283,7 @@
 
 	$checkout.on('update', function(e, task) {
 
-		var updateQueue = $(this).data('updateQueue');
+		var updateQueue = this.data('updateQueue');
 
 		if (task && task.component) {
 			updateQueue = jQuery.grep(updateQueue, function(tasks) {
@@ -292,16 +292,16 @@
 
 			updateQueue.push(task);
 
-			$(this).data('updateQueue', updateQueue);
+			this.data('updateQueue', updateQueue);
 		}
 
-		if ($(this).prop('updateLock')) return;
-		if ($(this).data('updateQueue').length == 0) return;
+		if (this.prop('updateLock')) return;
+		if (this.data('updateQueue').length == 0) return;
 
-		$(this).prop('updateLock', true);
+		this.prop('updateLock', true);
 
 		var task = updateQueue.shift();
-		$(this).data('updateQueue', updateQueue);
+		this.data('updateQueue', updateQueue);
 
 		if (!$('body > .loader-wrapper').length) {
 
@@ -376,7 +376,7 @@
 			complete: function(html) {
 				if ($checkout.data('updateQueue').length == 0) {
 					$('body > .loader-wrapper').fadeOut('fast', function() {
-						$(this).remove();
+						this.remove();
 					});
 				}
 				$checkout.prop('updateLock', false);
@@ -392,9 +392,9 @@
 	$('input[name="shipping_option[id]"]').on('change', function(e) {
 
 		$('input[name="shipping_option[id]"]:not(:checked) + .option :input').prop('disabled', true);
-		$(this).next('.option').find(':input').prop('disabled', false);
+		this.next('.option').find(':input').prop('disabled', false);
 
-		let formdata = $(this).closest('.option-wrapper :input').serialize();
+		let formdata = this.closest('.option-wrapper :input').serialize();
 
 		$checkout
 			.trigger('update', [{component: 'shipping', data: formdata + '&select_shipping=true', refresh: false}])
@@ -408,9 +408,9 @@
 	$(':input[name="payment_option[id]"]').on('change', function(e) {
 
 		$('input[name="payment_option[id]"]:not(:checked) + .option :input').prop('disabled', true);
-		$(this).next('.option').find(':input').prop('disabled', false);
+		this.next('.option').find(':input').prop('disabled', false);
 
-		let formdata = $(this).closest('.option-wrapper :input').serialize();
+		let formdata = this.closest('.option-wrapper :input').serialize();
 
 		$checkout
 			.trigger('update', [{component: 'payment', data: formdata + '&select_payment=true', refresh: false}])
@@ -419,8 +419,8 @@
 
 	// Display remaining characters
 	$('textarea[name="comments"][maxlength]').on('input', function() {
-		let remaining = $(this).attr('maxlength') - $(this).val().length;
-		$(this).closest('.comments').find('.remaining').text(remaining);
+		let remaining = this.attr('maxlength') - this.val().length;
+		this.closest('.comments').find('.remaining').text(remaining);
 	});
 
 	// Replace submit button with spinner when form is submitting
