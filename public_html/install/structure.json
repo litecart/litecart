@@ -101,7 +101,7 @@
 				"meta_description":	{ "type": "TEXT", "default": "'{}'" },
 				"link":	{ "type": "TEXT", "default": "'{}'" },
 				"keywords": { "type": "VARCHAR", "length": 255, "default": "''" },
-				"image": { "type": "VARCHAR", "length": 255, "default": "''" },
+				"default_image": { "type": "VARCHAR", "length": 128, "default": "''" },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
 				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
 			},

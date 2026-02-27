@@ -301,11 +301,11 @@
 			}
 
 			// Set main product image
-			$this->data['image'] = !empty($this->data['images']) ? array_values($this->data['images'])[0]['filename'] : '';
+			$this->data['default_image'] = !empty($this->data['images']) ? array_first($this->data['images'])[0]['filename'] : '';
 
 			database::query(
 				"update ". DB_TABLE_PREFIX ."products
-				set image = '". database::input($this->data['image']) ."'
+				set default_image = '". database::input($this->data['default_image']) ."'
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"
 			);

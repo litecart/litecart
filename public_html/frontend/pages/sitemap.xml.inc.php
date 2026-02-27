@@ -55,7 +55,7 @@
 	$category_iterator(0);
 
 	database::query(
-		"select id, image, updated_at from ". DB_TABLE_PREFIX ."products
+		"select id, default_image as image, updated_at from ". DB_TABLE_PREFIX ."products
 		where status
 		order by id;"
 	)->each(function($product) use (&$output) {

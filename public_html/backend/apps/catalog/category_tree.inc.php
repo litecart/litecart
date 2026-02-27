@@ -511,7 +511,7 @@ table .icon-folder-open {
 
 				// Output products
 				$products = database::query(
-					"select p.id, p.status, p.code, p.sold_out_status_id, p.image, p.valid_from, p.valid_to,
+					"select p.id, p.status, p.code, p.sold_out_status_id, p.default_image as image, p.valid_from, p.valid_to,
 						json_value(p.name, '$.". database::input(language::$selected['code']) ."') as name,
 						pp.regular_price, pp.final_price, pso.num_stock_options, pso.total_quantity,
 						oi.quantity_reserved, pso.total_quantity - oi.quantity_reserved as quantity_available,
