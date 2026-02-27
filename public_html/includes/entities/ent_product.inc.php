@@ -356,25 +356,31 @@
 			// Update attributes
 			if (!empty($this->data['attributes'])) {
 
+				$i = 0;
+				foreach ($this->data['attributes'] as $key => $attribute) {
+
+					if (empty($attribute['id'])) {
+
+						database::query(
+							"insert into ". DB_TABLE_PREFIX ."products_attributes
+							(product_id, group_id, value_id, custom_value)
+							values (". (int)$this->data['id'] .", ". (int)$attribute['group_id'] .", ". (int)$attribute['value_id'] .", '". database::input($attribute['custom_value']) ."');"
+						);
+
+						$this->data['attributes'][$key]['id'] = $attribute['id'] = database::insert_id();
+					}
+
 					database::query(
-						"insert into ". DB_TABLE_PREFIX ."products_attributes
-						(product_id, group_id, value_id, custom_value)
-						values (". (int)$this->data['id'] .", ". (int)$attribute['group_id'] .", ". (int)$attribute['value_id'] .", '". database::input($attribute['custom_value']) ."');"
+						"update ". DB_TABLE_PREFIX ."products_attributes
+						set group_id = ". (int)$attribute['group_id'] .",
+							value_id = ". (int)$attribute['value_id'] .",
+							custom_value = '". database::input($attribute['custom_value']) ."',
+							priority = ". (int)++$i ."
+						where product_id = ". (int)$this->data['id'] ."
+						and id = ". (int)$attribute['id'] ."
+						limit 1;"
 					);
-
-					$this->data['attributes'][$key]['id'] = $attribute['id'] = database::insert_id();
 				}
-
-				database::query(
-					"update ". DB_TABLE_PREFIX ."products_attributes
-					set group_id = ". (int)$attribute['group_id'] .",
-						value_id = ". (int)$attribute['value_id'] .",
-						custom_value = '". database::input($attribute['custom_value']) ."',
-						priority = ". (int)++$i ."
-					where product_id = ". (int)$this->data['id'] ."
-					and id = ". (int)$attribute['id'] ."
-					limit 1;"
-				);
 			}
 
 			// Delete customizations

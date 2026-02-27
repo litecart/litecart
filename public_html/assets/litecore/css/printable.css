@@ -110,7 +110,7 @@ hr {
   a:visited,
   a:hover,
   a:active {
-    /*color: #000;*/
+    color: inherit;
   }
   .page-break {
     page-break-before: always;

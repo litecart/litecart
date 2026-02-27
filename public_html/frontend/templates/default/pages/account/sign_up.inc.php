@@ -180,7 +180,7 @@
 
 <script>
 	$('input[name="type"]').on('change', function() {
-		if ($(this).val() == 'business') {
+		if (this.val() == 'business') {
 			$('#business-details :input').prop('disabled', false);
 			$('#business-details').slideDown('fast');
 		} else {
@@ -190,12 +190,12 @@
 	});
 
 	$('#box-create-account').on('change', ':input', function() {
-		if ($(this).val() == '') return;
+		if (this.val() == '') return;
 
 		$.ajax({
-			url: '<?php echo document::ilink('ajax/get_address.json'); ?>?trigger='+$(this).attr('name'),
+			url: '<?php echo document::ilink('ajax/get_address.json'); ?>?trigger='+this.attr('name'),
 			type: 'post',
-			data: $(this).closest('form').serialize(),
+			data: this.closest('form').serialize(),
 			cache: false,
 			async: true,
 			dataType: 'json',
@@ -217,20 +217,20 @@
 
 	$('select[name="country_code"]').on('change', function(e) {
 
-		if ($(this).find('option:selected').data('tax-id-format')) {
-			$('input[name="tax_id"]').attr('pattern', $(this).find('option:selected').data('tax-id-format'));
+		if ($('option:selected', this).data('tax-id-format')) {
+			$('input[name="tax_id"]').attr('pattern', $('option:selected', this).data('tax-id-format'));
 		} else {
 			$('input[name="tax_id"]').removeAttr('pattern');
 		}
 
-		if ($(this).find('option:selected').data('postcode-format')) {
-			$('input[name="postcode"]').attr('pattern', $(this).find('option:selected').data('postcode-format'));
+		if ($('option:selected', this).data('postcode-format')) {
+			$('input[name="postcode"]').attr('pattern', $('option:selected', this).data('postcode-format'));
 		} else {
 			$('input[name="postcode"]').removeAttr('pattern');
 		}
 
-		if ($(this).find('option:selected').data('phone-code')) {
-			$('input[name="phone"]').attr('placeholder', '+' + $(this).find('option:selected').data('phone-code'));
+		if ($('option:selected', this).data('phone-code')) {
+			$('input[name="phone"]').attr('placeholder', '+' + $('option:selected', this).data('phone-code'));
 		} else {
 			$('input[name="phone"]').removeAttr('placeholder');
 		}
@@ -238,7 +238,7 @@
 		<?php if (settings::get('customer_field_zone')) { ?>
 
 		$.ajax({
-			url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + $(this).val(),
+			url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + this.val(),
 			type: 'get',
 			cache: true,
 			async: true,

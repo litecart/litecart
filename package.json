@@ -22,14 +22,13 @@
 		"node": ">=24"
 	},
 	"devDependencies": {
-		"@prettier/plugin-php": "^0.24.0",
 		"@sequencemedia/gulp-clean-css": "^1.0.285",
 		"@sequencemedia/gulp-sourcemaps": "^1.0.301",
 		"gulp": "^5.0.1",
 		"gulp-clean-css": "^4.3.0",
 		"gulp-concat": "^2.6.1",
 		"gulp-fetch": "^1.0.1",
-		"gulp-header": "^2.0.9",
+		"gulp-header": "^2.0.12",
 		"gulp-less": "^5.0.0",
 		"gulp-phplint": "^0.9.0",
 		"gulp-rename": "^2.1.0",
@@ -38,7 +37,6 @@
 		"gulp-uglify": "^3.0.2",
 		"gulp-watch": "^5.0.1",
 		"phplint": "^2.0.5",
-		"prettier": "^3.8.1",
 		"sass": "^1.97.3"
 	},
 	"scripts": {
@@ -53,7 +51,6 @@
 		"watch": "gulp watch",
 		"upgrade": "ncu -u && npm install",
 		"dependencies": "npm list --depth=1",
-		"dedupe": "npm dedupe",
-		"prettier": "prettier \"public_html/**/*.{php,less,js}\""
+		"dedupe": "npm dedupe"
 	}
 }
