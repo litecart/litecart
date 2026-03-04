@@ -157,35 +157,35 @@
 					// Unknown tool
 					default:
 
-            foreach (functions::file_search('app://includes/mcp/mcp_*.inc.php') as $mcp_file) {
+						foreach (functions::file_search('app://includes/mcp/mcp_*.inc.php') as $mcp_file) {
 
 							// Include without polluting global scope
 							$tool_schema = (function() use ($mcp_file) {
 								return include $mcp_file;
 							})();
 
-              if (is_array($tool_schema) && !empty($tool_schema['name']) && $tool_schema['name'] === $params['name']) {
-                $tool_function = 'mcp_' . str_replace(['/', '-'], '_', $tool_schema['name']);
+							if (is_array($tool_schema) && !empty($tool_schema['name']) && $tool_schema['name'] === $params['name']) {
+								$tool_function = 'mcp_' . str_replace(['/', '-'], '_', $tool_schema['name']);
 
-                if (function_exists($tool_function)) {
+								if (function_exists($tool_function)) {
 
-                  // Support both 'arguments' (MCP standard) and 'input' (legacy)
-                  $tool_args = $params['arguments'] ?? $params['input'] ?? [];
+									// Support both 'arguments' (MCP standard) and 'input' (legacy)
+									$tool_args = $params['arguments'] ?? $params['input'] ?? [];
 
-                  // Check input against required parameters
+									// Check input against required parameters
 									if (!empty($tool_schema['inputSchema']['required']) && is_array($tool_schema['inputSchema']['required'])) {
 										foreach ($tool_schema['inputSchema']['required'] as $field) {
 											if (!isset($tool_args[$field]) || $tool_args[$field] === '') {
-	                      throw new McpException("Missing required parameter: $field", 400, -32602);
-	                    }
+												throw new McpException("Missing required parameter: $field", 400, -32602);
+											}
 										}
-                  }
+									}
 
-                  $tool_result = $tool_function($tool_args);
-                  break 2; // Exit both loops
-                }
-              }
-            }
+									$tool_result = $tool_function($tool_args);
+									break 2; // Exit both loops
+								}
+							}
+						}
 
 						throw new McpException('Tool not found', 404, -32601);
 				}
