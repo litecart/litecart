@@ -24,7 +24,7 @@
 				or (expires_at is null and created_at < '". date('Y-m-d H:i:s', strtotime('-3 months')) ."');"
 			);
 
-			echo 'Removed '. language::number_format(database::affected_rows()) .' old and expired event logs.' . PHP_EOL . PHP_EOL;
+			echo 'Removed '. f::format_number(database::affected_rows()) .' old and expired event logs.' . PHP_EOL . PHP_EOL;
 
 			// Cleanup expired sessions
 			database::query(
@@ -32,7 +32,7 @@
 				where expires_at < '". date('Y-m-d H:i:s') ."';"
 			);
 
-			echo 'Removed '. language::number_format(database::affected_rows()) .' expired sessions.' . PHP_EOL . PHP_EOL;
+			echo 'Removed '. f::format_number(database::affected_rows()) .' expired sessions.' . PHP_EOL . PHP_EOL;
 
 			// Cleanup old email history
 			database::query(
@@ -41,7 +41,7 @@
 				and updated_at < '". date('Y-m-d 00:00:00', strtotime('-1 month')) ."';"
 			);
 
-			echo 'Removed '. language::number_format(database::affected_rows()) .' old emails.' . PHP_EOL . PHP_EOL;
+			echo 'Removed '. f::format_number(database::affected_rows()) .' old emails.' . PHP_EOL . PHP_EOL;
 
 			// Cleanup old visitor statistics
 			database::query(
@@ -49,7 +49,7 @@
 				where created_at < '". date('Y-m-d 00:00:00', strtotime('-1 month')) ."';"
 			);
 
-			echo 'Removed '. language::number_format(database::affected_rows()) .' old visitor statistics.' . PHP_EOL . PHP_EOL;
+			echo 'Removed '. f::format_number(database::affected_rows()) .' old visitor statistics.' . PHP_EOL . PHP_EOL;
 
 			// Cleanup old log files
 			$deleted_files = 0;
@@ -65,7 +65,7 @@
 				$deleted_files++;
 			}
 
-			echo 'Removed '. language::number_format($deleted_files) .' old log files.' . PHP_EOL . PHP_EOL;
+			echo 'Removed '. f::format_number($deleted_files) .' old log files.' . PHP_EOL . PHP_EOL;
 
 			// Cleanup old cache files
 			$deleted_files = 0;
@@ -93,7 +93,7 @@
 				}
 			}
 
-			echo 'Removed '. language::number_format($deleted_files) .' cached files and '. language::number_format($deleted_dirs) .' directories' . PHP_EOL . PHP_EOL;
+			echo 'Removed '. f::format_number($deleted_files) .' cached files and '. f::format_number($deleted_dirs) .' directories' . PHP_EOL . PHP_EOL;
 
 			echo 'Job completed successfully.';
 		}

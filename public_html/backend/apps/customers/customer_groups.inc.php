@@ -59,7 +59,7 @@
 					<td><?php echo f::form_checkbox('customer_groups[]', $group['id']); ?></td>
 					<td><?php echo $group['id']; ?></td>
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_customer_group', ['group_id' => $group['id']]); ?>"><?php echo $group['name']; ?></a></td>
-					<td><?php echo language::number_format($group['num_customers']); ?></td>
+					<td><?php echo f::format_number($group['num_customers']); ?></td>
 					<td><a class="btn btn-default btn-sm" href="<?php echo document::href_link(__APP__.'/edit_customer_group', ['group_id' => $group['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo f::draw_fonticon('edit'); ?></a></td>
 				</tr>
 				<?php } ?>
@@ -68,7 +68,7 @@
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo t('title_customer_groups', 'Customer Groups'); ?>: <?php echo language::number_format($num_rows); ?>
+						<?php echo t('title_customer_groups', 'Customer Groups'); ?>: <?php echo f::format_number($num_rows); ?>
 					</td>
 				</tr>
 			</tfoot>

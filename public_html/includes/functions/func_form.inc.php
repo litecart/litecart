@@ -419,7 +419,7 @@
 			//$input = rtrim(preg_replace('#(\.'. str_repeat('\d', 2) .')0{1,2}$#', '$1', $input), '.'); // Auto decimals
 		}
 
-		$parameters = ($parameters ? $parameters .' ' : '') . 'placeholder="'. language::number_format(0, $decimals) .'"';
+		$parameters = ($parameters ? $parameters .' ' : '') . 'placeholder="'. f::format_number(0, $decimals) .'"';
 
 		return implode(PHP_EOL, [
 			'<div class="input-group">',
@@ -2335,9 +2335,9 @@
 		$options = array_map(function($stock_option) use ($product, $has_images) {
 
 			if ($product->quantity_unit) {
-				$formatted_quantity_available = language::number_format($stock_option['quantity_available'], $product->quantity_unit['decimals']) .' '. $product->quantity_unit['name'];
+				$formatted_quantity_available = f::format_number($stock_option['quantity_available'], $product->quantity_unit['decimals']) .' '. $product->quantity_unit['name'];
 			} else {
-				$formatted_quantity_available = language::number_format($stock_option['quantity_available']);
+				$formatted_quantity_available = f::format_number($stock_option['quantity_available']);
 			}
 
 			switch (true) {

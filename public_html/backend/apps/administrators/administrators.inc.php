@@ -121,7 +121,7 @@
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo t('title_administrators', 'Administrators'); ?>: <?php echo language::number_format($num_rows); ?>
+						<?php echo t('title_administrators', 'Administrators'); ?>: <?php echo f::format_number($num_rows); ?>
 					</td>
 				</tr>
 			</tfoot>

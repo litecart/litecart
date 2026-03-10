@@ -55,7 +55,7 @@
 					<td><?php echo $tax_rate['geo_zone']; ?></td>
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/tax/edit_tax_rate', ['tax_rate_id' => $tax_rate['id']], true); ?>"><?php echo $tax_rate['name']; ?></a></td>
 					<td><?php echo $tax_rate['description']; ?></td>
-					<td><?php echo language::number_format($tax_rate['rate'], 4); ?></td>
+					<td><?php echo f::format_number($tax_rate['rate'], 4); ?></td>
 					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/tax/edit_tax_rate', ['tax_rate_id' => $tax_rate['id']], true); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo f::draw_fonticon('edit'); ?></a></td>
 				</tr>
 				<?php } ?>
@@ -64,7 +64,7 @@
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo t('title_tax_rates', 'Tax Rates'); ?>: <?php echo language::number_format($num_rows); ?>
+						<?php echo t('title_tax_rates', 'Tax Rates'); ?>: <?php echo f::format_number($num_rows); ?>
 					</td>
 				</tr>
 			</tfoot>

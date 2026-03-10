@@ -137,7 +137,7 @@
 	if ($log_file = ini_get('error_log')) {
 
 		if (($filesize = filesize($log_file)) > 1024e6) {
-			notices::add('warnings', t('warning_truncating_extremely_large_log_file', 'Truncating an extremely large log file') .' ('. language::number_format($filesize / (1024 * 1024)) .' Mbytes)');
+			notices::add('warnings', t('warning_truncating_extremely_large_log_file', 'Truncating an extremely large log file') .' ('. f::format_number($filesize / (1024 * 1024)) .' Mbytes)');
 			file_put_contents($logfile, '');
 		}
 

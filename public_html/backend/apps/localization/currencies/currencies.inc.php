@@ -89,7 +89,7 @@
 					<td><?php echo $currency['id']; ?></td>
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/currencies/edit_currency', ['currency_code' => $currency['code']]); ?>"><?php echo $currency['name']; ?></a></td>
 					<td><?php echo $currency['code']; ?></td>
-					<td class="text-end"><?php echo language::number_format($currency['value'], 4); ?></td>
+					<td class="text-end"><?php echo f::format_number($currency['value'], 4); ?></td>
 					<td class="text-center"><?php echo currency::format_html(1234.56, false, $currency['code'], 1); ?></td>
 					<td class="text-center"><?php echo ($currency['code'] == settings::get('default_currency_code')) ? f::draw_fonticon('icon-check') : ''; ?></td>
 					<td class="text-center"><?php echo ($currency['code'] == settings::get('store_currency_code')) ? f::draw_fonticon('icon-check') : ''; ?></td>
@@ -106,7 +106,7 @@
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo t('title_currencies', 'Currencies'); ?>: <?php echo language::number_format($num_rows); ?>
+						<?php echo t('title_currencies', 'Currencies'); ?>: <?php echo f::format_number($num_rows); ?>
 					</td>
 				</tr>
 			</tfoot>

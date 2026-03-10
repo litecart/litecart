@@ -76,12 +76,12 @@
 					trigger_error('Invalid weight unit ('. $unit .')', E_USER_WARNING);
 				}
 
-				return language::number_format((float)$value, 2);
+				return f::format_number((float)$value, 2);
 			}
 
 			$decimals = self::$units[$unit]['decimals'];
 
-			$formatted = language::number_format((float)$value, $decimals) .' '. self::$units[$unit]['unit'];
+			$formatted = f::format_number((float)$value, $decimals) .' '. self::$units[$unit]['unit'];
 
 			return $formatted;
 		}

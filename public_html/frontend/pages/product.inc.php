@@ -384,9 +384,9 @@
 	if (!empty($product->quantity_unit['name'])) {
 		$_page->snippets['stock_status'] = settings::get('display_stock_count') ? language::number_format($product->quantity_available, $product->quantity_unit['decimals']) .' '. $product->quantity_unit['name'] : t('title_in_stock', 'In Stock');
 	} else {
-		$_page->snippets['stock_status'] = settings::get('display_stock_count') ? language::number_format($product->quantity_available) : t('title_in_stock', 'In Stock');
+		$_page->snippets['stock_status'] = settings::get('display_stock_count') ? f::format_number($product->quantity_available) : t('title_in_stock', 'In Stock');
 	}
-
+f::format_number
 	// Cheapest shipping
 	if (settings::get('display_cheapest_shipping')) {
 

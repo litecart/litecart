@@ -63,7 +63,7 @@
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo t('title_attributes', 'Attributes'); ?>: <?php echo language::number_format($num_rows); ?>
+						<?php echo t('title_attributes', 'Attributes'); ?>: <?php echo f::format_number($num_rows); ?>
 					</td>
 				</tr>
 			</tfoot>

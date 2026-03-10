@@ -203,6 +203,10 @@
 		return $text;
 	}
 
+	function format_number($number, $decimals=0) {
+		return language::number_format($number, $decimals);
+	}
+
 	function format_regex_code($string) {
 
 		$string = strip_tags($string);

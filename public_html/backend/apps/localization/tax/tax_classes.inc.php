@@ -55,7 +55,7 @@
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo t('title_tax_classes', 'Tax Classes'); ?>: <?php echo language::number_format($num_rows); ?>
+						<?php echo t('title_tax_classes', 'Tax Classes'); ?>: <?php echo f::format_number($num_rows); ?>
 					</td>
 				</tr>
 			</tfoot>

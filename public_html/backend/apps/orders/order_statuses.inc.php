@@ -134,7 +134,7 @@
 					<td class="text-center"><?php echo !empty($order_status['notify']) ? f::draw_fonticon('icon-check') : '-'; ?></td>
 					<td class="text-center">
 						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/orders', ['order_status_id' => $order_status['id']]); ?>" title="<?php echo t('title_view', 'View'); ?>">
-							<?php echo f::draw_fonticon('icon-square-out'); ?> <?php echo language::number_format($order_status['num_orders'], 0); ?>
+							<?php echo f::draw_fonticon('icon-square-out'); ?> <?php echo f::format_number($order_status['num_orders'], 0); ?>
 						</a>
 					</td>
 					<td class="text-center"><?php echo (int)$order_status['priority']; ?></td>
@@ -150,7 +150,7 @@
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo t('title_order_statuses', 'Order Statuses'); ?>: <?php echo language::number_format($num_rows); ?>
+						<?php echo t('title_order_statuses', 'Order Statuses'); ?>: <?php echo f::format_number($num_rows); ?>
 					</td>
 				</tr>
 			</tfoot>

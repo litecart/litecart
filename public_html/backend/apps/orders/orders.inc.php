@@ -362,7 +362,7 @@
 		) o on (o.order_status_id = os.id)
 		order by field(state, 'created', 'on_hold', 'ready', 'delayed', 'processing', 'dispatched', 'in_transit', 'delivered', 'returning', 'returned', 'cancelled', ''), name asc;"
 	)->each(function($order_status) use (&$order_status_options) {
-		$order_status_options[1]['options'][$order_status['id']] = $order_status['name'] .' ('. language::number_format($order_status['num_orders']) .')';
+		$order_status_options[1]['options'][$order_status['id']] = $order_status['name'] .' ('. f::format_number($order_status['num_orders']) .')';
 	});
 
 	// Actions
@@ -497,7 +497,7 @@ table .tag {
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo t('title_orders', 'Orders'); ?>: <?php echo language::number_format($num_rows); ?>
+						<?php echo t('title_orders', 'Orders'); ?>: <?php echo f::format_number($num_rows); ?>
 					</td>
 				</tr>
 			</tfoot>

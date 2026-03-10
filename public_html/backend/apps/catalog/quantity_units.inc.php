@@ -57,7 +57,7 @@
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo t('title_quantity_units', 'Quantity Units'); ?>: <?php echo language::number_format($num_rows); ?>
+						<?php echo t('title_quantity_units', 'Quantity Units'); ?>: <?php echo f::format_number($num_rows); ?>
 					</td>
 				</tr>
 			</tfoot>

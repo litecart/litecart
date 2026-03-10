@@ -200,7 +200,7 @@
       <tfoot>
         <tr>
           <td colspan="99">
-						<?php echo t('title_events', 'Events'); ?>: <?php echo language::number_format($num_rows); ?>
+						<?php echo t('title_events', 'Events'); ?>: <?php echo f::format_number($num_rows); ?>
 					</td>
         </tr>
       </tfoot>

@@ -80,7 +80,7 @@
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_campaign', ['campaign_id' => $campaign['id']]); ?>"><?php echo $campaign['name']; ?></a></td>
 					<td class="text-end"><?php echo $campaign['valid_from'] ? f::datetime_format('datetime', $campaign['valid_from']) : ''; ?></td>
 					<td class="text-end"><?php echo $campaign['valid_to'] ? f::datetime_format('datetime', $campaign['valid_to']) : ''; ?></td>
-					<td class="text-center"><?php echo language::number_format($campaign['num_products']); ?></td>
+					<td class="text-center"><?php echo f::format_number($campaign['num_products']); ?></td>
 					<td class="text-end">
 						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_campaign', ['campaign_id' => $campaign['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>">
 							<?php echo f::draw_fonticon('edit'); ?>
@@ -93,7 +93,7 @@
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo t('title_campaigns', 'Campaigns'); ?>: <?php echo language::number_format($num_rows); ?>
+						<?php echo t('title_campaigns', 'Campaigns'); ?>: <?php echo f::format_number($num_rows); ?>
 					</td>
 				</tr>
 			</tfoot>
