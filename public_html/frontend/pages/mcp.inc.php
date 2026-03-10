@@ -37,8 +37,8 @@
 		// HTTP Basic Authentication
 		if (!empty($_SERVER['PHP_AUTH_USER']) && !empty($_SERVER['PHP_AUTH_PW'])) {
 
-			$administrator = database::query(
-				"select * from ". DB_TABLE_PREFIX ."administrators
+			$customer = database::query(
+				"select * from ". DB_TABLE_PREFIX ."customers
 				where status
 				and lower(username) = lower('". database::input($_SERVER['PHP_AUTH_USER']) ."')
 				and (valid_from is null or valid_from < '". database::input(date('Y-m-d H:i:s')) ."')
@@ -46,30 +46,30 @@
 				limit 1;",
 			)->fetch();
 
-			if (!$administrator) {
-				throw new McpException(language::translate('error_administrator_not_found', 'The administrator is either suspended or could not be found in our database'), 401);
+			if (!$customer) {
+				throw new McpException(language::translate('error_customer_not_found', 'The customer is either suspended or could not be found in our database'), 401);
 			}
 
 			// Password check and login attempts
-			if (!password_verify($_SERVER['PHP_AUTH_PW'], $administrator['password_hash'])) {
-				if (++$administrator['login_attempts'] < 3) {
+			if (!password_verify($_SERVER['PHP_AUTH_PW'], $customer['password_hash'])) {
+				if (++$customer['login_attempts'] < 3) {
 
 					database::query(
-							"update ". DB_TABLE_PREFIX ."administrators
+							"update ". DB_TABLE_PREFIX ."customers
 							set login_attempts = login_attempts + 1
-							where id = ". (int)$administrator['id'] ."
+							where id = ". (int)$customer['id'] ."
 							limit 1;"
 					);
 
-					throw new McpException(strtr(language::translate('error_d_login_attempts_left', 'You have %d login attempts left until your account is temporary blocked'), ['%d' => 3 - $administrator['login_attempts']]), 403);
+					throw new McpException(strtr(language::translate('error_d_login_attempts_left', 'You have %d login attempts left until your account is temporary blocked'), ['%d' => 3 - $customer['login_attempts']]), 403);
 
 				} else {
 
 					database::query(
-						"update ". DB_TABLE_PREFIX ."administrators
+						"update ". DB_TABLE_PREFIX ."customers
 						set login_attempts = 0,
 						blocked_until = '". date('Y-m-d H:i:00', strtotime('+15 minutes')) ."'
-						where id = ". (int)$administrator['id'] ."
+						where id = ". (int)$customer['id'] ."
 						limit 1;",
 					);
 
@@ -80,11 +80,11 @@
 			}
 
 			// Reset login attempts after successful login
-			if (!empty($administrator['login_attempts'])) {
+			if (!empty($customer['login_attempts'])) {
 				database::query(
-					"update ". DB_TABLE_PREFIX ."administrators
+					"update ". DB_TABLE_PREFIX ."customers
 					set login_attempts = 0
-					where id = ". (int)$administrator['id'] ."
+					where id = ". (int)$customer['id'] ."
 					limit 1;",
 				);
 			}
@@ -152,42 +152,38 @@
 				}
 
 				// Tool dispatch
-				switch ($params['name']) {
+				foreach (functions::file_search('app://includes/mcp/mcp_*.inc.php') as $mcp_file) {
 
-					// Unknown tool
-					default:
+					// Include without polluting global scope
+					$tool_schema = (function() use ($mcp_file) {
+						return include $mcp_file;
+					})();
 
-						foreach (functions::file_search('app://includes/mcp/mcp_*.inc.php') as $mcp_file) {
+					if (is_array($tool_schema) && !empty($tool_schema['name']) && $tool_schema['name'] === $params['name']) {
+						$tool_function = 'mcp_' . str_replace(['/', '-'], '_', $tool_schema['name']);
 
-							// Include without polluting global scope
-							$tool_schema = (function() use ($mcp_file) {
-								return include $mcp_file;
-							})();
+						if (function_exists($tool_function)) {
 
-							if (is_array($tool_schema) && !empty($tool_schema['name']) && $tool_schema['name'] === $params['name']) {
-								$tool_function = 'mcp_' . str_replace(['/', '-'], '_', $tool_schema['name']);
+							// Support both 'arguments' (MCP standard) and 'input' (legacy)
+							$tool_args = $params['arguments'] ?? $params['input'] ?? [];
 
-								if (function_exists($tool_function)) {
-
-									// Support both 'arguments' (MCP standard) and 'input' (legacy)
-									$tool_args = $params['arguments'] ?? $params['input'] ?? [];
-
-									// Check input against required parameters
-									if (!empty($tool_schema['inputSchema']['required']) && is_array($tool_schema['inputSchema']['required'])) {
-										foreach ($tool_schema['inputSchema']['required'] as $field) {
-											if (!isset($tool_args[$field]) || $tool_args[$field] === '') {
-												throw new McpException("Missing required parameter: $field", 400, -32602);
-											}
-										}
+							// Check input against required parameters
+							if (!empty($tool_schema['inputSchema']['required']) && is_array($tool_schema['inputSchema']['required'])) {
+								foreach ($tool_schema['inputSchema']['required'] as $field) {
+									if (!isset($tool_args[$field]) || $tool_args[$field] === '') {
+										throw new McpException("Missing required parameter: $field", 400, -32602);
 									}
-
-									$tool_result = $tool_function($tool_args);
-									break 2; // Exit both loops
 								}
 							}
-						}
 
-						throw new McpException('Tool not found', 404, -32601);
+							$tool_result = $tool_function($tool_args);
+							break;
+						}
+					}
+				}
+
+				if (!isset($tool_result)) {
+					throw new McpException('Tool not found', 404, -32601);
 				}
 
 				$result = [
@@ -198,6 +194,7 @@
 					'structuredContent' => $tool_result,
 					'isError' => false,
 				];
+
 				break;
 
 			// Unknown method
