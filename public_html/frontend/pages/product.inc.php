@@ -36,6 +36,21 @@
 		notices::add('errors', t('text_product_can_no_longer_be_purchased', 'The product can no longer be purchased'));
 	}
 
+	// Notify if product has been replaced by another product
+	if (!empty($product->replaced_by)) {
+		$replaced_product = reference::product($product->replaced_by);
+		if (!empty($replaced_product->id)) {
+			notices::add('info', strtr(t('text_product_replaced_by', 'This product has been replaced by <a href="{link}">{name}</a>.'), [
+				'{link}' => document::ilink('product', ['product_id' => $replaced_product->id], true),
+				'{name}' => $replaced_product->name,
+			]));
+		} else {
+			notices::add('info', strtr(t('text_product_replaced_by_id', 'This product has been replaced by product {id}.'), [
+				'{id}' => f::escape_html($product->replaced_by, ENT_QUOTES, 'UTF-8'),
+			]));
+		}
+	}
+
 	// Handle product notification signup
 	if (!empty($_POST['notify_me'])) {
 		try {

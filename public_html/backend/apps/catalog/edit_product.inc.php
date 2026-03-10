@@ -274,6 +274,11 @@
 							</label>
 
 							<label class="form-group">
+								<div class="form-label"><?php echo t('title_replaced_by', 'Replaced By'); ?></div>
+								<?php echo f::form_select_product('replaced_by', true); ?>
+							</label>
+
+							<label class="form-group">
 								<div class="form-label"><?php echo t('title_keywords', 'Keywords'); ?></div>
 								<?php echo f::form_input_tags('keywords', true); ?>
 							</label>
