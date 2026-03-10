@@ -604,8 +604,6 @@
 
 			$this->reset();
 
-			cache::clear_cache('brands');
-			cache::clear_cache('category');
 			cache::clear_cache('products');
 		}
 	}

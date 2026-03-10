@@ -189,7 +189,7 @@
 		'customizations' => [],
 		'stock_options' => [],
 		'keywords' => $product->keywords,
-		'image' => $product->images ? 'storage://images/' . $product->image : '',
+		'default_image' => $product->images ? 'storage://images/' . $product->default_image : '',
 		'video_url' => $product->video_url,
 		'sticker' => '',
 		'extra_images' => [],
@@ -217,14 +217,16 @@
 	];
 
 	// Extra Images
-	foreach (array_slice(array_values($product->images), 1) as $image) {
-		$_page->snippets['extra_images'][] = 'storage://images/' . $image;
+	if (!empty($product->images) && is_array($product->images)) {
+		foreach (array_slice(array_values($product->images), 1) as $image) {
+			$_page->snippets['extra_images'][] = 'storage://images/' . $image;
+		}
 	}
 
 	// Watermark Images
 	if (settings::get('product_image_watermark') && $product->image) {
 		$_page->snippets['image'] = f::image_process($product->image, ['watermark' => true]);
-		foreach ($_page->snippets['extra_images'] as $image) {
+		foreach ($_page->snippets['extra_images'] as $key => $image) {
 			$_page->snippets['extra_images'][$key] = f::image_process($image, ['watermark' => true]);
 		}
 	}

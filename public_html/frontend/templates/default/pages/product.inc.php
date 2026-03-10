@@ -255,7 +255,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 				</div>
 			</div>
 
-			<?php if (is_ajax_request()) { ?>
+			<?php if (!is_ajax_request()) { ?>
 			<?php if ($description || $technical_data) { ?>
 			<div class="card" style="margin: var(--gutter-y) 0;">
 				<div class="card-body">

@@ -946,7 +946,10 @@
 							throw new Exception('Unknown output format');
 					}
 
-					ImageDestroy($new_image);
+					if (PHP_VERSION < '8.0.0') {
+						ImageDestroy($new_image);
+					}
+
 					return $result;
 			}
 		}

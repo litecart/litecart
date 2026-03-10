@@ -34,16 +34,16 @@
 							<div class="grid">
 								<div class="col-1 text-center">
 									<?php if ($class['id'] == 'necessary') { ?>
-									<?php echo f::form_draw_hidden_field('consents['. $class['id'] .'][]', 'all'); ?>
-									<?php echo f::form_draw_checkbox('consents['. $class['id'] .'][]', 'all', 'all', 'disabled'); ?>
+									<?php echo f::form_input_hidden('consents['. $class['id'] .'][]', 'all'); ?>
+									<?php echo f::form_checkbox('consents['. $class['id'] .'][]', 'all', 'all', 'disabled'); ?>
 									<?php } else { ?>
 									<?php echo $draw_checkbox($class['id'], 'all', 'all'); ?>
 									<?php } ?>
 								</div>
 
 								<div class="col-11">
-									<div class="name"><?php echo $class['title']; ?></div>
-									<div class="description"><?php echo $class['description']; ?></div>
+									<div class="name"><?php echo f::escape_html($class['title']); ?></div>
+									<div class="description"><?php echo f::escape_html($class['description']); ?></div>
 								</div>
 							</div>
 						</label>

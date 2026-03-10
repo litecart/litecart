@@ -101,7 +101,7 @@
 				"meta_description":	{ "type": "TEXT", "default": "'{}'" },
 				"link":	{ "type": "TEXT", "default": "'{}'" },
 				"keywords": { "type": "VARCHAR", "length": 255, "default": "''" },
-				"default_image": { "type": "VARCHAR", "length": 128, "default": "''" },
+				"image": { "type": "VARCHAR", "length": 128, "default": "''" },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
 				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
 			},
@@ -892,9 +892,9 @@
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"status": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
+				"type": { "type": "ENUM('virtual','physical','digital','variable','bundle')", "default": "'virtual'" },
 				"featured": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
 				"pinned": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
-				"type": { "type": "ENUM('virtual','physical','digital','variable','bundle')", "default": "'virtual'" },
 				"brand_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
 				"supplier_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
 				"delivery_status_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
@@ -905,6 +905,7 @@
 				"mpn": { "type": "VARCHAR", "length": 32, "default": "''" },
 				"gtin": { "type": "VARCHAR", "length": 32, "default": "''" },
 				"taric": { "type": "VARCHAR", "length": 16, "default": "''" },
+				"shelf": { "type": "VARCHAR", "length": 32, "default": "''" },
 				"name": { "type": "TEXT", "default": "'{}'" },
 				"short_description": { "type": "TEXT", "default": "'{}'" },
 				"description": { "type": "MEDIUMTEXT", "default": "'{}'" },

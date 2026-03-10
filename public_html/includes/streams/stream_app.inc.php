@@ -64,7 +64,7 @@
 
 		public function stream_flush(): bool {
 			trigger_error('Flushing data to an app:// resource is prohibited', E_USER_WARNING);
-				return false;
+			return false;
 		}
 
 		public function stream_lock(int $operation): bool {

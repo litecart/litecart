@@ -93,9 +93,16 @@
 
 					$this->_data['brand'] = [];
 
-					if (empty($this->_data['brand_id'])) return;
+					if ($this->_data['brand_id']) {
 
-					$this->_data['brand'] = reference::brand($this->brand_id, $this->_language_codes[0]);
+						$brand = reference::brand($this->brand_id, $this->_language_codes[0]);
+
+						if ($brand->id && $brand->status) {
+							$this->_data['brand'] = $brand;
+						}
+					}
+
+					break;
 
 			case 'campaign':
 
@@ -577,7 +584,7 @@
 							$product['technical_data'] = '';
 
 							foreach ($this->attributes as $attribute) {
-								$product['technical_data'] = $attribute['group_name'] .': '. $attribute['value_name'] . PHP_EOL;
+								$product['technical_data'] .= $attribute['group_name'] .': '. $attribute['value_name'] . PHP_EOL;
 							}
 
 							$product['technical_data'] = rtrim($product['technical_data']);

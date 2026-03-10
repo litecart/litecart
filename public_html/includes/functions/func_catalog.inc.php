@@ -102,7 +102,7 @@
 
 			where c.status
 			and (ptc.num_products > 0 or c2.num_subcategories > 0)
-			". (!empty($sql_where) ? implode(" and ", $sql_where) : "") ."
+			". (!empty($sql_where) ? implode(PHP_EOL . "and ", $sql_where) : "") ."
 
 			having relevance > 0
 
@@ -181,25 +181,58 @@
 				break;
 		}
 
-		$sql_where_categories = '';
-		if (!empty($filter['categories'])) {
-			$sql_where_categories =
-				"and p.id in (
-					select distinct product_id from ". DB_TABLE_PREFIX ."products_to_categories
-					where category_id in ('". implode("', '", database::input($filter['categories'])) ."')
-				)";
+		$sql_inner_where = [];
+		$sql_outer_where = [];
+
+		$sql_inner_where['status'] = "p.status";
+
+		if (!empty($filter['featured'])) {
+			$sql_inner_where['featured'] = "featured = 1";
 		}
 
-		$sql_where_attributes = [];
+		if (!empty($filter['categories'])) {
+			$sql_inner_where['categories'] = (
+				"p.id in (
+					select distinct product_id from ". DB_TABLE_PREFIX ."products_to_categories
+					where category_id in ('". implode("', '", database::input($filter['categories'])) ."')
+				)"
+			);
+		}
+
 		if (!empty($filter['attributes']) && is_array($filter['attributes'])) {
+		$sql_where_attributes = [];
 			foreach ($filter['attributes'] as $group_id => $values) {
-				$sql_where_attributes[] =
-					"and p.id in (
+				$sql_where_attributes[] = (
+					"p.id in (
 						select distinct product_id from ". DB_TABLE_PREFIX ."products_attributes
 						where (group_id = ". (int)$group_id ." and (value_id in ('". implode("', '", database::input($values)) ."') or custom_value in ('". implode("', '", database::input($values)) ."')))
 					)";
 			}
-			$sql_where_attributes = implode(PHP_EOL, $sql_where_attributes);
+			$sql_inner_where['attributes'] = implode(PHP . "and ", $sql_where_attributes);
+		}
+
+		if (!empty($filter['products'])) {
+			$sql_inner_where['products'] = "p.id in ('". implode("', '", database::input($filter['products'])) ."')";
+		}
+
+		if (!empty($filter['product_name'])) {
+			$sql_inner_where['product_name'] = "json_value(p.name, '$.". database::input(language::$selected['code']) ."') like '%". addcslashes(database::input($filter['product_name']), '%_') ."%'";
+		}
+
+		if (!empty($filter['brands'])) {
+			$sql_inner_where['brands'] = "p.brand_id in ('". implode("', '", database::input($filter['brands'])) ."')";
+		}
+
+		if (!empty($filter['keywords'])) {
+			$sql_inner_where['keywords'] = "(". implode(" or ", array_map(function($s){ return "find_in_set('$s', p.keywords)"; }, database::input($filter['keywords'])) ) .")";
+		}
+
+		if (!empty($filter['purchased'])) {
+			$sql_inner_where['purchased'] = "p.id in (select product_id from ". DB_TABLE_PREFIX ."orders_items group by product_id)";
+		}
+
+		if (!empty($filter['exclude_products'])) {
+			$sql_inner_where['exclude_products'] = "p.id not in ('". implode("', '", database::input($filter['exclude_products'])) ."')";
 		}
 
 		$sql_column_price = "coalesce(". implode(", ", array_map(function($currency) {
@@ -220,21 +253,12 @@
 
 				from ". DB_TABLE_PREFIX ."products p
 
-				where p.status
-				". (!empty($filter['featured']) ? "and featured = 1" : "") ."
-				". (!empty($filter['products']) ? "and p.id in ('". implode("', '", database::input($filter['products'])) ."')" : null) ."
-				". (!empty($filter['product_name']) ? "and json_value(p.name, '$.". database::input(language::$selected['code']) ."') like '%". addcslashes(database::input($filter['product_name']), '%_') ."%'" : "") ."
-				". fallback($sql_where_categories) ."
-				". fallback($sql_where_attributes) ."
-				". (!empty($filter['brands']) ? "and p.brand_id in ('". implode("', '", database::input($filter['brands'])) ."')" : null) ."
-				". (!empty($filter['keywords']) ? "and (". implode(" or ", array_map(function($s){ return "find_in_set('$s', p.keywords)"; }, database::input($filter['keywords']))) .")" : null) ."
+				where ". implode(" and ", $sql_inner_where) ."
 				and (p.valid_from is null or p.valid_from <= '". date('Y-m-d H:i:s') ."')
 				and (p.valid_to is null or p.valid_to >= '". date('Y-m-d H:i:s') ."')
-				". (!empty($filter['purchased']) ? "and p.id in (select product_id from ". DB_TABLE_PREFIX ."orders_lines group by product_id)" : "") ."
-				". (!empty($filter['exclude_products']) ? "and p.id not in ('". implode("', '", $filter['exclude_products']) ."')" : "") ."
 
 				". ((!empty($sql_inner_sort) && !empty($filter['limit'])) ? "order by " . implode(",", $sql_inner_sort) : "") ."
-				". ((!empty($filter['limit']) && empty($filter['sql_where']) && empty($filter['product_name']) && empty($filter['product_name']) && empty($filter['campaign']) && empty($sql_where_prices)) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : "") . (int)$filter['limit'] : "") ."
+				". ((!empty($filter['limit']) && empty($filter['sql_outer_where']) && empty($filter['campaign']) && empty($sql_inner_where['prices'])) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : "") . (int)$filter['limit'] : "") ."
 			) p
 
 			left join (
@@ -264,7 +288,7 @@
 					where status
 					and (valid_from is not null and valid_from > '". date('Y-m-d H:i:s') ."')
 					and (valid_to is not null and valid_to < '". date('Y-m-d H:i:s') ."')
-				) or campaign_id is null)
+				))
 				and (customer_group_id is null or customer_group_id = ". (int)customer::$data['group_id'] .")
 				and (geo_zone_id is null or geo_zone_id in (
 					select geo_zone_id from ". DB_TABLE_PREFIX ."zones_to_geo_zones
@@ -302,6 +326,7 @@
 
 			where (
 				(ifnull(pso.num_stock_options, 0) = 0 or pso.quantity_available > 0 or ss.hidden != 1)
+				". (!empty($sql_outer_where) ? implode(" and ", $sql_outer_where) : "") ."
 				". (!empty($filter['sql_where']) ? "and (". $filter['sql_where'] .")" : "") ."
 				". (!empty($filter['campaign']) ? "and (pp.final_price is not null and pp.final_price > 0)" : "") ."
 				". (!empty($filter['price_range']['min']) ? "and pp.final_price >= ". (float)$filter['price_range']['min'] : "") ."
@@ -311,7 +336,7 @@
 			group by p.id
 
 			". (!empty($sql_outer_sort) ? "order by ". implode(",", $sql_outer_sort) : "") ."
-			". (!empty($filter['limit']) && (!empty($filter['sql_where']) || !empty($filter['product_name']) || !empty($filter['campaign']) || !empty($sql_where_prices)) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : "") . (int)$filter['limit'] : "") .";"
+			". (!empty($filter['limit']) && (!empty($filter['product_name']) || !empty($filter['campaign']) || !empty($sql_inner_where['prices'])) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : "") . (int)$filter['limit'] : "") .";"
 		);
 
 		return database::query($query);
@@ -343,7 +368,7 @@
 
 		$sql_select_relevance = [];
 		$sql_inner_where = [];
-		$sql_where = [];
+		$sql_outer_where = [];
 		$sql_order_by = "relevance desc";
 
 		if (!empty($filter['query'])) {
@@ -421,16 +446,22 @@
 			);
 		}
 
+		$sql_inner_where['status'] = "p.status";
+
 		if (!empty($filter['exclude_products'])) {
 			$sql_inner_where['exclude_products'] = (
-				"and p.id not in ('". implode("', '", database::input($filter['exclude_products'])) ."')"
+				"p.id not in ('". implode("', '", database::input($filter['exclude_products'])) ."')"
 			);
 		}
 
 		if (!empty($filter['campaigns'])) {
-			$sql_where['campaigns'] = (
+			$sql_outer_where['campaigns'] = (
 				"(pp.final_price is not null and pp.final_price > 0)"
 			);
+		}
+
+		if (!empty($filter['featured'])) {
+			$sql_inner_where['featured'] = "featured = 1";
 		}
 
 		if (!empty($filter['sort'])) {
@@ -474,9 +505,7 @@
 						". implode(" + ", $sql_select_relevance) ."
 					) as relevance
 				from ". DB_TABLE_PREFIX ."products p
-				where status
-				". (!empty($sql_inner_where) ? implode(" and ", $sql_inner_where) : "")."
-				". (!empty($filter['featured']) ? "and featured = 1" : "") ."
+				where ". implode(" and ", $sql_inner_where) ."
 				and (valid_from is null or valid_from <= '". date('Y-m-d H:i:s') ."')
 				and (valid_to is null or valid_to >= '". date('Y-m-d H:i:s') ."')
 				having relevance > 0
@@ -508,7 +537,7 @@
 					where status
 					and (valid_from is not null and valid_from > '". date('Y-m-d H:i:s') ."')
 					and (valid_to is not null and valid_to < '". date('Y-m-d H:i:s') ."')
-				) or campaign_id is null)
+				))
 				and (customer_group_id is null or customer_group_id = ". (int)customer::$data['group_id'] .")
 				and (geo_zone_id is null or geo_zone_id in (
 					select geo_zone_id from ". DB_TABLE_PREFIX ."zones_to_geo_zones
@@ -544,7 +573,8 @@
 
 			where (p.id
 				and (ifnull(pso.num_stock_options, 0) = 0 or pso.quantity_available > 0 or ss.hidden != 1)
-				". (!empty($sql_where) ? implode(" and ", $sql_where) : "") ."
+				". (!empty($sql_outer_where) ? implode(" and ", $sql_outer_where) : "") ."
+				". (!empty($filter['sql_where']) ? "and (". $filter['sql_where'] .")" : "") ."
 				". (!empty($filter['price_range']['min']) ? "and final_price >= ". (float)$filter['price_range']['min'] : "") ."
 				". (!empty($filter['price_range']['max']) ? "and final_price <= ". (float)$filter['price_range']['max'] : "") ."
 			)
