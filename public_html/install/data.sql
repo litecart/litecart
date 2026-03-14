@@ -405,7 +405,7 @@ INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, 
 ('advanced', 'local', 'Webmail Link', 'The URL to your webmail client.', 'webmail_link', '?app=settings&doc=advanced&action=edit&key=webmail_link', 'text()', 20, NOW(), NOW()),
 ('security', 'local', 'CAPTCHA', 'Prevent robots from posting form data by enabling CAPTCHA security.', 'captcha_enabled', '1', 'toggle()', 16, NOW(), NOW()),
 ('', 'global', 'Catalog Template', '', 'store_template_catalog', 'default.catalog', 'template("catalog")', 0, NOW(), NOW()),
-('', 'global', 'Catalog Template Settings', '', 'store_template_catalog_settings', '{"sidebar_parallax_effect":"1","compact_category_tree":"0","cookie_acceptance":"1"}', 'text()', 0, NOW(), NOW()),
+('', 'global', 'Catalog Template Settings', '', 'store_template_catalog_settings', '{"sidebar_parallax_effect":"1","compact_category_tree":"0","cookie_acceptance":"1","footer_categories":"1","footer_categories_limit":"9","footer_manufacturers":"1","footer_manufacturers_limit":"9","footer_contact":"1"}', 'text()', 0, NOW(), NOW()),
 ('', 'global', 'Admin Template', '', 'store_template_admin', 'default.admin', 'template("admin")', 0, NOW(), NOW()),
 ('', 'global', 'Jobs Last Push', 'Time when background jobs were last pushed for execution.', 'jobs_last_push', NOW(), 'text()', 0, NOW(), NOW()),
 ('', 'local', 'Date Cache Cleared', 'Do not use system cache older than breakpoint.', 'cache_system_breakpoint', NOW(), 'text()', 0, NOW(), NOW());
