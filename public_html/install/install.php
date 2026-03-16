@@ -39,12 +39,13 @@
     }
 
   } else {
-    require __DIR__ . '/includes/header.inc.php';
-  }
 
-  if (empty($_REQUEST['install'])) {
-    header('Location: index.php');
-    exit;
+    if (empty($_REQUEST['install'])) {
+      header('Location: index.php');
+      exit;
+    }
+
+    require __DIR__ . '/includes/header.inc.php';
   }
 
   ob_start();
