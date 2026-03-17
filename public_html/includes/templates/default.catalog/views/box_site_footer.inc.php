@@ -3,15 +3,17 @@
   <div class="fourteen-forty">
 
     <div class="columns">
-      <section class="categories hidden-xs">
+      <?php if ($categories) { ?>
+      <section class="categories">
         <h3 class="title"><?php echo language::translate('title_categories', 'Categories'); ?></h3>
         <ul class="list-unstyled">
           <?php foreach ($categories as $category) echo '<li><a href="'. functions::escape_html($category['link']) .'">'. $category['name'] .'</a></li>' . PHP_EOL; ?>
         </ul>
       </section>
+      <?php } ?>
 
       <?php if ($manufacturers) { ?>
-      <section class="manufacturers hidden-xs hidden-sm">
+      <section class="manufacturers">
         <h3 class="title"><?php echo language::translate('title_manufacturers', 'Manufacturers'); ?></h3>
         <ul class="list-unstyled">
         <?php foreach ($manufacturers as $manufacturer) echo '<li><a href="'. functions::escape_html($manufacturer['link']) .'">'. $manufacturer['name'] .'</a></li>' . PHP_EOL; ?>
@@ -44,7 +46,8 @@
         </ul>
       </section>
 
-      <section class="contact hidden-xs">
+      <?php if (!isset(document::$settings['footer_contact']) || document::$settings['footer_contact']) { ?>
+      <section class="contact">
         <h3 class="title"><?php echo language::translate('title_contact', 'Contact'); ?></h3>
 
         <ul class="list-unstyled">
@@ -57,6 +60,7 @@
           <li><?php echo functions::draw_fonticon('fa-envelope'); ?> <a href="mailto:<?php echo settings::get('store_email'); ?>"><?php echo settings::get('store_email'); ?></a></li>
         </ul>
       </section>
+      <?php } ?>
     </div>
   </div>
 </footer>
