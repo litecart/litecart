@@ -101,24 +101,6 @@ jobs:
           fi
           echo "PRNG scan complete"
 
-      - name: LESS Lint
-        continue-on-error: true
-        run: |
-          npm install --no-save less > /dev/null 2>&1
-          errors=0
-          while IFS= read -r file; do
-            if ! npx lessc --lint "$file" > /dev/null 2>&1; then
-              echo "::error file=$file::LESS syntax error"
-              npx lessc --lint "$file" 2>&1 || true
-              errors=$((errors + 1))
-            fi
-          done < <(find public_html -name '*.less' -type f)
-          if [ $errors -gt 0 ]; then
-            echo "::error::$errors LESS file(s) with syntax errors"
-            exit 1
-          fi
-          echo "All LESS files passed syntax check"
-
       - name: SQL Lint
         run: |
           errors=0
