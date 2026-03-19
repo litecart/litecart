@@ -119,7 +119,9 @@ jobs:
       - name: Install LiteCart via CLI installer
         working-directory: public_html/install
         run: |
-          php install.php \
+          php -d "auto_prepend_file=" \
+            -r "\$_SERVER['SERVER_SOFTWARE']='CLI'; \$_SERVER['REQUEST_METHOD']='GET'; require 'install.php';" \
+            -- \
             --document_root="$(realpath ../../public_html)" \
             --db_server="127.0.0.1" \
             --db_username="litecart" \
