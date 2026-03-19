@@ -76,7 +76,7 @@
 			if (empty($_REQUEST['reset_token'])) {
 
 				$reset_token = [
-					'token' => substr(str_shuffle(str_repeat('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', 10)), 0, 8),
+					'token' => bin2hex(random_bytes(24)),
 					'expires' => date('Y-m-d H:i:s', strtotime('+15 minutes')),
 				];
 

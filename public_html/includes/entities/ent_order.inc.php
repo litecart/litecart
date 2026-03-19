@@ -204,7 +204,7 @@
 			}
 
 			if (!$this->data['public_key']) {
-				$this->data['public_key'] = substr(str_shuffle(str_repeat('0123456789abcdefghijklmnopqrstuvwxyz', mt_rand(5, 10))), 0, 32);
+				$this->data['public_key'] = bin2hex(random_bytes(16));
 			}
 
 			if (!$this->data['date_dispatched']) {
