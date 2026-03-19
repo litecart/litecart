@@ -27,7 +27,7 @@
 
 		$code = '';
 		for ($i=0; $i<$config['length']; $i++) {
-			$code .= substr($possible, mt_rand(0, strlen($possible) -1), 1);
+			$code .= substr($possible, random_int(0, strlen($possible) -1), 1);
 		}
 
 		if (!$image = imagecreate($config['width'], $config['height'])) {
