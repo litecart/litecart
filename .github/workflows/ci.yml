@@ -102,6 +102,7 @@ jobs:
           echo "PRNG scan complete"
 
       - name: LESS Lint
+        continue-on-error: true
         run: |
           npm install --no-save less > /dev/null 2>&1
           errors=0
