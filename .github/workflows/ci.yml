@@ -112,7 +112,7 @@ jobs:
         with:
           php-version: '8.3'
           extensions: mysqli, gd, intl, mbstring, zip, xml, curl, simplexml, apcu
-          ini-values: date.timezone=Europe/London
+          ini-values: date.timezone=Europe/London, apc.enable_cli=1
           tools: none
           coverage: none
 
@@ -120,6 +120,7 @@ jobs:
         run: |
           mkdir -p public_html/storage/{cache,data,logs}
           mkdir -p public_html/storage/images/products
+          mkdir -p public_html/storage/vmods/.cache
 
       - name: Generate config file
         run: |
