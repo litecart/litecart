@@ -188,7 +188,7 @@
 					if (!empty($administrator['two_factor_auth']) && !empty($administrator['email'])) {
 
 						session::$data['security_verification'] = [
-							'code' => mt_rand(100000, 999999),
+							'code' => random_int(100000, 999999),
 							'expires' => strtotime('+15 minutes'),
 							'attempts' => 0,
 						];

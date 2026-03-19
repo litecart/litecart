@@ -51,7 +51,7 @@
 				'report-uri '. self::ilink('f:csp_report'),
 			]));
 
-			header('Permissions-Policy: ', implode(',', [
+			header('Permissions-Policy: ' . implode(',', [
 					'camera=()',
 					'clipboard-read=()',
 					'clipboard-write=()',
