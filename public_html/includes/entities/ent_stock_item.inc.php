@@ -220,7 +220,7 @@
 					$products_query = database::query(
 						"select id from ". DB_TABLE_PREFIX ."products
 						where id in (
-							select product_id from ". DB_TABLE_PREFIX ."products_to_stock_items
+							select product_id from ". DB_TABLE_PREFIX ."products_stock_options
 							where stock_item_id = ". (int)$this->data['id'] ."
 						);"
 					);

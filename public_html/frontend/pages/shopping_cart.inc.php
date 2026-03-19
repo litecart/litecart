@@ -183,7 +183,6 @@
 
 		if ($cheapest_shipping) {
 			$_page->snippets['cheapest_shipping'] = $cheapest_shipping;
-			var_dump($_page->snippets['cheapest_shipping']);
 		}
 	}
 

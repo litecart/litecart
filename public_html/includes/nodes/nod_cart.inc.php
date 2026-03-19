@@ -238,7 +238,7 @@
 				foreach ($product->stock_options as $option) {
 					if ($option['id'] == $stock_option_id) {
 						$item['stock_items'][] = [
-							'stock_item_id' => $option['id'],
+							'stock_item_id' => $option['stock_item_id'],
 							'name' => $option['name'],
 							'quantity' => 1,
 						];
