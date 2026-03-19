@@ -54,6 +54,81 @@ jobs:
           fi
           echo "All JSON files passed syntax check"
 
+      - name: Debug Statement Scanner
+        run: |
+          echo "Scanning for debug statements in production code..."
+          errors=0
+          while IFS= read -r file; do
+            matches=$(grep -nE '\b(var_dump|print_r|var_export)\s*\(' "$file" || true)
+            if [ -n "$matches" ]; then
+              while IFS= read -r match; do
+                echo "::error file=$file::Debug statement found: $match"
+                errors=$((errors + 1))
+              done <<< "$matches"
+            fi
+          done < <(find public_html -name '*.php' -type f ! -path '*/install/*' ! -path '*/tests/*')
+          if [ $errors -gt 0 ]; then
+            echo "::error::$errors debug statement(s) found in production code"
+            exit 1
+          fi
+          echo "No debug statements found"
+
+      - name: Insecure PRNG Scanner
+        run: |
+          echo "Scanning for insecure PRNG usage..."
+          errors=0
+          while IFS= read -r file; do
+            matches=$(grep -nE '\b(mt_rand|mt_srand|str_shuffle)\s*\(' "$file" || true)
+            if [ -n "$matches" ]; then
+              while IFS= read -r match; do
+                echo "::warning file=$file::Insecure PRNG: $match"
+                errors=$((errors + 1))
+              done <<< "$matches"
+            fi
+          done < <(find public_html -name '*.php' -type f ! -path '*/install/*' ! -path '*/tests/*')
+          if [ $errors -gt 0 ]; then
+            echo "::warning::$errors insecure PRNG call(s) found — consider using random_int() / random_bytes()"
+          fi
+          echo "PRNG scan complete"
+
+      - name: LESS Lint
+        run: |
+          npm install --no-save less > /dev/null 2>&1
+          errors=0
+          while IFS= read -r file; do
+            if ! npx lessc --lint "$file" > /dev/null 2>&1; then
+              echo "::error file=$file::LESS syntax error"
+              npx lessc --lint "$file" 2>&1 || true
+              errors=$((errors + 1))
+            fi
+          done < <(find public_html -name '*.less' -type f)
+          if [ $errors -gt 0 ]; then
+            echo "::error::$errors LESS file(s) with syntax errors"
+            exit 1
+          fi
+          echo "All LESS files passed syntax check"
+
+      - name: SQL Lint
+        run: |
+          errors=0
+          while IFS= read -r file; do
+            if ! php -r "
+              \$sql = file_get_contents('$file');
+              if (preg_match('/[^\x09\x0A\x0D\x20-\x7E\x80-\xFF]/', \$sql)) {
+                echo 'Contains invalid characters';
+                exit(1);
+              }
+            " 2>/dev/null; then
+              echo "::error file=$file::SQL file contains invalid characters"
+              errors=$((errors + 1))
+            fi
+          done < <(find public_html -name '*.sql' -type f)
+          if [ $errors -gt 0 ]; then
+            echo "::error::$errors SQL file(s) with issues"
+            exit 1
+          fi
+          echo "All SQL files passed check"
+
   build:
     name: Gulp Build
     runs-on: ubuntu-latest
