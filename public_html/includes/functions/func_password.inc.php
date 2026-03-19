@@ -7,23 +7,40 @@
 		$numbers = '0123456789';
 		$specials = '!#%&/(){}[]+-';
 
+		// Pick $count random characters from $charset using CSPRNG
+		$pick = function($charset, $count) {
+			$result = '';
+			$max = strlen($charset) - 1;
+			for ($i = 0; $i < $count; $i++) {
+				$result .= $charset[random_int(0, $max)];
+			}
+			return $result;
+		};
+
 		$absolutes = '';
-		if ($min_lowercases && !is_bool($min_lowercases)) $absolutes .= substr(str_shuffle(str_repeat($lowercases, $min_lowercases)), 0, $min_lowercases);
-		if ($min_uppercases && !is_bool($min_uppercases)) $absolutes .= substr(str_shuffle(str_repeat($uppercases, $min_uppercases)), 0, $min_uppercases);
-		if ($min_numbers && !is_bool($min_numbers)) $absolutes .= substr(str_shuffle(str_repeat($numbers, $min_numbers)), 0, $min_numbers);
-		if ($min_specials && !is_bool($min_specials)) $absolutes .= substr(str_shuffle(str_repeat($specials, $min_specials)), 0, $min_specials);
+		if ($min_lowercases && !is_bool($min_lowercases)) $absolutes .= $pick($lowercases, $min_lowercases);
+		if ($min_uppercases && !is_bool($min_uppercases)) $absolutes .= $pick($uppercases, $min_uppercases);
+		if ($min_numbers && !is_bool($min_numbers)) $absolutes .= $pick($numbers, $min_numbers);
+		if ($min_specials && !is_bool($min_specials)) $absolutes .= $pick($specials, $min_specials);
 
 		$remaining = $length - strlen($absolutes);
 
-		$characters = '';
-		if ($min_lowercases !== false) $characters .= substr(str_shuffle(str_repeat($lowercases, $remaining)), 0, $remaining);
-		if ($min_uppercases !== false) $characters .= substr(str_shuffle(str_repeat($uppercases, $remaining)), 0, $remaining);
-		if ($min_numbers !== false) $characters .= substr(str_shuffle(str_repeat($numbers, $remaining)), 0, $remaining);
-		if ($min_specials !== false) $characters .= substr(str_shuffle(str_repeat($specials, $remaining)), 0, $remaining);
+		$pool = '';
+		if ($min_lowercases !== false) $pool .= $lowercases;
+		if ($min_uppercases !== false) $pool .= $uppercases;
+		if ($min_numbers !== false) $pool .= $numbers;
+		if ($min_specials !== false) $pool .= $specials;
 
-		$password = str_shuffle($absolutes . substr($characters, 0, $remaining));
+		$password = $absolutes . $pick($pool, $remaining);
 
-		return $password;
+		// Fisher-Yates shuffle with CSPRNG
+		$chars = str_split($password);
+		for ($i = count($chars) - 1; $i > 0; $i--) {
+			$j = random_int(0, $i);
+			[$chars[$i], $chars[$j]] = [$chars[$j], $chars[$i]];
+		}
+
+		return implode('', $chars);
 	}
 
 	function password_check_strength($password) {
