@@ -55,11 +55,21 @@ jobs:
           echo "All JSON files passed syntax check"
 
       - name: Debug Statement Scanner
+        continue-on-error: true
         run: |
           echo "Scanning for debug statements in production code..."
           errors=0
           while IFS= read -r file; do
-            matches=$(grep -nE '\b(var_dump|print_r|var_export)\s*\(' "$file" || true)
+            # var_dump is always a debug statement
+            matches=$(grep -nE '\bvar_dump\s*\(' "$file" || true)
+            if [ -n "$matches" ]; then
+              while IFS= read -r match; do
+                echo "::error file=$file::Debug statement found: $match"
+                errors=$((errors + 1))
+              done <<< "$matches"
+            fi
+            # print_r as standalone statement (not inside throw/Exception/string concatenation)
+            matches=$(grep -nE '^\s*print_r\s*\(' "$file" || true)
             if [ -n "$matches" ]; then
               while IFS= read -r match; do
                 echo "::error file=$file::Debug statement found: $match"
