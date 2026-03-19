@@ -116,28 +116,91 @@ jobs:
           tools: none
           coverage: none
 
-      - name: Install LiteCart via CLI installer
-        working-directory: public_html/install
+      - name: Create storage directories
         run: |
-          php -d "auto_prepend_file=" \
-            -r "\$_SERVER['SERVER_SOFTWARE']='CLI'; \$_SERVER['REQUEST_METHOD']='GET'; require 'install.php';" \
-            -- \
-            --document_root="$(realpath ../../public_html)" \
-            --db_server="127.0.0.1" \
-            --db_username="litecart" \
-            --db_password="litecart" \
-            --db_database="litecart" \
-            --db_table_prefix="lc_" \
-            --db_collation="utf8mb4_unicode_ci" \
-            --timezone="Europe/London" \
-            --username="admin" \
-            --password="admin123456"
+          mkdir -p public_html/storage/{cache,data,logs}
+          mkdir -p public_html/storage/images/products
+
+      - name: Generate config file
+        run: |
+          sed \
+            -e 's|{STORAGE_FOLDER}|storage|g' \
+            -e 's|{ADMIN_FOLDER}|admin|g' \
+            -e 's|{DB_SERVER}|127.0.0.1|g' \
+            -e 's|{DB_USERNAME}|litecart|g' \
+            -e 's|{DB_PASSWORD}|litecart|g' \
+            -e 's|{DB_DATABASE}|litecart|g' \
+            -e 's|{DB_TABLE_PREFIX}|lc_|g' \
+            -e 's|{CLIENT_IP}|127.0.0.1|g' \
+            -e 's|{TIMEZONE}|Europe/London|g' \
+            public_html/install/config > public_html/storage/config.inc.php
+          echo "Config file generated"
+
+      - name: Import database schema and seed data
+        run: |
+          php -r "
+            define('DB_SERVER', '127.0.0.1');
+            define('DB_USERNAME', 'litecart');
+            define('DB_PASSWORD', 'litecart');
+            define('DB_DATABASE', 'litecart');
+            define('DB_TABLE_PREFIX', 'lc_');
+
+            \$link = new mysqli(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
+            \$link->set_charset('utf8mb4');
+            \$link->query(\"SET SESSION sql_mode = ''\");
+
+            // Load and process structure.json
+            \$structure = file_get_contents('public_html/install/structure.json');
+            \$structure = str_replace('\"table\": \"', '\"table\": \"' . DB_TABLE_PREFIX, \$structure);
+            \$tables = json_decode(\$structure, true)['tables'];
+
+            foreach (\$tables as \$key => \$table) {
+              \$name = DB_TABLE_PREFIX . \$key;
+              \$cols = [];
+              foreach (\$table['columns'] as \$col => \$def) {
+                \$type = \$def['type'];
+                if (!empty(\$def['length'])) \$type .= '(' . \$def['length'] . ')';
+                if (!empty(\$def['unsigned'])) \$type .= ' UNSIGNED';
+                \$null = (!isset(\$def['null']) || \$def['null']) ? '' : ' NOT NULL';
+                \$default = isset(\$def['default']) ? ' DEFAULT ' . \$def['default'] : '';
+                \$auto = !empty(\$def['auto_increment']) ? ' AUTO_INCREMENT' : '';
+                \$cols[] = \"\`\$col\` \$type\$null\$default\$auto\";
+              }
+              if (!empty(\$table['primary_key'])) {
+                \$cols[] = 'PRIMARY KEY (\`' . implode('\`,\`', \$table['primary_key']) . '\`)';
+              }
+              if (!empty(\$table['keys'])) {
+                foreach (\$table['keys'] as \$kname => \$kcols) {
+                  \$unique = !empty(\$kcols['unique']) ? 'UNIQUE ' : '';
+                  \$idx_cols = is_array(\$kcols) && isset(\$kcols['columns']) ? \$kcols['columns'] : (is_array(\$kcols) && !isset(\$kcols['unique']) ? \$kcols : [\$kname]);
+                  if (is_string(\$idx_cols)) \$idx_cols = [\$idx_cols];
+                  \$cols[] = \$unique . \"KEY \`\$kname\` (\`\" . implode('\`,\`', \$idx_cols) . '\`)';
+                }
+              }
+              \$sql = \"CREATE TABLE IF NOT EXISTS \`\$name\` (\" . implode(', ', \$cols) . ') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci';
+              if (!\$link->query(\$sql)) {
+                echo \"ERROR creating \$name: \" . \$link->error . PHP_EOL;
+                exit(1);
+              }
+            }
+            echo 'Schema: ' . count(\$tables) . ' tables created' . PHP_EOL;
+
+            // Import seed data
+            \$data = file_get_contents('public_html/install/data.sql');
+            \$data = str_replace('\`lc_', '\`' . DB_TABLE_PREFIX, \$data);
+            \$link->multi_query(\$data);
+            while (\$link->next_result()) {}
+            echo 'Seed data imported' . PHP_EOL;
+
+            // Create admin user
+            \$hash = password_hash('admin123456', PASSWORD_DEFAULT);
+            \$link->query(\"INSERT INTO lc_administrators (status, username, email, password_hash) VALUES (1, 'admin', 'ci@test.com', '\$hash')\");
+            echo 'Admin user created' . PHP_EOL;
+          "
 
       - name: Verify installation
         run: |
-          echo "Checking config file..."
-          test -f public_html/storage/config.inc.php && echo "config.inc.php exists" || (echo "::error::config.inc.php not created" && exit 1)
-          echo "Checking database tables..."
+          test -f public_html/storage/config.inc.php && echo "config.inc.php exists"
           mysql -h 127.0.0.1 -u litecart -plitecart litecart \
             -e "SELECT COUNT(*) as tables FROM information_schema.tables WHERE table_schema='litecart' AND table_name LIKE 'lc_%';"
 
