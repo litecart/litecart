@@ -85,17 +85,21 @@
 	}
 
 	// Get first value from array without shifting it or moving internal cursor
-	function array_first(array $array):mixed {
-		if (empty($array) || !is_array($array)) return false;
-		//return $array[array_key_first($array)] || false; // PHP 7.3+
-		return reset($array) || false;
+	if (!function_exists('array_first')) {
+		function array_first(array $array):mixed {
+			if (empty($array) || !is_array($array)) return false;
+			//return $array[array_key_first($array)] || false; // PHP 7.3+
+			return reset($array) || false;
+		}
 	}
 
 	// Get last value from array without shifting it or moving internal cursor
-	function array_last(array $array):mixed {
-		if (empty($array) || !is_array($array)) return false;
-		//return $array[array_key_last($array)] || false; // PHP 7.3+
-		return end($array) || false;
+	if (!function_exists('array_last')) {
+		function array_last(array $array):mixed {
+			if (empty($array) || !is_array($array)) return false;
+			//return $array[array_key_last($array)] || false; // PHP 7.3+
+			return end($array) || false;
+		}
 	}
 
 	// Get a random node from array

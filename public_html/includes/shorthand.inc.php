@@ -34,7 +34,7 @@
 		if (!in_array($status_code, [301, 302, 303, 307, 308])) {
 			trigger_error('Unsupported response status code for redirect ('. (int)$status_code .')');
 		}
-	
+
 		header('Location: '. $_SERVER['REQUEST_URI'], $status_code);
 		exit;
 	}
@@ -59,7 +59,7 @@
 	// Returns value for variable or falls back to a substituting value on nil(). Similar to !empty($var) ? $var : $fallback1 ?: $fallback2
 	function fallback(&$var, $fallback=null) {
 		if (!nil($var)) return $var;
-		
+
 		$fallbacks = array_slice(func_get_args(), 1);
 
 		foreach ($fallbacks as $fallback) {

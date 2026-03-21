@@ -357,8 +357,8 @@
 .thumbnail {
 	display: inline-block;
 	vertical-align: middle;
-	width: 32px;
-	height: 32px;
+	width: 24px;
+	height: 24px;
 	border-radius: 4px;
 	max-width: unset;
 }
@@ -371,7 +371,7 @@ td .thumbnail {
 
 table .icon-folder,
 table .icon-folder-open {
-	font-size: 32px;
+	font-size: 24px;
 	line-height: 0.8;
 }
 </style>

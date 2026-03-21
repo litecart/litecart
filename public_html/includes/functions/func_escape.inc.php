@@ -1,11 +1,11 @@
 <?php
 
-	function escape_html($string) {
-		return htmlspecialchars((string)$string, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML5);
-	}
-
 	function escape_attr($string) {
 		return addcslashes(escape_html($string), "\r\n");
+	}
+
+	function escape_html($string) {
+		return htmlspecialchars((string)$string, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML5);
 	}
 
 	function escape_js($string) {
