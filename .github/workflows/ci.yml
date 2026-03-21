@@ -1,0 +1,278 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [dev-major]
+  push:
+    branches: [dev-major]
+  workflow_dispatch:
+
+jobs:
+
+  lint:
+    name: PHP & Asset Linting
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          tools: none
+          coverage: none
+
+      - name: PHP Lint
+        run: |
+          errors=0
+          while IFS= read -r file; do
+            if ! php -l "$file" > /dev/null 2>&1; then
+              php -l "$file"
+              errors=$((errors + 1))
+            fi
+          done < <(find public_html -name '*.php' -type f)
+          if [ $errors -gt 0 ]; then
+            echo "::error::$errors file(s) with PHP syntax errors"
+            exit 1
+          fi
+          echo "All PHP files passed syntax check"
+
+      - name: JSON Lint
+        run: |
+          errors=0
+          while IFS= read -r file; do
+            if ! php -r "json_decode(file_get_contents('$file')); exit(json_last_error() ? 1 : 0);" 2>/dev/null; then
+              echo "::error file=$file::Invalid JSON"
+              errors=$((errors + 1))
+            fi
+          done < <(find public_html -name '*.json' -type f ! -path '*/node_modules/*')
+          if [ $errors -gt 0 ]; then
+            echo "::error::$errors file(s) with JSON errors"
+            exit 1
+          fi
+          echo "All JSON files passed syntax check"
+
+      - name: Debug Statement Scanner
+        continue-on-error: true
+        run: |
+          echo "Scanning for debug statements in production code..."
+          errors=0
+          while IFS= read -r file; do
+            # var_dump is always a debug statement
+            matches=$(grep -nE '\bvar_dump\s*\(' "$file" || true)
+            if [ -n "$matches" ]; then
+              while IFS= read -r match; do
+                echo "::error file=$file::Debug statement found: $match"
+                errors=$((errors + 1))
+              done <<< "$matches"
+            fi
+            # print_r as standalone statement (not inside throw/Exception/string concatenation)
+            matches=$(grep -nE '^\s*print_r\s*\(' "$file" || true)
+            if [ -n "$matches" ]; then
+              while IFS= read -r match; do
+                echo "::error file=$file::Debug statement found: $match"
+                errors=$((errors + 1))
+              done <<< "$matches"
+            fi
+          done < <(find public_html -name '*.php' -type f ! -path '*/install/*' ! -path '*/tests/*')
+          if [ $errors -gt 0 ]; then
+            echo "::error::$errors debug statement(s) found in production code"
+            exit 1
+          fi
+          echo "No debug statements found"
+
+      - name: Insecure PRNG Scanner
+        run: |
+          echo "Scanning for insecure PRNG usage..."
+          errors=0
+          while IFS= read -r file; do
+            matches=$(grep -nE '\b(mt_rand|mt_srand|str_shuffle)\s*\(' "$file" || true)
+            if [ -n "$matches" ]; then
+              while IFS= read -r match; do
+                echo "::warning file=$file::Insecure PRNG: $match"
+                errors=$((errors + 1))
+              done <<< "$matches"
+            fi
+          done < <(find public_html -name '*.php' -type f ! -path '*/install/*' ! -path '*/tests/*')
+          if [ $errors -gt 0 ]; then
+            echo "::warning::$errors insecure PRNG call(s) found — consider using random_int() / random_bytes()"
+          fi
+          echo "PRNG scan complete"
+
+      - name: SQL Lint
+        run: |
+          errors=0
+          while IFS= read -r file; do
+            if ! php -r "
+              \$sql = file_get_contents('$file');
+              if (preg_match('/[^\x09\x0A\x0D\x20-\x7E\x80-\xFF]/', \$sql)) {
+                echo 'Contains invalid characters';
+                exit(1);
+              }
+            " 2>/dev/null; then
+              echo "::error file=$file::SQL file contains invalid characters"
+              errors=$((errors + 1))
+            fi
+          done < <(find public_html -name '*.sql' -type f)
+          if [ $errors -gt 0 ]; then
+            echo "::error::$errors SQL file(s) with issues"
+            exit 1
+          fi
+          echo "All SQL files passed check"
+
+  build:
+    name: Gulp Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Build assets
+        run: |
+          npx gulp js-framework
+          npx gulp js-backend
+          npx gulp js-frontend
+          npx gulp js-trumbowyg
+          npx gulp less-framework
+          npx gulp less-backend
+          npx gulp less-frontend
+          npx gulp sass-chartist
+          npx gulp sass-trumbowyg
+
+  platform-tests:
+    name: Platform Tests
+    runs-on: ubuntu-latest
+    needs: [lint]
+
+    services:
+      mariadb:
+        image: mariadb:11
+        env:
+          MARIADB_ROOT_PASSWORD: litecart_root
+          MARIADB_DATABASE: litecart
+          MARIADB_USER: litecart
+          MARIADB_PASSWORD: litecart
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mysqli, gd, intl, mbstring, zip, xml, curl, simplexml, apcu
+          ini-values: date.timezone=Europe/London, apc.enable_cli=1
+          tools: none
+          coverage: none
+
+      - name: Create storage directories
+        run: |
+          mkdir -p public_html/storage/{cache,data,logs}
+          mkdir -p public_html/storage/images/products
+          mkdir -p public_html/storage/vmods/.cache
+
+      - name: Generate config file
+        run: |
+          sed \
+            -e 's|{STORAGE_FOLDER}|storage|g' \
+            -e 's|{ADMIN_FOLDER}|admin|g' \
+            -e 's|{DB_SERVER}|127.0.0.1|g' \
+            -e 's|{DB_USERNAME}|litecart|g' \
+            -e 's|{DB_PASSWORD}|litecart|g' \
+            -e 's|{DB_DATABASE}|litecart|g' \
+            -e 's|{DB_TABLE_PREFIX}|lc_|g' \
+            -e 's|{CLIENT_IP}|127.0.0.1|g' \
+            -e 's|{TIMEZONE}|Europe/London|g' \
+            public_html/install/config > public_html/storage/config.inc.php
+          echo "Config file generated"
+
+      - name: Import database schema and seed data
+        run: |
+          php -r "
+            define('DB_SERVER', '127.0.0.1');
+            define('DB_USERNAME', 'litecart');
+            define('DB_PASSWORD', 'litecart');
+            define('DB_DATABASE', 'litecart');
+            define('DB_TABLE_PREFIX', 'lc_');
+
+            \$link = new mysqli(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
+            \$link->set_charset('utf8mb4');
+            \$link->query(\"SET SESSION sql_mode = ''\");
+
+            // Load and process structure.json
+            \$structure = file_get_contents('public_html/install/structure.json');
+            \$structure = str_replace('\"table\": \"', '\"table\": \"' . DB_TABLE_PREFIX, \$structure);
+            \$tables = json_decode(\$structure, true)['tables'];
+
+            foreach (\$tables as \$key => \$table) {
+              \$name = DB_TABLE_PREFIX . \$key;
+              \$cols = [];
+              foreach (\$table['columns'] as \$col => \$def) {
+                \$type = \$def['type'];
+                if (!empty(\$def['length'])) \$type .= '(' . \$def['length'] . ')';
+                if (!empty(\$def['unsigned'])) \$type .= ' UNSIGNED';
+                \$null = (!isset(\$def['null']) || \$def['null']) ? '' : ' NOT NULL';
+                \$default = isset(\$def['default']) ? ' DEFAULT ' . \$def['default'] : '';
+                \$auto = !empty(\$def['auto_increment']) ? ' AUTO_INCREMENT' : '';
+                \$cols[] = \"\`\$col\` \$type\$null\$default\$auto\";
+              }
+              if (!empty(\$table['primary_key'])) {
+                \$cols[] = 'PRIMARY KEY (\`' . implode('\`,\`', \$table['primary_key']) . '\`)';
+              }
+              if (!empty(\$table['keys'])) {
+                foreach (\$table['keys'] as \$kname => \$kcols) {
+                  \$unique = !empty(\$kcols['unique']) ? 'UNIQUE ' : '';
+                  \$idx_cols = is_array(\$kcols) && isset(\$kcols['columns']) ? \$kcols['columns'] : (is_array(\$kcols) && !isset(\$kcols['unique']) ? \$kcols : [\$kname]);
+                  if (is_string(\$idx_cols)) \$idx_cols = [\$idx_cols];
+                  \$cols[] = \$unique . \"KEY \`\$kname\` (\`\" . implode('\`,\`', \$idx_cols) . '\`)';
+                }
+              }
+              \$sql = \"CREATE TABLE IF NOT EXISTS \`\$name\` (\" . implode(', ', \$cols) . ') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci';
+              if (!\$link->query(\$sql)) {
+                echo \"ERROR creating \$name: \" . \$link->error . PHP_EOL;
+                exit(1);
+              }
+            }
+            echo 'Schema: ' . count(\$tables) . ' tables created' . PHP_EOL;
+
+            // Import seed data
+            \$data = file_get_contents('public_html/install/data.sql');
+            \$data = str_replace('\`lc_', '\`' . DB_TABLE_PREFIX, \$data);
+            \$link->multi_query(\$data);
+            while (\$link->next_result()) {}
+            echo 'Seed data imported' . PHP_EOL;
+
+            // Create admin user
+            \$hash = password_hash('admin123456', PASSWORD_DEFAULT);
+            \$link->query(\"INSERT INTO lc_administrators (status, username, email, password_hash) VALUES (1, 'admin', 'ci@test.com', '\$hash')\");
+            echo 'Admin user created' . PHP_EOL;
+          "
+
+      - name: Verify installation
+        run: |
+          test -f public_html/storage/config.inc.php && echo "config.inc.php exists"
+          mysql -h 127.0.0.1 -u litecart -plitecart litecart \
+            -e "SELECT COUNT(*) as tables FROM information_schema.tables WHERE table_schema='litecart' AND table_name LIKE 'lc_%';"
+
+      - name: Run platform tests
+        continue-on-error: true
+        run: php .git-hooks/pre-commit.d/platform_tests.php

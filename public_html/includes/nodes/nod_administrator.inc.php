@@ -97,7 +97,7 @@
 					die('Your account is disabled');
 				}
 
-				ini_set('display_errors', 'On');
+				//ini_set('display_errors', 'On'); // Disabled: exposes SQL queries, paths and stack traces
 
 				database::query(
 					"update ". DB_TABLE_PREFIX ."administrators

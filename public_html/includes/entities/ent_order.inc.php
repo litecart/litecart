@@ -204,7 +204,7 @@
 			}
 
 			if (!$this->data['public_key']) {
-				$this->data['public_key'] = substr(str_shuffle(str_repeat('0123456789abcdefghijklmnopqrstuvwxyz', mt_rand(5, 10))), 0, 32);
+				$this->data['public_key'] = bin2hex(random_bytes(16));
 			}
 
 			if (!$this->data['date_dispatched']) {
@@ -290,7 +290,7 @@
 					discount_tax = ". (float)$this->data['discount_tax'] .",
 					total = ". (float)$this->data['total'] .",
 					total_tax = ". (float)$this->data['total_tax'] .",
-					notes = '". database::input($this->data['ip_address']) ."',
+					notes = '". database::input($this->data['notes']) ."',
 					conversions = '". database::input(f::format_json($this->data['conversions'])) ."',
 					ip_address = '". database::input($this->data['ip_address']) ."',
 					hostname = '". database::input($this->data['hostname']) ."',
@@ -311,13 +311,6 @@
 					if (empty($previous_order_item['product_id'])) continue;
 					$this->adjust_stock_quantity($previous_order_item['product_id'], $previous_order_item['option_stock_combination'], (float)$previous_order_item['quantity']);
 				}
-
-				database::query(
-					"update ". DB_TABLE_PREFIX ."products
-					set quantity = quantity + ". (float)$previous_order_item['quantity'] ."
-					where product_id = ". (int)$previous_order_item['product_id'] ."
-					limit 1;"
-				);
 			}
 
 			// Delete order lines
