@@ -4,6 +4,18 @@
 	mb_internal_encoding('UTF-8');
 	mb_http_output('UTF-8');
 
+	// CLI detection (polyfill from compatibility.inc.php, needed before DOCUMENT_ROOT check)
+	if (!isset($_SERVER['REQUEST_METHOD'])) {
+		$_SERVER['SERVER_SOFTWARE'] = 'CLI';
+		$_SERVER['REQUEST_METHOD'] = 'GET';
+		$_SERVER['REMOTE_ADDR'] = '127.0.0.1';
+		$_REQUEST = getopt('', [
+			'db_server::', 'db_username:', 'db_password::', 'db_database:', 'db_table_prefix::', 'db_collation::',
+			'document_root:', 'timezone::', 'admin_folder::', 'username::', 'password::', 'development_type::', 'cleanup::',
+		]);
+		$_REQUEST['install'] = true;
+	}
+
 	if (!empty($_SERVER['DOCUMENT_ROOT'])) {
 		define('DOCUMENT_ROOT', rtrim(str_replace('\\', '/', realpath($_SERVER['DOCUMENT_ROOT'])), '/') . '/');
 
@@ -69,12 +81,7 @@
 			exit;
 		}
 
-		$_REQUEST = getopt('', [
-			'db_server::', 'db_username:', 'db_password::', 'db_database:', 'db_table_prefix::', 'db_collation::',
-			'document_root:', 'timezone::', 'admin_folder::', 'username::', 'password::', 'development_type:: cleanup::',
-		]);
-
-		$_REQUEST['install'] = true;
+		// getopt() and $_REQUEST['install'] already set in CLI detection block above
 	}
 
 	if (empty($_REQUEST['install'])) {
