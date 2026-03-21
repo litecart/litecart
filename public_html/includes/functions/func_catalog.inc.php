@@ -202,13 +202,13 @@
 		if (!empty($filter['attributes']) && is_array($filter['attributes'])) {
 		$sql_where_attributes = [];
 			foreach ($filter['attributes'] as $group_id => $values) {
-				$sql_where_attributes[] = (
+				$sql_where_attributes[] =
 					"p.id in (
 						select distinct product_id from ". DB_TABLE_PREFIX ."products_attributes
 						where (group_id = ". (int)$group_id ." and (value_id in ('". implode("', '", database::input($values)) ."') or custom_value in ('". implode("', '", database::input($values)) ."')))
 					)";
 			}
-			$sql_inner_where['attributes'] = implode(PHP . "and ", $sql_where_attributes);
+			$sql_inner_where['attributes'] = implode(PHP_EOL . "and ", $sql_where_attributes);
 		}
 
 		if (!empty($filter['products'])) {
