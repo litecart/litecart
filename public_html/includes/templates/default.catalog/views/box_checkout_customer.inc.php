@@ -16,7 +16,7 @@
       <div class="row">
         <?php if (settings::get('customer_field_company')) { ?>
         <div class="form-group col-xs-6">
-          <label><?php echo language::translate('title_company', 'Company'); ?> (<?php echo language::translate('text_or_leave_blank', 'Or leave blank'); ?>)</label>
+          <label><?php echo language::translate('title_company', 'Company'); ?> (<?php echo language::translate('text_leave_blank_if_individual', 'Leave blank if individual'); ?>)</label>
           <?php echo functions::form_draw_text_field('company', true); ?>
         </div>
         <?php } ?>
@@ -81,12 +81,12 @@
       </div>
 
       <div class="row">
-        <div class="form-group col-xs-6">
+        <div class="form-group col-sm-6">
           <label><?php echo language::translate('title_email_address', 'Email Address'); ?></label>
           <?php echo functions::form_draw_email_field('email', true, 'required'. (!empty(customer::$data['id']) ? ' readonly' : '')); ?>
         </div>
 
-        <div class="form-group col-xs-6">
+        <div class="form-group col-sm-6">
           <label><?php echo language::translate('title_phone', 'Phone'); ?></label>
           <?php echo functions::form_draw_phone_field('phone', true, 'required'); ?>
         </div>
@@ -102,7 +102,7 @@
         <?php if (settings::get('customer_field_company')) { ?>
         <div class="row">
           <div class="form-group col-xs-6">
-          <label><?php echo language::translate('title_company', 'Company'); ?> (<?php echo language::translate('text_or_leave_blank', 'Or leave blank'); ?>)</label>
+          <label><?php echo language::translate('title_company', 'Company'); ?> (<?php echo language::translate('text_leave_blank_if_individual', 'Leave blank if individual'); ?>)</label>
             <?php echo functions::form_draw_text_field('shipping_address[company]', true); ?>
           </div>
         </div>
@@ -159,7 +159,7 @@
         </div>
 
         <div class="row">
-          <div class="form-group col-xs-6">
+          <div class="form-group col-sm-6">
             <label><?php echo language::translate('title_phone', 'Phone'); ?></label>
             <?php echo functions::form_draw_phone_field('shipping_address[phone]', true); ?>
           </div>
