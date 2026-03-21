@@ -163,6 +163,15 @@
 			$code = current(explode('/', substr($_SERVER['REQUEST_URI'], strlen(WS_DIR_APP))));
 			if (in_array($code, $all_languages)) return $code;
 
+			// Return language by root
+			foreach ($enabled_languages as $language_code) {
+				if (self::$languages[$language_code]['url_type'] == 'root') {
+					if (preg_match('#^'. preg_quote(WS_DIR_APP, '#') .'(?![a-z]{2})(?:/|$)#', $_SERVER['REQUEST_URI'], $matches)) {
+						return $language_code;
+					}
+				}
+			}
+
 			// Return language from session
 			if (isset(self::$selected['code']) && in_array(self::$selected['code'], $all_languages)){
 				return self::$selected['code'];

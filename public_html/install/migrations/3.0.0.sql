@@ -853,6 +853,12 @@ UPDATE `lc_delivery_statuses`
 SET name = '{}',
 	description = '{}';
 -- -----
+UPDATE `lc_languages`
+SET `url_type` = 'root'
+WHERE code in (
+	select `value` from `lc_settings` where `key` = 'store_language_code'
+);
+-- -----
 UPDATE `lc_modules`
 SET `settings` = REPLACE(settings, 'weight_class', 'weight_unit')
 WHERE `module_id` = 'sm_zone_weight'

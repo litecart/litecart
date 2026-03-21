@@ -28,6 +28,17 @@
 				throw new Exception(t('error_must_provide_name', 'You must provide a name'));
 			}
 
+			if (!empty($_POST['url_type']) && $_POST['url_type'] == 'root') {
+				if (database::query(
+					"select id from ". DB_TABLE_PREFIX ."languages
+					where url_type = 'root'
+					and id != ". (int)$language->data['id'] ."
+					limit 1;"
+				)->num_rows) {
+					throw new Exception(t('error_root_url_type_already_in_use', 'The root URL type is already in use by another language'));
+				}
+			}
+
 			if (!empty($_POST['url_type']) && $_POST['url_type'] == 'domain') {
 
 				if (empty($_POST['domain_name'])) {
@@ -41,7 +52,7 @@
 						and id != ". (int)$language->data['id'] ."
 						limit 1;"
 					)->num_rows) {
-						throw new Exception(t('error_domain_in_use_by_other_language', 'The domain name is already in use by another domain name.'));
+						throw new Exception(t('error_domain_in_use_by_other_language', 'The domain name is already in use by another language.'));
 					}
 				}
 			}
@@ -268,6 +279,7 @@
 
 	$url_types = [
 		'none' => t('title_none', 'None'),
+		'root' => t('title_root', 'Root'),
 		'path' => t('title_path_prefix', 'Path Prefix'),
 		'domain' => t('title_domain', 'Domain'),
 	];
