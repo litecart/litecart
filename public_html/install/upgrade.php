@@ -633,7 +633,7 @@
 						$sql .= '  `'. database::input($column_name) .'` '. database::input($column['type']);
 					}
 
-					if (isset($column['length'])) {
+					if (isset($column['length']) && strpos($column['type'], '(') === false) {
 						$sql .= '('. $column['length'] .')';
 					}
 

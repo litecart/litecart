@@ -511,7 +511,7 @@
 				"locale": { "type": "VARCHAR", "length": 64, "default": "''" },
 				"locale_intl": { "type": "VARCHAR", "length": 16, "default": "''" },
 				"mysql_collation": { "type": "VARCHAR", "length": 32, "default": "''" },
-				"url_type": { "type": "ENUM('','none','root','path','domain')", "length": 16, "default": "''" },
+				"url_type": { "type": "ENUM('','none','root','path','domain')", "default": "''" },
 				"domain_name": { "type": "VARCHAR", "length": 64, "default": "''" },
 				"raw_date": { "type": "VARCHAR", "length": 32, "default": "''" },
 				"raw_time": { "type": "VARCHAR", "length": 32, "default": "''" },

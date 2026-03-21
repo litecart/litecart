@@ -531,7 +531,7 @@
 
 				$sql .= '  `' . $column_name . '` ' . $column['type'];
 
-				if (isset($column['length'])) {
+				if (isset($column['length']) && strpos($column['type'], '(') === false) {
 					$sql .= '(' . $column['length'] . ')';
 				}
 
