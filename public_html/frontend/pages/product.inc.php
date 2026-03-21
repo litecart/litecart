@@ -388,7 +388,6 @@
 	} else {
 		$_page->snippets['stock_status'] = settings::get('display_stock_count') ? f::format_number($product->quantity_available) : t('title_in_stock', 'In Stock');
 	}
-f::format_number
 	// Cheapest shipping
 	if (settings::get('display_cheapest_shipping')) {
 
