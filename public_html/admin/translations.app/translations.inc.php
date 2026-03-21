@@ -14,7 +14,7 @@
 
   breadcrumbs::add(language::translate('title_translations', 'Translations'));
 
-  $collections = include FS_DIR_ADMIN . 'translations.app/collections.inc.php';
+  $collections = include vmod::check(FS_DIR_ADMIN . 'translations.app/collections.inc.php');
 
   if (isset($_POST['save'])) {
     try {
@@ -78,7 +78,7 @@
         }
       }
 
-      notices::add('success', language::translate('title_changes_sasved', 'Changes saved'));
+      notices::add('success', language::translate('title_changes_saved', 'Changes saved'));
       header('Location: '. $_SERVER['REQUEST_URI']);
       exit;
 
@@ -154,7 +154,7 @@
     return (
       "select '$entity' as entity, '1' as frontend, '1' as backend, concat('[$entity', ':', e.id, ']$field') as code, '' as date_updated,
         coalesce(". implode(', ', array_map(function($language_code) use($field) { return "if($language_code.$field regexp '<', 1, null)"; }, $_GET['languages'])) .", 0) as html,
-        ". implode(', ', array_map(function($language_code) use($field) { return "`". database::input($language_code) ."`.$field as `text_". database::input($language_code) ."`"; }, $_GET['languages'])) ."
+        ". implode(', ', array_map(function($language_code) use($field) { return "coalesce(`". database::input($language_code) ."`.$field, '') as `text_". database::input($language_code) ."`"; }, $_GET['languages'])) ."
       from ". DB_TABLE_PREFIX ."$entity_table e
       ". implode(PHP_EOL, array_map(function($language_code) use($info_table, $id) { return "left join ". DB_TABLE_PREFIX ."$info_table `". database::input($language_code) ."` on (`". database::input($language_code) ."`.$id = e.id and `". database::input($language_code) ."`.language_code = '$language_code')"; }, $_GET['languages']))
     );
@@ -166,6 +166,10 @@
         $sql_union[] = $union_select($collection['entity'], $collection['entity_table'], $collection['info_table'], $collection['entity_column'], $column);
       }
     }
+  }
+
+  if (empty($sql_union)) {
+    notices::add('errors', language::translate('error_must_select_at_least_one_collection', 'You must select at least one collection'));
   }
 
 // Table Rows
@@ -465,7 +469,6 @@
     $('form[name="filter_form"]').submit();
   });
 
-
   $('textarea[name^="translations"]').on('input', function(){
     $(this).height('auto').height($(this).prop('scrollHeight') + 'px');
   }).trigger('input');
@@ -475,7 +478,6 @@
   $('.data-table :checkbox').change(function() {
     $('#actions').prop('disabled', !$('.data-table :checked').length);
   }).first().trigger('change');
-
 
   $('#translator-tool select').change(function(e){
 
