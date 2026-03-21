@@ -474,8 +474,18 @@
 
       if ($from_charset == $to_charset) return $variable;
 
+      if (!in_array(strtoupper($from_charset), mb_list_encodings())) {
+        trigger_error('Unknown charset: '. functions::escape_html($from_charset), E_USER_WARNING);
+        return false;
+      }
+
+      if (!in_array(strtoupper($to_charset), mb_list_encodings())) {
+        trigger_error('Unknown charset: '. functions::escape_html($to_charset), E_USER_WARNING);
+        return false;
+      }
+
       if (!mb_convert_variables($to_charset, $from_charset, $variable)) {
-        trigger_error('Could not encode variable from '. $from_charset .' to '. $to_charset, E_USER_WARNING);
+        trigger_error('Could not encode variable from '. functions::escape_html($from_charset) .' to '. functions::escape_html($to_charset), E_USER_WARNING);
         return false;
       }
 
