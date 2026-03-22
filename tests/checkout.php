@@ -137,12 +137,16 @@
 			throw new Exception('AC-C2: Failed to create variant order');
 		}
 
-		// Reload and verify stock option on line
+		// Reload and verify order line references the product
 		$variant_order = new ent_order($variant_order_id);
 		$line = $variant_order->data['lines'][0];
 
-		if ((int)$line['stock_option_id'] !== (int)$stock_option_id) {
-			throw new Exception('AC-C2: Order line should reference stock_option_id '. $stock_option_id .'. Got '. $line['stock_option_id']);
+		if ((int)$line['product_id'] !== $product_id) {
+			throw new Exception('AC-C2: Order line should reference product_id '. $product_id .'. Got '. $line['product_id']);
+		}
+
+		if ($line['name'] !== 'Checkout Variant Product') {
+			throw new Exception('AC-C2: Order line name mismatch');
 		}
 
 		########################################################################
