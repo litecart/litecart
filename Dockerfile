@@ -44,6 +44,10 @@ RUN sed -ri -e 's/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.c
 # Copy application files
 COPY public_html/ /var/www/html/public_html/
 
+# Copy entrypoint script
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
 # Set correct permissions
 RUN chown -R www-data:www-data /var/www/html/public_html \
     && chmod -R 755 /var/www/html/public_html \
@@ -55,4 +59,4 @@ RUN chown -R www-data:www-data /var/www/html/public_html \
 
 EXPOSE 80
 
-CMD ["apache2-foreground"]
+ENTRYPOINT ["docker-entrypoint.sh"]
