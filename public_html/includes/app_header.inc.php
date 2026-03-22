@@ -38,6 +38,35 @@
   class_exists('notices');
   class_exists('stats');
 
+// CSRF protection for state-changing requests
+  if (!in_array($_SERVER['REQUEST_METHOD'], ['GET', 'HEAD', 'OPTIONS']) && session_status() === PHP_SESSION_ACTIVE) {
+
+  // Excluded paths (payment gateway callbacks)
+    $csrf_excluded_paths = ['order_process'];
+    $csrf_skip = false;
+    $request_path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+    foreach ($csrf_excluded_paths as $path) {
+      if (preg_match('#/' . preg_quote($path, '#') . '(?:/|$)#', $request_path)) {
+        $csrf_skip = true;
+        break;
+      }
+    }
+
+    if (!$csrf_skip) {
+      $submitted_token = $_POST['csrf_token'] ?? $_SERVER['HTTP_X_CSRF_TOKEN'] ?? '';
+      if (!hash_equals(session::csrf_token(), $submitted_token)) {
+        http_response_code(403);
+        if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
+          header('Content-Type: application/json');
+          echo json_encode(['error' => 'CSRF token mismatch. Please reload the page and try again.']);
+        } else {
+          echo '<h1>403 Forbidden</h1><p>CSRF token mismatch. Please <a href="javascript:history.back()">go back</a> and try again.</p>';
+        }
+        exit;
+      }
+    }
+  }
+
 // Run operations before capture
   event::fire('before_capture');
 

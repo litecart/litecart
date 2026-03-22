@@ -77,4 +77,16 @@
     public static function regenerate_id() {
       return session_regenerate_id(true);
     }
+
+    public static function csrf_token() {
+      if (empty($_SESSION['csrf_token'])) {
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+      }
+      return $_SESSION['csrf_token'];
+    }
+
+    public static function rotate_csrf_token() {
+      $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+      return $_SESSION['csrf_token'];
+    }
   }

@@ -98,6 +98,7 @@
       );
 
       customer::load($customer['id']);
+      session::rotate_csrf_token();
 
       if (!empty($_POST['remember_me'])) {
         $checksum = sha1($customer['email'] . $customer['password_hash'] . $_SERVER['REMOTE_ADDR'] . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
