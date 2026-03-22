@@ -7,7 +7,14 @@ services:
       mysql:
         condition: service_healthy
     environment:
-      - APACHE_DOCUMENT_ROOT=/var/www/html/public_html
+      DB_SERVER: mysql
+      DB_USERNAME: litecart
+      DB_PASSWORD: litecart
+      DB_DATABASE: litecart
+      DB_COLLATION: utf8mb4_general_ci
+      ADMIN_USERNAME: admin
+      ADMIN_PASSWORD: admin
+      TZ: UTC
     restart: unless-stopped
 
   mysql:
