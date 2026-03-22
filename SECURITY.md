@@ -1,4 +1,4 @@
-## Have found a vulnerability?
+## Found a vulnerability?
 
 Reports of vulnerabilities, security threats, or suspicion of breaches can be sent to security@litecart.net.
 
