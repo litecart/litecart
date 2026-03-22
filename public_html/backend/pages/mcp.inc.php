@@ -23,8 +23,8 @@
 			throw new McpException('MCP server expects HTTP POST JSON-RPC requests', 405, -32600);
 		}
 
-		// Parse JSON-RPC request
-		$raw = file_get_contents('php://input');
+		// Parse JSON-RPC request (max 64KB)
+		$raw = file_get_contents('php://input', false, null, 0, 65536);
 		$rpc = json_decode($raw, true);
 
 		if (!is_array($rpc) || empty($rpc['jsonrpc']) || $rpc['jsonrpc'] !== '2.0' || empty($rpc['method'])) {
@@ -34,8 +34,11 @@
 		$rpc_id = $rpc['id'] ?? null;
 		$params = isset($rpc['params']) && is_array($rpc['params']) ? $rpc['params'] : [];
 
-		// HTTP Basic Authentication
-		if (!empty($_SERVER['PHP_AUTH_USER']) && !empty($_SERVER['PHP_AUTH_PW'])) {
+		// HTTP Basic Authentication (mandatory)
+		if (empty($_SERVER['PHP_AUTH_USER']) || empty($_SERVER['PHP_AUTH_PW'])) {
+			throw new McpException('Authentication required', 401, -32000, $rpc_id);
+		}
+
 
 			$administrator = database::query(
 				"select * from ". DB_TABLE_PREFIX ."administrators
@@ -76,7 +79,6 @@
 					throw new McpException(strtr(language::translate('error_account_has_been_blocked', 'The account has been temporary blocked %d minutes'), ['%d' => 15]), 403);
 				}
 
-				throw new McpException(language::translate('error_wrong_username_password_combination', 'Wrong combination of username and password or the account does not exist.'), 403);
 			}
 
 			// Reset login attempts after successful login
@@ -88,7 +90,6 @@
 					limit 1;",
 				);
 			}
-		}
 
 		// MCP method dispatch
 		switch ($rpc['method']) {
