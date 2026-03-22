@@ -1,0 +1,12 @@
+.git
+.github
+.git-hooks
+node_modules
+audits
+docs
+*.md
+!public_html/**/*.md
+gruntfile.js
+gulpfile.js
+package.json
+package-lock.json
