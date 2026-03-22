@@ -1,6 +1,6 @@
 <?php
 
-	class ent_order {
+	class ent_order implements JsonSerializable {
 		public $data;
 		public $previous;
 
@@ -1022,5 +1022,17 @@
 			cache::clear_cache('category');
 			cache::clear_cache('brand');
 			cache::clear_cache('products');
+		}
+
+	// Serialize only $data for session storage (json_encode compatibility)
+		public function jsonSerialize(): mixed {
+			return $this->data;
+		}
+
+	// Restore from session data
+		public static function from_data(array $data): self {
+			$order = new self();
+			$order->data = $data;
+			return $order;
 		}
 	}
