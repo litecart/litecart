@@ -99,9 +99,10 @@
 
       customer::load($customer['id']);
 
-      if (!empty($_POST['remember_me'])) {
-        $checksum = sha1($customer['email'] . $customer['password_hash'] . $_SERVER['REMOTE_ADDR'] . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
-        header('Set-Cookie: customer_remember_me='. $customer['email'] .':'. $checksum .'; Path='. WS_DIR_APP .'; Expires='. gmdate('r', strtotime('+3 months')) .'; HttpOnly; SameSite=Lax', false);
+      if (!empty($_POST['remember_me']) && defined('DB_SERVER_SECRET')) {
+        $expiry_days = (int)(settings::get('remember_me_days') ?: 30);
+        $token = functions::token_create_remember($customer['id'], $customer['password_hash'], $expiry_days);
+        header('Set-Cookie: customer_remember_me='. $token .'; Path='. WS_DIR_APP .'; Expires='. gmdate('r', strtotime('+'. $expiry_days .' days')) .'; HttpOnly; SameSite=Lax' . (!empty($_SERVER['HTTPS']) ? '; Secure' : ''), false);
       }
 
       notices::add('success', strtr(language::translate('success_logged_in_as_user', 'You are now logged in as %firstname %lastname.'), [
