@@ -65,7 +65,7 @@
 				'fr' => 'Ceci est une catégorie de test 2',
 			],
 			'keywords' => 'test,category2',
-			'parent_id' => 1,
+			'parent_id' => 0,
 			'priority' => 1,
 		];
 

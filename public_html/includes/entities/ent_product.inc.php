@@ -97,7 +97,7 @@
 					json_value(av.name, '$.". database::input(language::$selected['code']) ."') as value_name
 				from ". DB_TABLE_PREFIX ."products_attributes pa
 				left join ". DB_TABLE_PREFIX ."attribute_groups ag on (ag.id = pa.group_id)
-				left join " . DB_TABLE_PREFIX . "attribute_values av on (av.group_id = pa.group_id and av.id = pa.value)
+				left join " . DB_TABLE_PREFIX . "attribute_values av on (av.group_id = pa.group_id and av.id = pa.value_id)
 				where product_id = ". (int)$id ."
 				order by priority, group_name, value_name, custom_value;"
 			)->fetch_all();
@@ -507,9 +507,9 @@
 
 					// Update stock item
 					$ent_stock_item = new ent_stock_item($stock_option['stock_item_id']);
-					$ent_stock_item->data['sku'] = $stock_option['sku'];
-					$ent_stock_item->data['quantity_adjust'] = $stock_option['quantity_adjustment'];
-					$ent_stock_item->data['backordered'] = $stock_option['backordered'];
+					if (isset($stock_option['sku'])) $ent_stock_item->data['sku'] = $stock_option['sku'];
+					if (isset($stock_option['quantity_adjustment'])) $ent_stock_item->data['quantity_adjust'] = $stock_option['quantity_adjustment'];
+					if (isset($stock_option['backordered'])) $ent_stock_item->data['backordered'] = $stock_option['backordered'];
 					$ent_stock_item->save();
 				}
 			}

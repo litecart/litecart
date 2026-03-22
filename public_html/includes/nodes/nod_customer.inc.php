@@ -259,7 +259,7 @@
 
 			// Set first country in list
 			if (empty(self::$data['country_code'])) {
-				self::$data['country_code'] = $countries[0]['iso_code_2'];
+				self::$data['country_code'] = $countries[0];
 			}
 
 			// Set zone from cookie
