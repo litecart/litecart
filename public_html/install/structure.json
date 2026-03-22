@@ -922,7 +922,7 @@
 				"quantity_unit_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
 				"recommended_price": { "type": "FLOAT", "length": "10,4", "unsigned": true, "default": 0.0000 },
 				"tax_class_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
-				"image": { "type": "VARCHAR", "length": 255, "default": "''" },
+				"default_image": { "type": "VARCHAR", "length": 255, "default": "''" },
 				"video_url": { "type": "VARCHAR", "length": 255, "default": "''" },
 				"replaced_by": { "type": "VARCHAR", "length": 24 },
 				"valid_from": { "type": "TIMESTAMP", "nullable": true },
