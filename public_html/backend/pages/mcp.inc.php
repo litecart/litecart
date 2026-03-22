@@ -120,7 +120,7 @@
 
 				$tool_schemas = [];
 
-				foreach (functions::file_search('app://includes/mcp/mcp_*.inc.php') as $mcp_file) {
+				foreach (functions::file_search('app://backend/mcp/mcp_*.inc.php') as $mcp_file) {
 
 					// Include without polluting global scope
 					$tool_schema = (function() use ($mcp_file) {
@@ -153,7 +153,7 @@
 				}
 
 				// Tool dispatch
-				foreach (functions::file_search('app://includes/mcp/mcp_*.inc.php') as $mcp_file) {
+				foreach (functions::file_search('app://backend/mcp/mcp_*.inc.php') as $mcp_file) {
 
 					// Include without polluting global scope
 					$tool_schema = (function() use ($mcp_file) {
