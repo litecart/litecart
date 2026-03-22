@@ -427,6 +427,7 @@ input[name="development_type"]:checked + div {
     <div class="form-group col-md-6">
       <label>Collation</label>
       <select class="form-control" name="db_collation" required>
+        <option selected="selected">utf8mb4_general_ci</option>
         <option>utf8_bin</option>
         <option>utf8_general_ci</option>
         <option>utf8_unicode_ci</option>
@@ -437,7 +438,7 @@ input[name="development_type"]:checked + div {
         <option>utf8_polish_ci</option>
         <option>utf8_estonian_ci</option>
         <option>utf8_spanish_ci</option>
-        <option selected="selected">utf8_swedish_ci</option>
+        <option>utf8_swedish_ci</option>
         <option>utf8_turkish_ci</option>
         <option>utf8_czech_ci</option>
         <option>utf8_danish_ci</option>
