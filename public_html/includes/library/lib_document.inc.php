@@ -131,6 +131,8 @@
         'email' => !empty(customer::$data['email']) ? customer::$data['email'] : null,
       ];
 
+      self::$jsenv['csrf_token'] = session::csrf_token();
+
       self::$snippets['head_tags'][] = "<script>var _env = ". json_encode(self::$jsenv, JSON_UNESCAPED_SLASHES) .", config = _env;</script>";
 
     // Prepare title

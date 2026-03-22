@@ -98,6 +98,7 @@
       );
 
       customer::load($customer['id']);
+      session::rotate_csrf_token();
 
       if (!empty($_POST['remember_me']) && defined('DB_SERVER_SECRET')) {
         $expiry_days = (int)(settings::get('remember_me_days') ?: 30);
