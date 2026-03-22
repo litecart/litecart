@@ -1,0 +1,32 @@
+services:
+  apache:
+    build: .
+    ports:
+      - "9080:80"
+    depends_on:
+      - mysql
+    networks:
+      - litecart
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: litecart
+      MYSQL_DATABASE: litecart
+      MYSQL_USER: litecart
+      MYSQL_PASSWORD: litecart
+    command: >
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_swedish_ci
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - litecart
+
+networks:
+  litecart:
+
+volumes:
+  mysql_data:

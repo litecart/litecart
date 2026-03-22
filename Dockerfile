@@ -1,75 +1,58 @@
-#
-# Usage:
-#   docker build --build-arg MYSQL_ROOT_PASSWORD=yourpassword -t litecart .
-#
+FROM php:8.3-apache
 
-FROM debian:latest
-
-# Set timezone
-ENV TZ=Europe/London
-RUN ln -fs /usr/share/zoneinfo/$TZ /etc/localtime \
- && echo $TZ > /etc/timezone
-
-# Update system and install required packages
-RUN apt update && apt full-upgrade -y \
- && apt install -y curl nano unzip apache2 libapache2-mod-php mariadb-server \
-   php php-common php-cli php-fpm php-apcu php-curl php-dom php-gd \
-   php-imagick php-mysql php-simplexml php-mbstring php-intl php-zip php-xml \
- && apt clean
-
-# Install additional locales
-#apt install -y language-pack-es language-pack-fr language-pack-de
+# Install PHP extensions required by LiteCart
+RUN apt-get update && apt-get install -y \
+    libfreetype6-dev \
+    libjpeg62-turbo-dev \
+    libpng-dev \
+    libzip-dev \
+    libicu-dev \
+    libcurl4-openssl-dev \
+    libxml2-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) \
+        gd \
+        pdo_mysql \
+        zip \
+        intl \
+        curl \
+        opcache \
+        dom \
+        simplexml \
+        mbstring \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Enable Apache modules
-RUN a2enmod proxy_fcgi rewrite headers setenvif ssl
+RUN a2enmod rewrite headers expires
 
-# Configure PHP-FPM and PHP settings
-RUN PHP_VERSION=$(php -r "echo PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;") && \
-    echo "Detected PHP version: $PHP_VERSION" && \
-    ls -la /etc/php/ && \
-    ls -la /etc/php/$PHP_VERSION/ && \
-    a2enconf "php${PHP_VERSION}-fpm" && \
-    sed -ri "s/;?memory_limit\s*=\s*[^\s]*/memory_limit = 256M/" "/etc/php/${PHP_VERSION}/apache2/php.ini" && \
-    sed -ri "s/;?upload_max_filesize\s*=\s*[^\s]*/upload_max_filesize = 64M/" "/etc/php/${PHP_VERSION}/apache2/php.ini" && \
-    sed -ri "s/;?date\.timezone\s*=\s*[^\s]*/date.timezone = Europe\/London/g" "/etc/php/${PHP_VERSION}/apache2/php.ini"
+# Set recommended PHP settings for LiteCart
+RUN { \
+    echo 'upload_max_filesize = 50M'; \
+    echo 'post_max_size = 50M'; \
+    echo 'memory_limit = 256M'; \
+    echo 'max_execution_time = 300'; \
+    echo 'session.save_path = /tmp'; \
+    echo 'date.timezone = UTC'; \
+    echo 'expose_php = Off'; \
+} > /usr/local/etc/php/conf.d/litecart.ini
 
-# Set MariaDB root password via environment variable
-ARG MYSQL_ROOT_PASSWORD
-ENV MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+# Set Apache document root to public_html
+ENV APACHE_DOCUMENT_ROOT=/var/www/html/public_html
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf \
+    && sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
-# Configure and secure MariaDB
-RUN service mariadb start \
- && sleep 3 \
- && mariadb-admin -u root password '${MYSQL_ROOT_PASSWORD}' \
- && mariadb -u root -p${MYSQL_ROOT_PASSWORD} -e "DELETE FROM mysql.user WHERE User='';" \
- && mariadb -u root -p${MYSQL_ROOT_PASSWORD} -e "DROP DATABASE IF EXISTS test;" \
- && mariadb -u root -p${MYSQL_ROOT_PASSWORD} -e "FLUSH PRIVILEGES;" \
- && service mariadb stop
+# Allow .htaccess overrides
+RUN sed -ri -e 's/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.conf
 
-# Expose TCP ports for SSH, HTTP/HTTPS, and MySQL/MariaDB
-EXPOSE 22 80 443 3306
+# Copy application files
+COPY public_html/ /var/www/html/public_html/
 
-# Download LiteCart installer
-RUN cd /var/www/html && \
-  curl -O https://raw.githubusercontent.com/litecart/installer/master/web/index.php
+# Set correct permissions
+RUN chown -R www-data:www-data /var/www/html/public_html \
+    && chmod -R 755 /var/www/html/public_html \
+    && mkdir -p /var/www/html/public_html/storage \
+    && chmod -R 775 /var/www/html/public_html/storage
 
-# Change owner of LiteCart files
-RUN chown -R www-data:www-data /var/www/html
+EXPOSE 80
 
-# Create startup script
-RUN echo '#!/bin/bash\n\
-set -e\n\
-\n\
-# Start MariaDB\n\
-service mariadb start\n\
-\n\
-# Start PHP-FPM (find the version directory)\n\
-PHP_VERSION=$(ls /etc/php/ | grep -E "^[0-9]+\.[0-9]+$" | head -n 1)\n\
-service "php${PHP_VERSION}-fpm" start\n\
-\n\
-# Start Apache in foreground\n\
-apache2ctl -D FOREGROUND\n\
-' > /start.sh && chmod +x /start.sh
-
-# Set the startup script as the default command
-CMD ["/start.sh"]
+CMD ["apache2-foreground"]
