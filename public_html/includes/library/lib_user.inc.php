@@ -13,16 +13,21 @@
     // Bind user to session
       self::$data = &session::$data['user'];
 
-    // Login remembered user automatically
-      if (empty(self::$data['id']) && !empty($_COOKIE['remember_me']) && empty($_POST)) {
+    // Login remembered user automatically (HMAC-based token)
+      if (empty(self::$data['id']) && !empty($_COOKIE['remember_me']) && empty($_POST) && defined('DB_SERVER_SECRET')) {
 
         try {
 
-          list($username, $key) = explode(':', $_COOKIE['remember_me']);
+        // Decode token to get user ID (verify signature after DB lookup)
+          $decoded = base64_decode($_COOKIE['remember_me'], true);
+          $token = $decoded ? json_decode($decoded, true) : null;
+          if (!is_array($token) || empty($token['id'])) {
+            throw new Exception('Invalid or legacy cookie format');
+          }
 
           $user_query = database::query(
             "select * from ". DB_TABLE_PREFIX ."users
-            where lower(username) = lower('". database::input($username) ."')
+            where id = ". (int)$token['id'] ."
             and status
             and (date_valid_from is null or date_valid_from < '". date('Y-m-d H:i:s') ."')
             and (date_valid_to is null or year(date_valid_to) < '1971' or date_valid_to > '". date('Y-m-d H:i:s') ."')
@@ -30,12 +35,12 @@
           );
 
           if (!$user = database::fetch($user_query)) {
-            throw new Exception('Invalid email or the account has been removed');
+            throw new Exception('Invalid user or account removed');
           }
 
-          $checksum = sha1($user['username'] . $user['password_hash'] . $_SERVER['REMOTE_ADDR'] . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
-
-          if ($checksum != $key) {
+        // Verify HMAC with actual password hash
+          $verified_id = functions::token_verify_remember($_COOKIE['remember_me'], $user['password_hash']);
+          if ($verified_id === false) {
 
             if (++$user['login_attempts'] < 3) {
               database::query(
@@ -54,7 +59,7 @@
               );
             }
 
-            throw new Exception('Invalid checksum for cookie');
+            throw new Exception('Invalid token signature');
           }
 
           self::load($user['id']);
