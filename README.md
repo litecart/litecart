@@ -46,59 +46,66 @@ To get your store up and running, see our [step list](https://www.litecart.net/e
 
 # Folder Structure
 
+All paths below are relative to `public_html/` (the document root).
+
 ```
-litecart/
-├── assets/                     - Public/client side  third party libraries e.g. javascripts, stylesheets, fonts
-│   ├── litecore/               - LiteCore Javascript and Stylesheet framework
+public_html/
+├── assets/                     - Client-side third party libraries (javascripts, stylesheets, fonts)
+│   ├── litecore/               - LiteCore JavaScript and stylesheet framework
 │   ├── jquery/                 - jQuery 4+ JavaScript DOM library
-│   └── trumbowyg/              - WSIWYG Javascript library
-├── backend/                    - Admin panel (called by BACKED_ALIAS defined in config.inc.php)
-│   ├── apps/                   - Backend apps
-│   ├── pages/                  - Backend page controllers
-│   ├── routes/                 - Backend routes and URL rewriting
-│   ├── template/               - Backend template
-│   └── widgets/                - Backend dashboard widgets
-├── frontend/                   - Store Front
-│   ├── pages/                  - Full page content controllers
-│   ├── partials/               - Partial content controllers
-│   ├── routes/                 - Frontend routes and URL rewriting
-│   └── templates/              - Frontend templates
-│       └── default/
-│           ├── css/            - Cascade Style Sheets (CSS)
+│   ├── trumbowyg/              - WYSIWYG JavaScript editor library
+│   └── chartist/               - Chart library
+├── backend/                    - Admin panel (path controlled by BACKEND_ALIAS in config.inc.php)
+│   ├── apps/                   - Backend applications (catalog, orders, customers, settings, modules, etc.)
+│   ├── mcp/                    - Backend MCP tools (JSON-RPC server)
+│   ├── pages/                  - Backend page controllers (login, about, search)
+│   ├── partials/               - Backend UI components
+│   ├── routes/                 - Backend URL routing
+│   ├── template/               - Backend HTML/CSS/JS/LESS template
+│   └── widgets/                - Dashboard widgets (orders, stats, graphs, addons, discussions)
+├── frontend/                   - Storefront
+│   ├── mcp/                    - Frontend MCP tools (JSON-RPC server)
+│   ├── pages/                  - Frontend page controllers (product, category, checkout, account, etc.)
+│   ├── partials/               - Frontend UI components (site_header, site_footer, navigation, boxes)
+│   ├── routes/                 - Frontend URL routing
+│   └── templates/              - Frontend template themes
+│       └── default/            - Default theme
+│           ├── css/            - Compiled stylesheets (CSS)
 │           ├── fonts/          - Fonts
-│           ├── images/         - Images
+│           ├── images/         - Theme images
 │           ├── js/             - JavaScripts
-│           ├── (less/)         - Leaner Style Sheets (LESS) source files
-│           ├── (scss/)         - Sassy Cascading Style Sheets (SCSS) source files
-│           ├── layouts/        - Visuals for content suroundings
+│           ├── less/           - Leaner Style Sheets (LESS) source files
+│           ├── emails/         - Transactional email templates
+│           ├── layouts/        - Visuals for content surroundings
 │           ├── pages/          - Visuals for pages
-│           ├── partials/       - Visuals for partials
-│           └── config.inc.php  - Template settings
-├── includes/
-│   ├── abstracts/              - Class templates
-│   ├── clients/                – Clients, Service Layers, and Wrappers
-│   ├── entities/               - Entity objects
-│   ├── functions/              - Helper functions, called via lib_func.inc.php using f::name()
-│   ├── nodes/                  – System nodes and event based hook events
+│           └── partials/       - Visuals for partials
+├── includes/                   - Core application logic
+│   ├── abstracts/              - Base classes (abs_module, abs_modules, abs_reference_entity)
+│   ├── clients/                - Service clients (HTTP, SMTP)
+│   ├── entities/               - Data entities (product, order, customer, etc.)
+│   ├── functions/              - Helper functions, called via f::name()
 │   ├── modules/                - Plug 'n play modules
+│   │   ├── checkout/
 │   │   ├── customer/
 │   │   ├── order/
 │   │   ├── order_total/
 │   │   ├── shipping/
 │   │   ├── payment/
 │   │   └── jobs/
-│   └── references/             - Read-only factory model reference objects
+│   ├── nodes/                  - Static service nodes (database, session, cache, settings, events, etc.)
+│   ├── references/             - Read-only factory model reference objects
+│   └── streams/                - Stream wrappers (app://, storage://)
 ├── storage/
 │   ├── cache/                  - Application cache
 │   ├── downloads/              - Downloads storage
 │   ├── images/                 - Image storage
 │   ├── logs/                   - Application logs
 │   ├── uploads/                - WYSIWYG uploads
-│   ├── vmods/                  – Virtual Modifcations and Virtual File System
+│   ├── vmods/                  - Virtual modifications and virtual file system
 │   └── config.inc.php          - Application configuration
-├── install/                    – Installation wizard
-├── vendor/                     - Server-side third party libraries
-│   └── composer/               - Composer for LiteCart (https://www.litecart.net/addons/255/composer-for-litecart)
+├── install/                    - Installation wizard, migrations, and country configs
+├── tests/                      - Platform tests (entity CRUD and integration tests)
+├── vendor/                     - Server-side third party libraries (Composer)
 └── index.php                   - Main application entry point
 ```
 
