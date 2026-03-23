@@ -267,7 +267,8 @@ INSERT INTO `lc_modules` (`id`, `module_id`, `type`, `status`, `priority`, `sett
 (1, 'job_error_reporter', 'job', 1, 0, '{"status":"1","frequency":"Weekly","email_receipient":"","priority":"0"}', '', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 (2, 'job_cleaner', 'job', 1, 0, '{"status":"1","priority":"0"}', '', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 (3, 'job_mysql_optimizer', 'job', 1, 0, '{"status":"1","frequency":"monthly","priority":"0"}', '', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(4, 'job_shipping_tracker', 'job', 1, 0, '{"status":"1","frequency":"Hourly","priority":"0"}', '', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+(4, 'job_shipping_tracker', 'job', 1, 0, '{"status":"1","frequency":"Hourly","priority":"0"}', '', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(5, 'job_sitemap_generator', 'job', 1, 0, '{"status":"1","frequency":"Daily","priority":"0"}', '', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 -- -----
 INSERT INTO `lc_order_statuses` (`id`, `hidden`, `state`, `icon`, `color`, `name`, `is_sale`, `is_archived`, `is_trackable`, `stock_action`, `updated_at`, `created_at`) VALUES
 (1, 0, 'created', 'icon-plus', '#c0c0c0', '{"en": "Created"}', 0, 0, 0, 'none', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
