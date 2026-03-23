@@ -13,7 +13,7 @@
       self::$data = &session::$data['customer'];
 
     // Login remembered customer automatically (HMAC-based token)
-      if (empty(self::$data['id']) && !empty($_COOKIE['customer_remember_me']) && empty($_POST) && defined('DB_SERVER_SECRET')) {
+      if (empty(self::$data['id']) && !empty($_COOKIE['customer_remember_me']) && empty($_POST) && defined('HMAC_KEY_REMEMBER_ME')) {
 
         try {
 

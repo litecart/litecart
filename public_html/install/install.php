@@ -355,6 +355,7 @@
       '{DB_TABLE_PREFIX}' => $_REQUEST['db_table_prefix'],
       '{DB_DATABASE_CHARSET}' => strtok($_REQUEST['db_collation'], '_'),
       '{CLIENT_IP}' => $_REQUEST['client_ip'],
+      '{HMAC_KEY_REMEMBER_ME}' => bin2hex(random_bytes(32)),
     ];
 
     $config = strtr($config, $map);
