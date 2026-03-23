@@ -96,11 +96,11 @@
 		switch ($site_tag['position']) {
 
 			case 'head':
-				self::$head_tags[] = $site_tag['content'];
+				document::$head_tags[] = $site_tag['content'];
 				break;
 
 			case 'body':
-				self::$foot_tags[] = $site_tag['content'];
+				document::$foot_tags[] = $site_tag['content'];
 				break;
 		}
 	});
