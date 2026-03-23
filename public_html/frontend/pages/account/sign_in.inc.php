@@ -124,9 +124,9 @@
 			session::$data['customer_security_timestamp'] = time();
 			session::regenerate_id();
 
-			if (!empty($_POST['remember_me'])) {
-				$checksum = sha1($customer['email'] . $customer['password_hash'] . $_SERVER['REMOTE_ADDR'] . ($_SERVER['HTTP_USER_AGENT'] ?: ''));
-				header('Set-Cookie: customer_remember_me='. $customer['email'] .':'. $checksum .'; Path='. WS_DIR_APP .'; Expires='. gmdate('r', strtotime('+3 months')) .'; HttpOnly; SameSite=Lax', false);
+			if (!empty($_POST['remember_me']) && defined('HMAC_KEY_REMEMBER_ME')) {
+				$token = f::token_create_remember($customer['id'], $customer['password_hash']);
+				header('Set-Cookie: customer_remember_me='. $token .'; Path='. WS_DIR_APP .'; Expires='. gmdate('r', strtotime('+30 days')) .'; HttpOnly; SameSite=Lax' . (!empty($_SERVER['HTTPS']) ? '; Secure' : ''), false);
 			}
 
 			notices::add('success', strtr(t('success_logged_in_as_user', 'You are now logged in as {firstname} {lastname}.'), [
