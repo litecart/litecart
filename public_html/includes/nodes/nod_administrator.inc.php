@@ -13,16 +13,21 @@
 			// Bind administrator to session
 			self::$data = &session::$data['administrator'];
 
-			// Login remembered administrator automatically
-			if (!self::$data['id'] && !empty($_COOKIE['remember_me']) && !$_POST) {
+			// Login remembered administrator automatically (HMAC-based token)
+			if (!self::$data['id'] && !empty($_COOKIE['remember_me']) && !$_POST && defined('HMAC_KEY_REMEMBER_ME')) {
 
 				try {
 
-					list($username, $key) = explode(':', $_COOKIE['remember_me']);
+				// Decode token to get administrator ID
+					$decoded = base64_decode($_COOKIE['remember_me'], true);
+					$token = $decoded ? json_decode($decoded, true) : null;
+					if (!is_array($token) || empty($token['id'])) {
+						throw new Exception('Invalid or legacy cookie format');
+					}
 
 					$administrator = database::query(
 						"select * from ". DB_TABLE_PREFIX ."administrators
-						where lower(username) = lower('". database::input($username) ."')
+						where id = ". (int)$token['id'] ."
 						and status
 						and (valid_from is null or valid_from < '". date('Y-m-d H:i:s') ."')
 						and (valid_to is null or valid_to > '". date('Y-m-d H:i:s') ."')
@@ -30,12 +35,12 @@
 					)->fetch();
 
 					if (!$administrator) {
-						throw new Exception('Invalid email or the account has been removed');
+						throw new Exception('Invalid administrator or account removed');
 					}
 
-					$checksum = sha1($administrator['username'] . $administrator['password_hash'] . $_SERVER['REMOTE_ADDR'] . ($_SERVER['HTTP_USER_AGENT'] ?: ''));
-
-					if ($checksum != $key) {
+				// Verify HMAC with actual password hash
+					$verified_id = f::token_verify_remember($_COOKIE['remember_me'], $administrator['password_hash']);
+					if ($verified_id === false) {
 
 						if (++$administrator['login_attempts'] < 3) {
 							database::query(
@@ -54,7 +59,7 @@
 							);
 						}
 
-						throw new Exception('Invalid checksum for cookie');
+						throw new Exception('Invalid token signature');
 					}
 
 					self::load($administrator['id']);
