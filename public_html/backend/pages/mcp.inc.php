@@ -46,6 +46,7 @@
 				and lower(username) = lower('". database::input($_SERVER['PHP_AUTH_USER']) ."')
 				and (valid_from is null or valid_from < '". database::input(date('Y-m-d H:i:s')) ."')
 				and (valid_to is null or valid_to > '". database::input(date('Y-m-d H:i:s')) ."')
+				and (blocked_until is null or blocked_until < '". database::input(date('Y-m-d H:i:s')) ."')
 				limit 1;",
 			)->fetch();
 
