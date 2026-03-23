@@ -1,6 +1,6 @@
 <?php
 
-	class ent_order {
+	class ent_order implements JsonSerializable {
 		public $data;
 		public $previous;
 
@@ -338,6 +338,8 @@
 				database::query(
 					"update ". DB_TABLE_PREFIX ."orders_lines
 					set product_id = ". (int)$line['product_id'] .",
+						stock_option_id = ". ($line['stock_option_id'] ? (int)$line['stock_option_id'] : "null") .",
+						code = '". database::input($line['code']) ."',
 						name = '". database::input($line['name']) ."',
 						userdata = '". (!empty($line['userdata']) ? database::input(f::format_json($line['userdata'])) : '') ."',
 						serial_number = '". database::input($line['serial_number']) ."',
@@ -345,9 +347,13 @@
 						price = ". (float)$line['price'] .",
 						tax_class_id = ". (int)$line['tax_class_id'] .",
 						tax_rate = ". ($line['tax_rate'] ? (float)$line['tax_rate'] : "null") .",
+						tax = ". (float)$line['tax'] .",
 						discount = ". (float)$line['discount'] .",
+						discount_tax = ". (float)$line['discount_tax'] .",
 						sum = ". (float)$line['sum'] .",
 						sum_tax = ". (float)$line['sum_tax'] .",
+						weight = ". (float)$line['weight'] .",
+						weight_unit = '". database::input($line['weight_unit']) ."',
 						priority = ". ++$i ."
 					where id = ". (int)$line['id'] ."
 					and order_id = ". (int)$this->data['id'] ."
@@ -1022,5 +1028,17 @@
 			cache::clear_cache('category');
 			cache::clear_cache('brand');
 			cache::clear_cache('products');
+		}
+
+	// Serialize only $data for session storage (json_encode compatibility)
+		public function jsonSerialize(): mixed {
+			return $this->data;
+		}
+
+	// Restore from session data
+		public static function from_data(array $data): self {
+			$order = new self();
+			$order->data = $data;
+			return $order;
 		}
 	}
