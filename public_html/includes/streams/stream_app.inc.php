@@ -1,6 +1,7 @@
 <?php
 
 	class stream_app {
+
 		private $_directory = [];
 		private $_stream;
 		public $context;
