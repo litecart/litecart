@@ -14,7 +14,7 @@
       self::$data = &session::$data['user'];
 
     // Login remembered user automatically (HMAC-based token)
-      if (empty(self::$data['id']) && !empty($_COOKIE['remember_me']) && empty($_POST) && defined('DB_SERVER_SECRET')) {
+      if (empty(self::$data['id']) && !empty($_COOKIE['remember_me']) && empty($_POST) && defined('HMAC_KEY_REMEMBER_ME')) {
 
         try {
 
