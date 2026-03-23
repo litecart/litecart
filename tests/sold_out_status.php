@@ -60,8 +60,8 @@
 
 		// Prepare some new data
 		$data = [
-			'name' => 'Back in Stock',
-			'description' => 'This item is now back in stock.',
+			'name' => ['en' => 'Back in Stock'],
+			'description' => ['en' => 'This item is now back in stock.'],
 			'orderable' => 1,
 		];
 

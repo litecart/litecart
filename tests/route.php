@@ -20,7 +20,7 @@
 			['/frontend', 'frontend', 'Basic frontend path'],
 			['/backend/admin', 'backend/admin', 'Backend admin path'],
 			['/en/products', 'products', 'Path with English language code'],
-			['/ar/categories/test', 'categories/test', 'Arabic language path'],
+			['/ar/categories/test', 'ar/categories/test', 'Non-registered language code is not stripped'],
 			['/index.php/products', 'products', 'Path with index.php prefix'],
 			['/en/index.php/products', 'index.php/products', 'Path with language and index.php'],
 			['//multiple//slashes//', 'multiple/slashes/', 'Multiple slashes'],

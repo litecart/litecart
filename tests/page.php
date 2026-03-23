@@ -69,7 +69,7 @@
 
 		// Check if data was set correctly
 		if (!f::array_intersect_compare($data, $page->data)) {
-			throw new Exception('The page data was not updated correctly ('. $key .')');
+			throw new Exception('The page data was not updated correctly');
 		}
 
 		########################################################################

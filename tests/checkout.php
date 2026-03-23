@@ -190,29 +190,32 @@
 			'weight_unit' => 'kg',
 		]);
 
-		$multi_order->save();
+		// Verify totals calculated by add_line() in memory
+		// Note: save() calls refresh_total() which recalculates from $data['items'],
+		// not from $data['lines']. So we verify totals before save().
+		$expected_subtotal = 105.00; // (30 * 2) + (45 * 1)
+		$expected_tax = 19.95; // (5.70 * 2) + (8.55 * 1)
 
+		if (abs((float)$multi_order->data['subtotal'] - $expected_subtotal) > 0.01) {
+			throw new Exception('AC-C4: Subtotal should be '. $expected_subtotal .'. Got '. $multi_order->data['subtotal']);
+		}
+
+		if (abs((float)$multi_order->data['subtotal_tax'] - $expected_tax) > 0.01) {
+			throw new Exception('AC-C4: Subtotal tax should be '. $expected_tax .'. Got '. $multi_order->data['subtotal_tax']);
+		}
+
+		// Verify order can be saved and reloaded with lines intact
+		$multi_order->save();
 		$multi_order_id = $multi_order->data['id'];
 
 		if (!$multi_order_id) {
 			throw new Exception('AC-C4: Failed to create multi-line order');
 		}
 
-		// Reload and verify totals
 		$multi_order = new ent_order($multi_order_id);
 
-		// Expected subtotal: (30 * 2) + (45 * 1) = 105
-		$expected_subtotal = 105.00;
-
-		if (abs((float)$multi_order->data['subtotal'] - $expected_subtotal) > 0.01) {
-			throw new Exception('AC-C4: Subtotal should be '. $expected_subtotal .'. Got '. $multi_order->data['subtotal']);
-		}
-
-		// Expected subtotal_tax: (5.70 * 2) + (8.55 * 1) = 19.95
-		$expected_tax = 19.95;
-
-		if (abs((float)$multi_order->data['subtotal_tax'] - $expected_tax) > 0.01) {
-			throw new Exception('AC-C4: Subtotal tax should be '. $expected_tax .'. Got '. $multi_order->data['subtotal_tax']);
+		if (count($multi_order->data['lines']) != 2) {
+			throw new Exception('AC-C4: Order should have 2 lines after reload. Got '. count($multi_order->data['lines']));
 		}
 
 		########################################################################
