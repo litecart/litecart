@@ -12,7 +12,9 @@ if [ ! -f "$CONFIG_FILE" ]; then
     sleep 2
   done
 
-  php /var/www/html/public_html/install/install.php \
+  cd /var/www/html/public_html/install
+
+  php install.php \
     --document_root="/var/www/html/public_html" \
     --db_server="${DB_SERVER:-mysql}" \
     --db_username="${DB_USERNAME:-litecart}" \
@@ -23,6 +25,8 @@ if [ ! -f "$CONFIG_FILE" ]; then
     --timezone="${TZ:-UTC}" \
     --username="${ADMIN_USERNAME:-admin}" \
     --password="${ADMIN_PASSWORD:-admin}"
+
+  cd /var/www/html
 
   echo ""
   echo "============================================"

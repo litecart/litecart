@@ -44,9 +44,9 @@ RUN sed -ri -e 's/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.c
 # Copy application files
 COPY public_html/ /var/www/html/public_html/
 
-# Copy entrypoint script
+# Copy entrypoint script (sed strips Windows line endings)
 COPY docker-entrypoint.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+RUN sed -i 's/\r$//' /usr/local/bin/docker-entrypoint.sh && chmod +x /usr/local/bin/docker-entrypoint.sh
 
 # Set correct permissions
 RUN chown -R www-data:www-data /var/www/html/public_html \
