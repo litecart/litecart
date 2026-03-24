@@ -174,6 +174,10 @@
 
 		public function save() {
 
+			database::begin_transaction();
+
+			try {
+
 			// Re-calculate total if there are changes
 			$this->refresh_total();
 
@@ -313,11 +317,12 @@
 				}
 			}
 
-			// Delete order lines
+			// Delete order lines not in current data
+			$line_ids = array_filter(array_column($this->data['lines'], 'id'));
 			database::query(
 				"delete from ". DB_TABLE_PREFIX ."orders_lines
 				where order_id = ". (int)$this->data['id'] ."
-				and id not in ('". implode("', '", array_column($this->data['lines'], 'id')) ."');"
+				". ($line_ids ? "and id not in (". implode(",", array_map('intval', $line_ids)) .")" : "") .";"
 			);
 
 			// Insert/update order lines
@@ -422,11 +427,12 @@
 				}
 			};
 
-			// Delete comments
+			// Delete comments not in current data
+			$comment_ids = array_filter(array_column($this->data['comments'], 'id'));
 			database::query(
 				"delete from ". DB_TABLE_PREFIX ."orders_comments
 				where order_id = ". (int)$this->data['id'] ."
-				and id not in ('". implode("', '", array_column($this->data['comments'], 'id')) ."');"
+				". ($comment_ids ? "and id not in (". implode(",", array_map('intval', $comment_ids)) .")" : "") .";"
 			);
 
 			// Insert/update comments
@@ -500,6 +506,13 @@
 
 			$order_modules = new mod_order();
 			$order_modules->update($this);
+
+			database::commit();
+
+			} catch (Throwable $e) {
+				database::rollback();
+				throw $e;
+			}
 
 			$this->previous = $this->data;
 
