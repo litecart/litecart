@@ -56,8 +56,8 @@
 
 		// Prepare some new data
 		$data = [
-			'name' => 'Gram',
-			'description' => 'Unit of mass',
+			'name' => ['en' => 'Gram'],
+			'description' => ['en' => 'Unit of mass'],
 			'decimals' => 2,
 		];
 

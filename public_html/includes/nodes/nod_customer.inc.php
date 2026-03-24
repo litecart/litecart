@@ -21,26 +21,33 @@
 			// Bind scraps to session
 			self::$scraps = &session::$data['scraps'];
 
-			// Sign in a remembered customer
-			if (empty(self::$data['id']) && !empty($_COOKIE['customer_remember_me']) && empty($_POST)) {
+			// Sign in a remembered customer (HMAC-based token)
+			if (empty(self::$data['id']) && !empty($_COOKIE['customer_remember_me']) && empty($_POST) && defined('HMAC_KEY_REMEMBER_ME')) {
 
 				try {
 
-					list($email, $key) = explode(':', $_COOKIE['customer_remember_me']);
+				// Decode token to get customer ID
+					$decoded = base64_decode($_COOKIE['customer_remember_me'], true);
+					$token = $decoded ? json_decode($decoded, true) : null;
+					if (!is_array($token) || empty($token['id'])) {
+						throw new Exception('Invalid or legacy cookie format');
+					}
 
 					$customer = database::query(
 						"select * from ". DB_TABLE_PREFIX ."customers
-						where email = '". database::input($email) ."'
+						where id = ". (int)$token['id'] ."
+						and status
+						and (blocked_until is null or blocked_until < '". date('Y-m-d H:i:s') ."')
 						limit 1;"
 					)->fetch();
 
 					if (!$customer) {
-						throw new Exception('Invalid email or the account has been removed');
+						throw new Exception('Invalid customer or account removed');
 					}
 
-					$checksum = sha1($customer['email'] . $customer['password_hash'] . $_SERVER['REMOTE_ADDR'] . ($_SERVER['HTTP_USER_AGENT'] ?: ''));
-
-					if ($checksum != $key) {
+				// Verify HMAC with actual password hash
+					$verified_id = f::token_verify_remember($_COOKIE['customer_remember_me'], $customer['password_hash']);
+					if ($verified_id === false) {
 						if (++$customer['login_attempts'] < 3) {
 							database::query(
 								"update ". DB_TABLE_PREFIX ."customers
@@ -58,7 +65,7 @@
 							);
 						}
 
-						throw new Exception('Invalid checksum for cookie');
+						throw new Exception('Invalid token signature');
 					}
 
 					self::load($customer['id']);

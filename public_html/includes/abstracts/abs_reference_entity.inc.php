@@ -34,26 +34,25 @@
 
     // ArrayAccess implementation
     public function offsetExists($offset): bool {
-			return isset($this->data[$offset]);
+			return isset($this->_data[$offset]);
     }
 
     public function offsetGet($offset): mixed {
-			return fallback($this->data[$offset]);
+			return fallback($this->_data[$offset]);
     }
 
     public function offsetSet($offset, $value): void {
-			if (isset($this->_data[$name])) {
-				trigger_error('Overwriting data is prohibited ('.$name.')', E_USER_WARNING);
+			if (isset($this->_data[$offset])) {
+				trigger_error('Overwriting data is prohibited ('.$offset.')', E_USER_WARNING);
 				return;
 			}
-			$this->data[$offset] = $value;
+			$this->_data[$offset] = $value;
     }
 
     public function offsetUnset($offset): void {
-			if (isset($this->_data[$name])) {
-				trigger_error('Unsetting data is prohibited ('.$name.')', E_USER_WARNING);
+			if (isset($this->_data[$offset])) {
+				trigger_error('Unsetting data is prohibited ('.$offset.')', E_USER_WARNING);
 				return;
 			}
-			//unset($this->data[$offset]);
     }
 	}

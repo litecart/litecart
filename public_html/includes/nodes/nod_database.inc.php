@@ -274,7 +274,11 @@
 			}
 
 			if (($result = mysqli_query(self::$_links[$link], $sql)) === false) {
-				throw new Error('MySQL Error: ' . mysqli_errno(self::$_links[$link]) .' - '. preg_replace('#\s+#', ' ', mysqli_error(self::$_links[$link])) . PHP_EOL . $sql);
+				$ref = uniqid('db_');
+				if (in_array('storage', stream_get_wrappers())) {
+					error_log('['. date('Y-m-d H:i:s e') .']['. $ref .'] MySQL Error: '. mysqli_errno(self::$_links[$link]) .' - '. mysqli_error(self::$_links[$link]) .' | Query: '. $sql . PHP_EOL, 3, 'storage://logs/errors.log');
+				}
+				throw new Error('MySQL Error: ' . mysqli_errno(self::$_links[$link]) .' - '. preg_replace('#\s+#', ' ', mysqli_error(self::$_links[$link])) .' (ref: '. $ref .')');
 			}
 
 			if (($duration = microtime(true) - $timestamp) > 5 && in_array('storage', stream_get_wrappers())) {
@@ -300,7 +304,11 @@
 			$timestamp = microtime(true);
 
 			if (mysqli_multi_query(self::$_links[$link], $sql) === false) {
-				throw new Error('MySQL Error: ' . mysqli_errno(self::$_links[$link]) .' - '. preg_replace('#\r#', ' ', mysqli_error(self::$_links[$link])) . PHP_EOL . preg_replace('#^\s+#m', '', $sql));
+				$ref = uniqid('db_');
+				if (in_array('storage', stream_get_wrappers())) {
+					error_log('['. date('Y-m-d H:i:s e') .']['. $ref .'] MySQL Error: '. mysqli_errno(self::$_links[$link]) .' - '. mysqli_error(self::$_links[$link]) .' | Query: '. $sql . PHP_EOL, 3, 'storage://logs/errors.log');
+				}
+				throw new Error('MySQL Error: ' . mysqli_errno(self::$_links[$link]) .' - '. preg_replace('#\r#', ' ', mysqli_error(self::$_links[$link])) .' (ref: '. $ref .')');
 			}
 
 			$results = [];

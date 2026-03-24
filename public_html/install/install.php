@@ -456,6 +456,7 @@
 			'{DB_TABLE_PREFIX}' => DB_TABLE_PREFIX,
 			'{CLIENT_IP}' => $_REQUEST['client_ip'],
 			'{TIMEZONE}' => $_REQUEST['timezone'],
+			'{HMAC_KEY_REMEMBER_ME}' => bin2hex(random_bytes(32)),
 		]);
 
 		if (file_put_contents(FS_DIR_STORAGE . 'config.inc.php', $config) !== false) {
