@@ -101,7 +101,10 @@
           die('Your account is disabled');
         }
 
-        ini_set('display_errors', 'On');
+      // Show PHP errors only if the user has opted in
+        if (!empty($user['show_php_errors'])) {
+          ini_set('display_errors', 'On');
+        }
 
         database::query(
           "update ". DB_TABLE_PREFIX ."users

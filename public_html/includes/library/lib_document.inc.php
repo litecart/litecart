@@ -37,10 +37,15 @@
 
     public static function before_capture() {
 
-      header('X-Frame-Options: SAMEORIGIN'); // Clickjacking Protection
-      header('Content-Security-Policy: frame-ancestors \'self\';'); // Clickjacking Protection
-      header('Access-Control-Allow-Origin: '. self::ilink('')); // Only allow HTTP POST data from own domain
-      header('X-Powered-By: '. PLATFORM_NAME);
+      header('X-Frame-Options: SAMEORIGIN');
+      header('Content-Security-Policy: frame-ancestors \'self\';');
+      header('Access-Control-Allow-Origin: '. self::ilink(''));
+      header('X-Content-Type-Options: nosniff');
+      header('Referrer-Policy: strict-origin-when-cross-origin');
+      header_remove('X-Powered-By');
+      if (!empty($_SERVER['HTTPS'])) {
+        header('Strict-Transport-Security: max-age=31536000; includeSubDomains');
+      }
 
     // Set template
       if (!empty($_SERVER['REQUEST_URI']) && preg_match('#^('. preg_quote(WS_DIR_ADMIN, '#') .')#', $_SERVER['REQUEST_URI'])) {
@@ -114,7 +119,6 @@
       ];
 
       self::$jsenv['session'] = [
-        'id' => session::get_id(),
         'language_code' => language::$selected['code'],
         'country_code' => customer::$data['country_code'],
         'currency_code' => currency::$selected['code'],
