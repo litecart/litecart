@@ -270,6 +270,8 @@ template {
 }
 .breadcrumbs li {
   display: inline-block;
+  background: var(--breadcrumb-item-background);
+  color: var(--breadcrumb-item-text-color);
 }
 .breadcrumbs li::before {
   content: "/\00a0";
@@ -2171,9 +2173,6 @@ label.form-check > input:is([type="radio"]):checked {
   border-inline-end: 0;
   border-top: 0;
   border: 0;
-}
-.input-group > *:not(:first-child) {
-  border-left: var(--input-border);
 }
 .input-group > *:first-child {
   border-start-end-radius: 0;
