@@ -974,7 +974,7 @@
 							<?php echo f::form_input_hidden('comments['.$key.'][author]', true); ?>
 							<?php echo f::form_input_hidden('comments['.$key.'][text]', true); ?>
 
-							<?php echo nl2br($_POST['comments'][$key]['text']); ?>
+							<?php echo nl2br(f::escape_html($_POST['comments'][$key]['text'])); ?>
 
 							<div class="date"><?php echo f::datetime_when($_POST['comments'][$key]['created_at']); ?></div>
 

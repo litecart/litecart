@@ -330,7 +330,7 @@
 		}
 
 		public static function fetch_all($result, $column=null, $index_column=null) {
-			return $result->fetch_all($column=null, $index_column=null);
+			return $result->fetch_all($column, $index_column);
 		}
 
 		public static function seek($result, $offset) {

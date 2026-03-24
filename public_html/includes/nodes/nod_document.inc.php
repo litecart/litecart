@@ -481,7 +481,7 @@
 				}
 			}
 
-			self::$preloads[$link] = $type;
+			self::$preloads[$url] = $type;
 		}
 
 		// Send a message to the console
