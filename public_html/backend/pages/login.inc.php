@@ -149,6 +149,7 @@
 
 			session::$data['administrator_security_timestamp'] = time();
 			session::regenerate_id();
+			session::rotate_csrf_token();
 
 			unset(session::$data['security_verification']);
 

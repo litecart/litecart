@@ -135,6 +135,7 @@
 			}
 
 			self::$jsenv['session']['id'] = session::$data['id'];
+			self::$jsenv['csrf_token'] = session::csrf_token();
 
 			document::$jsenv['currency'] = [
 				'code' => &currency::$selected['code'],
