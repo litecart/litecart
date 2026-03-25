@@ -123,6 +123,7 @@
 
 			session::$data['customer_security_timestamp'] = time();
 			session::regenerate_id();
+			session::rotate_csrf_token();
 
 			if (!empty($_POST['remember_me']) && defined('HMAC_KEY_REMEMBER_ME')) {
 				$token = f::token_create_remember($customer['id'], $customer['password_hash']);

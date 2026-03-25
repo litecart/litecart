@@ -254,6 +254,18 @@
 			header('Set-Cookie: LCSESSID='. rawurlencode(self::$data['id']) .';Path=/;'. ($is_secure ? 'Secure;' : '') .'HttpOnly;SameSite=' . $samesite);
 		}
 
+		public static function csrf_token() {
+			if (empty(self::$data['csrf_token'])) {
+				self::$data['csrf_token'] = bin2hex(random_bytes(32));
+			}
+			return self::$data['csrf_token'];
+		}
+
+		public static function rotate_csrf_token() {
+			self::$data['csrf_token'] = bin2hex(random_bytes(32));
+			return self::$data['csrf_token'];
+		}
+
 		public static function close() {
 			trigger_error('Calling '.__CLASS__.'::close() is deprecated and can be removed.', E_USER_DEPRECATED);
 		}

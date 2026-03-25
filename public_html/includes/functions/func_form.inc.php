@@ -1,7 +1,12 @@
 <?php
 
 	function form_begin($name='', $method='post', $action='', $multipart=false, $parameters='') {
-		return '<form'. (($name) ? ' name="'. f::escape_attr($name) .'"' : '') .' method="'. ((strtolower($method) == 'get') ? 'get' : 'post') .'" enctype="'. (($multipart == true) ? 'multipart/form-data' : 'application/x-www-form-urlencoded') .'" accept-charset="'. mb_http_output() .'"'. (($action) ? ' action="'. f::escape_attr($action) .'"' : '') . ($parameters ? ' ' . $parameters : '') .'>';
+		$html = '<form'. (($name) ? ' name="'. f::escape_attr($name) .'"' : '') .' method="'. ((strtolower($method) == 'get') ? 'get' : 'post') .'" enctype="'. (($multipart == true) ? 'multipart/form-data' : 'application/x-www-form-urlencoded') .'" accept-charset="'. mb_http_output() .'"'. (($action) ? ' action="'. f::escape_attr($action) .'"' : '') . ($parameters ? ' ' . $parameters : '') .'>';
+	// Auto-inject CSRF token for POST forms
+		if (strtolower($method) !== 'get' && class_exists('session', false)) {
+			$html .= '<input type="hidden" name="csrf_token" value="'. f::escape_attr(session::csrf_token()) .'" />';
+		}
+		return $html;
 	}
 
 	function form_end() {
