@@ -46,7 +46,7 @@
 				$fh = fopen($last_sitemap_path, 'x');
 				fwrite($fh, implode(PHP_EOL, [
 					'<?xml version="1.0" encoding="UTF-8"?>',
-					'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">',
+					'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">',
 				]) . PHP_EOL);
 			};
 
@@ -145,9 +145,9 @@
 				"select id, default_image, updated_at from ". DB_TABLE_PREFIX ."products
 				where status
 				order by id;"
-			)->each(function($product) use (&$output) {
+			)->each(function($product) use (&$fh, &$count, &$bump_sitemap) {
 
-				$output[] = implode(PHP_EOL, array_filter([
+				fwrite($fh, implode(PHP_EOL, array_filter([
 					'  <url>',
 					'    <loc>'. document::ilink('f:product', ['product_id' => $product['id']]) .'</loc>',
 
@@ -172,7 +172,12 @@
 					'    <changefreq>weekly</changefreq>',
 					'    <priority>0.8</priority>',
 					'  </url>',
-				])) . PHP_EOL;
+				])) . PHP_EOL);
+
+				if (++$count == $this->settings['entries_per_sitemap']) {
+					$bump_sitemap();
+					$count = 0;
+				}
 			});
 
 			$close_sitemap();
