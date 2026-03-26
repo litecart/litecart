@@ -372,6 +372,33 @@
 			return mysqli_info(self::$_links[$link]);
 		}
 
+		public static function begin_transaction($link='default') {
+
+			if (!isset(self::$_links[$link])) {
+				self::connect($link);
+			}
+
+			return mysqli_begin_transaction(self::$_links[$link]);
+		}
+
+		public static function commit($link='default') {
+
+			if (!isset(self::$_links[$link])) {
+				return false;
+			}
+
+			return mysqli_commit(self::$_links[$link]);
+		}
+
+		public static function rollback($link='default') {
+
+			if (!isset(self::$_links[$link])) {
+				return false;
+			}
+
+			return mysqli_rollback(self::$_links[$link]);
+		}
+
 		public static function create_variable($field, $value=null) {
 
 			if (!$field) {
