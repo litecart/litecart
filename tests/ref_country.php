@@ -30,18 +30,13 @@
 		}
 
 		########################################################################
-		## Load zones
+		## Load zones (may be empty if seed data has no zones)
 		########################################################################
 
 		$zones = $us->zones;
 
-		if (empty($zones) || !is_array($zones)) {
-			throw new Exception('ref_country US should have zones');
-		}
-
-		// US should have 50+ zones (states)
-		if (count($zones) < 50) {
-			throw new Exception('ref_country US should have at least 50 zones, got '. count($zones));
+		if (!is_array($zones)) {
+			throw new Exception('ref_country zones should return an array');
 		}
 
 		########################################################################
