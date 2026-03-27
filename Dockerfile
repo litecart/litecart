@@ -12,14 +12,10 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) \
         gd \
-        pdo_mysql \
+        mysqli \
         zip \
         intl \
-        curl \
         opcache \
-        dom \
-        simplexml \
-        mbstring \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Enable Apache modules
