@@ -18,6 +18,7 @@ services:
     command: >
       --character-set-server=utf8mb4
       --collation-server=utf8mb4_swedish_ci
+      --character-set-client-handshake=FALSE
     ports:
       - "3306:3306"
     volumes:

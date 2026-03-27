@@ -154,9 +154,9 @@
 				+ (match(json_value(p.short_description, '$.". database::input(language::$selected['code']) ."') against ('". database::input($query_fulltext) ."' in boolean mode) /2)
 				+ (match(json_value(p.description, '$.". database::input(language::$selected['code']) ."') against ('". database::input($query_fulltext) ."' in boolean mode) /3)
 
-				+ if(json_value(p.name, '$.". database::input(language::$selected['code']) ."') like '%". database::input($_GET['query']) ."%', 3, 0)
-				+ if(json_value(p.short_description, '$.". database::input(language::$selected['code']) ."') like '%". database::input($_GET['query']) ."%', 2, 0)
-				+ if(json_value(p.description, '$.". database::input(language::$selected['code']) ."') like '%". database::input($_GET['query']) ."%', 1, 0)
+				+ if(json_value(p.name, '$.". database::input(language::$selected['code']) ."') collate utf8mb4_unicode_ci like '%". database::input($_GET['query']) ."%', 3, 0)
+				+ if(json_value(p.short_description, '$.". database::input(language::$selected['code']) ."') collate utf8mb4_unicode_ci like '%". database::input($_GET['query']) ."%', 2, 0)
+				+ if(json_value(p.description, '$.". database::input(language::$selected['code']) ."') collate utf8mb4_unicode_ci like '%". database::input($_GET['query']) ."%', 1, 0)
 
 				+ if (p.id in (
 					select product_id from ". DB_TABLE_PREFIX ."products_stock_options

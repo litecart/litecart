@@ -68,7 +68,7 @@
 						<?php echo f::draw_fonticon('icon-chevron-left'); ?> <?php echo t('title_back', 'Back'); ?>
 					</a>
 
-					<?php foreach ($subcategories as $subcategory) { ?>
+					<?php foreach ($categories as $subcategory) { ?>
 					<a class="nav-item" href="<?php echo document::href_ilink('category', ['category_id' => $subcategory['id']]); ?>">
 						<?php echo $subcategory['name']; ?>
 					</a>
