@@ -5,11 +5,14 @@ RUN apt-get update && apt-get install -y \
     libfreetype6-dev \
     libjpeg62-turbo-dev \
     libpng-dev \
+    libwebp-dev \
     libzip-dev \
     libicu-dev \
     libcurl4-openssl-dev \
     libxml2-dev \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    locales \
+    && sed -i '/en_US.UTF-8/s/^# //' /etc/locale.gen && locale-gen \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
     && docker-php-ext-install -j$(nproc) \
         gd \
         mysqli \
@@ -43,10 +46,31 @@ RUN sed -ri -e 's/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.c
 # Copy application files
 COPY public_html/ /var/www/html/public_html/
 
+# Set up storage directories
+RUN mkdir -p /var/www/html/public_html/storage/cache \
+        /var/www/html/public_html/storage/data \
+        /var/www/html/public_html/storage/files \
+        /var/www/html/public_html/storage/images \
+        /var/www/html/public_html/storage/backups \
+        /var/www/html/public_html/storage/logs \
+        /var/www/html/public_html/storage/vmods/.cache \
+    && touch /var/www/html/public_html/storage/config.inc.php \
+        /var/www/html/public_html/storage/.htaccess \
+        /var/www/html/public_html/storage/robots.txt \
+        /var/www/html/public_html/storage/vmods/.installed \
+        /var/www/html/public_html/storage/vmods/.settings \
+        /var/www/html/public_html/storage/vmods/.htaccess \
+        /var/www/html/public_html/storage/vmods/.cache/.checked \
+        /var/www/html/public_html/storage/vmods/.cache/.modifications
+
+# Copy default storage data if available
+RUN if [ -d /var/www/html/public_html/install/data/default/storage ]; then \
+        cp -rn /var/www/html/public_html/install/data/default/storage/* /var/www/html/public_html/storage/; \
+    fi
+
 # Set correct permissions
 RUN chown -R www-data:www-data /var/www/html/public_html \
     && chmod -R 755 /var/www/html/public_html \
-    && mkdir -p /var/www/html/public_html/storage \
     && chmod -R 775 /var/www/html/public_html/storage
 
 EXPOSE 80

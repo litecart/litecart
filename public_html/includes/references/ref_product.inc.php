@@ -70,8 +70,8 @@
 						order by pa.priority, group_name, value_name, custom_value;"
 					)->fetch_all(function($attribute){
 
-						$attribute['group_name'] = json_decode($attribute['group_name'], true) ?: [];
-						$attribute['value_name'] = json_decode($attribute['value_name'], true) ?: [];
+						$attribute['group_name'] = json_decode((string)$attribute['group_name'], true) ?: [];
+						$attribute['value_name'] = json_decode((string)$attribute['value_name'], true) ?: [];
 
 						foreach ($this->_language_codes as $language_code) {
 							if (!empty($attribute['group_name'][$language_code])) {
@@ -148,7 +148,7 @@
 					)->each(function($category) {
 
 						foreach ($this->_language_codes as $language_code) {
-							$category['name'] = json_decode($category['name'], true) ?: [];
+							$category['name'] = json_decode((string)$category['name'], true) ?: [];
 							if (!empty($category['name'][$language_code])) {
 								$category['name'] = $category['name'][$language_code];
 								break;
@@ -182,7 +182,7 @@
 							'name',
 							'description',
 						] as $field) {
-							$status[$field] = json_decode($status[$field], true) ?: [];
+							$status[$field] = json_decode((string)$status[$field], true) ?: [];
 							foreach ($this->_language_codes as $language_code) {
 								if (!empty($status[$field][$language_code])) {
 									$status[$field] = $status[$field][$language_code];
@@ -257,7 +257,7 @@
 					)->fetch(function($customization){
 
 						// Group
-						$customization['group_name'] = json_decode($customization['group_name'], true) ?: [];
+						$customization['group_name'] = json_decode((string)$customization['group_name'], true) ?: [];
 						foreach ($this->_language_codes as $language_code) {
 							if (!empty($customization['group_name'][$language_code])) {
 								$customization['group_name'] = $customization['group_name'][$language_code];
@@ -279,7 +279,7 @@
 
 							if (!empty($value['value_id'])) {
 
-								$value['name'] = json_decode($value['name'], true) ?: [];
+								$value['name'] = json_decode((string)$value['name'], true) ?: [];
 
 								foreach ($this->_language_codes as $language_code) {
 									if (!empty($value['name'][$language_code])) {
@@ -294,7 +294,7 @@
 
 							// Price Adjust
 							$price_adjustment = 0;
-							$value['price_adjustment'] = json_decode($value['price_adjustment'], true);
+							$value['price_adjustment'] = json_decode((string)$value['price_adjustment'], true);
 
 							foreach ($this->_currency_codes as $currency_code) {
 
@@ -567,7 +567,7 @@
 							'synonyms',
 						] as $field) {
 
-							$product[$field] = json_decode($product[$field], true) ?: [];
+							$product[$field] = json_decode((string)$product[$field], true) ?: [];
 
 							foreach ($this->_language_codes as $language_code) {
 								if (!empty($product[$field][$language_code])) {

@@ -6,7 +6,7 @@ services:
     depends_on:
       - mysql
     networks:
-      - litecart
+      - network
 
   mysql:
     image: mysql:8.0
@@ -23,10 +23,10 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
     networks:
-      - litecart
+      - network
 
 networks:
-  litecart:
+  network:
 
 volumes:
   mysql_data:
