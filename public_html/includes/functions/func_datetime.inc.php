@@ -242,7 +242,7 @@
 
 		$y = date('Y', $timestamp);
 		$m = date('m', $timestamp);
-		$d = date('m', $timestamp);
+		$d = date('d', $timestamp);
 
 		switch (true) {
 

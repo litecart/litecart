@@ -70,7 +70,7 @@
 
 	// Return an array of values not defined by the given keys
 	function array_exclude(array $array, array $excluded_keys):array {
-		return array_diff_key($input, array_flip($excluded_keys));
+		return array_diff_key($array, array_flip($excluded_keys));
 	}
 
 	// Same as array_exclude(). Return an array of values not including any given keys
@@ -135,7 +135,7 @@
 		}
 
 		return array_filter($array, function($value) {
-			return is_array($v) ? !empty($v) : strlen(trim($v));
+			return is_array($value) ? !empty($value) : strlen(trim($value));
 		});
 	}
 
