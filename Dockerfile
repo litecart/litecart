@@ -11,7 +11,9 @@ RUN apt-get update && apt-get install -y \
     libcurl4-openssl-dev \
     libxml2-dev \
     locales \
-    && sed -i '/en_US.UTF-8/s/^# //' /etc/locale.gen && locale-gen \
+    && sed -i '/en_US.UTF-8/s/^# //' /etc/locale.gen \
+    && sed -i '/de_DE.UTF-8/s/^# //' /etc/locale.gen \
+    && locale-gen \
     && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
     && docker-php-ext-install -j$(nproc) \
         gd \

@@ -147,8 +147,8 @@
 						);"
 					)->each(function($category) {
 
+						$category['name'] = json_decode((string)$category['name'], true) ?: [];
 						foreach ($this->_language_codes as $language_code) {
-							$category['name'] = json_decode((string)$category['name'], true) ?: [];
 							if (!empty($category['name'][$language_code])) {
 								$category['name'] = $category['name'][$language_code];
 								break;

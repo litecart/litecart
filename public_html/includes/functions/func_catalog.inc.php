@@ -498,7 +498,7 @@
 				ifnull(pso.num_stock_options, 0) as num_stock_options, pso.total_quantity, pso.quantity_available, pa.attributes
 
 			from (
-				select id, delivery_status_id, sold_out_status_id,code,	brand_id,	keywords,	image, recommended_price, tax_class_id,
+				select id, delivery_status_id, sold_out_status_id,code,	brand_id,	keywords,	default_image as image, recommended_price, tax_class_id,
 					json_value(name, '$.". database::input(language::$selected['code']) ."') as name,
 					json_value(short_description, '$.". database::input(language::$selected['code']) ."') as short_description,
 					quantity_unit_id, created_at, (
