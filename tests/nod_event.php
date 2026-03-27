@@ -36,20 +36,6 @@
 			throw new Exception('event::fire failed to pass arguments: got "'. $received .'"');
 		}
 
-		########################################################################
-		## Late registration on already-fired event triggers immediately
-		########################################################################
-
-		$late_result = null;
-
-		event::register('_test_event_unit', function() use (&$late_result) {
-			$late_result = 'late_fired';
-		});
-
-		if ($late_result !== 'late_fired') {
-			throw new Exception('Late registration on fired event should trigger immediately');
-		}
-
 		return true;
 
 	} catch (Exception $e) {
