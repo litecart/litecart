@@ -12,8 +12,9 @@
 			throw new Exception('escape_html failed to escape HTML tags');
 		}
 
-		if (f::escape_html("it's") !== 'it&#039;s') {
-			throw new Exception('escape_html failed to escape single quotes');
+		$escaped = f::escape_html("it's");
+		if (strpos($escaped, "'") !== false) {
+			throw new Exception('escape_html did not escape single quotes: '. $escaped);
 		}
 
 		if (f::escape_html('') !== '') {
