@@ -83,8 +83,7 @@
 							$image_type = exif_imagetype($this->_file);
 						} else {
 							$params = getimagesize($this->_file);
-							$image_type = $params[2];
-							$this->_data['type'] = 'gif';
+							$image_type = !empty($params[2]) ? $params[2] : null;
 						}
 
 						switch ($image_type) {

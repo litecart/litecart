@@ -78,7 +78,7 @@
 							'link',
 						] as $key) {
 
-							$brand[$key] = json_decode($brand[$key], true) ?: [];
+							$brand[$key] = json_decode((string)$brand[$key], true) ?: [];
 
 							foreach ($this->_language_codes as $language_code) {
 								if (!empty($brand[$key][$language_code])) {

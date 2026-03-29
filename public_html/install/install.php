@@ -361,15 +361,15 @@
 				return [
 					'name' => 'MariaDB',
 					'version' => strtok($row['VERSION()'], '-'),
-					'min_version' => $requirements['databases']['mariadb']['minimumVersion'],
-					'recommended_version' => $requirements['databases']['mariadb']['recommendedVersion'],
+					'min_version' => $requirements['database']['mariadb']['minimumVersion'],
+					'recommended_version' => $requirements['database']['mariadb']['recommendedVersion'],
 				];
 			}
 			return [
 				'name' => 'MySQL',
 				'version' => $row['VERSION()'],
-				'min_version' => $requirements['databases']['mysql']['minimumVersion'],
-				'recommended_version' => $requirements['databases']['mysql']['recommendedVersion'],
+				'min_version' => $requirements['database']['mysql']['minimumVersion'],
+				'recommended_version' => $requirements['database']['mysql']['recommendedVersion'],
 			];
 		});
 
@@ -590,7 +590,7 @@
 			// Create check constraints
 			if (!empty($table['check_constraints'])) {
 				foreach ($table['check_constraints'] as $name => $expression) {
-					$sql .= 'CONSTRAINT `'. database::input($name) .'` CHECK ('. database::input($expression) .'),' . PHP_EOL;
+					$sql .= 'CONSTRAINT `'. $name .'` CHECK ('. $expression .'),' . PHP_EOL;
 				}
 			}
 
@@ -634,6 +634,7 @@
 		echo '<p>Writing database table data... ';
 
 		$sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, file_get_contents('data.sql'));
+		$sql = preg_replace('#\r\n?#', "\n", $sql);
 
 		foreach ([
 			'{STORE_NAME}' => isset($_REQUEST['store_name']) ? $_REQUEST['store_name'] : '',
@@ -725,6 +726,7 @@
 
 						if (empty($sql)) continue;
 
+						$sql = preg_replace('#\r\n?#', "\n", $sql);
 						$sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, $sql);
 
 						foreach (preg_split('#^-- -----*$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {
@@ -751,6 +753,7 @@
 			$sql = file_get_contents('data/demo/data.sql');
 
 			if (!empty($sql)) {
+				$sql = preg_replace('#\r\n?#', "\n", $sql);
 				$sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, $sql);
 
 				foreach (preg_split('#^-- -----*$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {

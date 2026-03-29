@@ -112,7 +112,7 @@
 						foreach ($page as $key => $value) {
 
 							if (in_array($key, ['title', 'content', 'head_title', 'meta_description'])) {
-								$value = json_decode($value, true) ?: [];
+								$value = json_decode((string)$value, true) ?: [];
 
 								foreach ($this->_language_codes as $language_code) {
 									if (!empty($value[$language_code])) {

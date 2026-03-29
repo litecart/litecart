@@ -189,7 +189,7 @@
 		'customizations' => [],
 		'stock_options' => [],
 		'keywords' => $product->keywords,
-		'default_image' => $product->images ? 'storage://images/' . $product->default_image : '',
+		'image' => $product->images ? 'storage://images/' . $product->default_image : '',
 		'video_url' => $product->video_url,
 		'sticker' => '',
 		'extra_images' => [],

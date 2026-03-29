@@ -149,8 +149,8 @@ table tbody .toggle {
 	if (!empty($_GET['query'])) {
 		$sql_where_query = [
 			"p.id = '". database::input($_GET['query']) ."'",
-			"json_value(p.title, '$.". database::input(language::$selected['code']) ."') like '%". database::input($_GET['query']) ."%'",
-			"json_value(p.content, '$.". database::input(language::$selected['code']) ."') like '%". database::input($_GET['query']) ."%'",
+			"json_value(p.title, '$.". database::input(language::$selected['code']) ."') collate utf8mb4_unicode_ci like '%". database::input($_GET['query']) ."%'",
+			"json_value(p.content, '$.". database::input(language::$selected['code']) ."') collate utf8mb4_unicode_ci like '%". database::input($_GET['query']) ."%'",
 		];
 
 		$pages = database::query(
