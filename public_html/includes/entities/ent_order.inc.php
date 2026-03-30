@@ -54,7 +54,7 @@
 				'currency_value' => currency::$selected['value'],
 				'language_code' => language::$selected['code'],
 				'incoterm' => settings::get('default_incoterm'),
-				'items' => [],
+				'lines' => [],
 				'comments' => [],
 				'subtotal' => 0,
 				'subtotal_tax' => 0,
@@ -76,6 +76,7 @@
 
 			$this->data['payment_due'] = &$this->data['total']; // Backwards compatibility <3.0.0
 			$this->data['tax_total'] = &$this->data['total_tax']; // Backwards compatibility <3.0.0
+			$this->data['items'] = &$this->data['lines']; // Alias: add_line() writes to lines, checkout reads items
 
 			$this->previous = $this->data;
 		}
@@ -224,8 +225,8 @@
 
 				database::query(
 					"insert into ". DB_TABLE_PREFIX ."orders
-					(created_at)
-					values ('". ($this->data['created_at'] = date('Y-m-d H:i:s')) ."');"
+					(public_key, created_at)
+					values ('". database::input($this->data['public_key']) ."', '". ($this->data['created_at'] = date('Y-m-d H:i:s')) ."');"
 				);
 
 				$this->data['id'] = database::insert_id();
@@ -267,14 +268,16 @@
 					shipping_zone_code = '". database::input($this->data['customer']['shipping_address']['zone_code']) ."',
 					shipping_phone = '". database::input($this->data['customer']['shipping_address']['phone']) ."',
 					shipping_email = '". database::input($this->data['customer']['shipping_address']['email']) ."',
-					shipping_option_id = '". (!empty($this->shipping->selected['id']) ? database::input($this->data['shipping_option']['id']) : '') ."',
-					shipping_option_name = '". (!empty($this->shipping->selected['id']) ? database::input($this->shipping->selected['name']) : '') ."',
-					shipping_option_userdata = '". (!empty($this->shipping->selected['userdata']) ? database::input(f::format_json($this->data['shipping_option']['userdata'])) : '') ."',
+					shipping_option_id = '". (!empty($this->data['shipping_option']['id']) ? database::input($this->data['shipping_option']['id']) : '') ."',
+					shipping_option_name = '". (!empty($this->data['shipping_option']['name']) ? database::input($this->data['shipping_option']['name']) : '') ."',
+					shipping_option_fee = ". (float)(!empty($this->data['shipping_option']['fee']) ? $this->data['shipping_option']['fee'] : 0) .",
+					shipping_option_userdata = '". (!empty($this->data['shipping_option']['userdata']) ? database::input(f::format_json($this->data['shipping_option']['userdata'])) : '') ."',
 					shipping_purchase_cost = ". (float)$this->data['shipping_purchase_cost'] .",
 					shipping_tracking_id = '". database::input($this->data['shipping_tracking_id']) ."',
 					shipping_tracking_url = '". database::input($this->data['shipping_tracking_url']) ."',
 					payment_option_id = '". (!empty($this->data['payment_option']['id']) ? database::input($this->data['payment_option']['id']) : '') ."',
 					payment_option_name = '". (!empty($this->data['payment_option']['name']) ? database::input($this->data['payment_option']['name']) : '') ."',
+					payment_option_fee = ". (float)(!empty($this->data['payment_option']['fee']) ? $this->data['payment_option']['fee'] : 0) .",
 					payment_option_userdata = '". (!empty($this->data['payment_option']['userdata']) ? database::input(f::format_json($this->data['payment_option']['userdata'])) : '') ."',
 					payment_transaction_id = '". database::input($this->data['payment_transaction_id']) ."',
 					payment_transaction_fee = ". (float)$this->data['payment_transaction_fee'] .",
@@ -540,6 +543,16 @@
 				$this->data['total'] += ($item['price'] - (float)$item['discount']) * (float)$item['quantity'];
 				$this->data['total_tax'] += ((float)$item['tax'] - (float)$item['discount_tax']) * (float)$item['quantity'];
 				$this->data['weight_total'] += (float)weight::convert($item['weight'], $item['weight_unit'], $this->data['weight_unit']) * abs($item['quantity']);
+			}
+
+			// Add shipping fee
+			if (!empty($this->data['shipping_option']['fee'])) {
+				$this->data['total'] += (float)$this->data['shipping_option']['fee'];
+			}
+
+			// Add payment fee
+			if (!empty($this->data['payment_option']['fee'])) {
+				$this->data['total'] += (float)$this->data['payment_option']['fee'];
 			}
 		}
 

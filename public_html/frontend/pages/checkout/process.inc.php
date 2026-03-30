@@ -67,6 +67,7 @@
 	}
 
 	// Save order
+	$session_order = $order;
 	$order = new ent_order();
 
 	$fields = [
@@ -78,13 +79,16 @@
 		'weight_unit'
 	];
 
-	$order->data = array_replace($order->data, array_intersect_key($order->data, array_flip($fields)));
+	$order->data = array_replace($order->data, array_intersect_key($session_order->data, array_flip($fields)));
 	$order->data['currency_value'] = currency::$currencies[$order->data['currency_code']]['value'];
+	$order->data['display_prices_including_tax'] = !empty($session_order->data['display_prices_including_tax']);
 	$order->data['unread'] = true;
+	$order->shipping = $session_order->shipping;
+	$order->payment = $session_order->payment;
 
 	// Set items
-	foreach ($order->data['items'] as $item) {
-		$order->add_item($item);
+	foreach ($session_order->data['lines'] as $item) {
+		$order->add_line($item, !empty($item['stock_items']) ? $item['stock_items'] : []);
 	}
 
 	// Set order status id
@@ -112,6 +116,7 @@
 		$order->data['date_paid'] = $result['date_paid'];
 	}
 
+	$order->refresh_total();
 	$order->save();
 
 	customer::log([
@@ -130,27 +135,27 @@
 	// Clean up cart
 	cart::clear();
 
-	session::$data['checkout']['order'] = null;
-
 	// Send order confirmation email
 	if (settings::get('send_order_confirmation')) {
 		$bccs = [];
 
-		if (settings::get('send_order_copy_email')) {
-			foreach (preg_split('#[\s;,]+#', settings::get('send_order_copy_email')) as $email) {
+		if (settings::get('email_order_copy')) {
+			foreach (preg_split('#[\s;,]+#', settings::get('email_order_copy')) as $email) {
 				if (empty($email)) continue;
 				$bccs[] = $email;
 			}
 		}
 
-		$order->send_order_copy_email($order->data['customer']['email'], $bccs, $order->data['language_code']);
+		$order->send_order_copy($order->data['customer']['email'], [], $bccs, $order->data['language_code']);
 	}
 
 	// Run after process operations
 	$order->shipping->after_process($order);
 	$order->payment->after_process($order);
 
-	$order_modules->after_process($order);
+	$redirect_url = document::ilink('checkout/success', ['order_id' => $order->data['id'], 'public_key' => $order->data['public_key']]);
 
-	redirect(document::ilink('checkout/success', ['order_id' => $order->data['id'], 'public_key' => $order->data['public_key']]), 303);
+	session::$data['checkout']['order'] = null;
+
+	redirect($redirect_url, 303);
 	exit;

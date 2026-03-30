@@ -98,14 +98,14 @@
 					<div class="col-sm-6">
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_postcode', 'Postal Code'); ?></div>
-							<?php echo f::form_input_text('customer[postcode]', true); ?>
+							<?php echo f::form_input_text('customer[postcode]', true, 'required'); ?>
 						</label>
 					</div>
 
 					<div class="col-sm-6">
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_city', 'City'); ?></div>
-							<?php echo f::form_input_text('customer[city]', true); ?>
+							<?php echo f::form_input_text('customer[city]', true, 'required'); ?>
 						</label>
 					</div>
 				</div>
@@ -197,14 +197,14 @@
 							<div class="col-sm-6">
 								<label class="form-group">
 									<div class="form-label"><?php echo t('title_postcode', 'Postal Code'); ?></div>
-									<?php echo f::form_input_text('shipping_address[postcode]', true); ?>
+									<?php echo f::form_input_text('shipping_address[postcode]', true, 'required'); ?>
 								</label>
 							</div>
 
 							<div class="col-sm-6">
 								<label class="form-group">
 									<div class="form-label"><?php echo t('title_city', 'City'); ?></div>
-									<?php echo f::form_input_text('shipping_address[city]', true); ?>
+									<?php echo f::form_input_text('shipping_address[city]', true, 'required'); ?>
 								</label>
 							</div>
 						</div>
