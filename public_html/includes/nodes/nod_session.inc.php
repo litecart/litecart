@@ -37,13 +37,32 @@
 					self::generate_id();
 				}
 
+				if (empty(self::$data['fingerprint'])) {
+					if (!empty($_SERVER['HTTP_CF_VISITOR'])) {
+
+						// Use Cloudflare's visitor identifier if available
+						self::$data['fingerprint'] = $_SERVER['HTTP_CF_VISITOR'];
+
+					} else {
+
+						// Generate a fingerprint based on request data
+						self::$data['fingerprint'] = hash('sha256', implode([
+							fallback($_SERVER['SSL_PROTOCOL']),
+							fallback($_SERVER['SSL_CIPHER']),
+							$_SERVER['REMOTE_ADDR'],
+							$_SERVER['HTTP_USER_AGENT'],
+							fallback($_SERVER['HTTP_ACCEPT_LANGUAGE']),
+						]));
+					}
+				}
+
 				// Collect conversion data (Urchin Tracking Module (UTM) etc.)
 				if (empty(self::$data['conversions'])) {
 					self::$data['conversions'] = [];
 				}
 
 				foreach ([
-					'affiliate' => ['affid', 'affiliate', 'partner', 'ref', 'referrer', 'clickid'],
+					'affiliate' => ['affid', 'affiliateId', 'affiliate_id', 'affiliate', 'partner', 'ref', 'referrer', 'clickid'],
 					'facebook' => ['fbclid'],
 					'google' => ['_rck', '_rcn', '_rct', 'dclid', 'gclid', 'gbraid', 'gad_source', 'gad_campaignid', 'wbraid'],
 					'instagram' => ['igshid'],
