@@ -555,6 +555,10 @@
 		FS_DIR_APP . 'vmods/',
 	]);
 
+	perform_action('copy', [
+		FS_DIR_APP . 'install/data/default/storage/images/illustration/' => FS_DIR_STORAGE . 'images/illustration/',
+	]);
+
 	// Change indentation from spaces to tabs in files
 	foreach ([
 		FS_DIR_APP . 'storage/config_deleteme.inc.php',
