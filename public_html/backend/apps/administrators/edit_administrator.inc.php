@@ -100,14 +100,8 @@
 			notices::add('errors', $e->getMessage());
 		}
 	}
-?>
-<style>
-#app-permissions li,
-#widget-permissions li {
-	padding: .25em 0;
-}
-</style>
 
+?>
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">

@@ -14,6 +14,10 @@ waitFor('jQuery', ($) => {
 		}
 	});
 
+});
+
+waitFor('jQuery', ($) => {
+
 	// Filter
 	$('#sidebar input[name="filter"]').on({
 

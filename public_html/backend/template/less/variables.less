@@ -27,7 +27,7 @@
 	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
-/* Variables */
+/******************** Light Theme ********************/
 
 :root {
 
@@ -38,6 +38,13 @@
 	--top-background: var(--card-background);
 	--top-text-color: var(--card-text-color);
 
+	--copyright-text-color: #444;
+
+	/* Scrollbar */
+	--scrollbar-thumb-background: #c1c1c1;
+	--scrollbar-track-background: #f4f4f4;
+
+	/* Sidebar */
 	--sidebar-background: #fff;
 	--sidebar-group-background: var(--site-background);
 	--sidebar-border: var(--default-border-color);
@@ -47,12 +54,12 @@
 
 	--app-icon-background: #edf0f9;
 
+	/* Toolbar */
 	--toolbar-background: #fff;
 	--toolbar-text-color: var(--top-text-color);
 	--toolbar-border-color: var(--default-border-color);
 	--toolbar-border-width: 1px;
 
-	--copyright-text-color: #444;
 
 	/* Navigation */
 	--navigation-background: #3e3e3e;
@@ -92,7 +99,7 @@
 
 	/* Forms */
 	--input-padding-x: 1em;
-	--input-padding-y: .5em;
+	--input-padding-y: .66em;
 	--input-background: #ededee;
 	--input-text-color: #000;
 	//--input-border-color: #e5e6e9;
@@ -278,7 +285,7 @@
 	--table-footer-text-color: var(--default-text-color);
 }
 
-/******************** Dark Mode ********************/
+/******************** Dark Theme ********************/
 
 html.dark-mode {
 
@@ -291,6 +298,11 @@ html.dark-mode {
 
 	--page-background: #1a2133;
 
+	/* Scrollbar */
+	--scrollbar-thumb-background: #444a5a;
+	--scrollbar-track-background: #232733;
+
+	/* Sidebar */
 	--sidebar-background: #242832;
 	--sidebar-app-background--hover: #2d313e;
 	--sidebar-app-background--active: #212836;

@@ -257,7 +257,7 @@
 			];
 
 			redirect(document::ilink(__APP__ . '/confirm'), 303);
-			exit();
+			exit;
 		} catch (Exception $e) {
 			unset(session::$data['csv_batch']);
 			notices::add('errors', $e->getMessage());

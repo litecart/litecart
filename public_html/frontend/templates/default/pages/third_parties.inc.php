@@ -114,7 +114,7 @@
 </main>
 
 <script>
-	$('button[name="privacy_settings"]').click(function() {
+	$('button[name="privacy_settings"]').on('click', function() {
 		$('#site-privacy-consent').trigger('openExpanded');
 	});
 
@@ -126,7 +126,7 @@
 		}
 	});
 
-	$('#box-third-parties .third-party a').click(function(e) {
+	$('#box-third-parties .third-party a').on('click', function(e) {
 		e.preventDefault();
 		var $thirdParty = this.closest('.third-party');
 		$('.details', $thirdParty).toggleClass('expanded').toggle('fast', function() {

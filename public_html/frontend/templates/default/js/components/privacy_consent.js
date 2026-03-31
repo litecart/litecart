@@ -57,7 +57,7 @@ waitFor('jQuery', ($) => {
 
 		};
 
-		$element.find('button[name="customize"]').click(function() {
+		$element.find('button[name="customize"]').on('click', function() {
 			$element.find('.privacy-classes').toggleClass('expanded');
 		});
 

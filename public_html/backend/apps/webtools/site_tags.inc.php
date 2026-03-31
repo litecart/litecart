@@ -114,7 +114,7 @@
 </div>
 
 <script>
-	$('.data-table input[name^="site_tags["]').change(function() {
+	$('.data-table input[name^="site_tags["]').on('change', function() {
 		if ($('.data-table input[name^="site_tags["]:checked').length > 0) {
 			$('fieldset').prop('disabled', false);
 		} else {

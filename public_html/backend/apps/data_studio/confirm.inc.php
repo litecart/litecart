@@ -63,7 +63,7 @@ if (isset($_POST['import']) || isset($_GET['resume'])) {
 				array_unshift($batch['data'], $row);
 				echo implode(PHP_EOL, ['', 'Resuming ' . number_format(count($batch['data']), 0, '', ' ') . ' remaining lines for processing...', '', '']);
 				header('Refresh: 0; url=' . document::link(null, ['resume' => 'true']));
-				exit();
+				exit;
 			}
 
 			if (connection_aborted()) {
@@ -185,19 +185,19 @@ if (isset($_POST['import']) || isset($_GET['resume'])) {
 		notices::add('success', t('success_import_completed', 'Import completed'));
 
 		header('Refresh: 5; url=' . document::ilink());
-		exit();
+		exit;
 	} catch (Exception $e) {
 		notices::add('errors', $e->getMessage());
 		echo 'Error: ' . $e->getMessage();
 		header('Refresh: 5; url=' . document::ilink());
-		exit();
+		exit;
 	}
 }
 
 if (isset($_POST['abort'])) {
 	unset(session::$data['csv_batch']);
 	redirect(document::ilink(__APP__ . '/import'), 303);
-	exit();
+	exit;
 }
 
 if (empty($_POST)) {

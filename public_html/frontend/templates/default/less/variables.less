@@ -6,36 +6,43 @@
 
 @import '../../../../assets/litecore/less/framework/media.less';
 
-/* anuphan-regular - latin */
+// anuphan-regular - latin
 @font-face {
-  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-display: swap; // Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options.
   font-family: 'Anuphan';
   font-style: normal;
   font-weight: 400;
-  src: url('../fonts/anuphan-v6-latin-regular.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+  src: url('../fonts/anuphan-v6-latin-regular.woff2') format('woff2'); // Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+
 }
-/* anuphan-500 - latin */
+// anuphan-500 - latin
 @font-face {
-  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-display: swap; // Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options.
   font-family: 'Anuphan';
   font-style: normal;
   font-weight: 500;
-  src: url('../fonts/anuphan-v6-latin-500.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+  src: url('../fonts/anuphan-v6-latin-500.woff2') format('woff2'); // Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+
 }
-/* anuphan-700 - latin */
+// anuphan-700 - latin
 @font-face {
-  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-display: swap; // Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options.
   font-family: 'Anuphan';
   font-style: normal;
   font-weight: 700;
-  src: url('../fonts/anuphan-v6-latin-700.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+  src: url('../fonts/anuphan-v6-latin-700.woff2') format('woff2'); // Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+
 }
+
+/******************** Light Theme ********************/
 
 :root {
 
 	/* General */
+
 	--site-background: #f2f2f7;
 	--listing-border: 1px solid #d3d3e1;
+
+	/* Scrollbar */
+	--scrollbar-thumb-background: #c1c1c1;
+	--scrollbar-track-background: #f4f4f4;
 
 	/* Important Notice */
 	--important-notice-background: #e7e2c8;
@@ -45,8 +52,8 @@
 
 	/* Framework */
 
-	--gutter-x: 15px; /* See additional for media queries */
-	--gutter-y: 15px; /* See additional for media queries */
+	--gutter-x: 15px; // See additional for media queries
+	--gutter-y: 15px; // See additional for media queries
 
 	@media (min-width: @media-breakpoint-sm) {
 		--gutter-x: 20px;
@@ -203,7 +210,7 @@
 	--notice-danger-background: #fcc;
 	--notice-danger-text-color: #c44;
 
-	/* Pagination */
+	// Pagination
 	--pagination-item-background: var(--navbar-background);
 	--pagination-item-background--hover: #e4e4ed;
 	--pagination-item-background--active: #f4f4f9;
@@ -211,7 +218,7 @@
 	--pagination-item-border-color: var(--navbar-border-color);
 	--pagination-item-border-width: 1px;
 
-	/* Pills */
+	// Pills
 	--pill-item-background: #e4e6ed;
 	--pill-item-text-color: var(--default-text-color);
 	--pill-item-border-color: transparent;
@@ -228,7 +235,7 @@
 	--pill-item-text-color--active: var(--default-text-color);
 	--pill-item-border-color--active: #bbb;
 
-	/* Tabs */
+	// Tabs
 	--tab-bar-background: #f6f7f9;
 
 	--tab-item-background: #e5e5ea;
@@ -236,7 +243,7 @@
 	--tab-item-background--active: #fff;;
 	--tab-item-shadow: var(--default-shadow);
 
-	/* Tables */
+	// Tables
 	--table-border-color: var(--default-border-color);
 	--table-border-width: 1px;
 
@@ -255,15 +262,23 @@
 	--table-footer-background: #fbfcfd;
 	--table-footer-text-color: var(--default-text-color);
 
-	/* Footer */
+	// Footer
 	--footer-background: #dedee5;
 	--footer-title-color: #333;
 	--footer-text-color: #333;
 	--footer-shadow: inset 0 .5em 1em 0 rgba(0, 0, 0, 0.05);
 
-	/* Copyright */
+	// Copyright
 	--copyright-background: transparent;
 	--copyright-text-color: var(--footer-text-color);
 	--cookie-notice-background: #334c;
 	--cookie-notice-text-color: #fff;
+}
+
+/******************** Dark Theme ********************/
+
+html.dark-mode {
+	// Scrollbar
+	--scrollbar-thumb-background: #444a5a;
+	--scrollbar-track-background: #232733;
 }

@@ -5,8 +5,6 @@
  * @author T. Almroth
  */
 
-// Banner Click Tracking
-
 waitFor('jQuery', ($) => {
 
 	// CSRF token for AJAX requests
@@ -15,6 +13,13 @@ waitFor('jQuery', ($) => {
 			jqXHR.setRequestHeader('X-CSRF-Token', window._env.csrf_token);
 		}
 	});
+
+});
+
+
+// Banner Click Tracking
+
+waitFor('jQuery', ($) => {
 
 	var mouseOverAd = null;
 
@@ -270,7 +275,7 @@ waitFor('jQuery', ($) => {
 
 		};
 
-		$element.find('button[name="customize"]').click(function() {
+		$element.find('button[name="customize"]').on('click', function() {
 			$element.find('.privacy-classes').toggleClass('expanded');
 		});
 

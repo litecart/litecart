@@ -424,6 +424,9 @@ template {
 .btn + .btn-group {
   margin-inline-start: 0.5em;
 }
+.btn > [class^="icon-"] {
+  margin-inline-end: 0.5em;
+}
 .btn-block {
   width: 100%;
 }
@@ -856,6 +859,28 @@ template {
 #context-menu .item:hover {
   background: #343434;
 }
+.divider {
+  display: flex;
+  align-items: center;
+  padding: 0.5em;
+}
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  border-top: 1px solid var(--default-text-color);
+}
+.divider::before {
+  margin-right: 0.75em;
+}
+.divider::after {
+  margin-left: 0.75em;
+}
+.divider span::before {
+  content: attr(data-text);
+  color: var(--default-text-color);
+  white-space: nowrap;
+}
 /* Dropdowns */
 .dropdown {
   position: relative;
@@ -1133,7 +1158,7 @@ html[dir="rtl"] .dropdown label:has([data-toggle="dropdown"]) {
   font-family: "LiteCore";
   font-style: normal;
   font-weight: 400;
-  src: url("../fonts/fonticons.woff2?1763332012") format("woff2");
+  src: url("../fonts/fonticons.woff2?1774915253") format("woff2");
 }
 [class^="icon-"],
 [class*=" icon-"] {
@@ -1144,6 +1169,7 @@ html[dir="rtl"] .dropdown label:has([data-toggle="dropdown"]) {
   font-variant: normal;
   text-rendering: auto;
   text-align: center;
+  vertical-align: middle;
   line-height: 1;
   width: 1em;
   height: 1em;
@@ -1564,6 +1590,9 @@ html[dir="rtl"] .dropdown label:has([data-toggle="dropdown"]) {
 .icon-funnel:before {
   content: "\e089";
 }
+.icon-pointer:before {
+  content: "\e08a";
+}
 .icon-folder:before {
   content: "\e08b";
 }
@@ -1578,6 +1607,12 @@ html[dir="rtl"] .dropdown label:has([data-toggle="dropdown"]) {
 }
 .icon-floppy-disk:before {
   content: "\e08f";
+}
+.icon-history:before {
+  content: "\e090";
+}
+.icon-table:before {
+  content: "\e091";
 }
 .icon-flag:before {
   content: "\e092";
@@ -4000,7 +4035,7 @@ body.navbar-expanded {
 .table.data-table a.link {
   display: inline-block;
   background: var(--table-link-background);
-  padding: 0.15em 1em;
+  padding: 0.15em 0.5em;
   line-height: 1.5;
   border-radius: var(--border-radius);
   box-shadow: var(--table-link-shadow);
