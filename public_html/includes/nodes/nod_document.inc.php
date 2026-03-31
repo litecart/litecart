@@ -180,7 +180,7 @@
 				$style = [];
 
 				$matches[2] = preg_replace_callback('#<style[^>]*>(.+?)</style>\R*#is', function($match) use (&$style) {
-					$style[] = trim($match[1], "\r\n");
+					$style[] = trim(preg_replace('#/\*[\s\S]*?\*/#', '', $match[1]), "\r\n"); // Trim comments
 				}, $matches[2]);
 
 				return $matches[1] . $matches[2] . $matches[3];
@@ -200,6 +200,13 @@
 				$javascript = [];
 
 				$matches[2] = preg_replace_callback('#<script[^>]*(?!src="[^"]+")[^>]*>(.+?)</script>\R*#is', function($match) use (&$javascript) {
+
+					// Strip comments
+					$match[1] = preg_replace([
+						'#//.*#m',           // Single-line comments (multiline mode)
+						'#/\*.*?\*/#s',      // Multi-line comments (dotall mode)
+					], '', $match[1]);
+
 					$javascript[] = trim($match[1], "\r\n");
 				}, $matches[2]);
 
@@ -207,23 +214,22 @@
 			}, $output);
 
 			// Reinsert external stylesheets
-			if (!empty($stylesheets)) {
+			if ($stylesheets) {
 				$stylesheets = implode(PHP_EOL, $stylesheets) . PHP_EOL;
 				$output = preg_replace('#</head>#', addcslashes($stylesheets . '</head>', '\\$'), $output, 1);
 			}
 
 			// Reinsert internal styles
-			if (!empty($style)) {
+			if ($style) {
 
 				// Convert to string
 				$style = implode(PHP_EOL, $style);
 
-				// Minify internal CSS
+				// Minify internal styles
 				foreach([
 					'#/\*(?:.(?!/)|[^\*](?=/)|(?<!\*)/)*\*/#s' => '', // Remove comments
 					'#([a-zA-Z0-9 \#=",-:()\[\]]+\{\s*\}\s*)#' => '', // Remove empty selectors
 					'#\s+#' => ' ', // Replace multiple whitespace
-					'#^\s+#' => ' ', // Replace leading whitespace
 					'#\s*([,:;{}])\s*#' => '$1', // Remove whitespace around delimiters
 					'#;}#' => '}', // Remove trailing semicolons before closing brackets
 				] as $search => $replace) {
@@ -245,13 +251,13 @@
 			}
 
 			// Reinsert external javascripts
-			if (!empty($javascripts)) {
+			if ($javascripts) {
 				$javascripts = implode(PHP_EOL, $javascripts) . PHP_EOL;
 				$output = preg_replace('#</body>#is', addcslashes($javascripts .'</body>', '\\$'), $output, 1);
 			}
 
 			// Reinsert internal javascript
-			if (!empty($javascript)) {
+			if ($javascript) {
 
 				// Convert to string
 				$javascript = implode(PHP_EOL, [

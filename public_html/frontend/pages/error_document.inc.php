@@ -9,7 +9,7 @@
 
 	document::$layout = 'blank';
 
-	if (preg_match('#\.(a?png|avif|gif|jpg|png|svg|webp)$#', route::$request)) {
+	if (preg_match('#\.(a?png|avif|gif|jpe?g|png|svg|webp)$#', route::$request)) {
 		header('Content-Type: image/svg+xml');
 		echo file_get_contents('storage://images/no_image.svg');
 		exit;

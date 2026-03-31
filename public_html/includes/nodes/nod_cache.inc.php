@@ -235,9 +235,7 @@
 					break;
 
 				default:
-
 					trigger_error('Invalid cache storage ('. $token['storage'] .')', E_USER_WARNING);
-
 					break;
 			}
 
@@ -284,7 +282,6 @@
 
 						default:
 							$token['storage'] = 'file';
-							break;
 							return self::set($token, $data);
 					}
 
@@ -352,6 +349,7 @@
 
 			// Clear modifications
 			if (!$keyword) {
+
 				foreach (glob('storage://vmods/.cache/*.php') as $file) {
 					if (is_file($file)) unlink($file);
 				}

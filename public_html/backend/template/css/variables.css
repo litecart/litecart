@@ -71,8 +71,8 @@
   --default-shadow: 0 0 0 0 #0000, 0 0 0 0 #0000, 0 5px 8px -3px rgba(0, 0, 0, 0.1), 0 2px 3px -2px rgba(0, 0, 0, 0.1);
   --link-text-color: #06b;
   /* Forms */
-  --input-padding-x: 1.5em;
-  --input-padding-y: 0.66em;
+  --input-padding-x: 1em;
+  --input-padding-y: 0.5em;
   --input-background: #ededee;
   --input-text-color: #000;
   --input-border-color: transparent;
