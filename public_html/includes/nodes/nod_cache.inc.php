@@ -252,6 +252,8 @@
 
 			stats::start_watch('cache');
 
+			$result = false;
+
 			switch ($token['storage']) {
 
 				case 'file':

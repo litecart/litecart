@@ -149,6 +149,7 @@
 
 			session::$data['administrator_security_timestamp'] = time();
 			session::regenerate_id();
+			session::rotate_csrf_token();
 
 			unset(session::$data['security_verification']);
 
@@ -160,7 +161,7 @@
 					$is_known_ip = true;
 					$is_known_range = true;
 					break;
-				} else if (preg_replace('[0-9]{1,3}\.[0-9]{1,3}$', '', $_SERVER['REMOTE_ADDR']) == preg_replace('[0-9]{1,3}\.[0-9]{1,3}$', '', $known_ip)) {
+				} else if (preg_replace('#[0-9]{1,3}\.[0-9]{1,3}$#', '', $_SERVER['REMOTE_ADDR']) == preg_replace('#[0-9]{1,3}\.[0-9]{1,3}$#', '', $known_ip)) {
 					$is_known_range = true;
 					break;
 				}

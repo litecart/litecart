@@ -355,7 +355,7 @@ input[name="development_type"]:checked + div {
 	<h3>Database Server</h3>
 
 	<ul>
-		<?php foreach ($requirements['databases'] as $database) { ?>
+		<?php foreach ($requirements['database'] as $database) { ?>
 		<li>
 			<?php echo $database['name']; ?> <?php echo $database['minimumVersion']; ?>+ (Recommended: <?php echo $database['recommendedVersion']; ?>+)
 		</li>

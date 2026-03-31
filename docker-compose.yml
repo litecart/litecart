@@ -6,7 +6,7 @@ services:
     depends_on:
       - mysql
     networks:
-      - litecart
+      - network
 
   mysql:
     image: mysql:8.0
@@ -18,15 +18,16 @@ services:
     command: >
       --character-set-server=utf8mb4
       --collation-server=utf8mb4_swedish_ci
+      --character-set-client-handshake=FALSE
     ports:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
     networks:
-      - litecart
+      - network
 
 networks:
-  litecart:
+  network:
 
 volumes:
   mysql_data:

@@ -205,7 +205,7 @@
 							'synonyms',
 						] as $field) {
 
-							$category[$field] = json_decode($category[$field], true) ?: [];
+							$category[$field] = json_decode((string)$category[$field], true) ?: [];
 
 							foreach ($this->_language_codes as $language_code) {
 								if (!empty($category[$field][$language_code])) {

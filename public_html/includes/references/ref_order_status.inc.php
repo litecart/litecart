@@ -37,7 +37,7 @@
 							'email_message',
 						] as $field) {
 
-							$status[$field] = json_decode($status[$field], true) ?: [];
+							$status[$field] = json_decode((string)$status[$field], true) ?: [];
 
 							foreach ($this->_language_codes as $language_code) {
 								if (!empty($status[$field][$language_code])) {

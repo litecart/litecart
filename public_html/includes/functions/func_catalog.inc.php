@@ -51,19 +51,19 @@
 			$query_fulltext = f::escape_mysql_fulltext($_GET['query']);
 
 			$sql_select_relevance[] = (
-				"if(json_value(c.name, '$.". database::input(language::$selected['code']) ."') like '%". database::input($query_fulltext) ."%', 10, 0)"
+				"if(json_value(c.name, '$.". database::input(language::$selected['code']) ."') collate utf8mb4_unicode_ci like '%". database::input($query_fulltext) ."%', 10, 0)"
 			);
 
 			$sql_select_relevance[] = (
-				"if(json_value(c.short_description, '$.". database::input(language::$selected['code']) ."') like '%". database::input($query_fulltext) ."%', 5, 0)"
+				"if(json_value(c.short_description, '$.". database::input(language::$selected['code']) ."') collate utf8mb4_unicode_ci like '%". database::input($query_fulltext) ."%', 5, 0)"
 			);
 
 			$sql_select_relevance[] = (
-				"if(json_value(c.description, '$.". database::input(language::$selected['code']) ."') like '%". database::input($query_fulltext) ."%', 5, 0)"
+				"if(json_value(c.description, '$.". database::input(language::$selected['code']) ."') collate utf8mb4_unicode_ci like '%". database::input($query_fulltext) ."%', 5, 0)"
 			);
 
 			$sql_select_relevance[] = (
-				"if(json_value(c.synonyms, '$.". database::input(language::$selected['code']) ."') like '%". database::input($query_fulltext) ."%', 10, 0)"
+				"if(json_value(c.synonyms, '$.". database::input(language::$selected['code']) ."') collate utf8mb4_unicode_ci like '%". database::input($query_fulltext) ."%', 10, 0)"
 			);
 		}
 
@@ -216,7 +216,7 @@
 		}
 
 		if (!empty($filter['product_name'])) {
-			$sql_inner_where['product_name'] = "json_value(p.name, '$.". database::input(language::$selected['code']) ."') like '%". addcslashes(database::input($filter['product_name']), '%_') ."%'";
+			$sql_inner_where['product_name'] = "json_value(p.name, '$.". database::input(language::$selected['code']) ."') collate utf8mb4_unicode_ci like '%". addcslashes(database::input($filter['product_name']), '%_') ."%'";
 		}
 
 		if (!empty($filter['brands'])) {
@@ -391,21 +391,21 @@
 			);
 
 			$sql_select_relevance[] = (
-				"if(json_value(p.name, '$.". database::input(language::$selected['code']) ."') like '%". addcslashes(database::input($_GET['query']), '%_') ."%', 3, 0)"
+				"if(json_value(p.name, '$.". database::input(language::$selected['code']) ."') collate utf8mb4_unicode_ci like '%". addcslashes(database::input($_GET['query']), '%_') ."%', 3, 0)"
 			);
 
 			$sql_select_relevance[] = (
-				"if(json_value(p.short_description, '$.". database::input(language::$selected['code']) ."') like '%". addcslashes(database::input($_GET['query']), '%_') ."%', 2, 0)"
+				"if(json_value(p.short_description, '$.". database::input(language::$selected['code']) ."') collate utf8mb4_unicode_ci like '%". addcslashes(database::input($_GET['query']), '%_') ."%', 2, 0)"
 			);
 
 			$sql_select_relevance[] = (
-				"if(json_value(p.description, '$.". database::input(language::$selected['code']) ."') like '%". addcslashes(database::input($_GET['query']), '%_') ."%', 1, 0)"
+				"if(json_value(p.description, '$.". database::input(language::$selected['code']) ."') collate utf8mb4_unicode_ci like '%". addcslashes(database::input($_GET['query']), '%_') ."%', 1, 0)"
 			);
 		}
 
 		if (!empty($filter['product_name'])) {
 			$sql_select_relevance['product_name'] = (
-				"if(json_value(p.name, '$.". database::input(language::$selected['code']) ."') like '%". addcslashes(database::input($filter['product_name']), '%_') ."%', 1, 0)"
+				"if(json_value(p.name, '$.". database::input(language::$selected['code']) ."') collate utf8mb4_unicode_ci like '%". addcslashes(database::input($filter['product_name']), '%_') ."%', 1, 0)"
 			);
 		}
 
@@ -498,7 +498,7 @@
 				ifnull(pso.num_stock_options, 0) as num_stock_options, pso.total_quantity, pso.quantity_available, pa.attributes
 
 			from (
-				select id, delivery_status_id, sold_out_status_id,code,	brand_id,	keywords,	image, recommended_price, tax_class_id,
+				select id, delivery_status_id, sold_out_status_id,code,	brand_id,	keywords,	default_image as image, recommended_price, tax_class_id,
 					json_value(name, '$.". database::input(language::$selected['code']) ."') as name,
 					json_value(short_description, '$.". database::input(language::$selected['code']) ."') as short_description,
 					quantity_unit_id, created_at, (

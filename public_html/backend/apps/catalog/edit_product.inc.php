@@ -517,11 +517,11 @@
 									<?php echo f::form_input_hidden('attributes['.$key.'][value_id]', true); ?>
 									<?php echo f::form_input_hidden('attributes['.$key.'][value_name]', true); ?>
 									<?php echo f::form_input_hidden('attributes['.$key.'][custom_value]', true); ?>
-									<?php echo $_POST['attributes'][$key]['group_name']; ?>
+									<?php echo f::escape_html($_POST['attributes'][$key]['group_name']); ?>
 								</td>
 								<td class="grabbable">
-									<?php echo $_POST['attributes'][$key]['value_name']; ?>
-									<?php echo $_POST['attributes'][$key]['custom_value']; ?>
+									<?php echo f::escape_html($_POST['attributes'][$key]['value_name']); ?>
+									<?php echo f::escape_html($_POST['attributes'][$key]['custom_value']); ?>
 								</td>
 								<td class="text-end">
 									<button name="remove" type="button" class="btn btn-default btn-sm" title="<?php echo t('title_remove', 'Remove'); ?>">
@@ -795,7 +795,7 @@
 										<span class="name"><?php echo $stock_option['name']; ?></span>
 									</td>
 									<td class="grabbable">
-										<span class="sku"><?php echo $_POST['stock_options'][$key]['sku']; ?></span>
+										<span class="sku"><?php echo f::escape_html($_POST['stock_options'][$key]['sku']); ?></span>
 									</td>
 									<td><?php echo f::form_select('stock_options['.$key.'][price_modifier]', ['+', '*', '%', '='], '+'); ?></td>
 									<td>
