@@ -33,6 +33,7 @@ return [
 		'database' => 'database.inc.php',
 		'table' => 'table.inc.php',
 		'edit_row' => 'edit_row.inc.php',
+		'edit_cell' => 'edit_cell.inc.php',
 		'edit_table' => 'edit_table.inc.php',
 		'pretty_print' => 'pretty_print.inc.php',
 		'import' => 'import.inc.php',

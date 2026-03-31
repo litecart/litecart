@@ -116,9 +116,7 @@ textarea[name="query"] {
 
 				<label class="form-group">
 					<div class="form-label"><?php echo language::translate('title_select_table', 'Select Table'); ?></div>
-				<?php echo f::form_select('table', array_map(function($table) {
-					return [$table['name'], $table['name']];
-				}, reference::database(1)->tables), $_GET['name']); ?>
+					<?php echo f::form_select('table', array_map(function($table) { return [$table, $table]; }, $tables), $_GET['name']); ?>
 				</label>
 
 				<?php echo f::form_begin('query_form', 'post', '', false, 'style="max-width: 100vw;"'); ?>
@@ -157,8 +155,8 @@ textarea[name="query"] {
 			<thead>
 				<tr>
 					<th><?php echo f::draw_fonticon('icon-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
-					<?php foreach ($columns as $column) { ?>
-					<th><?php echo $column['name']; ?></th>
+					<?php foreach ($columns as $column) {?>
+					<th data-name="<?php echo f::escape_attr($column['name']); ?>" data-type="<?php echo f::escape_attr($column['type']); ?>" data-length="<?php echo f::escape_attr($column['length']); ?>" data-nullable="<?php echo f::escape_attr($column['null']); ?>" data-unsigned="<?php echo f::escape_attr($column['unsigned']); ?>" data-zerofill="<?php echo f::escape_attr($column['zerofill']); ?>" data-default="<?php echo f::escape_attr($column['default']); ?>"><?php echo f::escape_html($column['name']); ?></th>
 					<?php } ?>
 					<th class="main"></th>
 				</tr>
@@ -166,10 +164,10 @@ textarea[name="query"] {
 
 			<tbody>
 				<?php foreach ($rows as $row) { ?>
-				<tr>
+				<tr data-pkv="<?php echo f::escape_attr($row[$primary_column]); ?>">
 					<td><?php echo f::form_checkbox('rows[]', $row[$primary_column]); ?></td>
 					<?php foreach ($row as $column => $value) { ?>
-					<td><?php echo $value ? addcslashes(f::escape_html($value), "\t\r\n") : '<em>NULL</em>'; ?></td>
+					<td data-column-name="<?php echo f::escape_attr($column); ?>"><?php echo $value ? addcslashes(f::escape_html($value), "\t\r\n") : '<em>NULL</em>'; ?></td>
 					<?php } ?>
 					<td class="text-end">
 						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_row', ['table' => $_GET['name'], $primary_column => $row[$primary_column]]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>">
@@ -288,6 +286,104 @@ textarea[name="query"] {
 			'query': $('form[name="query_form"] textarea[name="query"]').val(),
 		}).then(function(response){
 			$('form[name="query_form"] textarea[name="query"]').val(response);
+		});
+	});
+
+	// Inline edit on double-click using header data-* metadata for input selection
+	$('.data-table').on('dblclick', 'tbody tr td[data-column-name]', function(e) {
+		const $td = $(this);
+		const $tr = $td.closest('tr');
+		const pkv = $tr.attr('data-pkv') || $tr.data('pkv') || $tr.attr('data-pk') || $tr.data('pk');
+
+		if (typeof pkv === 'undefined') return;
+
+		// Prevent multiple editors
+		if ($td.find('input, textarea, select').length) return;
+
+		const original = $td.text().trim();
+		const colIndex = $td.index();
+		const $th = $('.data-table thead tr th').eq(colIndex);
+		const column = $th.data('name') || $td.data('column-name');
+		const type = ($th.data('type') || '').toString().toLowerCase();
+		const nullable = !!$th.data('nullable');
+		const unsigned = !!$th.data('unsigned');
+		const zerofill = !!$th.data('zerofill');
+		const length = parseInt($th.data('length')) || 0;
+
+		if (!column) return;
+
+		// Choose input element based on type (switch for clarity)
+		let $input;
+		switch (true) {
+			case /tinyint\(1\)/i.test(type):
+				$input = $('<input type="checkbox">').addClass('form-check-input');
+				$input.prop('checked', original === '1' || original.toLowerCase() === 'true');
+				break;
+			case /int|tinyint|smallint|mediumint|bigint/i.test(type):
+				$input = $('<input class="form-input" type="number">');
+				if (unsigned) $input.attr('min', 0);
+				$input.val(original.replace(/[^0-9\-]/g, ''));
+				break;
+			case /decimal|float|double/i.test(type):
+				$input = $('<input class="form-input" type="number">').attr('step', 'any');
+				if (unsigned) $input.attr('min', 0);
+				$input.val(original.replace(/[^0-9\.\-]/g, ''));
+				break;
+			case /text|blob/i.test(type):
+				$input = $('<textarea class="form-input">');
+				$input.val(original);
+				break;
+			default:
+				if (length > 200) {
+					$input = $('<textarea class="form-input">');
+					$input.val(original);
+				} else {
+					$input = $('<input class="form-input" type="text">');
+					$input.val(original);
+				}
+		}
+
+		$td.empty().append($input);
+
+		// focus the input (avoid unsupported ':number' pseudo-selector)
+		$input.focus();
+
+		const finalize = function(displayVal, fallback) {
+			if (displayVal) $td.html(displayVal); else $td.text(fallback || original);
+		};
+
+		const save = function() {
+			let sendVal;
+			if ($input.is(':checkbox')) sendVal = $input.prop('checked') ? '1' : '0';
+			else sendVal = $input.val();
+
+			// Treat empty string as NULL only when column is nullable
+			if (sendVal === '' && nullable) sendVal = '';
+
+			$.post('<?php echo document::ilink(__APP__.'/edit_cell'); ?>', {
+				'csrf_token': '<?php echo session::csrf_token(); ?>',
+				'table': '<?php echo f::escape_attr($_GET['name'] ?? ''); ?>',
+				'primary_column': '<?php echo f::escape_attr($primary_column); ?>',
+				'pkv': pkv,
+				'column': column,
+				'value': sendVal,
+			}).done(function(resp){
+				try { var result = JSON.parse(resp); } catch(e) { result = { error: resp }; }
+				if (result.success) {
+					finalize(result.value, original);
+				} else {
+					alert(result.error || 'Update failed');
+					finalize(null, original);
+				}
+			}).fail(function(){
+				alert('Request failed');
+				finalize(null, original);
+			});
+		};
+
+		$input.on('blur', save).on('keydown', function(ev){
+			if (ev.key === 'Enter' && $input.is(':text')) { ev.preventDefault(); $input.blur(); }
+			if (ev.key === 'Escape') { $td.text(original); }
 		});
 	});
 </script>
