@@ -241,7 +241,9 @@
 
 		$query = (
 			"select p.*, b.id as brand_id, b.name as brand_name,
-				pp.regular_price, pp.final_price,
+				pp.regular_price,
+				if(cd.category_discount is not null, round(pp.final_price * (1 - cd.category_discount / 100), 4), pp.final_price) as final_price,
+				cd.category_discount,
 				ifnull(pso.num_stock_options, 0) as num_stock_options, pso.total_quantity, pso.quantity_available,
 				pa.attributes, ss.hidden
 
@@ -323,6 +325,17 @@
 			) pso on (pso.product_id = p.id)
 
 			left join ". DB_TABLE_PREFIX ."sold_out_statuses ss on (p.sold_out_status_id = ss.id)
+
+			left join (
+				select ptc.product_id, max(c.discount_percent) as category_discount
+				from ". DB_TABLE_PREFIX ."categories c
+				join ". DB_TABLE_PREFIX ."products_to_categories ptc on (ptc.category_id = c.id)
+				where c.discount_percent > 0
+				and c.status
+				and (c.discount_valid_from is null or c.discount_valid_from <= '". date('Y-m-d H:i:s') ."')
+				and (c.discount_valid_to is null or c.discount_valid_to >= '". date('Y-m-d H:i:s') ."')
+				group by ptc.product_id
+			) cd on (cd.product_id = p.id)
 
 			where (
 				(ifnull(pso.num_stock_options, 0) = 0 or pso.quantity_available > 0 or ss.hidden != 1)

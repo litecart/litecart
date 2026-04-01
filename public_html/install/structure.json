@@ -636,6 +636,25 @@
 					"length": 11,
 					"default": 0
 				},
+				"discount_percent": {
+					"type": "DECIMAL",
+					"length": "5,2",
+					"default": 0
+				},
+				"discount_valid_from": {
+					"type": "DATETIME",
+					"nullable": true
+				},
+				"discount_valid_to": {
+					"type": "DATETIME",
+					"nullable": true
+				},
+				"discount_stacking": {
+					"type": "TINYINT",
+					"length": 1,
+					"unsigned": true,
+					"default": 1
+				},
 				"updated_at": {
 					"type": "TIMESTAMP",
 					"default": "CURRENT_TIMESTAMP",

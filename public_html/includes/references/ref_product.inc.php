@@ -134,7 +134,28 @@
 
 				break;
 
-			case 'categories':
+			case 'category_discount':
+
+					$this->_data['category_discount'] = null;
+
+					$discount = database::query(
+						"select max(c.discount_percent) as discount_percent
+						from ". DB_TABLE_PREFIX ."categories c
+						join ". DB_TABLE_PREFIX ."products_to_categories ptc on (ptc.category_id = c.id)
+						where ptc.product_id = ". (int)$this->_data['id'] ."
+						and c.discount_percent > 0
+						and (c.discount_valid_from is null or c.discount_valid_from <= '". date('Y-m-d H:i:s') ."')
+						and (c.discount_valid_to is null or c.discount_valid_to >= '". date('Y-m-d H:i:s') ."')
+						limit 1;"
+					)->fetch('discount_percent');
+
+					if ($discount > 0) {
+						$this->_data['category_discount'] = (float)$discount;
+					}
+
+					break;
+
+				case 'categories':
 
 					$this->_data['categories'] = [];
 
@@ -229,6 +250,14 @@
 
 						if ($customer_price && $customer_price < $this->_data['final_price']) {
 							$this->_data['final_price'] = $customer_price;
+						}
+					}
+
+					// Category Discount (highest active discount wins)
+					if ($this->category_discount > 0) {
+						$discounted_price = $this->_data['final_price'] * (1 - $this->category_discount / 100);
+						if ($discounted_price < $this->_data['final_price']) {
+							$this->_data['final_price'] = round($discounted_price, 4);
 						}
 					}
 

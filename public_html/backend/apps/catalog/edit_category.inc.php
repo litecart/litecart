@@ -64,6 +64,10 @@
 				'synonyms',
 				'filters',
 				'priority',
+				'discount_percent',
+				'discount_valid_from',
+				'discount_valid_to',
+				'discount_stacking',
 			] as $field) {
 				if (isset($_POST[$field])) {
 					$category->data[$field] = $_POST[$field];
@@ -178,6 +182,35 @@
 								<div class="form-label"><?php echo t('title_priority', 'Priority'); ?></div>
 								<?php echo f::form_input_number('priority', true); ?>
 							</label>
+
+							<fieldset style="margin-top: 15px; padding: 15px; border: 1px solid var(--border-color); border-radius: 5px;">
+								<legend style="font-weight: bold; padding: 0 5px;"><?php echo t('title_discount', 'Discount'); ?></legend>
+
+								<label class="form-group">
+									<div class="form-label"><?php echo t('title_discount_percent', 'Discount (%)'); ?></div>
+									<?php echo f::form_input_number('discount_percent', true, 'min="0" max="100" step="0.01"'); ?>
+								</label>
+
+								<div class="grid">
+									<div class="col-md-6">
+										<label class="form-group">
+											<div class="form-label"><?php echo t('title_valid_from', 'Valid From'); ?></div>
+											<?php echo f::form_input_datetime('discount_valid_from', true); ?>
+										</label>
+									</div>
+									<div class="col-md-6">
+										<label class="form-group">
+											<div class="form-label"><?php echo t('title_valid_to', 'Valid To'); ?></div>
+											<?php echo f::form_input_datetime('discount_valid_to', true); ?>
+										</label>
+									</div>
+								</div>
+
+								<label class="form-group">
+									<div class="form-label"><?php echo t('title_discount_stacking', 'Stackable With Discount Codes'); ?></div>
+									<?php echo f::form_toggle('discount_stacking', 'y/n', true); ?>
+								</label>
+							</fieldset>
 						</div>
 
 						<div class="col-md-4">

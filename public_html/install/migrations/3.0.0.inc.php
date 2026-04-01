@@ -1289,3 +1289,14 @@
 		drop column `length_unit`,
 		drop column `quantity`;"
 	);
+
+	// Category discounts
+	if (!database::query("show columns from ". DB_TABLE_PREFIX ."categories like 'discount_percent';")->num_rows) {
+		database::query(
+			"alter table ". DB_TABLE_PREFIX ."categories
+			add column `discount_percent` decimal(5,2) not null default 0 after `priority`,
+			add column `discount_valid_from` datetime default null after `discount_percent`,
+			add column `discount_valid_to` datetime default null after `discount_valid_from`,
+			add column `discount_stacking` tinyint(1) unsigned not null default 1 after `discount_valid_to`;"
+		);
+	}

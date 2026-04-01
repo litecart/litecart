@@ -136,6 +136,10 @@
 					synonyms = '". database::input(f::format_json($this->data['synonyms'])) ."',
 					keywords = '". database::input($this->data['keywords']) ."',
 					priority = ". (int)$this->data['priority'] .",
+					discount_percent = ". min(100, max(0, (float)$this->data['discount_percent'])) .",
+					discount_valid_from = ". (!empty($this->data['discount_valid_from']) ? "'". database::input($this->data['discount_valid_from']) ."'" : "null") .",
+					discount_valid_to = ". (!empty($this->data['discount_valid_to']) ? "'". database::input($this->data['discount_valid_to']) ."'" : "null") .",
+					discount_stacking = ". (int)$this->data['discount_stacking'] .",
 					updated_at = '". ($this->data['updated_at'] = date('Y-m-d H:i:s')) ."'
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"

@@ -22,6 +22,24 @@
 
 			switch($field) {
 
+				case 'active_discount':
+
+					$this->_data['active_discount'] = null;
+
+					if (empty($this->discount_percent) || $this->discount_percent <= 0) break;
+
+					if (!empty($this->discount_valid_from) && $this->discount_valid_from > date('Y-m-d H:i:s')) break;
+					if (!empty($this->discount_valid_to) && $this->discount_valid_to < date('Y-m-d H:i:s')) break;
+
+					$this->_data['active_discount'] = [
+						'percent' => (float)$this->discount_percent,
+						'valid_from' => $this->discount_valid_from,
+						'valid_to' => $this->discount_valid_to,
+						'stacking' => (bool)$this->discount_stacking,
+					];
+
+					break;
+
 				case 'parent':
 
 					$this->_data['parent'] = false;
