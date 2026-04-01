@@ -204,10 +204,10 @@
 							<table class="table data-table">
 								<thead>
 									<tr>
-										<th class="text-start"><?php echo t('title_item', 'Item'); ?></td>
-										<th class="text-end"><?php echo t('title_price', 'Price'); ?></td>
-										<th class="text-end"><?php echo t('title_discount', 'Discount'); ?></td>
-										<th class="text-end"><?php echo t('title_sum', 'Sum'); ?></td>
+										<th class="text-start"><?php echo t('title_item', 'Item'); ?></th>
+										<th class="text-end"><?php echo t('title_price', 'Price'); ?></th>
+										<th class="text-end"><?php echo t('title_discount', 'Discount'); ?></th>
+										<th class="text-end"><?php echo t('title_sum', 'Sum'); ?></th>
 									</tr>
 								</thead>
 

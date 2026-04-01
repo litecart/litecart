@@ -192,7 +192,7 @@ waitFor('jQuery', ($) => {
 			});
 		};
 
-		let timerCart = setInterval('updateCart()', 60e3); // Keeps session alive
+		let timerCart = setInterval(updateCart, 60e3); // Keeps session alive
 	}
 });
 
