@@ -80,8 +80,8 @@
 				'country_code',
 				'postcode',
 			] as $field) {
-				if (isset($_POST['customer'][$field])) {
-					$order->data['customer'][$field] = $_POST['customer'][$field];
+				if (isset($_POST[$field])) {
+					$order->data['customer'][$field] = $_POST[$field];
 				}
 			}
 
