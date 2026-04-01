@@ -25,7 +25,7 @@
 				"valid_from": { "type": "TIMESTAMP", "nullable": true },
 				"valid_to": { "type": "TIMESTAMP", "nullable": true },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
-				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP"}
+				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
 			},
 			"primary_key": ["id"],
 			"keys": {
@@ -41,7 +41,7 @@
 				"name": { "type": "TEXT", "nullable": true },
 				"sort": { "type": "ENUM('alphabetical','priority')", "default": "'alphabetical'" },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
-				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP"}
+				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
 			},
 			"primary_key": ["id"],
 			"keys": {
@@ -58,7 +58,7 @@
 				"name": { "type": "TEXT", "nullable": true },
 				"priority": { "type": "INT", "length": 11, "default": 0 },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
-				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP"}
+				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
 			},
 			"primary_key": ["id"],
 			"keys": {
@@ -83,7 +83,7 @@
 				"valid_from": { "type": "TIMESTAMP", "nullable": true },
 				"valid_to": { "type": "TIMESTAMP", "nullable": true },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
-				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP"}
+				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
 			},
 			"primary_key": ["id"]
 		},
@@ -103,7 +103,7 @@
 				"keywords": { "type": "VARCHAR", "length": 255, "default": "''" },
 				"image": { "type": "VARCHAR", "length": 128, "default": "''" },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
-				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP"}
+				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
 			},
 			"primary_key": ["id"],
 			"keys": {
@@ -129,7 +129,7 @@
 				"valid_from": { "type": "TIMESTAMP", "nullable": true },
 				"valid_to": { "type": "TIMESTAMP", "nullable": true },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
-				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP"}
+				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
 			},
 			"primary_key": ["id"],
 			"keys": {
@@ -150,7 +150,7 @@
 				"image": { "type": "VARCHAR", "length": 255, "default": "''" },
 				"quantity": { "type": "DECIMAL", "length": "11,4", "default": 1 },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
-				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP"}
+				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
 			},
 			"primary_key": ["id"],
 			"keys": {
@@ -158,9 +158,33 @@
 				"cart_uid": ["cart_uid"]
 			},
 			"foreign_keys": {
-				"cart_item_to_customer": { "columns":["customer_id"], "references":{"table": "customers", "columns":["id"], "on_update": "CASCADE", "on_delete": "CASCADE"}},
-				"cart_item_to_product": { "columns":["product_id"], "references":{"table": "products", "columns":["id"], "on_update": "CASCADE", "on_delete": "CASCADE"}},
-				"cart_item_to_stock_option": { "columns":["stock_option_id"], "references":{"table": "products_stock_options", "columns":["id"], "on_update": "CASCADE", "on_delete": "CASCADE"}}
+				"cart_item_to_customer": {
+					"columns": ["customer_id"],
+					"references": {
+						"table": "customers",
+						"columns": ["id"],
+						"on_update": "CASCADE",
+						"on_delete": "CASCADE"
+					}
+				},
+				"cart_item_to_product": {
+					"columns": ["product_id"],
+					"references": {
+						"table": "products",
+						"columns": ["id"],
+						"on_update": "CASCADE",
+						"on_delete": "CASCADE"
+					}
+				},
+				"cart_item_to_stock_option": {
+					"columns": ["stock_option_id"],
+					"references": {
+						"table": "products_stock_options",
+						"columns": ["id"],
+						"on_update": "CASCADE",
+						"on_delete": "CASCADE"
+					}
+				}
 			}
 		},
 		"categories": {
@@ -181,7 +205,7 @@
 				"image": { "type": "VARCHAR", "length": 255, "default": "''" },
 				"priority": { "type": "INT", "length": 11, "default": 0 },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
-				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP"}
+				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
 			},
 			"primary_key": ["id"],
 			"keys": {
@@ -192,7 +216,13 @@
 			"foreign_keys": {
 				"category_to_parent": {
 					"columns": ["parent_id"],
-					"references": { "table": "categories", "columns":["id"], "on_update": "CASCADE", "on_delete": "RESTRICT" }}
+					"references": {
+					"table": "categories",
+					"columns": ["id"],
+					"on_update": "CASCADE",
+					"on_delete": "RESTRICT"
+					}
+				}
 			},
 			"check_constraints": {
 				"categories_chk_name": "name IS NULL OR name = '' OR JSON_VALID(name)",
@@ -221,11 +251,21 @@
 			"foreign_keys": {
 				"category_filter_to_category": {
 					"columns": ["category_id"],
-					"references": { "table": "categories", "columns":["id"], "on_update": "NO ACTION", "on_delete": "CASCADE" }}
-					,
+					"references": {
+						"table": "categories",
+						"columns": ["id"],
+						"on_update": "NO ACTION",
+						"on_delete": "CASCADE"
+					}
+				},
 				"category_filter_to_attribute_group": {
 					"columns": ["attribute_group_id"],
-					"references": { "table": "attribute_groups", "columns":["id"], "on_update": "NO ACTION", "on_delete": "CASCADE" }
+					"references": {
+						"table": "attribute_groups",
+						"columns": ["id"],
+						"on_update": "NO ACTION",
+						"on_delete": "CASCADE"
+					}
 				}
 			}
 		},
@@ -246,7 +286,7 @@
 				"currency_code": { "type": "CHAR", "length": 3, "default": "''" },
 				"phone_code": { "type": "VARCHAR", "length": 3, "default": "''" },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
-				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP"}
+				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
 			},
 			"primary_key": ["id"],
 			"unique_keys": {
@@ -271,7 +311,7 @@
 				"suffix": { "type": "VARCHAR", "length": 8, "default": "''" },
 				"priority": { "type": "INT", "length": 11, "default": 0 },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
-				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP"}
+				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
 			},
 			"primary_key": ["id"],
 			"keys": {
@@ -287,7 +327,7 @@
 				"name": { "type": "VARCHAR", "length": 32, "default": "''" },
 				"description": { "type": "VARCHAR", "length": 248, "default": "''" },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
-				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP"}
+				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
 			},
 			"primary_key": ["id"]
 		},
@@ -336,7 +376,7 @@
 				"blocked_until": { "type": "TIMESTAMP", "nullable": true },
 				"sessions_expiry": { "type": "TIMESTAMP", "nullable": true },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
-				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP"}
+				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
 			},
 			"primary_key": ["id"],
 			"unique_keys": {
@@ -348,7 +388,12 @@
 			"foreign_keys": {
 				"customer_to_customer_group": {
 					"columns": ["group_id"],
-					"references": { "table": "customer_groups", "columns":["id"], "on_update": "CASCADE", "on_delete": "SET NULL" }
+					"references": {
+						"table": "customer_groups",
+						"columns": ["id"],
+						"on_update": "CASCADE",
+						"on_delete": "SET NULL"
+					}
 				}
 			}
 		},
@@ -358,7 +403,7 @@
 				"name": { "type": "TEXT", "nullable": true },
 				"description": { "type": "TEXT", "nullable": true },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
-				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP"}
+				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
 			},
 			"primary_key": ["id"],
 			"check_constraints": {
@@ -385,7 +430,7 @@
 				"scheduled_at": { "type": "TIMESTAMP", "nullable": true },
 				"sent_at": { "type": "TIMESTAMP", "nullable": true },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
-				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP"}
+				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
 			},
 			"primary_key": ["id"],
 			"keys": {
@@ -412,7 +457,7 @@
 				"user_agent": { "type": "VARCHAR", "length": 248, "nullable": true },
 				"fingerprint": { "type": "VARCHAR", "length": 32, "nullable": true },
 				"expires_at": { "type": "TIMESTAMP", "nullable": true },
-				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP"}
+				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
 			},
 			"primary_key": ["id"],
 			"keys": {
@@ -430,7 +475,12 @@
 			"foreign_keys": {
 				"event_log_to_customer": {
 					"columns": ["customer_id"],
-					"references": { "table": "customers", "columns":["id"], "on_update": "CASCADE", "on_delete": "CASCADE" }
+					"references": {
+						"table": "customers",
+						"columns": ["id"],
+						"on_update": "CASCADE",
+						"on_delete": "CASCADE"
+					}
 				}
 			},
 			"check_constraints": {
@@ -445,7 +495,7 @@
 				"name": { "type": "VARCHAR", "length": 64, "default": "''" },
 				"description": { "type": "VARCHAR", "length": 255, "default": "''" },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
-				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP"}
+				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
 			},
 			"primary_key": ["id"]
 		},
@@ -472,7 +522,7 @@
 				"thousands_sep": { "type": "VARCHAR", "length": 1, "default": "''" },
 				"priority": { "type": "INT", "length": 11, "default": 0 },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
-				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP"}
+				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
 			},
 			"primary_key": ["id"],
 			"keys": {
@@ -491,7 +541,7 @@
 				"last_pushed": { "type": "TIMESTAMP", "nullable": true },
 				"last_processed": { "type": "TIMESTAMP", "nullable": true },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
-				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP"}
+				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
 			},
 			"primary_key": ["id"],
 			"unique_keys": {
@@ -514,7 +564,7 @@
 				"ip_address": { "type": "VARCHAR", "length": 64, "default": "''" },
 				"hostname": { "type": "VARCHAR", "length": 128, "default": "''" },
 				"user_agent": { "type": "VARCHAR", "length": 248, "default": "''" },
-				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP"}
+				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
 			},
 			"primary_key": ["id"],
 			"unique_keys": {
@@ -600,7 +650,7 @@
 				"date_paid": { "type": "TIMESTAMP", "nullable": true },
 				"date_dispatched": { "type": "TIMESTAMP", "nullable": true },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
-				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP"}
+				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
 			},
 			"primary_key": ["id"],
 			"unique_keys": {
@@ -615,11 +665,21 @@
 			"foreign_keys": {
 				"order_to_customer": {
 					"columns": ["customer_id"],
-					"references": { "table": "customers", "columns":["id"], "on_update": "CASCADE", "on_delete": "SET NULL" }}
-					,
+					"references": {
+						"table": "customers",
+						"columns": ["id"],
+						"on_update": "CASCADE",
+						"on_delete": "SET NULL"
+					}
+				},
 				"order_to_order_status": {
 					"columns": ["order_status_id"],
-					"references": { "table": "order_statuses", "columns":["id"], "on_update": "CASCADE", "on_delete": "SET NULL" }
+					"references": {
+						"table": "order_statuses",
+						"columns": ["id"],
+						"on_update": "CASCADE",
+						"on_delete": "SET NULL"
+					}
 				}
 			},
 			"check_constraints": {
@@ -634,7 +694,7 @@
 				"author": { "type": "ENUM('system','staff','customer')", "default": "'system'" },
 				"text": { "type": "VARCHAR", "length": 512, "default": "''" },
 				"hidden": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
-				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP"}
+				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
 			},
 			"primary_key": ["id"],
 			"keys": {
@@ -643,7 +703,12 @@
 			"foreign_keys": {
 				"order_comment_to_order": {
 					"columns": ["order_id"],
-					"references": { "table": "orders", "columns":["id"], "on_update": "NO ACTION", "on_delete": "CASCADE" }
+					"references": {
+						"table": "orders",
+						"columns": ["id"],
+						"on_update": "NO ACTION",
+						"on_delete": "CASCADE"
+					}
 				}
 			}
 		},
@@ -683,11 +748,21 @@
 			"foreign_keys": {
 				"order_item_to_order": {
 					"columns": ["order_id"],
-					"references": { "table": "orders", "columns":["id"], "on_update": "NO ACTION", "on_delete": "CASCADE" }}
-					,
+					"references": {
+						"table": "orders",
+						"columns": ["id"],
+						"on_update": "NO ACTION",
+						"on_delete": "CASCADE"
+					}
+				},
 				"order_item_to_product": {
 					"columns": ["product_id"],
-					"references": { "table": "products", "columns":["id"], "on_update": "CASCADE", "on_delete": "SET NULL" }
+					"references": {
+						"table": "products",
+						"columns": ["id"],
+						"on_update": "CASCADE",
+						"on_delete": "SET NULL"
+					}
 				}
 			}
 		},
@@ -725,15 +800,30 @@
 			"foreign_keys": {
 				"order_line_to_order": {
 					"columns": ["order_id"],
-					"references": { "table": "orders", "columns":["id"], "on_update": "RESTRICT", "on_delete": "RESTRICT" }}
-					,
+					"references": {
+						"table": "orders",
+						"columns": ["id"],
+						"on_update": "RESTRICT",
+						"on_delete": "RESTRICT"
+					}
+				},
 				"order_line_to_tax_class": {
 					"columns": ["tax_class_id"],
-					"references": { "table": "tax_classes", "columns":["id"], "on_update": "RESTRICT", "on_delete": "RESTRICT" }}
-					,
+					"references": {
+						"table": "tax_classes",
+						"columns": ["id"],
+						"on_update": "RESTRICT",
+						"on_delete": "RESTRICT"
+					}
+				},
 				"order_line_to_stock_option": {
 					"columns": ["stock_option_id"],
-					"references": { "table": "products_stock_options", "columns":["id"], "on_update": "CASCADE", "on_delete": "SET NULL" }
+					"references": {
+						"table": "products_stock_options",
+						"columns": ["id"],
+						"on_update": "CASCADE",
+						"on_delete": "SET NULL"
+					}
 				}
 			},
 			"check_constraints": {
@@ -758,7 +848,7 @@
 				"notify": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
 				"priority": { "type": "INT", "length": 11, "default": 0 },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
-				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP"}
+				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
 			},
 			"primary_key": ["id"],
 			"keys": {
@@ -786,7 +876,7 @@
 				"meta_description": { "type": "TEXT", "nullable": true },
 				"priority": { "type": "INT", "length": 11, "default": 0 },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
-				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP"}
+				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
 			},
 			"primary_key": ["id"],
 			"keys": {
@@ -841,7 +931,7 @@
 				"valid_from": { "type": "TIMESTAMP", "nullable": true },
 				"valid_to": { "type": "TIMESTAMP", "nullable": true },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
-				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP"}
+				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
 			},
 			"primary_key": ["id"],
 			"keys": {
@@ -893,15 +983,30 @@
 			"foreign_keys": {
 				"product_attribute_to_product": {
 					"columns": ["product_id"],
-					"references": { "table": "products", "columns":["id"], "on_update": "NO ACTION", "on_delete": "CASCADE" }}
-					,
+					"references": {
+						"table": "products",
+						"columns": ["id"],
+						"on_update": "NO ACTION",
+						"on_delete": "CASCADE"
+					}
+				},
 				"product_attribute_to_attribute_group": {
 					"columns": ["group_id"],
-					"references": { "table": "attribute_groups", "columns":["id"], "on_update": "NO ACTION", "on_delete": "CASCADE" }}
-					,
+					"references": {
+						"table": "attribute_groups",
+						"columns": ["id"],
+						"on_update": "NO ACTION",
+						"on_delete": "CASCADE"
+					}
+				},
 				"product_attribute_to_attribute_value": {
 					"columns": ["value_id"],
-					"references": { "table": "attribute_values", "columns":["id"], "on_update": "NO ACTION", "on_delete": "CASCADE" }
+					"references": {
+						"table": "attribute_values",
+						"columns": ["id"],
+						"on_update": "NO ACTION",
+						"on_delete": "CASCADE"
+					}
 				}
 			}
 		},
@@ -926,11 +1031,21 @@
 			"foreign_keys": {
 				"product_customization_to_product": {
 					"columns": ["product_id"],
-					"references": { "table": "products", "columns":["id"], "on_update": "CASCADE", "on_delete": "CASCADE" }}
-					,
+					"references": {
+						"table": "products",
+						"columns": ["id"],
+						"on_update": "CASCADE",
+						"on_delete": "CASCADE"
+					}
+				},
 				"product_customization_to_attribute_group": {
 					"columns": ["group_id"],
-					"references": { "table": "attribute_groups", "columns":["id"], "on_update": "CASCADE", "on_delete": "CASCADE" }
+					"references": {
+						"table": "attribute_groups",
+						"columns": ["id"],
+						"on_update": "CASCADE",
+						"on_delete": "CASCADE"
+					}
 				}
 			}
 		},
@@ -956,15 +1071,30 @@
 			"foreign_keys": {
 				"product_customization_value_to_product": {
 					"columns": ["product_id"],
-					"references": { "table": "products", "columns":["id"], "on_update": "CASCADE", "on_delete": "CASCADE" }}
-					,
+					"references": {
+						"table": "products",
+						"columns": ["id"],
+						"on_update": "CASCADE",
+						"on_delete": "CASCADE"
+					}
+				},
 				"product_customization_value_to_attribute_group": {
 					"columns": ["group_id"],
-					"references": { "table": "attribute_groups", "columns":["id"], "on_update": "CASCADE", "on_delete": "CASCADE" }}
-					,
+					"references": {
+						"table": "attribute_groups",
+						"columns": ["id"],
+						"on_update": "CASCADE",
+						"on_delete": "CASCADE"
+					}
+				},
 				"product_customization_value_to_attribute_value": {
 					"columns": ["value_id"],
-					"references": { "table": "attribute_values", "columns":["id"], "on_update": "CASCADE", "on_delete": "CASCADE" }
+					"references": {
+						"table": "attribute_values",
+						"columns": ["id"],
+						"on_update": "CASCADE",
+						"on_delete": "CASCADE"
+					}
 				}
 			}
 		},
@@ -983,7 +1113,12 @@
 			"foreign_keys": {
 				"product_image_to_product": {
 					"columns": ["product_id"],
-					"references": { "table": "products", "columns":["id"], "on_update": "NO ACTION", "on_delete": "CASCADE" }
+					"references": {
+						"table": "products",
+						"columns": ["id"],
+						"on_update": "NO ACTION",
+						"on_delete": "CASCADE"
+					}
 				}
 			}
 		},
@@ -993,7 +1128,7 @@
 				"product_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
 				"email": { "type": "VARCHAR", "length": 64, "default": "''" },
 				"language_code": { "type": "CHAR", "length": 2, "default": "''" },
-				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP"}
+				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
 			},
 			"primary_key": ["id"],
 			"unique_keys": {
@@ -1005,11 +1140,21 @@
 			"foreign_keys": {
 				"notification_to_product": {
 					"columns": ["product_id"],
-					"references": { "table": "products", "columns":["id"], "on_update": "CASCADE", "on_delete": "CASCADE" }}
-					,
+					"references": {
+						"table": "products",
+						"columns": ["id"],
+						"on_update": "CASCADE",
+						"on_delete": "CASCADE"
+					}
+				},
 				"notification_to_language": {
 					"columns": ["language_code"],
-					"references": { "table": "languages", "columns":["code"], "on_update": "CASCADE", "on_delete": "CASCADE" }
+					"references": {
+						"table": "languages",
+						"columns": ["code"],
+						"on_update": "CASCADE",
+						"on_delete": "CASCADE"
+					}
 				}
 			}
 		},
@@ -1021,7 +1166,7 @@
 				"customer_group_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
 				"geo_zone_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
 				"min_quantity": { "type": "DECIMAL", "length": "10,4", "unsigned": true, "default": 1 },
-				"price": { "type": "VARCHAR", "length": 512, "default": "'{}'"}
+				"price": { "type": "VARCHAR", "length": 512, "default": "'{}'" }
 			},
 			"primary_key": ["id"],
 			"keys": {
@@ -1034,19 +1179,39 @@
 			"foreign_keys": {
 				"product_price_to_product": {
 					"columns": ["product_id"],
-					"references": { "table": "products", "columns":["id"], "on_update": "CASCADE", "on_delete": "CASCADE" }}
-					,
+					"references": {
+						"table": "products",
+						"columns": ["id"],
+						"on_update": "CASCADE",
+						"on_delete": "CASCADE"
+					}
+				},
 				"product_price_to_customer_group": {
 					"columns": ["customer_group_id"],
-					"references": { "table": "customer_groups", "columns":["id"], "on_update": "CASCADE", "on_delete": "CASCADE" }}
-					,
+					"references": {
+						"table": "customer_groups",
+						"columns": ["id"],
+						"on_update": "CASCADE",
+						"on_delete": "CASCADE"
+					}
+				},
 				"product_price_to_campaign": {
 					"columns": ["campaign_id"],
-					"references": { "table": "campaigns", "columns":["id"], "on_update": "CASCADE", "on_delete": "CASCADE" }}
-					,
+					"references": {
+						"table": "campaigns",
+						"columns": ["id"],
+						"on_update": "CASCADE",
+						"on_delete": "CASCADE"
+					}
+				},
 				"product_price_to_geo_zone": {
 					"columns": ["geo_zone_id"],
-					"references": { "table": "geo_zones", "columns":["id"], "on_update": "CASCADE", "on_delete": "CASCADE" }
+					"references": {
+						"table": "geo_zones",
+						"columns": ["id"],
+						"on_update": "CASCADE",
+						"on_delete": "CASCADE"
+					}
 				}
 			},
 			"check_constraints": {
@@ -1073,11 +1238,21 @@
 			"foreign_keys": {
 				"product_stock_option_to_product": {
 					"columns": ["product_id"],
-					"references": { "table": "products", "columns":["id"], "on_update": "NO ACTION", "on_delete": "CASCADE" }}
-					,
+					"references": {
+						"table": "products",
+						"columns": ["id"],
+						"on_update": "NO ACTION",
+						"on_delete": "CASCADE"
+					}
+				},
 				"product_stock_option_to_stock_item": {
 					"columns": ["stock_item_id"],
-					"references": { "table": "stock_items", "columns":["id"], "on_update": "NO ACTION", "on_delete": "CASCADE" }
+					"references": {
+						"table": "stock_items",
+						"columns": ["id"],
+						"on_update": "NO ACTION",
+						"on_delete": "CASCADE"
+					}
 				}
 			}
 		},
@@ -1090,11 +1265,21 @@
 			"foreign_keys": {
 				"product_to_product": {
 					"columns": ["product_id"],
-					"references": { "table": "products", "columns":["id"], "on_update": "NO ACTION", "on_delete": "CASCADE" }}
-					,
+					"references": {
+						"table": "products",
+						"columns": ["id"],
+						"on_update": "NO ACTION",
+						"on_delete": "CASCADE"
+					}
+				},
 				"product_to_category": {
 					"columns": ["category_id"],
-					"references": { "table": "categories", "columns":["id"], "on_update": "NO ACTION", "on_delete": "CASCADE" }
+					"references": {
+						"table": "categories",
+						"columns": ["id"],
+						"on_update": "NO ACTION",
+						"on_delete": "CASCADE"
+					}
 				}
 			}
 		},
@@ -1107,7 +1292,7 @@
 				"separate": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
 				"priority": { "type": "INT", "length": 11, "default": 0 },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
-				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP"}
+				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
 			},
 			"primary_key": ["id"],
 			"check_constraints": {
@@ -1128,7 +1313,7 @@
 				"valid_from": { "type": "TIMESTAMP", "nullable": true },
 				"valid_to": { "type": "TIMESTAMP", "nullable": true },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
-				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP"}
+				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
 			},
 			"primary_key": ["id"],
 			"unique_keys": {
@@ -1159,7 +1344,7 @@
 				"last_active": { "type": "TIMESTAMP", "nullable": true },
 				"expires_at": { "type": "TIMESTAMP", "nullable": true },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
-				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP"}
+				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
 			},
 			"primary_key": ["id"],
 			"keys": {
@@ -1173,15 +1358,30 @@
 			"foreign_keys": {
 				"session_to_customer": {
 					"columns": ["customer_id"],
-					"references": { "table": "customers", "columns":["id"], "on_update": "CASCADE", "on_delete": "SET NULL" }}
-					,
+					"references": {
+						"table": "customers",
+						"columns": ["id"],
+						"on_update": "CASCADE",
+						"on_delete": "SET NULL"
+					}
+				},
 				"session_to_language": {
 					"columns": ["language_code"],
-					"references": { "table": "languages", "columns":["code"], "on_update": "CASCADE", "on_delete": "SET NULL" }}
-					,
+					"references": {
+						"table": "languages",
+						"columns": ["code"],
+						"on_update": "CASCADE",
+						"on_delete": "SET NULL"
+					}
+				},
 				"session_to_currency": {
 					"columns": ["currency_code"],
-					"references": { "table": "currencies", "columns":["code"], "on_update": "CASCADE", "on_delete": "SET NULL" }
+					"references": {
+						"table": "currencies",
+						"columns": ["code"],
+						"on_update": "CASCADE",
+						"on_delete": "SET NULL"
+					}
 				}
 			}
 		},
@@ -1197,7 +1397,7 @@
 				"function": { "type": "VARCHAR", "length": 128, "default": "''" },
 				"priority": { "type": "INT", "length": 11, "default": 0 },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
-				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP"}
+				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
 			},
 			"primary_key": ["id"],
 			"unique_keys": {
@@ -1230,7 +1430,7 @@
 				"require_consent": { "type": "VARCHAR", "length": 64, "nullable": true },
 				"priority": { "type": "TINYINT", "length": 4, "default": 0 },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
-				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP"}
+				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
 			},
 			"primary_key": ["id"],
 			"keys": {
@@ -1247,7 +1447,7 @@
 				"name": { "type": "TEXT", "nullable": true },
 				"description": { "type": "TEXT", "nullable": true },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
-				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP"}
+				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
 			},
 			"primary_key": ["id"],
 			"keys": {
@@ -1311,7 +1511,7 @@
 				"downloads": { "type": "INT", "length": 10, "unsigned": true, "default": 0 },
 				"priority": { "type": "INT", "length": 11, "default": 0 },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
-				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP"}
+				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
 			},
 			"primary_key": ["id"],
 			"keys": {
@@ -1339,11 +1539,21 @@
 			"foreign_keys": {
 				"stock_item": {
 					"columns": ["stock_item_id"],
-					"references": { "table": "stock_items", "columns":["id"], "on_update": "NO ACTION", "on_delete": "CASCADE" }}
-					,
+					"references": {
+						"table": "stock_items",
+						"columns": ["id"],
+						"on_update": "NO ACTION",
+						"on_delete": "CASCADE"
+					}
+				},
 				"supplier": {
 					"columns": ["supplier_id"],
-					"references": { "table": "suppliers", "columns":["id"], "on_update": "NO ACTION", "on_delete": "CASCADE" }
+					"references": {
+						"table": "suppliers",
+						"columns": ["id"],
+						"on_update": "NO ACTION",
+						"on_delete": "CASCADE"
+					}
 				}
 			}
 		},
@@ -1353,7 +1563,7 @@
 				"name": { "type": "VARCHAR", "length": 128, "default": "''" },
 				"description": { "type": "MEDIUMTEXT" },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
-				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP"}
+				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
 			},
 			"primary_key": ["id"]
 		},
@@ -1375,15 +1585,30 @@
 			"foreign_keys": {
 				"stock_transaction_content_to_transaction": {
 					"columns": ["transaction_id"],
-					"references": { "table": "stock_transactions", "columns":["id"], "on_update": "CASCADE", "on_delete": "CASCADE" }}
-					,
+					"references": {
+						"table": "stock_transactions",
+						"columns": ["id"],
+						"on_update": "CASCADE",
+						"on_delete": "CASCADE"
+					}
+				},
 				"stock_transaction_content_to_product": {
 					"columns": ["product_id"],
-					"references": { "table": "products", "columns":["id"], "on_update": "CASCADE", "on_delete": "SET NULL" }}
-					,
+					"references": {
+						"table": "products",
+						"columns": ["id"],
+						"on_update": "CASCADE",
+						"on_delete": "SET NULL"
+					}
+				},
 				"stock_transaction_content_to_stock_item": {
 					"columns": ["stock_item_id"],
-					"references": { "table": "stock_items", "columns":["id"], "on_update": "CASCADE", "on_delete": "SET NULL" }
+					"references": {
+						"table": "stock_items",
+						"columns": ["id"],
+						"on_update": "CASCADE",
+						"on_delete": "SET NULL"
+					}
 				}
 			}
 		},
@@ -1397,7 +1622,7 @@
 				"phone": { "type": "VARCHAR", "length": 24, "default": "''" },
 				"link": { "type": "VARCHAR", "length": 255, "default": "''" },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
-				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP"}
+				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
 			},
 			"primary_key": ["id"],
 			"keys": {
@@ -1411,7 +1636,7 @@
 				"name": { "type": "VARCHAR", "length": 64, "default": "''" },
 				"description": { "type": "VARCHAR", "length": 64, "default": "''" },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
-				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP"}
+				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
 			},
 			"primary_key": ["id"]
 		},
@@ -1430,7 +1655,7 @@
 				"rule_individuals_with_tax_id": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
 				"rule_individuals_without_tax_id": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
-				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP"}
+				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
 			},
 			"primary_key": ["id"],
 			"keys": {
@@ -1440,11 +1665,21 @@
 			"foreign_keys": {
 				"tax_rate_to_tax_class": {
 					"columns": ["tax_class_id"],
-					"references": { "table": "tax_classes", "columns":["id"], "on_update": "NO ACTION", "on_delete": "CASCADE" }}
-					,
+					"references": {
+						"table": "tax_classes",
+						"columns": ["id"],
+						"on_update": "NO ACTION",
+						"on_delete": "CASCADE"
+					}
+				},
 				"tax_rate_to_geo_zone": {
 					"columns": ["geo_zone_id"],
-					"references": { "table": "geo_zones", "columns":["id"], "on_update": "NO ACTION", "on_delete": "RESTRICT "}
+					"references": {
+						"table": "geo_zones",
+						"columns": ["id"],
+						"on_update": "NO ACTION",
+						"on_delete": "RESTRICT"
+					}
 				}
 			}
 		},
@@ -1465,7 +1700,7 @@
 				"do_not_sell_url": { "type": "VARCHAR", "length": 248, "default": "''" },
 				"country_code": { "type": "CHAR", "length": 2, "nullable": true },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
-				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP"}
+				"created_at": { "type": "TIMESTAMP", "default": "current_timestamp()" }
 			},
 			"primary_key": ["id"],
 			"keys": {
@@ -1475,7 +1710,12 @@
 			"foreign_keys": {
 				"third_party_to_country": {
 					"columns": ["country_code"],
-					"references": { "table": "countries", "columns":["iso_code_2"], "on_update": "CASCADE", "on_delete": "SET NULL" }
+					"references": {
+						"table": "countries",
+						"columns": ["iso_code_2"],
+						"on_update": "CASCADE",
+						"on_delete": "SET NULL"
+					}
 				}
 			},
 			"check_constraints": {
@@ -1494,7 +1734,7 @@
 				"backend": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
 				"last_accessed": { "type": "TIMESTAMP", "nullable": true },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
-				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP"}
+				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
 			},
 			"primary_key": ["id"],
 			"unique_keys": {
@@ -1520,7 +1760,7 @@
 				"pageviews": { "type": "INT", "length": 10, "unsigned": true, "default": 0 },
 				"last_page": { "type": "VARCHAR", "length": 128, "default": "''" },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
-				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP"}
+				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
 			},
 			"primary_key": ["id"],
 			"keys": {
@@ -1538,7 +1778,7 @@
 				"code": { "type": "VARCHAR", "length": 8 },
 				"name": { "type": "VARCHAR", "length": 64, "default": "''" },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
-				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP"}
+				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
 			},
 			"primary_key": ["id"],
 			"keys": {
@@ -1548,7 +1788,12 @@
 			"foreign_keys": {
 				"zone_to_country": {
 					"columns": ["country_code"],
-					"references": { "table": "countries", "columns":["iso_code_2"], "on_update": "NO ACTION", "on_delete": "CASCADE" }
+					"references": {
+						"table": "countries",
+						"columns": ["iso_code_2"],
+						"on_update": "NO ACTION",
+						"on_delete": "CASCADE"
+					}
 				}
 			}
 		},
@@ -1560,7 +1805,7 @@
 				"zone_code": { "type": "VARCHAR", "length": 8, "nullable": true },
 				"city": { "type": "VARCHAR", "length": 32, "nullable": true },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
-				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP"}
+				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
 			},
 			"primary_key": ["id"],
 			"unique_keys": {
@@ -1575,15 +1820,30 @@
 			"foreign_keys": {
 				"zone_entry_to_geo_zone": {
 					"columns": ["geo_zone_id"],
-					"references": { "table": "geo_zones", "columns":["id"], "on_update": "NO ACTION", "on_delete": "CASCADE" }}
-					,
+					"references": {
+						"table": "geo_zones",
+						"columns": ["id"],
+						"on_update": "NO ACTION",
+						"on_delete": "CASCADE"
+					}
+				},
 				"zone_entry_to_country": {
 					"columns": ["country_code"],
-					"references": { "table": "countries", "columns":["iso_code_2"], "on_update": "NO ACTION", "on_delete": "CASCADE" }}
-					,
+					"references": {
+						"table": "countries",
+						"columns": ["iso_code_2"],
+						"on_update": "NO ACTION",
+						"on_delete": "CASCADE"
+					}
+				},
 				"zone_entry_to_zone": {
 					"columns": ["zone_code"],
-					"references": { "table": "zones", "columns":["code"], "on_update": "CASCADE", "on_delete": "CASCADE" }
+					"references": {
+						"table": "zones",
+						"columns": ["code"],
+						"on_update": "CASCADE",
+						"on_delete": "CASCADE"
+					}
 				}
 			}
 		}
