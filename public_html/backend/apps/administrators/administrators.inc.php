@@ -90,7 +90,7 @@
 					<th></th>
 					<th></th>
 					<th><?php echo t('title_username', 'Username'); ?></th>
-					<th><?php echo t('title_name', 'Name'); ?></th>
+					<th><?php echo t('title_person_name', 'Name'); ?></th>
 					<th class="main"><?php echo t('title_email', 'Email'); ?></th>
 					<th><?php echo t('title_restrictions', 'Restrictions'); ?></th>
 					<th class="text-end" style="min-width: 200px;"><?php echo t('title_valid_from', 'Valid From'); ?></th>

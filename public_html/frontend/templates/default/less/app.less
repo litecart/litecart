@@ -38,7 +38,7 @@ body {
 
 	.code {
 		font-size: 0.8em;
-		background: #bcbccb;
+		background: var(--code-background);
 		padding: 0.25em 1em;
 	}
 }
@@ -50,7 +50,7 @@ body {
 
 		.code {
 			font-size: 0.8em;
-			background: #bcbccb;
+			background: var(--code-background);
 			padding: 0.25em 0.5em;
 			text-transform: none;
 		}
@@ -82,7 +82,7 @@ body {
 
 	.wishlist {
 		line-height: 1.2;
-		transition: all 200ms ease-out;
+		transition: opacity 200ms ease-out;
 
 		.navbar-item{
 			border-radius: 0;
@@ -163,7 +163,7 @@ body {
 
 	.shopping-cart {
 		line-height: 1.2;
-		transition: all 200ms ease-out;
+		transition: opacity 200ms ease-out;
 
 		.navbar-item {
 			border-start-start-radius: 0;
@@ -285,13 +285,13 @@ body {
 		}
 
 		a {
-			background: #fff;
+			background: var(--social-button-background);
 			padding: 0.5em;
 			border-radius: var(--border-radius);
 
 			&:hover {
-				background: #666;
-				color: #fff;
+				background: var(--social-button-background--hover);
+				color: var(--social-button-text-color--hover);
 			}
 		}
 	}
@@ -301,7 +301,7 @@ body {
 		margin-bottom: var(--gutter-y);
 		border-radius: var(--border-radius);
 		overflow: hidden;
-		transition: all 250ms linear;
+		transition: filter 250ms linear;
 
 		&:hover {
 			filter: grayscale(0);
@@ -309,7 +309,7 @@ body {
 	}
 
 	.title {
-		border-color: #999;
+		border-color: var(--default-border-color);
 		font-size: 1.25em;
 		margin: 0 0 0.75em 0;
 	}
@@ -343,7 +343,7 @@ body {
 	opacity: 0.3;
 	position: fixed;
 	font-size: 1.5em;
-	transition: linear all 200ms;
+	transition: opacity 200ms linear;
 
 	&:hover {
 		opacity: 1;
@@ -351,18 +351,18 @@ body {
 }
 
 #site-cookie-consent {
-	background: rgba(18, 0, 54, 0.65);
+	background: var(--overlay-cookie-consent);
 	position: fixed;
 	left: 0;
 	right: 0;
 	bottom: 0;
 	padding: 1em;
 	backdrop-filter: saturate(200%) blur(10px);
-	color: #fff;
+	color: var(--cookie-notice-text-color);
 	z-index: 999;
 	height: auto;
 	overflow: hidden;
-	transition: all 200ms linear;
+	transition: max-height 200ms linear, opacity 200ms linear;
 
 	&.hidden {
 		height: 0;
@@ -399,13 +399,13 @@ body {
 	}
 
 	.privacy-classes {
-		background: #fff3;
+		background: var(--overlay-frosted);
 		border-radius: 8px;
 		padding: 1em;
 		margin-bottom: 2em;
 		max-height: 80vh;
 		overflow-y: auto;
-		transition: all 200ms linear;
+		transition: max-height 200ms linear;
 		height: 480px;
 
 		&.expanded {
@@ -431,7 +431,7 @@ body {
 		}
 
 		.require-consent {
-			border: 1px dashed #eee;
+			border: 1px dashed var(--default-border-color);
 			padding: 2em;
 			text-align: center;
 		}
@@ -450,18 +450,18 @@ body {
 }
 
 #site-privacy-consent {
-	background: rgba(0, 0, 0, 0.65);
+	background: var(--overlay-dark);
 	position: fixed;
 	left: 0;
 	right: 0;
 	bottom: 0;
 	padding: 1em;
 	backdrop-filter: saturate(200%) blur(10px);
-	color: #fff;
+	color: var(--cookie-notice-text-color);
 	z-index: 999;
 	height: auto;
 	overflow: hidden;
-	transition: all 200ms linear;
+	transition: max-height 200ms linear, opacity 200ms linear;
 
 	&.hidden {
 		height: 0;
@@ -498,13 +498,13 @@ body {
 	}
 
 	.privacy-classes {
-		background: #fff3;
+		background: var(--overlay-frosted);
 		border-radius: 8px;
 		height: 0;
 		padding: 0;
 		margin-bottom: 0;
 		overflow: hidden;
-		transition: all 200ms linear;
+		transition: max-height 200ms linear;
 
 		&.expanded {
 			height: 480px;
@@ -534,7 +534,7 @@ body {
 		}
 
 		.require-consent:not(:empty) {
-			border: 1px dashed #eee;
+			border: 1px dashed var(--default-border-color);
 			padding: 2em;
 			text-align: center;
 		}
@@ -595,11 +595,11 @@ body {
 		grid-gap: 0.75em;
 	}
 
-	@media (min-width: 576px) {
+	@media (min-width: 768px) {
 		grid-gap: 1em;
 	}
 
-	@media (min-width: 576px) {
+	@media (min-width: 992px) {
 		grid-gap: 2em;
 	}
 
@@ -665,7 +665,7 @@ body {
 		.caption {
 			margin: 0;
 			padding: 0.5em;
-			background: #f2f2f2;
+			background: var(--site-background);
 			color: var(--default-text-color);
 			text-align: center;
 			border-radius: var(--border-radius);
@@ -683,13 +683,12 @@ body {
 			border: 1px solid var(--default-border-color);
 			border-radius: var(--border-radius);
 			padding: 0.5em;
-			transition: all 100ms linear;
-			background: #fff6;
+			transition: background-color 100ms linear, color 100ms linear;
+			background: var(--overlay-frosted);
 			font-weight: 500;
 
 			&:hover {
-				background: #fff;
-
+				background: var(--card-background);
 			}
 		}
 
@@ -714,7 +713,7 @@ body {
 		background: var(--whitespace-color);
 		font-size: calc(var(--default-text-size) - 1px);
 		padding: 0.5em;
-		transition: all 100ms linear;
+		transition: background-color 100ms linear, box-shadow 100ms linear;
 		border: 1px solid transparent;
 		border-radius: var(--border-radius);
 		overflow: hidden;
@@ -722,7 +721,7 @@ body {
 		@media (min-width: 576px) {
 			&:hover {
 				border: var(--listing-border);
-				background: #fff;
+				background: var(--card-background);
 			}
 		}
 
@@ -747,18 +746,18 @@ body {
 				position: absolute;
 				top: 1em;
 				padding: 0.5em 1em;
-				color: #fff;
+				color: var(--sticker-text-color);
 				text-align: center;
 				text-transform: uppercase;
 				line-height: 100%;
 				border-radius: 0 var(--border-radius) var(--border-radius) 0;
 
 				&.new {
-					background: rgba(251, 184, 41, 0.9);
+					background: var(--sticker-new-background);
 				}
 
 				&.sale {
-					background: rgba(237, 60, 50, 0.9);
+					background: var(--sticker-sale-background);
 				}
 			}
 		}
@@ -789,7 +788,7 @@ body {
 
 		.price {
 			.price {
-				color: #333;
+				color: var(--default-title-color);
 				white-space: nowrap;
 			}
 
@@ -803,7 +802,7 @@ body {
 
 			.final-price {
 				font-weight: bold;
-				color: #cc0000;
+				color: var(--color-sale-price);
 				white-space: nowrap;
 			}
 		}
@@ -814,11 +813,11 @@ body {
 			top: 1em;
 			inset-inline-end: 1em;
 			padding: 0.5em;
-			background: rgba(255, 255, 255, 0.25);
+			background: var(--overlay-light);
 			backdrop-filter: blur(3px);
 			border-radius: 1em;
 			margin: 0 -1px -1px -1px;
-			box-shadow: 0 0 0.5em 0 rgba(0, 0, 0, 0.15);
+			box-shadow: var(--default-shadow);
 
 			.btn {
 				padding: 0.75em;
@@ -871,7 +870,7 @@ body {
 			}
 		}
 		.price {
-			background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, #ffffff 20%, #ffffff 100%);
+			background: linear-gradient(to right, transparent 0%, var(--whitespace-color) 20%, var(--whitespace-color) 100%);
 		}
 		@media (min-width: 576px) {
 			height: auto;
@@ -902,7 +901,7 @@ body {
 			gap: 1.5em;
 		}
 
-		@media (min-width: 768px) {
+		@media (min-width: 992px) {
 			gap: 2em;
 		}
 
@@ -936,21 +935,21 @@ body {
 		margin-bottom: 2em;
 
 		.sticker {
-			color: #fff;
+			color: var(--sticker-text-color);
 			top: 1em;
 			padding: 0.5rem 1rem;
 			position: absolute;
 			text-transform: uppercase;
 			line-height: 100%;
 			border-radius: 0 var(--border-radius) var(--border-radius) 0;
-			box-shadow: 2px 3px 3px #0001;
+			box-shadow: var(--default-shadow);
 
 			&.new {
-				background: rgba(251, 184, 41, 0.85);
+				background: var(--sticker-new-background);
 			}
 
 			&.sale {
-				background: rgba(237, 60, 50, 0.85);
+				background: var(--sticker-sale-background);
 			}
 		}
 	}
@@ -963,8 +962,8 @@ body {
 			left: 50%;
 			transform: translate(-50%, -50%);
 			font-size: 2em;
-			color: #fff;
-			background-color: rgba(0, 0, 0, 0.5);
+			color: var(--sticker-text-color);
+			background-color: var(--overlay-dark);
 			border-radius: 50%;
 			padding: 0.25em;
 			line-height: 1;
@@ -982,29 +981,30 @@ body {
 		}
 
 		.final-price {
-			color: #cc0000;
+			color: var(--color-sale-price);
 		}
 	}
 
 	.tax {
-		color: #999;
+		color: var(--default-text-color);
+		opacity: 0.6;
 	}
 
 	.stock-available {
 		.value {
-			color: #009900;
+			color: var(--color-stock-available);
 		}
 	}
 
 	.stock-partly-available {
 		.value {
-			color: #ff9900;
+			color: var(--color-stock-partial);
 		}
 	}
 
 	.stock-unavailable {
 		.value {
-			color: #cc0000;
+			color: var(--color-stock-unavailable);
 		}
 	}
 
@@ -1020,14 +1020,14 @@ body {
 		}
 
 		.btn {
-			background: #fff;
-			transition: background 500ms linear;
+			background: var(--social-button-background);
+			transition: background-color 500ms linear;
 
 			&:hover {
-				background: #333;
-				color: #fff !important;
+				background: var(--social-button-background--hover);
+				color: var(--social-button-text-color--hover) !important;
 				i {
-					color: #fff !important;
+					color: var(--social-button-text-color--hover) !important;
 				}
 			}
 		}
@@ -1059,7 +1059,7 @@ body {
 
 	form[name="buy_now_form"] {
 		fieldset {
-			border-color: #d9d9d9;
+			border-color: var(--fieldset-border-color);
 		}
 		legend {
 			letter-spacing: .1em;
@@ -1072,7 +1072,7 @@ body {
 
 .price-tag {
 	.sale-price {
-		color: #cc0000;
+		color: var(--color-sale-price);
 	}
 }
 
