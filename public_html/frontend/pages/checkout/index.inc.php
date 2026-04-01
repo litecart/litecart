@@ -23,7 +23,6 @@
 
 		// Halt on no lines
 		if (empty($order->data['lines'])) {
-			var_dump($order);exit;
 			throw new Exception(t('error_order_appears_empty', 'The order appears empty'), 404);
 		}
 
@@ -111,7 +110,8 @@
 	}
 
 	if (!empty($order->shipping->selected)) {
-		$_POST['shipping_option'] = $order->shipping->selected;
+		if (!isset($_POST['confirm'])) $_POST['shipping_option'] = $order->shipping->selected;
+		$order->data['shipping_option'] = $order->shipping->selected;
 	}
 
 	// Prepare payment options
@@ -130,9 +130,11 @@
 	}
 
 	if (!empty($order->payment->selected)) {
-		$_POST['payment_option'] = $order->payment->selected;
+		if (!isset($_POST['confirm'])) $_POST['payment_option'] = $order->payment->selected;
+		$order->data['payment_option'] = $order->payment->selected;
 	}
 
+	$order->refresh_total();
 
 	// If Confirm Order button was pressed
 	if (isset($_POST['confirm'])) {
@@ -146,6 +148,19 @@
 			}
 
 			$session_order = &session::$data['checkout']['order'];
+
+			// Re-select shipping/payment from form POST data
+			if (!empty($_POST['shipping_option']['id'])) {
+				$session_order->shipping->select($_POST['shipping_option']['id'], $_POST);
+				$session_order->data['shipping_option'] = $session_order->shipping->selected;
+			}
+
+			if (!empty($_POST['payment_option']['id'])) {
+				$session_order->payment->select($_POST['payment_option']['id'], $_POST);
+				$session_order->data['payment_option'] = $session_order->payment->selected;
+			}
+
+			$session_order->refresh_total();
 
 			customer::log([
 				'type' => 'checkout_confirm',
@@ -172,8 +187,8 @@
 				exit;
 			}
 
-			$payment = new mod_payment();
-			if ($payment->options($session_order)) {
+			$payment = $session_order->payment;
+			if ($payment->options()) {
 
 				if (empty($payment->selected)) {
 					notices::add('errors', t('error_no_payment_method_selected', 'No payment method selected'));
@@ -194,15 +209,15 @@
 					];
 				}
 
-				if ($gateway = $payment->transfer($session_order, (string)document::ilink('checkout/process'))) {
+				$gateway = $payment->transfer($session_order, (string)document::ilink('checkout/process'));
 
-					if (!empty($gateway['error'])) {
-						notices::add('errors', $gateway['error']);
-						redirect(document::ilink('checkout/index'), 303);
-						exit;
-					}
+				if (!empty($gateway['error'])) {
+					notices::add('errors', $gateway['error']);
+					redirect(document::ilink('checkout/index'), 303);
+					exit;
+				}
 
-					if (!empty($gateway['method'])) {
+				if (!empty($gateway['method']) && !empty($gateway['action'])) {
 						switch (strtoupper($gateway['method'])) {
 
 							case 'POST':
@@ -249,11 +264,10 @@
 						}
 					}
 				}
-			}
 
-			$session_order->data['processable'] = true;
-			redirect(document::ilink('checkout/process'), 303);
-			exit;
+				$session_order->data['processable'] = true;
+				redirect(document::ilink('checkout/process'), 303);
+				exit;
 
 		} catch (Exception $e) {
 
@@ -319,14 +333,16 @@
 
 	$order = &session::$data['checkout']['order'];
 
-	if (!empty($shipping->data['selected'])) {
-		$order->data['shipping_option'] = $shipping->data['selected'];
-		$order->data['incoterm'] = $shipping->data['selected']['incoterm'];
+	if (!empty($order->shipping->selected['id'])) {
+		$order->data['shipping_option'] = $order->shipping->selected;
+		$order->data['incoterm'] = !empty($order->shipping->selected['incoterm']) ? $order->shipping->selected['incoterm'] : '';
 	}
 
-	if (!empty($payment->selected)) {
-		$order->data['payment_option'] = $payment->selected;
+	if (!empty($order->payment->selected['id'])) {
+		$order->data['payment_option'] = $order->payment->selected;
 	}
+
+	$order->refresh_total();
 
 	$order->data['processable'] = false; // Whether or not it is allowed to be processed in checkout/process
 

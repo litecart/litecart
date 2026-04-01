@@ -273,7 +273,6 @@
 			exit;
 
 		} catch(Exception $e) {
-			die($e->getMessage());
 			notices::add('errors', $e->getMessage());
 		}
 	}

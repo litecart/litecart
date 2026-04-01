@@ -119,6 +119,51 @@
 			return $this->_cache[$checksum]['options'];
 		}
 
+		public function receipt($order) {
+
+			if (empty($this->selected['module_id'])) return;
+			if (empty($this->modules[$this->selected['module_id']])) return;
+			if (!method_exists($this->modules[$this->selected['module_id']], 'receipt')) return;
+
+			return $this->modules[$this->selected['module_id']]->receipt($order);
+		}
+
+		public function after_process($order) {
+
+			if (empty($this->selected['module_id'])) return;
+			if (empty($this->modules[$this->selected['module_id']])) return;
+			if (!method_exists($this->modules[$this->selected['module_id']], 'after_process')) return;
+
+			return $this->modules[$this->selected['module_id']]->after_process($order);
+		}
+
+		public function pre_check($order) {
+
+			if (empty($this->selected['module_id'])) return;
+			if (empty($this->modules[$this->selected['module_id']])) return;
+			if (!method_exists($this->modules[$this->selected['module_id']], 'pre_check')) return;
+
+			return $this->modules[$this->selected['module_id']]->pre_check($order);
+		}
+
+		public function transfer($order, $success_url='', $cancel_url='') {
+
+			if (empty($this->selected['module_id'])) return;
+			if (empty($this->modules[$this->selected['module_id']])) return;
+			if (!method_exists($this->modules[$this->selected['module_id']], 'transfer')) return;
+
+			return $this->modules[$this->selected['module_id']]->transfer($order, $success_url, $cancel_url);
+		}
+
+		public function verify($order) {
+
+			if (empty($this->selected['module_id'])) return;
+			if (empty($this->modules[$this->selected['module_id']])) return;
+			if (!method_exists($this->modules[$this->selected['module_id']], 'verify')) return;
+
+			return $this->modules[$this->selected['module_id']]->verify($order);
+		}
+
 		public function cheapest() {
 
 			if (empty($this->_options)) {

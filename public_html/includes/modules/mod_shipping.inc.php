@@ -121,6 +121,15 @@
 			return $this->_cache[$checksum]['options'];
 		}
 
+		public function after_process($order) {
+
+			if (empty($this->selected['module_id'])) return;
+			if (empty($this->modules[$this->selected['module_id']])) return;
+			if (!method_exists($this->modules[$this->selected['module_id']], 'after_process')) return;
+
+			return $this->modules[$this->selected['module_id']]->after_process($order);
+		}
+
 		public function cheapest($order) {
 
 			if (empty($this->_options)) {
