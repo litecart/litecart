@@ -64,7 +64,7 @@
 										</div>
 
 										<div class="col-1 text-end">
-											<td><?php echo f::form_button('remove_cart_item', [$key, f::draw_fonticon('icon-trash')], 'submit', 'class="btn btn-danger" title="'. f::escape_attr(t('title_remove', 'Remove')) .'" formnovalidate'); ?></td>
+											<?php echo f::form_button('remove_cart_item', [$key, f::draw_fonticon('icon-trash')], 'submit', 'class="btn btn-danger" title="'. f::escape_attr(t('title_remove', 'Remove')) .'" formnovalidate'); ?>
 										</div>
 									</div>
 								</li>
@@ -92,7 +92,7 @@
 
 			<div class="col-md-5">
 
-				<section id="box-shopping-cart" class="card">
+				<section id="box-checkout-start" class="card">
 
 					<div class="card-header">
 						<h2 class="card-title"><?php echo t('title_checkout', 'Checkout'); ?></h2>

@@ -92,7 +92,7 @@
 						<?php if (settings::get('store_phone')) { ?>
 						<p class="phone">
 							<?php echo f::draw_fonticon('icon-phone'); ?> <a href="tel:<?php echo settings::get('store_phone'); ?>"><?php echo settings::get('store_phone'); ?></a>
-						<p>
+						</p>
 						<?php } ?>
 
 						<p class="email">

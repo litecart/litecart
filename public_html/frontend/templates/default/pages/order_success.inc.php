@@ -19,7 +19,7 @@
 					<?php } ?>
 				</ul>
 
-				<p><strong><?php echo t('title_order_total', 'Order Total'); ?></strong>: <?php echo currency::format($order['total'], false, $order['currency_code'], $order['currency_value']); ?>
+				<p><strong><?php echo t('title_order_total', 'Order Total'); ?></strong>: <?php echo currency::format($order['total'], false, $order['currency_code'], $order['currency_value']); ?></p>
 
 				<p><a href="{{printable_link|escape}}" target="_blank"><?php echo t('description_click_printable_copy', 'Click here for a printable copy'); ?></a></p>
 

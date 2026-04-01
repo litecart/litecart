@@ -21,8 +21,6 @@ waitFor('jQuery', ($) => {
 		if (!values.length) {
 			values = [ $dropdown.find('.dropdown-toggle').data('placeholder') ];
 		}
-		console.log('"'+values.join(', ')+'"');
-
 		$dropdown.find('.dropdown-toggle').text(values.join(', '));
 	});
 
