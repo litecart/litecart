@@ -199,7 +199,7 @@
 					];
 
 					$class_name = 'ent_' . $entity;
-					$properties = array_keys(f::array_flatten(new $class_name()->data));
+					$properties = array_keys(f::array_flatten((new $class_name())->data));
 
 					break;
 
