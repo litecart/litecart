@@ -139,7 +139,7 @@
 					<th style="width: 40px;"><?php echo f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th style="width: 40px;"></th>
 					<th data-sort="id" style="width: 50px;"><?php echo t('title_id', 'ID'); ?></th>
-					<th data-sort="name"><?php echo t('title_name', 'Name'); ?></th>
+					<th data-sort="name"><?php echo t('title_person_name', 'Name'); ?></th>
 					<th data-sort="email"><?php echo t('title_email', 'Email'); ?></th>
 					<th data-sort="company"><?php echo t('title_company_name', 'Company Name'); ?></th>
 					<th class="main"><?php echo t('title_last_hostname', 'Last Hostname'); ?></th>

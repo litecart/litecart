@@ -166,7 +166,7 @@
 					<th style="width: 50px;"><?php echo f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th><?php echo t('title_subscribed', 'Subscribed'); ?></th>
 					<th style="width: 480px;"><?php echo t('title_email', 'Email'); ?></th>
-					<th class="main"><?php echo t('title_name', 'Name'); ?></th>
+					<th class="main"><?php echo t('title_person_name', 'Name'); ?></th>
 					<th><?php echo t('title_ip_address', 'IP Address'); ?></th>
 					<th style="width: 200px;"><?php echo t('title_hostname', 'Hostname'); ?></th>
 					<th class="text-end" style="width: 200px;"><?php echo t('title_updated_at', 'Updated At'); ?></th>

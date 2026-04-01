@@ -25,7 +25,7 @@
 				<thead>
 					<tr>
 						<th><?php echo t('title_id', 'ID'); ?></th>
-						<th><?php echo t('title_name', 'Name'); ?></th>
+						<th><?php echo t('title_person_name', 'Name'); ?></th>
 						<th class="main"><?php echo t('title_email', 'Email'); ?></th>
 						<th><?php echo t('title_date_registered', 'Date Registered'); ?></th>
 					</tr>
