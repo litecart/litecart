@@ -244,18 +244,11 @@
 
 ?>
 <style>
-html {
-	background: #f8f8f8;
-}
-
 body {
 	display: flex;
 	flex-direction: column;
 	width: 100vw;
 	height: 100vh;
-}
-html.dark-mode body {
-	background: #1a2133;
 }
 
 .loader-wrapper {

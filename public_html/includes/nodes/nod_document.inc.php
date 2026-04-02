@@ -204,8 +204,8 @@
 
 					// Strip comments
 					$match[1] = preg_replace([
-						'#//.*#m',           // Single-line comments (multiline mode)
-						'#/\*.*?\*/#s',      // Multi-line comments (dotall mode)
+						'#^\s*//.*$#m',                // Single-line comments
+						'#/\*[^*]*\*+(?:[^/*][^*]*\*+)*/#s', // Multi-line comments (non-greedy, C-style)
 					], '', $match[1]);
 
 					$javascript[] = trim($match[1], "\r\n");
@@ -344,9 +344,9 @@
 
 			// Prepare JSON Schema
 			if (!empty(self::$schema)) {
-				$_layout->snippets['head_tags']['schema_json'] = implode(PHP_EOL, [
+				$_layout->snippets['head_tags']['schema_json'] = implode('', [
 					'<script type="application/ld+json" nonce="'. self::$nonce .'">',
-					f::format_json(array_values(self::$schema), false),
+					f::format_json(self::$schema, false),
 					'</script>',
 				]);
 			}

@@ -47,7 +47,7 @@
 		}
 
 		document::$layout = 'printable';
-		document::$title[] = [t('title_order', 'Order') .' '. $order->data['no']];
+		document::$title[] = t('title_order', 'Order') .' '. $order->data['no'];
 
 		$session_language = language::$selected['code'];
 		language::set($order->data['language_code']);
@@ -58,10 +58,10 @@
 		$_page->snippets['max_first_page_items'] = 15;
 		$_page->snippets['action_menu'] = true;
 		$_page->snippets['items'] = database::query(
-			"select ol.stock_item_id, oi.name, oi.sku, oi.gtin, oi.sum(ol.quantity * oi.quantity) as total_quantity
+			"select oi.stock_item_id, oi.name, oi.sku, oi.gtin, oi.taric, sum(ol.quantity * oi.quantity) as total_quantity
 			from ". DB_TABLE_PREFIX ."orders_items oi
 			left join ". DB_TABLE_PREFIX ."orders_lines ol on (ol.id = oi.line_id)
-			left join ". DB_TABLE_PREFIX ."orders o on (o.id = oi.order)
+			left join ". DB_TABLE_PREFIX ."orders o on (o.id = oi.order_id)
 			where oi.order_id = ". (int)$order->data['id'] .";"
 		)->fetch_all();
 

@@ -2,7 +2,7 @@
 
 return [
 	'name' => t('title_email', 'Email'),
-	'group' => 'system',
+	'group' => 'website',
 	'default' => 'drafts',
 	'priority' => 0,
 

@@ -164,10 +164,17 @@ textarea[name="notes"] {
 	transition: all 200ms ease-in-out;
 	font-weight: 500;
 }
+html.dark-mode textarea[name="notes"] {
+	background: #201f1a;
+	color: #fff1a3;
+}
+
 textarea[name="notes"]:focus {
 	overflow: auto;
 	transform: rotate(0deg);
 	border-radius: var(--border-radius);
+	background: var(--input-background) !important;
+	color: var(--input-text-color) !important;
 }
 </style>
 
