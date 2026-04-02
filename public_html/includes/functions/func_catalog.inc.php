@@ -241,7 +241,9 @@
 
 		$query = (
 			"select p.*, b.id as brand_id, b.name as brand_name,
-				pp.regular_price, pp.final_price,
+				pp.regular_price,
+				if(csd.scope_discount is not null, least(pp.final_price, round(pp.final_price * (1 - csd.scope_discount / 100), 4)), pp.final_price) as final_price,
+				csd.scope_discount as campaign_scope_discount,
 				ifnull(pso.num_stock_options, 0) as num_stock_options, pso.total_quantity, pso.quantity_available,
 				pa.attributes, ss.hidden
 
@@ -323,6 +325,27 @@
 			) pso on (pso.product_id = p.id)
 
 			left join ". DB_TABLE_PREFIX ."sold_out_statuses ss on (p.sold_out_status_id = ss.id)
+
+			left join (
+				select product_id, max(scope_discount) as scope_discount from (
+					select ptc.product_id, c.discount_percent as scope_discount
+					from ". DB_TABLE_PREFIX ."campaigns c
+					join ". DB_TABLE_PREFIX ."campaigns_scopes cs on (cs.campaign_id = c.id and cs.scope_type = 'category')
+					join ". DB_TABLE_PREFIX ."products_to_categories ptc on (ptc.category_id = cs.scope_id)
+					where c.status and c.discount_mode = 'percentage' and c.discount_percent > 0
+					and (c.valid_from is null or c.valid_from <= '". date('Y-m-d H:i:s') ."')
+					and (c.valid_to is null or c.valid_to >= '". date('Y-m-d H:i:s') ."')
+					union all
+					select pr.id as product_id, c.discount_percent as scope_discount
+					from ". DB_TABLE_PREFIX ."campaigns c
+					join ". DB_TABLE_PREFIX ."campaigns_scopes cs on (cs.campaign_id = c.id and cs.scope_type = 'brand')
+					join ". DB_TABLE_PREFIX ."products pr on (pr.brand_id = cs.scope_id)
+					where c.status and c.discount_mode = 'percentage' and c.discount_percent > 0
+					and (c.valid_from is null or c.valid_from <= '". date('Y-m-d H:i:s') ."')
+					and (c.valid_to is null or c.valid_to >= '". date('Y-m-d H:i:s') ."')
+				) scope_discounts
+				group by product_id
+			) csd on (csd.product_id = p.id)
 
 			where (
 				(ifnull(pso.num_stock_options, 0) = 0 or pso.quantity_available > 0 or ss.hidden != 1)

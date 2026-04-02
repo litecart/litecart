@@ -1289,3 +1289,28 @@
 		drop column `length_unit`,
 		drop column `quantity`;"
 	);
+
+	// Campaign scope discounts
+	if (!database::query("show columns from ". DB_TABLE_PREFIX ."campaigns like 'discount_mode';")->num_rows) {
+		database::query(
+			"alter table ". DB_TABLE_PREFIX ."campaigns
+			add column `discount_mode` varchar(16) not null default 'fixed' after `name`,
+			add column `discount_percent` decimal(5,2) not null default 0 after `discount_mode`;"
+		);
+	}
+
+	if (!database::query("show tables like '". DB_TABLE_PREFIX ."campaigns_scopes';")->num_rows) {
+		database::query(
+			"create table `". DB_TABLE_PREFIX ."campaigns_scopes` (
+				`id` int(10) unsigned not null auto_increment,
+				`campaign_id` int(10) unsigned not null,
+				`scope_type` varchar(16) not null default '',
+				`scope_id` int(10) unsigned not null,
+				primary key (`id`),
+				unique key `campaign_scope` (`campaign_id`, `scope_type`, `scope_id`),
+				key `campaign_id` (`campaign_id`),
+				key `scope_type` (`scope_type`, `scope_id`),
+				constraint `". DB_TABLE_PREFIX ."campaigns_scopes_campaign_id` foreign key (`campaign_id`) references `". DB_TABLE_PREFIX ."campaigns` (`id`) on delete cascade
+			) engine=InnoDB default charset=utf8mb4;"
+		);
+	}

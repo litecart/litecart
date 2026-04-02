@@ -232,7 +232,9 @@
 	}
 
 	// Sticker
-	if (!empty($product->campaign['price']) && $product->price > 0 && $product->campaign['price'] > 0) {
+	if (!empty($product->campaign['scope_discount_percent'])) {
+		$_page->snippets['sticker'] = '<div class="sticker sale">-'. (int)$product->campaign['scope_discount_percent'] .'%</div>';
+	} else if (!empty($product->campaign['price']) && $product->price > 0 && $product->campaign['price'] > 0) {
 		$percentage = round(($product->price - $product->campaign['price']) / $product->price * 100);
 		$_page->snippets['sticker'] = '<div class="sticker sale">'. t('sticker_sale', 'Sale') .' -'. $percentage .'%</div>';
 	} else if ($product->created_at > date('Y-m-d', strtotime('-'.settings::get('new_products_max_age')))) {
