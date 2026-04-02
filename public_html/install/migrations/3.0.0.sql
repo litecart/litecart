@@ -999,7 +999,7 @@ SET name = '{}',
 UPDATE `lc_settings`
 SET `value` = ''
 WHERE `value` = 'https://'
-and `key` IN ('control_panel_link', 'database_admin_link', 'webmail_link');
+and `key` IN ('control_panel_link', 'webmail_link');
 -- -----
 UPDATE `lc_settings`
 SET `value` = '0'
@@ -1084,7 +1084,7 @@ LIMIT 1;
 -- -----
 UPDATE `lc_settings`
 SET `value` = ''
-WHERE `value` IN ('?app=settings&doc=advanced&action=edit&key=control_panel_link', '?app=settings&doc=advanced&action=edit&key=database_admin_link', '?app=settings&doc=advanced&action=edit&key=webmail_link');
+WHERE `value` IN ('?app=settings&doc=advanced&action=edit&key=control_panel_link', '?app=settings&doc=advanced&action=edit&key=webmail_link');
 -- -----
 UPDATE `lc_settings`
 SET `value` = 1
@@ -1251,6 +1251,9 @@ OR category_id NOT IN (SELECT id from `lc_categories`);
 DELETE FROM `lc_quantity_units_info`
 WHERE quantity_unit_id NOT IN (SELECT id from `lc_quantity_units`)
 OR language_code NOT IN (SELECT code from `lc_languages`);
+-- -----
+DELETE FROM `lc_settings`
+WHERE `key` IN ('database_admin_link');
 -- -----
 DELETE FROM `lc_sold_out_statuses_info`
 WHERE sold_out_status_id NOT IN (SELECT id from `lc_sold_out_statuses`)

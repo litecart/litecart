@@ -30,13 +30,6 @@
 				'icon_only' => true,
 			],
 			[
-				'title' => t('title_database_manager', 'Database Manager'),
-				'link' => ($database_admin_link = settings::get('database_admin_link')) ? f::escape_html($database_admin_link) : document::ilink('settings/advanced', ['key' => 'database_admin_link', 'action' => 'edit']),
-				'icon' => 'icon-database',
-				'target' => '_blank',
-				'icon_only' => true,
-			],
-			[
 				'title' => t('title_frontend', 'Frontend'),
 				'link' => document::ilink('f:'),
 				'icon' => 'icon-display',
