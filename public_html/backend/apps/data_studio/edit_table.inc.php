@@ -147,7 +147,7 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo f::draw_fonticon('icon-pencil'); ?> <?php echo !empty($table->previous['name']) ? language::translate('title_edit_table', 'Edit Table') : language::translate('title_create_new_table', 'Create New Table'); ?>
+			<?php echo $app_icon; ?> <?php echo !empty($table->previous['name']) ? language::translate('title_edit_table', 'Edit Table') : language::translate('title_create_new_table', 'Create New Table'); ?>
 		</div>
 	</div>
 

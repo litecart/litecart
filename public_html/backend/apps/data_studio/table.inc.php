@@ -98,7 +98,7 @@ textarea[name="query"] {
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo f::draw_fonticon('icon-table'); ?> <?php echo language::translate('title_table_data', 'Table Data'); ?>
+			<?php echo $app_icon; ?> <?php echo language::translate('title_table_data', 'Table Data'); ?>
 		</div>
 	</div>
 
