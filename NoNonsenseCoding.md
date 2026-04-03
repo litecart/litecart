@@ -116,6 +116,29 @@ Better:
 		}
 
 
+## Repetitive Use - Avoid the repetitive nonsense
+
+	Repeating things can be annoying:
+
+		$long_descriptive_object['key1'] = $_POST['key1'] ?? '';
+		$long_descriptive_object['key2'] = $_POST['key2'] ?? '';
+		$long_descriptive_object['key3'] = $_POST['key3'] ?? '';
+		$long_descriptive_object['key4'] = $_POST['key4'] ?? '';
+		$long_descriptive_object['key5'] = $_POST['key5'] ?? '';
+
+	Better:
+
+		foreach ([
+			'key1',
+			'key2',
+			'key3',
+			'key4',
+			'key5',
+		] as $key) {
+			$long_descriptive_object[$key] = $_POST[$key] ?? '';
+		}
+
+
 ## Use codes others recognize - No made up nonsense
 
 Very bad:

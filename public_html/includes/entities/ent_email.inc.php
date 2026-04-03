@@ -466,7 +466,7 @@
 
 			cache::clear_cache('email');
 		}
-	
+
 		public function cleanup($time_ago='-30 days') {
 
 			database::query(

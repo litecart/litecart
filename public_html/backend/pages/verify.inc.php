@@ -186,4 +186,10 @@ input[autocomplete="one-time-code"] {
 
 <script>
 	$('input[name="code"]').trigger('focus');
+
+	$('input[name="code"]').on('input', function() {
+		if ($(this).val().length === 6) {
+			$(this).closest('form').submit();
+		}
+	});
 </script>

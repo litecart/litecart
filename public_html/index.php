@@ -35,6 +35,7 @@
 		switch ($argv[1]) {
 
 			case 'push_jobs':
+
 				// Run the background jobs
 				require_once 'app://frontend/pages/push_jobs.inc.php';
 				exit;

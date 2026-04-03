@@ -70,7 +70,7 @@ gulp.task('less-backend', function() {
 		.pipe(header(banner, { pkg: packageData }))
 		.pipe(gulp.dest('public_html/backend/template/css/', { overwrite: true }));
 
-	return gulp.src(['public_html/backend/template/less/*.less', '!public_html/backend/template/less/vari*bles.less'])
+	return gulp.src(['public_html/backend/template/less/*.less', '!public_html/backend/template/less/variables.less'])
 		.pipe(sourcemaps.init())
 		.pipe(less())
 		.on('error', function (err) {

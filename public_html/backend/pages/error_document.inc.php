@@ -1,6 +1,6 @@
 <?php
 
-	document::$layout = 'default';
+	document::$layout = 'blank';
 
 	if (!empty($_GET['code'])) {
 		http_response_code((int)$_GET['code']);

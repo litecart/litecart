@@ -197,8 +197,8 @@
 						(new ent_email())
 							->add_recipient($administrator['email'])
 							->set_subject(t('title_verification_code', 'Verification Code'))
-							->add_body(strtr(t('email_verification_code', 'Verification code: %code'), [
-								'%code' => session::$data['security_verification']['code']
+							->add_body(strtr(t('email_verification_code', 'Verification code: {code}'), [
+								'{code}' => session::$data['security_verification']['code']
 							]))
 							->send();
 
