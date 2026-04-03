@@ -38,7 +38,7 @@
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"code": { "type": "VARCHAR", "length": 32, "default": "''" },
-				"name": { "type": "TEXT", "nullable": true },
+				"name": { "type": "TEXT", "default": "'{}'", "comment": "TYPE:JSON_TRANSLATIONS" },
 				"sort": { "type": "ENUM('alphabetical','priority')", "default": "'alphabetical'" },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
 				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
@@ -48,14 +48,14 @@
 				"code": ["code"]
 			},
 			"check_constraints": {
-				"attribute_groups_chk_name": "name IS NULL OR name = '' OR JSON_VALID(name)"
+				"chk_name": "JSON_VALID(name)"
 			}
 		},
 		"attribute_values": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"group_id": { "type": "INT", "length": 10, "unsigned": true },
-				"name": { "type": "TEXT", "nullable": true },
+				"name": { "type": "TEXT", "default": "'{}'", "comment": "TYPE:JSON_TRANSLATIONS" },
 				"priority": { "type": "INT", "length": 11, "default": 0 },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
 				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
@@ -65,7 +65,7 @@
 				"group_id": ["group_id"]
 			},
 			"check_constraints": {
-				"attribute_values_chk_name": "name IS NULL OR name = '' OR JSON_VALID(name)"
+				"chk_name": "JSON_VALID(name)"
 			}
 		},
 		"banners": {
@@ -94,12 +94,12 @@
 				"featured": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
 				"code": { "type": "VARCHAR", "length": 32, "default": "''" },
 				"name": { "type": "VARCHAR", "length": 64, "default": "''" },
-				"short_description": { "type": "TEXT", "nullable": true },
-				"description": { "type": "MEDIUMTEXT", "nullable": true },
-				"h1_title": { "type": "TEXT", "nullable": true },
-				"head_title": { "type": "TEXT", "nullable": true },
-				"meta_description": { "type": "TEXT", "nullable": true },
-				"link": { "type": "TEXT", "nullable": true },
+				"short_description":	{ "type": "TEXT", "default": "'{}'", "comment": "TYPE:JSON_TRANSLATIONS" },
+				"description":	{ "type": "MEDIUMTEXT", "default": "'{}'", "comment": "TYPE:JSON_TRANSLATIONS" },
+				"h1_title":	{ "type": "TEXT", "default": "'{}'", "comment": "TYPE:JSON_TRANSLATIONS" },
+				"head_title":	{ "type": "TEXT", "default": "'{}'", "comment": "TYPE:JSON_TRANSLATIONS" },
+				"meta_description":	{ "type": "TEXT", "default": "'{}'", "comment": "TYPE:JSON_TRANSLATIONS" },
+				"link":	{ "type": "TEXT", "default": "'{}'", "comment": "TYPE:JSON_TRANSLATIONS" },
 				"keywords": { "type": "VARCHAR", "length": 255, "default": "''" },
 				"image": { "type": "VARCHAR", "length": 128, "default": "''" },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
@@ -113,12 +113,12 @@
 				"name": ["name"]
 			},
 			"check_constraints": {
-				"brands_chk_short_description": "short_description IS NULL OR short_description = '' OR JSON_VALID(short_description)",
-				"brands_chk_description": "description IS NULL OR description = '' OR JSON_VALID(description)",
-				"brands_chk_h1_title": "h1_title IS NULL OR h1_title = '' OR JSON_VALID(h1_title)",
-				"brands_chk_head_title": "head_title IS NULL OR head_title = '' OR JSON_VALID(head_title)",
-				"brands_chk_meta_description": "meta_description IS NULL OR meta_description = '' OR JSON_VALID(meta_description)",
-				"brands_chk_link": "link IS NULL OR link = '' OR JSON_VALID(link)"
+				"chk_short_description": "JSON_VALID(short_description)",
+				"chk_description": "JSON_VALID(description)",
+				"chk_h1_title": "JSON_VALID(h1_title)",
+				"chk_head_title": "JSON_VALID(head_title)",
+				"chk_meta_description": "JSON_VALID(meta_description)",
+				"chk_link": "JSON_VALID(link)"
 			}
 		},
 		"campaigns": {
@@ -194,13 +194,13 @@
 				"google_taxonomy_id": { "type": "INT", "length": 10, "unsigned": true, "default": 0 },
 				"status": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
 				"code": { "type": "VARCHAR", "length": 64, "default": "''" },
-				"name": { "type": "TEXT", "nullable": true },
-				"short_description": { "type": "TEXT", "nullable": true },
-				"description": { "type": "MEDIUMTEXT", "nullable": true },
-				"synonyms": { "type": "TEXT" },
-				"head_title": { "type": "TEXT", "nullable": true },
-				"h1_title": { "type": "TEXT", "nullable": true },
-				"meta_description": { "type": "TEXT", "nullable": true },
+				"name": { "type": "TEXT", "default": "'{}'", "comment": "TYPE:JSON_TRANSLATIONS" },
+				"short_description": { "type": "TEXT", "default": "'{}'", "comment": "TYPE:JSON_TRANSLATIONS" },
+				"description": { "type": "MEDIUMTEXT", "default": "'{}'", "comment": "TYPE:JSON_TRANSLATIONS" },
+				"synonyms": { "type": "TEXT", "default": "'{}'", "comment": "TYPE:JSON_TRANSLATIONS" },
+				"head_title": { "type": "TEXT", "default": "'{}'", "comment": "TYPE:JSON_TRANSLATIONS" },
+				"h1_title": { "type": "TEXT", "default": "'{}'", "comment": "TYPE:JSON_TRANSLATIONS" },
+				"meta_description": { "type": "TEXT", "default": "'{}'", "comment": "TYPE:JSON_TRANSLATIONS" },
 				"keywords": { "type": "VARCHAR", "length": 255, "default": "''" },
 				"image": { "type": "VARCHAR", "length": 255, "default": "''" },
 				"priority": { "type": "INT", "length": 11, "default": 0 },
@@ -225,12 +225,12 @@
 				}
 			},
 			"check_constraints": {
-				"categories_chk_name": "name IS NULL OR name = '' OR JSON_VALID(name)",
-				"categories_chk_short_description": "short_description IS NULL OR short_description = '' OR JSON_VALID(short_description)",
-				"categories_chk_description": "description IS NULL OR description = '' OR JSON_VALID(description)",
-				"categories_chk_h1_title": "h1_title IS NULL OR h1_title = '' OR JSON_VALID(h1_title)",
-				"categories_chk_head_title": "head_title IS NULL OR head_title = '' OR JSON_VALID(head_title)",
-				"categories_chk_meta_description": "meta_description IS NULL OR meta_description = '' OR JSON_VALID(meta_description)"
+				"chk_name": "JSON_VALID(name)",
+				"chk_short_description": "JSON_VALID(short_description)",
+				"chk_description": "JSON_VALID(description)",
+				"chk_h1_title": "JSON_VALID(h1_title)",
+				"chk_head_title": "JSON_VALID(head_title)",
+				"chk_meta_description": "JSON_VALID(meta_description)"
 			}
 		},
 		"categories_filters": {
@@ -400,15 +400,15 @@
 		"delivery_statuses": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
-				"name": { "type": "TEXT", "nullable": true },
-				"description": { "type": "TEXT", "nullable": true },
+				"name": { "type": "TEXT", "default": "'{}'", "comment": "TYPE:JSON_TRANSLATIONS" },
+				"description": { "type": "TEXT", "default": "'{}'", "comment": "TYPE:JSON_TRANSLATIONS" },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
 				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
 			},
 			"primary_key": ["id"],
 			"check_constraints": {
-				"delivery_statuses_chk_name": "name IS NULL OR name = '' OR JSON_VALID(name)",
-				"delivery_statuses_chk_description": "description IS NULL OR description = '' OR JSON_VALID(description)"
+				"chk_name": "JSON_VALID(name)",
+				"chk_description": "JSON_VALID(description)"
 			}
 		},
 		"emails": {
@@ -419,11 +419,11 @@
 				"reference": { "type": "VARCHAR", "length": 255, "default": "''" },
 				"language_code": { "type": "VARCHAR", "length": 2, "default": "''" },
 				"sender": { "type": "VARCHAR", "length": 255, "default": "''" },
-				"recipients": { "type": "TEXT" },
-				"ccs": { "type": "TEXT" },
-				"bccs": { "type": "TEXT" },
+				"recipients": { "type": "TEXT", "default": "''" },
+				"ccs": { "type": "TEXT", "default": "''" },
+				"bccs": { "type": "TEXT", "default": "''" },
 				"subject": { "type": "VARCHAR", "length": 255, "default": "''" },
-				"multiparts": { "type": "MEDIUMTEXT" },
+				"multiparts": { "type": "MEDIUMTEXT", "default": "''" },
 				"ip_address": { "type": "VARCHAR", "length": 39, "default": "''" },
 				"hostname": { "type": "VARCHAR", "length": 128, "default": "''" },
 				"user_agent": { "type": "VARCHAR", "length": 255, "default": "''" },
@@ -449,8 +449,8 @@
 				"customer_phone": { "type": "VARCHAR", "length": 16, "nullable": true },
 				"type": { "type": "VARCHAR", "length": 64, "nullable": true },
 				"description": { "type": "VARCHAR", "length": 248, "default": "''" },
-				"data": { "type": "VARCHAR", "length": 1024, "default": "'{}'" },
-				"conversions": { "type": "VARCHAR", "length": 1024, "default": "'{}'" },
+				"data": { "type": "VARCHAR", "length": 1024, "default": "'{}'", "comment": "TYPE:JSON" },
+				"conversions": { "type": "VARCHAR", "length": 1024, "default": "'{}'", "comment": "TYPE:JSON" },
 				"url": { "type": "VARCHAR", "length": 248, "nullable": true },
 				"ip_address": { "type": "VARCHAR", "length": 47, "nullable": true },
 				"hostname": { "type": "VARCHAR", "length": 128, "nullable": true },
@@ -484,8 +484,8 @@
 				}
 			},
 			"check_constraints": {
-				"event_logs_chk_data": "data IS NULL OR data = '' OR JSON_VALID(data)",
-				"event_logs_chk_conversions": "conversions IS NULL OR conversions = '' OR JSON_VALID(conversions)"
+				"chk_data": "JSON_VALID(data)",
+				"chk_conversions": "JSON_VALID(conversions)"
 			}
 		},
 		"geo_zones": {
@@ -536,8 +536,8 @@
 				"type": { "type": "VARCHAR", "length": 16, "default": "''" },
 				"status": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
 				"priority": { "type": "INT", "length": 11, "default": 0 },
-				"settings": { "type": "TEXT" },
-				"last_log": { "type": "TEXT" },
+				"settings": { "type": "TEXT", "default": "'{}'", "comment": "TYPE:JSON" },
+				"last_log": { "type": "TEXT", "default": "''" },
 				"last_pushed": { "type": "TIMESTAMP", "nullable": true },
 				"last_processed": { "type": "TIMESTAMP", "nullable": true },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
@@ -641,7 +641,7 @@
 				"total": { "type": "DECIMAL", "length": "10,4", "default": 0 },
 				"total_tax": { "type": "DECIMAL", "length": "10,4", "default": 0 },
 				"notes": { "type": "VARCHAR", "length": 1024, "default": "''" },
-				"conversions": { "type": "VARCHAR", "length": 1024, "default": "'{}'" },
+				"conversions": { "type": "VARCHAR", "length": 1024, "default": "'{}'", "comment": "TYPE:JSON" },
 				"ip_address": { "type": "VARCHAR", "length": 39, "default": "''" },
 				"hostname": { "type": "VARCHAR", "length": 128, "default": "''" },
 				"user_agent": { "type": "VARCHAR", "length": 255, "default": "''" },
@@ -683,7 +683,7 @@
 				}
 			},
 			"check_constraints": {
-				"orders_chk_conversions": "conversions IS NULL OR conversions = '' OR JSON_VALID(conversions)"
+				"chk_conversions": "JSON_VALID(conversions)"
 			}
 		},
 		"orders_comments": {
@@ -775,7 +775,7 @@
 				"code": { "type": "VARCHAR", "length": 32, "nullable": true },
 				"name": { "type": "VARCHAR", "length": 128, "default": "''" },
 				"serial_number": { "type": "VARCHAR", "length": 32, "default": "''" },
-				"userdata": { "type": "VARCHAR", "length": 2048, "default": "'{}'" },
+				"userdata": { "type": "VARCHAR", "length": 2048, "default": "'{}'", "comment": "TYPE:JSON" },
 				"quantity": { "type": "DECIMAL", "length": "11,4", "default": 0 },
 				"price": { "type": "DECIMAL", "length": "11,4", "default": 0 },
 				"tax_class_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
@@ -827,7 +827,7 @@
 				}
 			},
 			"check_constraints": {
-				"orders_lines_chk_userdata": "userdata IS NULL OR userdata = '' OR JSON_VALID(userdata)"
+				"chk_userdata": "JSON_VALID(userdata)"
 			}
 		},
 		"order_statuses": {
@@ -837,10 +837,10 @@
 				"hidden": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
 				"icon": { "type": "VARCHAR", "length": 24, "default": "''" },
 				"color": { "type": "VARCHAR", "length": 7, "default": "''" },
-				"name": { "type": "TEXT", "length": 64, "nullable": true },
-				"description": { "type": "TEXT", "nullable": true },
-				"email_subject": { "type": "TEXT", "nullable": true },
-				"email_message": { "type": "MEDIUMTEXT", "nullable": true },
+				"name": { "type": "TEXT", "length": 64, "default": "'{}'", "comment": "TYPE:JSON_TRANSLATIONS" },
+				"description": { "type": "TEXT", "default": "'{}'", "comment": "TYPE:JSON_TRANSLATIONS" },
+				"email_subject": { "type": "TEXT", "default": "'{}'", "comment": "TYPE:JSON_TRANSLATIONS" },
+				"email_message": { "type": "MEDIUMTEXT", "default": "'{}'", "comment": "TYPE:JSON_TRANSLATIONS" },
 				"is_sale": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
 				"is_archived": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
 				"is_trackable": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
@@ -858,10 +858,10 @@
 				"is_trackable": ["is_trackable"]
 			},
 			"check_constraints": {
-				"order_statuses_chk_name": "name IS NULL OR name = '' OR JSON_VALID(name)",
-				"order_statuses_chk_description": "description IS NULL OR description = '' OR JSON_VALID(description)",
-				"order_statuses_chk_email_subject": "email_subject IS NULL OR email_subject = '' OR JSON_VALID(email_subject)",
-				"order_statuses_chk_email_message": "email_message IS NULL OR email_message = '' OR JSON_VALID(email_message)"
+				"chk_name": "JSON_VALID(name)",
+				"chk_description": "JSON_VALID(description)",
+				"chk_email_subject": "JSON_VALID(email_subject)",
+				"chk_email_message": "JSON_VALID(email_message)"
 			}
 		},
 		"pages": {
@@ -870,10 +870,10 @@
 				"parent_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
 				"dock": { "type": "VARCHAR", "length": 64, "default": "''" },
 				"status": { "type": "TINYINT", "length": 1, "default": 0 },
-				"title": { "type": "TEXT", "nullable": true },
-				"content": { "type": "MEDIUMTEXT", "nullable": true },
-				"head_title": { "type": "TEXT", "nullable": true },
-				"meta_description": { "type": "TEXT", "nullable": true },
+				"title": { "type": "TEXT", "default": "'{}'", "comment": "TYPE:JSON_TRANSLATIONS" },
+				"content": { "type": "MEDIUMTEXT", "default": "'{}'", "comment": "TYPE:JSON_TRANSLATIONS" },
+				"head_title": { "type": "TEXT", "default": "'{}'", "comment": "TYPE:JSON_TRANSLATIONS" },
+				"meta_description": { "type": "TEXT", "default": "'{}'", "comment": "TYPE:JSON_TRANSLATIONS" },
 				"priority": { "type": "INT", "length": 11, "default": 0 },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
 				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
@@ -909,14 +909,14 @@
 				"gtin": { "type": "VARCHAR", "length": 32, "default": "''" },
 				"taric": { "type": "VARCHAR", "length": 16, "default": "''" },
 				"shelf": { "type": "VARCHAR", "length": 32, "default": "''" },
-				"name": { "type": "TEXT", "nullable": true },
-				"short_description": { "type": "TEXT", "nullable": true },
-				"description": { "type": "MEDIUMTEXT", "nullable": true },
-				"technical_data": { "type": "TEXT", "nullable": true },
+				"name": { "type": "TEXT", "default": "'{}'", "comment": "TYPE:JSON_TRANSLATIONS" },
+				"short_description": { "type": "TEXT", "default": "'{}'", "comment": "TYPE:JSON_TRANSLATIONS" },
+				"description": { "type": "MEDIUMTEXT", "default": "'{}'", "comment": "TYPE:JSON_TRANSLATIONS" },
+				"technical_data": { "type": "TEXT", "default": "'{}'", "comment": "TYPE:JSON_TRANSLATIONS" },
 				"autofill_technical_data": { "type": "TINYINT", "length": 1, "default": 0 },
-				"head_title": { "type": "TEXT", "nullable": true },
-				"meta_description": { "type": "TEXT", "nullable": true },
-				"synonyms": { "type": "TEXT", "nullable": true },
+				"head_title": { "type": "TEXT", "default": "'{}'", "comment": "TYPE:JSON_TRANSLATIONS" },
+				"meta_description": { "type": "TEXT", "default": "'{}'", "comment": "TYPE:JSON_TRANSLATIONS" },
+				"synonyms": { "type": "TEXT", "default": "'{}'", "comment": "TYPE:JSON_TRANSLATIONS" },
 				"keywords": { "type": "VARCHAR", "length": 255, "default": "''" },
 				"stock_option_type": { "type": "ENUM('variants','bundle')", "default": "'variants'" },
 				"quantity_min": { "type": "DECIMAL", "length": "10,4", "unsigned": true, "default": 1 },
@@ -953,13 +953,13 @@
 				"valid_to": ["valid_to"]
 			},
 			"check_constraints": {
-				"products_chk_name": "name IS NULL OR name = '' OR JSON_VALID(name)",
-				"products_chk_short_description": "short_description IS NULL OR short_description = '' OR JSON_VALID(short_description)",
-				"products_chk_description": "description IS NULL OR description = '' OR JSON_VALID(description)",
-				"products_chk_technical_data": "technical_data IS NULL OR technical_data = '' OR JSON_VALID(technical_data)",
-				"products_chk_head_title": "head_title IS NULL OR head_title = '' OR JSON_VALID(head_title)",
-				"products_chk_meta_description": "meta_description IS NULL OR meta_description = '' OR JSON_VALID(meta_description)",
-				"products_chk_synonyms": "synonyms IS NULL OR synonyms = '' OR JSON_VALID(synonyms)"
+				"chk_name": "JSON_VALID(name)",
+				"chk_short_description": "JSON_VALID(short_description)",
+				"chk_description": "JSON_VALID(description)",
+				"chk_technical_data": "JSON_VALID(technical_data)",
+				"chk_head_title": "JSON_VALID(head_title)",
+				"chk_meta_description": "JSON_VALID(meta_description)",
+				"chk_synonyms": "JSON_VALID(synonyms)"
 			}
 		},
 		"products_attributes": {
@@ -1166,7 +1166,7 @@
 				"customer_group_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
 				"geo_zone_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
 				"min_quantity": { "type": "DECIMAL", "length": "10,4", "unsigned": true, "default": 1 },
-				"price": { "type": "VARCHAR", "length": 512, "default": "'{}'" }
+				"price": { "type": "VARCHAR", "length": 512, "default": "'{}'", "comment": "TYPE:JSON" }
 			},
 			"primary_key": ["id"],
 			"keys": {
@@ -1215,8 +1215,8 @@
 				}
 			},
 			"check_constraints": {
-				"products_prices_chk_min_quantity": "min_quantity > 0",
-				"products_prices_chk_price": "price IS NULL OR price = '' OR JSON_VALID(price)"
+				"chk_min_quantity": "min_quantity > 0",
+				"chk_price": "JSON_VALID(price)"
 			}
 		},
 		"products_stock_options": {
@@ -1286,8 +1286,8 @@
 		"quantity_units": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
-				"name": { "type": "TEXT", "nullable": true },
-				"description": { "type": "TEXT", "nullable": true },
+				"name": { "type": "TEXT", "default": "'{}'", "comment": "TYPE:JSON_TRANSLATIONS" },
+				"description": { "type": "TEXT", "default": "'{}'", "comment": "TYPE:JSON_TRANSLATIONS" },
 				"decimals": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 2 },
 				"separate": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
 				"priority": { "type": "INT", "length": 11, "default": 0 },
@@ -1296,8 +1296,8 @@
 			},
 			"primary_key": ["id"],
 			"check_constraints": {
-				"quantity_units_chk_name": "name IS NULL OR name = '' OR JSON_VALID(name)",
-				"quantity_units_chk_description": "description IS NULL OR description = '' OR JSON_VALID(description)"
+				"chk_name": "JSON_VALID(name)",
+				"chk_description": "JSON_VALID(description)"
 			}
 		},
 		"redirects": {
@@ -1328,7 +1328,7 @@
 			"columns": {
 				"id": { "type": "VARCHAR", "length": 128 },
 				"customer_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
-				"data": { "type": "TEXT" },
+				"data": { "type": "TEXT", "default": "'{}'", "comment": "TYPE:JSON" },
 				"language_code": { "type": "CHAR", "length": 2, "default": "''" },
 				"country_code": { "type": "CHAR", "length": 2, "default": "''" },
 				"currency_code": { "type": "CHAR", "length": 3, "default": "''" },
@@ -1444,8 +1444,8 @@
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"hidden": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
 				"orderable": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
-				"name": { "type": "TEXT", "nullable": true },
-				"description": { "type": "TEXT", "nullable": true },
+				"name": { "type": "TEXT", "default": "'{}'", "comment": "TYPE:JSON_TRANSLATIONS" },
+				"description": { "type": "TEXT", "default": "'{}'", "comment": "TYPE:JSON_TRANSLATIONS" },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
 				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
 			},
@@ -1455,8 +1455,8 @@
 				"orderable": ["orderable"]
 			},
 			"check_constraints": {
-				"sold_out_statuses_chk_name": "name IS NULL OR name = '' OR JSON_VALID(name)",
-				"sold_out_statuses_chk_description": "description IS NULL OR description = '' OR JSON_VALID(description)"
+				"chk_name": "JSON_VALID(name)",
+				"chk_description": "JSON_VALID(description)"
 			}
 		},
 		"statistics": {
@@ -1468,7 +1468,7 @@
 				"measure_group_type": { "type": "VARCHAR", "length": 32, "default": "''" },
 				"measure_group_value": { "type": "VARCHAR", "length": 64, "default": "''" },
 				"count": { "type": "INT", "length": 10, "unsigned": true, "default": 0 },
-				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP"}
+				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" }
 			},
 			"primary_key": ["id"],
 			"unique_keys": {
@@ -1486,7 +1486,7 @@
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"brand_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
 				"supplier_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
-				"name": { "type": "TEXT", "nullable": true },
+				"name": { "type": "TEXT", "default": "'{}'", "comment": "TYPE:JSON_TRANSLATIONS" },
 				"attributes": { "type": "VARCHAR", "length": 32, "default": "''" },
 				"sku": { "type": "VARCHAR", "length": 32, "default": "''" },
 				"mpn": { "type": "VARCHAR", "length": 32, "default": "''" },
@@ -1522,7 +1522,7 @@
 				"supplier_id": ["supplier_id"]
 			},
 			"check_constraints": {
-				"stock_items_chk_name": "name IS NULL OR name = '' OR JSON_VALID(name)"
+				"chk_name": "JSON_VALID(name)"
 			}
 		},
 		"stock_items_references": {
@@ -1530,7 +1530,7 @@
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"stock_item_id": { "type": "INT", "length": 10, "unsigned": true },
 				"supplier_id": { "type": "INT", "length": 10, "unsigned": true },
-				"code": { "type": "VARCHAR", "length": 32, "default": "''"}
+				"code": { "type": "VARCHAR", "length": 32, "default": "''" }
 			},
 			"primary_key": ["id"],
 			"keys": {
@@ -1561,7 +1561,7 @@
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"name": { "type": "VARCHAR", "length": 128, "default": "''" },
-				"description": { "type": "MEDIUMTEXT" },
+				"description": { "type": "MEDIUMTEXT", "default": "''" },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
 				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
 			},
@@ -1617,7 +1617,7 @@
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"code": { "type": "VARCHAR", "length": 64, "default": "''" },
 				"name": { "type": "VARCHAR", "length": 64, "default": "''" },
-				"description": { "type": "TEXT" },
+				"description": { "type": "TEXT", "default": "''" },
 				"email": { "type": "VARCHAR", "length": 128, "default": "''" },
 				"phone": { "type": "VARCHAR", "length": 24, "default": "''" },
 				"link": { "type": "VARCHAR", "length": 255, "default": "''" },
@@ -1688,11 +1688,11 @@
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"status": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
 				"privacy_classes": { "type": "VARCHAR", "length": 64, "default": "''" },
-				"category": { "type": "VARCHAR", "length": 64, "default": "''" },
-				"name": { "type": "VARCHAR", "length": 64, "default": "''" },
-				"description": { "type": "MEDIUMTEXT", "nullable": true },
-				"collected_data": { "type": "TEXT", "nullable": true },
-				"purposes": { "type": "TEXT", "nullable": true },
+				"category": { "type": "VARCHAR", "length": 64, "default": "''", "comment": "TYPE:JSON_TRANSLATIONS" },
+				"name": { "type": "VARCHAR", "length": 64, "default": "''", "comment": "TYPE:JSON_TRANSLATIONS" },
+				"description": { "type": "MEDIUMTEXT", "default": "'{}'", "comment": "TYPE:JSON_TRANSLATIONS" },
+				"collected_data": { "type": "TEXT", "default": "'{}'", "comment": "TYPE:JSON_TRANSLATIONS" },
+				"purposes": { "type": "TEXT", "default": "'{}'", "comment": "TYPE:JSON_TRANSLATIONS" },
 				"homepage": { "type": "VARCHAR", "length": 248, "default": "''" },
 				"cookie_policy_url": { "type": "VARCHAR", "length": 248, "default": "''" },
 				"privacy_policy_url": { "type": "VARCHAR", "length": 248, "default": "''" },
@@ -1719,16 +1719,16 @@
 				}
 			},
 			"check_constraints": {
-				"third_parties_chk_description": "description IS NULL OR description = '' OR JSON_VALID(description)",
-				"third_parties_chk_collected_data": "collected_data IS NULL OR collected_data = '' OR JSON_VALID(collected_data)",
-				"third_parties_chk_purposes": "purposes IS NULL OR purposes = '' OR JSON_VALID(purposes)"
+				"chk_description": "JSON_VALID(description)",
+				"chk_collected_data": "JSON_VALID(collected_data)",
+				"chk_purposes": "JSON_VALID(purposes)"
 			}
 		},
 		"translations": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"code": { "type": "VARCHAR", "length": 128, "default": "''" },
-				"text_en": { "type": "TEXT" },
+				"text_en": { "type": "TEXT", "default": "''" },
 				"html": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
 				"frontend": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
 				"backend": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
