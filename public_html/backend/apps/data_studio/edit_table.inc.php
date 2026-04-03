@@ -63,6 +63,7 @@
 		'primary' => language::translate('title_primary_key', 'Primary Key'),
 		'key' => language::translate('title_index_key', 'Index Key'),
 		'unique' => language::translate('title_unique_key', 'Unique Key'),
+		'fulltext' => language::translate('title_fulltext_index', 'Fulltext Index'),
 	];
 
 	$column_types = [
@@ -177,7 +178,7 @@
 
 						<div class="form-group">
 							<label><?php echo language::translate('title_engine', 'Engine'); ?></label>
-							<?php //echo f::form_mysql_engines_list('engine', true); ?>
+							<?php echo f::form_select_mysql_engine('engine', true); ?>
 						</div>
 					</div>
 
@@ -193,7 +194,7 @@
 								<th></th>
 								<th><?php echo language::translate('title_name', 'Name'); ?></th>
 								<th><?php echo language::translate('title_type', 'Type'); ?></th>
-								<th><?php echo language::translate('title_columns', 'Columns'); ?></th>
+								<th class="main"><?php echo language::translate('title_columns', 'Columns'); ?></th>
 								<th><?php echo language::translate('title_cardinality', 'Cardinality'); ?></th>
 								<th class="main"><?php echo language::translate('title_type', 'Type'); ?></th>
 								<th></th>
@@ -208,6 +209,7 @@
 									<?php echo ($index['kind'] == 'primary') ? f::draw_fonticon('icon-key', 'style="color: #e5d72c;"') : ''; ?>
 									<?php echo ($index['kind'] == 'unique') ? f::draw_fonticon('icon-key', 'style="color: #e52c2c;"') : ''; ?>
 									<?php echo ($index['kind'] == 'key') ? f::draw_fonticon('icon-key', 'style="color: #7ce52c;"') : ''; ?>
+									<?php echo ($index['kind'] == 'fulltext') ? f::draw_fonticon('icon-search', 'style="color: #2c7ce5;"') : ''; ?>
 								</td>
 								<td><?php echo $index['name']; ?></td>
 								<td><?php echo $index['kind']; ?></td>
@@ -262,18 +264,34 @@
 					<td><?php echo f::form_input_text('columns['.$column['name'].'][comment]', true); ?></td>
 					<td class="grabbable text-center"><?php echo f::draw_fonticon('icon-arrows-vertical'); ?></td>
 					<td class="text-end">
-						<button class="btn btn-danger btn-sm" name="remove" value="true" type="button" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo f::draw_fonticon('icon-trash'); ?></button>
+						<button class="btn btn-danger btn-sm" name="remove" value="true" type="button" title="<?php echo language::translate('title_remove', 'Remove'); ?>">
+							<?php echo f::draw_fonticon('icon-trash'); ?>
+						</button>
 					</td>
 				</tr>
 				<?php } ?>
 			</tbody>
 
 			<tfoot>
-				<td colspan="12">
-					<button class="btn btn-default btn-" name="add_column" type="button"><?php echo f::draw_fonticon('icon-plus'); ?> <?php echo language::translate('title_add_column', 'Add Column'); ?></a>
-					<button class="btn btn-default btn-" name="add_primary_key" type="button" data-require-columns="true"><?php echo f::draw_fonticon('icon-plus'); ?> <?php echo language::translate('title_add_primary_key', 'Add Primary Key'); ?></a>
-					<button class="btn btn-default btn-" name="add_key" type="button" data-require-columns="true"><?php echo f::draw_fonticon('icon-plus'); ?> <?php echo language::translate('title_add_key', 'Add Key'); ?></a>
-					<button class="btn btn-default btn-" name="add_unique_key" type="button" data-require-columns="true"><?php echo f::draw_fonticon('icon-plus'); ?> <?php echo language::translate('title_add_unique_key', 'Add Unique Key'); ?></a>
+				<td colspan="99">
+					<button class="btn btn-default" name="add_column" type="button">
+						<?php echo f::draw_fonticon('icon-plus'); ?> <?php echo language::translate('title_add_column', 'Add Column'); ?>
+					</button>
+					<button class="btn btn-default" name="delete" type="button" data-require-columns="true">
+						<?php echo f::draw_fonticon('icon-trash'); ?> <?php echo language::translate('title_delete', 'Delete'); ?>
+					</button>
+					<button class="btn btn-default" name="add_primary_key" type="button" data-require-columns="true">
+						<?php echo f::draw_fonticon('icon-plus'); ?> <?php echo language::translate('title_add_primary_key', 'Add Primary Key'); ?>
+					</button>
+					<button class="btn btn-default" name="add_key" type="button" data-require-columns="true">
+						<?php echo f::draw_fonticon('icon-plus'); ?> <?php echo language::translate('title_add_key', 'Add Key'); ?>
+					</button>
+					<button class="btn btn-default" name="add_unique_key" type="button" data-require-columns="true">
+						<?php echo f::draw_fonticon('icon-plus'); ?> <?php echo language::translate('title_add_unique_key', 'Add Unique Key'); ?>
+					</button>
+					<button class="btn btn-default" name="add_fulltext_key" type="button" data-require-columns="true">
+						<?php echo f::draw_fonticon('icon-plus'); ?> <?php echo language::translate('title_add_fulltext_key', 'Add Fulltext Key'); ?>
+					</button>
 				</td>
 			</tfoot>
 		</table>
@@ -341,24 +359,31 @@
 		$(this).closest('tr').remove();
 	});
 
+	$('table.tfoot').on('click', 'button[name="delete"]', function(){
+		if (!window.confirm("<?php echo f::escape_js(language::translate('text_are_you_sure', 'Are you sure?')); ?>")) return false;
+		$('table.columns tbody tr td:first-child :checkbox:checked').closest('tr').remove();
+	});
+
 	let new_index_key_i = 0; while ($('indexes[new_'+ new_index_key_i +']').length) new_index_key_i++;
-	$('button[name="add_primary_key"], button[name="add_key"], button[name="add_unique_key"]').on('click', function(){
-		var $row = $([
-			'<tr draggable="true">',
-			'  <td><?php echo f::escape_js(f::form_checkbox('selected_columns[]', '')); ?></td>',
-			'  <td>'+ prompt("What would you like to name this key?") +'</td>',
-			'  <td><?php echo f::form_input_text('indexes[new_index_key_i][type]'); ?></td>',
-			'  <td>'+ $(this).data('kind') +'</td>',
-			'  <td><?php //echo implode(', ', $index['columns']); ?></td>',
-			'  <td><?php //echo $index['cardinality']; ?></td>',
-			'  <td><?php //echo $index['type']; ?></td>',
-			'  <td class="grabbable text-center"><?php echo f::draw_fonticon('icon-arrows-vertical'); ?></td>',
-			'  <td class="text-end"><button class="btn btn-danger btn-sm" name="remove" value="true" type="button" title="<?php echo f::escape_js(language::translate('title_remove', 'Remove')); ?>"><?php echo f::draw_fonticon('icon-trash'); ?></button></td>',
-			'</tr>'
-		].join('\n')
-			.replace(/new_index_key_i/, new_index_key_i++)
-		);
-		$('table.indexes tbody').append($row);
+	$('button[name="add_primary_key"], button[name="add_key"], button[name="add_unique_key"], button[name="add_fulltext_key"]').on('click', function(){
+	   var kind = $(this).attr('name').replace('add_', '').replace('_key', '');
+	   var name = prompt("What would you like to name this key?");
+	   if (!name) return;
+	   var $row = $([
+		   '<tr draggable="true">',
+		   '  <td><?php echo f::escape_js(f::form_checkbox('selected_columns[]', '')); ?></td>',
+		   '  <td>'+ name +'</td>',
+		   '  <td>'+ kind +'</td>',
+		   '  <td>'+ kind +'</td>',
+		   '  <td></td>',
+		   '  <td></td>',
+		   '  <td></td>',
+		   '  <td class="grabbable text-center"><?php echo f::draw_fonticon('icon-arrows-vertical'); ?></td>',
+		   '  <td class="text-end"><button class="btn btn-danger btn-sm" name="remove" value="true" type="button" title="<?php echo f::escape_js(language::translate('title_remove', 'Remove')); ?>"><?php echo f::draw_fonticon('icon-trash'); ?></button></td>',
+		   '</tr>'
+	   ].join('\n')
+		   .replace(/new_index_key_i/, new_index_key_i++));
+	   $('table.indexes tbody').append($row);
 	});
 
 	$('table.indexes').on('click', 'button[name="remove"]', function(){

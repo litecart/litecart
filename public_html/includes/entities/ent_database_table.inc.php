@@ -79,13 +79,16 @@
 					return;
 				}
 
+				$kind = ($index['Key_name'] == 'PRIMARY') ? 'primary'
+					: ($index['Index_type'] == 'FULLTEXT' ? 'fulltext'
+					: (!$index['Non_unique'] ? 'unique' : 'key'));
 				$this->data['indexes'][$index['Key_name']] = [
-					'name' => $index['Key_name'],
-					'kind' => ($index['Key_name'] == 'PRIMARY') ? 'primary' : (!$index['Non_unique'] ? 'unique' : 'key'),
-					'type' => $index['Index_type'],
-					'columns' => [$index['Column_name']],
-					'cardinality' => $index['Cardinality'],
-					'comment' => $index['Index_comment'],
+						'name' => $index['Key_name'],
+						'kind' => $kind,
+						'type' => $index['Index_type'],
+						'columns' => [$index['Column_name']],
+						'cardinality' => $index['Cardinality'],
+						'comment' => $index['Index_comment'],
 				];
 		});
 
