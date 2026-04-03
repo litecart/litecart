@@ -213,6 +213,12 @@
 				"parent_id": ["parent_id"],
 				"status": ["status"]
 			},
+			"fulltext_keys": {
+				"name": ["name"],
+				"short_description": ["short_description"],
+				"description": ["description"],
+				"synonyms": ["synonyms"]
+			},
 			"foreign_keys": {
 				"category_to_parent": {
 					"columns": ["parent_id"],
@@ -952,6 +958,11 @@
 				"valid_from": ["valid_from"],
 				"valid_to": ["valid_to"]
 			},
+			"fulltext_keys": {
+				"name": ["name"],
+				"short_description": ["short_description"],
+				"description": ["description"]
+			},
 			"check_constraints": {
 				"chk_name": "JSON_VALID(name)",
 				"chk_short_description": "JSON_VALID(short_description)",
@@ -1520,6 +1531,9 @@
 				"sku": ["sku"],
 				"brand_id": ["brand_id"],
 				"supplier_id": ["supplier_id"]
+			},
+			"fulltext_keys": {
+				"name": ["name"]
 			},
 			"check_constraints": {
 				"chk_name": "JSON_VALID(name)"
