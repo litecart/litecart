@@ -32,12 +32,25 @@
 				$_POST['products'] = [];
 			}
 
+			// Parse scope checkboxes (format: "category:5", "brand:3")
+			$_POST['scopes'] = array_map(function($val) {
+				list($type, $id) = explode(':', $val, 2);
+				return ['scope_type' => $type, 'scope_id' => (int)$id];
+			}, array_filter((array)($_POST['scopes'] ?? [])));
+
+			if ($_POST['discount_mode'] == 'percentage' && empty($_POST['scopes'])) {
+				throw new Exception(t('error_must_provide_scope', 'You must select at least one category or brand'));
+			}
+
 			foreach ([
 				'status',
 				'name',
+				'discount_mode',
+				'discount_percent',
 				'valid_from',
 				'valid_to',
 				'products',
+				'scopes',
 			] as $field) {
 				if (isset($_POST[$field])) {
 					$campaign->data[$field] = $_POST[$field];
@@ -125,9 +138,71 @@
 					</div>
 				</div>
 
+			<div class="grid">
+					<div class="col-md-12">
+						<label class="form-group">
+							<div class="form-label"><?php echo t('title_discount_mode', 'Discount Mode'); ?></div>
+							<?php echo f::form_toggle('discount_mode', ['fixed' => t('title_fixed_prices', 'Fixed Prices'), 'percentage' => t('title_percentage_discount', 'Percentage Discount')], true); ?>
+						</label>
+					</div>
+				</div>
+
+				<div id="percentage-settings" style="<?php echo ($_POST['discount_mode'] ?? 'fixed') != 'percentage' ? 'display: none;' : ''; ?>">
+					<div class="grid">
+						<div class="col-md-4">
+							<label class="form-group">
+								<div class="form-label"><?php echo t('title_discount_percent', 'Discount (%)'); ?></div>
+								<?php echo f::form_input_number('discount_percent', true, 'min="0" max="100" step="0.01"'); ?>
+							</label>
+						</div>
+					</div>
+
+					<div class="grid">
+						<div class="col-md-6">
+							<fieldset style="padding: 15px; border: 1px solid var(--default-border-color); border-radius: var(--border-radius);">
+								<legend style="font-weight: bold; padding: 0 5px;"><?php echo t('title_categories', 'Categories'); ?></legend>
+								<?php
+									$categories = database::query(
+										"select c.id, json_value(c.name, '$.". database::input(language::$selected['code']) ."') as name
+										from ". DB_TABLE_PREFIX ."categories c
+										where c.status
+										order by name;"
+									)->fetch_all();
+									$selected_category_ids = array_column(array_filter($_POST['scopes'] ?? [], function($s) { return $s['scope_type'] == 'category'; }), 'scope_id');
+									foreach ($categories as $cat) {
+								?>
+								<label class="form-group" style="margin-bottom: 0.25em;">
+									<input type="checkbox" name="scopes[]" value="category:<?php echo $cat['id']; ?>" <?php echo in_array($cat['id'], $selected_category_ids) ? 'checked' : ''; ?> /> <?php echo $cat['name']; ?>
+								</label>
+								<?php } ?>
+							</fieldset>
+						</div>
+
+						<div class="col-md-6">
+							<fieldset style="padding: 15px; border: 1px solid var(--default-border-color); border-radius: var(--border-radius);">
+								<legend style="font-weight: bold; padding: 0 5px;"><?php echo t('title_brands', 'Brands'); ?></legend>
+								<?php
+									$brands = database::query(
+										"select id, name from ". DB_TABLE_PREFIX ."brands
+										where status
+										order by name;"
+									)->fetch_all();
+									$selected_brand_ids = array_column(array_filter($_POST['scopes'] ?? [], function($s) { return $s['scope_type'] == 'brand'; }), 'scope_id');
+									foreach ($brands as $brand) {
+								?>
+								<label class="form-group" style="margin-bottom: 0.25em;">
+									<input type="checkbox" name="scopes[]" value="brand:<?php echo $brand['id']; ?>" <?php echo in_array($brand['id'], $selected_brand_ids) ? 'checked' : ''; ?> /> <?php echo $brand['name']; ?>
+								</label>
+								<?php } ?>
+							</fieldset>
+						</div>
+					</div>
+				</div>
+
 			</div>
 		</div>
 
+		<div id="fixed-price-settings" style="<?php echo ($_POST['discount_mode'] ?? 'fixed') == 'percentage' ? 'display: none;' : ''; ?>">
 		<table id="campaigns" class="table data-table">
 			<thead>
 				<tr>
@@ -180,6 +255,7 @@
 			<a href="<?php echo document::href_ilink(__APP__.'/product_picker'); ?>" class="btn btn-default" data-toggle="lightbox" data-max-width="800px" data-callback="add_product">
 				<?php echo f::draw_fonticon('icon-plus', 'style="margin-inline-end: .5em;"'); ?> <?php echo t('title_add_product', 'Add Product'); ?>
 			</a>
+		</div>
 		</div>
 
 		<div class="card-action">
@@ -253,6 +329,16 @@
 		e.preventDefault();
 		if (confirm('<?php echo t('text_are_you_sure', 'Are you sure?'); ?>')) {
 			this.closest('tr').remove();
+		}
+	});
+
+	$('input[name="discount_mode"]').on('change', function() {
+		if ($(this).val() == 'percentage') {
+			$('#percentage-settings').show();
+			$('#fixed-price-settings').hide();
+		} else {
+			$('#percentage-settings').hide();
+			$('#fixed-price-settings').show();
 		}
 	});
 
