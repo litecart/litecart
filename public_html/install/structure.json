@@ -126,6 +126,8 @@
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"status": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 1 },
 				"name": { "type": "VARCHAR", "length": 50, "default": "''" },
+				"discount_mode": { "type": "VARCHAR", "length": 16, "default": "'fixed'" },
+				"discount_percent": { "type": "DECIMAL", "length": "5,2", "default": 0 },
 				"valid_from": { "type": "TIMESTAMP", "nullable": true },
 				"valid_to": { "type": "TIMESTAMP", "nullable": true },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
@@ -136,6 +138,32 @@
 				"status": ["status"],
 				"valid_from": ["valid_from"],
 				"valid_to": ["valid_to"]
+			}
+		},
+		"campaigns_scopes": {
+			"columns": {
+				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
+				"campaign_id": { "type": "INT", "length": 10, "unsigned": true },
+				"scope_type": { "type": "VARCHAR", "length": 16, "default": "''" },
+				"scope_id": { "type": "INT", "length": 10, "unsigned": true }
+			},
+			"primary_key": ["id"],
+			"unique_keys": {
+				"campaign_scope": ["campaign_id", "scope_type", "scope_id"]
+			},
+			"keys": {
+				"campaign_id": ["campaign_id"],
+				"scope_type": ["scope_type", "scope_id"]
+			},
+			"foreign_keys": {
+				"campaign_id": {
+					"columns": ["campaign_id"],
+					"references": {
+						"table": "campaigns",
+						"columns": ["id"]
+					},
+					"on_delete": "CASCADE"
+				}
 			}
 		},
 		"cart_items": {

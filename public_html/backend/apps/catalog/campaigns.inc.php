@@ -34,7 +34,7 @@
 
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$campaigns = database::query(
-		"select c.*, cp.num_products
+		"select c.*, cp.num_products, csp.num_scope_products
 		from ". DB_TABLE_PREFIX ."campaigns c
 		left join (
 			select campaign_id, count(*) as num_products
@@ -42,6 +42,14 @@
 			where campaign_id is not null
 			group by campaign_id
 		) cp on (cp.campaign_id = c.id)
+		left join (
+			select cs.campaign_id, count(distinct p.id) as num_scope_products
+			from ". DB_TABLE_PREFIX ."campaigns_scopes cs
+			left join ". DB_TABLE_PREFIX ."products_to_categories ptc on (cs.scope_type = 'category' and cs.scope_id = ptc.category_id)
+			left join ". DB_TABLE_PREFIX ."products p on (p.id = ptc.product_id or (cs.scope_type = 'brand' and p.brand_id = cs.scope_id))
+			where p.id is not null
+			group by cs.campaign_id
+		) csp on (csp.campaign_id = c.id)
 		order by c.status desc, c.valid_from, c.valid_to;"
 	)->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
 
@@ -65,6 +73,7 @@
 					<th><?php echo f::draw_fonticon('icon-square-check checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th><?php echo t('title_ID', 'ID'); ?></th>
 					<th class="main"><?php echo t('title_Name', 'Name'); ?></th>
+					<th><?php echo t('title_type', 'Type'); ?></th>
 					<th class="text-end"><?php echo t('title_valid_from', 'Valid From'); ?></th>
 					<th class="text-end"><?php echo t('title_valid_to', 'Valid To'); ?></th>
 					<th class="text-end"><?php echo t('title_products', 'Products'); ?></th>
@@ -78,9 +87,10 @@
 					<td><?php echo f::form_checkbox('campaigns[]', $campaign['id']); ?></td>
 					<td><?php echo $campaign['id']; ?></td>
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_campaign', ['campaign_id' => $campaign['id']]); ?>"><?php echo $campaign['name']; ?></a></td>
+					<td><?php echo $campaign['discount_mode'] == 'percentage' ? '-'. (float)$campaign['discount_percent'] .'%' : t('title_fixed_prices', 'Fixed Prices'); ?></td>
 					<td class="text-end"><?php echo $campaign['valid_from'] ? f::datetime_format('datetime', $campaign['valid_from']) : ''; ?></td>
 					<td class="text-end"><?php echo $campaign['valid_to'] ? f::datetime_format('datetime', $campaign['valid_to']) : ''; ?></td>
-					<td class="text-center"><?php echo f::format_number($campaign['num_products']); ?></td>
+					<td class="text-center"><?php echo f::format_number($campaign['discount_mode'] == 'percentage' ? $campaign['num_scope_products'] : $campaign['num_products']); ?></td>
 					<td class="text-end">
 						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_campaign', ['campaign_id' => $campaign['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>">
 							<?php echo f::draw_fonticon('edit'); ?>

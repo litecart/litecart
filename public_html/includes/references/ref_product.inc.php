@@ -106,6 +106,7 @@
 
 			case 'campaign':
 
+				// Fixed campaign price (existing behavior)
 				$this->_data['campaign'] = database::query(
 					"select *, min(
 						coalesce(
@@ -119,6 +120,7 @@
 					and campaign_id in (
 						select id from ". DB_TABLE_PREFIX ."campaigns
 						where status
+						and discount_mode = 'fixed'
 						and (valid_from is null or valid_from <= '". date('Y-m-d H:i:s') ."')
 						and (valid_to is null or valid_to >= '". date('Y-m-d H:i:s') ."')
 					)
@@ -131,6 +133,30 @@
 					group by product_id
 					limit 1;"
 				)->fetch();
+
+				// Scope campaign percentage (category/brand)
+				$scope_discount = database::query(
+					"select max(c.discount_percent) as discount_percent
+					from ". DB_TABLE_PREFIX ."campaigns c
+					join ". DB_TABLE_PREFIX ."campaigns_scopes cs on (cs.campaign_id = c.id)
+					where c.status
+					and c.discount_mode = 'percentage'
+					and c.discount_percent > 0
+					and (c.valid_from is null or c.valid_from <= '". date('Y-m-d H:i:s') ."')
+					and (c.valid_to is null or c.valid_to >= '". date('Y-m-d H:i:s') ."')
+					and (
+						(cs.scope_type = 'category' and cs.scope_id in (
+							select category_id from ". DB_TABLE_PREFIX ."products_to_categories
+							where product_id = ". (int)$this->_data['id'] ."
+						))
+						or (cs.scope_type = 'brand' and cs.scope_id = ". (int)$this->_data['brand_id'] .")
+					)
+					limit 1;"
+				)->fetch('discount_percent');
+
+				if ($scope_discount > 0) {
+					$this->_data['campaign']['scope_discount_percent'] = (float)$scope_discount;
+				}
 
 				break;
 
@@ -201,7 +227,7 @@
 					// Regular Price
 					$this->_data['final_price'] = $this->price;
 
-					// Campaign Price
+					// Campaign Fixed Price
 					if (isset($this->campaign['price']) && $this->campaign['price'] > 0 && $this->campaign['price'] < $this->_data['final_price']) {
 						$this->_data['final_price'] = $this->campaign['price'];
 					}
@@ -229,6 +255,14 @@
 
 						if ($customer_price && $customer_price < $this->_data['final_price']) {
 							$this->_data['final_price'] = $customer_price;
+						}
+					}
+
+					// Campaign Scope Percentage Discount (highest active wins)
+					if (!empty($this->campaign['scope_discount_percent'])) {
+						$scope_price = round($this->_data['final_price'] * (1 - $this->campaign['scope_discount_percent'] / 100), 4);
+						if ($scope_price < $this->_data['final_price']) {
+							$this->_data['final_price'] = $scope_price;
 						}
 					}
 

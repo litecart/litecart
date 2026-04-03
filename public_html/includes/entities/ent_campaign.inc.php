@@ -24,6 +24,7 @@
 			});
 
 			$this->data['products']	= [];
+			$this->data['scopes'] = [];
 
 			$this->previous = $this->data;
 		}
@@ -47,6 +48,12 @@
 			}
 
 			$this->data = array_replace($this->data, array_intersect_key($campaign, $this->data));
+
+			$this->data['scopes'] = database::query(
+				"select * from ". DB_TABLE_PREFIX ."campaigns_scopes
+				where campaign_id = ". (int)$this->data['id'] ."
+				order by scope_type, scope_id;"
+			)->fetch_all();
 
 			$this->data['products'] = database::query(
 				"select pp.id, pp.product_id, pp.campaign_id, pp.customer_group_id, pp.geo_zone_id, pp.price,
@@ -93,6 +100,8 @@
 			database::query(
 				"update ". DB_TABLE_PREFIX ."campaigns
 				set name = '". database::input($this->data['name']) ."',
+					discount_mode = '". database::input($this->data['discount_mode'] ?: 'fixed') ."',
+					discount_percent = ". min(100, max(0, (float)$this->data['discount_percent'])) .",
 					valid_from = ". (!empty($this->data['valid_from']) ? "'". database::input($this->data['valid_from']) ."'" : "null") .",
 					valid_to = ". (!empty($this->data['valid_to']) ? "'". database::input($this->data['valid_to']) ."'" : "null") ."
 				where id = ". (int)$this->data['id'] ."
@@ -129,6 +138,26 @@
 					where id = ". (int)$campaign_product['id'] ."
 					limit 1;"
 				);
+			}
+
+			// Save scopes (percentage mode only)
+			if ($this->data['discount_mode'] == 'percentage') {
+
+				database::query(
+					"delete from ". DB_TABLE_PREFIX ."campaigns_scopes
+					where campaign_id = ". (int)$this->data['id'] .";"
+				);
+
+				if (!empty($this->data['scopes'])) {
+					foreach ($this->data['scopes'] as $scope) {
+						if (empty($scope['scope_type']) || empty($scope['scope_id'])) continue;
+						database::query(
+							"insert ignore into ". DB_TABLE_PREFIX ."campaigns_scopes
+							(campaign_id, scope_type, scope_id)
+							values (". (int)$this->data['id'] .", '". database::input($scope['scope_type']) ."', ". (int)$scope['scope_id'] .");"
+						);
+					}
+				}
 			}
 
 			$this->previous = $this->data;

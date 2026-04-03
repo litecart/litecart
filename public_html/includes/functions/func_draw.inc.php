@@ -331,7 +331,9 @@
 		$listing_product = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/listing_product.inc.php');
 
 		$sticker = '';
-		if ($product['final_price'] && $product['final_price'] < $product['regular_price']) {
+		if (!empty($product['campaign_scope_discount'])) {
+			$sticker = '<div class="sticker sale" title="'. t('title_on_sale', 'On Sale') .'">-'. (int)$product['campaign_scope_discount'] .'%</div>';
+		} else if ($product['final_price'] && $product['final_price'] < $product['regular_price']) {
 			$sticker = '<div class="sticker sale" title="'. t('title_on_sale', 'On Sale') .'">'. t('sticker_sale', 'Sale') .'</div>';
 		} else if ($product['created_at'] > date('Y-m-d', strtotime('-'.settings::get('new_products_max_age')))) {
 			$sticker = '<div class="sticker new" title="'. t('title_new', 'New') .'">'. t('sticker_new', 'New') .'</div>';
