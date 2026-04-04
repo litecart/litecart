@@ -127,7 +127,6 @@
 	button[type=submit]:not([disabled]) {
 		font-weight: bold;
 		color: var(--color-error);
-		animation: flasher 1s linear infinite;
 	}
 }
 
@@ -214,7 +213,8 @@
 		line-height: 24px;
 	}
 	input[type=checkbox][required]:not(:checked) {
-		animation: flasher 1s linear infinite;
+		outline: 2px solid var(--color-error);
+		outline-offset: 2px;
 	}
 	@media(min-width: @media-breakpoint-md) {
 		position: sticky;

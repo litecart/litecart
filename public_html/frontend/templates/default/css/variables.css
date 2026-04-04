@@ -48,16 +48,16 @@
   /* Framework */
   --gutter-x: 15px;
   --gutter-y: 15px;
-  --border-radius: 10px;
+  --border-radius: 12px;
   --whitespace-color: #fff;
   /* Defaults */
   --default-text-font: 'Anuphan', Arial, 'Helvetica Neue', Helvetica, sans-serif;
   --default-text-color: #444;
-  --default-text-size: 14px;
-  --default-line-height: 1.2;
+  --default-text-size: 15px;
+  --default-line-height: 1.5;
   --default-title-color: #333;
   --default-border-color: #ececf1;
-  --default-shadow: 0 0 0 0 #0000, 0 0 0 0 #0000, 0 1px 3px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --default-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   --link-text-color: #5292b1;
   /* Badges */
   --badge-background: #c00;
@@ -80,9 +80,9 @@
   --button-border-width: 1px;
   --button-shadow: 0 2px 2px 0 rgba(37, 44, 97, 0.15), 0 1px 3px 0 rgba(93, 100, 148, 0.2);
   /* Button: Primary */
-  --button-primary-background: #4772a1;
-  --button-primary-background--hover: #4377b1;
-  --button-primary-background--active: #39679b;
+  --button-primary-background: #3b6fb5;
+  --button-primary-background--hover: #3565a5;
+  --button-primary-background--active: #2d5a95;
   --button-primary-text-color: #fff;
   --button-primary-border-color: transparent;
   --button-primary-border-color--hover: transparent;
@@ -96,13 +96,13 @@
   --button-default-border-color--hover: transparent;
   --button-default-border-color--active: transparent;
   /* Button: Success */
-  --button-success-background: #91C231;
-  --button-success-background--hover: #90c920;
-  --button-success-background--active: #81b123;
+  --button-success-background: #4caf50;
+  --button-success-background--hover: #43a047;
+  --button-success-background--active: #388e3c;
   --button-success-text-color: #fff;
-  --button-success-border-color: #6da500;
-  --button-success-border-color--hover: #91C231;
-  --button-success-border-color--active: #81b123;
+  --button-success-border-color: #388e3c;
+  --button-success-border-color--hover: #43a047;
+  --button-success-border-color--active: #388e3c;
   /* Button: Danger */
   --button-danger-background: #d9534f;
   --button-danger-background--hover: #d9534f;
@@ -115,7 +115,7 @@
   --card-background: #fff;
   --card-text-color: var(--default-text-color);
   --card-title-text-size: 1.5em;
-  --card-title-text-weight: 500;
+  --card-title-text-weight: 600;
   --card-border-color: #e7e7e7;
   --card-border-width: 1px;
   --card-shadow: var(--default-shadow);
@@ -150,10 +150,9 @@
   --input-code-background: #313b50;
   --input-code-text-color: #fff;
   /* Navigation */
-  --navbar-background: linear-gradient(to bottom, #dadbe3, #cdcdd8, #dcdae5);
+  --navbar-background: #fff;
   --navbar-text-color: #4e4e55;
-  --navbar-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
-  --navbar-shadow: var(--default-shadow);
+  --navbar-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
   --navbar-border-width: 1px;
   --navbar-border-color: #e3e3e3;
   --navbar-outline-width: 1px;
@@ -218,15 +217,15 @@
   --overlay-light: rgba(255, 255, 255, 0.25);
   --overlay-frosted: rgba(255, 255, 255, 0.2);
   --code-background: #bcbccb;
-  --social-button-background: #fff;
-  --social-button-background--hover: #333;
+  --social-button-background: transparent;
+  --social-button-background--hover: rgba(255, 255, 255, 0.15);
   --social-button-text-color--hover: #fff;
   --fieldset-border-color: #d9d9d9;
-  --footer-background: #dedee5;
-  --footer-title-color: #333;
-  --footer-text-color: #333;
-  --footer-shadow: inset 0 0.5em 1em 0 rgba(0, 0, 0, 0.05);
-  --copyright-background: transparent;
+  --footer-background: #1a1a2e;
+  --footer-title-color: #e0e0ea;
+  --footer-text-color: #b0b0c0;
+  --footer-shadow: none;
+  --copyright-background: #151525;
   --copyright-text-color: var(--footer-text-color);
   --cookie-notice-background: #334c;
   --cookie-notice-text-color: #fff;
