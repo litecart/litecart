@@ -106,7 +106,7 @@
 
 			<div class="col-md-3">
 
-				<section class="col-12 col-sm-12 col-md-3 col-lg-3 text-center" style="align-self: center;">
+				<section class="text-center">
 
 					<div class="facility hidden-xs hidden-sm">
 						<a href="<?php echo document::href_rlink('storage://images/illustration/facility.jpg'); ?>" title="<?php echo settings::get('store_name'); ?>" data-toggle="lightbox">
