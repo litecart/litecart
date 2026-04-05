@@ -14,7 +14,7 @@
 					<?php foreach ($brands as $brand) { ?>
 					<article class="brand">
 						<a class="link" href="<?php echo f::escape_html($brand['link']); ?>">
-							<!--<?php echo f::draw_thumbnail($brand['image'], 320, 100, 'fit', 'alt="'. f::escape_attr($brand['name']) .'"'); ?>-->
+							<?php //echo f::draw_thumbnail($brand['image'], 320, 100, 'fit', 'alt="'. f::escape_attr($brand['name']) .'"'); ?>
 							<div class="caption"><?php echo $brand['name']; ?></div>
 						</a>
 					</article>

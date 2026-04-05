@@ -12,7 +12,14 @@
 <body>
 
 <div id="page">
-	<header>
+	<header class="container">
+
+		<?php if ($important_notice) { ?>
+		<div id="important-notice">
+			<?php echo f::escape_html($important_notice); ?>
+		</div>
+		<?php } ?>
+
 		<?php include 'app://frontend/partials/site_navigation.inc.php'; ?>
 	</header>
 

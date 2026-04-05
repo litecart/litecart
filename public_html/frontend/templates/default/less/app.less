@@ -1,9 +1,5 @@
 body {
 	background: var(--site-background);
-
-	.container {
-		max-width: 90%;
-	}
 }
 
 #page {
@@ -99,7 +95,7 @@ body {
 		.badge {
 			position: absolute;
 			bottom: 12px;
-			inset-inline-start: 12px;
+			inset-inline-end: 12px;
 		}
 
 		.badge,
@@ -126,8 +122,7 @@ body {
 		&.filled {
 			.badge {
 				display: inline-block;
-				animation: pulsating 2s linear;
-				animation-iteration-count: infinite;
+				background: var(--default-text-color);
 			}
 
 			.checkout {
@@ -335,7 +330,8 @@ body {
 	.title {
 		border-color: rgba(255, 255, 255, 0.15);
 		font-size: 1.25em;
-		margin: 0 0 0.75em 0;
+		margin: 0 0 .75em 0;
+		color: inherit;
 	}
 
 	a {
@@ -755,9 +751,8 @@ body {
 	.product {
 		background: var(--whitespace-color);
 		font-size: calc(var(--default-text-size) - 1px);
-		padding: 0.5em;
 		transition: transform 100ms linear, box-shadow 100ms linear;
-		border: var(--listing-border);
+		border: var(--listing-border-size) solid var(--listing-border-color);
 		border-radius: var(--border-radius);
 		overflow: hidden;
 
@@ -765,24 +760,19 @@ body {
 			&:hover {
 				transform: translateY(-2px);
 				box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+				img {
+					scale: 1.05;
+				}
 			}
 		}
 
 		.image-wrapper {
 			background: var(--whitespace-color);
-			border-radius: var(--border-radius);
 			overflow: hidden;
 
 			img {
-				--f: 1.05;
-				/* Scale factor */
-				clip-path: inset(0);
+				border-radius: 0;
 				transition: 250ms;
-
-				&:hover {
-					clip-path: inset(calc((1 - 1/var(--f)) * 50%));
-					scale: var(--f);
-				}
 			}
 
 			.sticker {
@@ -805,12 +795,16 @@ body {
 			}
 		}
 
+		.info {
+			padding: 1em;
+		}
+
 		.name {
 			display: -webkit-box;
+			margin-bottom: .5em;
 			-webkit-line-clamp: 2;
 			-webkit-box-orient: vertical;
 			overflow: hidden;
-			min-height: 2.5em;
 			line-height: 125%;
 			font-weight: 500;
 		}

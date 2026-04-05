@@ -315,9 +315,10 @@ template {
   line-height: 1em;
   padding: 0.5em 1em;
   vertical-align: middle;
+  transition: all 250ms linear;
 }
 .breadcrumbs-2 .breadcrumb-item:hover {
-  transform: scale(1.04);
+  transform: translateY(-2px);
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.05);
 }
 /* Buttons */
@@ -3518,7 +3519,6 @@ body.litebox-open {
   }
   .navbar .dropdown-menu {
     background: #fff;
-    border: none;
   }
   .navbar .navbar-menu {
     flex-direction: row;
@@ -3708,6 +3708,22 @@ body.navbar-expanded {
   font-size: 2rem;
   font-weight: bold;
   color: #666;
+}
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb-background);
+  border-radius: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track-background);
+  border-radius: 8px;
+}
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb-background) var(--scrollbar-track-background);
 }
 /* Spacing */
 .m-1 {

@@ -1,9 +1,6 @@
 body {
   background: var(--site-background);
 }
-body .container {
-  max-width: 90%;
-}
 #page {
   display: flex;
   flex-direction: column;
@@ -63,66 +60,65 @@ body .container {
 #site-navigation .search form {
   padding: 0.5em;
 }
-#site-navigation .wishlist {
+#site-navigation .favourites {
   line-height: 1.2;
   transition: opacity 200ms ease-out;
 }
-#site-navigation .wishlist .navbar-item {
+#site-navigation .favourites .navbar-item {
   border-radius: 0;
 }
-#site-navigation .wishlist img {
+#site-navigation .favourites img {
   max-height: 32px;
 }
-#site-navigation .wishlist .badge {
+#site-navigation .favourites .badge {
   position: absolute;
   bottom: 12px;
-  inset-inline-start: 12px;
+  inset-inline-end: 12px;
 }
-#site-navigation .wishlist .badge,
-#site-navigation .wishlist .checkout {
+#site-navigation .favourites .badge,
+#site-navigation .favourites .checkout {
   display: none;
 }
-#site-navigation .wishlist .name {
+#site-navigation .favourites .name {
   white-space: normal;
 }
-#site-navigation .wishlist .price {
+#site-navigation .favourites .price {
   font-weight: 500;
 }
-#site-navigation .wishlist .items a {
+#site-navigation .favourites .items a {
   color: inherit;
 }
-#site-navigation .wishlist .row {
+#site-navigation .favourites .row {
   margin-bottom: 0;
 }
-#site-navigation .wishlist.filled .badge {
+#site-navigation .favourites.filled .badge {
   display: inline-block;
-  animation: pulsating 2s linear;
-  animation-iteration-count: infinite;
+  background: var(--default-text-color);
 }
-#site-navigation .wishlist.filled .checkout {
+#site-navigation .favourites.filled .checkout {
   display: block;
 }
-#site-navigation .wishlist.filled .empty {
+#site-navigation .favourites.filled .empty {
   display: none;
 }
 @media (min-width: 768px) {
-  #site-navigation .wishlist .dropdown-menu {
+  #site-navigation .favourites .dropdown-menu {
     width: 360px;
     max-height: calc(100vh - 125px);
     display: flex;
     flex-direction: column;
   }
-  #site-navigation .wishlist .dropdown-menu li {
+  #site-navigation .favourites .dropdown-menu li {
     flex-shrink: 0;
     flex-grow: 0;
   }
-  #site-navigation .wishlist .dropdown-menu .items {
+  #site-navigation .favourites .dropdown-menu .items {
     overflow-y: auto;
     flex-shrink: 1 !important;
     flex-grow: 1 !important;
   }
 }
-#site-navigation .wishlist .search {
+#site-navigation .favourites .search {
   flex-grow: 1;
   order: initial;
 }
@@ -265,6 +261,7 @@ body .container {
   border-color: rgba(255, 255, 255, 0.15);
   font-size: 1.25em;
   margin: 0 0 0.75em 0;
+  color: inherit;
 }
 #site-footer a {
   color: var(--footer-text-color);
@@ -623,9 +620,8 @@ body .container {
 .listing .product {
   background: var(--whitespace-color);
   font-size: calc(var(--default-text-size) - 1px);
-  padding: 0.5em;
   transition: transform 100ms linear, box-shadow 100ms linear;
-  border: var(--listing-border);
+  border: var(--listing-border-size) solid var(--listing-border-color);
   border-radius: var(--border-radius);
   overflow: hidden;
 }
@@ -634,21 +630,17 @@ body .container {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
   }
+  .listing .product:hover img {
+    scale: 1.05;
+  }
 }
 .listing .product .image-wrapper {
   background: var(--whitespace-color);
-  border-radius: var(--border-radius);
   overflow: hidden;
 }
 .listing .product .image-wrapper img {
-  --f: 1.05;
-  /* Scale factor */
-  clip-path: inset(0);
+  border-radius: 0;
   transition: 250ms;
-}
-.listing .product .image-wrapper img:hover {
-  clip-path: inset(calc((1 - 1/var(--f)) * 50%));
-  scale: var(--f);
 }
 .listing .product .image-wrapper .sticker {
   position: absolute;
@@ -666,12 +658,15 @@ body .container {
 .listing .product .image-wrapper .sticker.sale {
   background: var(--sticker-sale-background);
 }
+.listing .product .info {
+  padding: 1em;
+}
 .listing .product .name {
   display: -webkit-box;
+  margin-bottom: 0.5em;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  min-height: 2.5em;
   line-height: 125%;
   font-weight: 500;
 }

@@ -39,7 +39,8 @@ waitFor('jQuery', ($) => {
 		}
 	});
 
-})
+});
+
 
 // Add to cart
 waitFor('jQuery', ($) => {

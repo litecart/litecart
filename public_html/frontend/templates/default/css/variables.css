@@ -35,8 +35,9 @@
 /******************** Light Theme ********************/
 :root {
   /* General */
-  --site-background: #f2f2f7;
-  --listing-border: 1px solid #d3d3e1;
+  --site-background: #f2f4f7;
+  --listing-border-size: 1px;
+  --listing-border-color: var(--default-border-color);
   /* Scrollbar */
   --scrollbar-thumb-background: #c1c1c1;
   --scrollbar-track-background: #f4f4f4;
@@ -48,11 +49,11 @@
   /* Framework */
   --gutter-x: 15px;
   --gutter-y: 15px;
-  --border-radius: 12px;
+  --border-radius: 10px;
   --whitespace-color: #fff;
   /* Defaults */
   --default-text-font: 'Anuphan', Arial, 'Helvetica Neue', Helvetica, sans-serif;
-  --default-text-color: #444;
+  --default-text-color: #333;
   --default-text-size: 15px;
   --default-line-height: 1.5;
   --default-title-color: #333;
@@ -66,7 +67,7 @@
   --banner-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
   --banner-shadow: var(--default-shadow);
   /* Breadcrumbs */
-  --breadcrumbs-background: #dcdce5;
+  --breadcrumbs-background: #dce0e5;
   --breadcrumbs-border-width: 1px;
   --breadcrumbs-border-color: #d6d6e1;
   --breadcrumbs-shadow: var(--default-shadow);
@@ -119,14 +120,14 @@
   --card-border-color: #e7e7e7;
   --card-border-width: 1px;
   --card-shadow: var(--default-shadow);
-  --card-footer-background: #f2f3f6;
+  --card-footer-background: #fbfbfc;
   /* Carousel */
   --carousel-shadow: var(--default-shadow);
   /* Dropdowns */
   --dropdown-background: #fff;
   --dropdown-text-color: var(--default-text-color);
-  --dropdown-border-color: transparent;
-  --dropdown-border-width: none;
+  --dropdown-border-color: var(--default-border-color);
+  --dropdown-border-width: 1px;
   --dropdown-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
   --dropdown-item-background: #fff;
   --dropdown-item-text-color: var(--dropdown-text-color);
@@ -135,7 +136,7 @@
   /* Forms */
   --input-padding-x: 1.25em;
   --input-padding-y: 0.66em;
-  --input-background: #ececf1;
+  --input-background: #eceff1;
   --input-text-color: #000;
   --input-border-color: #e5e6e9;
   --input-border-width: 0;
@@ -145,7 +146,7 @@
   --input-shadow: none;
   --input-addon-background: #e9ebf1;
   --input-checkbox-background: #e6e7eb;
-  --input-checkbox-background--active: #7052c2;
+  --input-checkbox-background--active: #527fc2;
   --input-toggle-background: #fff;
   --input-code-background: #313b50;
   --input-code-text-color: #fff;
@@ -154,7 +155,7 @@
   --navbar-text-color: #4e4e55;
   --navbar-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
   --navbar-border-width: 1px;
-  --navbar-border-color: #e3e3e3;
+  --navbar-border-color: var(--default-border-color);
   /* Notices */
   --notice-default-background: #e5e3e3;
   --notice-default-text-color: #333;
@@ -170,13 +171,13 @@
   --pagination-item-text-color: var(--navbar-text-color);
   --pagination-item-border-color: var(--navbar-border-color);
   --pagination-item-border-width: 1px;
-  --pill-item-background: #e4e6ed;
+  --pill-item-background: #e4e7ed;
   --pill-item-text-color: var(--default-text-color);
   --pill-item-border-color: transparent;
   --pill-item-border-width: 0;
   --pill-item-outline-width: 1px;
   --pill-item-outline-color: transparent;
-  --pill-item-background--hover: #d7d7e1;
+  --pill-item-background--hover: #d7dae1;
   --pill-item-text-color--hover: var(--default-text-color);
   --pill-item-border-color--hover: #d3d3d3;
   --pill-item-outline-color--hover: #d7d7dd;
@@ -219,11 +220,11 @@
   --social-button-background--hover: rgba(255, 255, 255, 0.15);
   --social-button-text-color--hover: #fff;
   --fieldset-border-color: #d9d9d9;
-  --footer-background: #1a1a2e;
-  --footer-title-color: #e0e0ea;
-  --footer-text-color: #b0b0c0;
+  --footer-background: #1e222a;
+  --footer-title-color: #b0b5c0;
+  --footer-text-color: #b0b5c0;
   --footer-shadow: none;
-  --copyright-background: #151525;
+  --copyright-background: #14161a;
   --copyright-text-color: var(--footer-text-color);
   --cookie-notice-background: #334c;
   --cookie-notice-text-color: #fff;
