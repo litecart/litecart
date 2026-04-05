@@ -1,10 +1,8 @@
-![LiteCart®](https://www.litecart.net/images/logotype.svg "LiteCart®")
-
-----------------------------------------------------------------------
+# LiteCart
 
 LiteCart is a lightweight e-commerce platform for online merchants. Developed in PHP, HTML 5, and CSS 3.
 
-LiteCart is a registered trademark, property of founder T. Almroth - [LiteCart AB](http://www.litecart.net/).
+LiteCart is a registered trademark, property of founder T. Almroth - [LiteCart AB](https://www.litecart.net/).
 
 
 ## Tech Stack
@@ -17,7 +15,7 @@ LiteCart is a registered trademark, property of founder T. Almroth - [LiteCart A
 
 ## How To Install
 
-For an updated version of the upgrade documentation, visit https://www.litecart.net/wiki/how_to_install
+For an updated version of the upgrade documentation, visit [How To Install](https://www.litecart.net/wiki/how_to_install).
 
 What you need:
 
@@ -27,44 +25,44 @@ What you need:
 
 ### Instructions
 
-Please note: Running your own website requires some common sense and basic webmastering skills. If this is not your area of expertise, ask a collegue or friend to assist you.
+Please note: Running your own website requires some common sense and basic webmastering skills. If this is not your area of expertise, ask a colleague or friend to assist you.
 
 1. Connect to your web host via FTP using your favourite FTP software.
 
 2. Transfer the contents of the folder public_html/ in this archive (yes the contents inside the folder - not the folder itself). Transfer it to your website root directory. Using subdirectories is supported but not recommended.
 
-    Example:
+   ```text
+   Examples:
 
-    /var/www/
+   * /var/www/
+   * /home/username/public_html/
+   * C:\xampp\htdocs\
+   ```
 
-    /home/username/public_html/
+   Paths are machine specific, so talk to your web host if you are uncertain where this folder is.
 
-    C:\xampp\htdocs\
-
-Paths are machine specific, so talk to your web host if you are uncertain where this folder is.
-
-3. Point your web browser to the URL of your website followed by the subfolder install/ e.g. http://www.mysite.com/install/. If you placed LiteCart in a subfolder of the web root, the path should be something like http://www.mysite.com/litecart/install. The installation page should now load.
+3. Point your web browser to the URL of your website followed by the subfolder `install/` e.g. `http://www.mysite.com/install/`. If you placed LiteCart in a subfolder of the web root, the path should be something like `http://www.mysite.com/litecart/install`. The installation page should now load.
 
 4. Carefully read the instructions on the page. Fill in your details for database, region, etc. Click the Install button when you are ready.
 
 If everything went well LiteCart should be successfully installed.
 
-For community written installation instructions see https://www.litecart.net/en/wiki/how_to_install.
+For community written installation instructions see [How To Install](https://www.litecart.net/en/wiki/how_to_install).
 
 
 ## Documentation
 
-See our wiki for guides, examples and documentation. [https://www.litecart.net/wiki/](https://www.litecart.net/wiki/)
+See our wiki for guides, examples and documentation: [https://www.litecart.net/wiki/](https://www.litecart.net/wiki/)
 
 
 ## How To Get Started
 
-Get your store up and running, by following our [step list](https://www.litecart.net/en/wiki/get_started) for best practise.
+To get your store up and running, see our [step list](https://www.litecart.net/en/wiki/get_started) for best practice.
 
 
 ## Folder Structure
 
-```
+```text
 /                   – Root
 ├── admin/          – Backend
 │   ├── *.app/      – Admin apps
@@ -108,7 +106,7 @@ An alphabetical list of framework components that you can find in LiteCart.
 
 ## How To Change The Look Of Your Store
 
-Navigate to the folder ~/includes/templates/default.catalog/ and you will find all HTML content and CSS files to edit. If you want to adapt your work with LESS instead of CSS you will need a LESS compiler. We recommend downloading our [Developer Kit](https://www.litecart.net/addons/163/developer-kit) that has a preconfigured LESS compiler and JavaScript minifyer.
+Navigate to the folder ~/includes/templates/default.catalog/ and you will find all HTML content and CSS files to edit. If you want to adapt your work with LESS instead of CSS you will need a LESS compiler. We recommend downloading our [Developer Kit](https://www.litecart.net/addons/163/developer-kit) that has a preconfigured LESS compiler and JavaScript minifier.
 
 See our wiki article [How To Create a Template](https://www.litecart.net/en/wiki/how_to_create_a_template).
 
@@ -123,10 +121,10 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on contributing to the pro
 This project is licensed under the terms specified in [LICENSE.md](LICENSE.md).
 
 
-## Links
+## See Also
 
-  * [Official Website](http://www.litecart.net)
+  * [Official Website](https://www.litecart.net)
   * [GitHub Repository](https://github.com/litecart/litecart)
   * [Issue Tracker](https://github.com/litecart/litecart/issues)
-  * [Community Forums](http://www.litecart.net/forums/)
-  * [Community Wiki](http://wiki.litecart.net/)
+  * [Community Forums](https://www.litecart.net/forums/)
+  * [Community Wiki](https://wiki.litecart.net/)
