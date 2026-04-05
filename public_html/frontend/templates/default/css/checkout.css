@@ -113,7 +113,6 @@
 #box-checkout-customer button[type=submit]:not([disabled]) {
   font-weight: bold;
   color: var(--color-error);
-  animation: flasher 1s linear infinite;
 }
 #box-checkout-shipping .option,
 #box-checkout-payment .option {
@@ -199,7 +198,8 @@
   line-height: 24px;
 }
 #box-checkout-summary input[type=checkbox][required]:not(:checked) {
-  animation: flasher 1s linear infinite;
+  outline: 2px solid var(--color-error);
+  outline-offset: 2px;
 }
 @media (min-width: 768px) {
   #box-checkout-summary {

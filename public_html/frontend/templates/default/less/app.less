@@ -1,5 +1,9 @@
 body {
 	background: var(--site-background);
+
+	.container {
+		max-width: 90%;
+	}
 }
 
 #page {
@@ -268,17 +272,23 @@ body {
 		margin-bottom: 0;
 	}
 
+	> .container > .grid > .col-md-3 {
+		overflow: hidden;
+	}
+
 	.modules {
 		margin: 1rem 0;
 	}
 
 	.buttons {
 		display: inline-flex;
+		flex-wrap: wrap;
 		justify-content: center;
 		vertical-align: middle;
 		gap: 0.5em;
 		line-height: 1.2;
-		font-size: 1.5em;
+		font-size: 1.25em;
+		max-width: 100%;
 
 		> * {
 			aspect-ratio: 1;
@@ -287,31 +297,53 @@ body {
 		a {
 			background: var(--social-button-background);
 			padding: 0.5em;
+			border: 1px solid var(--footer-text-color);
 			border-radius: var(--border-radius);
+			color: var(--footer-text-color);
 
 			&:hover {
 				background: var(--social-button-background--hover);
 				color: var(--social-button-text-color--hover);
+				border-color: var(--social-button-text-color--hover);
 			}
 		}
 	}
 
-	.facility img {
-		filter: grayscale(0.75);
-		margin-bottom: var(--gutter-y);
+	.facility {
 		border-radius: var(--border-radius);
+		margin-bottom: var(--gutter-y);
 		overflow: hidden;
-		transition: filter 250ms linear;
+		max-width: 100%;
 
-		&:hover {
-			filter: grayscale(0);
+		a {
+			display: block;
+		}
+
+		img {
+			filter: grayscale(0.75);
+			width: 100%;
+			height: auto;
+			display: block;
+			transition: filter 250ms linear;
+
+			&:hover {
+				filter: grayscale(0);
+			}
 		}
 	}
 
 	.title {
-		border-color: var(--default-border-color);
+		border-color: rgba(255, 255, 255, 0.15);
 		font-size: 1.25em;
 		margin: 0 0 0.75em 0;
+	}
+
+	a {
+		color: var(--footer-text-color);
+
+		&:hover {
+			color: #fff;
+		}
 	}
 }
 
@@ -340,10 +372,21 @@ body {
 	inset-inline-end: 1em;
 	width: 2em;
 	height: 2em;
-	opacity: 0.3;
+	opacity: 0.5;
 	position: fixed;
 	font-size: 1.5em;
 	transition: opacity 200ms linear;
+	color: var(--default-text-color) !important;
+	background: var(--card-background);
+	border-radius: 50%;
+	box-shadow: var(--default-shadow);
+	text-align: center;
+	line-height: 2em;
+
+	i, [class^="icon-"] {
+		color: inherit !important;
+		font-size: 1.5rem !important;
+	}
 
 	&:hover {
 		opacity: 1;
@@ -713,15 +756,15 @@ body {
 		background: var(--whitespace-color);
 		font-size: calc(var(--default-text-size) - 1px);
 		padding: 0.5em;
-		transition: background-color 100ms linear, box-shadow 100ms linear;
-		border: 1px solid transparent;
+		transition: transform 100ms linear, box-shadow 100ms linear;
+		border: var(--listing-border);
 		border-radius: var(--border-radius);
 		overflow: hidden;
 
 		@media (min-width: 576px) {
 			&:hover {
-				border: var(--listing-border);
-				background: var(--card-background);
+				transform: translateY(-2px);
+				box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
 			}
 		}
 
@@ -763,11 +806,11 @@ body {
 		}
 
 		.name {
-			display: flex;
-			justify-content: center;
-			align-content: center;
-			flex-direction: column;
-			height: 40px;
+			display: -webkit-box;
+			-webkit-line-clamp: 2;
+			-webkit-box-orient: vertical;
+			overflow: hidden;
+			min-height: 2.5em;
 			line-height: 125%;
 			font-weight: 500;
 		}
@@ -887,6 +930,7 @@ body {
 }
 
 [data-toggle="momentum-scroll"] {
+	overflow: hidden;
 
 	.listing {
 		display: flex;
