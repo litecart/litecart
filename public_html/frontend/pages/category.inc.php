@@ -112,9 +112,8 @@
 		],
 	])->fetch_page(null, null, $_GET['page'], settings::get('items_per_page'), $num_rows, $num_pages);
 
-	$_page->snippets['num_products_page'] = count($_page->snippets['products']);
-	$_page->snippets['num_products_total'] = $num_rows;
-	$_page->snippets['pagination'] = f::draw_pagination($num_pages);
+	$_page->snippets['num_pages'] = $num_pages;
+	$_page->snippets['num_products'] = $num_rows;
 
 	// Brands
 	$_page->snippets['brands'] = database::query(
@@ -158,5 +157,14 @@
 
 		$_page->snippets['attributes'][] = $attribute;
 	});
+
+	// Headless requests
+	if (!empty($_SERVER['HTTP_ACCEPT']) && preg_match('#^application/json#', $_SERVER['HTTP_ACCEPT'])) {
+		header('Content-Type: application/json;charset='. mb_http_output());
+		echo f::format_json($_page->snippets);
+		exit;
+	}
+
+	$_page->snippets['pagination'] = f::draw_pagination($num_pages);
 
 	echo $_page->render();

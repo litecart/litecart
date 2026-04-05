@@ -65,13 +65,23 @@
 		'sort' => $_GET['sort'],
 	])->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
 
+	$_page->snippets['products'] = $products;
+	$_page->snippets['num_products'] = $num_rows;
+	$_page->snippets['num_pages'] = $num_pages;
+
+	// Headless requests
+	if (!empty($_SERVER['HTTP_ACCEPT']) && preg_match('#^application/json#', $_SERVER['HTTP_ACCEPT'])) {
+		header('Content-Type: application/json;charset='. mb_http_output());
+		echo f::format_json($_page->snippets);
+		exit;
+	}
+
 	if (count($products) == 1) {
 		$product = current($products);
 		redirect(document::ilink('product', ['product_id' => $product['id']]), 302);
 		exit;
 	}
 
-	$_page->snippets['products'] = $products;
 	$_page->snippets['pagination'] = f::draw_pagination($num_pages);
 
 	echo $_page->render();

@@ -62,9 +62,6 @@
 			'popularity' => t('title_popularity', 'Popularity'),
 			'date' => t('title_date', 'Date'),
 		],
-		'num_products_page' => null,
-		'num_products_total' => null,
-		'pagination' => null,
 	];
 
 	$_page->snippets['products'] = f::catalog_products_query([
@@ -74,8 +71,16 @@
 		'campaigns_first' => true,
 	])->fetch_page(null, null, $_GET['page'], 20, $num_rows, $num_pages);
 
-	$_page->snippets['num_products_page'] = count($_page->snippets['products']);
-	$_page->snippets['num_products_total'] = $num_rows;
+	$_page->snippets['num_products'] = $num_rows;
+	$_page->snippets['num_pages'] = $num_pages;
+
+	// Headless requests
+	if (!empty($_SERVER['HTTP_ACCEPT']) && preg_match('#^application/json#', $_SERVER['HTTP_ACCEPT'])) {
+		header('Content-Type: application/json;charset='. mb_http_output());
+		echo f::format_json($_page->snippets);
+		exit;
+	}
+
 	$_page->snippets['pagination'] = f::draw_pagination($num_pages);
 
 	echo $_page->render();

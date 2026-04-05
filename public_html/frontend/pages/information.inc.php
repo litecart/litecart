@@ -39,6 +39,13 @@
 			'content' => $page->content,
 		];
 
+		// Headless requests
+		if (!empty($_SERVER['HTTP_ACCEPT']) && preg_match('#^application/json#', $_SERVER['HTTP_ACCEPT'])) {
+			header('Content-Type: application/json;charset='. mb_http_output());
+			echo f::format_json($_page->snippets);
+			exit;
+		}
+
 		echo $_page->render();
 
 	} catch (Exception $e) {
