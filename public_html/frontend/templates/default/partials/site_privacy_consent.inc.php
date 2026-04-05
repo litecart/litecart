@@ -76,11 +76,13 @@
 </div>
 
 <script>
-	try {
-		const privacy_classes = <?php echo f::format_json($privacy_classes, ''); ?>;
-		const consents = <?php echo f::format_json($consents, ''); ?>;
-		$('#site-privacy-consent').privacyConsent(privacy_classes, consents);
-	} catch (e) {
-		console.error('Could not initiate privacy consent manager:' + e.message);
-	};
+	waitFor('jQuery', function($) {
+		try {
+			var privacy_classes = <?php echo f::format_json($privacy_classes, ''); ?>;
+			var consents = <?php echo f::format_json($consents, ''); ?>;
+			$('#site-privacy-consent').privacyConsent(privacy_classes, consents);
+		} catch (e) {
+			console.error('Could not initiate privacy consent manager: ' + e.message);
+		}
+	});
 </script>
