@@ -800,6 +800,28 @@
             $this->_image->setImageDepth(16);
           }
 
+        // Get the EXIF orientation of the image
+          $orientation = $this->_image->getImageOrientation();
+
+        // Determine the rotation angle based on orientation
+          switch ($orientation) {
+
+            case Imagick::ORIENTATION_TOPRIGHT:
+              $this->_image->rotateImage('none', 90);
+              break;
+
+            case Imagick::ORIENTATION_BOTTOMRIGHT:
+              $this->_image->rotateImage('none', 180);
+              break;
+
+            case Imagick::ORIENTATION_BOTTOMLEFT:
+              $this->_image->rotateImage('none', -90);
+              break;
+          }
+
+        // Fix the orientation so that the image displays correctly
+          $this->_image->setImageOrientation(Imagick::ORIENTATION_TOPLEFT);
+
           switch(strtolower($type)) {
 
             case 'jpeg':
@@ -834,6 +856,33 @@
           }
 
           if ($interlaced) ImageInterlace($this->_image, true);
+
+          if (function_exists('exif_read_data')) {
+
+          // Get the EXIF data of the image
+            $exif = exif_read_data($filename);
+
+          // Check if orientation data exists
+            if (isset($exif['Orientation'])) {
+              $orientation = $exif['Orientation'];
+
+            // Determine the rotation angle based on orientation
+              switch ($orientation) {
+
+                case 3:
+                  $this->_image = ImageRotate($this->_image, 180, 0);
+                  break;
+
+                case 6:
+                  $this->_image = ImageRotate($this->_image, -90, 0);
+                  break;
+
+                case 8:
+                  $this->_image = ImageRotate($this->_image, 90, 0);
+                  break;
+              }
+            }
+          }
 
           switch(strtolower($type)) {
 
