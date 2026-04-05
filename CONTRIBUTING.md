@@ -30,9 +30,9 @@ Branch Name: `dev-major`
 
 # How To Install and Run the Build Tools
 
-This project uses Gulp 5 (ESM) for building assets. Requires Node.js 24+.
+This project uses Gulp 5 (ESM) for building assets. Requires Node.js 24+ or Bun.
 
-1. Install Node.js from https://nodejs.org/
+1. Install [Node.js](https://nodejs.org/) (or [Bun](https://bun.sh/)).
 
 2. Open a Terminal window and run these commands:
 
@@ -41,7 +41,7 @@ This project uses Gulp 5 (ESM) for building assets. Requires Node.js 24+.
 cd /path/to/project
 
 # Install project dependencies
-npm install
+npm install   # or bun install
 ```
 
 Done!

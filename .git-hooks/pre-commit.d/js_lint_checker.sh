@@ -15,8 +15,8 @@ echo "--------------------------------------"
 echo ""
 
 # Check dependencies
-if ! command -v node &> /dev/null; then
-	echo "Node.js could not be found. Please install Node.js."
+if ! command -v node &> /dev/null && ! command -v bun &> /dev/null; then
+	echo "Node.js or Bun could not be found. Please install Node.js or Bun."
 	exit 1
 fi
 
@@ -29,8 +29,12 @@ do
 	tmp_file=$(mktemp --suffix=.js)
 	git cat-file blob ":$file" > "$tmp_file"
 
-	# Check syntax using Node.js
-	output=$(node --check "$tmp_file" 2>&1)
+	# Check syntax using Node.js or Bun
+	if command -v bun &> /dev/null; then
+		output=$(bun --check "$tmp_file" 2>&1)
+	else
+		output=$(node --check "$tmp_file" 2>&1)
+	fi
 	lint_result=$?
 
 	# Remove temporary file
