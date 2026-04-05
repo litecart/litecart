@@ -895,9 +895,12 @@
 
 		### #############################################################
 
+		// Write lock file to prevent re-installation
+		file_put_contents(FS_DIR_STORAGE . 'install.lock', date('Y-m-d H:i:s'));
+
 		echo implode(PHP_EOL, [
 			'<h2>Complete</h2>',
-			'<p>Installation complete! Please delete the <strong>~/install/</strong> folder.</p>',
+			'<p>Installation complete!</p>',
 			'<p>You may now log in to the <a href="../'. BACKEND_ALIAS .'/">backend</a> and start configuring your store.</p>',
 			'<p>Check out the <a href="https://wiki.litecart.net/" target="_blank">LiteCart Wiki</a> website for some great tips. Turn to our <a href="https://www.litecart.net/forums/" target="_blank">Community Forums</a> if you have questions.</p>',
 		]);

@@ -45,6 +45,8 @@
 
 	function password_check_strength($password) {
 
+		if (strlen($password) < 12) return false;
+
 		preg_replace('#[a-z]#', '', $password, -1, $lowercases);
 		preg_replace('#[A-Z]#', '', $password, -1, $uppercases);
 		preg_replace('#\d#', '', $password, -1, $numbers);

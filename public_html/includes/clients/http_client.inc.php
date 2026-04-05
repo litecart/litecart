@@ -177,10 +177,13 @@
 				'bytes' => strlen($response_headers . "\r\n" . $response_body),
 			];
 
+			// Redact sensitive headers before logging
+			$redacted_request_headers = preg_replace('#^(Authorization:\s*).*$#mi', '$1[REDACTED]', $this->last_request['headers']);
+
 			file_put_contents(f::file_realpath('storage://logs/http_request_last-'. $parts['host'] .'.log'), implode("\r\n", [
 				'##'. str_pad(' ['. date('Y-m-d H:i:s', $this->last_request['timestamp']) .'] Request ', 70, '#', STR_PAD_RIGHT),
 				'',
-				$this->last_request['headers'],
+				$redacted_request_headers,
 				$this->last_request['body'],
 				'',
 				'##'. str_pad(' ['. date('Y-m-d H:i:s', $this->last_response['timestamp']) .'] Response — '. $this->last_response['bytes'] .' bytes transferred in '. $this->last_response['duration'] .' s ', 72, '#', STR_PAD_RIGHT),
