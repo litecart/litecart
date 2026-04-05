@@ -19,8 +19,8 @@ For an updated version of the upgrade documentation, visit [How To Install](http
 
 What you need:
 
-  * An Apache2 web server running PHP 5.6 or higher. Latest stable PHP release recommended for best performance.
-  * A MySQL 5.7+ or MariaDB database.
+- An Apache2 web server running PHP 5.6 or higher. Latest stable PHP release recommended for best performance.
+- A MySQL 5.7+ or MariaDB database.
 
 
 ### Instructions
@@ -34,9 +34,9 @@ Please note: Running your own website requires some common sense and basic webma
    ```text
    Examples:
 
-   * /var/www/
-   * /home/username/public_html/
-   * C:\xampp\htdocs\
+   - /var/www/
+   - /home/username/public_html/
+   - C:\xampp\htdocs\
    ```
 
    Paths are machine specific, so talk to your web host if you are uncertain where this folder is.
@@ -123,8 +123,8 @@ This project is licensed under the terms specified in [LICENSE.md](LICENSE.md).
 
 ## See Also
 
-  * [Official Website](https://www.litecart.net)
-  * [GitHub Repository](https://github.com/litecart/litecart)
-  * [Issue Tracker](https://github.com/litecart/litecart/issues)
-  * [Community Forums](https://www.litecart.net/forums/)
-  * [Community Wiki](https://wiki.litecart.net/)
+- [Official Website](https://www.litecart.net)
+- [GitHub Repository](https://github.com/litecart/litecart)
+- [Issue Tracker](https://github.com/litecart/litecart/issues)
+- [Community Forums](https://www.litecart.net/forums/)
+- [Community Wiki](https://wiki.litecart.net/)
