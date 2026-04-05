@@ -2,7 +2,7 @@ body {
 	background: var(--site-background);
 
 	.container {
-		max-width: 90%;
+		max-width: min(90%, 1600px);
 	}
 }
 
@@ -759,7 +759,6 @@ body {
 		transition: transform 100ms linear, box-shadow 100ms linear;
 		border: var(--listing-border);
 		border-radius: var(--border-radius);
-		overflow: hidden;
 
 		@media (min-width: 576px) {
 			&:hover {

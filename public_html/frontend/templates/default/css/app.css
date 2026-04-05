@@ -2,7 +2,7 @@ body {
   background: var(--site-background);
 }
 body .container {
-  max-width: 90%;
+  max-width: min(90%, 1600px);
 }
 #page {
   display: flex;
@@ -627,7 +627,6 @@ body .container {
   transition: transform 100ms linear, box-shadow 100ms linear;
   border: var(--listing-border);
   border-radius: var(--border-radius);
-  overflow: hidden;
 }
 @media (min-width: 576px) {
   .listing .product:hover {
@@ -933,3 +932,4 @@ body .container {
   background: url('../images/loader.svg');
   background-size: cover;
 }
+/*# sourceMappingURL=app.css.map */
