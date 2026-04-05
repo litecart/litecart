@@ -2,11 +2,11 @@
 
 ## Code Compliance
 
- - PHP code must comply with modern PHP standards no earlier than 5.6+.
+ - PHP code must comply with modern PHP standards no earlier than 8.0+ (recommended 8.3+).
 
- - HTML code must comply with HTML 5.
+ - HTML code must comply with HTML 5. Self-closing tags required (`<br />`, `<img ... />`).
 
- - Style definitions must be compliant with CSS 3.
+ - Style definitions must be compliant with CSS 3. All color values must use CSS custom properties defined in `variables.less`.
 
  - Any use of JavaScript should honour the jQuery framework.
 
@@ -560,3 +560,61 @@
 		);
 
 		echo '<input value="<?php echo htmlspecialchars($_POST['variable']); ?>">
+
+
+## Autoloader Conventions
+
+	Class prefixes determine the autoloader directory:
+
+		nod_*    nodes/        Static singletons (core services)
+		ent_*    entities/     Data objects (product, order, customer, etc.)
+		ref_*    references/   Read-only factory models with lazy properties
+		abs_*    abstracts/    Base classes
+		cm_*     modules/customer/    Customer modules
+		om_*     modules/order/       Order modules
+		ot_*     modules/order_total/ Order total modules
+		pm_*     modules/payment/     Payment modules
+		sm_*     modules/shipping/    Shipping modules
+		job_*    modules/jobs/        Background job modules
+		mod_*    modules/             Generic modules
+		url_*    routes/              Route handlers
+		wrap_*   wrappers/            Service layers / API clients
+
+	All autoloaded files use `.inc.php` extension and pass through the vMod system.
+
+
+## Stream Wrappers
+
+	Use stream wrappers for file paths within the application:
+
+		app://       Application files (templates, includes, assets)
+		storage://   User storage (images, config, cache)
+
+	Incorrect:
+
+		include FS_DIR_APP . 'includes/templates/default/layouts/default.inc.php';
+
+	Correct:
+
+		include 'app://frontend/templates/default/layouts/default.inc.php';
+
+
+## CSS Custom Properties
+
+	All color values in storefront LESS files must use CSS custom properties defined in `variables.less`.
+
+	Incorrect:
+
+		.element {
+			color: #cc0000;
+			background: rgba(0, 0, 0, 0.5);
+		}
+
+	Correct:
+
+		.element {
+			color: var(--color-sale-price);
+			background: var(--overlay-dark);
+		}
+
+	Exceptions: `transparent`, `inherit`, `currentColor`.
