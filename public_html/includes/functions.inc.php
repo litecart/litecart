@@ -3,9 +3,9 @@
 	// Output any variable to the browser console
 	function console_dump(...$vars) { // ... as of PHP 5.6
 
-		$output = var_export($vars, true);
-
-		echo '<script>console.log("'. addcslashes($output, "\"\r\n") .'");</script>';
+		foreach ($vars as $var) {
+			echo '<script>console.log('. json_encode($var, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) .');</script>';
+		}
 	}
 
 	// Return the first non-nil variable
