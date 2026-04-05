@@ -341,6 +341,13 @@
 
 		list($width, $height) = f::image_scale_by_width(320, settings::get('product_image_ratio'));
 
+		$is_favourite = database::query(
+			"select id from ". DB_TABLE_PREFIX ."favourites
+			where product_id = ". (int)$product['id'] ."
+			and customer_id = ". (int)customer::$data['id'] ."
+			limit 1;"
+		)->num_rows();
+
 		$listing_product->snippets = [
 			'product_id' => $product['id'],
 			'num_stock_options' => $product['num_stock_options'],
@@ -364,6 +371,7 @@
 			'tax_class_id' => $product['tax_class_id'],
 			'delivery_status_id' => $product['delivery_status_id'],
 			'sold_out_status_id' => $product['sold_out_status_id'],
+			'is_favourite' => $is_favourite,
 		];
 
 		if (!empty($product['brand_id'])) {

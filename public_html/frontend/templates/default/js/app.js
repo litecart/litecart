@@ -197,6 +197,56 @@ waitFor('jQuery', ($) => {
 	}
 });
 
+waitFor('jQuery', $ => {
+
+	$('.listing .product button[name="add_to_favourites"]').on('click', function (e) {
+		e.preventDefault();
+
+		let $product = $(this).closest('.product');
+
+		$.ajax({
+			url: _env.platform.url + 'favourites',
+			type: 'post',
+			data: {
+				add: true,
+				product_id: $product.data('id'),
+			},
+			cache: false,
+			async: true,
+			dataType: 'json',
+			success: function (result) {
+				if (result.status == 'ok') {
+					$product.data('in-favourites', result.added ? '1' : '0');
+				}
+			},
+		});
+	});
+
+	$('.listing .product button[name="remove_from_favourites"]').on('click', function (e) {
+		e.preventDefault();
+
+		let $product = $(this).closest('.product');
+
+		$.ajax({
+			url: _env.platform.url + 'favourites',
+			type: 'post',
+			data: {
+				remove: true,
+				product_id: $product.data('id'),
+			},
+			cache: false,
+			async: true,
+			dataType: 'json',
+			success: function (result) {
+				if (result.status == 'ok') {
+					$product.data('in-favourites', result.added ? '1' : '0');
+				}
+			},
+		});
+	});
+});
+
+
 // Sidebar parallax effect
 waitFor('jQuery', ($) => {
 
@@ -389,39 +439,6 @@ waitFor('jQuery', ($) => {
 					});
 				}
 			}
-		});
-	});
-});
-
-// Wishlist
-waitFor('jQuery', $ => {
-	$('.listing .product button[name="add_to_wishlist"]').on('click', function (e) {
-		e.preventDefault();
-
-		// Get the form and button
-		let $product = $(this).closest('.product');
-
-		if (!$product.data('in-wishlist')) {
-			action = 'add';
-		} else {
-			action = 'remove';
-		}
-
-		$.ajax({
-			url: _env.platform.url + 'ajax/wishlist.json',
-			type: 'post',
-			data: {
-				action: action,
-				product_id: $product.data('product-id'),
-			},
-			cache: false,
-			async: true,
-			dataType: 'json',
-			success: function (result) {
-				if (result.status == 'ok') {
-					$product.data('in-wishlist', result.added ? '1' : '0');
-				}
-			},
 		});
 	});
 });

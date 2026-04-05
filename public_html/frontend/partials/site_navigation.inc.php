@@ -111,6 +111,30 @@
 		cache::set($site_navigation_cache_token, $site_navigation->snippets);
 	}
 
+	// Favourites
+	$num_favourites = database::query(
+		"select count(*) as num_items from ". DB_TABLE_PREFIX ."favourites
+		where customer_id = ". (int)customer::$data['id'] .";"
+	)->fetch('num_items');
+
+	$num_favourites = 2;
+
+	$site_navigation->snippets['favourites'] = [
+		'items' => [],
+		'link' => document::ilink('favourites'),
+		'num_items' => $num_favourites,
+		'total' => null,
+	];
+
+	$site_navigation->snippets['favourites']['items'] = database::query(
+		"select p.id, json_value(p.name, '$.". database::input(language::$selected['code']) ."') as name, p.default_image as image
+		from ". DB_TABLE_PREFIX ."favourites f
+		left join ". DB_TABLE_PREFIX ."products p on (p.id = f.product_id)
+		where f.customer_id = ". (int)customer::$data['id'] .";"
+	)->fetch_all(function(&$item) {
+		$item['image'] = $item['image'] ? 'storage://images/products/' . $item['image'] : null;
+	});
+
 	// Shopping Cart
 
 	$site_navigation->snippets['shopping_cart'] = [

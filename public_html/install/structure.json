@@ -522,6 +522,43 @@
 				"chk_conversions": "JSON_VALID(conversions)"
 			}
 		},
+		"favourites": {
+			"columns": {
+				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
+				"customer_id": { "type": "INT", "length": 10, "unsigned": true },
+				"product_id": { "type": "INT", "length": 10, "unsigned": true },
+				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
+				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
+			},
+			"primary_key": ["id"],
+			"unique_keys": {
+				"customer_product": ["customer_id", "product_id"]
+			},
+			"keys": {
+				"customer_id": ["customer_id"],
+				"product_id": ["product_id"]
+			},
+			"foreign_keys": {
+				"favourite_to_customer": {
+					"columns": ["customer_id"],
+					"references": {
+						"table": "customers",
+						"columns": ["id"],
+						"on_update": "CASCADE",
+						"on_delete": "CASCADE"
+					}
+				},
+				"favourite_to_product": {
+					"columns": ["product_id"],
+					"references": {
+						"table": "products",
+						"columns": ["id"],
+						"on_update": "CASCADE",
+						"on_delete": "CASCADE"
+					}
+				}
+			}
+		},
 		"geo_zones": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },

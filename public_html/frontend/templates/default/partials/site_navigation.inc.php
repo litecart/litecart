@@ -127,6 +127,14 @@
 			</li>
 			<?php } ?>
 
+			<li class="favourites<?php if (!empty($favourites['items'])) echo ' filled'; ?> dropdown dropdown-end">
+				<a class="navbar-item" href="<?php echo document::href_ilink('favourites'); ?>">
+					<img class="img-responsive hidden-xs" src="<?php echo document::href_rlink('app://frontend/templates/'.settings::get('template') .'/images/'. (!empty($favourites['items']) ? 'favourites_filled.svg' : 'favourites.svg')); ?>">
+					<span class="hidden-sm hidden-md hidden-lg hidden-xl hidden-xxl"><?php echo t('title_favourites', 'Favourites'); ?></span>
+					<span class="badge"><?php echo $favourites['num_items']; ?></span>
+				</a>
+			</li>
+
 			<li class="shopping-cart<?php if (!empty($shopping_cart['items'])) echo ' filled'; ?> dropdown dropdown-end">
 				<div class="navbar-item" data-toggle="dropdown">
 					<img class="img-responsive hidden-xs" src="<?php echo document::href_rlink('app://frontend/templates/'.settings::get('template') .'/images/'. (!empty($shopping_cart['items']) ? 'cart_filled.svg' : 'cart.svg')); ?>">

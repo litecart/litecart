@@ -25,6 +25,16 @@
 			<?php echo f::draw_fonticon('icon-zoom-in'); ?>
 		</button>
 
+		<?php if ($is_favourite) { ?>
+		<button class="favourites btn btn-default btn-sm" name="remove_from_favourites" title="<?php echo t('title_remove_favourites', 'Remove From Favourites'); ?>">
+			<?php echo functions::draw_fonticon('icon-heart', 'style="color: #c00;"'); ?>
+		</button>
+		<?php } else { ?>
+		<button class="favourites btn btn-default btn-sm" name="add_to_favourites" title="<?php echo t('title_add_to_favourites', 'Add To Favourites'); ?>">
+			<?php echo functions::draw_fonticon('icon-heart-o'); ?>
+		</button>
+		<?php } ?>
+
 		<?php if (!$num_stock_options) { ?>
 		<button class="add-to-cart btn btn-success btn-sm" name="add_cart_product" title="<?php echo t('title_add_to_cart', 'Add To Cart'); ?>">
 			<?php echo f::draw_fonticon('icon-shopping-cart'); ?>

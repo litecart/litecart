@@ -3,7 +3,7 @@
 ## Graphics
 
 * (cart) T. Almroth - CC BY-SA 4.0 - https://www.tim-international.net/
-* (wishlist) T. Almroth - CC BY-SA 4.0 - https://www.tim-international.net/
+* (favourites) T. Almroth - CC BY-SA 4.0 - https://www.tim-international.net/
 * (logotype) T. Almroth - CC BY-SA 4.0 - https://www.tim-international.net/
 * (no-image/camera) T. Almroth - CC BY-SA 4.0 - https://www.tim-international.net/
 * (newsletter) T. Almroth - CC BY-SA 4.0 - http://www.tim-international.net/
