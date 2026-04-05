@@ -93,6 +93,19 @@
 		)
 	);
 
+	$categories = database::query(
+		"select c.id, json_value(c.name, '$.". database::input(language::$selected['code']) ."') as name
+		from ". DB_TABLE_PREFIX ."categories c
+		where c.status
+		order by name;"
+	)->fetch_all();
+
+	$brands = database::query(
+		"select id, name from ". DB_TABLE_PREFIX ."brands
+		where status
+		order by name;"
+	)->fetch_all();
+
 ?>
 <div class="card">
 	<div class="card-header">
@@ -161,18 +174,9 @@
 						<div class="col-md-6">
 							<fieldset style="padding: 15px; border: 1px solid var(--default-border-color); border-radius: var(--border-radius);">
 								<legend style="font-weight: bold; padding: 0 5px;"><?php echo t('title_categories', 'Categories'); ?></legend>
-								<?php
-									$categories = database::query(
-										"select c.id, json_value(c.name, '$.". database::input(language::$selected['code']) ."') as name
-										from ". DB_TABLE_PREFIX ."categories c
-										where c.status
-										order by name;"
-									)->fetch_all();
-									$selected_category_ids = array_column(array_filter($_POST['scopes'] ?? [], function($s) { return $s['scope_type'] == 'category'; }), 'scope_id');
-									foreach ($categories as $cat) {
-								?>
+								<?php foreach ($categories as $cat) {?>
 								<label class="form-group" style="margin-bottom: 0.25em;">
-									<input type="checkbox" name="scopes[]" value="category:<?php echo $cat['id']; ?>" <?php echo in_array($cat['id'], $selected_category_ids) ? 'checked' : ''; ?> /> <?php echo $cat['name']; ?>
+									<?php echo f::form_checkbox('scopes[]', 'category:'.$cat['id'], true); ?> <?php echo f::escape_html($cat['name']); ?>
 								</label>
 								<?php } ?>
 							</fieldset>
@@ -181,17 +185,9 @@
 						<div class="col-md-6">
 							<fieldset style="padding: 15px; border: 1px solid var(--default-border-color); border-radius: var(--border-radius);">
 								<legend style="font-weight: bold; padding: 0 5px;"><?php echo t('title_brands', 'Brands'); ?></legend>
-								<?php
-									$brands = database::query(
-										"select id, name from ". DB_TABLE_PREFIX ."brands
-										where status
-										order by name;"
-									)->fetch_all();
-									$selected_brand_ids = array_column(array_filter($_POST['scopes'] ?? [], function($s) { return $s['scope_type'] == 'brand'; }), 'scope_id');
-									foreach ($brands as $brand) {
-								?>
+								<?php foreach ($brands as $brand) { ?>
 								<label class="form-group" style="margin-bottom: 0.25em;">
-									<input type="checkbox" name="scopes[]" value="brand:<?php echo $brand['id']; ?>" <?php echo in_array($brand['id'], $selected_brand_ids) ? 'checked' : ''; ?> /> <?php echo $brand['name']; ?>
+									<?php echo f::form_checkbox('scopes[]', 'brand:'.$brand['id'], true); ?> <?php echo f::escape_html($brand['name']); ?>
 								</label>
 								<?php } ?>
 							</fieldset>
@@ -203,59 +199,59 @@
 		</div>
 
 		<div id="fixed-price-settings" style="<?php echo ($_POST['discount_mode'] ?? 'fixed') == 'percentage' ? 'display: none;' : ''; ?>">
-		<table id="campaigns" class="table data-table">
-			<thead>
-				<tr>
-					<th class="main"><?php echo t('title_product', 'Product'); ?></th>
-					<th><?php echo t('title_customer_group', 'Customer Group'); ?></th>
-					<th><?php echo t('title_geo_zone', 'Geo Zone'); ?></th>
-					<th class="text-center"><?php echo t('title_regular_price', 'Regular Price'); ?></th>
-					<th class="text-center"><?php echo t('title_campaign_price', 'Campaign Price'); ?></th>
-					<th class="text-center"><?php echo t('title_percentage', 'Percentage'); ?></th>
-					<th></th>
-				</tr>
-			</thead>
+			<table id="campaigns" class="table data-table">
+				<thead>
+					<tr>
+						<th class="main"><?php echo t('title_product', 'Product'); ?></th>
+						<th><?php echo t('title_customer_group', 'Customer Group'); ?></th>
+						<th><?php echo t('title_geo_zone', 'Geo Zone'); ?></th>
+						<th class="text-center"><?php echo t('title_regular_price', 'Regular Price'); ?></th>
+						<th class="text-center"><?php echo t('title_campaign_price', 'Campaign Price'); ?></th>
+						<th class="text-center"><?php echo t('title_percentage', 'Percentage'); ?></th>
+						<th></th>
+					</tr>
+				</thead>
 
-			<tbody>
-				<?php foreach ($_POST['products'] as $key => $product) { ?>
-				<tr data-product-id="<?php echo $product['product_id']; ?>" data-regular-price="<?php echo currency::format_raw($product['regular_price'], settings::get('store_currency_code')); ?>">
-					<td>
-						<?php echo f::form_input_hidden('products['.$key.'][product_id]', true); ?>
-						<a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_product', ['product_id' => $product['product_id']]); ?>">
-							<?php echo $product['name']; ?>
-						</a>
-					</td>
-					<td><?php echo f::form_select_customer_group('products['.$key.'][customer_group_id]', true); ?></td>
-					<td><?php echo f::form_select_geo_zone('products['.$key.'][geo_zone_id]', true); ?></td>
-					<td class="text-end"><?php echo currency::format($product['regular_price'], false, settings::get('store_currency_code')); ?></td>
-					<td>
-						<div class="dropdown dropdown-end">
-							<?php echo f::form_input_money('products['.$key.'][price]['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), true, 'style="width: 125px;"'); ?>
-							<ul class="dropdown-menu">
-								<?php foreach (array_diff($currency_codes, [settings::get('store_currency_code')]) as $currency_code) { ?>
-								<li>
-									<?php echo f::form_input_money('products['.$key.'][price]['. $currency_code .']', $currency_code, true, 'style="width: 125px;"'); ?>
-								</li>
-								<?php } ?>
-							</ul>
-						</div>
-					</td>
-					<td><?php echo f::form_input_percent('products['.$key.'][percentage]', true, 2, 'style="width: 100px;"'); ?></td>
-					<td class="text-end">
-						<button class="btn btn-danger btn-sm" name="remove" type="button" title="<?php echo t('title_edit', 'Edit'); ?>">
-							<?php echo f::draw_fonticon('icon-times'); ?>
-						</button>
-					</td>
-				</tr>
-				<?php } ?>
-			</tbody>
-		</table>
+				<tbody>
+					<?php foreach ($_POST['products'] as $key => $product) { ?>
+					<tr data-product-id="<?php echo $product['product_id']; ?>" data-regular-price="<?php echo currency::format_raw($product['regular_price'], settings::get('store_currency_code')); ?>">
+						<td>
+							<?php echo f::form_input_hidden('products['.$key.'][product_id]', true); ?>
+							<a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_product', ['product_id' => $product['product_id']]); ?>">
+								<?php echo $product['name']; ?>
+							</a>
+						</td>
+						<td><?php echo f::form_select_customer_group('products['.$key.'][customer_group_id]', true); ?></td>
+						<td><?php echo f::form_select_geo_zone('products['.$key.'][geo_zone_id]', true); ?></td>
+						<td class="text-end"><?php echo currency::format($product['regular_price'], false, settings::get('store_currency_code')); ?></td>
+						<td>
+							<div class="dropdown dropdown-end">
+								<?php echo f::form_input_money('products['.$key.'][price]['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), true, 'style="width: 125px;"'); ?>
+								<ul class="dropdown-menu">
+									<?php foreach (array_diff($currency_codes, [settings::get('store_currency_code')]) as $currency_code) { ?>
+									<li>
+										<?php echo f::form_input_money('products['.$key.'][price]['. $currency_code .']', $currency_code, true, 'style="width: 125px;"'); ?>
+									</li>
+									<?php } ?>
+								</ul>
+							</div>
+						</td>
+						<td><?php echo f::form_input_percent('products['.$key.'][percentage]', true, 2, 'style="width: 100px;"'); ?></td>
+						<td class="text-end">
+							<button class="btn btn-danger btn-sm" name="remove" type="button" title="<?php echo t('title_edit', 'Edit'); ?>">
+								<?php echo f::draw_fonticon('icon-times'); ?>
+							</button>
+						</td>
+					</tr>
+					<?php } ?>
+				</tbody>
+			</table>
 
-		<div class="card-body">
-			<a href="<?php echo document::href_ilink(__APP__.'/product_picker'); ?>" class="btn btn-default" data-toggle="lightbox" data-max-width="800px" data-callback="add_product">
-				<?php echo f::draw_fonticon('icon-plus', 'style="margin-inline-end: .5em;"'); ?> <?php echo t('title_add_product', 'Add Product'); ?>
-			</a>
-		</div>
+			<div class="card-body">
+				<a href="<?php echo document::href_ilink(__APP__.'/product_picker'); ?>" class="btn btn-default" data-toggle="lightbox" data-max-width="800px" data-callback="add_product">
+					<?php echo f::draw_fonticon('icon-plus', 'style="margin-inline-end: .5em;"'); ?> <?php echo t('title_add_product', 'Add Product'); ?>
+				</a>
+			</div>
 		</div>
 
 		<div class="card-action">

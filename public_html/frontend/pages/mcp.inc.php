@@ -51,7 +51,7 @@
 			)->fetch();
 
 			if (!$customer) {
-				throw new McpException(language::translate('error_customer_not_found', 'The customer is either suspended or could not be found in our database'), 401);
+				throw new McpException(t('error_customer_not_found', 'The customer is either suspended or could not be found in our database'), 401);
 			}
 
 			// Password check and login attempts
@@ -65,7 +65,7 @@
 							limit 1;"
 					);
 
-					throw new McpException(strtr(language::translate('error_d_login_attempts_left', 'You have %d login attempts left until your account is temporary blocked'), ['%d' => 3 - $customer['login_attempts']]), 403);
+					throw new McpException(strtr(t('error_d_login_attempts_left', 'You have %d login attempts left until your account is temporary blocked'), ['%d' => 3 - $customer['login_attempts']]), 403);
 
 				} else {
 
@@ -77,7 +77,7 @@
 						limit 1;",
 					);
 
-					throw new McpException(strtr(language::translate('error_account_has_been_blocked', 'The account has been temporary blocked %d minutes'), ['%d' => 15]), 403);
+					throw new McpException(strtr(t('error_account_has_been_blocked', 'The account has been temporary blocked %d minutes'), ['%d' => 15]), 403);
 				}
 
 			}

@@ -106,7 +106,7 @@
     return [$row['type'], $row['type']];
   });
 
-  array_unshift($type_options, ['', '-- '. language::translate('title_all', 'All') .' --']);
+  array_unshift($type_options, ['', '-- '. t('title_all', 'All') .' --']);
 ?>
 <div class="card card-app">
   <div class="card-header">

@@ -40,5 +40,6 @@ return [
 		'sent' => 'sent.inc.php',
 		'view' => 'view.inc.php',
 		'edit' => 'edit.inc.php',
+		'failed' => 'failed.inc.php',
 	],
 ];

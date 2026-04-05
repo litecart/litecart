@@ -157,4 +157,4 @@
 		]);
 	}
 
-	echo $_page->stitch();
+	echo $_page->render();

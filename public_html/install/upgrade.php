@@ -537,9 +537,9 @@
 				}
 
 				if ($table_exists) {
-					$sql = 'ALTER TABLE `'. database::input($table['name']) .'`' . PHP_EOL;
+					$sql = "ALTER TABLE `". database::input($table['name']) ."`" . PHP_EOL;
 				} else {
-					$sql = 'CREATE TABLE `'. database::input($table['name']) .'` (' . PHP_EOL;
+					$sql = "CREATE TABLE `". database::input($table['name']) ."` (" . PHP_EOL;
 				}
 
 				$last_column = null;
@@ -548,8 +548,7 @@
 				if ($table_exists && !empty($table['primary_key'])) {
 					if (database::query(
 						"SHOW INDEX FROM `". database::input($table['name']) ."`
-						WHERE Key_name = 'PRIMARY'
-						/*AND non_unique = 0*/;"
+						WHERE Key_name = 'PRIMARY';"
 					)->num_rows) {
 						$sql .= 'DROP PRIMARY KEY,' . PHP_EOL;
 					}
@@ -563,7 +562,7 @@
 							WHERE Key_name = '". database::input($key_name) ."'
 							AND non_unique = 0;"
 						)->num_rows) {
-							$sql .= 'DROP INDEX `'. database::input($key_name) .'`,' . PHP_EOL;
+							$sql .= "DROP INDEX `". database::input($key_name) ."`," . PHP_EOL;
 						}
 					}
 				}
@@ -572,7 +571,7 @@
 				if ($table_exists && !empty($table['keys'])) {
 					foreach (array_keys($table['keys']) as $key_name) {
 						if (database::query(
-							"SHOW INDEX FROM `". $table['name'] ."`
+							"SHOW INDEX FROM `". database::input($table['name']) ."`
 							WHERE Key_name = '". database::input($key_name) ."'
 							AND non_unique = 1;"
 						)->num_rows) {

@@ -2,8 +2,8 @@
 
 	return [
 		'name' => t('title_appearance', 'Appearance'),
-		'default' => 'images',
 		'group' => 'system',
+		'default' => 'images',
 		'priority' => 0,
 
 		'theme' => [

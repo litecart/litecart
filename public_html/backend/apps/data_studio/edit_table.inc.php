@@ -10,9 +10,9 @@
 		$_POST = $table->data;
 	}
 
-	document::$snippets['title'][] = !empty($customer->data['id']) ? language::translate('title_edit_table', 'Edit Table') : language::translate('title_create_new_table', 'Create New Table');
+	document::$snippets['title'][] = !empty($customer->data['id']) ? t('title_edit_table', 'Edit Table') : t('title_create_new_table', 'Create New Table');
 
-	breadcrumbs::add(language::translate('title_tables', 'Tables'), document::ilink(__APP__.'/tables'));
+	breadcrumbs::add(t('title_tables', 'Tables'), document::ilink(__APP__.'/tables'));
 	breadcrumbs::add($table->previous['name'],  document::ilink(__APP__.'/table', ['name' => $table->previous['name']]));
 
 	if (isset($_POST['save'])) {
@@ -34,7 +34,7 @@
 
 			$table->save();
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			header('Location: '. document::ilink(__APP__.'/table', ['name' => $table->data['name']]));
 			exit;
 
@@ -46,11 +46,11 @@
 	if (isset($_POST['delete'])) {
 
 		try {
-			if (empty($table->previous['name'])) throw new Exception(language::translate('error_must_provide_table', 'You must provide a table'));
+			if (empty($table->previous['name'])) throw new Exception(t('error_must_provide_table', 'You must provide a table'));
 
 			$table->delete();
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			header('Location: '. document::ilink(__APP__.'/tables'));
 			exit;
 
@@ -60,10 +60,10 @@
 	}
 
 	$key_types = [
-		'primary' => language::translate('title_primary_key', 'Primary Key'),
-		'key' => language::translate('title_index_key', 'Index Key'),
-		'unique' => language::translate('title_unique_key', 'Unique Key'),
-		'fulltext' => language::translate('title_fulltext_index', 'Fulltext Index'),
+		'primary' => t('title_primary_key', 'Primary Key'),
+		'key' => t('title_index_key', 'Index Key'),
+		'unique' => t('title_unique_key', 'Unique Key'),
+		'fulltext' => t('title_fulltext_index', 'Fulltext Index'),
 	];
 
 	$column_types = [
@@ -148,7 +148,7 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo !empty($table->previous['name']) ? language::translate('title_edit_table', 'Edit Table') : language::translate('title_create_new_table', 'Create New Table'); ?>
+			<?php echo $app_icon; ?> <?php echo !empty($table->previous['name']) ? t('title_edit_table', 'Edit Table') : t('title_create_new_table', 'Create New Table'); ?>
 		</div>
 	</div>
 
@@ -158,26 +158,26 @@
 
 			<div class="row">
 				<div class="col-md-3">
-					<h2><?php echo language::translate('title_general', 'General'); ?></h2>
+					<h2><?php echo t('title_general', 'General'); ?></h2>
 
 					<div class="">
 						<div class="form-group">
-							<label><?php echo language::translate('title_name', 'Name'); ?></label>
+							<label><?php echo t('title_name', 'Name'); ?></label>
 							<?php echo f::form_input_text('name'); ?>
 						</div>
 
 						<div class="form-group">
-							<label><?php echo language::translate('title_auto_increment', 'Auto Increment'); ?></label>
+							<label><?php echo t('title_auto_increment', 'Auto Increment'); ?></label>
 							<?php echo f::form_input_number('auto_increment', true); ?>
 						</div>
 
 						<div class="form-group">
-							<label><?php echo language::translate('title_collation', 'Collation'); ?></label>
+							<label><?php echo t('title_collation', 'Collation'); ?></label>
 							<?php echo f::form_select_mysql_collation('collation', true); ?>
 						</div>
 
 						<div class="form-group">
-							<label><?php echo language::translate('title_engine', 'Engine'); ?></label>
+							<label><?php echo t('title_engine', 'Engine'); ?></label>
 							<?php echo f::form_select_mysql_engine('engine', true); ?>
 						</div>
 					</div>
@@ -185,18 +185,18 @@
 				</div>
 
 				<div class="col-md-9">
-					<h2><?php echo language::translate('title_indexes', 'Indexes'); ?></h2>
+					<h2><?php echo t('title_indexes', 'Indexes'); ?></h2>
 
 					<table class="indexes table table-striped table-hover table-sortable data-table">
 						<thead>
 							<tr>
 								<th><?php echo f::draw_fonticon('icon-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
 								<th></th>
-								<th><?php echo language::translate('title_name', 'Name'); ?></th>
-								<th><?php echo language::translate('title_type', 'Type'); ?></th>
-								<th class="main"><?php echo language::translate('title_columns', 'Columns'); ?></th>
-								<th><?php echo language::translate('title_cardinality', 'Cardinality'); ?></th>
-								<th class="main"><?php echo language::translate('title_type', 'Type'); ?></th>
+								<th><?php echo t('title_name', 'Name'); ?></th>
+								<th><?php echo t('title_type', 'Type'); ?></th>
+								<th class="main"><?php echo t('title_columns', 'Columns'); ?></th>
+								<th><?php echo t('title_cardinality', 'Cardinality'); ?></th>
+								<th class="main"><?php echo t('title_type', 'Type'); ?></th>
 								<th></th>
 							</tr>
 						</thead>
@@ -217,7 +217,7 @@
 								<td><?php echo $index['cardinality']; ?></td>
 								<td><?php echo $index['type']; ?></td>
 								<td class="text-end">
-									<button class="btn btn-danger btn-sm" name="remove" value="true" type="button" title="<?php echo language::translate('title_remove', 'Remove'); ?>"><?php echo f::draw_fonticon('icon-trash'); ?></button>
+									<button class="btn btn-danger btn-sm" name="remove" value="true" type="button" title="<?php echo t('title_remove', 'Remove'); ?>"><?php echo f::draw_fonticon('icon-trash'); ?></button>
 								</td>
 							</tr>
 							<?php } ?>
@@ -232,15 +232,15 @@
 				<tr>
 					<th><?php echo f::draw_fonticon('icon-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th></th>
-					<th style="min-width: 150px;"><?php echo language::translate('title_column', 'Column'); ?></th>
-					<th style="min-width: 150px;"><?php echo language::translate('title_type', 'Type'); ?></th>
-					<th style="min-width: 35px;"><?php echo language::translate('title_unsigned', 'Unsigned'); ?></th>
-					<th style="min-width: 100px;"><?php echo language::translate('title_length_set', 'Length/Set'); ?></th>
-					<th style="min-width: 35px;"><?php echo language::translate('title_nullable', 'Nullable'); ?></th>
-					<th style="min-width: 150px;"><?php echo language::translate('title_default', 'Default'); ?></th>
-					<th style="min-width: 200px;"><?php echo language::translate('title_collation', 'Collation'); ?></th>
-					<th class="main"><?php echo language::translate('title_comment', 'Comment'); ?></th>
-					<th style="min-width: 10px;"><?php echo language::translate('title_move', 'Move'); ?></th>
+					<th style="min-width: 150px;"><?php echo t('title_column', 'Column'); ?></th>
+					<th style="min-width: 150px;"><?php echo t('title_type', 'Type'); ?></th>
+					<th style="min-width: 35px;"><?php echo t('title_unsigned', 'Unsigned'); ?></th>
+					<th style="min-width: 100px;"><?php echo t('title_length_set', 'Length/Set'); ?></th>
+					<th style="min-width: 35px;"><?php echo t('title_nullable', 'Nullable'); ?></th>
+					<th style="min-width: 150px;"><?php echo t('title_default', 'Default'); ?></th>
+					<th style="min-width: 200px;"><?php echo t('title_collation', 'Collation'); ?></th>
+					<th class="main"><?php echo t('title_comment', 'Comment'); ?></th>
+					<th style="min-width: 10px;"><?php echo t('title_move', 'Move'); ?></th>
 					<th style="min-width: 45px;"></th>
 				</tr>
 			</thead>
@@ -264,7 +264,7 @@
 					<td><?php echo f::form_input_text('columns['.$column['name'].'][comment]', true); ?></td>
 					<td class="grabbable text-center"><?php echo f::draw_fonticon('icon-arrows-vertical'); ?></td>
 					<td class="text-end">
-						<button class="btn btn-danger btn-sm" name="remove" value="true" type="button" title="<?php echo language::translate('title_remove', 'Remove'); ?>">
+						<button class="btn btn-danger btn-sm" name="remove" value="true" type="button" title="<?php echo t('title_remove', 'Remove'); ?>">
 							<?php echo f::draw_fonticon('icon-trash'); ?>
 						</button>
 					</td>
@@ -275,31 +275,31 @@
 			<tfoot>
 				<td colspan="99">
 					<button class="btn btn-default" name="add_column" type="button">
-						<?php echo f::draw_fonticon('icon-plus'); ?> <?php echo language::translate('title_add_column', 'Add Column'); ?>
+						<?php echo f::draw_fonticon('icon-plus'); ?> <?php echo t('title_add_column', 'Add Column'); ?>
 					</button>
 					<button class="btn btn-default" name="delete" type="button" data-require-columns="true">
-						<?php echo f::draw_fonticon('icon-trash'); ?> <?php echo language::translate('title_delete', 'Delete'); ?>
+						<?php echo f::draw_fonticon('icon-trash'); ?> <?php echo t('title_delete', 'Delete'); ?>
 					</button>
 					<button class="btn btn-default" name="add_primary_key" type="button" data-require-columns="true">
-						<?php echo f::draw_fonticon('icon-plus'); ?> <?php echo language::translate('title_add_primary_key', 'Add Primary Key'); ?>
+						<?php echo f::draw_fonticon('icon-plus'); ?> <?php echo t('title_add_primary_key', 'Add Primary Key'); ?>
 					</button>
 					<button class="btn btn-default" name="add_key" type="button" data-require-columns="true">
-						<?php echo f::draw_fonticon('icon-plus'); ?> <?php echo language::translate('title_add_key', 'Add Key'); ?>
+						<?php echo f::draw_fonticon('icon-plus'); ?> <?php echo t('title_add_key', 'Add Key'); ?>
 					</button>
 					<button class="btn btn-default" name="add_unique_key" type="button" data-require-columns="true">
-						<?php echo f::draw_fonticon('icon-plus'); ?> <?php echo language::translate('title_add_unique_key', 'Add Unique Key'); ?>
+						<?php echo f::draw_fonticon('icon-plus'); ?> <?php echo t('title_add_unique_key', 'Add Unique Key'); ?>
 					</button>
 					<button class="btn btn-default" name="add_fulltext_key" type="button" data-require-columns="true">
-						<?php echo f::draw_fonticon('icon-plus'); ?> <?php echo language::translate('title_add_fulltext_key', 'Add Fulltext Key'); ?>
+						<?php echo f::draw_fonticon('icon-plus'); ?> <?php echo t('title_add_fulltext_key', 'Add Fulltext Key'); ?>
 					</button>
 				</td>
 			</tfoot>
 		</table>
 
 		<div class="card-action">
-			<?php echo f::form_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
-			<?php echo (!empty($table->previous['name'])) ? f::form_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
-			<?php echo f::form_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
+			<?php echo f::form_button('save', t('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
+			<?php echo (!empty($table->previous['name'])) ? f::form_button('delete', t('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\''. t('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
+			<?php echo f::form_button('cancel', t('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
 		</div>
 
 	<?php echo f::form_end(); ?>
@@ -344,7 +344,7 @@
 			'  <td><?php echo f::escape_js(f::form_input_text('columns[new_key_i][comment]', '')); ?></td>' +
 			'  <td class="grabbable text-center"><?php echo f::draw_fonticon('icon-arrows-vertical'); ?></td>' +
 			'  <td class="text-end">' +
-			'    <button class="btn btn-danger btn-sm" name="remove" value="true" type="button" title="<?php echo f::escape_js(language::translate('title_remove', 'Remove')); ?>"><?php echo f::escape_js(f::draw_fonticon('icon-trash')); ?></button>' +
+			'    <button class="btn btn-danger btn-sm" name="remove" value="true" type="button" title="<?php echo f::escape_js(t('title_remove', 'Remove')); ?>"><?php echo f::escape_js(f::draw_fonticon('icon-trash')); ?></button>' +
 			'  </td>' +
 			'</tr>'
 		).html(function(index,html){
@@ -355,12 +355,12 @@
 	});
 
 	$('table.columns').on('click', 'button[name="remove"]', function(){
-		if (!window.confirm("<?php echo f::escape_js(language::translate('text_are_you_sure', 'Are you sure?')); ?>")) return false;
+		if (!window.confirm("<?php echo f::escape_js(t('text_are_you_sure', 'Are you sure?')); ?>")) return false;
 		$(this).closest('tr').remove();
 	});
 
 	$('table.tfoot').on('click', 'button[name="delete"]', function(){
-		if (!window.confirm("<?php echo f::escape_js(language::translate('text_are_you_sure', 'Are you sure?')); ?>")) return false;
+		if (!window.confirm("<?php echo f::escape_js(t('text_are_you_sure', 'Are you sure?')); ?>")) return false;
 		$('table.columns tbody tr td:first-child :checkbox:checked').closest('tr').remove();
 	});
 
@@ -379,7 +379,7 @@
 		   '  <td></td>',
 		   '  <td></td>',
 		   '  <td class="grabbable text-center"><?php echo f::draw_fonticon('icon-arrows-vertical'); ?></td>',
-		   '  <td class="text-end"><button class="btn btn-danger btn-sm" name="remove" value="true" type="button" title="<?php echo f::escape_js(language::translate('title_remove', 'Remove')); ?>"><?php echo f::draw_fonticon('icon-trash'); ?></button></td>',
+		   '  <td class="text-end"><button class="btn btn-danger btn-sm" name="remove" value="true" type="button" title="<?php echo f::escape_js(t('title_remove', 'Remove')); ?>"><?php echo f::draw_fonticon('icon-trash'); ?></button></td>',
 		   '</tr>'
 	   ].join('\n')
 		   .replace(/new_index_key_i/, new_index_key_i++));
@@ -387,7 +387,7 @@
 	});
 
 	$('table.indexes').on('click', 'button[name="remove"]', function(){
-		if (!window.confirm("<?php echo f::escape_js(language::translate('text_are_you_sure', 'Are you sure?')); ?>")) return false;
+		if (!window.confirm("<?php echo f::escape_js(t('text_are_you_sure', 'Are you sure?')); ?>")) return false;
 		$(this).closest('tr').remove();
 	});
 

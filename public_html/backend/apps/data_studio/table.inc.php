@@ -13,7 +13,7 @@
 	}
 
 	if (!in_array($_GET['name'], $tables)) {
-		notices::add('errors', language::translate('error_table_not_found', 'Table not found'));
+		notices::add('errors', t('error_table_not_found', 'Table not found'));
 		return;
 	}
 
@@ -40,7 +40,7 @@
 		$_POST['query'] = "select * from `". database::input($_GET['name']) ."`;";
 	}
 
-	breadcrumbs::add(language::translate('title_tables', 'Tables'), document::ilink(__APP__.'/tables'));
+	breadcrumbs::add(t('title_tables', 'Tables'), document::ilink(__APP__.'/tables'));
 	breadcrumbs::add($_GET['name']);
 
 	// Table Rows
@@ -49,7 +49,7 @@
 
 	$affected_rows = database::affected_rows();
 	if (preg_match('#^\s*(INSERT|UPDATE|DELETE|ALTER) #i', $_POST['query'])) {
-		notices::add('notices', strtr(language::translate('notice_n_rows_affected', '%n rows affected'), ['%n' => $affected_rows]));
+		notices::add('notices', strtr(t('notice_n_rows_affected', '%n rows affected'), ['%n' => $affected_rows]));
 	}
 
 /*
@@ -98,14 +98,14 @@ textarea[name="query"] {
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo language::translate('title_table_data', 'Table Data'); ?>
+			<?php echo $app_icon; ?> <?php echo t('title_table_data', 'Table Data'); ?>
 		</div>
 	</div>
 
 	<div class="card-action">
 		<ul class="list-inline">
-			<li><a class="btn btn-default" href="<?php echo document::href_ilink(__APP__.'/edit_table', ['name' => $_GET['name']]); ?>"><?php echo f::draw_fonticon('icon-pencil'); ?> <?php echo language::translate('title_edit_table_structure', 'Edit Table Structure'); ?></a></li>
-			<li><a class="btn btn-default" href="<?php echo document::href_ilink(__APP__.'/edit_row', ['table' => $_GET['name']]); ?>"><?php echo f::draw_fonticon('icon-plus'); ?> <?php echo language::translate('title_create_new_row', 'Create New Row'); ?></a></li>
+			<li><a class="btn btn-default" href="<?php echo document::href_ilink(__APP__.'/edit_table', ['name' => $_GET['name']]); ?>"><?php echo f::draw_fonticon('icon-pencil'); ?> <?php echo t('title_edit_table_structure', 'Edit Table Structure'); ?></a></li>
+			<li><a class="btn btn-default" href="<?php echo document::href_ilink(__APP__.'/edit_row', ['table' => $_GET['name']]); ?>"><?php echo f::draw_fonticon('icon-plus'); ?> <?php echo t('title_create_new_row', 'Create New Row'); ?></a></li>
 		</ul>
 	</div>
 
@@ -115,20 +115,20 @@ textarea[name="query"] {
 			<div class="col-md-5">
 
 				<label class="form-group">
-					<div class="form-label"><?php echo language::translate('title_select_table', 'Select Table'); ?></div>
+					<div class="form-label"><?php echo t('title_select_table', 'Select Table'); ?></div>
 					<?php echo f::form_select('table', array_map(function($table) { return [$table, $table]; }, $tables), $_GET['name']); ?>
 				</label>
 
 				<?php echo f::form_begin('query_form', 'post', '', false, 'style="max-width: 100vw;"'); ?>
 
 					<label class="form-group">
-						<div class="form-label"><?php echo language::translate('title_query', 'Query'); ?></div>
+						<div class="form-label"><?php echo t('title_query', 'Query'); ?></div>
 						<?php echo f::form_textarea('query', true, 'style="min-height: 100px;"'); ?>
 					</label>
 
 					<div class="form-group">
-						<?php echo f::form_button('run', language::translate('title_run_query', 'Run Query'), 'submit', 'class="btn btn-success"'); ?>
-						<?php echo f::form_button('pretty_print', language::translate('title_pretty_print', 'Pretty Print'), 'button'); ?>
+						<?php echo f::form_button('run', t('title_run_query', 'Run Query'), 'submit', 'class="btn btn-success"'); ?>
+						<?php echo f::form_button('pretty_print', t('title_pretty_print', 'Pretty Print'), 'button'); ?>
 					</div>
 
 				<?php echo f::form_end(); ?>
@@ -138,7 +138,7 @@ textarea[name="query"] {
 			<?php if (!empty($columns)) { ?>
 			<div class="col-md-7">
 				<fieldset id="toggle-columns">
-					<legend><?php echo language::translate('title_toggle_columns', 'Toggle Columns'); ?></legend>
+					<legend><?php echo t('title_toggle_columns', 'Toggle Columns'); ?></legend>
 					<div class="columns">
 					<?php foreach (array_slice($columns, 0, 10) as $column) echo f::form_checkbox('columns[]', [$column['name'], $column['name']], !empty($_POST['columns']) ? true : $column); ?>
 					<?php foreach (array_slice($columns, 10) as $column) echo f::form_checkbox('columns[]', [$column['name'], $column['name']], true); ?>
@@ -170,7 +170,7 @@ textarea[name="query"] {
 					<td data-column-name="<?php echo f::escape_attr($column); ?>"><?php echo $value ? addcslashes(f::escape_html($value), "\t\r\n") : '<em>NULL</em>'; ?></td>
 					<?php } ?>
 					<td class="text-end">
-						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_row', ['table' => $_GET['name'], $primary_column => $row[$primary_column]]); ?>" title="<?php echo language::translate('title_edit', 'Edit'); ?>">
+						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_row', ['table' => $_GET['name'], $primary_column => $row[$primary_column]]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>">
 							<?php echo f::draw_fonticon('icon-pencil'); ?>
 						</a>
 					</td>
@@ -180,7 +180,7 @@ textarea[name="query"] {
 
 			<tfoot>
 				<td colspan="<?php echo count($columns) + 2; ?>">
-					<?php echo language::translate('title_rows', 'Rows'); ?>: <?php echo f::format_number($num_rows); ?>
+					<?php echo t('title_rows', 'Rows'); ?>: <?php echo f::format_number($num_rows); ?>
 				</td>
 			</tfoot>
 		</table>
@@ -189,10 +189,10 @@ textarea[name="query"] {
 	<?php if (!empty($rows) && in_array($primary_column, $columns)) { ?>
 	<div class="card-body">
 		<fieldset id="actions">
-			<legend><?php echo language::translate('text_with_selected', 'With selected'); ?></legend>
+			<legend><?php echo t('text_with_selected', 'With selected'); ?></legend>
 
 			<ul class="list-inline">
-				<li><?php echo f::form_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete'); ?></li>
+				<li><?php echo f::form_button('delete', t('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!confirm(\''. t('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete'); ?></li>
 			</ul>
 		</fieldset>
 	</div>

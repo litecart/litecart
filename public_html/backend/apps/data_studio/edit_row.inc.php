@@ -5,13 +5,13 @@
 	)->fetch_all('Name');
 
 	if (empty($_GET['table']) || !in_array($_GET['table'], $tables)) {
-		notices::add('errors', language::translate('error_table_not_found', 'Table not found'));
+		notices::add('errors', t('error_table_not_found', 'Table not found'));
 		return;
 	}
 
-	breadcrumbs::add(language::translate('title_database', 'Database'), document::ilink(__APP__.'/tables'));
+	breadcrumbs::add(t('title_database', 'Database'), document::ilink(__APP__.'/tables'));
 	breadcrumbs::add($_GET['table'], document::ilink(__APP__.'/table', ['name' => $_GET['table']]));
-	breadcrumbs::add(language::translate('title_edit_row', 'Edit Row'));
+	breadcrumbs::add(t('title_edit_row', 'Edit Row'));
 
 	$columns = database::query(
 		"show full columns from `". database::input($_GET['table']) ."`;"
@@ -89,7 +89,7 @@
 				);
 			}
 
-			notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			header('Location: '. document::ilink(__APP__.'/table', ['name' => $_GET['table']]));
 			exit;
 
@@ -143,7 +143,7 @@
 <div class="card">
 	<div class="card-header">
 		<h1 class="card-title">
-			<?php echo f::draw_fonticon('icon-pencil'); ?> <?php echo (!empty($row[$primary_column])) ? language::translate('title_edit_row', 'Edit Row') : language::translate('title_create_new_row', 'Create New Row'); ?>
+			<?php echo f::draw_fonticon('icon-pencil'); ?> <?php echo (!empty($row[$primary_column])) ? t('title_edit_row', 'Edit Row') : t('title_create_new_row', 'Create New Row'); ?>
 		</h1>
 	</div>
 
@@ -151,9 +151,9 @@
 		<table class="table table-striped table-hover table-sortable table-dragable data-table">
 			<thead>
 				<tr>
-					<th><?php echo language::translate('title_column_name', 'Column Name'); ?></th>
-					<th><?php echo language::translate('title_null', 'Null'); ?></th>
-					<th class="main"><?php echo language::translate('title_value', 'Value'); ?></th>
+					<th><?php echo t('title_column_name', 'Column Name'); ?></th>
+					<th><?php echo t('title_null', 'Null'); ?></th>
+					<th class="main"><?php echo t('title_value', 'Value'); ?></th>
 				</tr>
 			</thead>
 
@@ -169,15 +169,15 @@
 
 			<tfoot>
 				<td colspan="3">
-					<?php echo language::translate('title_columns', 'Columns'); ?>: <?php echo count($columns); ?>
+					<?php echo t('title_columns', 'Columns'); ?>: <?php echo count($columns); ?>
 				</td>
 			</tfoot>
 		</table>
 
 		<div class="card-action">
-			<?php echo f::form_button('save', language::translate('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
-			<?php echo (!empty($row[$primary_column])) ? f::form_button('delete', language::translate('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\''. language::translate('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
-			<?php echo f::form_button('cancel', language::translate('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
+			<?php echo f::form_button('save', t('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
+			<?php echo (!empty($row[$primary_column])) ? f::form_button('delete', t('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\''. t('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
+			<?php echo f::form_button('cancel', t('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
 		</div>
 
 	<?php echo f::form_end(); ?>

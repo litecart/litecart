@@ -45,7 +45,7 @@
 					". (!empty($order->data['customer']['shipping_address']['zone_code']) ? "and (zone_code = '' or zone_code = '". database::input($order->data['customer']['shipping_address']['zone_code']) ."')" : "and zone_code = ''") ."
 					". (!empty($order->data['customer']['shipping_address']['city']) ? "and (city = '' or city like '". addcslashes(database::input($order->data['customer']['shipping_address']['city']), '%_') ."')" : "and city = ''") .";"
 				)->num_rows()) {
-					notices::add('errors', strtr(language::translate('error_geo_zone_restriction', 'Your shopping cart contains items that can not be shipped to %country'), [
+					notices::add('errors', strtr(t('error_geo_zone_restriction', 'Your shopping cart contains items that can not be shipped to %country'), [
 						'%country' => reference::country($order->data['customer']['shipping_address']['country_code'])->name,
 					]) .'['.$item['sku'].']');
 					header('Location: '. document::ilink('checkout/customer'), 302);

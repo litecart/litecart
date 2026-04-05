@@ -11,12 +11,8 @@
 	if (!empty($_POST['delete'])) {
 		if (!empty($_POST['emails'])) {
 			database::query(
-				'delete from ' .
-					DB_TABLE_PREFIX .
-					"emails
-					where id in ('" .
-					implode("', '", database::input($_POST['emails'])) .
-					"');",
+				"delete from " . DB_TABLE_PREFIX ."emails
+				where id in ('" . implode("', '", database::input($_POST['emails'])) ."');",
 			);
 		}
 
@@ -27,18 +23,10 @@
 
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$emails = database::query(
-		'select * from ' .
-			DB_TABLE_PREFIX .
-			"emails
-			where status = 'error'
-			" .
-			(!empty($_GET['query'])
-				? 'and (' .
-					implode(PHP_EOL . 'or ', ["recipients like '%" . database::input_like($_GET['query']) . "%'", "subject like '%" . database::input_like($_GET['query']) . "%'", "multiparts like '%" . database::input_like($_GET['query']) . "%'"]) .
-					')'
-				: '') .
-			"
-			order by sent_at desc;",
+		"select * from " . DB_TABLE_PREFIX ."emails
+		where status = 'error'
+		". (!empty($_GET['query']) ? 'and ('. implode(PHP_EOL . 'or ', ["recipients like '%" . database::input_like($_GET['query']) . "%'", "subject like '%" . database::input_like($_GET['query']) . "%'", "multiparts like '%" . database::input_like($_GET['query']) . "%'"]) .')' : '') ."
+		order by sent_at desc;",
 	)->fetch_page(function(&$email) {
 
 		$email['sender'] = json_decode($email['sender'], true);
@@ -123,9 +111,11 @@
 					<td><?php echo f::form_checkbox('emails[]', $email['id']); ?></td>
 					<td><?php echo strtr($email['status'], $statuses); ?></td>
 					<td><?php echo implode(', ', array_column($email['recipients'], 'name')); ?></td>
-					<td><a class="link" href="<?php echo document::href_ilink(__APP__ . '/view', [
-     	'email_id' => $email['id'],
-     ]); ?>"><?php echo $email['subject']; ?></a></td>
+					<td>
+						<a class="link" href="<?php echo document::href_ilink(__APP__ . '/view', ['email_id' => $email['id']]); ?>">
+							<?php echo $email['subject']; ?>
+						</a>
+					</td>
 					<td><?php echo f::datetime_format('datetime', $email['sent_at']); ?></td>
 					<td><?php echo f::datetime_format('datetime', $email['created_at']); ?></td>
 				</tr>
@@ -134,7 +124,9 @@
 
 			<tfoot>
 				<tr>
-					<td colspan="99"><?php echo t('title_emails', 'Emails'); ?>: <?php echo f::format_number($num_rows); ?></td>
+					<td colspan="99">
+						<?php echo t('title_emails', 'Emails'); ?>: <?php echo f::format_number($num_rows); ?>
+					</td>
 				</tr>
 			</tfoot>
 		</table>
