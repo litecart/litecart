@@ -3,9 +3,7 @@
 	// Output any variable to the browser console
 	function console_dump(...$vars) { // ... as of PHP 5.6
 
-		ob_start();
-		var_dump($vars);
-		$output = ob_get_clean();
+		$output = var_export($vars, true);
 
 		echo '<script>console.log("'. addcslashes($output, "\"\r\n") .'");</script>';
 	}
