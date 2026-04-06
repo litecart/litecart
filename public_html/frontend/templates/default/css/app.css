@@ -623,7 +623,6 @@ body {
   transition: transform 100ms linear, box-shadow 100ms linear;
   border: var(--listing-border-size) solid var(--listing-border-color);
   border-radius: var(--border-radius);
-  overflow: hidden;
 }
 @media (min-width: 576px) {
   .listing .product:hover {
@@ -928,3 +927,4 @@ body {
   background: url('../images/loader.svg');
   background-size: cover;
 }
+/*# sourceMappingURL=app.css.map */
