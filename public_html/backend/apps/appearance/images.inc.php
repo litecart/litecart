@@ -25,7 +25,7 @@
 		[
 			'id' => 'newsletter',
 			'name' => t('title_newsletter', 'Newsletter'),
-			'file' => 'storage://images/illustration/letter.svg',
+			'file' => 'storage://images/illustration/newsletter.svg',
 			'extension' => 'svg',
 			'mime' => 'image/svg+xml',
 			'max' => ['width' => 800, 'height' => 600],
