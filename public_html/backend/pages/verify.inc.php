@@ -79,8 +79,11 @@
 
 			notices::add('errors', $e->getMessage());
 
-			if (++session::$data['security_verification']['attempts'] >= 5 || time() > session::$data['security_verification']['expires']) {
-				$send_verification_code();
+			if (++session::$data['security_verification']['attempts'] >= 5) {
+				unset(session::$data['security_verification']);
+				notices::add('errors', t('error_too_many_attempts', 'Too many failed attempts. Please sign in again.'));
+				redirect(document::ilink('login'));
+				exit;
 			}
 		}
 	}

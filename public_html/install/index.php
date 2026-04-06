@@ -8,6 +8,13 @@
 
 	define('VMOD_DISABLED', 'true');
 
+	// Block access if installation is already completed
+	if (is_file(FS_DIR_STORAGE . 'install.lock')) {
+		http_response_code(403);
+		echo 'Installation already completed. Remove storage/install.lock to reinstall.';
+		exit;
+	}
+
 	require_once FS_DIR_APP . 'includes/autoloader.inc.php';
 	require_once FS_DIR_APP . 'includes/error_handler.inc.php';
 	require_once FS_DIR_APP . 'includes/functions.inc.php';

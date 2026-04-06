@@ -48,11 +48,13 @@
 			});
 
 			if (!$customer) {
-				throw new Exception(t('error_email_not_found_in_database', 'The email does not exist in our database'));
+			// Dummy password_verify to prevent timing-based user enumeration
+				password_verify($_POST['password'], '$2y$10$abcdefghijklmnopqrstuuABCDEFGHIJKLMNOPQRSTUVWXYZ01234');
+				throw new Exception(t('error_wrong_email_password_combination', 'Wrong combination of email and password or the account does not exist'));
 			}
 
 			if (!$customer['status']) {
-				throw new Exception(t('error_customer_account_disabled_or_not_activated', 'The customer account is disabled or not activated'));
+				throw new Exception(t('error_wrong_email_password_combination', 'Wrong combination of email and password or the account does not exist'));
 			}
 
 			if ($customer['blocked_until'] && strtotime($customer['blocked_until']) > time()) {
