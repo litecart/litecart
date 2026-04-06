@@ -425,9 +425,6 @@ template {
 .btn + .btn-group {
   margin-inline-start: 0.5em;
 }
-.btn > [class^="icon-"] {
-  margin-inline-end: 0.5em;
-}
 .btn-block {
   width: 100%;
 }
