@@ -48,12 +48,16 @@ waitFor('jQuery', ($) => {
 				'mousemove': function(e) {
 					if (!clicked) return;
 
+					// Require at least 10px movement before starting a drag to avoid tiny accidental shifts
+					let delta = Math.abs(clickX - e.pageX);
+					if (delta < 10) return;
+
 					dragging = true;
 
 					let prevScrollLeft = $content.scrollLeft(); // Store the previous scroll position
 					let currentDrag = (clickX - e.pageX);
 
-					$content.scrollLeft(scrollX + (clickX - e.pageX));
+					$content.scrollLeft(scrollX + currentDrag);
 
 					if (currentDrag > 0) {
 						direction = 'right';
@@ -73,7 +77,10 @@ waitFor('jQuery', ($) => {
 				},
 
 				'mouseup': function(e) {
-					e.preventDefault();
+					// Only prevent click when a drag actually occurred
+					if (dragging) {
+						e.preventDefault();
+					}
 					self = this;
 					clicked = false;
 					cancelAnimationFrame(momentumID);
