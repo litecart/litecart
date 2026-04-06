@@ -3173,10 +3173,9 @@ body.litebox-open {
 }
 [data-toggle="momentum-scroll"] {
   position: relative;
-  margin: calc(0px - var(--gutter-y)) calc(0px - var(--gutter-x));
 }
 [data-toggle="momentum-scroll"] .scroll-content {
-  padding: 0 var(--gutter-x);
+  padding: var(--gutter-x) var(--gutter-x);
   overflow: hidden;
   user-select: none;
   touch-action: pan-x;
