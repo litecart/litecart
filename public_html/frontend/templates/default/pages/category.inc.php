@@ -286,7 +286,7 @@
 	});
 
 	$('#box-category').on('change', ':input[name="list_style"]', function() {
-		if (this.val() == 'rows') {
+		if ($(this).val() == 'rows') {
 			$('#box-category .listing.products').removeClass('columns').addClass('rows');
 		} else {
 			$('#box-category .listing.products').removeClass('rows').addClass('columns');
@@ -294,6 +294,6 @@
 	});
 
 	$('#box-category').on('change', ':input[name="sort"]', function() {
-		$('form[name="filter_form"] :input[name="sort"]').not(this).val(this.val()).trigger('input');
+		$('form[name="filter_form"] :input[name="sort"]').not(this).val($(this).val()).trigger('input');
 	});
 </script>

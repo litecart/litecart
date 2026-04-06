@@ -259,10 +259,10 @@ waitFor('jQuery', ($) => {
 	function Plugin(option) {
 		return this.each(function () {
 			const $this = $(this);
-			let data = $this.data('carousel');
-			const options = $.extend({}, Carousel.DEFAULTS, $this.data(), typeof option === 'object' && option);
+			let data = $(this).data('carousel');
+			const options = $.extend({}, Carousel.DEFAULTS, $(this).data(), typeof option === 'object' && option);
 
-			if (!data) $this.data('carousel', (data = new Carousel(this, options)));
+			if (!data) $(this).data('carousel', (data = new Carousel(this, options)));
 			if (typeof option === 'number') data.to(option);
 			else if (typeof option === 'string') data[option]();
 			else if (options.interval) data.pause().cycle();
@@ -278,7 +278,7 @@ waitFor('jQuery', ($) => {
 		const $target = $($this.attr('data-target') || $this.closest('.carousel'));
 		if (!$target.hasClass('carousel')) return;
 
-		const options = $.extend({}, $target.data(), $this.data());
+		const options = $.extend({}, $target.data(), $(this).data());
 		const slideIndex = $this.attr('data-slide-to');
 
 		if (slideIndex) options.interval = false;
@@ -1450,12 +1450,16 @@ waitFor('jQuery', ($) => {
 				'mousemove': function(e) {
 					if (!clicked) return;
 
+					// Require at least 10px movement before starting a drag to avoid tiny accidental shifts
+					let delta = Math.abs(clickX - e.pageX);
+					if (delta < 10) return;
+
 					dragging = true;
 
 					let prevScrollLeft = $content.scrollLeft(); // Store the previous scroll position
 					let currentDrag = (clickX - e.pageX);
 
-					$content.scrollLeft(scrollX + (clickX - e.pageX));
+					$content.scrollLeft(scrollX + currentDrag);
 
 					if (currentDrag > 0) {
 						direction = 'right';
@@ -1475,7 +1479,10 @@ waitFor('jQuery', ($) => {
 				},
 
 				'mouseup': function(e) {
-					e.preventDefault();
+					// Only prevent click when a drag actually occurred
+					if (dragging) {
+						e.preventDefault();
+					}
 					self = this;
 					clicked = false;
 					cancelAnimationFrame(momentumID);

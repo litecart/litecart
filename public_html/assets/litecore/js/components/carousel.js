@@ -186,10 +186,10 @@ waitFor('jQuery', ($) => {
 	function Plugin(option) {
 		return this.each(function () {
 			const $this = $(this);
-			let data = $this.data('carousel');
-			const options = $.extend({}, Carousel.DEFAULTS, $this.data(), typeof option === 'object' && option);
+			let data = $(this).data('carousel');
+			const options = $.extend({}, Carousel.DEFAULTS, $(this).data(), typeof option === 'object' && option);
 
-			if (!data) $this.data('carousel', (data = new Carousel(this, options)));
+			if (!data) $(this).data('carousel', (data = new Carousel(this, options)));
 			if (typeof option === 'number') data.to(option);
 			else if (typeof option === 'string') data[option]();
 			else if (options.interval) data.pause().cycle();
@@ -205,7 +205,7 @@ waitFor('jQuery', ($) => {
 		const $target = $($this.attr('data-target') || $this.closest('.carousel'));
 		if (!$target.hasClass('carousel')) return;
 
-		const options = $.extend({}, $target.data(), $this.data());
+		const options = $.extend({}, $target.data(), $(this).data());
 		const slideIndex = $this.attr('data-slide-to');
 
 		if (slideIndex) options.interval = false;

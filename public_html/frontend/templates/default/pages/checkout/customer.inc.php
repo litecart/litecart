@@ -346,7 +346,7 @@
 
 	// Toggle customer type
 	$('input[name="customer[type]"]').on('change', function() {
-		if (this.val() == 'business') {
+		if ($(this).val() == 'business') {
 			$('#business-details :input').prop('disabled', false);
 			$('#business-details').slideDown('fast');
 		} else {
@@ -374,10 +374,10 @@
 
 	// Get Address
 	$('.billing-address :input').on('change', function() {
-		if (this.val() == '') return;
-		console.log('Get address (Trigger: '+ this.attr('name') +')');
+		if ($(this).val() == '') return;
+		console.log('Get address (Trigger: '+ $(this).attr('name') +')');
 		$.ajax({
-			url: '<?php echo document::ilink('ajax/get_address.json'); ?>?trigger='+this.attr('name'),
+			url: '<?php echo document::ilink('ajax/get_address.json'); ?>?trigger='+$(this).attr('name'),
 			type: 'post',
 			data: $('.billing-address :input').serialize(),
 			cache: false,
@@ -417,7 +417,7 @@
 
 		<?php if (settings::get('customer_field_zone')) { ?>
 		$.ajax({
-			url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + this.val(),
+			url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + $(this).val(),
 			type: 'get',
 			cache: true,
 			async: true,
@@ -439,10 +439,10 @@
 
 	// Get Address (Shipping)
 	$('.shipping-address :input').on('change', function() {
-		if (this.val() == '') return;
-		console.log('Get address (Trigger: '+ this.attr('name') +')');
+		if ($(this).val() == '') return;
+		console.log('Get address (Trigger: '+ $(this).attr('name') +')');
 		$.ajax({
-			url: '<?php echo document::ilink('ajax/get_address.json'); ?>?trigger='+this.attr('name'),
+			url: '<?php echo document::ilink('ajax/get_address.json'); ?>?trigger='+$(this).attr('name'),
 			type: 'post',
 			data: $('.shipping-address :input').serialize(),
 			cache: false,
@@ -477,7 +477,7 @@
 		<?php if (settings::get('customer_field_zone')) { ?>
 
 		$.ajax({
-			url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + this.val(),
+			url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + $(this).val(),
 			type: 'get',
 			cache: true,
 			async: false,

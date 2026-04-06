@@ -269,7 +269,7 @@
 	const currency_codes = <?php echo f::format_json($currency_codes); ?>;
 
 	$('#campaigns').on('focus', 'input[name^="campaigns"]', function(e) {
-		if (this.attr('name').match(/\[[A-Z]{3}\]$/)) {
+		if ($(this).attr('name').match(/\[[A-Z]{3}\]$/)) {
 			this.closest('.dropdown').addClass('open');
 		}
 	});
@@ -282,8 +282,8 @@
 
 		let $row = this.closest('tr'),
 			regular_price = Number($row.data('regular-price')),
-			campaign_price = Number(this.val()),
-			percentage = Number((regular_price - this.val()) / regular_price * 100).toFixed(2);
+			campaign_price = Number($(this).val()),
+			percentage = Number((regular_price - $(this).val()) / regular_price * 100).toFixed(2);
 
 		$('input[name$="[percentage]"]', $row).val(percentage);
 

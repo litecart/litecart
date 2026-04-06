@@ -213,10 +213,10 @@
 	$('input[name="new[sku]"]').on('input', function(e) {
 		let $row = this.closest('tr');
 
-		if ($('datalist#available-stock-items option[value="'+ this.val() +'"]').length) {
-			$('input[name="new[name]"]', $row).val($('datalist#available-stock-items option[value="'+ this.val() +'"]:first').data('name')).prop('readonly', true);
-			$('input[name="new[quantity]"]', $row).val($('datalist#available-stock-items option[value="'+ this.val() +'"]:first').data('quantity') || 0);
-			$('input[name="new[backordered]"]', $row).val($('datalist#available-stock-items option[value="'+ this.val() +'"]:first').data('backordered') || '');
+		if ($('datalist#available-stock-items option[value="'+ $(this).val() +'"]').length) {
+			$('input[name="new[name]"]', $row).val($('datalist#available-stock-items option[value="'+ $(this).val() +'"]:first').data('name')).prop('readonly', true);
+			$('input[name="new[quantity]"]', $row).val($('datalist#available-stock-items option[value="'+ $(this).val() +'"]:first').data('quantity') || 0);
+			$('input[name="new[backordered]"]', $row).val($('datalist#available-stock-items option[value="'+ $(this).val() +'"]:first').data('backordered') || '');
 		} else {
 			$('input[name="new[name]"]', $row).prop('readonly', false);
 		}

@@ -180,7 +180,7 @@
 
 <script>
 	$('input[name="type"]').on('change', function() {
-		if (this.val() == 'business') {
+		if ($(this).val() == 'business') {
 			$('#business-details :input').prop('disabled', false);
 			$('#business-details').slideDown('fast');
 		} else {
@@ -190,10 +190,10 @@
 	});
 
 	$('#box-create-account').on('change', ':input', function() {
-		if (this.val() == '') return;
+		if ($(this).val() == '') return;
 
 		$.ajax({
-			url: '<?php echo document::ilink('ajax/get_address.json'); ?>?trigger='+this.attr('name'),
+			url: '<?php echo document::ilink('ajax/get_address.json'); ?>?trigger='+$(this).attr('name'),
 			type: 'post',
 			data: this.closest('form').serialize(),
 			cache: false,
@@ -238,7 +238,7 @@
 		<?php if (settings::get('customer_field_zone')) { ?>
 
 		$.ajax({
-			url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + this.val(),
+			url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + $(this).val(),
 			type: 'get',
 			cache: true,
 			async: true,

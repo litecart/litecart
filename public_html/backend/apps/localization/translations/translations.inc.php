@@ -432,7 +432,7 @@
 		if (!from_language_code || !to_language_code) return;
 
 		$.each($(':input[name^="translations"][name$="[text_'+ from_language_code +']"]'), function(i) {
-			var source = this.val(),
+			var source = $(this).val(),
 				translation = this.closest('tr').find(':input[name^="translations"][name$="[text_'+ to_language_code +']"]').val();
 
 			if (source && !translation) {

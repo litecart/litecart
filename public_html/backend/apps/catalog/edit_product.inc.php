@@ -345,13 +345,13 @@
 
 				<div id="tab-information" class="tab-contents">
 
-					<nav class="tabs" style="margin-top: -1em;">
+					<nav class="tabs">
 						<?php foreach ($language_codes as $language_code) { ?>
 						<a class="tab-item<?php if ($language_code == language::$selected['code']) echo ' active'; ?>" data-toggle="tab" href="#<?php echo $language_code; ?>"><?php echo language::$languages[$language_code]['name']; ?></a>
 						<?php } ?>
 					</nav>
 
-					<div class="tab-contents" style="padding-top: 2em;">
+					<div class="tab-contents">
 						<?php foreach ($language_codes as $language_code) { ?>
 						<div id="<?php echo $language_code; ?>" class="tab-content<?php if ($language_code == language::$selected['code']) echo ' active'; ?>">
 
@@ -409,7 +409,7 @@
 					</div>
 				</div>
 
-				<div id="tab-prices" class="tab-content">
+				<div id="tab-prices" class="tab-contents">
 
 					<div class="grid" style="max-width: 720px;">
 						<div class="col-md-6">
@@ -431,7 +431,7 @@
 						<?php echo t('title_prices', 'Prices'); ?>
 					</h2>
 
-					<div style="margin: 0 -25px;">
+					<div style="margin: 0 -1.5em;">
 						<table id="prices" class="table data-table">
 							<thead>
 								<tr>
@@ -496,7 +496,7 @@
 					</div>
 				</div>
 
-				<div id="tab-attributes" class="tab-content" style="max-width: 960px;">
+				<div id="tab-attributes" class="tab-contents" style="max-width: 960px;">
 
 					<table id="attributes" class="table data-table">
 						<thead>
@@ -545,7 +545,7 @@
 					</table>
 				</div>
 
-				<div id="tab-customizations" class="tab-content">
+				<div id="tab-customizations" class="tab-contents">
 
 					<ul id="customizations" class="list-unstyled">
 						<?php foreach ($_POST['customizations'] as $group_id => $customization) { ?>
@@ -704,7 +704,7 @@
 					</div>
 				</div>
 
-				<div id="tab-stock" class="tab-content">
+				<div id="tab-stock" class="tab-contents">
 
 					<div class="grid" style="max-width: 720px;">
 						<div class="col-md-3">
@@ -763,7 +763,7 @@
 						</div>
 					</div>
 
-					<div style="margin: 0 -2em;">
+					<div style="margin: 0 -1.5em;">
 						<table id="stock-options" class="table data-table">
 							<thead>
 								<tr>
@@ -869,7 +869,7 @@
 	// Cross Referencing
 
 	$('input[name="name[<?php echo settings::get('store_language_code'); ?>]"]').on('input change', function() {
-		$('input[name="'+ this.attr('name') +'"]').not(this).val(this.val());
+		$('input[name="'+ $(this).attr('name') +'"]').not(this).val($(this).val());
 	});
 
 	// Initiate
@@ -877,14 +877,14 @@
 	$('input[name="name[<?php echo settings::get('store_language_code'); ?>]"]').first().trigger('input');
 
 	$('input[name^="name"]').on('input', function(e) {
-		let language_code = this.attr('name').match(/\[(.*)\]$/)[1];
-		$('input[name="head_title['+language_code+']"]').attr('placeholder', this.val());
-		$('input[name="h1_title['+language_code+']"]').attr('placeholder', this.val());
+		let language_code = $(this).attr('name').match(/\[(.*)\]$/)[1];
+		$('input[name="head_title['+language_code+']"]').attr('placeholder', $(this).val());
+		$('input[name="h1_title['+language_code+']"]').attr('placeholder', $(this).val());
 	});
 
 	$('input[name^="short_description"]').on('input', function(e) {
-		let language_code = this.attr('name').match(/\[(.*)\]$/)[1];
-		$('input[name="meta_description['+language_code+']"]').attr('placeholder', this.val());
+		let language_code = $(this).attr('name').match(/\[(.*)\]$/)[1];
+		$('input[name="meta_description['+language_code+']"]').attr('placeholder', $(this).val());
 	});
 
 	// Default Category
@@ -894,7 +894,7 @@
 
 		$('select[name="default_category_id"]').html('');
 		$.each($(':input[name="categories[]"]', this), function(category) {
-			$('select[name="default_category_id"]').append('<option value="'+ this.val() +'">'+ unescape(this.data('name')) +'</option>');
+			$('select[name="default_category_id"]').append('<option value="'+ $(this).val() +'">'+ unescape($(this).data('name')) +'</option>');
 		});
 
 		if (default_category_id) {
@@ -997,7 +997,7 @@
 	// Prices
 
 	$('input[name="prices[<?php echo settings::get('store_currency_code'); ?>]"]').on('input', function() {
-		$('input[name="prices[<?php echo settings::get('store_currency_code'); ?>]"]').not(this).val(this.val());
+		$('input[name="prices[<?php echo settings::get('store_currency_code'); ?>]"]').not(this).val($(this).val());
 	});
 
 	function get_tax_rate() {
@@ -1034,12 +1034,12 @@
 	// Update gross price
 	$('input[name^="prices"]').on('input', function() {
 
-		let currency_code = this.attr('name').match(/^prices\[([A-Z]{3})\]$/)[1];
+		let currency_code = $(this).attr('name').match(/^prices\[([A-Z]{3})\]$/)[1];
 		let decimals = get_currency_decimals(currency_code);
 		let gross_field = $('input[name="gross_prices['+ currency_code +']"]');
-		let gross_price = parseFloat(Number(this.val() * (1+(get_tax_rate()/100))).toFixed(decimals));
+		let gross_price = parseFloat(Number($(this).val() * (1+(get_tax_rate()/100))).toFixed(decimals));
 
-		if (this.val() == 0) {
+		if ($(this).val() == 0) {
 			$gross_field.val('');
 		} else {
 			$gross_field.val(gross_price);
@@ -1051,12 +1051,12 @@
 	// Update net price
 	$('input[name^="gross_prices"]').on('input', function() {
 
-		let currency_code = this.attr('name').match(/^gross_prices\[([A-Z]{3})\]$/)[1];
+		let currency_code = $(this).attr('name').match(/^gross_prices\[([A-Z]{3})\]$/)[1];
 		let decimals = get_currency_decimals(currency_code);
 		let $net_field = $('input[name="prices['+ currency_code +']"]');
-		let net_price = parseFloat(Number(this.val() / (1+(get_tax_rate()/100))).toFixed(decimals));
+		let net_price = parseFloat(Number($(this).val() / (1+(get_tax_rate()/100))).toFixed(decimals));
 
-		if (this.val() == 0) {
+		if ($(this).val() == 0) {
 			$net_field.val('');
 		} else {
 			$net_field.val(net_price);
@@ -1104,7 +1104,7 @@
 	});
 
 	$('#prices').on('focus', 'input[name^="prices"]', function(e) {
-		if (this.attr('name').match(/\[[A-Z]{3}\]$/)) {
+		if ($(this).attr('name').match(/\[[A-Z]{3}\]$/)) {
 			this.closest('.dropdown').addClass('open');
 		}
 	});
@@ -1119,7 +1119,7 @@
 
 		<?php foreach (currency::$currencies as $currency) { ?>
 		if ($('input[name^="prices"][name$="[<?php echo $currency['code']; ?>]"]').val() > 0) {
-			value = parseFloat($('input[name="prices[<?php echo $currency['code']; ?>]"]').val() * (100 - this.val()) / 100).toFixed(<?php echo $currency['decimals']; ?>);
+			value = parseFloat($('input[name="prices[<?php echo $currency['code']; ?>]"]').val() * (100 - $(this).val()) / 100).toFixed(<?php echo $currency['decimals']; ?>);
 			$('input[name$="[<?php echo $currency['code']; ?>]"]', $parent).val(value);
 		} else {
 			$('input[name$="[<?php echo $currency['code']; ?>]"]', $parent).val('');
@@ -1134,7 +1134,7 @@
 
 	$('#prices').on('input', 'input[name^="prices"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]', function() {
 		let $parent = this.closest('tr');
-		let percentage = ($('input[name="prices[<?php echo settings::get('store_currency_code'); ?>]"]').val() - this.val()) / $('input[name="prices[<?php echo settings::get('store_currency_code'); ?>]"]').val() * 100;
+		let percentage = ($('input[name="prices[<?php echo settings::get('store_currency_code'); ?>]"]').val() - $(this).val()) / $('input[name="prices[<?php echo settings::get('store_currency_code'); ?>]"]').val() * 100;
 		percentage = percentage.toFixed(2);
 		$('input[name$="[percentage]"]', $parent).val(percentage);
 
@@ -1207,7 +1207,7 @@
 		let $row = this.closest('tr');
 		$('option:selected', $option = this);
 
-		if (this.val() != '') {
+		if ($(this).val() != '') {
 			$('.price-valid-from', $row).text($option.data('valid-from'));
 			$('.price-valid-to', $row).text($option.data('valid-to'));
 		} else {
@@ -1220,7 +1220,7 @@
 		let $row = this.closest('tr');
 		$('option:selected', $option = this);
 
-		if (this.val() != '') {
+		if ($(this).val() != '') {
 			$('.date-valid-from', $row).text($option.data('valid-from'));
 			$('.date-valid-to', $row).text($option.data('valid-to'));
 		} else {
@@ -1336,7 +1336,7 @@
 			}
 		});
 		if (exists) {
-			alert("<?php echo t('error_attribute_already_defined', 'This attribute is already defined'); ?>");
+			alert("<?php echo t('error_attribute_already_defined', '$(this).attribute is already defined'); ?>");
 			return;
 		}
 
@@ -1396,41 +1396,41 @@
 		$('input[name="quantity"]').val( parseFloat($('input[name="quantity"]').val() || 0).toFixed(decimals) );
 
 		$('input[name^="stock_options"][name$="[quantity]"]').each(function() {
-			this.val( parseFloat(this.val() || 0).toFixed(decimals) );
+			$(this).val( parseFloat($(this).val() || 0).toFixed(decimals) );
 		});
 
 		$('input[name^="stock_options"][name$="[quantity_adjustment]"]').each(function() {
-			this.val( parseFloat(this.val() || 0).toFixed(decimals) );
+			$(this).val( parseFloat($(this).val() || 0).toFixed(decimals) );
 		});
 	}).trigger('change');
 
 	// Quantity and Adjustments
 
 	$('body').on('input', ':input[name="quantity"], :input[name$="[quantity]"]', function() {
-		let $quantity_adjustment_field = $(':input[name="' + this.attr('name').replace('quantity', 'quantity_adjustment') + '"]'),
-			quantity = parseFloat(this.val()),
-			quantity_adjustment = parseFloat(this.val()) - parseFloat(this.data('quantity')),
+		let $quantity_adjustment_field = $(':input[name="' + $(this).attr('name').replace('quantity', 'quantity_adjustment') + '"]'),
+			quantity = parseFloat($(this).val()),
+			quantity_adjustment = parseFloat($(this).val()) - parseFloat($(this).data('quantity')),
 			decimals = parseInt($('select[name="quantity_unit_id"] option:selected').data('decimals'));
 
-		$(':input[name="'+ this.attr('name')+'"]').not(this).val( quantity.toFixed(decimals) );
+		$(':input[name="'+ $(this).attr('name')+'"]').not(this).val( quantity.toFixed(decimals) );
 		$quantity_adjustment_field.val( quantity_adjustment.toFixed(decimals) );
 	});
 
 	$('body').on('input', ':input[name="quantity_adjustment"], :input[name$="[quantity_adjustment]"]', function() {
-		let $quantity_field = $(':input[name="' + this.attr('name').replace('quantity_adjustment', 'quantity') + '"]'),
+		let $quantity_field = $(':input[name="' + $(this).attr('name').replace('quantity_adjustment', 'quantity') + '"]'),
 			quantity = parseFloat($quantity_field.data('quantity') || 0),
-			quantity_adjustment = parseFloat(this.val() || 0),
+			quantity_adjustment = parseFloat($(this).val() || 0),
 			decimals = parseInt($('select[name="quantity_unit_id"] option:selected').data('decimals') || 0);
 
-		$(':input[name="'+ this.attr('name') +'"]').not(this).val( quantity_adjustment.toFixed(decimals) );
+		$(':input[name="'+ $(this).attr('name') +'"]').not(this).val( quantity_adjustment.toFixed(decimals) );
 		$quantity_field.val( (quantity + quantity_adjustment).toFixed(decimals) );
 	});
 
 	// Transfer Backordered Quantity
 
 	$('body').on('click', 'button[name*="transfer_backordered"]', function() {
-		let $quantity_adjustment_field = $(':input[name="' + this.attr('name').replace('transfer_backordered', 'quantity_adjustment') +'"]'),
-			$backordered_field = $(':input[name="' + this.attr('name').replace('transfer_backordered', 'backordered') +'"]'),
+		let $quantity_adjustment_field = $(':input[name="' + $(this).attr('name').replace('transfer_backordered', 'quantity_adjustment') +'"]'),
+			$backordered_field = $(':input[name="' + $(this).attr('name').replace('transfer_backordered', 'backordered') +'"]'),
 			quantity_adjustment = parseFloat($quantity_adjustment_field.val() || 0),
 			backordered = parseFloat($backordered_field.val() || 0);
 
@@ -1472,7 +1472,7 @@
 
 	$('body').on('change', '.litebox select[name="new_predefined_customization[group_id]"]', function() {
 		$.ajax({
-			url: '<?php echo document::ilink('b:catalog/attribute_values.json'); ?>?group_id=' + this.val(),
+			url: '<?php echo document::ilink('b:catalog/attribute_values.json'); ?>?group_id=' + $(this).val(),
 			type: 'get',
 			cache: true,
 			async: true,
@@ -1494,7 +1494,7 @@
 
 	$('body').on('change', '.litebox select[name="new_user_input_customization[group_id]"]', function() {
 		$.ajax({
-			url: '<?php echo document::ilink('b:catalog/attribute_values.json'); ?>?group_id=' + this.val(),
+			url: '<?php echo document::ilink('b:catalog/attribute_values.json'); ?>?group_id=' + $(this).val(),
 			type: 'get',
 			cache: true,
 			async: true,
@@ -1654,8 +1654,7 @@
 			return;
 		}
 
-		var $output = $([]);
-			'<li>',
+		var $output = $([
 			'  <div class="float-end">',
 			'    <a class="move-group-up btn btn-default" href="#" title="<?php echo f::escape_js(t('text_move_up', 'Move up')); ?>"><?php echo f::draw_fonticon('icon-arrow-up', 'style="color: #3399cc;"'); ?></a>',
 			'    <a class="move-group-down btn btn-default" href="#" title="<?php echo f::escape_js(t('text_move_down', 'Move down')); ?>"><?php echo f::draw_fonticon('icon-arrow-down', 'style="color: #3399cc;"'); ?></a>',
@@ -1698,12 +1697,12 @@
 
 	$('#stock-options').on('input', 'input[name$="[quantity]"]', function() {
 		var $adjustment_element = this.closest('tr').find('input[name$="[quantity_adjustment]"]');
-		$adjustment_element.val(parseFloat(this.val() || 0) - parseFloat(this.data('quantity') || 0));
+		$adjustment_element.val(parseFloat($(this).val() || 0) - parseFloat($(this).data('quantity') || 0));
 	});
 
 	$('#stock-options').on('input', 'input[name$="[quantity_adjustment]"]', function() {
 		var $quantity_element = this.closest('tr').find('input[name$="[quantity]"]');
-		$quantity_element.val(parseFloat($quantity_element.data('quantity') || 0) + parseFloat(this.val() || 0));
+		$quantity_element.val(parseFloat($quantity_element.data('quantity') || 0) + parseFloat($(this).val() || 0));
 	});
 
 	$('#stock-options button[name="transfer"]').on('click', function() {
@@ -1730,7 +1729,7 @@
 
 		var total = 0;
 		this.closest('tbody').find('input[name$="[quantity]"]').each(function() {
-			total += parseFloat(this.val() || 0);
+			total += parseFloat($(this).val() || 0);
 		});
 
 		if (!$('input[name^="stock_options"][name$="[id]"]').length) {
@@ -1744,12 +1743,12 @@
 
 			$('input[name="quantity"]').val(0);
 			$('input[name^="stock_options"][name$="[quantity]"]').each(function() {
-				$('input[name="quantity"]').val( parseFloat($('input[name="quantity"]').val() || 0) + parseFloat(this.val() || 0) );
+				$('input[name="quantity"]').val( parseFloat($('input[name="quantity"]').val() || 0) + parseFloat($(this).val() || 0) );
 			});
 
 			$('input[name="quantity_adjustment"]').val(0);
 			$('input[name^="stock_options"][name$="[quantity_adjustment]"]').each(function() {
-				$('input[name="quantity_adjustment"]').val( parseFloat($('input[name="quantity_adjustment"]').val() || 0) + parseFloat(this.val() || 0) );
+				$('input[name="quantity_adjustment"]').val( parseFloat($('input[name="quantity_adjustment"]').val() || 0) + parseFloat($(this).val() || 0) );
 			});
 		}
 	});

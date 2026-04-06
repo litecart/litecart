@@ -409,9 +409,9 @@
 <script>
 	<?php if (empty($stock_item->data['id'])) { ?>
 	$('form[name="stock_item_form"] input[name^="name"]').each(function() {
-		if (this.val() == '') {
-			var $field = 'input[name="' + this.attr('name') + '"]';
-			this.val( $field.not(this).val() );
+		if ($(this).val() == '') {
+			var $field = 'input[name="' + $(this).attr('name') + '"]';
+			$(this).val( $field.not(this).val() );
 		}
 	});
 	<?php } ?>
@@ -421,13 +421,13 @@
 		'form[name="stock_item_form"] input[name="quantity_adjustment"]',
 		'form[name="stock_item_form"] input[name="backordered"]'
 	].join(', ')).on('blur', function() {
-		this.val(Number(this.val()).toFixed($('select[name="quantity_unit_id"] option:selected').data('decimals')));
+		$(this).val(Number($(this).val()).toFixed($('select[name="quantity_unit_id"] option:selected').data('decimals')));
 	});
 
 	$('form[name="stock_item_form"] input[name="quantity"]').on('input', function() {
 
 		let decimals = $('select[name="quantity_unit_id"] option:selected').data('decimals'),
-			quantity = Number(parseFloat(this.val()) - parseFloat(this.data('quantity'))).toFixed(decimals);
+			quantity = Number(parseFloat($(this).val()) - parseFloat($(this).data('quantity'))).toFixed(decimals);
 
 		$('input[name="quantity_adjustment"]').val(quantity);
 	});
@@ -435,7 +435,7 @@
 	$('form[name="stock_item_form"] input[name="quantity_adjustment"]').on('input', function() {
 
 		let decimals = $('select[name="quantity_unit_id"] option:selected').data('decimals'),
-			quantity = Number(parseFloat($('input[name="quantity"]').data('quantity')) + parseFloat(this.val())).toFixed();
+			quantity = Number(parseFloat($('input[name="quantity"]').data('quantity')) + parseFloat($(this).val())).toFixed();
 
 		$('input[name="quantity"]').val(quantity);
 	});

@@ -528,7 +528,7 @@
 
 	// Filter
 	$('input[name="filter"]').on('input', function() {
-		var filter = this.val().toLowerCase();
+		var filter = $(this).val().toLowerCase();
 		$('#php-config tbody tr').each(function() {
 			if (this.text().toLowerCase().indexOf(filter) !== -1) {
 				this.show();

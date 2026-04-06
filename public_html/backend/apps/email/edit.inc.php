@@ -209,7 +209,7 @@
 	].join('\n');
 
 	$('textarea[name="multiparts[0][body]"]').on('input', function(){
-		let content = template.replace(/\{\{content\}\}/g, this.val());
+		let content = template.replace(/\{\{content\}\}/g, $(this).val());
 		let iframeDoc = $('#preview')[0].contentDocument || $('#preview')[0].contentWindow.document;
 		iframeDoc.body.innerHTML = content;
 	});

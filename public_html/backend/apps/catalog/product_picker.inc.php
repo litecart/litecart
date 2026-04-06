@@ -43,7 +43,7 @@
 
 		let $modal = $('#modal-product-picker');
 
-		if (this.val() == '') {
+		if ($(this).val() == '') {
 			$('tbody', $modal).html('');
 			xhr_product_picker = null;
 			return;
@@ -53,7 +53,7 @@
 			type: 'get',
 			async: true,
 			cache: false,
-			url: '<?php echo document::ilink('catalog/products.json'); ?>?query=' + this.val(),
+			url: '<?php echo document::ilink('catalog/products.json'); ?>?query=' + $(this).val(),
 			dataType: 'json',
 			beforeSend: function(jqXHR) {
 				jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'));

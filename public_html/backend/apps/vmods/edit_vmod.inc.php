@@ -753,8 +753,8 @@ textarea.warning {
 <script>
 
 	$('input[name="name"]').on('change', function() {
-		if (this.val() != '' && $('input[name="id"]').val() == '') {
-			$('input[name="id"]').val(this.val().toLowerCase().replace(/[^a-z0-9_\- ]/g, '').replace(/[^a-z0-9_]+/g, '_'));
+		if ($(this).val() != '' && $('input[name="id"]').val() == '') {
+			$('input[name="id"]').val($(this).val().toLowerCase().replace(/[^a-z0-9_\- ]/g, '').replace(/[^a-z0-9_]+/g, '_'));
 		}
 	});
 
@@ -762,7 +762,7 @@ textarea.warning {
 
 
 	$('.tabs').on('click', '[data-toggle="tab"]', function(e) {
-		$(this.attr('href')).find(':input[name$="[content]"]').trigger('input');
+		$($(this).attr('href')).find(':input[name$="[content]"]').trigger('input');
 	});
 
 	$('.tabs .add').on('click', function(e) {
@@ -820,7 +820,7 @@ textarea.warning {
 
 	$('#files').on('change', ':input[name$="[type]"]', function(e) {
 		e.preventDefault();
-		let match_type = this.val();
+		let match_type = $(this).val();
 
 		this.closest('.operation').find(':input[name$="[content]"]').each(function(i, $field){
 			switch (match_type) {
@@ -844,7 +844,7 @@ textarea.warning {
 	$('#files').on('change', ':input[name$="[method]"]', function(e) {
 		e.preventDefault();
 
-		let method = this.val();
+		let method = $(this).val();
 
 		if ($.inArray(method, ['top', 'bottom', 'all']) != -1) {
 			this.closest('.operation').find(':input[name*="[find]"]').prop('disabled', true);

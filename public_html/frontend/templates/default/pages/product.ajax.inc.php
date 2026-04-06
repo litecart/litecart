@@ -241,22 +241,22 @@ form[name="buy_now_form"] .dropdown-menu .image {
 			tax = <?php echo currency::format_raw($total_tax); ?>;
 
 		$('input[type="radio"]:checked, input[type="checkbox"]:checked', this).each(function() {
-			if (this.data('price-adjust')) regular_price += this.data('price-adjust');
-			if (this.data('price-adjust')) final_price += this.data('price-adjust');
-			if (this.data('tax-adjust')) tax += this.data('tax-adjust');
+			if ($(this).data('price-adjust')) regular_price += $(this).data('price-adjust');
+			if ($(this).data('price-adjust')) final_price += $(this).data('price-adjust');
+			if ($(this).data('tax-adjust')) tax += $(this).data('tax-adjust');
 		});
 
 		$('select option:checked', this).each(function() {
-			if (this.data('price-adjust')) regular_price += this.data('price-adjust');
-			if (this.data('price-adjust')) final_price += this.data('price-adjust');
-			if (this.data('tax-adjust')) tax += this.data('tax-adjust');
+			if ($(this).data('price-adjust')) regular_price += $(this).data('price-adjust');
+			if ($(this).data('price-adjust')) final_price += $(this).data('price-adjust');
+			if ($(this).data('tax-adjust')) tax += $(this).data('tax-adjust');
 		});
 
 		$('input[type!="radio"][type!="checkbox"]', this).each(function() {
-			if (this.val() != '') {
-				if (this.data('price-adjust')) regular_price += this.data('price-adjust');
-				if (this.data('price-adjust')) final_price += this.data('price-adjust');
-				if (this.data('tax-adjust')) tax += this.data('tax-adjust');
+			if ($(this).val() != '') {
+				if ($(this).data('price-adjust')) regular_price += $(this).data('price-adjust');
+				if ($(this).data('price-adjust')) final_price += $(this).data('price-adjust');
+				if ($(this).data('tax-adjust')) tax += $(this).data('tax-adjust');
 			}
 		});
 

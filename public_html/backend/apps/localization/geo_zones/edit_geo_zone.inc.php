@@ -154,7 +154,7 @@
 		let $zone_field = this.closest('tr').find('select[name="new_zone[zone_code]"]');
 
 		$.ajax({
-			url: '<?php echo document::ilink('countries/zones.json'); ?>?country_code=' + this.val(),
+			url: '<?php echo document::ilink('countries/zones.json'); ?>?country_code=' + $(this).val(),
 			type: 'get',
 			cache: true,
 			async: true,

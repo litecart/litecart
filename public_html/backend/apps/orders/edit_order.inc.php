@@ -1476,7 +1476,7 @@
 	$('select[name="currency_code"]').on('change', function(e) {
 		$('input[type="number"][data-type="currency"]').data('decimals', $('option:selected', this).data('decimals'));
 		$('input[name="currency_value"]').val($('option:selected', this).data('value'));
-		$('input[data-type="currency"]').closest('.input-group').find('.input-group-text').text(this.val());
+		$('input[data-type="currency"]').closest('.input-group').find('.input-group-text').text($(this).val());
 		refresh_total();
 	});
 
@@ -1529,7 +1529,7 @@
 		}
 
 		$.ajax({
-			url: '<?php echo document::ilink('countries/zones.json'); ?>?country_code=' + this.val(),
+			url: '<?php echo document::ilink('countries/zones.json'); ?>?country_code=' + $(this).val(),
 			type: 'get',
 			cache: true,
 			async: false,
@@ -1577,7 +1577,7 @@
 
 		$('body').css('cursor', 'wait');
 		$.ajax({
-			url: '<?php echo document::ilink('countries/zones.json'); ?>?country_code=' + this.val(),
+			url: '<?php echo document::ilink('countries/zones.json'); ?>?country_code=' + $(this).val(),
 			type: 'get',
 			cache: true,
 			async: true,

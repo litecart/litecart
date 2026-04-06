@@ -39,7 +39,7 @@
 <script>
 	var xhr_country_picker = null;
 	$('#modal-country-picker input[name="query"]').on('input', function() {
-		if (this.val() == '') {
+		if ($(this).val() == '') {
 			$('#modal-country-picker .results tbody').html('');
 			xhr_country_picker = null;
 			return;
@@ -48,7 +48,7 @@
 			type: 'get',
 			async: true,
 			cache: false,
-			url: '<?php echo document::ilink(__APP__.'/countries.json'); ?>?query=' + this.val(),
+			url: '<?php echo document::ilink(__APP__.'/countries.json'); ?>?query=' + $(this).val(),
 			dataType: 'json',
 			beforeSend: function(jqXHR) {
 				jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'));

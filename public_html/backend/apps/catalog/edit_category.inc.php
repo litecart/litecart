@@ -137,7 +137,7 @@
 	<div class="card-body">
 		<?php echo f::form_begin('category_form', 'post', false, true); ?>
 
-			<div class="tab-content">
+			<div class="tab-contents">
 				<div id="tab-general" class="tab active" style="max-width: 1200px;">
 
 					<div class="grid">
@@ -285,9 +285,9 @@
 					</div>
 				</div>
 
-				<div id="tab-filters" class="tab-content" style="max-width: 720px;">
+				<div id="tab-filters" class="tab-contents" style="max-width: 720px;">
 
-					<table class="table data-table">
+					<table class="table data-table" style="margin: 0;">
 						<thead>
 							<tr>
 								<th><?php echo t('title_attribute_group', 'Attribute Group'); ?></th>
@@ -355,13 +355,13 @@
 	// Cross Referencing
 
 	$('input[name="name[<?php echo settings::get('store_language_code'); ?>]"]').on('input change', function() {
-		$('input[name="'+ this.attr('name') +'"]').not(this).val(this.val());
+		$('input[name="'+ $(this).attr('name') +'"]').not($(this)).val($(this).val());
 	});
 
 	// Image
 
 	$('input[name="image"]').on('change', function(e) {
-		if (this.val() != '') {
+		if ($(this).val() != '') {
 			var oFReader = new FileReader();
 			oFReader.readAsDataURL(this.files[0]);
 			oFReader.onload = function(e){
@@ -375,18 +375,18 @@
 	// Head Title & H1 Title
 
 	$('input[name^="name"]').on('input', function(e) {
-		var language_code = this.attr('name').match(/\[(.*)\]$/)[1];
-		$('.tabs a[href="#'+language_code+'"]').css('opacity', this.val() ? 1 : .5);
-		$('input[name="name['+language_code+']"]').not(this).val(this.val());
-		$('input[name="head_title['+language_code+']"]').attr('placeholder', this.val());
-		$('input[name="h1_title['+language_code+']"]').attr('placeholder', this.val());
+		var language_code = $(this).attr('name').match(/\[(.*)\]$/)[1];
+		$('.tabs a[href="#'+language_code+'"]').css('opacity', $(this).val() ? 1 : .5);
+		$('input[name="name['+language_code+']"]').not($(this)).val($(this).val());
+		$('input[name="head_title['+language_code+']"]').attr('placeholder', $(this).val());
+		$('input[name="h1_title['+language_code+']"]').attr('placeholder', $(this).val());
 	}).trigger('input');
 
 	// Meta Description
 
 	$('input[name^="short_description"]').on('input', function(e) {
-		var language_code = this.attr('name').match(/\[(.*)\]$/)[1];
-		$('input[name="meta_description['+language_code+']"]').attr('placeholder', this.val());
+		var language_code = $(this).attr('name').match(/\[(.*)\]$/)[1];
+		$('input[name="meta_description['+language_code+']"]').attr('placeholder', $(this).val());
 	}).trigger('input');
 
 	// Filters
@@ -429,17 +429,17 @@
 
 	$('#tab-filters').on('click', '.move-up, .move-down', function(e) {
 		e.preventDefault();
-		var $row = this.closest('tr');
+		var $row = $(this).closest('tr');
 
-		if (this.is('.move-up') && $row.prevAll().length) {
+		if ($(this).is('.move-up') && $row.prevAll().length) {
 			$row.insertBefore($row.prev());
-		} else if (this.is('.move-down') && $row.nextAll().length) {
+		} else if ($(this).is('.move-down') && $row.nextAll().length) {
 			$row.insertAfter($row.next());
 		}
 	});
 
 	$('#tab-filters').on('click', '.remove', function(e) {
 		e.preventDefault();
-		this.closest('tr').remove();
+		$(this).closest('tr').remove();
 	});
 </script>

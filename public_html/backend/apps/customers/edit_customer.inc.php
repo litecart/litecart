@@ -221,7 +221,7 @@
 
 <div class="tab-contents">
 
-	<div id="tab-profile" class="tab-content">
+	<div id="tab-profile" class="tab-contents">
 		<div class="card">
 			<div class="card-header">
 				<div class="card-title">
@@ -577,7 +577,7 @@
 	// Init
 
 	$('input[name="type"]').on('change', function() {
-		if (this.val() == 'company') {
+		if ($(this).val() == 'company') {
 			$('.company-details :input').prop('disabled', false);
 			$('.company-details').slideDown('fast');
 		} else {
@@ -648,10 +648,10 @@
 	// Get Address
 
 	$('form[name="customer_form"]').on('change', ':input', function() {
-		if (this.val() == '') return;
+		if ($(this).val() == '') return;
 
 		$.ajax({
-			url: '<?php echo document::ilink('ajax/get_address.json'); ?>?trigger='+this.attr('name'),
+			url: '<?php echo document::ilink('ajax/get_address.json'); ?>?trigger='+$(this).attr('name'),
 			type: 'post',
 			data: this.closest('form').serialize(),
 			cache: false,
@@ -674,10 +674,10 @@
 
 	$('form[name="customer_form"]').on('change', ':input', function() {
 
-		if (this.val() == '') return;
+		if ($(this).val() == '') return;
 
 		$.ajax({
-			url: '<?php echo document::ilink('ajax/get_address.json'); ?>?trigger='+this.attr('name'),
+			url: '<?php echo document::ilink('ajax/get_address.json'); ?>?trigger='+$(this).attr('name'),
 			type: 'post',
 			data: this.closest('form').serialize(),
 			cache: false,
@@ -720,7 +720,7 @@
 		}
 
 		$.ajax({
-			url: '<?php echo document::ilink('countries/zones.json'); ?>?country_code=' + this.val(),
+			url: '<?php echo document::ilink('countries/zones.json'); ?>?country_code=' + $(this).val(),
 			type: 'get',
 			cache: true,
 			async: true,
@@ -756,7 +756,7 @@
 		}
 
 		$.ajax({
-			url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + this.val(),
+			url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + $(this).val(),
 			type: 'get',
 			cache: true,
 			async: true,

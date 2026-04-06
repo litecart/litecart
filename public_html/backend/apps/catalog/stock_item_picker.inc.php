@@ -56,7 +56,7 @@
 	$('#stock-item-picker input[name="query"]').on('input', function() {
 
 		/*
-		if (this.val() == '') {
+		if ($(this).val() == '') {
 			$('#stock-item-picker tbody').html('');
 			xhr_stock_item_picker = null;
 			return;
@@ -67,7 +67,7 @@
 			type: 'get',
 			async: true,
 			cache: false,
-			url: '<?php echo document::ilink(__APP__.'/stock_items.json'); ?>?query=' + this.val(),
+			url: '<?php echo document::ilink(__APP__.'/stock_items.json'); ?>?query=' + $(this).val(),
 			dataType: 'json',
 			beforeSend: function(jqXHR) {
 				jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'));

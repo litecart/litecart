@@ -227,7 +227,7 @@
 
 <script>
 	$(':input[name^="purpose"]').on('input', function(e){
-		var language_code = this.attr('name').match(/\[(.*)\]$/)[1];
-		$('.nav-tabs a[href="#'+language_code+'"]').css('opacity', this.val() ? 1 : .5);
+		var language_code = $(this).attr('name').match(/\[(.*)\]$/)[1];
+		$('.nav-tabs a[href="#'+language_code+'"]').css('opacity', $(this).val() ? 1 : .5);
 	}).trigger('input');
 </script>
