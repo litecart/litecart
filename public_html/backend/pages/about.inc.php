@@ -424,7 +424,7 @@
 		</div>
 	</div>
 
-	<div id="tab-php-ini" class="tab-content">
+	<div id="tab-php-ini" class="tab-contents">
 		<div class="card">
 			<div class="card-header">
 				<div class="card-title">
@@ -457,7 +457,7 @@
 		</div>
 	</div>
 
-	<div id="tab-errors" class="tab-content">
+	<div id="tab-errors" class="tab-contents">
 		<div id="box-error-log" class="card">
 			<div class="card-header">
 				<div class="card-title">

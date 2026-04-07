@@ -390,7 +390,7 @@ textarea.warning {
 					<div id="files" class="tab-contents">
 
 						<?php if (!empty($_POST['files'])) foreach (array_keys($_POST['files']) as $f) { ?>
-						<div id="tab-<?php echo $f; ?>" class="tab-content" data-tab-index="<?php echo $f; ?>">
+						<div id="tab-<?php echo $f; ?>" class="tab-contents" data-tab-index="<?php echo $f; ?>">
 
 							<div class="grid">
 								<div class="col-md-6">
@@ -507,7 +507,7 @@ textarea.warning {
 
 				</div>
 
-				<div id="tab-settings" class="tab-content">
+				<div id="tab-settings" class="tab-contents">
 
 					<h2><?php echo t('title_settings', 'Settings'); ?></h2>
 
@@ -573,7 +573,7 @@ textarea.warning {
 
 				</div>
 
-				<div id="tab-install" class="tab-content">
+				<div id="tab-install" class="tab-contents">
 
 					<div class="grid">
 						<div class="col-md-6">
@@ -646,7 +646,7 @@ textarea.warning {
 </div>
 
 <div id="new-tab-content-template" style="display: none;">
-	<div id="tab-new_tab_index" class="tab-content">
+	<div id="tab-new_tab_index" class="tab-contents">
 
 		<div class="grid">
 			<div class="col-md-6">

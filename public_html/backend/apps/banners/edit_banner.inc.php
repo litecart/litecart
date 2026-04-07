@@ -139,7 +139,7 @@ table th:last-child {
 				<div class="form-label"><?php echo t('title_html', 'HTML'); ?></div>
 				<div class="form-input" style="padding: 0;">
 					<?php echo f::form_input_code('html', true, 'placeholder="'. f::escape_attr('<a href="$target_url"><img class="responsive" src="$image_url"></a>') .'" style="height: 150px;"'); ?>
-					<div style="padding: 0.5em; background: #efefef;">
+					<div style="padding: 0.5em; background: var(--input-addon-background);">
 						<?php echo t('title_aliases', 'Aliases'); ?>: <em>$uid, $key, $language_code, $image_url, $target_url</em>
 					</div>
 				</div>
@@ -179,10 +179,10 @@ table th:last-child {
 <script>
 	$('.data-table').on('input', ':input[name^="keys"]', function() {
 
-		let key = this.val();
+		let key = $(this).val();
 		let $row = this.closest('tr');
 
-		this.attr('name', this.attr('name').replace(/^keys\[([^\]]+)?\]/, 'keys['+ key +']'));
+		$(this).attr('name', $(this).attr('name').replace(/^keys\[([^\]]+)?\]/, 'keys['+ key +']'));
 
 		$.each($(':input[name^="values["]', $row), function(i, $field) {
 			let matches = $field.attr('name').match(/^values\[(.*?)\]\[(.*?)\]$/);

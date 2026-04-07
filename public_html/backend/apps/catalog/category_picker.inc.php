@@ -70,12 +70,12 @@
 <script>
 	$('#modal-category-picker').on('click', 'a', function(e) {
 		e.preventDefault();
-		$('.modal-body').load(this.attr('href')+' .modal-body');
+		$('.modal-body').load($(this).attr('href')+' .modal-body');
 	});
 
 	$('#modal-category-picker').on('click', 'button[name="select"]', function() {
 		let $field = $.litebox.current().$currentTarget.closest('.input-group'),
-			id = this.data('id'), name = this.data('name');
+			id = $(this).data('id'), name = $(this).data('name');
 
 		$(':input', $field).val(id).trigger('change');
 		$('.name', $field).text(name);

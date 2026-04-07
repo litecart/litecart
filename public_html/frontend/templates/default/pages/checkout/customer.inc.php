@@ -293,8 +293,8 @@
 				</div>
 
 				<div>
-					<button class="btn btn-lg btn-default btn-block" name="save" value="true" type="submit">
-						<?php echo t('title_save_and_continue', 'Save and Continue'); ?>
+					<button class="btn btn-lg btn-success btn-block" name="save" value="true" type="submit">
+						<?php echo t('title_save_and_continue', 'Save and Continue'); ?> <?php echo f::draw_fonticon('icon-arrow-right'); ?>
 					</button>
 				</div>
 

@@ -1600,7 +1600,7 @@
 
 <script>
 	$('form[name="export_form"] input[name="type"]').on('change', function() {
-		let dependencies = this.data('dependencies') ? this.data('dependencies').split(',') : [];
+		let dependencies = $(this).data('dependencies') ? $(this).data('dependencies').split(',') : [];
 		$('form[name="export_form"] select[name="currency_code"]').prop('disabled', ($.inArray('currency', dependencies) === -1));
 		$('form[name="export_form"] select[name="language_code"]').prop('disabled', ($.inArray('language', dependencies) === -1));
 	});

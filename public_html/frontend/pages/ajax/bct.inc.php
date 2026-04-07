@@ -1,5 +1,7 @@
 <?php
 
+	header('X-Robots-Tag: noindex');
+
 	// Banner Click Tracking
 
 	try {
@@ -25,7 +27,14 @@
 			'expires_at' => strtotime('+12 months'),
 		]);
 
+		$result = ['success' => true];
+
 	} catch (Exception $e) {
 		http_response_code($e->getCode() ?: 500);
-		die('Error: '. $e->getMessage());
+		$result = ['error' => $e->getMessage()];
 	}
+
+	ob_clean();
+	header('Content-Type: application/json; charset=utf-8');
+	echo f::format_json($result);
+	exit;

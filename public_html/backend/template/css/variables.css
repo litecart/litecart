@@ -169,6 +169,9 @@
   --dropdown-menu-text-color: #444;
   --dropdown-item-background--hover: #f1f2f5;
   --dropdown-item-text-color--hover: #444;
+  /* Modals */
+  --modal-background: #fff;
+  --modal-text-color: #fff;
   /* Notices */
   --notice-default-background: #c3dde9;
   --notice-default-text-color: #000;
@@ -277,7 +280,7 @@ html.dark-mode {
   --input-border-width: 1px;
   --input-outline-color--hover: #4e5464;
   --input-outline-color: #6b768d;
-  --input-code-background: #1a2133;
+  --input-code-background: #1d2026;
   --input-addon-background: #252830;
   --input-toggle-background: #464e61;
   --input-toggle-background--hover: #282d38;
@@ -292,6 +295,9 @@ html.dark-mode {
   --card-text-color: #acb6c2;
   --card-border-color: #253046;
   --card-footer-background: #1b1f28;
+  /* Modals */
+  --modal-background: var(--card-background);
+  --modal-text-color: var(--card-text-color);
   --pill-item-background: #333c4e;
   --pill-item-text-color: #acb6c2;
   --pill-item-border-color: transparent;

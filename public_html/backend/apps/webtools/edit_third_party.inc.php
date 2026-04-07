@@ -129,7 +129,7 @@
 				<?php } ?>
 			</nav>
 
-			<div class="tab-content">
+			<div class="tab-contents">
 
 				<?php foreach (array_keys(language::$languages) as $language_code) { ?>
 				<div id="<?php echo $language_code; ?>" class="tab-pane<?php if ($language_code == language::$selected['code']) echo ' active'; ?>">

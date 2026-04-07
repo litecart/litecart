@@ -3039,7 +3039,7 @@ body.litebox-open {
 }
 .litebox .litebox-modal:not(.litebox-seamless) {
   padding: var(--gutter-y) var(--gutter-x);
-  background: #fff;
+  background: var(--modal-background, '#fff');
   box-shadow: 0 5px 2em rgba(0, 0, 0, 0.25);
 }
 .litebox .litebox-modal.litebox-seamless > * {
@@ -3070,7 +3070,7 @@ body.litebox-open {
   top: 50%;
   margin-top: -1.5em;
   background: rgba(0, 0, 0, 0.33);
-  color: #fff;
+  color: var(--modal-text-color, '#fff');
   border-radius: var(--border-radius);
   cursor: pointer;
   backdrop-filter: blur(3px);
@@ -4083,6 +4083,9 @@ body.navbar-expanded {
 .tabs a {
   color: inherit;
   text-decoration: none;
+}
+.tab-contents {
+  margin: 1em 0;
 }
 .tab-contents-2 {
   margin: 2em 0;

@@ -1,5 +1,7 @@
 <?php
 
+	header('X-Robots-Tag: noindex');
+
 	try {
 
 		if (empty($_GET['trigger'])) {

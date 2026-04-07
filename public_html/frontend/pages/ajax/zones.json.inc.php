@@ -1,5 +1,7 @@
 <?php
 
+	header('X-Robots-Tag: noindex');
+
 	try {
 
 		if (!isset($_GET['country_code'])) {
