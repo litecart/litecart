@@ -2,7 +2,7 @@
 
 	return [
 		'f:category' => [
-			'pattern' => '#^categories/(\d+)(?:/.*)?$#',
+			'pattern' => '#^c/(\d+)(?:/.*)?$#',
 			'controller' => 'app://frontend/pages/category.inc.php',
 			'params' => 'category_id=$1',
 			'endpoint' => 'frontend',
@@ -13,7 +13,7 @@
 
 				if (empty($link->query['category_id'])) return;
 
-				$link->path = 'categories/'. $link->query['category_id'];
+				$link->path = 'c/'. $link->query['category_id'];
 
 				$category = reference::category($link->query['category_id'], $language_code);
 

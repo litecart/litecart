@@ -2,7 +2,7 @@
 
 	return [
 		'f:product' => [
-			'pattern' => '#^products/(\d+)(?:/.*)?$#',
+			'pattern' => '#^p/(\d+)(?:/.*)?$#',
 			'controller' => 'app://frontend/pages/product.inc.php',
 			'params' => 'product_id=$1',
 			'endpoint' => 'frontend',
@@ -31,7 +31,7 @@
 					$link->unset_query('category_id');
 				}
 
-				$new_path .= 'products/'. $product->id .'/'. f::format_path_friendly($product->name, $language_code);
+				$new_path .= 'p/'. $product->id .'/'. f::format_path_friendly($product->name, $language_code);
 
 				$link->path = $new_path;
 				$link->unset_query('product_id');

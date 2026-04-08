@@ -2,7 +2,7 @@
 
 	return [
 		'f:information' => [
-			'pattern' => '#^information/(\d+)(?:/.*)?$#',
+			'pattern' => '#^i/(\d+)(?:/.*)?$#',
 			'controller' => 'app://frontend/pages/information.inc.php',
 			'params' => 'page_id=$1',
 			'endpoint' => 'frontend',
@@ -18,7 +18,7 @@
 
 				if (empty($page)) return false;
 
-				$link->path = 'information/'. $page->id .'/'. f::format_path_friendly($page->title, $language_code);
+				$link->path = 'i/'. $page->id .'/'. f::format_path_friendly($page->title, $language_code);
 				$link->unset_query('page_id');
 
 				return $link;
