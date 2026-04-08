@@ -2,7 +2,7 @@
  * LiteCart v3.0.0 - Superfast, lightweight e-commerce platform built built with for simplicity.
  * @link https://www.litecart.net/
  * @license CC-BY-ND-4.0
- * @author T. Almroth
+ * @author T. Almroth - LiteCart AB
  */
 
 /* Minimal waitFor() implementation
@@ -59,16 +59,6 @@ waitFor('jQuery', ($) => {
 
 		return jQuery.ajax(url, options);
 	};
-
-	// Keep-alive
-	if (typeof _env !== 'undefined' && _env?.platform?.path) {
-		setInterval(function() {
-			$.get({
-				url: _env.platform.path + 'ajax/keep_alive',
-				cache: false
-			});
-		}, 60e3);
-	}
 });
 
 /*
@@ -1592,7 +1582,7 @@ waitFor('jQuery', ($) => {
 
 
 waitFor('jQuery', ($) => {
-	
+
 	// jQuery Placeholders by LiteCart
 	let Placeholders = [];
 
