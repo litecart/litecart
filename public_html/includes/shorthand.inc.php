@@ -39,7 +39,7 @@
 		exit;
 	}
 
-	// Checks if variables are not set, null, (bool)false, (int)0, (float)0.00, (string)"", (string)"0", (string)"0.00", (array)[], or array with nil nodes
+	// Checks if variables are not set, null, (bool)false, (int)0, (float)0, (string)"", (string)"0", (string)"0.00", (array)[], or array with nil nodes
 	function nil(&...$args) { // ... as of PHP 5.6
 
 		foreach ($args as $arg) {
@@ -57,14 +57,11 @@
 	}
 
 	// Returns value for variable or falls back to a substituting value on nil(). Similar to !empty($var) ? $var : $fallback1 ?: $fallback2
-	function fallback(&$var, $fallback=null) {
-		if (!nil($var)) return $var;
-
-		$fallbacks = array_slice(func_get_args(), 1);
-
+	function fallback(&...$fallbacks) { // ... as of PHP 5.6
 		foreach ($fallbacks as $fallback) {
 			if (!nil($fallback)) return $fallback;
 		}
+		return end($fallbacks);
 	}
 
 	// Check if variable indicates a truthy value
@@ -98,4 +95,11 @@
 		}
 
 		return false;
+	}
+
+	// Output any variable to the browser console
+	function console_dump(...$vars) { // ... as of PHP 5.6
+		foreach ($vars as $var) {
+			echo '<script>console.log('. json_encode($var, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) .');</script>';
+		}
 	}

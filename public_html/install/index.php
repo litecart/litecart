@@ -17,7 +17,6 @@
 
 	require_once FS_DIR_APP . 'includes/autoloader.inc.php';
 	require_once FS_DIR_APP . 'includes/error_handler.inc.php';
-	require_once FS_DIR_APP . 'includes/functions.inc.php';
 	require_once FS_DIR_APP . 'includes/shorthand.inc.php';
 	require_once __DIR__ . '/includes/header.inc.php';
 	require_once __DIR__ . '/includes/functions.inc.php';

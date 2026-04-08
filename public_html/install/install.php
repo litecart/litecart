@@ -99,7 +99,6 @@
 
 	define('VMOD_DISABLED', 'true');
 
-	require_once FS_DIR_APP . 'includes/functions.inc.php';
 	require_once FS_DIR_APP . 'includes/shorthand.inc.php';
 
 	require_once FS_DIR_APP . 'includes/nodes/nod_database.inc.php';

@@ -33,9 +33,6 @@
 	// Load shorthand functions
 	require_once 'app://includes/shorthand.inc.php';
 
-	// General functions
-	require_once 'app://includes/functions.inc.php';
-
 	// 3rd party autoloader (If present)
 	if (is_file(FS_DIR_APP . 'vendor/autoload.php')) {
 		require_once FS_DIR_APP . 'vendor/autoload.php';
