@@ -51,7 +51,7 @@
 		## password_check_strength
 		########################################################################
 
-		if (!f::password_check_strength('Str0ng!Pass')) {
+		if (!f::password_check_strength('Str0ng!Pass99')) {
 			throw new Exception('password_check_strength rejected a strong password');
 		}
 
