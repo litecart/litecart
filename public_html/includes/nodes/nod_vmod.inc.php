@@ -118,7 +118,7 @@
 			// Load modifications from disk
 			if (!self::$_modifications) {
 
-				foreach (glob(FS_DIR_STORAGE . 'vmods/*.{xml,hjson}', GLOB_BRACE) as $file) {
+				foreach (glob(FS_DIR_STORAGE . 'vmods/.*xml', GLOB_BRACE) as $file) {
 					self::load($file);
 				}
 
