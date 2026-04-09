@@ -26,7 +26,7 @@
 				if (database::query(
 					"select *, concat(firstname, ' ', lastname) as name
 					from ". DB_TABLE_PREFIX ."newsletter_recipients
-					where email = '". database::input(strtolower($recipient_id)) ."'
+					where email = '". database::input(strtolower($recipient)) ."'
 					limit 1;"
 				)->num_rows) {
 					$newsletter_recipient = new ent_newsletter_recipient($recipient);

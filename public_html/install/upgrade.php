@@ -830,7 +830,7 @@
 				'',
 				'<p style="font-weight: bold;">The upgrade failed. Please check the error log for more information.</p>',
 				'',
-				'<p>Error: '. htmlspecialchars($e->getMessage()) .'</p>',
+				'<p>Error: '. htmlspecialchars($t->getMessage()) .'</p>',
 				'',
 			]);
 		}

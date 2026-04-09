@@ -29,7 +29,7 @@
 				'shipping_option_id' => $order->data['shipping_option']['id'],
 				'payment_option_id' => $order->data['payment_option']['id'],
 				'total_amount' => $order->data['total'],
-				'error' => $result['error'],
+				'error' => $error_message,
 			],
 			'expires_at' => strtotime('+12 months'),
 		]);

@@ -86,7 +86,7 @@
 
 		trigger_error('Unknown predefined button ('. f::escape_html($name) .')', E_USER_WARNING);
 
-		return form_button($name, $value, 'submit', $parameters);
+		return form_button($name, $name, 'submit', $parameters);
 	}
 
 	function form_captcha($id, $config=[], $parameters='') {
@@ -878,7 +878,7 @@
 
 		if (strpos($input, '/') !== false) {
 			trigger_error('Passing type as 3rd parameter in form_toggle() is deprecated. Use instead form_toggle($name, $type, $input, $parameters)', E_USER_DEPRECATED);
-			list($type, $input) = [$input, $type];
+			list($options, $input) = [$input, $options];
 		}
 
 		if ($input === true) {
@@ -1653,7 +1653,7 @@
 			'	$dropdown.on("click", ".dropdown-results li", function() {',
 			'		var id = $(this).data("id");',
 			'		var name = this.text();',
-			'		$(":input[name=\'' . f::escape_js($name, $dropdown) . '\']").val(id).trigger("change");',
+			'		$(":input[name=\'' . f::escape_js($name) . '\']").val(id).trigger("change");',
 			'		$searchInput.val(name);',
 			'		$("li", $list).removeClass("active");',
 			'		this.addClass("active");',
@@ -1818,11 +1818,7 @@
 		}
 	}
 
-	function form_select_function($name, $parameters='') {
-
-		if (preg_match('#\[\]$#', $name)) {
-			return form_select_multiple_files($name, $options, $input, $parameters);
-		}
+	function form_select_function($name, $input=true, $parameters='') {
 
 		$options = [
 			'administrator()',
@@ -1894,7 +1890,7 @@
 	function form_select_multiple_files($name, $pattern, $input=true, $parameters='') {
 
 		if (!preg_match('#\[\]$#', $name)) {
-			return form_select_file($name, $options, $input, $parameters);
+			return form_select_file($name, $pattern, $input, $parameters);
 		}
 
 		$options = array_map(function($file) {

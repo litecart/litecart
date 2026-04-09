@@ -568,7 +568,7 @@
 
 			// Append length digit
 			if (strpos(settings::get('order_no_format'), '{l}') !== false) {
-				$length = strlen(preg_replace('#[^\d]#', '', $order_no)) + preg_match('#\{c\}#', settings::get('order_no_format')) ? 1 : 0;
+				$length = strlen(preg_replace('#[^\d]#', '', $order_no)) + (preg_match('#\{c\}#', settings::get('order_no_format')) ? 1 : 0);
 				$order_no = str_replace('{l}', $length, $order_no);
 			}
 
@@ -582,10 +582,13 @@
 					$sum += ($i % 2 == 0) ? array_sum(str_split($digit * 2)) : $digit;
 				}
 
-				$order_no = str_replace('{c}', strval($stack), $order_no);
+				$checkdigit = (10 - ($sum % 10)) % 10;
+				$order_no = str_replace('{c}', $checkdigit, $order_no);
 			}
 
 			$this->data['no'] = preg_replace('#\{.*?\}#', '', $order_no);
+
+			return $this->data['no'];
 		}
 
 		public function add_line($line, $stock_items=[]) {
