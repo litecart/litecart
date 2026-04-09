@@ -414,7 +414,7 @@
 							file_put_contents(FS_DIR_STORAGE . 'vmods/.installed', $new_contents . PHP_EOL, LOCK_EX);
 
 							if (isset($_SERVER['REQUEST_URI'])) {
-								reload();
+								header('Location: '. $_SERVER['REQUEST_URI'], true, 302);
 								exit;
 							}
 						}
@@ -438,7 +438,7 @@
 							include func_get_arg(0);
 						})($tmp_file);
 
-						reload();
+						header('Location: '. $_SERVER['REQUEST_URI'], true, 302);
 						exit;
 					}
 
