@@ -117,8 +117,6 @@
 		where customer_id = ". (int)customer::$data['id'] .";"
 	)->fetch('num_items');
 
-	$num_favourites = 2;
-
 	$site_navigation->snippets['favourites'] = [
 		'items' => [],
 		'link' => document::ilink('favourites'),
