@@ -544,13 +544,13 @@
 
 						if ($aliases) {
 							foreach ($aliases as $key => $value) {
-								$find = str_replace('{alias:'. $key .'}', $value, $insert);
+								$find = str_replace('{alias:'. $key .'}', (string)$value, (string)$find);
 							}
 						}
 
 						if ($settings) {
 							foreach ($settings as $key => $value) {
-								$find = str_replace('{setting:'. $key .'}', $value, $find);
+								$find = str_replace('{setting:'. $key .'}', (string)$value, (string)$find);
 							}
 						}
 
@@ -610,13 +610,13 @@
 
 					if ($aliases) {
 						foreach ($aliases as $key => $value) {
-							$insert = str_replace('{alias:'. $key .'}', $value, $insert);
+							$insert = str_replace('{alias:'. $key .'}', (string)$value, (string)$insert);
 						}
 					}
 
 					if ($settings) {
 						foreach ($settings as $key => $value) {
-							$insert = str_replace('{setting:'. $key .'}', $value, $insert);
+							$insert = str_replace('{setting:'. $key .'}', (string)$value, (string)$insert);
 						}
 					}
 
