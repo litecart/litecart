@@ -100,6 +100,14 @@
 	// Output any variable to the browser console
 	function console_dump(...$vars) { // ... as of PHP 5.6
 		foreach ($vars as $var) {
+
+			// Determine if output can be shown as a table
+			if (is_array($var) && count($var) > 0 && array_reduce($var, function($carry, $item) { return $carry || (is_array($item) && count($item) > 0); }, false)) {
+				echo '<script>console.table('. json_encode($var, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) .');</script>';
+				continue;
+			}
+
+			// Output as regular log
 			echo '<script>console.log('. json_encode($var, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) .');</script>';
 		}
 	}
