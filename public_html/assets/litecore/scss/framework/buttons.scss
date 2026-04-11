@@ -1,18 +1,18 @@
 /* Buttons */
 
-.btn(@type) {
-	background: ~"var(--button-@{type}-background)";
-	color: ~"var(--button-@{type}-text-color)";
-	border: var(--button-border-width) solid ~"var(--button-@{type}-border-color)";
+@mixin btn($type) {
+	background: var(--button-#{$type}-background);
+	color: var(--button-#{$type}-text-color);
+	border: var(--button-border-width) solid var(--button-#{$type}-border-color);
 	&:hover:not(.active, .disabled, [disabled]),
 	&:focus:not(.active, .disabled, [disabled]),
 	&:active:not(.active, .disabled, [disabled]) {
-		background: ~"var(--button-@{type}-background--hover)";
-		border-color: ~"var(--button-@{type}-border-color--hover)";
+		background: var(--button-#{$type}-background--hover);
+		border-color: var(--button-#{$type}-border-color--hover);
 	}
 	&.active {
-		background: ~"var(--button-@{type}-background--active)";
-		border-color: ~"var(--button-@{type}-border-color--active)";
+		background: var(--button-#{$type}-background--active);
+		border-color: var(--button-#{$type}-border-color--active);
 	}
 }
 
@@ -32,19 +32,19 @@
 	user-select: none;
 
 	&.btn-default {
-		.btn('default');
+		@include btn('default');
 	}
 
 	&.btn-success {
-		.btn('success');
+		@include btn('success');
 	}
 
 	&.btn-danger {
-		.btn('danger');
+		@include btn('danger');
 	}
 
 	&.btn-outline {
-		.btn('outline');
+		@include btn('outline');
 		box-shadow: none;
 		border: var(--button-outline-text-color) solid var(--button-outline-border-width);
 	}

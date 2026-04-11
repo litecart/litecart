@@ -13,7 +13,7 @@
 	.card-filter,
 	.card-body,
 	.card-footer {
-		padding: ~"calc(var(--gutter-y) / 2)" var(--gutter-x);
+		padding: calc(var(--gutter-y) / 2) var(--gutter-x);
 	}
 
 	.card-filter {

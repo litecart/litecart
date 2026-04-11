@@ -1,4 +1,4 @@
-@import '../../../assets/litecore/less/framework/media.less';
+@import '../../../assets/litecore/scss/framework/media.scss';
 
 /* Fonts */
 
@@ -74,12 +74,12 @@
 	--gutter-x: 12px; /* See additional for media queries */
 	--gutter-y: 12px; /* See additional for media queries */
 
-	@media (min-width: @media-breakpoint-sm) {
+	@media (min-width: $media-breakpoint-sm) {
 		--gutter-x: 15px;
 		--gutter-y: 15px;
 	}
 
-	@media (min-width: @media-breakpoint-md) {
+	@media (min-width: $media-breakpoint-md) {
 		--gutter-x: 20px;
 		--gutter-y: 20px;
 	}

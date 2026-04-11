@@ -144,9 +144,9 @@ jobs:
           npx gulp js-backend
           npx gulp js-frontend
           npx gulp js-trumbowyg
-          npx gulp less-framework
-          npx gulp less-backend
-          npx gulp less-frontend
+          npx gulp scss-framework
+          npx gulp scss-backend
+          npx gulp scss-frontend
           npx gulp sass-chartist
           npx gulp sass-trumbowyg
 
