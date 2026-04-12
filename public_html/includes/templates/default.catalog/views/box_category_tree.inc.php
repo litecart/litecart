@@ -18,10 +18,10 @@
 
 <?php if (!empty(document::$settings['compact_category_tree'])) { ?>
 <style>
-  #box-category-tree > ul.compact > li:not(.opened) {
+  #box-category-tree > .card-body > ul.compact > li:not(.opened) {
     display: none;
   }
-  #box-category-tree > ul.compact > li.toggle {
+  #box-category-tree > .card-body > ul.compact > li.toggle {
     display: block !important;
   }
 </style>
@@ -41,16 +41,16 @@
 
 <?php if (!empty(document::$settings['compact_category_tree'])) { ?>
 <script>
-  $('#box-category-tree > ul.compact').prepend(
+  $('#box-category-tree > .card-body > ul.compact').prepend(
     '<li class="toggle"><a href="#" data-toggle="showall"><?php echo functions::draw_fonticon(((language::$selected['direction'] == 'rtl') ? 'fa-angle-right' : 'fa-angle-left') .' fa-fw'); ?> <?php echo language::translate('title_show_all', 'Show All'); ?></a></li>'
   );
 
-  $('#box-category-tree > ul.compact').on('click', 'a[data-toggle="showall"]', function(e){
+  $('#box-category-tree > .card-body > ul.compact').on('click', 'a[data-toggle="showall"]', function(e){
     e.preventDefault();
     $(this).parent().slideUp(function(){
       $(this).remove();
     });
-    $('#box-category-tree > ul > li:hidden').slideDown();
+    $('#box-category-tree > .card-body > ul > li:hidden').slideDown();
   });
 </script>
 <?php } ?>
