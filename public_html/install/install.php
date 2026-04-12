@@ -130,6 +130,10 @@
       $_REQUEST['password'] = '';
     }
 
+    if (empty($_REQUEST['client_ip'])) {
+      $_REQUEST['client_ip'] = !empty($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1';
+    }
+
     if (empty($_REQUEST['timezone']) && !empty($_REQUEST['store_time_zone'])) {
       $_REQUEST['timezone'] = $_REQUEST['store_time_zone']; // Backwards compatible
     } else if (empty($_REQUEST['timezone']) && ini_get('date.timezone')) {
@@ -343,7 +347,7 @@
 
     echo '<p>Writing config file... ';
 
-    $config = file_get_contents('config');
+    $config = file_get_contents(__DIR__ . '/config');
 
     $map = [
       '{ADMIN_FOLDER}' => $_REQUEST['admin_folder'],
@@ -360,7 +364,7 @@
 
     $config = strtr($config, $map);
 
-    if (file_put_contents('../includes/config.inc.php', $config) !== false) {
+    if (file_put_contents(FS_DIR_APP . 'includes/config.inc.php', $config) !== false) {
       echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
     } else {
       throw new Exception('<span class="error">[Error]</span></p>' . PHP_EOL . PHP_EOL);
@@ -370,7 +374,7 @@
 
     echo '<p>Cleaning database... ';
 
-    $sql = file_get_contents('clean.sql');
+    $sql = file_get_contents(__DIR__ . '/clean.sql');
     $sql = str_replace('`lc_', '`'.$_REQUEST['db_table_prefix'], $sql);
 
     foreach (preg_split('#^-- -----+\s*$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {
@@ -384,7 +388,7 @@
 
     echo '<p>Writing database tables... ';
 
-    $sql = file_get_contents('structure.sql');
+    $sql = file_get_contents(__DIR__ . '/structure.sql');
 
   // Workaround for early MySQL versions (<5.6.5) not supporting multiple DEFAULT CURRENT_TIMESTAMP
     if (version_compare($mysql_version, '5.6.5', '<')) {
@@ -412,7 +416,7 @@
 
     echo '<p>Writing database table data... ';
 
-    $sql = file_get_contents('data.sql');
+    $sql = file_get_contents(__DIR__ . '/data.sql');
     $sql = str_replace('`lc_', '`'.$_REQUEST['db_table_prefix'], $sql);
 
     $map = [
@@ -436,7 +440,7 @@
     ### Files > Default Data ######################################
 
     echo '<p>Copying default files...';
-    if (file_xcopy('data/default/public_html/', FS_DIR_APP)) {
+    if (file_xcopy(__DIR__ . '/data/default/public_html/', FS_DIR_APP)) {
       echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
     } else {
       echo ' <span class="error">[Error]</span></p>' . PHP_EOL . PHP_EOL;
@@ -456,14 +460,14 @@
 
     echo '<p>Setting mod_rewrite base path...';
 
-    $htaccess = file_get_contents('htaccess');
+    $htaccess = file_get_contents(__DIR__ . '/htaccess');
 
     $htaccess = strtr($htaccess, [
       '{BASE_DIR}' => WS_DIR_APP,
       '{ADMIN_DIR_FULL}' => FS_DIR_APP . $_REQUEST['admin_folder'] .'/',
     ]);
 
-    if (file_put_contents('../.htaccess', $htaccess)) {
+    if (file_put_contents(FS_DIR_APP . '.htaccess', $htaccess)) {
       echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
     } else {
       echo ' <span class="error">[Error]</span></p>' . PHP_EOL . PHP_EOL;
@@ -473,8 +477,8 @@
 
     if (!empty($_REQUEST['admin_folder']) && $_REQUEST['admin_folder'] != 'admin') {
       echo '<p>Renaming admin folder...';
-      if (is_dir('../admin/')) {
-        rename('../admin/', '../'.$_REQUEST['admin_folder']);
+      if (is_dir(FS_DIR_APP . 'admin/')) {
+        rename(FS_DIR_APP . 'admin/', FS_DIR_APP . $_REQUEST['admin_folder']);
         echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
       } else {
         echo ' <span class="error">[Error: Not found]</span></p>' . PHP_EOL . PHP_EOL;
@@ -516,7 +520,7 @@
 
       echo '<p>Patching installation with regional data...';
 
-      $directories = glob('data/*{'. $_REQUEST['country_code'] .',XX}*/', GLOB_BRACE);
+      $directories = glob(__DIR__ . '/data/*{'. $_REQUEST['country_code'] .',XX}*/', GLOB_BRACE);
 
       if (!empty($directories)) {
         foreach ($directories as $dir) {
@@ -526,7 +530,7 @@
           if ($dir == 'demo') continue;
           if ($dir == 'default') continue;
 
-          foreach (glob('data/'. $dir .'/*.sql') as $file) {
+          foreach (glob(__DIR__ . '/data/'. $dir .'/*.sql') as $file) {
 
             if (!$sql = file_get_contents($file)) continue;
 
@@ -539,8 +543,8 @@
           }
         }
 
-        if (file_exists('data/'. $dir .'/public_html/')) {
-          file_xcopy('data/'. $dir .'/public_html/', FS_DIR_APP);
+        if (file_exists(__DIR__ . '/data/'. $dir .'/public_html/')) {
+          file_xcopy(__DIR__ . '/data/'. $dir .'/public_html/', FS_DIR_APP);
         }
       }
 
@@ -552,7 +556,7 @@
     if (!empty($_REQUEST['demo_data'])) {
       echo '<p>Writing demo data... ';
 
-      $sql = file_get_contents('data/demo/data.sql');
+      $sql = file_get_contents(__DIR__ . '/data/demo/data.sql');
 
       if (!empty($sql)) {
         $sql = str_replace('`lc_', '`'.$_REQUEST['db_table_prefix'], $sql);
@@ -571,7 +575,7 @@
     if (!empty($_REQUEST['demo_data'])) {
       echo '<p>Copying demo files...';
 
-      if (file_xcopy('data/demo/public_html/', FS_DIR_APP)) {
+      if (file_xcopy(__DIR__ . '/data/demo/public_html/', FS_DIR_APP)) {
         echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
       } else {
         echo ' <span class="error">[Error]</span></p>' . PHP_EOL . PHP_EOL;
@@ -583,7 +587,7 @@
     echo '<p>Preparing CSS files...<br>' . PHP_EOL;
 
     $files_to_delete = [
-      '../includes/templates/default.admin/less/',
+      FS_DIR_APP . 'includes/templates/default.admin/less/',
     ];
 
     foreach ($files_to_delete as $file) {
@@ -595,10 +599,10 @@
       file_put_contents(FS_DIR_APP . 'includes/templates/default.catalog/.development', 'advanced');
 
       $files_to_delete = [
-        '../includes/templates/default.catalog/css/app.css',
-        '../includes/templates/default.catalog/css/checkout.css',
-        '../includes/templates/default.catalog/css/framework.css',
-        '../includes/templates/default.catalog/css/printable.css',
+        FS_DIR_APP . 'includes/templates/default.catalog/css/app.css',
+        FS_DIR_APP . 'includes/templates/default.catalog/css/checkout.css',
+        FS_DIR_APP . 'includes/templates/default.catalog/css/framework.css',
+        FS_DIR_APP . 'includes/templates/default.catalog/css/printable.css',
       ];
 
       foreach ($files_to_delete as $file) {
@@ -610,18 +614,18 @@
       file_put_contents(FS_DIR_APP . 'includes/templates/default.catalog/.development', 'standard');
 
       $files_to_delete = [
-        '../includes/templates/default.catalog/css/*.min.css',
-        '../includes/templates/default.catalog/css/*.min.css.map',
-        '../includes/templates/default.catalog/js/*.min.js',
-        '../includes/templates/default.catalog/js/*.min.js.map',
-        '../includes/templates/default.catalog/less/',
+        FS_DIR_APP . 'includes/templates/default.catalog/css/*.min.css',
+        FS_DIR_APP . 'includes/templates/default.catalog/css/*.min.css.map',
+        FS_DIR_APP . 'includes/templates/default.catalog/js/*.min.js',
+        FS_DIR_APP . 'includes/templates/default.catalog/js/*.min.js.map',
+        FS_DIR_APP . 'includes/templates/default.catalog/less/',
       ];
 
       foreach ($files_to_delete as $file) {
         file_delete($file);
       }
 
-      foreach (glob('../includes/templates/default.catalog/layouts/*.inc.php') as $file) {
+      foreach (glob(FS_DIR_APP . 'includes/templates/default.catalog/layouts/*.inc.php') as $file) {
         echo 'Modify '. $file .'<br>'. PHP_EOL;
         $contents = file_get_contents($file);
         $search_replace = [
