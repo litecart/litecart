@@ -1,5 +1,10 @@
-@charset "UTF-8";
-/* Media Breakpoints */
+/*!
+ * LiteCart v3.0.0 - Superfast, lightweight e-commerce platform built built with for simplicity.
+ * @link https://www.litecart.net/
+ * @license CC-BY-ND-4.0
+ * @author T. Almroth, LiteCart AB
+ */
+
 * {
   box-sizing: border-box;
 }
@@ -847,7 +852,8 @@ summary {
   color: inherit;
 }
 
-#context-menu {
+/* Context Menu */
+.context-menu {
   position: fixed;
   z-index: 10000;
   width: 150px;
@@ -856,22 +862,42 @@ summary {
   transform: scale(0);
   transform-origin: top left;
 }
-
-#context-menu.visible {
+.context-menu.visible {
   transform: scale(1);
   transition: transform 200ms ease-in-out;
 }
-
-#context-menu .item {
+.context-menu .item {
   padding: 8px 10px;
   font-size: 15px;
   color: #eee;
   cursor: pointer;
   border-radius: inherit;
 }
-
-#context-menu .item:hover {
+.context-menu .item:hover {
   background: #343434;
+}
+
+/* Dividers */
+.divider {
+  display: flex;
+  align-items: center;
+  padding: 0.5em;
+}
+.divider::before, .divider::after {
+  content: "";
+  flex: 1;
+  border-top: 1px solid var(--default-text-color);
+}
+.divider::before {
+  margin-right: 0.75em;
+}
+.divider::after {
+  margin-left: 0.75em;
+}
+.divider span::before {
+  content: attr(data-text);
+  color: var(--default-text-color);
+  white-space: nowrap;
 }
 
 /* Dropdowns */

@@ -4,7 +4,7 @@
 * $license CC-BY-ND-4.0
 */
 
-@import '../../../../assets/litecore/scss/framework/media.scss';
+@use '../../../../assets/litecore/scss/framework/media' as *;
 
 // anuphan-regular - latin
 @font-face {

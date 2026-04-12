@@ -3,7 +3,6 @@ import cleancss from '@sequencemedia/gulp-clean-css';
 import concat from 'gulp-concat';
 import download from 'gulp-fetch';
 import header from 'gulp-header';
-// LESS removed — all styles now use SCSS via dart-sass
 import phplint from 'gulp-phplint';
 import rename from 'gulp-rename';
 import replace from 'gulp-replace';
@@ -11,10 +10,10 @@ import * as dartSass from 'sass';
 import gulpSass from 'gulp-sass';
 import sourcemaps from '@sequencemedia/gulp-sourcemaps';
 import uglify from 'gulp-uglify';
-
 import packageData from './package.json' with { type: 'json' };
 
 const sass = gulpSass(dartSass);
+const sassOptions = { charset: false };
 
 const banner = [
 	'/*!',
@@ -29,12 +28,18 @@ const banner = [
 
 gulp.task('scss-framework', function() {
 
-	return gulp.src(['public_html/assets/litecore/scss/*.scss'])
+	return gulp.src('public_html/assets/litecore/scss/{framework/main,email,printable}.scss', { allowEmpty: true })
 		.pipe(sourcemaps.init())
-		.pipe(sass({ silenceDeprecations: ['import'] }).on('error', sass.logError))
+		.pipe(sass(sassOptions).on('error', sass.logError))
+		.pipe(rename(function(path) {
+			if (path.dirname == 'framework' && path.basename == 'main') {
+				path.dirname = '';
+				path.basename = 'framework';
+			}
+		}))
+		.pipe(header(banner, { pkg: packageData }))
 		.pipe(gulp.dest('public_html/assets/litecore/css/', { overwrite: true }))
 		.pipe(cleancss())
-		.pipe(header(banner, { pkg: packageData }))
 		.pipe(rename({ extname: '.min.css' }))
 		.pipe(sourcemaps.write('.', { includeContent: false }))
 		.pipe(gulp.dest('public_html/assets/litecore/css/', { overwrite: true }));
@@ -57,13 +62,13 @@ gulp.task('js-framework', function() {
 gulp.task('scss-backend', function() {
 
 	gulp.src('public_html/backend/template/scss/vari*bles.scss')
-		.pipe(sass({ silenceDeprecations: ['import'] }).on('error', sass.logError))
+		.pipe(sass(sassOptions).on('error', sass.logError))
 		.pipe(header(banner, { pkg: packageData }))
 		.pipe(gulp.dest('public_html/backend/template/css/', { overwrite: true }));
 
 	return gulp.src(['public_html/backend/template/scss/*.scss', '!public_html/backend/template/scss/variables.scss'])
 		.pipe(sourcemaps.init())
-		.pipe(sass({ silenceDeprecations: ['import'] }).on('error', sass.logError))
+		.pipe(sass(sassOptions).on('error', sass.logError))
 		.pipe(header(banner, { pkg: packageData }))
 		.pipe(cleancss())
 		.pipe(rename({ extname: '.min.css' }))
@@ -99,13 +104,13 @@ gulp.task('js-trumbowyg', function() {
 gulp.task('scss-frontend', function() {
 
 	gulp.src('public_html/frontend/templates/default/scss/vari*bles.scss')
-		.pipe(sass({ silenceDeprecations: ['import'] }).on('error', sass.logError))
+		.pipe(sass(sassOptions).on('error', sass.logError))
 		.pipe(header(banner, { pkg: packageData }))
 		.pipe(gulp.dest('public_html/frontend/templates/default/css/', { overwrite: true }));
 
 	return gulp.src(['public_html/frontend/templates/default/scss/*.scss', '!public_html/frontend/templates/default/scss/variables*.scss'])
 		.pipe(sourcemaps.init())
-		.pipe(sass({ silenceDeprecations: ['import'] }).on('error', sass.logError))
+		.pipe(sass({ ...sassOptions, silenceDeprecations: ['import'] }).on('error', sass.logError))
 		.pipe(gulp.dest('public_html/frontend/templates/default/css/', { overwrite: true }))
 		.pipe(cleancss())
 		.pipe(header(banner, { pkg: packageData }))
@@ -129,7 +134,7 @@ gulp.task('js-frontend', function() {
 // Task to compile and minify Chartist SCSS
 gulp.task('sass-chartist', function() {
 	return gulp.src('public_html/assets/chartist/chartist.scss', { allowEmpty: true })
-		.pipe(sass().on('error', sass.logError))
+		.pipe(sass(sassOptions).on('error', sass.logError))
 		//.pipe(gulp.dest('public_html/assets/chartist/', { overwrite: true }))
 		//.pipe(sourcemaps.write('.', { includeContent: false }))
 		.pipe(cleancss())
@@ -142,7 +147,7 @@ gulp.task('sass-chartist', function() {
 gulp.task('sass-trumbowyg', function() {
 	return gulp
 		.src('public_html/assets/trumbowyg/ui/*.scss')
-		.pipe(sass({ silenceDeprecations: ['legacy-js-api'] })
+		.pipe(sass({ ...sassOptions, silenceDeprecations: ['legacy-js-api'] })
 		.on('error', sass.logError))
 		//.pipe(gulp.dest('public_html/assets/trumbowyg/ui/'))
 		//.pipe(sourcemaps.write('.', { includeContent: false }))
@@ -165,7 +170,7 @@ gulp.task('iconly', function() {
 	download({ url: 'https://dev.iconly.io/public/OoTc8FJRmnEY/iconly.woff2', filename: 'fonticons.woff2' })
 		.pipe(gulp.dest('public_html/assets/litecore/fonts/'));
 
-	return download({ url: 'https://dev.iconly.io/public/OoTc8FJRmnEY/iconly.css', filename: 'fonticons.scss' })
+	return download({ url: 'https://dev.iconly.io/public/OoTc8FJRmnEY/iconly.css', filename: '_fonticons.scss' })
 		.pipe(replace(/^\/\*\!.*?(?=\n.icon-)/gs, [
 			'',
 			'@font-face {',

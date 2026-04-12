@@ -1,0 +1,28 @@
+/* Context Menu */
+
+.context-menu {
+	position: fixed;
+	z-index: 10000;
+	width: 150px;
+	background: #1b1a1a;
+	border-radius: 5px;
+	transform: scale(0);
+	transform-origin: top left;
+
+	&.visible {
+		transform: scale(1);
+		transition: transform 200ms ease-in-out;
+	}
+
+	.item {
+		padding: 8px 10px;
+		font-size: 15px;
+		color: #eee;
+		cursor: pointer;
+		border-radius: inherit;
+	}
+
+	.item:hover {
+		background: #343434;
+	}
+}

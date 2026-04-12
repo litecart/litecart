@@ -1,4 +1,4 @@
-@import '../../../assets/litecore/scss/framework/media.scss';
+@use '../../../assets/litecore/scss/framework/media' as *;
 
 body {
 	background: var(--site-background);
