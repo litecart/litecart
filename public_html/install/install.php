@@ -163,6 +163,9 @@
 			$_REQUEST['password'] = '';
 		}
 
+		if (empty($_REQUEST['client_ip'])) {
+			$_REQUEST['client_ip'] = !empty($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1';
+		}
 
 		if (empty($_REQUEST['timezone']) && !empty($_REQUEST['store_time_zone'])) {
 			$_REQUEST['timezone'] = $_REQUEST['store_time_zone']; // Backwards compatible
