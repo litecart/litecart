@@ -24,8 +24,8 @@
 			foreach ($this->modules as $module) {
 				if ($options = $module->option($items, $customer)) {
 					$results[] = [
-						'module_id' => $module_id,
-						'label' => $row['label'],
+						'module_id' => $module->data['module_id'],
+						'label' => $options['label'],
 					];
 				}
 			}

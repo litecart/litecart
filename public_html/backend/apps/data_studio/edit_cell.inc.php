@@ -42,6 +42,7 @@
 		}
 
 		// Determine SQL value and validation
+		$value = $_POST['value'] ?? '';
 		$is_null = false;
 		if ($value === '' && $column_info['null']) {
 			$is_null = true;

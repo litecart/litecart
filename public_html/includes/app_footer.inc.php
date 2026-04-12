@@ -26,7 +26,7 @@
 	event::fire('shutdown');
 
 	// Execute background jobs
-	if (!$last_push = settings::get('jobs_last_push') || strtotime($last_push) < strtotime('-15 minutes')) {
+	if (!($last_push = settings::get('jobs_last_push')) || strtotime($last_push) < strtotime('-15 minutes')) {
 
 		// To avoid using this push method, set up a cron job to call every 5 minutes for the following command:
 		// Example: */5 * * * * php /path/to/your/catalog/index.php push_jobs &>/dev/null

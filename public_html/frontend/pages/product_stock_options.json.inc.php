@@ -103,7 +103,7 @@
 			header('Content-Type: application/json');
 			$json = [
 				'status' => 'ok',
-				'notice' => $notice,
+				'notice' => $notice ?? '',
 			];
 
 			break;
