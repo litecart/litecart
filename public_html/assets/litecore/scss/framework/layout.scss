@@ -4,12 +4,12 @@
 .float-end { float: inline-end; }
 
 .container-fluid, .container {
-	padding: ~"calc(var(--gutter-y)/2)" ~"calc(var(--gutter-x) / 2)";
+	padding: calc(var(--gutter-y)/2) calc(var(--gutter-x) / 2);
 }
 
 .container {
 	box-sizing: content-box;
-	max-width: @media-breakpoint-xxl;
+	max-width: $media-breakpoint-xxl;
 	margin: 0 auto;
 	width: 100%;
 }
@@ -40,22 +40,22 @@
 	display: none !important;
 }
 
-@media (max-width: (@media-breakpoint-sm - 1px)) {
+@media (max-width: ($media-breakpoint-sm - 1px)) {
 	.hidden, .hidden-xs { display: none !important; }
 }
-@media (min-width: (@media-breakpoint-sm)) and (max-width: (@media-breakpoint-md - 1px)) {
+@media (min-width: ($media-breakpoint-sm)) and (max-width: ($media-breakpoint-md - 1px)) {
 	.hidden-sm { display: none !important; }
 }
-@media (min-width: @media-breakpoint-md) and (max-width: (@media-breakpoint-lg - 1px)) {
+@media (min-width: $media-breakpoint-md) and (max-width: ($media-breakpoint-lg - 1px)) {
 	.hidden-md { display: none !important; }
 }
-@media (min-width: @media-breakpoint-lg) and (max-width: (@media-breakpoint-xl - 1px)) {
+@media (min-width: $media-breakpoint-lg) and (max-width: ($media-breakpoint-xl - 1px)) {
 	.hidden-lg { display: none !important; }
 }
-@media (min-width: @media-breakpoint-xl) and (max-width: (@media-breakpoint-xxl - 1px)) {
+@media (min-width: $media-breakpoint-xl) and (max-width: ($media-breakpoint-xxl - 1px)) {
 	.hidden-xl { display: none !important; }
 }
-@media (min-width: @media-breakpoint-xxl) {
+@media (min-width: $media-breakpoint-xxl) {
 	.hidden-xxl { display: none !important; }
 }
 

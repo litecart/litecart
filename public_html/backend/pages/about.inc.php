@@ -138,7 +138,7 @@
 
 		if (($filesize = filesize($log_file)) > 1024e6) {
 			notices::add('warnings', t('warning_truncating_extremely_large_log_file', 'Truncating an extremely large log file') .' ('. f::format_number($filesize / (1024 * 1024)) .' Mbytes)');
-			file_put_contents($logfile, '');
+			file_put_contents($log_file, '');
 		}
 
 		$iniatial_memory_limit = ini_get('memory_limit');

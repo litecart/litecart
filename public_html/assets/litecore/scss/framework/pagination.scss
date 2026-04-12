@@ -16,7 +16,7 @@
 		text-decoration: none;
 
 		.pagination-item + 	.pagination-item {
-			margin-inline-start: ~"calc(0 - var(--pagination-item-border-width))";
+			margin-inline-start: calc(0 - var(--pagination-item-border-width));
 		}
 
 		&:first-child {

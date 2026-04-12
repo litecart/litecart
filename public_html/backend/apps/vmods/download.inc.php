@@ -6,7 +6,7 @@
 			throw new Exception(t('error_must_provide_vmod', 'You must provide a vMod'));
 		}
 
-		$folder = 'storage://addons/' . basename($_GET['vmod']) .'/';
+		$file = 'storage://vmods/' . basename($_GET['vmod']);
 
 		if (!is_file($file)) {
 			throw new Exception(t('error_file_could_not_be_found', 'The file could not be found'));

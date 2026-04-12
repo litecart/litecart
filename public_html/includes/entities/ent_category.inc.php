@@ -205,6 +205,8 @@
 				$this->save();
 			}
 
+			$image = new ent_image($file);
+
 			if (!empty($filename)) {
 				$filename = 'categories/'. $filename;
 			} else {
@@ -218,8 +220,6 @@
 			if (is_file('storage://images/' . $filename)) {
 				unlink('storage://images/' . $filename);
 			}
-
-			$image = new ent_image($file);
 
 			if (settings::get('image_downsample_size')) {
 				list($width, $height) = explode(',', settings::get('image_downsample_size'));
@@ -278,7 +278,7 @@
 			foreach ($this->data['products'] as $product_id) {
 				$product = new ent_product($product_id);
 
-				if (($key = array_search($id, $product->data['categories'])) !== false) {
+				if (($key = array_search($this->data['id'], $product->data['categories'])) !== false) {
 					unset($product->data['categories'][$key]);
 				}
 

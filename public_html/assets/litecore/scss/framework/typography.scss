@@ -36,7 +36,7 @@
 .text-right { text-align: right !important; }
 .text-end { text-align: end !important; }
 
-@media (min-width: @media-breakpoint-sm) {
+@media (min-width: $media-breakpoint-sm) {
 	.text-sm-start { text-align: start !important; }
 	.text-sm-left { text-align: left !important; }
 	.text-sm-center { text-align: center !important; }
@@ -44,7 +44,7 @@
 	.text-sm-end { text-align: end !important; }
 }
 
-@media (min-width: @media-breakpoint-md) {
+@media (min-width: $media-breakpoint-md) {
 	.text-md-start { text-align: start !important; }
 	.text-md-left { text-align: left !important; }
 	.text-md-center { text-align: center !important; }
@@ -52,7 +52,7 @@
 	.text-md-end { text-align: end !important; }
 }
 
-@media (min-width: @media-breakpoint-lg) {
+@media (min-width: $media-breakpoint-lg) {
 	.text-lg-start { text-align: start !important; }
 	.text-lg-left { text-align: left !important; }
 	.text-lg-center { text-align: center !important; }
@@ -60,7 +60,7 @@
 	.text-lg-end { text-align: end !important; }
 }
 
-@media (min-width: @media-breakpoint-xl) {
+@media (min-width: $media-breakpoint-xl) {
 	.text-xl-start { text-align: start !important; }
 	.text-xl-left { text-align: left !important; }
 	.text-xl-center { text-align: center !important; }
@@ -68,7 +68,7 @@
 	.text-xl-end { text-align: end !important; }
 }
 
-@media (min-width: @media-breakpoint-xxl) {
+@media (min-width: $media-breakpoint-xxl) {
 	.text-xxl-start { text-align: start !important; }
 	.text-xxl-left { text-align: left !important; }
 	.text-xxl-center { text-align: center !important; }

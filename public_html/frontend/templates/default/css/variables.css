@@ -7,30 +7,30 @@
 
 /*!
 * LiteCart v3.0.0 - Superfast, lightweight e-commerce platform built without nonsense.
-* @link https://www.litecart.net/
-* @license CC-BY-ND-4.0
+* $link https://www.litecart.net/
+* $license CC-BY-ND-4.0
 */
 /* Media Breakpoints */
 @font-face {
   font-display: swap;
-  font-family: 'Anuphan';
+  font-family: "Anuphan";
   font-style: normal;
   font-weight: 400;
-  src: url('../fonts/anuphan-v6-latin-regular.woff2') format('woff2');
+  src: url("../fonts/anuphan-v6-latin-regular.woff2") format("woff2");
 }
 @font-face {
   font-display: swap;
-  font-family: 'Anuphan';
+  font-family: "Anuphan";
   font-style: normal;
   font-weight: 500;
-  src: url('../fonts/anuphan-v6-latin-500.woff2') format('woff2');
+  src: url("../fonts/anuphan-v6-latin-500.woff2") format("woff2");
 }
 @font-face {
   font-display: swap;
-  font-family: 'Anuphan';
+  font-family: "Anuphan";
   font-style: normal;
   font-weight: 700;
-  src: url('../fonts/anuphan-v6-latin-700.woff2') format('woff2');
+  src: url("../fonts/anuphan-v6-latin-700.woff2") format("woff2");
 }
 /******************** Light Theme ********************/
 :root {
@@ -49,6 +49,20 @@
   /* Framework */
   --gutter-x: 15px;
   --gutter-y: 15px;
+}
+@media (min-width: 576px) {
+  :root {
+    --gutter-x: 20px;
+    --gutter-y: 20px;
+  }
+}
+@media (min-width: 768px) {
+  :root {
+    --gutter-x: 30px;
+    --gutter-y: 30px;
+  }
+}
+:root {
   --border-radius: 10px;
   --whitespace-color: #fff;
   /* Defaults */
@@ -64,7 +78,7 @@
   --badge-background: #c00;
   --badge-text-color: #fff;
   /* Banners */
-  --banner-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+  --banner-shadow: 0 10px 20px rgba(0, 0, 0, .05);
   --banner-shadow: var(--default-shadow);
   /* Breadcrumbs */
   --breadcrumbs-background: #dce0e5;
@@ -77,7 +91,7 @@
   --breadcrumb-item-border-color: #d6d6e1;
   /* Buttons */
   --button-padding-x: 1em;
-  --button-padding-y: 0.55em;
+  --button-padding-y: .55em;
   --button-border-width: 1px;
   --button-shadow: 0 2px 2px 0 rgba(37, 44, 97, 0.15), 0 1px 3px 0 rgba(93, 100, 148, 0.2);
   /* Button: Primary */
@@ -135,7 +149,7 @@
   --dropdown-item-text-color--hover: #222;
   /* Forms */
   --input-padding-x: 1.25em;
-  --input-padding-y: 0.66em;
+  --input-padding-y: .66em;
   --input-background: #eceff1;
   --input-text-color: #000;
   --input-border-color: #e5e6e9;
@@ -155,7 +169,7 @@
   --navbar-text-color: #4e4e55;
   --navbar-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
   --navbar-border-width: 1px;
-  --navbar-border-color: var(--default-border-color);
+  --navbar-border-color:	var(--default-border-color);
   /* Notices */
   --notice-default-background: #e5e3e3;
   --notice-default-text-color: #333;
@@ -229,18 +243,7 @@
   --cookie-notice-background: #334c;
   --cookie-notice-text-color: #fff;
 }
-@media (min-width: 576px) {
-  :root {
-    --gutter-x: 20px;
-    --gutter-y: 20px;
-  }
-}
-@media (min-width: 768px) {
-  :root {
-    --gutter-x: 30px;
-    --gutter-y: 30px;
-  }
-}
+
 /******************** Dark Theme ********************/
 html.dark-mode {
   --scrollbar-thumb-background: #444a5a;

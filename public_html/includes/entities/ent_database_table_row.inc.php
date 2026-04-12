@@ -20,9 +20,9 @@
 			$this->_table = $table;
 
 			if ($id) {
-				$this->_primary_column_name = $id;
+				$this->_primary_column = $id;
 			} else {
-				$this->_primary_column_name = reference::database_table($table)->primary_key;
+				$this->_primary_column = reference::database_table($table)->primary_key;
 			}
 
 			if ($id) {
@@ -49,12 +49,12 @@
 
 			$row = database::query(
 				"select * from `". database::input($this->_table) ."`
-				where `". database::input($this->_primary_column_name) ."` = '". database::input($id) ."'
+				where `". database::input($this->_primary_column) ."` = '". database::input($id) ."'
 				limit 1;"
 			)->fetch();
 
 			if (!$row) {
-				throw new Exception('Could not find row ('. $this->_primary_column_name .': '. $id .') in database.');
+				throw new Exception('Could not find row ('. $this->_primary_column .': '. $id .') in database.');
 			}
 
 			$this->data = array_replace($this->data, array_intersect_key($row, $this->data));
@@ -67,13 +67,17 @@
 			if (!$this->data[$this->_primary_column]) {
 				database::query(
 					"insert into `". database::input($this->_table) ."`
-					(`". implode("`, `", database::input(array_keys($row))) ."`)
-					values ('". implode("', '", database::input($row)) ."');"
+					(`". implode("`, `", database::input(array_keys($this->data))) ."`)
+					values ('". implode("', '", database::input($this->data)) ."');"
 				);
 			} else {
+				$set = array_map(function($value, $key) {
+					return "`". database::input($key) ."` = '". database::input($value) ."'";
+				}, $this->data, array_keys($this->data));
+
 				database::query(
 					"update `". database::input($this->_table) ."`
-					set ". implode(", ", array_walk($row, function($value, $key){ return "`". database::input($key) ."` = '". database::input($value) ."'"; })) ."
+					set ". implode(", ", $set) ."
 					where `". database::input($this->_primary_column) ."` = '". database::input($this->data[$this->_primary_column]) ."'
 					limit 1;"
 				);

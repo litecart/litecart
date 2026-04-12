@@ -1,4 +1,4 @@
-@import "../../../../assets/litecore/less/framework/media.less";
+@import "../../../../assets/litecore/scss/framework/media.scss";
 
 .loader-wrapper {
 	position: fixed;
@@ -196,7 +196,7 @@
 			margin-top: 1em;
 		}
 
-		@media(min-width: @media-breakpoint-sm) {
+		@media(min-width: $media-breakpoint-sm) {
 				padding: 1em;
 		}
 	}
@@ -216,7 +216,7 @@
 		outline: 2px solid var(--color-error);
 		outline-offset: 2px;
 	}
-	@media(min-width: @media-breakpoint-md) {
+	@media(min-width: $media-breakpoint-md) {
 		position: sticky;
 		top: 3.5em;
 	}

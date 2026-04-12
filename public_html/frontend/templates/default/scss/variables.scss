@@ -1,10 +1,10 @@
 /*!
 * LiteCart v3.0.0 - Superfast, lightweight e-commerce platform built without nonsense.
-* @link https://www.litecart.net/
-* @license CC-BY-ND-4.0
+* $link https://www.litecart.net/
+* $license CC-BY-ND-4.0
 */
 
-@import '../../../../assets/litecore/less/framework/media.less';
+@import '../../../../assets/litecore/scss/framework/media.scss';
 
 // anuphan-regular - latin
 @font-face {
@@ -56,12 +56,12 @@
 	--gutter-x: 15px; // See additional for media queries
 	--gutter-y: 15px; // See additional for media queries
 
-	@media (min-width: @media-breakpoint-sm) {
+	@media (min-width: $media-breakpoint-sm) {
 		--gutter-x: 20px;
 		--gutter-y: 20px;
 	}
 
-	@media (min-width: @media-breakpoint-md) {
+	@media (min-width: $media-breakpoint-md) {
 		--gutter-x: 30px;
 		--gutter-y: 30px;
 	}

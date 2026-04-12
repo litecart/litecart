@@ -1,10 +1,10 @@
 /* Notices */
 
-.make-notice(@type: ~'') {
-	&.notice-@{type} {
-		background: ~"var(--notice-@{type}-background)";
-		color: ~"var(--notice-@{type}-text-color)";
-		border: ~"var(--notice-border-width) solid var(--notice-@{type}-border-color)";
+@mixin make-notice($type: '') {
+	&.notice-#{$type} {
+		background: var(--notice-#{$type}-background);
+		color: var(--notice-#{$type}-text-color);
+		border: var(--notice-border-width) solid var(--notice-#{$type}-border-color);
 	}
 }
 
@@ -31,9 +31,9 @@
 		}
 
 		// Notice variations using the mixin
-		.make-notice(default);
-		.make-notice(warning);
-		.make-notice(success);
-		.make-notice(danger);
+		@include make-notice(default);
+		@include make-notice(warning);
+		@include make-notice(success);
+		@include make-notice(danger);
 	}
 }

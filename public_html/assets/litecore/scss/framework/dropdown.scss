@@ -99,10 +99,10 @@
 		background: #e5e5e5;
 	}
 
-	> li > *:not(.btn) {
-		&a:hover,
-		&a:focus,
-		&a:active {
+	> li > a:not(.btn) {
+		&:hover,
+		&:focus,
+		&:active {
 			text-decoration: none;
 			background: #f5f5f5;
 		}

@@ -8,27 +8,27 @@
 /* Media Breakpoints */
 /* Fonts */
 @font-face {
-  font-family: 'Inter';
+  font-family: "Inter";
   font-style: normal;
   font-weight: 400;
   font-swap: swap;
-  src: local(''), url('../fonts/inter-v12-latin-regular.woff2') format('woff2');
+  src: local(""), url("../fonts/inter-v12-latin-regular.woff2") format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 @font-face {
-  font-family: 'Inter';
+  font-family: "Inter";
   font-style: normal;
   font-weight: 500;
   font-swap: swap;
-  src: local(''), url('../fonts/inter-v12-latin-500.woff2') format('woff2');
+  src: local(""), url("../fonts/inter-v12-latin-500.woff2") format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 @font-face {
-  font-family: 'Inter';
+  font-family: "Inter";
   font-style: normal;
   font-weight: 700;
   font-swap: swap;
-  src: local(''), url('../fonts/inter-v12-latin-700.woff2') format('woff2');
+  src: local(""), url("../fonts/inter-v12-latin-700.woff2") format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 /******************** Light Theme ********************/
@@ -61,10 +61,22 @@
   --navigation-background: #f2f3f6;
   --navigation-background--hover: #f2f3f6;
   /* Framework */
-  --gutter-x: 12px;
-  /* See additional for media queries */
-  --gutter-y: 12px;
-  /* See additional for media queries */
+  --gutter-x: 12px; /* See additional for media queries */
+  --gutter-y: 12px; /* See additional for media queries */
+}
+@media (min-width: 576px) {
+  :root {
+    --gutter-x: 15px;
+    --gutter-y: 15px;
+  }
+}
+@media (min-width: 768px) {
+  :root {
+    --gutter-x: 20px;
+    --gutter-y: 20px;
+  }
+}
+:root {
   --border-radius: 6px;
   --whitespace-color: #fff;
   --default-text-font: Inter, Arial, 'Helvetica Neue', Helvetica, sans-serif;
@@ -73,11 +85,11 @@
   --default-line-height: 1.2;
   --default-title-color: #333;
   --default-border-color: #f2f3f7;
-  --default-shadow: 0 0 0 0 #0000, 0 0 0 0 #0000, 0 5px 8px -3px rgba(0, 0, 0, 0.1), 0 2px 3px -2px rgba(0, 0, 0, 0.1);
+  --default-shadow: 0 0 0 0 #0000, 0 0 0 0 #0000, 0 5px 8px -3px rgba(0, 0, 0, .1), 0 2px 3px -2px rgba(0, 0, 0, .1);
   --link-text-color: #06b;
   /* Forms */
   --input-padding-x: 1em;
-  --input-padding-y: 0.66em;
+  --input-padding-y: .66em;
   --input-background: #ededee;
   --input-text-color: #000;
   --input-border-color: transparent;
@@ -104,19 +116,19 @@
   --breadcrumb-item-text-color: #3c3c3c;
   /* Buttons */
   --button-padding-x: 1.25em;
-  --button-padding-y: 0.55em;
+  --button-padding-y: .55em;
   --button-border-width: 1px;
   --button-shadow: 0 1px 2px 0 rgba(37, 44, 97, 0.15), 0 1px 2px 0 rgba(93, 100, 148, 0.2);
   --button-shadow--active: 0 1px 0px 0 rgba(37, 44, 97, 0.15), 0 0px 2px 0 rgba(93, 100, 148, 0.2);
-  --button-shadow--active: inset 0px 1px 0 0 rgba(0, 0, 0, 0.05);
+  --button-shadow--active: inset 0px 1px 0 0 rgba(0,0,0,.05);
   /* Primary Button */
   --button-primary-background: #3ba5c6;
   --button-primary-background--active: #2f8fae;
   --button-primary-background--hover: #2f8fae;
   --button-primary-text-color: #fff;
-  --button-primary-border-color: rgba(0, 0, 0, 0.1);
-  --button-primary-border-color--active: rgba(0, 0, 0, 0.1);
-  --button-primary-border-color--hover: rgba(0, 0, 0, 0.1);
+  --button-primary-border-color: rgba(0, 0, 0, .1);
+  --button-primary-border-color--active: rgba(0, 0, 0, .1);
+  --button-primary-border-color--hover: rgba(0, 0, 0, .1);
   /* Default Button */
   --button-default-background: #ededee;
   --button-default-background--hover: #e3e4e9;
@@ -130,17 +142,17 @@
   --button-success-background--hover: #7faf26;
   --button-success-background--active: #7faf26;
   --button-success-text-color: #fff;
-  --button-success-border-color: rgba(0, 0, 0, 0.1);
-  --button-success-border-color--hover: rgba(0, 0, 0, 0.1);
-  --button-success-border-color--active: rgba(0, 0, 0, 0.1);
+  --button-success-border-color: rgba(0, 0, 0, .1);
+  --button-success-border-color--hover: rgba(0, 0, 0, .1);
+  --button-success-border-color--active: rgba(0, 0, 0, .1);
   /* Danger Button */
   --button-danger-background: #d9534f;
   --button-danger-background--hover: #d04a46;
   --button-danger-background--active: #d04a46;
   --button-danger-text-color: #fff;
-  --button-danger-border-color: rgba(0, 0, 0, 0.1);
-  --button-danger-border-color--hover: rgba(0, 0, 0, 0.1);
-  --button-danger-border-color--active: rgba(0, 0, 0, 0.1);
+  --button-danger-border-color: rgba(0, 0, 0, .1);
+  --button-danger-border-color--hover: rgba(0, 0, 0, .1);
+  --button-danger-border-color--active: rgba(0, 0, 0, .1);
   /* Outline Button */
   --button-outline-background: transparent;
   --button-outline-background--hover: transparent;
@@ -156,9 +168,9 @@
   --card-title-text-weight: 700;
   --card-border-color: transparent;
   --card-border-width: 0;
-  --card-shadow: 0 0 0 0 #0000, 0 0 0 0 #0000, 0 5px 8px -3px rgba(0, 0, 0, 0.1), 0 2px 3px -2px rgba(0, 0, 0, 0.1);
+  --card-shadow: 0 0 0 0 #0000, 0 0 0 0 #0000, 0 5px 8px -3px rgba(0, 0, 0, .1), 0 2px 3px -2px rgba(0, 0, 0, .1);
   --card-footer-background: #f4f6fb;
-  --carousel-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  --carousel-shadow: 0 10px 20px rgba(0, 0, 0, .15);
   /* Dropdowns */
   --dropdown-background: #fff;
   --dropdown-text-color: var(--default-text-color);
@@ -188,6 +200,7 @@
   --notice-danger-border-color: #fff;
   /* Pagination */
   --pagination-item-background: #fff;
+  --pagination-item-background--hover: #c8cbd0;
   --pagination-item-text-color: var(--navbar-text-color);
   --pagination-item-border-color: var(--default-border-color);
   --pagination-item-border-width: 1px;
@@ -227,22 +240,11 @@
   --table-link-text-color: var(--default-text-color);
   --table-link-background--hover: #b9bfc6;
   --table-link-shadow: 0 0 1px 0 rgba(37, 44, 97, 0.15), 0 1px 1px 0 rgba(93, 100, 148, 0.2);
-  --table-link-shadow--active: inset 0px 1px 0 0 rgba(0, 0, 0, 0.05);
+  --table-link-shadow--active: inset 0px 1px 0 0 rgba(0,0,0,.05);
   --table-footer-background: #fbfcfd;
   --table-footer-text-color: var(--default-text-color);
 }
-@media (min-width: 576px) {
-  :root {
-    --gutter-x: 15px;
-    --gutter-y: 15px;
-  }
-}
-@media (min-width: 768px) {
-  :root {
-    --gutter-x: 20px;
-    --gutter-y: 20px;
-  }
-}
+
 /******************** Dark Theme ********************/
 html.dark-mode {
   --site-background: #1e222a;
@@ -341,14 +343,14 @@ html.dark-mode {
   --button-success-background--hover: #63871b;
   --button-success-background--active: #63871b;
   --button-success-text-color: #fff;
-  --button-success-border-color: rgba(0, 0, 0, 0.1);
-  --button-success-border-color--hover: rgba(0, 0, 0, 0.1);
-  --button-success-border-color--active: rgba(0, 0, 0, 0.1);
+  --button-success-border-color: rgba(0, 0, 0, .1);
+  --button-success-border-color--hover: rgba(0, 0, 0, .1);
+  --button-success-border-color--active: rgba(0, 0, 0, .1);
   --button-danger-background: #3c2a29;
   --button-danger-background--hover: #482927;
   --button-danger-background--active: #482927;
   --button-danger-text-color: #fff;
-  --button-danger-border-color: rgba(0, 0, 0, 0.1);
-  --button-danger-border-color--hover: rgba(0, 0, 0, 0.1);
-  --button-danger-border-color--active: rgba(0, 0, 0, 0.1);
+  --button-danger-border-color: rgba(0, 0, 0, .1);
+  --button-danger-border-color--hover: rgba(0, 0, 0, .1);
+  --button-danger-border-color--active: rgba(0, 0, 0, .1);
 }

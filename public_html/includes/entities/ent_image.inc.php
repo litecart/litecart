@@ -327,7 +327,7 @@
 
 			$tmp_file = f::file_create_tempfile($binary);
 
-			$this->load($tmp_file);
+			return $this->load($tmp_file);
 		}
 
 		public function resample($max_width=1024, $max_height=1024, $clipping='FIT_ONLY_BIGGER') {
@@ -877,7 +877,7 @@
 					if (function_exists('exif_read_data')) {
 
 						// Get the EXIF data of the image
-						$exif = exif_read_data($filename);
+						$exif = exif_read_data($this->_file);
 
 						// Check if orientation data exists
 						if (isset($exif['Orientation'])) {
