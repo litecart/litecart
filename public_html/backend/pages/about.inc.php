@@ -53,11 +53,11 @@
 
 			while ($line = fgets($fh)) {
 				$pieces = [];
-				if (preg_match('/^MemTotal:\s+(\d+)\skB$/', $line, $pieces)) {
+				if (preg_match('#^MemTotal:\s+(\d+)\skB$#', $line, $pieces)) {
 					$ram_usage = $pieces[1];
 					continue;
 				}
-				if (preg_match('/^MemFree:\s+(\d+)\skB$/', $line, $pieces)) {
+				if (preg_match('#^MemFree:\s+(\d+)\skB$#', $line, $pieces)) {
 					$ram_free = $pieces[1];
 					continue;
 				}
@@ -124,11 +124,11 @@
 	sort($php['disabled_functions'], SORT_NATURAL);
 
 	$database = [
-			'name' => database::server_info(),
-			'library' => mysqli_get_client_info(),
-			'hostname' => DB_SERVER,
-			'user' => DB_USERNAME,
-			'database' => DB_DATABASE,
+		'name' => database::server_info(),
+		'library' => mysqli_get_client_info(),
+		'hostname' => DB_SERVER,
+		'user' => DB_USERNAME,
+		'database' => DB_DATABASE,
 	];
 
 	// Errors
@@ -368,6 +368,7 @@
 						<th colspan="2">PHP</th>
 					</tr>
 				</thead>
+
 				<tbody>
 					<tr>
 						<th>Version</th>

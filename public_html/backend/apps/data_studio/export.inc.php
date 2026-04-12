@@ -19,6 +19,7 @@
 
 	if (isset($_POST['export'])) {
 		try {
+
 			if (empty($_POST['format'])) {
 				throw new Exception(t('error_must_select_format', 'You must select a format'));
 			}

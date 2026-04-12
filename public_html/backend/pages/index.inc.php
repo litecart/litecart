@@ -24,14 +24,15 @@
 			return;
 		}
 
-		// Make sure document exists
-		if (!file_exists('app://backend/apps/'. __APP__ .'/'. $app_config['docs'][__DOC__])) {
+		// Resolve requested document file
+		$doc_file = isset($app_config['docs'][__DOC__]) ? $app_config['docs'][__DOC__] : null;
+		if (!$doc_file || !file_exists('app://backend/apps/'. __APP__ .'/'. $doc_file)) {
 			notices::add('errors', __APP__ .'/'. f::escape_html(__DOC__) . ' is not a valid app document');
 			return;
 		}
 
 		// Render the app document
-		$_content = new ent_view('app://backend/apps/'. __APP__ .'/'. $app_config['docs'][__DOC__]);
+		$_content = new ent_view('app://backend/apps/'. __APP__ .'/'. $doc_file);
 
 		$_content->snippets = [
 			'app_icon' => implode(PHP_EOL, [

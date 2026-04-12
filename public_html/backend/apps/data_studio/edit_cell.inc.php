@@ -52,11 +52,11 @@
 			// Determine value based on column type (switch for clarity)
 			switch (true) {
 
-				case preg_match('/^tinyint\\(1\\)/i', $column_info['type']):
+				case preg_match('#^tinyint\(1\)#i', $column_info['type']):
 					$val = ($value === '1' || strtolower($value) === 'true' || $value === 'on') ? 1 : 0;
 					break;
 
-				case preg_match('/int|tinyint|smallint|mediumint|bigint/i', $column_info['type']):
+				case preg_match('#int|tinyint|smallint|mediumint|bigint#i', $column_info['type']):
 					if ($value === null || $value === '') {
 						$val = 0;
 					} else if (!is_numeric($value)) {
@@ -69,7 +69,7 @@
 					}
 					break;
 
-				case preg_match('/decimal|float|double/i', $column_info['type']):
+				case preg_match('#decimal|float|double#i', $column_info['type']):
 					if ($value === null || $value === '') {
 						$val = 0;
 					} else if (!is_numeric($value)) {
@@ -112,8 +112,8 @@
 			$display = $val;
 
 			// Zerofill handling for integer types
-			if ($column_info['zerofill'] && preg_match('/^\d+/', $column_info['type'])) {
-				$width = (int)preg_replace('/,.*$/', '', $column_info['type']);
+			if ($column_info['zerofill'] && preg_match('#^\d+#', $column_info['type'])) {
+				$width = (int)preg_replace('#,.*$#', '', $column_info['type']);
 				if (is_numeric($display)) {
 					$display = str_pad((string)$display, $width, '0', STR_PAD_LEFT);
 				}

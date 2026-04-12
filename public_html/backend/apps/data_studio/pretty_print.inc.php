@@ -1,9 +1,9 @@
 <?php
 
-/*
+/*!
  * MySQL Pretty Print
- * @author T. Almroth <info@international.net>
- * https://www.tim-international.net/
+ * @author T. Almroth - LiteCart AB <info@litecart.net>
+ * @website https://www.litecart.net/
  */
 
 	function mysql_pretty_print($query, $indentation="\t") {
@@ -71,10 +71,10 @@
 			'UUID', 'VARIANCE', 'VAR_POP', 'VAR_SAMP', 'VERSION', 'WEEK', 'WEEKDAY', 'WEEKOFYEAR', 'WITHIN', 'X', 'Y', 'YEAR', 'YEARWEEK'
 		];
 
-	// Step through each character in the query
+		// Step through each character in the query
 		for ($i = 0; $i < strlen($query); $i++) {
 
-		// Skip over a value clause
+			// Skip over a value clause
 			if (preg_match("#[`']s#", $query[$i]) && $query[$i - 1] != "\\") {
 				$value_wrapper = $query[$i];
 				for ($n = $i + 1; $n < strlen($query); $n++) {
@@ -82,12 +82,12 @@
 				}
 				$i = $n;
 
-			// Restart at cursor position
+				// Restart at cursor position
 				$i--;
 				continue;
 			}
 
-		// Remove #comments
+			// Remove #comments
 			if ($query[$i] == '#' && ($i == 0 || $query[$i-1] != "\\")) {
 				for ($n = $i + 1; $n < strlen($query); $n++) {
 					if (($query[$n] == "\r" || $query[$n] == "\n") && $query[$n - 1] != "\\") {
@@ -97,15 +97,15 @@
 				}
 				$query = substr($query, 0, $i) . substr($query, $n + 1);
 
-			// Restart at cursor position
+				// Restart at cursor position
 				$i--;
 				continue;
 			}
 
-		// Remove -- comments
+			// Remove -- comments
 			if ($query[$i] == '-' && $query[$i+1] == '-' && $query[$i+2] == ' ') {
 
-			// Find end of line
+				// Find end of line
 				for ($n = $i + 3; $n < strlen($query); $n++) {
 					if ($query[$n] == "\r" || $query[$n] == "\n") {
 						if ($query[$n] == "\r" && $query[$n+1] == "\n") $n++; // Windows CRLF
@@ -113,76 +113,76 @@
 					}
 				}
 
-			// Commit replacement
+				// Commit replacement
 				$query = substr($query, 0, $i) . substr($query, $n + 1);
 
-			// Restart at cursor position
+				// Restart at cursor position
 				$i--;
 				continue;
 			}
 
-		// Remove /* comments */
+			// Remove /* comments */
 			if ($query[$i] == '/' && $query[$i+1] == '*') {
 
-			// Find end of comment
+				// Find end of comment
 				for ($n = $i + 2; $n < strlen($query); $n++) {
 					if ($query[$n] == '/' && $query[$n-1] == '*') break;
 				}
 
-			// Commit replacement
+				// Commit replacement
 				$query = substr($query, 0, $i) . substr($query, $n + 1);
 
-			// Restart at cursor position
+				// Restart at cursor position
 				$i--;
 				continue;
 			}
 
-		// Reformat commas
+			// Reformat commas
 			if ($query[$i] == ',') {
 
-			// Consume preceeding whitespace characters
+				// Consume preceeding whitespace characters
 				while ($i > 0 && preg_match('#\s#', $query[$i - 1])) {
 					$i--;
 				}
 
-			// Consume trailing whitespace characters
+				// Consume trailing whitespace characters
 				$n = $i + 1;
 				while ($n < strlen($query) && isset($query[$n + 1]) && preg_match('#\s#', $query[$n + 1])) {
 					$n++;
 				}
 
-			// Commit replacement
+				// Commit replacement
 				$replacement = ', ';
 				$query = substr($query, 0, $i) . $replacement . substr($query, $n + 1);
 
-			// Set internal cursor
+				// Set internal cursor
 				$i += strlen($replacement) -1;
 				continue;
 			}
 
-		// Reformat newline commands
+			// Reformat newline commands
 			foreach ($newline_commands as $find) {
 				$find_length = strlen($find);
 
-			// Match $find and lookaround 1 chars to be certain
+				// Match $find and lookaround 1 chars to be certain
 				if (!preg_match("#^". preg_quote($find, '#') ."$#i", substr($query, $i, $find_length))) continue;
 				if (!preg_match("#(^|\s)". preg_quote($find, '#') ."(\s|$)#i", substr($query, ($i == 0) ? $i : $i - 1, ($i == 0) ? $find_length + 1 : $find_length + 2))) continue;
 
-			// Consume preceeding whitespace characters
+				// Consume preceeding whitespace characters
 				while ($i > 0 && preg_match('#\s#', $query[$i - 1])) {
 					$i--;
 				}
 
-			// Consume trailing whitespace characters
+				// Consume trailing whitespace characters
 				$n = $i + $find_length;
 				while ($n < strlen($query) && isset($query[$n + 1]) && preg_match('#\s#', $query[$n + 1])) {
 					$n++;
 				}
 
-			// Process paranthesized subquery
+				// Process paranthesized subquery
 				if ($find == 'SELECT' && $query[$i-1] == '(') {
 
-				// Find ending paranthesis
+					// Find ending paranthesis
 					$e = $i + $find_length;
 					$paranthesis_depth = 1;
 					while ($e < strlen($query) && isset($query[$e + 1]) && ($query[$e + 1] != ')' || $query[$e] == '\\' || $paranthesis_depth != 1)) {
@@ -191,53 +191,53 @@
 						$e++;
 					}
 
-				// Format subquery
+					// Format subquery
 					$formatted_subquery = mysql_pretty_print(substr($query, $i, $e-$i+1), $indentation);
 
-				// Commit replacement
+					// Commit replacement
 					$replacement = "\n". preg_replace('#^([\t| ]*)#m', $indentation.'$1', $formatted_subquery) ."\n";
 					$query = substr($query, 0, $i) . $replacement . substr($query, $e + 1);
 
-				// Set internal cursor
+					// Set internal cursor
 					$i += strlen($replacement) -1;
 					continue 2;
 				}
 
-			// Commit replacement
+				// Commit replacement
 				$replacement = "\n" . str_repeat($indentation, $depth) . $find . ' ';
 
 				$query = substr($query, 0, $i) . $replacement . substr($query, $n + 1);
 
-			// Set internal cursor
+				// Set internal cursor
 				$i += strlen($replacement) -1;
 				continue 2;
 			}
 
-		// Reformat inline commands
+			// Reformat inline commands
 			foreach ($inline_commands as $find) {
 				$find_length = strlen($find);
 
-			// Match $find and lookaround 1 chars to be certain
+				// Match $find and lookaround 1 chars to be certain
 				if (!preg_match('#^'. preg_quote($find, '#') .'$#i', substr($query, $i, $find_length))) continue;
 				if (!preg_match('#(^|\s)'. preg_quote($find, '#') .'(\s|\(|$)#i', substr($query, ($i == 0) ? $i : $i - 1, ($i == 0) ? $find_length + 1 : $find_length + 2))) continue;
 
-			// Consume preceeding whitespace characters
+				// Consume preceeding whitespace characters
 				while ($i > 0 && preg_match('#\s#', $query[$i - 1])) {
 					$i--;
 				}
 
-			// Consume trailing whitespace characters
+				// Consume trailing whitespace characters
 				$n = $i + $find_length;
 				while ($n < strlen($query) && isset($query[$n + 1]) && preg_match('#\s#', $query[$n + 1])) {
 					$n++;
 				}
 
-			// Commit replacement
+				// Commit replacement
 				$replacement = ' ' . $find . ' ';
 
 				$query = substr($query, 0, $i) . $replacement . substr($query, $n + 1);
 
-			// Set internal cursor
+				// Set internal cursor
 				$i += strlen($replacement) -1;
 				continue 2;
 			}
@@ -247,10 +247,15 @@
 	}
 
 	try {
-		if (empty($_POST['query'])) throw new Exception('No query specified');
+
+		if (empty($_POST['query'])) {
+			throw new Exception('No query specified');
+		}
+
 		header('Content-Type: text/plain; charset=utf-8');
 		echo mysql_pretty_print($_POST['query']);
 		exit;
+
 	} catch (Exception $e) {
 		header('HTTP/1.1 400 Bad Request');
 		echo $e->getMessage();
