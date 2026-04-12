@@ -15,7 +15,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -128,10 +128,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: '24'
 
@@ -144,9 +144,9 @@ jobs:
           npx gulp js-backend
           npx gulp js-frontend
           npx gulp js-trumbowyg
-          npx gulp less-framework
-          npx gulp less-backend
-          npx gulp less-frontend
+          npx gulp scss-framework
+          npx gulp scss-backend
+          npx gulp scss-frontend
           npx gulp sass-chartist
           npx gulp sass-trumbowyg
 
@@ -173,7 +173,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2

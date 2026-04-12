@@ -39,7 +39,7 @@
 			vertical-align: middle;
 		}
 
-		@media (min-width: @media-breakpoint-md) {
+		@media (min-width: $media-breakpoint-md) {
 			flex: 0 1 auto;
 		}
 	}
@@ -61,7 +61,7 @@
 
 		transition: margin 200ms ease-out;
 
-		@media (min-width: @media-breakpoint-md) {
+		@media (min-width: $media-breakpoint-md) {
 			position: relative;
 			top: auto;
 			width: auto;
@@ -79,7 +79,7 @@
 	.navbar-search {
 		order: -1;
 		padding: .5em;
-		@media (min-width: @media-breakpoint-md) {
+		@media (min-width: $media-breakpoint-md) {
 			flex-grow: 1;
 			order: initial;
 		}
@@ -111,7 +111,7 @@
 			&:not(.open) > .navbar-item:hover {
 				backdrop-filter: brightness(.9);
 			}
-			@media (min-width: @media-breakpoint-md) {
+			@media (min-width: $media-breakpoint-md) {
 				width: auto;
 			}
 		}
@@ -136,8 +136,8 @@
 
 	.navbar-form {
 		margin: .25rem;
-		@media (min-width: @media-breakpoint-md) {
-			margin: ~"calc(.25rem + 1px)";
+		@media (min-width: $media-breakpoint-md) {
+			margin: calc(.25rem + 1px);
 		}
 	}
 
@@ -199,7 +199,7 @@
 			}
 		}
 
-		@media (max-width: (@media-breakpoint-md - 1px)) {
+		@media (max-width: ($media-breakpoint-md - 1px)) {
 			.navbar-menu {
 				height: 100vh;
 				overflow-y: auto;
@@ -236,7 +236,7 @@
 			display: block;
 			overflow-y: auto;
 		}
-		@media (min-width: @media-breakpoint-md) {
+		@media (min-width: $media-breakpoint-md) {
 			width: auto;
 			border-top: 0;
 			box-shadow: none;
@@ -252,7 +252,7 @@
 		}
 	}
 
-	@media (min-width: @media-breakpoint-md) {
+	@media (min-width: $media-breakpoint-md) {
 
 		.navbar-toggle {
 			display: none;

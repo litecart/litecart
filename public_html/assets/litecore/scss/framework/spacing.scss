@@ -1,0 +1,53 @@
+/* Spacing */
+
+@mixin m($id, $size) {
+	.m-#{$id} { margin: $size; }
+	.mx-#{$id} { margin-inline-start: $size; margin-inline-end: $size; }
+	.my-#{$id} { margin-top: $size; margin-bottom: $size; }
+	.mt-#{$id} { margin-top: $size; }
+	.mb-#{$id} { margin-top: $size; }
+	.ml-#{$id} { margin-top: $size; }
+	.mr-#{$id} { margin-top: $size; }
+}
+
+@mixin p($id, $size) {
+	.p-#{$id} { padding: $size; }
+	.px-#{$id} { padding-inline-start: $size; padding-inline-end: $size; }
+	.py-#{$id} { padding-top: $size; padding-bottom: $size; }
+	.pt-#{$id} { padding-top: $size; }
+	.pb-#{$id} { padding-top: $size; }
+	.pl-#{$id} { padding-top: $size; }
+	.pr-#{$id} { padding-top: $size; }
+}
+
+@include m(1, .25rem);
+@include m(2, .5rem);
+@include m(3, 1rem);
+@include m(4, 2rem);
+
+@include p(1, .25rem);
+@include p(2, .5rem);
+@include p(3, 1rem);
+@include p(4, 2rem);
+
+/*
+.pt-0 {	padding-top: 0; }
+.pt-1 {	padding-top: 1em; }
+.pt-2 {	padding-top: 2em; }
+.pb-0 {	padding-bottom: 0; }
+.pb-1 {	padding-bottom: 1em; }
+.pb-2 {	padding-bottom: 2em; }
+
+.mt-0 {	margin-top: 0; }
+.mt-1 {	margin-top: 1em; }
+.mt-2 {	margin-top: 2em; }
+.mb-0 {	margin-bottom: 0; }
+.mb-1 {	margin-bottom: 1em; }
+.mb-2 {	margin-bottom: 2em; }
+.mx-0 {	margin-inline-start: 0; margin-inline-end: 0; }
+.mx-1 {	margin-inline-start: 1em; margin-inline-end: 1em; }
+.mx-2 {	margin-inline-start: 2em; margin-inline-start: 2em; }
+.my-0 {	margin-top: 0; margin-bottom: 0; }
+.my-1 {	margin-top: 1em; margin-bottom: 1em; }
+.my-2 {	margin-top: 2em; margin-bottom: 2em; }
+*/

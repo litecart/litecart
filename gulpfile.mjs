@@ -3,7 +3,7 @@ import cleancss from '@sequencemedia/gulp-clean-css';
 import concat from 'gulp-concat';
 import download from 'gulp-fetch';
 import header from 'gulp-header';
-import less from 'gulp-less';
+// LESS removed — all styles now use SCSS via dart-sass
 import phplint from 'gulp-phplint';
 import rename from 'gulp-rename';
 import replace from 'gulp-replace';
@@ -27,15 +27,11 @@ const banner = [
 	'',
 ].join('\n');
 
-gulp.task('less-framework', function() {
+gulp.task('scss-framework', function() {
 
-	return gulp.src(['public_html/assets/litecore/less/*.less'])
+	return gulp.src(['public_html/assets/litecore/scss/*.scss'])
 		.pipe(sourcemaps.init())
-		.pipe(less())
-		.on('error', function (err) {
-			console.error('LESS Error:', err.message);
-			this.emit('end'); // Prevents Gulp from stopping
-		})
+		.pipe(sass({ silenceDeprecations: ['import'] }).on('error', sass.logError))
 		.pipe(gulp.dest('public_html/assets/litecore/css/', { overwrite: true }))
 		.pipe(cleancss())
 		.pipe(header(banner, { pkg: packageData }))
@@ -58,25 +54,16 @@ gulp.task('js-framework', function() {
 		.pipe(gulp.dest('public_html/assets/litecore/js/', { overwrite: true }));
 });
 
-// Compile LESS files
-gulp.task('less-backend', function() {
+gulp.task('scss-backend', function() {
 
-	gulp.src('public_html/backend/template/less/vari*bles.less') // non-globstar pattern will fail on some windows paths
-		.pipe(less())
-		.on('error', function (err) {
-			console.error('LESS Error:', err.message);
-			this.emit('end'); // Prevents Gulp from stopping
-		})
+	gulp.src('public_html/backend/template/scss/vari*bles.scss')
+		.pipe(sass({ silenceDeprecations: ['import'] }).on('error', sass.logError))
 		.pipe(header(banner, { pkg: packageData }))
 		.pipe(gulp.dest('public_html/backend/template/css/', { overwrite: true }));
 
-	return gulp.src(['public_html/backend/template/less/*.less', '!public_html/backend/template/less/variables.less'])
+	return gulp.src(['public_html/backend/template/scss/*.scss', '!public_html/backend/template/scss/variables.scss'])
 		.pipe(sourcemaps.init())
-		.pipe(less())
-		.on('error', function (err) {
-			console.error('LESS Error:', err.message);
-			this.emit('end'); // Prevents Gulp from stopping
-		})
+		.pipe(sass({ silenceDeprecations: ['import'] }).on('error', sass.logError))
 		.pipe(header(banner, { pkg: packageData }))
 		.pipe(cleancss())
 		.pipe(rename({ extname: '.min.css' }))
@@ -109,24 +96,16 @@ gulp.task('js-trumbowyg', function() {
 		.pipe(gulp.dest('public_html/assets/trumbowyg/', { overwrite: true }));
 });
 
-gulp.task('less-frontend', function() {
+gulp.task('scss-frontend', function() {
 
-	gulp.src('public_html/frontend/templates/default/less/vari*bles.less') // non-globstar pattern will fail on some windows paths
-		.pipe(less())
-		.on('error', function (err) {
-			console.error('LESS Error:', err.message);
-			this.emit('end'); // Prevents Gulp from stopping
-		})
+	gulp.src('public_html/frontend/templates/default/scss/vari*bles.scss')
+		.pipe(sass({ silenceDeprecations: ['import'] }).on('error', sass.logError))
 		.pipe(header(banner, { pkg: packageData }))
 		.pipe(gulp.dest('public_html/frontend/templates/default/css/', { overwrite: true }));
 
-	return gulp.src(['public_html/frontend/templates/default/less/*.less', '!public_html/frontend/templates/default/less/variables*.less'])
+	return gulp.src(['public_html/frontend/templates/default/scss/*.scss', '!public_html/frontend/templates/default/scss/variables*.scss'])
 		.pipe(sourcemaps.init())
-		.pipe(less())
-		.on('error', function (err) {
-			console.error('LESS Error:', err.message);
-			this.emit('end'); // Prevents Gulp from stopping
-		})
+		.pipe(sass({ silenceDeprecations: ['import'] }).on('error', sass.logError))
 		.pipe(gulp.dest('public_html/frontend/templates/default/css/', { overwrite: true }))
 		.pipe(cleancss())
 		.pipe(header(banner, { pkg: packageData }))
@@ -186,7 +165,7 @@ gulp.task('iconly', function() {
 	download({ url: 'https://dev.iconly.io/public/OoTc8FJRmnEY/iconly.woff2', filename: 'fonticons.woff2' })
 		.pipe(gulp.dest('public_html/assets/litecore/fonts/'));
 
-	return download({ url: 'https://dev.iconly.io/public/OoTc8FJRmnEY/iconly.css', filename: 'fonticons.less' })
+	return download({ url: 'https://dev.iconly.io/public/OoTc8FJRmnEY/iconly.css', filename: 'fonticons.scss' })
 		.pipe(replace(/^\/\*\!.*?(?=\n.icon-)/gs, [
 			'',
 			'@font-face {',
@@ -215,19 +194,19 @@ gulp.task('iconly', function() {
 			'',
 		].join('\n')))
 		.pipe(replace(/(\.icon-[^:]+:before)\s*\{\s*([^}]+?)\s*\}\s*/g, '$1 { $2 }\n'))
-		.pipe(gulp.dest('public_html/assets/litecore/less/framework/'));
+		.pipe(gulp.dest('public_html/assets/litecore/scss/framework/'));
 });
 
 // Watch files for changes
 gulp.task('watch', function() {
 	gulp.watch('public_html/assets/chartist/chartist.scss', gulp.series('sass-chartist'))
-	gulp.watch('public_html/assets/litecore/less/**/*.less', gulp.series('less-framework'))
+	gulp.watch('public_html/assets/litecore/scss/**/*.scss', gulp.series('scss-framework'))
 	gulp.watch('public_html/assets/litecore/js/components/*.js', gulp.series('js-framework'))
 	gulp.watch('public_html/assets/trumbowyg/trumbowyg.js', gulp.series('js-trumbowyg'))
 	gulp.watch('public_html/assets/trumbowyg/**/*.scss', gulp.series('sass-trumbowyg'))
-	gulp.watch('public_html/backend/template/less/**/*.less', gulp.series('less-backend'))
+	gulp.watch('public_html/backend/template/scss/**/*.scss', gulp.series('scss-backend'))
 	gulp.watch('public_html/backend/template/js/components/*.js', gulp.series('js-backend'))
-	gulp.watch('public_html/frontend/templates/default/less/**/*.less', gulp.series('less-frontend'))
+	gulp.watch('public_html/frontend/templates/default/scss/**/*.scss', gulp.series('scss-frontend'))
 	gulp.watch('public_html/frontend/templates/default/js/components/*.js', gulp.series('js-frontend'))
 });
 
@@ -237,9 +216,9 @@ gulp.task('build', gulp.series(
 	'js-backend',
 	'js-frontend',
 	'js-trumbowyg',
-	'less-framework',
-	'less-backend',
-	'less-frontend',
+	'scss-framework',
+	'scss-backend',
+	'scss-frontend',
 	'sass-chartist',
 	'sass-trumbowyg',
 	'watch',

@@ -1,6 +1,7 @@
 :root {
   --page-margin: 10mm;
 }
+
 .page {
   position: relative;
   display: flex;
@@ -10,42 +11,42 @@
   color: #444;
   overflow: hidden;
 }
-.page[data-size="A4"] {
+.page[data-size=A4] {
   page: A4;
   width: 210mm;
   height: 297mm;
 }
-.page[data-size="A4R"] {
+.page[data-size=A4R] {
   page: A4R;
   width: 297mm;
   height: 210mm;
 }
-.page[data-size="A5"] {
+.page[data-size=A5] {
   page: A5;
   width: 148mm;
   height: 210mm;
 }
-.page[data-size="A5R"] {
+.page[data-size=A5R] {
   page: A5R;
   width: 210mm;
   height: 148mm;
 }
-.page[data-size="A6"] {
+.page[data-size=A6] {
   page: A6;
   width: 105mm;
   height: 148mm;
 }
-.page[data-size="A6R"] {
+.page[data-size=A6R] {
   page: A6R;
   width: 148mm;
   height: 105mm;
 }
-.page[data-size="US-Letter"] {
+.page[data-size=US-Letter] {
   page: US-Letter;
   width: 8.5in;
   height: 11in;
 }
-.page[data-size="US-Legal"] {
+.page[data-size=US-Legal] {
   page: US-Legal;
   width: 8.5in;
   height: 14in;
@@ -64,9 +65,11 @@
   padding: var(--page-margin);
   padding-top: 0;
 }
+
 hr {
   border-color: var(--default-border-color);
 }
+
 @media print {
   @page {
     margin: 0;
@@ -106,10 +109,7 @@ hr {
   h1 {
     margin-top: 0;
   }
-  a:link,
-  a:visited,
-  a:hover,
-  a:active {
+  a:link, a:visited, a:hover, a:active {
     color: inherit;
   }
   .page-break {
