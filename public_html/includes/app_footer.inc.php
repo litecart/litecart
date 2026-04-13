@@ -4,7 +4,7 @@
 
 	stats::start_watch('after_content');
 
-	// Site the captured output buffer
+	// Store the captured output buffer
 	document::$content = ob_get_contents();
 	ob_clean();
 
