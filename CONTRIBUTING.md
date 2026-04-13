@@ -71,10 +71,12 @@ If you are new to Git, we recommend SourceTree or GitHub Desktop as a great grap
 
 ```bash
 # Clone the repo
-git clone dev https://github.com/you/litecart.git
+git clone https://github.com/you/litecart.git
+cd litecart
+git checkout dev
 ```
 
-2. Add the official repository as second source, and let's call it `upstream`.
+3. Add the official repository as second source, and let's call it `upstream`.
 
 ```bash
 # Add official repo
@@ -84,30 +86,26 @@ git remote add upstream https://github.com/litecart/litecart.git
 git fetch upstream
 ```
 
-3. Create a new local branch for your new feature or modification, based on the state of the `dev` branch of the official repository (upstream).
+4. Create a new local branch for your new feature or modification, based on the state of the `dev` branch of the official repository (upstream).
 
 ```bash
 git checkout -b mynewfeature upstream/dev
 ```
 
-4. Commit your changes and push the new branch to your forked repository.
+5. Commit your changes and push the new branch to your forked repository.
 
 ```bash
-# Cherry pick a commit made in another branch...
-git cherry-pick <commit-hash>
-
-# ... or stage new files for commit
+# Stage files for commit
 git add path/to/file.ext
-git add path/to/file2.ext
 
 # Commit your new feature locally
-git commit -m "Commit message of new feature, used for changelog"
+git commit -m "+ Commit message of new feature, used for changelog"
 
 # Push commit to your Github repository
 git push -u origin mynewfeature
 ```
 
-5. Go to your forked repository in Github and click **Pull Requests** followed by the button **New Pull Request**.
+6. Go to your forked repository in Github and click **Pull Requests** followed by the button **New Pull Request**.
 
   * Base Repository: `litecart/litecart`, Compare: `dev`
 

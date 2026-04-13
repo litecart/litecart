@@ -77,7 +77,7 @@
 
   Correct:
 
-    echo '<p>Hello World!</br />' . PHP_EOL
+    echo '<p>Hello World!<br />' . PHP_EOL
        . 'This is a new row</p>';
 
   For emails and HTTP headers we always use Windows style Carriage Return + Line Feed (CRLF) \r\n
@@ -273,6 +273,28 @@
   Correct:
 
     $_POST['name'] = strtolower(trim($_POST['name']));  // We most likely will not ever use the unsanitized data
+
+
+## Avoid One-Time Variables
+
+  Creating variables for one-time use should be avoided (unless it serves good purpose).
+
+  Incorrect:
+
+    $array = ['foo', 'bar'];
+
+    foreach ($array as $item) {
+      echo $item;
+    }
+
+  Correct:
+
+    foreach ([
+      'foo',
+      'bar',
+    ] as $item) {
+      echo $item;
+    }
 
 
 ## Naming of CSS IDs and Classes
@@ -514,7 +536,7 @@
       limit 1;"
     );
 
-    echo '<input value="<?php echo htmlspecialchars($_POST['variable']); ?>" />
+    echo '<input value="' . htmlspecialchars($_POST['variable']) . '" />'
 
 
 ## No Sloppy HTML
@@ -530,3 +552,26 @@
 
         <img src="" />
         <br />
+
+
+## Autoloader Conventions
+
+  Class prefixes determine the autoloader directory:
+
+    abs_*    abstracts/           Base classes
+    ent_*    entities/            Data objects (product, order, customer, etc.)
+    ref_*    references/          Read-only factory models
+    cm_*     modules/customer/    Customer modules
+    om_*     modules/order/       Order modules
+    ot_*     modules/order_total/ Order total modules
+    pm_*     modules/payment/     Payment modules
+    sm_*     modules/shipping/    Shipping modules
+    job_*    modules/jobs/        Background job modules
+    mod_*    modules/             Generic modules
+    url_*    routes/              Route handlers
+    wrap_*   wrappers/            Service layers / API clients
+
+  Bare class names (no prefix) resolve to `library/lib_{class}.inc.php` and auto-call
+  `{class}::init()` if it exists. This is how `database`, `session`, `settings`, etc. are loaded.
+
+  All autoloaded files use `.inc.php` extension and pass through the vMod system.

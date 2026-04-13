@@ -1,4 +1,4 @@
-## Have found a vulnerability?
+## Found a vulnerability?
 
 Reports of vulnerabilities, security threats, or suspicion of breaches can be sent to security@litecart.net.
 
@@ -8,8 +8,9 @@ Do not register a public CVE record until security fixes are released.
 
 ## PGP Public Key
 
-```
+```pgp
 -----BEGIN PGP PUBLIC KEY BLOCK-----
+
 xsBNBGKokEoBCADbGIJthkW5k31YDSjEPMub2NncCEGvqLhRDhvnCvm0tW3P1igJ
 OHiLXAsYmGd+8+9FpkDN3IbX0gkn9wdkiGjUe7qk4HwQ9LZ/+Do0tgfbliru9kw4
 OaSmWUYHe5haQfaGwKv2pjxQcCP/kSZIZhpZJw+znVKwPIrQkC5Ln3ULcKo43WYF
