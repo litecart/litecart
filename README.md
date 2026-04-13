@@ -89,7 +89,7 @@ Get your store up and running, by following our [step list](https://www.litecart
 ├── install/        – Installation wizard
 ├── logs/           – Application logs
 ├── pages/          – Documents
-└── vmods/          – Virtual Modifcations
+└── vmods/          – Virtual Modifications (vMod™ by LiteCart)
 ```
 
 ## Data Collections and Entities
