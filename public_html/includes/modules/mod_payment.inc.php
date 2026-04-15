@@ -98,15 +98,15 @@
 						'module_id' => $module->id,
 						'option_id' => $option['id'],
 						'icon' => $option['icon'],
-						'vendor' => fallback('', $option['vendor']),
+						'vendor' => $option['vendor'] ?? '',
 						'name' => $option['name'],
 						'description' => !empty($option['fields']) ? $option['description'] : '',
-						'fields' => fallback(null, $option['fields']),
+						'fields' => $option['fields'] ?? null,
 						'fee' => (float)$option['fee'],
 						'tax_class_id' => (int)$option['tax_class_id'],
 						'exclude_cheapest' => !empty($option['exclude_cheapest']),
-						'confirm' => fallback(null, $option['confirm']),
-						'error' => fallback(false, $option['error']),
+						'confirm' => $option['confirm'] ?? null,
+						'error' => $option['error'] ?? false,
 					];
 				}
 			}

@@ -58,7 +58,7 @@
 
 		$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/order.inc.php');
 		$_page->snippets = [
-			'text_direction' => fallback('ltr', language::$languages[$order->data['language_code']]['direction']),
+			'text_direction' => language::$languages[$order->data['language_code']]['direction'] ?? 'ltr',
 			'order' => $order->data,
 			'comments' => [],
 		];

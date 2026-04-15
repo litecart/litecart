@@ -3,17 +3,17 @@
 	try {
 
 		$customer = [
-			'tax_id' => fallback('', $_REQUEST['tax_id']),
-			'company' => fallback('', $_REQUEST['company']),
-			'country_code' => fallback(settings::get('store_country_code'), $_REQUEST['country_code']),
-			'zone_code' => fallback(settings::get('store_zone_code'), $_REQUEST['zone_code']),
-			'city' => fallback('', $_REQUEST['city']),
+			'tax_id' => $_REQUEST['tax_id'] ?? '',
+			'company' => $_REQUEST['company'] ?? '',
+			'country_code' => $_REQUEST['country_code'] ?? settings::get('store_country_code'),
+			'zone_code' => $_REQUEST['zone_code'] ?? settings::get('store_zone_code'),
+			'city' => $_REQUEST['city'] ?? '',
 			'shipping_address' => [
-				'tax_id' => fallback('', $_REQUEST['shipping_address']['tax_id'], $_REQUEST['tax_id']),
-				'company' => fallback('', $_REQUEST['shipping_address']['company'], $_REQUEST['company']),
-				'country_code' => fallback('', $_REQUEST['shipping_address']['country_code'], $_REQUEST['country_code']),
-				'zone_code' => fallback('', $_REQUEST['shipping_address']['zone_code'], $_REQUEST['zone_code']),
-				'city' => fallback('', $_REQUEST['shipping_address']['city'], $_REQUEST['city']),
+				'tax_id' => $_REQUEST['shipping_address']['tax_id'] ?? $_REQUEST['tax_id'] ?? '',
+				'company' => $_REQUEST['shipping_address']['company'] ?? $_REQUEST['company'] ?? '',
+				'country_code' => $_REQUEST['shipping_address']['country_code'] ?? $_REQUEST['country_code'] ?? '',
+				'zone_code' => $_REQUEST['shipping_address']['zone_code'] ?? $_REQUEST['zone_code'] ?? '',
+				'city' => $_REQUEST['shipping_address']['city'] ?? $_REQUEST['city'] ?? '',
 			],
 		];
 

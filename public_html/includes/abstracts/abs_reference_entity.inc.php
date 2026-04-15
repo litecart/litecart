@@ -38,7 +38,7 @@
     }
 
     public function offsetGet($offset): mixed {
-			return fallback(null, $this->_data[$offset]);
+			return $this->_data[$offset] ?? null;
     }
 
     public function offsetSet($offset, $value): void {

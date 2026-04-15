@@ -43,7 +43,7 @@
 				case (!$component && is_file('app://includes/entities/ent_'.basename($resource).'.inc.php')):
 
 					$class_name = 'ent_'.$resource;
-					$object = new $class_name(fallback(null, $arguments[0]));
+					$object = new $class_name($arguments[0] ?? null);
 
 					self::$_cache[$resource][$checksum] = (object)$object->data;
 

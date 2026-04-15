@@ -76,7 +76,7 @@
 				$app_item['menu'][] = [
 					'title' => $menu_item['title'],
 					'doc' => $menu_item['doc'],
-					'link' => document::ilink($app['id'] .'/'. $menu_item['doc'], fallback([], $menu_item['params'])),
+					'link' => document::ilink($app['id'] .'/'. $menu_item['doc'], $menu_item['params'] ?? []),
 					'active' => $selected,
 				];
 			}

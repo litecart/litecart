@@ -100,12 +100,12 @@
 
 			self::$_routes[] = [
 				'resource' => $resource,
-				'patterns' => fallback('', $route['patterns']),
-				'endpoint' => fallback('frontend', $route['endpoint']),
-				'controller' => fallback(null, $route['controller']),
-				'params' => fallback([], $route['params']),
-				'options' => fallback([], $route['options']),
-				'rewrite' => fallback(null, $route['rewrite']),
+				'patterns' => $route['patterns'] ?? '',
+				'endpoint' => $route['endpoint'] ?? 'frontend',
+				'controller' => $route['controller'] ?? null,
+				'params' => $route['params'] ?? [],
+				'options' => $route['options'] ?? [],
+				'rewrite' => $route['rewrite'] ?? null,
 			];
 		}
 
@@ -123,7 +123,7 @@
 						// Resolve resource logic
 						if (preg_match('#\*#', $route['resource'])) {
 							$route['resource'] = preg_replace_callback('#^([a-z]:).*$#', function($matches){
-								return fallback('f:', $matches[1]) . preg_replace('#^'. trim(preg_quote(BACKEND_ALIAS, '#')) .'/#', '', parse_url(self::$request, PHP_URL_PATH));
+								return ($matches[1] ?? 'f:') . preg_replace('#^'. trim(preg_quote(BACKEND_ALIAS, '#')) .'/#', '', parse_url(self::$request, PHP_URL_PATH));
 							}, $route['resource']);
 						}
 

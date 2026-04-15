@@ -70,7 +70,7 @@
 			self::$snippets['home_path'] = WS_DIR_APP;
 			self::$snippets['nonce'] = self::$nonce;
 
-			switch (fallback(null, route::$selected['endpoint'])) {
+			switch (route::$selected['endpoint'] ?? null) {
 
 				case 'backend':
 					self::$snippets['template_path'] = WS_DIR_APP . 'backend/template/';
@@ -123,7 +123,7 @@
 				'settings' => self::$settings,
 			];
 
-			switch (fallback(null, route::$selected['endpoint'])) {
+			switch (route::$selected['endpoint'] ?? null) {
 
 				case 'backend':
 					self::$jsenv['template']['url'] = WS_DIR_APP . 'backend/template/';
@@ -299,7 +299,7 @@
 			stats::start_watch('rendering');
 
 			// Set view
-			switch (fallback(null, route::$selected['endpoint'])) {
+			switch (route::$selected['endpoint'] ?? null) {
 
 				case 'backend':
 					$_layout = new ent_view('app://backend/template/layouts/'.self::$layout.'.inc.php');
@@ -329,7 +329,7 @@
 				}
 
 				self::$title = array_filter(self::$title);
-				$_layout->snippets['title'] = implode(' | ', array_reverse(self::$title));
+				$_layout->snippets['title'] = implode(' · ', array_reverse(self::$title));
 			}
 
 			// Add meta description
@@ -537,7 +537,7 @@
 
 				default:
 
-					switch (fallback(null, route::$selected['endpoint'])) {
+					switch (route::$selected['endpoint'] ?? null) {
 
 						case 'backend':
 							$resource = WS_DIR_APP . BACKEND_ALIAS .'/'. $resource;

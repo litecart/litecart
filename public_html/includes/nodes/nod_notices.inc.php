@@ -68,7 +68,7 @@
 
 			if (empty(self::$data)) return '';
 
-			switch (fallback(null, route::$selected['endpoint'])) {
+			switch (route::$selected['endpoint'] ?? null) {
 
 				case 'backend':
 					$view = new ent_view('app://backend/template/partials/notices.inc.php');

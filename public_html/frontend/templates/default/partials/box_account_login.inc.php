@@ -5,7 +5,7 @@
 
 	<div class="card-body">
 		<?php echo f::form_begin('sign_in_form', 'post', document::ilink('account/sign_in')); ?>
-			<?php echo f::form_input_hidden('redirect_url', fallback(document::ilink(''), $_GET['redirect_url'])); ?>
+			<?php echo f::form_input_hidden('redirect_url', $_GET['redirect_url'] ?? document::ilink('')); ?>
 
 			<label class="form-group">
 				<div class="form-label"><?php echo t('title_email_address', 'Email Address'); ?></div>

@@ -115,7 +115,7 @@
 					<td><?php echo f::form_input_hidden('zones['. $key .'][id]', true); ?><?php echo $_POST['zones'][$key]['id']; ?></td>
 					<td><?php echo f::form_input_hidden('zones['. $key .'][country_code]', true); ?> <?php echo reference::country($_POST['zones'][$key]['country_code'])->name; ?></td>
 					<td><?php echo f::form_input_hidden('zones['. $key .'][zone_code]', true); ?> <?php echo !empty($_POST['zones'][$key]['zone_code']) ? reference::country($_POST['zones'][$key]['country_code'])->zones[$_POST['zones'][$key]['zone_code']]['name'] : '-- '.t('title_all_zones', 'All Zones') .' --'; ?></td>
-					<td><?php echo f::form_input_hidden('zones['. $key .'][city]', true); ?> <?php echo fallback('-- '. t('title_all_cities', 'All Cities') .' --', $_POST['zones'][$key]['city']); ?></td>
+					<td><?php echo f::form_input_hidden('zones['. $key .'][city]', true); ?> <?php echo $_POST['zones'][$key]['city'] ?? ('-- '. t('title_all_cities', 'All Cities') .' --'); ?></td>
 					<td class="text-end">
 						<a class="remove btn btn-default btn-sm" href="#" title="<?php echo t('title_remove', 'Remove'); ?>">
 							<?php echo f::draw_fonticon('icon-times', 'style="color: #cc3333;"'); ?>

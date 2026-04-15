@@ -18,7 +18,7 @@
 
 	function mcp_stats_summary($params) {
 
-		$period = fallback('all', $params['period']);
+		$period = $params['period'] ?? 'all';
 		$currency_code = settings::get('store_currency_code');
 
 		// Get order statuses that count as a sale

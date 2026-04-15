@@ -225,7 +225,7 @@
 								document::$template = 'blank';
 
 								echo '<div>'. t('title_redirecting', 'Redirecting') .'...</div>' . PHP_EOL
-									 . '<form name="gateway_form" method="post" action="'. fallback(document::ilink('checkout/process'), $gateway['action']) .'">' . PHP_EOL;
+									. '<form name="gateway_form" method="post" action="'. ($gateway['action'] ?? document::ilink('checkout/process')) .'">' . PHP_EOL;
 
 								if (is_array($gateway['fields'])) {
 									foreach ($gateway['fields'] as $key => $value) echo f::form_input_hidden($key, $value) . PHP_EOL;
@@ -259,7 +259,7 @@
 							case 'GET':
 							default:
 
-								redirect(fallback(document::ilink('checkout/process'), $gateway['action']), 303);
+								redirect($gateway['action'] ?? document::ilink('checkout/process'), 302);
 								exit;
 						}
 					}
@@ -355,7 +355,7 @@
 		'payment_options' => $order->payment->options(),
 		'consent' => null, // Placeholder for consent
 		'error' => $order->validate(),
-		'confirm' => fallback(t('title_confirm_order', 'Confirm Order'), $order->payment->selected['confirm']),
+		'confirm' => $order->payment->selected['confirm'] ?? t('title_confirm_order', 'Confirm Order'),
 	];
 
 	// Determine if we have terms of purchase

@@ -18,8 +18,8 @@
 				if (!$config = require $directory . 'config.inc.php') continue;
 
 				$config['theme'] = [
-					'icon' => fallback('icon-plus', $config['theme']['icon']),
-					'color' => fallback('#97a3b5', $config['theme']['color']),
+					'icon' => $config['theme']['icon'] ?? 'icon-plus',
+					'color' => $config['theme']['color'] ?? '#97a3b5',
 				];
 
 				if (empty($config['group'])) {

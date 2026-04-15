@@ -379,17 +379,17 @@
 		public static function log($event) {
 
 			$event = [
-				'session_id' => isset($event['session_id']) ? $event['session_id'] : fallback(null, session::$data['id']),
-				'customer_id' => isset($event['customer_id']) ? $event['customer_id'] : fallback(null, $event['customer_id'], self::$data['id']),
-				'customer_email' => isset($event['customer_email']) ? $event['customer_email'] : fallback(null, self::$data['email']),
-				'customer_phone' => isset($event['customer_phone']) ? $event['customer_phone'] : fallback(null, self::$data['phone']),
-				'type' => isset($event['type']) ? $event['type'] : 'unknown',
-				'description' => isset($event['description']) ? $event['description'] : null,
+				'session_id' => $event['session_id'] ?? session::$data['id'] ?? null,
+				'customer_id' => $event['customer_id'] ?? self::$data['id'] ?? null,
+				'customer_email' => $event['customer_email'] ?? self::$data['email'] ?? '',
+				'customer_phone' => $event['customer_phone'] ?? self::$data['phone'] ?? '',
+				'type' => $event['type'] ?? 'unknown',
+				'description' => $event['description'] ?? null,
 				'data' => !empty($event['data']) ? f::format_json($event['data']) : null,
-				'url' => isset($event['url']) ? $event['url'] : document::link(),
-				'ip_address' => isset($event['ip_address']) ? $event['ip_address'] : $_SERVER['REMOTE_ADDR'],
-				'hostname' => isset($event['hostname']) ? $event['hostname'] : gethostbyaddr(isset($event['ip_address']) ? $event['ip_address'] : $_SERVER['REMOTE_ADDR']),
-				'user_agent' => isset($event['user_agent']) ? $event['user_agent'] : $_SERVER['HTTP_USER_AGENT'],
+				'url' => $event['url'] ?? document::link(),
+				'ip_address' => $event['ip_address'] ?? $_SERVER['REMOTE_ADDR'],
+				'hostname' => $event['hostname'] ?? gethostbyaddr($event['ip_address'] ?? $_SERVER['REMOTE_ADDR']),
+				'user_agent' => $event['user_agent'] ?? $_SERVER['HTTP_USER_AGENT'] ?? '',
 				'expires_at' => isset($event['expires_at']) ? date('Y-m-d H:i:s', strtotime($event['expires_at'])) : date('Y-m-d H:i:s', strtotime('+90 days')),
 				'created_at' => date('Y-m-d H:i:s'),
 			];

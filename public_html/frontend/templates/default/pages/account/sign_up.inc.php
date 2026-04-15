@@ -111,7 +111,7 @@
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_zone_state_province', 'Zone/State/Province'); ?></div>
-										<?php echo f::form_select_zone('zone_code', fallback(null, $_POST['country_code']), true, 'required'); ?>
+										<?php echo f::form_select_zone('zone_code', $_POST['country_code'] ?? '', true, 'required'); ?>
 									</label>
 								</div>
 								<?php } ?>

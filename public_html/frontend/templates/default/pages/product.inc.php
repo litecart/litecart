@@ -54,6 +54,14 @@ form[name="buy_now_form"] .dropdown-menu .image {
 				<div class="col-md-6">
 					<h1 class="title"><?php echo f::escape_html($name); ?></h1>
 
+					<?php //if ($average_rating) { ?>
+					<div class="average-rating">
+						<a href="#reviews" style="text-decoration: none;">
+							<?php echo functions::draw_rating($average_rating); ?>
+						</a>
+					</div>
+					<?php //} ?>
+
 					<?php if ($short_description) { ?>
 					<p class="short-description">
 						<?php echo f::escape_html($short_description); ?>
@@ -321,6 +329,169 @@ form[name="buy_now_form"] .dropdown-menu .image {
 			<?php } ?>
 			<?php } ?>
 
+			<?php //if (!is_ajax_request() && $reviews) { ?>
+			<section id="reviews" class="card ">
+				<a name="reviews"></a>
+
+			<div class="card-header">
+				<div class="card-title">
+					<?php echo t('title_customer_reviews', 'Customer Reviews'); ?>
+				</div>
+			</div>
+
+				<div class="card-body">
+					<div class="row">
+						<div class="col-md-6">
+
+							<?php if (!empty($reviews)) { ?>
+							<div class="reviews">
+								<?php foreach ($reviews as $review) { ?>
+								<div class="review" data-review-id="<?php echo $review['id']; ?>">
+
+									<div class="vote">
+										<a class="upvote" href="#">
+											<?php echo functions::draw_fonticon('fa-thumbs-up'); ?> <span class="num-votes"><?php echo $review['upvotes']; ?></span>
+										</a>
+										<a class="downvote" href="#">
+											<?php echo functions::draw_fonticon('fa-thumbs-down'); ?> <span class="num-votes"><?php echo $review['downvotes']; ?></span>
+										</a>
+									</div>
+
+									<div class="name">
+										<?php echo f::escape_html($review['customer_name']); ?>
+									</div>
+
+									<div class="rating">
+										<?php echo functions::draw_rating($review['rating']); ?>
+									</div>
+
+									<div class="title">
+										<?php echo f::escape_html($review['title']); ?>
+									</div>
+
+									<div class="description">
+										<?php echo nl2br(f::escape_html($review['description'])); ?>
+									</div>
+
+<?php
+	if (!empty($review['attachments'])) {
+		echo '<div class="attachments" style="margin-top: 1em;">';
+		foreach ($review['attachments'] as $attachment) {
+
+			switch(true) {
+				case (preg_match('#\.(bmp|gif|jpe?g|png)$#', $attachment['filename'])):
+					echo '<div class="attachment"><a href="'. functions::escape_html($attachment['link']) .'" class="thumbnail" data-toggle="lightbox" data-type="image"><img src="'. WS_DIR_APP . functions::image_thumbnail($attachment['attachment'], 96, 96, 'FIT_USE_WHITESPACING') .'" alt=""></a></div>';
+					break;
+
+				case (preg_match('#\.(avi|mp4|mov)$#', $attachment['filename'])):
+					echo '<div class="attachment"><a href="'. functions::escape_html($attachment['link']) .'" class="thumbnail text-center">'. WS_DIR_APP . functions::draw_fonticon('fa-film fa-3x', 'style="padding-top: 2em;"') .'</a></div>';
+					break;
+
+				default:
+					echo '<div class="attachment"><a href="'. functions::escape_html($attachment['link']) .'" class="thumbnail text-center">'. functions::draw_fonticon('fa-paperclip fa-3x', 'style="padding-top: 2em;"') .'</a></div>';
+					break;
+			}
+		}
+		echo '</div>';
+	}
+?>
+
+								</div>
+								<?php } ?>
+							</div>
+
+							<?php } else { ?>
+							<p><em><?php echo t('title_be_first_to_post_review', 'Be the first to post a review for this product'); ?></em></p>
+							<?php } ?>
+
+						</div>
+
+						<div class="col-md-6">
+
+							<?php echo functions::form_begin('rating_form', 'post', '', true); ?>
+
+								<fieldset<?php echo empty(customer::$data['id']) ? ' disabled' : ''; ?>>
+									<h3><?php echo t('title_rate_this_product', 'Rate This Product'); ?></h3>
+
+									<?php if (empty(customer::$data['id'])) { ?>
+
+									<div style="color: #999;"><?php echo t('text_must_be_signed_in_to_rate_product', 'You must be signed in to rate this product'); ?></div>
+
+									<div><a class="btn btn-default" href="<?php echo document::ilink('account/sign_in', ['redirect_url' => document::link()]) ?>#box-login" data-toggle="lightbox" data-seamless="true" data-width="480px" data-require-window-width="768"><?php echo t('title_sign_in', 'Sign In'); ?></a></div>
+
+									<?php } else { ?>
+
+									<div class="form-group">
+										<div class="rate-now">
+											<input type="radio" id="star5" name="rating" value="5"<?php echo ($customer_review['rating'] == 5) ? ' checked' : ''; ?>>
+												<label for="star5"></label>
+											<input type="radio" id="star4" name="rating" value="4"<?php echo ($customer_review['rating'] == 4) ? ' checked' : ''; ?>>
+												<label for="star4"></label>
+											<input type="radio" id="star3" name="rating" value="3"<?php echo ($customer_review['rating'] == 3) ? ' checked' : ''; ?>>
+												<label for="star3"></label>
+											<input type="radio" id="star2" name="rating" value="2"<?php echo ($customer_review['rating'] == 2) ? ' checked' : ''; ?>>
+												<label for="star2"></label>
+											<input type="radio" id="star1" name="rating" value="1"<?php echo ($customer_review['rating'] == 1) ? ' checked' : ''; ?>>
+												<label for="star1"></label>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<?php echo functions::form_input_text('title', !empty($customer_review['title']) ? $customer_review['title'] : true, 'placeholder="'. functions::escape_html(t('title_title', 'Title')) .'"'); ?>
+									</div>
+
+											<div class="form-group">
+										<?php echo functions::form_textarea('description', !empty($customer_review['description']) ? $customer_review['description'] : true, 'placeholder="'. functions::escape_html(t('title_review', 'Review')) .'"'); ?>
+									</div>
+
+									<div class="attachments">
+
+										<div class="current-attachments">
+											<?php if (!empty($_POST['attachments'])) foreach (array_keys($_POST['attachments']) as $key) { ?>
+											<div class="attachment form-group">
+												<label><?php echo t('title_attachment', 'Attachment'); ?></label>
+												<?php echo functions::form_input_hidden('attachments['.$key.'][id]', true); ?>
+												<div class="input-group">
+													<div class="form-control"><?php echo functions::escape_html($_POST['attachments'][$key]['filename']); ?></div>
+													<div class="input-group-text">
+														<a class="move-up" href="#" title="<?php echo t('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-up fa-lg', 'style="color: #3399cc;"'); ?></a>
+														<a class="move-down" href="#" title="<?php echo t('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-down fa-lg', 'style="color: #3399cc;"'); ?></a>
+														<a class="remove" href="#" title="<?php echo t('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times fa-lg', 'style="color: #cc3333;"'); ?></a>
+													</div>
+												</div>
+											</div>
+											<?php } ?>
+										</div>
+
+										<div class="new-attachments">
+										</div>
+
+										<div class="form-group">
+											<p><?php echo t('text_add_review_attachment', 'Add a photo to your review.'); ?></p>
+											<a href="#" class="add" title="<?php echo t('text_add', 'Add'); ?>"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #66cc66;"'); ?> <?php echo t('title_add_attachment', 'Add Attachment'); ?></a>
+										</div>
+									</div>
+
+									<?php if (settings::get('captcha_enabled')) { ?>
+									<div class="form-group">
+										<label><?php echo t('title_captcha', 'CAPTCHA'); ?></label>
+										<div style="max-width: 250px;"><?php echo functions::form_draw_captcha_field('captcha', 'review_product', 'required'); ?></div>
+									</div>
+									<?php } ?>
+
+									<?php echo functions::form_draw_button('submit_review', t('title_submit', 'Submit'), 'submit'); ?>
+
+									<?php } ?>
+								</fieldset>
+
+							<?php echo functions::form_end(); ?>
+
+						</div>
+					</div>
+				</div>
+			</section>
+			<?php //} ?>
+
 		</article>
 
 		<?php include 'app://frontend/partials/box_similar_products.inc.php'; ?>
@@ -392,4 +563,61 @@ form[name="buy_now_form"] .dropdown-menu .image {
 		e.preventDefault();
 		prompt("<?php echo t('text_link_to_this_product', 'Link to this product'); ?>", "<?php echo f::escape_attr($link); ?>");
 	});
+
+	// Reviews
+
+	$('.average-rating a[href="#reviews"]').on('click', function(){
+		$('html, body').animate({
+				scrollTop: $('#reviews').offset().top - 20
+		}, 500);
+	});
+
+  $('.review .upvote').click(function(e){
+    var $button = $(this);
+    var $review = $(this).closest('.review');
+    e.preventDefault();
+    $.ajax({
+       type: 'post',
+       url: '<?php echo document::ilink('ajax/review'); ?>?review_id='+ $review.data('review-id'),
+       data: 'upvote=true',
+       success: function(result){
+         $button.find('.num-votes').text(result.upvotes);
+       }
+    });
+  });
+
+  $('.review .downvote').click(function(e){
+    var $review = $(this).closest('.review');
+    var $button = $(this);
+    e.preventDefault();
+    $.ajax({
+       type: 'post',
+       url: '<?php echo document::ilink('ajax/review'); ?>?review_id='+ $review.data('review-id'),
+       data: 'review_id='+ $review.data('review-id') +'&downvote=true',
+       success: function(result){
+         $button.find('.num-votes').text(result.downvotes);
+       }
+    });
+  });
+
+  $('.attachments').on('click', '.remove', function(e) {
+    e.preventDefault();
+    $(this).closest('.form-group').remove();
+    refreshMainImage();
+  });
+
+  $('.attachments .add').click(function(e) {
+    e.preventDefault();
+    var output = [
+      '<div class="attachment form-group">',
+      '  <div class="input-group">',
+      '    <?php echo functions::form_draw_file_field('new_attachments[]', 'accept=".gif,.jpg,.png"'); ?>',
+      '    <div class="input-group-text">',
+      '      <a class="remove" href="#" title="<?php echo t('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times fa-lg', 'style="color: #cc3333;"'); ?></a>',
+      '    </div>',
+      '  </div>',
+      '</div>'
+    ].join('\n');
+    $('.attachments .new-attachments').append(output);
+  });
 </script>

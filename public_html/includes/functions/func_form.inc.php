@@ -3,12 +3,12 @@
 	function form_begin($name='', $method='post', $action='', $multipart=false, $parameters='') {
 
 		$html = '<form'. (($name) ? ' name="'. f::escape_attr($name) .'"' : '') .' method="'. ((strtolower($method) == 'get') ? 'get' : 'post') .'" enctype="'. (($multipart == true) ? 'multipart/form-data' : 'application/x-www-form-urlencoded') .'" accept-charset="'. mb_http_output() .'"'. (($action) ? ' action="'. f::escape_attr($action) .'"' : '') . ($parameters ? ' ' . $parameters : '') .'>';
-		
+
 		// Auto-inject CSRF token for POST forms
 		if (strtolower($method) !== 'get' && class_exists('session', false)) {
 			$html .= '<input type="hidden" name="csrf_token" value="'. f::escape_attr(session::csrf_token()) .'" />';
 		}
-	
+
 		return $html;
 	}
 
@@ -95,10 +95,10 @@
 	function form_captcha($id, $config=[], $parameters='') {
 
 		$config = [
-			'width' => fallback(100, $config['width']),
-			'height' => fallback(40, $config['height']),
-			'length' => fallback(4, $config['length']),
-			'set' => fallback('numbers', $config['set']),
+			'width' => $config['width'] ?? 100,
+			'height' => $config['height'] ?? 40,
+			'length' => $config['length'] ?? 4,
+			'set' => $config['set'] ?? 'numbers',
 		];
 
 		return f::captcha_draw($id, $config, $parameters);
@@ -1151,7 +1151,7 @@
 				return form_select_timezone($name, $input, $parameters);
 
 			case 'toggle':
-				return form_toggle($name, fallback(null, $options[0]), $input);
+				return form_toggle($name, $options[0] ?? null, $input);
 
 			case 'tax_class':
 				return form_select_tax_class($name, $input, $parameters);
@@ -2371,7 +2371,7 @@
 
 			$option = implode(PHP_EOL, [
 				'<div class="dropdown-item flex flex-nogap">',
-				'  '. f::draw_thumbnail('storage://images/' . fallback('no_image.svg', $stock_option['image']), 0, 64, 'product', 'style="width: 64px; height: 64px; margin-inline-end: 1em;"'),
+				'  '. f::draw_thumbnail('storage://images/' . ($stock_option['image'] ?? 'no_image.svg'), 0, 64, 'product', 'style="width: 64px; height: 64px; margin-inline-end: 1em;"'),
 				'  <div class="flex-grow">',
 				'    <div class="name">'. $stock_option['name'] .' ['. $stock_option['sku'] .']</div>',
 				'    <div class="notice">'. $icon .' '. $notice .'</div>',

@@ -59,10 +59,10 @@
 				'subtotal' => 0,
 				'subtotal_tax' => 0,
 				'display_prices_including_tax' => settings::get('default_display_prices_including_tax'),
-				'ip_address' => fallback(null, $_SERVER['REMOTE_ADDR']),
+				'ip_address' => $_SERVER['REMOTE_ADDR'] ?? null,
 				'hostname' => isset($_SERVER['REMOTE_ADDR']) ? gethostbyaddr($_SERVER['REMOTE_ADDR']) : '',
-				'user_agent' => fallback(null, $_SERVER['HTTP_USER_AGENT']),
-				'domain' => fallback(null, $_SERVER['HTTP_HOST']),
+				'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? null,
+				'domain' => $_SERVER['HTTP_HOST'] ?? null,
 			]);
 
 			$this->data['customer']['country_code'] = settings::get('default_country_code');
@@ -187,7 +187,7 @@
 				$this->data['comments'][] = [
 					'author' => 'system',
 					'text' => strtr(t('text_user_changed_order_status_to_new_status', 'Order status changed to {new_status}', settings::get('store_language_code')), [
-						'{username}' => fallback('system', administrator::$data['username']),
+						'{username}' => administrator::$data['username'] ?? 'system',
 						'{new_status}' => reference::order_status($this->data['order_status_id'], settings::get('store_language_code'))->name,
 					]),
 					'hidden' => 1,
@@ -503,7 +503,7 @@
 				}
 			}
 
-			list($module_id, $option_id) = preg_split('#:#', fallback(':', $this->data['payment_option']['id']), 2);
+			list($module_id, $option_id) = preg_split('#:#', $this->data['payment_option']['id'] ?? ':', 2);
 			$payment_modules = new mod_payment();
 			$payment_modules->run('after_save', $module_id, $this);
 

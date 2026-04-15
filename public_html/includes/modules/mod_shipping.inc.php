@@ -99,15 +99,15 @@
 						'module_id' => $module->id,
 						'option_id' => $option['id'],
 						'icon' => $option['icon'],
-						'vendor' => fallback('', $option['vendor']),
+						'vendor' => $option['vendor'] ?? '',
 						'name' => $option['name'],
-						'description' => fallback('', $option['description']),
-						'fields' => fallback(null, $option['fields']),
+						'description' => $option['description'] ?? '',
+						'fields' => $option['fields'] ?? [],
 						'fee' => (float)$option['fee'],
 						'tax_class_id' => (int)$option['tax_class_id'],
-						'incoterm' => fallback(settings::get('default_incoterm'), $option['incoterm']),
+						'incoterm' => $option['incoterm'] ?? settings::get('default_incoterm'),
 						'exclude_cheapest' => !empty($option['exclude_cheapest']),
-						'error' => fallback(false, $option['error']),
+						'error' => $option['error'] ?? false,
 					];
 				}
 			}

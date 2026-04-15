@@ -231,7 +231,7 @@
 								continue 2;
 							}
 
-							echo 'Updating existing newsletter recipient '. fallback("on line $line", $row['email']) . PHP_EOL;
+							echo 'Updating existing newsletter recipient '. ($row['email'] ?? "on line $line") . PHP_EOL;
 							$updated++;
 
 						} else {
@@ -241,7 +241,7 @@
 								continue 2;
 							}
 
-							echo 'Inserting new newsletter recipient: '. fallback("on line $line", $row['email']) . PHP_EOL;
+							echo 'Inserting new newsletter recipient: '. ($row['email'] ?? "on line $line") . PHP_EOL;
 							$inserted++;
 
 							if (!empty($row['id'])) {

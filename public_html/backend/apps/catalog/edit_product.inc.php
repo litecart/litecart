@@ -314,7 +314,7 @@
 									<?php echo f::form_input_hidden('images['.$key.'][id]', true); ?>
 									<?php echo f::form_input_hidden('images['.$key.'][filename]', $_POST['images'][$key]['filename']); ?>
 									<?php echo f::draw_thumbnail('storage://images/' . $product->data['images'][$key]['filename'], 480, 0, 'product'); ?>
-									<?php echo f::form_input_text('images['.$key.'][new_filename]', fallback($_POST['images'][$key]['filename'], $_POST['images'][$key]['new_filename'])); ?>
+									<?php echo f::form_input_text('images['.$key.'][new_filename]', $_POST['images'][$key]['filename'] ?? $_POST['images'][$key]['new_filename']); ?>
 
 									<div style="align-content: center;">
 										<div class="btn-group">

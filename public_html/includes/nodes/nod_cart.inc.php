@@ -43,7 +43,7 @@
 			// Event handler for adding product to cart
 			if (!empty($_POST['add_cart_product'])) {
 
-				$userdata = fallback(null, $_POST['userdata']);
+				$userdata = $_POST['userdata'] ?? [];
 
 				if ($userdata) {
 					foreach (array_keys($userdata) as $key) {
@@ -58,7 +58,7 @@
 					}
 				}
 
-				self::add_product($_POST['product_id'], fallback(null, $_POST['stock_option_id']), $userdata, isset($_POST['quantity']) ? $_POST['quantity'] : 1);
+				self::add_product($_POST['product_id'] ?? null, $_POST['stock_option_id'] ?? null, $userdata, $_POST['quantity'] ?? 1);
 
 				customer::log([
 					'type' => 'add_cart_item',

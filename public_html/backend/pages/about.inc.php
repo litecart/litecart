@@ -99,13 +99,13 @@
 		],
 		'ip_address' => $_SERVER['SERVER_ADDR'],
 		'hostname' => gethostbyaddr($_SERVER['SERVER_ADDR']),
-		'cpu_usage' => fallback('', $cpu_usage),
-		'memory_usage' => fallback('', $memory_usage),
-		'uptime' =>  fallback('', $uptime),
+		'cpu_usage' => $cpu_usage ?? '',
+		'memory_usage' => $memory_usage ?? '',
+		'uptime' =>  $uptime ?? '',
 	];
 
 	$web_server = [
-		'name' => fallback('', $_SERVER['SERVER_SOFTWARE']),
+		'name' => $_SERVER['SERVER_SOFTWARE'] ?? '',
 		'sapi' => php_sapi_name(),
 		'current_user' => get_current_user(),
 		'loaded_modules' => function_exists('apache_get_modules') ? apache_get_modules() : [],
@@ -331,7 +331,7 @@
 					</tr>
 					<tr>
 						<th>Uptime</th>
-						<td><?php echo fallback('<em>n/a</em>', $uptime); ?></td>
+						<td><?php echo $uptime ?? '<em>n/a</em>'; ?></td>
 					</tr>
 				</tbody>
 			</table>
@@ -345,15 +345,15 @@
 				<tbody>
 					<tr>
 						<th>Daemon</th>
-						<td><?php echo fallback('<em>Unknown</em>', $web_server['name']); ?></td>
+						<td><?php echo $web_server['name'] ?? '<em>Unknown</em>'; ?></td>
 					</tr>
 					<tr>
 						<th>SAPI</th>
-						<td><?php echo $web_server['sapi']; ?></td>
+						<td><?php echo $web_server['sapi'] ?? '<em>Unknown</em>'; ?></td>
 					</tr>
 					<tr>
 						<th>Current User</th>
-						<td><?php echo $web_server['current_user']; ?></td>
+						<td><?php echo $web_server['current_user'] ?? '<em>Unknown</em>'; ?></td>
 					</tr>
 					<tr>
 						<th>Enabled Modules</th>
@@ -376,7 +376,7 @@
 					</tr>
 					<tr>
 						<th>Whoami</th>
-						<td><?php echo fallback('<em>Unknown</em>', $php['whoami']); ?></td>
+						<td><?php echo $php['whoami'] ?? '<em>Unknown</em>'; ?></td>
 					</tr>
 					<tr>
 						<th>PHP Extensions</th>
@@ -388,7 +388,7 @@
 					</tr>
 					<tr>
 						<th>Memory Limit</th>
-						<td><?php echo fallback('<em>n/a</em>', $php['memory_limit']); ?></td>
+						<td><?php echo ($php['memory_limit'] ?? '<em>n/a</em>'); ?></td>
 					</tr>
 				</tbody>
 			</table>
@@ -402,11 +402,11 @@
 				<tbody>
 					<tr>
 						<th>Server Name</th>
-						<td><?php echo $database['name']; ?></td>
+						<td><?php echo $database['name'] ?? '-'; ?></td>
 					</tr>
 					<tr>
 						<th>Client Library</th>
-						<td><?php echo $database['library']; ?></td>
+						<td><?php echo $database['library'] ?? '-'; ?></td>
 					</tr>
 					<tr>
 						<th>Hostname</th>

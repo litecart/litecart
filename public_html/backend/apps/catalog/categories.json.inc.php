@@ -21,7 +21,7 @@
 
 		$json = [
 			'status' => 'ok',
-			'id' => fallback(0, $_GET['parent_id']),
+			'id' => $_GET['parent_id'] ?? null,
 			'name' => !empty($_GET['parent_id']) ? $category->name : '['. t('title_root', 'Root') .']',
 			'parent' => [
 				'id' => $category->parent ? $category->parent->id : 0,

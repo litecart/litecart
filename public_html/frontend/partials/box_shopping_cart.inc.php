@@ -19,7 +19,7 @@
 	];
 
 	foreach (cart::$items as $key => $item) {
-		$item['image'] = 'storage://images/' . fallback('no_image.svg', $item['image']);
+			$item['image'] = 'storage://images/' . ($item['image'] ?? 'no_image.svg');
 		$box_shopping_cart->snippets['items'][$key] = $item;
 	}
 

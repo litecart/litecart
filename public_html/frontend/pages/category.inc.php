@@ -32,7 +32,7 @@
 	$category = reference::category($_GET['category_id']);
 
 	if (empty($_GET['list_style'])) {
-		$_GET['list_style'] = fallback('columns', $category->list_style);
+		$_GET['list_style'] = $category->list_style ?? 'columns';
 	}
 
 	if (!$category->id) {
@@ -101,14 +101,14 @@
 	// Products
 	$_page->snippets['products'] = f::catalog_products_query([
 		'categories' => [$category->id] + array_keys($category->descendants),
-		'brands' => fallback(null, $_GET['brands']),
-		'attributes' => fallback(null, $_GET['attributes']),
-		'product_name' => fallback(null, $_GET['product_name']),
+		'brands' => $_GET['brands'] ?? null,
+		'attributes' => $_GET['attributes'] ?? null,
+		'product_name' => $_GET['product_name'] ?? null,
 		'sort' => $_GET['sort'],
 		'campaigns_first' => true,
 		'price_range' => [
-			'min' => fallback(null, $_GET['price_range']['min]']),
-			'max' => fallback(null, $_GET['price_range']['max]']),
+			'min' => $_GET['price_range']['min'] ?? null,
+			'max' => $_GET['price_range']['max'] ?? null,
 		],
 	])->fetch_page(null, null, $_GET['page'], settings::get('items_per_page'), $num_rows, $num_pages);
 

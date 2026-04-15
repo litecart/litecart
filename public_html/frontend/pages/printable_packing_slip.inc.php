@@ -53,7 +53,7 @@
 		language::set($order->data['language_code']);
 
 		$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/printable_packing_slip.inc.php');
-		$_page->snippets['text_direction'] = fallback('ltr', language::$languages[$order->data['language_code']]['direction']);
+		$_page->snippets['text_direction'] = language::$languages[$order->data['language_code']]['direction'] ?? 'ltr';
 		$_page->snippets['order'] = $order->data;
 		$_page->snippets['max_first_page_items'] = 15;
 		$_page->snippets['action_menu'] = true;

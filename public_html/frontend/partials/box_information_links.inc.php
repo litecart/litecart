@@ -21,7 +21,7 @@
 		'page_path' => $current_page_path,
 	];
 
-	$box_information_links_cache_token = cache::token('box_information_links', ['language', fallback(null, $_GET['page_id'])]);
+	$box_information_links_cache_token = cache::token('box_information_links', ['language', $_GET['page_id'] ?? null]);
 	if (!$box_information_links->snippets['pages'] = cache::get($box_information_links_cache_token)) {
 
 		$iterator = function($parent_id) use (&$iterator) {

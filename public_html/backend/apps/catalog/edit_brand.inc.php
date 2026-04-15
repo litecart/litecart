@@ -119,7 +119,7 @@
 				<div class="col-md-6">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_featured', 'Featured'); ?></div>
-						<?php echo f::form_toggle('featured', 'y/n', fallback('1', $_POST['featured'])); ?>
+						<?php echo f::form_toggle('featured', 'y/n', $_POST['featured'] ?? '1'); ?>
 					</label>
 				</div>
 

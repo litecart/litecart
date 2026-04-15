@@ -21,19 +21,19 @@
 		}
 
 		$result = [
-			'tax_id' => fallback(null, $address['tax_id']),
-			'company' => fallback(null, $address['company']),
-			'firstname' => fallback(null, $address['firstname']),
-			'lastname' => fallback(null, $address['lastname']),
-			'address1' => fallback(null, $address['address1']),
-			'address2' => fallback(null, $address['address2']),
-			'postcode' => fallback(null, $address['postcode']),
-			'city' => fallback(null, $address['city']),
-			'country_code' => fallback(null, $address['country_code']),
-			'zone_code' => fallback(null, $address['zone_code']),
-			'phone' => fallback(null, $address['phone']),
-			'email' => fallback(null, $address['email']),
-			'alert' => fallback(null, $address['alert']),
+			'tax_id' => $address['tax_id'] ?? '',
+			'company' => $address['company'] ?? '',
+			'firstname' => $address['firstname'] ?? '',
+			'lastname' => $address['lastname'] ?? '',
+			'address1' => $address['address1'] ?? '',
+			'address2' => $address['address2'] ?? '',
+			'postcode' => $address['postcode'] ?? '',
+			'city' => $address['city'] ?? '',
+			'country_code' => $address['country_code'] ?? '',
+			'zone_code' => $address['zone_code'] ?? '',
+			'phone' => $address['phone'] ?? '',
+			'email' => $address['email'] ?? '',
+			'alert' => $address['alert'] ?? '',
 		];
 
 	} catch (Exception $e) {

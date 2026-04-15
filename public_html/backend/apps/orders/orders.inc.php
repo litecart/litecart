@@ -253,7 +253,7 @@
 		left join ". DB_TABLE_PREFIX ."order_statuses os on (os.id = o.order_status_id)
 		where o.id
 		". (!empty($sql_where_query) ? "and (". implode(" or ", $sql_where_query) .")" : "") ."
-		". fallback(null, $sql_where_order_status) ."
+		". ($sql_where_order_status ?? '') ."
 		". (!empty($_GET['date_from']) ? "and o.created_at >= '". date('Y-m-d 00:00:00', strtotime($_GET['date_from'])) ."'" : '') ."
 		". (!empty($_GET['date_to']) ? "and o.created_at <= '". date('Y-m-d 23:59:59', strtotime($_GET['date_to'])) ."'" : '') ."
 		order by $sql_sort;"
