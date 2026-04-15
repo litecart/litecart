@@ -147,8 +147,8 @@ jobs:
           npx gulp scss-framework
           npx gulp scss-backend
           npx gulp scss-frontend
-          npx gulp sass-chartist
-          npx gulp sass-trumbowyg
+          npx gulp scss-chartist
+          npx gulp scss-trumbowyg
 
   platform-tests:
     name: Platform Tests
