@@ -10,7 +10,7 @@
 	}
 
 	// Table Rows, Total Number of Rows, Total Number of Pages
-	$tax_rates = database::query(
+	$tax_rates = database::prepare(
 		"select tr.*, gz.name as geo_zone, tc.name as tax_class
 		from ". DB_TABLE_PREFIX ."tax_rates tr
 		left join ". DB_TABLE_PREFIX ."geo_zones gz on (gz.id = tr.geo_zone_id)

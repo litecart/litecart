@@ -626,7 +626,7 @@
 
 	// Reviews
 
-  $reviews = database::query(
+	$reviews = database::prepare(
     "select pr.*,
 			json_value(pr.title, '$.". database::input(language::$selected['code']) ."') as title,
 			json_value(pr.description, '$.". database::input(language::$selected['code']) ."') as description
@@ -636,7 +636,7 @@
     and pr.product_id = ". (int)$product->id ."
     and title != ''
     order by pr.created_at desc;"
-  )->fetch_page(function(&$review) {
+	)->fetch_page(function(&$review) {
 		$review['title'] = json_decode($review['title'], true) ?: [];
 		$review['description'] = json_decode($review['description'], true) ?: [];
 		$review['attachments'] = json_decode($review['attachments'], true) ?: [];

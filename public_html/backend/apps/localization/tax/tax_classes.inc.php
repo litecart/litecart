@@ -10,7 +10,7 @@
 	}
 
 	// Table Rows, Total Number of Rows, Total Number of Pages
-	$tax_classes = database::query(
+	$tax_classes = database::prepare(
 		"select * from ". DB_TABLE_PREFIX ."tax_classes
 		order by name asc;"
 	)->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);

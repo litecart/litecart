@@ -33,7 +33,7 @@
 	}
 
 // Table Rows
-	$site_tags = database::query(
+	$site_tags = database::prepare(
 		"select * from ". DB_TABLE_PREFIX ."site_tags
 		order by status desc, position asc, priority asc, name asc;"
 	)->fetch_page(null, null, $_GET['page'], settings::get('data_table_rows_per_page'), $num_rows, $num_pages);

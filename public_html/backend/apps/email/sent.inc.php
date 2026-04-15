@@ -22,7 +22,7 @@
 		exit;
 	}
 
-	$emails = database::query(
+	$emails = database::prepare(
 		"select * from " . DB_TABLE_PREFIX . "emails
 		where status = 'sent'
 		". (!empty($_GET['query'])? 'and ('. implode(PHP_EOL . 'or ', [

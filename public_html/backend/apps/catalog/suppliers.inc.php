@@ -10,7 +10,7 @@
 	}
 
 	// Table Rows, Total Number of Rows, Total Number of Pages
-	$suppliers = database::query(
+	$suppliers = database::prepare(
 		"select id, name
 		from ". DB_TABLE_PREFIX ."suppliers
 		order by name asc;"

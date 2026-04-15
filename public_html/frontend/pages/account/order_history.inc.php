@@ -25,7 +25,7 @@
 	$_page->snippets['orders'] = [];
 
 	// Table Rows, Total Number of Rows, Total Number of Pages
-	$orders = database::query(
+	$orders = database::prepare(
 		"select o.*, os.name as order_status_name
 		from ". DB_TABLE_PREFIX ."orders o
 		left join (

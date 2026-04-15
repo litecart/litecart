@@ -180,7 +180,7 @@
 	}, currency::$currencies)) .")";
 
 	// Table Rows, Total Number of Rows, Total Number of Pages
-	$products = database::query(
+	$products = database::prepare(
 		"select p.id, p.status, p.featured, p.code, p.default_image as image, p.sold_out_status_id, p.valid_from, p.valid_to, p.created_at,
 			json_value(p.name, '$.". database::input(language::$selected['code']) ."') as name,
 		 	pp.regular_price, pp.final_price, pso.num_stock_options, pso.quantity, quantity_reserved, pso.quantity - ol.quantity_reserved as quantity_available

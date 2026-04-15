@@ -157,7 +157,7 @@
 
 	// Table Rows
 
-	$translations = database::query(
+	$translations = database::prepare(
 		"select * from (
 			". implode(PHP_EOL . PHP_EOL . "union ", $sql_union) ."
 		) x

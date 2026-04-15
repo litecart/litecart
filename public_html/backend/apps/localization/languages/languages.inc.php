@@ -42,7 +42,7 @@
 	}
 
 	// Table Rows, Total Number of Rows, Total Number of Pages
-	$languages = database::query(
+	$languages = database::prepare(
 		"select * from ". DB_TABLE_PREFIX ."languages
 		order by field(status, 1, -1, 0), priority, name;"
 	)->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);

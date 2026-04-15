@@ -44,7 +44,7 @@
 	}
 
 	// Table Rows, Total Number of Rows, Total Number of Pages
-	$stock_items = database::query(
+	$stock_items = database::prepare(
 		"select si.*,
 			json_value(si.name, '$.". database::input(language::$selected['code']) ."') as name,
 			oi.quantity_reserved,

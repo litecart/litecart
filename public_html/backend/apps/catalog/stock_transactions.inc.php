@@ -10,7 +10,7 @@
 	}
 
 	// Table Rows, Total Number of Rows, Total Number of Pages
-	$transactions = database::query(
+	$transactions = database::prepare(
 		"select id, name, created_at
 		from ". DB_TABLE_PREFIX ."stock_transactions t
 		where true

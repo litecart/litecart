@@ -42,7 +42,7 @@
 	}
 
 	// Table Rows, Total Number of Rows, Total Number of Pages
-	$geo_zones = database::query(
+	$geo_zones = database::prepare(
 		"select * from ". DB_TABLE_PREFIX ."geo_zones
 		order by name asc;"
 	)->fetch_page(function($geo_zone){

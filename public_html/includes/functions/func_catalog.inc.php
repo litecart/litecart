@@ -6,7 +6,7 @@
 			$parent_ids = [$parent_ids];
 		}
 
-		$query = database::query(
+		$statement = database::prepare(
 			"select c.id, c.parent_id, c.image, c.priority, c.updated_at,
 				json_value(c.name, '$.". database::input(language::$selected['code']) ."') as name,
 				json_value(c.short_description, '$.". database::input(language::$selected['code']) ."') as short_description
@@ -33,7 +33,7 @@
 			order by c.priority asc, name asc;"
 		);
 
-		return $query;
+		return $statement;
 	}
 
 	function catalog_categories_search_query($filter=[]) {
@@ -79,7 +79,7 @@
 			);
 		}
 
-		$query = (
+		$statement = (
 			"select c.id, c.parent_id, c.image, c.priority, c.updated_at,
 				json_value(c.name, '$.". database::input(language::$selected['code']) ."') as name,
 				json_value(c.short_description, '$.". database::input(language::$selected['code']) ."') as short_description,
@@ -110,7 +110,7 @@
 			". (!empty($filter['limit']) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : "") . (int)$filter['limit'] : "") .";"
 		);
 
-		return database::query($query);
+		return database::prepare($statement);
 	}
 
 	// Filter function using AND syntax
@@ -239,7 +239,7 @@
 			return "if(json_value(price, '$.". database::input($currency['code']) ."') != 0, json_value(price, '$.". database::input($currency['code']) ."') * ". $currency['value'] .", null)";
 		}, currency::$currencies)) .")";
 
-		$query = (
+		$statement = (
 			"select p.*, b.id as brand_id, b.name as brand_name,
 				pp.regular_price,
 				if(csd.scope_discount is not null, least(pp.final_price, round(pp.final_price * (1 - csd.scope_discount / 100), 4)), pp.final_price) as final_price,
@@ -347,6 +347,13 @@
 				group by product_id
 			) csd on (csd.product_id = p.id)
 
+			left join (
+				select product_id, round(avg(rating), 1) as rating
+				from ". DB_TABLE_PREFIX ."reviews
+				where status
+				group by product_id
+			) pr on (pr.product_id = p.id)
+
 			where (
 				(ifnull(pso.num_stock_options, 0) = 0 or pso.quantity_available > 0 or ss.hidden != 1)
 				". (!empty($sql_outer_where) ? implode(" and ", $sql_outer_where) : "") ."
@@ -362,7 +369,7 @@
 			". (!empty($filter['limit']) && (!empty($filter['product_name']) || !empty($filter['campaign']) || !empty($sql_inner_where['prices'])) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : "") . (int)$filter['limit'] : "") .";"
 		);
 
-		return database::query($query);
+		return database::prepare($statement);
 	}
 
 	// Search function using OR syntax
@@ -516,7 +523,7 @@
 			return "if(json_value(price, '$.". database::input($currency['code']) ."') != 0, json_value(price, '$.". database::input($currency['code']) ."') * ". $currency['value'] .", null)";
 		}, currency::$currencies)) . ")";
 
-		$query = (
+		$statement = (
 			"select p.*, b.name as brand_name, pp.regular_price, pp.final_price,
 				ifnull(pso.num_stock_options, 0) as num_stock_options, pso.total_quantity, pso.quantity_available, pa.attributes
 
@@ -609,5 +616,5 @@
 			". (!empty($filter['limit']) ? "limit ". (!empty($filter['offset']) ? (int)$filter['offset'] . ", " : "") . (int)$filter['limit'] : "") .";"
 		);
 
-		return database::query($query);
+		return database::prepare($statement);
 	}

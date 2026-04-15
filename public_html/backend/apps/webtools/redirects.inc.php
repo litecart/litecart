@@ -59,7 +59,7 @@
 		}
 	}
 
-	$redirects = database::query(
+	$redirects = database::prepare(
 		"select * from ". DB_TABLE_PREFIX ."redirects
 		order by status desc, pattern asc, destination asc;"
 	)->fetch_page(null, null, $_GET['page'], settings::get('data_table_rows_per_page'), $num_rows, $num_pages);

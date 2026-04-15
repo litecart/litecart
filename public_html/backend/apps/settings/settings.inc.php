@@ -75,7 +75,7 @@
 	}
 
 	// Table Rows, Total Number of Rows, Total Number of Pages
-	$settings = database::query(
+	$settings = database::prepare(
 		"select * from ". DB_TABLE_PREFIX ."settings
 		where `group_key` = '". database::input($settings_group['key']) ."'
 		order by priority, `key` asc;"

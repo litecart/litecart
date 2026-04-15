@@ -10,7 +10,7 @@
 	}
 
 	// Table Rows, Total Number of Rows, Total Number of Pages
-	$quantity_units = database::query(
+	$quantity_units = database::prepare(
 		"select qu.id, json_value(qu.name, '$.". database::input(language::$selected['code']) ."') as name,
 			json_value(qu.description, '$.". database::input(language::$selected['code']) ."') as description
 		from ". DB_TABLE_PREFIX ."quantity_units qu
