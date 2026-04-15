@@ -56,14 +56,6 @@
 		return !0;
 	}
 
-	// Returns the fallback value if all attempts are nil(). Similar to ($attempt1 ?? $attempt2 ?? '') ?: $fallback.
-	function fallback($fallback, &...$attempts) {
-		foreach ($attempts as $attempt) {
-			if (!nil($attempt)) return $attempt;
-		}
-		return $fallback;
-	}
-
 	// Check if variable indicates a truthy value
 	function is_true($string) {
 		//return (!empty($string) && preg_match('#^(1|true|yes|on|active|enabled)$#i', $string));
