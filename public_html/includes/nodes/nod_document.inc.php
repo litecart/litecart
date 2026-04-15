@@ -204,7 +204,7 @@
 
 					// Strip comments
 					$match[1] = preg_replace([
-						'#^\s*//.*$#m',                // Single-line comments
+						'#^\s*//.*$#m', // Single-line comments
 						'#/\*[^*]*\*+(?:[^/*][^*]*\*+)*/#s', // Multi-line comments (non-greedy, C-style)
 					], '', $match[1]);
 
@@ -459,7 +459,7 @@
 			self::$foot_tags[$key] = implode(PHP_EOL, $scripts);
 		}
 
-		public static function add_script($lines, $key=null) {
+		public static function add_script($lines, $key='') {
 
 			if (is_array($lines)) {
 				$lines = implode(PHP_EOL, $lines);
@@ -472,7 +472,20 @@
 			self::$javascript[$key] = $lines;
 		}
 
-		public static function add_preload($url, $type=null) {
+		public static function add_style($lines, $key='') {
+
+			if (is_array($lines)) {
+				$lines = implode(PHP_EOL, $lines);
+			}
+
+			if (!preg_match('#^( |\t)#', $lines)) {
+				$lines = preg_replace('#^#m', "\t", $lines);
+			}
+
+			self::$style[$key] = $lines;
+		}
+
+		public static function add_preload($url, $type='') {
 
 			if (!$type) {
 				$path = parse_url($url, PHP_URL_PATH);

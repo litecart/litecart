@@ -18,7 +18,7 @@
 
 				try {
 
-				// Decode token to get administrator ID
+					// Decode token to get administrator ID
 					$decoded = base64_decode($_COOKIE['remember_me'], true);
 					$token = $decoded ? json_decode($decoded, true) : null;
 					if (!is_array($token) || empty($token['id'])) {
@@ -38,7 +38,7 @@
 						throw new Exception('Invalid administrator or account removed');
 					}
 
-				// Verify HMAC with actual password hash
+					// Verify HMAC with actual password hash
 					$verified_id = f::token_verify_remember($_COOKIE['remember_me'], $administrator['password_hash']);
 					if ($verified_id === false) {
 

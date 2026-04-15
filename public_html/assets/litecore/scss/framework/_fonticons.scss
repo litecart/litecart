@@ -4,7 +4,7 @@
 	font-family: "LiteCore";
 	font-style: normal;
 	font-weight: 400;
-	src: url("../fonts/fonticons.woff2?1774915253") format("woff2");
+	src: url("../fonts/fonticons.woff2?1776175045") format("woff2");
 }
 
 [class^="icon-"], [class*=" icon-"] {
@@ -15,6 +15,7 @@
 	font-variant: normal;
 	text-rendering: auto;
 	text-align: center;
+	vertical-align: middle;
 	line-height: 1;
 	width: 1em;
 	height: 1em;
@@ -180,6 +181,7 @@
 .icon-expand:before { content: "\e09d"; }
 .icon-exclamation:before { content: "\e09f"; }
 .icon-exclamation-triangle:before { content: "\e0a0"; }
+.icon-webhooks:before { content: "\e0a1"; }
 .icon-envelope-open:before { content: "\e0a2"; }
 .icon-envelope:before { content: "\e0a4"; }
 .icon-ellipsis-v:before { content: "\e0a6"; }

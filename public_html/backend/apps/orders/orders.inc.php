@@ -452,8 +452,8 @@ table .tag {
 				<tr class="<?php echo implode(' ', $order['css_classes']); ?>" data-id="<?php echo $order['id']; ?>">
 					<td><?php echo f::form_checkbox('orders[]', $order['id'], true); ?></td>
 					<td><?php echo !empty($order['starred']) ? f::draw_fonticon('icon-star', 'style="color: #f2b01e;"') : f::draw_fonticon('icon-star-o', 'style="color: #ccc;"'); ?></td>
-					<td><?php echo (int)$order['id']; ?></td>
-					<td class="text-end"><?php echo $order['no']; ?></td>
+					<td class="text-end"><?php echo (int)$order['id']; ?></td>
+					<td class="text-center"><?php echo $order['no']; ?></td>
 					<td></td>
 					<td><?php echo f::draw_fonticon($order['order_status_icon'], 'style="color: '. $order['order_status_color'] .';"'); ?> <?php echo $order['order_status_id'] ? $order['order_status_name'] : t('title_uncompleted', 'Uncompleted'); ?></td>
 					<td>

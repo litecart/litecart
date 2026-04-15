@@ -16,7 +16,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 	<div id="content">
 
-		<article id="box-product" data-id="{{product_id}}" data-name="{{name|escape}}" data-price="<?php echo currency::format_raw($final_price); ?>">
+		<article id="box-product" data-id="<?php echo $product_id; ?>" data-name="<?php echo f::escape_attr($name); ?>" data-price="<?php echo currency::format_raw($final_price); ?>">
 
 			<div class="grid" style="margin-bottom: 0;">
 				<div class="col-md-6">
@@ -24,7 +24,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 						<a class="main-image" href="<?php echo document::href_rlink($image); ?>" data-toggle="lightbox" data-gallery="product">
 							<?php echo f::draw_thumbnail($image, 720, 0, 'product', 'alt="'. f::escape_attr($name) .'"'); ?>
-							{{sticker}}
+							<?php echo ($sticker); ?>
 						</a>
 
 						<?php if ($extra_images || $video_url) { ?>
@@ -52,11 +52,11 @@ form[name="buy_now_form"] .dropdown-menu .image {
 				</div>
 
 				<div class="col-md-6">
-					<h1 class="title">{{name}}</h1>
+					<h1 class="title"><?php echo f::escape_html($name); ?></h1>
 
 					<?php if ($short_description) { ?>
 					<p class="short-description">
-						{{short_description}}
+						<?php echo f::escape_html($short_description); ?>
 					</p>
 					<?php } ?>
 
@@ -66,7 +66,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 							<?php if ($brand['image']) { ?>
 							<?php echo f::draw_thumbnail($brand['image'], 0, 40, '', 'style="margin: 0; max-height: 80px; margin-inline-start: 0;"'); ?>
 							<?php } else { ?>
-							<h3><?php echo $brand['name']; ?></h3>
+							<h3><?php echo f::escape_html($brand['name']); ?></h3>
 							<?php } ?>
 						</a>
 					</div>
@@ -75,7 +75,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 					<?php if ($recommended_price) { ?>
 					<div class="recommended-price" style="margin: 1em 0;">
 						<?php echo t('title_recommended_price', 'Recommended Price'); ?>:
-						<span class="value">{{recommended_price|money}}</span>
+						<span class="value"><?php echo currency::format($recommended_price); ?></span>
 					</div>
 					<?php } ?>
 
@@ -92,21 +92,21 @@ form[name="buy_now_form"] .dropdown-menu .image {
 						<?php if ($sku) { ?>
 						<div class="sku">
 							<?php echo t('title_sku', 'SKU'); ?>:
-							<span class="value">{{sku}}</span>
+							<span class="value"><?php echo f::escape_html($sku); ?></span>
 						</div>
 						<?php } ?>
 
 						<?php if ($mpn) { ?>
 						<div class="mpn">
 							<?php echo t('title_mpn', 'MPN'); ?>:
-							<span class="value">{{mpn}}</span>
+							<span class="value"><?php echo f::escape_html($mpn); ?></span>
 						</div>
 						<?php } ?>
 
 						<?php if ($gtin) { ?>
 						<div class="gtin">
 							<?php echo t('title_gtin', 'GTIN'); ?>:
-							<span class="value">{{gtin}}</span>
+							<span class="value"><?php echo f::escape_html($gtin); ?></span>
 						</div>
 						<?php } ?>
 					</div>
@@ -117,13 +117,13 @@ form[name="buy_now_form"] .dropdown-menu .image {
 						<?php if ($quantity_available > 0) { ?>
 						<div class="stock-available">
 							<?php echo t('title_stock_status', 'Stock Status'); ?>:
-							<span class="value">{{stock_status}}</span>
+							<span class="value"><?php echo f::escape_html($stock_status); ?></span>
 						</div>
 
 						<?php if ($delivery_status) { ?>
 						<div class="stock-delivery">
 							<?php echo t('title_delivery_status', 'Delivery Status'); ?>:
-							<span class="value"><?php echo $delivery_status['name']; ?></span>
+							<span class="value"><?php echo f::escape_html($delivery_status['name']); ?></span>
 						</div>
 						<?php } ?>
 
@@ -131,7 +131,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 						<?php if ($sold_out_status) { ?>
 							<div class="<?php echo $orderable ? 'stock-partly-available' : 'stock-unavailable'; ?>">
 								<?php echo t('title_stock_status', 'Stock Status'); ?>:
-								<span class="value"><?php echo $sold_out_status['name']; ?></span>
+								<span class="value"><?php echo f::escape_html($sold_out_status['name']); ?></span>
 							</div>
 
 					<?php } else { ?>
@@ -156,10 +156,10 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 					<?php } ?>
 					<?php } ?>
-			</div>
-			<?php } ?>
+				</div>
+				<?php } ?>
 
-			<?php if ($final_price) { ?>
+				<?php if ($final_price) { ?>
 					<?php echo f::form_begin('buy_now_form', 'post'); ?>
 
 						<fieldset style="margin: 2em 0;">
@@ -203,7 +203,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 									<?php if ($total_tax) { ?>
 									<div class="tax" style="margin: 0 0 1em 0;">
 									<?php if ($tax_rates) { ?>
-										<?php echo $including_tax ? t('text_tax_included', 'Tax included') : t('title_excluding_tax', 'Excluding Tax'); ?>: <span class="total-tax">{{total_tax|money}}</span>
+										<?php echo $including_tax ? t('text_tax_included', 'Tax included') : t('title_excluding_tax', 'Excluding Tax'); ?>: <span class="total-tax"><?php echo currency::format($total_tax); ?></span>
 									<?php } else { ?>
 										<?php echo t('title_no_tax_included', 'No tax included'); ?>
 									<?php } ?>
@@ -257,7 +257,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 			<?php if (!is_ajax_request()) { ?>
 			<?php if ($description || $technical_data) { ?>
-			<div class="card" style="margin: var(--gutter-y) 0;">
+			<section class="card" style="margin: var(--gutter-y) 0;">
 				<div class="card-body">
 					<div class="grid" style="margin-bottom: 0;">
 
@@ -266,7 +266,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 							<h2 style="margin-top: 0;"><?php echo t('title_description', 'Description'); ?></h2>
 
 							<div class="description">
-								{{description}}
+								<?php echo $description; ?>
 							</div>
 						</div>
 						<?php } ?>
@@ -317,7 +317,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 					</div>
 
 				</div>
-			</div>
+			</section>
 			<?php } ?>
 			<?php } ?>
 
@@ -388,8 +388,8 @@ form[name="buy_now_form"] .dropdown-menu .image {
 		});
 	});
 
-	$('#box-product[data-id="{{product_id}}"] .social-bookmarks .link').off().on('click', function(e) {
+	$('#box-product[data-id="<?php echo $product_id; ?>"] .social-bookmarks .link').off().on('click', function(e) {
 		e.preventDefault();
-		prompt("<?php echo t('text_link_to_this_product', 'Link to this product'); ?>", '{{link}}');
+		prompt("<?php echo t('text_link_to_this_product', 'Link to this product'); ?>", "<?php echo f::escape_attr($link); ?>");
 	});
 </script>

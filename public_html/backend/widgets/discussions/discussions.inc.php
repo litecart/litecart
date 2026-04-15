@@ -63,7 +63,7 @@
 }
 #widget-discussions .title, #widget-discussions .description {
 	white-space: nowrap;
-	overflow-x: hidden;
+	overflow: hidden;
 	text-overflow: ellipsis;
 }
 </style>

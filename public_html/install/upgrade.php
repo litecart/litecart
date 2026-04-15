@@ -623,13 +623,13 @@
 					if ($table_exists) {
 
 						if ($column_exists) {
-							$sql .= 'CHANGE COLUMN `'. database::input($column_name) .'` `'. database::input($column_name) .'` '. database::input($column['type']);
+							$sql .= 'CHANGE COLUMN `'. database::input($column_name) .'` `'. database::input($column_name) .'` '. $column['type'];
 						} else {
-							$sql .= 'ADD COLUMN `'. database::input($column_name) .'` '. database::input($column['type']);
+							$sql .= 'ADD COLUMN `'. database::input($column_name) .'` '. $column['type'];
 						}
 
 					} else {
-						$sql .= '  `'. database::input($column_name) .'` '. database::input($column['type']);
+						$sql .= '  `'. database::input($column_name) .'` '. $column['type'];
 					}
 
 					if (isset($column['length']) && strpos($column['type'], '(') === false) {

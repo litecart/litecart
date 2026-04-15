@@ -10,6 +10,7 @@ import * as dartSass from 'sass';
 import gulpSass from 'gulp-sass';
 import sourcemaps from '@sequencemedia/gulp-sourcemaps';
 import uglify from 'gulp-uglify';
+
 import packageData from './package.json' with { type: 'json' };
 
 const sass = gulpSass(dartSass);
@@ -132,7 +133,7 @@ gulp.task('js-frontend', function() {
 });
 
 // Task to compile and minify Chartist SCSS
-gulp.task('sass-chartist', function() {
+gulp.task('scss-chartist', function() {
 	return gulp.src('public_html/assets/chartist/chartist.scss', { allowEmpty: true })
 		.pipe(sass(sassOptions).on('error', sass.logError))
 		//.pipe(gulp.dest('public_html/assets/chartist/', { overwrite: true }))
@@ -144,7 +145,7 @@ gulp.task('sass-chartist', function() {
 });
 
 // Task to compile and minify Trumbowyg SCSS
-gulp.task('sass-trumbowyg', function() {
+gulp.task('scss-trumbowyg', function() {
 	return gulp
 		.src('public_html/assets/trumbowyg/ui/*.scss')
 		.pipe(sass({ ...sassOptions, silenceDeprecations: ['legacy-js-api'] })
@@ -204,11 +205,11 @@ gulp.task('iconly', function() {
 
 // Watch files for changes
 gulp.task('watch', function() {
-	gulp.watch('public_html/assets/chartist/chartist.scss', gulp.series('sass-chartist'))
+	gulp.watch('public_html/assets/chartist/chartist.scss', gulp.series('scss-chartist'))
 	gulp.watch('public_html/assets/litecore/scss/**/*.scss', gulp.series('scss-framework'))
 	gulp.watch('public_html/assets/litecore/js/components/*.js', gulp.series('js-framework'))
 	gulp.watch('public_html/assets/trumbowyg/trumbowyg.js', gulp.series('js-trumbowyg'))
-	gulp.watch('public_html/assets/trumbowyg/**/*.scss', gulp.series('sass-trumbowyg'))
+	gulp.watch('public_html/assets/trumbowyg/**/*.scss', gulp.series('scss-trumbowyg'))
 	gulp.watch('public_html/backend/template/scss/**/*.scss', gulp.series('scss-backend'))
 	gulp.watch('public_html/backend/template/js/components/*.js', gulp.series('js-backend'))
 	gulp.watch('public_html/frontend/templates/default/scss/**/*.scss', gulp.series('scss-frontend'))
@@ -224,8 +225,8 @@ gulp.task('build', gulp.series(
 	'scss-framework',
 	'scss-backend',
 	'scss-frontend',
-	'sass-chartist',
-	'sass-trumbowyg',
+	'scss-chartist',
+	'scss-trumbowyg',
 	'watch',
 ));
 

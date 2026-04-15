@@ -23,6 +23,7 @@
 			'description' => 'User clicked a banner',
 			'data' => [
 				'banner_id' => $_POST['banner_id'],
+				'referrer' => $_SERVER['HTTP_REFERER'] ?? null,
 			],
 			'expires_at' => strtotime('+12 months'),
 		]);

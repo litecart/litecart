@@ -26,7 +26,7 @@
 
 				try {
 
-				// Decode token to get customer ID
+					// Decode token to get customer ID
 					$decoded = base64_decode($_COOKIE['customer_remember_me'], true);
 					$token = $decoded ? json_decode($decoded, true) : null;
 					if (!is_array($token) || empty($token['id'])) {
@@ -45,7 +45,7 @@
 						throw new Exception('Invalid customer or account removed');
 					}
 
-				// Verify HMAC with actual password hash
+					// Verify HMAC with actual password hash
 					$verified_id = f::token_verify_remember($_COOKIE['customer_remember_me'], $customer['password_hash']);
 					if ($verified_id === false) {
 						if (++$customer['login_attempts'] < 3) {

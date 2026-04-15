@@ -4,8 +4,6 @@
 
 		private static $_cache = [];
 
-		######################################################################
-
 		public static function get_price($value, $tax_class_id, $calculate_tax=null, $customer=null) {
 
 			if ($calculate_tax === null) {
@@ -35,9 +33,11 @@
 
 		public static function get_rates($tax_class_id, $customer=null) {
 
-			if (empty($tax_class_id)) return [];
+			if (!$tax_class_id) {
+				return [];
+			}
 
-			if (empty($customer)) {
+			if (!$customer) {
 				$customer = 'customer';
 			}
 
@@ -73,6 +73,7 @@
 							'zone_code' => customer::$data['zone_code'],
 							'city' => customer::$data['city'],
 						];
+
 						break;
 
 					default:

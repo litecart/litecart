@@ -65,8 +65,6 @@
 		foreach ($fallbacks as $fallback) {
 			if (!nil($fallback)) return $fallback;
 		}
-
-		return $fallback;
 	}
 
 	// Check if variable indicates a truthy value

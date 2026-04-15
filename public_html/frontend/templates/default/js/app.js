@@ -2,7 +2,7 @@
  * LiteCart v3.0.0 - Superfast, lightweight e-commerce platform built built with for simplicity.
  * @link https://www.litecart.net/
  * @license CC-BY-ND-4.0
- * @author T. Almroth - LiteCart AB
+ * @author T. Almroth, LiteCart AB
  */
 
 waitFor('jQuery', ($) => {

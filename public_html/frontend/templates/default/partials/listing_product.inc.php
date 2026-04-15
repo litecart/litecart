@@ -1,19 +1,25 @@
-<article class="product" data-id="{{product_id}}" data-sku="{{sku|escape}}" data-name="{{name|escape}}" data-price="<?php echo currency::format_raw($final_price); ?>">
+<article class="product" data-id="<?php echo (int)$product_id; ?>" data-sku="<?php echo f::escape_attr($sku); ?>" data-name="<?php echo f::escape_attr($name); ?>" data-price="<?php echo currency::format_raw($final_price); ?>">
 	<a class="link" href="<?php echo f::escape_html($link) ?>">
 
 		<div class="image-wrapper">
 			<?php echo f::draw_thumbnail($image, 320, 0, 'product', 'loading="lazy" alt="'. f::escape_attr($name) .'"'); ?>
-			{{sticker}}
+			<?php echo $sticker; ?>
 		</div>
 
 		<div class="info">
 
 			<div class="name">
-				{{name}}
+				<?php echo f::escape_html($name); ?>
 			</div>
 
+      <?php if ($rating) { ?>
+      <div class="rating" style="font-size: .75em;">
+        <?php echo functions::draw_rating($rating); ?>
+      </div>
+      <?php } ?>
+
 			<div class="short-description">
-				{{short_description}}
+				<?php echo f::escape_html($short_description); ?>
 			</div>
 
 			<?php echo f::draw_price_tag($regular_price, $final_price, currency::$selected['code']); ?>

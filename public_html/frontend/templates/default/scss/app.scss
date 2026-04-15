@@ -290,11 +290,13 @@ body {
 		}
 
 		a {
+			display: inline-flex;
 			background: var(--social-button-background);
-			padding: 0.5em;
+			padding: .5em;
 			border: 1px solid var(--footer-text-color);
 			border-radius: var(--border-radius);
 			color: var(--footer-text-color);
+			text-decoration: none;
 
 			&:hover {
 				background: var(--social-button-background--hover);
@@ -1049,6 +1051,7 @@ body {
 		display: flex;
 
 		a {
+			display: inline-flex;
 			font-size: 1.25em;
 			padding: 0.5em;
 			border-radius: 50%;
@@ -1058,6 +1061,7 @@ body {
 
 		.btn {
 			background: var(--social-button-background);
+			color: var(--social-button-text-color);
 			transition: background-color 500ms linear;
 
 			&:hover {

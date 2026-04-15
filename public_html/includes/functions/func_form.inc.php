@@ -1,11 +1,14 @@
 <?php
 
 	function form_begin($name='', $method='post', $action='', $multipart=false, $parameters='') {
+
 		$html = '<form'. (($name) ? ' name="'. f::escape_attr($name) .'"' : '') .' method="'. ((strtolower($method) == 'get') ? 'get' : 'post') .'" enctype="'. (($multipart == true) ? 'multipart/form-data' : 'application/x-www-form-urlencoded') .'" accept-charset="'. mb_http_output() .'"'. (($action) ? ' action="'. f::escape_attr($action) .'"' : '') . ($parameters ? ' ' . $parameters : '') .'>';
-	// Auto-inject CSRF token for POST forms
+		
+		// Auto-inject CSRF token for POST forms
 		if (strtolower($method) !== 'get' && class_exists('session', false)) {
 			$html .= '<input type="hidden" name="csrf_token" value="'. f::escape_attr(session::csrf_token()) .'" />';
 		}
+	
 		return $html;
 	}
 
@@ -240,8 +243,8 @@
 		document::$javascript['table2csv'] = implode(PHP_EOL, [
 			'$(\'table[data-toggle="csv"]\').on(\'click\', \'button[name="remove_row"]\', function(e) {',
 			'  e.preventDefault()',
-			'  var $parent = this.closest(\'tbody\')',
-			'  this.closest(\'tr\').remove()',
+			'  var $parent = $(this).closest(\'tbody\')',
+			'  $(this).closest(\'tr\').remove()',
 			'  $parent.trigger(\'input\')',
 			'})',
 			'',
@@ -275,7 +278,7 @@
 			'        }',
 			'      }).get().join(\',\')',
 			'    }).get().join(\'\\r\\n\')',
-			'  this.next(\'textarea\').val(csv)',
+			'  $(this).next(\'textarea\').val(csv)',
 			'});',
 		]);
 
@@ -490,7 +493,7 @@
 			'<div class="input-group">',
 			'  <span class="input-group-icon">'. f::draw_fonticon('icon-key') .'</span>',
 			'  <input'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-input"' : '') .' type="password" name="'. f::escape_attr($name) .'" value="'. f::escape_attr($input) .'"'. ($parameters ? ' '. $parameters : '') .'>',
-			'  <button class="btn btn-default" type="button" onclick="this.prev().attr(\'type\', (this.prev().attr(\'type\') == \'password\') ? \'text\' : \'password\')">'. f::draw_fonticon('icon-eye') .'</button>',
+			'  <button class="btn btn-default" type="button" onclick="'. f::escape_attr("$(this).prev().attr('type', ($(this).prev().attr('type') == 'password') ? 'text' : 'password');") .'">'. f::draw_fonticon('icon-eye') .'</button>',
 			'</div>',
 		]);
 	}
@@ -1504,7 +1507,7 @@
 			$input = form_reinsert_value($name);
 		}
 
-		$account_name = t('title_guest', 'Guest');
+		$name = t('title_guest', 'Guest');
 
 		if ($input) {
 			$customer = database::query(
@@ -1514,9 +1517,9 @@
 			)->fetch();
 
 			if ($customer) {
-				$account_name = $customer['company'] ?: $customer['firstname'] .' '. $customer['lastname'];
+				$name = $customer['company'] ?: $customer['firstname'] .' '. $customer['lastname'];
 			} else {
-				$account_name = '<em>'. t('title_unknown', 'Unknown') .'</em>';
+				$name = t('title_unknown', 'Unknown');
 			}
 		}
 
@@ -1529,7 +1532,7 @@
 	}
 */
 
-	function form_select_customer($name, $value = true, $parameters = '') {
+	function form_select_customer($name, $input = true, $parameters = '') {
 
 		if (empty(administrator::$data['id'])) {
 			throw new Error('Must be logged in to use form_select_customer()');
@@ -1597,16 +1600,16 @@
 			'	}',
 		]), 'select-customer');
 
-		document::add_javascript(implode(PHP_EOL, [
+		document::add_script([
 			'	var xhr_customer_search = null;',
 			'	var $dropdown = $(".customer-dropdown");',
-			'	var $(".search-input", $searchInput = $dropdown);',
-			'	var $(".dropdown-results", $results = $dropdown);',
-			'	var $("ul", $list = $results);',
+			'	var $searchInput = $dropdown.find(".search-input");',
+			'	var $results = $dropdown.find(".dropdown-results");',
+			'	var $list = $results.find("ul");',
 			'',
 			'	// Preselect the current customer if exists',
-			'	if ($searchInput.val() && ' . (int)$value . ') {',
-			'		$list.prepend(\'<li class="active" data-id="' . (int)$value . '">' . f::escape_js($account_name) . ' (ID: ' . (int)$value . ')</li>\');',
+			'	if ($searchInput.val() && ' . (int)$input . ') {',
+			'		$list.prepend(\'<li class="active" data-id="' . (int)$input . '">' . f::escape_js($name) . ' (ID: ' . (int)$input . ')</li>\');',
 			'	}',
 			'',
 			'	$searchInput.on("input", function() {',
@@ -1614,7 +1617,7 @@
 			'		$results.show();',
 			'',
 			'		if (query === "") {',
-			'			$list.html(\'<li class="set-guest' . (!empty($value) ? '' : ' active') . '" data-id="0">(' . f::escape_js(t('title_guest', 'Guest')) . ')</li>\');',
+			'			$list.html(\'<li class="set-guest' . (!empty($input) ? '' : ' active') . '" data-id="0">(' . f::escape_js(t('title_guest', 'Guest')) . ')</li>\');',
 			'			return;',
 			'		}',
 			'',
@@ -1636,14 +1639,14 @@
 			'				$list.html(\'<li class="set-guest" data-id="0">(' . f::escape_js(t('title_guest', 'Guest')) . ')</li>\');',
 			'				$.each(json, function(i, row) {',
 			'					if (row) {',
-			'						var isActive = (row.id == ' . (int)$value . ');',
+			'						var isActive = (row.id == '. (int)$input .');',
 			'						$list.append(',
 			'							\'<li class="\' + (isActive ? "active" : "") + \'" data-id="\' + row.id + \'">\' +',
 			'							row.id + \' &ndash; \' + row.name + \' (\' + row.email + \')</li>\'',
 			'						);',
 			'					}',
 			'				});',
-			'				if ($("li", $list).length === 1) {',
+			'				if ($list.find("li").length === 1) {',
 			'					$list.append(\'<li><em>' . f::escape_js(t('text_no_results', 'No results')) . '</em></li>\');',
 			'				}',
 			'			}',
@@ -1652,11 +1655,11 @@
 			'',
 			'	$dropdown.on("click", ".dropdown-results li", function() {',
 			'		var id = $(this).data("id");',
-			'		var name = this.text();',
-			'		$(":input[name=\'' . f::escape_js($name) . '\']").val(id).trigger("change");',
+			'		var name = $(this).text();',
+			'		$dropdown.find(":input[name=\'' . f::escape_js($name) . '\']").val(id).trigger("change");',
 			'		$searchInput.val(name);',
-			'		$("li", $list).removeClass("active");',
-			'		this.addClass("active");',
+			'		$list.find("li").removeClass("active");',
+			'		$(this).addClass("active");',
 			'		$results.hide();',
 			'	});',
 			'',
@@ -1669,15 +1672,15 @@
 			'	$searchInput.on("focus", function() {',
 			'		$results.show();',
 			'	});',
-		]));
+		]);
 
 		return implode(PHP_EOL, [
 			'<div class="customer-dropdown"' . ($parameters ? ' ' . $parameters : '') . '>',
-			'  <input type="hidden" name="' . f::escape_html($name) . '" value="' . (int)$value . '" />',
-			'  <input type="text" class="form-input search-input" placeholder="' . f::escape_html(t('title_search', 'Search')) . '" autocomplete="off" value="' . f::escape_html($value ? $account_name : '') . '">',
+			'  <input type="hidden" name="' . f::escape_html($name) . '" value="' . (int)$input . '" />',
+			'  <input type="text" class="form-input search-input" placeholder="' . f::escape_html(t('title_search', 'Search')) . '" autocomplete="off" value="' . f::escape_html($input ? $name : '') . '">',
 			'  <div class="dropdown-results" style="display: none;">',
 			'    <ul class="list-unstyled">',
-			'      <li class="set-guest' . ($value ? '' : ' active') . '" data-id="0">(' . f::escape_html(t('title_guest', 'Guest')) . ')</li>',
+			'      <li class="set-guest' . ($input ? '' : ' active') . '" data-id="0">(' . f::escape_html(t('title_guest', 'Guest')) . ')</li>',
 			'    </ul>',
 			'  </div>',
 			'</div>',
@@ -1691,7 +1694,8 @@
 		}
 
 		$options = database::query(
-			"select * from ". DB_TABLE_PREFIX ."customer_groups
+			"select id, name
+			from ". DB_TABLE_PREFIX ."customer_groups
 			order by name asc;"
 		)->fetch_all(function($group){
 			return [$group['id'], $group['name']];
@@ -1721,7 +1725,8 @@
 		}
 
 		$options = database::query(
-			"select id, email, company, firstname, lastname from ". DB_TABLE_PREFIX ."customers
+			"select id, email, company, firstname, lastname
+			from ". DB_TABLE_PREFIX ."customers
 			order by email;"
 		)->fetch_all(function($customer) {
 			return [$customer['id'], $customer['email'], 'data-name="'. f::escape_attr($customer['company'] ?: $customer['firstname'] .' '. $customer['lastname']) .'"'];
@@ -1751,8 +1756,10 @@
 		}
 
 		$options = database::query(
-			"select ds.id, json_value(ds.name, '$.name') as name, json_value(ds.description, '$.description') as description
-			from ". DB_TABLE_PREFIX ."delivery_statuses ds
+			"select id,
+				json_value(name, '$.name') as name,
+				json_value(description, '$.description') as description
+			from ". DB_TABLE_PREFIX ."delivery_statuses
 			order by name asc;"
 		)->fetch_all(function($row) {
 			return [$row['id'], $row['name'], 'title="'. f::escape_attr($row['description']) .'"'];
@@ -1894,12 +1901,15 @@
 		}
 
 		$options = array_map(function($file) {
+
 			$file = preg_replace('#^'. preg_quote('app://', '#') .'#', '', $file);
+
 			if (is_dir('app://' . $file)) {
 				return [basename($file).'/', $file.'/'];
 			} else {
 				return [basename($file), $file];
 			}
+
 		}, f::file_search($pattern, GLOB_BRACE));
 
 		if (preg_match('#\[\]$#', $name)) {

@@ -232,11 +232,13 @@ body {
   aspect-ratio: 1;
 }
 #site-footer .buttons a {
+  display: inline-flex;
   background: var(--social-button-background);
   padding: 0.5em;
   border: 1px solid var(--footer-text-color);
   border-radius: var(--border-radius);
   color: var(--footer-text-color);
+  text-decoration: none;
 }
 #site-footer .buttons a:hover {
   background: var(--social-button-background--hover);
@@ -893,6 +895,7 @@ body {
   display: flex;
 }
 #box-product .social-bookmarks a {
+  display: inline-flex;
   font-size: 1.25em;
   padding: 0.5em;
   border-radius: 50%;
@@ -901,6 +904,7 @@ body {
 }
 #box-product .social-bookmarks .btn {
   background: var(--social-button-background);
+  color: var(--social-button-text-color);
   transition: background-color 500ms linear;
 }
 #box-product .social-bookmarks .btn:hover {
@@ -932,6 +936,74 @@ body {
 }
 #box-product form[name=buy_now_form] .form-group {
   margin-bottom: 0.5em;
+}
+#box-product .rate-now {
+  width: 270px;
+  display: inline-block;
+}
+#box-product .rate-now fieldset {
+  background: #f9f9f9;
+  display: block;
+  border: none;
+  padding: 15px;
+}
+#box-product .rate-now input[name=rating] {
+  display: none;
+}
+#box-product .rate-now input[name=rating] ~ label {
+  float: right;
+  padding: 10px;
+  font-size: 36px;
+  color: #444;
+  transition: all 0.2s;
+}
+#box-product .rate-now input[name=rating]:checked ~ label:before {
+  content: "\f005";
+  color: orange;
+  transition: all 0.25s;
+}
+#box-product .rate-now input[name=rating][value="5"]:checked ~ label:before {
+  text-shadow: 0 0 10px orange;
+}
+#box-product .rate-now input[name=rating][value="1"]:checked ~ label:before {
+  color: #F62;
+}
+#box-product .rate-now input[name=rating] ~ label:hover {
+  transform: rotate(-15deg) scale(1.3);
+}
+#box-product .rate-now input[name=rating] ~ label:before {
+  content: "\f006";
+  font-family: FontAwesome;
+}
+#box-product .review {
+  position: relative;
+  margin: 15px 0;
+  padding: 15px;
+  background: #f9f9f9;
+}
+#box-product .review .rating {
+  margin-bottom: 1.5em;
+}
+#box-product .review .vote {
+  position: absolute;
+  top: 3em;
+  right: 1em;
+}
+#box-product .review .name {
+  float: right;
+}
+#box-product .review .title {
+  font-weight: bold;
+  margin: 7.5px 0;
+}
+#box-product .review .attachment {
+  width: 96px;
+}
+#box-product .review .thumbnail {
+  padding: 0.25em;
+}
+#box-product .review .upvote, #box-product .review .downvote {
+  color: inherit;
 }
 
 .price-tag .sale-price {

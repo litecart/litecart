@@ -372,7 +372,7 @@
 					try {
 
 						if ($this->type == 'svg') {
-							$this->_image->scale($max_width, $max_height);
+							$this->_image->scaleImage($max_width, $max_height);
 							return;
 						}
 
