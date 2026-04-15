@@ -61,6 +61,10 @@
 		<?php echo f::form_button_link(document::ilink(__APP__.'/countries/edit_country'), t('title_create_new_country', 'Create New Country'), '', 'create'); ?>
 	</div>
 
+	<div class="card-filter">
+		<div class="expandable"><?php echo f::form_input_search('query', false, 'placeholder="'. t('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"'); ?></div>
+	</div>
+
 	<?php echo f::form_begin('countries_form', 'post'); ?>
 
 		<table class="table data-table">
@@ -125,4 +129,12 @@
 	$('.data-table :checkbox').on('change', function() {
 		$('#actions').prop('disabled', !$('.data-table :checked').length);
 	}).first().trigger('change');
+
+	$('input[name="query"]').on('input', function() {
+		var query = this.value.toLowerCase();
+		$('.data-table tbody tr').each(function() {
+			$(this).toggle(!query || $(this).text().toLowerCase().indexOf(query) > -1);
+		});
+		$('.data-table tfoot td').text('<?php echo t('title_countries', 'Countries'); ?>: ' + $('.data-table tbody tr:visible').length);
+	});
 </script>
