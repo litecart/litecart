@@ -379,10 +379,10 @@
 		public static function log($event) {
 
 			$event = [
-				'session_id' => isset($event['session_id']) ? $event['session_id'] : fallback(session::$data['id'], null),
-				'customer_id' => isset($event['customer_id']) ? $event['customer_id'] : fallback($event['customer_id'], self::$data['id'], null),
-				'customer_email' => isset($event['customer_email']) ? $event['customer_email'] : fallback(self::$data['email'], null),
-				'customer_phone' => isset($event['customer_phone']) ? $event['customer_phone'] : fallback(self::$data['phone'], null),
+				'session_id' => isset($event['session_id']) ? $event['session_id'] : fallback(null, session::$data['id']),
+				'customer_id' => isset($event['customer_id']) ? $event['customer_id'] : fallback(null, $event['customer_id'], self::$data['id']),
+				'customer_email' => isset($event['customer_email']) ? $event['customer_email'] : fallback(null, self::$data['email']),
+				'customer_phone' => isset($event['customer_phone']) ? $event['customer_phone'] : fallback(null, self::$data['phone']),
 				'type' => isset($event['type']) ? $event['type'] : 'unknown',
 				'description' => isset($event['description']) ? $event['description'] : null,
 				'data' => !empty($event['data']) ? f::format_json($event['data']) : null,

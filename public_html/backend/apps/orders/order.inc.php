@@ -271,12 +271,12 @@ textarea[name="notes"]:focus {
 
 					<div class="form-group">
 						<div class="form-label"><?php echo t('title_payment_option', 'Payment Option'); ?></div>
-						<div class="detail"><?php echo fallback($order->data['payment_option']['name'], '-'); ?></div>
+						<div class="detail"><?php echo fallback('-', $order->data['payment_option']['name']); ?></div>
 					</div>
 
 					<div class="form-group">
 						<div class="form-label"><?php echo t('title_transaction_number', 'Transaction Number'); ?></div>
-						<div class="detail"><?php echo fallback($order->data['payment_transaction_id'], '-'); ?></div>
+						<div class="detail"><?php echo fallback('-', $order->data['payment_transaction_id']); ?></div>
 					</div>
 
 				</div>
@@ -377,22 +377,22 @@ textarea[name="notes"]:focus {
 
 			<div id="subtotal" class="summary">
 				<div class="title"><?php echo t('title_subtotal', 'Subtotal'); ?></div>
-				<div class="amount"><?php echo currency::format(fallback($_POST['discount'], 0), true, $order->data['currency_code'], $order->data['currency_value']); ?></div>
+				<div class="amount"><?php echo currency::format(fallback(0, $_POST['discount']), true, $order->data['currency_code'], $order->data['currency_value']); ?></div>
 			</div>
 
 			<div id="total-discount" class="summary">
 				<div class="title"><?php echo t('title_total_discount', 'Total Discount'); ?></div>
-				<div class="amount"><?php echo currency::format(fallback($_POST['discount'], 0), true, $order->data['currency_code'], $order->data['currency_value']); ?></div>
+				<div class="amount"><?php echo currency::format(fallback(0, $_POST['discount']), true, $order->data['currency_code'], $order->data['currency_value']); ?></div>
 			</div>
 
 			<div id="total-tax" class="summary">
 				<div class="title"><?php echo t('title_total_tax', 'Total Tax'); ?></div>
-				<div class="amount"><?php echo currency::format(fallback($_POST['total_tax'], 0), true, $order->data['currency_code'], $order->data['currency_value']); ?></div>
+				<div class="amount"><?php echo currency::format(fallback(0, $_POST['total_tax']), true, $order->data['currency_code'], $order->data['currency_value']); ?></div>
 			</div>
 
 			<div id="grand-total" class="summary">
 				<div class="title"><?php echo t('title_grand_total', 'Grand Total'); ?></div>
-				<div class="amount"><?php echo currency::format_html(fallback($_POST['total'], 0), true, $order->data['currency_code'], $order->data['currency_value']); ?></div>
+				<div class="amount"><?php echo currency::format_html(fallback(0, $_POST['total']), true, $order->data['currency_code'], $order->data['currency_value']); ?></div>
 			</div>
 		</div>
 

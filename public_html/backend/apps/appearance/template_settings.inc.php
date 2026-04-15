@@ -26,7 +26,7 @@
 					if (array_key_exists($setting['key'], $saved_settings) && array_key_exists($language_code, $saved_settings[$setting['key']])) {
 						$settings[$key]['value'][$language_code] = $saved_settings[$setting['key']][$language_code];
 					} else {
-						$settings[$key]['value'][$language_code] = fallback($saved_settings[$setting['key']]['en'], $setting['default_value']);
+						$settings[$key]['value'][$language_code] = fallback($setting['default_value'], $saved_settings[$setting['key']]['en']);
 					}
 				}
 

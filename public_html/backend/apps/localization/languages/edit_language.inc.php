@@ -75,7 +75,7 @@
 
 			if (!empty($_POST['locale']) && !setlocale(LC_ALL, preg_split('#\s*,\s*#', $_POST['locale'], -1, PREG_SPLIT_NO_EMPTY))) {
 				throw new Exception(strtr(t('error_not_a_valid_system_locale', '%locale is not a valid system locale on this machine'), [
-					'%locale' => fallback($_POST['locale'], 'NULL')
+					'%locale' => fallback('NULL', $_POST['locale'])
 				]));
 			}
 

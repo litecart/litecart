@@ -11,7 +11,7 @@
 {{head_tags}}
 <style>
 :root {
-	--default-text-size: <?php echo fallback($_COOKIE['font_size'], '13'); ?>px;
+	--default-text-size: <?php echo fallback('13', $_COOKIE['font_size']); ?>px;
 }
 </style>
 </head>

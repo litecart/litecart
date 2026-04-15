@@ -73,10 +73,10 @@
 			}
 
 			$this->data['id'] = preg_replace('#\.disabled$#', '', $this->data['folder']);
-			$this->data['name'] = fallback($dom->getElementsByTagName('name')->item(0)->textContent, '');
-			$this->data['version'] = fallback($dom->getElementsByTagName('version')->item(0)->textContent, date('Y-m-d', filemtime($this->data['location'] .'vmod.xml')));
-			$this->data['description'] = fallback($dom->getElementsByTagName('description')->item(0)->textContent, '');
-			$this->data['author'] = fallback($dom->getElementsByTagName('author')->item(0)->textContent, '');
+			$this->data['name'] = fallback('', $dom->getElementsByTagName('name')->item(0)->textContent);
+			$this->data['version'] = fallback(date('Y-m-d', filemtime($this->data['location'] .'vmod.xml')), $dom->getElementsByTagName('version')->item(0)->textContent);
+			$this->data['description'] = fallback('', $dom->getElementsByTagName('description')->item(0)->textContent);
+			$this->data['author'] = fallback('', $dom->getElementsByTagName('author')->item(0)->textContent);
 			$this->data['created_at'] = date('Y-m-d H:i:s', filectime($this->data['location'] .'vmod.xml'));
 			$this->data['updated_at'] = date('Y-m-d H:i:s', filemtime($this->data['location'] .'vmod.xml'));
 
@@ -228,8 +228,8 @@
 			$vmod_node->appendChild( $dom->createElement('author', $this->data['author']) );
 
 			$marketplace_node = $dom->createElement('marketplace');
-			$marketplace_node->appendChild( $dom->createElement('addon_id', fallback($this->data['marketplace']['addon_id'], '')) );
-			$marketplace_node->appendChild( $dom->createElement('expires_at', fallback($this->data['marketplace']['expires_at'], '')) );
+			$marketplace_node->appendChild( $dom->createElement('addon_id', fallback('', $this->data['marketplace']['addon_id'])) );
+			$marketplace_node->appendChild( $dom->createElement('expires_at', fallback('', $this->data['marketplace']['expires_at'])) );
 
 			$vmod_node->appendChild($marketplace_node);
 

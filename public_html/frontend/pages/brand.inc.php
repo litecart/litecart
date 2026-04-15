@@ -66,7 +66,7 @@
 
 	$_page->snippets['products'] = f::catalog_products_query([
 		'brands' => [$brand->id],
-		'product_name' => fallback($_GET['product_name']),
+		'product_name' => fallback(null, $_GET['product_name']),
 		'sort' => $_GET['sort'],
 		'campaigns_first' => true,
 	])->fetch_page(null, null, $_GET['page'], 20, $num_rows, $num_pages);

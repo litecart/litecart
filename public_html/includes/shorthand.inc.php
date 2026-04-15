@@ -56,15 +56,12 @@
 		return !0;
 	}
 
-	// Returns value for variable or falls back to a substituting value on nil(). Similar to !empty($var) ? $var : $fallback1 ?: $fallback2
-	function fallback(&$var, $fallback=null) {
-		if (!nil($var)) return $var;
-
-		$fallbacks = array_slice(func_get_args(), 1);
-
-		foreach ($fallbacks as $fallback) {
-			if (!nil($fallback)) return $fallback;
+	// Returns the fallback value if all attempts are nil(). Similar to ($attempt1 ?? $attempt2 ?? '') ?: $fallback.
+	function fallback($fallback, &...$attempts) {
+		foreach ($attempts as $attempt) {
+			if (!nil($attempt)) return $attempt;
 		}
+		return $fallback;
 	}
 
 	// Check if variable indicates a truthy value

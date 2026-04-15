@@ -28,7 +28,7 @@
 	<?php include 'app://frontend/partials/site_footer.inc.php'; ?>
 </div>
 
-<?php if (fallback(document::$settings['scroll_up'])) { ?>
+<?php if (fallback(null, document::$settings['scroll_up'])) { ?>
 <a id="scroll-up" class="hidden-print" href="#">
 	<?php echo f::draw_fonticon('icon-chevron-up', 'style="color: #000; font-size: 3rem;"'); ?>
 </a>

@@ -44,7 +44,7 @@
 		echo PHP_EOL . '- Testing route::add() and identification...';
 
 		// Save original state - we'll test indirectly through behavior
-		$original_request = fallback(route::$request, '');
+		$original_request = fallback('', route::$request);
 
 		// Add test routes
 		route::add('f:test-page', [

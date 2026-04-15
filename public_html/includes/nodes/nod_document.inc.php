@@ -70,7 +70,7 @@
 			self::$snippets['home_path'] = WS_DIR_APP;
 			self::$snippets['nonce'] = self::$nonce;
 
-			switch (fallback(route::$selected['endpoint'])) {
+			switch (fallback(null, route::$selected['endpoint'])) {
 
 				case 'backend':
 					self::$snippets['template_path'] = WS_DIR_APP . 'backend/template/';
@@ -123,7 +123,7 @@
 				'settings' => self::$settings,
 			];
 
-			switch (fallback(route::$selected['endpoint'])) {
+			switch (fallback(null, route::$selected['endpoint'])) {
 
 				case 'backend':
 					self::$jsenv['template']['url'] = WS_DIR_APP . 'backend/template/';
@@ -299,7 +299,7 @@
 			stats::start_watch('rendering');
 
 			// Set view
-			switch (fallback(route::$selected['endpoint'])) {
+			switch (fallback(null, route::$selected['endpoint'])) {
 
 				case 'backend':
 					$_layout = new ent_view('app://backend/template/layouts/'.self::$layout.'.inc.php');
@@ -537,7 +537,7 @@
 
 				default:
 
-					switch (fallback(route::$selected['endpoint'])) {
+					switch (fallback(null, route::$selected['endpoint'])) {
 
 						case 'backend':
 							$resource = WS_DIR_APP . BACKEND_ALIAS .'/'. $resource;

@@ -41,7 +41,7 @@
 							</div>
 
 							<div class="text-center">
-								<a href="<?php echo document::ilink('account/reset_password', ['email' => fallback($_POST['email'])]); ?>">
+								<a href="<?php echo document::ilink('account/reset_password', ['email' => fallback(null, $_POST['email'])]); ?>">
 									<?php echo t('text_lost_your_password', 'Lost your password?'); ?>
 								</a>
 							</div>

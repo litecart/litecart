@@ -109,18 +109,18 @@ h1 {
 		<div class="grid">
 			<div class="col-6">
 				<div class="label"><?php echo t('title_shipping_option', 'Shipping Option'); ?></div>
-				<div class="value"><?php echo fallback($order['shipping_option']['name'], '-'); ?></div>
+				<div class="value"><?php echo fallback('-', $order['shipping_option']['name']); ?></div>
 
 				<div class="label"><?php echo t('title_shipping_tracking_id', 'Shipping Tracking ID'); ?></div>
-				<div class="value"><?php echo fallback($order['shipping_tracking_id'], '-'); ?></div>
+				<div class="value"><?php echo fallback('-', $order['shipping_tracking_id']); ?></div>
 			</div>
 
 			<div class="col-6">
 				<div class="label"><?php echo t('title_payment_option', 'Payment Option'); ?></div>
-				<div class="value"><?php echo fallback($order['payment_option']['name'], '-'); ?></div>
+				<div class="value"><?php echo fallback('-', $order['payment_option']['name']); ?></div>
 
 				<div class="label"><?php echo t('title_transaction_number', 'Transaction Number'); ?></div>
-				<div class="value"><?php echo fallback($order['payment_transaction_id'], '-'); ?></div>
+				<div class="value"><?php echo fallback('-', $order['payment_transaction_id']); ?></div>
 			</div>
 		</div>
 
@@ -187,22 +187,22 @@ h1 {
 
 			<div id="subtotal" class="summary">
 				<div class="title"><?php echo t('title_subtotal', 'Subtotal'); ?></div>
-				<div class="amount"><?php echo currency::format(fallback($_POST['discount'], 0), true, $order['currency_code'], $order['currency_value']); ?></div>
+				<div class="amount"><?php echo currency::format(fallback(0, $_POST['discount']), true, $order['currency_code'], $order['currency_value']); ?></div>
 			</div>
 
 			<div id="total-discount" class="summary">
 				<div class="title"><?php echo t('title_total_discount', 'Total Discount'); ?></div>
-				<div class="amount"><?php echo currency::format(fallback($_POST['discount'], 0), true, $order['currency_code'], $order['currency_value']); ?></div>
+				<div class="amount"><?php echo currency::format(fallback(0, $_POST['discount']), true, $order['currency_code'], $order['currency_value']); ?></div>
 			</div>
 
 			<div id="total-tax" class="summary">
 				<div class="title"><?php echo t('title_total_tax', 'Total Tax'); ?></div>
-				<div class="amount"><?php echo currency::format(fallback($_POST['total_tax'], 0), true, $order['currency_code'], $order['currency_value']); ?></div>
+				<div class="amount"><?php echo currency::format(fallback(0, $_POST['total_tax']), true, $order['currency_code'], $order['currency_value']); ?></div>
 			</div>
 
 			<div id="grand-total" class="summary">
 				<div class="title"><?php echo t('title_grand_total', 'Grand Total'); ?></div>
-				<div class="amount"><?php echo currency::format_html(fallback($_POST['total'], 0), true, $order['currency_code'], $order['currency_value']); ?></div>
+				<div class="amount"><?php echo currency::format_html(fallback(0, $_POST['total']), true, $order['currency_code'], $order['currency_value']); ?></div>
 			</div>
 		</div>
 	</main>

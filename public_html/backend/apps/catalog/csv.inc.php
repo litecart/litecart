@@ -391,7 +391,7 @@
 								continue 2;
 							}
 
-							echo 'Updating existing category '. fallback($row['name'], 'on line '. $batch['counters']['line']) . PHP_EOL;
+							echo 'Updating existing category '. fallback('on line '. $batch['counters']['line'], $row['name']) . PHP_EOL;
 							$batch['counters']['updated']++;
 
 						} else {
@@ -401,7 +401,7 @@
 								continue 2;
 							}
 
-							echo 'Inserting new category: '. fallback($row['name'], 'on line '. $batch['counters']['line']) . PHP_EOL;
+							echo 'Inserting new category: '. fallback('on line '. $batch['counters']['line'], $row['name']) . PHP_EOL;
 							$batch['counters']['inserted']++;
 
 							if (!empty($row['id'])) {
@@ -504,7 +504,7 @@
 								continue 2;
 							}
 
-							echo 'Updating existing brand '. fallback($row['name'], 'on line '. $batch['counters']['line']) . PHP_EOL;
+							echo 'Updating existing brand '. fallback('on line '. $batch['counters']['line'], $row['name']) . PHP_EOL;
 							$batch['counters']['updated']++;
 
 						} else {
@@ -514,7 +514,7 @@
 								continue 2;
 							}
 
-							echo 'Inserting new brand: '. fallback($row['name'], "on line $line") . PHP_EOL;
+							echo 'Inserting new brand: '. fallback("on line $line", $row['name']) . PHP_EOL;
 							$batch['counters']['inserted']++;
 
 							if (!empty($row['id'])) {
@@ -621,7 +621,7 @@
 								continue 2;
 							}
 
-							echo 'Updating existing product '. fallback($row['name'], 'on line '. $batch['counters']['line']) . PHP_EOL;
+							echo 'Updating existing product '. fallback('on line '. $batch['counters']['line'], $row['name']) . PHP_EOL;
 							$batch['counters']['updated']++;
 
 						} else {
@@ -631,7 +631,7 @@
 								continue 2;
 							}
 
-							echo 'Inserting new product: '. fallback($row['name'], 'on line '. $batch['counters']['line']) . PHP_EOL;
+							echo 'Inserting new product: '. fallback('on line '. $batch['counters']['line'], $row['name']) . PHP_EOL;
 							$batch['counters']['inserted']++;
 
 							if (!empty($row['id'])) {
@@ -926,7 +926,7 @@
 								continue 2;
 							}
 
-							echo 'Updating existing stock item '. fallback($row['name'][$row['language_code']], "on line $line") . PHP_EOL;
+							echo 'Updating existing stock item '. fallback("on line $line", $row['name'][$row['language_code']]) . PHP_EOL;
 							$batch['counters']['updated']++;
 
 						} else {
@@ -936,7 +936,7 @@
 								continue 2;
 							}
 
-							echo 'Inserting new stock item '. fallback($row['name'][$row['language_code']], "on line $line") . PHP_EOL;
+							echo 'Inserting new stock item '. fallback("on line $line", $row['name'][$row['language_code']]) . PHP_EOL;
 							$batch['counters']['inserted']++;
 						}
 
@@ -999,7 +999,7 @@
 								continue 2;
 							}
 
-							echo 'Updating existing stock item '. fallback($row['name'][$row['language_code']], "on line $line") . PHP_EOL;
+							echo 'Updating existing stock item '. fallback("on line $line", $row['name'][$row['language_code']]) . PHP_EOL;
 							$batch['counters']['updated']++;
 
 						} else {
@@ -1009,7 +1009,7 @@
 								continue 2;
 							}
 
-							echo 'Inserting new stock item: '. fallback($row['name'][$row['language_code']], "on line $line") . PHP_EOL;
+							echo 'Inserting new stock item: '. fallback("on line $line", $row['name'][$row['language_code']]) . PHP_EOL;
 							$batch['counters']['inserted']++;
 
 							if (!empty($row['id'])) {
@@ -1116,7 +1116,7 @@
 								continue 2;
 							}
 
-							echo 'Updating existing supplier '. fallback($row['name'], 'on line '. $batch['counters']['line']) . PHP_EOL;
+							echo 'Updating existing supplier '. fallback('on line '. $batch['counters']['line'], $row['name']) . PHP_EOL;
 							$batch['counters']['updated']++;
 
 						} else {
@@ -1126,7 +1126,7 @@
 								continue 2;
 							}
 
-							echo 'Inserting new supplier: '. fallback($row['name'], 'on line '. $batch['counters']['line']) . PHP_EOL;
+							echo 'Inserting new supplier: '. fallback('on line '. $batch['counters']['line'], $row['name']) . PHP_EOL;
 							$batch['counters']['inserted']++;
 
 							if (!empty($row['id'])) {

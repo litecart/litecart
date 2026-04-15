@@ -52,7 +52,7 @@
 		} else if (!in_array('fsockopen', $disabled_functions)) {
 
 			$parts = parse_url($url);
-			$fp = fsockopen($parts['host'], fallback($parts['port'], 80), $errno, $errstr, 30);
+			$fp = fsockopen($parts['host'], fallback(80, $parts['port']), $errno, $errstr, 30);
 
 			fwrite($fp, implode("\r\n", [
 				'GET '. $parts['path'] .' HTTP/1.1',

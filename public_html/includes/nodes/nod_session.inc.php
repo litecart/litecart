@@ -47,11 +47,11 @@
 
 						// Generate a fingerprint based on request data
 						self::$data['fingerprint'] = hash('sha256', implode([
-							fallback($_SERVER['SSL_PROTOCOL']),
-							fallback($_SERVER['SSL_CIPHER']),
+							fallback(null, $_SERVER['SSL_PROTOCOL']),
+							fallback(null, $_SERVER['SSL_CIPHER']),
 							$_SERVER['REMOTE_ADDR'],
 							$_SERVER['HTTP_USER_AGENT'],
-							fallback($_SERVER['HTTP_ACCEPT_LANGUAGE']),
+							fallback(null, $_SERVER['HTTP_ACCEPT_LANGUAGE']),
 						]));
 					}
 				}

@@ -95,10 +95,10 @@
 	function form_captcha($id, $config=[], $parameters='') {
 
 		$config = [
-			'width' => fallback($config['width'], 100),
-			'height' => fallback($config['height'], 40),
-			'length' => fallback($config['length'], 4),
-			'set' => fallback($config['set'], 'numbers'),
+			'width' => fallback(100, $config['width']),
+			'height' => fallback(40, $config['height']),
+			'length' => fallback(4, $config['length']),
+			'set' => fallback('numbers', $config['set']),
 		];
 
 		return f::captcha_draw($id, $config, $parameters);
@@ -1151,7 +1151,7 @@
 				return form_select_timezone($name, $input, $parameters);
 
 			case 'toggle':
-				return form_toggle($name, fallback($options[0], null), $input);
+				return form_toggle($name, fallback(null, $options[0]), $input);
 
 			case 'tax_class':
 				return form_select_tax_class($name, $input, $parameters);
@@ -2371,7 +2371,7 @@
 
 			$option = implode(PHP_EOL, [
 				'<div class="dropdown-item flex flex-nogap">',
-				'  '. f::draw_thumbnail('storage://images/' . fallback($stock_option['image'], 'no_image.svg'), 0, 64, 'product', 'style="width: 64px; height: 64px; margin-inline-end: 1em;"'),
+				'  '. f::draw_thumbnail('storage://images/' . fallback('no_image.svg', $stock_option['image']), 0, 64, 'product', 'style="width: 64px; height: 64px; margin-inline-end: 1em;"'),
 				'  <div class="flex-grow">',
 				'    <div class="name">'. $stock_option['name'] .' ['. $stock_option['sku'] .']</div>',
 				'    <div class="notice">'. $icon .' '. $notice .'</div>',

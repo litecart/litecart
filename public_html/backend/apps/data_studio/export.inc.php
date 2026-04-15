@@ -268,7 +268,7 @@
 
 					<div class="form-group">
 						<label><?php echo t('title_format', 'Format'); ?></label>
-						<?php	echo f::form_toggle('format', $format_options, fallback($_POST['format'], 'csv')); ?>
+						<?php	echo f::form_toggle('format', $format_options, fallback('csv', $_POST['format'])); ?>
 					</div>
 
 					<fieldset id="csv" class="options">

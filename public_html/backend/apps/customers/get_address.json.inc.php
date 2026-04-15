@@ -9,20 +9,20 @@
 	if (!$customer) exit;
 
 	$json = [
-		'tax_id' => fallback($customer['tax_id']),
-		'company' => fallback($customer['company']),
-		'firstname' => fallback($customer['firstname']),
-		'lastname' => fallback($customer['lastname']),
-		'address1' => fallback($customer['address1']),
-		'address2' => fallback($customer['address2']),
-		'postcode' => fallback($customer['postcode']),
-		'city' => fallback($customer['city']),
-		'country_code' => fallback($customer['country_code']),
-		'zone_code' => fallback($customer['zone_code']),
-		'phone' => fallback($customer['phone']),
-		'email' => fallback($customer['email']),
-		'default_billing_address_id' => fallback($customer['default_billing_address_id']),
-		'default_shipping_address_id' => fallback($customer['default_shipping_address_id']),
+		'tax_id' => fallback(null, $customer['tax_id']),
+		'company' => fallback(null, $customer['company']),
+		'firstname' => fallback(null, $customer['firstname']),
+		'lastname' => fallback(null, $customer['lastname']),
+		'address1' => fallback(null, $customer['address1']),
+		'address2' => fallback(null, $customer['address2']),
+		'postcode' => fallback(null, $customer['postcode']),
+		'city' => fallback(null, $customer['city']),
+		'country_code' => fallback(null, $customer['country_code']),
+		'zone_code' => fallback(null, $customer['zone_code']),
+		'phone' => fallback(null, $customer['phone']),
+		'email' => fallback(null, $customer['email']),
+		'default_billing_address_id' => fallback(null, $customer['default_billing_address_id']),
+		'default_shipping_address_id' => fallback(null, $customer['default_shipping_address_id']),
 	];
 
 	ob_clean();

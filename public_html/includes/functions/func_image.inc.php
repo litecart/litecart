@@ -24,15 +24,15 @@
 			}
 
 			$options = [
-				'destination' => fallback($options['destination'], 'storage://cache/'),
-				'width' => fallback($options['width'], 0),
-				'height' => fallback($options['height'], 0),
-				'quality' => fallback($options['quality'], settings::get('image_quality')),
-				'trim' => fallback($options['trim'], false),
+				'destination' => fallback('storage://cache/', $options['destination']),
+				'width' => fallback(0, $options['width']),
+				'height' => fallback(0, $options['height']),
+				'quality' => fallback(settings::get('image_quality'), $options['quality']),
+				'trim' => fallback(false, $options['trim']),
 				'interlaced' => !empty($options['interlaced']),
-				'overwrite' => fallback($options['overwrite'], false),
-				'watermark' => fallback($options['watermark'], false),
-				'extension' => fallback($options['extension']),
+				'overwrite' => fallback(false, $options['overwrite']),
+				'watermark' => fallback(false, $options['watermark']),
+				'extension' => fallback(null, $options['extension']),
 			];
 
 			// If destination is a folder

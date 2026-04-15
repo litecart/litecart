@@ -62,12 +62,12 @@
 
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_email_address', 'Email Address'); ?></div>
-										<div><?php echo fallback($order['customer']['email'], '&nbsp;'); ?></div>
+										<div><?php echo fallback('&nbsp;', $order['customer']['email']); ?></div>
 									</label>
 
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_phone_number', 'Phone Number'); ?></div>
-										<div><?php echo fallback($order['customer']['phone'], '&nbsp;'); ?></div>
+										<div><?php echo fallback('&nbsp;', $order['customer']['phone']); ?></div>
 									</label>
 								</div>
 
@@ -79,12 +79,12 @@
 
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_email_address', 'Email Address'); ?></div>
-										<div><?php echo fallback($order['customer']['shipping_address']['email'], '&nbsp;'); ?></div>
+										<div><?php echo fallback('&nbsp;', $order['customer']['shipping_address']['email']); ?></div>
 									</label>
 
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_phone_number', 'Phone Number'); ?></div>
-										<div><?php echo fallback($order['customer']['shipping_address']['phone'], '&nbsp;'); ?></div>
+										<div><?php echo fallback('&nbsp;', $order['customer']['shipping_address']['phone']); ?></div>
 									</label>
 
 								</div>

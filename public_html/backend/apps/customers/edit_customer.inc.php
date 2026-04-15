@@ -107,7 +107,7 @@
 				'phone',
 				'email',
 			] as $field) {
-				$customer->data['shipping_address'][$field] = fallback($_POST['shipping_address'][$field], '');
+				$customer->data['shipping_address'][$field] = fallback('', $_POST['shipping_address'][$field]);
 			}
 
 			$customer->save();
@@ -336,7 +336,7 @@
 											<?php echo !empty($orders['total_count']) ? (int)$orders['total_count'] : '0'; ?>
 										</td>
 										<td><?php echo t('title_total_sales', 'Total Sales'); ?><br>
-											<?php echo currency::format(fallback($orders['total_sales'], 0), false, settings::get('store_currency_code')); ?>
+											<?php echo currency::format(fallback(0, $orders['total_sales']), false, settings::get('store_currency_code')); ?>
 										</td>
 									</tr>
 								</tbody>

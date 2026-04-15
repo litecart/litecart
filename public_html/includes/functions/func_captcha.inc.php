@@ -3,12 +3,12 @@
 	function captcha_draw($id='default', $config=[], $parameters='') {
 
 		$config = [
-			'width' => fallback($config['width'], 100),
-			'height' => fallback($config['height'], 40),
-			'length' => fallback($config['length'], 4),
-			'set' => fallback($config['set'], 'numbers'),
-			'font' => fallback($config['font'], FS_DIR_APP . 'assets/fonts/captcha.ttf'),
-			'font_size' => fallback($config['height'], 40) * 0.7,
+			'width' => fallback(100, $config['width']),
+			'height' => fallback(40, $config['height']),
+			'length' => fallback(4, $config['length']),
+			'set' => fallback('numbers', $config['set']),
+			'font' => fallback(FS_DIR_APP . 'assets/fonts/captcha.ttf', $config['font']),
+			'font_size' => fallback(40, $config['height']) * 0.7,
 		];
 
 		switch ($config['set']) {

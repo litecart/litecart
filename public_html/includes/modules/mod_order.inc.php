@@ -37,7 +37,7 @@
 						'title' => $action['title'],
 						'description' => @$action['description'],
 						'function' => $action['function'],
-						'target' => fallback($action['target'], '_self'),
+						'target' => fallback('_self', $action['target']),
 					];
 				}
 			}

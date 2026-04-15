@@ -24,7 +24,7 @@
 				return '';
 			}
 
-			switch (fallback(route::$selected['endpoint'])) {
+			switch (fallback(null, route::$selected['endpoint'])) {
 
 				case 'backend':
 					$view = new ent_view('app://backend/template/partials/breadcrumbs.inc.php');

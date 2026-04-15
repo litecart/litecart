@@ -61,7 +61,7 @@
 						continue;
 					}
 
-					echo 'Updating existing page '. fallback($row['name'], "on line $line") . PHP_EOL;
+					echo 'Updating existing page '. fallback("on line $line", $row['name']) . PHP_EOL;
 					$updated++;
 
 				} else {
@@ -71,7 +71,7 @@
 						continue;
 					}
 
-					echo 'Inserting new page: '. fallback($row['name'], "on line $line") . PHP_EOL;
+					echo 'Inserting new page: '. fallback("on line $line", $row['name']) . PHP_EOL;
 					$inserted++;
 
 					if (!empty($row['id'])) {

@@ -122,7 +122,7 @@
 					<div class="col-sm-6">
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_zone_state_province', 'Zone/State/Province'); ?></div>
-							<?php echo f::form_select_zone('customer[zone_code]', fallback($_POST['country_code'], customer::$data['country_code'], settings::get('store_country_code')), true); ?>
+							<?php echo f::form_select_zone('customer[zone_code]', fallback(settings::get('store_country_code'), $_POST['country_code'], customer::$data['country_code']), true); ?>
 						</label>
 					</div>
 					<?php } ?>
@@ -221,7 +221,7 @@
 							<div class="col-sm-6">
 								<label class="form-group">
 									<div class="form-label"><?php echo t('title_zone_state_province', 'Zone/State/Province'); ?></div>
-									<?php echo f::form_select_zone('shipping_address[zone_code]', fallback($_POST['shipping_address']['country_code'], customer::$data['shipping_address']['country_code'], $_POST['country_code'], customer::$data['country_code'], settings::get('store_country_code')), true); ?>
+									<?php echo f::form_select_zone('shipping_address[zone_code]', fallback(settings::get('store_country_code'), $_POST['shipping_address']['country_code'], customer::$data['shipping_address']['country_code'], $_POST['country_code'], customer::$data['country_code']), true); ?>
 								</label>
 							</div>
 							<?php } ?>
