@@ -303,7 +303,7 @@
 		echo f::draw_thumbnail('storage://images/'. $image['filename'], 480, 0, 'product', 'id="main-image"');
 	} else {
 		echo f::draw_thumbnail('storage://images/no_image.svg', 480, 0, 'product', 'id="main-image"');
-  }
+	}
 ?>
 							</label>
 

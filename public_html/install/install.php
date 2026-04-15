@@ -34,17 +34,17 @@
 
 	// Set platform name
 	if (preg_match('#define\(\'PLATFORM_NAME\', \'([^\']+)\'\);#', file_get_contents(FS_DIR_APP . 'includes/app_header.inc.php'), $matches)) {
-    define('PLATFORM_NAME', isset($matches[1]) ? $matches[1] : false);
-  } else {
-    throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . 'Could not get platform name</p>' . PHP_EOL  . PHP_EOL);
-  }
+		define('PLATFORM_NAME', isset($matches[1]) ? $matches[1] : false);
+	} else {
+		throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . 'Could not get platform name</p>' . PHP_EOL  . PHP_EOL);
+	}
 
-  // Set platform version
-  if (preg_match('#define\(\'PLATFORM_VERSION\', \'([^\']+)\'\);#', file_get_contents(FS_DIR_APP . 'includes/app_header.inc.php'), $matches)) {
-    define('PLATFORM_VERSION', isset($matches[1]) ? $matches[1] : false);
-  } else {
-    throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . 'Could not get platform version</p>' . PHP_EOL  . PHP_EOL);
-  }
+	// Set platform version
+	if (preg_match('#define\(\'PLATFORM_VERSION\', \'([^\']+)\'\);#', file_get_contents(FS_DIR_APP . 'includes/app_header.inc.php'), $matches)) {
+		define('PLATFORM_VERSION', isset($matches[1]) ? $matches[1] : false);
+	} else {
+		throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . 'Could not get platform version</p>' . PHP_EOL  . PHP_EOL);
+	}
 
 	require_once FS_DIR_APP . 'includes/compatibility.inc.php';
 
@@ -384,7 +384,7 @@
 
 		} else if (version_compare($database_software['version'], $database_software['recommended_version'], '<')) {
 			echo $database_software['name'] .' '. $database_software['version'] .' <span class="ok">[OK]</span><br>'
-				 . '<span class="warning">'. $database_software['name'] .' '. $database_software['recommended_version'] .'+ recommended</span></span></p>';
+				. '<span class="warning">'. $database_software['name'] .' '. $database_software['recommended_version'] .'+ recommended</span></span></p>';
 
 		} else {
 			echo $database_software['name'] .' '. $database_software['version'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
@@ -887,9 +887,9 @@
 		echo '<p>Create files for vMod cache and management...';
 
 		if (file_put_contents(FS_DIR_STORAGE . 'vmods/.installed', '') !== false
-		 && file_put_contents(FS_DIR_STORAGE . 'vmods/.settings', '') !== false
-		 && file_put_contents(FS_DIR_STORAGE . 'vmods/.cache/.checked', '') !== false
-		 && file_put_contents(FS_DIR_STORAGE . 'vmods/.cache/.modifications', '') !== false) {
+		&& file_put_contents(FS_DIR_STORAGE . 'vmods/.settings', '') !== false
+		&& file_put_contents(FS_DIR_STORAGE . 'vmods/.cache/.checked', '') !== false
+		&& file_put_contents(FS_DIR_STORAGE . 'vmods/.cache/.modifications', '') !== false) {
 			echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 		} else {
 			echo ' <span class="error">[Failed]</span></p>' . PHP_EOL . PHP_EOL;

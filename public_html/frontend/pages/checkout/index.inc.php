@@ -52,7 +52,7 @@
 					exit;
 				}
 			}
-    }
+		}
 
 
 	} catch (Exception $e) {
@@ -234,7 +234,7 @@
 								}
 
 								echo '</form>' . PHP_EOL
-									 . '<script>' . PHP_EOL;
+									. '<script>' . PHP_EOL;
 
 								if (!empty($gateway['delay'])) {
 									echo implode(PHP_EOL, [

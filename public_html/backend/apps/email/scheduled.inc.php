@@ -94,15 +94,15 @@
 				<td><?php echo f::form_checkbox('emails[]', $email['id']); ?></td>
 					<td><?php echo strtr($email['status'], $statuses); ?></td>
 					<td><?php echo implode(', ', array_column($email['recipients'], 'name')); ?></td>
-					<td><a class="link" href="<?php echo document::href_ilink(__APP__ . '/edit', [
-     	'email_id' => $email['id'],
-     ]); ?>"><?php echo $email['subject']; ?></a></td>
+					<td>
+						<a class="link" href="<?php echo document::href_ilink(__APP__ . '/edit', ['email_id' => $email['id']]); ?>">
+							<?php echo $email['subject']; ?>
+						</a>
+					</td>
 					<td><?php echo f::datetime_format('datetime', $email['scheduled_at']); ?></td>
 					<td><?php echo f::datetime_format('datetime', $email['created_at']); ?></td>
 					<td class="text-end">
-						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__ . '/edit', [
-      	'email_id' => $email['id'],
-      ]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>">
+						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__ . '/edit', ['email_id' => $email['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>">
 							<?php echo f::draw_fonticon('edit'); ?>
 						</a>
 					</td>

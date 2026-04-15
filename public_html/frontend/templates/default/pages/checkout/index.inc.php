@@ -8,10 +8,10 @@
 	font-weight: bold;
 }
 .option:has(input[name="shipping_option[id]"]:checked)::after {
-  content: '<?php echo t('title_selected', ' Selected '); ?>';
+	content: '<?php echo t('title_selected', ' Selected '); ?>';
 }
 .option:has(input[name="payment_option[id]"]:checked)::after {
-  content: '<?php echo t('title_selected', ' Selected '); ?>';
+	content: '<?php echo t('title_selected', ' Selected '); ?>';
 }
 </style>
 

@@ -32,27 +32,27 @@
 			$this->_data[$name] = $value;
 		}
 
-    // ArrayAccess implementation
-    public function offsetExists($offset): bool {
+		// ArrayAccess implementation
+		public function offsetExists($offset): bool {
 			return isset($this->_data[$offset]);
-    }
+		}
 
-    public function offsetGet($offset): mixed {
+		public function offsetGet($offset): mixed {
 			return $this->_data[$offset] ?? null;
-    }
+		}
 
-    public function offsetSet($offset, $value): void {
+		public function offsetSet($offset, $value): void {
 			if (isset($this->_data[$offset])) {
 				trigger_error('Overwriting data is prohibited ('.$offset.')', E_USER_WARNING);
 				return;
 			}
 			$this->_data[$offset] = $value;
-    }
+		}
 
-    public function offsetUnset($offset): void {
+		public function offsetUnset($offset): void {
 			if (isset($this->_data[$offset])) {
 				trigger_error('Unsetting data is prohibited ('.$offset.')', E_USER_WARNING);
 				return;
 			}
-    }
+		}
 	}

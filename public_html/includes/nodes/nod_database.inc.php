@@ -1,9 +1,9 @@
 <?php
 
 	/*
-	 * PHP wrapper for MariaDB/MySQL.
-	 * Procedural style as performance seems a bit faster than object-oriented
-	 */
+	* PHP wrapper for MariaDB/MySQL.
+	* Procedural style as performance seems a bit faster than object-oriented
+	*/
 
 	class database {
 
@@ -396,8 +396,8 @@
 		private $_link;
 
 		public function __construct($statement, $link = 'default', $result = null) {
-      $this->_statement = $statement;
-      $this->_link = $link;
+			$this->_statement = $statement;
+			$this->_link = $link;
 			$this->_result = $result;
 		}
 
@@ -729,35 +729,35 @@
 
 			$rows = [];
 
-      // If original query is available and looks like a SELECT, use COUNT + LIMIT/OFFSET
-      if (!$this->_result && $this->_statement && preg_match('#^\s*SELECT\b#i', $this->_statement)) {
+			// If original query is available and looks like a SELECT, use COUNT + LIMIT/OFFSET
+			if (!$this->_result && $this->_statement && preg_match('#^\s*SELECT\b#i', $this->_statement)) {
 
-        // Strip trailing semicolon
-        $query = preg_replace('#\s*;\s*$#', '', $this->_statement);
+				// Strip trailing semicolon
+				$query = preg_replace('#\s*;\s*$#', '', $this->_statement);
 
 				// Remove any existing LIMIT clause to get accurate count
-        $query = preg_replace('#\s+LIMIT\s+\d+(\s*,\s*\d+)?\s*$#i', '', $query);
+				$query = preg_replace('#\s+LIMIT\s+\d+(\s*,\s*\d+)?\s*$#i', '', $query);
 
-        // Count total rows by wrapping the sanitized query
-        $num_rows = database::query(
-          "SELECT COUNT(*) AS c FROM (
-            ". $query ."
-          ) AS _count", $this->_link
-        )->fetch('c');
+				// Count total rows by wrapping the sanitized query
+				$num_rows = database::query(
+					"SELECT COUNT(*) AS c FROM (
+						". $query ."
+					) AS _count", $this->_link
+				)->fetch('c');
 
-        $num_pages = ($items_per_page > 0) ? ceil($num_rows / $items_per_page) : 0;
+				$num_pages = ($items_per_page > 0) ? ceil($num_rows / $items_per_page) : 0;
 
-        $offset = ($page - 1) * $items_per_page;
+				$offset = ($page - 1) * $items_per_page;
 
 				database::$stats['duration'] += microtime(true) - $timestamp;
 
-        if ($offset < $num_rows) {
-          $paged_sql = $query . ' LIMIT ' . (int)$offset . ', ' . (int)$items_per_page;
-          $rows = database::query($paged_sql, $this->_link)->fetch_all($filter, $index_column);
-        }
+				if ($offset < $num_rows) {
+					$paged_sql = $query . ' LIMIT ' . (int)$offset . ', ' . (int)$items_per_page;
+					$rows = database::query($paged_sql, $this->_link)->fetch_all($filter, $index_column);
+				}
 
-        return $rows;
-      }
+				return $rows;
+			}
 
 			if (!$this->_result) {
 				$this->execute();

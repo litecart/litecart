@@ -1,9 +1,9 @@
 <?php
 
-  // Summary validation stub for checkout confirmation flow
+	// Summary validation stub for checkout confirmation flow
 
-  if (empty(session::$data['checkout']['order'])) return;
+	if (empty(session::$data['checkout']['order'])) return;
 
-  $order = &session::$data['checkout']['order'];
+	$order = &session::$data['checkout']['order'];
 
-  $order->refresh_total();
+	$order->refresh_total();

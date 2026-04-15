@@ -29,9 +29,9 @@
 		}
 	}
 
-  if (!empty($_GET['filter']['pattern'])) {
-    $_GET['filter']['pattern'] = f::file_resolve_path(ltrim($_GET['filter']['pattern'], '/\\'));
-  }
+	if (!empty($_GET['filter']['pattern'])) {
+		$_GET['filter']['pattern'] = f::file_resolve_path(ltrim($_GET['filter']['pattern'], '/\\'));
+	}
 
 	if (!empty($_POST['mkdir'])) {
 
@@ -247,7 +247,7 @@
 		}
 	}
 
-  $results = [];
+	$results = [];
 
 	if (!empty($_GET['filter']['pattern'])) {
 		foreach (f::file_search('storage://'. $_GET['path'] . (!empty($_GET['filter']['pattern']) ? $_GET['filter']['pattern'] : '*')) as $file) {
@@ -495,9 +495,9 @@ table .icon-folder {
 </div>
 
 <datalist id="search-patterns">
-  <option value="*.php">Display all files ending with .php in the current folder</option>
-  <option value="**/*.php">Display all files ending with .php in all recursive folders</option>
-  <option value="**/images/">Display all directories named images/ in all recursive folders</option>
+	<option value="*.php">Display all files ending with .php in the current folder</option>
+	<option value="**/*.php">Display all files ending with .php in all recursive folders</option>
+	<option value="**/images/">Display all directories named images/ in all recursive folders</option>
 </datalist>
 
 <script>
@@ -545,7 +545,7 @@ table .icon-folder {
 		dragleave: function(e){
 			let dropzone = this.getBoundingClientRect();
 			if (e.originalEvent.x < dropzone.left || e.originalEvent.x > dropzone.left + dropzone.width
-			 || e.originalEvent.y < dropzone.top || e.originalEvent.y > dropzone.top + dropzone.height) {
+			|| e.originalEvent.y < dropzone.top || e.originalEvent.y > dropzone.top + dropzone.height) {
 				$(this).removeClass('in');
 			}
 		},
