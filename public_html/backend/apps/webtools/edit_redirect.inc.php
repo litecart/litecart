@@ -4,6 +4,12 @@
 		$redirect = new ent_redirect($_GET['redirect_id']);
 	} else {
 		$redirect = new ent_redirect();
+		if (isset($_GET['status'])) {
+			$redirect->data['status'] = null;
+		}
+		if (isset($_GET['destination'])) {
+			$redirect->data['destination'] = null;
+		}
 	}
 
 	document::$title[] = !empty($redirect->data['id']) ? t('title_edit_redirect', 'Edit Redirect') : t('title_create_new_redirect', 'Create New Redirect');
@@ -109,7 +115,8 @@
 
 	$type_options = [
 		[301, '301 Moved Permanently'],
-		[302, '302 Found (Redirect)'],
+		[302, '302 Found'],
+		[303, '303 See Other'],
 		[307, '307 Temporary Redirect'],
 		[308, '308 Permanent Redirect'],
 	];
@@ -133,13 +140,13 @@
 			</div>
 
 			<div class="form-group">
-				<?php echo f::form_radio_button('immediate', ['1', t('title_firstly', 'Firstly')], true); ?>
-				<div><?php echo t('text_process_rule_firstly', 'Process the rule before processing any logical resource'); ?></div>
+				<?php echo f::form_radio_button('immediate', ['1', t('title_immediately', 'Immediately')], true); ?>
+				<div><?php echo t('text_perform_redirect_immediately', 'Perform a redirect immediately once the URL is requested.'); ?></div>
 			</div>
 
 			<div class="form-group">
-				<?php echo f::form_radio_button('immediate', ['0', t('title_lastly', 'Lastly')], !file_get_contents('php://input') ? '0' : true); ?>
-				<div><?php echo t('text_process_rule_lastly', 'Process the rule as a last destination if no logical resource was found'); ?></div>
+				<?php echo f::form_radio_button('immediate', ['0', t('title_last_destination', 'Last Destination')], !file_get_contents('php://input') ? '0' : true); ?>
+				<div><?php echo t('text_perform_redirect_last_destination', 'Perform a redirect as a last destination when there is no resource matching the requested URL.'); ?></div>
 			</div>
 
 			<fieldset id="regex-helper" style="margin-bottom: 2em;">
@@ -352,4 +359,6 @@
 			$('input[name="pattern"]').val('');
 		}
 	});
+
+	$('input[name="use_helper"]').trigger('change'); // Init
 </script>

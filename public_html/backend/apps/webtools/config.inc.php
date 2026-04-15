@@ -3,7 +3,7 @@
 	return [
 		'name' => t('title_webtools', 'Webtools'),
 		'group' => 'system',
-		'default' => 'redirects',
+		'default' => 'not_found',
 		'priority' => 0,
 
 		'theme' => [
@@ -12,6 +12,11 @@
 		],
 
 		'menu' => [
+			[
+				'title' => t('title_not_found', 'Not Found'),
+				'doc' => 'not_found',
+				'params' => [],
+			],
 			[
 				'title' => t('title_redirects', 'Redirects'),
 				'doc' => 'redirects',
@@ -37,6 +42,8 @@
 		'docs' => [
 			'edit_redirect' => 'edit_redirect.inc.php',
 			'redirects' => 'redirects.inc.php',
+
+			'not_found' => 'not_found.inc.php',
 
 			'edit_site_tag' => 'edit_site_tag.inc.php',
 			'site_tags' => 'site_tags.inc.php',

@@ -645,6 +645,29 @@
 				"subscribed": ["subscribed"]
 			}
 		},
+		"not_found": {
+			"columns": {
+				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
+				"url": { "type": "VARCHAR", "length": 255, "default": "''" },
+				"hits": { "type": "INT", "length": 10, "unsigned": true, "default": 0 },
+				"last_requested": { "type": "VARCHAR", "length": 255, "default": "''" },
+				"last_referrer": { "type": "VARCHAR", "length": 255, "default": "''" },
+				"last_ip_address": { "type": "VARCHAR", "length": 39, "default": "''" },
+				"last_hostname": { "type": "VARCHAR", "length": 128, "default": "''" },
+				"last_user_agent": { "type": "VARCHAR", "length": 255, "default": "''" },
+				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
+				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
+			},
+			"primary_key": ["id"],
+			"unique_keys": {
+				"url": ["url"]
+			},
+			"keys": {
+				"hits": ["hits"],
+				"last_requested": ["last_requested"],
+				"created_at": ["created_at"]
+			}
+		},
 		"orders": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },

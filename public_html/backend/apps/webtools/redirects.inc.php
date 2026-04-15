@@ -100,7 +100,7 @@
 					<td><?php echo f::draw_fonticon(!empty($redirect['status']) ? 'on' : 'off'); ?></td>
 					<td><a href="<?php echo document::href_ilink(__APP__.'/edit_redirect', ['redirect_id' => $redirect['id']]); ?>"><?php echo $redirect['pattern']; ?></a></td>
 					<td><?php echo $redirect['destination']; ?></td>
-					<td class="text-end"><?php echo $redirect['redirects']; ?></td>
+					<td class="text-end"><?php echo f::format_number($redirect['redirects']); ?></td>
 					<td class="text-end"><?php echo $redirect['last_redirected'] ? f::datetime_when($redirect['last_redirected']) : '-'; ?></td>
 					<td class="text-end"><a href="<?php echo document::href_ilink(__APP__.'/edit_redirect', ['redirect_id' => $redirect['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo f::draw_fonticon('edit'); ?></a></td>
 				</tr>
