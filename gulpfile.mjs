@@ -161,7 +161,7 @@ gulp.task('scss-trumbowyg', function() {
 // Lint PHP files
 gulp.task('phplint', function() {
 	return gulp
-		.src(paths.php)
+		.src('public_html/**/*.php')
 		.pipe(phplint())
 		.pipe(phplint.reporter('fail'));
 });
