@@ -4,7 +4,7 @@
 		$_GET['page'] = 1;
 	}
 
-	document::$snippets['title'][] = t('title_email_drafts', 'Email Drafts');
+	document::$title[] = t('title_email_drafts', 'Email Drafts');
 
 	breadcrumbs::add(t('title_email', 'Email'));
 	breadcrumbs::add(t('title_email_drafts', 'Email Drafts'));

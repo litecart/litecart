@@ -143,7 +143,7 @@
 			return file_exists($path) ? stat($path) : false;
 		}
 
-		####################################################################
+		## Non-Standard StreamWrapper Methods
 
 		private function _resolve_path($path) {
 			return preg_replace('#^storage://#', FS_DIR_STORAGE, str_replace('\\', '/', $path));

@@ -130,7 +130,7 @@
 			return file_exists($path) ? stat($path) : false;
 		}
 
-		####################################################################
+		## Non-Standard StreamWrapper Methods
 
 		private function _resolve_path($path) {
 			return preg_replace('#^app://#', FS_DIR_APP, str_replace('\\', '/', $path));
