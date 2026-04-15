@@ -77,6 +77,13 @@
 				limit 1;"
 			);
 
+			if (!empty($this->data['pattern'])) {
+				database::query(
+					"delete from ". DB_TABLE_PREFIX ."not_found
+					where url regexp '". database::input($this->data['pattern']) ."';"
+				);
+			}
+
 			cache::clear_cache('redirects');
 
 			$this->previous = $this->data;
