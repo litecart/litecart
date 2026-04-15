@@ -12,11 +12,11 @@
 				<?php echo f::escape_html($name); ?>
 			</div>
 
-      <?php if ($rating) { ?>
-      <div class="rating" style="font-size: .75em;">
-        <?php echo functions::draw_rating($rating); ?>
-      </div>
-      <?php } ?>
+			<?php if ($rating) { ?>
+			<div class="rating" style="font-size: .75em;">
+				<?php echo functions::draw_rating($rating); ?>
+			</div>
+			<?php } ?>
 
 			<div class="short-description">
 				<?php echo f::escape_html($short_description); ?>

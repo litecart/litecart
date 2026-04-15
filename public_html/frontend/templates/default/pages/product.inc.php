@@ -572,52 +572,52 @@ form[name="buy_now_form"] .dropdown-menu .image {
 		}, 500);
 	});
 
-  $('.review .upvote').click(function(e){
-    var $button = $(this);
-    var $review = $(this).closest('.review');
-    e.preventDefault();
-    $.ajax({
-       type: 'post',
-       url: '<?php echo document::ilink('ajax/review'); ?>?review_id='+ $review.data('review-id'),
-       data: 'upvote=true',
-       success: function(result){
-         $button.find('.num-votes').text(result.upvotes);
-       }
-    });
-  });
+	$('.review .upvote').click(function(e){
+		var $button = $(this);
+		var $review = $(this).closest('.review');
+		e.preventDefault();
+		$.ajax({
+			type: 'post',
+			url: '<?php echo document::ilink('ajax/review'); ?>?review_id='+ $review.data('review-id'),
+			data: 'upvote=true',
+			success: function(result){
+				$button.find('.num-votes').text(result.upvotes);
+			}
+		});
+	});
 
-  $('.review .downvote').click(function(e){
-    var $review = $(this).closest('.review');
-    var $button = $(this);
-    e.preventDefault();
-    $.ajax({
-       type: 'post',
-       url: '<?php echo document::ilink('ajax/review'); ?>?review_id='+ $review.data('review-id'),
-       data: 'review_id='+ $review.data('review-id') +'&downvote=true',
-       success: function(result){
-         $button.find('.num-votes').text(result.downvotes);
-       }
-    });
-  });
+	$('.review .downvote').click(function(e){
+		var $review = $(this).closest('.review');
+		var $button = $(this);
+		e.preventDefault();
+		$.ajax({
+			type: 'post',
+			url: '<?php echo document::ilink('ajax/review'); ?>?review_id='+ $review.data('review-id'),
+			data: 'review_id='+ $review.data('review-id') +'&downvote=true',
+			success: function(result){
+				$button.find('.num-votes').text(result.downvotes);
+			}
+		});
+	});
 
-  $('.attachments').on('click', '.remove', function(e) {
-    e.preventDefault();
-    $(this).closest('.form-group').remove();
-    refreshMainImage();
-  });
+	$('.attachments').on('click', '.remove', function(e) {
+		e.preventDefault();
+		$(this).closest('.form-group').remove();
+		refreshMainImage();
+	});
 
-  $('.attachments .add').click(function(e) {
-    e.preventDefault();
-    var output = [
-      '<div class="attachment form-group">',
-      '  <div class="input-group">',
-      '    <?php echo functions::form_draw_file_field('new_attachments[]', 'accept=".gif,.jpg,.png"'); ?>',
-      '    <div class="input-group-text">',
-      '      <a class="remove" href="#" title="<?php echo t('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times fa-lg', 'style="color: #cc3333;"'); ?></a>',
-      '    </div>',
-      '  </div>',
-      '</div>'
-    ].join('\n');
-    $('.attachments .new-attachments').append(output);
-  });
+	$('.attachments .add').click(function(e) {
+		e.preventDefault();
+		var output = [
+			'<div class="attachment form-group">',
+			'  <div class="input-group">',
+			'    <?php echo functions::form_draw_file_field('new_attachments[]', 'accept=".gif,.jpg,.png"'); ?>',
+			'    <div class="input-group-text">',
+			'      <a class="remove" href="#" title="<?php echo t('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times fa-lg', 'style="color: #cc3333;"'); ?></a>',
+			'    </div>',
+			'  </div>',
+			'</div>'
+		].join('\n');
+		$('.attachments .new-attachments').append(output);
+	});
 </script>

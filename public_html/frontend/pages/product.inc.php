@@ -80,89 +80,89 @@
 
 	// Handle submit review
 
-  if (!empty($_POST['submit_review'])) {
+	if (!empty($_POST['submit_review'])) {
 
-    try {
+		try {
 
 			if (settings::get('captcha_enabled') && !f::captcha_validate('review_product')) {
 				throw new Exception(t('error_invalid_captcha', 'Invalid CAPTCHA given'));
 			}
 
-      if (empty(customer::$data['id'])) {
-        throw new Exception(t('error_must_be_logged_in', 'You must be logged in'));
-      }
+			if (empty(customer::$data['id'])) {
+				throw new Exception(t('error_must_be_logged_in', 'You must be logged in'));
+			}
 
-      if (empty($_POST['rating'])) {
-        throw new Exception(t('error_must_select_rating', 'You must select a rating'));
-      }
+			if (empty($_POST['rating'])) {
+				throw new Exception(t('error_must_select_rating', 'You must select a rating'));
+			}
 
-      if (empty($_POST['review'])) {
-        throw new Exception(t('error_must_enter_a_review', 'You must enter a review'));
-      }
+			if (empty($_POST['review'])) {
+				throw new Exception(t('error_must_enter_a_review', 'You must enter a review'));
+			}
 
-      $reviews = database::query(
-        "select * from ". DB_TABLE_PREFIX ."reviews
-        where product_id = ". (int)$product->id ."
-        and customer_id = ". (int)customer::$data['id'] ."
-        limit 1;"
-      )->fetch();
+			$reviews = database::query(
+				"select * from ". DB_TABLE_PREFIX ."reviews
+				where product_id = ". (int)$product->id ."
+				and customer_id = ". (int)customer::$data['id'] ."
+				limit 1;"
+			)->fetch();
 
-      if ($review ) {
-        $review = new ent_product_review($review['id']);
-      } else {
-        $review = new ent_product_review();
-        $review->data['customer_id'] = customer::$data['id'];
-        $review->data['customer_name'] = customer::$data['name'];
-        $review->data['customer_email'] = customer::$data['email'];
-        $review->data['product_id'] = $product->id;
-      }
+			if ($review ) {
+				$review = new ent_review($review['id']);
+			} else {
+				$review = new ent_review();
+				$review->data['customer_id'] = customer::$data['id'];
+				$review->data['customer_name'] = customer::$data['name'];
+				$review->data['customer_email'] = customer::$data['email'];
+				$review->data['product_id'] = $product->id;
+			}
 
-      $review->data['status'] = 0;
-      $review->data['rating'] = $_POST['rating'];
-      $review->data['title'][language::$selected['code']] = $_POST['title'];
-      $review->data['description'][language::$selected['code']] = $_POST['review'];
+			$review->data['status'] = 0;
+			$review->data['rating'] = $_POST['rating'];
+			$review->data['title'][language::$selected['code']] = $_POST['title'];
+			$review->data['description'][language::$selected['code']] = $_POST['review'];
 
-      foreach ($review->data['attachments'] as $key => $attachment) {
-        if (!in_array($attachment['id'], array_column($review->data['attachments'], 'id'))) {
+			foreach ($review->data['attachments'] as $key => $attachment) {
+				if (!in_array($attachment['id'], array_column($review->data['attachments'], 'id'))) {
 					unset($review->data['attachments'][$key]);
-        }
-      }
+				}
+			}
 
-      if (!empty($_FILES['new_attachments']['tmp_name'])) {
-        foreach (array_keys($_FILES['new_attachments']['tmp_name']) as $key) {
-          $review->add_attachment($_FILES['new_attachments']['tmp_name'][$key], $_FILES['new_attachments']['name'][$key], $_FILES['new_attachments']['type'][$key]);
-        }
-      }
+			if (!empty($_FILES['new_attachments']['tmp_name'])) {
+				foreach (array_keys($_FILES['new_attachments']['tmp_name']) as $key) {
+					$review->add_attachment($_FILES['new_attachments']['tmp_name'][$key], $_FILES['new_attachments']['name'][$key], $_FILES['new_attachments']['type'][$key]);
+				}
+			}
 
-      $review->save();
+			$review->save();
 
-      $message = t('email_body_product_reviewed', implode("\r\n", [
-        "{customer_email} has reviewed the product {product_name} giving it a rating of {rating} stars.",
-        "",
-        "{review}",
-      ]));
+			$message = t('email_body_product_reviewed', implode("\r\n", [
+				"{customer_email} has reviewed the product {product_name} giving it a rating of {rating} stars.",
+				"",
+				"{review}",
+			]));
 
-      $message = strtr($message, [
-        '{customer_email}' => customer::$data['email'],
-        '{product_name}' => $product->name,
-        '{rating}' => $_POST['rating'],
-        '{review}' => $_POST['review'],
-      ]);
+			$message = strtr($message, [
+				'{customer_email}' => customer::$data['email'],
+				'{product_name}' => $product->name,
+				'{rating}' => $_POST['rating'],
+				'{review}' => $_POST['review'],
+			]);
 
-      (new ent_email())
+			(new ent_email())
 				->add_recipient(settings::get('store_email'))
 				->set_subject(t('email_subject_product_reviewed', 'Product Review'))
 				->add_body($message)
 				->send();
 
-      notices::$data['success'][] = t('success_thank_you_for_reviewing_product', 'Thank you for reviewing this product');
-      header('Location: '. document::link());
-      exit;
+			notices::$data['success'][] = t('success_thank_you_for_reviewing_product', 'Thank you for reviewing this product');
+			header('Location: '. document::link());
+			exit;
 
-    } catch (Exception $e) {
-      notices::add('errors', $e->getMessage());
-    }
-  }
+		} catch (Exception $e) {
+			notices::add('errors', $e->getMessage());
+		}
+	}
 
 	// Handle review upvote/downvote
 	if (isset($_POST['review_upvote']) || isset($_POST['review_downvote'])) {
@@ -173,7 +173,9 @@
 			}
 
 			$review = database::query(
-				"select pr.*, json_value(p.name, '$.\"". database::input(language::$selected['code']) ."\"') as product_name, concat(c.firstname, ' ', c.lastname) as customer_name
+				"select pr.*,
+					json_value(p.name, '$.\"". database::input(language::$selected['code']) ."\"') as product_name,
+					concat(c.firstname, ' ', c.lastname) as customer_name
 				from ". DB_TABLE_PREFIX ."reviews pr
 				left join ". DB_TABLE_PREFIX ."products p on (pr.product_id = p.product_id)
 				left join ". DB_TABLE_PREFIX ."customers c on (pr.customer_id = c.id)
@@ -260,17 +262,17 @@
 		header('Content-Type: application/json');
 		echo f::format_json($result);
 		exit;
-  }
+	}
 
-  if (empty(self::$data['is_bot'])) { // Needs an addon to detect bots
-    database::query(
-      "insert into ". DB_TABLE_PREFIX ."statistics
-      (type, entity_type, entity_id, measure_group_type, measure_group_value, `count`)
-      values ('product_views', 'product', ". (int)$product->id .", 'week', '". database::input(date('Y-W')) ."', 1)
-      on duplicate key update
-      `count` = `count` + 1;"
-    );
-  }
+	if (empty(self::$data['is_bot'])) { // Needs an addon to detect bots
+		database::query(
+			"insert into ". DB_TABLE_PREFIX ."statistics
+			(type, entity_type, entity_id, measure_group_type, measure_group_value, `count`)
+			values ('product_views', 'product', ". (int)$product->id .", 'week', '". database::input(date('Y-W')) ."', 1)
+			on duplicate key update
+			`count` = `count` + 1;"
+		);
+	}
 
 	customer::log([
 		'type' => 'product_view',
@@ -627,15 +629,13 @@
 	// Reviews
 
 	$reviews = database::prepare(
-    "select pr.*,
-			json_value(pr.title, '$.". database::input(language::$selected['code']) ."') as title,
-			json_value(pr.description, '$.". database::input(language::$selected['code']) ."') as description
-		from ". DB_TABLE_PREFIX ."reviews pr
-    left join ". DB_TABLE_PREFIX ."customers c on (pr.customer_id = c.id)
-    where pr.status
-    and pr.product_id = ". (int)$product->id ."
-    and title != ''
-    order by pr.created_at desc;"
+		"select *,
+			json_value(title, '$.". database::input(language::$selected['code']) ."') as title,
+			json_value(description, '$.". database::input(language::$selected['code']) ."') as description
+		from ". DB_TABLE_PREFIX ."reviews
+		where status
+		and product_id = ". (int)$product->id ."
+		order by created_at desc;"
 	)->fetch_page(function(&$review) {
 		$review['title'] = json_decode($review['title'], true) ?: [];
 		$review['description'] = json_decode($review['description'], true) ?: [];
@@ -670,13 +670,13 @@
 
 	// Customer's Review
 	$_page->snippets['customer_review'] = database::query(
-    "select pr.*, c.firstname as name
+		"select pr.*, c.firstname as name
 		from ". DB_TABLE_PREFIX ."reviews pr
-    left join ". DB_TABLE_PREFIX ."customers c on (pr.customer_id = c.id)
-    where pr.product_id = ". (int)$product->id ."
-    and customer_id = ". (int)customer::$data['id'] ."
-    limit 1;"
-  )->fetch(function(&$review) {
+		left join ". DB_TABLE_PREFIX ."customers c on (pr.customer_id = c.id)
+		where pr.product_id = ". (int)$product->id ."
+		and customer_id = ". (int)customer::$data['id'] ."
+		limit 1;"
+	)->fetch(function(&$review) {
 		$review['title'] = json_decode($review['title'], true) ?: [];
 		$review['description'] = json_decode($review['description'], true) ?: [];
 		$review['attachments'] = json_decode($review['attachments'], true) ?: [];

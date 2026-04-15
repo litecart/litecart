@@ -1423,6 +1423,56 @@
 				"immediate": ["immediate"]
 			}
 		},
+		"reviews": {
+			"columns": {
+				"id": { "type": "INT", "length": 11, "unsigned": true, "auto_increment": true },
+				"product_id": { "type": "INT", "length": 11, "unsigned": true, "default": 0 },
+				"customer_id": { "type": "INT", "length": 11, "unsigned": true, "default": 0 },
+				"customer_email": { "type": "VARCHAR", "length": 64, "default": "''" },
+				"customer_name": { "type": "VARCHAR", "length": 64, "default": "''" },
+				"status": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
+				"rating": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
+				"upvotes": { "type": "INT", "length": 11, "unsigned": true, "default": 0 },
+				"downvotes": { "type": "INT", "length": 11, "unsigned": true, "default": 0 },
+				"title": { "type": "TEXT", "default": "'{}'", "comment": "TYPE:JSON_TRANSLATIONS" },
+				"description": { "type": "TEXT", "default": "'{}'", "comment": "TYPE:JSON_TRANSLATIONS" },
+				"attachments": { "type": "TEXT", "default": "'[]'", "comment": "TYPE:JSON" },
+				"date_updated": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" },
+				"date_created": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
+			},
+			"primary_key": ["id"],
+			"unique_keys": {
+				"unique_review_customer": ["product_id", "customer_id", "customer_email"]
+			},
+			"keys": {
+				"rating": ["rating"]
+			},
+			"foreign_keys": {
+				"review_to_product": {
+					"columns": ["product_id"],
+					"references": {
+						"table": "products",
+						"columns": ["id"],
+						"on_update": "CASCADE",
+						"on_delete": "CASCADE"
+					}
+				},
+				"review_to_customer": {
+					"columns": ["customer_id"],
+					"references": {
+						"table": "customers",
+						"columns": ["id"],
+						"on_update": "CASCADE",
+						"on_delete": "SET NULL"
+					}
+				}
+			},
+			"check_constraints": {
+				"chk_title": "JSON_VALID(title)",
+				"chk_description": "JSON_VALID(description)",
+				"chk_attachments": "JSON_VALID(attachments)"
+			}
+		},
 		"sessions": {
 			"columns": {
 				"id": { "type": "VARCHAR", "length": 128 },

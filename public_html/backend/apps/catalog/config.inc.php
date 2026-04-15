@@ -106,6 +106,9 @@
 			'quantity_units' => 'quantity_units.inc.php',
 			'edit_quantity_unit' => 'edit_quantity_unit.inc.php',
 
+			'reviews' => 'reviews.inc.php',
+			'edit_review' => 'edit_review.inc.php',
+
 			'sold_out_statuses' => 'sold_out_statuses.inc.php',
 			'edit_sold_out_status' => 'edit_sold_out_status.inc.php',
 
