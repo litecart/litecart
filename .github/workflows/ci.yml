@@ -276,3 +276,142 @@ jobs:
       - name: Run platform tests
         continue-on-error: true
         run: php .git-hooks/pre-commit.d/platform_tests.php
+
+  e2e-tests:
+    name: E2E Tests (Playwright)
+    runs-on: ubuntu-latest
+    needs: [lint, build]
+
+    services:
+      mariadb:
+        image: mariadb:11
+        env:
+          MARIADB_ROOT_PASSWORD: litecart_root
+          MARIADB_DATABASE: litecart
+          MARIADB_USER: litecart
+          MARIADB_PASSWORD: litecart
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mysqli, gd, intl, mbstring, zip, xml, curl, simplexml, apcu
+          ini-values: date.timezone=Europe/London, apc.enable_cli=1
+          tools: none
+          coverage: none
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+
+      - name: Create storage directories
+        run: |
+          mkdir -p public_html/storage/{cache,data,logs}
+          mkdir -p public_html/storage/images/products
+          mkdir -p public_html/storage/vmods/.cache
+
+      - name: Generate config file
+        run: |
+          sed \
+            -e 's|{STORAGE_FOLDER}|storage|g' \
+            -e 's|{ADMIN_FOLDER}|admin|g' \
+            -e 's|{DB_SERVER}|127.0.0.1|g' \
+            -e 's|{DB_USERNAME}|litecart|g' \
+            -e 's|{DB_PASSWORD}|litecart|g' \
+            -e 's|{DB_DATABASE}|litecart|g' \
+            -e 's|{DB_TABLE_PREFIX}|lc_|g' \
+            -e 's|{CLIENT_IP}|127.0.0.1|g' \
+            -e 's|{TIMEZONE}|Europe/London|g' \
+            public_html/install/config > public_html/storage/config.inc.php
+          echo "Config file generated"
+
+      - name: Import database schema and seed data
+        run: |
+          php -r "
+            define('DB_SERVER', '127.0.0.1');
+            define('DB_USERNAME', 'litecart');
+            define('DB_PASSWORD', 'litecart');
+            define('DB_DATABASE', 'litecart');
+            define('DB_TABLE_PREFIX', 'lc_');
+
+            \$link = new mysqli(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
+            \$link->set_charset('utf8mb4');
+            \$link->query(\"SET SESSION sql_mode = ''\");
+
+            // Load and process structure.json
+            \$structure = file_get_contents('public_html/install/structure.json');
+            \$structure = str_replace('\"table\": \"', '\"table\": \"' . DB_TABLE_PREFIX, \$structure);
+            \$tables = json_decode(\$structure, true)['tables'];
+
+            foreach (\$tables as \$key => \$table) {
+              \$name = DB_TABLE_PREFIX . \$key;
+              \$cols = [];
+              foreach (\$table['columns'] as \$col => \$def) {
+                \$type = \$def['type'];
+                if (!empty(\$def['length'])) \$type .= '(' . \$def['length'] . ')';
+                if (!empty(\$def['unsigned'])) \$type .= ' UNSIGNED';
+                \$null = (!isset(\$def['null']) || \$def['null']) ? '' : ' NOT NULL';
+                \$default = isset(\$def['default']) ? ' DEFAULT ' . \$def['default'] : '';
+                \$auto = !empty(\$def['auto_increment']) ? ' AUTO_INCREMENT' : '';
+                \$cols[] = \"\`\$col\` \$type\$null\$default\$auto\";
+              }
+              if (!empty(\$table['primary_key'])) {
+                \$cols[] = 'PRIMARY KEY (\`' . implode('\`,\`', \$table['primary_key']) . '\`)';
+              }
+              if (!empty(\$table['keys'])) {
+                foreach (\$table['keys'] as \$kname => \$kcols) {
+                  \$unique = !empty(\$kcols['unique']) ? 'UNIQUE ' : '';
+                  \$idx_cols = is_array(\$kcols) && isset(\$kcols['columns']) ? \$kcols['columns'] : (is_array(\$kcols) && !isset(\$kcols['unique']) ? \$kcols : [\$kname]);
+                  if (is_string(\$idx_cols)) \$idx_cols = [\$idx_cols];
+                  \$cols[] = \$unique . \"KEY \`\$kname\` (\`\" . implode('\`,\`', \$idx_cols) . '\`)';
+                }
+              }
+              \$sql = \"CREATE TABLE IF NOT EXISTS \`\$name\` (\" . implode(', ', \$cols) . ') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci';
+              if (!\$link->query(\$sql)) {
+                echo \"ERROR creating \$name: \" . \$link->error . PHP_EOL;
+                exit(1);
+              }
+            }
+            echo 'Schema: ' . count(\$tables) . ' tables created' . PHP_EOL;
+
+            // Import seed data
+            \$data = file_get_contents('public_html/install/data.sql');
+            \$data = str_replace('\`lc_', '\`' . DB_TABLE_PREFIX, \$data);
+            \$link->multi_query(\$data);
+            while (\$link->next_result()) {}
+            echo 'Seed data imported' . PHP_EOL;
+
+            // Create admin user
+            \$hash = password_hash('admin123456', PASSWORD_DEFAULT);
+            \$link->query(\"INSERT INTO lc_administrators (status, username, email, password_hash) VALUES (1, 'admin', 'ci@test.com', '\$hash')\");
+            echo 'Admin user created' . PHP_EOL;
+          "
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Run E2E tests
+        run: npx playwright test
+
+      - name: Upload test report
+        uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 14

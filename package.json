@@ -22,6 +22,7 @@
 		"node": ">=24"
 	},
 	"devDependencies": {
+		"@playwright/test": "^1.59.1",
 		"@sequencemedia/gulp-clean-css": "^1.0.285",
 		"@sequencemedia/gulp-sourcemaps": "^1.0.301",
 		"gulp": "^5.0.1",
@@ -46,6 +47,7 @@
 		"hash": "php .git-hooks/pre-commit.d/calculate_checksums.php",
 		"phplint": "gulp phplint",
 		"test": "php .git-hooks/pre-commit.d/platform_tests.php",
+		"test:e2e": "npx playwright test",
 		"uglify": "gulp replace",
 		"watch": "gulp watch",
 		"upgrade": "ncu -u && npm install",

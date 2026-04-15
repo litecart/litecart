@@ -35,6 +35,9 @@ BingSiteAuth.xml
 #####################
 
 node_modules/
+playwright/.auth/
+playwright-report/
+test-results/
 
 *.bak
 *.old
