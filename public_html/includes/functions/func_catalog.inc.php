@@ -47,23 +47,23 @@
 
 		if (!empty($filter['query'])) {
 
-			$code_regex = f::format_regex_code($_GET['query']);
-			$query_fulltext = f::escape_mysql_fulltext($_GET['query']);
+			$code_regex = f::format_regex_code($filter['query']);
+			$query_fulltext = f::escape_mysql_fulltext($filter['query']);
 
 			$sql_select_relevance[] = (
-				"if(json_value(c.name, '$.". database::input(language::$selected['code']) ."') collate utf8mb4_unicode_ci like '%". database::input($query_fulltext) ."%', 10, 0)"
+				"if(json_value(c.name, '$.". database::input(language::$selected['code']) ."') like '%". database::input($query_fulltext) ."%', 10, 0)"
 			);
 
 			$sql_select_relevance[] = (
-				"if(json_value(c.short_description, '$.". database::input(language::$selected['code']) ."') collate utf8mb4_unicode_ci like '%". database::input($query_fulltext) ."%', 5, 0)"
+				"if(json_value(c.short_description, '$.". database::input(language::$selected['code']) ."') like '%". database::input($query_fulltext) ."%', 5, 0)"
 			);
 
 			$sql_select_relevance[] = (
-				"if(json_value(c.description, '$.". database::input(language::$selected['code']) ."') collate utf8mb4_unicode_ci like '%". database::input($query_fulltext) ."%', 5, 0)"
+				"if(json_value(c.description, '$.". database::input(language::$selected['code']) ."') like '%". database::input($query_fulltext) ."%', 5, 0)"
 			);
 
 			$sql_select_relevance[] = (
-				"if(json_value(c.synonyms, '$.". database::input(language::$selected['code']) ."') collate utf8mb4_unicode_ci like '%". database::input($query_fulltext) ."%', 10, 0)"
+				"if(json_value(c.synonyms, '$.". database::input(language::$selected['code']) ."') like '%". database::input($query_fulltext) ."%', 10, 0)"
 			);
 		}
 
@@ -183,6 +183,7 @@
 
 		$sql_inner_where = [];
 		$sql_outer_where = [];
+		$sql_join = [];
 
 		$sql_inner_where['status'] = "p.status";
 
@@ -200,14 +201,18 @@
 		}
 
 		if (!empty($filter['attributes']) && is_array($filter['attributes'])) {
-		$sql_where_attributes = [];
+
+			$sql_where_attributes = [];
+
 			foreach ($filter['attributes'] as $group_id => $values) {
-				$sql_where_attributes[] =
+				$sql_where_attributes[] = (
 					"p.id in (
 						select distinct product_id from ". DB_TABLE_PREFIX ."products_attributes
 						where (group_id = ". (int)$group_id ." and (value_id in ('". implode("', '", database::input($values)) ."') or custom_value in ('". implode("', '", database::input($values)) ."')))
-					)";
+					)"
+				);
 			}
+
 			$sql_inner_where['attributes'] = implode(PHP_EOL . "and ", $sql_where_attributes);
 		}
 
@@ -264,43 +269,6 @@
 			) p
 
 			left join (
-				select entity_id as product_id, sum(count) as views
-				from ". DB_TABLE_PREFIX ."statistics
-				where entity_type = 'product'
-				and measure_group_type = 'week'
-				and measure_group_value in ('". date('Y-W') ."', '". date('Y-W') ."')
-				group by entity_id
-			) st on st.product_id = p.id
-
-			left join ". DB_TABLE_PREFIX ."brands b on (b.id = p.brand_id)
-
-			left join (
-				select
-					product_id, group_concat(concat(group_id, '-', if(custom_value != '', custom_value, value_id)) separator ',') as attributes
-				from ". DB_TABLE_PREFIX ."products_attributes
-				group by product_id
-				order by id
-			) pa on (p.id = pa.product_id)
-
-			left join (
-				select product_id, max($sql_column_price) as regular_price, min($sql_column_price) as final_price
-				from ". DB_TABLE_PREFIX ."products_prices
-				where (campaign_id is null or campaign_id in (
-					select id from ". DB_TABLE_PREFIX ."campaigns
-					where status
-					and (valid_from is not null and valid_from > '". date('Y-m-d H:i:s') ."')
-					and (valid_to is not null and valid_to < '". date('Y-m-d H:i:s') ."')
-				))
-				and (customer_group_id is null or customer_group_id = ". (int)customer::$data['group_id'] .")
-				and (geo_zone_id is null or geo_zone_id in (
-					select geo_zone_id from ". DB_TABLE_PREFIX ."zones_to_geo_zones
-					where country_code = '". database::input(customer::$data['country_code']) ."'
-					and (zone_code = '' or zone_code is null or zone_code = '". database::input(customer::$data['zone_code']) ."')
-				))
-				group by product_id
-			) pp on (pp.product_id = p.id)
-
-			left join (
 				select
 					pso.product_id,
 					pso.id as stock_option_id,
@@ -324,7 +292,52 @@
 				group by pso.product_id
 			) pso on (pso.product_id = p.id)
 
+			". (($filter['sort'] === 'popularity') ?
+			"left join (
+				select entity_id as product_id, sum(count) as views
+				from ". DB_TABLE_PREFIX ."statistics
+				where entity_type = 'product'
+				and measure_group_type = 'week'
+				and measure_group_value in ('". date('Y-W') ."', '". date('Y-W') ."')
+				group by entity_id
+			) st on st.product_id = p.id"
+			: "") ."
+
+			left join (
+				select product_id, max($sql_column_price) as regular_price, min($sql_column_price) as final_price
+				from ". DB_TABLE_PREFIX ."products_prices
+				where (customer_group_id is null or customer_group_id = ". (int)customer::$data['group_id'] .")
+				and (geo_zone_id is null or geo_zone_id in (
+					select geo_zone_id from ". DB_TABLE_PREFIX ."zones_to_geo_zones
+					where country_code = '". database::input(customer::$data['country_code']) ."'
+					and (zone_code = '' or zone_code is null or zone_code = '". database::input(customer::$data['zone_code']) ."')
+				))
+				and (campaign_id is null or campaign_id in (
+					select id from ". DB_TABLE_PREFIX ."campaigns
+					where status
+					and (valid_from is not null and valid_from > '". date('Y-m-d H:i:s') ."')
+					and (valid_to is not null and valid_to < '". date('Y-m-d H:i:s') ."')
+				))
+				group by product_id
+			) pp on (pp.product_id = p.id)
+
+			left join (
+				select product_id, group_concat(concat(group_id, '-', if(custom_value != '', custom_value, value_id)) separator ',') as attributes
+				from ". DB_TABLE_PREFIX ."products_attributes
+				group by product_id
+				order by id
+			) pa on (p.id = pa.product_id)
+
+			left join ". DB_TABLE_PREFIX ."brands b on (b.id = p.brand_id)
+
 			left join ". DB_TABLE_PREFIX ."sold_out_statuses ss on (p.sold_out_status_id = ss.id)
+
+			left join (
+				select product_id, round(avg(rating), 1) as rating
+				from ". DB_TABLE_PREFIX ."reviews
+				where status
+				group by product_id
+			) pr on (pr.product_id = p.id)
 
 			left join (
 				select product_id, max(scope_discount) as scope_discount from (
@@ -346,13 +359,6 @@
 				) scope_discounts
 				group by product_id
 			) csd on (csd.product_id = p.id)
-
-			left join (
-				select product_id, round(avg(rating), 1) as rating
-				from ". DB_TABLE_PREFIX ."reviews
-				where status
-				group by product_id
-			) pr on (pr.product_id = p.id)
 
 			where (
 				(ifnull(pso.num_stock_options, 0) = 0 or pso.quantity_available > 0 or ss.hidden != 1)
@@ -397,6 +403,7 @@
 		}
 
 		$sql_select_relevance = [];
+		$sql_join = [];
 		$sql_inner_where = [];
 		$sql_outer_where = [];
 		$sql_order_by = "relevance desc";
@@ -406,7 +413,9 @@
 			$code_regex = f::format_regex_code($_GET['query']);
 			$query_fulltext = f::escape_mysql_fulltext($_GET['query']);
 
-			$sql_select_relevance[] = "if(p.code regexp '". database::input($code_regex) ."', 5, 0)";
+			$sql_select_relevance[] = (
+				"if(p.code regexp '". database::input($code_regex) ."', 5, 0)"
+			);
 
 			$sql_select_relevance[] = (
 				"if(p.id in (
@@ -528,10 +537,10 @@
 				ifnull(pso.num_stock_options, 0) as num_stock_options, pso.total_quantity, pso.quantity_available, pa.attributes
 
 			from (
-				select id, delivery_status_id, sold_out_status_id,code,	brand_id,	keywords,	default_image as image, recommended_price, tax_class_id,
+				select id, delivery_status_id, sold_out_status_id,code,	brand_id,	keywords,	default_image as image, recommended_price, tax_class_id, quantity_unit_id, created_at,
 					json_value(name, '$.". database::input(language::$selected['code']) ."') as name,
 					json_value(short_description, '$.". database::input(language::$selected['code']) ."') as short_description,
-					quantity_unit_id, created_at, (
+					(
 						". implode(" + ", $sql_select_relevance) ."
 					) as relevance
 				from ". DB_TABLE_PREFIX ."products p
@@ -542,42 +551,6 @@
 			) p
 
 			left join (
-				select entity_id as product_id, sum(count) as views
-				from ". DB_TABLE_PREFIX ."statistics
-				where entity_type = 'product'
-				and measure_group_type = 'week'
-				and measure_group_value in ('". date('Y-W') ."', '". date('Y-W') ."')
-				group by entity_id
-			) st on st.product_id = p.id
-
-			left join ". DB_TABLE_PREFIX ."brands b on (b.id = p.brand_id)
-
-			left join (
-				select product_id, group_concat(concat(group_id, '-', if(custom_value != '', custom_value, value_id)) separator ',') as attributes
-				from ". DB_TABLE_PREFIX ."products_attributes
-				group by product_id
-				order by id
-			) pa on (p.id = pa.product_id)
-
-			left join (
-				select product_id, max($sql_column_price) as regular_price, min($sql_column_price) as final_price
-				from ". DB_TABLE_PREFIX ."products_prices
-				where (campaign_id is null or campaign_id in (
-					select id from ". DB_TABLE_PREFIX ."campaigns
-					where status
-					and (valid_from is not null and valid_from > '". date('Y-m-d H:i:s') ."')
-					and (valid_to is not null and valid_to < '". date('Y-m-d H:i:s') ."')
-				))
-				and (customer_group_id is null or customer_group_id = ". (int)customer::$data['group_id'] .")
-				and (geo_zone_id is null or geo_zone_id in (
-					select geo_zone_id from ". DB_TABLE_PREFIX ."zones_to_geo_zones
-					where country_code = '". database::input(customer::$data['country_code']) ."'
-					and (zone_code = '' or zone_code is null or zone_code = '". database::input(customer::$data['zone_code']) ."')
-				))
-				group by product_id
-			) pp on (pp.product_id = p.id)
-
-			left join (
 				select
 					pso.product_id,
 					pso.id as stock_option_id,
@@ -585,7 +558,9 @@
 					sum(si.quantity) as total_quantity,
 					sum(si.quantity - ol.quantity_reserved) as quantity_available
 				from ". DB_TABLE_PREFIX ."products_stock_options pso
+
 				left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
+
 				left join (
 					select ol.stock_option_id, sum(ol.quantity) as quantity_reserved
 					from ". DB_TABLE_PREFIX ."orders_lines ol
@@ -598,6 +573,44 @@
 				) ol on (ol.stock_option_id = pso.id)
 				group by pso.product_id
 			) pso on (pso.product_id = p.id)
+
+			". (($filter['sort'] === 'popularity') ?
+			"left join (
+				select entity_id as product_id, sum(count) as views
+				from ". DB_TABLE_PREFIX ."statistics
+				where entity_type = 'product'
+				and measure_group_type = 'week'
+				and measure_group_value in ('". date('Y-W') ."', '". date('Y-W') ."')
+				group by entity_id
+			) st on st.product_id = p.id"
+			: "") ."
+
+			left join (
+				select product_id, max($sql_column_price) as regular_price, min($sql_column_price) as final_price
+				from ". DB_TABLE_PREFIX ."products_prices
+				where (customer_group_id is null or customer_group_id = ". (int)customer::$data['group_id'] .")
+				and (geo_zone_id is null or geo_zone_id in (
+					select geo_zone_id from ". DB_TABLE_PREFIX ."zones_to_geo_zones
+					where country_code = '". database::input(customer::$data['country_code']) ."'
+					and (zone_code = '' or zone_code is null or zone_code = '". database::input(customer::$data['zone_code']) ."')
+				))
+				and (campaign_id is null or campaign_id in (
+					select id from ". DB_TABLE_PREFIX ."campaigns
+					where status
+					and (valid_from is not null and valid_from > '". date('Y-m-d H:i:s') ."')
+					and (valid_to is not null and valid_to < '". date('Y-m-d H:i:s') ."')
+				))
+				group by product_id
+			) pp on (pp.product_id = p.id)
+
+			left join (
+				select product_id, group_concat(concat(group_id, '-', if(custom_value != '', custom_value, value_id)) separator ',') as attributes
+				from ". DB_TABLE_PREFIX ."products_attributes
+				group by product_id
+				order by id
+			) pa on (p.id = pa.product_id)
+
+			left join ". DB_TABLE_PREFIX ."brands b on (b.id = p.brand_id)
 
 			left join ". DB_TABLE_PREFIX ."sold_out_statuses ss on (p.sold_out_status_id = ss.id)
 
