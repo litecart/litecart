@@ -372,6 +372,7 @@
 			'delivery_status_id' => $product['delivery_status_id'],
 			'sold_out_status_id' => $product['sold_out_status_id'],
 			'is_favourite' => $is_favourite,
+			'rating' => $product['rating'] ?? null,
 		];
 
 		if (!empty($product['brand_id'])) {
@@ -526,4 +527,23 @@
 	function draw_progress_bar($progress, $width=15) {
 		$percentage = floor($progress);
 		return str_pad(str_repeat("\u{25AE}", floor(($width / 100) * $percentage)), $width, "\u{25AF}", STR_PAD_RIGHT) . ' '. $percentage .'%';
+	}
+
+	function draw_rating($rating, $max_rating=5) {
+
+		$rating = round($rating * 2) / 2;
+
+		$output = '';
+
+		for ($i=1; $i<=$max_rating; $i++) {
+			if ($rating >= $i) {
+				$output .= draw_fonticon('icon-star', 'style="color: #f90;"');
+			} else if ($rating == $i-0.5) {
+				$output .= draw_fonticon('icon-star-half', 'style="color: #f90;"');
+			} else {
+				$output .= draw_fonticon('icon-star', 'style="color: #ccc;"');
+			}
+		}
+
+		return $output;
 	}
