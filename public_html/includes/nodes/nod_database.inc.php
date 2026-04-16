@@ -738,12 +738,19 @@
 				// Remove any existing LIMIT clause to get accurate count
 				$query = preg_replace('#\s+LIMIT\s+\d+(\s*,\s*\d+)?\s*$#i', '', $query);
 
-				// Count total rows by wrapping the sanitized query
+				// Build a count-friendly query by replacing the initial SELECT ... FROM with SELECT 1 FROM
+				// This avoids selecting all columns (e.g. SELECT * , json_value(...) AS title) which can
+				// cause duplicate column name errors when used in a derived table.
+				$count_query = preg_replace('#^\s*SELECT\b.*?\bFROM\b#is', 'SELECT 1 FROM', $query, 1);
+
+				// Remove trailing ORDER BY from the count query if present
+				$count_query = preg_replace('#\s+ORDER\s+BY\s+.+$#i', '', $count_query);
+
+				// Count total rows by wrapping the simplified query
 				$num_rows = database::query(
-					"SELECT COUNT(*) AS c FROM (
-						". $query ."
-					) AS _count", $this->_link
-				)->fetch('c');
+					"SELECT COUNT(*) AS num_rows FROM (\n\t\t\t\t" . $count_query . "\n\t\t\t) AS _subquery;",
+					$this->_link
+				)->fetch('num_rows');
 
 				$num_pages = ($items_per_page > 0) ? ceil($num_rows / $items_per_page) : 0;
 
@@ -752,8 +759,8 @@
 				database::$stats['duration'] += microtime(true) - $timestamp;
 
 				if ($offset < $num_rows) {
-					$paged_sql = $query . ' LIMIT ' . (int)$offset . ', ' . (int)$items_per_page;
-					$rows = database::query($paged_sql, $this->_link)->fetch_all($filter, $index_column);
+					$paged_query = $query . ' LIMIT ' . (int)$offset . ', ' . (int)$items_per_page;
+					$rows = database::query($paged_query, $this->_link)->fetch_all($filter, $index_column);
 				}
 
 				return $rows;
