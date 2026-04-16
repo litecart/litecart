@@ -43,6 +43,14 @@
 
 			echo 'Removed '. f::format_number(database::affected_rows()) .' old emails.' . PHP_EOL . PHP_EOL;
 
+			// Cleanup old not found logs
+			database::query(
+				"delete from ". DB_TABLE_PREFIX ."not_found
+				where last_requested < '". date('Y-m-d 00:00:00', strtotime('-90 days')) ."';"
+			);
+
+			echo 'Removed '. language::number_format(database::affected_rows()) .' old not found logs.' . PHP_EOL . PHP_EOL;
+
 			// Cleanup old visitor statistics
 			database::query(
 				"delete from ". DB_TABLE_PREFIX ."visitors
