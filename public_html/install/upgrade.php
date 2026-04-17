@@ -808,6 +808,33 @@
 
 			echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 
+			### Storage Skeleton > Ensure ##########################################
+			#
+			# Idempotent copy of small files that MUST exist under storage/
+			# on every install (fresh or upgraded). Currently: the deny-rule
+			# .htaccess on storage/logs/ that older installs (<= 3.0.0) never
+			# shipped. Each entry is copied ONLY if the destination does not
+			# already exist — operator customisations are never overwritten.
+
+			echo '<p>Ensuring storage skeleton files... ';
+
+			$skeleton_files = [
+				'logs/.htaccess',
+			];
+			$copied = 0;
+			foreach ($skeleton_files as $rel) {
+				$dst = FS_DIR_STORAGE . $rel;
+				$src = __DIR__ . '/data/default/storage/' . $rel;
+				if (is_file($dst)) continue;
+				if (!is_file($src)) continue;
+				$dst_dir = dirname($dst);
+				if (!is_dir($dst_dir)) @mkdir($dst_dir, 0755, true);
+				if (@copy($src, $dst)) $copied++;
+			}
+
+			echo ($copied ? "$copied file(s) installed. " : 'Nothing to do. ')
+				 . '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+
 			########################################################################
 
 			echo '<h2>Complete</h2>' . PHP_EOL . PHP_EOL
