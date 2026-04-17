@@ -195,15 +195,24 @@
 			self::$stats['requests']++;
 
 			// Redirect
-			if ($status_code == 301) {
+			if (in_array($status_code, [301, 302, 303, 307, 308])) {
+
 				if (!$this->follow_redirects) {
 					trigger_error('Destination is redirecting to another destination but follow_redirects is disabled', E_USER_WARNING);
-				} else if (preg_match('#^Location:\s?(.*)?$#im', $response_headers, $matches)) {
-					$redirect_url = !empty($matches[1]) ? trim($matches[1]) : $url;
-					return $this->call($method, $redirect_url, $data, $headers);
-				} else {
+					return false;
+				}
+
+				$redirect_url = preg_replace('#^Location:\s*(.*)$#mi', '$1', $response_headers, 1, $count);
+
+				if (!$redirect_url) {
 					trigger_error('Destination is redirecting to a null destination', E_USER_WARNING);
 				}
+
+				if (in_array($status_code, [307, 308]) && $method != 'HEAD') {
+					return $this->call($method, $redirect_url, $data, $headers);
+				}
+
+				return $this->call($method, $redirect_url, '', $headers);
 			}
 
 			return $response_body;
