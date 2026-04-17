@@ -17,6 +17,11 @@
 		return;
 	}
 
+	document::$title[] = $_GET['name'];
+
+	breadcrumbs::add(t('title_tables', 'Tables'), document::ilink(__APP__.'/tables'));
+	breadcrumbs::add($_GET['name']);
+
 	$columns = database::query(
 		"show full columns from `". database::input($_GET['name']) ."`;"
 	)->fetch_all(function($column) {
@@ -36,12 +41,40 @@
 		];
 	});
 
+	$primary_column = null;
+	foreach ($columns as $column) {
+		if ($column['primary']) {
+			$primary_column = $column['name'];
+			break;
+		}
+	}
+
+	if (isset($_POST['delete'])) {
+
+		try {
+
+			if (empty($_POST['rows']) || !is_array($_POST['rows'])) {
+				throw new Exception(t('error_must_select_rows', 'You must select rows'));
+			}
+
+			foreach ($_POST['rows'] as $pkv) {
+				database::query(
+					"delete from `". database::input($_GET['name']) ."`
+					where `". database::input($primary_column) ."` = '". database::input($pkv) ."'
+					limit 1;"
+				);
+			}
+
+			notices::add('notices', strtr(t('notice_n_rows_deleted', '%n rows deleted'), ['%n' => count($_POST['rows'])]));
+
+		} catch (Exception $e) {
+			notices::add('errors', $e->getMessage());
+		}
+	}
+
 	if (empty($_POST['query'])) {
 		$_POST['query'] = "select * from `". database::input($_GET['name']) ."`;";
 	}
-
-	breadcrumbs::add(t('title_tables', 'Tables'), document::ilink(__APP__.'/tables'));
-	breadcrumbs::add($_GET['name']);
 
 	// Table Rows
 	$rows = database::query($_POST['query'])
@@ -52,6 +85,10 @@
 		notices::add('notices', strtr(t('notice_n_rows_affected', '%n rows affected'), ['%n' => $affected_rows]));
 	}
 
+	$table_options = array_map(function($table) {
+	return [$table, $table];
+	}, $tables);
+
 /*
 	$operator_options = [
 		['='], ['!='], ['<'], ['<='], ['>'], ['>='],
@@ -59,14 +96,6 @@
 		['IS NULL'], ['IS NOT NULL'], ['REGEXP'], ['NOT REGEXP'],
 	];
 */
-
-	$primary_column = null;
-	foreach ($columns as $column) {
-		if ($column['primary']) {
-			$primary_column = $column['name'];
-			break;
-		}
-	}
 
 ?>
 <style>
@@ -94,7 +123,6 @@ textarea[name="query"] {
 }
 </style>
 
-
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
@@ -109,94 +137,98 @@ textarea[name="query"] {
 		</ul>
 	</div>
 
-	<div class="card-body">
-
-		<div class="row">
-			<div class="col-md-5">
-
-				<label class="form-group">
-					<div class="form-label"><?php echo t('title_select_table', 'Select Table'); ?></div>
-					<?php echo f::form_select('table', array_map(function($table) { return [$table, $table]; }, $tables), $_GET['name']); ?>
-				</label>
-
-				<?php echo f::form_begin('query_form', 'post', '', false, 'style="max-width: 100vw;"'); ?>
-
+	<?php f::form_begin('data_form', 'post'); ?>
+	
+		<div class="card-body">
+	
+			<div class="row">
+				<div class="col-md-5">
+	
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_query', 'Query'); ?></div>
-						<?php echo f::form_textarea('query', true, 'style="min-height: 100px;"'); ?>
+						<div class="form-label"><?php echo t('title_select_table', 'Select Table'); ?></div>
+						<?php echo f::form_select('table', $table_options, $_GET['name']); ?>
 					</label>
-
-					<div class="form-group">
-						<?php echo f::form_button('run', t('title_run_query', 'Run Query'), 'submit', 'class="btn btn-success"'); ?>
-						<?php echo f::form_button('pretty_print', t('title_pretty_print', 'Pretty Print'), 'button'); ?>
-					</div>
-
-				<?php echo f::form_end(); ?>
-
-			</div>
-
-			<?php if (!empty($columns)) { ?>
-			<div class="col-md-7">
-				<fieldset id="toggle-columns">
-					<legend><?php echo t('title_toggle_columns', 'Toggle Columns'); ?></legend>
-					<div class="columns">
-					<?php foreach (array_slice($columns, 0, 10) as $column) echo f::form_checkbox('columns[]', [$column['name'], $column['name']], !empty($_POST['columns']) ? true : $column); ?>
-					<?php foreach (array_slice($columns, 10) as $column) echo f::form_checkbox('columns[]', [$column['name'], $column['name']], true); ?>
-					</div>
-				</fieldset>
-			</div>
-			<?php } ?>
-		</div>
-
-	</div>
-
-	<div style="overflow-x: auto;">
-		<table class="table table-striped table-hover table-sortable data-table">
-			<thead>
-				<tr>
-					<th><?php echo f::draw_fonticon('icon-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
-					<?php foreach ($columns as $column) {?>
-					<th data-name="<?php echo f::escape_attr($column['name']); ?>" data-type="<?php echo f::escape_attr($column['type']); ?>" data-length="<?php echo f::escape_attr($column['length']); ?>" data-nullable="<?php echo f::escape_attr($column['null']); ?>" data-unsigned="<?php echo f::escape_attr($column['unsigned']); ?>" data-zerofill="<?php echo f::escape_attr($column['zerofill']); ?>" data-default="<?php echo f::escape_attr($column['default']); ?>"><?php echo f::escape_html($column['name']); ?></th>
-					<?php } ?>
-					<th class="main"></th>
-				</tr>
-			</thead>
-
-			<tbody>
-				<?php foreach ($rows as $row) { ?>
-				<tr data-pkv="<?php echo f::escape_attr($row[$primary_column]); ?>">
-					<td><?php echo f::form_checkbox('rows[]', $row[$primary_column]); ?></td>
-					<?php foreach ($row as $column => $value) { ?>
-					<td data-column-name="<?php echo f::escape_attr($column); ?>"><?php echo $value ? addcslashes(f::escape_html($value), "\t\r\n") : '<em>NULL</em>'; ?></td>
-					<?php } ?>
-					<td class="text-end">
-						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_row', ['table' => $_GET['name'], $primary_column => $row[$primary_column]]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>">
-							<?php echo f::draw_fonticon('icon-pencil'); ?>
-						</a>
-					</td>
-				</tr>
+	
+					<?php echo f::form_begin('query_form', 'post', '', false, 'style="max-width: 100vw;"'); ?>
+	
+						<label class="form-group">
+							<div class="form-label"><?php echo t('title_query', 'Query'); ?></div>
+						<?php echo f::form_textarea('query', true, 'style="min-height: 100px;" spellcheck="false"'); ?>
+						</label>
+	
+						<div class="form-group">
+							<?php echo f::form_button('run', t('title_run_query', 'Run Query'), 'submit', 'class="btn btn-success"'); ?>
+							<?php echo f::form_button('pretty_print', t('title_pretty_print', 'Pretty Print'), 'button'); ?>
+						</div>
+	
+					<?php echo f::form_end(); ?>
+	
+				</div>
+	
+				<?php if (!empty($columns)) { ?>
+				<div class="col-md-7">
+					<fieldset id="toggle-columns">
+						<legend><?php echo t('title_toggle_columns', 'Toggle Columns'); ?></legend>
+						<div class="columns">
+						<?php foreach (array_slice($columns, 0, 10) as $column) echo f::form_checkbox('columns[]', [$column['name'], $column['name']], !empty($_POST['columns']) ? true : $column); ?>
+						<?php foreach (array_slice($columns, 10) as $column) echo f::form_checkbox('columns[]', [$column['name'], $column['name']], true); ?>
+						</div>
+					</fieldset>
+				</div>
 				<?php } ?>
-			</tbody>
+			</div>
+	
+		</div>
+	
+		<div style="overflow-x: auto;">
+			<table class="table table-striped table-hover table-sortable data-table">
+				<thead>
+					<tr>
+						<th><?php echo f::draw_fonticon('icon-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
+						<?php foreach ($columns as $column) {?>
+						<th data-name="<?php echo f::escape_attr($column['name']); ?>" data-type="<?php echo f::escape_attr($column['type']); ?>" data-length="<?php echo f::escape_attr($column['length']); ?>" data-nullable="<?php echo f::escape_attr($column['null']); ?>" data-unsigned="<?php echo f::escape_attr($column['unsigned']); ?>" data-zerofill="<?php echo f::escape_attr($column['zerofill']); ?>" data-default="<?php echo f::escape_attr($column['default']); ?>"><?php echo f::escape_html($column['name']); ?></th>
+						<?php } ?>
+						<th class="main"></th>
+					</tr>
+				</thead>
+	
+				<tbody>
+					<?php foreach ($rows as $row) { ?>
+					<tr data-pkv="<?php echo f::escape_attr($row[$primary_column]); ?>">
+						<td><?php echo f::form_checkbox('rows[]', $row[$primary_column]); ?></td>
+						<?php foreach ($row as $column => $value) { ?>
+						<td data-column-name="<?php echo f::escape_attr($column); ?>"><?php echo $value ? addcslashes(f::escape_html($value), "\t\r\n") : '<em>NULL</em>'; ?></td>
+						<?php } ?>
+						<td class="text-end">
+							<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_row', ['table' => $_GET['name'], $primary_column => $row[$primary_column]]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>">
+								<?php echo f::draw_fonticon('icon-pencil'); ?>
+							</a>
+						</td>
+					</tr>
+					<?php } ?>
+				</tbody>
+	
+				<tfoot>
+					<td colspan="<?php echo count($columns) + 2; ?>">
+						<?php echo t('title_rows', 'Rows'); ?>: <?php echo f::format_number($num_rows); ?>
+					</td>
+				</tfoot>
+			</table>
+		</div>
+	
+		<?php if ($rows && in_array($primary_column, array_column($columns, 'name'))) { ?>
+		<div class="card-body">
+			<fieldset id="actions">
+				<legend><?php echo t('text_with_selected', 'With selected'); ?></legend>
+	
+				<ul class="list-inline">
+					<li><?php echo f::form_button('delete', t('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!confirm(\''. t('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete'); ?></li>
+				</ul>
+			</fieldset>
+		</div>
+		<?php } ?>
 
-			<tfoot>
-				<td colspan="<?php echo count($columns) + 2; ?>">
-					<?php echo t('title_rows', 'Rows'); ?>: <?php echo f::format_number($num_rows); ?>
-				</td>
-			</tfoot>
-		</table>
-	</div>
-
-	<?php if (!empty($rows) && in_array($primary_column, $columns)) { ?>
-	<div class="card-body">
-		<fieldset id="actions">
-			<legend><?php echo t('text_with_selected', 'With selected'); ?></legend>
-
-			<ul class="list-inline">
-				<li><?php echo f::form_button('delete', t('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!confirm(\''. t('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete'); ?></li>
-			</ul>
-		</fieldset>
-	</div>
-	<?php } ?>
+	<?php echo f::form_end(); ?>
 
 	<?php if ($num_pages > 1) { ?>
 	<div class="card-footer">
@@ -278,7 +310,7 @@ textarea[name="query"] {
 
 	$('.data-table :checkbox').on('change', function() {
 		$('#actions').prop('disabled', !$('.data-table :checked').length);
-	});
+	}).first().trigger('change'); // Initial state
 
 	$('button[name="pretty_print"]').on('click', function() {
 		$.post('<?php echo document::ilink(__APP__.'/pretty_print'); ?>', {
@@ -315,24 +347,29 @@ textarea[name="query"] {
 		// Choose input element based on type (switch for clarity)
 		let $input;
 		switch (true) {
+
 			case /tinyint\(1\)/i.test(type):
 				$input = $('<input type="checkbox">').addClass('form-check-input');
 				$input.prop('checked', original === '1' || original.toLowerCase() === 'true');
 				break;
+
 			case /int|tinyint|smallint|mediumint|bigint/i.test(type):
 				$input = $('<input class="form-input" type="number">');
 				if (unsigned) $input.attr('min', 0);
 				$input.val(original.replace(/[^0-9\-]/g, ''));
 				break;
+
 			case /decimal|float|double/i.test(type):
 				$input = $('<input class="form-input" type="number">').attr('step', 'any');
 				if (unsigned) $input.attr('min', 0);
 				$input.val(original.replace(/[^0-9\.\-]/g, ''));
 				break;
+
 			case /text|blob/i.test(type):
 				$input = $('<textarea class="form-input">');
 				$input.val(original);
 				break;
+
 			default:
 				if (length > 200) {
 					$input = $('<textarea class="form-input">');
@@ -367,23 +404,35 @@ textarea[name="query"] {
 				'pkv': pkv,
 				'column': column,
 				'value': sendVal,
-			}).done(function(resp){
-				try { var result = JSON.parse(resp); } catch(e) { result = { error: resp }; }
+				}).done(function(resp) {
+
+					try {
+						var result = JSON.parse(resp);
+					} catch(e) {
+						result = { error: resp };
+					}
+
 				if (result.success) {
 					finalize(result.value, original);
 				} else {
 					alert(result.error || 'Update failed');
 					finalize(null, original);
 				}
-			}).fail(function(){
+
+			}).fail(function() {
 				alert('Request failed');
 				finalize(null, original);
 			});
 		};
 
-		$input.on('blur', save).on('keydown', function(ev){
-			if (ev.key === 'Enter' && $input.is(':text')) { ev.preventDefault(); $input.blur(); }
-			if (ev.key === 'Escape') { $td.text(original); }
+		$input.on('blur', save).on('keydown', function(e){
+			if (e.key === 'Enter' && $input.is(':text')) {
+				e.preventDefault();
+				$input.blur();
+			}
+			if (e.key === 'Escape') {
+				$td.text(original);
+			}
 		});
 	});
 </script>

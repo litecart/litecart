@@ -98,6 +98,25 @@
 		}
 	}
 
+	if (isset($_POST['delete'])) {
+
+		try {
+
+			database::query(
+				"delete from `". database::input($_GET['table']) ."`
+				where `". database::input($primary_column) ."` = '". database::input($row[$primary_column]) ."'
+				limit 1;"
+			);
+
+			notices::add('success', t('success_row_deleted', 'Row deleted'));
+			header('Location: '. document::ilink(__APP__.'/table', ['name' => $_GET['table']]));
+			exit;
+
+		} catch (Exception $e) {
+			notices::add('errors', $e->getMessage());
+		}
+	}
+
 	$draw_input_field = function($column) {
 		switch (true) {
 
