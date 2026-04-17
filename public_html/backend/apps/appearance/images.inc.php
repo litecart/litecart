@@ -7,6 +7,22 @@
 
 	$images = [
 		[
+			'id' => 'symbol',
+			'name' => t('title_symbol', 'Symbol'),
+			'file' => 'storage://images/symbol.svg',
+			'extension' => 'svg',
+			'mime' => 'image/svg+xml',
+			'max' => ['width' => 512, 'height' => 512],
+		],
+		[
+			'id' => 'logotype',
+			'name' => t('title_logotype', 'Logotype'),
+			'file' => 'storage://images/logotype.svg',
+			'extension' => 'svg',
+			'mime' => 'image/svg+xml',
+			'max' => ['width' => 600, 'height' => 200],
+		],
+		[
 			'id' => 'logotype',
 			'name' => t('title_logotype', 'Logotype'),
 			'file' => 'storage://images/logotype.png',
@@ -84,8 +100,8 @@
 	align-self: center;
 }
 .form-label {
-	font-weight: bold;
-	margin-bottom: 0.5em;
+	font-weight: 500;
+	margin-bottom: .5em;
 }
 .image-container {
 	position: relative;
@@ -150,15 +166,15 @@
 
 <script>
 	$('input[type="file"]').on('change', function() {
-		$form_group = this.closest('.form-group');
+		$form_group = $(this).closest('.form-group');
 		if (this.files && this.files[0]) {
 			var reader = new FileReader();
 			reader.onload = function(e) {
-				$('img', $form_group).attr('src', e.target.result);
+				$form_group.find('img').attr('src', e.target.result);
 			}
 			reader.readAsDataURL(this.files[0]);
 		} else {
-			$('img', $form_group).attr('src', $('img', $form_group).data('original') );
+			$form_group.find('img').attr('src', $form_group.find('img').data('original') );
 		}
 	});
 </script>
