@@ -72,6 +72,8 @@
 			cache::set(self::$_cache_token, self::$_cache['translations']);
 		}
 
+		## Node specific methods
+
 		public static function load() {
 			self::$languages = database::query(
 				"select * from ". DB_TABLE_PREFIX ."languages
@@ -100,7 +102,7 @@
 				if (class_exists('customer', false) && customer::check_login()) {
 					database::query(
 						"update ". DB_TABLE_PREFIX ."customers
-						set language_code = '". database::input(self::$data['language_code']) ."'
+						set language_code = '". database::input(self::$selected['code']) ."'
 						where id = ". (int)session::$data['customer']['id'] ."
 						limit 1;"
 					);

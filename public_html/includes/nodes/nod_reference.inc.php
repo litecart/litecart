@@ -4,6 +4,8 @@
 
 		private static $_cache;
 
+		## Node specific methods
+
 		public static function __callStatic($resource, $arguments) {
 
 			$checksum = crc32(http_build_query($arguments));
@@ -29,9 +31,7 @@
 
 					$class_name = 'ref_'.$resource;
 
-					//self::$_cache[$resource][$checksum] = new $class_name(...$arguments); // As of PHP 5.6
-					$reflect = new ReflectionClass($class_name);
-					self::$_cache[$resource][$checksum] = $reflect->newInstanceArgs($arguments);
+					self::$_cache[$resource][$checksum] = new $class_name(...$arguments); // As of PHP 5.6
 
 					if (method_exists(self::$_cache[$resource][$checksum], '__construct')) {
 						call_user_func_array([self::$_cache[$resource][$checksum], '__construct'], $arguments);
@@ -43,7 +43,7 @@
 				case (!$component && is_file('app://includes/entities/ent_'.basename($resource).'.inc.php')):
 
 					$class_name = 'ent_'.$resource;
-					$object = new $class_name($arguments[0] ?? null);
+					$object = new $class_name(...$arguments); // As of PHP 5.6
 
 					self::$_cache[$resource][$checksum] = (object)$object->data;
 

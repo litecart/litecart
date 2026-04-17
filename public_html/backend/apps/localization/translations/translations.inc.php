@@ -1,6 +1,6 @@
 <?php
 
-	document::$snippets['title'][] = t('title_translations', 'Translations');
+	document::$title[] = t('title_translations', 'Translations');
 
 	breadcrumbs::add(t('title_localization', 'Localization'));
 	breadcrumbs::add(t('title_translations', 'Translations'), document::ilink());
@@ -413,7 +413,7 @@
 	});
 
 	$('textarea[name^="translations"]').on('input', function() {
-		this.height('auto').height(this.prop('scrollHeight') + 'px');
+		$(this).height('auto').height($(this).prop('scrollHeight') + 'px');
 	}).trigger('input');
 
 	// Translator Tool
@@ -424,16 +424,16 @@
 
 	$('#translator-tool select').on('change', function(e) {
 
-		var $modal = this.closest('.litebox'),
-			from_language_code = $('select[name="from_language_code"]', $modal).val(),
-			to_language_code = $('select[name="to_language_code"]', $modal).val(),
+		var $modal = $(this).closest('.litebox'),
+			from_language_code = $modal.find('select[name="from_language_code"]').val(),
+			to_language_code = $modal.find('select[name="to_language_code"]').val(),
 			translations = [];
 
 		if (!from_language_code || !to_language_code) return;
 
 		$.each($(':input[name^="translations"][name$="[text_'+ from_language_code +']"]'), function(i) {
 			var source = $(this).val(),
-				translation = this.closest('tr').find(':input[name^="translations"][name$="[text_'+ to_language_code +']"]').val();
+				translation = $(this).closest('tr').find(':input[name^="translations"][name$="[text_'+ to_language_code +']"]').val();
 
 			if (source && !translation) {
 				translations.push('['+ i +'] = ' + source);
@@ -442,20 +442,20 @@
 
 		translations = translations.join('\n');
 
-		$(':input[name="source"]', $modal).val(translations).select();
+		$modal.find(':input[name="source"]').val(translations).select();
 	});
 
 	$('#translator-tool :input[name="source"]').on('focus', function(e) {
-		this.select();
+		$(this).select();
 	});
 
 	$('#translator-tool button[name="prefill_fields"]').on('click', function() {
-		var $modal = this.closest('.litebox'),
-			 translated = $(':input[name="result"]', $modal).val().trim();
+		var $modal = $(this).closest('.litebox'),
+			 translated = $modal.find(':input[name="result"]').val().trim();
 
 		translated = translated.split(/\n(?=\[\d+\])/);
 
-		if ($('select[name="to_language_code"]', $modal).val() == '') {
+		if ($modal.find('select[name="to_language_code"]').val() == '') {
 			alert('You must specify which language you are translating');
 			return false;
 		}
@@ -466,7 +466,7 @@
 				index = matches[1],
 				translation = matches[2].trim();
 
-			$('select[name="to_language_code"]', $(':input[name$="[text_'+ $modal).val() +']"]:eq('+ index +')').val(translation).css('border', '1px solid #f00');
+			$(':input[name$="[text_'+ $modal.find('select[name="to_language_code"]').val() +']"]:eq('+ index +')').val(translation).css('border', '1px solid #f00');
 		});
 
 		$.litebox.close();

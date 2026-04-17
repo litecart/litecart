@@ -81,7 +81,7 @@
 
 	$('#modal-country-picker tbody').on('click', 'td', function() {
 
-		let $row = this.closest('tr'),
+		let $row = $(this).closest('tr'),
 			code = $('.code', $row).text(),
 			name = $('.name', $row).text(),
 			$field = $.litebox.current().$currentTarget.closest('.form-input');

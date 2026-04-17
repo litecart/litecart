@@ -5,6 +5,8 @@
 		private static $_watches;
 		public static $data;
 
+		## Node specific methods
+
 		public static function start_watch($id) {
 			if (!isset(self::$_watches[$id])) {
 				self::$_watches[$id] = microtime(true);

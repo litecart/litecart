@@ -10,7 +10,7 @@
 		$_POST = $table->data;
 	}
 
-	document::$snippets['title'][] = !empty($customer->data['id']) ? t('title_edit_table', 'Edit Table') : t('title_create_new_table', 'Create New Table');
+	document::$title[] = !empty($customer->data['id']) ? t('title_edit_table', 'Edit Table') : t('title_create_new_table', 'Create New Table');
 
 	breadcrumbs::add(t('title_tables', 'Tables'), document::ilink(__APP__.'/tables'));
 	breadcrumbs::add($table->previous['name'],  document::ilink(__APP__.'/table', ['name' => $table->previous['name']]));

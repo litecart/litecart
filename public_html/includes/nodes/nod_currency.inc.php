@@ -21,7 +21,7 @@
 			self::set();
 		}
 
-		######################################################################
+		## Node specific methods
 
 		public static function load() {
 

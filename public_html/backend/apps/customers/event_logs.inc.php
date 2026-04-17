@@ -8,7 +8,7 @@
 		$_GET['sort'] = 'created';
 	}
 
-	document::$snippets['title'][] = t('title_event_logs', 'Event Logs');
+	document::$title[] = t('title_event_logs', 'Event Logs');
 
 	breadcrumbs::add(t('title_customers', 'Customers'), document::link(WS_DIR_ADMIN, ['app' => 'customers']));
 	breadcrumbs::add(t('title_event_logs', 'Event Logs'));
@@ -39,7 +39,7 @@
 		}
 	}
 
-// Table Rows
+	// Table Rows
 	$events = [];
 
 	if (!empty($_GET['query'])) {
@@ -107,6 +107,7 @@
 	});
 
 	array_unshift($type_options, ['', '-- '. t('title_all', 'All') .' --']);
+
 ?>
 <div class="card card-app">
 	<div class="card-header">

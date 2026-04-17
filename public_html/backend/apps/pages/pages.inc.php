@@ -298,12 +298,12 @@ table tbody .toggle {
 	$('input[name="query"]').keypress(function(e) {
 		if (e.which == 13) {
 			e.preventDefault();
-			this.closest('form').submit();
+			$(this).closest('form').submit();
 		}
 	});
 
 	$('form[name="search_form"] select').on('change', function() {
-		this.closest('form').submit();
+		$(this).closest('form').submit();
 	});
 
 	$('.data-table :checkbox').on('change', function() {

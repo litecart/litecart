@@ -4,6 +4,8 @@
 
 		private static $_cache = [];
 
+		## Node specific methods
+
 		public static function get_price($value, $tax_class_id, $calculate_tax=null, $customer=null) {
 
 			if ($calculate_tax === null) {

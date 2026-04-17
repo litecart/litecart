@@ -520,7 +520,7 @@
 	<?php if (!empty($available_languages)) { ?>
 	$('select[name="prefill"]').on('change', function() {
 
-		$.each($('option:selected', this).data(), function(key, value) {
+		$.each($(this).find('option:selected').data(), function(key, value) {
 
 			var field_name = key
 				.replace(/([A-Z])/, '_$1')

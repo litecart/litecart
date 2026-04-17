@@ -134,6 +134,8 @@
 			self::$time_elapsed += microtime(true) - $timestamp;
 		}
 
+		## Node specific methods
+
 		// Return a modified file
 		public static function check($file) {
 

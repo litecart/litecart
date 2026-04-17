@@ -176,6 +176,8 @@
 
 		}
 
+		## Node specific methods
+
 		public static function reset() {
 			self::$data = (new ent_session())->data;
 		}

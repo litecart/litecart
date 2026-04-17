@@ -7,6 +7,8 @@
 		public static function init() {
 		}
 
+		## Node specific methods
+
 		public static function reset() {
 			self::$data = [];
 		}

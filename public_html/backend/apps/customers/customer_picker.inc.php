@@ -75,9 +75,9 @@
 						'</tr>'
 					].join('\n'));
 
-					$('.id', $row).text(row.id);
-					$('.name', $row).text(row.name);
-					$('.date-created', $row).text(row.created_at);
+					$row.find('.id').text(row.id);
+					$row.find('.name').text(row.name);
+					$row.find('.date-created').text(row.created_at);
 
 					$row.data(row);
 
@@ -99,7 +99,7 @@
 
 	$('#modal-customer-picker tbody').on('click', 'td', function() {
 
-		let $row = this.closest('tr'),
+		let $row = $(this).closest('tr'),
 			callback = $.litebox.current().$currentTarget.data('callback'),
 			expand = <?php echo (isset($_GET['collect']) && array_intersect(['address', 'stock_option'], $_GET['collect'])) ? 'true' : 'false'; ?>,
 			customer = $row.data();
@@ -121,20 +121,20 @@
 
 		} else {
 			let $field = $.litebox.current().$currentTarget.closest('.form-group');
-			$(':input', $field).val(customer.id).trigger('change');
-			$('.id', $field).text(customer.id);
-			$('.name', $field).text(customer.name);
+			$field.find(':input').val(customer.id).trigger('change');
+			$field.find('.id').text(customer.id);
+			$field.find('.name').text(customer.name);
 			$.litebox.close();
 		}
 	});
 
 	$('#modal-customer-picker .set-guest').on('click', function() {
 
-		let $field = $.litebox.current().$currentTarget.closest('.form-input');
+		let field = $.litebox.current().$currentTarget.closest('.form-input');
 
-		$(':input', $field).val('0').trigger('change');
-		$('.id', $field).text('0');
-		$('.name', $field).text('(<?php echo f::escape_js(t('title_guest', 'Guest')); ?>)');
+		$(field).find(':input').val('0').trigger('change');
+		$(field).find('.id').text('0');
+		$(field).find('.name').text('(<?php echo f::escape_js(t('title_guest', 'Guest')); ?>)');
 		$.litebox.close();
 	});
 </script>

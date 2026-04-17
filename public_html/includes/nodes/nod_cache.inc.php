@@ -60,6 +60,8 @@
 			}
 		}
 
+		## Node specific methods
+
 		public static function token($keyword, $dependencies=[], $storage='memory', $ttl=900) {
 
 			if (!in_array($storage, ['file', 'memory'])) {

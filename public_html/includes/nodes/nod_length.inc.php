@@ -59,6 +59,8 @@
 			],
 		];
 
+		## Node specific methods
+
 		public static function convert($value, $from, $to) {
 
 			if ((float)$value == 0) {

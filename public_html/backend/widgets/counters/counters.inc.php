@@ -146,9 +146,9 @@
 				<div class="card-body">
 					<div class="text-xxl">
 						<?php if ($stats['last_year_comparison'] >= 0) { ?>
-							<?php echo f::draw_fonticon('icon-arrow-northeast', 'style="color: #62d100;"'); ?> +<?php echo number_format($stats['last_year_comparison'], 1); ?>%
+							<?php echo f::draw_fonticon('icon-arrow-northeast', 'style="color: #62d100;"'); ?> +<?php echo f::format_number($stats['last_year_comparison'], 1); ?>%
 						<?php } else { ?>
-							<?php echo f::draw_fonticon('icon-arrow-southeast', 'style="color: #d10068;"'); ?> <?php echo number_format($stats['last_year_comparison'], 1); ?>%
+							<?php echo f::draw_fonticon('icon-arrow-southeast', 'style="color: #d10068;"'); ?> <?php echo f::format_number($stats['last_year_comparison'], 1); ?>%
 						<?php } ?>
 					</div>
 				</div>
@@ -166,9 +166,9 @@
 				<div class="card-body">
 					<div class="text-xxl">
 						<?php if ($stats['trend_percentage'] >= 0) { ?>
-							<?php echo f::draw_fonticon('icon-arrow-northeast', 'style="color: #62d100;"'); ?> +<?php echo number_format($stats['trend_percentage'], 1); ?>%
+							<?php echo f::draw_fonticon('icon-arrow-northeast', 'style="color: #62d100;"'); ?> +<?php echo f::format_number($stats['trend_percentage'], 1); ?>%
 						<?php } else { ?>
-							<?php echo f::draw_fonticon('icon-arrow-southeast', 'style="color: #d10068;"'); ?> <?php echo number_format($stats['trend_percentage'], 1); ?>%
+							<?php echo f::draw_fonticon('icon-arrow-southeast', 'style="color: #d10068;"'); ?> <?php echo f::format_number($stats['trend_percentage'], 1); ?>%
 						<?php } ?>
 					</div>
 				</div>

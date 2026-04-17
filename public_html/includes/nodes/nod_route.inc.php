@@ -55,7 +55,7 @@
 			cache::set(self::$_links_cache_token, self::$_links_cache);
 		}
 
-		######################################################################
+		## Node specific methods
 
 		public static function load($pattern) {
 
@@ -448,12 +448,14 @@
 
 			// Rewrite link
 			foreach (self::$_routes as $route) {
+
 				$operators = [
 					'\\*' => '.+',
 					'\\?' => '.',
 					'\\{' => '(', '\\}' => ')',
 					',' => '|'
 				];
+
 				if (preg_match('#^'. strtr(preg_quote($route['resource'], '#'), $operators) .'$#i', $ilink)) { // Use preg_match() as fnmatch() does not support GLOB_BRACE
 					if (isset($route['rewrite']) && is_callable($route['rewrite'])) {
 						if ($rewritten_link = call_user_func_array($route['rewrite'], [$link, $language_code])) {

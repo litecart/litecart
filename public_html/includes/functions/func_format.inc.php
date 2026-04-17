@@ -33,6 +33,7 @@
 			'{address2}' => $address['address2'] ?? '',
 			'{city}' => $address['city'] ?? '',
 			'{postcode}' => $address['postcode'] ?? '',
+			'{country_code}' => $address['country_code'] ?? '',
 			'{country_name}' => $country['name'] ?? $address['country_code'] ?? '',
 			'{country_domestic_name}' => $country['domestic_name'] ?? $country['name'] ?? $address['country_code'] ?? '',
 			'{zone_code}' => $address['zone_code'] ?? '',

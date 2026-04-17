@@ -147,11 +147,11 @@
 
 <script>
 	$('select[name$="new_zone[zone_code]"][disabled]').each(function() {
-		this.html('<option value="">-- <?php echo f::escape_js(t('title_all_zones', 'All Zones')); ?> --</option>');
+		$(this).html('<option value="">-- <?php echo f::escape_js(t('title_all_zones', 'All Zones')); ?> --</option>');
 	});
 
 	$('select[name="new_zone[country_code]"]').on('change', function() {
-		let $zone_field = this.closest('tr').find('select[name="new_zone[zone_code]"]');
+		let $zone_field = $(this).closest('tr').find('select[name="new_zone[zone_code]"]');
 
 		$.ajax({
 			url: '<?php echo document::ilink('countries/zones.json'); ?>?country_code=' + $(this).val(),
@@ -246,6 +246,6 @@
 
 	$('#zones').on('click', '.remove', function(e) {
 		e.preventDefault();
-		this.closest('tr').remove();
+		$(this).closest('tr').remove();
 	});
 </script>

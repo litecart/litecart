@@ -5,6 +5,8 @@
 		private static $_callbacks = [];
 		private static $_fired_events = [];
 
+		## Node specific methods
+
 		public static function register($event, $callback) {
 
 			$checksum = crc32(f::format_json($callback, false));

@@ -140,7 +140,7 @@
 				// Perform Action from Order Module
 				default:
 
-					list($module_id, $action_id) = explode(':', $_POST['order_action']);
+					list($module_id, $action_id) = explode(':', $_POST['action']);
 
 					$mod_order = new mod_order();
 					$actions = $mod_order->actions();
@@ -335,6 +335,12 @@
 		$orders[$i] = $order;
 	}
 
+	// Redirect if only one result with an exact match on order ID or order number
+	if (!empty($_GET['query']) && count($orders) == 1 && ($orders[0]['id'] == $_GET['query'] || $orders[0]['no'] == $_GET['query'])) {
+		redirect(document::href_ilink(__APP__.'/order', ['order_id' => $orders[0]['id'], 'redirect_url' => $_SERVER['REQUEST_URI']]));
+		exit;
+	}
+
 	// Order Statuses
 	$order_status_options = [
 		[
@@ -366,14 +372,7 @@
 	});
 
 	// Actions
-	$actions = [];
-
-	$mod_order = new mod_order();
-	if ($modules = $mod_order->actions()) {
-		foreach ($modules as $module) {
-			$actions[] = $module;
-		}
-	}
+	$actions = (new mod_order)->actions();
 
 ?>
 <style>
@@ -568,12 +567,12 @@ table .tag {
 	$('input[name="query"]').keypress(function(e) {
 		if (e.which == 13) {
 			e.preventDefault();
-			this.closest('form').submit();
+			$(this).closest('form').submit();
 		}
 	});
 
 	$('form[name="search_form"] select').on('change', function() {
-		this.closest('form').submit();
+		$(this).closest('form').submit();
 	});
 
 	$('.data-table :checkbox').on('change', function() {
@@ -582,7 +581,7 @@ table .tag {
 
 	$('table').on('click', '.icon-star-o', function(e) {
 		e.stopPropagation();
-		let $star = this;
+		let $star = $(this);
 		$.post('', 'star&order_id='+$star.closest('tr').data('id'), function(data) {
 			$star.replaceWith('<?php echo f::draw_fonticon('icon-star', 'style="color: #f2b01e;"'); ?>');
 		});
@@ -591,7 +590,7 @@ table .tag {
 
 	$('table').on('click', '.icon-star', function(e) {
 		e.stopPropagation();
-		let $star = this;
+		let $star = $(this);
 		$.post('', 'unstar&order_id='+$star.closest('tr').data('id'), function(data) {
 			$star.replaceWith('<?php echo f::draw_fonticon('icon-star-o', 'style="color: #ccc;"'); ?>');
 		});

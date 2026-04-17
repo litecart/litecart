@@ -284,7 +284,7 @@
 		return '<img '. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="thumbnail '. f::escape_attr($clipping) .'"' : '') .' src="'. document::href_rlink($thumbnail) .'" srcset="'. document::href_rlink($thumbnail) .' 1x, '. document::href_rlink($thumbnail_2x) .' 2x"'. ($parameters ? ' '. $parameters : '') .'>';
 	}
 
-	function draw_price_tag($regular_price, $final_price=null, $currency_code=null) {
+	function draw_price_tag($regular_price, $final_price=null, $currency_code=null, $currency_value=null) {
 
 		if ($regular_price === null && $final_price === null) {
 			return '';
@@ -298,12 +298,16 @@
 			$currency_code = currency::$selected['code'];
 		}
 
+		if (!isset($currency_value)) {
+			$currency_value = currency::$selected['value'];
+		}
+
 		$price_tag = ['<div class="price-tag">'];
 
 		if ($final_price !== null && $final_price < $regular_price) {
-			$price_tag[] = '	<del class="regular-price">'. currency::format($regular_price, true, currency::$selected['code'], 1) .'</del> <strong class="sale-price">'. currency::format($final_price, true, currency::$selected['code'], 1) .'</strong>';
+			$price_tag[] = '	<del class="regular-price">'. currency::format($regular_price, true, $currency_code, $currency_value) .'</del> <strong class="sale-price">'. currency::format($final_price, true, $currency_code, $currency_value) .'</strong>';
 		} else {
-			$price_tag[] = '	<span class="regular-price">'. currency::format($regular_price, true, currency::$selected['code'], 1) .'</span>';
+			$price_tag[] = '	<span class="regular-price">'. currency::format($regular_price, true, $currency_code, $currency_value) .'</span>';
 		}
 
 		$price_tag[] = '</div>';

@@ -8,7 +8,7 @@
 
 		'theme' => [
 			'color' => '#21a261',
-			'icon' => 'icon-user',
+			'icon' => 'icon-users',
 		],
 
 		'menu' => [

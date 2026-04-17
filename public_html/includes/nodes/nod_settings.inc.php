@@ -41,6 +41,8 @@
 			});
 		}
 
+		## Node specific methods
+
 		public static function get(string $key, $fallback=null) {
 
 			if (isset(self::$_cache[$key])) return self::$_cache[$key];

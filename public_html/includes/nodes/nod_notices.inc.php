@@ -18,6 +18,8 @@
 			self::$data = &session::$data['notices'];
 		}
 
+		## Node specific methods
+
 		public static function reset($type=null) {
 
 			if ($type) {

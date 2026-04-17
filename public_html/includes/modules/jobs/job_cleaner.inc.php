@@ -3,7 +3,7 @@
 	class job_cleaner extends abs_module {
 
 		public $name = 'Cleaner';
-		public $description = 'Keep the platform tidy by cleaning up old things.';
+		public $description = 'Keeps the platform tidy by cleaning up old things.';
 		public $author = 'LiteCart Dev Team';
 		public $version = '1.0';
 		public $website = 'https://www.litecart.net';

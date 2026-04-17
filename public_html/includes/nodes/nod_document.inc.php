@@ -48,6 +48,7 @@
 				"frame-ancestors 'self'", // Clickjacking Protection
 				//"script-src 'self' 'unsafe-inline'",
 				//"style-src 'self' 'unsafe-inline'",
+				//"style-src-elem 'self' 'unsafe-inline'",
 				'report-uri '. self::ilink('f:csp_report'),
 			]));
 
@@ -58,7 +59,7 @@
 					'fullscreen=(self)',
 					'payment=()',
 					'geolocation=()',
-					'browsing-topics()',
+					'browsing-topics=()',
 			]));
 
 			self::$title = [settings::get('store_name')];
@@ -161,6 +162,8 @@
 
 			self::$head_tags[] = '<script nonce="'. self::$nonce .'">window._env='. f::format_json(self::$jsenv, false) .'</script>';
 		}
+
+		## Node specific methods
 
 		public static function optimize(&$output) {
 

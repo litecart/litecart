@@ -1,6 +1,7 @@
 <?php
 
 	class smtp_client {
+
 		private $_socket;
 		private $_host;
 		private $_username;
@@ -157,7 +158,7 @@
 
 			foreach ($recipients as $recipient) {
 				$this->write("RCPT TO: <$recipient>\r\n", 250);
-	}
+			}
 
 			$this->write("DATA\r\n", 354)
 					 ->write("$data\r\n")

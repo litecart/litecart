@@ -117,7 +117,7 @@
 			}
 		}
 
-		#####
+		## Node specific methods
 
 		public static function reset() {
 
@@ -179,7 +179,7 @@
 
 		public static function add_product($product_id, $stock_option_id=null, $userdata=[], $quantity=1, $force=false, $item_key=null) {
 
-			$product = reference::product($product_id);
+			$product = reference::product($product_id, language::$selected['code'], currency::$selected['code'], customer::$data);
 			$quantity = round((float)$quantity, $product->quantity_unit ? (int)$product->quantity_unit['decimals'] : 0, PHP_ROUND_HALF_UP);
 
 			// Set item key
