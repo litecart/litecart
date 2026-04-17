@@ -54,7 +54,7 @@
 		// Excluded paths (payment gateway callbacks, MCP endpoints)
 		$csrf_excluded_paths = ['order_process', 'mcp'];
 		$csrf_skip = false;
-		$request_path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+		$request_path = strtok($_SERVER['REQUEST_URI'], '?');
 		foreach ($csrf_excluded_paths as $path) {
 			if (preg_match('#/' . preg_quote($path, '#') . '(?:/|$)#', $request_path)) {
 				$csrf_skip = true;
