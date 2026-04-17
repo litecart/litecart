@@ -10,6 +10,14 @@
 	mb_http_output('UTF-8');
 	@set_time_limit(900);
 
+	// CLI options used by the shared bootstrap when getopt() runs.
+	$INSTALL_CLI_OPTIONS = [
+		'from_version::', 'development_type::', 'backup::', 'cleanup::',
+	];
+
+	require_once __DIR__ . '/includes/bootstrap.inc.php';
+	require_once __DIR__ . '/includes/security_headers.inc.php';
+
 	require_once __DIR__ . '/../includes/compatibility.inc.php';
 
 	if ($_SERVER['SERVER_SOFTWARE'] == 'CLI') {
@@ -32,14 +40,7 @@
 			exit;
 		}
 
-		$options = [
-			'from_version::',
-			'development_type::',
-			'backup::',
-			'cleanup::',
-		];
-
-		$_REQUEST = getopt('', $options);
+		// $_REQUEST already populated by bootstrap.inc.php's getopt call.
 		$_REQUEST['upgrade'] = true;
 
 		if (isset($_REQUEST['cleanup'])) {
@@ -99,6 +100,42 @@
 	require_once FS_DIR_APP . 'includes/nodes/nod_event.inc.php';
 	require_once FS_DIR_APP . 'includes/nodes/nod_functions.inc.php';
 	require FS_DIR_APP . 'includes/nodes/nod_stats.inc.php';
+
+	// AC-5, AC-6: the web upgrader requires an authenticated administrator.
+	// CLI runs are exempt (see install_is_cli() for detection rules).
+	// Session and administrator nodes are loaded lazily so that a broken
+	// schema can still reach the CLI path; any exception during init is
+	// treated as "not logged in" and the user gets redirected to login.
+	if (!install_is_cli()) {
+		try {
+			if (!class_exists('session')) {
+				require_once FS_DIR_APP . 'includes/nodes/nod_session.inc.php';
+				session::init();
+			}
+			if (!class_exists('administrator')) {
+				require_once FS_DIR_APP . 'includes/nodes/nod_administrator.inc.php';
+				administrator::init();
+			}
+			$__upgrade_authenticated = administrator::check_login();
+		} catch (Throwable $t) {
+			error_log('upgrade.php auth gate failed: ' . $t->getMessage());
+			$__upgrade_authenticated = false;
+		}
+
+		if (!$__upgrade_authenticated) {
+			install_send_security_headers();
+			http_response_code(401);
+			header('Content-Type: text/html; charset=UTF-8');
+			$admin_login_url = (defined('WS_DIR_ADMIN') ? WS_DIR_ADMIN : '/admin/') . 'login';
+			echo '<!DOCTYPE html><html><head><title>Upgrade — Authentication Required</title></head><body>'
+				. '<h1>Authentication Required</h1>'
+				. '<p>The web upgrader requires an administrator session. '
+				. '<a href="' . htmlspecialchars($admin_login_url, ENT_QUOTES) . '">Sign in</a> and retry, '
+				. 'or run <code>php upgrade.php</code> from the command line.</p>'
+				. '</body></html>';
+			exit;
+		}
+	}
 
 	$requirements = json_decode(file_get_contents(__DIR__ . '/requirements.json'), true);
 
