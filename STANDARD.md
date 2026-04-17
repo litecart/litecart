@@ -31,6 +31,14 @@
 		C:/path/to/file
 
 
+## Trailing Directory Separators
+
+	Directories should be ended with the directory separator. This communicates if the intended path is a file or directoy.
+
+	/path/name/  # Oh it's a directory
+	/path/name   # Ah it's a file
+
+
 ## File Naming
 
 	The filename of the files should be all lowercase characters with underscore (_) for
