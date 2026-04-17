@@ -180,7 +180,7 @@
 			// Redact sensitive headers before logging
 			$redacted_request_headers = preg_replace('#^(Authorization:\s*).*$#mi', '$1[REDACTED]', $this->last_request['headers']);
 
-			file_put_contents(f::file_realpath('storage://logs/http_request_last-'. $parts['host'] .'.log'), implode("\r\n", [
+			file_put_contents('storage://logs/http_request_last-'. $parts['host'] .'.log', implode("\r\n", [
 				'##'. str_pad(' ['. date('Y-m-d H:i:s', $this->last_request['timestamp']) .'] Request ', 70, '#', STR_PAD_RIGHT),
 				'',
 				$redacted_request_headers,
