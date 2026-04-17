@@ -24,6 +24,15 @@
 				throw new Exception(t('error_must_provide_code', 'You must provide a code'));
 			}
 
+			// AC-7: server-side validation of the language code. The HTML
+			// input has a pattern attribute, but that is client-side only —
+			// an attacker can POST any value. The code is persisted and
+			// later spliced into `text_<code>` column names in DDL, so it
+			// must match a strict locale pattern before we accept it.
+			if (!preg_match('#^[a-z]{2,5}(-[a-z0-9]{2,8})?$#i', $_POST['code'])) {
+				throw new Exception(t('error_invalid_language_code', 'Language code must be a BCP-47 style locale (e.g. "en", "de", "zh-cn")'));
+			}
+
 			if (empty($_POST['name'])) {
 				throw new Exception(t('error_must_provide_name', 'You must provide a name'));
 			}
@@ -163,9 +172,9 @@
 					foreach ($csv as $row) {
 						database::query(
 							"insert into ". DB_TABLE_PREFIX ."translations
-							(`code`, `text_". database::input($language->data['code']) ."`)
+							(`code`, `text_". database::identifier($language->data['code']) ."`)
 							values ('". database::input($row['code']) ."', '". database::input($row['text_'.$language->data['code']]) ."')
-							on duplicate key update `text_". database::input($language->data['code']) ."` = '". database::input($row['text_'.$language->data['code']]) ."');"
+							on duplicate key update `text_". database::identifier($language->data['code']) ."` = '". database::input($row['text_'.$language->data['code']]) ."');"
 						);
 					}
 
