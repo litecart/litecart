@@ -69,8 +69,26 @@
 			}
 
 			self::query("SET SESSION sql_mode = '". database::input(implode(',', $sql_modes)) ."';", $link);
+
+			// Set connection charset
 			self::query("SET names '". database::input($charset) ."';", $link);
+
+			// Set default storage engine
 			self::query("SET SESSION default_storage_engine = InnoDB;", $link);
+
+			// Set time zone for current session
+			if (defined('DB_TABLE_PREFIX')) {
+				$timezone = database::query(
+					"SELECT `value` FROM ". DB_TABLE_PREFIX ."settings
+					WHERE `key` = 'store_timezone'
+					LIMIT 1;", 'default'
+				)->fetch('value');
+
+				if ($timezone) {
+					$datetime = new \DateTime('now', new \DateTimezone($timezone));
+					self::query("SET time_zone = '". database::input($datetime->format('P')) ."';", $link);
+				}
+			}
 
 			return self::$links[$link];
 		}
