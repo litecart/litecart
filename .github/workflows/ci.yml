@@ -389,8 +389,10 @@ jobs:
             echo 'Schema: ' . count(\$tables) . ' tables created' . PHP_EOL;
 
             // Import seed data
-            \$data = file_get_contents('public_html/install/data.sql');
-            \$data = str_replace('\`lc_', '\`' . DB_TABLE_PREFIX, \$data);
+            \$data = strtr(file_get_contents('public_html/install/data.sql'), [
+              '\`lc_' => '\`' . DB_TABLE_PREFIX,
+              '{STORE_TIME_ZONE}' => 'Europe/London'
+            ]);
             \$link->multi_query(\$data);
             while (\$link->next_result()) {}
             echo 'Seed data imported' . PHP_EOL;
