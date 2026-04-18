@@ -420,7 +420,7 @@
 		'{DB_DATABASE}' => DB_DATABASE,
 		'{DB_TABLE_PREFIX}' => DB_TABLE_PREFIX,
 		'{CLIENT_IP}' => isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1',
-		'{TIMEZONE}' => $timezone,
+		'{STORE_TIME_ZONE}' => $timezone,
 	]);
 
 	if (file_put_contents(FS_DIR_APP . 'storage/config.inc.php', $config) !== false) {

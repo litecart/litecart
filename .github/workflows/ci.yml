@@ -201,7 +201,7 @@ jobs:
             -e 's|{DB_DATABASE}|litecart|g' \
             -e 's|{DB_TABLE_PREFIX}|lc_|g' \
             -e 's|{CLIENT_IP}|127.0.0.1|g' \
-            -e 's|{TIMEZONE}|Europe/London|g' \
+            -e 's|{STORE_TIME_ZONE}|Europe/London|g' \
             public_html/install/config > public_html/storage/config.inc.php
           echo "Config file generated"
 
@@ -255,8 +255,10 @@ jobs:
             echo 'Schema: ' . count(\$tables) . ' tables created' . PHP_EOL;
 
             // Import seed data
-            \$data = file_get_contents('public_html/install/data.sql');
-            \$data = str_replace('\`lc_', '\`' . DB_TABLE_PREFIX, \$data);
+            \$data = strtr(file_get_contents('public_html/install/data.sql'), [
+              '\`lc_' => '\`' . DB_TABLE_PREFIX,
+              '{STORE_TIME_ZONE}' => 'Europe/London'
+            ]);
             \$link->multi_query(\$data);
             while (\$link->next_result()) {}
             echo 'Seed data imported' . PHP_EOL;
@@ -333,7 +335,7 @@ jobs:
             -e 's|{DB_DATABASE}|litecart|g' \
             -e 's|{DB_TABLE_PREFIX}|lc_|g' \
             -e 's|{CLIENT_IP}|127.0.0.1|g' \
-            -e 's|{TIMEZONE}|Europe/London|g' \
+            -e 's|{STORE_TIME_ZONE}|Europe/London|g' \
             public_html/install/config > public_html/storage/config.inc.php
           echo "Config file generated"
 

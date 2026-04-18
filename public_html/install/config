@@ -72,7 +72,7 @@
 	ini_set('session.gc_maxlifetime', 1440);
 
 	// Timezone
-	ini_set('date.timezone', '{TIMEZONE}');
+	ini_set('date.timezone', '{STORE_TIME_ZONE}');
 
 	// Output Compression
 	ini_set('zlib.output_compression', 1);

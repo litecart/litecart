@@ -608,7 +608,7 @@ input[name="development_type"]:checked + div {
 				<div class="form-label">Backend URL</div>
 				<div class="input-group">
 					<span class="input-group-text"><?php echo preg_replace('#install/.*$#', '', strtok($_SERVER['REQUEST_URI'], '?')); ?></span>
-					<input class="form-input" name="admin_folder" type="text" value="admin" required>
+					<input class="form-input" name="backend_alias" type="text" value="admin" required>
 				</div>
 			</label>
 		</div>

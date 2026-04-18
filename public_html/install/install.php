@@ -7,7 +7,7 @@
 	// CLI option list used by the shared bootstrap when getopt() runs.
 	$INSTALL_CLI_OPTIONS = [
 		'db_server::', 'db_username:', 'db_password::', 'db_database:', 'db_table_prefix::', 'db_collation::',
-		'document_root:', 'timezone::', 'admin_folder::', 'username::', 'password::', 'development_type::', 'cleanup::',
+		'document_root:', 'timezone::', 'backend_alias::', 'username::', 'password::', 'development_type::', 'cleanup::',
 		'client_ip::',
 	];
 
@@ -80,7 +80,7 @@
 				'',
 				'  --timezone           Set timezone e.g. Europe/London',
 				'',
-				'  --admin_folder       Set admin folder name (Default: admin)',
+				'  --backend_alias       Set admin folder name (Default: admin)',
 				'  --username           Set admin username',
 				'  --password           Set admin user password',
 				'',
@@ -135,59 +135,40 @@
 
 		echo '<p>Checking installation parameters...';
 
-		if (!empty($_REQUEST['admin_folder'])) {
-			$_REQUEST['admin_folder'] = basename(trim(str_replace('\\', '/', $_REQUEST['admin_folder']), '/'));
-		} else {
-			$_REQUEST['admin_folder'] = 'admin';
+		// Set default values for optional parameters
+		foreach ([
+			'db_server' => $_REQUEST['db_server'] ?? '127.0.0.1',
+			'db_password' => $_REQUEST['db_password'] ?? '',
+			'db_collation' => $_REQUEST['db_collation'] ?? 'utf8mb4_swedish_ci',
+			'db_table_prefix' => $_REQUEST['db_table_prefix'] ?? 'lc_',
+			'username' => $_REQUEST['username'] ?? 'admin',
+			'password' => $_REQUEST['password'] ?? '',
+			'client_ip' => $_REQUEST['client_ip'] ?? $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1',
+			'timezone' => $_REQUEST['timezone'] ?? ini_get('date.timezone'),
+			'backend_alias' => $_REQUEST['backend_alias'] ?? 'admin',
+		] as $parameter => $value) {
+			$_REQUEST[$parameter] = $value;
 		}
 
-		if (empty($_REQUEST['db_server'])) {
-			$_REQUEST['db_server'] = '127.0.0.1';
-		}
+		// Validate
 
 		if (empty($_REQUEST['db_username'])) {
 			throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . 'No MySQL/MariaDB user provided</p>' . PHP_EOL  . PHP_EOL);
-		}
-
-		if (empty($_REQUEST['db_password'])) {
-			$_REQUEST['db_password'] = '';
 		}
 
 		if (empty($_REQUEST['db_database'])) {
 			throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . 'No MySQL/MariaDB database provided</p>' . PHP_EOL  . PHP_EOL);
 		}
 
-		if (empty($_REQUEST['db_collation'])) {
-			$_REQUEST['db_collation'] = 'utf8mb4_swedish_ci';
-		}
-
-		if (!isset($_REQUEST['db_table_prefix'])) {
-			$_REQUEST['db_table_prefix'] = 'lc_';
-		}
-
-		if (!isset($_REQUEST['username'])) {
-			$_REQUEST['username'] = 'admin';
-		}
-
-		if (!isset($_REQUEST['password'])) {
-			$_REQUEST['password'] = '';
-		}
-
-		if (empty($_REQUEST['client_ip'])) {
-			$_REQUEST['client_ip'] = !empty($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1';
-		}
-
-		if (empty($_REQUEST['timezone']) && !empty($_REQUEST['store_time_zone'])) {
-			$_REQUEST['timezone'] = $_REQUEST['store_time_zone']; // Backwards compatible
-
-		} else if (empty($_REQUEST['timezone']) && ini_get('date.timezone')) {
-			$_REQUEST['timezone'] = ini_get('date.timezone');
-
-		} else if (empty($_REQUEST['timezone'])) {
+		if (empty($_REQUEST['timezone'])) {
 			throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . 'No time zone provided</p>' . PHP_EOL  . PHP_EOL);
 		}
 
-		define('BACKEND_ALIAS', $_REQUEST['admin_folder']);
+		if ($_REQUEST['backend_alias'] != basename($_REQUEST['backend_alias'])) {
+			throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . 'Invalid backend folder name</p>' . PHP_EOL  . PHP_EOL);
+		}
+
+		define('BACKEND_ALIAS', $_REQUEST['backend_alias']);
 		define('DB_SERVER', $_REQUEST['db_server']);
 		define('DB_USERNAME', $_REQUEST['db_username']);
 		define('DB_PASSWORD', $_REQUEST['db_password']);
@@ -469,7 +450,7 @@
 			'DB_DATABASE'           => DB_DATABASE,
 			'DB_TABLE_PREFIX'       => DB_TABLE_PREFIX,
 			'CLIENT_IP'             => $_REQUEST['client_ip'],
-			'TIMEZONE'              => $_REQUEST['timezone'],
+			'STORE_TIME_ZONE'       => $_REQUEST['timezone'],
 			'HMAC_KEY_REMEMBER_ME'  => bin2hex(random_bytes(32)),
 		]);
 
