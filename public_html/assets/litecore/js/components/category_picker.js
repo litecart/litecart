@@ -10,7 +10,7 @@ waitFor('jQuery', ($) => {
 			this.xhr = null;
 			this.config = config;
 
-			self = this;
+			const self = this;
 
 			$(this).find('.dropdown input[type="search"]').on({
 

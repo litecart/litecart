@@ -442,7 +442,7 @@
 
 	$('form[name="stock_item_form"] select[name="quantity_unit_id"]').on('change', function() {
 
-		let decimals = $('option:selected', this).data('decimals');
+		let decimals = $(this).find('option:selected').data('decimals');
 
 		if ($('input[name="quantity"]').val() != '') {
 			$('input[name="quantity"]').val(Number($('input[name="quantity"]').val()).toFixed(decimals));

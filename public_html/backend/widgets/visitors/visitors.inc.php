@@ -1,8 +1,8 @@
 <?php
-	
+
 	document::load_style('app://assets/chartist/chartist.min.css', 'chartist');
 	document::load_script('app://assets/chartist/chartist.min.js', 'chartist');
-	
+
 	// Statistics data for the last 30 days (cached for 5 minutes)
 	$widget_website_traffic_cache_token = cache::token('widget_website_traffic', ['site'], 'memory', 300);
 	if (!$stats = cache::get($widget_website_traffic_cache_token)) {
@@ -19,25 +19,25 @@
 				'total_pageviews' => $day['total_pageviews'],
 			];
 		}, 'date');
-	
+
 		for ($timestamp=time(); strtotime('-1 month') <= $timestamp; $timestamp = strtotime('-1 day', $timestamp)) {
 
 			$stats[date('Y-m-d', $timestamp)]['label'] = date('j', $timestamp);
-	
+
 			if (!isset($stats[date('Y-m-d', $timestamp)]['total_visits'])) {
 				$stats[date('Y-m-d', $timestamp)]['total_visits'] = 0;
 			}
-	
+
 			if (!isset($stats[date('Y-m-d', $timestamp)]['total_pageviews'])) {
 				$stats[date('Y-m-d', $timestamp)]['total_pageviews'] = 0;
 			}
 		}
-	
+
 		ksort($stats);
-	
+
 		cache::set($widget_website_traffic_cache_token, $stats);
 	}
-	
+
 	// Online Visitors
 	$visitors = database::query(
 		"select * from ". DB_TABLE_PREFIX ."visitors
@@ -111,14 +111,9 @@
 								</a>
 							</div>
 							<div>
-							<!--<small style="font-size: 0.8em;">
-								<a target="_blank" href="<?php echo f::escape_html($visitor['last_page']); ?>" title="<?php echo f::escape_html($visitor['last_page']); ?>">
-									<?php echo f::escape_html(parse_url($visitor['last_page'], PHP_URL_PATH)); ?>
-								</a>
-							</small>-->
 							<a target="_blank" href="<?php echo f::escape_html($visitor['last_page']); ?>">
-								<small style="font-size: 0.8em;">
-									<?php echo f::escape_html(f::string_ellipsis($visitor['last_page'])); ?>
+								<small>
+									<?php echo f::escape_html(f::string_ellipsis($visitor['last_page'], 250)); ?>
 								</small>
 							</a>
 						</div>

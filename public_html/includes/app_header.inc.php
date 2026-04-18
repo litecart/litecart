@@ -49,7 +49,7 @@
 	class_exists('stats');
 
 	// CSRF protection for state-changing requests
-	if (!in_array($_SERVER['REQUEST_METHOD'], ['GET', 'HEAD', 'OPTIONS']) && !empty(session::$data['id'])) {
+	if ($_SERVER['SERVER_SOFTWARE'] != 'CLI' && !in_array($_SERVER['REQUEST_METHOD'], ['GET', 'HEAD', 'OPTIONS'])) {
 
 		// Excluded paths (payment gateway callbacks, MCP endpoints)
 		$csrf_excluded_paths = ['order_process', 'mcp'];

@@ -1322,9 +1322,9 @@
 		// Prevent duplicate attribute group/value/custom_value
 		let exists = false;
 		$('#attributes tbody tr').each(function() {
-			let group_id = $('input[name^="attributes"][name$="[group_id]"]', this).val();
-			let value_id = $('input[name^="attributes"][name$="[value_id]"]', this).val();
-			let custom_value = $('input[name^="attributes"][name$="[custom_value]"]', this).val();
+			let group_id = $(this).find('input[name^="attributes"][name$="[group_id]"]').val();
+			let value_id = $(this).find('input[name^="attributes"][name$="[value_id]"]').val();
+			let custom_value = $(this).find('input[name^="attributes"][name$="[custom_value]"]').val();
 
 			if (
 				group_id == $newAttributeGroup.val() &&
@@ -1386,9 +1386,9 @@
 	// Quantity Unit
 
 	$('select[name="quantity_unit_id"]').on('change', function() {
-		if ($('option:selected', this).data('decimals') === undefined) return;
+		if (this).find($('option:selected').data('decimals') === undefined) return;
 
-		let decimals = $('option:selected', this).data('decimals');
+		let decimals = $(this).find('option:selected').data('decimals');
 
 		$('input[name="quantity_min"]').val( parseFloat($('input[name="quantity_min"]').val() || 0).toFixed(decimals) );
 		$('input[name="quantity_max"]').val( parseFloat($('input[name="quantity_max"]').val() || 0).toFixed(decimals) );

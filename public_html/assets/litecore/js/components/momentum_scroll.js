@@ -81,7 +81,6 @@ waitFor('jQuery', ($) => {
 					if (dragging) {
 						e.preventDefault();
 					}
-					self = this;
 					clicked = false;
 					cancelAnimationFrame(momentumID);
 					momentumID = requestAnimationFrame(momentumLoop);
