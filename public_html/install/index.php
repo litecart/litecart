@@ -1,18 +1,18 @@
 <?php
 
+	require_once __DIR__ . '/includes/bootstrap.inc.php';
+	require_once __DIR__ . '/includes/security_headers.inc.php';
+
 	define('DOCUMENT_ROOT', rtrim(str_replace('\\', '/', realpath(!empty($_SERVER['DOCUMENT_ROOT']) ? $_SERVER['DOCUMENT_ROOT'] : __DIR__.'/..')), '/'));
-	define('FS_DIR_APP', rtrim(str_replace('\\', '/', realpath(__DIR__.'/../')), '/') . '/');
-	define('FS_DIR_STORAGE', rtrim(str_replace('\\', '/', realpath(__DIR__.'/../storage')), '/') . '/');
 	define('WS_DIR_APP', preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '', FS_DIR_APP));
 	define('WS_DIR_STORAGE', preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '', FS_DIR_STORAGE));
 
 	define('VMOD_DISABLED', 'true');
 
-	// Block access if installation is already completed
-	if (is_file(FS_DIR_STORAGE . 'install.lock')) {
-		http_response_code(403);
-		echo 'Installation already completed. Remove storage/install.lock to reinstall.';
-		exit;
+	// AC-1: block access if installation is already completed.
+	if (install_is_locked()) {
+		install_send_security_headers();
+		install_reject_locked();
 	}
 
 	require_once FS_DIR_APP . 'includes/autoloader.inc.php';
