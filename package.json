@@ -39,7 +39,11 @@
 		"phplint": "^2.0.5",
 		"sass": "^1.99.0",
 		"eslint": "^10.2.1",
-		"eslint-plugin-html": "^8.1.4"
+		"eslint-plugin-html": "^8.1.4",
+		"stylelint": "^17.8.0",
+		"stylelint-config-standard-scss": "^17.0.0",
+		"postcss-html": "^1.8.1",
+		"postcss-scss": "^4.0.9"
 	},
 	"scripts": {
 		"iconly": "gulp iconly && gulp scss-framework",
@@ -55,6 +59,9 @@
 		"upgrade": "ncu -u && npm install",
 		"dependencies": "npm list --depth=1",
 		"dedupe": "npm dedupe",
-		"lint": "eslint \"public_html/**/*.{js,php,html}\""
+		"lint": "eslint \"public_html/**/*.{js,php,html}\"",
+		"lint:css": "stylelint \"public_html/**/*.{php,html}\" --fix --allow-empty-input --custom-syntax postcss-html",
+		"lint:scss": "stylelint \"public_html/**/*.scss\" --fix --allow-empty-input --custom-syntax postcss-scss",
+		"lint:style": "npm run lint:css && npm run lint:scss"
 	}
 }
