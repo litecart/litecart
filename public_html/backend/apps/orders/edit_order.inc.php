@@ -1469,13 +1469,13 @@
 	// Order
 
 	$('select[name="order_status_id"]').on('change', function(e) {
-		let color = $('option:selected', this).data('color');
+		let color = $(this).find('option:selected').data('color');
 		this.css('box-shadow', color ? '0 0 0px 2px'+ color +'cc' : '');
 	}).trigger('change');
 
 	$('select[name="currency_code"]').on('change', function(e) {
-		$('input[type="number"][data-type="currency"]').data('decimals', $('option:selected', this).data('decimals'));
-		$('input[name="currency_value"]').val($('option:selected', this).data('value'));
+		$('input[type="number"][data-type="currency"]').data('decimals', $(this).find('option:selected').data('decimals'));
+		$(this).find('input[name="currency_value"]').val($('option:selected').data('value'));
 		$('input[data-type="currency"]').closest('.input-group').find('.input-group-text').text($(this).val());
 		refresh_total();
 	});
@@ -1510,20 +1510,20 @@
 
 	$('#customer-details select[name="customer[country_code]"]').on('change', function() {
 
-		if ($('option:selected', this).data('tax-id-format')) {
-			$('input[name="customer[tax_id]"]').attr('pattern', $('option:selected', this).data('tax-id-format'));
+		if ($(this).find('option:selected').data('tax-id-format')) {
+			$('input[name="customer[tax_id]"]').attr('pattern', $(this).find('option:selected').data('tax-id-format'));
 		} else {
 			$('input[name="customer[tax_id]"]').removeAttr('pattern');
 		}
 
-		if ($('option:selected', this).data('postcode-format')) {
-			$('input[name="customer[postcode]"]').attr('pattern', $('option:selected', this).data('postcode-format'));
+		if ($(this).find('option:selected').data('postcode-format')) {
+			$('input[name="customer[postcode]"]').attr('pattern', $(this).find('option:selected').data('postcode-format'));
 		} else {
 			$('input[name="customer[postcode]"]').removeAttr('pattern');
 		}
 
-		if ($('option:selected', this).data('phone-code')) {
-			$('input[name="customer[phone]"]').attr('placeholder', '+' + $('option:selected', this).data('phone-code'));
+		if ($(this).find('option:selected').data('phone-code')) {
+			$('input[name="customer[phone]"]').attr('placeholder', '+' + $(this).find('option:selected').data('phone-code'));
 		} else {
 			$('input[name="customer[phone]"]').removeAttr('placeholder');
 		}
@@ -1557,20 +1557,20 @@
 
 	$('#customer-details select[name="shipping_address[country_code]"]').on('change', function() {
 
-		if ($('option:selected', this).data('tax-id-format')) {
-			$('input[name="shipping_address[tax_id]"]').attr('pattern', $('option:selected', this).data('tax-id-format'));
+		if ($(this).find('option:selected').data('tax-id-format')) {
+			$('input[name="shipping_address[tax_id]"]').attr('pattern', $(this).find('option:selected').data('tax-id-format'));
 		} else {
 			$('input[name="shipping_address[tax_id]"]').removeAttr('pattern');
 		}
 
-		if ($('option:selected', this).data('postcode-format')) {
-			$('input[name="shipping_address[postcode]"]').attr('pattern', $('option:selected', this).data('postcode-format'));
+		if ($(this).find('option:selected').data('postcode-format')) {
+			$('input[name="shipping_address[postcode]"]').attr('pattern', $(this).find('option:selected').data('postcode-format'));
 		} else {
 			$('input[name="shipping_address[postcode]"]').removeAttr('pattern');
 		}
 
-		if ($('option:selected', this).data('phone-code')) {
-			$('input[name="shipping_address[phone]"]').attr('placeholder', '+' + $('option:selected', this).data('phone-code'));
+		if ($(this).find('option:selected').data('phone-code')) {
+			$('input[name="shipping_address[phone]"]').attr('placeholder', '+' + $(this).find('option:selected').data('phone-code'));
 		} else {
 			$('input[name="shipping_address[phone]"]').removeAttr('placeholder');
 		}
@@ -1598,7 +1598,7 @@
 	});
 
 	if ($('select[name="customer[country_code]"] option:selected').data('tax-id-format')) {
-		$('input[name="customer[tax_id]"]').attr('pattern', $('select[name="country_code"] option:selected').data('tax-id-format'));
+		$('input[name="customer[tax_id]"]').attr('pattern', $('select[name="customer[country_code]"] option:selected').data('tax-id-format'));
 	} else {
 		$('input[name="customer[tax_id]"]').removeAttr('pattern');
 	}
@@ -1707,11 +1707,7 @@
 	});
 
 	$('#box-comments .bubbles').on('change', 'input[name^="comments"][name$="[hidden]"]', function(e) {
-		if (this.is(':checked')) {
-			this.closest('.bubble').addClass('semi-transparent');
-		} else {
-			this.closest('.bubble').removeClass('semi-transparent');
-		}
+		$(this).closest('.bubble').toggleClass('semi-transparent', $(this).is(':checked') );
 	});
 
 	// Tax Rates
@@ -1744,7 +1740,7 @@
 
 	$('#order-lines').on('input change', ':input[name$="[quantity]"], :input[name$="[price]"], :input[name$="[tax_rate]"], :input[name$="[discount]"]', function() {
 
-		let $row = this.closest('tr'),
+		let $row = $(this).closest('tr'),
 			quantity = parseFloat($(':input[name$="[quantity]"]', $row).val() || 0),
 			price = parseFloat($(':input[name$="[price]"]', $row).val() || 0),
 			tax_rate = parseFloat($(':input[name$="[tax_rate]"]', $row).val() || 0),
@@ -1764,7 +1760,7 @@
 
 	$('#order-lines').on('click', '.edit', function() {
 
-		let $row = this.closest('tr');
+		let $row = $(this).closest('tr'),
 			type = $(':input[name$="[type]"]', $row).val();
 
 		switch (type) {
@@ -1836,14 +1832,14 @@
 		$.litebox('#modal-edit-line');
 
 		let $modal = $('.litebox.active'),
-			$row = this.closest('tr');
+			$row = $(this).closest('tr');
 
 		$modal.data('row', '');
 	});
 
 	$('#order-lines').on('click', '.remove', function(e) {
 		e.preventDefault();
-		this.closest('tr').remove();
+		$(this).closest('tr').remove();
 	});
 
 	// Edit Line Item Modal
@@ -1959,15 +1955,15 @@
 
 		$('#order-lines tbody tr').each(function() {
 
-			let final_price = parseFloat($(':input[name$="[price]"]', this).val() || 0) - parseFloat($(':input[name$="[discount]"]', this).val() || 0),
-				sum = final_price * parseFloat($(':input[name$="[quantity]"]', this).val() || 0),
-				sum_tax = sum * (parseFloat($(':input[name$="[tax_rate]"]', this).val() || 0) / 100);
+			let final_price = parseFloat(this).find($(':input[name$="[price]"]').val(this).find() || 0) - parseFloat($(':input[name$="[discount]"]').val() || 0),
+				sum = final_price * parseFloat(this).find($(':input[name$="[quantity]"]').val() || 0),
+				sum_tax = sum * (this).find(parseFloat($(':input[name$="[tax_rate]"]').val() || 0) / 100);
 
-				$('.sum', this).text(sum.toMoney());
-				$('.sum_tax', this).text(sum_tax.toMoney());
+				$(this).find('.sum').text(sum.toMoney());
+				$(this).find('.sum_tax').text(sum_tax.toMoney());
 
 			subtotal += sum;
-			discount += parseFloat($(':input[name$="[quantity]"]', this).val() || 0) * parseFloat($(':input[name$="[discount]"]', this).val() || 0);
+			discount += parseFloat(this).find($(':input[name$="[quantity]"]').val(this).find() || 0) * parseFloat($(':input[name$="[discount]"]').val() || 0);
 			tax += sum_tax;
 		});
 

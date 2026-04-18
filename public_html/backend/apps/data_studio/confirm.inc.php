@@ -329,7 +329,7 @@ table td {
 		if (current > 1) {
 			$('span.current').text(current - 1);
 			$('tbody tr').each(function(i){
-				$('td:nth-child(2, this)').text(data[current - 2][i]);
+				$(this).find('td:nth-child(2)').text(data[current - 2][i]);
 			});
 		}
 	});
@@ -340,15 +340,15 @@ table td {
 		if (current < data.length) {
 			$('span.current').text(current + 1);
 			$('tbody tr').each(function(i){
-				$('td:nth-child(2, this)').text(data[current][i]);
+				$(this).find('td:nth-child(2)').text(data[current][i]);
 			});
 		}
 	});
 
 	$('input[name="truncate"]').on('change', function(e){
-		if (this.prop('checked') == true){
+		if ($(this).prop('checked') == true) {
 			if (!confirm("<?php echo t('text_are_you_sure', 'Are you sure?'); ?>")){
-				this.prop('checked', false);
+				$(this).prop('checked', false);
 			}
 		}
 	});

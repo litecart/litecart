@@ -280,7 +280,7 @@
 
 	$('#campaigns').on('input', 'input[name$="['+store_currency_code+']"]', function() {
 
-		let $row = this.closest('tr'),
+		let $row = $(this).closest('tr'),
 			regular_price = Number($row.data('regular-price')),
 			campaign_price = Number($(this).val()),
 			percentage = Number((regular_price - $(this).val()) / regular_price * 100).toFixed(2);
@@ -301,7 +301,7 @@
 	});
 
 	$('#campaigns').on('input', 'input[name$="[percentage]"]', function() {
-		let $row = this.closest('tr'),
+		let $row = $(this).closest('tr'),
 			amount = 0;
 
 		$.each(currencies, function(i, currency) {

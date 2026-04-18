@@ -400,7 +400,7 @@ table .icon-star-o:hover {
 
 	$('table').on('click', '.icon-star-o', function(e) {
 		e.stopPropagation();
-		let $star = this;
+		let $star = $(this);
 		$.post('', 'star&product_id='+$star.closest('tr').data('id'), function(data) {
 			$star.replaceWith('<?php echo f::draw_fonticon('icon-star', 'style="color: #f2b01e;"'); ?>');
 		});
@@ -409,7 +409,7 @@ table .icon-star-o:hover {
 
 	$('table').on('click', '.icon-star', function(e) {
 		e.stopPropagation();
-		let $star = this;
+		let $star = $(this);
 		$.post('', 'unstar&product_id='+$star.closest('tr').data('id'), function(data) {
 			$star.replaceWith('<?php echo f::draw_fonticon('icon-star-o', 'style="color: #ccc;"'); ?>');
 		});

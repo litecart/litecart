@@ -110,7 +110,7 @@
 
 	$('#stock-item-picker tbody').on('click', 'td', function() {
 
-		let $row = this.closest('tr'),
+		let $row = $(this).closest('tr'),
 			callback = '<?php echo !empty($_GET['js_callback']) ? f::escape_js($_GET['js_callback']) : ''; ?>',
 			stock_item = $row.data();
 

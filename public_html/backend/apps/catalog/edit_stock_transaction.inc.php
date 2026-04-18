@@ -211,7 +211,7 @@
 
 <script>
 	$('input[name="new[sku]"]').on('input', function(e) {
-		let $row = this.closest('tr');
+		let $row = $(this).closest('tr');
 
 		if ($('datalist#available-stock-items option[value="'+ $(this).val() +'"]').length) {
 			$('input[name="new[name]"]', $row).val($('datalist#available-stock-items option[value="'+ $(this).val() +'"]:first').data('name')).prop('readonly', true);
@@ -223,8 +223,8 @@
 	});
 
 	$('body').on('click', 'button[name="transfer"]', function() {
-		let $quantity_field = this.closest('tr').find('input[name$="[quantity_adjustment]"]'),
-			$backordered_field = this.closest('tr').find('input[name$="[backordered]"]');
+		let $quantity_field = $(this).closest('tr').find('input[name$="[quantity_adjustment]"]'),
+			$backordered_field = $(this).closest('tr').find('input[name$="[backordered]"]');
 
 		$quantity_field.val(Number($quantity_field.val()) + Number($backordered_field.val()));
 		$backordered_field.val(0);
@@ -248,7 +248,7 @@
 		let __index__ = 0;
 		while ($(':input[name^="contents[new_'+__index__+']"]').length) __index__++;
 
-		let row = this.closest('tr');
+		let $row = $(this).closest('tr');
 
 		if (!$('datalist#available-stock-items option[value="'+ $('input[name="new[sku]"]').val() +'"]').length) {
 			alert('Unknown stock item');

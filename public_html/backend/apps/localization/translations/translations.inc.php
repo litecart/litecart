@@ -372,6 +372,7 @@
 		$('#tokens').html('');
 
 		$.each($('form[name="filter_form"] input[type="checkbox"]:checked, form[name="filter_form"] input[type="radio"]:checked'), function(i, $el) {
+			$el = $(this);
 			if (!$el.val()) return;
 
 			var $token = $('<span class="token"></span>');
@@ -394,7 +395,7 @@
 	$('#tokens').on('click', '.remove', function(e) {
 
 		e.preventDefault();
-		var $token = this.closest('.token');
+		var $token = $(this).closest('.token');
 
 		switch ($(':input[name="'+ $token.data('name') +'"]').attr('type')) {
 

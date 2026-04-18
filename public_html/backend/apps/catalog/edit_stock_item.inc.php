@@ -458,8 +458,8 @@
 	});
 
 	$('button[name="transfer"]').on('click', function() {
-		var $quantity_field = this.closest('form').find('input[name="quantity_adjustment"]');
-		var $backordered_field = this.closest('form').find('input[name="backordered"]');
+		var $quantity_field = $(this).closest('form').find('input[name="quantity_adjustment"]');
+		var $backordered_field = $(this).closest('form').find('input[name="backordered"]');
 		$quantity_field.val( Number($quantity_field.val()) + Number($backordered_field.val()) ).trigger('input');
 		$backordered_field.val(0);
 	});

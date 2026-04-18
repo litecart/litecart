@@ -893,7 +893,7 @@
 		let default_category_id = $('select[name="default_category_id"] option:selected').val();
 
 		$('select[name="default_category_id"]').html('');
-		$.each($(':input[name="categories[]"]', this), function(category) {
+		$(this).find($(':input[name="categories[]"]')).each(function() {
 			$('select[name="default_category_id"]').append('<option value="'+ $(this).val() +'">'+ unescape($(this).data('name')) +'</option>');
 		});
 
@@ -911,11 +911,11 @@
 	$('#images').on('click', 'button[name="move_up"], button[name="move_down"]', function(e) {
 		e.preventDefault();
 
-		let $row = this.closest('.image');
+		let $row = $(this).closest('.image');
 
-		if (this.is('button[name="move_up"]') && $row.prevAll().length > 0) {
+		if ($(this).is('button[name="move_up"]') && $row.prevAll().length > 0) {
 			$row.insertBefore($row.prev());
-		} else if (this.is('button[name="move_down"]') && $row.nextAll().length > 0) {
+		} else if ($(this).is('button[name="move_down"]') && $row.nextAll().length > 0) {
 			$row.insertAfter($row.next());
 		}
 
@@ -924,7 +924,7 @@
 
 	$('#images').on('click', 'button[name="remove"]', function(e) {
 		e.preventDefault();
-		this.closest('.image').remove();
+		$(this).closest('.image').remove();
 		refreshMainImage();
 	});
 
@@ -950,7 +950,7 @@
 	});
 
 	$('#images').on('change', 'input[type="file"]', function(e) {
-		let $img = this.closest('.image').find('img');
+		let $img = $(this).closest('.image').find('img');
 
 		if ($img.length && this.files && this.files[0]) {
 			let reader = new FileReader();
@@ -987,7 +987,7 @@
 	});
 
 	$('input[name="autogenerate_techdata"]').on('change', function() {
-		if (this.is(':checked')) {
+		if ($(this).is(':checked')) {
 			$('textarea[name^="technical_data"]').prop('disabled', true);
 		} else {
 			$('textarea[name^="technical_data"]').prop('disabled', false);
@@ -1114,7 +1114,7 @@
 	});
 
 	$('#prices').on('input', 'input[name^="prices"][name$="[percentage]"]', function() {
-		let $parent = this.closest('tr'),
+		let $parent = $(this).closest('tr'),
 			value = 0;
 
 		<?php foreach (currency::$currencies as $currency) { ?>
@@ -1133,7 +1133,7 @@
 	});
 
 	$('#prices').on('input', 'input[name^="prices"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]', function() {
-		let $parent = this.closest('tr');
+		let $parent = $(this).closest('tr');
 		let percentage = ($('input[name="prices[<?php echo settings::get('store_currency_code'); ?>]"]').val() - $(this).val()) / $('input[name="prices[<?php echo settings::get('store_currency_code'); ?>]"]').val() * 100;
 		percentage = percentage.toFixed(2);
 		$('input[name$="[percentage]"]', $parent).val(percentage);
@@ -1204,8 +1204,8 @@
 	});
 
 	$('#prices select[name$="[price_id]"]').on('change', function() {
-		let $row = this.closest('tr');
-		$('option:selected', $option = this);
+		let $row = $(this).closest('tr');
+		$('option:selected', $option = $(this));
 
 		if ($(this).val() != '') {
 			$('.price-valid-from', $row).text($option.data('valid-from'));
@@ -1217,8 +1217,8 @@
 	});
 
 	$('#prices').on('change', 'select[name$="[campaign_id]"]', function(e) {
-		let $row = this.closest('tr');
-		$('option:selected', $option = this);
+		let $row = $(this).closest('tr');
+		$('option:selected', $option = $(this));
 
 		if ($(this).val() != '') {
 			$('.date-valid-from', $row).text($option.data('valid-from'));
@@ -1232,7 +1232,7 @@
 	// Attributes
 	$('#attributes select[name="new_attribute[group_id]"]').on('change', function(e) {
 
-		let $newAttributeGroup = this,
+		let $newAttributeGroup = $(this),
 			$newAttributeValue = $('select[name="new_attribute[value_id]"]'),
 			$newCustomValue = $('input[name="new_attribute[custom_value]"]');
 
@@ -1284,9 +1284,11 @@
 
 	$('#attributes select[name="new_attribute[value_id]"]').on('change', function(e) {
 
-		let $newAttributeGroup = this,
-			$newAttributeValue = $('select[name="new_attribute[value_id]"]'),
-			$newCustomValue = $('input[name="new_attribute[custom_value]"]');
+		let $row = $(this).closest('tr');
+
+		let $newAttributeGroup = $row.find('select[name="new_attribute[group_id]"]'),
+			$newAttributeValue = $row.find('select[name="new_attribute[value_id]"]'),
+			$newCustomValue = $row.find('input[name="new_attribute[custom_value]"]');
 
 		$newCustomValue.prop({
 			disabled: !!$newAttributeValue.val(),
@@ -1297,9 +1299,11 @@
 	$('#attributes button[name="add"]').on('click', function(e) {
 		e.preventDefault();
 
-		let $newAttributeGroup = $('select[name="new_attribute[group_id]"]'),
-			$newAttributeValue = $('select[name="new_attribute[value_id]"]'),
-			$newCustomValue = $('input[name="new_attribute[custom_value]"]');
+		let $row = $(this).closest('tr');
+
+		let $newAttributeGroup = $row.find('select[name="new_attribute[group_id]"]'),
+			$newAttributeValue = $row.find('select[name="new_attribute[value_id]"]'),
+			$newCustomValue = $row.find('input[name="new_attribute[custom_value]"]');
 
 		if ($newAttributeGroup.val() == '') {
 			alert("<?php echo t('error_must_select_attribute_group', 'You must select an attribute group'); ?>")
@@ -1336,7 +1340,7 @@
 			}
 		});
 		if (exists) {
-			alert("<?php echo t('error_attribute_already_defined', '$(this).attribute is already defined'); ?>");
+			alert("<?php echo t('error_attribute_already_defined', 'This attribute is already defined'); ?>");
 			return;
 		}
 
@@ -1386,7 +1390,7 @@
 	// Quantity Unit
 
 	$('select[name="quantity_unit_id"]').on('change', function() {
-		if (this).find($('option:selected').data('decimals') === undefined) return;
+		if ($(this).find('option:selected').data('decimals') === undefined) return;
 
 		let decimals = $(this).find('option:selected').data('decimals');
 
@@ -1447,25 +1451,25 @@
 
 	$('#customizations').on('click', '.move-group-up, .move-group-down', function(e) {
 		e.preventDefault();
-		var $li = this.closest('li');
-		if (this.is('.move-group-up') && $li.prevAll().length > 0) {
+		var $li = $(this).closest('li');
+		if ($(this).is('.move-group-up') && $li.prevAll().length > 0) {
 			$li.insertBefore($li.prev());
-		} else if (this.is('.move-group-down') && $li.nextAll().length > 0) {
+		} else if ($(this).is('.move-group-down') && $li.nextAll().length > 0) {
 			$li.insertAfter($li.next());
 		}
 	});
 
 	$('#customizations').on('click', 'button[name="remove"]', function(e) {
 		e.preventDefault();
-		this.closest('tr').remove();
+		$(this).closest('tr').remove();
 	});
 
 	$('#customizations').on('click', 'button[name="move-up"], button[name="move-down"]', function(e) {
 		e.preventDefault();
-		var $row = this.closest('tr');
-		if (this.is('.move-up') && $row.prevAll().length > 0) {
+		var $row = $(this).closest('tr');
+		if ($(this).is('.move-up') && $row.prevAll().length > 0) {
 			$row.insertBefore($row.prev());
-		} else if (this.is('.move-down') && $row.nextAll().length > 0) {
+		} else if ($(this).is('.move-down') && $row.nextAll().length > 0) {
 			$row.insertAfter($row.next());
 		}
 	});
@@ -1530,9 +1534,9 @@
 	$('body').on('click', '.litebox button[name="add_predefined_customization"]', function(e) {
 		e.preventDefault();
 
-		var $groupElement = this.closest('fieldset').find('select[name="new_predefined_customization[group_id]"]'),
-			$valueElement = this.closest('fieldset').find('select[name="new_predefined_customization[value_id]"]'),
-			$customValueElement = this.closest('fieldset').find('input[name="new_predefined_customization[custom_value]"]');
+		var $groupElement = $(this).closest('fieldset').find('select[name="new_predefined_customization[group_id]"]'),
+			$valueElement = $(this).closest('fieldset').find('select[name="new_predefined_customization[value_id]"]'),
+			$customValueElement = $(this).closest('fieldset').find('input[name="new_predefined_customization[custom_value]"]');
 
 		if ($groupElement.val() == '') {
 			alert("<?php echo f::escape_js(t('error_must_select_attribute_group', 'You must select an attribute group')); ?>");
@@ -1642,7 +1646,7 @@
 	$('body').on('click', '.litebox button[name="add_user_input_option"]', function(e) {
 		e.preventDefault();
 
-		var $groupElement = this.closest('fieldset').find('select[name="new_user_input_customization[group_id]"]');
+		var $groupElement = $(this).closest('fieldset').find('select[name="new_user_input_customization[group_id]"]');
 
 		if ($groupElement.val() == '') {
 			alert("<?php echo f::escape_js(t('error_must_select_attribute_group', 'You must select an attribute group')); ?>");
@@ -1696,29 +1700,29 @@
 	<?php } ?>
 
 	$('#stock-options').on('input', 'input[name$="[quantity]"]', function() {
-		var $adjustment_element = this.closest('tr').find('input[name$="[quantity_adjustment]"]');
+		var $adjustment_element = $(this).closest('tr').find('input[name$="[quantity_adjustment]"]');
 		$adjustment_element.val(parseFloat($(this).val() || 0) - parseFloat($(this).data('quantity') || 0));
 	});
 
 	$('#stock-options').on('input', 'input[name$="[quantity_adjustment]"]', function() {
-		var $quantity_element = this.closest('tr').find('input[name$="[quantity]"]');
+		var $quantity_element = $(this).closest('tr').find('input[name$="[quantity]"]');
 		$quantity_element.val(parseFloat($quantity_element.data('quantity') || 0) + parseFloat($(this).val() || 0));
 	});
 
 	$('#stock-options button[name="transfer"]').on('click', function() {
-		var $quantity_field = this.closest('tr').find('input[name$="[quantity_adjustment]"]'),
-			$backordered_field = this.closest('tr').find('input[name$="[backordered]"]');
+		var $quantity_field = $(this).closest('tr').find('input[name$="[quantity_adjustment]"]'),
+			$backordered_field = $(this).closest('tr').find('input[name$="[backordered]"]');
 		$quantity_field.val(parseFloat($quantity_field.val() || 0) + parseFloat($backordered_field.val() || 0)).trigger('input');
 		$backordered_field.val(0);
 	});
 
 	$('#stock-options').on('click', '.move-up, .move-down', function(e) {
 		e.preventDefault();
-		var $row = this.closest('tr');
+		var $row = $(this).closest('tr');
 
-		if (this.is('.move-up') && $row.prevAll().length > 1) {
+		if ($(this).is('.move-up') && $row.prevAll().length > 1) {
 			$row.insertBefore($row.prev());
-		} else if (this.is('.move-down') && $row.nextAll().length > 0) {
+		} else if ($(this).is('.move-down') && $row.nextAll().length > 0) {
 			$row.insertAfter($row.next());
 		}
 	});

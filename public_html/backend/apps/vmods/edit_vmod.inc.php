@@ -795,8 +795,8 @@ textarea.warning {
 
 		if (!confirm("<?php echo t('text_are_you_sure', 'Are you sure?'); ?>")) return false;
 
-		let $tab = this.closest('.nav-link'),
-			$tab_pane = $(this.closest('.nav-link').attr('href'));
+		let $tab = $(this).closest('.nav-link'),
+			$tab_pane = $tab.attr('href');
 
 		if ($tab.prev('[data-toggle="tab"]').length) {
 			$tab.prev('[data-toggle="tab"]').trigger('click');
@@ -864,13 +864,13 @@ textarea.warning {
 	$('textarea.form-code').trigger('input');
 
 	$('.tab-content').on('input', ':input[name^="files"][name$="[name]"]', function() {
-		let $tab_pane = this.closest('.tab-content'),
-			tab_index = this.closest('.tab-content').attr('id').replace(/^tab-/, ''),
+		let $tab_pane = $(this).closest('.tab-content'),
+			tab_index = $tab_pane.attr('id').replace(/^tab-/, ''),
 			tab_name = $('input[name$="[name]"]', $tab_pane).val();
 
 		$('a[href="#tab-'+ tab_index +'"] .file').text(tab_name);
 
-		let file_pattern = this.closest('.grid').find(':input[name^="files"][name$="[name]"]').val(),
+		let file_pattern = $(this).closest('.grid').find(':input[name^="files"][name$="[name]"]').val(),
 			url = '<?php echo document::ilink(__APP__.'/sources', ['pattern' => 'thepattern']); ?>'.replace(/thepattern/, file_pattern);
 
 		$.get(url, function(result) {
@@ -900,8 +900,8 @@ textarea.warning {
 	$('#files').on('click', '.add', function(e) {
 		e.preventDefault();
 
-		let $operations = this.closest('.tab-content').find('.operations'),
-			tab_index = this.closest('.tab-content').data('tab-index');
+		let $operations = $(this).closest('.tab-content').find('.operations'),
+			tab_index = $(this).closest('.tab-content').data('tab-index');
 
 		let __index__ = $(':input[name$="[find][content]"]').length || 0;
 
@@ -918,12 +918,12 @@ textarea.warning {
 	$('#files').on('click', '.move-up, .move-down', function(e) {
 		e.preventDefault();
 
-		let $row = this.closest('.operation'),
-			$operations = this.closest('.operations');
+		let $row = $(this).closest('.operation'),
+			$operations = $(this).closest('.operations');
 
-		if (this.is('.move-up') && $row.prevAll().length > 0) {
+		if ($(this).is('.move-up') && $row.prevAll().length > 0) {
 			$row.insertBefore($row.prev());
-		} else if (this.is('.move-down') && $row.nextAll().length > 0) {
+		} else if ($(this).is('.move-down') && $row.nextAll().length > 0) {
 			$row.insertAfter($row.next());
 		}
 
@@ -933,11 +933,11 @@ textarea.warning {
 	$('#files').on('click', '.remove', function(e) {
 		e.preventDefault();
 
-		let $operations = this.closest('.operations');
+		let $operations = $(this).closest('.operations');
 
 		if (!confirm("<?php echo t('text_are_you_sure', 'Are you sure?'); ?>")) return;
 
-		this.closest('.operation').remove();
+		$(this).closest('.operation').remove();
 		reindex_operations($operations);
 
 		$(':input[name$="[find][content]"]', $operations).trigger('input');
@@ -946,8 +946,8 @@ textarea.warning {
 	// Validate operation
 	$('#files').on('input', ':input[name*="[find]"]', function() {
 
-		let $tab = this.closest('.tab-content'),
-			$operation = this.closest('.operation'),
+		let $tab = $(this).closest('.tab-content'),
+			$operation = $(this).closest('.operation'),
 			method = $(':input[name$="[method]"]', $operation).val(),
 			find = $(':input[name$="[find][content]"]', $operation).val(),
 			type = $(':input[name$="[type]"]:checked', $operation).val(),
@@ -1025,7 +1025,7 @@ textarea.warning {
 			$.each($('.script', $tab), function() {
 
 				let regex = new RegExp(find, regex_flags),
-					source = $('.form-code', this).text(),
+					source = $(this).find('.form-code').text(),
 					matches = (source.match(regex) || []).length;
 
 				if (!matches) {
@@ -1099,11 +1099,11 @@ textarea.warning {
 	$('#aliases').on('click', 'button[name$="[move_up]"], button[name$="[move_down]"]', function(e) {
 		e.preventDefault();
 
-		let $row = this.closest('.alias');
+		let $row = $(this).closest('.alias');
 
-		if (this.is('button[name$="[move_up]"]') && $row.prevAll().length > 0) {
+		if ($(this).is('button[name$="[move_up]"]') && $row.prevAll().length > 0) {
 			$row.insertBefore($row.prev());
-		} else if (this.is('button[name$="[move_down]"]') && $row.nextAll().length > 0) {
+		} else if ($(this).is('button[name$="[move_down]"]') && $row.nextAll().length > 0) {
 			$row.insertAfter($row.next());
 		}
 	});
@@ -1184,11 +1184,11 @@ textarea.warning {
 	$('#settings').on('click', 'button[name$="[move_up]"], button[name$="[move_down]"]', function(e) {
 		e.preventDefault();
 
-		let $row = this.closest('.setting');
+		let $row = $(this).closest('.setting');
 
-		if (this.is('button[name$="[move_up]"]') && $row.prevAll().length > 0) {
+		if ($(this).is('button[name$="[move_up]"]') && $row.prevAll().length > 0) {
 			$row.insertBefore($row.prev());
-		} else if (this.is('button[name$="[move_down]"]') && $row.nextAll().length > 0) {
+		} else if ($(this).is('button[name$="[move_down]"]') && $row.nextAll().length > 0) {
 			$row.insertAfter($row.next());
 		}
 	});
@@ -1197,7 +1197,7 @@ textarea.warning {
 		e.preventDefault();
 
 		if (!confirm("<?php echo t('text_are_you_sure', 'Are you sure?'); ?>")) return;
-		this.closest('.setting').remove();
+		$(this).closest('.setting').remove();
 	});
 
 	// Upgrade Patches

@@ -612,7 +612,7 @@
 	// Init (Shipping address)
 
 	$('input[name="different_shipping_address"]').on('change', function(e) {
-		if (this.checked == true) {
+		if ($(this).is(':checked')) {
 			$('fieldset.shipping-address').prop('disabled', false).slideDown('fast');
 		} else {
 			$('fieldset.shipping-address').prop('disabled', true).slideUp('fast');
@@ -776,7 +776,7 @@
 	});
 
 	$('input[name="different_shipping_address"]').on('change', function(e) {
-		if (this.checked == true) {
+		if ($(this).is(':checked')) {
 			$('#shipping-address').slideDown('fast');
 		} else {
 			$('#shipping-address').slideUp('fast');

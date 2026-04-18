@@ -172,7 +172,7 @@
 	$('form[name="form_add_product"] button[name="ok"]').off('click').on('click', function(e) {
 		e.preventDefault();
 
-		let $form = this.closest('form'),
+		let $form = $(this).closest('form'),
 			callback = $.litebox.current().$currentTarget.data('callback');
 			item = {
 				id: '',

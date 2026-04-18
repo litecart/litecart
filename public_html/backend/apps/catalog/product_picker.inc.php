@@ -101,7 +101,7 @@
 
 	$('#modal-product-picker tbody').on('click', 'td', function() {
 
-		let $row = this.closest('tr'),
+		let $row = $(this).closest('tr'),
 			callback = $.litebox.current().$currentTarget.data('callback'),
 			expand = <?php echo (isset($_GET['collect']) && array_intersect(['price', 'stock_option'], $_GET['collect'])) ? 'true' : 'false'; ?>,
 			product = $row.data();

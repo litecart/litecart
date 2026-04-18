@@ -332,6 +332,15 @@
 		<div class="card-body">
 			<?php echo f::form_begin('import_form', 'post', null, true, 'style="max-width: 600px;"'); ?>
 
+				<label class="form-group">
+					<div class="form-label"><?php echo t('title_url', 'URL'); ?></div>
+					<?php echo f::form_input_url('url', true, 'placeholder="https://www.example.tld/data.csv"'); ?>
+				</label>
+
+				<div class="divider" style="margin-top: -1.5em;">
+					<span><?php echo t('title_or', 'or'); ?></span>
+				</div>
+
 				<div class="row">
 					<label class="form-group col-sm-8">
 						<div class="form-label"><?php echo t('title_file', 'File'); ?></div>
@@ -343,13 +352,6 @@
 						<?php echo f::form_select_encoding('charset', !empty($_POST['charset']) ? true : 'UTF-8'); ?>
 					</label>
 				</div>
-
-				<label class="form-group">
-					<div class="divider" style="margin-top: -1.5em;">
-						<span><?php echo t('title_or', 'or'); ?></span>
-					</div>
-					<?php echo f::form_input_url('url', true, 'placeholder="https://www.example.tld/data.csv"'); ?>
-				</label>
 
 				<label class="form-group">
 					<div class="form-label"><?php echo t('title_target', 'Target'); ?></div>
@@ -410,7 +412,7 @@
 				</div>
 
 				<div class="text-center">
-					<?php echo f::form_button('load', t('title_next', 'Next') . ' ' . f::draw_fonticon('icon-chevron-right'), 'submit', 'class="btn btn-default btn-lg"'); ?>
+					<?php echo f::form_button('load', t('title_next', 'Next') . ' ' . f::draw_fonticon('icon-chevron-right'), 'submit', 'class="btn btn-default btn-lg btn-block"'); ?>
 				</div>
 
 			<?php echo f::form_end(); ?>
