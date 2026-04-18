@@ -239,7 +239,7 @@
 
 	$('body').on('click', '#transaction-contents .remove', function(e) {
 		e.preventDefault();
-		this.closest('tr').remove();
+		$(this).closest('tr').remove();
 	});
 
 	$('table tfoot button[name="add"]').on('click', function(e) {

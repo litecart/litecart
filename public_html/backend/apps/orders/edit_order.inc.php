@@ -1481,7 +1481,7 @@
 
 	$('select[name="order_status_id"]').on('change', function(e) {
 		let color = $(this).find('option:selected').data('color');
-		this.css('box-shadow', color ? '0 0 0px 2px'+ color +'cc' : '');
+		$(this).css('box-shadow', color ? '0 0 0px 2px'+ color +'cc' : '');
 	}).trigger('change');
 
 	$('select[name="currency_code"]').on('change', function(e) {
@@ -1673,7 +1673,7 @@
 	// Comments
 
 	$('#box-comments').on('input', 'textarea[name^="comments"][name$="[text]"]', function() {
-		this.height('auto').height('calc(' + this.prop('scrollHeight') + 'px + 1em) ');
+		$(this).css('height', 'auto').css('height', 'calc(' + this.scrollHeight + 'px + 1em) ');
 	}).trigger('input');
 
 
@@ -1700,21 +1700,21 @@
 			.replace(/__index__/g, 'new_' + __index__)
 		);
 
-		this.before($output);
-		this.closest('#box-comments .bubbles textarea:last-child').trigger('focus');
+		$(this).before($output);
+		$(this).closest('#box-comments .bubbles textarea:last-child').trigger('focus');
 	});
 
 	$('#box-comments').on('click', ':input[name$="[hidden]"]', function(e) {
-		this.closest('.bubble').find(':input[name$="[notify]"]').prop('checked', false).trigger('change');
+		$(this).closest('.bubble').find(':input[name$="[notify]"]').prop('checked', false).trigger('change');
 	});
 
 	$('#box-comments').on('click', ':input[name$="[notify]"]', function(e) {
-		this.closest('.bubble').find(':input[name$="[hidden]"]').prop('checked', false).trigger('change');
+		$(this).closest('.bubble').find(':input[name$="[hidden]"]').prop('checked', false).trigger('change');
 	});
 
 	$('#box-comments').on('click', '.remove', function(e) {
 		e.preventDefault();
-		this.closest('.bubble').remove();
+		$(this).closest('.bubble').remove();
 	});
 
 	$('#box-comments .bubbles').on('change', 'input[name^="comments"][name$="[hidden]"]', function(e) {

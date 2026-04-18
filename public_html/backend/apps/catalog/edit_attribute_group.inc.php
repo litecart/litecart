@@ -186,11 +186,11 @@
 			.replace(/__index__/g, 'new_' + __index__)
 		);
 
-		this.closest('table').find('tbody').append($output);
+		$(this).closest('table').find('tbody').append($output);
 	});
 
 	$('form[name="attribute_form"]').on('click', '.remove', function(e) {
 		e.preventDefault();
-		this.closest('tr').remove();
+		$(this).closest('tr').remove();
 	});
 </script>

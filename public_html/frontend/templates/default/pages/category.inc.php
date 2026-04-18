@@ -270,7 +270,7 @@
 	$('#box-category').on('click', '#filter-tokens .remove', function(e) {
 		e.preventDefault();
 
-		let $token = this.closest('.token');
+		let $token = $(this).closest('.token');
 
 		switch ($(':input[name="'+ $token.data('name') +'"]').attr('type')) {
 

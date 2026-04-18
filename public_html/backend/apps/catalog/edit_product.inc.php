@@ -1109,12 +1109,12 @@
 
 	$('#prices').on('focus', 'input[name^="prices"]', function(e) {
 		if ($(this).attr('name').match(/\[[A-Z]{3}\]$/)) {
-			this.closest('.dropdown').addClass('open');
+			$(this).closest('.dropdown').addClass('open');
 		}
 	});
 
 	$('#prices').on('blur', '.dropdown', function(e) {
-		this.removeClass('open');
+		$(this).removeClass('open');
 	});
 
 	$('#prices').on('input', 'input[name^="prices"][name$="[percentage]"]', function() {
@@ -1156,7 +1156,7 @@
 
 	$('#prices').on('click', '.remove', function(e) {
 		e.preventDefault();
-		this.closest('tr').remove();
+		$(this).closest('tr').remove();
 	});
 
 	$('#prices').on('click', '.add', function(e) {
@@ -1388,7 +1388,7 @@
 	$('#attributes').on('click', 'button[name="remove"]', function(e) {
 		e.preventDefault();
 		if (!confirm("<?php echo t('text_are_you_sure', 'Are you sure?'); ?>")) return;
-		this.closest('tr').remove();
+		$(this).closest('tr').remove();
 	});
 
 	// Quantity Unit
@@ -1450,7 +1450,7 @@
 
 	$('#customizations').on('click', '.remove-group', function(e) {
 		e.preventDefault();
-		this.closest('li').remove();
+		$(this).closest('li').remove();
 	});
 
 	$('#customizations').on('click', '.move-group-up, .move-group-down', function(e) {
@@ -1699,7 +1699,7 @@
 
 	<?php if (currency::$currencies > 1) { ?>
 	$('#stock-options').on('focusin', 'input[name^="stock_options"][name*="[price_adjustment]"]', function() {
-		this.closest('.dropdown').addClass('open');
+		$(this).closest('.dropdown').addClass('open');
 	});
 	<?php } ?>
 
@@ -1733,10 +1733,10 @@
 
 	$('#stock-options').on('click', '.remove', function(e) {
 		e.preventDefault();
-		this.closest('tr').remove();
+		$(this).closest('tr').remove();
 
 		var total = 0;
-		this.closest('tbody').find('input[name$="[quantity]"]').each(function() {
+		$(this).closest('tbody').find('input[name$="[quantity]"]').each(function() {
 			total += parseFloat($(this).val() || 0);
 		});
 

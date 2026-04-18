@@ -499,7 +499,7 @@
 
 	$('#table-references').on('click', '.remove', function(e) {
 		e.preventDefault();
-		this.closest('tr').remove();
+		$(this).closest('tr').remove();
 	});
 
 	$('#table-references').on('click', '.add', function(e) {

@@ -787,10 +787,10 @@ textarea.warning {
 				.replace(/__index__/g, 'new_'+ __index__)
 		).hide();
 
-		this.before($tab);
+		$(this).before($tab);
 		$('#files').append($tab_pane);
 
-		this.prev().trigger('click');
+		$(this).prev().trigger('click');
 	});
 
 	$('.tabs').on('click', '.remove', function(e) {
@@ -809,7 +809,7 @@ textarea.warning {
 		}
 
 		$tab_pane.remove();
-		this.closest('.nav-link').remove();
+		$tab.remove();
 	});
 
 	// Operations
@@ -825,7 +825,7 @@ textarea.warning {
 		e.preventDefault();
 		let match_type = $(this).val();
 
-		this.closest('.operation').find(':input[name$="[content]"]').each(function(i, $field){
+		$(this).closest('.operation').find(':input[name$="[content]"]').each(function(i, $field){
 			switch (match_type) {
 
 				case 'inline':
@@ -841,7 +841,7 @@ textarea.warning {
 			}
 		});
 
-		this.closest('.operation').find(':input[name$="[find][content]"]').trigger('input');
+		$(this).closest('.operation').find(':input[name$="[find][content]"]').trigger('input');
 	});
 
 	$('#files').on('change', ':input[name$="[method]"]', function(e) {
@@ -850,9 +850,9 @@ textarea.warning {
 		let method = $(this).val();
 
 		if ($.inArray(method, ['top', 'bottom', 'all']) != -1) {
-			this.closest('.operation').find(':input[name*="[find]"]').prop('disabled', true);
+			$(this).closest('.operation').find(':input[name*="[find]"]').prop('disabled', true);
 		} else {
-			this.closest('.operation').find(':input[name*="[find]"]').prop('disabled', false);
+			$(this).closest('.operation').find(':input[name*="[find]"]').prop('disabled', false);
 		}
 	});
 
@@ -860,8 +860,8 @@ textarea.warning {
 
 	// Auto expand textareas
 	$('body').on('input', 'textarea.form-code', function() {
-		this.css('height', '');
-		this.css('height', Math.min(this.scrollHeight + 10, 250) + 'px');
+		$(this).css('height', '');
+		$(this).css('height', Math.min(this.scrollHeight + 10, 250) + 'px');
 	});
 
 	$('textarea.form-code').trigger('input');
@@ -1115,7 +1115,7 @@ textarea.warning {
 		e.preventDefault();
 
 		if (!confirm("<?php echo t('text_are_you_sure', 'Are you sure?'); ?>")) return;
-		this.closest('.alias').remove();
+		$(this).closest('.alias').remove();
 	});
 
 	// Settings

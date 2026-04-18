@@ -196,7 +196,7 @@
 
 <script>
 	$('input[name="category_id"]').on('change', function(e) {
-		this.closest('form').submit();
+		$(this).closest('form').submit();
 	});
 
 	$('.data-table :checkbox').on('change', function() {

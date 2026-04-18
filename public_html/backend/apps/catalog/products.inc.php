@@ -383,7 +383,7 @@ table .icon-star-o:hover {
 
 <script>
 	$('input[name="category_id"]').on('change', function(e) {
-		this.closest('form').submit();
+		$(this).closest('form').submit();
 	});
 
 	$('.data-table :checkbox').on('change', function() {
@@ -392,7 +392,7 @@ table .icon-star-o:hover {
 
 	$('form[name="search_form"]').on('input change', function(e) {
 		e.preventDefault();
-		$.get('', this.serialize(), function(response) {
+		$.get('', $(this).serialize(), function(response) {
 			$response = $(response).html();
 			$('.data-table tbody').html($('.data-table tbody', $response).html());
 			$('.data-table tfoot').html($('.data-table tfoot', $response).html());

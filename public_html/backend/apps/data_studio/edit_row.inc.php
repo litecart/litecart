@@ -210,8 +210,8 @@
 
 	// Textarea auto-resize
 	$('textarea').on('input', function(e) {
-		this.style.height = 'auto';
-		this.style.height = (this.scrollHeight + 5) + 'px';
+		$(this).css('height', 'auto');
+		$(this).css('height', (this.scrollHeight + 5) + 'px');
 	});
 
 	$('textarea').trigger('input'); // Initial resize

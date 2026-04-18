@@ -272,7 +272,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 		$.ajax({
 			type: 'post',
 			url: '<?php echo document::ilink('ajax/product_options_stock.json'); ?>',
-			data: this.closest('form').serialize(),
+			data: $(this).closest('form').serialize(),
 			dataType: 'json',
 			cache: false,
 			success: function(data) {

@@ -21,7 +21,7 @@
 			throw new Exception('The vmod does not exist');
 		}
 
-		$vmod = vmod::parse($file);
+		$vmod = vmod::parse_xml(null, $file);
 
 	} catch (Exception $e) {
 		notices::add('errors', $e->getMessage());

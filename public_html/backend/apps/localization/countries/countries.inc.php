@@ -131,7 +131,7 @@
 	}).first().trigger('change');
 
 	$('input[name="query"]').on('input', function() {
-		var query = this.value.toLowerCase();
+		var query = $(this).val().toLowerCase();
 		$('.data-table tbody tr').each(function() {
 			$(this).toggle(!query || $(this).text().toLowerCase().indexOf(query) > -1);
 		});

@@ -195,7 +195,7 @@
 		$.ajax({
 			url: '<?php echo document::ilink('ajax/get_address.json'); ?>?trigger='+$(this).attr('name'),
 			type: 'post',
-			data: this.closest('form').serialize(),
+			data: $(this).closest('form').serialize(),
 			cache: false,
 			async: true,
 			dataType: 'json',

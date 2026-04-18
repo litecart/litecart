@@ -270,12 +270,12 @@
 
 	$('#campaigns').on('focus', 'input[name^="campaigns"]', function(e) {
 		if ($(this).attr('name').match(/\[[A-Z]{3}\]$/)) {
-			this.closest('.dropdown').addClass('open');
+			$(this).closest('.dropdown').addClass('open');
 		}
 	});
 
 	$('#campaigns').on('blur', '.dropdown', function(e) {
-		this.removeClass('open');
+		$(this).removeClass('open');
 	});
 
 	$('#campaigns').on('input', 'input[name$="['+store_currency_code+']"]', function() {
@@ -324,7 +324,7 @@
 	$('#campaigns').on('click', 'button[name="remove"]', function(e) {
 		e.preventDefault();
 		if (confirm('<?php echo t('text_are_you_sure', 'Are you sure?'); ?>')) {
-			this.closest('tr').remove();
+			$(this).closest('tr').remove();
 		}
 	});
 
