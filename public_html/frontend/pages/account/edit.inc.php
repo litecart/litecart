@@ -73,7 +73,7 @@
 				}
 			}
 
-			if (isset($_POST[$field])) {
+			if (isset($_POST['email'])) {
 				$customer->data['email'] = $_POST['email'];
 			}
 
