@@ -221,7 +221,7 @@
 	// Toggles
 
 	$('#box-customer-details input[name="customer[different_shipping_address]"]').on('change', function(e) {
-		if (this.checked == true) {
+		if ($(this).is(':checked') == true) {
 			$('#box-customer-details .shipping-address fieldset').prop('disabled', false).slideDown('fast');
 		} else {
 			$('#box-customer-details .shipping-address fieldset').prop('disabled', true).slideUp('fast');
@@ -229,7 +229,7 @@
 	});
 
 	$('#box-customer-details input[name="sign_up"]').on('change', function() {
-		if (this.checked == true) {
+		if ($(this).is(':checked') == true) {
 			$('#box-customer-details .account fieldset').prop('disabled', false).slideDown('fast');
 		} else {
 			$('#box-customer-details .account fieldset').prop('disabled', true).slideUp('fast');
@@ -284,20 +284,20 @@
 
 	$('#box-customer-details select[name="customer[country_code]"]').on('input', function(e) {
 
-		if ($('option:selected', this).data('tax-id-format')) {
-			$('input[name="customer[tax_id]"]').attr('pattern', $('option:selected', this).data('tax-id-format'));
+		if ($(this).find('option:selected').data('tax-id-format')) {
+			$('input[name="customer[tax_id]"]').attr('pattern', $(this).find('option:selected').data('tax-id-format'));
 		} else {
 			$('input[name="customer[tax_id]"]').removeAttr('pattern');
 		}
 
-		if ($('option:selected', this).data('postcode-format')) {
-			$('input[name="customer[postcode]"]').attr('pattern', $('option:selected', this).data('postcode-format'));
+		if ($(this).find('option:selected').data('postcode-format')) {
+			$('input[name="customer[postcode]"]').attr('pattern', $(this).find('option:selected').data('postcode-format'));
 		} else {
 			$('input[name="customer[postcode]"]').removeAttr('pattern');
 		}
 
-		if ($('option:selected', this).data('phone-code')) {
-			$('input[name="customer[phone]"]').attr('placeholder', '+' + $('option:selected', this).data('phone-code'));
+		if ($(this).find('option:selected').data('phone-code')) {
+			$('input[name="customer[phone]"]').attr('placeholder', '+' + $(this).find('option:selected').data('phone-code'));
 		} else {
 			$('input[name="customer[phone]"]').removeAttr('placeholder');
 		}
@@ -327,14 +327,14 @@
 
 	$('#box-customer-details select[name="shipping_address[country_code]"]').on('input', function(e) {
 
-		if ($('option:selected', this).data('postcode-format')) {
-			$('input[name="shipping_address[postcode]"]').attr('pattern', $('option:selected', this).data('postcode-format'));
+		if ($(this).find('option:selected').data('postcode-format')) {
+			$('input[name="shipping_address[postcode]"]').attr('pattern', $(this).find('option:selected').data('postcode-format'));
 		} else {
 			$('input[name="shipping_address[postcode]"]').removeAttr('pattern');
 		}
 
-		if ($('option:selected', this).data('phone-code')) {
-			$('input[name="shipping_address[phone]"]').attr('placeholder', '+' + $('option:selected', this).data('phone-code'));
+		if ($(this).find('option:selected').data('phone-code')) {
+			$('input[name="shipping_address[phone]"]').attr('placeholder', '+' + $(this).find('option:selected').data('phone-code'));
 		} else {
 			$('input[name="shipping_address[phone]"]').removeAttr('placeholder');
 		}
@@ -378,7 +378,7 @@
 
 	// Prevent losing form focus when clicking the label of a checkbox
 	$('#box-customer-details .form-check').on('click', function(e) {
-		$(':checkbox', this).trigger('focusin').trigger('focus');
+		$(this).find(':checkbox').trigger('focusin').trigger('focus');
 	});
 
 	// Auto-Save
@@ -387,7 +387,7 @@
 
 	$('#box-customer-details').on('focusout', function() {
 		timerSubmitCustomer = setTimeout(function() {
-			if (this.not(':focus')) {
+			if ($(this).not(':focus')) {
 				if ($('#box-customer-details').prop('changed')) {
 
 					console.log('Autosaving customer details');

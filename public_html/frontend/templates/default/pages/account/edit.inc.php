@@ -221,20 +221,20 @@
 
 	$('select[name="country_code"]').on('change', function(e) {
 
-		if ($('option:selected', this).data('tax-id-format')) {
-			$('input[name="tax_id"]').attr('pattern', $('option:selected', this).data('tax-id-format'));
+		if ($(this).find('option:selected').data('tax-id-format')) {
+			$('input[name="tax_id"]').attr('pattern', $(this).find('option:selected').data('tax-id-format'));
 		} else {
 			$('input[name="tax_id"]').removeAttr('pattern');
 		}
 
-		if ($('option:selected', this).data('postcode-format')) {
-			$('input[name="postcode"]').attr('pattern', $('option:selected', this).data('postcode-format'));
+		if ($(this).find('option:selected').data('postcode-format')) {
+			$('input[name="postcode"]').attr('pattern', $(this).find('option:selected').data('postcode-format'));
 		} else {
 			$('input[name="postcode"]').removeAttr('pattern');
 		}
 
-		if ($('option:selected', this).data('phone-code')) {
-			$('input[name="phone"]').attr('placeholder', '+' + $('option:selected', this).data('phone-code'));
+		if ($(this).find('option:selected').data('phone-code')) {
+			$('input[name="phone"]').attr('placeholder', '+' + $(this).find('option:selected').data('phone-code'));
 		} else {
 			$('input[name="phone"]').removeAttr('placeholder');
 		}

@@ -43,7 +43,7 @@
 <script>
 	$('form[name="newsletter_subscribe_form"]').submit(function(e){
 		e.preventDefault();
-		let url = '<?php echo document::ilink('newsletter'); ?>?email='+ $('input[name="email"]', this).val();
+		let url = '<?php echo document::ilink(this).find('newsletter'); ?>?email='+ $('input[name="email"]').val();
 		$.litebox(url +' #box-newsletter-subscribe', {
 			"seamless": true,
 			"width": "640px"
