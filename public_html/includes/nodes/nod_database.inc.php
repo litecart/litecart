@@ -156,13 +156,16 @@
 
 			if ($result === false) {
 
-				$ref = uniqid('db_');
+				$reference = uniqid('db_');
 
-				if (in_array('storage', stream_get_wrappers())) {
-					error_log('['. date('Y-m-d H:i:s e') .']['. $ref .'] MySQL Error: '. mysqli_errno(self::$links[$link]) .' - '. mysqli_error(self::$links[$link]) .' | Query: '. $sql . PHP_EOL, 3, 'storage://logs/errors.log');
+				if (!defined('DEBUG') || !DEBUG) {
+					error_log('['. date('Y-m-d H:i:s e') .']['. $reference .'] Failing Query: '. $sql . PHP_EOL, 3, 'storage://logs/errors.log');
 				}
 
-				throw new Error('MySQL Error: ' . mysqli_errno(self::$links[$link]) .' - '. preg_replace('#\s+#', ' ', mysqli_error(self::$links[$link])) .' (Ref: '. $ref .')');
+				throw new Error(implode(PHP_EOL, [
+					"MySQL Error: ". mysqli_errno(self::$links[$link]) .': '. preg_replace('#\s+#', ' ', mysqli_error(self::$links[$link])),
+					defined('DEBUG') && DEBUG ? "Query: ". $sql : "Reference: $reference",
+				]));
 			}
 
 			if (($duration = microtime(true) - $timestamp) > 5 && in_array('storage', stream_get_wrappers())) {
@@ -188,11 +191,17 @@
 			$timestamp = microtime(true);
 
 			if (mysqli_multi_query(self::$links[$link], $sql) === false) {
-				$ref = uniqid('db_');
-				if (in_array('storage', stream_get_wrappers())) {
-					error_log('['. date('Y-m-d H:i:s e') .']['. $ref .'] MySQL Error: '. mysqli_errno(self::$links[$link]) .' - '. mysqli_error(self::$links[$link]) .' | Query: '. $sql . PHP_EOL, 3, 'storage://logs/errors.log');
+
+				$reference = uniqid('db_');
+
+				if (!defined('DEBUG') || !DEBUG) {
+					error_log('['. date('Y-m-d H:i:s e') .']['. $reference .'] Failing Query: '. $sql . PHP_EOL, 3, 'storage://logs/errors.log');
 				}
-				throw new Error('MySQL Error: ' . mysqli_errno(self::$links[$link]) .' - '. preg_replace('#\r#', ' ', mysqli_error(self::$links[$link])) .' (Ref: '. $ref .')');
+
+				throw new Error(implode(PHP_EOL, [
+					"MySQL Error: ". mysqli_errno(self::$links[$link]) .': '. preg_replace('#\s+#', ' ', mysqli_error(self::$links[$link])),
+					defined('DEBUG') && DEBUG ? "Query: ". $sql : "Reference: $reference",
+				]));
 			}
 
 			$results = [];
@@ -341,6 +350,9 @@
 					case (isset($field['Comment']) && preg_match('#TYPE:JSON$#i', $field['Comment'])): // Requires "show full columns" data
 					case (isset($field['Comment']) && preg_match('#TYPE:ARRAY$#i', $field['Comment'])): // Requires "show full columns" data
 						return [];
+
+					default:
+						return null;
 				}
 			}
 
@@ -448,13 +460,13 @@
 
 			foreach ($args as $nth => $params) {
 
-				if (!is_array($params) || array_is_list($params)) {
-					trigger_error('Invalid bind arguments format (expecting associative array)', E_USER_WARNING);
-					continue;
+				if (is_array($params)) {
+					// Flatten the parameters
+					$flattened = f::array_flatten($params, '.');
+				} else {
+					// Assign numeric placeholder :0 :1 for a non-array argument.
+					$flattened = ["$nth" => $params];
 				}
-
-				// Flatten the parameters
-				$flattened = f::array_flatten($params, '.');
 
 				// Step through each character in the query
 				for ($i = 0; $i < strlen($sql); $i++) {
@@ -584,17 +596,24 @@
 
 			$timestamp = microtime(true);
 
+			if (!isset(database::$links[$this->_link])) {
+				database::connect($this->_link);
+			}
+
 			$this->_result = mysqli_query(database::$links[$this->_link], $this->_statement);
 
 			if ($this->_result === false) {
 
-				$ref = uniqid('db_');
+				$reference = uniqid('db_');
 
-				if (in_array('storage', stream_get_wrappers())) {
-					error_log('['. date('Y-m-d H:i:s e') .']['. $ref .'] MySQL Error: '. mysqli_errno(database::$links[$link]) .' - '. mysqli_error(database::$links[$link]) .' | Query: '. $sql . PHP_EOL, 3, 'storage://logs/errors.log');
+				if (!defined('DEBUG') || !DEBUG) {
+					error_log('['. date('Y-m-d H:i:s e') .']['. $reference .'] Failing Query: '. $sql . PHP_EOL, 3, 'storage://logs/errors.log');
 				}
 
-				throw new Error('MySQL Error: ' . mysqli_errno(database::$links[$link]) .' - '. preg_replace('#\s+#', ' ', mysqli_error(database::$links[$link])) .' (ref: '. $ref .')');
+				throw new Error(implode(PHP_EOL, [
+					"MySQL Error: ". mysqli_errno(database::$links[$this->_link]) .': '. preg_replace('#\s+#', ' ', mysqli_error(database::$links[$this->_link])),
+					defined('DEBUG') && DEBUG ? "Query: ". $this->_statement : "Reference: $reference",
+				]));
 			}
 
 			if (($duration = microtime(true) - $timestamp) > 5 && in_array('storage', stream_get_wrappers())) {
