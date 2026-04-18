@@ -56,6 +56,8 @@
 			throw new Exception('Expected 2 pages, got '. $num_pages);
 		}
 
+		return true;
+
 	} catch (Exception $e) {
 
 		echo ' [FAILED]' . PHP_EOL . 'Error: '. $e->getMessage();
