@@ -228,14 +228,58 @@
 				'expires_at' => strtotime('+12 months'),
 			]);
 
+			// Headless requests
+			if (!empty($_SERVER['HTTP_ACCEPT']) && preg_match('#^application/json#', $_SERVER['HTTP_ACCEPT'])) {
+				header('Content-Type: application/json;charset='. mb_http_output());
+				echo f::format_json(['success' => true]);
+				exit;
+			}
+
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			reload();
 			exit;
 
 		} catch (Exception $e) {
+
+			http_response_code(400);
+
+			// Headless requests
+			if (!empty($_SERVER['HTTP_ACCEPT']) && preg_match('#^application/json#', $_SERVER['HTTP_ACCEPT'])) {
+				header('Content-Type: application/json;charset='. mb_http_output());
+				echo f::format_json(['error' => $e->getMessage()]);
+				exit;
+			}
+
 			notices::add('errors', $e->getMessage());
 		}
 	}
 
 	$_page = new ent_view('app://frontend/templates/'. settings::get('template') .'/pages/account/edit.inc.php');
+
+	$_page->snippets = [
+		'id' => $customer->data['id'],
+		'email' => $customer->data['email'],
+		'firstname' => $customer->data['firstname'],
+		'lastname' => $customer->data['lastname'],
+		'company' => $customer->data['company'],
+		'tax_id' => $customer->data['tax_id'],
+		'address1' => $customer->data['address1'],
+		'address2' => $customer->data['address2'],
+		'postcode' => $customer->data['postcode'],
+		'city' => $customer->data['city'],
+		'country_code' => $customer->data['country_code'],
+		'zone_code' => $customer->data['zone_code'],
+		'phone' => $customer->data['phone'],
+		'different_shipping_address' => $customer->data['different_shipping_address'],
+		'newsletter' => $customer->data['newsletter'],
+		'shipping_address' => $customer->data['shipping_address'],
+	];
+
+	// Headless requests
+	if (!empty($_SERVER['HTTP_ACCEPT']) && preg_match('#^application/json#', $_SERVER['HTTP_ACCEPT'])) {
+		header('Content-Type: application/json;charset='. mb_http_output());
+		echo f::format_json($_page->snippets);
+		exit;
+	}
+
 	echo $_page->render();

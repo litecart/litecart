@@ -132,6 +132,19 @@
 				header('Set-Cookie: customer_remember_me='. $token .'; Path='. WS_DIR_APP .'; Expires='. gmdate('r', strtotime('+30 days')) .'; HttpOnly; SameSite=Lax' . (!empty($_SERVER['HTTPS']) ? '; Secure' : ''), false);
 			}
 
+			// Headless requests
+			if (!empty($_SERVER['HTTP_ACCEPT']) && preg_match('#^application/json#', $_SERVER['HTTP_ACCEPT'])) {
+				header('Content-Type: application/json;charset='. mb_http_output());
+				echo f::format_json([
+					'success' => true,
+					'id' => customer::$data['id'],
+					'email' => customer::$data['email'],
+					'firstname' => customer::$data['firstname'],
+					'lastname' => customer::$data['lastname'],
+				]);
+				exit;
+			}
+
 			notices::add('success', strtr(t('success_logged_in_as_user', 'You are now logged in as {firstname} {lastname}.'), [
 				'{email}' => customer::$data['email'],
 				'{firstname}' => customer::$data['firstname'],
@@ -149,10 +162,33 @@
 			exit;
 
 		} catch (Exception $e) {
+
 			http_response_code(401);
+
+			// Headless requests
+			if (!empty($_SERVER['HTTP_ACCEPT']) && preg_match('#^application/json#', $_SERVER['HTTP_ACCEPT'])) {
+				header('Content-Type: application/json;charset='. mb_http_output());
+				echo f::format_json(['error' => $e->getMessage()]);
+				exit;
+			}
+
 			notices::add('errors', $e->getMessage());
 		}
 	}
 
 	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/account/sign_in.inc.php');
+
+	// Headless requests
+	if (!empty($_SERVER['HTTP_ACCEPT']) && preg_match('#^application/json#', $_SERVER['HTTP_ACCEPT'])) {
+		header('Content-Type: application/json;charset='. mb_http_output());
+		echo f::format_json([
+			'is_logged_in' => customer::check_login(),
+			'id' => customer::$data['id'],
+			'email' => customer::$data['email'],
+			'firstname' => customer::$data['firstname'],
+			'lastname' => customer::$data['lastname'],
+		]);
+		exit;
+	}
+
 	echo $_page->render();
