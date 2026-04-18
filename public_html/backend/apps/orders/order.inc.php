@@ -159,7 +159,7 @@ textarea[name="notes"] {
 	display: block;
 	width: 100%;
 	border: none;
-	background: #fff1a3;
+	background: #f9f4d6;
 	font-family: "Comic Sans MS", cursive, sans-serif;
 	font-size: 1.2em;
 	transform: rotate(2deg);
@@ -188,12 +188,12 @@ textarea[name="notes"]:focus {
 
 <div class="card">
 	<div class="card-header">
-		<h1><?php echo t('title_order', 'Order'); ?> #<?php echo $order->data['id']; ?></h1>
+		<h1><?php echo t('title_order', 'Order'); ?> #<?php echo (int)$order->data['id']; ?></h1>
 	</div>
 
-	<div class="card-body">
-		<?php echo f::form_begin('order_form', 'post'); ?>
+	<?php echo f::form_begin('order_form', 'post'); ?>
 
+	<div class="card-body">
 			<div class="grid">
 
 				<div class="col-3">
@@ -207,7 +207,7 @@ textarea[name="notes"]:focus {
 						<div class="col-6">
 							<div class="form-group">
 								<div class="form-label"><?php echo t('title_order_no', 'Order No'); ?></div>
-								<div class="detail"><?php echo $order->data['no']; ?></div>
+								<div class="detail"><?php echo functions::escape_html($order->data['no']); ?></div>
 							</div>
 						</div>
 
@@ -221,18 +221,23 @@ textarea[name="notes"]:focus {
 
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_order_reference', 'Order Reference'); ?></div>
-						<div class="detail"><?php echo $order->data['reference']; ?></div>
+						<div class="detail"><?php echo functions::escape_html($order->data['reference']); ?></div>
 					</label>
 
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_ip_address', 'IP Address'); ?></div>
+						<div class="form-label"><?php echo t('title_ip_address', 'IP Address'); ?> / <?php echo t('title_hostname', 'Hostname'); ?></div>
 						<div class="detail text-ellipsis">
-							<?php echo $order->data['ip_address']; ?> <?php echo !empty($order->data['hostname']) ? '('. $order->data['hostname'] .')' : ''; ?>
-							<?php if (!empty($order->data['ip_address'])) { ?>
-							<a class="btn btn-default btn-sm" href="https://ip-api.com/#<?php echo $order->data['ip_address']; ?>" target="_blank" style="margin: -.5em 0; margin-inline-start: 1em;">
-								<?php echo f::draw_fonticon('icon-square-out', ''); ?>
-							</a>
-							<?php } ?>
+							<div class="ip-address">
+								<tt><?php echo $order->data['ip_address']; ?></tt>
+								<?php if (!empty($order->data['ip_address'])) { ?>
+								<a class="float-end btn btn-default btn-sm" href="https://ip-api.com/#<?php echo $order->data['ip_address']; ?>" target="_blank" style="margin: -.5em 0; margin-inline-start: 1em;">
+									<?php echo f::draw_fonticon('icon-square-out', ''); ?>
+								</a>
+								<?php } ?>
+							</div>
+							<div class="hostname">
+								<small><?php echo functions::escape_html($order->data['hostname']); ?></small>
+							</div>
 						</div>
 					</label>
 				</div>
@@ -292,15 +297,13 @@ textarea[name="notes"]:focus {
 				<div class="col-3" style="padding-top: 1em;">
 					<div class="form-group">
 						<a class="btn btn-default btn-block" href="<?php echo document::ilink('f:printable_order_copy', ['order_no' => (int)$order->data['no'], 'public_key' => $order->data['public_key']]); ?>" target="_blank">
-							<?php echo f::draw_fonticon('icon-print'); ?>
-							<?php echo t('title_order_copy', 'Order Copy'); ?>
+							<?php echo f::draw_fonticon('icon-print'); ?> <?php echo t('title_order_copy', 'Order Copy'); ?>
 						</a>
 					</div>
 
 					<div class="form-group">
 						<a class="btn btn-default btn-block" href="<?php echo document::ilink('f:printable_packing_slip', ['order_no' => (int)$order->data['no'], 'public_key' => $order->data['public_key']]); ?>" target="_blank">
-							<?php echo f::draw_fonticon('icon-print'); ?>
-							<?php echo t('title_packing_slip', 'Packing Slip'); ?>
+							<?php echo f::draw_fonticon('icon-print'); ?> <?php echo t('title_packing_slip', 'Packing Slip'); ?>
 						</a>
 					</div>
 
@@ -318,37 +321,77 @@ textarea[name="notes"]:focus {
 					</label>
 				</div>
 			</div>
+
 		</div>
 
-		<table id="lines" class="table data-table">
-			<thead>
-				<tr>
-					<th class="main"><?php echo t('title_item', 'Item'); ?></th>
-					<th><?php echo t('title_code', 'Code'); ?></th>
-					<th><?php echo t('title_qty', 'Qty'); ?></th>
-					<th class="text-end"><?php echo t('title_unit_price', 'Unit Price'); ?></th>
-					<th class="text-end"><?php echo t('title_discount', 'Discount'); ?></th>
-					<th class="text-end"><?php echo t('title_tax', 'Tax'); ?> </th>
-					<th class="text-end"><?php echo t('title_sum', 'Sum'); ?></th>
-				</tr>
-			</thead>
+		<div class="card-action">
+			<?php echo f::form_button_predefined('save', t('title_save', 'Save'), 'submit'); ?>
+			<?php echo f::form_button_predefined('cancel', t('title_cancel', 'Cancel'), 'cancel', 'btn-default'); ?>
+		</div>
+		<?php echo f::form_end(); ?>
+</div>
 
-			<tbody>
-				<?php foreach ($order->data['lines'] as $line) { ?>
-				<tr>
-					<td colspan="3" style="white-space: normal;"><?php echo f::escape_html($line['name']); ?></td>
-					<td><?php echo f::escape_html($line['code']); ?></td>
-					<td><?php echo ($line['quantity'] > 1) ? '<strong>'. (float)$line['quantity'].'</strong>' : (float)$line['quantity']; ?></td>
-					<td class="text-end"><?php echo currency::format($line['price'], false, $order->data['currency_code'], $order->data['currency_value']); ?></td>
-					<td class="text-end"><?php echo currency::format($line['discount'], false, $order->data['currency_code'], $order->data['currency_value']); ?></td>
-					<td class="text-end"><?php echo currency::format($line['sum_tax'], false, $order->data['currency_code'], $order->data['currency_value']); ?></td>
-					<td class="text-end"><?php echo currency::format($line['sum'] + $line['sum_tax'], false, $order->data['currency_code'], $order->data['currency_value']); ?></td>
-				</tr>
-				<?php } ?>
+<div class="card">
+	<div class="card-header">
+		<h2><?php echo t('title_Lines', 'Lines'); ?></h2>
+	</div>
+
+	<table id="lines" class="table data-table">
+		<thead>
+			<tr>
+				<th class="main"><?php echo t('title_item', 'Item'); ?></th>
+				<th><?php echo t('title_code', 'Code'); ?></th>
+				<th><?php echo t('title_qty', 'Qty'); ?></th>
+				<th class="text-end"><?php echo t('title_unit_price', 'Unit Price'); ?></th>
+				<th class="text-end"><?php echo t('title_discount', 'Discount'); ?></th>
+				<th class="text-end"><?php echo t('title_tax', 'Tax'); ?> </th>
+				<th class="text-end"><?php echo t('title_sum', 'Sum'); ?></th>
+			</tr>
+		</thead>
+
+		<tbody>
+			<?php foreach ($order->data['lines'] as $line) { ?>
+			<tr>
+				<td colspan="3" style="white-space: normal;"><?php echo f::escape_html($line['name']); ?></td>
+				<td><?php echo f::escape_html($line['code']); ?></td>
+				<td><?php echo ($line['quantity'] > 1) ? '<strong>'. (float)$line['quantity'].'</strong>' : (float)$line['quantity']; ?></td>
+				<td class="text-end"><?php echo currency::format($line['price'], false, $order->data['currency_code'], $order->data['currency_value']); ?></td>
+				<td class="text-end"><?php echo currency::format($line['discount'], false, $order->data['currency_code'], $order->data['currency_value']); ?></td>
+				<td class="text-end"><?php echo currency::format($line['sum_tax'], false, $order->data['currency_code'], $order->data['currency_value']); ?></td>
+				<td class="text-end"><?php echo currency::format($line['sum'] + $line['sum_tax'], false, $order->data['currency_code'], $order->data['currency_value']); ?></td>
+			</tr>
+			<?php } ?>
 		</tbody>
 	</table>
 
 	<div class="card-body">
+		<div id="invoice-total" class="flex flex-columns">
+
+			<div id="subtotal" class="summary">
+				<div class="title"><?php echo t('title_subtotal', 'Subtotal'); ?></div>
+				<div class="amount"><?php echo currency::format($_POST['discount'] ?? 0, true, $order->data['currency_code'], $order->data['currency_value']); ?></div>
+			</div>
+
+			<div id="total-discount" class="summary">
+				<div class="title"><?php echo t('title_total_discount', 'Total Discount'); ?></div>
+				<div class="amount"><?php echo currency::format($_POST['discount'] ?? 0, true, $order->data['currency_code'], $order->data['currency_value']); ?></div>
+			</div>
+
+			<div id="total-tax" class="summary">
+				<div class="title"><?php echo t('title_total_tax', 'Total Tax'); ?></div>
+				<div class="amount"><?php echo currency::format($_POST['total_tax'] ?? 0, true, $order->data['currency_code'], $order->data['currency_value']); ?></div>
+			</div>
+
+			<div id="grand-total" class="summary">
+				<div class="title"><?php echo t('title_grand_total', 'Grand Total'); ?></div>
+				<div class="amount"><?php echo currency::format_html($_POST['total'] ?? 0, true, $order->data['currency_code'], $order->data['currency_value']); ?></div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="card">
+	<div class="card-header">
 		<h2><?php echo t('text_stock_items_in_this_order', 'Stock items in this order'); ?></h2>
 	</div>
 
@@ -380,35 +423,4 @@ textarea[name="notes"]:focus {
 		</tbody>
 	</table>
 
-	<div class="card-body">
-		<div id="invoice-total" class="flex flex-columns">
-
-			<div id="subtotal" class="summary">
-				<div class="title"><?php echo t('title_subtotal', 'Subtotal'); ?></div>
-				<div class="amount"><?php echo currency::format($_POST['discount'] ?? 0, true, $order->data['currency_code'], $order->data['currency_value']); ?></div>
-			</div>
-
-			<div id="total-discount" class="summary">
-				<div class="title"><?php echo t('title_total_discount', 'Total Discount'); ?></div>
-				<div class="amount"><?php echo currency::format($_POST['discount'] ?? 0, true, $order->data['currency_code'], $order->data['currency_value']); ?></div>
-			</div>
-
-			<div id="total-tax" class="summary">
-				<div class="title"><?php echo t('title_total_tax', 'Total Tax'); ?></div>
-				<div class="amount"><?php echo currency::format($_POST['total_tax'] ?? 0, true, $order->data['currency_code'], $order->data['currency_value']); ?></div>
-			</div>
-
-			<div id="grand-total" class="summary">
-				<div class="title"><?php echo t('title_grand_total', 'Grand Total'); ?></div>
-				<div class="amount"><?php echo currency::format_html($_POST['total'] ?? 0, true, $order->data['currency_code'], $order->data['currency_value']); ?></div>
-			</div>
-		</div>
-
-		<div class="card-action">
-			<?php echo f::form_button_predefined('save', t('title_save', 'Save'), 'submit'); ?>
-			<?php echo f::form_button_predefined('cancel', t('title_cancel', 'Cancel'), 'cancel', 'btn-default'); ?>
-		</div>
-
-	<?php echo f::form_end(); ?>
-	</div>
 </div>
