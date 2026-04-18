@@ -28,15 +28,13 @@
 				limit 1;"
 			)->fetch();
 
-			if (!$customer) {
-				throw new Exception(t('error_email_not_in_database', 'The email address does not exist in our database.'));
-			}
-
-			if (empty($customer['status'])) {
-				throw new Exception(t('error_account_inactive', 'Your account is inactive, contact customer support'));
-			}
-
 			if (!empty($_REQUEST['reset_token'])) {
+
+				// Reset-token branch: the token itself is the secret, so unknown or
+				// inactive accounts surface as a generic "invalid reset token" error.
+				if (!$customer || empty($customer['status'])) {
+					throw new Exception(t('error_invalid_reset_token', 'Invalid reset token'));
+				}
 
 				if (!$reset_token = json_decode($customer['password_reset_token'], true)) {
 					throw new Exception(t('error_invalid_reset_token', 'Invalid reset token'));
@@ -75,43 +73,52 @@
 
 			if (empty($_REQUEST['reset_token'])) {
 
-				$reset_token = [
-					'token' => bin2hex(random_bytes(24)),
-					'expires' => date('Y-m-d H:i:s', strtotime('+15 minutes')),
-				];
+				// Uniform-response branch: never leak whether the email belongs to a known or active account.
+				if ($customer && !empty($customer['status'])) {
 
-				database::query(
-					"update ". DB_TABLE_PREFIX ."customers
-					set password_reset_token = '". database::input(f::format_json($reset_token, false)) ."'
-					where id = ". (int)$customer['id'] ."
-					limit 1;"
-				);
+					$reset_token = [
+						'token' => bin2hex(random_bytes(24)),
+						'expires' => date('Y-m-d H:i:s', strtotime('+15 minutes')),
+					];
 
-				$aliases = [
-					'{email}' => $customer['email'],
-					'{store_name}' => settings::get('store_name'),
-					'{token}' => $reset_token['token'],
-					'{link}' => document::ilink('account/reset_password', ['email' => $customer['email'], 'reset_token' => $reset_token['token']]),
-				];
+					database::query(
+						"update ". DB_TABLE_PREFIX ."customers
+						set password_reset_token = '". database::input(f::format_json($reset_token, false)) ."'
+						where id = ". (int)$customer['id'] ."
+						limit 1;"
+					);
 
-				$subject = t('title_reset_password', 'Reset Password');
-				$message = strtr(implode("\r\n", [
-					t('email_body_reset_password_intro', "You recently requested to reset your password for {store_name}."),
-					t('email_body_reset_password_ignore', "If you did not request a password reset, please ignore this email."),
-					t('email_body_reset_password_instruction', "Visit the link below to reset your password:"),
-					"",
-					"{link}",
-					"",
-					t('email_body_reset_password_token', "Reset Token: {token}")
-				]), $aliases);
+					$aliases = [
+						'{email}' => $customer['email'],
+						'{store_name}' => settings::get('store_name'),
+						'{token}' => $reset_token['token'],
+						'{link}' => document::ilink('account/reset_password', ['email' => $customer['email'], 'reset_token' => $reset_token['token']]),
+					];
 
-				(new ent_email())
-					->add_recipient($customer['email'], $customer['firstname'] .' '. $customer['lastname'])
-					->set_subject($subject)
-					->add_body($message)
-					->send();
+					$subject = t('title_reset_password', 'Reset Password');
+					$message = strtr(implode("\r\n", [
+						t('email_body_reset_password_intro', "You recently requested to reset your password for {store_name}."),
+						t('email_body_reset_password_ignore', "If you did not request a password reset, please ignore this email."),
+						t('email_body_reset_password_instruction', "Visit the link below to reset your password:"),
+						"",
+						"{link}",
+						"",
+						t('email_body_reset_password_token', "Reset Token: {token}")
+					]), $aliases);
 
-				notices::add('success', t('success_reset_password_email_sent', 'An email with instructions has been sent to your email address.'));
+					(new ent_email())
+						->add_recipient($customer['email'], $customer['firstname'] .' '. $customer['lastname'])
+						->set_subject($subject)
+						->add_body($message)
+						->send();
+
+				} else {
+
+					// Timing-neutral dummy path so unknown/inactive accounts respond in the same ballpark as real sends.
+					usleep(random_int(200000, 500000));
+				}
+
+				notices::add('success', t('success_reset_password_email_sent_uniform', 'If an account exists for this email, instructions have been sent.'));
 				redirect(document::ilink('account/reset_password', ['email' => $_REQUEST['email'], 'reset_token' => '']), 303);
 				exit;
 
@@ -119,7 +126,8 @@
 
 				$customer = new ent_customer($customer['id']);
 				$customer->set_password($_POST['new_password']);
-				$customer->data['password_reset_token'] = '';
+				$customer->data['sessions_expiry'] = date('Y-m-d H:i:s');
+				$customer->save();
 
 				notices::add('success', t('success_new_password_set', 'Your new password has been set. You may now sign in.'));
 				redirect(document::ilink('account/sign_in', ['email' => $customer->data['email']]), 303);

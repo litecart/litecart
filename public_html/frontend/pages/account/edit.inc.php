@@ -68,7 +68,7 @@
 					throw new Exception(t('error_passwords_missmatch', 'The passwords did not match.'));
 				}
 
-				if (!f::password_check_strength($_POST['password'])) {
+				if (!f::password_check_strength($_POST['new_password'])) {
 					throw new Exception(t('error_password_not_strong_enough', 'The password is not strong enough'));
 				}
 			}

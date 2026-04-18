@@ -183,12 +183,17 @@
 
 			database::query(
 				"update ". DB_TABLE_PREFIX ."customers
-				set password_hash = '". database::input($this->data['password_hash'] = password_hash($password, PASSWORD_DEFAULT)) ."'
+				set password_hash = '". database::input($this->data['password_hash'] = password_hash($password, PASSWORD_DEFAULT)) ."',
+					password_reset_token = ''
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"
 			);
 
-			$this->previous['password_hash'] = $this->data['password_hash'];
+			$this->data['password_reset_token'] = '';
+
+			// Re-sync the full snapshot so a later save() does not roll back values that were changed
+			// between set_password() and save() (e.g. sessions_expiry during the reset flow).
+			$this->previous = $this->data;
 		}
 
 		public function send_email($type='account_created') {
