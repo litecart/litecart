@@ -37,7 +37,9 @@
 		"gulp-uglify": "^3.0.2",
 		"gulp-watch": "^5.0.1",
 		"phplint": "^2.0.5",
-		"sass": "^1.99.0"
+		"sass": "^1.99.0",
+		"eslint": "^10.2.1",
+		"eslint-plugin-html": "^8.1.4"
 	},
 	"scripts": {
 		"iconly": "gulp iconly && gulp scss-framework",
@@ -52,6 +54,7 @@
 		"watch": "gulp watch",
 		"upgrade": "ncu -u && npm install",
 		"dependencies": "npm list --depth=1",
-		"dedupe": "npm dedupe"
+		"dedupe": "npm dedupe",
+		"lint": "eslint \"public_html/**/*.{js,php,html}\""
 	}
 }
