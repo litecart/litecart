@@ -886,7 +886,7 @@ summary {
 .divider::before, .divider::after {
   content: "";
   flex: 1;
-  border-top: 1px solid var(--default-text-color);
+  border-top: 1px solid var(--default-border-color);
 }
 .divider::before {
   margin-right: 0.75em;
@@ -896,7 +896,7 @@ summary {
 }
 .divider span::before {
   content: attr(data-text);
-  color: var(--default-text-color);
+  color: var(--default-border-color);
   white-space: nowrap;
 }
 

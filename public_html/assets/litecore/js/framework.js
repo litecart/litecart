@@ -312,7 +312,7 @@ waitFor('jQuery', ($) => {
 			this.xhr = null;
 			this.config = config;
 
-			self = this;
+			const self = this;
 
 			$(this).find('.dropdown input[type="search"]').on({
 
@@ -490,7 +490,7 @@ waitFor('jQuery', ($) => {
 			});
 
 			this.config = config;
-			self = this;
+			const self = this;
 
 			$(this).on('contextmenu').on({
 			});
@@ -1473,7 +1473,6 @@ waitFor('jQuery', ($) => {
 					if (dragging) {
 						e.preventDefault();
 					}
-					self = this;
 					clicked = false;
 					cancelAnimationFrame(momentumID);
 					momentumID = requestAnimationFrame(momentumLoop);
@@ -1582,7 +1581,7 @@ waitFor('jQuery', ($) => {
 
 
 waitFor('jQuery', ($) => {
-
+	
 	// jQuery Placeholders by LiteCart
 	let Placeholders = [];
 
