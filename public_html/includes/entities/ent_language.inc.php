@@ -121,7 +121,7 @@
 					} else {
 						database::query(
 							"alter table ". DB_TABLE_PREFIX ."translations
-							change `text_". database::input($this->previous['code']) ."` `text_". database::input($this->data['code']) ."` text not null;"
+							change `text_". database::identifier($this->previous['code']) ."` `text_". database::identifier($this->data['code']) ."` text not null;"
 						);
 
 						foreach ([
@@ -167,11 +167,11 @@
 
 				if (!database::query(
 					"show fields from ". DB_TABLE_PREFIX ."translations
-					where `Field` = 'text_". database::input($this->data['code']) ."';"
+					where `Field` = 'text_". database::identifier($this->data['code']) ."';"
 				)->num_rows) {
 					database::query(
 						"alter table ". DB_TABLE_PREFIX ."translations
-						add `text_". database::input($this->data['code']) ."` text not null after text_en;"
+						add `text_". database::identifier($this->data['code']) ."` text not null after text_en;"
 					);
 				}
 			}
@@ -201,14 +201,24 @@
 				limit 1;"
 			);
 
-			if (database::query(
-				"show fields from ". DB_TABLE_PREFIX ."translations
-				where `Field` = 'text_". database::input($this->data['code']) ."';"
-			)->num_rows) {
-				database::query(
-					"alter table ". DB_TABLE_PREFIX ."translations
-					drop `text_". database::input($this->data['code']) ."`;"
-				);
+			// If the persisted code is a legacy/invalid identifier we still
+			// want the delete above to succeed — the bogus row is removed —
+			// but skip the column drop rather than crashing with a helper
+			// exception. A maligned code almost certainly never had a real
+			// text_<code> column anyway.
+			try {
+				$safe_code = database::identifier($this->data['code']);
+				if (database::query(
+					"show fields from ". DB_TABLE_PREFIX ."translations
+					where `Field` = 'text_". $safe_code ."';"
+				)->num_rows) {
+					database::query(
+						"alter table ". DB_TABLE_PREFIX ."translations
+						drop `". 'text_' . $safe_code ."`;"
+					);
+				}
+			} catch (InvalidArgumentException $e) {
+				error_log('ent_language::delete: skipping text_<code> drop for invalid code ' . var_export($this->data['code'], true));
 			}
 
 			foreach ([

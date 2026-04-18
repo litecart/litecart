@@ -106,10 +106,8 @@
 						throw new Exception(t('error_your_account_is_disabled', 'Your account is disabled'));
 					}
 
-					if (!empty($customer['sessions_expiry'])) {
-						if (!isset(session::$data['customer_security_timestamp']) || session::$data['customer_security_timestamp'] < strtotime($customer['sessions_expiry'])) {
-							throw new Exception(t('error_session_expired_due_to_account_changes', 'Session expired due to changes in the account'));
-						}
+					if (self::is_session_expired($customer)) {
+						throw new Exception(t('error_session_expired_due_to_account_changes', 'Session expired due to changes in the account'));
 					}
 
 					session::$data['customer'] = array_replace(session::$data['customer'], array_intersect_key($customer, session::$data['customer']));
@@ -374,6 +372,22 @@
 
 		public static function check_login() {
 			if (!empty(self::$data['id'])) return true;
+		}
+
+		// Returns true when the current session's customer_security_timestamp is older than
+		// the customer's sessions_expiry (or missing entirely). Used by init() to revoke
+		// sessions after a password reset or similar security event.
+		public static function is_session_expired($customer_row) {
+
+			if (empty($customer_row['sessions_expiry'])) {
+				return false;
+			}
+
+			if (!isset(session::$data['customer_security_timestamp'])) {
+				return true;
+			}
+
+			return session::$data['customer_security_timestamp'] < strtotime($customer_row['sessions_expiry']);
 		}
 
 		public static function log($event) {

@@ -9,6 +9,13 @@
 		private $_log_handle;
 		private $_last_response;
 
+		// When an AUTH command is written, this counter is set to the
+		// number of subsequent write()s whose payload is a base64 credential
+		// token. Each following write() decrements the counter and writes
+		// "[REDACTED]" to the transcript instead of the raw bytes. Socket
+		// writes are unaffected.
+		private $_pending_credential_writes = 0;
+
 		function __construct($host, $port=25, $username='', $password='') {
 
 			if ($port == 465) {
@@ -136,7 +143,27 @@
 
 		public function write($data, $expected_response=null) {
 
-			fwrite($this->_log_handle, "> $data");
+			if ($this->_pending_credential_writes > 0) {
+				// Payload is a credential token — never let it hit the log.
+				fwrite($this->_log_handle, "> [REDACTED]\r\n");
+				$this->_pending_credential_writes--;
+			} else {
+				fwrite($this->_log_handle, "> $data");
+
+				// If this is an AUTH command, arm the redaction counter
+				// for the following write() call(s). Counter values are
+				// chosen from the three auth flows in send():
+				//   AUTH LOGIN   → 2 follow-up writes (username-b64, password-b64)
+				//   AUTH PLAIN   → 1 follow-up write  (\0user\0pass-b64)
+				//   AUTH CRAM-MD5 → 1 follow-up write (HMAC response)
+				$trimmed = ltrim($data);
+				if (stripos($trimmed, 'AUTH LOGIN') === 0) {
+					$this->_pending_credential_writes = 2;
+				} else if (stripos($trimmed, 'AUTH PLAIN') === 0 || stripos($trimmed, 'AUTH CRAM-MD5') === 0) {
+					$this->_pending_credential_writes = 1;
+				}
+			}
+
 			$result = fwrite($this->_socket, $data);
 
 			if ($expected_response !== null) {

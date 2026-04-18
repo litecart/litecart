@@ -189,12 +189,14 @@
 			$session = database::query(
 				"select * from ". DB_TABLE_PREFIX ."sessions
 				where id = '". database::input($session_id) ."'
+				and expires_at > '". database::input(date('Y-m-d H:i:s')) ."'
 				limit 1;"
 			)->fetch(function(&$row){
 				$row['data'] = $row['data'] ? json_decode($row['data'], true) : [];
 			});
 
 			if (!$session) {
+				self::generate_id();
 				return false;
 			}
 
@@ -216,18 +218,21 @@
 			}
 
 			// Save only the payload without pretty printing to reduce storage
+			$expires_at = date('Y-m-d H:i:s', strtotime('+1 hour'));
+
 			database::query(
 				"insert into ". DB_TABLE_PREFIX ."sessions
-				(id, data, updated_at, created_at)
+				(id, data, expires_at, updated_at, created_at)
 				values (
 					'". database::input(self::$data['id']) ."',
 					'". database::input(f::format_json(self::$data)) ."',
+					'". database::input($expires_at) ."',
 					'". database::input(date('Y-m-d H:i:s')) ."',
 					'". database::input(date('Y-m-d H:i:s')) ."'
 				)
 				on duplicate key update
 					data = '". database::input(f::format_json(self::$data)) ."',
-					expires_at = '". database::input(date('Y-m-d H:i:s', strtotime('+1 hour'))) ."',
+					expires_at = '". database::input($expires_at) ."',
 					updated_at = '". database::input(date('Y-m-d H:i:s')) ."';"
 			);
 

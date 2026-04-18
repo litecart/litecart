@@ -4,16 +4,28 @@
 	mb_internal_encoding('UTF-8');
 	mb_http_output('UTF-8');
 
-	// CLI detection (polyfill from compatibility.inc.php, needed before DOCUMENT_ROOT check)
-	if (!isset($_SERVER['REQUEST_METHOD'])) {
-		$_SERVER['SERVER_SOFTWARE'] = 'CLI';
-		$_SERVER['REQUEST_METHOD'] = 'GET';
-		$_SERVER['REMOTE_ADDR'] = '127.0.0.1';
-		$_REQUEST = getopt('', [
-			'db_server::', 'db_username:', 'db_password::', 'db_database:', 'db_table_prefix::', 'db_collation::',
-			'document_root:', 'timezone::', 'admin_folder::', 'username::', 'password::', 'development_type::', 'cleanup::',
-		]);
+	// CLI option list used by the shared bootstrap when getopt() runs.
+	$INSTALL_CLI_OPTIONS = [
+		'db_server::', 'db_username:', 'db_password::', 'db_database:', 'db_table_prefix::', 'db_collation::',
+		'document_root:', 'timezone::', 'admin_folder::', 'username::', 'password::', 'development_type::', 'cleanup::',
+		'client_ip::',
+	];
+
+	require_once __DIR__ . '/includes/bootstrap.inc.php';
+	require_once __DIR__ . '/includes/security_headers.inc.php';
+	require_once __DIR__ . '/includes/config_writer.inc.php';
+
+	if (install_is_cli()) {
+		// CLI sets $_REQUEST['install'] explicitly after option parsing below.
 		$_REQUEST['install'] = true;
+	}
+
+	// AC-1, AC-2: reject installer runs on a completed installation.
+	// Applies to both web requests and CLI — removing the lock file is an
+	// explicit, human decision; no --force flag is exposed.
+	if (install_is_locked()) {
+		install_send_security_headers();
+		install_reject_locked();
 	}
 
 	if (!empty($_SERVER['DOCUMENT_ROOT'])) {
@@ -26,9 +38,7 @@
 		throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . ' Could not detect \$_SERVER[\'DOCUMENT_ROOT\']. If you are using CLI, make sure you pass the parameter "document_root" e.g. --document_root="/var/www/mysite.com/public_html"</p>' . PHP_EOL  . PHP_EOL);
 	}
 
-	define('FS_DIR_APP',     rtrim(str_replace('\\', '/', realpath(__DIR__.'/../')), '/') . '/');
-	define('FS_DIR_STORAGE', FS_DIR_APP .'/storage/');
-
+	// FS_DIR_APP and FS_DIR_STORAGE are already defined by bootstrap.inc.php.
 	define('WS_DIR_APP',     preg_replace('#^'. preg_quote(rtrim(DOCUMENT_ROOT, '/'), '#') .'#', '', FS_DIR_APP));
 	define('WS_DIR_STORAGE', WS_DIR_APP .'storage/');
 
@@ -81,7 +91,7 @@
 			exit;
 		}
 
-		// getopt() and $_REQUEST['install'] already set in CLI detection block above
+		// getopt() and $_REQUEST['install'] already set by bootstrap.inc.php
 	}
 
 	if (empty($_REQUEST['install'])) {
@@ -448,17 +458,19 @@
 
 		echo '<p>Writing config file... ';
 
-		$config = strtr(file_get_contents('config'), [
-			'{STORAGE_FOLDER}' => 'storage',
-			'{ADMIN_FOLDER}' => BACKEND_ALIAS,
-			'{DB_SERVER}' => DB_SERVER,
-			'{DB_USERNAME}' => DB_USERNAME,
-			'{DB_PASSWORD}' => DB_PASSWORD,
-			'{DB_DATABASE}' => DB_DATABASE,
-			'{DB_TABLE_PREFIX}' => DB_TABLE_PREFIX,
-			'{CLIENT_IP}' => $_REQUEST['client_ip'],
-			'{TIMEZONE}' => $_REQUEST['timezone'],
-			'{HMAC_KEY_REMEMBER_ME}' => bin2hex(random_bytes(32)),
+		// AC-3, AC-4: values are serialised through var_export() via
+		// install_render_config(), which also validates client_ip.
+		$config = install_render_config(__DIR__ . '/config', [
+			'STORAGE_FOLDER'        => 'storage',
+			'ADMIN_FOLDER'          => BACKEND_ALIAS,
+			'DB_SERVER'             => DB_SERVER,
+			'DB_USERNAME'           => DB_USERNAME,
+			'DB_PASSWORD'           => DB_PASSWORD,
+			'DB_DATABASE'           => DB_DATABASE,
+			'DB_TABLE_PREFIX'       => DB_TABLE_PREFIX,
+			'CLIENT_IP'             => $_REQUEST['client_ip'],
+			'TIMEZONE'              => $_REQUEST['timezone'],
+			'HMAC_KEY_REMEMBER_ME'  => bin2hex(random_bytes(32)),
 		]);
 
 		if (file_put_contents(FS_DIR_STORAGE . 'config.inc.php', $config) !== false) {

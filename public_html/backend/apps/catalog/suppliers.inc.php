@@ -9,10 +9,20 @@
 		$_GET['page'] = 1;
 	}
 
+	// Search Filter
+	if (!empty($_GET['query'])) {
+		$sql_find = [
+			"id = '". database::input($_GET['query']) ."'",
+			"name like '%". database::input($_GET['query']) ."%'",
+		];
+	}
+
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$suppliers = database::prepare(
 		"select id, name
 		from ". DB_TABLE_PREFIX ."suppliers
+		where id
+		". (!empty($sql_find) ? "and (". implode(" or ", $sql_find) .")" : "") ."
 		order by name asc;"
 	)->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
 
@@ -27,6 +37,15 @@
 	<div class="card-action">
 		<?php echo f::form_button_link(document::ilink(__APP__.'/edit_supplier'), t('title_create_new_supplier', 'Create New Supplier'), '', 'create'); ?>
 	</div>
+
+	<?php echo f::form_begin('search_form', 'get'); ?>
+
+		<div class="card-filter">
+			<div class="expandable"><?php echo f::form_input_search('query', true, 'placeholder="'. t('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"'); ?></div>
+			<?php echo f::form_button('filter', t('title_search', 'Search'), 'submit'); ?>
+		</div>
+
+	<?php echo f::form_end(); ?>
 
 	<?php echo f::form_begin('suppliers_form', 'post'); ?>
 

@@ -42,8 +42,20 @@
 			if (!self::$_cache['translations'] = cache::get(self::$_cache_token)) {
 				self::$_cache['translations'] = [];
 
+				// Guard: the selected code is embedded as a backtick-less
+				// column reference below. If it isn't a safe identifier
+				// (legacy data from before PROJ-22 hardening), fall back
+				// to text_en so the storefront still renders instead of
+				// crashing — and leave a trace in errors.log.
+				try {
+					$selected_column = 'text_' . database::identifier(self::$selected['code']);
+				} catch (InvalidArgumentException $e) {
+					error_log('nod_language: skipping invalid language code ' . var_export(self::$selected['code'], true) . ', falling back to text_en');
+					$selected_column = 'text_en';
+				}
+
 				database::query(
-					"select id, code, if(text_". self::$selected['code'] ." != '', text_". self::$selected['code'] .", text_en) as text
+					"select id, code, if($selected_column != '', $selected_column, text_en) as text
 					from ". DB_TABLE_PREFIX ."translations
 					where ". ((isset(route::$request['endpoint']) && route::$request['endpoint'] == 'backend') ? "backend = 1" : "frontend = 1") ."
 					having text != '';"
