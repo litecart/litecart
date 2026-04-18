@@ -20,7 +20,6 @@
 .flex-rows,
 .flex-columns,
 .flex-inline {
-
 	&:is(ul) {
 		list-style: none;
 		padding: 0;
@@ -38,6 +37,7 @@
 	&.flex-rows {
 		flex-direction: column;
 	}
+
 	&.flex-nogap {
 		gap: 0;
 	}
@@ -86,7 +86,7 @@
 	}
 
 	> * {
-		//flex: 0 1 auto;
+		// flex: 0 1 auto;
 		flex: 1 1 auto;
 	}
 }

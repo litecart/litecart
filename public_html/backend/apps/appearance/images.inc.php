@@ -99,10 +99,12 @@
 [class*="col-"] {
 	align-self: center;
 }
+
 .form-label {
 	font-weight: 500;
 	margin-bottom: .5em;
 }
+
 .image-container {
 	position: relative;
 	border: 1px solid var(--default-border-color);
@@ -113,15 +115,17 @@
 	overflow: hidden;
 	cursor: pointer;
 }
+
 .image-container img {
 	border-radius: 0;
 }
+
 .image-container .format {
 	font-weight: 500;
 	position: absolute;
 	top: 0;
 	inset-inline-end: 0;
-	background-color: rgba(0, 0, 0, 0.5);
+	background-color: rgb(0 0 0 / 50%);
 	color: #fff;
 	padding: 0.5em 1em;
 	border-end-start-radius: var(--border-radius);

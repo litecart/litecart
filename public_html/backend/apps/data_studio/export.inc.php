@@ -229,6 +229,7 @@
 	display: none;
 	transition: all 200ms linear;
 }
+
 #formats:has(input[name="format"][value="csv"]:checked) #csv.options,
 #formats:has(input[name="format"][value="json"]:checked) #json.options,
 #formats:has(input[name="format"][value="yaml"]:checked) #yaml.options,

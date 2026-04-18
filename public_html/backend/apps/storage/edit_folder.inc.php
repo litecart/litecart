@@ -52,7 +52,7 @@ textarea[name="content"] {
 	background: #2f3244;
 	color: #fff;
 	height: 640px;
-	font-family: Lucida Console, Monospace;
+	font-family: "Lucida Console", monospace;
 }
 </style>
 

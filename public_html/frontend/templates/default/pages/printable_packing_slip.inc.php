@@ -23,6 +23,7 @@ h1 {
 	margin-inline-start: -15px;
 	margin-bottom: 3mm;
 }
+
 .rounded-rectangle .value {
 	margin: 0 !important;
 }
@@ -35,15 +36,17 @@ h1 {
 	font-weight: bold;
 	margin-bottom: 3pt;
 }
+
 .page .value {
 	margin-bottom: 3mm;
 }
+
 .page .footer .row {
 	margin-bottom: 0;
 }
 
 table.items tbody tr:nth-child(11) {
-	page-break-before: always;
+	break-before: always;
 }
 </style>
 

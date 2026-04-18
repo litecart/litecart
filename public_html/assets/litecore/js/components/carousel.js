@@ -186,10 +186,10 @@ waitFor('jQuery', ($) => {
 	function Plugin(option) {
 		return this.each(function () {
 			const $this = $(this);
-			let data = $(this).data('carousel');
-			const options = $.extend({}, Carousel.DEFAULTS, $(this).data(), typeof option === 'object' && option);
+			let data = $this.data('carousel');
+			const options = $.extend({}, Carousel.DEFAULTS, $this.data(), typeof option === 'object' && option);
 
-			if (!data) $(this).data('carousel', (data = new Carousel(this, options)));
+			if (!data) $this.data('carousel', (data = new Carousel(this, options)));
 			if (typeof option === 'number') data.to(option);
 			else if (typeof option === 'string') data[option]();
 			else if (options.interval) data.pause().cycle();

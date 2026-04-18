@@ -3,6 +3,7 @@ form[name="buy_now_form"] .dropdown-menu {
 	left: 0;
 	right: 0;
 }
+
 form[name="buy_now_form"] .dropdown-menu .image {
 	border-radius: var(--border-radius);
 	border: 1px solid var(--default-border-color);
@@ -209,7 +210,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 									<?php if ($tax_class_id) { ?>
 									<?php if ($total_tax) { ?>
-									<div class="tax" style="margin: 0 0 1em 0;">
+									<div class="tax" style="margin: 0 0 1em;">
 									<?php if ($tax_rates) { ?>
 										<?php echo $including_tax ? t('text_tax_included', 'Tax included') : t('title_excluding_tax', 'Excluding Tax'); ?>: <span class="total-tax"><?php echo currency::format($total_tax); ?></span>
 									<?php } else { ?>

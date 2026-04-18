@@ -57,9 +57,11 @@
 	font-size: 64px;
 	font-weight: bold;
 }
+
 .title {
 	font-size: 48px;
 }
+
 .description {
 	font-size: 24px;
 }

@@ -9,23 +9,25 @@
 // anuphan-regular - latin
 @font-face {
   font-display: swap; // Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options.
-  font-family: 'Anuphan';
+  font-family: Anuphan;
   font-style: normal;
   font-weight: 400;
   src: url('../fonts/anuphan-v6-latin-regular.woff2') format('woff2'); // Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+
 }
+
 // anuphan-500 - latin
 @font-face {
   font-display: swap; // Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options.
-  font-family: 'Anuphan';
+  font-family: Anuphan;
   font-style: normal;
   font-weight: 500;
   src: url('../fonts/anuphan-v6-latin-500.woff2') format('woff2'); // Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+
 }
+
 // anuphan-700 - latin
 @font-face {
   font-display: swap; // Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options.
-  font-family: 'Anuphan';
+  font-family: Anuphan;
   font-style: normal;
   font-weight: 700;
   src: url('../fonts/anuphan-v6-latin-700.woff2') format('woff2'); // Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+
@@ -34,7 +36,6 @@
 /******************** Light Theme ********************/
 
 :root {
-
 	/* General */
 
 	--site-background: #f2f4f7;
@@ -70,14 +71,13 @@
 	--whitespace-color: #fff;
 
 	/* Defaults */
-	--default-text-font: 'Anuphan', Arial, 'Helvetica Neue', Helvetica, sans-serif;
+	--default-text-font: 'Anuphan', arial, 'Helvetica Neue', helvetica, sans-serif;
 	--default-text-color: #333;
 	--default-text-size: 15px;
 	--default-line-height: 1.5;
 	--default-title-color: #333;
 	--default-border-color: #ececf1;
-	--default-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-
+	--default-shadow: 0 1px 3px rgb(0 0 0 / 8%);
 	--link-text-color: #5292b1;
 
 	/* Badges */
@@ -85,7 +85,7 @@
 	--badge-text-color: #fff;
 
 	/* Banners */
-	--banner-shadow: 0 10px 20px rgba(0, 0, 0, .05);
+	--banner-shadow: 0 10px 20px rgb(0 0 0 / 5%);
 	--banner-shadow: var(--default-shadow);
 
 	/* Breadcrumbs */
@@ -93,7 +93,6 @@
 	--breadcrumbs-border-width: 1px;
 	--breadcrumbs-border-color: #d6d6e1;
 	--breadcrumbs-shadow: var(--default-shadow);
-
 	--breadcrumb-item-background: #f1f1f7;
 	--breadcrumb-item-text-color: #444;
 	--breadcrumb-item-border-width: 1px;
@@ -103,7 +102,7 @@
 	--button-padding-x: 1em;
 	--button-padding-y: .55em;
 	--button-border-width: 1px;
-	--button-shadow: 0 2px 2px 0 rgba(37, 44, 97, 0.15), 0 1px 3px 0 rgba(93, 100, 148, 0.2);
+	--button-shadow: 0 2px 2px 0 rgb(37 44 97 / 15%), 0 1px 3px 0 rgb(93 100 148 / 20%);
 
 	/* Button: Primary */
 	--button-primary-background: #3b6fb5;
@@ -137,9 +136,9 @@
 	--button-danger-background--hover: #d9534f;
 	--button-danger-background--active: #db5d59;
 	--button-danger-text-color: #fff;
-	--button-danger-border-color: rgba(0, 0, 0, 0.1);
-	--button-danger-border-color--hover: rgba(0, 0, 0, 0.1);
-	--button-danger-border-color--active: rgba(0, 0, 0, 0.1);
+	--button-danger-border-color: rgb(0 0 0 / 10%);
+	--button-danger-border-color--hover: rgb(0 0 0 / 10%);
+	--button-danger-border-color--active: rgb(0 0 0 / 10%);
 
 	/* Cards */
 	--card-background: #fff;
@@ -159,8 +158,7 @@
 	--dropdown-text-color: var(--default-text-color);
 	--dropdown-border-color: var(--default-border-color);
 	--dropdown-border-width: 1px;
-	--dropdown-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
-
+	--dropdown-shadow: 0 6px 12px rgb(0 0 0 / 17.5%);
 	--dropdown-item-background: #fff;
 	--dropdown-item-text-color: var(--dropdown-text-color);
 	--dropdown-item-background--hover: #f1f2f5;
@@ -169,7 +167,8 @@
 	/* Forms */
 	--input-padding-x: 1.25em;
 	--input-padding-y: .66em;
-	//--input-background: #f1f2f5;
+
+	// --input-background: #f1f2f5;
 	--input-background: #eceff1;
 	--input-text-color: #000;
 	--input-border-color: #e5e6e9;
@@ -178,32 +177,27 @@
 	--input-outline-color--hover: #e0e0e6;
 	--input-outline-width: 1px;
 	--input-shadow: none;
-
 	--input-addon-background: #e9ebf1;
 	--input-checkbox-background: #e6e7eb;
 	--input-checkbox-background--active: #527fc2;
 	--input-toggle-background: #fff;
-
 	--input-code-background: #313b50;
 	--input-code-text-color: #fff;
 
 	/* Navigation */
 	--navbar-background: #fff;
 	--navbar-text-color: #4e4e55;
-	--navbar-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+	--navbar-shadow: 0 1px 2px rgb(0 0 0 / 6%);
 	--navbar-border-width: 1px;
 	--navbar-border-color: 	var(--default-border-color);
 
 	/* Notices */
 	--notice-default-background: #e5e3e3;
 	--notice-default-text-color: #333;
-
 	--notice-success-background: #d6eca6;
 	--notice-success-text-color: #567d00;
-
-	--notice-warning-background: #ffcc66;
-	--notice-warning-text-color: #aa0000;
-
+	--notice-warning-background: #fc6;
+	--notice-warning-text-color: #a00;
 	--notice-danger-background: #fcc;
 	--notice-danger-text-color: #c44;
 
@@ -222,65 +216,53 @@
 	--pill-item-border-width: 0;
 	--pill-item-outline-width: 1px;
 	--pill-item-outline-color: transparent;
-
 	--pill-item-background--hover: #d7dae1;
 	--pill-item-text-color--hover: var(--default-text-color);
 	--pill-item-border-color--hover: #d3d3d3;
 	--pill-item-outline-color--hover: #d7d7dd;
-
 	--pill-item-background--active: #c7c7cf;
 	--pill-item-text-color--active: var(--default-text-color);
 	--pill-item-border-color--active: #bbb;
 
 	// Tabs
 	--tab-bar-background: #f6f7f9;
-
 	--tab-item-background: #e5e5ea;
-	--tab-item-background--hover: rgba(255, 255, 255, 0.75);
+	--tab-item-background--hover: rgb(255 255 255 / 75%);
 	--tab-item-background--active: #fff;
 	--tab-item-shadow: var(--default-shadow);
 
 	// Tables
 	--table-border-color: var(--default-border-color);
 	--table-border-width: 1px;
-
 	--table-header-background: #fff;
 	--table-header-text-color: var(--default-text-color);
-
 	--table-body-background: #fff;
 	--table-body-background--even: #fff;
 	--table-body-background--hover: #f2f3f7;
 	--table-body-text-color: var(--default-text-color);
-
 	--table-link-background: #e3ebf3;
 	--table-link-text-color: var(--default-text-color);
 	--table-link-background--hover: #cfddeb;
-
 	--table-footer-background: #fbfcfd;
 	--table-footer-text-color: var(--default-text-color);
 
 	/* Semantic Colors */
-	--color-sale-price: #cc0000;
-	--color-stock-available: #009900;
-	--color-stock-partial: #ff9900;
-	--color-stock-unavailable: #cc0000;
+	--color-sale-price: #c00;
+	--color-stock-available: #090;
+	--color-stock-partial: #f90;
+	--color-stock-unavailable: #c00;
 	--color-error: #f00;
-
 	--sticker-text-color: #fff;
-	--sticker-new-background: rgba(251, 184, 41, 0.9);
-	--sticker-sale-background: rgba(237, 60, 50, 0.9);
-
-	--overlay-dark: rgba(0, 0, 0, 0.65);
-	--overlay-cookie-consent: rgba(18, 0, 54, 0.65);
-	--overlay-light: rgba(255, 255, 255, 0.25);
-	--overlay-frosted: rgba(255, 255, 255, 0.2);
-
+	--sticker-new-background: rgb(251 184 41 / 90%);
+	--sticker-sale-background: rgb(237 60 50 / 90%);
+	--overlay-dark: rgb(0 0 0 / 65%);
+	--overlay-cookie-consent: rgb(18 0 54 / 65%);
+	--overlay-light: rgb(255 255 255 / 25%);
+	--overlay-frosted: rgb(255 255 255 / 20%);
 	--code-background: #bcbccb;
-
 	--social-button-background: transparent;
-	--social-button-background--hover: rgba(255, 255, 255, 0.15);
+	--social-button-background--hover: rgb(255 255 255 / 15%);
 	--social-button-text-color--hover: #fff;
-
 	--fieldset-border-color: #d9d9d9;
 
 	// Footer

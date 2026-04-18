@@ -3,9 +3,11 @@
 	padding: var(--gutter-y )var(--gutter-x);
 	padding-top: 0;
 }
+
 #box-newsletter-subscribe .row > div:last-child {
 	align-self: center;
 }
+
 #box-newsletter-subscribe .wrapper {
 	display: inline-flex;
 	gap: var(--gutter-y) var(--gutter-x);

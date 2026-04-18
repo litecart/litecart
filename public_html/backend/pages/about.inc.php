@@ -197,29 +197,37 @@
 	background: transparent;
 	border-bottom: none;
 }
+
 .tabs .nav-link:not(.active) {
 	background: #eee;
 }
+
 .tab-content {
 	margin: 0;
 	background: none;
 }
+
 #box-about {
 	position: relative;
 	overflow: hidden;
 }
+
 #box-about table + table {
 	margin-top: 2em;
 }
+
 #box-about tbody th {
 	text-align: left;
 }
+
 #box-about tr > *:first-child {
 	width: 250px;
 }
+
 #box-about meter {
 	width: 500px;
 }
+
 #box-about .credits-wrapper {
 	position: absolute;
 	top: 2em;
@@ -229,19 +237,22 @@
 	padding: 2em;
 	background: #fff;
 	border: 1px solid var(--default-border-color);
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+	box-shadow: 0 0 10px rgb(0 0 0 / 5%);
 	border-radius: var(--border-radius);
 	overflow: hidden;
 	transform: translateY(0%);
 	z-index: 999;
 }
+
 #box-error-log tr.critical {
 	background: #c002;
 }
+
 #box-error-log td {
 	white-space: wrap !important;
 	cursor: default;
 }
+
 #box-error-log .backtrace {
 	background: #f8f8f8;
 	white-space: pre-wrap;

@@ -9,7 +9,7 @@ waitFor('jQuery', ($) => {
 			});
 
 			this.config = config;
-			const self = this;
+
 
 			$(this).on('contextmenu').on({
 			});

@@ -33,7 +33,7 @@
 			margin-inline-start: calc(0 - var(--pagination-item-border-width));
 		}
 
-		&:hover:not(.active):not(.disabled) {
+		&:hover:not(.active, .disabled) {
 			background: var(--pagination-item-background--hover);
 			text-decoration: none;
 		}

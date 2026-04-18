@@ -58,13 +58,16 @@
 #widget-addons .addons {
 	columns: auto 275px;
 }
+
 #widget-addons .addon {
 	margin-bottom: 1em;
 	break-inside: avoid;
 }
+
 #widget-addons .description {
 	opacity: 0.85;
 }
+
 #widget-addons .title, #widget-addons .description {
 	white-space: nowrap;
 	text-overflow: ellipsis;

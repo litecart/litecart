@@ -396,12 +396,15 @@
 	overflow-x: hidden;
 	white-space: nowrap;
 }
+
 #order-lines tr.highlight {
 	border: 1px #f00 solid;
 }
+
 #order-lines tr.extended {
 	display: none;
 }
+
 #order-lines tr.highlight + tr.extended {
 	display: table-row;
 }
@@ -412,23 +415,28 @@
 	inset-inline-end: 2.5em;
 	cursor: pointer;
 }
+
 #box-comments .bubble {
 	padding-top: 2em;
 }
+
 #box-comments .bubbles .notify  {
 	position: absolute;
 	top: 0.5em;
 	inset-inline-end: 4em;
 	cursor: pointer;
 }
+
 #box-comments .bubbles .private input[name$="[hidden]"],
 #box-comments .bubbles .notify input[name$="[notify]"] {
 	display: none;
 }
+
 #box-comments .bubbles .private input[name$="[hidden]"] + .fa,
 #box-comments .bubbles .notify input[name$="[notify]"] + .fa {
 	opacity: 0.25;
 }
+
 #box-comments .bubbles .private input[name$="[hidden]"]:checked + .fa,
 #box-comments .bubbles .notify input[name$="[notify]"]:checked + .fa {
 	opacity: 1;
@@ -449,14 +457,17 @@
 #order-totals .title {
 	margin-bottom: 0.5em;
 }
+
 #order-totals .amount {
 	font-size: 1.5em;
 }
+
 #order-totals .summary {
 	background: var(--card-background);
 	padding: 1em;
 	border-radius: var(--border-radius);
 }
+
 #order-totals #order-total {
 	font-weight: bold;
 }
@@ -1034,7 +1045,7 @@
 							<?php echo f::form_input_hidden('lines['.$key.'][tax_rate]', true); ?>
 						</td>
 						<td class="sku"><?php echo f::escape_html($_POST['lines'][$key]['sku']); ?></td>
-						<td class="text-center"><?php if (isset($_POST['lines'][$key]['sufficient_stock'])) echo $line['sufficient_stock'] ? '<span style="color: #88cc44;">'. f::draw_fonticon('icon-check') .' '. $line['stock_quantity'] .'</span>' : '<span style="color: #ff6644;">'. f::draw_fonticon('icon-times') .' '. $line['stock_quantity'] .'</span>'; ?></td>
+						<td class="text-center"><?php if (isset($_POST['lines'][$key]['sufficient_stock'])) echo $line['sufficient_stock'] ? '<span style="color: #88cc44;">'. f::draw_fonticon('icon-check') .' '. $line['stock_quantity'] .'</span>' : '<span style="color: #f64;">'. f::draw_fonticon('icon-times') .' '. $line['stock_quantity'] .'</span>'; ?></td>
 						<td><?php echo f::form_input_decimal('lines['.$key.'][quantity]', true, 2); ?></td>
 						<td><?php echo f::form_input_decimal('lines['.$key.'][price]', true); ?></td>
 						<td><?php echo f::form_input_decimal('lines['.$key.'][discount]', true); ?></td>
@@ -1072,7 +1083,7 @@
 									<?php echo f::escape_html($item['name']); ?>
 								</td>
 								<td class="sku"><?php echo f::escape_html($item['sku']); ?></td>
-								<td class="text-center"><?php if (isset($item['sufficient_stock'])) echo $item['sufficient_stock'] ? '<span style="color: #88cc44;">'. f::draw_fonticon('icon-check') .' '. $item['stock_quantity'] .'</span>' : '<span style="color: #ff6644;">'. f::draw_fonticon('icon-times') .' '. $item['stock_quantity'] .'</span>'; ?></td>
+								<td class="text-center"><?php if (isset($item['sufficient_stock'])) echo $item['sufficient_stock'] ? '<span style="color: #88cc44;">'. f::draw_fonticon('icon-check') .' '. $item['stock_quantity'] .'</span>' : '<span style="color: #f64;">'. f::draw_fonticon('icon-times') .' '. $item['stock_quantity'] .'</span>'; ?></td>
 								<td><?php echo f::form_input_decimal('lines['.$key.'][items]['.$key2.'][quantity]', true, 2); ?></td>
 								<td></td>
 							</tr>

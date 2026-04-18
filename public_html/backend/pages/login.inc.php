@@ -265,9 +265,11 @@ body {
 	margin: auto;
 	border-radius: var(--border-radius);
 }
+
 #box-login .card-header a {
 	display: block;
 }
+
 #box-login .card-header img {
 	margin: 0 auto;
 	max-width: 200px;

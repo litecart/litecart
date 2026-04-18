@@ -913,36 +913,43 @@ html {
 	display: table;
 	width: 100%;
 }
+
 body {
 	display: table-cell;
 	vertical-align: middle;
 }
+
 .glass-edges {
 	max-width: 640px;
 }
+
 input[name="development_type"] {
 	display: none;
 }
+
 input[name="development_type"] + div {
 	display: inline-block;
 	padding: 15px;
 	margin: 7.5px;
-	border: 1px solid rgba(0, 0, 0, .1);
+	border: 1px solid rgb(0 0 0 / 10%);
 	border-radius: 15px;
 	width: 250px;
 	height: 145px;
 	text-align: center;
 	cursor: pointer;
 }
+
 input[name="development_type"] + div .type {
 	font-size: 1.5em;
 	line-height: 1.5em;
 }
+
 input[name="development_type"] + div .title {
 	font-size: 1.25em;
 	font-weight: bold;
 	line-height: 1.5em;
 }
+
 input[name="development_type"]:checked + div {
 	border-color: #333;
 }

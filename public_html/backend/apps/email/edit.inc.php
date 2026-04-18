@@ -112,6 +112,7 @@
 .head > * {
 	margin: 1em 0;
 }
+
 #preview {
 	border: 1px solid var(--default-border-color);
 	width: 100%;

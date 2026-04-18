@@ -19,6 +19,7 @@
 	.card-filter {
 		display: flex;
 		gap: var(--gutter-y) var(--gutter-x);
+
 		.expandable {
 			flex: 1;
 		}
@@ -35,10 +36,12 @@
 		border-start-start-radius: var(--border-radius);
 		border-start-end-radius: var(--border-radius);
 	}
+
 	> *[class*="card-"]:last-child,
 	> form:last-child *[class*="card-"]:last-child {
 		padding-bottom: var(--gutter-y);
 	}
+
 	> *[class*="card-footer"]:last-child {
 		padding-top: var(--gutter-y);
 		border-end-start-radius: var(--border-radius);
@@ -60,7 +63,7 @@
 
 	.card-footer {
 		background: var(--card-footer-background);
-		box-shadow: inset 0px 10px 15px -15px rgba(0, 0, 0, .25);
+		box-shadow: inset 0 10px 15px -15px rgb(0 0 0 / 25%);
 	}
 
 	.card-header,
@@ -68,6 +71,7 @@
 		> *:first-child {
 			margin-top: 0;
 		}
+
 		> *:last-child {
 			margin-bottom: 0;
 		}
@@ -82,8 +86,7 @@
 	}
 
 	> hr {
-		margin-inline-end: 0;
-		margin-inline-start: 0;
+		margin-inline: 0;
 	}
 
 	> .list-group:first-child .list-group-item:first-child {

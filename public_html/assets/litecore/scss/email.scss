@@ -16,9 +16,10 @@ img {
 
 table {
 	border-collapse: separate;
-	mso-table-lspace: 0pt;
-	mso-table-rspace: 0pt;
+	mso-table-lspace: 0;
+	mso-table-rspace: 0;
 	width: 100%; }
+
 	table td {
 		font-family: sans-serif;
 		font-size: 14px;
@@ -28,6 +29,7 @@ table {
 .container {
 	display: block;
 	margin: 0 auto !important;
+
 	/* makes it centered */
 	max-width: 640px;
 	padding: 15px;
@@ -65,17 +67,18 @@ table {
 	text-align: center;
 	width: 100%;
 }
+
 .footer td,
 .footer p,
 .footer span,
 .footer a {
-	color: #999999;
+	color: #999;
 	font-size: 12px;
 	text-align: center;
 }
 
 h1, h2, h3, h4 {
-	color: #000000;
+	color: #000;
 	font-family: sans-serif;
 	font-weight: 400;
 	line-height: 1.4;
@@ -96,6 +99,7 @@ p, ul, ol {
 	margin: 0;
 	margin-bottom: 15px;
 }
+
 p li, ul li, ol li {
 	list-style-position: inside;
 	margin-left: 5px;
@@ -107,7 +111,6 @@ a {
 }
 
 .btn {
-	box-sizing: border-box;
 	background: #3460ac;
 	border: 1px solid #fff;
 	border-radius: 5px;
@@ -122,12 +125,15 @@ a {
 	text-decoration: none;
 	text-transform: capitalize;
 }
+
 .btn > tbody > tr > td {
 	padding-bottom: 15px;
 }
+
 .btn table {
 	width: auto;
 }
+
 .btn table td {
 	background: #fff;
 	border-radius: 5px;
@@ -186,11 +192,12 @@ hr {
 	margin: 30px 0;
 }
 
-@media only screen and (max-width: 620px) {
+@media only screen and (width <= 620px) {
 	table.body h1 {
 		font-size: 28px !important;
 		margin-bottom: 15px !important;
 	}
+
 	table.body p,
 	table.body ul,
 	table.body ol,
@@ -199,28 +206,35 @@ hr {
 	table.body a {
 		font-size: 16px !important;
 	}
+
 	table.body .wrapper,
 	table.body .article {
 		padding: 15px !important;
 	}
+
 	table.body .content {
 		padding: 0 !important;
 	}
+
 	table.body .container {
 		padding: 0 !important;
 		width: 100% !important;
 	}
+
 	table.body .main {
 		border-inline-start-width: 0 !important;
 		border-radius: 0 !important;
 		border-inline-end-width: 0 !important;
 	}
+
 	table.body .btn table {
 		width: 100% !important;
 	}
+
 	table.body .btn a {
 		width: 100% !important;
 	}
+
 	table.body .img-responsive {
 		height: auto !important;
 		max-width: 100% !important;

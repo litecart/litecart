@@ -80,13 +80,16 @@
 .icons {
 	margin-bottom: 2em;
 }
+
 .icons .favicon {
 	display: inline-block;
 	text-align: center;
 }
+
 .icons .favicon:not(:first-child) {
 	margin-left: .5em;
 }
+
 .icons .thumbnail {
 	width: auto;
 	margin: 0;

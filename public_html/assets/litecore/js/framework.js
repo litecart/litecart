@@ -249,10 +249,10 @@ waitFor('jQuery', ($) => {
 	function Plugin(option) {
 		return this.each(function () {
 			const $this = $(this);
-			let data = $(this).data('carousel');
-			const options = $.extend({}, Carousel.DEFAULTS, $(this).data(), typeof option === 'object' && option);
+			let data = $this.data('carousel');
+			const options = $.extend({}, Carousel.DEFAULTS, $this.data(), typeof option === 'object' && option);
 
-			if (!data) $(this).data('carousel', (data = new Carousel(this, options)));
+			if (!data) $this.data('carousel', (data = new Carousel(this, options)));
 			if (typeof option === 'number') data.to(option);
 			else if (typeof option === 'string') data[option]();
 			else if (options.interval) data.pause().cycle();
@@ -490,7 +490,7 @@ waitFor('jQuery', ($) => {
 			});
 
 			this.config = config;
-			const self = this;
+
 
 			$(this).on('contextmenu').on({
 			});
@@ -639,8 +639,6 @@ waitFor('jQuery', ($) => {
 
 waitFor('jQuery', $ => {
 	$('.blob').on('mousemove', function (e) {
-		var x = e.clientX;
-		var y = e.clientY;
 		$(this).css('transform', `translate3d(calc(${e.clientX}px - 50%), calc(${e.clientY}px - 50%), 0)`);
 	});
 });
@@ -964,9 +962,7 @@ waitFor('jQuery', ($) => {
 		// Attach Litebox to elements
 		static attach($source, $modal, options = {}) {
 
-			const tempOptions = { ...this.defaults, ...$source.data(), ...options };
 			const handler = (e) => {
-				const $target = $(e.currentTarget);
 				const gallery = $(e.currentTarget).data('gallery');
 				const $gallerySource = gallery ? $(`[data-gallery="${gallery}"]`) : $source;
 				const elementOptions = {
@@ -1331,7 +1327,6 @@ waitFor('jQuery', ($) => {
 
 			const source = this.$source;
 			const len = source.length;
-			const $inner = this.$instance.find('.litebox-inner');
 			index = ((index % len) + len) % len;
 
 			this.$instance.addClass('litebox-loading');

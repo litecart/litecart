@@ -4,14 +4,17 @@
 	border: 1px solid #ddd;
 	border-radius: var(--border-radius);
 }
+
 .detail .form-label {
 	font-weight: bold;
 }
+
 .option:has(input[name="shipping_option[id]"]:checked)::after {
-	content: '<?php echo t('title_selected', ' Selected '); ?>';
+	content: '<?php echo t('title_selected', ' selected '); ?>';
 }
+
 .option:has(input[name="payment_option[id]"]:checked)::after {
-	content: '<?php echo t('title_selected', ' Selected '); ?>';
+	content: '<?php echo t('title_selected', ' selected '); ?>';
 }
 </style>
 

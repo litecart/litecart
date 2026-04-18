@@ -18,7 +18,7 @@
 }
 #box-checkout > form > .row {
   height: 100vh;
-  grid-gap: 0;
+  gap: 0;
   margin-bottom: 0;
 }
 #box-checkout .left-wrapper {
@@ -55,8 +55,8 @@
   display: inline-block;
 }
 
-.strikethrough-divider > span:before,
-.strikethrough-divider > span:after {
+.strikethrough-divider > span::before,
+.strikethrough-divider > span::after {
   content: "";
   position: absolute;
   top: 50%;
@@ -65,12 +65,12 @@
   background: var(--default-background);
 }
 
-.strikethrough-divider > span:before {
+.strikethrough-divider > span::before {
   inset-inline-end: 100%;
   margin-inline-end: 1em;
 }
 
-.strikethrough-divider > span:after {
+.strikethrough-divider > span::after {
   inset-inline-start: 100%;
   margin-inline-start: 1em;
 }
@@ -144,13 +144,12 @@
 #box-checkout-shipping .option .content,
 #box-checkout-payment .option .content {
   max-height: 0;
-  overflow-x: hidden;
-  overflow-y: hidden;
+  overflow: hidden;
   text-align: start;
   transition: max-height 0.25s ease, padding 0.25s ease;
 }
-#box-checkout-shipping .option:hover:not(:has(input[name$="_option[id]"]:checked)):not(:has(input[name$="_option[id]"][disabled])),
-#box-checkout-payment .option:hover:not(:has(input[name$="_option[id]"]:checked)):not(:has(input[name$="_option[id]"][disabled])) {
+#box-checkout-shipping .option:hover:not(:has(input[name$="_option[id]"]:checked), :has(input[name$="_option[id]"][disabled])),
+#box-checkout-payment .option:hover:not(:has(input[name$="_option[id]"]:checked), :has(input[name$="_option[id]"][disabled])) {
   cursor: pointer;
   border-color: var(--default-border-color);
 }
@@ -176,7 +175,6 @@
 #box-checkout-payment .option:has(input[name$="_option[id]"]:checked)::after {
   position: absolute;
   top: 0.5em;
-  inset-inline-end: -25px;
   background: var(--default-title-color);
   font-size: 0.8em;
   text-align: center;

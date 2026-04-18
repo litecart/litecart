@@ -298,15 +298,19 @@
 	display: none;
 	transition: all 200ms linear;
 }
+
 #formats:has(input[name="format"][value="csv"]:checked) #csv.options {
 	display: block;
 }
+
 #formats:has(input[name="format"][value="json"]:checked) #json.options {
 	display: block;
 }
+
 #formats:has(input[name="format"][value="yaml"]:checked) #yaml.options {
 	display: block;
 }
+
 #formats:has(input[name="format"][value="xml"]:checked) #xml.options {
 	display: block;
 }

@@ -79,9 +79,7 @@ waitFor('jQuery', ($) => {
 		// Attach Litebox to elements
 		static attach($source, $modal, options = {}) {
 
-			const tempOptions = { ...this.defaults, ...$source.data(), ...options };
 			const handler = (e) => {
-				const $target = $(e.currentTarget);
 				const gallery = $(e.currentTarget).data('gallery');
 				const $gallerySource = gallery ? $(`[data-gallery="${gallery}"]`) : $source;
 				const elementOptions = {
@@ -446,7 +444,6 @@ waitFor('jQuery', ($) => {
 
 			const source = this.$source;
 			const len = source.length;
-			const $inner = this.$instance.find('.litebox-inner');
 			index = ((index % len) + len) % len;
 
 			this.$instance.addClass('litebox-loading');

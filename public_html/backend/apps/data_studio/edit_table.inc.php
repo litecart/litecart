@@ -124,22 +124,23 @@
 
 ?>
 <style>
-.card-app table {
-	/*font-family: Monospace;*/
-}
 .card-app table td:not([class="main"]) {
 	white-space: nowrap;
 }
+
 .card-app table.columns thead th,
 .card-app table.columns tbody td {
 	padding: .25em .5em;
 }
+
 .card-app table tfoot td {
 	padding: 1em !important;
 }
+
 .card-app table td input,
 .card-app table td select {
 }
+
 .card-app table tr td:not(:first-child) {
 	border-inline-start: 1px solid var(--table-border-color);
 }

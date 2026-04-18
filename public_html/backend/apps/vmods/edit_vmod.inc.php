@@ -167,6 +167,7 @@
 	border: 1px solid var(--default-border-color);
 	margin-bottom: 2em;
 }
+
 html.dark-mode .operation {
 	background: #232a3e;
 }
@@ -174,6 +175,7 @@ html.dark-mode .operation {
 .tabs .icon-times {
 	color: #c00;
 }
+
 .tabs .icon-plus {
 	color: #0c0;
 }
@@ -181,6 +183,7 @@ html.dark-mode .operation {
 .script {
 	position: relative;
 }
+
 .script .filename {
 	position: absolute;
 	display: inline-block;
@@ -227,7 +230,7 @@ textarea[name*="[insert]"][name$="[content]"] {
 
 input.warning,
 textarea.warning {
-	box-shadow: 0 0 5px 3px rgba(255 0,0, 0.7);
+	box-shadow: 0 0 5px 3px rgb(255 0 0 70%);
 }
 </style>
 

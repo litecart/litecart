@@ -1,16 +1,19 @@
 @use "media" as *;
 
-/* Typography*/
+/* Typography */
 
 .text-narrow {
 	font-weight: 300;
 }
+
 .text-regular {
 	font-weight: 400;
 }
+
 .text-medium {
 	font-weight: 500;
 }
+
 .text-bold {
 	font-weight: 700;
 }
@@ -27,6 +30,7 @@
 .text-sm {
 	font-size: .875em;
 }
+
 .text-lg {
 	font-size: 1.25em;
 }

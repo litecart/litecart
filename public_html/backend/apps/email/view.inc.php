@@ -38,6 +38,7 @@
 	.head > * {
 		margin: 1em 0;
 	}
+
 	.body {
 		padding: 1em;
 		border: 1px solid var(--default-border-color);

@@ -266,6 +266,7 @@
 .icon-exclamation-triangle {
 	color: #f00;
 }
+
 table .thumbnail {
 	display: inline-block;
 	vertical-align: middle;
@@ -274,6 +275,7 @@ table .thumbnail {
 	border-radius: 4px;
 	max-width: unset;
 }
+
 table .icon-star:hover,
 table .icon-star-o:hover {
 	transform: scale(1.5);

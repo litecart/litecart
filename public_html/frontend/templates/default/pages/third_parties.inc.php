@@ -2,37 +2,45 @@
 #box-third-parties h1 {
 	margin-top: 0;
 }
+
 #box-third-parties .third-party {
 	padding: 1em;
 	border-bottom: 1px solid #f3f3f3;
 	border-radius: var(--default-border-radius);
 	transition: all 200ms linear;
 }
+
 #box-third-parties .third-party:first-child {
 	border-top: 1px solid #f3f3f3;
 }
+
 #box-third-parties.third-party:hover {
 	background: #f3f3f3;
 }
+
 #box-third-parties .third-party a {
 	text-decoration: none;
 	color: inherit;
 }
+
 #box-third-parties .third-party .name {
 	display: block;
 	font-weight: 600;
 }
+
 #box-third-parties .third-party .details {
 	display: none;
 	padding: 2em;
 	padding-right: 0;
 }
+
 #box-third-parties .third-party .details:hidden::after {
 	content: 'x';
 	position: absolute;
 	top: 0;
 	right: 0;
 }
+
 #box-third-parties .third-party label {
 	font-weight: 700;
 }

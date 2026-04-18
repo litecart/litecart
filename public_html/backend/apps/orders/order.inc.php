@@ -107,20 +107,25 @@
 	margin-inline-start: -15px;
 	margin-bottom: 3mm;
 }
+
 .form-group label {
 	font-weight: 500;
 }
+
 .form-group .detail {
 	margin: 0;
 	padding: 0.5em 0;
 }
+
 .billing-address .value {
 	margin: 0 !important;
 }
+
 #lines {
 	margin-bottom: 2em;
 	display: block;
 }
+
 #lines tr th:last-child, .order-total tr td:last-child {
 	width: 30mm;
 }
@@ -135,6 +140,7 @@
 #invoice-total {
 	gap: 4mm;
 }
+
 #invoice-total .summary {
 	text-align: end;
 	border: 1px solid var(--default-border-color);
@@ -143,20 +149,21 @@
 	margin: 0;
 	min-width: 150px;
 }
+
 #grand-total {
 	font-weight: bold;
 	border-width: 2px !important;
 }
+
 textarea[name="notes"] {
 	display: block;
 	width: 100%;
-	font-family: monospace;
 	border: none;
 	background: #fff1a3;
 	font-family: "Comic Sans MS", cursive, sans-serif;
 	font-size: 1.2em;
 	transform: rotate(2deg);
-	box-shadow: 2px 2px 5px rgba(0,0,0,.1);
+	box-shadow: 2px 2px 5px rgb(0 0 0 / 10%);
 	padding: 2em;
 	border-radius: 2px;
 	min-height: 200px;
@@ -164,6 +171,7 @@ textarea[name="notes"] {
 	transition: all 200ms ease-in-out;
 	font-weight: 500;
 }
+
 html.dark-mode textarea[name="notes"] {
 	background: #201f1a;
 	color: #fff1a3;

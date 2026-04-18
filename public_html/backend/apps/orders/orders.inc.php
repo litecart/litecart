@@ -386,7 +386,6 @@ table .icon-star-o:hover {
 }
 
 table .tag {
-	font-family: monospace;
 	font-size: 0.8em;
 	opacity: 0.75;
 	border: 1px solid #b9bfc6;

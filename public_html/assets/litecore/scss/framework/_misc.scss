@@ -1,6 +1,7 @@
 .shadow {
 	box-shadow: var(--default-shadow)
 }
+
 .semi-transparent {
 	opacity: .5;
 }
@@ -17,14 +18,17 @@
 	margin: 2em 0;
 	width: 100%;
 }
-.strikethrough-divider:before {
+
+.strikethrough-divider::before {
 	margin-inline-end: 1em;
 }
-.strikethrough-divider:after {
+
+.strikethrough-divider::after {
 	margin-inline-start: 1em;
 }
-.strikethrough-divider:after,
-.strikethrough-divider:before {
+
+.strikethrough-divider::after,
+.strikethrough-divider::before {
 	flex: 1;
 	border-top: 1px solid #d3dce2;
 	content: "";

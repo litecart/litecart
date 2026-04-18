@@ -60,15 +60,19 @@
 	stroke-width: 1px;
 	stroke-dasharray: 5,5;
 }
+
 #chart-visits .ct-series .ct-point {
 	stroke-width: 4px;
 }
+
 #chart-visits .ct-line {
 	stroke: #00192e;
 }
+
 #chart-visits .ct-point {
 	stroke: #00192e;
 }
+
 #chart-visits .ct-area {
 	fill: #87aefd;
 }
@@ -84,7 +88,7 @@
 			<div id="chart-visits" style="height: 200px;" title="<?php echo t('title_visits', 'Visits'); ?>"></div>
 		</div>
 
-		<div style="max-height: 300px; overflow-x: hidden; overflow-y: auto;">
+		<div style="max-height: 300px; overflow: hidden auto;">
 			<table class="table table-striped data-table">
 				<thead>
 					<tr>

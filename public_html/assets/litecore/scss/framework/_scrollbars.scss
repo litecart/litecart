@@ -3,10 +3,12 @@
   width: 8px;
   height: 8px;
 }
+
 ::-webkit-scrollbar-thumb {
   background: var(--scrollbar-thumb-background);
   border-radius: 8px;
 }
+
 ::-webkit-scrollbar-track {
   background: var(--scrollbar-track-background);
   border-radius: 8px;

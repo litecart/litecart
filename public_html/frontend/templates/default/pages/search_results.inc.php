@@ -2,16 +2,18 @@
 #box-filter .filter {
 	display: grid;
 	grid-auto-flow: row;
-	grid-gap: 1em;
+	gap: 1em;
 	grid-template-columns: 1fr;
 	margin-bottom: 1em;
 }
-@media (min-width: 480px) {
+
+@media (width >= 480px) {
 	#box-filter .filter {
 		grid-auto-flow: column;
 	}
 }
-@media (min-width: 768px) {
+
+@media (width >= 768px) {
 	#box-filter .filter {
 		grid-auto-flow: column;
 	}

@@ -4,12 +4,14 @@
 	background: var(--button-#{$type}-background);
 	color: var(--button-#{$type}-text-color);
 	border: var(--button-border-width) solid var(--button-#{$type}-border-color);
+
 	&:hover:not(.active, .disabled, [disabled]),
 	&:focus:not(.active, .disabled, [disabled]),
 	&:active:not(.active, .disabled, [disabled]) {
 		background: var(--button-#{$type}-background--hover);
 		border-color: var(--button-#{$type}-border-color--hover);
 	}
+
 	&.active {
 		background: var(--button-#{$type}-background--active);
 		border-color: var(--button-#{$type}-border-color--active);
@@ -45,13 +47,14 @@
 
 	&.btn-outline {
 		@include btn('outline');
+
 		box-shadow: none;
 		border: var(--button-outline-text-color) solid var(--button-outline-border-width);
 	}
 
 	.btn-outline-gradient {
 		border: solid 2px transparent;
-		background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(101deg, #78e4ff, #ff48fa);
+		background-image: linear-gradient(rgb(255 255 255 / 0%), rgb(255 255 255 / 0%)), linear-gradient(101deg, #78e4ff, #ff48fa);
 	}
 
 	&.btn-sm { font-size: .65em; }
@@ -78,33 +81,40 @@
 
 .btn-block {
 	width: 100%;
-	//.btn + .btn {
+
+	// .btn + .btn {
 	//	margin-inline-start: 0;
 	//	margin-top: .5em;
-	//}
+	// }
 }
 
 .btn-group {
 	position: relative;
 	display: inline-flex;
 	border-radius: var(--border-radius);
+
 	+ .btn, + .btn-group {
 		margin-inline-start: .5em;
 	}
+
 	.btn {
 		flex: 1 0 auto;
 		margin-inline-start: -1px;
 	}
+
 	&:not(.btn-group-vertical) > .btn:not(:first-child) {
 		border-inline-start: var(--button-border-width) solid var(--button-border-color);
 	}
+
 	>.btn:first-child:not(:last-child, [data-toggle="dropdown"]) {
 			border-start-end-radius: 0;
 			border-end-end-radius: 0;
 	}
-	>.btn:not(:first-child):not(:last-child, [data-toggle="dropdown"]) {
+
+	>.btn:not(:first-child, :last-child, [data-toggle="dropdown"]) {
 		border-radius: 0;
 	}
+
 	>.btn:last-child:not(:first-child),
 	>[data-toggle="dropdown"]:not(:first-child) {
 		border-start-start-radius: 0;

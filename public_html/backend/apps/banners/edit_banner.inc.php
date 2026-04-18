@@ -88,6 +88,7 @@
 table th {
 	min-width: 250px;
 }
+
 table th:last-child {
 	min-width: auto;
 }

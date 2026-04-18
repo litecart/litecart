@@ -153,6 +153,7 @@
 .card table input {
 	text-align: inline-start;
 }
+
 .card table input[size],
 .card table select {
 	width: auto;

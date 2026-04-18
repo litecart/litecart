@@ -10,9 +10,11 @@
     flex: 1;
     border-top: 1px solid var(--default-border-color);
   }
+
   &::before {
     margin-right: .75em;
   }
+
   &::after {
     margin-left: .75em;
   }

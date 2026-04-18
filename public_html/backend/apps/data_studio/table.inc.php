@@ -102,23 +102,28 @@
 .nav-pills .nav-link {
 	padding: .25em .5em !important;
 }
+
 .card .columns {
 	columns: 3;
 	column-rule: 1px solid var(--default-border-color);
 	column-gap: 2em;
 }
+
 .card table td {
 	overflow-x: hidden;
 	text-overflow: ellipsis;
 	max-width: 250px;
 }
+
 .card table em {
 	opacity: .5;
 }
+
 textarea[name="query"] {
-	font-family: Monospace;
+	font-family: monospace;
 }
-.card-app table tr td:not(:first-child):not(:last-child) {
+
+.card-app table tr td:not(:first-child, :last-child) {
 	border-inline-start: 1px solid var(--table-border-color);
 }
 </style>

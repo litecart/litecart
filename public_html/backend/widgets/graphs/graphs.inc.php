@@ -122,6 +122,7 @@
 	--chart-b-color: #d2d2d2;
 	--chart-c-color: #3ba5c6;
 }
+
 .dark-mode #chart-sales-monthly {
 	--chart-label-color: #999;
 	--chart-a-color: #343d5a;
@@ -134,6 +135,7 @@
 	--chart-a-color: #e4e4e4;
 	--chart-b-color: #3ba5c6;
 }
+
 .dark-mode #chart-sales-daily {
 	--chart-label-color: #999;
 	--chart-a-color: #424d6e;
@@ -144,15 +146,19 @@
 	font-size: 12px;
 	color: var(--chart-label-color);
 }
+
 #chart-sales-monthly .ct-series-a .ct-bar, #chart-sales-daily .ct-series-a .ct-bar {
 	stroke: var(--chart-a-color);
 }
+
 #chart-sales-monthly .ct-series-b .ct-bar, #chart-sales-daily .ct-series-b .ct-bar {
 	stroke: var(--chart-b-color);
 }
+
 #chart-sales-monthly .ct-series-c .ct-bar, #chart-sales-daily .ct-series-c .ct-bar {
-	stroke: url(#gradient);
+	stroke: url("#gradient");
 }
+
 #chart-sales-monthly .ct-bar{
 	stroke-width: 20px;
 }
@@ -160,9 +166,11 @@
 #chart-sales-daily .ct-series-a .ct-bar {
 	stroke: var(--chart-a-color);
 }
+
 #chart-sales-daily .ct-series-b .ct-bar {
-	stroke: url(#gradient2);
+	stroke: url("#gradient2");
 }
+
 #chart-sales-daily .ct-bar {
 	stroke-width: 10px;
 }

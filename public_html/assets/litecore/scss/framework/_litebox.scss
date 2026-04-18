@@ -6,17 +6,10 @@ body.litebox-open {
 .litebox {
 	display: none;
 	position: fixed;
-	top: 0;
-	left: 0;
-	bottom: 0;
-	right: 0;
+	inset: 0;
 	overflow-y: auto;
-
 	text-align: center;
 	white-space: nowrap;
-
-	z-index: 999;
-
 	animation: litebox-fadein 100ms linear;
 	backdrop-filter: blur(3px) grayscale(1);
 	z-index: 999;
@@ -27,10 +20,10 @@ body.litebox-open {
 
 	/* support for nested liteboxes. Does not work in IE8 (use JS to fix) */
 	&.active {
-		background: rgba(0, 0, 0, 0.5);
+		background: rgb(0 0 0 / 50%);
 	}
 
-	&:before {
+	&::before {
 		/* position: trick to center content vertically */
 		content: '';
 		display: inline-block;
@@ -45,20 +38,17 @@ body.litebox-open {
 		text-align: start;
 		vertical-align: middle;
 		display: inline-block;
-
 		margin: var(--gutter-y) var(--gutter-x);
-
 		border-radius: var(--border-radius);
 
 		/* reset white-space wrapping */
 		white-space: normal;
-
 		animation: litebox-fadein 250ms linear;
 
 		&:not(.litebox-seamless) {
 			padding: var(--gutter-y) var(--gutter-x);
 			background: var(--modal-background, '#fff');
-			box-shadow: 0 5px 2em rgba(0,0,0,0.25);
+			box-shadow: 0 5px 2em rgb(0 0 0 / 25%);
 		}
 
 		&.litebox-seamless > * {
@@ -80,6 +70,7 @@ body.litebox-open {
 		border-radius: 50%;
 		transition: all 150ms linear;
 		z-index: 9999;
+
 		&:hover {
 			filter: invert(.75);
 		}
@@ -91,15 +82,16 @@ body.litebox-open {
 		position: absolute;
 		top: 50%;
 		margin-top: -1.5em;
-		background: rgba(0, 0, 0, 0.33);
+		background: rgb(0 0 0 / 33%);
 		color: var(--modal-text-color, '#fff');
 		border-radius: var(--border-radius);
 		cursor: pointer;
 		backdrop-filter: blur(3px);
 		transition: all 150ms linear;
 		z-index: 1000;
+
 		&:hover {
-			background: rgba(0, 0, 0, 0.66);
+			background: rgb(0 0 0 / 66%);
 		}
 	}
 
@@ -133,6 +125,7 @@ body.litebox-open {
 		animation: litebox-spin 2s linear infinite;
 		opacity: 0.25;
 	}
+
 	.litebox-modal {
 		background: none;
 		box-shadow: none;

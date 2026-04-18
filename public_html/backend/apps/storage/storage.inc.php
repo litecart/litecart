@@ -330,13 +330,17 @@
 	font-size: 1.25em;
 	margin-right: .5em;
 }
+
 .dropzone.in {
 	position: relative;
-	/*border: 2px dashed #999;*/
+
+	/* border: 2px dashed #999; */
 }
+
 .dropzone .drag-notice {
 	display: none;
 }
+
 .dropzone.in .drag-notice {
 	content: ' ';
 	position: absolute;
@@ -347,10 +351,11 @@
 	justify-content: center;
 	text-align: center;
 	flex-direction: column;
-	background: rgba(0, 0, 0, 0.25);
+	background: rgb(0 0 0 / 25%);
 	font-size: 2.5em;
 	color: #fff;
 }
+
 table .icon-folder {
 	color: #7ccdff;
 }

@@ -2,7 +2,7 @@
 
 @mixin m($id, $size) {
 	.m-#{$id} { margin: $size; }
-	.mx-#{$id} { margin-inline-start: $size; margin-inline-end: $size; }
+	.mx-#{$id} { margin-inline: $size $size; }
 	.my-#{$id} { margin-top: $size; margin-bottom: $size; }
 	.mt-#{$id} { margin-top: $size; }
 	.mb-#{$id} { margin-top: $size; }
@@ -12,7 +12,7 @@
 
 @mixin p($id, $size) {
 	.p-#{$id} { padding: $size; }
-	.px-#{$id} { padding-inline-start: $size; padding-inline-end: $size; }
+	.px-#{$id} { padding-inline: $size $size; }
 	.py-#{$id} { padding-top: $size; padding-bottom: $size; }
 	.pt-#{$id} { padding-top: $size; }
 	.pb-#{$id} { padding-top: $size; }
@@ -24,7 +24,6 @@
 @include m(2, .5rem);
 @include m(3, 1rem);
 @include m(4, 2rem);
-
 @include p(1, .25rem);
 @include p(2, .5rem);
 @include p(3, 1rem);

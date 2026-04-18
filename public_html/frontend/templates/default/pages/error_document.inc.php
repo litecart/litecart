@@ -2,6 +2,7 @@
 main {
 	padding: 2em 0;
 }
+
 #box-error-document {
 	padding: 4em 0;
 	background-image: url('<?php echo document::rlink('storage://images/illustration/crash.svg'); ?>');
@@ -15,9 +16,11 @@ main {
 	font-size: 64px;
 	font-weight: bold;
 }
+
 #box-error-document .title {
 	font-size: 24px;
 }
+
 #box-error-document .description {
 	font-size: 18px;
 	opacity: .65;

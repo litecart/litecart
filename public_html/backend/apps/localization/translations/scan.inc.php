@@ -172,6 +172,7 @@
 pre {
 	white-space: pre-line;
 }
+
 table.data-table td {
 	white-space: normal;
 }

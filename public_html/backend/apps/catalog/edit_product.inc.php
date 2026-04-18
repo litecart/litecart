@@ -151,14 +151,15 @@
 <style>
 #categories {
 	max-height: 310px;
-	overflow-y: auto;
-	overflow-x: hidden;
+	overflow: hidden auto;
 	transition: all 200ms linear;
 }
+
 #categories:hover {
 	width: 150%;
 	z-index: 999;
 }
+
 #categories label {
 	white-space: nowrap;
 }
@@ -166,14 +167,17 @@
 #images {
 	margin-bottom: 1em;
 }
+
 #images .image {
 	gap: 1em;
 	margin-bottom: 1em;
 }
+
 #images img {
 	max-width: 50px;
 	max-height: 50px;
 }
+
 #images .actions {
 	text-align: right;
 	padding: 0.25em 0;

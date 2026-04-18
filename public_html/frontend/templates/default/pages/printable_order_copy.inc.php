@@ -27,6 +27,7 @@ h1 {
 	margin-inline-start: -15px;
 	margin-bottom: 3mm;
 }
+
 .billing-address .value {
 	margin: 0 !important;
 }
@@ -39,28 +40,33 @@ h1 {
 	font-weight: 500;
 	margin-bottom: 3pt;
 }
+
 .page .value {
 	margin-bottom: 3mm;
 }
+
 .page .footer .row {
 	margin-bottom: 0;
 }
+
 #invoice-total {
 	margin-top: 5mm;
 	gap: 4mm;
 }
+
 #invoice-total .summary {
 	text-align: end;
-
 	border: 1px solid var(--default-border-color);
 	border-radius: var(--border-radius);
 	padding: 2mm 4mm;
 	margin: 0;
 }
+
 #grand-total {
 	font-weight: 700;
 	border-width: 2px !important;
 }
+
 #grand-total .amount {
 	font-size: 1.5em;
 }

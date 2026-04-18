@@ -15,11 +15,13 @@
 ?>
 <style>
 .card table {
-	/*font-family: Monospace;*/
+	/* font-family: Monospace; */
 }
+
 .card table td:not([class="main"]) {
 	white-space: nowrap;
 }
+
 .card table td input,
 .card table td select {
 	min-width: max-content;

@@ -54,13 +54,16 @@
 #widget-discussions .topics {
 	columns: auto 275px;
 }
+
 #widget-discussions .topic {
 	margin-bottom: 1em;
 	break-inside: avoid;
 }
+
 #widget-discussions .description {
 	opacity: 0.85;
 }
+
 #widget-discussions .title, #widget-discussions .description {
 	white-space: nowrap;
 	overflow: hidden;

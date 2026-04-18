@@ -2,16 +2,18 @@
 body {
 	padding: 60px 15px;
 }
+
 #box-maintenance-mode {
 	display: block;
 	text-align: center;
 	padding: 30px;
-	border-radius: 0px 25px 0px 25px;
+	border-radius: 0 25px;
 	background: #fff;
-	box-shadow: 0px 0px 30px rgba(0,0,0,0.25), 0px 0px 5px rgba(0,0,0,0.15);
+	box-shadow: 0 0 30px rgb(0 0 0 / 25%), 0 0 5px rgb(0 0 0 / 15%);
 	margin: 0 auto;
 	max-width: 640px;
 }
+
 #box-maintenance-mode img {
 	max-width: 250px;
 	max-height: 60px;

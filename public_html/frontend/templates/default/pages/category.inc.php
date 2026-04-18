@@ -3,9 +3,11 @@
 	display: block;
 	margin-bottom: 1em;
 }
+
 #filter-tokens:empty {
 	display: none;
 }
+
 #filter-tokens .token {
 	padding: .5em 1em;
 	border-radius: 4px;
@@ -13,6 +15,7 @@
 	margin-inline-end: .5em;
 	white-space: nowrap;
 }
+
 #filter-tokens .token .remove {
 	padding-inline-start: .5em;
 	color: inherit;
@@ -22,14 +25,17 @@
 #filter-tokens .token[data-group="name"] {
 	background: #cbe2b6;
 }
+
 #filter-tokens .token[data-group="brand"] {
 	background: #b6c2e2;
 }
+
 #filter-tokens .token[data-group^="attribute"] {
 	background: #e2c6b6;
 }
+
 #filter-tokens .token[data-group="price-range"] {
-	background:rgb(182, 216, 226);
+	background:rgb(182 216 226);
 }
 </style>
 

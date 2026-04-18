@@ -1,11 +1,12 @@
 /* Dropdowns */
 
 .dropdown {
-	//perspective: 400px;
+	// perspective: 400px;
 
 	// Make sure the dropdown is on top of other elements
 	position: relative;
-	//z-index: 999;
+
+	// z-index: 999;
 
 	[data-toggle="dropdown"] {
 		background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
@@ -27,7 +28,7 @@
 		border: var(--dropdown-border-width) solid var(--dropdown-border-color);
 		border-radius: var(--border-radius);
 		box-shadow: var(--dropdown-shadow);
-		transform-origin: 0px 0px;
+		transform-origin: 0 0;
 		transform: rotateX(-25deg);
 		transition: 250ms;
 		overflow: hidden;
@@ -37,6 +38,7 @@
 
 	&.open {
 		z-index: 999;
+
 		> .dropdown-content,
 		> .dropdown-menu {
 			visibility: visible;
@@ -49,22 +51,19 @@
 	&.dropdown > .dropdown-menu,
 	&.dropdown-start > .dropdown-content,
 	&.dropdown-start > .dropdown-menu {
-		inset-inline-start: 0;
-		inset-inline-end: auto;
+		inset-inline: 0 auto;
 	}
 
 	&.dropdown-end > .dropdown-content,
 	&.dropdown-end > .dropdown-menu,
 	&.dropdown-start > .dropdown-content,
 	&.dropdown-start > .dropdown-menu {
-		inset-inline-start: auto;
-		inset-inline-end: 0;
+		inset-inline: auto 0;
 	}
 
 	&.dropdown-block > .dropdown-content,
 	&.dropdown-block > .dropdown-menu {
-		inset-inline-start: 0;
-		inset-inline-end: 0;
+		inset-inline: 0;
 		width: 100%;
 	}
 
@@ -82,10 +81,11 @@
 .dropdown-content {
 	position: fixed;
 	min-width: max-content;
-	//width: max-content;
+
+	// width: max-content;
 	text-align: start;
 	border-radius: var(--border-radius);
-	box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+	box-shadow: 0 6px 12px rgb(0 0 0 / 17.5%);
 	background-clip: padding-box;
 
 	&:is(ul) {
@@ -148,24 +148,26 @@
 .dropdown-item {
 	background: var(--dropdown-item-background);
 	color: var(--dropdown-item-text-color);
-	//padding: .75em 1em;
+
+	// padding: .75em 1em;
 
 	a, label {
 		display: block;
 	}
 
-	//&:hover, &:has(input[type="checkbox"], input[type="radio"]):hover {
+	// &:hover, &:has(input[type="checkbox"], input[type="radio"]):hover {
 	&:hover a, &:hover label {
-		//background: var(--dropdown-item-background--hover);
+		// background: var(--dropdown-item-background--hover);
 		color: var(--dropdown-item-text-color--hover);
 		cursor: pointer;
 	}
 
 	&:has(input:checked) label {
-		//background: var(--dropdown-item-background--active);
+		// background: var(--dropdown-item-background--active);
 		color: var(--dropdown-item-text-color--active);
 		font-weight: 500;
 	}
+
 /*
 	input[type="checkbox"],
 	input[type="radio"] {
@@ -176,8 +178,7 @@
 
 .form-select + .dropdown-menu,
 .form-select + .dropdown-content {
-	inset-inline-start: 0 !important;
-	inset-inline-end: 0 !important;
+	inset-inline: 0 !important;
 }
 
 html[dir="rtl"] {

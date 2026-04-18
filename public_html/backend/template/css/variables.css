@@ -7,7 +7,7 @@
 
 /* Fonts */
 @font-face {
-  font-family: "Inter";
+  font-family: Inter;
   font-style: normal;
   font-weight: 400;
   font-swap: swap;
@@ -15,7 +15,7 @@
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 @font-face {
-  font-family: "Inter";
+  font-family: Inter;
   font-style: normal;
   font-weight: 500;
   font-swap: swap;
@@ -23,7 +23,7 @@
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 @font-face {
-  font-family: "Inter";
+  font-family: Inter;
   font-style: normal;
   font-weight: 700;
   font-swap: swap;
@@ -78,13 +78,13 @@
 :root {
   --border-radius: 6px;
   --whitespace-color: #fff;
-  --default-text-font: Inter, Arial, 'Helvetica Neue', Helvetica, sans-serif;
+  --default-text-font: inter, arial, 'Helvetica Neue', helvetica, sans-serif;
   --default-text-color: #222;
   --default-text-size: 12px;
   --default-line-height: 1.2;
   --default-title-color: #333;
   --default-border-color: #f2f3f7;
-  --default-shadow: 0 0 0 0 #0000, 0 0 0 0 #0000, 0 5px 8px -3px rgba(0, 0, 0, .1), 0 2px 3px -2px rgba(0, 0, 0, .1);
+  --default-shadow: 0 0 0 0 #0000, 0 0 0 0 #0000, 0 5px 8px -3px rgb(0 0 0 / 10%), 0 2px 3px -2px rgb(0 0 0 / 10%);
   --link-text-color: #06b;
   /* Forms */
   --input-padding-x: 1em;
@@ -117,17 +117,17 @@
   --button-padding-x: 1.25em;
   --button-padding-y: .55em;
   --button-border-width: 1px;
-  --button-shadow: 0 1px 2px 0 rgba(37, 44, 97, 0.15), 0 1px 2px 0 rgba(93, 100, 148, 0.2);
-  --button-shadow--active: 0 1px 0px 0 rgba(37, 44, 97, 0.15), 0 0px 2px 0 rgba(93, 100, 148, 0.2);
-  --button-shadow--active: inset 0px 1px 0 0 rgba(0,0,0,.05);
+  --button-shadow: 0 1px 2px 0 rgb(37 44 97 / 15%), 0 1px 2px 0 rgb(93 100 148 / 20%);
+  --button-shadow--active: 0 1px 0px 0 rgb(37 44 97 / 15%), 0 0px 2px 0 rgb(93 100 148 / 20%);
+  --button-shadow--active: inset 0px 1px 0 0 rgb(0 0 0 / 5%);
   /* Primary Button */
   --button-primary-background: #3ba5c6;
   --button-primary-background--active: #2f8fae;
   --button-primary-background--hover: #2f8fae;
   --button-primary-text-color: #fff;
-  --button-primary-border-color: rgba(0, 0, 0, .1);
-  --button-primary-border-color--active: rgba(0, 0, 0, .1);
-  --button-primary-border-color--hover: rgba(0, 0, 0, .1);
+  --button-primary-border-color: rgb(0 0 0 / 10%);
+  --button-primary-border-color--active: rgb(0 0 0 / 10%);
+  --button-primary-border-color--hover: rgb(0 0 0 / 10%);
   /* Default Button */
   --button-default-background: #ededee;
   --button-default-background--hover: #e3e4e9;
@@ -141,17 +141,17 @@
   --button-success-background--hover: #7faf26;
   --button-success-background--active: #7faf26;
   --button-success-text-color: #fff;
-  --button-success-border-color: rgba(0, 0, 0, .1);
-  --button-success-border-color--hover: rgba(0, 0, 0, .1);
-  --button-success-border-color--active: rgba(0, 0, 0, .1);
+  --button-success-border-color: rgb(0 0 0 / 10%);
+  --button-success-border-color--hover: rgb(0 0 0 / 10%);
+  --button-success-border-color--active: rgb(0 0 0 / 10%);
   /* Danger Button */
   --button-danger-background: #d9534f;
   --button-danger-background--hover: #d04a46;
   --button-danger-background--active: #d04a46;
   --button-danger-text-color: #fff;
-  --button-danger-border-color: rgba(0, 0, 0, .1);
-  --button-danger-border-color--hover: rgba(0, 0, 0, .1);
-  --button-danger-border-color--active: rgba(0, 0, 0, .1);
+  --button-danger-border-color: rgb(0 0 0 / 10%);
+  --button-danger-border-color--hover: rgb(0 0 0 / 10%);
+  --button-danger-border-color--active: rgb(0 0 0 / 10%);
   /* Outline Button */
   --button-outline-background: transparent;
   --button-outline-background--hover: transparent;
@@ -167,9 +167,9 @@
   --card-title-text-weight: 700;
   --card-border-color: transparent;
   --card-border-width: 0;
-  --card-shadow: 0 0 0 0 #0000, 0 0 0 0 #0000, 0 5px 8px -3px rgba(0, 0, 0, .1), 0 2px 3px -2px rgba(0, 0, 0, .1);
+  --card-shadow: 0 0 0 0 #0000, 0 0 0 0 #0000, 0 5px 8px -3px rgb(0 0 0 / 10%), 0 2px 3px -2px rgb(0 0 0 / 10%);
   --card-footer-background: #f4f6fb;
-  --carousel-shadow: 0 10px 20px rgba(0, 0, 0, .15);
+  --carousel-shadow: 0 10px 20px rgb(0 0 0 / 15%);
   /* Dropdowns */
   --dropdown-background: #fff;
   --dropdown-text-color: var(--default-text-color);
@@ -191,9 +191,9 @@
   --notice-success-background: #98cc34;
   --notice-success-text-color: #fff;
   --notice-success-border-color: #fff;
-  --notice-warning-background: #ffcc66;
-  --notice-warning-text-color: #aa0000;
-  --notice-warning-border-color: #aa0000;
+  --notice-warning-background: #fc6;
+  --notice-warning-text-color: #a00;
+  --notice-warning-border-color: #a00;
   --notice-danger-background: #d9534f;
   --notice-danger-text-color: #fff;
   --notice-danger-border-color: #fff;
@@ -225,7 +225,7 @@
   --tab-item-text-color: #444;
   --tab-item-text-color--hover: #444;
   --tab-item-text-color--active: #444;
-  --tab-item-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  --tab-item-shadow: 0 10px 20px rgb(0 0 0 / 15%);
   /* Tables */
   --table-border-color: var(--default-border-color);
   --table-border-width: 1px;
@@ -238,8 +238,8 @@
   --table-link-background: #e4e7eb;
   --table-link-text-color: var(--default-text-color);
   --table-link-background--hover: #b9bfc6;
-  --table-link-shadow: 0 0 1px 0 rgba(37, 44, 97, 0.15), 0 1px 1px 0 rgba(93, 100, 148, 0.2);
-  --table-link-shadow--active: inset 0px 1px 0 0 rgba(0,0,0,.05);
+  --table-link-shadow: 0 0 1px 0 rgb(37 44 97 / 15%), 0 1px 1px 0 rgb(93 100 148 / 20%);
+  --table-link-shadow--active: inset 0px 1px 0 0 rgb(0 0 0 / 5%);
   --table-footer-background: #fbfcfd;
   --table-footer-text-color: var(--default-text-color);
 }
@@ -342,14 +342,14 @@ html.dark-mode {
   --button-success-background--hover: #63871b;
   --button-success-background--active: #63871b;
   --button-success-text-color: #fff;
-  --button-success-border-color: rgba(0, 0, 0, .1);
-  --button-success-border-color--hover: rgba(0, 0, 0, .1);
-  --button-success-border-color--active: rgba(0, 0, 0, .1);
+  --button-success-border-color: rgb(0 0 0 / 10%);
+  --button-success-border-color--hover: rgb(0 0 0 / 10%);
+  --button-success-border-color--active: rgb(0 0 0 / 10%);
   --button-danger-background: #3c2a29;
   --button-danger-background--hover: #482927;
   --button-danger-background--active: #482927;
   --button-danger-text-color: #fff;
-  --button-danger-border-color: rgba(0, 0, 0, .1);
-  --button-danger-border-color--hover: rgba(0, 0, 0, .1);
-  --button-danger-border-color--active: rgba(0, 0, 0, .1);
+  --button-danger-border-color: rgb(0 0 0 / 10%);
+  --button-danger-border-color--hover: rgb(0 0 0 / 10%);
+  --button-danger-border-color--active: rgb(0 0 0 / 10%);
 }
