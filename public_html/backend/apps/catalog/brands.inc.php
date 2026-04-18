@@ -32,6 +32,14 @@
 		}
 	}
 
+	// Search Filter
+	if (!empty($_GET['query'])) {
+		$sql_find = [
+			"b.id = '". database::input($_GET['query']) ."'",
+			"b.name like '%". database::input($_GET['query']) ."%'",
+		];
+	}
+
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$brands = database::query(
 		"select b.*, p.num_products
@@ -41,6 +49,8 @@
 			from ". DB_TABLE_PREFIX ."products
 			group by brand_id
 		) p on (p.brand_id = b.id)
+		where b.id
+		". (!empty($sql_find) ? "and (". implode(" or ", $sql_find) .")" : "") ."
 		order by name asc;"
 	)->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
 
@@ -55,6 +65,15 @@
 	<div class="card-action">
 		<?php echo f::form_button_link(document::ilink(__APP__.'/edit_brand'), t('title_create_new_brand', 'Create New Brand'), '', 'create'); ?>
 	</div>
+
+	<?php echo f::form_begin('search_form', 'get'); ?>
+
+		<div class="card-filter">
+			<div class="expandable"><?php echo f::form_input_search('query', true, 'placeholder="'. t('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"'); ?></div>
+			<?php echo f::form_button('filter', t('title_search', 'Search'), 'submit'); ?>
+		</div>
+
+	<?php echo f::form_end(); ?>
 
 	<?php echo f::form_begin('brands_form', 'post'); ?>
 
