@@ -410,8 +410,7 @@
 
 		if (!empty($filter['query'])) {
 
-			$code_regex = f::format_regex_code($_GET['query']);
-			$query_fulltext = f::escape_mysql_fulltext($_GET['query']);
+			$code_regex = f::format_regex_code($filter['query']);
 
 			$sql_select_relevance[] = (
 				"if(p.code regexp '". database::input($code_regex) ."', 5, 0)"
@@ -430,15 +429,15 @@
 			);
 
 			$sql_select_relevance[] = (
-				"if(json_value(p.name, '$.". database::input(language::$selected['code']) ."') collate utf8mb4_unicode_ci like '%". addcslashes(database::input($_GET['query']), '%_') ."%', 3, 0)"
+				"if(json_value(p.name, '$.". database::input(language::$selected['code']) ."') collate utf8mb4_unicode_ci like '%". addcslashes(database::input($filter['query']), '%_') ."%', 3, 0)"
 			);
 
 			$sql_select_relevance[] = (
-				"if(json_value(p.short_description, '$.". database::input(language::$selected['code']) ."') collate utf8mb4_unicode_ci like '%". addcslashes(database::input($_GET['query']), '%_') ."%', 2, 0)"
+				"if(json_value(p.short_description, '$.". database::input(language::$selected['code']) ."') collate utf8mb4_unicode_ci like '%". addcslashes(database::input($filter['query']), '%_') ."%', 2, 0)"
 			);
 
 			$sql_select_relevance[] = (
-				"if(json_value(p.description, '$.". database::input(language::$selected['code']) ."') collate utf8mb4_unicode_ci like '%". addcslashes(database::input($_GET['query']), '%_') ."%', 1, 0)"
+				"if(json_value(p.description, '$.". database::input(language::$selected['code']) ."') collate utf8mb4_unicode_ci like '%". addcslashes(database::input($filter['query']), '%_') ."%', 1, 0)"
 			);
 		}
 
