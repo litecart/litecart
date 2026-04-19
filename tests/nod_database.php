@@ -77,33 +77,27 @@
     }
 
     ########################################################################
-    ## query — parameter substitution (integer)
+    ## prepare / bind — parameter substitution (integer)
     ########################################################################
 
-    $result = database::query(
-      "select :val as result;",
-      [':val' => 42]
-    );
-
-    $row = $result->fetch();
+    $row = database::prepare(
+      "select :val as result;"
+    )->bind(['val' => 42])->fetch();
 
     if ((int)$row['result'] !== 42) {
-      throw new Exception('query: Parameter substitution for integer failed, got '. $row['result']);
+      throw new Exception('prepare/bind: Parameter substitution for integer failed, got '. var_export($row['result'], true));
     }
 
     ########################################################################
-    ## query — parameter substitution (string with escaping)
+    ## prepare / bind — parameter substitution (string with escaping)
     ########################################################################
 
-    $result = database::query(
-      "select :val as result;",
-      [':val' => "test'injection"]
-    );
-
-    $row = $result->fetch();
+    $row = database::prepare(
+      "select :val as result;"
+    )->bind(['val' => "test'injection"])->fetch();
 
     if ($row['result'] !== "test'injection") {
-      throw new Exception('query: String parameter should be escaped and returned correctly');
+      throw new Exception('prepare/bind: String parameter should be escaped and returned correctly, got '. var_export($row['result'], true));
     }
 
     ########################################################################
@@ -143,17 +137,18 @@
     }
 
     ########################################################################
-    ## each — callback iteration
+    ## each — callback is invoked for every row
     ########################################################################
 
-    $values = database::query(
+    $collected = [];
+    database::query(
       "select 1 as n union all select 2 union all select 3;"
-    )->each(function($row) {
-      return (int)$row['n'] * 10;
+    )->each(function($row) use (&$collected) {
+      $collected[] = (int)$row['n'] * 10;
     });
 
-    if ($values !== [10, 20, 30]) {
-      throw new Exception('each: Expected [10, 20, 30], got '. var_export($values, true));
+    if ($collected !== [10, 20, 30]) {
+      throw new Exception('each: Expected [10, 20, 30] collected via callback, got '. var_export($collected, true));
     }
 
     ########################################################################
