@@ -46,7 +46,7 @@
 				throw new Exception('Could not find tax rate (ID: '. (int)$id .') in database.');
 			}
 
-			$this->data = array_replace($this->data, array_intersect_key($tax_rate, $this->data));
+			$this->data = f::array_update($this->data, $tax_rate);
 
 			$this->previous = $this->data;
 		}

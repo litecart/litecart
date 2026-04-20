@@ -47,7 +47,7 @@
 				throw new Exception('Could not find currency ('. f::escape_html($currency_code) .') in database.');
 			}
 
-			$this->data = array_replace($this->data, array_intersect_key($currency, $this->data));
+			$this->data = f::array_update($this->data, $currency);
 
 			$this->previous = $this->data;
 		}

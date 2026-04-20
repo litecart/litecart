@@ -68,7 +68,7 @@
 				throw new Error('Could not find stock item (ID: '. (int)$id .') in database.');
 			}
 
-			$this->data = array_replace($this->data, array_intersect_key($stock_item, $this->data));
+			$this->data = f::array_update($this->data, $stock_item);
 
 			// Info
 			foreach ([

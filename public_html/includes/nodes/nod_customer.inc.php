@@ -110,7 +110,7 @@
 						throw new Exception(t('error_session_expired_due_to_account_changes', 'Session expired due to changes in the account'));
 					}
 
-					session::$data['customer'] = array_replace(session::$data['customer'], array_intersect_key($customer, session::$data['customer']));
+					session::$data['customer'] = f::array_update(session::$data['customer'], $customer);
 
 				} catch (Exception $e) {
 
@@ -352,7 +352,7 @@
 			});
 
 			if ($customer) {
-				session::$data['customer'] = array_replace(session::$data['customer'], array_intersect_key($customer, session::$data['customer']));
+				session::$data['customer'] = f::array_update(session::$data['customer'], $customer);
 			}
 
 			if (!empty(self::$data['language_code']) && self::$data['language_code'] == language::$selected['code']) {

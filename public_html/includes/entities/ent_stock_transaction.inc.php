@@ -64,7 +64,7 @@
 				throw new Error('Could not find stock transaction (ID: '. (int)$id .') in database.');
 			}
 
-			$this->data = array_replace($this->data, array_intersect_key($transaction, $this->data));
+			$this->data = f::array_update($this->data, $transaction);
 
 			$this->data['contents'] = database::query(
 				"select stc.*, si.sku, si.quantity, si.backordered, json_value(si.name, '$.". database::input(language::$selected['code']) ."') as name

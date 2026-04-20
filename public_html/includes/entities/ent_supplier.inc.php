@@ -44,7 +44,7 @@
 				throw new Exception('Could not find supplier (ID: '. (int)$id .') in database.');
 			}
 
-			$this->data = array_replace($this->data, array_intersect_key($supplier, $this->data));
+			$this->data = f::array_update($this->data, $supplier);
 
 			$this->previous = $this->data;
 		}

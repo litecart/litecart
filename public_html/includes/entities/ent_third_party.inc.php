@@ -54,7 +54,7 @@
 				throw new Exception('Could not find third party (ID: '. (int)$third_party_id .') in database.');
 			}
 
-			$this->data = array_replace($this->data, array_intersect_key($third_party, $this->data));
+			$this->data = f::array_update($this->data, $third_party);
 
 			foreach ([
 				'description',

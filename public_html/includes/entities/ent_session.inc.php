@@ -48,7 +48,7 @@
 				throw new Exception('Could not find session in database (ID: '. $id .')');
 			}
 
-			$this->data = array_replace($this->data, array_intersect_key($session, $this->data));
+			$this->data = f::array_update($this->data, $session);
 
 			$this->previous = $this->data;
 		}

@@ -51,7 +51,7 @@
 				throw new Exception('Could not find sold out status (ID: '. (int)$id .') in database.');
 			}
 
-			$this->data = array_replace($this->data, array_intersect_key($sold_out_status, $this->data));
+			$this->data = f::array_update($this->data, $sold_out_status);
 
 			foreach ([
 				'name',

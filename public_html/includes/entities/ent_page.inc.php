@@ -53,7 +53,7 @@
 				throw new Exception('Could not find page (ID: '. (int)$id .') in database.');
 			}
 
-			$this->data = array_replace($this->data, array_intersect_key($page, $this->data));
+			$this->data = f::array_update($this->data, $page);
 
 			foreach ([
 				'title',

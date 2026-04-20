@@ -44,7 +44,7 @@
 				throw new Exception('Could not find site tag (ID: '. (int)$site_tag_id .') in database.');
 			}
 
-			$this->data = array_replace($this->data, array_intersect_key($site_tag, $this->data));
+			$this->data = f::array_update($this->data, $site_tag);
 
 			$this->previous = $this->data;
 		}
