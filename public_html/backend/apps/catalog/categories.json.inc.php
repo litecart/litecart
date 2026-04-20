@@ -38,7 +38,9 @@
 				'(". database::input(t('title_untitled', 'Untitled')) .")'
 			) as name
 			from ". DB_TABLE_PREFIX ."categories c
-			where ". (!empty($_GET['parent_id']) ? "c.parent_id = ". (int)$_GET['parent_id'] : "c.parent_id is null") ."
+			where ". (empty($_GET['query'])
+				? (!empty($_GET['parent_id']) ? "c.parent_id = ". (int)$_GET['parent_id'] : "c.parent_id is null")
+				: "1=1") ."
 			". (!empty($sql_find) ? "and (". implode(" or ", $sql_find) .")" : "") ."
 			order by c.priority, name;"
 		)->fetch_all(function($subcategory) {

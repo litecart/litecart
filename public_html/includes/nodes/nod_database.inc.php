@@ -377,12 +377,15 @@
 				return $input;
 			}
 
-			if ($input == '') {
-				return '';
+			// Pass non-string scalars through unchanged. Must run before the empty-check
+			// below, otherwise `null == ''` (loose compare) would coerce null to ''.
+			// gettype() returns 'NULL' / 'double' (not 'null' / 'float') — use those.
+			if (in_array(gettype($input), ['NULL', 'boolean', 'integer', 'double'], true)) {
+				return $input;
 			}
 
-			if (in_array(gettype($input), ['null', 'boolean', 'double', 'integer', 'float'])) {
-				return $input;
+			if ($input === '') {
+				return '';
 			}
 
 			if ($allowable_tags !== true) {
@@ -613,8 +616,8 @@
 							continue;
 						}
 
-						// Commit replacement
-						$sql = substr($sql, 0, $i) . $value . substr($sql, $n + 1);
+						// Commit replacement (keep the break character at $n — it belongs to the SQL, not the placeholder)
+						$sql = substr($sql, 0, $i) . $value . substr($sql, $n);
 
 						// Move cursor to end of parameter
 						$i = $i + strlen($value);
