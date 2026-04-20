@@ -5,7 +5,7 @@
 	breadcrumbs::add(t('title_localization', 'Localization'));
 	breadcrumbs::add(t('title_import_export_csv', 'Import/Export CSV'), document::ilink());
 
-	$collections = include __DIR__.'/collections.inc.php';
+	$collections = include 'app://backend/apps/localization/translations/collections.inc.php';
 
 	if (isset($_POST['import'])) {
 
@@ -230,8 +230,9 @@
 			};
 
 			foreach ($collections as $collection) {
+				if (empty($collection['translatable'])) continue;
 				if (empty($_GET['collections']) || in_array($collection['id'], $_GET['collections'])) {
-					foreach ($collection['columns'] as $column) {
+					foreach ($collection['translatable'] as $column) {
 						$sql_union[] = $union_select($collection['id'], $collection['entity'], $column);
 					}
 				}

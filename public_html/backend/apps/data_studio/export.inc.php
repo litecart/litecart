@@ -4,9 +4,9 @@
 
 	breadcrumbs::add(t('title_export_data', 'Export Data'));
 
-	$collections_set = include 'app://includes/collections.inc.php';
-	$collections = array_filter($collections_set, function ($collection) {
-		return !empty($collection['name']);
+	$collections = include 'app://includes/collections.inc.php';
+	$collections = array_filter($collections, function ($collection) {
+		return !empty($collection['entity']);
 	});
 
 	$database_tables = database::query(
@@ -29,30 +29,36 @@
 			}
 
 			switch (true) {
-				case substr($_POST['source'], 0, 4) == 'ent:':
+				case substr($_POST['source'], 0, 10) == 'collection:':
 
-					$collection = basename(substr($_POST['source'], 4));
+					$collection = basename(substr($_POST['source'], 10));
 
-					// Check if entity exists in collections
-					if (!in_array($collection, array_column($collections, 'name'))) {
+					// Check if collection exists in collections
+					if (!in_array($collection, array_column($collections, 'id'))) {
 						throw new Exception(t('error_invalid_source', 'Invalid source'));
 					}
 
-					$class_name = 'ent_' . $collection;
+					$i = array_search($collection, array_column($collections, 'id'));
+
+					if ($i === false || !isset($collections[$i])) {
+						throw new Exception(t('error_invalid_collection', 'Invalid collection'));
+					}
+
+					if (empty($collections[$i]['entity'])) {
+						throw new Exception(t('error_collection_missing_entity', 'The selected collection is missing an entity definition and cannot be exported'));
+					}
+
+					$collection = $collections[$i];
+
+					$class_name = 'ent_' . $collection['entity'];
 					if (!class_exists($class_name)) {
 						throw new Exception(t('error_entity_class_not_found', 'Entity class not found'));
 					}
 
 					$entity_obj = new $class_name();
 
-					// Derive table name from class name: ent_administrator => administrators
-					$table = preg_replace('#^ent_#', '', $class_name);
-					$table = strtolower($table);
-					// crude pluralization: add 's' if not already
-					if (substr($table, -1) !== 's') $table .= 's';
-
 					$data = database::query(
-						"SELECT * FROM `". DB_TABLE_PREFIX . $table . "`
+						"SELECT * FROM `". DB_TABLE_PREFIX . $collection['id'] . "`
 						ORDER BY `id` ASC;"
 					)->fetch_all();
 
@@ -62,15 +68,16 @@
 
 					break;
 
-				case substr($_POST['source'], 0, 3) == 'db:':
-					$table = substr($_POST['source'], 3);
+				case substr($_POST['source'], 0, 9) == 'database:':
+					$table = substr($_POST['source'], 9);
 
 					if (!in_array($table, $database_tables)) {
 						throw new Exception(t('error_invalid_source', 'Invalid source'));
 					}
 
 					$data = database::query(
-						"SELECT * FROM `". DB_TABLE_PREFIX . $table . "` ORDER BY 1 ASC;"
+						"SELECT * FROM `". DB_TABLE_PREFIX . $table . "`
+						ORDER BY 1 ASC;"
 					)->fetch_all();
 
 					if (!$data) {
@@ -198,14 +205,14 @@
 		[
 			'label' => t('title_entity_collection', 'Entity Collection'),
 			'options' => array_combine(
-				array_map(function ($collection) { return 'ent:' . $collection['entity']; }, $collections),
+				array_map(function ($collection) { return 'collection:' . $collection['id']; }, $collections),
 				array_map(function ($collection) { return $collection['name']; }, $collections),
 			),
 		],
 		[
 			'label' => t('title_database_table', 'Database Table'),
 			'options' => array_combine(
-				array_map(function ($table) { return 'db:' . $table; }, $database_tables),
+				array_map(function ($table) { return 'database:' . $table; }, $database_tables),
 				$database_tables,
 			),
 		],

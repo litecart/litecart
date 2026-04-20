@@ -50,7 +50,7 @@
 				throw new Exception('Could not find language ('. f::escape_html($language_code) .') in database.');
 			}
 
-			$this->data = array_intersect_key(array_merge($this->data, $language), $this->data);
+			$this->data = f::array_update($this->data, $language);
 
 			$this->previous = $this->data;
 		}
@@ -74,15 +74,20 @@
 				". (!empty($this->data['id']) ? "and id != ". (int)$this->data['id'] : "") ."
 				limit 1;"
 			)->num_rows) {
-				throw new Exception(t('error_language_conflict', 'The language conflicts with another language in the database'));
+				throw new Exception(strtr(t('error_language_conflict', 'The language code ({code} or {code2}) conflicts with another language in the database'), [
+					'{code}' => $this->data['code'],
+					'{code2}' => $this->data['code2'],
+				]));
 			}
 
 			if (!$this->data['id']) {
-				database::query(
+
+			database::query(
 					"insert into ". DB_TABLE_PREFIX ."languages
-					(created_at)
-					values ('". ($this->data['created_at'] = date('Y-m-d H:i:s')) ."');"
+					(code, code2, created_at)
+					values ('". database::input($this->data['code']) ."', '". database::input($this->data['code2']) ."', '". ($this->data['created_at'] = date('Y-m-d H:i:s')) ."');"
 				);
+
 				$this->data['id'] = database::insert_id();
 			}
 
@@ -112,58 +117,49 @@
 				limit 1;"
 			);
 
-			if (!empty($this->previous['code'])) {
-				if ($this->data['code'] != $this->previous['code']) {
+			if (!empty($this->previous['code']) && $this->data['code'] != $this->previous['code']) {
 
-					if ($this->previous['code'] == 'en') {
-						throw new Exception('You cannot not rename the english language because it is used for the PHP framework.');
+				if ($this->previous['code'] == 'en') {
+					throw new Exception('You cannot not rename the english language because it is used for the PHP framework.');
+				}
 
-					} else {
+				// Rename language column in translations table
+
+				if (database::query(
+					"show fields from ". DB_TABLE_PREFIX ."translations
+					where `Field` = 'text_". database::identifier($this->data['code']) ."';"
+				)->num_rows) {
+					database::query(
+						"alter table ". DB_TABLE_PREFIX ."translations
+						change `text_". database::identifier($this->previous['code']) ."` `text_". database::identifier($this->data['code']) ."` text not null;"
+					);
+				}
+
+				// Rename language code in entity collections
+
+				$collections = include 'app://includes/collections.inc.php';
+
+				foreach ($collections as $collection) {
+					if (empty($collection['translatable'])) continue;
+
+					$table = DB_TABLE_PREFIX . $collection['id'];
+
+					foreach ($collection['translatable'] as $column) {
 						database::query(
-							"alter table ". DB_TABLE_PREFIX ."translations
-							change `text_". database::identifier($this->previous['code']) ."` `text_". database::identifier($this->data['code']) ."` text not null;"
+							"update `$table`
+							set `{$column}` = if(
+									json_contains_path(`{$column}`, 'one', '$.". database::input($this->previous['code']) ."'),
+									json_set(json_remove(`{$column}`, '$.". database::input($this->previous['code']) ."'),
+									'$.". database::input($this->data['code']) ."', json_value(`{$column}`, '$.". database::input($this->previous['code']) ."')
+								), `{$column}`)
+							limit 1;"
 						);
-
-						foreach ([
-							DB_TABLE_PREFIX . "attribute_groups",
-							DB_TABLE_PREFIX . "attribute_values",
-							DB_TABLE_PREFIX . "brands",
-							DB_TABLE_PREFIX . "categories",
-							DB_TABLE_PREFIX . "delivery_statuses",
-							DB_TABLE_PREFIX . "order_statuses",
-							DB_TABLE_PREFIX . "pages",
-							DB_TABLE_PREFIX . "products",
-							DB_TABLE_PREFIX . "quantity_units",
-							DB_TABLE_PREFIX . "sold_out_statuses",
-						] as $table) {
-
-							database::query(
-								"show fields from $table;"
-							)->each(function($column) use ($table) {
-
-								if (in_array(strtoupper($column['Type']), ['TEXT', 'MEDIUMTEXT'])) {
-
-									database::query(
-										"select id, `{$column['Field']}`
-										from `$table`
-										where `{$column['Field']}` like '%\"". database::input($this->previous['code']) ."\"%';"
-									)->each(function($row) use ($table, $column) {
-
-										database::query(
-											"update `$table`
-											set `{$column['Field']}` = if(json_contains_path(`{$column['Field']}`, 'one', '$.". database::input($this->previous['code']) ."'), json_set(json_remove(`{$column['Field']}`, '$.". database::input($this->previous['code']) ."'), '$.". database::input($this->data['code']) ."', json_value(`{$column['Field']}`, '$.". database::input($this->previous['code']) ."')), `{$column['Field']}`),
-											where id = ". (int)$row['id'] ."
-											limit 1;"
-										);
-									});
-								}
-
-							});
-						}
 					}
 				}
 
 			} else {
+
+				// Add new language to translations table if not already exists.
 
 				if (!database::query(
 					"show fields from ". DB_TABLE_PREFIX ."translations
@@ -173,6 +169,23 @@
 						"alter table ". DB_TABLE_PREFIX ."translations
 						add `text_". database::identifier($this->data['code']) ."` text not null after text_en;"
 					);
+				}
+
+				// Add new language to entity collections
+
+				$collections = include 'app://includes/collections.inc.php';
+
+				foreach ($collections as $collection) {
+					if (empty($collection['translatable'])) continue;
+
+					$table = DB_TABLE_PREFIX . $collection['id'];
+
+					foreach ($collection['translatable'] as $column) {
+						database::query(
+							"update `$table`
+							set `{$column}` = json_set(ifnull(`{$column}`, '{}'), '$.". database::input($this->data['code']) ."', '')"
+						);
+					}
 				}
 			}
 
@@ -207,7 +220,9 @@
 			// exception. A maligned code almost certainly never had a real
 			// text_<code> column anyway.
 			try {
+
 				$safe_code = database::identifier($this->data['code']);
+
 				if (database::query(
 					"show fields from ". DB_TABLE_PREFIX ."translations
 					where `Field` = 'text_". $safe_code ."';"
@@ -217,43 +232,26 @@
 						drop `". 'text_' . $safe_code ."`;"
 					);
 				}
+
 			} catch (InvalidArgumentException $e) {
 				error_log('ent_language::delete: skipping text_<code> drop for invalid code ' . var_export($this->data['code'], true));
 			}
 
-			foreach ([
-				DB_TABLE_PREFIX . "attribute_groups",
-				DB_TABLE_PREFIX . "attribute_values",
-				DB_TABLE_PREFIX . "brands",
-				DB_TABLE_PREFIX . "categories",
-				DB_TABLE_PREFIX . "delivery_statuses",
-				DB_TABLE_PREFIX . "order_statuses",
-				DB_TABLE_PREFIX . "pages",
-				DB_TABLE_PREFIX . "products",
-				DB_TABLE_PREFIX . "quantity_units",
-				DB_TABLE_PREFIX . "sold_out_statuses",
-			] as $table) {
+			$collections = include 'app://includes/collections.inc.php';
 
-				database::query(
-					"show fields from $table;"
-				)->each(function($column) use ($table) {
+			foreach ($collections as $collection) {
+				if (empty($collection['translatable'])) continue;
 
-					if (in_array(strtoupper($column['Type']), ['TEXT', 'MEDIUMTEXT'])) {
-						$rows = database::query(
-							"select id, `{$column['Field']}`
-							from $table
-							where `{$column['Field']}` like '%\"". database::input($this->data['code']) ."\"%';"
-						)->each(function($row) use ($table, $column) {
+				$table = DB_TABLE_PREFIX . $collection['id'];
 
-							database::query(
-								"update $table
-								set `{$column['Field']}` = json_remove(`{$column['Field']}`, '$.". database::input($this->data['code']) ."')
-								where id = ". (int)$row['id'] ."
-								limit 1;"
-							);
-						});
-					}
-				});
+				foreach ($collection['translatable'] as $column) {
+					database::query(
+						"update `$table`
+						set `{$column}` = json_remove(`{$column}`, '$.". database::input($this->data['code']) ."')
+						where id = ". (int)$row['id'] ."
+						limit 1;"
+					);
+				}
 			}
 
 			$this->reset();

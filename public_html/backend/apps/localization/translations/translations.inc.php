@@ -162,8 +162,9 @@
 	};
 
 	foreach ($collections as $collection) {
+		if (empty($collection['translatable'])) continue;
 		if (empty($_GET['collections']) || in_array($collection['id'], $_GET['collections'])) {
-			foreach ($collection['columns'] as $column) {
+			foreach ($collection['translatable'] as $column) {
 				$sql_union[] = $union_select($collection['id'], $collection['entity'], $column);
 			}
 		}
