@@ -422,7 +422,7 @@
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_zone', 'Zone'); ?></div>
-										<?php echo f::form_select_zone('zone_code', isset($_POST['country_code']) ? $_POST['country_code'] : '', true); ?>
+										<?php echo f::form_select_zone('zone_code', $_POST['country_code'] ?? '', true); ?>
 									</label>
 								</div>
 							</div>
@@ -499,7 +499,7 @@
 									<div class="col-sm-6">
 										<label class="form-group">
 											<div class="form-label"><?php echo t('title_zone_state_province', 'Zone/State/Province'); ?></div>
-											<?php echo f::form_select_zone(isset($_POST['shipping_address']['country_code']) ? $_POST['shipping_address']['country_code'] : $_POST['country_code'], 'shipping_address[zone_code]', true); ?>
+											<?php echo f::form_select_zone($_POST['shipping_address']['country_code'] ?? $_POST['country_code'], 'shipping_address[zone_code]', true); ?>
 										</label>
 									</div>
 								</div>

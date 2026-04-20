@@ -16,7 +16,7 @@
 		foreach (array_keys($array) as $row) {
 			$line = [];
 			foreach ($columns as $column) {
-				$line[$column] = isset($array[$row][$column]) ? $array[$row][$column] : '';
+				$line[$column] = $array[$row][$column] ?? '';
 			}
 			$array[$row] = $line;
 		}

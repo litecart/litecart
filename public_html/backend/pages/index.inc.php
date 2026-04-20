@@ -25,7 +25,7 @@
 		}
 
 		// Resolve requested document file
-		$doc_file = isset($app_config['docs'][__DOC__]) ? $app_config['docs'][__DOC__] : null;
+		$doc_file = $app_config['docs'][__DOC__] ?? null;
 		if (!$doc_file || !file_exists('app://backend/apps/'. __APP__ .'/'. $doc_file)) {
 			notices::add('errors', __APP__ .'/'. f::escape_html(__DOC__) . ' is not a valid app document');
 			return;

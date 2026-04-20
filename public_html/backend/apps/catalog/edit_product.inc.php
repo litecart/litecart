@@ -108,7 +108,7 @@
 				$_GET['redirect_url'] = new ent_link($_GET['redirect_url']);
 				$_GET['redirect_url']->host = '';
 			} else {
-				$_GET['redirect_url'] = document::ilink(__APP__.'/category_tree', ['category_id' => isset($_POST['categories'][0]) ? $_POST['categories'][0] : '']);
+				$_GET['redirect_url'] = document::ilink(__APP__.'/category_tree', ['category_id' => $_POST['categories'][0] ?? '']);
 			}
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));

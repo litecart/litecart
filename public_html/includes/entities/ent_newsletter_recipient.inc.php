@@ -23,9 +23,9 @@
 				$this->data[$field['Field']] = database::create_variable($field);
 			});
 
-			$this->data['ip_address'] = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '';
-			$this->data['hostname'] = isset($_SERVER['REMOTE_ADDR']) ? gethostbyaddr($_SERVER['REMOTE_ADDR']) : '';
-			$this->data['user_agent'] = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
+			$this->data['ip_address'] = $_SERVER['REMOTE_ADDR'] ?? '';
+			$this->data['hostname'] = gethostbyaddr($_SERVER['REMOTE_ADDR'] ?? '');
+			$this->data['user_agent'] = $_SERVER['HTTP_USER_AGENT'] ?? '';
 
 			$this->previous = $this->data;
 		}

@@ -33,7 +33,8 @@
 		$_SERVER['REQUEST_METHOD'] = 'GET';
 		$_SERVER['REQUEST_URI'] = '/';
 		$_SERVER['SERVER_SOFTWARE'] = 'CLI';
-		$_SERVER['SCRIPT_FILENAME'] = isset($argv[0]) ? $argv[0] : 'index.php';
+		$_SERVER['SCRIPT_FILENAME'] = $argv[0] ?? 'index.php';
+		$_SERVER['HTTPS'] = 'on';
 	}
 
 	// Normalize Windows paths to Unix-style

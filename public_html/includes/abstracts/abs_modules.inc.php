@@ -51,11 +51,11 @@
 				$object->settings = [];
 				foreach ($object->settings() as $setting) {
 					$setting['key'] = rtrim($setting['key'], '[]');
-					$object->settings[$setting['key']] = isset($settings[$setting['key']]) ? $settings[$setting['key']] : $setting['default_value'];
+					$object->settings[$setting['key']] = $settings[$setting['key']] ?? $setting['default_value'];
 				}
 
 				$object->status = (isset($object->settings['status']) && filter_var($object->settings['status'], FILTER_VALIDATE_BOOLEAN));
-				$object->priority = isset($object->settings['priority']) ? (int)$object->settings['priority'] : 0;
+				$object->priority = (int)($object->settings['priority'] ?? 0);
 
 				if ($type == 'jobs') {
 					$object->last_pushed = $module['last_pushed'];

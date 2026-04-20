@@ -177,8 +177,8 @@
 
 			$amount = (float)self::format_raw($value, $currency_code, $currency_value);
 			$decimals = isset(self::$currencies[$currency_code]['decimals']) ? (int)self::$currencies[$currency_code]['decimals'] : 2;
-			$prefix = isset(self::$currencies[$currency_code]['prefix']) ? self::$currencies[$currency_code]['prefix'] : '';
-			$suffix = isset(self::$currencies[$currency_code]['suffix']) ? self::$currencies[$currency_code]['suffix'] : ' ' . $currency_code;
+			$prefix = self::$currencies[$currency_code]['prefix'] ?? '';
+			$suffix = self::$currencies[$currency_code]['suffix'] ?? ' ' . $currency_code;
 
 			$is_negative = $amount < 0;
 

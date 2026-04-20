@@ -135,8 +135,7 @@
 		)->fetch_all('code');
 
 		// Get currencies from i18n repository
-		$client = new http_client();
-		$result = $client->call('GET', 'https://raw.githubusercontent.com/litecart/i18n/master/currencies.csv');
+		$result = (new http_client)->call('GET', 'https://raw.githubusercontent.com/litecart/i18n/master/currencies.csv');
 		$available_currencies = f::csv_decode($result);
 
 		// Filter already added

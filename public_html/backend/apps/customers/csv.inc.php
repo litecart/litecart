@@ -81,7 +81,7 @@
 								continue 2;
 							}
 
-							echo 'Updating existing group '. ((!empty($row['name'])) ? $row['name'] : "on line $line") . PHP_EOL;
+							echo 'Updating existing group '. (($row['name'] ?? '') ?: "on line $line") . PHP_EOL;
 							$updated++;
 
 						} else {
@@ -91,7 +91,7 @@
 								continue 2;
 							}
 
-							echo 'Inserting new address: '. ((!empty($row['name'])) ? $row['name'] : "on line $line") . PHP_EOL;
+							echo 'Inserting new address: '. (($row['name'] ?? '') ?: "on line $line") . PHP_EOL;
 							$inserted++;
 
 							if (!empty($row['id'])) {

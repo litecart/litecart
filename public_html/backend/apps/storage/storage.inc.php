@@ -250,7 +250,7 @@
 	$results = [];
 
 	if (!empty($_GET['filter']['pattern'])) {
-		foreach (f::file_search('storage://'. $_GET['path'] . (!empty($_GET['filter']['pattern']) ? $_GET['filter']['pattern'] : '*')) as $file) {
+		foreach (f::file_search('storage://'. $_GET['path'] . (($_GET['filter']['pattern'] ?? '') ?:  '*')) as $file) {
 			if (in_array($file, ['.', '..'])) continue;
 			if (empty($_GET['filter']['content']) || (is_file($file) && strpos(file_get_contents($file), $_GET['filter']['content']) !== false)) {
 				$results[] = [

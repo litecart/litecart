@@ -462,9 +462,15 @@
 				throw new \Exception('File is missing the name element');
 			}
 
+			$id = preg_replace('#\.(disabled|xml)$#', '', basename($file));
+
+			if ($id == 'vmod') { // Get parent folder as id for addons
+				$id = basename(dirname($file));
+			}
+
 			$vmod = [
 				'type' => 'vmod',
-				'id' => preg_replace('#\.(xml|disabled)$#', '', pathinfo($file, PATHINFO_FILENAME)),
+				'id' => $id,
 				'name' => $dom->getElementsByTagName('name')->item(0)->textContent,
 				'version' => $dom->getElementsByTagName('version')->item(0)->textContent,
 				'author' => !empty($dom->getElementsByTagName('author')) ? $dom->getElementsByTagName('author')->item(0)->textContent : '',
@@ -514,7 +520,7 @@
 			foreach ($dom->getElementsByTagName('setting') as $setting_node) {
 				$key = $setting_node->getElementsByTagName('key')->item(0)->textContent;
 				$default_value = $setting_node->getElementsByTagName('default_value')->item(0)->textContent;
-				$settings[$key] = isset(self::$_settings[$vmod['id']][$key]) ? self::$_settings[$vmod['id']][$key] : $default_value;
+				$settings[$key] = self::$_settings[$vmod['id']][$key] ?? $default_value;
 			}
 
 			if (empty($dom->getElementsByTagName('file'))) {

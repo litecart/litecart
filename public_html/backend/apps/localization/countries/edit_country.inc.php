@@ -100,8 +100,7 @@
 		)->fetch_all('iso_code_2');
 
 		// Get countries from i18n repository
-		$client = new http_client();
-		$result = $client->call('GET', 'https://raw.githubusercontent.com/litecart/i18n/master/countries.csv');
+		$result = (new http_client)->call('GET', 'https://raw.githubusercontent.com/litecart/i18n/master/countries.csv');
 		$available_countries = f::csv_decode($result);
 
 		// Filter already added

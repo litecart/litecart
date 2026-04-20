@@ -57,7 +57,7 @@
 			$new_settings = [];
 
 			foreach ($settings as $setting) {
-				$new_settings[$setting['key']] = isset($_POST['settings'][$setting['key']]) ? $_POST['settings'][$setting['key']] : $setting['value'];
+				$new_settings[$setting['key']] = $_POST['settings'][$setting['key']] ?? $setting['value'];
 			}
 
 			database::query(

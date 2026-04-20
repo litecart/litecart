@@ -419,7 +419,7 @@
 		'{DB_PASSWORD}' => DB_PASSWORD,
 		'{DB_DATABASE}' => DB_DATABASE,
 		'{DB_TABLE_PREFIX}' => DB_TABLE_PREFIX,
-		'{CLIENT_IP}' => isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1',
+		'{CLIENT_IP}' => $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1',
 		'{STORE_TIME_ZONE}' => $timezone,
 	]);
 

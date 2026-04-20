@@ -163,7 +163,7 @@
 						'locales' => [$language->data['code']],
 					]));
 
-					if ($client->response_code() != 200) {
+					if ($client->last_response['status_code'] != 200) {
 						throw new Exception('Language pack not found');
 					}
 
@@ -313,8 +313,7 @@
 		)->fetch_all('code');
 
 		// Get languages from i18n repository
-		$client = new http_client();
-		$result = $client->call('GET', 'https://raw.githubusercontent.com/litecart/i18n/master/languages.csv');
+		$result = (new http_client)->call('GET', 'https://raw.githubusercontent.com/litecart/i18n/master/languages.csv');
 		$available_languages = f::csv_decode($result);
 
 		// Filter already added

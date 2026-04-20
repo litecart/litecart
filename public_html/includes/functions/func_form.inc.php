@@ -49,7 +49,7 @@
 			$value = [$value, $value];
 		}
 
-		return '<button'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="btn btn-default"' : '') .' type="'. f::escape_attr($type) .'" name="'. f::escape_attr($name) .'" value="'. f::escape_attr($value[0]) .'"'. ($parameters ? ' '. $parameters : '') .'>'. (($fonticon) ? f::draw_fonticon($fonticon) . ' ' : '') . (isset($value[1]) ? $value[1] : $value[0]) .'</button>';
+		return '<button'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="btn btn-default"' : '') .' type="'. f::escape_attr($type) .'" name="'. f::escape_attr($name) .'" value="'. f::escape_attr($value[0]) .'"'. ($parameters ? ' '. $parameters : '') .'>'. (($fonticon) ? f::draw_fonticon($fonticon) . ' ' : '') . ($value[1] ?? $value[0]) .'</button>';
 	}
 
 	function form_button_link($url, $title, $parameters='', $fonticon='') {
@@ -110,7 +110,7 @@
 			return implode(PHP_EOL, [
 				'<label'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-check"' : '') .'>',
 				'  ' . form_checkbox($name, $value[0], $input, $parameters),
-				'  ' . (isset($value[1]) ? $value[1] : $value[0]),
+				'  ' . ($value[1] ?? $value[0]),
 				'</label>',
 			]);
 		}
@@ -149,9 +149,9 @@
 			}
 
 			if (preg_match('#\[\]$#', $name)) {
-				$html[] = '<li class="dropdown-item">' . f::form_checkbox($name, $option, $input, isset($option[2]) ? $option[2] : '') .'</li>' . PHP_EOL;
+				$html[] = '<li class="dropdown-item">' . f::form_checkbox($name, $option, $input, $option[2] ?? '') .'</li>' . PHP_EOL;
 			} else {
-				$html[] = '<li class="dropdown-item">' . f::form_radio_button($name, $option, $input, isset($option[2]) ? $option[2] : '') .'</li>' . PHP_EOL;
+				$html[] = '<li class="dropdown-item">' . f::form_radio_button($name, $option, $input, $option[2] ?? '') .'</li>' . PHP_EOL;
 			}
 		}
 
@@ -529,7 +529,7 @@
 			return implode(PHP_EOL, [
 				'<label'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="form-check"' : '') .'>',
 				'  ' . form_radio_button($name, $value[0], $input, $parameters),
-				'  ' . (isset($value[1]) ? $value[1] : $value[0]),
+				'  ' . ($value[1] ?? $value[0]),
 				'</label>',
 			]);
 		}
@@ -777,7 +777,7 @@
 				}
 			}
 
-			$html .= '  <option value="'. f::escape_attr($option[0]) .'"'. (!strcmp($option[0], $input) ? ' selected' : '') . (!empty($option[2]) ? ' ' . $option[2] : '') . '>'. (isset($option[1]) ? $option[1] : $option[0]) .'</option>' . PHP_EOL;
+			$html .= '  <option value="'. f::escape_attr($option[0]) .'"'. (!strcmp($option[0], $input) ? ' selected' : '') . (!empty($option[2]) ? ' ' . $option[2] : '') . '>'. ($option[1] ?? $option[0]) .'</option>' . PHP_EOL;
 		}
 
 		$html .= '</select>';
@@ -801,7 +801,7 @@
 				}
 			}
 
-			$html .= form_checkbox($name, $option, $input, isset($option[2]) ? $option[2] : '');
+			$html .= form_checkbox($name, $option, $input, $option[2] ?? '');
 		}
 
 		$html .= '</div>';
@@ -842,9 +842,9 @@
 				}
 
 				if (preg_match('#\[\]$#', $name)) {
-					$html .= '  <option value="'. f::escape_attr($option[0]) .'"'. (in_array($option[0], $input) ? ' selected' : '') . (!empty($option[2]) ? ' ' . $option[2] : '') . '>'. (isset($option[1]) ? $option[1] : $option[0]) .'</option>' . PHP_EOL;
+					$html .= '  <option value="'. f::escape_attr($option[0]) .'"'. (in_array($option[0], $input) ? ' selected' : '') . (!empty($option[2]) ? ' ' . $option[2] : '') . '>'. ($option[1] ?? $option[0]) .'</option>' . PHP_EOL;
 				} else {
-					$html .= '  <option value="'. f::escape_attr($option[0]) .'"'. (!strcmp($option[0], $input) ? ' selected' : '') . (!empty($option[2]) ? ' ' . $option[2] : '') . '>'. (isset($option[1]) ? $option[1] : $option[0]) .'</option>' . PHP_EOL;
+					$html .= '  <option value="'. f::escape_attr($option[0]) .'"'. (!strcmp($option[0], $input) ? ' selected' : '') . (!empty($option[2]) ? ' ' . $option[2] : '') . '>'. ($option[1] ?? $option[0]) .'</option>' . PHP_EOL;
 				}
 			}
 

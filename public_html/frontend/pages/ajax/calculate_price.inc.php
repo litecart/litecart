@@ -18,8 +18,8 @@
 			throw new Exception('Missing stock_option_id', 400);
 		}
 
-		$stock_option_id = isset($_REQUEST['stock_option_id']) ? $_REQUEST['stock_option_id'] : null;
-		$userdata = isset($_REQUEST['userdata']) ? $_REQUEST['userdata'] : null;
+		$stock_option_id = $_REQUEST['stock_option_id'] ?? null;
+		$userdata = $_REQUEST['userdata'] ?? null;
 
 		$unit_price = $product->calculate_price($_REQUEST['quantity'], $stock_option_id, $userdata);
 		$tax = tax::calculate($unit_price, $product->tax_class_id);

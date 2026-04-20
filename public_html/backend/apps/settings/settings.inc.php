@@ -113,7 +113,7 @@
 
 				case (substr($setting['function'], 0, 14) == 'regional_input'):
 					$setting['value'] = !empty($setting['value']) ? json_decode($setting['value'], true) : null;
-					$setting['value'] = isset($setting['value'][language::$selected['code']]) ? $setting['value'][language::$selected['code']] : null;
+					$setting['value'] = $setting['value'][language::$selected['code']] ?? null;
 					break;
 
 				case (substr($setting['function'], 0, 6) == 'toggle'):

@@ -35,11 +35,11 @@
 				// Set settings to object
 				foreach ($this->settings() as $setting) {
 					$setting['key'] = rtrim($setting['key'], '[]');
-					$this->settings[$setting['key']] = isset($settings[$setting['key']]) ? $settings[$setting['key']] : $setting['default_value'];
+					$this->settings[$setting['key']] = $settings[$setting['key']] ?? $setting['default_value'];
 				}
 
 				$this->status = (isset($this->settings['status']) && in_array(strtolower($this->settings['status']), ['1', 'active', 'enabled', 'on', 'true', 'yes'])) ? 1 : 0;
-				$this->priority = isset($this->settings['priority']) ? (int)$this->settings['priority'] : 0;
+				$this->priority = (int)($this->settings['priority'] ?? 0);
 
 				if ($module['type'] == 'jobs') {
 					$this->last_pushed = $module['last_pushed'];

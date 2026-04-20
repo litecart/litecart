@@ -200,7 +200,7 @@
 		// Product
 		$product = database::query(
 			"select * from ". DB_TABLE_PREFIX ."products
-			where id = ". (!empty($stock_option['product_id']) ? $stock_option['product_id'] : (int)$order_item['product_id']) ."
+			where id = ". (!empty($stock_option['product_id']) ? (int)$stock_option['product_id'] : (int)$order_item['product_id']) ."
 			limit 1;"
 		)->fetch();
 

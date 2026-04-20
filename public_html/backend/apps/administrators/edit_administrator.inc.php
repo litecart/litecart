@@ -119,7 +119,7 @@
 						<div class="col-md-6">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_status', 'Status'); ?></div>
-								<?php echo f::form_toggle('status', 'e/d', (isset($_POST['status'])) ? $_POST['status'] : '1'); ?>
+								<?php echo f::form_toggle('status', 'e/d', $_POST['status'] ?? '1'); ?>
 							</label>
 						</div>
 

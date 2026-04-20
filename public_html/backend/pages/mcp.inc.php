@@ -253,13 +253,13 @@
 				'code' => -32000,
 				'message' => $e->getMessage(),
 			],
-			'id' => isset($rpc_id) ? $rpc_id : null,
+			'id' => $rpc_id ?? null,
 		], JSON_UNESCAPED_SLASHES);
 
 		if ($output === false) {
 			$output = json_encode([
 				'jsonrpc' => '2.0',
-				'id' => isset($rpc_id) ? $rpc_id : null,
+				'id' => $rpc_id ?? null,
 				'error' => [
 					'code' => -32603,
 					'message' => 'Encoding error',

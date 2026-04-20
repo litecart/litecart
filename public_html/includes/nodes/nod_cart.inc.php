@@ -65,9 +65,9 @@
 					'description' => 'User added an item to cart',
 					'data' => [
 						'product_id' => $_POST['product_id'],
-						'stock_option_id' => isset($_POST['stock_option_id']) ? $_POST['stock_option_id'] : null,
-						'quantity' => isset($_POST['quantity']) ? $_POST['quantity'] : 1,
-						'userdata' => isset($userdata) ? $userdata : [],
+						'stock_option_id' => $_POST['stock_option_id'] ?? null,
+						'quantity' => $_POST['quantity'] ?? 1,
+						'userdata' => $userdata ?? [],
 					],
 					'expires_at' => strtotime('+6 months'),
 				]);
@@ -104,7 +104,7 @@
 
 			// Event handler for updating product in cart
 			if (!empty($_POST['update_cart_item'])) {
-				self::update($_POST['update_cart_item'], isset($_POST['item'][$_POST['update_cart_item']]['quantity']) ? $_POST['item'][$_POST['update_cart_item']]['quantity'] : 1);
+				self::update($_POST['update_cart_item'], $_POST['item'][$_POST['update_cart_item']]['quantity'] ?? 1);
 				reload();
 				exit;
 			}
@@ -303,11 +303,13 @@
 					}
 				}
 
-				if (($calculated_price = $product->calculate_price([
+				$calculated_price = $product->calculate_price([
 					'quantity' => $quantity,
 					'stock_option_id' => $stock_option_id,
 					'userdata' => $userdata,
-				])) === false) {
+				]);
+
+				if ($calculated_price === false) {
 					throw new Exception(t('error_price_not_available_or_determined', 'Price is not yet available or could not be determined'));
 				} else {
 					$item['price'] = $calculated_price;
