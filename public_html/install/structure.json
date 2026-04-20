@@ -740,6 +740,7 @@
 				"hostname": { "type": "VARCHAR", "length": 128, "default": "''" },
 				"user_agent": { "type": "VARCHAR", "length": 255, "default": "''" },
 				"domain": { "type": "VARCHAR", "length": 64, "nullable": true },
+				"fingerprint": { "type": "VARCHAR", "length": 32, "nullable": true },
 				"public_key": { "type": "VARCHAR", "length": 32, "default": "''" },
 				"date_paid": { "type": "TIMESTAMP", "nullable": true },
 				"date_dispatched": { "type": "TIMESTAMP", "nullable": true },
@@ -753,6 +754,7 @@
 			"keys": {
 				"no": ["no"],
 				"order_status_id": ["order_status_id"],
+				"fingerprint": ["fingerprint"],
 				"starred": ["starred"],
 				"unread": ["unread"]
 			},

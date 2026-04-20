@@ -62,6 +62,7 @@
 				'ip_address' => $_SERVER['REMOTE_ADDR'] ?? null,
 				'hostname' => isset($_SERVER['REMOTE_ADDR']) ? gethostbyaddr($_SERVER['REMOTE_ADDR']) : '',
 				'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? null,
+				'fingerprint' => session::$data['fingerprint'] ?? null,
 				'domain' => $_SERVER['HTTP_HOST'] ?? null,
 			]);
 
@@ -302,6 +303,7 @@
 					ip_address = '". database::input($this->data['ip_address']) ."',
 					hostname = '". database::input($this->data['hostname']) ."',
 					user_agent = '". database::input($this->data['user_agent']) ."',
+					fingerprint = '". database::input($this->data['fingerprint']) ."',
 					domain = '". database::input($this->data['domain']) ."',
 					public_key = '". database::input($this->data['public_key']) ."',
 					date_paid = ". (!empty($this->data['date_paid']) ? "'". date('Y-m-d H:i:s', strtotime($this->data['date_paid'])) ."'" : "null") .",
