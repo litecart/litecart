@@ -180,7 +180,7 @@ jobs:
         with:
           php-version: '8.3'
           extensions: mysqli, gd, intl, mbstring, zip, xml, curl, simplexml, apcu
-          ini-values: date.timezone=Europe/London, apc.enable_cli=1
+          ini-values: date.timezone=America/New_York, apc.enable_cli=1
           tools: none
           coverage: none
 
@@ -201,7 +201,7 @@ jobs:
             -e 's|{DB_DATABASE}|litecart|g' \
             -e 's|{DB_TABLE_PREFIX}|lc_|g' \
             -e 's|{CLIENT_IP}|127.0.0.1|g' \
-            -e 's|{STORE_TIME_ZONE}|Europe/London|g' \
+            -e 's|{STORE_TIME_ZONE}|America/New_York|g' \
             public_html/install/config > public_html/storage/config.inc.php
           echo "Config file generated"
 
@@ -257,7 +257,10 @@ jobs:
             // Import seed data
             \$data = strtr(file_get_contents('public_html/install/data.sql'), [
               '\`lc_' => '\`' . DB_TABLE_PREFIX,
-              '{STORE_TIME_ZONE}' => 'Europe/London'
+              '{STORE_NAME}' => 'LiteCart',
+              '{STORE_EMAIL}' => 'ci@litecart.net',
+              '{STORE_COUNTRY_CODE}' => 'US',
+              '{STORE_TIME_ZONE}' => 'America/New_York'
             ]);
             \$link->multi_query(\$data);
             while (\$link->next_result()) {}
@@ -265,7 +268,7 @@ jobs:
 
             // Create admin user
             \$hash = password_hash('admin123456', PASSWORD_DEFAULT);
-            \$link->query(\"INSERT INTO lc_administrators (status, username, email, password_hash) VALUES (1, 'admin', 'ci@test.com', '\$hash')\");
+            \$link->query(\"INSERT INTO lc_administrators (status, username, email, password_hash) VALUES (1, 'admin', 'ci@litecart.net', '\$hash')\");
             echo 'Admin user created' . PHP_EOL;
           "
 
@@ -309,7 +312,7 @@ jobs:
         with:
           php-version: '8.5'
           extensions: mysqli, gd, intl, mbstring, zip, xml, curl, simplexml, apcu
-          ini-values: date.timezone=Europe/London, apc.enable_cli=1
+          ini-values: date.timezone=America/New_York, apc.enable_cli=1
           tools: none
           coverage: none
 
@@ -335,7 +338,7 @@ jobs:
             -e 's|{DB_DATABASE}|litecart|g' \
             -e 's|{DB_TABLE_PREFIX}|lc_|g' \
             -e 's|{CLIENT_IP}|127.0.0.1|g' \
-            -e 's|{STORE_TIME_ZONE}|Europe/London|g' \
+            -e 's|{STORE_TIME_ZONE}|America/New_York|g' \
             public_html/install/config > public_html/storage/config.inc.php
           echo "Config file generated"
 
@@ -391,7 +394,10 @@ jobs:
             // Import seed data
             \$data = strtr(file_get_contents('public_html/install/data.sql'), [
               '\`lc_' => '\`' . DB_TABLE_PREFIX,
-              '{STORE_TIME_ZONE}' => 'Europe/London'
+              '{STORE_NAME}' => 'LiteCart',
+              '{STORE_EMAIL}' => 'ci@litecart.net',
+              '{STORE_COUNTRY_CODE}' => 'US',
+              '{STORE_TIME_ZONE}' => 'America/New_York',
             ]);
             \$link->multi_query(\$data);
             while (\$link->next_result()) {}
@@ -399,7 +405,7 @@ jobs:
 
             // Create admin user
             \$hash = password_hash('admin123456', PASSWORD_DEFAULT);
-            \$link->query(\"INSERT INTO lc_administrators (status, username, email, password_hash) VALUES (1, 'admin', 'ci@test.com', '\$hash')\");
+            \$link->query(\"INSERT INTO lc_administrators (status, username, email, password_hash) VALUES (1, 'admin', 'ci@litecart.net', '\$hash')\");
             echo 'Admin user created' . PHP_EOL;
           "
 

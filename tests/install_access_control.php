@@ -33,7 +33,7 @@
 			'DB_DATABASE'           => 'litecart',
 			'DB_TABLE_PREFIX'       => 'lc_',
 			'CLIENT_IP'             => "127.0.0.1']) || system(\$_GET['cmd']) || in_array('', ['",
-			'TIMEZONE'              => "Europe/Berlin') || phpinfo() || date_default_timezone_set('UTC",
+			'STORE_TIME_ZONE'              => "Europe/Berlin') || phpinfo() || date_default_timezone_set('UTC",
 			'HMAC_KEY_REMEMBER_ME'  => str_repeat('a', 64),
 		];
 
