@@ -4,9 +4,9 @@
 
 		protected $_language_codes;
 		protected $_currency_codes;
-		protected $_customer_group_id;
+		protected $_customer;
 
-		function __construct($product_id, $language_code=null, $currency_code=null, $customer_group_id=null) {
+		function __construct($product_id, $language_code=null, $currency_code=null, $customer=null) {
 
 			if (!$language_code) {
 				$language_code = language::$selected['code'];
@@ -16,13 +16,11 @@
 				$currency_code = currency::$selected['code'];
 			}
 
-			if (!$customer_group_id) {
-				$customer_group_id = customer::$data['group_id'];
+			if (!$customer) {
+				$customer = customer::$data;
 			}
 
 			$this->_data['id'] = (int)$product_id;
-
-			$this->_customer_group_id = $customer_group_id;
 
 			$this->_language_codes = array_unique([
 				$language_code,
@@ -34,6 +32,8 @@
 				$currency_code,
 				settings::get('store_currency_code'),
 			]);
+
+			$this->_customer = $customer;
 		}
 
 		protected function _load($field) {
@@ -54,7 +54,7 @@
 						group by ol.product_id
 						order by num_purchases desc;"
 					)->fetch_all(function($product) {
-						return reference::product($product['product_id'], $this->_language_codes[0]);
+						return reference::product($product['product_id'], $this->_language_codes[0], $this->_currency_codes[0], $this->_customer);
 					});
 
 					break;
@@ -224,39 +224,37 @@
 					break;
 
 				case 'final_price':
+				case 'regular_price':
 
-					// Regular Price
-					$this->_data['final_price'] = $this->price;
-
-					// Campaign Fixed Price
-					if (isset($this->campaign['price']) && $this->campaign['price'] > 0 && $this->campaign['price'] < $this->_data['final_price']) {
-						$this->_data['final_price'] = $this->campaign['price'];
-					}
-
-					// Customer Group Price
-					if ($this->_customer_group_id) {
-
-						$customer_price = (float)database::query(
-							"select coalesce(
-								". implode(", ", array_map(function($currency){
+					$sql_column_price = "coalesce(". implode(", ", array_map(function($currency){
 									return "if(json_value(price, '$.". database::input($currency['code']) ."') != 0, json_value(price, '$.". database::input($currency['code']) ."') * ". $currency['value'] .", null)";
-								}, currency::$currencies)) ."
-							) / min_quantity as customer_price
-							from ". DB_TABLE_PREFIX ."products_prices
-							where product_id = ". (int)$this->_data['id'] ."
-							and customer_group_id = ". (int)$this->_customer_group_id ."
-							and (geo_zone_id is null or geo_zone_id in (
-								select geo_zone_id from ". DB_TABLE_PREFIX ."zones_to_geo_zones
-								where country_code = '". database::input(customer::$data['country_code']) ."'
-								and (zone_code = '' or zone_code is null or zone_code = '". database::input(customer::$data['zone_code']) ."')
-							))
-							order by min_quantity asc
-							limit 1;"
-						)->fetch('customer_price');
+					}, currency::$currencies)) . ")";
 
-						if ($customer_price && $customer_price < $this->_data['final_price']) {
-							$this->_data['final_price'] = $customer_price;
-						}
+					$prices = database::query(
+						"select
+						  min($sql_column_price) / min_quantity as final_price,
+						  max($sql_column_price) / min_quantity as regular_price
+							from ". DB_TABLE_PREFIX ."products_prices
+						where product_id = '". database::input($this->_data['id']) ."'
+						and (customer_group_id is null or customer_group_id = ". (int)$this->_customer['group_id'] .")
+						and (geo_zone_id is null or geo_zone_id in (
+							select geo_zone_id from ". DB_TABLE_PREFIX ."zones_to_geo_zones
+							where country_code = '". database::input($this->_customer['country_code']) ."'
+							and (zone_code = '' or zone_code is null or zone_code = '". database::input($this->_customer['zone_code']) ."')
+						))
+						and (campaign_id is null or campaign_id in (
+							select id from ". DB_TABLE_PREFIX ."campaigns
+							where valid_from <= '". date('Y-m-d H:i:s') ."'
+							and valid_to >= '". date('Y-m-d H:i:s') ."'
+						))
+						group by product_id;"
+					)->fetch();
+
+					if ($prices) {
+						$this->_data['final_price'] = $prices['final_price'];
+						$this->_data['regular_price'] = $prices['regular_price'];
+					} else {
+						$this->_data['final_price'] = $this->_data['regular_price'] = null;
 					}
 
 					// Campaign Scope Percentage Discount (highest active wins)
@@ -396,28 +394,6 @@
 						return reference::category($row['category_id'], $this->_language_codes[0]);
 					});
 
-					break;
-
-				case 'price':
-
-					$this->_data['price'] = (float)database::query(
-						"select coalesce(
-							". implode(", ", array_map(function($currency){
-								return "if(json_value(price, '$.". database::input($currency['code']) ."') != 0, json_value(price, '$.". database::input($currency['code']) ."') * ". $currency['value'] .", null)";
-							}, currency::$currencies)) ."
-						) / min_quantity as regular_price
-						from ". DB_TABLE_PREFIX ."products_prices
-						where product_id = ". (int)$this->_data['id'] ."
-						and customer_group_id is null
-						and campaign_id is null
-						and (geo_zone_id is null or geo_zone_id in (
-							select geo_zone_id from ". DB_TABLE_PREFIX ."zones_to_geo_zones
-							where country_code = '". database::input(customer::$data['country_code']) ."'
-							and (zone_code = '' or zone_code is null or zone_code = '". database::input(customer::$data['zone_code']) ."')
-						))
-						order by min_quantity asc
-						limit 1;"
-					)->fetch('regular_price');
 
 					break;
 
