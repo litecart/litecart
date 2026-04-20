@@ -43,17 +43,21 @@
 			}
 
 			// Backwards Compatibility
-			self::$aliases['#^admin/#'] = 'backend/'; // <3.0.0
-			self::$aliases['#^admin/(.*?)\.app/#'] = 'backend/apps/$1/'; // <3.0.0
-			self::$aliases['#^admin/(.*?)\.widget/#'] = 'backend/widgets/$1/'; // <3.0.0
-			self::$aliases['#^pages/#'] = 'frontend/pages/'; // <3.0.0
-			self::$aliases['#^includes/partials/#'] = 'frontend/partials/'; // <3.0.0
-			self::$aliases['#^includes/controllers/ctrl_#'] = 'includes/entities/ent_'; // <2.2.0
-			self::$aliases['#^includes/library/lib_#'] = 'includes/nodes/nod_'; // <3.0.0
-			self::$aliases['#^includes/routes/#'] = 'frontend/routes/'; // <3.0.0
-			self::$aliases['#^includes/templates/(.*?)\.admin/#'] = 'backend/template/'; // <3.0.0
-			self::$aliases['#^includes/templates/(.*?)\.catalog/#'] = 'frontend/templates/$1/'; // <3.0.0
-			self::$aliases['#^includes/wrappers/wrap_(http|smtp)#'] = 'includes/clients/$1_client'; // <3.0.0
+			foreach ([
+				'#^admin/#' => 'backend/', // <3.0.0
+				'#^admin/(.*?)\.app/#' => 'backend/apps/$1/', // <3.0.0
+				'#^admin/(.*?)\.widget/#' => 'backend/widgets/$1/', // <3.0.0
+				'#^pages/#' => 'frontend/pages/', // <3.0.0
+				'#^includes/partials/#' => 'frontend/partials/', // <3.0.0
+				'#^includes/controllers/ctrl_#' => 'includes/entities/ent_', // <2.2.0
+				'#^includes/library/lib_#' => 'includes/nodes/nod_', // <3.0.0
+				'#^includes/routes/#' => 'frontend/routes/', // <3.0.0
+				'#^includes/templates/(.*?)\.admin/#' => 'backend/template/', // <3.0.0
+				'#^includes/templates/(.*?)\.catalog/#' => 'frontend/templates/$1/', // <3.0.0
+				'#^includes/wrappers/wrap_(http|smtp)#' => 'includes/clients/$1_client', // <3.0.0
+			] as $pattern => $replace) {
+				self::$aliases[$pattern] = $replace;
+			}
 
 			// Determine last modified date
 			$last_modified = null;
@@ -430,6 +434,7 @@
 					// Exceute install script
 					if ($dom->getElementsByTagName('install')->length) {
 
+						require_once vmod::check(FS_DIR_APP . 'includes/shorthand.inc.php');
 						require_once vmod::check(FS_DIR_APP . 'includes/compatibility.inc.php');
 						require_once vmod::check(FS_DIR_APP . 'includes/autoloader.inc.php');
 
@@ -453,6 +458,21 @@
 		}
 
 		public static function parse_xml($dom, $file) {
+
+			if (!$dom) {
+
+				if (!$xml = file_get_contents($file)) {
+					throw new \Exception('Could not read file');
+				}
+
+				if (!$dom = new \DOMDocument()) {
+					throw new \Exception('Could not parse file as XML');
+				}
+
+				if (!$dom->loadXML($xml)) {
+					throw new \Exception('Could not parse file as XML');
+				}
+			}
 
 			if ($dom->documentElement->tagName != 'vmod') {
 				throw new \Exception("File is not a valid vMod ($file)");

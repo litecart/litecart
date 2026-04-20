@@ -749,11 +749,15 @@
 			},
 			"primary_key": ["id"],
 			"unique_keys": {
+				"no": ["no"],
 				"public_key": ["public_key"]
 			},
 			"keys": {
-				"no": ["no"],
 				"order_status_id": ["order_status_id"],
+				"customer_id": ["customer_id"],
+				"customer_email": ["customer_email"],
+				"customer_country_code": ["customer_country_code"],
+				"ip_address": ["ip_address"],
 				"fingerprint": ["fingerprint"],
 				"starred": ["starred"],
 				"unread": ["unread"]
@@ -766,6 +770,15 @@
 						"columns": ["id"],
 						"on_update": "CASCADE",
 						"on_delete": "SET NULL"
+					}
+				},
+				"order_to_country": {
+					"columns": ["customer_country_code"],
+					"references": {
+						"table": "countries",
+						"columns": ["iso_code_2"],
+						"on_update": "CASCADE",
+						"on_delete": "NO ACTION"
 					}
 				},
 				"order_to_order_status": {
@@ -1276,6 +1289,9 @@
 				"customer_group_id": ["customer_group_id"],
 				"campaign_id": ["campaign_id"],
 				"min_quantity": ["min_quantity"]
+			},
+			"unique_keys": {
+				"price": ["product_id", "customer_id", "customer_group_id", "price_list_id", "geo_zone_id", "campaign_id", "min_quantity"]
 			},
 			"foreign_keys": {
 				"product_price_to_product": {
@@ -1842,8 +1858,8 @@
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"status": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
 				"privacy_classes": { "type": "VARCHAR", "length": 64, "default": "''" },
-				"category": { "type": "VARCHAR", "length": 64, "default": "''", "comment": "TYPE:JSON_TRANSLATIONS" },
-				"name": { "type": "VARCHAR", "length": 64, "default": "''", "comment": "TYPE:JSON_TRANSLATIONS" },
+				"category": { "type": "VARCHAR", "length": 64, "default": "''" },
+				"name": { "type": "VARCHAR", "length": 64, "default": "''" },
 				"description": { "type": "MEDIUMTEXT", "default": "'{}'", "comment": "TYPE:JSON_TRANSLATIONS" },
 				"collected_data": { "type": "TEXT", "default": "'{}'", "comment": "TYPE:JSON_TRANSLATIONS" },
 				"purposes": { "type": "TEXT", "default": "'{}'", "comment": "TYPE:JSON_TRANSLATIONS" },

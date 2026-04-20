@@ -78,7 +78,7 @@
 
 	if (count($products) == 1) {
 		$product = current($products);
-		redirect(document::ilink('product', ['product_id' => $product['id']]), 302);
+		redirect(document::ilink('product', ['product_id' => $product['id']]), 303);
 		exit;
 	}
 

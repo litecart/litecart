@@ -157,7 +157,7 @@
 
 	Comments should have the same indentation as the code:
 
-		// Line describing comment
+		// Title comment
 		echo 'Hello World!';
 
 	Inline side notes are made at the end of the line:
@@ -251,7 +251,7 @@
 
 	Correct:
 
- 		<img src="..." alt="<?php echo htmlspecialchars($title); ?>">
+ 		<img src="..." alt="<?php echo f::escape_attr($title); ?>">
 
 
 ## PHP Variable Scope
@@ -458,60 +458,34 @@
 		$variable = $my_function();
 
 
-## Repetitive Statements in PHP
+## For Iterating
 
 	Try to avoid this at all costs:
 
 		for ($i=0, $n=count($array); $i<$n; $i++) {
-			$array[$i] = 'value';
+			$array[$i] = '...';
 		}
 
-	Walking through an array:
-
-		foreach ($array as $key => $item) {
-			....
-		}
-
-	Walking through an array and overwriting a source variable:
+	Instead do this:
 
 		foreach ($array as $key => $node) {
-			$node[$key] = 'newvalue';
+			$array[$key] = '...';
+		}
+
+	When it's okay to use for-iterating:
+
+	  for ($ts=time(); $ts < strtotime('+1 months'); $ts=strtotime('+1 days', $ts)) {
+			...
 		}
 
 
-## Iterators
+## Anonymous Functions
 
-	Preferably use anonymous functions for iterators unless they are also used elsewhere in the platform.
+	Use anonymous functions when they are not needed elsewhere in the platform.
 
-		$iterator = function($input) use (&$iterator)  {
-			$iterator();
+		$tempfunc = function($var) use (&$tempfunc)  {
+			$tempfunc();
 		};
-
-
-## No Matryoshka Dolls
-
-	Avoid conditional conditions inside loops.
-
-	Incorrect:
-
-		foreach ($array => $node) {
-			if ($node['first'] == 'a') {
-				if ($node['second'] == 'b') {
-					if ($node['third'] == 'c') {
-						// Do some stuff
-					}
-				}
-			}
-		}
-
-	Correct:
-
-		foreach ($array => $node) {
-			if ($node['first'] != 'a') continue;
-			if ($node['second'] != 'b') continue;
-			if ($node['third'] != 'c') continue;
-			// Do some stuff
-		}
 
 
 ## Translating String Content
@@ -542,7 +516,7 @@
 			limit 1;"
 		);
 
-	Unlike when displaying strings, double quote characters are use to wrap SQL queries.
+	Use double quote characters to wrap a SQL query string.
 
 
 ## Processing User Input
@@ -563,7 +537,7 @@
 			set number = ". (int)$_POST['number'] .",
 				string = '". database::input($_POST['string']) ."',
 				date = '". date('Y-m-d', strtotime($_POST['string'])) ."',
-			where this = 'that'
+			where foo like '%". database::input_like($foo) ."%'
 			limit 1;"
 		);
 
@@ -586,6 +560,7 @@
 		job_*    modules/jobs/        Background job modules
 		mod_*    modules/             Generic modules
 		url_*    routes/              Route handlers
+		stream_* streams/             StreamWrappers
 		wrap_*   wrappers/            Service layers / API clients
 
 	All autoloaded files use `.inc.php` extension and pass through the vMod system.

@@ -84,7 +84,7 @@ Variable duplication is a challenge to backtrace. If we have no use of the raw u
 
 		$userInput = $_POST['userInput'];
 		$sanitizedUserInput = sanitize($userInput);
-		$trimmedSanitizedUserInput = polish($sanitizedUserInput);
+		$polishSanitizedUserInput = polish($sanitizedUserInput);
 
 		passToFunction($trimmedSanitizedUserInput); // Wait, what is the origin of the data again?
 
@@ -175,7 +175,7 @@ Better:
 
 # No Yoda Conditions - Strange nonsense this is
 
-Unless a galaxy far from, you are. Expressions like Yoda, you do should not.
+Unless a galaxy far from, you are. Expressions like Yoda, do you should not.
 
 Avoid:
 
@@ -190,10 +190,36 @@ Better:
 		}
 
 
+## No Conditional Conditions Inside Iterators - That's gotta be nonsense, if..
+
+	Avoid conditional conditions during iteration.
+
+	Avoid:
+
+		foreach ($array => $node) {
+			if ($node['first'] == 'a') {
+				if ($node['second'] == 'b') {
+					if ($node['third'] == 'c') {
+						// Do some stuff
+					}
+				}
+			}
+		}
+
+	Better:
+
+		foreach ($array => $node) {
+			if ($node['first'] != 'a') continue;
+			if ($node['second'] != 'b') continue;
+			if ($node['third'] != 'c') continue;
+			// Do some stuff
+		}
+
+
 ## Fat third party libraries for small features - Stay away from other people's nonsense
 
 Looking to cut corners with third party libraries will backfire eventually. Libraries can be performance draining. They have dependencies and can unknowingly become outdated or discontinued. Many are poorly managed, contains flaws or have security problems. They can be a complete pain when you want to step up versions. One way or the other, they need to be maintained. Maintenance will take time and focus and can require a lot of reverse engineering.
 
-There is no good reason to embed an entire third party library if you will just utilize a small portion of it. If it's reasonable to code this part yourself it's likely a good idea to do it. Best of all, you will know every corner of the code.
+There is no good reason to embed an entire third party library if you will just utilize a small portion of it. If it's reasonable to code this part yourself it's likely a good idea to do it. Best of all, you will know every corner of the code, and will probably learn new things on the way.
 
 Try to stay away from third party libraries.

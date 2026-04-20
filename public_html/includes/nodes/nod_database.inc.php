@@ -633,6 +633,10 @@
 
 		public function execute() {
 
+			if ($this->_result) {
+				return $this; // Already executed
+			}
+
 			if (!$this->_statement) {
 				trigger_error('No prepared statement available for execution', E_USER_WARNING);
 				return false;
