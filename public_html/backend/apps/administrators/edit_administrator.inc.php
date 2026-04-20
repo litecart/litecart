@@ -15,6 +15,68 @@
 	breadcrumbs::add(t('title_administrators', 'Administrators'), document::href_ilink(__APP__.'/administrators'));
 	breadcrumbs::add(!empty($administrator->data['username']) ? t('title_edit_administrator', 'Edit Administrator') : t('title_create_new_administrator', 'Create New Administrator'));
 
+	// TOTP enroll/confirm/disable — handled before the main save so the sub-form
+	// buttons (totp_setup, totp_confirm, totp_disable) don't have to go through
+	// the generic save validation.
+	if (!empty($administrator->data['id']) && (!empty($_POST['totp_setup']) || !empty($_POST['totp_confirm']) || !empty($_POST['totp_disable']))) {
+
+		require_once 'app://includes/functions/func_totp.inc.php';
+
+		try {
+
+			if (!empty($_POST['totp_setup'])) {
+				session::$data['totp_pending_secret'] = totp_generate_secret();
+				redirect(document::ilink());
+				exit;
+			}
+
+			if (!empty($_POST['totp_confirm'])) {
+
+				if (empty(session::$data['totp_pending_secret'])) {
+					throw new Exception(t('error_totp_setup_expired', 'TOTP setup session expired. Please try again.'));
+				}
+
+				if (empty($_POST['totp_code']) || !totp_verify_code(session::$data['totp_pending_secret'], $_POST['totp_code'])) {
+					throw new Exception(t('error_invalid_verification_code', 'Invalid verification code'));
+				}
+
+				database::query(
+					"update ". DB_TABLE_PREFIX ."administrators
+					set totp_secret = '". database::input(session::$data['totp_pending_secret']) ."'
+					where id = ". (int)$administrator->data['id'] ."
+					limit 1;"
+				);
+
+				unset(session::$data['totp_pending_secret']);
+				notices::add('success', t('success_totp_enabled', 'TOTP has been enabled'));
+				redirect(document::ilink());
+				exit;
+			}
+
+			if (!empty($_POST['totp_disable'])) {
+
+				if (empty($_POST['totp_disable_password']) || !password_verify($_POST['totp_disable_password'], $administrator->data['password_hash'])) {
+					throw new Exception(t('error_wrong_password', 'Wrong password'));
+				}
+
+				database::query(
+					"update ". DB_TABLE_PREFIX ."administrators
+					set totp_secret = null
+					where id = ". (int)$administrator->data['id'] ."
+					limit 1;"
+				);
+
+				unset(session::$data['totp_pending_secret']);
+				notices::add('success', t('success_totp_disabled', 'TOTP has been disabled'));
+				redirect(document::ilink());
+				exit;
+			}
+
+		} catch (Exception $e) {
+			notices::add('errors', $e->getMessage());
+		}
+	}
+
 	if (isset($_POST['save'])) {
 
 		try {
@@ -161,6 +223,63 @@
 							</label>
 						</div>
 					</div>
+
+					<?php if (!empty($administrator->data['id'])) { ?>
+					<div class="grid">
+						<div class="col-md-12">
+							<div class="form-group">
+								<div class="form-label"><?php echo t('title_totp_authenticator', 'TOTP Authenticator'); ?></div>
+
+								<?php if (!empty($administrator->data['totp_secret'])) { ?>
+
+									<div class="alert alert-success" style="margin-bottom: 1em;">
+										<?php echo t('text_totp_enabled', 'TOTP is enabled. You will be prompted for a code on each login.'); ?>
+									</div>
+
+									<div class="grid">
+										<div class="col-md-6">
+											<?php echo f::form_input_password('totp_disable_password', '', 'autocomplete="off" placeholder="'. t('title_password', 'Password') .'"'); ?>
+										</div>
+										<div class="col-md-6">
+											<?php echo f::form_button('totp_disable', t('title_disable_totp', 'Disable TOTP'), 'submit', 'class="btn btn-danger"'); ?>
+										</div>
+									</div>
+
+								<?php } elseif (!empty(session::$data['totp_pending_secret'])) { ?>
+
+									<?php
+										require_once 'app://includes/functions/func_totp.inc.php';
+										$totp_uri = totp_build_uri(session::$data['totp_pending_secret'], $administrator->data['username'], settings::get('store_name'));
+										$totp_svg = totp_generate_qr_svg($totp_uri, 200);
+									?>
+
+									<div style="text-align: center; margin-bottom: 1em;">
+										<?php echo $totp_svg; ?>
+									</div>
+
+									<div class="form-group">
+										<div class="form-label"><?php echo t('title_manual_setup_key', 'Manual Setup Key'); ?></div>
+										<code style="word-break: break-all; user-select: all;"><?php echo session::$data['totp_pending_secret']; ?></code>
+									</div>
+
+									<div class="grid">
+										<div class="col-md-6">
+											<?php echo f::form_input_text('totp_code', '', 'placeholder="'. t('title_verification_code', 'Verification Code') .'" autocomplete="one-time-code" inputmode="numeric" maxlength="6" pattern="\d{6}"'); ?>
+										</div>
+										<div class="col-md-6">
+											<?php echo f::form_button('totp_confirm', t('title_confirm', 'Confirm'), 'submit', 'class="btn btn-success"'); ?>
+										</div>
+									</div>
+
+								<?php } else { ?>
+
+									<?php echo f::form_button('totp_setup', t('title_enable_totp', 'Enable TOTP'), 'submit', 'class="btn btn-default"'); ?>
+
+								<?php } ?>
+							</div>
+						</div>
+					</div>
+					<?php } ?>
 
 					<div class="grid">
 						<div class="col-md-6">
