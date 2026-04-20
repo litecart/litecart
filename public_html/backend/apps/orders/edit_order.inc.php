@@ -20,39 +20,33 @@
 		$_POST = $order->data;
 
 		// Convert to local currency
-		foreach (array_keys($_POST['lines']) as $key) {
-			$_POST['lines'][$key]['price'] = $_POST['lines'][$key]['price'] ? $_POST['lines'][$key]['price'] / $_POST['currency_value'] : 0;
-			$_POST['lines'][$key]['tax'] = $_POST['lines'][$key]['tax'] ? $_POST['lines'][$key]['tax'] / $_POST['currency_value'] : 0;
-			$_POST['lines'][$key]['discount'] = $_POST['lines'][$key]['discount'] ? $_POST['lines'][$key]['discount'] / $_POST['currency_value'] : 0;
-			$_POST['lines'][$key]['discount_tax'] = $_POST['lines'][$key]['discount_tax'] ? $_POST['lines'][$key]['discount_tax'] / $_POST['currency_value'] : 0;
-			$_POST['lines'][$key]['sum'] = $_POST['lines'][$key]['sum'] ? $_POST['lines'][$key]['sum'] / $_POST['currency_value'] : 0;
-			$_POST['lines'][$key]['sum_tax'] = $_POST['lines'][$key]['sum_tax'] ? $_POST['lines'][$key]['sum_tax'] / $_POST['currency_value'] : 0;
+		foreach ($_POST['lines'] as $i => $line) {
+			foreach ([
+				'price',
+				'tax',
+				'discount',
+				'discount_tax',
+				'sum',
+				'sum_tax'
+			] as $field) {
+				$_POST['lines'][$i][$field] = !empty($line[$field]) ? $line[$field] / $_POST['currency_value'] : 0;
+			}
 		}
 
-		$_POST['subtotal'] = $_POST['subtotal'] ? $_POST['subtotal'] / $_POST['currency_value'] : 0;
-		$_POST['subtotal_tax'] = $_POST['subtotal_tax'] ? $_POST['subtotal_tax'] / $_POST['currency_value'] : 0;
-
-		$_POST['discount'] = $_POST['discount'] ? $_POST['discount'] / $_POST['currency_value'] : 0;
-		$_POST['discount_tax'] = $_POST['discount_tax'] ? $_POST['discount_tax'] / $_POST['currency_value'] : 0;
-
-		$_POST['total'] = $_POST['total'] ? $_POST['total'] / $_POST['currency_value'] : 0;
-		$_POST['total_tax'] = $_POST['total_tax'] ? $_POST['total_tax'] / $_POST['currency_value'] : 0;
-
-		if (empty($order->data['id'])) {
-			$_POST['customer']['country_code'] = settings::get('default_country_code');
+		foreach ([
+			'subtotal',
+			'subtotal_tax',
+			'discount',
+			'discount_tax',
+			'total',
+			'total_tax',
+		] as $field) {
+			$_POST[$field] = !empty($_POST[$field]) ? $_POST[$field] / $_POST['currency_value'] : 0;
 		}
-	}
-
-	if (empty($_POST['currency_code'])) {
-		$_POST['currency_code'] = $order->data['currency_code'] ?: settings::get('store_currency_code');
-	}
-
-	if (empty($_POST['lines'])) {
-		$_POST['lines'] = [];
 	}
 
 	// Mark as read
-	if (!empty($order->data['id'])) {
+	if (!empty($order->data['id']) && $order->data['unread']) {
 		database::query(
 			"update ". DB_TABLE_PREFIX ."orders
 			set unread = 0
@@ -112,9 +106,9 @@
 				throw new Exception(t('error_must_select_lines', 'You must select lines'));
 			}
 
-			$split_order = new ent_order();
+			$next_order = new ent_order();
 
-			$split_order->previous['order_status_id'] = $order->data['order_status_id'];
+			$next_order->previous['order_status_id'] = $order->data['order_status_id'];
 
 			foreach ([
 				'order_status_id',
@@ -128,24 +122,24 @@
 				'payment_option',
 				'payment_transaction_id',
 			] as $field) {
-				$split_order->data[$field] = $order->data[$field];
+				$next_order->data[$field] = $order->data[$field];
 			}
 
 			foreach ($_POST['selected_lines'] as $key) {
-				$split_order->add_line($order->data['lines'][$key]);
+				$next_order->add_line($order->data['lines'][$key]);
 				unset($order->data['lines'][$key]);
 			}
 
-			$split_order->data['shipping_option'] = $order->data['shipping_option'];
-			$split_order->data['payment_option'] = $order->data['payment_option'];
+			$next_order->data['shipping_option'] = $order->data['shipping_option'];
+			$next_order->data['payment_option'] = $order->data['payment_option'];
 
-			$split_order->data['comments'] = [[
+			$next_order->data['comments'] = [[
 				'author' => 'system',
 				'hidden' => true,
 				'text' => 'Splitted from order '. $order->data['id'],
 			]];
 
-			$split_order->save();
+			$next_order->save();
 			$order->save();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
@@ -162,25 +156,33 @@
 
 		try {
 
-			if (empty($_POST['lines'])) {
-				$_POST['lines'] = [];
-			}
-
-			if (empty($_POST['comments'])) {
-				$_POST['comments'] = [];
-			}
-
-			if (!empty($_POST['lines'])) {
-				foreach (array_keys($_POST['lines']) as $key) {
-					$_POST['lines'][$key]['price'] = !empty($_POST['lines'][$key]['price']) ? (float)$_POST['lines'][$key]['price'] * (float)$_POST['currency_value'] : 0;
-					$_POST['lines'][$key]['tax'] = !empty($_POST['lines'][$key]['tax']) ? (float)$_POST['lines'][$key]['tax'] * (float)$_POST['currency_value'] : 0;
-					$_POST['lines'][$key]['discount'] = !empty($_POST['lines'][$key]['price']) ? (float)$_POST['lines'][$key]['discount'] * (float)$_POST['currency_value'] : 0;
-					$_POST['lines'][$key]['discount_tax'] = !empty($_POST['lines'][$key]['price']) ? (float)$_POST['lines'][$key]['discount_tax'] * (float)$_POST['currency_value'] : 0;
-					$_POST['lines'][$key]['sum'] = !empty($_POST['lines'][$key]['price']) ? (float)$_POST['lines'][$key]['sum'] * (float)$_POST['currency_value'] : 0;
-					$_POST['lines'][$key]['sum_tax'] = !empty($_POST['lines'][$key]['price']) ? (float)$_POST['lines'][$key]['sum_tax'] * (float)$_POST['currency_value'] : 0;
+			// Set default values for missing fields
+			foreach ([
+				'lines' => [],
+				'items' => [],
+				'order_totals' => [],
+				'comments' => [],
+			] as $field => $default) {
+				if (empty($_POST[$field])) {
+					$_POST[$field] = $default;
 				}
 			}
 
+			// Convert to store currency
+			foreach ($_POST['lines'] as $i => $line) {
+				foreach ([
+					'price',
+					'tax',
+					'discount',
+					'discount_tax',
+					'sum',
+					'sum_tax',
+				] as $field) {
+					$_POST['lines'][$i][$field] = !empty($line[$field]) ? (float)$line[$field] * (float)$_POST['currency_value'] : 0;
+				}
+			}
+
+			// Save details to customer account if requested
 			if (!empty($_POST['customer']['save']) || !empty($_POST['shipping_address']['save'])) {
 
 				if (!empty($_POST['customer']['id'])) {
@@ -313,12 +315,7 @@
 			$order->save();
 
 			if (!empty($_POST['send_order_copy_email'])) {
-
-				$bccs = [];
-				foreach (preg_split('#[\s;,]+#', settings::get('send_order_copy_email'), -1, PREG_SPLIT_NO_EMPTY) as $email) {
-					$bccs[] = $email;
-				}
-
+				$bccs = settings::get('send_order_copy_email') ? preg_split('#[\s;,]+#', settings::get('send_order_copy_email'), -1, PREG_SPLIT_NO_EMPTY) : [];
 				$order->send_order_copy_email($order->data['customer']['email'], $bccs, $order->data['language_code']);
 			}
 

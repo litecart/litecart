@@ -31,12 +31,18 @@
 				throw new Exception(t('error_must_define_files', 'You must define files'));
 			}
 
-			if (empty($_POST['install'])) $_POST['install'] = '';
-			if (empty($_POST['uninstall'])) $_POST['uninstall'] = '';
-			if (empty($_POST['upgrades'])) $_POST['upgrades'] = [];
-			if (empty($_POST['settings'])) $_POST['settings'] = [];
-			if (empty($_POST['aliases'])) $_POST['aliases'] = [];
-			if (empty($_POST['files'])) $_POST['files'] = [];
+			foreach ([
+				'install' => '',
+				'uninstall' => '',
+				'upgrades' => [],
+				'settings' => [],
+				'aliases' => [],
+				'files' => [],
+			] as $field => $default) {
+				if (empty($_POST[$field])) {
+					$_POST[$field] = $default;
+				}
+			}
 
 			foreach ([
 				'id',

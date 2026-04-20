@@ -43,16 +43,19 @@
 				}
 			}
 
-			if (empty($_POST['autofill_technical_data'])) {
-				$_POST['autofill_technical_data'] = '';
+			foreach ([
+				'categories' => [],
+				'images' => [],
+				'attributes' => [],
+				'prices' => [],
+				'customizations' => [],
+				'stock_options' => [],
+				'autofill_technical_data' => '',
+			] as $field => $default) {
+				if (empty($_POST[$field])) {
+					$_POST[$field] = $default;
+				}
 			}
-
-			if (empty($_POST['categories'])) $_POST['categories'] = [];
-			if (empty($_POST['images'])) $_POST['images'] = [];
-			if (empty($_POST['attributes'])) $_POST['attributes'] = [];
-			if (empty($_POST['prices'])) $_POST['prices'] = [];
-			if (empty($_POST['customizations'])) $_POST['customizations'] = [];
-			if (empty($_POST['stock_options'])) $_POST['stock_options'] = [];
 
 			foreach ([
 				'status',
