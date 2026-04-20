@@ -35,29 +35,46 @@
 				throw new Exception(t('error_must_provide_verification_code', 'You must provide a verification code'));
 			}
 
-			if ($_POST['code'] != session::$data['security_verification']['code']) {
-				throw new Exception(t('error_invalid_verification_code', 'Invalid verification code'));
+			$is_totp = !empty(session::$data['security_verification']['type'])
+				&& session::$data['security_verification']['type'] === 'totp';
+
+			if ($is_totp) {
+
+				require_once 'app://includes/functions/func_totp.inc.php';
+
+				if (empty(administrator::$data['totp_secret'])
+					|| !totp_verify_code(administrator::$data['totp_secret'], $_POST['code'])) {
+					throw new Exception(t('error_invalid_verification_code', 'Invalid verification code'));
+				}
+
+			} else {
+
+				if ($_POST['code'] != session::$data['security_verification']['code']) {
+					throw new Exception(t('error_invalid_verification_code', 'Invalid verification code'));
+				}
+
+				if (time() > session::$data['security_verification']['expires']) {
+					throw new Exception(t('error_verification_code_expired', 'The verification code has expired'));
+				}
+
+				// The unknown-IP challenge records the successful IP as trusted.
+				// TOTP is location-independent and intentionally doesn't.
+				$known_ips = preg_split('#\s*,\s*#', administrator::$data['known_ips'], -1, PREG_SPLIT_NO_EMPTY);
+
+				array_unshift($known_ips, $_SERVER['REMOTE_ADDR']);
+				$known_ips = array_unique($known_ips);
+
+				if (count($known_ips) > 5) {
+					array_pop($known_ips);
+				}
+
+				database::query(
+					"update ". DB_TABLE_PREFIX ."administrators
+					set known_ips = '". database::input(implode(',', $known_ips)) ."'
+					where id = ". (int)administrator::$data['id'] ."
+					limit 1;"
+				);
 			}
-
-			if (time() > session::$data['security_verification']['expires']) {
-				throw new Exception(t('error_verification_code_expired', 'The verification code has expired'));
-			}
-
-			$known_ips = preg_split('#\s*,\s*#', administrator::$data['known_ips'], -1, PREG_SPLIT_NO_EMPTY);
-
-			array_unshift($known_ips, $_SERVER['REMOTE_ADDR']);
-			$known_ips = array_unique($known_ips);
-
-			if (count($known_ips) > 5) {
-				array_pop($known_ips);
-			}
-
-			database::query(
-				"update ". DB_TABLE_PREFIX ."administrators
-				set known_ips = '". database::input(implode(',', $known_ips)) ."'
-				where id = ". (int)administrator::$data['id'] ."
-				limit 1;"
-			);
 
 			unset(session::$data['security_verification']);
 
@@ -178,9 +195,11 @@ input[autocomplete="one-time-code"] {
 					<?php echo f::form_button('verify', t('title_verify', 'Verify'), 'submit', 'class="btn btn-default btn-block btn-lg"'); ?>
 				</label>
 
+				<?php if (empty(session::$data['security_verification']['type']) || session::$data['security_verification']['type'] !== 'totp') { ?>
 				<label class="form-group text-center">
 					<?php echo f::form_button('resend', t('title_resend_code', 'Resend Code'), 'submit', 'class="btn btn-default btn-sm"'); ?>
 				</label>
+				<?php } ?>
 			</div>
 
 		<?php echo f::form_end(); ?>
