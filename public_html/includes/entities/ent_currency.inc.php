@@ -62,11 +62,9 @@
 				throw new Exception(t('error_cannot_disable_default_currency', 'You must change the default currency before disabling it.'));
 			}
 
-			if (!empty($this->previous['code'])) {
-				if ($this->data['code'] != $this->previous['code']) {
-					if ($this->previous['code'] == settings::get('store_currency_code')) {
-						throw new Exception('Cannot rename the store currency.');
-					}
+			if (!empty($this->previous['code']) && $this->data['code'] != $this->previous['code']) {
+				if ($this->previous['code'] == settings::get('store_currency_code')) {
+					throw new Exception('Cannot rename the store currency.');
 				}
 			}
 
@@ -108,14 +106,6 @@
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"
 			);
-
-			if (!empty($this->previous['code'])) {
-				if ($this->data['code'] != $this->previous['code']) {
-					if ($this->previous['code'] == settings::get('store_currency_code')) {
-						throw new Exception('Cannot rename the store currency.');
-					}
-				}
-			}
 
 			$this->previous = $this->data;
 

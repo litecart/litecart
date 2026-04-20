@@ -35,22 +35,26 @@
 				$this->data[$column] = array_fill_keys(array_keys(language::$languages), '');
 			}
 
-			$this->data['status'] = 1;
-			$this->data['tax_class_id'] = settings::get('default_tax_class_id');
-			$this->data['quantity_unit_id'] = settings::get('default_quantity_unit_id');
-			$this->data['delivery_status_id'] = settings::get('default_delivery_status_id');
-			$this->data['sold_out_status_id'] = settings::get('default_sold_out_status_id');
-			$this->data['quantity_min'] = 1;
-			$this->data['quantity_available'] = 0;
-			$this->data['quantity_reserved'] = 0;
-
-			$this->data['categories'] = [];
-			$this->data['feeds'] = [];
-			$this->data['images'] = [];
-			$this->data['prices'] = [];
-			$this->data['attributes'] = [];
-			$this->data['customizations'] = [];
-			$this->data['stock_options'] = [];
+			// Default values
+			foreach ([
+				'status' => 1,
+				'tax_class_id' => settings::get('default_tax_class_id'),
+				'quantity_unit_id' => settings::get('default_quantity_unit_id'),
+				'delivery_status_id' => settings::get('default_delivery_status_id'),
+				'sold_out_status_id' => settings::get('default_sold_out_status_id'),
+				'quantity_min' => 1,
+				'quantity_available' => 0,
+				'quantity_reserved' => 0,
+				'categories' => [],
+				'feeds' => [],
+				'images' => [],
+				'prices' => [],
+				'attributes' => [],
+				'customizations' => [],
+				'stock_options' => [],
+			] as $field => $value) {
+				$this->data[$field] = $value;
+			}
 
 			$this->previous = $this->data;
 		}

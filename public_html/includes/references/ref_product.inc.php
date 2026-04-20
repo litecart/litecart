@@ -174,6 +174,7 @@
 					)->each(function($category) {
 
 						$category['name'] = json_decode((string)$category['name'], true) ?: [];
+
 						foreach ($this->_language_codes as $language_code) {
 							if (!empty($category['name'][$language_code])) {
 								$category['name'] = $category['name'][$language_code];
@@ -557,7 +558,7 @@
 
 					$this->_data['supplier'] = null;
 
-					if (!empty($this->supplier_id)) {
+					if ($this->supplier_id) {
 						$this->_data['supplier'] = reference::supplier($this->supplier_id);
 					}
 

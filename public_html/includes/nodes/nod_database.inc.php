@@ -465,6 +465,13 @@
 			$this->_result = $result;
 		}
 
+		public function __destruct() {
+
+			if ($this->_result) {
+				$this->_result->free();
+			}
+		}
+
 		public function __call($method, $arguments) {
 			return call_user_func_array([$this->_result, $method], $arguments);
 		}
@@ -472,7 +479,7 @@
 		// Magic getters for properties of mysqli_result
 		public function __get($name) {
 
-			if (!$this->_result) {
+			if (!isset($this->_result)) {
 				$this->execute();
 			}
 
@@ -670,7 +677,7 @@
 
 		public function fetch($filter=null) {
 
-			if (!$this->_result) {
+			if (!isset($this->_result)) {
 				$this->execute();
 			}
 
@@ -716,7 +723,7 @@
 
 		public function fetch_all($filter=null, $index_column=null) {
 
-			if (!$this->_result) {
+			if (!isset($this->_result)) {
 				$this->execute();
 			}
 
@@ -837,7 +844,7 @@
 				return $rows;
 			}
 
-			if (!$this->_result) {
+			if (!isset($this->_result)) {
 				$this->execute();
 			}
 
@@ -876,22 +883,31 @@
 		}
 
 		public function seek($offset) {
+
+			if (!isset($this->_result)) {
+				$this->execute();
+			}
+
 			mysqli_data_seek($this->_result, $offset);
+
 			return $this;
 		}
 
 		public function num_rows() {
+
+			if (!isset($this->_result)) {
+				$this->execute();
+			}
+
 			return mysqli_num_rows($this->_result);
 		}
 
 		public function free() {
+
 			if ($this->_result) {
 				return mysqli_free_result($this->_result);
 			}
-			return true;
-		}
 
-		public function __destruct() {
-			$this->free();
+			return true;
 		}
 	}
