@@ -97,7 +97,15 @@
 // App content
   } else {
 
-    if (empty(user::$data['apps']) || (!empty(user::$data['apps'][$_GET['app']]['status']) && in_array($_GET['doc'], user::$data['apps'][$_GET['app']]['docs']))) {
+  // Helper endpoints (*.json, *.csv, *_picker) aren't individually tickable in the
+  // administrator edit UI — they're auxiliary routes consumed by the main docs.
+  // Allow them implicitly as long as the user has the app enabled.
+    $is_helper = preg_match('#\.(json|csv)$#', $_GET['doc'] ?? '')
+              || str_ends_with($_GET['doc'] ?? '', '_picker');
+
+    if (empty(user::$data['apps'])
+    || (!empty(user::$data['apps'][$_GET['app']]['status'])
+        && ($is_helper || in_array($_GET['doc'], user::$data['apps'][$_GET['app']]['docs'])))) {
 
       if (!is_file(FS_DIR_ADMIN . $_GET['app'].'.app/config.inc.php')) {
         http_response_code(404);
