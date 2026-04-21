@@ -138,7 +138,7 @@
 						header('Content-Disposition: attachment; filename='. $_POST['source'] .'.json');
 					}
 
-					echo json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+					echo f::format_json($data);
 					exit;
 
 				case 'yaml':

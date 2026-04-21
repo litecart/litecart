@@ -58,7 +58,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 					<?php //if ($average_rating) { ?>
 					<div class="average-rating">
 						<a href="#reviews" style="text-decoration: none;">
-							<?php echo functions::draw_rating($average_rating); ?>
+							<?php echo f::draw_rating($average_rating); ?>
 						</a>
 					</div>
 					<?php //} ?>
@@ -351,10 +351,10 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 									<div class="vote">
 										<a class="upvote" href="#">
-											<?php echo functions::draw_fonticon('fa-thumbs-up'); ?> <span class="num-votes"><?php echo $review['upvotes']; ?></span>
+											<?php echo f::draw_fonticon('fa-thumbs-up'); ?> <span class="num-votes"><?php echo $review['upvotes']; ?></span>
 										</a>
 										<a class="downvote" href="#">
-											<?php echo functions::draw_fonticon('fa-thumbs-down'); ?> <span class="num-votes"><?php echo $review['downvotes']; ?></span>
+											<?php echo f::draw_fonticon('fa-thumbs-down'); ?> <span class="num-votes"><?php echo $review['downvotes']; ?></span>
 										</a>
 									</div>
 
@@ -363,7 +363,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 									</div>
 
 									<div class="rating">
-										<?php echo functions::draw_rating($review['rating']); ?>
+										<?php echo f::draw_rating($review['rating']); ?>
 									</div>
 
 									<div class="title">
@@ -381,15 +381,15 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 			switch(true) {
 				case (preg_match('#\.(bmp|gif|jpe?g|png)$#', $attachment['filename'])):
-					echo '<div class="attachment"><a href="'. functions::escape_html($attachment['link']) .'" class="thumbnail" data-toggle="lightbox" data-type="image"><img src="'. WS_DIR_APP . functions::image_thumbnail($attachment['attachment'], 96, 96, 'FIT_USE_WHITESPACING') .'" alt=""></a></div>';
+					echo '<div class="attachment"><a href="'. f::escape_html($attachment['link']) .'" class="thumbnail" data-toggle="lightbox" data-type="image"><img src="'. WS_DIR_APP . f::image_thumbnail($attachment['attachment'], 96, 96, 'FIT_USE_WHITESPACING') .'" alt=""></a></div>';
 					break;
 
 				case (preg_match('#\.(avi|mp4|mov)$#', $attachment['filename'])):
-					echo '<div class="attachment"><a href="'. functions::escape_html($attachment['link']) .'" class="thumbnail text-center">'. WS_DIR_APP . functions::draw_fonticon('fa-film fa-3x', 'style="padding-top: 2em;"') .'</a></div>';
+					echo '<div class="attachment"><a href="'. f::escape_html($attachment['link']) .'" class="thumbnail text-center">'. WS_DIR_APP . f::draw_fonticon('fa-film fa-3x', 'style="padding-top: 2em;"') .'</a></div>';
 					break;
 
 				default:
-					echo '<div class="attachment"><a href="'. functions::escape_html($attachment['link']) .'" class="thumbnail text-center">'. functions::draw_fonticon('fa-paperclip fa-3x', 'style="padding-top: 2em;"') .'</a></div>';
+					echo '<div class="attachment"><a href="'. f::escape_html($attachment['link']) .'" class="thumbnail text-center">'. f::draw_fonticon('fa-paperclip fa-3x', 'style="padding-top: 2em;"') .'</a></div>';
 					break;
 			}
 		}
@@ -409,7 +409,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 						<div class="col-md-6">
 
-							<?php echo functions::form_begin('rating_form', 'post', '', true); ?>
+							<?php echo f::form_begin('rating_form', 'post', '', true); ?>
 
 								<fieldset<?php echo empty(customer::$data['id']) ? ' disabled' : ''; ?>>
 									<h3><?php echo t('title_rate_this_product', 'Rate This Product'); ?></h3>
@@ -438,11 +438,11 @@ form[name="buy_now_form"] .dropdown-menu .image {
 									</div>
 
 									<div class="form-group">
-										<?php echo functions::form_input_text('title', !empty($customer_review['title']) ? $customer_review['title'] : true, 'placeholder="'. functions::escape_html(t('title_title', 'Title')) .'"'); ?>
+										<?php echo f::form_input_text('title', !empty($customer_review['title']) ? $customer_review['title'] : true, 'placeholder="'. f::escape_html(t('title_title', 'Title')) .'"'); ?>
 									</div>
 
 											<div class="form-group">
-										<?php echo functions::form_textarea('description', !empty($customer_review['description']) ? $customer_review['description'] : true, 'placeholder="'. functions::escape_html(t('title_review', 'Review')) .'"'); ?>
+										<?php echo f::form_textarea('description', !empty($customer_review['description']) ? $customer_review['description'] : true, 'placeholder="'. f::escape_html(t('title_review', 'Review')) .'"'); ?>
 									</div>
 
 									<div class="attachments">
@@ -451,13 +451,13 @@ form[name="buy_now_form"] .dropdown-menu .image {
 											<?php if (!empty($_POST['attachments'])) foreach (array_keys($_POST['attachments']) as $key) { ?>
 											<div class="attachment form-group">
 												<label><?php echo t('title_attachment', 'Attachment'); ?></label>
-												<?php echo functions::form_input_hidden('attachments['.$key.'][id]', true); ?>
+												<?php echo f::form_input_hidden('attachments['.$key.'][id]', true); ?>
 												<div class="input-group">
-													<div class="form-control"><?php echo functions::escape_html($_POST['attachments'][$key]['filename']); ?></div>
+													<div class="form-control"><?php echo f::escape_html($_POST['attachments'][$key]['filename']); ?></div>
 													<div class="input-group-text">
-														<a class="move-up" href="#" title="<?php echo t('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-up fa-lg', 'style="color: #3399cc;"'); ?></a>
-														<a class="move-down" href="#" title="<?php echo t('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-down fa-lg', 'style="color: #3399cc;"'); ?></a>
-														<a class="remove" href="#" title="<?php echo t('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times fa-lg', 'style="color: #cc3333;"'); ?></a>
+														<a class="move-up" href="#" title="<?php echo t('text_move_up', 'Move up'); ?>"><?php echo f::draw_fonticon('fa-arrow-up fa-lg', 'style="color: #3399cc;"'); ?></a>
+														<a class="move-down" href="#" title="<?php echo t('text_move_down', 'Move down'); ?>"><?php echo f::draw_fonticon('fa-arrow-down fa-lg', 'style="color: #3399cc;"'); ?></a>
+														<a class="remove" href="#" title="<?php echo t('title_remove', 'Remove'); ?>"><?php echo f::draw_fonticon('fa-times fa-lg', 'style="color: #cc3333;"'); ?></a>
 													</div>
 												</div>
 											</div>
@@ -469,23 +469,23 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 										<div class="form-group">
 											<p><?php echo t('text_add_review_attachment', 'Add a photo to your review.'); ?></p>
-											<a href="#" class="add" title="<?php echo t('text_add', 'Add'); ?>"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #66cc66;"'); ?> <?php echo t('title_add_attachment', 'Add Attachment'); ?></a>
+											<a href="#" class="add" title="<?php echo t('text_add', 'Add'); ?>"><?php echo f::draw_fonticon('fa-plus', 'style="color: #66cc66;"'); ?> <?php echo t('title_add_attachment', 'Add Attachment'); ?></a>
 										</div>
 									</div>
 
 									<?php if (settings::get('captcha_enabled')) { ?>
 									<div class="form-group">
 										<label><?php echo t('title_captcha', 'CAPTCHA'); ?></label>
-										<div style="max-width: 250px;"><?php echo functions::form_draw_captcha_field('captcha', 'review_product', 'required'); ?></div>
+										<div style="max-width: 250px;"><?php echo f::form_captcha('captcha', 'review_product', 'required'); ?></div>
 									</div>
 									<?php } ?>
 
-									<?php echo functions::form_draw_button('submit_review', t('title_submit', 'Submit'), 'submit'); ?>
+									<?php echo f::form_button('submit_review', t('title_submit', 'Submit'), 'submit'); ?>
 
 									<?php } ?>
 								</fieldset>
 
-							<?php echo functions::form_end(); ?>
+							<?php echo f::form_end(); ?>
 
 						</div>
 					</div>
@@ -612,9 +612,9 @@ form[name="buy_now_form"] .dropdown-menu .image {
 		var output = [
 			'<div class="attachment form-group">',
 			'  <div class="input-group">',
-			'    <?php echo functions::form_draw_file_field('new_attachments[]', 'accept=".gif,.jpg,.png"'); ?>',
+			'    <?php echo f::form_input_file('new_attachments[]', 'accept=".gif,.jpg,.png"'); ?>',
 			'    <div class="input-group-text">',
-			'      <a class="remove" href="#" title="<?php echo t('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times fa-lg', 'style="color: #cc3333;"'); ?></a>',
+			'      <a class="remove" href="#" title="<?php echo t('title_remove', 'Remove'); ?>"><?php echo f::draw_fonticon('fa-times fa-lg', 'style="color: #cc3333;"'); ?></a>',
 			'    </div>',
 			'  </div>',
 			'</div>'

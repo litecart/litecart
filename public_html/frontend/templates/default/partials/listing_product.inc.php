@@ -14,7 +14,7 @@
 
 			<?php if ($rating) { ?>
 			<div class="rating" style="font-size: .75em;">
-				<?php echo functions::draw_rating($rating); ?>
+				<?php echo f::draw_rating($rating); ?>
 			</div>
 			<?php } ?>
 
@@ -33,11 +33,11 @@
 
 		<?php if ($is_favourite) { ?>
 		<button class="favourites btn btn-default btn-sm" name="remove_from_favourites" title="<?php echo t('title_remove_favourites', 'Remove From Favourites'); ?>">
-			<?php echo functions::draw_fonticon('icon-heart', 'style="color: #c00;"'); ?>
+			<?php echo f::draw_fonticon('icon-heart', 'style="color: #c00;"'); ?>
 		</button>
 		<?php } else { ?>
 		<button class="favourites btn btn-default btn-sm" name="add_to_favourites" title="<?php echo t('title_add_to_favourites', 'Add To Favourites'); ?>">
-			<?php echo functions::draw_fonticon('icon-heart-o'); ?>
+			<?php echo f::draw_fonticon('icon-heart-o'); ?>
 		</button>
 		<?php } ?>
 

@@ -143,7 +143,7 @@
 						throw new Exception(t('error_failed_decoding_xml', 'Failed decoding XML'));
 					}
 
-					if (!($data = json_encode($data))) {
+					if (!($data = f::format_json($data))) {
 						throw new Exception(t('error_failed_encoding_json', 'Failed encoding JSON'));
 					}
 

@@ -29,7 +29,15 @@
 	}
 
 	// Stop script execution and reload the current page
-	function reload($status_code=302) {
+	function reload($status_code=null) {
+
+		if ($status_code === null) {
+			if (file_get_contents('php://input')) {
+				$status_code = 303; // See Other
+			} else {
+				$status_code = 302; // Found
+			}
+		}
 
 		if (!in_array($status_code, [301, 302, 303, 307, 308])) {
 			trigger_error('Unsupported response status code for redirect ('. (int)$status_code .')');

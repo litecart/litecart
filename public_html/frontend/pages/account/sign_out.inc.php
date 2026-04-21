@@ -30,7 +30,7 @@
 		// Headless requests
 		if (!empty($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false) {
 			header('Content-Type: application/json; charset='. language::$selected['charset']);
-			echo json_encode([
+			echo f::format_json([
 				'success' => true,
 				'message' => t('description_logged_out', 'You are now logged out.'),
 			]);

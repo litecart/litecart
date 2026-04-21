@@ -116,7 +116,7 @@
 					if (is_file(self::FS_DIR_ATTACHMENTS . $attachment['attachment'])) {
 						@unlink(self::FS_DIR_ATTACHMENTS . $attachment['attachment']);
 					}
-					functions::image_delete_cache(self::FS_DIR_ATTACHMENTS . $attachment['attachment']);
+					f::image_delete_cache(self::FS_DIR_ATTACHMENTS . $attachment['attachment']);
 				}
 			}
 
@@ -128,8 +128,8 @@
 					$this->data['attachments'][$key]['id'] = $attachment['id'];
 				}
 				if (!empty($attachment['new_filename']) && !is_file(FS_DIR_APP . 'images/' . $attachment['new_filename'])) {
-					functions::image_delete_cache(self::FS_DIR_ATTACHMENTS . $attachment['filename']);
-					functions::image_delete_cache(self::FS_DIR_ATTACHMENTS . $attachment['new_filename']);
+					f::image_delete_cache(self::FS_DIR_ATTACHMENTS . $attachment['filename']);
+					f::image_delete_cache(self::FS_DIR_ATTACHMENTS . $attachment['new_filename']);
 					if ($attachment['new_filename'] != $attachment['filename']) {
 						rename(self::FS_DIR_ATTACHMENTS . $attachment['filename'], self::FS_DIR_ATTACHMENTS . $attachment['new_filename']);
 						$attachment['filename'] = $attachment['new_filename'];
@@ -193,7 +193,7 @@
 				if (is_file(self::FS_DIR_ATTACHMENTS . $attachment['attachment'])) {
 					@unlink(self::FS_DIR_ATTACHMENTS . $attachment['attachment']);
 				}
-				functions::image_delete_cache(self::FS_DIR_ATTACHMENTS . $attachment['attachment']);
+				f::image_delete_cache(self::FS_DIR_ATTACHMENTS . $attachment['attachment']);
 			}
 
 			// delete review row

@@ -207,7 +207,7 @@ textarea[name="notes"]:focus {
 						<div class="col-6">
 							<div class="form-group">
 								<div class="form-label"><?php echo t('title_order_no', 'Order No'); ?></div>
-								<div class="detail"><?php echo functions::escape_html($order->data['no']); ?></div>
+								<div class="detail"><?php echo f::escape_html($order->data['no']); ?></div>
 							</div>
 						</div>
 
@@ -221,7 +221,7 @@ textarea[name="notes"]:focus {
 
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_order_reference', 'Order Reference'); ?></div>
-						<div class="detail"><?php echo functions::escape_html($order->data['reference']); ?></div>
+						<div class="detail"><?php echo f::escape_html($order->data['reference']); ?></div>
 					</label>
 
 					<label class="form-group">
@@ -236,7 +236,7 @@ textarea[name="notes"]:focus {
 								<?php } ?>
 							</div>
 							<div class="hostname">
-								<small><?php echo functions::escape_html($order->data['hostname']); ?></small>
+								<small><?php echo f::escape_html($order->data['hostname']); ?></small>
 							</div>
 						</div>
 					</label>

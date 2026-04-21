@@ -151,8 +151,8 @@
 
 <script>
 	var data = {
-		labels: <?php echo json_encode(array_column($stats, 'label')); ?>,
-		series: <?php echo json_encode([array_column($stats, 'total_visits')]); ?>
+		labels: <?php echo f::format_json(array_column($stats, 'label'), ''); ?>,
+		series: <?php echo f::format_json([array_column($stats, 'total_visits')], ''); ?>
 	};
 
 	var options = {

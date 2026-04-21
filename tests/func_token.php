@@ -51,11 +51,11 @@
 		## token_verify_remember — rejects tampered token
 		########################################################################
 
-		$tampered = base64_encode(json_encode([
+		$tampered = base64_encode(f::format_json([
 			'id' => 99,
 			'exp' => time() + 86400,
 			'sig' => 'fake_signature',
-		]));
+		], ''));
 
 		$result = f::token_verify_remember($tampered, $password_hash);
 

@@ -68,9 +68,12 @@
 				http_response_code(403);
 				if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
 					header('Content-Type: application/json');
-					echo json_encode(['error' => 'CSRF token mismatch. Please reload the page and try again.']);
+					echo f::format_json(['error' => 'CSRF token mismatch. Please reload the page and try again.']);
 				} else {
-					echo '<h1>403 Forbidden</h1><p>CSRF token mismatch. Please <a href="javascript:history.back()">go back</a> and try again.</p>';
+					echo implode(PHP_EOL, [
+						'<h1>403 Forbidden</h1>',
+						'<p>CSRF token mismatch. Please <a href="javascript:history.back()">go back</a> and try again.</p>'
+					]);
 				}
 				exit;
 			}

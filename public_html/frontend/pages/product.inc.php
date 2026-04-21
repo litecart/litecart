@@ -196,6 +196,7 @@
 						'link' => document::rlink('storage://data/reviews_attachments/'. ($attachment['attachment'])),
 					];
 				}
+
 			});
 
 			if (!$review) {

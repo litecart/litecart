@@ -215,7 +215,7 @@
 
 <script>
 	$('#cron-example').on('click', function() {
-		prompt("<?php echo t('title_cron_job_configuration', 'Cron Job Configuration'); ?>", "*/5 * * * * php <?php echo functions::escape_js(FS_DIR_APP); ?>index.php push_jobs &>/dev/null");
+		prompt("<?php echo t('title_cron_job_configuration', 'Cron Job Configuration'); ?>", "*/5 * * * * php <?php echo f::escape_js(FS_DIR_APP); ?>index.php push_jobs &>/dev/null");
 	});
 
 	$('.data-table :checkbox').on('change', function() {

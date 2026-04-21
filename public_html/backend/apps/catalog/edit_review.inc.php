@@ -77,7 +77,7 @@
 		exit();
 	}
 
-	functions::draw_lightbox();
+	f::draw_lightbox();
 
 	$account_name = '('. t('title_guest', 'Guest') .')';
 	if (!empty($_POST['customer_id'])) {
@@ -95,34 +95,34 @@
 
 	<div class="card-body">
 
-		<?php echo functions::form_draw_form_begin(false, 'post', false, true, 'style="max-width: 640px;"'); ?>
+		<?php echo f::form_begin(false, 'post', false, true, 'style="max-width: 640px;"'); ?>
 
 			<div class="row">
 				<div class="col-md-6">
 					<div class="form-group">
 						<label><?php echo t('title_status', 'Status'); ?></label>
-						<?php echo functions::form_draw_toggle('status', true, 'e/d'); ?>
+						<?php echo f::form_toggle('status', true, 'e/d'); ?>
 					</div>
 				</div>
 
 				<div class="col-md-6">
 					<div class="form-group">
 						<label><?php echo t('title_rating', 'Rating'); ?></label>
-						<?php echo functions::form_draw_number_field('rating', true, 1, 5); ?>
+						<?php echo f::form_input_number('rating', true, 1, 5); ?>
 					</div>
 				</div>
 			</div>
 
 			<div class="form-group">
 				<label><?php echo t('title_product', 'product'); ?></label>
-				<?php echo functions::form_draw_products_list('product_id', true); ?>
+				<?php echo f::form_select_product('product_id', true); ?>
 			</div>
 
 			<div class="row">
 				<div class="col-md-6">
 					<div class="form-group">
 						<label><?php echo t('title_customer', 'Customer'); ?></label>
-						<?php echo functions::form_draw_hidden_field('customer_id', true); ?>
+						<?php echo f::form_input_hidden('customer_id', true); ?>
 						<div class="selected-account form-control disabled"><?php echo t('title_id', 'ID'); ?>: <span class="id"><?php echo @(int)$_POST['customer_id']; ?></span> &mdash; <span class="name"><?php echo $account_name; ?></span> <a href="#modal-customer-picker" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin-left: 5px;"><?php echo t('title_change', 'Change'); ?></a></div>
 					</div>
 				</div>
@@ -130,14 +130,14 @@
 				<div class="col-md-6">
 					<div class="form-group">
 						<label><?php echo t('title_email', 'Email'); ?></label>
-						<?php echo functions::form_draw_email_field('customer_email', true); ?>
+						<?php echo f::form_input_email('customer_email', true); ?>
 					</div>
 				</div>
 
 				<div class="col-md-12">
 					<div class="form-group">
 						<label><?php echo t('title_name', 'Name'); ?></label>
-						<?php echo functions::form_draw_text_field('customer_name', true); ?>
+						<?php echo f::form_input_text('customer_name', true); ?>
 					</div>
 				</div>
 			</div>
@@ -153,12 +153,12 @@
 				<div id="<?php echo $language_code; ?>" class="tab-pane fade in<?php echo ($language_code == language::$selected['code']) ? ' active' : ''; ?>">
 					<div class="form-group">
 						<label><?php echo t('title_title', 'Title'); ?></label>
-						<?php echo functions::form_draw_regional_input_field($language_code, 'title['. $language_code .']', true, ''); ?>
+						<?php echo f::form_regional_text($language_code, 'title['. $language_code .']', true, ''); ?>
 					</div>
 
 					<div class="form-group">
 						<label><?php echo t('title_review', 'Review'); ?></label>
-						<?php echo functions::form_draw_regional_textarea($language_code, 'review['. $language_code .']', true, 'style="height: 250px;"'); ?>
+						<?php echo f::form_regional_textarea($language_code, 'review['. $language_code .']', true, 'style="height: 250px;"'); ?>
 					</div>
 				</div>
 				<?php } ?>
@@ -168,14 +168,14 @@
 				<div class="col-md-6">
 					<div class="form-group">
 						<label><?php echo t('title_upvotes', 'Upvotes'); ?></label>
-						<?php echo functions::form_draw_number_field('upvotes', true, 0); ?>
+						<?php echo f::form_input_number('upvotes', true, 0); ?>
 					</div>
 				</div>
 
 				<div class="col-md-6">
 					<div class="form-group">
 						<label><?php echo t('title_downvotes', 'Downvotes'); ?></label>
-						<?php echo functions::form_draw_number_field('downvotes', true, 0); ?>
+						<?php echo f::form_input_number('downvotes', true, 0); ?>
 					</div>
 				</div>
 			</div>
@@ -185,15 +185,15 @@
 				<div class="attachments">
 					<?php if (!empty($_POST['attachments'])) foreach (array_keys($_POST['attachments']) as $key) { ?>
 					<div class="attachment form-group">
-						<?php echo functions::form_draw_hidden_field('attachments['.$key.'][id]', true); ?>
-						<?php echo functions::form_draw_hidden_field('attachments['.$key.'][filename]', $_POST['attachments'][$key]['filename']); ?>
+						<?php echo f::form_input_hidden('attachments['.$key.'][id]', true); ?>
+						<?php echo f::form_input_hidden('attachments['.$key.'][filename]', $_POST['attachments'][$key]['filename']); ?>
 
 						<div class="input-group">
-							<?php echo functions::form_draw_text_field('attachments['.$key.'][new_filename]', isset($_POST['attachments'][$key]['new_filename']) ? true : $_POST['attachments'][$key]['filename']); ?>
+							<?php echo f::form_input_text('attachments['.$key.'][new_filename]', isset($_POST['attachments'][$key]['new_filename']) ? true : $_POST['attachments'][$key]['filename']); ?>
 							<div class="input-group-text">
-								<a class="move-up" href="#" title="<?php echo t('text_move_up', 'Move up'); ?>"><?php echo functions::draw_fonticon('fa-arrow-up fa-lg', 'style="color: #3399cc;"'); ?></a>
-								<a class="move-down" href="#" title="<?php echo t('text_move_down', 'Move down'); ?>"><?php echo functions::draw_fonticon('fa-arrow-down fa-lg', 'style="color: #3399cc;"'); ?></a>
-								<a class="remove" href="#" title="<?php echo t('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times fa-lg', 'style="color: #cc3333;"'); ?></a>
+								<a class="move-up" href="#" title="<?php echo t('text_move_up', 'Move up'); ?>"><?php echo f::draw_fonticon('fa-arrow-up fa-lg', 'style="color: #3399cc;"'); ?></a>
+								<a class="move-down" href="#" title="<?php echo t('text_move_down', 'Move down'); ?>"><?php echo f::draw_fonticon('fa-arrow-down fa-lg', 'style="color: #3399cc;"'); ?></a>
+								<a class="remove" href="#" title="<?php echo t('title_remove', 'Remove'); ?>"><?php echo f::draw_fonticon('fa-times fa-lg', 'style="color: #cc3333;"'); ?></a>
 							</div>
 						</div>
 					</div>
@@ -204,26 +204,26 @@
 					<div class="attachment form-group">
 						<label><?php echo t('title_attachment', 'Attachment'); ?></label>
 						<div class="input-group">
-							<?php echo functions::form_draw_file_field('new_attachments[]'); ?>
+							<?php echo f::form_input_file('new_attachments[]'); ?>
 							<div class="input-group-text">
-								<a class="remove" href="#" title="<?php echo t('title_remove', 'Remove'); ?>"><?php echo functions::draw_fonticon('fa-times fa-lg', 'style="color: #cc3333;"'); ?></a>
+								<a class="remove" href="#" title="<?php echo t('title_remove', 'Remove'); ?>"><?php echo f::draw_fonticon('fa-times fa-lg', 'style="color: #cc3333;"'); ?></a>
 							</div>
 						</div>
 					</div>
 				</div>
 
 				<div class="form-group">
-					<a href="#" class="add" title="<?php echo t('text_add', 'Add'); ?>"><?php echo functions::draw_fonticon('fa-plus', 'style="color: #66cc66;"'); ?></a>
+					<a href="#" class="add" title="<?php echo t('text_add', 'Add'); ?>"><?php echo f::draw_fonticon('fa-plus', 'style="color: #66cc66;"'); ?></a>
 				</div>
 			</div>
 
 			<div class="card-action">
-				<?php echo functions::form_draw_button('save', t('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
-				<?php echo !empty($review->data['id']) ? functions::form_draw_button('delete', t('title_delete', 'Delete'), 'submit', 'class="btn btn-danger" onclick="if (!confirm(&quot;'. t('text_are_you_sure', 'Are you sure?') .'&quot;)) return false;"', 'delete') : ''; ?>
-				<?php echo functions::form_draw_button('cancel', t('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
+				<?php echo f::form_button('save', t('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
+				<?php echo !empty($review->data['id']) ? f::form_button('delete', t('title_delete', 'Delete'), 'submit', 'class="btn btn-danger" onclick="if (!confirm(&quot;'. t('text_are_you_sure', 'Are you sure?') .'&quot;)) return false;"', 'delete') : ''; ?>
+				<?php echo f::form_button('cancel', t('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
 			</div>
 
-		<?php echo functions::form_draw_form_end(); ?>
+		<?php echo f::form_end(); ?>
 	</div>
 </div>
 
@@ -233,7 +233,7 @@
 
 	<div class="modal-body">
 		<div class="form-group">
-			<?php echo functions::form_draw_text_field('query', true, 'placeholder="'. functions::escape_html(t('title_search', 'Search')) .'"'); ?>
+			<?php echo f::form_input_text('query', true, 'placeholder="'. f::escape_html(t('title_search', 'Search')) .'"'); ?>
 		</div>
 
 		<div class="form-group results table-responsive">
@@ -291,7 +291,7 @@
 					}
 				});
 				if ($('#modal-customer-picker .results tbody').html() == '') {
-					$('#modal-customer-picker .results tbody').html('<tr><td colspan="4"><em><?php echo functions::escape_js(t('text_no_results', 'No results')); ?></em></td></tr>');
+					$('#modal-customer-picker .results tbody').html('<tr><td colspan="4"><em><?php echo f::escape_js(t('text_no_results', 'No results')); ?></em></td></tr>');
 				}
 			},
 		});
@@ -305,7 +305,7 @@
 
 		if (!id) {
 			id = 0;
-			name = '(<?php echo functions::escape_js(t('title_guest', 'Guest')); ?>)';
+			name = '(<?php echo f::escape_js(t('title_guest', 'Guest')); ?>)';
 		}
 
 		$('input[name="customer_id"]').val(id).trigger('change');
@@ -317,7 +317,7 @@
 	$('#modal-customer-picker .set-guest').click(function(){
 		$('input[name="customer[id]"]').val('0');
 		$('.selected-account .id').text('0');
-		$('.selected-account .name').text('(<?php echo functions::escape_js(t('title_guest', 'Guest')); ?>)');
+		$('.selected-account .name').text('(<?php echo f::escape_js(t('title_guest', 'Guest')); ?>)');
 		$.featherlight.close();
 	});
 
@@ -354,11 +354,11 @@
 
 		var $output = $([
 			'<div class="attachment form-group">'
-			'  <label><?php echo functions::escape_js(t('title_attachment', 'Attachment')); ?></label>'
+			'  <label><?php echo f::escape_js(t('title_attachment', 'Attachment')); ?></label>'
 			'  <div class="input-group">'
-			'    <?php echo functions::escape_js(functions::form_draw_file_field('new_attachments[]')); ?>',
+			'    <?php echo f::escape_js(f::form_input_file('new_attachments[]')); ?>',
 			'    <div class="input-group-text">',
-			'      <a class="remove" href="#" title="<?php echo functions::escape_js(t('title_remove', 'Remove')); ?>"><?php echo json_encode(functions::draw_fonticon('fa-times fa-lg', 'style="color: #cc3333;')); ?></a>',
+			'      <a class="remove" href="#" title="<?php echo f::escape_js(t('title_remove', 'Remove')); ?>"><?php echo f::escape_js(f::draw_fonticon('fa-times fa-lg', 'style="color: #cc3333;'), ''); ?></a>',
 			'    </div>',
 			'  </div>',
 			'</div>',

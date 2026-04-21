@@ -8,11 +8,11 @@
 		$payload = $id . ':' . $exp . ':' . substr($password_hash, 0, 16);
 		$sig = hash_hmac('sha256', $payload, HMAC_KEY_REMEMBER_ME);
 
-		return base64_encode(json_encode([
+		return base64_encode(f::format_json([
 			'id' => (int)$id,
 			'exp' => $exp,
 			'sig' => $sig,
-		]));
+		], ''));
 	}
 
 	function token_verify_remember($cookie_value, $password_hash) {

@@ -118,13 +118,13 @@
 
 	<?php echo f::form_begin('search_form', 'get'); ?>
 		<div class="card-filter">
-			<div style="vertical-align: middle; width: 160px;"><?php echo functions::form_select('type', $type_options, true, 'onchange="$(this).closest(\'form\').submit();"'); ?></div>
+			<div style="vertical-align: middle; width: 160px;"><?php echo f::form_select('type', $type_options, true, 'onchange="$(this).closest(\'form\').submit();"'); ?></div>
 			<div class="expandable"><?php echo f::form_input_search('query', true, 'placeholder="'. t('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"'); ?></div>
 			<div>
 				<div class="input-group" style="max-width: 450px;">
-					<?php echo functions::form_input_datetime('from'); ?>
+					<?php echo f::form_input_datetime('from'); ?>
 					<span class="input-group-text"> - </span>
-					<?php echo functions::form_input_datetime('to'); ?>
+					<?php echo f::form_input_datetime('to'); ?>
 				</div>
 			</div>
 			<div><?php echo f::form_button('filter', t('title_search', 'Search'), 'submit'); ?></div>

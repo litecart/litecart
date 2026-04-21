@@ -123,7 +123,7 @@
 						break;
 
 					case 'get':
-						$hash_string .= json_encode($_GET, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+						$hash_string .= f::format_json($_GET, '');
 						break;
 
 					case 'language':
@@ -146,7 +146,7 @@
 						break;
 
 					case 'post':
-						$hash_string .= json_encode($_POST, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+						$hash_string .= f::format_json($_POST, '');
 						break;
 
 					case 'region':
@@ -270,7 +270,7 @@
 						}
 					}
 
-					$result = file_put_contents($cache_file, json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+					$result = file_put_contents($cache_file, f::format_json($data));
 					break;
 
 				case 'memory':

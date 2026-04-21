@@ -121,7 +121,7 @@
 
 				$tool_schemas = [];
 
-				foreach (functions::file_search('app://frontend/mcp/mcp_*.inc.php') as $mcp_file) {
+				foreach (f::file_search('app://frontend/mcp/mcp_*.inc.php') as $mcp_file) {
 
 					// Include without polluting global scope
 					$tool_schema = (function() use ($mcp_file) {
@@ -154,7 +154,7 @@
 				}
 
 				// Tool dispatch
-				foreach (functions::file_search('app://frontend/mcp/mcp_*.inc.php') as $mcp_file) {
+				foreach (f::file_search('app://frontend/mcp/mcp_*.inc.php') as $mcp_file) {
 
 					// Include without polluting global scope
 					$tool_schema = (function() use ($mcp_file) {
@@ -191,7 +191,7 @@
 				$result = [
 					'content' => [[
 						'type' => 'text',
-						'text' => json_encode($tool_result, JSON_UNESCAPED_SLASHES),
+						'text' => f::format_json($tool_result),
 					]],
 					'structuredContent' => $tool_result,
 					'isError' => false,
@@ -204,11 +204,11 @@
 				throw new McpException('Method not found', 404, -32601);
 		}
 
-		$output = json_encode([
+		$output = f::format_json([
 			'jsonrpc' => '2.0',
 			'id' => $rpc_id,
 			'result' => $result,
-		], JSON_UNESCAPED_SLASHES);
+		]);
 
 		if ($output === false) {
 			throw new McpException('Encoding error', 500, -32603);
@@ -223,48 +223,48 @@
 			header('WWW-Authenticate: Basic realm="' . PLATFORM_NAME . ' MCP Server"');
 		}
 
-		$output = json_encode([
+		$output = f::format_json([
 			'jsonrpc' => '2.0',
 			'id' => $e->rpc_id,
 			'error' => [
 				'code' => $e->rpc_code,
 				'message' => $e->getMessage(),
 			],
-		], JSON_UNESCAPED_SLASHES);
+		]);
 
 		if ($output === false) {
-			$output = json_encode([
+			$output = f::format_json([
 				'jsonrpc' => '2.0',
 				'error' => [
 					'code' => -32603,
 					'message' => 'Encoding error',
 				],
 				'id' => $e->rpc_id,
-			], JSON_UNESCAPED_SLASHES);
+			]);
 		}
 
 	} catch (Exception $e) {
 
 		http_response_code($e->getCode() ?: 500);
 
-		$output = json_encode([
+		$output = f::format_json([
 			'jsonrpc' => '2.0',
 			'error' => [
 				'code' => -32000,
 				'message' => $e->getMessage(),
 			],
 			'id' => $rpc_id ?? null,
-		], JSON_UNESCAPED_SLASHES);
+		]);
 
 		if ($output === false) {
-			$output = json_encode([
+			$output = f::format_json([
 				'jsonrpc' => '2.0',
 				'id' => $rpc_id ?? null,
 				'error' => [
 					'code' => -32603,
 					'message' => 'Encoding error',
 				],
-			], JSON_UNESCAPED_SLASHES);
+			]);
 		}
 	}
 
