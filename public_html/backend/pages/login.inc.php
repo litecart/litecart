@@ -153,6 +153,25 @@
 
 			unset(session::$data['security_verification']);
 
+			// TOTP (opt-in per administrator). When enrolled, always challenge —
+			// independent of the known-IP check below. Email OTP remains the
+			// fallback for admins who haven't enrolled.
+			if (!empty($administrator['totp_secret'])) {
+
+				session::$data['security_verification'] = [
+					'type' => 'totp',
+					'attempts' => 0,
+				];
+
+				if (!empty($_POST['redirect_url'])) {
+					redirect(document::ilink('verify', ['redirect_url' => $_POST['redirect_url']]));
+				} else {
+					redirect(document::ilink('verify'));
+				}
+
+				exit;
+			}
+
 			$is_known_ip = false;
 			$is_known_range = false;
 
@@ -349,11 +368,11 @@ body {
 
 	$('form[name="login_form"]').submit(function(e) {
 		e.preventDefault();
-		let $form = $(this);
+		let form = this;
 		$('#box-login .card-body').slideUp(100, function() {
 			$('#box-login').fadeOut(250, function() {
 				$('.loader-wrapper').fadeIn(100, function() {
-					$form.submit();
+					form.submit();
 				});
 			});
 		});
