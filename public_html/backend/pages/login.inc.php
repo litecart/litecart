@@ -368,11 +368,11 @@ body {
 
 	$('form[name="login_form"]').submit(function(e) {
 		e.preventDefault();
-		let $form = $(this);
+		let form = this;
 		$('#box-login .card-body').slideUp(100, function() {
 			$('#box-login').fadeOut(250, function() {
 				$('.loader-wrapper').fadeIn(100, function() {
-					$form.submit();
+					form.submit();
 				});
 			});
 		});
