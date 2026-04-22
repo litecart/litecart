@@ -170,6 +170,20 @@
 				$customer_modules->update($this->data);
 			}
 
+			if (empty($this->previous['id'])) {
+				f::webhook_send('customer:created', $this->data);
+			} else {
+				f::webhook_send('customer:updated', $this->data);
+			}
+
+			if ($this->previous['newsletter'] != $this->data['newsletter']) {
+				if (!empty($this->data['newsletter'])) {
+					f::webhook_send('newsletter:subscribed', $this->data);
+				} else {
+					f::webhook_send('newsletter:unsubscribed', $this->data);
+				}
+			}
+
 			$this->previous = $this->data;
 
 			cache::clear_cache('customers');
@@ -260,6 +274,8 @@
 
 			$customer_modules = new mod_customer();
 			$customer_modules->delete($this->previous);
+
+			f::webhook_send('customer:deleted', $this->previous);
 
 			$this->reset();
 

@@ -514,9 +514,10 @@
 
 			database::commit();
 
-			} catch (Throwable $e) {
-				database::rollback();
-				throw $e;
+			if (!$this->previous['id']) {
+				functions::webhook_send('order:created', $this->data);
+			} else {
+				functions::webhook_send('order:updated', $this->data);
 			}
 
 			$this->previous = $this->data;
@@ -525,6 +526,11 @@
 			cache::clear_cache('category');
 			cache::clear_cache('brand');
 			cache::clear_cache('products');
+
+			} catch (Throwable $e) {
+				database::rollback();
+				throw $e;
+			}
 		}
 
 		public function refresh_total() {
@@ -1052,6 +1058,8 @@
 				left join ". DB_TABLE_PREFIX ."orders_comments oc on (oc.order_id = o.id)
 				where o.id = ". (int)$this->data['id'] .";"
 			);
+
+			f::webhook_send('order:deleted', $this->previous);
 
 			$this->reset();
 

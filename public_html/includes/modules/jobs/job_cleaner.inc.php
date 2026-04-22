@@ -58,6 +58,15 @@
 			);
 
 			echo 'Removed '. f::format_number(database::affected_rows()) .' old visitor statistics.' . PHP_EOL . PHP_EOL;
+			echo "Cleaning up old webhook requests..." . PHP_EOL;
+
+			database::query(
+				"delete from ". DB_TABLE_PREFIX ."webhook_requests
+				where created_at < '". database::input(date('Y-m-d H:i:s', strtotime('-30 days'))) ."';"
+			);
+
+			echo '- Removed '. f::format_number(database::affected_rows()) .' webhook request(s).' . PHP_EOL . PHP_EOL;
+
 
 			// Cleanup old log files
 			$deleted_files = 0;

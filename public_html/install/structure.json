@@ -1916,6 +1916,56 @@
 				"created_at": ["created_at"]
 			}
 		},
+		"webhooks": {
+			"columns": {
+				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
+				"status": { "type": "TINYINT", "length": 1, "default": 1 },
+				"event": { "type": "VARCHAR", "length": 64, "default": "''" },
+				"url": { "type": "VARCHAR", "length": 256, "default": "''" },
+				"last_sent": { "type": "TIMESTAMP", "nullable": true },
+				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
+				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
+			},
+			"primary_key": ["id"]
+		},
+		"webhook_requests": {
+			"columns": {
+				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
+				"type": { "type": "ENUM('incoming','outgoing')" },
+				"webhook_id": { "type": "INT", "length": 10, "unsigned": true },
+				"status": { "type": "ENUM('pending','pending_retry','delivered','failed')", "default": "'pending'" },
+				"method": { "type": "ENUM('GET','POST','PUT','PATCH','DELETE')", "default": "'GET'" },
+				"url": { "type": "VARCHAR", "length": 256, "default": "''" },
+				"headers": { "type": "TEXT", "default": "''"},
+				"body": { "type": "TEXT", "default": "''" },
+				"failed_attempts": { "type": "INT", "length": 10, "unsigned": true, "default": 0 },
+				"last_attempt": { "type": "TIMESTAMP", "nullable": true },
+				"raw_request": { "type": "TEXT", "nullable": true },
+				"raw_response": { "type": "TEXT", "nullable": true },
+				"scheduled_at": { "type": "TIMESTAMP", "nullable": true },
+				"delivered_at": { "type": "TIMESTAMP", "nullable": true },
+				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
+				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
+			},
+			"indexes": {
+				"type": ["type"],
+				"status": ["status"],
+				"webhook_id": ["webhook_id"],
+				"scheduled_at": ["scheduled_at"],
+				"delivered_at": ["delivered_at"]
+			},
+			"foreign_keys": {
+				"request_to_webhook": {
+					"columns": ["webhook_id"],
+					"references": {
+						"table": "webhooks",
+						"columns": ["id"],
+						"on_update": "CASCADE",
+						"on_delete": "SET NULL"
+					}
+				}
+			}
+		},
 		"visitors": {
 			"columns": {
 				"id": { "type": "BIGINT", "length": 20, "unsigned": true, "auto_increment": true },
