@@ -70,7 +70,7 @@
 			);
 
 			notices::add('success', t('success_notification_back_in_stock', 'We will notify you when the product is back in stock'));
-			header('Location: '. $_SERVER['REQUEST_URI']);
+			redirect($_SERVER['REQUEST_URI']);
 			exit;
 
 		} catch (Exception $e) {
@@ -156,7 +156,7 @@
 				->send();
 
 			notices::$data['success'][] = t('success_thank_you_for_reviewing_product', 'Thank you for reviewing this product');
-			header('Location: '. document::link());
+			redirect(document::link());
 			exit;
 
 		} catch (Exception $e) {

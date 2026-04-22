@@ -33,7 +33,7 @@
 			$webhook->save();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::link('', ['doc' => 'webhooks'], ['app']));
+			redirect(document::link('', ['doc' => 'webhooks'], ['app']));
 			exit;
 
 		} catch (Exception $e) {
@@ -87,46 +87,55 @@
 	];
 
 ?>
-<h1><?php echo $app_icon; ?> <?php echo !empty($webhook->data['id']) ? t('title_edit_webhook', 'Edit Webhook') : t('title_create_new_webhook', 'Create New Webhook'); ?></h1>
-
-<?php echo f::form_begin('webhook_form', 'post', false, false, 'autocomplete="off" style="max-width: 640px;"'); ?>
-
-	<div class="row">
-		<div class="col-md-6">
-			<div class="form-group">
-				<label><?php echo t('title_status', 'Status'); ?></label>
-				<?php echo f::form_toggle('status', $_POST['status'] ?? '1', 'e/d'); ?>
-			</div>
-		</div>
-
-		<div class="col-md-6">
-			<div class="form-group">
-				<label><?php echo t('title_event', 'Event'); ?></label>
-				<?php echo f::form_select_optgroup('event', $event_options, true); ?>
-			</div>
+<div class="card">
+	<div class="card-header">
+		<div class="card-title">
+			<?php echo $app_icon; ?> <?php echo !empty($webhook->data['id']) ? t('title_edit_webhook', 'Edit Webhook') : t('title_create_new_webhook', 'Create New Webhook'); ?>
 		</div>
 	</div>
 
-	<div class="form-group">
-		<label><?php echo t('title_url', 'URL'); ?></label>
-		<?php echo f::form_input_url('url', true, 'required'); ?>
-	</div>
+	<?php echo f::form_begin('webhook_form', 'post', false, false, 'autocomplete="off" style="max-width: 640px;"'); ?>
 
-	<?php if (empty($webhook->data['id'])) { ?>
-	<div class="row">
-		<div class="col-md-6">
-			<div class="form-group">
-				<label><?php echo t('title_last_sent', 'Last Sent'); ?></label>
-				<input class="form-input" readonly name="sent_at" value="<?php echo $webhook->data['date_sent'] ? f::format_datetime('datetime', $webhook->data['date_sent']) : '-'; ?>">
+		<div class="card-body">
+
+			<div class="row">
+				<div class="col-md-6">
+					<div class="form-group">
+						<label><?php echo t('title_status', 'Status'); ?></label>
+						<?php echo f::form_toggle('status', 'e/d', $_POST['status'] ?? '1'); ?>
+					</div>
+				</div>
+
+				<div class="col-md-6">
+					<div class="form-group">
+						<label><?php echo t('title_event', 'Event'); ?></label>
+						<?php echo f::form_select_optgroup('event', $event_options, true); ?>
+					</div>
+				</div>
 			</div>
+
+			<div class="form-group">
+				<label><?php echo t('title_url', 'URL'); ?></label>
+				<?php echo f::form_input_url('url', true, 'required'); ?>
+			</div>
+
+			<?php if (!empty($webhook->data['id'])) { ?>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="form-group">
+						<label><?php echo t('title_last_sent', 'Last Sent'); ?></label>
+						<input class="form-input" readonly name="sent_at" value="<?php echo $webhook->data['sent_at'] ? f::format_datetime('datetime', $webhook->data['sent_at']) : '-'; ?>">
+					</div>
+				</div>
+			</div>
+			<?php } ?>
 		</div>
-	</div>
-	<?php } ?>
 
-	<div class="card-action">
-		<?php echo f::form_button_predefined('save'); ?>
-		<?php echo !empty($webhook->data['id']) ? f::form_button_predefined('delete') : ''; ?>
-		<?php echo f::form_button_predefined('cancel'); ?>
-	</div>
+		<div class="card-action">
+			<?php echo f::form_button_predefined('save'); ?>
+			<?php echo !empty($webhook->data['id']) ? f::form_button_predefined('delete') : ''; ?>
+			<?php echo f::form_button_predefined('cancel'); ?>
+		</div>
 
-<?php echo f::form_end(); ?>
+	<?php echo f::form_end(); ?>
+</div>

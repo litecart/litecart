@@ -19,7 +19,7 @@
 			}
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::link());
+			redirect(document::ilink(__APP__.'/webhooks'));
 			exit;
 
 		} catch (Exception $e) {
@@ -33,7 +33,7 @@
 	)->fetch_page(null, null, $_GET['page'], settings::get('data_table_rows_per_page'), $num_rows, $num_pages);
 
 ?>
-<div class="card card-app">
+<div class="card">
 
 	<div class="card-header">
 		<div class="card-title">
@@ -42,12 +42,12 @@
 	</div>
 
 	<div class="card-filter">
-		<div class="list-inline pull-end">
+		<ul class="list-inline">
 		</ul>
 	</div>
 
 	<div class="card-action">
-			<?php echo f::form_button_link(document::link('', ['doc' => 'edit_webhook'], true), t('title_create_new_webhook', 'Create New Webhook'), '', 'add'); ?>
+		<?php echo f::form_button_link(document::ilink(__APP__.'/edit_webhook'), t('title_create_new_webhook', 'Create New Webhook'), '', 'add'); ?>
 	</div>
 
 	<?php echo f::form_begin('webhooks_form', 'post'); ?>
@@ -55,7 +55,7 @@
 		<table class="table table-striped table-hover data-table">
 			<thead>
 				<tr>
-					<th><?php echo f::draw_fonticon('fa-check-square-o fa-fw checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th><?php echo f::draw_fonticon('icon-square-check checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th></th>
 					<th><?php echo t('title_event', 'Event'); ?></th>
 					<th class="main"><?php echo t('title_url', 'URL'); ?></th>
@@ -70,10 +70,10 @@
 					<td><?php echo f::form_checkbox('webhooks[]', $webhook['id']); ?></td>
 					<td><?php echo f::draw_fonticon('fa-circle', 'style="color: '. (!empty($webhook['status']) ? '#88cc44' : '#ff6644') .';"'); ?></td>
 					<td><?php echo $webhook['event']; ?></td>
-					<td><a class="link" href="<?php echo document::href_link('', ['doc' => 'edit_webhook', 'webhook_id' => $webhook['id']], true); ?>"><?php echo f::escape_html($webhook['url']); ?></a></td>
-					<td class="text-end"><?php echo (!empty($webhook['date_sent'])) ? language::strftime(language::$selected['format_datetime'], strtotime($webhook['date_sent'])) : '-'; ?></td>
+					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_webhook', ['webhook_id' => $webhook['id']]); ?>"><?php echo f::escape_html($webhook['url']); ?></a></td>
+					<td class="text-end"><?php echo (!empty($webhook['sent_at'])) ? f::datetime_format('datetime', strtotime($webhook['sent_at'])) : '-'; ?></td>
 					<td class="text-end">
-						<a href="<?php echo document::href_link('', ['doc' => 'edit_webhook', 'webhook_id' => $webhook['id']], true); ?>" title="<?php echo t('title_edit', 'Edit'); ?>">
+						<a href="<?php echo document::href_ilink(__APP__.'/edit_webhook', ['webhook_id' => $webhook['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>">
 							<?php echo f::draw_fonticon('fa-pencil'); ?>
 						</a>
 					</td>
@@ -84,15 +84,18 @@
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo t('title_webhooks', 'Webhooks'); ?>: <?php echo language::number_format($num_rows); ?>
+						<?php echo t('title_webhooks', 'Webhooks'); ?>: <?php echo f::number_format($num_rows); ?>
 					</td>
 				</tr>
 			</tfoot>
 		</table>
 
 		<div class="card-body">
-			<?php echo f::form_button('enable', t('title_enable', 'Enable'), 'submit', '', 'on'); ?>
-			<?php echo f::form_button('disable', t('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+			<fieldset>
+				<legend><?php echo t('text_with_selected', 'With selected'); ?>:</legend>
+				<?php echo f::form_button('enable', t('title_enable', 'Enable'), 'submit', '', 'on'); ?>
+				<?php echo f::form_button('disable', t('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+			</fieldset>
 		</div>
 
 	<?php echo f::form_end(); ?>

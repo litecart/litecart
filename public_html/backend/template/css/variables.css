@@ -219,8 +219,8 @@
   --tab-bar-background: transparent;
   --tab-bar-border-color: #e5e5e9;
   --tab-bar-border-width: 1px;
-  --tab-item-background: #e5e5ea;
-  --tab-item-background--hover: #d9d9df;
+  --tab-item-background: #f3f3f3;
+  --tab-item-background--hover: #d9d9d9;
   --tab-item-background--active: #fdfdfd;
   --tab-item-text-color: #444;
   --tab-item-text-color--hover: #444;

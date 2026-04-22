@@ -90,7 +90,7 @@
 			}
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink(__APP__.'/table', ['name' => $_GET['table']]));
+			redirect(document::ilink(__APP__.'/table', ['name' => $_GET['table']]));
 			exit;
 
 		} catch (Exception $e) {
@@ -109,7 +109,7 @@
 			);
 
 			notices::add('success', t('success_row_deleted', 'Row deleted'));
-			header('Location: '. document::ilink(__APP__.'/table', ['name' => $_GET['table']]));
+			redirect(document::ilink(__APP__.'/table', ['name' => $_GET['table']]));
 			exit;
 
 		} catch (Exception $e) {

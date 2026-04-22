@@ -48,7 +48,7 @@
 					notices::add('errors', strtr(t('error_geo_zone_restriction', 'Your shopping cart contains items that can not be shipped to %country'), [
 						'%country' => reference::country($order->data['customer']['shipping_address']['country_code'])->name,
 					]) .'['.$item['sku'].']');
-					header('Location: '. document::ilink('checkout/customer'), 302);
+					redirect(document::ilink('checkout/customer'), 302);
 					exit;
 				}
 			}

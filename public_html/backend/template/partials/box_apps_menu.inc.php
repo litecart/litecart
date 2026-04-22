@@ -4,9 +4,9 @@
 		<?php foreach ($groups as $group) { ?>
 		<li class="group">
 
-			<!--<div class="title">
+			<div class="title">
 				<?php echo $group['name']; ?>
-			</div>-->
+			</div>
 
 			<ul class="apps">
 

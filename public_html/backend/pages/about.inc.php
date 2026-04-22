@@ -202,7 +202,7 @@
 	background: #eee;
 }
 
-.tab-content {
+.tab-contents {
 	margin: 0;
 	background: none;
 }

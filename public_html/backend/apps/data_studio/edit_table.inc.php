@@ -35,7 +35,7 @@
 			$table->save();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink(__APP__.'/table', ['name' => $table->data['name']]));
+			redirect(document::ilink(__APP__.'/table', ['name' => $table->data['name']]));
 			exit;
 
 		} catch (Exception $e) {
@@ -51,7 +51,7 @@
 			$table->delete();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink(__APP__.'/tables'));
+			redirect(document::ilink(__APP__.'/tables'));
 			exit;
 
 		} catch (Exception $e) {

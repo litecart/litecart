@@ -24,8 +24,6 @@
         $this->data[$field['Field']] = database::create_variable($field['Type']);
       });
 
-      $this->data['headers'] = [];
-
       $this->previous = $this->data;
     }
 

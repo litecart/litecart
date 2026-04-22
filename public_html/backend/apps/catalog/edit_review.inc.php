@@ -60,7 +60,7 @@
 			$review->save();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			header('Location: '. document::ilink(__APP__.'/reviews'));
+			redirect(document::ilink(__APP__.'/reviews'));
 			exit;
 
 		} catch (Exception $e) {
@@ -73,8 +73,8 @@
 		$review->delete();
 
 		notices::add('success', t('success_post_deleted', 'Post deleted'));
-		header('Location: '. document::ilink(__APP__.'/reviews'));
-		exit();
+		redirect(document::ilink(__APP__.'/reviews'));
+		exit;
 	}
 
 	f::draw_lightbox();
