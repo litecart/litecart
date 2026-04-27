@@ -66,8 +66,24 @@
 				$last_modified = $self_last_modified;
 			}
 
+			if (($folder_last_modified = filemtime(FS_DIR_STORAGE .'addons/')) > $last_modified) {
+				$last_modified = $folder_last_modified;
+			}
+
 			if (($folder_last_modified = filemtime(FS_DIR_STORAGE .'vmods/')) > $last_modified) {
 				$last_modified = $folder_last_modified;
+			}
+
+			foreach (glob(FS_DIR_STORAGE .'addons/*', GLOB_ONLYDIR) as $folder) {
+
+				if (in_array(basename($folder), ['.', '..', '.cache'])) continue;
+				if (preg_match('#\.disabled$#', $folder)) continue;
+
+				$vmod = $folder .'/vmod.xml';
+
+				if (filemtime($vmod) > $last_modified) {
+					$last_modified = filemtime($vmod);
+				}
 			}
 
 			foreach (glob(FS_DIR_STORAGE .'vmods/*.xml') as $file) {
@@ -122,7 +138,13 @@
 			// Load modifications from disk
 			if (!self::$_modifications) {
 
-				foreach (glob(FS_DIR_STORAGE . 'vmods/.*xml', GLOB_BRACE) as $file) {
+				// Load from add-ons
+				foreach (glob(FS_DIR_STORAGE . 'addons/*/vmod.xml', GLOB_BRACE) as $file) {
+					//self::load($file);
+				}
+
+				// Load from vMods
+				foreach (glob(FS_DIR_STORAGE . 'vmods/*.xml', GLOB_BRACE) as $file) {
 					self::load($file);
 				}
 
