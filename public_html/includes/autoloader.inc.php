@@ -39,14 +39,14 @@
 			case (preg_match('#^tm_#', $class)):
 
 				$file = match(strtok($class, '_')) {
-					'chk' => 'app://includes/modules/checkout/' . $class . '.inc.php',
-					'cm' => 'app://includes/modules/customer/' . $class . '.inc.php',
-					'job' => 'app://includes/modules/jobs/' . $class . '.inc.php',
-					'om' => 'app://includes/modules/order/' . $class . '.inc.php',
-					'ot' => 'app://includes/modules/order_total/' . $class . '.inc.php',
-					'pm' => 'app://includes/modules/payment/' . $class . '.inc.php',
-					'sm' => 'app://includes/modules/shipping/' . $class . '.inc.php',
-					'tm' => 'app://includes/modules/translation/' . $class . '.inc.php',
+					'chk' => FS_DIR_APP . 'includes/modules/checkout/' . $class . '.inc.php',
+					'cm' => FS_DIR_APP . 'includes/modules/customer/' . $class . '.inc.php',
+					'job' => FS_DIR_APP . 'includes/modules/jobs/' . $class . '.inc.php',
+					'om' => FS_DIR_APP . 'includes/modules/order/' . $class . '.inc.php',
+					'ot' => FS_DIR_APP . 'includes/modules/order_total/' . $class . '.inc.php',
+					'pm' => FS_DIR_APP . 'includes/modules/payment/' . $class . '.inc.php',
+					'sm' => FS_DIR_APP . 'includes/modules/shipping/' . $class . '.inc.php',
+					'tm' => FS_DIR_APP . 'includes/modules/translation/' . $class . '.inc.php',
 				};
 
 				// Patch modules for PHP 8.2 Compatibility
