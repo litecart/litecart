@@ -197,15 +197,25 @@
 				'stock_option_id' => $stock_option_id ? (int)$stock_option_id : null,
 				'stock_items' => [],
 				'userdata' => $userdata,
-				'image' => $product->image,
+				'image' => $product->default_image,
 				'name' => $product->name,
 				'code' => $product->code,
 				'sku' => $product->sku,
 				'mpn' => $product->mpn,
 				'gtin' => $product->gtin,
 				'taric' => $product->taric,
-				'price' => $product->final_price, // Will be recalculated later
+				'regular_price' => [
+					'value' => $product->regular_price, // Will be recalculated further down
 				'tax' => $product->tax,
+				],
+				'final_price' => [
+					'value' => $product->final_price, // Will be recalculated further down
+					'tax' => $product->tax,
+				],
+				'discount' => [
+					'value' => $product->regular_price - $product->final_price,
+					'tax' => tax::get_tax($product->regular_price - $product->final_price, $product->tax_class_id),
+				],
 				'tax_class_id' => $product->tax_class_id,
 				'quantity' => $quantity,
 				'quantity_min' => $product->quantity_min ?: '0',
@@ -311,10 +321,12 @@
 
 				if ($calculated_price === false) {
 					throw new Exception(t('error_price_not_available_or_determined', 'Price is not yet available or could not be determined'));
-				} else {
-					$item['price'] = $calculated_price;
-					$item['tax'] = tax::get_tax($calculated_price, $product->tax_class_id);
 				}
+
+				$item['final_price'] = [
+					'value' => $calculated_price,
+					'tax' => tax::get_tax($calculated_price, $product->tax_class_id),
+				];
 
 				// Set image from stock option
 				if ($stock_option_id) {
@@ -335,8 +347,20 @@
 			}
 
 			// Round amounts (Gets rid of hidden decimals)
-			$item['price'] = currency::round($item['price'], currency::$selected['code']);
-			$item['tax'] = currency::round($item['tax'], currency::$selected['code']);
+			$item['regular_price'] = [
+				'value' => currency::round($item['regular_price']['value'], currency::$selected['code']),
+				'tax' => currency::round($item['regular_price']['tax'], currency::$selected['code']),
+			];
+
+			$item['final_price'] = [
+				'value' => currency::round($item['final_price']['value'], currency::$selected['code']),
+				'tax' => currency::round($item['final_price']['tax'], currency::$selected['code']),
+			];
+
+			$item['discount'] = [
+				'value' => currency::round($item['discount']['value'], currency::$selected['code']),
+				'tax' => currency::round($item['discount']['tax'], currency::$selected['code']),
+			];
 
 			// Add new item or append to existing
 			if (isset(self::$items[$item_key])) {
@@ -433,8 +457,18 @@
 
 			self::$total = [
 				'items' => 0,
-				'value' => 0,
-				'tax' => 0,
+				'subtotal' => [
+					'value' => 0,
+					'tax' => 0,
+				],
+				'discount' => [
+					'value' => 0,
+					'tax' => 0,
+				],
+				'total' => [
+					'value' => 0,
+					'tax' => 0,
+				],
 			];
 
 			foreach (self::$items as $item) {
@@ -445,9 +479,23 @@
 					$num_items = 1;
 				}
 
-				self::$total['value'] += $item['price'] * $item['quantity'];
-				self::$total['tax'] += $item['tax'] * $item['quantity'];
 				self::$total['items'] += $num_items;
+
+				self::$total['subtotal'] = [
+					'value' => $item['regular_price']['value'] * $item['quantity'],
+					'tax' => $item['regular_price']['tax'] * $item['quantity'],
+				];
+
+				self::$total['discount'] = [
+					'value' => $item['discount']['value'] * $item['quantity'],
+					'tax' => $item['discount']['tax'] * $item['quantity'],
+				];
+
+
+				self::$total['total'] = [
+					'value' => $item['final_price']['value'] * $item['quantity'],
+					'tax' => $item['final_price']['tax'] * $item['quantity'],
+				];
 			}
 		}
 	}

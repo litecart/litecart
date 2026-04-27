@@ -148,9 +148,9 @@
 	}
 
 	if (!empty(customer::$data['display_prices_including_tax'])) {
-		$site_navigation->snippets['shopping_cart']['total'] = currency::format(cart::$total['value'] + cart::$total['tax']);
+		$site_navigation->snippets['shopping_cart']['total'] = currency::format(cart::$total['total']['value'] + cart::$total['total']['tax']);
 	} else {
-		$site_navigation->snippets['shopping_cart']['total'] = currency::format(cart::$total['value']);
+		$site_navigation->snippets['shopping_cart']['total'] = currency::format(cart::$total['total']['value']);
 	}
 
 	echo $site_navigation->render();
