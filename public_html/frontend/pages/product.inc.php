@@ -70,7 +70,7 @@
 			);
 
 			notices::add('success', t('success_notification_back_in_stock', 'We will notify you when the product is back in stock'));
-			redirect($_SERVER['REQUEST_URI']);
+			reload(303);
 			exit;
 
 		} catch (Exception $e) {

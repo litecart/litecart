@@ -567,7 +567,7 @@
 		public static function link($path=null, $new_params=[], $inherit_params=null, $skip_params=[], $language_code=null) {
 
 			if (!$path) {
-				$path = strtok($_SERVER['REQUEST_URI'], '?');
+				$path = strtok($_SERVER['REQUEST_URI'], '?'); // Don't rely on parse_url(..., PHP_URL_PATH) as it can be spoofed by the client.
 
 				if ($inherit_params === null) {
 					$inherit_params = true;

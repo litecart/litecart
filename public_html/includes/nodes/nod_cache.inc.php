@@ -173,7 +173,7 @@
 						break;
 
 					case 'webpath':
-						$hash_string .= strtok($_SERVER['REQUEST_URI'], '?');
+						$hash_string .= strtok($_SERVER['REQUEST_URI'], '?'); // Don't rely on parse_url(..., PHP_URL_PATH) as it can generate a warning once spoofed by the client.
 						break;
 
 					default:

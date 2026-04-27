@@ -160,7 +160,7 @@ table tbody .toggle {
 				select parent_id as id, count(id) as num_subpages
 				from ". DB_TABLE_PREFIX ."pages
 			) p2 on (p2.id = p.id)
-			where p.id
+			where true
 			". (empty($_GET['query']) ? "and !parent_id" : "") ."
 			". (!empty($sql_where_query) ? "and (". implode(" or ", $sql_where_query) .")" : "") ."
 			". (!empty($_GET['dock']) ? "and find_in_set('". database::input($_GET['dock']) ."', p.dock)" : "") ."

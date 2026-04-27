@@ -27,7 +27,7 @@
 	},
 	"scripting": {
 		"php": {
-			"minimumVersion": "5.6",
+			"minimumVersion": "8.0",
 			"recommendedVersion": "8.5",
 			"maximumVersion": "8.5",
 			"requiredExtensions": ["dom", ["gd", "imagick"], "intl", "json", "libxml", "mbstring", "mysqlnd", "openssl", "SimpleXML"],

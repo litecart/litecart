@@ -161,8 +161,7 @@
 		public static function require_login() {
 
 			if (!self::check_login()) {
-				$redirect_url = strtok($_SERVER['REQUEST_URI'], '?') . (!empty($_SERVER['QUERY_STRING']) ? '?' . $_SERVER['QUERY_STRING'] : '');
-				redirect(document::ilink('b:login', ['redirect_url' => $redirect_url]), 302);
+				redirect(document::ilink('b:login', ['redirect_url' => $_SERVER['REQUEST_URI']]), 302);
 				exit;
 			}
 
