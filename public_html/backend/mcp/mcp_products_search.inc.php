@@ -59,7 +59,7 @@
 		$sql_where = $conditions ? 'where ' . implode(' and ', $conditions) : '';
 
 		$products = database::query(
-			"select p.id, pi.name, p.sku, p.default_image, p.quantity, p.status, p.date_created
+			"select p.id, pi.name, p.sku, p.default_image, p.quantity, p.status, p.created_at
 			from ". DB_TABLE_PREFIX ."products p
 			left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
 			". $sql_where ."
@@ -76,7 +76,7 @@
 				'quantity' => (float)$product['quantity'],
 				'status' => (int)$product['status'],
 				'image' => $product['default_image'] ?: null,
-				'created' => $product['date_created'],
+				'created_at' => $product['created_at'],
 			];
 		}
 

@@ -45,7 +45,7 @@
 		from ". DB_TABLE_PREFIX ."reviews pr
 		left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = pr.product_id and pi.language_code = '". database::input(language::$selected['code']) ."')
 		". (!empty($sql_find) ? "where (". implode(" or ", $sql_find) .")" : "") ."
-		order by date_updated desc;"
+		order by updated_at desc;"
 	)->fetch_page(function(&$review){
 		$review['title'] = json_decode($review['title'], true) ?: [];
 		$review['description'] = json_decode($review['description'], true) ?: [];
@@ -106,7 +106,7 @@
 					<td><?php echo !empty($review['customer_name']) ? $review['customer_name'] : '<em>'. t('title_guest', 'Guest') .'</em>'; ?></td>
 					<td><?php echo $review['title']; ?></td>
 					<td class="text-center"><?php echo $review['rating']; ?></td>
-					<td><?php echo $review['date_updated'] > $review['date_created'] ? $review['date_updated'] : $review['date_created']; ?></td>
+					<td><?php echo $review['updated_at'] > $review['created_at'] ? $review['updated_at'] : $review['created_at']; ?></td>
 					<td>
 						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_review', ['review_id' => $review['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>">
 							<?php echo f::draw_fonticon('fa-pencil'); ?>

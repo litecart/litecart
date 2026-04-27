@@ -94,8 +94,8 @@
 		where el.id
 		". ((!empty($_GET['type'])) ? "and `type` = '". database::input($_GET['type']) ."'" : "") ."
 		". (!empty($sql_find) ? "and (". implode(" or ", $sql_find) .")" : "") ."
-		". (!empty($_GET['from']) ? "and ca.date_created >= '". date('Y-m-d H:i:s', strtotime($_GET['from'])) ."'" : "") ."
-		". (!empty($_GET['to']) ? "and ca.date_created <= '". date('Y-m-d H:i:s', strtotime($_GET['to'])) ."'" : "") ."
+		". (!empty($_GET['from']) ? "and ca.created_at >= '". date('Y-m-d H:i:s', strtotime($_GET['from'])) ."'" : "") ."
+		". (!empty($_GET['to']) ? "and ca.created_at <= '". date('Y-m-d H:i:s', strtotime($_GET['to'])) ."'" : "") ."
 		order by $sql_sort;"
 	)->fetch_page(null, null, $_GET['page'], settings::get('data_table_rows_per_page'), $num_rows, $num_pages);
 

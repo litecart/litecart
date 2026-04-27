@@ -55,7 +55,7 @@
 
 				database::query(
 					"insert into ". DB_TABLE_PREFIX ."webhooks
-					(date_created)
+					(created_at)
 					values ('". date('Y-m-d H:i:s') ."');"
 				);
 
@@ -67,7 +67,7 @@
 				set status = ". (int)$this->data['status'] .",
 					event = '". database::input($this->data['event']) ."',
 					url = '". database::input($this->data['url']) ."',
-					date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
+					updated_at = '". ($this->data['updated_at'] = date('Y-m-d H:i:s')) ."'
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"
 			);

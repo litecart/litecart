@@ -213,10 +213,10 @@
 				$this->data['public_key'] = bin2hex(random_bytes(16));
 			}
 
-			if (!$this->data['date_dispatched']) {
+			if (!$this->data['dispatched_at']) {
 				if ($this->data['order_status_id'] && in_array(reference::order_status($this->data['order_status_id'])->state, ['dispatched', 'delivered'])) {
 					if (!$this->previous['order_status_id'] || !in_array(reference::order_status($this->previous['order_status_id'])->state, ['dispatched', 'delivered'])) {
-						$this->data['date_dispatched'] = date('Y-m-d H:i:s');
+						$this->data['dispatched_at'] = date('Y-m-d H:i:s');
 					}
 				}
 			}
@@ -306,8 +306,8 @@
 					fingerprint = '". database::input($this->data['fingerprint']) ."',
 					domain = '". database::input($this->data['domain']) ."',
 					public_key = '". database::input($this->data['public_key']) ."',
-					date_paid = ". (!empty($this->data['date_paid']) ? "'". date('Y-m-d H:i:s', strtotime($this->data['date_paid'])) ."'" : "null") .",
-					date_dispatched = ". (!empty($this->data['date_dispatched']) ? "'". date('Y-m-d H:i:s', strtotime($this->data['date_dispatched'])) ."'" : "null") .",
+					paid_at = ". (!empty($this->data['paid_at']) ? "'". date('Y-m-d H:i:s', strtotime($this->data['paid_at'])) ."'" : "null") .",
+					dispatched_at = ". (!empty($this->data['dispatched_at']) ? "'". date('Y-m-d H:i:s', strtotime($this->data['dispatched_at'])) ."'" : "null") .",
 					updated_at = '". ($this->data['updated_at'] = date('Y-m-d H:i:s')) ."'
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"

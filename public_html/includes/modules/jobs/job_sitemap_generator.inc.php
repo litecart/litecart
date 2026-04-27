@@ -61,7 +61,7 @@
 				fclose($fh);
 			};
 
-			$draw_url_node = function($resource, $params, $changefreq, $priority, $date_updated) use (&$fh, &$count, &$bump_sitemap) {
+			$draw_url_node = function($resource, $params, $changefreq, $priority, $updated_at) use (&$fh, &$count, &$bump_sitemap) {
 
 				$hreflangs = '';
 				foreach (language::$languages as $language) {
@@ -75,7 +75,7 @@
 					$hreflangs,
 					'    <changefreq>'. $changefreq .'</changefreq>',
 					'    <priority>'. $priority .'</priority>',
-					'    <lastmod>'. date('Y-m-d', strtotime($date_updated)) .'</lastmod>',
+					'    <lastmod>'. date('Y-m-d', strtotime($updated_at)) .'</lastmod>',
 					'  </url>',
 				]) . PHP_EOL);
 

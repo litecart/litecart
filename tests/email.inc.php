@@ -211,7 +211,7 @@
 		// Update basic data
 		$email->data['status'] = 'scheduled';
 		$email->data['subject'] = 'Updated Test Email Subject';
-		$email->data['date_scheduled'] = date('Y-m-d H:i:s', strtotime('+1 hour'));
+		$email->data['scheduled_at'] = date('Y-m-d H:i:s', strtotime('+1 hour'));
 
 		// Update sender
 		$email->set_sender('updated@example.com', 'Updated Sender');
@@ -256,10 +256,10 @@
 		foreach ($status_tests as $test_status) {
 			$email->data['status'] = $test_status;
 			$email->save();
-			
+
 			// Reload to verify
 			$email = new ent_email($email_id);
-			
+
 			if ($email->data['status'] !== $test_status) {
 				throw new Exception("Status test failed for '$test_status'");
 			}
@@ -271,24 +271,24 @@
 
 		// Test scheduling dates
 		$future_date = date('Y-m-d H:i:s', strtotime('+2 hours'));
-		$email->data['date_scheduled'] = $future_date;
+		$email->data['scheduled_at'] = $future_date;
 		$email->save();
 
 		// Reload to verify
 		$email = new ent_email($email_id);
 
-		if ($email->data['date_scheduled'] !== $future_date) {
+		if ($email->data['scheduled_at'] !== $future_date) {
 			throw new Exception('Date scheduling was not saved correctly');
 		}
 
 		// Test clearing scheduled date
-		$email->data['date_scheduled'] = null;
+		$email->data['scheduled_at'] = null;
 		$email->save();
 
 		// Reload to verify
 		$email = new ent_email($email_id);
 
-		if (!empty($email->data['date_scheduled'])) {
+		if (!empty($email->data['scheduled_at'])) {
 			throw new Exception('Date scheduling was not cleared correctly');
 		}
 
@@ -306,7 +306,7 @@
 
 		foreach ($malicious_subjects as $malicious_subject) {
 			$email->set_subject($malicious_subject);
-			
+
 			// Subject should be sanitized (no line breaks or tabs)
 			if (preg_match('#[\r\n\t%0A%0D]#', $email->data['subject'])) {
 				throw new Exception('Subject was not properly sanitized');

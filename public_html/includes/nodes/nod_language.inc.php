@@ -272,7 +272,7 @@
 			if (!$translation) {
 				database::query(
 					"insert into ". DB_TABLE_PREFIX ."translations
-					(code, text_en, html, created_at, updated_at)
+					(code, text_en, html, updated_at, created_at)
 					values ('". database::input($code) ."', '". database::input($default, true) ."', '". (($default != strip_tags($default)) ? 1 : 0) ."', '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
 				);
 			}

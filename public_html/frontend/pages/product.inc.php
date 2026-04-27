@@ -658,7 +658,7 @@
 				'@type' => 'Person',
 				'name' => $review['customer_name'],
 			],
-			'datePublished' => date('Y-m-d', strtotime($review['date_updated'])),
+			'datePublished' => date('Y-m-d', strtotime($review['updated_at'])),
 			'name' => $review['title'],
 			'description' => $review['description'],
 			'reviewRating' => [

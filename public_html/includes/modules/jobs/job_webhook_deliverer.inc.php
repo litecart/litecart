@@ -17,7 +17,7 @@
 
 			database::query(
 				"delete from ". DB_TABLE_PREFIX ."webhook_requests
-				where date_created < '". date('Y-m-d H:i:s', strtotime('-1 month')) ."';"
+				where created_at < '". date('Y-m-d H:i:s', strtotime('-1 month')) ."';"
 			);
 
 			$pending_requests = database::query(
@@ -30,8 +30,8 @@
 					or (status = 'pending_retry' and failed_attempts = 4 and last_attempt < '". date('Y-m-d H:i:s', strtotime('-12 hours')) ."')
 					or (status = 'pending_retry' and failed_attempts >= 5 and last_attempt < '". date('Y-m-d H:i:s', strtotime('-24 hours')) ."')
 				)
-				and (date_scheduled is null or date_scheduled < '". date('Y-m-d H:i:s') ."')
-				order by date_created asc;"
+				and (scheduled_at is null or scheduled_at < '". date('Y-m-d H:i:s') ."')
+				order by created_at asc;"
 			)->fetch_all(function(&$row) {
 				$row['headers'] = $row['headers'] ? array_map(function($header) {
 					return preg_split('#: ?#', $header, 2);
@@ -68,7 +68,7 @@
 							last_attempt = '". date('Y-m-d H:i:s') ."',
 							raw_request = '". database::input($request_log) ."',
 							raw_response = '". database::input($response_log) ."',
-							date_delivered = '". date('Y-m-d H:i:s') ."'
+							delivered_at = '". date('Y-m-d H:i:s') ."'
 						where id = ". (int)$request['id'] .";"
 					);
 				} else if (substr($client->last_response['status_code'], 0, 1) == '4') {
@@ -78,7 +78,7 @@
 							last_attempt = '". date('Y-m-d H:i:s') ."',
 							raw_request = '". database::input($request_log) ."',
 							raw_response = '". database::input($response_log) ."',
-							date_delivered = '". date('Y-m-d H:i:s') ."',
+							delivered_at = '". date('Y-m-d H:i:s') ."',
 							failed_attempts = failed_attempts + 1
 						where id = ". (int)$request['id'] .";"
 					);

@@ -62,8 +62,8 @@
 	}
 
 	// Set transaction date
-	if (isset($result['date_paid'])) {
-		$order->data['date_paid'] = $result['date_paid'];
+	if (isset($result['paid_at'])) {
+		$order->data['paid_at'] = $result['paid_at'];
 	}
 
 	$order->save();

@@ -746,8 +746,8 @@
 				"domain": { "type": "VARCHAR", "length": 64, "nullable": true },
 				"fingerprint": { "type": "VARCHAR", "length": 32, "nullable": true },
 				"public_key": { "type": "VARCHAR", "length": 32, "default": "''" },
-				"date_paid": { "type": "TIMESTAMP", "nullable": true },
-				"date_dispatched": { "type": "TIMESTAMP", "nullable": true },
+				"paid_at": { "type": "TIMESTAMP", "nullable": true },
+				"dispatched_at": { "type": "TIMESTAMP", "nullable": true },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
 				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
 			},
@@ -1459,8 +1459,8 @@
 				"title": { "type": "TEXT", "default": "'{}'", "comment": "TYPE:JSON_TRANSLATIONS" },
 				"description": { "type": "TEXT", "default": "'{}'", "comment": "TYPE:JSON_TRANSLATIONS" },
 				"attachments": { "type": "TEXT", "default": "'[]'", "comment": "TYPE:JSON" },
-				"date_updated": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" },
-				"date_created": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
+				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" },
+				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
 			},
 			"primary_key": ["id"],
 			"unique_keys": {

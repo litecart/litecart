@@ -284,7 +284,7 @@
 							'  <td class="id">' + row.id + '</td>' +
 							'  <td class="name">' + row.name + '</td>' +
 							'  <td class="email">' + row.email + '</td>' +
-							'  <td class="date-created">' + row.date_created + '</td>' +
+							'  <td class="date-created">' + row.created_at + '</td>' +
 							'  <td></td>' +
 							'</tr>'
 						);

@@ -56,7 +56,7 @@
 
 				database::query(
 					"insert into ". DB_TABLE_PREFIX ."webhook_requests
-					(date_created)
+					(created_at)
 					values ('". date('Y-m-d H:i:s') ."');"
 				);
 
@@ -74,9 +74,9 @@
 					raw_request = ". (isset($this->data['raw_request']) ? "'". database::input($this->data['raw_request']) ."'" : "NULL") .",
 					raw_response = ". (isset($this->data['raw_response']) ? "'". database::input($this->data['raw_response']) ."'" : "NULL") .",
 					last_attempt = ". (!empty($this->data['last_attempt']) ? "'". database::input($this->data['last_attempt']) ."'" : "NULL") .",
-					date_delivered = ". (!empty($this->data['date_delivered']) ? "'". database::input($this->data['date_delivered']) ."'" : "NULL") .",
-					date_scheduled = ". (!empty($this->data['date_scheduled']) ? "'". database::input($this->data['date_scheduled']) ."'" : "NULL") .",
-					date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
+					delivered_at = ". (!empty($this->data['delivered_at']) ? "'". database::input($this->data['delivered_at']) ."'" : "NULL") .",
+					scheduled_at = ". (!empty($this->data['scheduled_at']) ? "'". database::input($this->data['scheduled_at']) ."'" : "NULL") .",
+					updated_at = '". ($this->data['updated_at'] = date('Y-m-d H:i:s')) ."'
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"
 			);

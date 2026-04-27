@@ -263,8 +263,8 @@
 				'payment_terms',
 				'display_prices_including_tax',
 				'reference',
-				'date_paid',
-				'date_dispatched',
+				'paid_at',
+				'dispatched_at',
 				'comments',
 				'notes',
 			] as $field) {
@@ -865,8 +865,8 @@
 
 								<div class="col-md-6">
 									<label class="form-group">
-										<div class="form-label"><?php echo t('title_date_paid', 'Date Paid'); ?></div>
-										<?php echo f::form_input_datetime('date_paid', true); ?>
+										<div class="form-label"><?php echo t('title_paid_at', 'Date Paid'); ?></div>
+										<?php echo f::form_input_datetime('paid_at', true); ?>
 									</label>
 								</div>
 							</div>
@@ -933,8 +933,8 @@
 
 								<div class="col-md-6">
 									<label class="form-group">
-										<div class="form-label"><?php echo t('title_date_dispatched', 'Date Dispatched'); ?></div>
-										<?php echo f::form_input_datetime('date_dispatched', true); ?>
+										<div class="form-label"><?php echo t('title_dispatched_at', 'Date Dispatched'); ?></div>
+										<?php echo f::form_input_datetime('dispatched_at', true); ?>
 									</label>
 								</div>
 							</div>

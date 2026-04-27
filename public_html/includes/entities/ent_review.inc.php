@@ -67,7 +67,7 @@
 			if (empty($this->data['id'])) {
 				database::query(
 					"insert into ". DB_TABLE_PREFIX ."reviews
-					(product_id, customer_id, date_created)
+					(product_id, customer_id, created_at)
 					values (". (int)$this->data['product_id'] .", ". (int)$this->data['customer_id'] .", '". database::input(date('Y-m-d H:i:s')) ."');"
 				);
 
@@ -84,7 +84,7 @@
 					rating = ". (int)$this->data['rating'] .",
 					upvotes = ". (int)$this->data['upvotes'] .",
 					downvotes = ". (int)$this->data['downvotes'] .",
-					date_updated = '". date('Y-m-d H:i:s') ."'
+					updated_at = '". date('Y-m-d H:i:s') ."'
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"
 			);
@@ -102,7 +102,7 @@
 					title = '". database::input(f::format_json($this->data['title'])) ."',
 					description = '". database::input(f::format_json($this->data['description'])) ."',
 					attachments = '". database::input(f::format_json($this->data['attachments'])) ."',
-					date_updated = '". date('Y-m-d H:i:s') ."'
+					updated_at = '". date('Y-m-d H:i:s') ."'
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"
 			);
