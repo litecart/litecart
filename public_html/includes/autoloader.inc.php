@@ -38,43 +38,27 @@
 			case (preg_match('#^sm_#', $class)):
 			case (preg_match('#^tm_#', $class)):
 
+				$file = match(strtok($class, '_')) {
+					'chk' => 'app://includes/modules/checkout/' . $class . '.inc.php',
+					'cm' => 'app://includes/modules/customer/' . $class . '.inc.php',
+					'job' => 'app://includes/modules/jobs/' . $class . '.inc.php',
+					'om' => 'app://includes/modules/order/' . $class . '.inc.php',
+					'ot' => 'app://includes/modules/order_total/' . $class . '.inc.php',
+					'pm' => 'app://includes/modules/payment/' . $class . '.inc.php',
+					'sm' => 'app://includes/modules/shipping/' . $class . '.inc.php',
+					'tm' => 'app://includes/modules/translation/' . $class . '.inc.php',
+				};
+
 				// Patch modules for PHP 8.2 Compatibility
-				if (version_compare(PHP_VERSION, 8.2, '>=')) {
-
-					$search_replace = [
-						'#^chk#' => 'app://includes/modules/checkout/$0.inc.php',
-						'#^cm_#' => 'app://includes/modules/customer/$0.inc.php',
-						'#^job_#' => 'app://includes/modules/jobs/$0.inc.php',
-						'#^om_#' => 'app://includes/modules/order/$0.inc.php',
-						'#^pm_#' => 'app://includes/modules/payment/$0.inc.php',
-						'#^sm_#' => 'app://includes/modules/shipping/$0.inc.php',
-					];
-
-					$file = preg_replace(array_keys($search_replace), array_values($search_replace), $class);
+				if (version_compare(PHP_VERSION, 8.2, '>=') && is_file($file)) {
+					$source = file_get_contents($file);
+					if (!preg_match('#\#\[AllowDynamicProperties\]#', $source)) {
+						$source = preg_replace('#([ \t]*)class [a-zA-Z0-9_-]+\s*?\{(\n|\r\n?)#', '$1#[AllowDynamicProperties]$2$0', $source);
+						file_put_contents($file, $source);
+					}
 				}
 
-				switch (true) {
-					case (preg_match('#^cm_#', $class)):
-						require 'app://includes/modules/customer/' . $class . '.inc.php';
-						break;
-
-					case (preg_match('#^job_#', $class)):
-						require 'app://includes/modules/jobs/' . $class . '.inc.php';
-						break;
-
-					case (preg_match('#^om_#', $class)):
-						require 'app://includes/modules/order/' . $class . '.inc.php';
-						break;
-
-					case (preg_match('#^pm_#', $class)):
-						require 'app://includes/modules/payment/' . $class . '.inc.php';
-						break;
-
-					case (preg_match('#^sm_#', $class)):
-						require 'app://includes/modules/shipping/' . $class . '.inc.php';
-						break;
-				}
-
+				require $file;
 				break;
 
 			// References
