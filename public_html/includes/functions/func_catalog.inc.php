@@ -511,6 +511,16 @@
 			$sql_inner_where['featured'] = "featured = 1";
 		}
 
+		$sql_outer_where[] = "and (ifnull(pso.num_stock_options, 0) = 0 or pso.quantity_available > 0 or ss.hidden != 1)";
+
+		if (!empty($filter['price_range']['min'])) {
+			$sql_outer_where[] = "and final_price >= ". (float)$filter['price_range']['min'];
+		}
+
+		if (!empty($filter['price_range']['max'])) {
+			$sql_outer_where = "and final_price <= ". (float)$filter['price_range']['max'];
+		}
+
 		if (!empty($filter['sort'])) {
 			switch ($filter['sort']) {
 
@@ -622,13 +632,7 @@
 
 			left join ". DB_TABLE_PREFIX ."sold_out_statuses ss on (p.sold_out_status_id = ss.id)
 
-			where (p.id
-				and (ifnull(pso.num_stock_options, 0) = 0 or pso.quantity_available > 0 or ss.hidden != 1)
-				". (!empty($sql_outer_where) ? implode(" and ", $sql_outer_where) : "") ."
-				". (!empty($filter['sql_where']) ? "and (". $filter['sql_where'] .")" : "") ."
-				". (!empty($filter['price_range']['min']) ? "and final_price >= ". (float)$filter['price_range']['min'] : "") ."
-				". (!empty($filter['price_range']['max']) ? "and final_price <= ". (float)$filter['price_range']['max'] : "") ."
-			)
+			". (!empty($sql_outer_where) ? "where (". implode(PHP_EOL . "and ", $sql_outer_where) .")" : "") ."
 
 			group by p.id
 			having relevance > 0
