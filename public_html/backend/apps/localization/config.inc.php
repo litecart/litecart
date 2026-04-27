@@ -43,6 +43,11 @@
 				'params' => [],
 			],
 			[
+				'title' => t('title_auto_translate', 'Auto Translate'),
+				'doc' => 'translations/auto_translate',
+				'params' => [],
+			],
+			[
 				'title' => t('title_scan_for_translations', 'Scan For Translations'),
 				'doc' => 'translations/scan',
 				'params' => [],

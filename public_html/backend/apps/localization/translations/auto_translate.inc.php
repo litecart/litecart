@@ -357,17 +357,8 @@
 	}
 
 	$collection_options = array_map(function($collection) {
-		return [$collection['name'], $collection['id']];
+		return [$collection['id'], $collection['name']];
 	}, $collections);
-
-	$language_options = [['-- '. t('title_select', 'Select') .' --', '']];
-	foreach (language::$languages as $language) {
-		$language_options[] = [$language['name'], $language['code']];
-	}
-
-	$target_language_options = array_map(function($language) {
-		return [$language['name'], $language['code']];
-	}, language::$languages);
 
 ?>
 <div class="card card-app">
@@ -382,28 +373,26 @@
 
 			<?php echo f::form_begin('auto_translate_form', 'post'); ?>
 
-				<div class="form-group">
-					<label><?php echo t('title_collections', 'Collections'); ?></label>
+				<label class="form-group">
+					<dic class="form-labet"><?php echo t('title_collections', 'Collections'); ?></dic>
 					<?php echo f::form_select('collections[]', $collection_options, true); ?>
-				</div>
+				</label>
 
-
-				<div class="form-group">
-					<label><?php echo t('title_from_language', 'From Language'); ?></label>
-					<?php echo f::form_select('source_language_code', $language_options, $source_language_code); ?>
-				</div>
+				<label class="form-group">
+					<div class="<"><?php echo t('title_from_language', 'From Language'); ?></div>
+					<?php echo f::form_select_language('source_language_code', true); ?>
+				</label>
 
 				<div class="form-group">
 					<label><?php echo t('title_to_language', 'To Language'); ?></label>
-					<?php echo f::form_select('target_language_codes[]', $target_language_options, true); ?>
+					<?php echo f::form_select_language('target_language_codes[]', true); ?>
 				</div>
-
 
 				<div class="form-group">
 					<label><?php echo t('title_translate_mode', 'Mode'); ?></label>
 					<?php echo f::form_select('translate_mode', [
-						[t('title_translate_mode_missing', 'Missing only — fill in blank translations'), 'missing'],
-						[t('title_translate_mode_overwrite', 'Overwrite all — re-translate everything'), 'overwrite'],
+						'missing' => t('title_translate_mode_missing', 'Missing only — fill in blank translations'),
+						'overwrite' => t('title_translate_mode_overwrite', 'Overwrite all — re-translate everything'),
 					], $translate_mode); ?>
 				</div>
 

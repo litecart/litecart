@@ -238,10 +238,6 @@
 		</div>
 	</div>
 
-	<div class="card-action">
-    <?php echo f::form_button('translate', f::draw_fonticon('icon-languages') .' '. t('title_translate_missing', 'Translate Missing'), 'button'); ?>
-	</div>
-
 	<?php echo f::form_begin('filter_form', 'get'); ?>
 		<div class="card-filter">
 
@@ -333,6 +329,7 @@
 		</div>
 
 		<div class="card-action">
+	    <?php echo f::form_button('translate', f::draw_fonticon('icon-language') .' '. t('title_translate_missing', 'Translate Missing'), 'button'); ?>
 			<?php echo f::form_button('translator_tool', t('title_translator_tool', 'Translator Tool'), 'button', 'class="btn btn-default translator-tool" data-toggle="lightbox" data-target="#translator-tool" data-width="980px"'); ?>
 			<?php echo f::form_button_predefined('save'); ?>
 		</div>
