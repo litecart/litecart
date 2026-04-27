@@ -232,8 +232,8 @@
 
 					$prices = database::query(
 						"select
-						  min($sql_column_price) / min_quantity as final_price,
-						  max($sql_column_price) / min_quantity as regular_price
+							min($sql_column_price) / min_quantity as final_price,
+							max($sql_column_price) / min_quantity as regular_price
 							from ". DB_TABLE_PREFIX ."products_prices
 						where product_id = '". database::input($this->_data['id']) ."'
 						and (customer_group_id is null or customer_group_id = ". (int)$this->_customer['group_id'] .")

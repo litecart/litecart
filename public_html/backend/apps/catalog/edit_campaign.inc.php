@@ -380,7 +380,7 @@
 
 		$output.data({
 			'product-id': product.id,
-		  'regular-price': product.price.value
+			'regular-price': product.price.value
 		});
 
 		$('#campaigns tbody').append($output);

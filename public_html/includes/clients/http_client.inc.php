@@ -58,10 +58,10 @@
 				// Process data for GET/HEAD requests
 				if (in_array($method, ['GET', 'HEAD'])) {
 
-				switch (true) {
+					switch (true) {
 
-					  case is_array($data):
-					  case is_object($data):
+						case is_array($data):
+						case is_object($data):
 							$parts['query'] = (isset($parts['query']) ? $parts['query'] . '&' : '') . http_build_query($data);
 							break;
 

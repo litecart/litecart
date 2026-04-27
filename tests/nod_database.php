@@ -1,212 +1,212 @@
 <?php
 
-  include_once __DIR__.'/../public_html/includes/app_header.inc.php';
+	include_once __DIR__.'/../public_html/includes/app_header.inc.php';
 
-  try {
+	try {
 
-    ########################################################################
-    ## input — string escaping
-    ########################################################################
+		########################################################################
+		## input — string escaping
+		########################################################################
 
-    $escaped = database::input("O'Reilly");
+		$escaped = database::input("O'Reilly");
 
-    if (strpos($escaped, "'") !== false && strpos($escaped, "\\'") === false && strpos($escaped, "''") === false) {
-      throw new Exception('input: Single quote not escaped in "'. $escaped .'"');
-    }
+		if (strpos($escaped, "'") !== false && strpos($escaped, "\\'") === false && strpos($escaped, "''") === false) {
+			throw new Exception('input: Single quote not escaped in "'. $escaped .'"');
+		}
 
-    ########################################################################
-    ## input — null passthrough
-    ########################################################################
+		########################################################################
+		## input — null passthrough
+		########################################################################
 
-    $escaped = database::input(null);
+		$escaped = database::input(null);
 
-    if ($escaped !== null) {
-      throw new Exception('input: null should pass through, got '. var_export($escaped, true));
-    }
+		if ($escaped !== null) {
+			throw new Exception('input: null should pass through, got '. var_export($escaped, true));
+		}
 
-    ########################################################################
-    ## input — integer passthrough
-    ########################################################################
+		########################################################################
+		## input — integer passthrough
+		########################################################################
 
-    $escaped = database::input(42);
+		$escaped = database::input(42);
 
-    if ($escaped !== 42) {
-      throw new Exception('input: integer should pass through, got '. var_export($escaped, true));
-    }
+		if ($escaped !== 42) {
+			throw new Exception('input: integer should pass through, got '. var_export($escaped, true));
+		}
 
-    ########################################################################
-    ## input — array escaping (recursive)
-    ########################################################################
+		########################################################################
+		## input — array escaping (recursive)
+		########################################################################
 
-    $escaped = database::input(["test's", "normal"]);
+		$escaped = database::input(["test's", "normal"]);
 
-    if (!is_array($escaped) || count($escaped) !== 2) {
-      throw new Exception('input: array escaping should return array with 2 elements');
-    }
+		if (!is_array($escaped) || count($escaped) !== 2) {
+			throw new Exception('input: array escaping should return array with 2 elements');
+		}
 
-    ########################################################################
-    ## input_like — wildcard escaping
-    ########################################################################
+		########################################################################
+		## input_like — wildcard escaping
+		########################################################################
 
-    $escaped = database::input_like('100% match_test');
+		$escaped = database::input_like('100% match_test');
 
-    if (strpos($escaped, '\\%') === false) {
-      throw new Exception('input_like: % should be escaped, got "'. $escaped .'"');
-    }
+		if (strpos($escaped, '\\%') === false) {
+			throw new Exception('input_like: % should be escaped, got "'. $escaped .'"');
+		}
 
-    if (strpos($escaped, '\\_') === false) {
-      throw new Exception('input_like: _ should be escaped, got "'. $escaped .'"');
-    }
+		if (strpos($escaped, '\\_') === false) {
+			throw new Exception('input_like: _ should be escaped, got "'. $escaped .'"');
+		}
 
-    ########################################################################
-    ## query — basic SELECT
-    ########################################################################
+		########################################################################
+		## query — basic SELECT
+		########################################################################
 
-    $result = database::query(
-      "select 1 + 1 as total;"
-    );
+		$result = database::query(
+			"select 1 + 1 as total;"
+		);
 
-    if (!$result || !$result->num_rows) {
-      throw new Exception('query: Basic SELECT should return a result');
-    }
+		if (!$result || !$result->num_rows) {
+			throw new Exception('query: Basic SELECT should return a result');
+		}
 
-    $row = $result->fetch();
+		$row = $result->fetch();
 
-    if ($row['total'] != 2) {
-      throw new Exception('query: Expected 2, got '. $row['total']);
-    }
+		if ($row['total'] != 2) {
+			throw new Exception('query: Expected 2, got '. $row['total']);
+		}
 
-    ########################################################################
-    ## prepare / bind — parameter substitution (integer)
-    ########################################################################
+		########################################################################
+		## prepare / bind — parameter substitution (integer)
+		########################################################################
 
-    $row = database::prepare(
-      "select :val as result;"
-    )->bind(['val' => 42])->fetch();
+		$row = database::prepare(
+			"select :val as result;"
+		)->bind(['val' => 42])->fetch();
 
-    if ((int)$row['result'] !== 42) {
-      throw new Exception('prepare/bind: Parameter substitution for integer failed, got '. var_export($row['result'], true));
-    }
+		if ((int)$row['result'] !== 42) {
+			throw new Exception('prepare/bind: Parameter substitution for integer failed, got '. var_export($row['result'], true));
+		}
 
-    ########################################################################
-    ## prepare / bind — parameter substitution (string with escaping)
-    ########################################################################
+		########################################################################
+		## prepare / bind — parameter substitution (string with escaping)
+		########################################################################
 
-    $row = database::prepare(
-      "select :val as result;"
-    )->bind(['val' => "test'injection"])->fetch();
+		$row = database::prepare(
+			"select :val as result;"
+		)->bind(['val' => "test'injection"])->fetch();
 
-    if ($row['result'] !== "test'injection") {
-      throw new Exception('prepare/bind: String parameter should be escaped and returned correctly, got '. var_export($row['result'], true));
-    }
+		if ($row['result'] !== "test'injection") {
+			throw new Exception('prepare/bind: String parameter should be escaped and returned correctly, got '. var_export($row['result'], true));
+		}
 
-    ########################################################################
-    ## fetch — single column shorthand
-    ########################################################################
+		########################################################################
+		## fetch — single column shorthand
+		########################################################################
 
-    $value = database::query(
-      "select 'hello' as greeting;"
-    )->fetch('greeting');
+		$value = database::query(
+			"select 'hello' as greeting;"
+		)->fetch('greeting');
 
-    if ($value !== 'hello') {
-      throw new Exception('fetch(column): Expected "hello", got '. var_export($value, true));
-    }
+		if ($value !== 'hello') {
+			throw new Exception('fetch(column): Expected "hello", got '. var_export($value, true));
+		}
 
-    ########################################################################
-    ## fetch_all — multiple rows
-    ########################################################################
+		########################################################################
+		## fetch_all — multiple rows
+		########################################################################
 
-    $rows = database::query(
-      "select 1 as n union all select 2 union all select 3;"
-    )->fetch_all();
+		$rows = database::query(
+			"select 1 as n union all select 2 union all select 3;"
+		)->fetch_all();
 
-    if (count($rows) !== 3) {
-      throw new Exception('fetch_all: Expected 3 rows, got '. count($rows));
-    }
+		if (count($rows) !== 3) {
+			throw new Exception('fetch_all: Expected 3 rows, got '. count($rows));
+		}
 
-    ########################################################################
-    ## num_rows
-    ########################################################################
+		########################################################################
+		## num_rows
+		########################################################################
 
-    $count = database::query(
-      "select 1 union all select 2;"
-    )->num_rows;
+		$count = database::query(
+			"select 1 union all select 2;"
+		)->num_rows;
 
-    if ($count !== 2) {
-      throw new Exception('num_rows: Expected 2, got '. $count);
-    }
+		if ($count !== 2) {
+			throw new Exception('num_rows: Expected 2, got '. $count);
+		}
 
-    ########################################################################
-    ## each — callback is invoked for every row
-    ########################################################################
+		########################################################################
+		## each — callback is invoked for every row
+		########################################################################
 
-    $collected = [];
-    database::query(
-      "select 1 as n union all select 2 union all select 3;"
-    )->each(function($row) use (&$collected) {
-      $collected[] = (int)$row['n'] * 10;
-    });
+		$collected = [];
+		database::query(
+			"select 1 as n union all select 2 union all select 3;"
+		)->each(function($row) use (&$collected) {
+			$collected[] = (int)$row['n'] * 10;
+		});
 
-    if ($collected !== [10, 20, 30]) {
-      throw new Exception('each: Expected [10, 20, 30] collected via callback, got '. var_export($collected, true));
-    }
+		if ($collected !== [10, 20, 30]) {
+			throw new Exception('each: Expected [10, 20, 30] collected via callback, got '. var_export($collected, true));
+		}
 
-    ########################################################################
-    ## create_variable — type mapping
-    ########################################################################
+		########################################################################
+		## create_variable — type mapping
+		########################################################################
 
-    $int_var = database::create_variable(['Type' => 'int(11)', 'Default' => null]);
+		$int_var = database::create_variable(['Type' => 'int(11)', 'Default' => null]);
 
-    if ($int_var !== 0) {
-      throw new Exception('create_variable: int with null default should be 0, got '. var_export($int_var, true));
-    }
+		if ($int_var !== 0) {
+			throw new Exception('create_variable: int with null default should be 0, got '. var_export($int_var, true));
+		}
 
-    $float_var = database::create_variable(['Type' => 'decimal(10,2)', 'Default' => null]);
+		$float_var = database::create_variable(['Type' => 'decimal(10,2)', 'Default' => null]);
 
-    if ($float_var !== 0.0) {
-      throw new Exception('create_variable: decimal with null default should be 0.0, got '. var_export($float_var, true));
-    }
+		if ($float_var !== 0.0) {
+			throw new Exception('create_variable: decimal with null default should be 0.0, got '. var_export($float_var, true));
+		}
 
-    $str_var = database::create_variable(['Type' => 'varchar(255)', 'Default' => null]);
+		$str_var = database::create_variable(['Type' => 'varchar(255)', 'Default' => null]);
 
-    if ($str_var !== '') {
-      throw new Exception('create_variable: varchar with null default should be empty string, got '. var_export($str_var, true));
-    }
+		if ($str_var !== '') {
+			throw new Exception('create_variable: varchar with null default should be empty string, got '. var_export($str_var, true));
+		}
 
-    ########################################################################
-    ## transaction — rollback works
-    ########################################################################
+		########################################################################
+		## transaction — rollback works
+		########################################################################
 
-    database::query("start transaction;");
+		database::query("start transaction;");
 
-    database::query(
-      "insert into ". DB_TABLE_PREFIX ."settings_groups
-      (". DB_TABLE_PREFIX ."settings_groups.`key`, name, description, priority)
-      values ('test_tx_". uniqid() ."', 'TX Test', '', 999);"
-    );
+		database::query(
+			"insert into ". DB_TABLE_PREFIX ."settings_groups
+			(". DB_TABLE_PREFIX ."settings_groups.`key`, name, description, priority)
+			values ('test_tx_". uniqid() ."', 'TX Test', '', 999);"
+		);
 
-    $inserted = database::insert_id();
+		$inserted = database::insert_id();
 
-    if (!$inserted) {
-      throw new Exception('transaction: INSERT should return an ID');
-    }
+		if (!$inserted) {
+			throw new Exception('transaction: INSERT should return an ID');
+		}
 
-    database::query("rollback;");
+		database::query("rollback;");
 
-    $found = database::query(
-      "select id from ". DB_TABLE_PREFIX ."settings_groups
-      where id = ". (int)$inserted ."
-      limit 1;"
-    )->num_rows;
+		$found = database::query(
+			"select id from ". DB_TABLE_PREFIX ."settings_groups
+			where id = ". (int)$inserted ."
+			limit 1;"
+		)->num_rows;
 
-    if ($found) {
-      throw new Exception('transaction: ROLLBACK should have removed the inserted row');
-    }
+		if ($found) {
+			throw new Exception('transaction: ROLLBACK should have removed the inserted row');
+		}
 
-    return true;
+		return true;
 
-  } catch (Exception $e) {
+	} catch (Exception $e) {
 
-    echo ' [Failed]'. PHP_EOL . 'Error: '. $e->getMessage();
-    return false;
-  }
+		echo ' [Failed]'. PHP_EOL . 'Error: '. $e->getMessage();
+		return false;
+	}

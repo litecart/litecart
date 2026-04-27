@@ -1,67 +1,67 @@
 <?php
 
-  class ent_webhook_request {
+	class ent_webhook_request {
 
-    public $data;
-    public $previous;
+		public $data;
+		public $previous;
 
-    public function __construct($request_id=null) {
+		public function __construct($request_id=null) {
 
-      if ($request_id) {
-        $this->load($request_id);
-      } else {
-        $this->reset();
-      }
-    }
+			if ($request_id) {
+				$this->load($request_id);
+			} else {
+				$this->reset();
+			}
+		}
 
-    public function reset() {
+		public function reset() {
 
-      $this->data = [];
+			$this->data = [];
 
-      database::query(
-        "show fields from ". DB_TABLE_PREFIX ."webhook_requests;"
-      )->each(function($field) {
-        $this->data[$field['Field']] = database::create_variable($field['Type']);
-      });
+			database::query(
+				"show fields from ". DB_TABLE_PREFIX ."webhook_requests;"
+			)->each(function($field) {
+				$this->data[$field['Field']] = database::create_variable($field['Type']);
+			});
 
-      $this->previous = $this->data;
-    }
+			$this->previous = $this->data;
+		}
 
-    public function load($request_id) {
+		public function load($request_id) {
 
-      if (!preg_match('#^[0-9]+$#', $request_id)) {
-        throw new Exception('Invalid webhook request (ID: '. $request_id .')');
-      }
+			if (!preg_match('#^[0-9]+$#', $request_id)) {
+				throw new Exception('Invalid webhook request (ID: '. $request_id .')');
+			}
 
-      $this->reset();
+			$this->reset();
 
-      $request = database::query(
-        "select * from ". DB_TABLE_PREFIX ."webhook_requests
-        where id = ". (int)$request_id ."
-        limit 1;"
-      )->fetch();
+			$request = database::query(
+				"select * from ". DB_TABLE_PREFIX ."webhook_requests
+				where id = ". (int)$request_id ."
+				limit 1;"
+			)->fetch();
 
-      if (!$request) {
-        throw new Exception('Could not find webhook (ID: '. (int)$request_id .') in database.');
-      }
+			if (!$request) {
+				throw new Exception('Could not find webhook (ID: '. (int)$request_id .') in database.');
+			}
 
-      $this->data = array_update($this->data, $request);
+			$this->data = array_update($this->data, $request);
 
-      $this->previous = $this->data;
-    }
+			$this->previous = $this->data;
+		}
 
-    public function save() {
+		public function save() {
 
-      if (!$this->data['id']) {
+			if (!$this->data['id']) {
 
 				database::query(
-          "insert into ". DB_TABLE_PREFIX ."webhook_requests
-          (date_created)
-          values ('". date('Y-m-d H:i:s') ."');"
-        );
+					"insert into ". DB_TABLE_PREFIX ."webhook_requests
+					(date_created)
+					values ('". date('Y-m-d H:i:s') ."');"
+				);
 
-        $this->data['id'] = database::insert_id();
-      }
+				$this->data['id'] = database::insert_id();
+			}
 
 			database::query(
 				"update ". DB_TABLE_PREFIX ."webhook_requests
@@ -81,17 +81,17 @@
 				limit 1;"
 			);
 
-      $this->previous = $this->data;
-    }
+			$this->previous = $this->data;
+		}
 
-    public function delete() {
+		public function delete() {
 
-      database::query(
-        "delete from ". DB_TABLE_PREFIX ."webhook_requests
-        where id = ". (int)$this->data['id'] ."
-        limit 1;"
-      );
+			database::query(
+				"delete from ". DB_TABLE_PREFIX ."webhook_requests
+				where id = ". (int)$this->data['id'] ."
+				limit 1;"
+			);
 
-      $this->reset();
-    }
-  }
+			$this->reset();
+		}
+	}

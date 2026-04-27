@@ -1,19 +1,19 @@
 <?php
 
-  #[AllowDynamicProperties]
-  class job_webhook_deliverer extends abs_module {
+	#[AllowDynamicProperties]
+	class job_webhook_deliverer extends abs_module {
 
-    public $id = __CLASS__;
-    public $name = 'Webhook Deliverer';
-    public $description = 'Deliver webhooks that are pending or waiting for retry attempts.';
-    public $author = 'LiteCart Dev Team';
-    public $version = '1.0';
-    public $website = 'https://www.litecart.net';
-    public $priority = 0;
+		public $id = __CLASS__;
+		public $name = 'Webhook Deliverer';
+		public $description = 'Deliver webhooks that are pending or waiting for retry attempts.';
+		public $author = 'LiteCart Dev Team';
+		public $version = '1.0';
+		public $website = 'https://www.litecart.net';
+		public $priority = 0;
 
-    public function process($force, $last_run) {
+		public function process($force, $last_run) {
 
-      if (empty($this->settings['status'])) return;
+			if (empty($this->settings['status'])) return;
 
 			database::query(
 				"delete from ". DB_TABLE_PREFIX ."webhook_requests
@@ -43,7 +43,7 @@
 				return;
 			}
 
-      echo 'Found '. count($pending_requests) .' webhooks awaiting delivery' . PHP_EOL;
+			echo 'Found '. count($pending_requests) .' webhooks awaiting delivery' . PHP_EOL;
 
 			foreach ($pending_requests as $request) {
 
@@ -94,24 +94,24 @@
 					);
 				}
 			}
-    }
+		}
 
-    function settings() {
-      return [
-        [
-          'key' => 'status',
-          'default_value' => '1',
-          'title' => language::translate(__CLASS__.':title_status', 'Status'),
-          'description' => language::translate(__CLASS__.':description_status', 'Enables or disables the module.'),
-          'function' => 'toggle("e/d")',
-        ],
-        [
-          'key' => 'priority',
-          'default_value' => '0',
-          'title' => language::translate(__CLASS__.':title_priority', 'Priority'),
-          'description' => language::translate(__CLASS__.':description_priority', 'Process this module in the given priority order.'),
-          'function' => 'number()',
-        ],
-      ];
-    }
-  }
+		function settings() {
+			return [
+				[
+					'key' => 'status',
+					'default_value' => '1',
+					'title' => language::translate(__CLASS__.':title_status', 'Status'),
+					'description' => language::translate(__CLASS__.':description_status', 'Enables or disables the module.'),
+					'function' => 'toggle("e/d")',
+				],
+				[
+					'key' => 'priority',
+					'default_value' => '0',
+					'title' => language::translate(__CLASS__.':title_priority', 'Priority'),
+					'description' => language::translate(__CLASS__.':description_priority', 'Process this module in the given priority order.'),
+					'function' => 'number()',
+				],
+			];
+		}
+	}
