@@ -238,6 +238,10 @@
 		</div>
 	</div>
 
+	<div class="card-action">
+    <?php echo f::form_button('translate', f::draw_fonticon('icon-languages') .' '. t('title_translate_missing', 'Translate Missing'), 'button'); ?>
+	</div>
+
 	<?php echo f::form_begin('filter_form', 'get'); ?>
 		<div class="card-filter">
 
@@ -437,6 +441,67 @@
 	$('textarea[name^="translations"]').on('input', function() {
 		$(this).height('auto').height($(this).prop('scrollHeight') + 'px');
 	}).trigger('input');
+
+  $('button[name="translate"]').on('click', function(e){
+    e.preventDefault();
+
+    if (!$('textarea[name$="[en]"]').length) {
+      alert('Need english source for translating');
+      return;
+    }
+
+    var translationsQueue = [];
+
+    $('textarea[name~="translations\[\d+\]\[text_[a-z]{2}\]"]').each(function(){
+      if ($(this).val() == '') {
+
+        let $textarea = $(this),
+          language_code = $textarea.attr('name').match(/text_([a-z]{2})/)[1];
+          text = $textarea.closest('tr').find('textarea[name$="[en]"]').val();
+
+        if (translationsQueue[language_code] === undefined) {
+          translationsQueue[language_code] = [];
+        }
+
+        translationsQueue[language_code].push(text);
+      }
+    });
+
+    if (translationsQueue.length == 0) {
+      alert('Nothing to translate');
+      return;
+    }
+
+    $.each(translationsQueue, function(language_code, texts){
+      $.ajax({
+        url: '<?php echo document::href_ilink(__APP__.'translate.json'); ?>',
+        type: 'post',
+        dataType: 'json',
+        data: {
+          from: 'en',
+          to: language_code,
+          text: texts,
+        },
+        beforeSend: function(){
+          $('textarea[name^="translations\[\d+\]\[text_' + language_code + '\]"]').css('border', '1px dashed #f00');
+        },
+        success: function(result){
+
+          if (result.error) {
+            console.log(result.error);
+            return;
+          }
+
+          $('textarea[name^="translations\[\d+\]\[text_' + language_code + '\]"]').each(function(i){
+            $(this).val(data[i]).trigger('input').css('border', '1px solid #f00;');
+          });
+        },
+        error: function(jqXHR, textStatus, errorThrown){
+          console.log(textStatus, errorThrown);
+        },
+      });
+    });
+  });
 
 	// Translator Tool
 

@@ -83,6 +83,8 @@
 			'tax/tax_rates.json' => 'tax/tax_rates.json.inc.php',
 			'tax/edit_tax_rate' => 'tax/edit_tax_rate.inc.php',
 			'translations/translations' => 'translations/translations.inc.php',
+			'translations/auto_translate' => 'translations/auto_translate.inc.php',
+			'translations/translate.json' => 'translations/translate.json.inc.php',
 			'translations/scan' => 'translations/scan.inc.php',
 			'translations/csv' => 'translations/csv.inc.php',
 		],

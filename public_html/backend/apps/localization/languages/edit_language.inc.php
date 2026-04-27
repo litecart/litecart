@@ -101,6 +101,9 @@
 			if (empty($_POST['domain_name'])) {
 				$_POST['domain_name'] = '';
 			}
+			if (empty($_POST['auto_translate'])) {
+				$_POST['auto_translate'] = '0';
+			}
 
 			$_POST['code'] = strtolower($_POST['code']);
 			$_POST['raw_datetime'] = $_POST['raw_date'] .' '. $_POST['raw_time'];
@@ -125,6 +128,7 @@
 				'format_datetime',
 				'decimal_point',
 				'thousands_sep',
+				'auto_translate',
 				'priority',
 			] as $field) {
 				if (isset($_POST[$field])) {
@@ -496,6 +500,12 @@
 			</div>
 
 			<div class="grid">
+				<div class="col-md-6">
+					<div class="form-group">
+						<?php echo f::form_checkbox('auto_translate', ['1', t('title_auto_translate', 'Auto Translate')]); ?>
+					</div>
+				</div>
+
 				<div class="col-md-6">
 					<div class="form-group">
 						<?php echo f::form_checkbox('set_default', ['1', t('description_set_as_default_language', 'Set as default language')], (isset($language->data['code']) && $language->data['code'] && $language->data['code'] == settings::get('default_language_code')) ? '1' : true); ?>

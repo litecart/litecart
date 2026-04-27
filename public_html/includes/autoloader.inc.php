@@ -36,6 +36,7 @@
 			case (preg_match('#^ot_#', $class)):
 			case (preg_match('#^pm_#', $class)):
 			case (preg_match('#^sm_#', $class)):
+			case (preg_match('#^tm_#', $class)):
 
 				// Patch modules for PHP 8.2 Compatibility
 				if (version_compare(PHP_VERSION, 8.2, '>=')) {

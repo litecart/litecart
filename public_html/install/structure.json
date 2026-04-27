@@ -592,6 +592,7 @@
 				"format_datetime": { "type": "VARCHAR", "length": 32, "default": "''" },
 				"decimal_point": { "type": "VARCHAR", "length": 1, "default": "''" },
 				"thousands_sep": { "type": "VARCHAR", "length": 1, "default": "''" },
+				"auto_translate": { "type": "TINYINT", "length": 1, "default": 0 },
 				"priority": { "type": "INT", "length": 11, "default": 0 },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
 				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
