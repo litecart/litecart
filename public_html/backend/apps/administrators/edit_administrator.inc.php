@@ -343,16 +343,19 @@
 						</div>
 					</div>
 
-					<div class="grid">
-						<div class="col-md-12">
-							<label class="form-group">
-								<div class="form-label"><?php echo t('title_known_ip_addresses', 'Known IP Addresses'); ?></div>
-								<div class="form-input" readonly style="height: 80px;">
-									<?php echo str_replace(',', ', ', $administrator->data['known_ips']); ?>
-								</div>
-							</label>
+					<label class="form-group">
+						<div class="form-label"><?php echo t('title_known_ip_addresses', 'Known IP Addresses'); ?></div>
+						<div class="form-input" readonly style="height: 80px;">
+							<?php echo str_replace(',', ', ', $administrator->data['known_ips']); ?>
 						</div>
-					</div>
+					</label>
+
+					<label class="form-group">
+						<div class="form-label"><?php echo t('title_known_fingerprints', 'Known Fingerprints'); ?></div>
+						<div class="form-input" readonly style="height: 80px;">
+							<?php echo str_replace(',', ', ', $administrator->data['fingerprints']); ?>
+						</div>
+					</label>
 					<?php } ?>
 				</div>
 

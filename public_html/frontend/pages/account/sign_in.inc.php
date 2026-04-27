@@ -42,13 +42,10 @@
 				"select * from ". DB_TABLE_PREFIX ."customers
 				where email = '". database::input(strtolower($_POST['email'])) ."'
 				limit 1;"
-			)->fetch(function($customer){
-				$customer['known_ips'] = preg_split('#\s*,\s*#', $customer['known_ips'], -1, PREG_SPLIT_NO_EMPTY);
-				return $customer;
-			});
+			)->fetch();
 
 			if (!$customer) {
-			// Dummy password_verify to prevent timing-based user enumeration
+				// Dummy password_verify to prevent timing-based user enumeration
 				password_verify($_POST['password'], '$2y$10$abcdefghijklmnopqrstuuABCDEFGHIJKLMNOPQRSTUVWXYZ01234');
 				throw new Exception(t('error_wrong_email_password_combination', 'Wrong combination of email and password or the account does not exist'));
 			}
@@ -101,16 +98,21 @@
 				);
 			}
 
-			array_unshift($customer['known_ips'], $_SERVER['REMOTE_ADDR']);
-			$customer['known_ips'] = array_unique($customer['known_ips']);
+			$customer['known_ips'] = f::string_split($customer['known_ips']);
+			$customer['known_fingerprints'] = f::string_split($customer['known_fingerprints']);
 
-			if (count($customer['known_ips']) > 5) {
-				array_pop($customer['known_ips']);
+			array_unshift($customer['known_ips'], $_SERVER['REMOTE_ADDR']);
+			$customer['known_ips'] = array_slice(array_unique($customer['known_ips']), 0, 10);
+
+			if (!empty(session::$data['fingerprint'])) {
+				array_unshift($customer['known_fingerprints'], session::$data['fingerprint']);
+				$customer['known_fingerprints'] = array_slice(array_unique($customer['known_fingerprints']), 0, 10);
 			}
 
 			database::query(
 				"update ". DB_TABLE_PREFIX ."customers
 				set known_ips = '". database::input(implode(',', $customer['known_ips'])) ."',
+					known_fingerprints = '". database::input(implode(',', $customer['known_fingerprints'])) ."',
 					last_ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."',
 					last_hostname = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
 					last_user_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."',

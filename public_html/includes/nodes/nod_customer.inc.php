@@ -341,21 +341,20 @@
 				"select * from ". DB_TABLE_PREFIX ."customers
 				where id = ". (int)$id ."
 				limit 1;"
-			)->fetch(function(&$customer){
+			)->fetch();
 
+			if ($customer) {
 				foreach ($customer as $field => $value) {
 					if (preg_match('#^shipping_(.*)$#', $field, $matches)) {
 						unset($customer['shipping_'.$matches[1]]);
 						$customer['shipping_address'][$matches[1]] = $value;
 					}
 				}
-			});
 
-			if ($customer) {
 				session::$data['customer'] = f::array_update(session::$data['customer'], $customer);
 			}
 
-			if (!empty(self::$data['language_code']) && self::$data['language_code'] == language::$selected['code']) {
+			if (!empty(self::$data['language_code']) && language::$selected['code'] != self::$data['language_code']) {
 				language::set(self::$data['language_code']);
 			}
 		}

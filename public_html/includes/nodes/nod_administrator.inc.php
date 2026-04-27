@@ -154,6 +154,8 @@
 
 			$administrator['apps'] = $administrator['apps'] ? json_decode($administrator['apps'], true) : [];
 			$administrator['widgets'] = $administrator['widgets'] ? json_decode($administrator['widgets'], true) : [];
+			$administrator['known_ips'] = f::string_split($administrator['known_ips']);
+			$administrator['known_fingerprints'] = f::string_split($administrator['known_fingerprints']);
 
 			session::$data['administrator'] = $administrator;
 		}

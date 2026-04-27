@@ -30,14 +30,14 @@
 				where username = '". database::input(strtolower($_POST['username'])) ."'
 				or email = '". database::input(strtolower($_POST['username'])) ."'
 				limit 1;"
-			)->fetch(function($administrator){
-				$administrator['known_ips'] = f::string_split($administrator['known_ips']);
-				return $administrator;
-			});
+			)->fetch();
 
 			if (!$administrator) {
 				throw new Exception(t('error_administrator_not_found', 'The administrator could not be found in our database'));
 			}
+
+			$administrator['known_ips'] = f::string_split($administrator['known_ips']);
+			$administrator['known_fingerprints'] = f::string_split($administrator['known_fingerprints']);
 
 			if (empty($administrator['status'])) {
 				throw new Exception(t('error_administrator_account_disabled', 'The administrator account is disabled'));
@@ -133,9 +133,15 @@
 				]));
 			}
 
+			if (!empty(session::$data['fingerprint'])) {
+				array_unshift($administrator['known_fingerprints'], session::$data['fingerprint']);
+				$administrator['known_fingerprints'] = array_slice(array_unique($administrator['known_fingerprints']), 0, 10);
+			}
+
 			database::query(
 				"update ". DB_TABLE_PREFIX ."administrators
-				set last_ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."',
+				set known_fingerprints = '". database::input(implode(',', $administrator['known_fingerprints'])) ."',
+					last_ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."',
 					last_hostname = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
 					last_user_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."',
 					login_attempts = 0,
@@ -190,11 +196,7 @@
 				if ($is_known_range) {
 
 					array_unshift($administrator['known_ips'], $_SERVER['REMOTE_ADDR']);
-					$administrator['known_ips'] = array_unique($administrator['known_ips']);
-
-					if (count($administrator['known_ips']) > 10) {
-						array_pop($administrator['known_ips']);
-					}
+					$administrator['known_ips'] = array_slice(array_unique($administrator['known_ips']), 0, 10);
 
 					database::query(
 						"update ". DB_TABLE_PREFIX ."administrators

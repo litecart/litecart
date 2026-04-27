@@ -59,14 +59,9 @@
 
 				// The unknown-IP challenge records the successful IP as trusted.
 				// TOTP is location-independent and intentionally doesn't.
-				$known_ips = preg_split('#\s*,\s*#', administrator::$data['known_ips'], -1, PREG_SPLIT_NO_EMPTY);
-
+				$known_ips = administrator::$data['known_ips'];
 				array_unshift($known_ips, $_SERVER['REMOTE_ADDR']);
-				$known_ips = array_unique($known_ips);
-
-				if (count($known_ips) > 5) {
-					array_pop($known_ips);
-				}
+				$known_ips = array_alice(array_unique($known_ips), 0, 10);
 
 				database::query(
 					"update ". DB_TABLE_PREFIX ."administrators
