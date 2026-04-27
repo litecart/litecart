@@ -137,7 +137,7 @@
 						<?php if (is_dir(FS_DIR_APP . 'backend/apps/firewall/')) { ?>
 						<td>
 							<a class="btn btn-default" href="<?php echo document::href_ilink('firewall/edit_blacklist_entry', ['ip_address' => $visitor['ip_address'], 'hostname' => $visitor['hostname'], 'user_agent' => $visitor['user_agent']]); ?>">
-								<?php echo f::draw_fonticon('icon-plus'); ?> <?php echo t('title_blacklist', 'Blacklist'); ?>
+								<?php echo f::draw_fonticon('add'); ?> <?php echo t('title_blacklist', 'Blacklist'); ?>
 							</a>
 						</td>
 						<?php } ?>

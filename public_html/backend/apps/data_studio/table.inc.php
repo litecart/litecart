@@ -137,39 +137,39 @@ textarea[name="query"] {
 
 	<div class="card-action">
 		<ul class="list-inline">
-			<li><a class="btn btn-default" href="<?php echo document::href_ilink(__APP__.'/edit_table', ['name' => $_GET['name']]); ?>"><?php echo f::draw_fonticon('icon-pencil'); ?> <?php echo t('title_edit_table_structure', 'Edit Table Structure'); ?></a></li>
-			<li><a class="btn btn-default" href="<?php echo document::href_ilink(__APP__.'/edit_row', ['table' => $_GET['name']]); ?>"><?php echo f::draw_fonticon('icon-plus'); ?> <?php echo t('title_create_new_row', 'Create New Row'); ?></a></li>
+			<li><a class="btn btn-default" href="<?php echo document::href_ilink(__APP__.'/edit_table', ['name' => $_GET['name']]); ?>"><?php echo f::draw_fonticon('edit'); ?> <?php echo t('title_edit_table_structure', 'Edit Table Structure'); ?></a></li>
+			<li><a class="btn btn-default" href="<?php echo document::href_ilink(__APP__.'/edit_row', ['table' => $_GET['name']]); ?>"><?php echo f::draw_fonticon('add'); ?> <?php echo t('title_create_new_row', 'Create New Row'); ?></a></li>
 		</ul>
 	</div>
 
 	<?php f::form_begin('data_form', 'post'); ?>
-	
+
 		<div class="card-body">
-	
+
 			<div class="row">
 				<div class="col-md-5">
-	
+
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_select_table', 'Select Table'); ?></div>
 						<?php echo f::form_select('table', $table_options, $_GET['name']); ?>
 					</label>
-	
+
 					<?php echo f::form_begin('query_form', 'post', '', false, 'style="max-width: 100vw;"'); ?>
-	
+
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_query', 'Query'); ?></div>
 						<?php echo f::form_textarea('query', true, 'style="min-height: 100px;" spellcheck="false"'); ?>
 						</label>
-	
+
 						<div class="form-group">
 							<?php echo f::form_button('run', t('title_run_query', 'Run Query'), 'submit', 'class="btn btn-success"'); ?>
 							<?php echo f::form_button('pretty_print', t('title_pretty_print', 'Pretty Print'), 'button'); ?>
 						</div>
-	
+
 					<?php echo f::form_end(); ?>
-	
+
 				</div>
-	
+
 				<?php if (!empty($columns)) { ?>
 				<div class="col-md-7">
 					<fieldset id="toggle-columns">
@@ -182,21 +182,21 @@ textarea[name="query"] {
 				</div>
 				<?php } ?>
 			</div>
-	
+
 		</div>
-	
+
 		<div style="overflow-x: auto;">
 			<table class="table table-striped table-hover table-sortable data-table">
 				<thead>
 					<tr>
-						<th><?php echo f::draw_fonticon('icon-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
+						<th><?php echo f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
 						<?php foreach ($columns as $column) {?>
 						<th data-name="<?php echo f::escape_attr($column['name']); ?>" data-type="<?php echo f::escape_attr($column['type']); ?>" data-length="<?php echo f::escape_attr($column['length']); ?>" data-nullable="<?php echo f::escape_attr($column['null']); ?>" data-unsigned="<?php echo f::escape_attr($column['unsigned']); ?>" data-zerofill="<?php echo f::escape_attr($column['zerofill']); ?>" data-default="<?php echo f::escape_attr($column['default']); ?>"><?php echo f::escape_html($column['name']); ?></th>
 						<?php } ?>
 						<th class="main"></th>
 					</tr>
 				</thead>
-	
+
 				<tbody>
 					<?php foreach ($rows as $row) { ?>
 					<tr data-pkv="<?php echo f::escape_attr($row[$primary_column]); ?>">
@@ -206,13 +206,13 @@ textarea[name="query"] {
 						<?php } ?>
 						<td class="text-end">
 							<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_row', ['table' => $_GET['name'], $primary_column => $row[$primary_column]]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>">
-								<?php echo f::draw_fonticon('icon-pencil'); ?>
+								<?php echo f::draw_fonticon('edit'); ?>
 							</a>
 						</td>
 					</tr>
 					<?php } ?>
 				</tbody>
-	
+
 				<tfoot>
 					<td colspan="<?php echo count($columns) + 2; ?>">
 						<?php echo t('title_rows', 'Rows'); ?>: <?php echo f::format_number($num_rows); ?>
@@ -220,12 +220,12 @@ textarea[name="query"] {
 				</tfoot>
 			</table>
 		</div>
-	
+
 		<?php if ($rows && in_array($primary_column, array_column($columns, 'name'))) { ?>
 		<div class="card-body">
 			<fieldset id="actions">
 				<legend><?php echo t('text_with_selected', 'With selected'); ?></legend>
-	
+
 				<ul class="list-inline">
 					<li><?php echo f::form_button('delete', t('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!confirm(\''. t('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete'); ?></li>
 				</ul>

@@ -987,7 +987,7 @@
 							<div class="date"><?php echo f::datetime_when($_POST['comments'][$key]['created_at']); ?></div>
 
 							<div class="actions">
-								<a class="remove" href="#" title="<?php echo t('title_remove', 'Remove'); ?>"><?php echo f::draw_fonticon('icon-times'); ?></a>
+								<a class="btn btn-default btn-sm remove" href="#" title="<?php echo t('title_remove', 'Remove'); ?>"><?php echo f::draw_fonticon('remove'); ?></a>
 								<label class="private" title="<?php echo f::escape_html(t('title_hidden', 'Hidden')); ?>"><?php echo f::form_checkbox('comments['.$key .'][hidden]', '1', true); ?> <?php echo f::draw_fonticon('icon-eye-slash'); ?></label>
 							</div>
 						</div>
@@ -1042,7 +1042,7 @@
 							<?php echo f::form_input_hidden('lines['.$key.'][tax_rate]', true); ?>
 						</td>
 						<td class="sku"><?php echo f::escape_html($_POST['lines'][$key]['sku']); ?></td>
-						<td class="text-center"><?php if (isset($_POST['lines'][$key]['sufficient_stock'])) echo $line['sufficient_stock'] ? '<span style="color: #88cc44;">'. f::draw_fonticon('icon-check') .' '. $line['stock_quantity'] .'</span>' : '<span style="color: #f64;">'. f::draw_fonticon('icon-times') .' '. $line['stock_quantity'] .'</span>'; ?></td>
+						<td class="text-center"><?php if (isset($_POST['lines'][$key]['sufficient_stock'])) echo $line['sufficient_stock'] ? '<span style="color: #88cc44;">'. f::draw_fonticon('icon-check') .' '. $line['stock_quantity'] .'</span>' : '<span style="color: #f64;">'. f::draw_fonticon('remove') .' '. $line['stock_quantity'] .'</span>'; ?></td>
 						<td><?php echo f::form_input_decimal('lines['.$key.'][quantity]', true, 2); ?></td>
 						<td><?php echo f::form_input_decimal('lines['.$key.'][price]', true); ?></td>
 						<td><?php echo f::form_input_decimal('lines['.$key.'][discount]', true); ?></td>
@@ -1052,9 +1052,7 @@
 							<?php echo f::draw_fonticon('icon-arrows-v'); ?>
 						</td>
 						<td>
-							<a class="btn btn-default btn-sm remove" href="#" title="<?php echo t('title_remove', 'Remove'); ?>">
-								<?php echo f::draw_fonticon('remove'); ?>
-							</a>
+							<?php echo f::form_button_predefined('remove-sm'); ?>
 							<a class="btn btn-default btn-sm edit" href="#" title="<?php echo t('title_edit', 'Edit'); ?>">
 								<?php echo f::draw_fonticon('edit'); ?>
 							</a>
@@ -1080,7 +1078,7 @@
 									<?php echo f::escape_html($item['name']); ?>
 								</td>
 								<td class="sku"><?php echo f::escape_html($item['sku']); ?></td>
-								<td class="text-center"><?php if (isset($item['sufficient_stock'])) echo $item['sufficient_stock'] ? '<span style="color: #88cc44;">'. f::draw_fonticon('icon-check') .' '. $item['stock_quantity'] .'</span>' : '<span style="color: #f64;">'. f::draw_fonticon('icon-times') .' '. $item['stock_quantity'] .'</span>'; ?></td>
+								<td class="text-center"><?php if (isset($item['sufficient_stock'])) echo $item['sufficient_stock'] ? '<span style="color: #88cc44;">'. f::draw_fonticon('icon-check') .' '. $item['stock_quantity'] .'</span>' : '<span style="color: #f64;">'. f::draw_fonticon('remove') .' '. $item['stock_quantity'] .'</span>'; ?></td>
 								<td><?php echo f::form_input_decimal('lines['.$key.'][items]['.$key2.'][quantity]', true, 2); ?></td>
 								<td></td>
 							</tr>
@@ -1690,7 +1688,7 @@
 			'  <div class="actions">',
 			'    <label class="notify" title="<?php echo f::escape_html(t('title_notify', 'Notify')); ?>"><?php echo f::escape_js(f::form_checkbox('comments[__index__][notify]', [1, f::draw_fonticon('icon-envelope')], true)); ?> </label>',
 			'    <label class="private" title="<?php echo f::escape_html(t('title_hidden', 'Hidden')); ?>"><?php echo f::escape_js(f::form_checkbox('comments[__index__][hidden]', [1, f::draw_fonticon('icon-eye-slash')], true)); ?></label>',
-			'    <a class="btn btn-default btn-sm remove" href="#" title="<?php echo t('title_remove', 'Remove'); ?>"><?php echo f::draw_fonticon('icon-times'); ?></a>',
+			'    <a class="btn btn-default btn-sm remove" href="#" title="<?php echo t('title_remove', 'Remove'); ?>"><?php echo f::draw_fonticon('remove'); ?></a>',
 			'  </div>',
 			'</div>'
 		].join('\n')
@@ -1845,7 +1843,7 @@
 		$modal.data('row', '');
 	});
 
-	$('#order-lines').on('click', '.remove', function(e) {
+	$('#order-lines').on('click', 'button[name="remove"]', function(e) {
 		e.preventDefault();
 		$(this).closest('tr').remove();
 	});
@@ -1990,7 +1988,7 @@
 		'#order-lines :input[name$="[price]"]',
 		'#order-lines :input[name$="[discount]"]',
 		'#order-lines :input[name$="[tax_rate]"]',
-		'#order-lines a.remove',
+		'#order-lines button[name="remove"]',
 	].join(', '), function() {
 		refresh_total();
 	});

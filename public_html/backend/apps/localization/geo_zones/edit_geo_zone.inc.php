@@ -116,11 +116,7 @@
 					<td><?php echo f::form_input_hidden('zones['. $key .'][country_code]', true); ?> <?php echo reference::country($_POST['zones'][$key]['country_code'])->name; ?></td>
 					<td><?php echo f::form_input_hidden('zones['. $key .'][zone_code]', true); ?> <?php echo !empty($_POST['zones'][$key]['zone_code']) ? reference::country($_POST['zones'][$key]['country_code'])->zones[$_POST['zones'][$key]['zone_code']]['name'] : '-- '.t('title_all_zones', 'All Zones') .' --'; ?></td>
 					<td><?php echo f::form_input_hidden('zones['. $key .'][city]', true); ?> <?php echo $_POST['zones'][$key]['city'] ?? ('-- '. t('title_all_cities', 'All Cities') .' --'); ?></td>
-					<td class="text-end">
-						<a class="remove btn btn-default btn-sm" href="#" title="<?php echo t('title_remove', 'Remove'); ?>">
-							<?php echo f::draw_fonticon('icon-times', 'style="color: #cc3333;"'); ?>
-						</a>
-					</td>
+					<td class="text-end"><?php echo f::form_button_predefined('remove-sm'); ?></td>
 				</tr>
 				<?php } ?>
 			</tbody>
@@ -221,11 +217,7 @@
 			'  <td><?php echo f::escape_js(f::form_input_hidden('zones[__index__][country_code]', '')); ?>' + $('select[name="new_zone[country_code]"] option:selected').text() + '</td>',
 			'  <td><?php echo f::escape_js(f::form_input_hidden('zones[__index__][zone_code]', '')); ?>' + zone_name + '</td>',
 			'  <td><?php echo f::escape_js(f::form_input_hidden('zones[__index__][city]', '')); ?>' + city_name + '</td>',
-			'  <td class="text-end">',
-			'		<a class="remove btn btn-default btn-sm" href="#" title="<?php echo f::escape_js(t('title_remove', 'Remove'), true); ?>">',
-			'			<?php echo f::escape_js(f::draw_fonticon('icon-times', 'style="color: #cc3333;"')); ?>',
-			'		</a>',
-			'	</td>',
+			'  <td class="text-end"><?php echo f::escape_js(f::form_button_predefined('remove-sm')); ?></td>',
 			'</tr>'
 		].join('\n')
 			.replace(/__index__/g, 'new_' + __index__)
@@ -244,7 +236,7 @@
 		$(':input[name="new_zone[city]"]').val('');
 	});
 
-	$('#zones').on('click', '.remove', function(e) {
+	$('#zones').on('click', 'button[name="remove"]', function(e) {
 		e.preventDefault();
 		$(this).closest('tr').remove();
 	});

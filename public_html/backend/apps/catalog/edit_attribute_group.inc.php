@@ -131,7 +131,7 @@
 					<td><?php foreach (array_keys(language::$languages) as $language_code) echo f::form_regional_text( 'values['. $key .'][name]['. $language_code .']', $language_code, true); ?></td>
 					<td class="text-center"><?php echo !empty($group_value['in_use']) ? t('title_yes', 'Yes') : t('title_no', 'No'); ?></td>
 					<td class="grabbable"><?php echo f::draw_fonticon('icon-arrows-vertical'); ?></td>
-					<td class="text-end"><?php if (empty($group_value['in_use'])) echo '<a href="#" class="remove btn btn-default btn-sm" title="'. t('title_remove', 'Remove') .'">'. f::draw_fonticon('icon-times', 'style="color: #c33;"') .'</a>'; ?></td>
+					<td class="text-end"><?php if (empty($group_value['in_use'])) echo '<a href="#" class="remove btn btn-default btn-sm" title="'. t('title_remove', 'Remove') .'">'. f::draw_fonticon('remove') .'</a>'; ?></td>
 				</tr>
 				<?php } ?>
 			</tbody>
@@ -140,7 +140,7 @@
 				<tr>
 					<td colspan="99">
 						<a class="add btn btn-default btn-sm" href="#">
-							<?php echo f::draw_fonticon('icon-plus'); ?>
+							<?php echo f::draw_fonticon('add'); ?>
 						</a>
 					</td>
 				</tr>
@@ -176,11 +176,7 @@
 			'  <td><?php echo f::escape_js($name_fields); ?></td>',
 			'  <td class="text-center"><?php echo t('title_no', 'No'); ?></td>',
 			'  <td class="grabbable"><?php echo f::escape_js(f::draw_fonticon('icon-arrows-vertical')); ?></td>',
-			'  <td class="text-end">',
-			'		<a class="remove btn btn-default btn-sm" href="#" title="<?php echo f::escape_js(t('title_remove', 'Remove'), true); ?>">',
-			'			<?php echo f::escape_js(f::draw_fonticon('icon-times', 'style="color: #c33;"')); ?>',
-			'		</a>',
-			'	</td>',
+			'  <td class="text-end"><?php echo f::escape_js(f::form_button_predefined('remove-sm')); ?></td>',
 			'</tr>',
 		].join('\n')
 			.replace(/__index__/g, 'new_' + __index__)
@@ -189,7 +185,7 @@
 		$(this).closest('table').find('tbody').append($output);
 	});
 
-	$('form[name="attribute_form"]').on('click', '.remove', function(e) {
+	$('form[name="attribute_form"]').on('click', 'button[name="remove"]', function(e) {
 		e.preventDefault();
 		$(this).closest('tr').remove();
 	});

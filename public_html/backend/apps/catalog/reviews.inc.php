@@ -80,7 +80,7 @@
 		<table class="table table-striped data-table">
 			<thead>
 				<tr>
-					<th><?php echo f::draw_fonticon('fa-check-square-o fa-fw checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th><?php echo f::draw_fonticon('icon-square-check checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th></th>
 					<th><?php echo t('title_id', 'ID'); ?></th>
 					<th><?php echo t('title_product', 'Product'); ?></th>
@@ -96,7 +96,7 @@
 				<?php foreach ($reviews as $review) { ?>
 				<tr class="<?php echo $review['status'] ? false : ' semi-transparent'; ?>">
 					<td><?php echo f::form_checkbox('reviews[]', $review['id']); ?></td>
-					<td><?php echo f::draw_fonticon('fa-circle', 'style="color: '. (!empty($review['status']) ? '#99cc66' : '#ff6666') .';"'); ?></td>
+					<td><?php echo f::draw_fonticon('icon-circle', 'style="color: '. (!empty($review['status']) ? '#99cc66' : '#ff6666') .';"'); ?></td>
 					<td><?php echo $review['id']; ?></td>
 					<td>
 						<a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_review', ['review_id' => $review['id']]); ?>">
@@ -109,7 +109,7 @@
 					<td><?php echo $review['updated_at'] > $review['created_at'] ? $review['updated_at'] : $review['created_at']; ?></td>
 					<td>
 						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_review', ['review_id' => $review['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>">
-							<?php echo f::draw_fonticon('fa-pencil'); ?>
+							<?php echo f::draw_fonticon('edit'); ?>
 						</a>
 					</td>
 				</tr>

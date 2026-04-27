@@ -191,9 +191,9 @@
 						<div class="input-group">
 							<?php echo f::form_input_text('attachments['.$key.'][new_filename]', isset($_POST['attachments'][$key]['new_filename']) ? true : $_POST['attachments'][$key]['filename']); ?>
 							<div class="input-group-text">
-								<a class="move-up" href="#" title="<?php echo t('text_move_up', 'Move up'); ?>"><?php echo f::draw_fonticon('fa-arrow-up fa-lg', 'style="color: #3399cc;"'); ?></a>
-								<a class="move-down" href="#" title="<?php echo t('text_move_down', 'Move down'); ?>"><?php echo f::draw_fonticon('fa-arrow-down fa-lg', 'style="color: #3399cc;"'); ?></a>
-								<a class="remove" href="#" title="<?php echo t('title_remove', 'Remove'); ?>"><?php echo f::draw_fonticon('fa-times fa-lg', 'style="color: #cc3333;"'); ?></a>
+								<?php echo f::form_button_predefined('move-up-sm'); ?>
+								<?php echo f::form_button_predefined('move-down-sm'); ?>
+								<?php echo f::form_button_predefined('remove-sm'); ?>
 							</div>
 						</div>
 					</div>
@@ -205,15 +205,13 @@
 						<label><?php echo t('title_attachment', 'Attachment'); ?></label>
 						<div class="input-group">
 							<?php echo f::form_input_file('new_attachments[]'); ?>
-							<div class="input-group-text">
-								<a class="remove" href="#" title="<?php echo t('title_remove', 'Remove'); ?>"><?php echo f::draw_fonticon('fa-times fa-lg', 'style="color: #cc3333;"'); ?></a>
-							</div>
+							<?php echo f::form_button_predefined('remove-sm'); ?>
 						</div>
 					</div>
 				</div>
 
 				<div class="form-group">
-					<a href="#" class="add" title="<?php echo t('text_add', 'Add'); ?>"><?php echo f::draw_fonticon('fa-plus', 'style="color: #66cc66;"'); ?></a>
+					<a href="#" class="add" title="<?php echo t('text_add', 'Add'); ?>"><?php echo f::draw_fonticon('add'); ?></a>
 				</div>
 			</div>
 
@@ -330,21 +328,21 @@
 		}
 	}).trigger('input');
 
-	$('#attachments').on('click', '.move-up, .move-down', function(e) {
+	$('#attachments').on('click', 'button[name="move_up", button[name="move_down"]', function(e) {
 		e.preventDefault();
 
 		var $row = $(this).closest('.form-group');
 
-		if ($(this).is('.move-up') && $row.prevAll().length > 0) {
+		if ($(this).is('[name="move_up"]') && $row.prevAll().length > 0) {
 			$row.insertBefore(row.prev());
-		} else if ($(this).is('.move-down') && $row.nextAll().length > 0) {
+		} else if ($(this).is('[name="move_down"]') && $row.nextAll().length > 0) {
 			$row.insertAfter($row.next());
 		}
 
 		refreshMainImage();
 	});
 
-	$('#attachments').on('click', '.remove', function(e) {
+	$('#attachments').on('click', 'button[name="remove"]', function(e) {
 		e.preventDefault();
 		$(this).closest('.form-group').remove();
 	});
@@ -357,9 +355,7 @@
 			'  <label><?php echo f::escape_js(t('title_attachment', 'Attachment')); ?></label>'
 			'  <div class="input-group">'
 			'    <?php echo f::escape_js(f::form_input_file('new_attachments[]')); ?>',
-			'    <div class="input-group-text">',
-			'      <a class="remove" href="#" title="<?php echo f::escape_js(t('title_remove', 'Remove')); ?>"><?php echo f::escape_js(f::draw_fonticon('fa-times fa-lg', 'style="color: #cc3333;'), ''); ?></a>',
-			'    </div>',
+			'    <?php echo f::escape_js(f::form_button_predefined('remove-sm'), ''); ?>',
 			'  </div>',
 			'</div>',
 		].join(''));

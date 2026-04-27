@@ -178,14 +178,6 @@ html.dark-mode .operation {
 	background: #232a3e;
 }
 
-.tabs .icon-times {
-	color: #c00;
-}
-
-.tabs .icon-plus {
-	color: #0c0;
-}
-
 .script {
 	position: relative;
 }
@@ -390,10 +382,10 @@ textarea.warning {
 					<nav class="tabs">
 						<?php foreach (array_keys($vmod->data['files']) as $f) { ?>
 						<a class="tab-item" data-toggle="tab" href="#tab-<?php echo $f; ?>">
-							<span class="file"><?php echo f::escape_html($_POST['files'][$f]['name']); ?></span> <span class="btn btn-default btn-sm remove" title="<?php t('title_remove', 'Remove')?>"><?php echo f::draw_fonticon('icon-times'); ?></span>
+							<span class="file"><?php echo f::escape_html($_POST['files'][$f]['name']); ?></span> <span class="btn btn-default btn-sm remove" title="<?php t('title_remove', 'Remove')?>"><?php echo f::draw_fonticon('remove'); ?></span>
 						</a>
 						<?php } ?>
-						<a class="tab-item add" href="#"><?php echo f::draw_fonticon('icon-plus'); ?></a>
+						<a class="tab-item add" href="#"><?php echo f::draw_fonticon('add'); ?></a>
 					</nav>
 
 					<div id="files" class="tab-contents">
@@ -503,7 +495,7 @@ textarea.warning {
 
 									<div class="text-end">
 										<a class="btn btn-default add" href="#">
-											<?php echo f::draw_fonticon('icon-plus', 'style="color: #0c0;"'); ?> <?php echo t('title_add_operation', 'Add Operation'); ?>
+											<?php echo f::draw_fonticon('add'); ?> <?php echo t('title_add_operation', 'Add Operation'); ?>
 										</a>
 									</div>
 
@@ -672,7 +664,7 @@ textarea.warning {
 				<div class="operations"></div>
 				<div>
 					<a class="btn btn-default add" href="#">
-						<?php echo f::draw_fonticon('icon-plus', 'style="color: #0c0;"'); ?> <?php echo t('title_add_operation', 'Add Operation'); ?>
+						<?php echo f::draw_fonticon('add'); ?> <?php echo t('title_add_operation', 'Add Operation'); ?>
 					</a>
 				</div>
 			</div>
@@ -782,7 +774,7 @@ textarea.warning {
 
 		let $tab = $([
 			'<a class="nav-link" data-toggle="tab" href="#tab-__index__">',
-			'  <span class="file">__index__</span> <span class="btn btn-default btn-sm remove" title="<?php echo t('title_remove', 'Remove')?>"><?php echo f::draw_fonticon('icon-times'); ?></span>',
+			'  <span class="file">__index__</span> <span class="btn btn-default btn-sm remove" title="<?php echo t('title_remove', 'Remove')?>"><?php echo f::draw_fonticon('remove'); ?></span>',
 			'</a>'
 		].join('')
 			.replace(/__index__/g, 'new_'+ __index__)

@@ -37,14 +37,14 @@
 
 	<div class="card-action">
 		<ul class="list-inline">
-			<li><a class="btn btn-default" href="<?php echo document::href_ilink(__APP__.'/edit_table'); ?>"><?php echo f::draw_fonticon('icon-plus'); ?> <?php echo t('title_create_new_table', 'Create New Table'); ?></a></li>
+			<li><a class="btn btn-default" href="<?php echo document::href_ilink(__APP__.'/edit_table'); ?>"><?php echo f::draw_fonticon('add'); ?> <?php echo t('title_create_new_table', 'Create New Table'); ?></a></li>
 		</ul>
 	</div>
 
 		<table class="table table-striped table-hover table-sortable data-table">
 			<thead>
 				<tr>
-					<th><?php echo f::draw_fonticon('icon-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th><?php echo f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th><?php echo t('title_table_name', 'Table Name'); ?></th>
 					<th class="main"><?php echo t('title_comment', 'Comment'); ?></th>
 					<th><?php echo t('title_rows', 'Rows'); ?></th>
@@ -69,7 +69,7 @@
 					<td><?php echo $table['engine']; ?></td>
 					<td class="text-end">
 						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_table', ['name' => $table['name']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>">
-							<?php echo f::draw_fonticon('icon-pencil'); ?>
+							<?php echo f::draw_fonticon('edit'); ?>
 						</a>
 					</td>
 				</tr>

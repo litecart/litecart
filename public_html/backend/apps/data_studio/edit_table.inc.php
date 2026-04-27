@@ -191,7 +191,7 @@
 					<table class="indexes table table-striped table-hover table-sortable data-table">
 						<thead>
 							<tr>
-								<th><?php echo f::draw_fonticon('icon-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
+								<th><?php echo f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
 								<th></th>
 								<th><?php echo t('title_name', 'Name'); ?></th>
 								<th><?php echo t('title_type', 'Type'); ?></th>
@@ -231,7 +231,7 @@
 		<table class="columns table table-striped table-hover table-dragable table-form data-table">
 			<thead>
 				<tr>
-					<th><?php echo f::draw_fonticon('icon-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th><?php echo f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th></th>
 					<th style="min-width: 150px;"><?php echo t('title_column', 'Column'); ?></th>
 					<th style="min-width: 150px;"><?php echo t('title_type', 'Type'); ?></th>
@@ -276,22 +276,22 @@
 			<tfoot>
 				<td colspan="99">
 					<button class="btn btn-default" name="add_column" type="button">
-						<?php echo f::draw_fonticon('icon-plus'); ?> <?php echo t('title_add_column', 'Add Column'); ?>
+						<?php echo f::draw_fonticon('add'); ?> <?php echo t('title_add_column', 'Add Column'); ?>
 					</button>
 					<button class="btn btn-default" name="delete" type="button" data-require-columns="true">
 						<?php echo f::draw_fonticon('icon-trash'); ?> <?php echo t('title_delete', 'Delete'); ?>
 					</button>
 					<button class="btn btn-default" name="add_primary_key" type="button" data-require-columns="true">
-						<?php echo f::draw_fonticon('icon-plus'); ?> <?php echo t('title_add_primary_key', 'Add Primary Key'); ?>
+						<?php echo f::draw_fonticon('add'); ?> <?php echo t('title_add_primary_key', 'Add Primary Key'); ?>
 					</button>
 					<button class="btn btn-default" name="add_key" type="button" data-require-columns="true">
-						<?php echo f::draw_fonticon('icon-plus'); ?> <?php echo t('title_add_key', 'Add Key'); ?>
+						<?php echo f::draw_fonticon('add'); ?> <?php echo t('title_add_key', 'Add Key'); ?>
 					</button>
 					<button class="btn btn-default" name="add_unique_key" type="button" data-require-columns="true">
-						<?php echo f::draw_fonticon('icon-plus'); ?> <?php echo t('title_add_unique_key', 'Add Unique Key'); ?>
+						<?php echo f::draw_fonticon('add'); ?> <?php echo t('title_add_unique_key', 'Add Unique Key'); ?>
 					</button>
 					<button class="btn btn-default" name="add_fulltext_key" type="button" data-require-columns="true">
-						<?php echo f::draw_fonticon('icon-plus'); ?> <?php echo t('title_add_fulltext_key', 'Add Fulltext Key'); ?>
+						<?php echo f::draw_fonticon('add'); ?> <?php echo t('title_add_fulltext_key', 'Add Fulltext Key'); ?>
 					</button>
 				</td>
 			</tfoot>

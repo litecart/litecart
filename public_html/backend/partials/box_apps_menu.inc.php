@@ -45,7 +45,7 @@
 			'name' => $app['name'],
 			'link' => document::ilink($app['id'] .'/'. $app['default']),
 			'theme' => [
-				'icon' => !(empty($app['theme']['icon'])) ? $app['theme']['icon'] : 'icon-plus',
+				'icon' => !(empty($app['theme']['icon'])) ? $app['theme']['icon'] : 'add',
 				'color' => !(empty($app['theme']['color'])) ? $app['theme']['color'] : '#97a3b5',
 			],
 			'active' => (defined('__APP__') && __APP__ == $app['id']),

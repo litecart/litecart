@@ -163,7 +163,7 @@
 							<?php echo f::form_input_decimal('contents['. $key .'][backordered]', true, 2); ?>
 						</div>
 					</td>
-					<td class="text-center"><a class="remove btn btn-default btn-sm" href="#" title="<?php echo f::escape_html(t('title_remove', 'Remove')); ?>"><?php echo f::draw_fonticon('remove'); ?></a></td>
+					<td class="text-center"><?php echo f::form_button_predefined('remove-sm'); ?></td>
 				</tr>
 				<?php } ?>
 			</tbody>
@@ -237,7 +237,7 @@
 		}
 	});
 
-	$('body').on('click', '#transaction-contents .remove', function(e) {
+	$('body').on('click', '#transaction-contents button[name="remove"]', function(e) {
 		e.preventDefault();
 		$(this).closest('tr').remove();
 	});
@@ -279,7 +279,7 @@
 			'        <?php echo f::escape_js(f::form_input_decimal('contents[new_item_index][backordered]', true, 2)); ?>',
 			'      </div>',
 			'    </td>',
-			'    <td class="text-center"><a class="btn btn-default btn-sm remove" href="#" title="<?php echo f::escape_html(t('title_remove', 'Remove')); ?>"><?php echo f::escape_js(f::draw_fonticon('icon-times', 'style="color: #c33;"')); ?></a></td>',
+			'    <td class="text-center"><a class="btn btn-default btn-sm remove" href="#" title="<?php echo f::escape_html(t('title_remove', 'Remove')); ?>"><?php echo f::escape_js(f::draw_fonticon('remove')); ?></a></td>',
 			'  </tr>'
 		].join('\n')
 			.replace(/__index__/g, 'new_' + __index__)

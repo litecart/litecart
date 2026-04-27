@@ -163,7 +163,7 @@
 <div class="card">
 	<div class="card-header">
 		<h1 class="card-title">
-			<?php echo f::draw_fonticon('icon-pencil'); ?> <?php echo (!empty($row[$primary_column])) ? t('title_edit_row', 'Edit Row') : t('title_create_new_row', 'Create New Row'); ?>
+			<?php echo f::draw_fonticon('edit'); ?> <?php echo (!empty($row[$primary_column])) ? t('title_edit_row', 'Edit Row') : t('title_create_new_row', 'Create New Row'); ?>
 		</h1>
 	</div>
 

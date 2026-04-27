@@ -68,13 +68,13 @@
 				<?php foreach ($webhooks as $webhook) { ?>
 				<tr class="<?php echo empty($webhook['status']) ? 'semi-transparent' : null; ?>">
 					<td><?php echo f::form_checkbox('webhooks[]', $webhook['id']); ?></td>
-					<td><?php echo f::draw_fonticon('fa-circle', 'style="color: '. (!empty($webhook['status']) ? '#88cc44' : '#ff6644') .';"'); ?></td>
+					<td><?php echo f::draw_fonticon('icon-circle', 'style="color: '. (!empty($webhook['status']) ? '#88cc44' : '#ff6644') .';"'); ?></td>
 					<td><?php echo $webhook['event']; ?></td>
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_webhook', ['webhook_id' => $webhook['id']]); ?>"><?php echo f::escape_html($webhook['url']); ?></a></td>
 					<td class="text-end"><?php echo (!empty($webhook['sent_at'])) ? f::datetime_format('datetime', strtotime($webhook['sent_at'])) : '-'; ?></td>
 					<td class="text-end">
 						<a href="<?php echo document::href_ilink(__APP__.'/edit_webhook', ['webhook_id' => $webhook['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>">
-							<?php echo f::draw_fonticon('fa-pencil'); ?>
+							<?php echo f::draw_fonticon('edit'); ?>
 						</a>
 					</td>
 				</tr>

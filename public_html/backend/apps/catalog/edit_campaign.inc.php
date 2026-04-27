@@ -239,7 +239,7 @@
 						<td><?php echo f::form_input_percent('products['.$key.'][percentage]', true, 2, 'style="width: 100px;"'); ?></td>
 						<td class="text-end">
 							<button class="btn btn-danger btn-sm" name="remove" type="button" title="<?php echo t('title_edit', 'Edit'); ?>">
-								<?php echo f::draw_fonticon('icon-times'); ?>
+								<?php echo f::draw_fonticon('remove'); ?>
 							</button>
 						</td>
 					</tr>
@@ -249,7 +249,7 @@
 
 			<div class="card-body">
 				<a href="<?php echo document::href_ilink(__APP__.'/product_picker'); ?>" class="btn btn-default" data-toggle="lightbox" data-max-width="800px" data-callback="add_product">
-					<?php echo f::draw_fonticon('icon-plus', 'style="margin-inline-end: .5em;"'); ?> <?php echo t('title_add_product', 'Add Product'); ?>
+					<?php echo f::draw_fonticon('add', 'style="margin-inline-end: .5em;"'); ?> <?php echo t('title_add_product', 'Add Product'); ?>
 				</a>
 			</div>
 		</div>
@@ -369,7 +369,7 @@
 			'  <td><?php echo f::escape_js(f::form_input_percent('products[__index__][percentage]', '0.00', 2)); ?></td>',
 			'  <td class="text-end">',
 			'    <button class="btn btn-danger btn-sm" name="remove" type="button" title="<?php echo t('title_edit', 'Edit'); ?>">',
-			'      <?php echo f::draw_fonticon('icon-times'); ?>',
+			'      <?php echo f::draw_fonticon('remove'); ?>',
 			'    </button>',
 			'  </td>',
 			'</tr>',

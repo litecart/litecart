@@ -203,7 +203,7 @@ table th:last-child {
 			<?php foreach (language::$languages as $language) { ?>
 			'  <td><?php echo f::form_input_text('values['. $language['code'] .'][__index__]', true); ?></td>',
 			<?php } ?>
-			'  <td><a class="btn btn-default btn-sm remove" href="#" title="<?php echo f::escape_html(t('title_remove', 'Remove')); ?>"><?php echo f::draw_fonticon('icon-times', 'style="color: #cc3333;"'); ?></a></td>',
+			'  <td><a class="btn btn-default btn-sm remove" href="#" title="<?php echo f::escape_html(t('title_remove', 'Remove')); ?>"><?php echo f::draw_fonticon('remove'); ?></a></td>',
 			'</tr>'
 		].join('\n')
 			.replace(/__index__/g, 'new_' + __index__)

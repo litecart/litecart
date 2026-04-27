@@ -326,7 +326,7 @@
 
 		} else if (array_unique(array_column($order['lines'], 'sufficient_stock'), true) == [true]) {
 			$order['sufficient_stock'] = true;
-			$order['sufficient_stock_icon'] = f::draw_fonticon('icon-times', 'style="color: #ff6644;"');
+			$order['sufficient_stock_icon'] = f::draw_fonticon('remove');
 		} else {
 			$order['sufficient_stock'] = null;
 			$order['sufficient_stock_icon'] = '';

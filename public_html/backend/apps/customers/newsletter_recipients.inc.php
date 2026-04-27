@@ -178,7 +178,7 @@
 				<?php foreach ($recipients as $recipient) { ?>
 				<tr>
 					<td><?php echo f::form_checkbox('recipients[]', $recipient['id']); ?></td>
-					<td class="text-center"><?php echo !empty($recipient['subscribed']) ? f::draw_fonticon('icon-check', 'style="color: #88cc44;"') : f::draw_fonticon('icon-times', 'style="color: #ff6644;"'); ?></td>
+					<td class="text-center"><?php echo !empty($recipient['subscribed']) ? f::draw_fonticon('true') : f::draw_fonticon('false'); ?></td>
 					<td><?php echo $recipient['email']; ?></td>
 					<td><?php echo f::escape_html($recipient['name']); ?></td>
 					<td><?php echo $recipient['ip_address']; ?></td>
@@ -209,7 +209,7 @@
 
 					<div class="btn-group">
 						<?php echo f::form_button('subscribe', t('title_set_as_subscribed', 'Set As Subscribed'), 'submit', 'class="btn btn-default"', 'icon-check'); ?>
-						<?php echo f::form_button('unsubscribe', t('title_set_as_unsubscribed', 'Set As Unsubscribed'), 'submit', 'class="btn btn-default"', 'icon-times'); ?>
+						<?php echo f::form_button('unsubscribe', t('title_set_as_unsubscribed', 'Set As Unsubscribed'), 'submit', 'class="btn btn-default"', 'remove'); ?>
 					</div>
 
 					<?php echo f::form_button_predefined('delete'); ?>

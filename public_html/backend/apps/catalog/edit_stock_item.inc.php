@@ -376,7 +376,7 @@
 										<?php echo f::form_select_supplier('references['.$key.'][source]', true); ?>
 									</td>
 									<td><?php echo f::form_input_text('references['.$key.'][code]', true); ?></td>
-									<td><a class="remove btn btn-default btn-sm" href="#" title="<?php echo t('title_remove', 'Remove'); ?>"><?php echo f::draw_fonticon('remove'); ?></a></td>
+									<td><?php echo f::form_button_predefined('remove-sm'); ?></a></td>
 								</tr>
 							<?php } ?>
 							</tbody>
@@ -497,7 +497,7 @@
 
 	// References
 
-	$('#table-references').on('click', '.remove', function(e) {
+	$('#table-references').on('click', 'button[name="remove"]', function(e) {
 		e.preventDefault();
 		$(this).closest('tr').remove();
 	});
@@ -515,7 +515,7 @@
 			'    <?php echo f::escape_js(f::form_select_supplier('references[__index__][source]', true)); ?>',
 			'  </td>',
 			'  <td><?php echo f::escape_js(f::form_input_text('references[__index__][code]', true)); ?></td>',
-			'  <td><a class="remove btn btn-default btn-sm" href="#" title="<?php echo f::escape_js(t('title_remove', 'Remove')); ?>"><?php echo f::escape_js(f::draw_fonticon('remove')); ?></a></td>',
+			'  <td><?php echo f::escape_js(f::form_button_predefined('remove-sm')); ?></a></td>',
 			'</tr>',
 		].join('\n')
 			.replace(/__index__/g, 'new_' + __index__)

@@ -560,13 +560,13 @@
 
 							<div class="float-end">
 								<button name="move-group-up" type="button" class="btn btn-default" title="<?php echo f::escape_html(t('title_move_up', 'Move Up')); ?>">
-									<?php echo f::draw_fonticon('icon-arrow-up', 'style="color: #3399cc;"'); ?>
+									<?php echo f::draw_fonticon('move-up'); ?>
 								</button>
 								<button name="move-group-down" type="button" class="btn btn-default" title="<?php echo f::escape_html(t('title_move_down', 'Move Down')); ?>">
-									<?php echo f::draw_fonticon('icon-arrow-down', 'style="color: #3399cc;"'); ?>
+									<?php echo f::draw_fonticon('move-down'); ?>
 								</button>
 								<button name="remove-group" type="button" class="btn btn-default" title="<?php echo f::escape_html(t('title_remove', 'Remove')); ?>">
-									<?php echo f::draw_fonticon('icon-times', 'style="color: #cc3333;"'); ?>
+									<?php echo f::draw_fonticon('remove'); ?>
 								</button>
 							</div>
 
@@ -832,9 +832,7 @@
 										</div>
 									</td>
 									<td class="text-end">
-										<a class="remove btn btn-default btn-sm" href="#" title="<?php echo t('title_remove', 'Remove'); ?>">
-											<?php echo f::draw_fonticon('icon-times', 'style="color: #c33;"'); ?>
-										</a>
+										<?php echo f::form_button_predefined('remove-sm'); ?>
 									</td>
 									<td class="text-end">
 										<a class="edit btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['stock_item_id' => $_POST['stock_options'][$key]['stock_item_id'], 'js_callback' => 'upsert_stock_item'], ['app']); ?>" data-toggle="lightbox" data-seamless="true"data-max-width="980px"  title="<?php echo t('title_edit', 'Edit'); ?>">
@@ -849,10 +847,10 @@
 								<tr>
 									<td colspan="99">
 										<a href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['js_callback' => 'upsert_stock_item']); ?>" class="btn btn-default" data-toggle="lightbox" data-seamless="true" data-width="980px">
-											<?php echo f::draw_fonticon('icon-plus'); ?> <?php echo t('title_create_new_stock_item', 'Create New Stock Item'); ?>
+											<?php echo f::draw_fonticon('add'); ?> <?php echo t('title_create_new_stock_item', 'Create New Stock Item'); ?>
 										</a>
 										<a href="<?php echo document::href_ilink(__APP__.'/stock_item_picker', ['js_callback' => 'upsert_stock_item']); ?>" class="btn btn-default" data-toggle="lightbox" data-seamless="true" data-width="980px">
-											<?php echo f::draw_fonticon('icon-plus'); ?> <?php echo t('title_add_existing_stock_item', 'Add Existing Stock Item'); ?>
+											<?php echo f::draw_fonticon('add'); ?> <?php echo t('title_add_existing_stock_item', 'Add Existing Stock Item'); ?>
 										</a>
 									</td>
 								</tr>
@@ -1157,7 +1155,7 @@
 
 	$('input[name^="prices"][name*="[price]"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').trigger('input');
 
-	$('#prices').on('click', '.remove', function(e) {
+	$('#prices').on('click', 'button[name="remove"]', function(e) {
 		e.preventDefault();
 		$(this).closest('tr').remove();
 	});
@@ -1580,9 +1578,9 @@
 			var $output = $([
 				'<li data-group-id="'+ $groupElement.val().escapeAttr() +'" data-group-name="'+ $('option:selected', $groupElement).text().escapeAttr() +'">',
 				'  <div class="float-end">',
-				'    <a class="btn btn-default move-group-up" href="#" title="<?php echo f::escape_js(t('text_move_up', 'Move up')); ?>"><?php echo f::draw_fonticon('icon-arrow-up', 'style="color: #3399cc;"'); ?></a>',
-				'    <a class="btn btn-default move-group-down" href="#" title="<?php echo f::escape_js(t('text_move_down', 'Move down')); ?>"><?php echo f::draw_fonticon('icon-arrow-down', 'style="color: #3399cc;"'); ?></a>',
-				'    <a class="btn btn-default remove-group" href="#" title="<?php echo f::escape_js(t('title_remove', 'Remove')); ?>"><?php echo f::draw_fonticon('icon-times', 'style="color: #cc3333;"'); ?></a>',
+				'    <a class="btn btn-default move-group-up" href="#" title="<?php echo f::escape_js(t('text_move_up', 'Move up')); ?>"><?php echo f::draw_fonticon('move-up'); ?></a>',
+				'    <a class="btn btn-default move-group-down" href="#" title="<?php echo f::escape_js(t('text_move_down', 'Move down')); ?>"><?php echo f::draw_fonticon('move-down'); ?></a>',
+				'    <a class="btn btn-default remove-group" href="#" title="<?php echo f::escape_js(t('title_remove', 'Remove')); ?>"><?php echo f::draw_fonticon('remove'); ?></a>',
 				'  </div>',
 				'  <h2>'+ $('option:selected', $groupElement).text() +'</h2>',
 				'  <?php echo f::escape_js(f::form_input_hidden('customizations[new_group_id][group_id]', 'new_group_id')); ?>',
@@ -1667,9 +1665,9 @@
 
 		var $output = $([
 			'  <div class="float-end">',
-			'    <a class="move-group-up btn btn-default" href="#" title="<?php echo f::escape_js(t('text_move_up', 'Move up')); ?>"><?php echo f::draw_fonticon('icon-arrow-up', 'style="color: #3399cc;"'); ?></a>',
-			'    <a class="move-group-down btn btn-default" href="#" title="<?php echo f::escape_js(t('text_move_down', 'Move down')); ?>"><?php echo f::draw_fonticon('icon-arrow-down', 'style="color: #3399cc;"'); ?></a>',
-			'    <a class="remove-group btn btn-default" href="#" title="<?php echo f::escape_js(t('title_remove', 'Remove')); ?>"><?php echo f::draw_fonticon('icon-times', 'style="color: #cc3333;"'); ?></a>',
+			'    <a class="move-group-up btn btn-default" href="#" title="<?php echo f::escape_js(t('text_move_up', 'Move up')); ?>"><?php echo f::draw_fonticon('move-up'); ?></a>',
+			'    <a class="move-group-down btn btn-default" href="#" title="<?php echo f::escape_js(t('text_move_down', 'Move down')); ?>"><?php echo f::draw_fonticon('move-down'); ?></a>',
+			'    <a class="remove-group btn btn-default" href="#" title="<?php echo f::escape_js(t('title_remove', 'Remove')); ?>"><?php echo f::draw_fonticon('remove'); ?></a>',
 			'  </div>',
 			'  <h2>'+ $('option:selected', $groupElement).text() +'</h2>',
 			'  <?php echo f::escape_js(f::form_input_hidden('customizations[new_group_id][group_id]', 'new_group_id')); ?>',
@@ -1813,7 +1811,7 @@
 			'    </div>',
 			'  </td>',
 			'  <td class="text-end">',
-			'    <a class="remove btn btn-default btn-sm" href="#" title="<?php echo f::escape_js(t('title_remove', 'Remove'), true); ?>"><?php echo f::escape_js(f::draw_fonticon('icon-times', 'style="color: #c33;"')); ?></a>',
+			'    <a class="remove btn btn-default btn-sm" href="#" title="<?php echo f::escape_js(t('title_remove', 'Remove'), true); ?>"><?php echo f::escape_js(f::draw_fonticon('remove')); ?></a>',
 			'  </td>',
 			'  <td class="text-end">',
 			'    <a class="edit btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_stock_item', ['stock_item_id' => 'new_stock_item_id', 'js_callback' => 'upsert_stock_item'], ['app']); ?>" data-toggle="lightbox" data-seamless="true" data-max-width="980px" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo f::draw_fonticon('edit'); ?></a>',

@@ -351,10 +351,10 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 									<div class="vote">
 										<a class="upvote" href="#">
-											<?php echo f::draw_fonticon('fa-thumbs-up'); ?> <span class="num-votes"><?php echo $review['upvotes']; ?></span>
+											<?php echo f::draw_fonticon('icon-thumbs-up'); ?> <span class="num-votes"><?php echo $review['upvotes']; ?></span>
 										</a>
 										<a class="downvote" href="#">
-											<?php echo f::draw_fonticon('fa-thumbs-down'); ?> <span class="num-votes"><?php echo $review['downvotes']; ?></span>
+											<?php echo f::draw_fonticon('icon-thumbs-down'); ?> <span class="num-votes"><?php echo $review['downvotes']; ?></span>
 										</a>
 									</div>
 
@@ -385,11 +385,11 @@ form[name="buy_now_form"] .dropdown-menu .image {
 					break;
 
 				case (preg_match('#\.(avi|mp4|mov)$#', $attachment['filename'])):
-					echo '<div class="attachment"><a href="'. f::escape_html($attachment['link']) .'" class="thumbnail text-center">'. WS_DIR_APP . f::draw_fonticon('fa-film fa-3x', 'style="padding-top: 2em;"') .'</a></div>';
+					echo '<div class="attachment"><a href="'. f::escape_html($attachment['link']) .'" class="thumbnail text-center">'. WS_DIR_APP . f::draw_fonticon('icon-film', 'style="font-size: 3rem; padding-top: 2rem;"') .'</a></div>';
 					break;
 
 				default:
-					echo '<div class="attachment"><a href="'. f::escape_html($attachment['link']) .'" class="thumbnail text-center">'. f::draw_fonticon('fa-paperclip fa-3x', 'style="padding-top: 2em;"') .'</a></div>';
+					echo '<div class="attachment"><a href="'. f::escape_html($attachment['link']) .'" class="thumbnail text-center">'. f::draw_fonticon('icon-paperclip', 'style="font-size: 3rem; padding-top: 2rem;"') .'</a></div>';
 					break;
 			}
 		}
@@ -455,9 +455,9 @@ form[name="buy_now_form"] .dropdown-menu .image {
 												<div class="input-group">
 													<div class="form-control"><?php echo f::escape_html($_POST['attachments'][$key]['filename']); ?></div>
 													<div class="input-group-text">
-														<a class="move-up" href="#" title="<?php echo t('text_move_up', 'Move up'); ?>"><?php echo f::draw_fonticon('fa-arrow-up fa-lg', 'style="color: #3399cc;"'); ?></a>
-														<a class="move-down" href="#" title="<?php echo t('text_move_down', 'Move down'); ?>"><?php echo f::draw_fonticon('fa-arrow-down fa-lg', 'style="color: #3399cc;"'); ?></a>
-														<a class="remove" href="#" title="<?php echo t('title_remove', 'Remove'); ?>"><?php echo f::draw_fonticon('fa-times fa-lg', 'style="color: #cc3333;"'); ?></a>
+														<?php echo f::form_button_predefined('move-up-sm'); ?>
+														<?php echo f::form_button_predefined('move-down-sm'); ?>
+														<?php echo f::form_button_predefined('remove-sm'); ?>
 													</div>
 												</div>
 											</div>
@@ -469,7 +469,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 										<div class="form-group">
 											<p><?php echo t('text_add_review_attachment', 'Add a photo to your review.'); ?></p>
-											<a href="#" class="add" title="<?php echo t('text_add', 'Add'); ?>"><?php echo f::draw_fonticon('fa-plus', 'style="color: #66cc66;"'); ?> <?php echo t('title_add_attachment', 'Add Attachment'); ?></a>
+											<a href="#" class="add" title="<?php echo t('text_add', 'Add'); ?>"><?php echo f::draw_fonticon('add'); ?> <?php echo t('title_add_attachment', 'Add Attachment'); ?></a>
 										</div>
 									</div>
 
@@ -601,7 +601,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 		});
 	});
 
-	$('.attachments').on('click', '.remove', function(e) {
+	$('.attachments').on('click', 'button[name="remove"]', function(e) {
 		e.preventDefault();
 		$(this).closest('.form-group').remove();
 		refreshMainImage();
@@ -613,9 +613,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 			'<div class="attachment form-group">',
 			'  <div class="input-group">',
 			'    <?php echo f::form_input_file('new_attachments[]', 'accept=".gif,.jpg,.png"'); ?>',
-			'    <div class="input-group-text">',
-			'      <a class="remove" href="#" title="<?php echo t('title_remove', 'Remove'); ?>"><?php echo f::draw_fonticon('fa-times fa-lg', 'style="color: #cc3333;"'); ?></a>',
-			'    </div>',
+			'    <?php echo f::form_button_predefined('remove-sm'); ?>',
 			'  </div>',
 			'</div>'
 		].join('\n');

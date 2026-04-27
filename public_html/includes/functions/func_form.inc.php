@@ -52,10 +52,6 @@
 		return '<button'. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="btn btn-default"' : '') .' type="'. f::escape_attr($type) .'" name="'. f::escape_attr($name) .'" value="'. f::escape_attr($value[0]) .'"'. ($parameters ? ' '. $parameters : '') .'>'. (($fonticon) ? f::draw_fonticon($fonticon) . ' ' : '') . ($value[1] ?? $value[0]) .'</button>';
 	}
 
-	function form_button_link($url, $title, $parameters='', $fonticon='') {
-		return '<a '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="btn btn-default"' : '') .' href="'. f::escape_attr($url) .'"'. ($parameters ? ' '. $parameters : '') .'>'. ($fonticon ? f::draw_fonticon($fonticon) . ' ' : '') . $title .'</a>';
-	}
-
 	function form_button_predefined($name, $parameters='') {
 
 		switch ($name) {
@@ -71,6 +67,24 @@
 
 			case 'disable':
 				return f::form_button('disable', t('title_disable', 'Disable'), 'submit', $parameters, 'off');
+
+			case 'move-up':
+				return f::form_button('move_up', t('title_move_up', 'Move Up'), 'button', 'class="btn btn-default"' . $parameters, 'move-up');
+
+			case 'move-up-sm':
+				return f::form_button('move_up', '', 'button', 'title="'. f::escape_attr(t('title_move_up', 'Move Up')) .'" class="btn btn-default btn-sm"' . $parameters, 'move-up');
+
+			case 'move-down':
+				return f::form_button('move_down', t('title_move_up', 'Move Up'), 'button', 'class="btn btn-default"' . $parameters, 'move-down');
+
+			case 'move-down-sm':
+				return f::form_button('move_down', '', 'button', 'title="'. f::escape_attr(t('title_move_down', 'Move Down')) .'" class="btn btn-default btn-sm"' . $parameters, 'move-down');
+
+			case 'remove':
+				return f::form_button('remove', t('title_remove', 'Remove'), 'button', 'class="btn btn-default"' . $parameters, 'remove');
+
+			case 'remove-sm':
+				return f::form_button('remove', '', 'button', 'title="'. f::escape_attr(t('title_remove', 'Remove')) .'" class="btn btn-default btn-sm"' . $parameters, 'remove');
 
 			case 'save':
 				return f::form_button('save', t('title_save', 'Save'), 'submit', 'class="btn btn-success"' . ($parameters ? ' '. $parameters : ''), 'save');
@@ -91,6 +105,28 @@
 
 		return form_button($name, $name, 'submit', $parameters);
 	}
+
+	function form_button_link($url, $title, $parameters='', $fonticon='') {
+		return '<a '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="btn btn-default"' : '') .' href="'. (f::escape_attr($url) ?: '#') .'"'. ($parameters ? ' '. $parameters : '') .'>'. ($fonticon ? f::draw_fonticon($fonticon) . ' ' : '') . $title .'</a>';
+	}
+
+	function form_button_link_predefined($name, $url, $parameters='') {
+		switch ($name) {
+
+			case 'create':
+				return form_button_link($url, t('title_create', 'Create'), $parameters, 'add');
+
+			case 'edit':
+				return form_button_link($url, t('title_edit', 'Edit'), $parameters, 'edit');
+
+			case 'edit-sm':
+				return form_button_link($url, '', 'title="'. f::escape_attr(t('title_edit', 'Edit')) ."'". ($parameters ? ' '. $parameters : ''), 'edit');
+		}
+
+		trigger_error('Unknown predefined link button ('. f::escape_html($name) .')', E_USER_WARNING);
+
+		return form_button_link($url, $name, $parameters);
+}
 
 	function form_captcha($id, $config=[], $parameters='') {
 
@@ -211,7 +247,7 @@
 				return '      <th>'. $column .'<button name="remove_column" class="btn btn default btn-sm">'. f::draw_fonticon('remove') .'</button></th>';
 			}, $columns)),
 
-			'      <th><button class="btn btn-default btn-sm" name="add_column" type="button">'. f::draw_fonticon('icon-plus') .' '.  t('title_add_column', 'Add Column') .'</button></th>',
+			'      <th><button class="btn btn-default btn-sm" name="add_column" type="button">'. f::draw_fonticon('add') .' '.  t('title_add_column', 'Add Column') .'</button></th>',
 			'    </tr>',
 			'  </thead>',
 			'  <tbody>',
@@ -231,7 +267,7 @@
 			'    <tr>',
 			'      <td colspan="99">',
 			'        <button class="btn btn-default btn-sm" name="add_row" type="button">',
-			'          '. f::draw_fonticon('icon-plus') .' '.  t('title_add_row', 'Add Row'),
+			'          '. f::draw_fonticon('add') .' '.  t('title_add_row', 'Add Row'),
 			'        </button>',
 			'      </td>',
 			'    </tr>',

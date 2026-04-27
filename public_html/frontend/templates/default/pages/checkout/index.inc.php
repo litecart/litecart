@@ -45,7 +45,7 @@
 						<div class="card-header">
 							<div class="float-end">
 								<a href="<?php echo document::ilink('checkout/customer'); ?>" class="btn btn-default btn-sm" style="margin-inline-start: 1em;">
-									<?php echo f::draw_fonticon('icon-pencil'); ?> <?php echo t('title_change', 'Change'); ?>
+									<?php echo f::draw_fonticon('edit'); ?> <?php echo t('title_change', 'Change'); ?>
 								</a>
 							</div>
 							<h2 class="card-title">
