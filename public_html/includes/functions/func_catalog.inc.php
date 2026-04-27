@@ -511,14 +511,14 @@
 			$sql_inner_where['featured'] = "featured = 1";
 		}
 
-		$sql_outer_where[] = "and (ifnull(pso.num_stock_options, 0) = 0 or pso.quantity_available > 0 or ss.hidden != 1)";
+		$sql_outer_where[] = "(ifnull(pso.num_stock_options, 0) = 0 or pso.quantity_available > 0 or ss.hidden != 1)";
 
 		if (!empty($filter['price_range']['min'])) {
-			$sql_outer_where[] = "and final_price >= ". (float)$filter['price_range']['min'];
+			$sql_outer_where[] = "final_price >= ". (float)$filter['price_range']['min'];
 		}
 
 		if (!empty($filter['price_range']['max'])) {
-			$sql_outer_where = "and final_price <= ". (float)$filter['price_range']['max'];
+			$sql_outer_where = "final_price <= ". (float)$filter['price_range']['max'];
 		}
 
 		if (!empty($filter['sort'])) {
