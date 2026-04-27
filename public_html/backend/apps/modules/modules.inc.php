@@ -42,6 +42,14 @@
 			$edit_doc = 'edit_shipping';
 			break;
 
+		case 'translation':
+			$title = language::translate('title_translation', 'Translation');
+			$files = glob(FS_DIR_APP . 'includes/modules/translation/tm_*.inc.php');
+			$mod_class = new mod_translation();
+			$type = 'translation';
+			$edit_doc = 'edit_translation';
+			break;
+
 		default:
 			throw new Error('Unknown module type ('. __DOC__ .')');
 	}

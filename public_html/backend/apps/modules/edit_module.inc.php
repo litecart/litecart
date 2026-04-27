@@ -33,6 +33,11 @@
 			$return_doc = 'shipping';
 			break;
 
+		case (preg_match('#^tm_#', $module_id)):
+			$type = 'translation';
+			$return_doc = 'translation';
+			break;
+
 		default:
 			throw new Error('Unknown module type');
 	}
