@@ -7,17 +7,27 @@
 		}
 
 		$statement = database::prepare(
-			"select c.id, c.parent_id, c.image, c.priority, c.updated_at,
+			"with recursive category_descendants as (
+				select id as root_id, id as descendant_id
+				from ". DB_TABLE_PREFIX ."categories
+				union all
+				select cd.root_id, c2.id
+				from category_descendants cd
+				inner join ". DB_TABLE_PREFIX ."categories c2 on c2.parent_id = cd.descendant_id
+			)
+
+			select c.id, c.parent_id, c.image, c.priority, c.updated_at, ctv.num_products, c2.num_subcategories,
 				json_value(c.name, '$.". database::input(language::$selected['code']) ."') as name,
 				json_value(c.short_description, '$.". database::input(language::$selected['code']) ."') as short_description
 
 			from ". DB_TABLE_PREFIX ."categories c
 
 			left join (
-				select category_id, count(product_id) as num_products
-				from ". DB_TABLE_PREFIX . "products_to_categories
-				group by category_id
-			) ptc on (ptc.category_id = c.id)
+				select cd.root_id as category_id, count(distinct ptc.product_id) as num_products
+				from category_descendants cd
+				left join ". DB_TABLE_PREFIX ."products_to_categories ptc on (ptc.category_id = cd.descendant_id)
+				group by cd.root_id
+			) ctv on (ctv.category_id = c.id)
 
 			left join (
 				select parent_id, count(id) as num_subcategories
@@ -28,7 +38,6 @@
 
 			where c.status
 			and ". ($parent_ids ? "c.parent_id in ('". implode("', '", database::input($parent_ids)) ."')" : "c.parent_id is null") ."
-			and (ptc.num_products > 0 or c2.num_subcategories > 0)
 
 			order by c.priority asc, name asc;"
 		);
