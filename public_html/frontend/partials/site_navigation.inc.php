@@ -143,8 +143,20 @@
 	];
 
 	foreach (cart::$items as $key => $item) {
-		$item['image'] = 'storage://images/' . $item['image'];
-		$site_navigation->snippets['shopping_cart']['items'][$key] = $item;
+		$item['image'] =
+		$site_navigation->snippets['shopping_cart']['items'][$key] = [
+			'key' => $key,
+			'product_id' => $item['product_id'],
+			'stock_option_id' => $item['stock_option_id'],
+			'name' => $item['name'],
+			'image' => 'storage://images/' . $item['image'],
+			'price' => !empty(customer::$data['display_prices_including_tax']) ? $item['final_price']['value'] + $item['final_price']['tax']: $item['final_price']['value'],
+			'tax' => $item['final_price']['tax'],
+			'tax_class_id' => $item['tax_class_id'],
+			'quantity' => $item['quantity'],
+			'quantity_unit' => $item['quantity_unit'],
+			'link' => document::ilink('product', ['product_id' => $item['product_id']]),
+		];
 	}
 
 	if (!empty(customer::$data['display_prices_including_tax'])) {
