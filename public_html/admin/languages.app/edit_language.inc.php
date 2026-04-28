@@ -26,14 +26,14 @@
       }
 
       if (!empty($_POST['url_type']) && $_POST['url_type'] == 'domain' && !empty($_POST['domain_name'])) {
-        if (!empty($language->data['id']) && database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."languages where domain_name = '". database::input($_POST['domain_name']) ."' and id != ". (int)$language->data['id'] ." limit 1;"))) {
+        if (!empty($language->data['id']) && database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."languages where url_type = 'domain' and domain_name = '". database::input($_POST['domain_name']) ."' and id != ". (int)$language->data['id'] ." limit 1;"))) {
           throw new Exception(language::translate('error_domain_in_use_by_other_language', 'The domain name is already in use by another domain name.'));
         }
       }
 
       if (!empty($_POST['url_type']) && $_POST['url_type'] == 'none') {
-        if (!empty($language->data['id']) && database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."languages where url_type = 'none' and id != ". (int)$language->data['id'] ." limit 1;"))) {
-          throw new Exception(language::translate('error_another_language_uses_url_type_none', 'Another language is already using URL type \'None\' and there can only be one.'));
+        if (!empty($language->data['id']) && database::num_rows(database::query("select id from ". DB_TABLE_PREFIX ."languages where url_type = 'root' and id != ". (int)$language->data['id'] ." limit 1;"))) {
+          throw new Exception(language::translate('error_another_language_uses_url_type_none', 'Another language is already using URL type \'Root\' and there can only be one.'));
         }
       }
 
@@ -264,19 +264,26 @@
         </div>
       </div>
 
-      <div class="row">
-        <div class="form-group col-md-6">
-          <label><?php echo language::translate('title_url_type', 'URL Type'); ?></label>
-          <div class="btn-group btn-block btn-group-inline" data-toggle="buttons">
+      <div class="form-group">
+        <label><?php echo language::translate('title_url_type', 'URL Type'); ?></label>
+        <div class="btn-group btn-block btn-group-inline" data-toggle="buttons">
           <label class="btn btn-default<?php echo (!empty($_POST['url_type']) && $_POST['url_type'] == 'none') ? ' active' : ''; ?>"><?php echo functions::form_draw_radio_button('url_type', 'none', !empty($_POST['url_type']) ? true : 'none'); ?> <?php echo language::translate('title_none', 'None'); ?></label>
-          <label class="btn btn-default<?php echo (!empty($_POST['url_type']) && $_POST['url_type'] == 'path') ? ' active' : ''; ?>"><?php echo functions::form_draw_radio_button('url_type', 'path', true); ?> <?php echo language::translate('title_path_prefix', 'Path Prefix'); ?></label>
+          <label class="btn btn-default<?php echo (!empty($_POST['url_type']) && $_POST['url_type'] == 'root') ? ' active' : ''; ?>"><?php echo functions::form_draw_radio_button('url_type', 'root', !empty($_POST['url_type']) ? true : 'root'); ?> <?php echo language::translate('title_root', 'Root'); ?></label>
+          <label class="btn btn-default<?php echo (!empty($_POST['url_type']) && $_POST['url_type'] == 'path') ? ' active' : ''; ?>"><?php echo functions::form_draw_radio_button('url_type', 'path', true); ?> <?php echo language::translate('title_path', 'Path'); ?></label>
           <label class="btn btn-default<?php echo (!empty($_POST['url_type']) && $_POST['url_type'] == 'domain') ? ' active' : ''; ?>"><?php echo functions::form_draw_radio_button('url_type', 'domain', true); ?> <?php echo language::translate('title_domain', 'Domain'); ?></label>
-          </div>
+          <label class="btn btn-default<?php echo (!empty($_POST['url_type']) && $_POST['url_type'] == 'domainpath') ? ' active' : ''; ?>"><?php echo functions::form_draw_radio_button('url_type', 'domainpath', true); ?> <?php echo language::translate('title_domain_path', 'Domain + Path'); ?></label>
         </div>
+      </div>
 
+      <div class="row">
         <div class="form-group col-md-6">
           <label><?php echo language::translate('title_domain_name', 'Domain Name'); ?></label>
           <?php echo functions::form_draw_text_field('domain_name', true); ?>
+        </div>
+
+        <div class="form-group col-md-6">
+          <label><?php echo language::translate('title_example_url', 'Example URL'); ?></label>
+          <div style="padding: .5em 0;" id="url-example"></div>
         </div>
       </div>
 
@@ -351,10 +358,26 @@
 
 <script>
 $('input[name="url_type"]').change(function(){
-  if ($('input[name="url_type"][value="domain"]:checked').length) {
+
+  if ($('input[name="url_type"][value="domain"]:checked, input[name="url_type"][value="domainpath"]:checked').length) {
     $('input[name="domain_name"]').prop('disabled', false);
   } else {
     $('input[name="domain_name"]').prop('disabled', true);
   }
+
+  let code = $('input[name="code"]').val() || 'xx',
+    domain = $('input[name="domain_name"]').val() || 'domain.tld',
+    example_url = '';
+
+  switch ($(this).val()) {
+    case 'none': example_url = '-'; break;
+    case 'root': example_url = `https://<?php echo functions::escape_js($_SERVER['HTTP_HOST']); ?>`; break;
+    case 'path': example_url = `https://<?php echo functions::escape_js($_SERVER['HTTP_HOST']); ?>/${code}/`; break;
+    case 'domain': example_url = `https://${domain}/`; break;
+    case 'domainpath': example_url = `https://${domain}/${code}/`; break;
+  }
+
+  $('#url-example').text(example_url);
+
 }).first().trigger('change');
 </script>

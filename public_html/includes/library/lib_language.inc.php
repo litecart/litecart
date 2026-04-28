@@ -159,15 +159,6 @@
         }
       }
 
-    // Return language by regional domain
-      foreach ($enabled_languages as $language_code) {
-        if (self::$languages[$language_code]['url_type'] == 'domain') {
-          if (!empty(self::$languages[$language_code]['domain_name']) && preg_match('#^'. preg_quote(self::$languages[$language_code]['domain_name'], '#') .'$#', $_SERVER['HTTP_HOST'])) {
-            return $language_code;
-          }
-        }
-      }
-
     // Return language from URI query
       if (!empty($_GET['language'])) {
         if (in_array($_GET['language'], $all_languages)) return $_GET['language'];
@@ -177,9 +168,30 @@
       $code = current(explode('/', substr($_SERVER['REQUEST_URI'], strlen(WS_DIR_APP))));
       if (in_array($code, $all_languages)) return $code;
 
+    // Return language from domain path
+      foreach ($enabled_languages as $language_code) {
+        if (self::$languages[$language_code]['url_type'] == 'domainpath') {
+          if (!empty(self::$languages[$language_code]['domain_name']) && preg_match('#^'. preg_quote(self::$languages[$language_code]['domain_name'], '#') .'$#', $_SERVER['HTTP_HOST'])) {
+            $webpath = strtok($_SERVER['REQUEST_URI'], '?');
+            if (preg_match('#^/'. preg_quote($language_code, '#') .'(/|$)#', $webpath)) {
+              return $language_code;
+            }
+          }
+        }
+      }
+
+    // Return language from domain
+      foreach ($enabled_languages as $language_code) {
+        if (self::$languages[$language_code]['url_type'] == 'domain') {
+          if (!empty(self::$languages[$language_code]['domain_name']) && preg_match('#^'. preg_quote(self::$languages[$language_code]['domain_name'], '#') .'$#', $_SERVER['HTTP_HOST'])) {
+            return $language_code;
+          }
+        }
+      }
+
     // Return language from root path
       foreach ($enabled_languages as $language_code) {
-        if (self::$languages[$language_code]['url_type'] == 'none') {
+        if (self::$languages[$language_code]['url_type'] == 'root') {
           $webpath = strtok($_SERVER['REQUEST_URI'], '?');
           if (!$webpath || !preg_match('#^'. preg_quote(WS_DIR_APP, '#') .'[a-z]{2}(/|$)#', $webpath)) {
             return $language_code;

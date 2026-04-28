@@ -55,6 +55,14 @@
 
 // Pagination
   $num_pages = ceil($num_rows/settings::get('data_table_rows_per_page'));
+
+  $url_types = [
+    'domainpath' => language::translate('text_url_type_domainpath', 'Domain + Path'),
+    'domain' => language::translate('text_url_type_domain', 'Domain'),
+    'path' => language::translate('text_url_type_path', 'Path'),
+    'root' => language::translate('text_url_type_root', 'Root'),
+    'none' => language::translate('text_url_type_none', 'None'),
+  ];
 ?>
 <div class="card card-app">
   <div class="card-header">
@@ -99,7 +107,7 @@
           <td class="text-center"><?php echo $language['code2']; ?></td>
           <td class="text-center"><?php echo ($language['code'] == settings::get('default_language_code')) ? functions::draw_fonticon('fa-check') : ''; ?></td>
           <td class="text-center"><?php echo ($language['code'] == settings::get('store_language_code')) ? functions::draw_fonticon('fa-check') : ''; ?></td>
-          <td><?php echo strtr($language['url_type'], ['none' => language::translate('title_none', 'None'), 'path' => language::translate('title_path_prefix', 'Path Prefix'), 'domain' => language::translate('title_domain', 'Domain')]); ?></td>
+          <td><?php echo strtr($language['url_type'], $url_types); ?></td>
           <td class="text-center"><?php echo $language['priority']; ?></td>
           <td><a class="btn btn-default btn-sm" href="<?php echo document::href_link('', ['doc' => 'edit_language', 'language_code' => $language['code'], 'page' => $_GET['page']], true); ?>" title="<?php echo functions::escape_html(language::translate('title_edit', 'Edit')); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
         </tr>
