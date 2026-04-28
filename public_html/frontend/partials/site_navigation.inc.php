@@ -143,7 +143,6 @@
 	];
 
 	foreach (cart::$items as $key => $item) {
-		$item['image'] =
 		$site_navigation->snippets['shopping_cart']['items'][$key] = [
 			'key' => $key,
 			'product_id' => $item['product_id'],
