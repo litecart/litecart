@@ -4,6 +4,7 @@
 
 	try {
 
+		// Restrict access to administrator use only
 		if (administrator::check_login()) {
 			throw new Exception('Access denied', 403);
 		}

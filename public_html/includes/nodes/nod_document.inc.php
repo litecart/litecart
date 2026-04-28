@@ -87,6 +87,22 @@
 				self::add_head_tags(implode(PHP_EOL, [
 					'<script nonce="'. self::$nonce .'">let _alertedErrors=0;window.onerror=(c,r,a,p)=>{_alertedErrors++<5&&alert(c+" in "+r.split("/").pop().split("?")[0]+" on line "+a)};</script>',
 				]), 'alert_errors');
+
+				// Client-side error reporter
+				self::$javascript['error-reporter'] = implode(PHP_EOL, [
+					'  window.onerror = function(message, file, line) {',
+					'    fetch("' . document::ilink('f:ajax/report_error') . '", {',
+					'      method: "POST",',
+					'      headers: { "Content-Type": "application/json; charset=utf-8" },',
+					'      body: JSON.stringify({',
+					'        url: location.href,',
+					'        message: message,',
+					'        file: file,',
+					'        line: line',
+					'      })',
+					'    });',
+					'  };',
+				]);
 			}
 
 			// Wait For (Mini version)
