@@ -147,7 +147,7 @@ hr {
 
 	.page-break {
 		border-bottom: 1px #ccc dashed;
-		margin: var(--page-margin) -var(--page-margin);
+		margin: var(--page-margin) calc(-1 * var(--page-margin));
 		line-height: 0;
 	}
 

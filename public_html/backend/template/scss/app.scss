@@ -79,9 +79,11 @@ h4 { font-size: 1.10em; }
 		.app > a {
 			text-align: center;
 			padding: 0 .25em;
+
 			&:hover {
 				transform: scale(1.15);
 			}
+
 			.app-icon {
 				font-size: 1.25em;
 			}
