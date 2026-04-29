@@ -268,23 +268,18 @@
 		[
 			'label' => t('title_entity_collection', 'Entity Collection'),
 			'options' => array_combine(
-				array_map(function ($table) {
-					return 'ent:' . $table;
-				}, array_column($collections, 'entity')),
-				array_column($collections, 'name'),
+				f::array_each($collections, fn($collection) => 'ent:' . $collection['entity']),
+				array_column($collections, 'name')
 			),
 		],
 		[
 			'label' => t('title_database_table', 'Database Table'),
 			'options' => array_combine(
-				array_map(function ($table) {
-					return 'db:' . $table;
-				}, $database_tables),
-				$database_tables,
+				f::array_each($database_tables, fn($table) => 'db:' . $table),
+				$database_tables
 			),
 		],
 	];
-
 
 	$format_options = [
 		['csv', t('title_csv', 'CSV')],

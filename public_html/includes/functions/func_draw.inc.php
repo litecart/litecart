@@ -6,9 +6,9 @@
 			$keywords = preg_split('#\s*,\s*#', $keywords, -1, PREG_SPLIT_NO_EMPTY);
 		}
 
-		$sql_where_keywords = "(". implode(" or ", array_map(function($keyword){
-			return "find_in_set('". database::input($keyword) ."', keywords)";
-		}, $keywords)) .")";
+		$sql_where_keywords = "(". implode(" or ", f::array_each($keywords, fn($keyword) =>
+			"find_in_set('". database::input($keyword) ."', keywords)"
+		)) .")";
 
 		$banners = database::query(
 			"select * from ". DB_TABLE_PREFIX ."banners

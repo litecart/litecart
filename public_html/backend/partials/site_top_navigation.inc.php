@@ -8,12 +8,10 @@
 				'title' => language::$selected['code'],
 				'link' => '#',
 				'icon' => 'icon-search',
-				'subitems' => array_map(function($language) {
-					return [
-						'title' => $language['name'],
-						'link' => document::ilink(null, [], [], [], $language['code']),
-					];
-				}, language::$languages),
+				'subitems' => f::array_each(language::$languages, fn($language) => [
+					'title' => $language['name'],
+					'link' => document::ilink(null, [], [], [], $language['code']),
+				]),
 			],
 			[
 				'title' => t('title_webmail', 'Webmail'),

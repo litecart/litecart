@@ -126,7 +126,7 @@
 		trigger_error('Unknown predefined link button ('. f::escape_html($name) .')', E_USER_WARNING);
 
 		return form_button_link($url, $name, $parameters);
-}
+	}
 
 	function form_captcha($id, $config=[], $parameters='') {
 
@@ -243,9 +243,9 @@
 			'  <thead>',
 			'    <tr>',
 
-			implode(PHP_EOL, array_map(function($column) {
-				return '      <th>'. $column .'<button name="remove_column" class="btn btn default btn-sm">'. f::draw_fonticon('remove') .'</button></th>';
-			}, $columns)),
+			implode(PHP_EOL, f::array_each($columns, fn($column) =>
+				'      <th>'. $column .'<button name="remove_column" class="btn btn default btn-sm">'. f::draw_fonticon('remove') .'</button></th>'
+			)),
 
 			'      <th><button class="btn btn-default btn-sm" name="add_column" type="button">'. f::draw_fonticon('add') .' '.  t('title_add_column', 'Add Column') .'</button></th>',
 			'    </tr>',
@@ -1026,7 +1026,7 @@
 		$options = [];
 		if (!empty($matches[2])) {
 			$options = preg_split('#\s*,\s*#', $matches[2], -1, PREG_SPLIT_NO_EMPTY);
-			$options = array_map(function($s){ return trim($s, '\'" '); }, $options);
+			$options = f::array_each($options, fn($s) => trim($s, '\'" '));
 		}
 
 		switch ($matches[1]) {
@@ -1398,9 +1398,9 @@
 
 		database::query(
 			"select c.id, coalesce(
-				". implode(', ', array_map(function($language) {
-					return "json_value(c.name, '$.". database::input($language['code']) ."')";
-				}, language::$languages)) .",
+				". implode(', ', f::array_each(language::$languages, fn($language) =>
+					"json_value(c.name, '$.". database::input($language['code']) ."')"
+				)) .",
 				'(". database::input(t('title_untitled', 'Untitled')) .")'
 			) as name
 			from ". DB_TABLE_PREFIX ."categories c
@@ -1513,9 +1513,9 @@
 			if (isset($args[3])) $parameters = $args[2];
 		}
 
-		$options = array_map(function($currency){
-			return [$currency['code'], $currency['name'], 'data-value="'. (float)$currency['value'] .'" data-decimals="'. (int)$currency['decimals'] .'" data-prefix="'. f::escape_attr($currency['prefix']) .'" data-suffix="'. f::escape_attr($currency['suffix']) .'"'];
-		}, currency::$currencies);
+		$options = f::array_each(currency::$currencies, fn($curre=> ncy) =>
+			[$currency['code'], $currency['name'], 'data-value="'. (float)$currency['value'] .'" data-decimals="'. (int)$currency['decimals'] .'" data-prefix="'. f::escape_attr($currency['prefix']) .'" data-suffix="'. f::escape_attr($currency['suffix']) .'"']
+		);
 
 		if (preg_match('#\[\]$#', $name)) {
 			return form_select_multiple($name, $options, $input, $parameters);
@@ -2007,6 +2007,27 @@
 		}
 	}
 
+	function form_select_intl_locale($name, $input=true, $parameters='') {
+
+		if ($input === true) {
+			$input = form_reinsert_value($name);
+		}
+
+		if (!class_exists('ResourceBundle')) {
+			trigger_error('The PHP extension "intl" is required to use form_select_locale()', E_USER_WARNING);
+			return form_input_text($name, $input, $parameters . ($parameters ? ' ' : '') .'placeholder="en_US.utf8, en-US.UTF-8, english"');
+		}
+
+		$options = f::array_each(ResourceBundle::getLocales(''), fn($locale) => [$locale]);
+
+		if (preg_match('#\[\]$#', $name)) {
+			return form_select_multiple($name, $options, $input, $parameters);
+		} else {
+			array_unshift($options, ['', '-- '. t('title_select', 'Select') . ' --']);
+			return form_select($name, $options, $input, $parameters);
+		}
+	}
+
 	function form_select_language($name, $input=true, $parameters='') {
 
 		if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
@@ -2014,9 +2035,9 @@
 			if (isset($args[3])) $parameters = $args[2];
 		}
 
-		$options = array_map(function($language){
-			return [$language['code'], $language['name'], 'data-decimal-point="'. $language['decimal_point'] .'" data-thousands-sep="'. $language['thousands_sep'] .'"'];
-		}, language::$languages);
+		$options = f::array_each(language::$languages, fn($language) =>
+			[$language['code'], $language['name'], 'data-decimal-point="'. $language['decimal_point'] .'" data-thousands-sep="'. $language['thousands_sep'] .'"']
+		);
 
 		if (preg_match('#\[\]$#', $name)) {
 			return form_select_multiple($name, $options, $input, $parameters);
@@ -2041,59 +2062,14 @@
 			}
 		}
 
-		$options = array_map(function($unit){
-			return [$unit['unit'], $unit['unit'], 'data-value="'. (float)$unit['value'] .'" data-decimals="'. (int)$unit['decimals'] .'" title="'. f::escape_attr($unit['name']) .'"'];
-		}, length::$units);
+		$options = f::array_each(length::$units, fn($unit) =>
+			[$unit['unit'], $unit['unit'], 'data-value="'. (float)$unit['value'] .'" data-decimals="'. (int)$unit['decimals'] .'" title="'. f::escape_attr($unit['name']) .'"']
+		);
 
 		if (preg_match('#\[\]$#', $name)) {
 			return form_select_multiple($name, $options, $input, $parameters);
 		} else {
 			array_unshift($options, ['', '--']);
-			return form_select($name, $options, $input, $parameters);
-		}
-	}
-
-	function form_select_intl_locale($name, $input=true, $parameters='') {
-
-		if ($input === true) {
-			$input = form_reinsert_value($name);
-		}
-
-		if (!class_exists('ResourceBundle')) {
-			trigger_error('The PHP extension "intl" is required to use form_select_locale()', E_USER_WARNING);
-			return form_input_text($name, $input, $parameters . ($parameters ? ' ' : '') .'placeholder="en_US.utf8, en-US.UTF-8, english"');
-		}
-
-		$options = array_map(function($locale){
-			return [$locale];
-		}, ResourceBundle::getLocales(''));
-
-		if (preg_match('#\[\]$#', $name)) {
-			return form_select_multiple($name, $options, $input, $parameters);
-		} else {
-			array_unshift($options, ['', '-- '. t('title_select', 'Select') . ' --']);
-			return form_select($name, $options, $input, $parameters);
-		}
-	}
-
-	function form_select_system_locale($name, $input=true, $parameters='') {
-
-		if ($input === true) {
-			$input = form_reinsert_value($name);
-		}
-
-		if (preg_match('#^WIN#i', PHP_OS)) {
-			return form_input_text($name, $input, $parameters . ($parameters ? ' ' : '') .'placeholder="en-US,english"');
-		}
-
-		$options = array_map(function($locale){
-			return [$locale];
-		}, preg_split('#\R+#', shell_exec('locale -a'), -1, PREG_SPLIT_NO_EMPTY));
-
-		if (preg_match('#\[\]$#', $name)) {
-			return form_select_multiple($name, $options, $input, $parameters);
-		} else {
-			array_unshift($options, ['', '-- '. t('title_select', 'Select') . ' --']);
 			return form_select($name, $options, $input, $parameters);
 		}
 	}
@@ -2307,7 +2283,7 @@
 
 			$sql_column_price = "coalesce(". implode(", ", array_map(function($currency) {
 				return "if(json_value(price, '$.". database::input($currency['code']) ."') != 0, json_value(price, '$.". database::input($currency['code']) ."') * ". $currency['value'] .", null)";
-			}, currency::$currencies)) .")";
+			})) .")";
 
 			$product = database::query(
 				"select p.id, p.code, pp.regular_price, pp.final_price, json_value(p.name, '$.". database::input(language::$selected['code']) ."') as name
@@ -2582,9 +2558,9 @@
 			'<div id="input-'.$uid.'" '. (!preg_match('#class="([^"]+)?"#', $parameters) ? 'class="form-input flex flex-rows"' : '') . ($parameters ? ' '. $parameters : '') .'>',
 			'  <div class="stock-items flex-grow">',
 			//!$input ? '<em>'. t('text_no_items', 'No items') .'</em>' : '',
-			implode(PHP_EOL, array_map(function($item) {
-				return '    <div class="stock-item" data-id="'. $item['id'] .'">'. $item['name'] .' &mdash; '. $item['sku'] .' ['. (float)$item['quantity'] .']</div>';
-			}, $items)),
+			implode(PHP_EOL, f::array_each($items, fn($item) =>
+				'    <div class="stock-item" data-id="'. $item['id'] .'">'. $item['name'] .' &mdash; '. $item['sku'] .' ['. (float)$item['quantity'] .']</div>'
+			)),
 			'  </div>',
 			'  '. form_button('add', t('title_add_item', 'Add'), 'button', 'data-toggle="lightbox" data-target="'. document::href_ilink('catalog/item_picker', ['js_callback' => '_callback_'.$uid]) .'"'),
 			'</div>',
@@ -2632,7 +2608,6 @@
 
 		if ($input === true) {
 			$input = form_reinsert_value($name);
-
 			if ($input == '' && file_get_contents('php://input') == '') {
 				$input = settings::get('default_tax_class_id');
 			}
@@ -2660,9 +2635,9 @@
 			if (isset($args[3])) $parameters = $args[2];
 		}
 
-		$options = array_map(function($folder){
-			return basename($folder);
-		}, f::file_search('app://frontend/templates/*', GLOB_ONLYDIR));
+		$options = f::array_each(f::file_search('app://frontend/templates/*', GLOB_ONLYDIR), fn($folder) =>
+			basename($folder)
+		);
 
 		if (preg_match('#\[\]$#', $name)) {
 			return form_select_multiple($name, $options, $input, $parameters);
@@ -2679,7 +2654,7 @@
 			if (isset($args[3])) $parameters = $args[2];
 		}
 
-		$options = array_filter(array_map(function($timezone){
+		$options = array_filter(f::array_each(timezone_identifiers_list(), function($timezone){
 			$timezone = explode('/', $timezone); // 0 => Continent, 1 => City
 
 			if (empty($timezone[1]) || !in_array($timezone[0], ['Africa', 'America', 'Asia', 'Atlantic', 'Australia', 'Europe', 'Indian', 'Pacific'])) {
@@ -2687,7 +2662,7 @@
 			}
 
 			return implode('/', $timezone);
-		}, timezone_identifiers_list()));
+		}));
 
 		if (preg_match('#\[\]$#', $name)) {
 			return form_select_multiple($name, $options, $input, $parameters);
@@ -2712,9 +2687,9 @@
 			}
 		}
 
-		$options = array_map(function($unit){
-			return [$unit['unit'], $unit['unit'], 'data-value="'. (float)$unit['value'] .'" data-decimals="'. (int)$unit['decimals'] .'" title="'. f::escape_attr($unit['name']) .'"'];
-		}, weight::$units);
+		$options = f::array_each(weight::$units, fn($unit) =>
+			[$unit['unit'], $unit['unit'], 'data-value="'. (float)$unit['value'] .'" data-decimals="'. (int)$unit['decimals'] .'" title="'. f::escape_attr($unit['name']) .'"']
+		);
 
 		if (preg_match('#\[\]$#', $name)) {
 			return form_select_multiple($name, $options, $input, $parameters);

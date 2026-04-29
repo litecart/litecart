@@ -25,11 +25,9 @@
 		];
 	}
 
-	$sql_column_price = "coalesce(". implode(", ", array_map(function($currency) {
-		return "if(json_value(price, '$.". database::input($currency['code']) ."') != 0, json_value(price, '$.". database::input($currency['code']) ."') * ". $currency['value'] .", null)";
-	}, currency::$currencies)) .")";				$sql_column_price = "coalesce(". implode(", ", array_map(function($currency) {
-		return "if(json_value(price, '$.". database::input($currency['code']) ."') != 0, json_value(price, '$.". database::input($currency['code']) ."') * ". $currency['value'] .", null)";
-	}, currency::$currencies)) .")";
+	$sql_column_price = "coalesce(". implode(", ", f::array_each(currency::$currencies, fn($currency) =>
+		"if(json_value(price, '$.". database::input($currency['code']) ."') != 0, json_value(price, '$.". database::input($currency['code']) ."') * ". $currency['value'] .", null)"
+	)) .")";
 
 	$products = database::query(
 		"select p.id, p.code, p.default_image as image, pp.regular_price, pp.final_price, p.created_at,

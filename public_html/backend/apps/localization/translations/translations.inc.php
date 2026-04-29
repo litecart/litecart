@@ -119,7 +119,7 @@
 	if (empty($_GET['collections']) || in_array('translations', $_GET['collections'])) {
 		$sql_union[] = (
 			"select 'translation' as entity, frontend, backend, code, updated_at, html,
-				". implode(", ", array_map(function($language_code) { return "`text_". database::identifier($language_code) ."`"; }, $_GET['languages'])) ."
+				". implode(", ", f::array_each($_GET['languages'], fn($language_code) => "`text_". database::identifier($language_code) ."`")) ."
 			from ". DB_TABLE_PREFIX ."translations
 			where code not regexp '^(settings_group:|settings_key:|cm|job|om|ot|pm|sm)_'"
 		);
@@ -128,7 +128,7 @@
 	if (empty($_GET['collections']) || in_array('modules', $_GET['collections'])) {
 		$sql_union[] = (
 			"select 'translation' as entity, frontend, backend, code, updated_at, html,
-				". implode(", ", array_map(function($language_code) { return "`text_". database::identifier($language_code) ."`"; }, $_GET['languages'])) ."
+				". implode(", ", f::array_each($_GET['languages'], fn($language_code) => "`text_". database::identifier($language_code) ."`")) ."
 			from ". DB_TABLE_PREFIX ."translations
 			where code regexp '^(cm|job|om|ot|pm|sm)_'"
 		);
@@ -137,7 +137,7 @@
 	if (empty($_GET['collections']) || in_array('setting_groups', $_GET['collections'])) {
 		$sql_union[] = (
 			"select 'translation' as entity, frontend, backend, code, updated_at, html,
-				". implode(", ", array_map(function($language_code) { return "`text_". database::identifier($language_code) ."`"; }, $_GET['languages'])) ."
+				". implode(", ", f::array_each($_GET['languages'], fn($language_code) => "`text_". database::identifier($language_code) ."`")) ."
 			from ". DB_TABLE_PREFIX ."translations
 			where code regexp '^settings_group:'"
 		);
@@ -146,7 +146,7 @@
 	if (empty($_GET['collections']) || in_array('settings', $_GET['collections'])) {
 		$sql_union[] = (
 			"select 'translation' as entity, frontend, backend, code, updated_at, html,
-				". implode(", ", array_map(function($language_code) { return "`text_". database::identifier($language_code) ."`"; }, $_GET['languages'])) ."
+				". implode(", ", f::array_each($_GET['languages'], fn($language_code) => "`text_". database::identifier($language_code) ."`")) ."
 			from ". DB_TABLE_PREFIX ."translations
 			where code regexp '^settings_key:'"
 		);
@@ -155,8 +155,8 @@
 	$union_select = function($id, $entity, $column) {
 		return (
 			"select '$entity' as entity, '1' as frontend, '1' as backend, concat('[". database::input($entity) ."', ':', id, ']". database::input($column) ."') as code, '' as updated_at,
-				coalesce(". implode(', ', array_map(function($language_code) use($column) { return "if(json_value(`". database::input($column) ."`, '$.". database::input($language_code) ."') regexp '<', 1, null)"; }, $_GET['languages'])) .", 0) as html,
-				". implode(', ', array_map(function($language_code) use($column) { return "json_value(`". $column ."`, '$.". database::input($language_code) ."') as `text_". database::identifier($language_code) ."`"; }, $_GET['languages'])) ."
+				coalesce(". implode(', ', f::array_each($_GET['languages'], fn($language_code) => "if(json_value(`". database::input($column) ."`, '$.". database::input($language_code) ."') regexp '<', 1, null)")) .", 0) as html,
+				". implode(', ', f::array_each($_GET['languages'], fn($language_code) => "json_value(`". $column ."`, '$.". database::input($language_code) ."') as `text_". database::identifier($language_code) ."`")) ."
 			from ". DB_TABLE_PREFIX . database::input($id)
 		);
 	};
@@ -179,8 +179,8 @@
 		where x.code != ''
 		". ((!empty($_GET['endpoint']) && $_GET['endpoint'] == 'frontend') ? "and frontend = 1" : "") ."
 		". ((!empty($_GET['endpoint']) && $_GET['endpoint'] == 'backend') ? "and backend = 1" : "") ."
-		". (!empty($_GET['untranslated']) ? "and (". implode(" or ", array_map(function($language_code) { return "`text_". database::identifier($language_code) ."` = ''"; }, $_GET['languages'])) .")" : "") ."
-		". (!empty($_GET['query']) ? "and (code like '%". addcslashes(database::input($_GET['query']), '%_') ."%' or ". implode(' or ', array_map(function($language_code) { return "`text_". database::identifier($language_code) ."` like '%". addcslashes(database::input($_GET['query']), '%_') ."%'"; }, $_GET['languages'])) .")" : "") ."
+		". (!empty($_GET['untranslated']) ? "and (". implode(" or ", f::array_each($_GET['languages'], fn($language_code) => "`text_". database::identifier($language_code) ."` = ''")) .")" : "") ."
+		". (!empty($_GET['query']) ? "and (code like '%". addcslashes(database::input($_GET['query']), '%_') ."%' or ". implode(' or ', f::array_each($_GET['languages'], fn($language_code) => "`text_". database::identifier($language_code) ."` like '%". addcslashes(database::input($_GET['query']), '%_') ."%'")) .")" : "") ."
 		order by x.updated_at desc;"
 	)->fetch_page(null, null, $_GET['page'], settings::get('data_table_rows_per_page'), $num_rows, $num_pages);
 

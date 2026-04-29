@@ -175,9 +175,9 @@
 		);
 	}
 
-	$sql_column_price = "coalesce(". implode(", ", array_map(function($currency) {
-		return "if(json_value(price, '$.". database::input($currency['code']) ."') != 0, json_value(price, '$.". database::input($currency['code']) ."') * ". $currency['value'] .", null)";
-	}, currency::$currencies)) .")";
+	$sql_column_price = "coalesce(". implode(", ", f::array_each(currency::$currencies, fn($currency) =>
+		"if(json_value(price, '$.". database::input($currency['code']) ."') != 0, json_value(price, '$.". database::input($currency['code']) ."') * ". $currency['value'] .", null)"
+	)) .")";
 
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$products = database::prepare(

@@ -205,15 +205,15 @@
 		[
 			'label' => t('title_entity_collection', 'Entity Collection'),
 			'options' => array_combine(
-				array_map(function ($collection) { return 'collection:' . $collection['id']; }, $collections),
-				array_map(function ($collection) { return $collection['name']; }, $collections),
+				f::array_each($collections, fn($collection) => 'collection:' . $collection['id']),
+				array_column($collections, 'name')
 			),
 		],
 		[
 			'label' => t('title_database_table', 'Database Table'),
 			'options' => array_combine(
-				array_map(function ($table) { return 'database:' . $table; }, $database_tables),
-				$database_tables,
+				f::array_each($database_tables, fn($table) => 'database:' . $table),
+				$database_tables
 			),
 		],
 	];

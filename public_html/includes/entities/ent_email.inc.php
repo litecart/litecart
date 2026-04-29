@@ -314,16 +314,16 @@
 
 			// Add "To" header
 			if (!empty($this->data['recipients'])) {
-				$headers['To'] = implode(', ', array_map(function($recipient) {
-					return $this->format_contact($recipient);
-				}, $this->data['recipients']));
+				$headers['To'] = implode(', ', f::array_each($this->data['recipients'], fn($recipient)
+					=> $this->format_contact($recipient)
+				));
 			}
 
 			// Add "Cc" header
 			if (!empty($this->data['ccs'])) {
-				$headers['Cc'] = implode(', ', array_map(function($recipient) {
-					return $this->format_contact($recipient);
-				}, $this->data['ccs']));
+				$headers['Cc'] = implode(', ', f::array_each($this->data['ccs'], fn($recipient)
+					=> $this->format_contact($recipient)
+				));
 			}
 
 			// SMTP does not need a header for BCCs, we will add that for PHP mail() later
@@ -424,14 +424,14 @@
 
 				// PHP mail() needs a header for BCCs
 				if (!empty($this->data['bccs'])) {
-					$headers['Bcc'] = implode(', ', array_map(function($recipient){
-						return $this->format_contact($recipient);
-					}, $this->data['bccs']));
+					$headers['Bcc'] = implode(', ', f::array_each($this->data['bccs'], fn($recipient)
+						=> $this->format_contact($recipient)
+					));
 				}
 
-				$recipients = implode(', ', array_map(function($recipient){
-					return $this->format_contact($recipient);
-				}, $this->data['recipients']));
+				$recipients = implode(', ', f::array_each($this->data['recipients'], fn($recipient)
+					=> $this->format_contact($recipient)
+				));
 
 				$subject = mb_encode_mimeheader($this->data['subject']);
 

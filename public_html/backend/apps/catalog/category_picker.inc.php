@@ -15,9 +15,9 @@
 
 	$categories = database::query(
 		"select c.id, coalesce(
-			". implode(', ', array_map(function($language) {
-				return "json_value(c.name, '$.". database::input($language['code']) ."')";
-			}, language::$languages)) .",
+			". implode(', ', f::array_each(language::$languages, fn($language) =>
+				"json_value(c.name, '$.". database::input($language['code']) ."')"
+			)) .",
 			'(". database::input(t('title_untitled', 'Untitled')) .")'
 		) as name
 		from ". DB_TABLE_PREFIX ."categories c

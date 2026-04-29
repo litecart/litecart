@@ -85,9 +85,7 @@
 		notices::add('notices', strtr(t('notice_n_rows_affected', '%n rows affected'), ['%n' => $affected_rows]));
 	}
 
-	$table_options = array_map(function($table) {
-	return [$table, $table];
-	}, $tables);
+	$table_options = f::array_each($tables, fn($table) => [$table, $table]);
 
 /*
 	$operator_options = [

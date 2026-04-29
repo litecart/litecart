@@ -238,7 +238,9 @@
 		}
 
 		if (!empty($filter['keywords'])) {
-			$sql_inner_where['keywords'] = "(". implode(" or ", array_map(function($s){ return "find_in_set('$s', p.keywords)"; }, database::input($filter['keywords'])) ) .")";
+			$sql_inner_where['keywords'] = "(". implode(" or ", f::array_each(database::input($filter['keywords']), fn($keyword) =>
+				"find_in_set('". database::input($keyword) ."', p.keywords)"
+			)) .")";
 		}
 
 		if (!empty($filter['purchased'])) {
@@ -249,9 +251,9 @@
 			$sql_inner_where['exclude_products'] = "p.id not in ('". implode("', '", database::input($filter['exclude_products'])) ."')";
 		}
 
-		$sql_column_price = "coalesce(". implode(", ", array_map(function($currency) {
-			return "if(json_value(price, '$.". database::input($currency['code']) ."') != 0, json_value(price, '$.". database::input($currency['code']) ."') * ". $currency['value'] .", null)";
-		}, currency::$currencies)) .")";
+		$sql_column_price = "coalesce(". implode(", ", f::array_each(currency::$currencies, fn($currency) =>
+			"if(json_value(price, '$.". database::input($currency['code']) ."') != 0, json_value(price, '$.". database::input($currency['code']) ."') * ". $currency['value'] .", null)"
+		)) .")";
 
 		$statement = (
 			"select p.*, b.id as brand_id, b.name as brand_name,
@@ -546,9 +548,9 @@
 			}
 		}
 
-		$sql_column_price = "coalesce(". implode(", ", array_map(function($currency){
-			return "if(json_value(price, '$.". database::input($currency['code']) ."') != 0, json_value(price, '$.". database::input($currency['code']) ."') * ". $currency['value'] .", null)";
-		}, currency::$currencies)) . ")";
+		$sql_column_price = "coalesce(". implode(", ", f::array_each(currency::$currencies, fn($currency) =>
+			"if(json_value(price, '$.". database::input($currency['code']) ."') != 0, json_value(price, '$.". database::input($currency['code']) ."') * ". $currency['value'] .", null)"
+		)) . ")";
 
 		$statement = (
 			"select p.*, b.name as brand_name, pp.regular_price, pp.final_price,

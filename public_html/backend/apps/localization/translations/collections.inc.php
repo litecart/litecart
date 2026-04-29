@@ -39,7 +39,7 @@
 			'name' => t('title_translations', 'Translations'),
 			'entity' => 'translation',
 			'identified_by' => ['code'],
-			'translatable' => array_map(function($lang) { return 'text_'.$lang; }, array_keys(language::$languages)),
+			'translatable' => f::array_each(array_keys(language::$languages), fn($language) => 'text_'.$language),
 		],
 		...$collections,
 	];

@@ -33,10 +33,10 @@
 			}
 
 			// Parse scope checkboxes (format: "category:5", "brand:3")
-			$_POST['scopes'] = array_map(function($val) {
+			$_POST['scopes'] = f::array_each(array_filter($_POST['scopes'] ?? []), function($val) {
 				list($type, $id) = explode(':', $val, 2);
 				return ['scope_type' => $type, 'scope_id' => (int)$id];
-			}, array_filter((array)($_POST['scopes'] ?? [])));
+			});
 
 			if ($_POST['discount_mode'] == 'percentage' && empty($_POST['scopes'])) {
 				throw new Exception(t('error_must_provide_scope', 'You must select at least one category or brand'));

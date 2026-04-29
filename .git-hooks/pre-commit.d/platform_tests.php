@@ -11,9 +11,7 @@
 	$files = f::file_search($directory . '/*.php');
 
 	echo 'Found '. count($files) . ' test files' . PHP_EOL;
-	echo implode(PHP_EOL, array_map(function($file) {
-		return ' - '. basename($file);
-	}, $files)) . PHP_EOL;
+	echo implode(PHP_EOL, f::array_each($files, fn($file) => ' - '. basename($file))) . PHP_EOL;
 
 	foreach ($files as $file) {
 

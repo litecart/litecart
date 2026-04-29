@@ -110,9 +110,9 @@
 				$this->_data['campaign'] = database::query(
 					"select *, min(
 						coalesce(
-							". implode(', ', array_map(function($currency_code){
-								return "if(json_value(price, '$.". database::input($currency_code) ."') != 0, json_value(price, '$.". database::input($currency_code) ."') * ". currency::$currencies[$currency_code]['value'] .", null)";
-							}, $this->_currency_codes)) ."
+							". implode(', ', f::array_each($this->_currency_codes, fn($currency_code) =>
+								"if(json_value(price, '$.". database::input($currency_code) ."') != 0, json_value(price, '$.". database::input($currency_code) ."') * ". currency::$currencies[$currency_code]['value'] .", null)"
+							)) ."
 						)
 					) as price
 					from ". DB_TABLE_PREFIX ."products_prices
@@ -226,9 +226,9 @@
 				case 'final_price':
 				case 'regular_price':
 
-					$sql_column_price = "coalesce(". implode(", ", array_map(function($currency){
-									return "if(json_value(price, '$.". database::input($currency['code']) ."') != 0, json_value(price, '$.". database::input($currency['code']) ."') * ". $currency['value'] .", null)";
-					}, currency::$currencies)) . ")";
+					$sql_column_price = "coalesce(". implode(", ", f::array_each(currency::$currencies, fn($currency) =>
+						"if(json_value(price, '$.". database::input($currency['code']) ."') != 0, json_value(price, '$.". database::input($currency['code']) ."') * ". $currency['value'] .", null)"
+					)) . ")";
 
 					$prices = database::query(
 						"select
@@ -767,3 +767,4 @@
 			}
 		}
 	}
+

@@ -187,7 +187,7 @@
 			if (in_array('translations', $_POST['collections'])) {
 				$sql_union[] = (
 					"select 'translation' as entity, frontend, backend, code, updated_at, html,
-					". implode(", ", array_map(function($language_code) { return "`text_". database::identifier($language_code) ."`"; }, $_POST['language_codes'])) ."
+					". implode(", ", f::array_each($_POST['language_codes'], fn($language_code) => "`text_". database::identifier($language_code) ."`")) ."
 					from ". DB_TABLE_PREFIX ."translations
 					where code not regexp '^(settings_group:|settings_key:|cm|job|om|ot|pm|sm)_'"
 				);
@@ -196,7 +196,7 @@
 			if (in_array('modules', $_POST['collections'])) {
 				$sql_union[] = (
 					"select 'translation' as entity, frontend, backend, code, updated_at, html,
-					". implode(", ", array_map(function($language_code) { return "`text_". database::identifier($language_code) ."`"; }, $_POST['language_codes'])) ."
+					". implode(", ", f::array_each($_POST['language_codes'], fn($language_code) => "`text_". database::identifier($language_code) ."`")) ."
 					from ". DB_TABLE_PREFIX ."translations
 					where code regexp '^(cm|job|om|ot|pm|sm)_'"
 				);
@@ -205,7 +205,7 @@
 			if (in_array('setting_groups', $_POST['collections'])) {
 				$sql_union[] = (
 					"select 'translation' as entity, frontend, backend, code, updated_at, html,
-					". implode(", ", array_map(function($language_code) { return "`text_". database::identifier($language_code) ."`"; }, $_POST['language_codes'])) ."
+					". implode(", ", f::array_each($_POST['language_codes'], fn($language_code) => "`text_". database::identifier($language_code) ."`")) ."
 					from ". DB_TABLE_PREFIX ."translations
 					where code regexp '^settings_group:'"
 				);
@@ -214,7 +214,7 @@
 			if (in_array('settings', $_POST['collections'])) {
 				$sql_union[] = (
 					"select 'translation' as entity, frontend, backend, code, updated_at, html,
-					". implode(", ", array_map(function($language_code) { return "`text_". database::identifier($language_code) ."`"; }, $_POST['language_codes'])) ."
+					". implode(", ", f::array_each($_POST['language_codes'], fn($language_code) => "`text_". database::identifier($language_code) ."`")) ."
 					from ". DB_TABLE_PREFIX ."translations
 					where code regexp '^settings_key:'"
 				);
@@ -223,8 +223,8 @@
 			$union_select = function($id, $entity, $column) {
 				return (
 					"select '$entity' as entity, '1' as frontend, '1' as backend, concat('[". database::input($entity) ."', ':', id, ']". database::input($column) ."') as code, '' as updated_at,
-						coalesce(". implode(', ', array_map(function($language_code) use($column) { return "if(json_value(`". database::input($column) ."`, '$.". database::input($language_code) ."') regexp '<', 1, null)"; }, $_POST['language_codes'])) .", 0) as html,
-						". implode(', ', array_map(function($language_code) use($column) { return "json_value(`". $column ."`, '$.". database::input($language_code) ."') as `text_". database::identifier($language_code) ."`"; }, $_POST['language_codes'])) ."
+						coalesce(". implode(', ', f::array_each($_POST['language_codes'], fn($language_code) => "if(json_value(`". database::input($column) ."`, '$.". database::input($language_code) ."') regexp '<', 1, null)")) .", 0) as html,
+						". implode(', ', f::array_each($_POST['language_codes'], fn($language_code) => "json_value(`". $column ."`, '$.". database::input($language_code) ."') as `text_". database::identifier($language_code) ."`")) ."
 					from ". DB_TABLE_PREFIX . database::input($id)
 				);
 			};
@@ -369,7 +369,7 @@
 
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_collections', 'Collections'); ?></div>
-							<?php echo f::form_select('collections[]', array_map(function($c) { return [$c['id'], $c['name']]; }, $collections), true); ?>
+							<?php echo f::form_select('collections[]', f::array_each($collections, fn($collection) => [$collection['id'], $collection['name']]), true); ?>
 						</label>
 
 						<label class="form-group">

@@ -32,9 +32,9 @@
 
 		$json['subcategories'] = database::query(
 			"select c.id, c.parent_id, c.created_at, coalesce(
-				". implode(', ', array_map(function($language) {
-					return "json_value(c.name, '$.". database::input($language['code']) ."')";
-				}, language::$languages)) .",
+				". implode(', ', f::array_each(language::$languages, fn($language) =>
+					"json_value(c.name, '$.". database::input($language['code']) ."')"
+				)) .",
 				'(". database::input(t('title_untitled', 'Untitled')) .")'
 			) as name
 			from ". DB_TABLE_PREFIX ."categories c

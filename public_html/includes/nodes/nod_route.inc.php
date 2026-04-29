@@ -217,7 +217,7 @@
 			];
 
 			// Tunnel an asset stored in an add-on
-			if (preg_match('#^('. implode('|', array_map(function($folder) { return preg_quote($folder, '#'); }, $static_folders)) .')#', $static_path)
+			if (preg_match('#^('. implode('|', f::array_each($static_folders, fn($folder) => preg_quote($folder, '#'))) .')#', $static_path)
 			 && is_file('app://'.$static_path) && preg_match('#\.(a?png|avif|bmp|css|eot|gif|ico|jpe?g|jp2|js|otf|pdf|svg|tiff?|ttf|webp|woff2?)$#', pathinfo($static_path, PATHINFO_BASENAME))) {
 
 				if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']) >= filemtime('app://'.$static_path)) {

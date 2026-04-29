@@ -33,9 +33,7 @@
 				and (scheduled_at is null or scheduled_at < '". date('Y-m-d H:i:s') ."')
 				order by created_at asc;"
 			)->fetch_all(function(&$row) {
-				$row['headers'] = $row['headers'] ? array_map(function($header) {
-					return preg_split('#: ?#', $header, 2);
-				}, f::string_split($row['headers'])) : [];
+				$row['headers'] = $row['headers'] ? f::array_each(f::string_split($row['headers']), fn($header) => preg_split('#: ?#', $header, 2)) : [];
 			});
 
 			if (!$pending_requests) {

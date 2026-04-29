@@ -153,25 +153,23 @@
 
 		$tmp_order = (object)[
 			'data' => [
-				'items' => array_map(function($item) {
-					return [
-						'product_id' => $item['product_id'],
-						'stock_option_id' => $item['stock_option_id'],
-						'name' => $item['name'],
-						'sku' => $item['sku'],
-						'image' => $item['image'],
-						'quantity' => $item['quantity'],
-						'price' => $item['price'],
-						'tax_class_id' => $item['tax_class_id'],
-						'tax' => $item['tax'],
-						'weight' => $item['weight'],
-						'weight_unit' => $item['weight_unit'],
-						'length' => $item['length'],
-						'width' => $item['width'],
-						'height' => $item['height'],
-						'length_unit' => $item['length_unit'],
-					];
-				}, cart::$items),
+				'items' => f::array_each(cart::$items, fn($item) => [
+					'product_id' => $item['product_id'],
+					'stock_option_id' => $item['stock_option_id'],
+					'name' => $item['name'],
+					'sku' => $item['sku'],
+					'image' => $item['image'],
+					'quantity' => $item['quantity'],
+					'price' => $item['price'],
+					'tax_class_id' => $item['tax_class_id'],
+					'tax' => $item['tax'],
+					'weight' => $item['weight'],
+					'weight_unit' => $item['weight_unit'],
+					'length' => $item['length'],
+					'width' => $item['width'],
+					'height' => $item['height'],
+					'length_unit' => $item['length_unit'],
+				]),
 				'subtotal' => cart::$total['value'],
 				'subtotal_tax' => cart::$total['tax'],
 				'customer' => customer::$data,

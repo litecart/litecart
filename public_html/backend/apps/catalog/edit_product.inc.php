@@ -1181,10 +1181,8 @@
 			'    <div class="dropdown">',
 			'      <?php echo f::escape_js(f::form_input_money('prices[__index__][price]['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), true, 'style="width: 125px;"')); ?>',
 			'      <ul class="dropdown-menu" style="right:0;">',
-			<?php echo implode(PHP_EOL, array_map(
-				function($currency_code) {
-					return '\'      <li>'. f::escape_js(f::form_input_money('prices[__index__][price]['. $currency_code .']', $currency_code, true, 'style="width: 125px;"')) .'</li>\',';
-				}, array_diff($currency_codes, [settings::get('store_currency_code')])
+			<?php echo implode(PHP_EOL, f::array_each(array_diff($currency_codes, [settings::get('store_currency_code')]), fn($currency_code) =>
+				'\'      <li>'. f::escape_js(f::form_input_money('prices[__index__][price]['. $currency_code .']', $currency_code, true, 'style="width: 125px;"')) .'</li>\','
 			)); ?>
 			'      </ul>',
 			'    </div>',

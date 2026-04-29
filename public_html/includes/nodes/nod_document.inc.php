@@ -3,8 +3,8 @@
 	class document {
 
 		public static $canonical = '';
-		public static $content = [];
 		public static $console = [];
+		public static $content = [];
 		public static $description = '';
 		public static $head_tags = [];
 		public static $foot_tags = [];
@@ -47,8 +47,11 @@
 				"default-src 'self' https://www.litecart.net 'unsafe-inline' 'unsafe-eval' data:", // Default policy
 				"frame-ancestors 'self'", // Clickjacking Protection
 				//"script-src 'self' 'unsafe-inline'",
+				//"img-src 'self'",
 				//"style-src 'self' 'unsafe-inline'",
 				//"style-src-elem 'self' 'unsafe-inline'",
+				//"base-uri 'self'",
+				//"form-action 'self'",
 				'report-uri '. self::ilink('f:csp_report'),
 			]));
 
@@ -129,7 +132,7 @@
 
 		public static function after_capture() {
 
-			// JavaScript environment
+			// JavaScript Environment
 
 			self::$jsenv['platform'] = [
 				'path' => WS_DIR_APP,
@@ -388,9 +391,9 @@
 
 			// Prepare console log
 			if (!empty(self::$console)) {
-				self::$javascript[] = implode(PHP_EOL, array_map(function($log) {
-					return 'console.'. $log['type'] .'("'. f::escape_attr($log['message']) .'", '. f::format_json($log['data']) .');';
-				}, self::$console));
+				self::$javascript[] = implode(PHP_EOL, f::array_each(self::$console, fn($log) =>
+					'console.'. $log['type'] .'("'. f::escape_attr($log['message']) .'", '. f::format_json($log['data']) .');'
+				));
 			}
 
 			// Prepare internal javascript

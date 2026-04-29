@@ -505,9 +505,9 @@ table .icon-folder-open {
 					$output .= $draw_category_branch($subcategory['id'], $depth+1);
 				}
 
-				$sql_column_price = "coalesce(". implode(", ", array_map(function($currency) {
-					return "if(json_value(price, '$.". database::input($currency['code']) ."') != 0, json_value(price, '$.". database::input($currency['code']) ."') * ". $currency['value'] .", null)";
-				}, currency::$currencies)) .")";
+				$sql_column_price = "coalesce(". implode(", ", f::array_each(currency::$currencies, fn($currency) =>
+					"if(json_value(price, '$.". database::input($currency['code']) ."') != 0, json_value(price, '$.". database::input($currency['code']) ."') * ". $currency['value'] .", null)"
+				)) .")";
 
 				// Output products
 				$products = database::query(

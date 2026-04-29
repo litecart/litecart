@@ -356,9 +356,9 @@
 		}
 	}
 
-	$collection_options = array_map(function($collection) {
-		return [$collection['id'], $collection['name']];
-	}, $collections);
+	$collection_options = f::array_each($collections, fn($collection) =>
+		[$collection['id'], $collection['name']]
+	);
 
 ?>
 <div class="card card-app">
