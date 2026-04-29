@@ -1513,7 +1513,7 @@
 			if (isset($args[3])) $parameters = $args[2];
 		}
 
-		$options = f::array_each(currency::$currencies, fn($curre=> ncy) =>
+		$options = f::array_each(currency::$currencies, fn($currency) =>
 			[$currency['code'], $currency['name'], 'data-value="'. (float)$currency['value'] .'" data-decimals="'. (int)$currency['decimals'] .'" data-prefix="'. f::escape_attr($currency['prefix']) .'" data-suffix="'. f::escape_attr($currency['suffix']) .'"']
 		);
 

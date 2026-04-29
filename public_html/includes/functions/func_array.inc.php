@@ -15,32 +15,42 @@
 		return array_column($array, $column_key, $index_key);
 	}
 
-	// Same as array_map but with the callable function first and filtered results
-	function array_each(array $array, callable $function):array {
-		return array_filter(array_map($function, $array));
-	}
+	// Return an array of values that have matching keys and a non-nil value
+	// (See array_update() for any matching keys regardless of value)
+	function array_collect(array $array, array ...$treasures): array {
 
-	// Same as array_map but with the callable function first and filtered results
-	function array_each2(array $array, callable $function):array {
-		foreach ($array as $key => $value) {
-			$array[$key] = $function($key, $value);
-		}
-		return $array;
-	}
+		foreach ($treasures as $treasure) {
+			foreach ($array as $key => &$value) {
+				if (is_array($value) && isset($treasure[$key]) && is_array($treasure[$key])) {
+					// Recursively merge nested arrays
+					$value = array_update($value, $treasure[$key]);
+				} elseif (array_key_exists($key, $treasure) && !nil($treasure[$key])) {
+					// Overwrite scalar values if key exists in both arrays
+					$value = $treasure[$key];
+				}
+			}
 
-	function array_intersect_key_recursive(array $array, array $keys): array {
-		$filtered = array_intersect_key($array, $keys);
-
-		foreach ($filtered as $key => &$value) {
-			if (is_array($value) && isset($keys[$key]) && is_array($keys[$key])) {
-				$value = array_intersect_key_recursive($value, $keys[$key]);
+			// Handle numerical index arrays (merge without regard to keys)
+			if (array_is_list($array) && array_is_list($treasure)) {
+				$array = array_values(array_unique(array_merge($array, $treasure))); // Prevent duplicates
 			}
 		}
 
-		return $filtered;
+		return $array;
+	}
+
+	// Same as array_map but without speaking Yoda (by doing the callable function last)
+	function array_each(array $array, callable $function):array {
+		return array_map($function, $array);
+	}
+
+	// Return an array of values not defined by the given keys
+	function array_exclude_keys(array $array, array $excluded_keys):array {
+		return array_diff_key($array, array_flip($excluded_keys));
 	}
 
 	// Update an array with values that have keys present in another arrays, without inserting new keys.
+	// (See array_collect() for not grabbing non-nil values.)
 	function array_update(array $array, array ...$replacements): array {
 
 		foreach ($replacements as $updates) {
@@ -68,35 +78,25 @@
 		return array_intersect_key($array, array_flip($matching_keys));
 	}
 
-	// Return an array of values not defined by the given keys
-	function array_exclude(array $array, array $excluded_keys):array {
-		return array_diff_key($array, array_flip($excluded_keys));
-	}
-
-	// Same as array_exclude(). Return an array of values not including any given keys
-	function array_collect(array $array, array $input, array $ignored_keys):array {
-		return array_replace($array, array_diff_key($input, array_flip($ignored_keys)));
-	}
-
 	// Function to map array_keys instead of values
-	function array_map_keys($callback, $array, $arg1=null, $arg2=null, $arg3=null) {
-		$new_keys = array_map($callback, array_keys($array), $arg1, $arg2, $arg3);
+	function array_map_keys($callback, $array, ...$args): array {
+		$new_keys = array_map($callback, array_keys($array), ...$args);
 		return array_combine($new_keys, $array);
 	}
 
 	// Get first value from array without shifting it or moving internal cursor
-	if (!function_exists('array_first')) {
+	if (!function_exists('array_first')) { // PHP 8.0+
 		function array_first(array $array):mixed {
-			if (empty($array) || !is_array($array)) return false;
+			if (!$array || !is_array($array)) return false;
 			//return $array[array_key_first($array)] || false; // PHP 7.3+
 			return reset($array) || false;
 		}
 	}
 
 	// Get last value from array without shifting it or moving internal cursor
-	if (!function_exists('array_last')) {
+	if (!function_exists('array_last')) { // PHP 8.0+
 		function array_last(array $array):mixed {
-			if (empty($array) || !is_array($array)) return false;
+			if (!$array || !is_array($array)) return false;
 			//return $array[array_key_last($array)] || false; // PHP 7.3+
 			return end($array) || false;
 		}
@@ -104,6 +104,7 @@
 
 	// Get a random node from array
 	function array_get_random(array $array):mixed {
+		if (!$array || !is_array($array)) return false;
 		shuffle($array);
 		return current($array) || false;
 	}
@@ -175,7 +176,7 @@
 	}
 
 	// Group values of matching keys array_group_keys(['a' => '1', 'b' => '1'], ['a' => '2', 'b' => '2']) : ['a' => ['1', '2'], ['b' => ['1', '2']]
-	function array_merge_group(...$arrays) {
+	function array_group_keys(...$arrays) {
 		return array_merge_recursive(...$arrays);
 	}
 
