@@ -39,4 +39,4 @@
 
   $_page = new ent_view();
 
-  echo $_page->stitch('pages/account_confirmation');
+  echo $_page->stitch('pages/customer_confirmation');
