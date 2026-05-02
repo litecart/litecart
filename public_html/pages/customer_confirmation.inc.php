@@ -10,13 +10,22 @@
 
   try {
 
-    if (empty($_GET['customer_id']) || empty($_GET['customer_email'])) {
-      throw new Exception('Missing customer_id or customer_email', 404);
+    if (empty($_GET['public_key'])) {
+      throw new Exception('Public Key is unknown', 404);
     }
 
     // averlon; hier muss jetzt der DB-datensatz für den kunden gesucht werden
+    $customer_query = database::query(
+      "select * from ". DB_TABLE_PREFIX ."customers
+      where public_key = '". $_GET['public_key'] ."'
+      limit 1;"
+    );
     
-    $customer = new ent_customer($_GET['customer_id']);
+    // $avcustomer = new ent_customer();
+    $avcustomer = database::fetch($customer_query);
+    $customer = new ent_customer($avcustomer['id']);
+
+    // $customer = new ent_customer($_GET['public_key']);
     $customer->data['status'] = 1;
     $customer->save();
 

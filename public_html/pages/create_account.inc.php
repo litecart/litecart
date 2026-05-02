@@ -111,7 +111,7 @@
         '%customer_firstname' => $customer->data['firstname'],
         '%customer_lastname' => $customer->data['lastname'],
         '%customer_email' => $customer->data['email'],
-        '%customer_email_confirmation_url' => document::ilink('account_confirmation', ['customer_id' => $customer->data['id'], 'customer_email' => $customer->data['email']], false, [], $language_code),
+        '%customer_email_confirmation_url' => document::ilink('customer_confirmation', ['public_key' => $customer->data['public_key']], false, [], $language_code),
       ];
 
       $subject = language::translate('email_subject_customer_account_created', 'Customer Account Created');

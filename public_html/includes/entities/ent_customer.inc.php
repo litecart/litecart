@@ -95,6 +95,10 @@
 
         $this->data['id'] = database::insert_id();
 
+        if (empty($this->data['public_key'])) {
+          $this->data['public_key'] = substr(str_shuffle(str_repeat('0123456789abcdefghijklmnopqrstuvwxyz', mt_rand(5, 10))), 0, 32);
+        }
+
         database::query(
           "update ". DB_TABLE_PREFIX ."orders
           set customer_id = ". (int)$this->data['id'] ."
@@ -135,7 +139,8 @@
           password_reset_token = '". database::input($this->data['password_reset_token']) ."',
           date_blocked_until = ". (!empty($this->data['date_blocked_until']) ? "'". database::input($this->data['date_blocked_until']) ."'" : "NULL") .",
           date_expire_sessions = ". (!empty($this->data['date_expire_sessions']) ? "'". database::input($this->data['date_expire_sessions']) ."'" : "NULL") .",
-          date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
+          date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."',
+          public_key = '". database::input($this->data['public_key']) ."'
         where id = ". (int)$this->data['id'] ."
         limit 1;"
       );
