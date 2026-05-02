@@ -775,12 +775,12 @@
 				echo '<p>Preparing CSS files...</p>' . PHP_EOL . PHP_EOL;
 
 				perform_action('delete', [
-					FS_DIR_APP . 'backend/template/less/',
+					FS_DIR_APP . 'backend/template/scss/',
 				]);
 
 				if (!empty($_REQUEST['development_type']) && $_REQUEST['development_type'] == 'advanced') {
 
-					file_put_contents(FS_DIR_APP . 'includes/templates/default.catalog/.development', 'advanced');
+					file_put_contents(FS_DIR_APP . 'includes/templates/default/.development', 'advanced');
 
 					perform_action('delete', [
 						FS_DIR_APP . 'frontend/templates/*/css/app.css',
@@ -792,14 +792,14 @@
 
 				} else {
 
-					file_put_contents(FS_DIR_APP . 'includes/templates/default.catalog/.development', 'standard');
+					file_put_contents(FS_DIR_APP . 'includes/templates/default/.development', 'standard');
 
 					perform_action('delete', [
 						FS_DIR_APP . 'frontend/templates/*/css/*.min.css',
 						FS_DIR_APP . 'frontend/templates/*/css/*.min.css.map',
-						FS_DIR_APP . 'frontend/templates/*/less/',
-						FS_DIR_APP . 'frontened/templates/default.catalog/js/*.min.js.map',
-						FS_DIR_APP . 'frontend/templates/default.catalog/less/',
+						FS_DIR_APP . 'frontend/templates/*/scss/',
+						FS_DIR_APP . 'frontened/templates/default/js/*.min.js.map',
+						FS_DIR_APP . 'frontend/templates/default/scss/',
 					]);
 
 					perform_action('modify', [
@@ -1036,11 +1036,11 @@ input[name="development_type"]:checked + div {
 			<div>
 				<div class="type">Advanced</div>
 				<div class="title">
-					.less + .min.css<br>
+					.scss + .min.css<br>
 					.js + .min.js
 				</div>
 				<small class="description">
-					(Requires a <a href="https://www.litecart.net/addons/163/developer-kit" target="_blank">LESS compiler</a>)
+					(Requires a <a href="https://www.litecart.net/addons/163/developer-kit" target="_blank">SCSS compiler</a>)
 				</small>
 			</div>
 		</label>

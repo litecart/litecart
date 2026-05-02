@@ -818,7 +818,7 @@
 			echo '<p>Preparing CSS files...</p>' . PHP_EOL;
 
 			perform_action('delete', [
-				FS_DIR_APP . 'backend/template/less/',
+				FS_DIR_APP . 'backend/template/scss/',
 			]);
 
 			if (!empty($_REQUEST['development_type']) && $_REQUEST['development_type'] == 'advanced') {
@@ -841,7 +841,7 @@
 				perform_action('delete', [
 					FS_DIR_APP . 'frontend/templates/*/css/*.min.css',
 					FS_DIR_APP . 'frontend/templates/*/css/*.min.css.map',
-					FS_DIR_APP . 'frontend/templates/*/less/',
+					FS_DIR_APP . 'frontend/templates/*/scss/',
 				]);
 
 				perform_action('modify', [
