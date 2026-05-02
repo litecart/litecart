@@ -454,7 +454,7 @@
 				"status": { "type": "ENUM('draft','scheduled','sent','error')", "default": "'draft'" },
 				"code": { "type": "VARCHAR", "length": 255, "default": "''" },
 				"reference": { "type": "VARCHAR", "length": 255, "default": "''" },
-				"language_code": { "type": "VARCHAR", "length": 2, "default": "''" },
+				"language_code": { "type": "CHAR", "length": 2, "default": "''" },
 				"sender": { "type": "VARCHAR", "length": 255, "default": "''" },
 				"recipients": { "type": "TEXT", "default": "''" },
 				"ccs": { "type": "TEXT", "default": "''" },
@@ -577,8 +577,8 @@
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"status": { "type": "TINYINT", "length": 1, "default": 0 },
-				"code": { "type": "CHAR", "length": 2, "default": "''" },
-				"code2": { "type": "CHAR", "length": 3, "default": "''" },
+				"code": { "type": "CHAR", "length": 2 },
+				"code2": { "type": "CHAR", "length": 3 },
 				"name": { "type": "VARCHAR", "length": 32, "default": "''" },
 				"direction": { "type": "ENUM('ltr','rtl')", "default": "'ltr'" },
 				"locale": { "type": "VARCHAR", "length": 64, "default": "''" },
@@ -602,6 +602,10 @@
 			"primary_key": ["id"],
 			"keys": {
 				"status": ["status"]
+			},
+			"unique_keys": {
+				"code": ["code"],
+				"code2": ["code2"]
 			}
 		},
 		"modules": {
@@ -982,7 +986,7 @@
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"parent_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
 				"dock": { "type": "VARCHAR", "length": 64, "default": "''" },
-				"status": { "type": "TINYINT", "length": 1, "default": 0 },
+				"status": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
 				"title": { "type": "TEXT", "default": "'{}'", "comment": "TYPE:JSON_TRANSLATIONS" },
 				"content": { "type": "MEDIUMTEXT", "default": "'{}'", "comment": "TYPE:JSON_TRANSLATIONS" },
 				"head_title": { "type": "TEXT", "default": "'{}'", "comment": "TYPE:JSON_TRANSLATIONS" },
@@ -993,9 +997,9 @@
 			},
 			"primary_key": ["id"],
 			"keys": {
-				"status": ["status"],
 				"parent_id": ["parent_id"],
-				"dock": ["dock"]
+				"dock": ["dock"],
+				"status": ["status"]
 			},
 			"check_constraints": {
 				"pages_chk_title": "title IS NULL OR title = '' OR JSON_VALID(title)",
@@ -1597,7 +1601,7 @@
 				"status": { "type": "TINYINT", "length": 1, "default": 0 },
 				"position": { "type": "ENUM('head','body')", "default": "'head'" },
 				"name": { "type": "VARCHAR", "length": 128, "default": "''" },
-				"content": { "type": "TEXT" },
+				"content": { "type": "TEXT", "default": "''" },
 				"require_consent": { "type": "VARCHAR", "length": 64, "nullable": true },
 				"priority": { "type": "TINYINT", "length": 4, "default": 0 },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
@@ -1874,7 +1878,7 @@
 				"do_not_sell_url": { "type": "VARCHAR", "length": 248, "default": "''" },
 				"country_code": { "type": "CHAR", "length": 2, "nullable": true },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
-				"created_at": { "type": "TIMESTAMP", "default": "current_timestamp()" }
+				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
 			},
 			"primary_key": ["id"],
 			"keys": {
@@ -1917,7 +1921,8 @@
 			"keys": {
 				"frontend": ["frontend"],
 				"backend": ["backend"],
-				"created_at": ["created_at"]
+				"created_at": ["created_at"],
+				"updated_at": ["updated_at"]
 			}
 		},
 		"webhooks": {

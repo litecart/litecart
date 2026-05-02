@@ -18,18 +18,11 @@
 	}
 
 	// Redirect to a URL and stop script execution
-	function redirect($url=null, $status_code=302) {
+	function redirect($url=null, $status_code=null) {
 
 		if (!$url) {
 			$url = $_SERVER['REQUEST_URI'];
 		}
-
-		header('Location: '. $url, $status_code);
-		exit;
-	}
-
-	// Stop script execution and reload the current page
-	function reload($status_code=null) {
 
 		if ($status_code === null) {
 			if (file_get_contents('php://input')) {
@@ -43,7 +36,13 @@
 			trigger_error('Unsupported response status code for redirect ('. (int)$status_code .')');
 		}
 
-		header('Location: '. $_SERVER['REQUEST_URI'], $status_code);
+		header('Location: '. $url, true, $status_code);
+		exit;
+	}
+
+	// Stop script execution and reload the current page
+	function reload($status_code=null) {
+		redirect($_SERVER['REQUEST_URI'], $status_code);
 		exit;
 	}
 

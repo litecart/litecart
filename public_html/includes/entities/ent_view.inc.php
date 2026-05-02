@@ -13,7 +13,7 @@
 			if ($view) {
 
 				// Absolute path
-				if (preg_match('#^app://#', $view) || preg_match('#^([a-zA-Z]:)?/#', $view)) {
+				if (preg_match('#^(app|storage)://#', $view) || preg_match('#^([a-zA-Z]:)?/#', $view)) {
 					$this->view = $view;
 
 				// Relative path

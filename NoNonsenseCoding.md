@@ -190,7 +190,7 @@ Better:
 		}
 
 
-## No Conditional Conditions Inside Iterators - That's gotta be nonsense, if..
+## No Conditional Conditions Inside Iterators - That's if nonsense
 
 	Avoid conditional conditions during iteration.
 

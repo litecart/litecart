@@ -6,8 +6,8 @@
 		$development = false;
 	}
 
-	if ($development = 'advanced' && is_file(FS_DIR_APP . 'frontend/templates/'. settings::get('template') .'/less/variables.less')) {
-		$stylesheet = FS_DIR_APP . 'frontend/templates/'. settings::get('template') .'/less/variables.less';
+	if ($development = 'advanced' && is_file(FS_DIR_APP . 'frontend/templates/'. settings::get('template') .'/scss/variables.scss')) {
+		$stylesheet = FS_DIR_APP . 'frontend/templates/'. settings::get('template') .'/scss/variables.scss';
 	} else if (is_file(FS_DIR_APP . 'frontend/templates/'. settings::get('template') .'/css/variables.css')) {
 		$stylesheet = FS_DIR_APP . 'frontend/templates/'. settings::get('template') .'/css/variables.css';
 
@@ -47,9 +47,9 @@
 
 	<div class="card-body">
 
-		<?php if (preg_match('#\.less$#', $stylesheet)) { ?>
+		<?php if (preg_match('#\.scss$#', $stylesheet)) { ?>
 		<div class="notices">
-			<div class="notice notice-default"><?php echo f::draw_fonticon('icon-info'); ?> <?php echo t('notice_detected_less_version_of_variables', 'We detected a LESS version present in this installation that will be used. A LESS compiler is needed to compile the CSS versions (e.g. Developer Kit add-on).'); ?></div>
+			<div class="notice notice-default"><?php echo f::draw_fonticon('icon-info'); ?> <?php echo t('notice_detected_scss_version_of_variables', 'We detected a SCSS version present in this installation that will be used. A SCSS compiler is needed to compile the CSS versions (e.g. Developer Kit add-on).'); ?></div>
 		</div>
 		<?php } ?>
 

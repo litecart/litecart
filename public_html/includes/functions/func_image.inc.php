@@ -2,13 +2,13 @@
 
 	function image_scale_by_width($width, $aspect_ratio) {
 		list($x, $y) = preg_split('#[:/]#', $aspect_ratio, 2);
-		if (empty($y)) return [$width, $width];
+		if (!$y) return [$width, $width];
 		return [$width, round($width / $x * $y)];
 	}
 
 	function image_scale_by_height($height, $aspect_ratio) {
 		list($x, $y) = preg_split('#[:/]#', $aspect_ratio, 2);
-		if (empty($x)) return [$height, $height];
+		if (!$x) return [$height, $height];
 		return [round($height / $y * $x), $height];
 	}
 

@@ -26,7 +26,7 @@
 
 			if (!empty($_POST['totp_setup'])) {
 				session::$data['totp_pending_secret'] = totp_generate_secret();
-				redirect(document::ilink());
+				reload();
 				exit;
 			}
 
@@ -49,7 +49,7 @@
 
 				unset(session::$data['totp_pending_secret']);
 				notices::add('success', t('success_totp_enabled', 'TOTP has been enabled'));
-				redirect(document::ilink());
+				reload();
 				exit;
 			}
 
@@ -68,7 +68,7 @@
 
 				unset(session::$data['totp_pending_secret']);
 				notices::add('success', t('success_totp_disabled', 'TOTP has been disabled'));
-				redirect(document::ilink());
+				reload();
 				exit;
 			}
 

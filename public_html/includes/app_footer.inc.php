@@ -38,13 +38,13 @@
 		);
 
 		$url = document::ilink('f:push_jobs');
-		$disabled_functions = preg_split('#\s*,\s*#', ini_get('disable_functions'), -1, PREG_SPLIT_NO_EMPTY);
+		$disabled_functions = f::string_split(ini_get('disable_functions'));
 
 		if (!in_array('exec', $disabled_functions)) {
 			exec(implode('', [
 				'(',
-				' command -v wget >/dev/null &&',
-				' wget -q -O - "'. escapeshellarg($url) .'"',
+				' command -v wget >/dev/null',
+				' && wget -q -O - "'. escapeshellarg($url) .'"',
 				' || curl -s "'. escapeshellarg($url).'"',
 				') > /dev/null 2>&1 &',
 			]));
