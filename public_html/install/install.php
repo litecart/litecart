@@ -115,6 +115,7 @@
 	require_once FS_DIR_APP . 'includes/nodes/nod_functions.inc.php';
 	require_once FS_DIR_APP . 'includes/clients/http_client.inc.php';
 	require_once FS_DIR_APP . 'includes/functions/func_file.inc.php';
+	require_once FS_DIR_APP . 'includes/functions/func_csv.inc.php';
 	require_once FS_DIR_APP . 'includes/error_handler.inc.php';
 
 	require_once __DIR__ . '/includes/header.inc.php';
@@ -626,26 +627,66 @@
 
 		### Database > Tables > Data ##################################
 
-		echo '<p>Writing database table data... ';
+		if (file_exists(__DIR__.'/data.sql')) {
 
-		$sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, file_get_contents('data.sql'));
-		$sql = preg_replace('#\r\n?#', "\n", $sql);
+			echo '<p>Writing database table data from SQL file... ';
 
-		foreach ([
-			'{STORE_NAME}' => isset($_REQUEST['store_name']) ? $_REQUEST['store_name'] : '',
-			'{STORE_EMAIL}' => isset($_REQUEST['store_email']) ? $_REQUEST['store_email'] : '',
-			'{STORE_TIME_ZONE}' => isset($_REQUEST['store_time_zone']) ? $_REQUEST['store_time_zone'] : '',
-			'{STORE_COUNTRY_CODE}' => isset($_REQUEST['country_code']) ? $_REQUEST['country_code'] : '',
-		] as $search => $replace) {
-			$sql = str_replace($search, database::input($replace), $sql);
+			$sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, file_get_contents(__DIR__.'/data.sql'));
+
+			foreach ([
+				'{STORE_NAME}' => isset($_REQUEST['store_name']) ? $_REQUEST['store_name'] : '',
+				'{STORE_EMAIL}' => isset($_REQUEST['store_email']) ? $_REQUEST['store_email'] : '',
+				'{STORE_TIME_ZONE}' => isset($_REQUEST['store_time_zone']) ? $_REQUEST['store_time_zone'] : '',
+				'{STORE_COUNTRY_CODE}' => isset($_REQUEST['country_code']) ? $_REQUEST['country_code'] : '',
+			] as $search => $replace) {
+				$sql = str_replace($search, database::input($replace), $sql);
+			}
+
+			foreach (preg_split('#^-- -----*$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {
+				$query = preg_replace('#^-- .*?\R+#m', '', $query);
+				database::query($query);
+			}
+
+			echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 		}
 
-		foreach (preg_split('#^-- -----*$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {
-			$query = preg_replace('#^-- .*?\R+#m', '', $query);
-			database::query($query);
-		}
+		if ($data_files = glob(__DIR__.'/data/*.csv')) {
 
-		echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+			echo '<p>Writing database table data from CSV files... ';
+
+			foreach ($data_files as $file) {
+
+				$table = DB_TABLE_PREFIX . basename($file, '.csv');
+
+				$contents = file_get_contents($file);
+
+				foreach ([
+					'{STORE_NAME}' => isset($_REQUEST['store_name']) ? $_REQUEST['store_name'] : '',
+					'{STORE_EMAIL}' => isset($_REQUEST['store_email']) ? $_REQUEST['store_email'] : '',
+					'{STORE_TIME_ZONE}' => isset($_REQUEST['store_time_zone']) ? $_REQUEST['store_time_zone'] : '',
+					'{STORE_COUNTRY_CODE}' => isset($_REQUEST['country_code']) ? $_REQUEST['country_code'] : '',
+				] as $search => $replace) {
+					$contents = str_replace($search, database::input($replace), $contents);
+				}
+
+				$rows = f::csv_decode($contents);
+
+				$query = "INSERT INTO `". database::input($table) ."` (". implode(', ', array_keys($rows[0])) .") VALUES ";
+
+				foreach ($rows as $columns) {
+					$query .= "(". implode(', ', $columns) ."),";
+				}
+
+				$query = rtrim($query, ',') . ";";
+
+				echo 'Importing '. basename($file) .'... ';
+				database::query($query);
+
+				echo '<span class="ok">[OK]</span></p>' . PHP_EOL;
+			}
+
+			echo PHP_EOL;
+		}
 
 		### Files > Default Data ######################################
 

@@ -1,0 +1,15 @@
+id,hidden,state,icon,color,name,is_sale,is_archived,is_trackable,stock_action,updated_at,created_at
+1,0,created,icon-plus,#c0c0c0,"{""en"": ""Created""}",0,0,0,none,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+2,0,on_hold,icon-money,#c0c0c0,"{""en"": ""Awaiting payment""}",0,0,0,none,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+3,0,on_hold,icon-pause,#c0c0c0,"{""en"": ""On hold""}",1,0,0,none,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+4,0,ready,icon-clock-o,#bec11d,"{""en"": ""Ready""}",1,0,0,reserve,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+5,0,delayed,icon-hourglass-half,#e3ab44,"{""en"": ""Delayed""}",1,0,0,reserve,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+6,0,processing,icon-cog,#e3ab44,"{""en"": ""Processing""}",1,0,0,reserve,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+7,0,completed,icon-check,#99cc66,"{""en"": ""Completed""}",1,1,0,commit,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+8,0,dispatched,icon-truck,#99cc66,"{""en"": ""Dispatched""}",1,1,1,commit,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+9,0,in_transit,icon-truck,#e3ab44,"{""en"": ""In Transit""}",1,0,1,commit,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+10,0,delivered,icon-home,#99cc66,"{""en"": ""Delivered""}",1,1,0,commit,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+11,0,returning,icon-undo,#e3ab44,"{""en"": ""Returning""}",1,0,1,reserve,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+12,0,returned,icon-building,#99cc66,"{""en"": ""Returned""}",1,1,0,commit,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+13,1,cancelled,icon-times,#ff6666,"{""en"": ""Cancelled""}",0,1,0,none,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+14,1,cancelled,icon-exclamation,#ff6666,"{""en"": ""Fraud""}",0,1,0,none,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP

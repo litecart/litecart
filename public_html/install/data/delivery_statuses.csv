@@ -1,0 +1,3 @@
+id,name,updated_at,created_at
+1,"{""en"": ""1-3 days""}",CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+2,"{""en"": ""3-5 days""}",CURRENT_TIMESTAMP,CURRENT_TIMESTAMP

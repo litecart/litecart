@@ -1,0 +1,6 @@
+id,module_id,type,status,priority,settings,last_log,updated_at,created_at
+1,job_error_reporter,job,1,0,"{""status"":""1"",""frequency"":""Weekly"",""email_receipient"":"""",""priority"":""0""}",,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+2,job_cleaner,job,1,0,"{""status"":""1"",""priority"":""0""}",,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+3,job_mysql_optimizer,job,1,0,"{""status"":""1"",""frequency"":""monthly"",""priority"":""0""}",,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+4,job_shipping_tracker,job,1,0,"{""status"":""1"",""frequency"":""Hourly"",""priority"":""0""}",,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+5,job_sitemap_generator,job,1,0,"{""status"":""1"",""frequency"":""Daily"",""priority"":""0""}",,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
