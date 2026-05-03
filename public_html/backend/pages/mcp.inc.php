@@ -92,6 +92,19 @@
 				);
 			}
 
+		// Resolve administrator's app permissions for per-tool gating
+		$admin_apps = !empty($administrator['apps']) ? json_decode($administrator['apps'], true) : [];
+
+		// Helper: is the administrator allowed to use this MCP tool?
+		// Tool schemas may declare an 'app' key. Tools without 'app' are system tools (allowed for any authenticated admin).
+		// When 'app' is set, restricted admins (non-empty apps map) must have status=1 on that app.
+		$mcp_tool_allowed = function($tool_schema) use ($admin_apps) {
+			$app = $tool_schema['app'] ?? '';
+			if (!$app) return true;
+			if (empty($admin_apps)) return true;
+			return !empty($admin_apps[$app]['status']);
+		};
+
 		// MCP method dispatch
 		switch ($rpc['method']) {
 
@@ -128,6 +141,9 @@
 						return include $mcp_file;
 					})();
 
+					// Skip tools the administrator isn't permitted to use
+					if (!$mcp_tool_allowed($tool_schema)) continue;
+
 					if (!empty($tool_schema['name']) && is_array($tool_schema['inputSchema'])) {
 						$tool_schemas[] = [
 							'name' => $tool_schema['name'],
@@ -162,6 +178,12 @@
 					})();
 
 					if (is_array($tool_schema) && !empty($tool_schema['name']) && $tool_schema['name'] === $params['name']) {
+
+						// Per-tool permission check
+						if (!$mcp_tool_allowed($tool_schema)) {
+							throw new McpException('Tool not permitted for this administrator', 403, -32001, $rpc_id);
+						}
+
 						$tool_function = 'mcp_' . str_replace(['/', '-'], '_', $tool_schema['name']);
 
 						if (function_exists($tool_function)) {

@@ -2,6 +2,7 @@
 
 	return $schema = [
 		'name' => 'orders_list',
+		'app' => 'orders',
 		'description' => 'List recent orders with status, customer, total, and date. Supports filtering by status, customer, and date range.',
 		'inputSchema' => [
 			'type' => 'object',

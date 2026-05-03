@@ -96,15 +96,21 @@
 				throw new Exception('No files or folders selected');
 			}
 
+			// Sanitize incoming paths: f::file_resolve_path() throws when a path
+			// climbs above the storage root via .. segments.
 			if (!empty($_POST['folders'])) {
 				foreach ($_POST['folders'] as $folder) {
-					f::file_delete('storage://' . trim($folder, '/'), true);
+					$resolved = f::file_resolve_path(trim($folder, '/'));
+					if ($resolved === '') continue;
+					f::file_delete('storage://' . $resolved, true);
 				}
 			}
 
 			if (!empty($_POST['files'])) {
 				foreach ($_POST['files'] as $file) {
-					f::file_delete('storage://' . trim($file, '/'));
+					$resolved = f::file_resolve_path(trim($file, '/'));
+					if ($resolved === '') continue;
+					f::file_delete('storage://' . $resolved);
 				}
 			}
 
@@ -156,6 +162,21 @@
 
 			if (empty($_POST['folders']) && empty($_POST['files'])) {
 				throw new Exception('No files or folders selected');
+			}
+
+			// Sanitize incoming paths: reject any traversal above the storage root.
+			if (!empty($_POST['folders'])) {
+				foreach ($_POST['folders'] as &$_folder) {
+					$_folder = f::file_resolve_path(trim($_folder, '/'));
+				}
+				unset($_folder);
+			}
+
+			if (!empty($_POST['files'])) {
+				foreach ($_POST['files'] as &$_file) {
+					$_file = f::file_resolve_path(trim($_file, '/'));
+				}
+				unset($_file);
 			}
 
 			// Pack multiple files into a zip archive
