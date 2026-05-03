@@ -25,11 +25,13 @@
 		$is_helper = preg_match('/\.(json|csv)$/', __DOC__)
 		          || str_ends_with(__DOC__, '_picker');
 
-		if (!empty(administrator::$data['apps'][__APP__]['status'])
-		    && !$is_helper
-		    && !in_array(__DOC__, administrator::$data['apps'][__APP__]['docs'])) {
-			notices::add('errors', t('title_access_denied', 'Access Denied'));
-			return;
+		// Empty apps map = unrestricted (super admin); non-empty = restricted to listed apps/docs.
+		if (!empty(administrator::$data['apps'])) {
+			if (empty(administrator::$data['apps'][__APP__]['status'])
+			    || (!$is_helper && !in_array(__DOC__, administrator::$data['apps'][__APP__]['docs']))) {
+				notices::add('errors', t('title_access_denied', 'Access Denied'));
+				return;
+			}
 		}
 
 		// Resolve requested document file

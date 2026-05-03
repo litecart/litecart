@@ -2,6 +2,7 @@
 
 	return $schema = [
 		'name' => 'stats_summary',
+		'app' => 'reports',
 		'description' => 'Returns shop statistics: sales totals (month/year/all-time), order counts, averages, top 5 products by quantity, and customer/product/category counts. All monetary values in the store\'s base currency.',
 		'inputSchema' => [
 			'type' => 'object',

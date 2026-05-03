@@ -2,6 +2,7 @@
 
 	return $schema = [
 		'name' => 'products_search',
+		'app' => 'catalog',
 		'description' => 'Search products by keyword, category, or brand. Returns id, name, price, quantity, status, and image URL.',
 		'inputSchema' => [
 			'type' => 'object',
