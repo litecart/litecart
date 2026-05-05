@@ -242,7 +242,8 @@ jobs:
                 if (!empty(\$def['length'])) \$type .= '(' . \$def['length'] . ')';
                 if (!empty(\$def['unsigned'])) \$type .= ' UNSIGNED';
                 \$null = (!isset(\$def['null']) || \$def['null']) ? '' : ' NOT NULL';
-                \$default = isset(\$def['default']) ? ' DEFAULT ' . \$def['default'] : '';
+                \$blob_text = in_array(strtoupper(\$def['type']), ['TEXT','TINYTEXT','MEDIUMTEXT','LONGTEXT','BLOB','TINYBLOB','MEDIUMBLOB','LONGBLOB','JSON','GEOMETRY']);
+                \$default = isset(\$def['default']) ? ' DEFAULT ' . (\$blob_text ? '(' . \$def['default'] . ')' : \$def['default']) : '';
                 \$auto = !empty(\$def['auto_increment']) ? ' AUTO_INCREMENT' : '';
                 \$cols[] = \"\`\$col\` \$type\$null\$default\$auto\";
               }
@@ -390,7 +391,8 @@ jobs:
                 if (!empty(\$def['length'])) \$type .= '(' . \$def['length'] . ')';
                 if (!empty(\$def['unsigned'])) \$type .= ' UNSIGNED';
                 \$null = (!isset(\$def['null']) || \$def['null']) ? '' : ' NOT NULL';
-                \$default = isset(\$def['default']) ? ' DEFAULT ' . \$def['default'] : '';
+                \$blob_text = in_array(strtoupper(\$def['type']), ['TEXT','TINYTEXT','MEDIUMTEXT','LONGTEXT','BLOB','TINYBLOB','MEDIUMBLOB','LONGBLOB','JSON','GEOMETRY']);
+                \$default = isset(\$def['default']) ? ' DEFAULT ' . (\$blob_text ? '(' . \$def['default'] . ')' : \$def['default']) : '';
                 \$auto = !empty(\$def['auto_increment']) ? ' AUTO_INCREMENT' : '';
                 \$cols[] = \"\`\$col\` \$type\$null\$default\$auto\";
               }
