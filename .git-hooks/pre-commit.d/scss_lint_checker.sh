@@ -1,7 +1,7 @@
 #!/bin/env bash
 
 # Get the list of SCSS files staged to be committed
-scss_files=$(git diff --cached --name-only --diff-filter=ACM | grep '\.scss$')
+scss_files=$(git diff --cached --name-only --diff-filter=ACM | grep '\.s?css$')
 
 # Check if there are any SCSS files to lint
 if [ -z "$scss_files" ]; then
@@ -10,7 +10,7 @@ fi
 
 echo ""
 echo "----------------------------------------"
-echo "-- SCSS Lint Checker Pre-Commit Hook --"
+echo "-- (S)CSS Lint Checker Pre-Commit Hook --"
 echo "----------------------------------------"
 echo ""
 
@@ -28,7 +28,7 @@ do
 
 	if [ $lint_result -ne 0 ]; then
 		echo " [ERROR]"
-		echo "  - $file contains SCSS errors!"
+		echo "  - $file contains (S)CSS errors!"
 		echo "  - $output"
 		exit 1
 	fi
