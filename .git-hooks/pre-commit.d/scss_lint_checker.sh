@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/env bash
 
 # Get the list of SCSS files staged to be committed
 scss_files=$(git diff --cached --name-only --diff-filter=ACM | grep '\.scss$')

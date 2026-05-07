@@ -1,12 +1,44 @@
-#!/bin/bash
+#!/bin/env bash
 
 for hook in $(dirname "$0")/pre-commit.d/*; do
 
-	if [[ $hook == *.php ]]; then php $hook
-	elif [[ $hook == *.js ]]; then node $hook
-	elif [[ $hook == *.py ]]; then python $hook
-	elif [[ $hook == *.sh ]]; then bash $hook
-	else bash $hook
+	# Execute a shell script hook with Bash
+	if [[ $hook == *.sh ]]; then
+		bash $hook
+
+	# Execute a PHP hook
+	elif [[ $hook == *.php ]]; then
+		if command -v php &> /dev/null; then
+			php $hook
+		else
+			echo "PHP could not be found. Skipping PHP hooks."
+		fi
+		continue
+
+	# Execute a JS hook with Bun or Node.js
+	elif [[ $hook == *.js ]]; then
+		if command -v bun &> /dev/null; then
+			bun $hook
+		elif command -v node &> /dev/null; then
+			node $hook
+		else
+			echo "Bun or Node.js could not be found. Skipping JS hooks."
+		fi
+		continue
+
+	# Execute a Python hook with Python
+	elif [[ $hook == *.py ]]; then
+		if command -v python &> /dev/null; then
+			python $hook
+		else
+			echo "Python could not be found. Skipping Python hooks."
+		fi
+		continue
+
+	# Skip unknown hook
+	else
+		echo "Unknown hook type: $hook, skipping."
+		continue
 	fi
 
 	RESULT=$?

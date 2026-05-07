@@ -1,4 +1,7 @@
+#!/usr/bin/env php
 <?php
+
+	declare(strict_types=1);
 
 	$staged_files = preg_split('#(\r\n?|\n)#', shell_exec('git diff --cached --name-only 2>&1'), -1, PREG_SPLIT_NO_EMPTY);
 	$json_files = preg_grep('#\.json$#', $staged_files);

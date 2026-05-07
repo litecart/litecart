@@ -1,4 +1,7 @@
+#!/usr/bin/env php
 <?php
+
+	declare(strict_types=1);
 
 	include_once __DIR__.'/../../public_html/includes/app_header.inc.php';
 

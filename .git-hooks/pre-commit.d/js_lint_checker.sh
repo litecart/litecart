@@ -15,8 +15,8 @@ echo "--------------------------------------"
 echo ""
 
 # Check dependencies
-if ! command -v node &> /dev/null && ! command -v bun &> /dev/null; then
-	echo "Node.js or Bun could not be found. Please install Node.js or Bun."
+if ! command -v bun &> /dev/null && ! command -v node &> /dev/null; then
+	echo "Bun or Node.js could not be found. Please install one of them."
 	exit 1
 fi
 

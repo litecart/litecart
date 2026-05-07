@@ -1,4 +1,7 @@
+#!/usr/bin/env php
 <?php
+
+	declare(strict_types=1);
 
 	$checksums_file = 'public_html/install/checksums.md5';
 	$tracked_files = preg_split('#(\r\n?|\n)#', shell_exec('git ls-files'), -1, PREG_SPLIT_NO_EMPTY);

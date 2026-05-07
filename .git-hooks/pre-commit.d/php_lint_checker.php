@@ -1,4 +1,7 @@
+#!/usr/bin/env php
 <?php
+
+	declare(strict_types=1);
 
 	echo PHP_EOL;
 

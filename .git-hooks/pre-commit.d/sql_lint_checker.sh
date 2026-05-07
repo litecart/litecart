@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/env bash
 
 # Get the list of SQL files staged to be committed
 sql_files=$(git diff --cached --name-only --diff-filter=ACM | grep '\.sql$')
