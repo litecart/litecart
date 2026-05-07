@@ -29,19 +29,39 @@ const banner = [
 ].join('\n');
 
 const tabify = function() {
-  return new Transform({
-    objectMode: true,
-    transform(file, _, cb) {
-      if (file.isBuffer()) {
-        let contents = file.contents.toString();
-        contents = contents.replace(/^( {2})+/gm, match =>
-          '\t'.repeat(match.length / 2)
-        );
-        file.contents = Buffer.from(contents);
-      }
-      cb(null, file);
-    }
-  });
+	const indentSize = 2;
+	return new Transform({
+		objectMode: true,
+		transform(file, _, cb) {
+			if (file.isBuffer()) {
+				let contents = file.contents.toString();
+				const newline = contents.indexOf('\r\n') !== -1 ? '\r\n' : '\n';
+				const lines = contents.split(/\r\n|\n/);
+				for (let i = 0; i < lines.length; i++) {
+					const line = lines[i];
+					const m = line.match(/^([ \t]*)/);
+					if (!m) continue;
+					const ws = m[1];
+					if (!ws) continue;
+					let spaceCount = 0;
+					for (const ch of ws) {
+						if (ch === '\t') spaceCount += indentSize;
+						else spaceCount += 1;
+					}
+					const tabs = Math.floor(spaceCount / indentSize);
+					let leftover = spaceCount % indentSize;
+					const rest = line.slice(ws.length);
+					// For comment lines that start with '*', ensure there is at least one space
+					// after the tabs so the asterisk remains separated ("\t * ...").
+					if (rest.startsWith('*') && leftover === 0) leftover = 1;
+					lines[i] = '\t'.repeat(tabs) + (leftover ? ' '.repeat(leftover) : '') + rest;
+				}
+				contents = lines.join(newline);
+				file.contents = Buffer.from(contents);
+			}
+			cb(null, file);
+		}
+	});
 }
 
 gulp.task('scss-framework', function() {
