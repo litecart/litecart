@@ -117,12 +117,13 @@
 
 	// Brands
 	$_page->snippets['brands'] = database::query(
-		"select distinct b.id, b.name from ". DB_TABLE_PREFIX ."products p
-		left join ". DB_TABLE_PREFIX ."brands b on (b.id = p.brand_id)
-		". (!empty($_GET['category_id']) ? " left join ". DB_TABLE_PREFIX ."products_to_categories pc on pc.product_id = p.id " : "") ."
-		where p.status
-		and brand_id
-		". (!empty($_GET['category_id']) ? "and pc.category_id = " . (int)$_GET['category_id']  : "") ."
+		"select id, name from ". DB_TABLE_PREFIX ."brands
+		where id in (
+		  select brand_id from ". DB_TABLE_PREFIX ."products
+			". (!empty($_GET['category_id']) ? " left join ". DB_TABLE_PREFIX ."products_to_categories pc on pc.product_id = p.id " : "") ."
+		  where status		  and brand_id
+			". (!empty($_GET['category_id']) ? "and pc.category_id = " . (int)$_GET['category_id']  : "") ."
+		)
 		order by b.name asc;"
 	)->fetch_all(function($brand) {
 		return [

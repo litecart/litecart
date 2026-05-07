@@ -314,7 +314,7 @@
 		)->fetch_all('id');
 
 		$matched_categories = database::query(
-			"select distinct id from ". DB_TABLE_PREFIX ."categories
+			"select id from ". DB_TABLE_PREFIX ."categories
 			where id = '". database::input($_GET['query']) ."'
 			or find_in_set('". database::input($_GET['query']) ."', keywords)
 			or (
@@ -326,7 +326,7 @@
 				or match(json_value(short_description, '$.". database::input(language::$selected['code']) ."') against ('*". database::input_fulltext($_GET['query']) ."*')
 			)
 			or id in (
-				select distinct category_id from ". DB_TABLE_PREFIX ."products_to_categories
+				select category_id from ". DB_TABLE_PREFIX ."products_to_categories
 				where product_id in ('". implode("', '", database::input($matched_products)) ."')
 			);"
 		)->fetch_all('id');
@@ -339,7 +339,7 @@
 
 	} else {
 		$category_branches = database::query(
-			"select distinct id from ". DB_TABLE_PREFIX ."categories
+			"select id from ". DB_TABLE_PREFIX ."categories
 			where parent_id is null;"
 		)->fetch_all('id');
 		$opened_categories = !empty($_GET['category_id']) ? array_keys(reference::category($_GET['category_id'])->path) : [];
