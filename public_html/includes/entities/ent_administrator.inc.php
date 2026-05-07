@@ -25,6 +25,8 @@
 
 			$this->data['apps'] = [];
 			$this->data['widgets'] = [];
+			$this->data['known_ips'] = [];
+			$this->data['known_fingerprints'] = [];
 
 			$this->previous = $this->data;
 		}
@@ -53,6 +55,8 @@
 
 			$this->data['apps'] = !empty($this->data['apps']) ? json_decode($this->data['apps'], true) : [];
 			$this->data['widgets'] = !empty($this->data['widgets']) ? json_decode($this->data['widgets'], true) : [];
+			$this->data['known_ips'] = f::string_split($this->data['known_ips']);
+			$this->data['known_fingerprints'] = f::string_split($this->data['known_fingerprints']);
 
 			$this->previous = $this->data;
 		}

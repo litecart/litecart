@@ -151,25 +151,36 @@ jobs:
           npx gulp scss-trumbowyg
 
   platform-tests:
-    name: Platform Tests
+    name: Platform Tests (${{ matrix.db.slug }})
     runs-on: ubuntu-latest
     needs: [lint]
 
+    strategy:
+      fail-fast: false
+      matrix:
+        db:
+          - image: mariadb:12
+            slug: mariadb-12
+            health: 'healthcheck.sh --connect --innodb_initialized'
+          - image: mysql:8.4
+            slug: mysql-8.4
+            health: 'mysqladmin ping -h localhost'
+
     services:
-      mariadb:
-        image: mariadb:12
+      database:
+        image: ${{ matrix.db.image }}
         env:
-          MARIADB_ROOT_PASSWORD: litecart_root
-          MARIADB_DATABASE: litecart
-          MARIADB_USER: litecart
-          MARIADB_PASSWORD: litecart
+          MYSQL_ROOT_PASSWORD: litecart_root
+          MYSQL_DATABASE: litecart
+          MYSQL_USER: litecart
+          MYSQL_PASSWORD: litecart
         ports:
           - 3306:3306
         options: >-
-          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-cmd="${{ matrix.db.health }}"
           --health-interval=10s
           --health-timeout=5s
-          --health-retries=5
+          --health-retries=10
 
     steps:
       - name: Checkout
@@ -231,7 +242,8 @@ jobs:
                 if (!empty(\$def['length'])) \$type .= '(' . \$def['length'] . ')';
                 if (!empty(\$def['unsigned'])) \$type .= ' UNSIGNED';
                 \$null = (!isset(\$def['null']) || \$def['null']) ? '' : ' NOT NULL';
-                \$default = isset(\$def['default']) ? ' DEFAULT ' . \$def['default'] : '';
+                \$blob_text = in_array(strtoupper(\$def['type']), ['TEXT','TINYTEXT','MEDIUMTEXT','LONGTEXT','BLOB','TINYBLOB','MEDIUMBLOB','LONGBLOB','JSON','GEOMETRY']);
+                \$default = isset(\$def['default']) ? ' DEFAULT ' . (\$blob_text ? '(' . \$def['default'] . ')' : \$def['default']) : '';
                 \$auto = !empty(\$def['auto_increment']) ? ' AUTO_INCREMENT' : '';
                 \$cols[] = \"\`\$col\` \$type\$null\$default\$auto\";
               }
@@ -283,25 +295,36 @@ jobs:
         run: php .git-hooks/pre-commit.d/platform_tests.php
 
   e2e-tests:
-    name: E2E Tests (Playwright)
+    name: E2E Tests (${{ matrix.db.slug }})
     runs-on: ubuntu-latest
     needs: [lint, build]
 
+    strategy:
+      fail-fast: false
+      matrix:
+        db:
+          - image: mariadb:12
+            slug: mariadb-12
+            health: 'healthcheck.sh --connect --innodb_initialized'
+          - image: mysql:8.4
+            slug: mysql-8.4
+            health: 'mysqladmin ping -h localhost'
+
     services:
-      mariadb:
-        image: mariadb:11
+      database:
+        image: ${{ matrix.db.image }}
         env:
-          MARIADB_ROOT_PASSWORD: litecart_root
-          MARIADB_DATABASE: litecart
-          MARIADB_USER: litecart
-          MARIADB_PASSWORD: litecart
+          MYSQL_ROOT_PASSWORD: litecart_root
+          MYSQL_DATABASE: litecart
+          MYSQL_USER: litecart
+          MYSQL_PASSWORD: litecart
         ports:
           - 3306:3306
         options: >-
-          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-cmd="${{ matrix.db.health }}"
           --health-interval=10s
           --health-timeout=5s
-          --health-retries=5
+          --health-retries=10
 
     steps:
       - name: Checkout
@@ -368,7 +391,8 @@ jobs:
                 if (!empty(\$def['length'])) \$type .= '(' . \$def['length'] . ')';
                 if (!empty(\$def['unsigned'])) \$type .= ' UNSIGNED';
                 \$null = (!isset(\$def['null']) || \$def['null']) ? '' : ' NOT NULL';
-                \$default = isset(\$def['default']) ? ' DEFAULT ' . \$def['default'] : '';
+                \$blob_text = in_array(strtoupper(\$def['type']), ['TEXT','TINYTEXT','MEDIUMTEXT','LONGTEXT','BLOB','TINYBLOB','MEDIUMBLOB','LONGBLOB','JSON','GEOMETRY']);
+                \$default = isset(\$def['default']) ? ' DEFAULT ' . (\$blob_text ? '(' . \$def['default'] . ')' : \$def['default']) : '';
                 \$auto = !empty(\$def['auto_increment']) ? ' AUTO_INCREMENT' : '';
                 \$cols[] = \"\`\$col\` \$type\$null\$default\$auto\";
               }
@@ -434,6 +458,6 @@ jobs:
         uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
-          name: playwright-report
+          name: playwright-report-${{ matrix.db.slug }}
           path: playwright-report/
           retention-days: 14

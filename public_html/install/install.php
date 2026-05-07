@@ -547,7 +547,9 @@
 				}
 
 				if (isset($column['default'])) {
-					$sql .= ' DEFAULT '. $column['default'] .'';
+					// MySQL 8.0+ requires parentheses around DEFAULT for BLOB/TEXT/JSON/GEOMETRY columns
+					$blob_text = in_array(strtoupper($column['type']), ['TEXT', 'TINYTEXT', 'MEDIUMTEXT', 'LONGTEXT', 'BLOB', 'TINYBLOB', 'MEDIUMBLOB', 'LONGBLOB', 'JSON', 'GEOMETRY']);
+					$sql .= ' DEFAULT '. ($blob_text ? '('. $column['default'] .')' : $column['default']);
 				}
 
 				if (!empty($column['on_update'])) {

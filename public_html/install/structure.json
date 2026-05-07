@@ -1956,7 +1956,8 @@
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
 				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
 			},
-			"indexes": {
+			"primary_key": ["id"],
+			"keys": {
 				"type": ["type"],
 				"status": ["status"],
 				"webhook_id": ["webhook_id"],
