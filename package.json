@@ -26,6 +26,7 @@
 		"@playwright/test": "^1.59.1",
 		"@sequencemedia/gulp-clean-css": "^1.0.285",
 		"@sequencemedia/gulp-sourcemaps": "^1.0.301",
+		"editorconfig-checker": "^6.1.1",
 		"gulp": "^5.0.1",
 		"gulp-clean-css": "^4.3.0",
 		"gulp-concat": "^2.6.1",
