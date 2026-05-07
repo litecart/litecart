@@ -26,19 +26,30 @@ do
 	echo -n "- $file"
 
 	# Get the staged content of the file
-	tmp_file=$(mktemp --suffix=.js)
+	base=$(basename -- "$file")
+	if [[ "$base" == *.* ]]; then
+		suffix=".${base##*.}"
+	else
+		suffix=".tmp"
+	fi
+	tmp_file=$(mktemp --suffix="$suffix")
 	git cat-file blob ":$file" > "$tmp_file"
 
-	# Check syntax using Node.js or Bun
-	if command -v bun &> /dev/null; then
-		output=$(bun --check "$tmp_file" 2>&1)
-	else
-		output=$(node --check "$tmp_file" 2>&1)
-	fi
-	lint_result=$?
+	# Create a processed copy that mocks top-level waitFor(...) calls to a safe noop
+	proc_file=$(mktemp --suffix="$suffix")
+	sed -E 's/(^|[^._[:alnum:]])waitFor[[:space:]]*\(/\1(typeof waitFor === "function" ? waitFor : function(){})(/g' "$tmp_file" > "$proc_file"
 
-	# Remove temporary file
-	rm -f "$tmp_file"
+	# Prefer Node's syntax check when available; fall back to Bun
+	if command -v bun &> /dev/null; then
+		output=$(bun --check "$proc_file" 2>&1)
+		lint_result=$?
+	else
+		output=$(node --check "$proc_file" 2>&1)
+		lint_result=$?
+	fi
+
+	# Remove temporary files
+	rm -f "$tmp_file" "$proc_file"
 
 	if [ $lint_result -ne 0 ]; then
 		echo " [ERROR]"
