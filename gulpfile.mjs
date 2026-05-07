@@ -10,6 +10,7 @@ import * as dartSass from 'sass';
 import gulpSass from 'gulp-sass';
 import sourcemaps from '@sequencemedia/gulp-sourcemaps';
 import uglify from 'gulp-uglify';
+import { Transform } from 'stream';
 
 import packageData from './package.json' with { type: 'json' };
 
@@ -27,6 +28,22 @@ const banner = [
 	'',
 ].join('\n');
 
+const tabify = function() {
+  return new Transform({
+    objectMode: true,
+    transform(file, _, cb) {
+      if (file.isBuffer()) {
+        let contents = file.contents.toString();
+        contents = contents.replace(/^( {2})+/gm, match =>
+          '\t'.repeat(match.length / 2)
+        );
+        file.contents = Buffer.from(contents);
+      }
+      cb(null, file);
+    }
+  });
+}
+
 gulp.task('scss-framework', function() {
 
 	return gulp.src('public_html/assets/litecore/scss/{framework/main,email,printable}.scss', { allowEmpty: true })
@@ -39,6 +56,7 @@ gulp.task('scss-framework', function() {
 			}
 		}))
 		.pipe(header(banner, { pkg: packageData }))
+		.pipe(tabify()) // Use tab indentation
 		.pipe(gulp.dest('public_html/assets/litecore/css/', { overwrite: true }))
 		.pipe(cleancss())
 		.pipe(rename({ extname: '.min.css' }))
@@ -65,12 +83,15 @@ gulp.task('scss-backend', function() {
 	gulp.src('public_html/backend/template/scss/vari*bles.scss')
 		.pipe(sass(sassOptions).on('error', sass.logError))
 		.pipe(header(banner, { pkg: packageData }))
+		.pipe(tabify())
 		.pipe(gulp.dest('public_html/backend/template/css/', { overwrite: true }));
 
 	return gulp.src(['public_html/backend/template/scss/*.scss', '!public_html/backend/template/scss/variables.scss'])
 		.pipe(sourcemaps.init())
 		.pipe(sass(sassOptions).on('error', sass.logError))
 		.pipe(header(banner, { pkg: packageData }))
+		//.pipe(tabify()) // Use tab indentation
+		//.pipe(gulp.dest('public_html/backend/template/css/', { overwrite: true }))
 		.pipe(cleancss())
 		.pipe(rename({ extname: '.min.css' }))
 		.pipe(sourcemaps.write('.', { includeContent: false }))
@@ -107,11 +128,13 @@ gulp.task('scss-frontend', function() {
 	gulp.src('public_html/frontend/templates/default/scss/vari*bles.scss')
 		.pipe(sass(sassOptions).on('error', sass.logError))
 		.pipe(header(banner, { pkg: packageData }))
+		.pipe(tabify()) // Use tab indentation
 		.pipe(gulp.dest('public_html/frontend/templates/default/css/', { overwrite: true }));
 
 	return gulp.src(['public_html/frontend/templates/default/scss/*.scss', '!public_html/frontend/templates/default/scss/variables*.scss'])
 		.pipe(sourcemaps.init())
 		.pipe(sass({ ...sassOptions, silenceDeprecations: ['import'] }).on('error', sass.logError))
+		.pipe(tabify()) // Use tab indentation
 		.pipe(gulp.dest('public_html/frontend/templates/default/css/', { overwrite: true }))
 		.pipe(cleancss())
 		.pipe(header(banner, { pkg: packageData }))
@@ -136,6 +159,7 @@ gulp.task('js-frontend', function() {
 gulp.task('scss-chartist', function() {
 	return gulp.src('public_html/assets/chartist/chartist.scss', { allowEmpty: true })
 		.pipe(sass(sassOptions).on('error', sass.logError))
+		//.pipe(tabify()) // Use tab indentation
 		//.pipe(gulp.dest('public_html/assets/chartist/', { overwrite: true }))
 		//.pipe(sourcemaps.write('.', { includeContent: false }))
 		.pipe(cleancss())
@@ -150,6 +174,7 @@ gulp.task('scss-trumbowyg', function() {
 		.src('public_html/assets/trumbowyg/ui/*.scss')
 		.pipe(sass({ ...sassOptions, silenceDeprecations: ['legacy-js-api'] })
 		.on('error', sass.logError))
+		//.pipe(tabify()) // Use tab indentation
 		//.pipe(gulp.dest('public_html/assets/trumbowyg/ui/'))
 		//.pipe(sourcemaps.write('.', { includeContent: false }))
 		.pipe(cleancss())
