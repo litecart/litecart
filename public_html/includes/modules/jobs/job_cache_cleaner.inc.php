@@ -39,6 +39,8 @@
           $deleted_files++;
         }
 
+        if (!is_dir($dir)) continue;
+
         $is_empty_dir = !(new \FilesystemIterator($dir))->valid();
 
         if ($is_empty_dir) {
