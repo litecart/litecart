@@ -99,9 +99,9 @@
 			case (substr($setting['function'], 0, 6) == 'toggle'):
 
 				if (in_array(strtolower($setting['value']), ['1', 'active', 'enabled', 'on', 'true', 'yes'])) {
-				 $settings[$key]['value'] = t('title_true', 'True');
+					$settings[$key]['value'] = t('title_true', 'True');
 				} else if (in_array(strtolower($setting['value']), ['', '0', 'inactive', 'disabled', 'off', 'false', 'no'])) {
-				 $settings[$key]['value'] = t('title_false', 'False');
+					$settings[$key]['value'] = t('title_false', 'False');
 				}
 
 				break;

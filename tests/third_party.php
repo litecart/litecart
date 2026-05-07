@@ -7,7 +7,7 @@
 		// Start a MySQL transaction so we can rollback the test
 		database::query("start transaction;");
 
-		 // Fetch the current auto increment ID
+		// Fetch the current auto increment ID
 		$auto_increment_id = database::query(
 			"SHOW TABLE STATUS LIKE '". DB_TABLE_PREFIX ."third_parties';"
 		)->fetch('Auto_increment');

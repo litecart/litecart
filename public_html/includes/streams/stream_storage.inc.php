@@ -55,7 +55,7 @@
 		}
 
 		public function stream_close(): void {
-			 fclose($this->_stream);
+			fclose($this->_stream);
 		}
 
 		public function stream_eof(): bool {

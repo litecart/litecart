@@ -7,7 +7,7 @@
 	 *   ~/frontend/templates/default/partials/box_brand_logotypes.inc.php
 	 */
 
-	 $box_brand_logotypes = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/box_brand_logotypes.inc.php');
+		$box_brand_logotypes = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/box_brand_logotypes.inc.php');
 
 	$box_brand_logotypes_cache_token = cache::token('box_brand_logotypes');
 	if (!$box_brand_logotypes->snippets['brands'] = cache::get($box_brand_logotypes_cache_token)) {

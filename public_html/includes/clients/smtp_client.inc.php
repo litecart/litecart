@@ -61,8 +61,9 @@
 			stream_set_blocking($this->_socket, true);
 			stream_set_timeout($this->_socket, 6);
 
-			$this->read(220)
-					 ->write("EHLO {$_SERVER['SERVER_NAME']}\r\n", 250);
+			$this
+				->read(220)
+				->write("EHLO {$_SERVER['SERVER_NAME']}\r\n", 250);
 
 			if (preg_match('#250.STARTTLS#', $this->_last_response)) {
 				$this->write("STARTTLS\r\n", 220);
@@ -89,14 +90,16 @@
 						break;
 
 					case (in_array('LOGIN', $auths)):
-						$this->write("AUTH LOGIN\r\n", 334)
-								 ->write(base64_encode($this->_username) . "\r\n", 334)
-								 ->write(base64_encode($this->_password) . "\r\n", 235);
+						$this
+							->write("AUTH LOGIN\r\n", 334)
+							->write(base64_encode($this->_username) . "\r\n", 334)
+							->write(base64_encode($this->_password) . "\r\n", 235);
 						break;
 
 					case (in_array('PLAIN', $auths)):
-						$this->write("AUTH PLAIN\r\n", 334)
-								 ->write(base64_encode("\0" . $this->_username . "\0" . $this->_password) . "\r\n", 235);
+						$this
+							->write("AUTH PLAIN\r\n", 334)
+							->write(base64_encode("\0" . $this->_username . "\0" . $this->_password) . "\r\n", 235);
 						break;
 
 					default:
@@ -187,9 +190,10 @@
 				$this->write("RCPT TO: <$recipient>\r\n", 250);
 			}
 
-			$this->write("DATA\r\n", 354)
-					 ->write("$data\r\n")
-					 ->write(".\r\n", 250);
+			$this
+				->write("DATA\r\n", 354)
+				->write("$data\r\n")
+				->write(".\r\n", 250);
 
 			return true;
 		}

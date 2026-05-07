@@ -29,6 +29,10 @@ foreach (f::file_search('storage://addons/*/vmod.xml') as $file) {
 	}
 }
 
+foreach ($addon['packages'] as $i => $package) {
+	$addon['packages'][$i]['installed'] = ($package['version'] == $addon['installed']['version']) ? true: false;
+}
+
 if (!($profile = marketplace_client::whoami())) {
 	notices::add('warnings', 'Failed to retrieve user profile');
 }
@@ -204,9 +208,7 @@ f::draw_lightbox();
 						<div class="images">
 							<?php foreach (array_slice($addon['images'], 1) as $image) { ?>
 								<a href="<?php echo document::href_link($image['original']); ?>" data-toggle="lightbox">
-									<img class="thumbnail" src="<?php echo f::escape_html($image['thumbnail']); ?>" srcset="<?php echo f::escape_html($image['thumbnail']); ?> 1x, <?php echo f::escape_html($image['thumbnail_2x']); ?> 2x" alt="<?php echo f::escape_html(
- 	$addon['name'],
- ); ?>">
+									<img class="thumbnail" src="<?php echo f::escape_html($image['thumbnail']); ?>" srcset="<?php echo f::escape_html($image['thumbnail']); ?> 1x, <?php echo f::escape_html($image['thumbnail_2x']); ?> 2x" alt="<?php echo f::escape_html($addon['name']); ?>">
 								</a>
 							<?php } ?>
 						</div>
@@ -264,15 +266,8 @@ f::draw_lightbox();
 								<?php foreach ($addon['packages'] as $package) { ?>
 								<li>
 									<label class="option">
-										<input type="radio" name="package_id" value="<?php echo $package['id']; ?>"<?php if ($package['version'] == $addon['installed']['version']) {
-	echo ' checked';
-} ?>>
-										<span class="title"><?php echo t('title_version', 'Version'); ?> <?php
- echo $package['version'];
- if ($package['version'] == $addon['installed']['version']) {
- 	echo ' (<strong>' . t('title_installed', 'Installed') . '</strong>)';
- }
- ?></span>
+										<input type="radio" name="package_id" value="<?php echo $package['id']; ?>"<?php if ($package['installed']) {	echo ' checked'; } ?>>
+										<span class="title"><?php echo t('title_version', 'Version'); ?> <?php echo $package['installed'] ? ' (<strong>' . t('title_installed', 'Installed') . '</strong>)' : ''; ?></span>
 										<div class="compatible-versions">
 											<?php foreach ($package['compatible_versions'] as $version) { ?>
 											<?php echo $version == PLATFORM_VERSION ? '<span class="label label-success">' . $version . '</span>' : '<span class="label label-danger">' . $version . '</span>'; ?>

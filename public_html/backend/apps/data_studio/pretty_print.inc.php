@@ -1,10 +1,10 @@
 <?php
 
-/*!
- * MySQL Pretty Print
- * @author T. Almroth - LiteCart AB <info@litecart.net>
- * @website https://www.litecart.net/
- */
+	/*!
+	 * MySQL Pretty Print
+	 * @author T. Almroth - LiteCart AB <info@litecart.net>
+	 * @website https://www.litecart.net/
+	 */
 
 	function mysql_pretty_print($query, $indentation="\t") {
 

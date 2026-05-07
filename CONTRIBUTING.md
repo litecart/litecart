@@ -7,25 +7,25 @@ Branch Name: `dev-major`
 
 # Changelog / Commit Messages
 
-    ! means critical
-    + means added
-    - means removed
-    * means changed
+		! means critical
+		+ means added
+		- means removed
+		* means changed
 
-  Examples:
+	Examples:
 
-    ! Fix critical issue where beer was not coming out of the tap
-    * Replaced the smaller plate with a larger one
-    + Added lettuce to the sallad
-    - Removed rotten tomatoes
+		! Fix critical issue where beer was not coming out of the tap
+		* Replaced the smaller plate with a larger one
+		+ Added lettuce to the sallad
+		- Removed rotten tomatoes
 
-  Issue Tracker Fix Example:
+	Issue Tracker Fix Example:
 
-    * Fix #1234 - Car engine doesn't start
+		* Fix #1234 - Car engine doesn't start
 
-  The commit message must always reveal what's inside the commit, no surprises or unreferenced work.
+	The commit message must always reveal what's inside the commit, no surprises or unreferenced work.
 
-  DO NOT COMMIT test data or debug code. All commits should be ready for production.
+	DO NOT COMMIT test data or debug code. All commits should be ready for production.
 
 
 # How To Install and Run the Build Tools
@@ -48,12 +48,12 @@ Done!
 
 You can now execute any of the following commands:
 
-    npm run build         (Compile LESS/SCSS to CSS, minify JS — includes watch)
-    npm run watch         (Watch for changes in LESS/JS/SCSS and recompile)
-    npm run phplint       (Check PHP scripts for syntax errors via Gulp)
-    npm test              (Run platform tests — requires a running database)
-    npm run hash          (Update checksums.md5 for all tracked files)
-    npm run uglify        (Minify JavaScript and update version numbers)
+		npm run build         (Compile LESS/SCSS to CSS, minify JS — includes watch)
+		npm run watch         (Watch for changes in LESS/JS/SCSS and recompile)
+		npm run phplint       (Check PHP scripts for syntax errors via Gulp)
+		npm test              (Run platform tests — requires a running database)
+		npm run hash          (Update checksums.md5 for all tracked files)
+		npm run uglify        (Minify JavaScript and update version numbers)
 
 
 # Database Schema
@@ -76,15 +76,15 @@ Do not use automated JSON formatters (Prettier, VS Code format-on-save, etc.) on
 
 For `structure.json`, column definitions use compact single-line objects with spaces:
 
-    "column_name": { "type": "VARCHAR", "length": 128, "default": "''" },
+		"column_name": { "type": "VARCHAR", "length": 128, "default": "''" },
 
 Do NOT expand these into multi-line format:
 
-    "column_name": {
-        "type": "VARCHAR",
-        "length": 128,
-        "default": "''"
-    },
+		"column_name": {
+				"type": "VARCHAR",
+				"length": 128,
+				"default": "''"
+		},
 
 When editing JSON files, make targeted changes and preserve the surrounding format.
 
@@ -93,9 +93,9 @@ When editing JSON files, make targeted changes and preserve the surrounding form
 
 Storefront styles are compiled from LESS source files:
 
-    frontend/templates/default/less/variables.less   (CSS custom properties — theme tokens)
-    frontend/templates/default/less/app.less          (main storefront styles)
-    frontend/templates/default/less/checkout.less     (checkout-specific styles)
+		frontend/templates/default/less/variables.less   (CSS custom properties — theme tokens)
+		frontend/templates/default/less/app.less          (main storefront styles)
+		frontend/templates/default/less/checkout.less     (checkout-specific styles)
 
 All color values must use CSS custom properties defined in `variables.less`. Do not hardcode hex/rgb values in component LESS files.
 
@@ -148,9 +148,9 @@ git push -u origin mynewfeature
 
 6. Go to your forked repository in Github and click **Pull Requests** followed by the button **New Pull Request**.
 
-  * Base Repository: `litecart/litecart`, Compare: `dev-major`
+	* Base Repository: `litecart/litecart`, Compare: `dev-major`
 
-  * Head Repository: `you/litecart`, Compare: `mynewfeature`
+	* Head Repository: `you/litecart`, Compare: `mynewfeature`
 
 Caution! After creating the pull request, do not push any more commits to your feature branch, unless you have bugs that needs patching.
 

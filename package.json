@@ -64,6 +64,7 @@
 		"lint": "eslint \"public_html/**/*.{js,php,html}\"",
 		"lint:css": "stylelint \"public_html/**/*.{php,html}\" --fix --allow-empty-input --custom-syntax postcss-html",
 		"lint:scss": "stylelint \"public_html/**/*.scss\" --fix --allow-empty-input --custom-syntax postcss-scss",
+		"lint:editorconfig": "editorconfig-checker -exclude .git -exclude node_modules -exclude public_html/assets -exclude public_html/vendor",
 		"lint:style": "npm run lint:css && npm run lint:scss"
 	}
 }

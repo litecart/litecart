@@ -140,7 +140,7 @@
 				$this->data['id'] = database::insert_id();
 			}
 
-		 // Create sku if missing
+			// Create sku if missing
 			if (empty($this->data['sku'])) {
 
 				$i = 1;

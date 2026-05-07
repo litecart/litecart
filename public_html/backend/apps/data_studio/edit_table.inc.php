@@ -367,24 +367,24 @@
 
 	let new_index_key_i = 0; while ($('indexes[new_'+ new_index_key_i +']').length) new_index_key_i++;
 	$('button[name="add_primary_key"], button[name="add_key"], button[name="add_unique_key"], button[name="add_fulltext_key"]').on('click', function(){
-		 var kind = $(this).attr('name').replace('add_', '').replace('_key', '');
-		 var name = prompt("What would you like to name this key?");
-		 if (!name) return;
-		 var $row = $([
-			 '<tr draggable="true">',
-			 '  <td><?php echo f::escape_js(f::form_checkbox('selected_columns[]', '')); ?></td>',
-			 '  <td>'+ name +'</td>',
-			 '  <td>'+ kind +'</td>',
-			 '  <td>'+ kind +'</td>',
-			 '  <td></td>',
-			 '  <td></td>',
-			 '  <td></td>',
-			 '  <td class="grabbable text-center"><?php echo f::draw_fonticon('icon-arrows-vertical'); ?></td>',
-			 '  <td class="text-end"><button class="btn btn-danger btn-sm" name="remove" value="true" type="button" title="<?php echo f::escape_js(t('title_remove', 'Remove')); ?>"><?php echo f::draw_fonticon('icon-trash'); ?></button></td>',
-			 '</tr>'
-		 ].join('\n')
-			 .replace(/new_index_key_i/, new_index_key_i++));
-		 $('table.indexes tbody').append($row);
+			var kind = $(this).attr('name').replace('add_', '').replace('_key', '');
+			var name = prompt("What would you like to name this key?");
+			if (!name) return;
+			var $row = $([
+				'<tr draggable="true">',
+				'  <td><?php echo f::escape_js(f::form_checkbox('selected_columns[]', '')); ?></td>',
+				'  <td>'+ name +'</td>',
+				'  <td>'+ kind +'</td>',
+				'  <td>'+ kind +'</td>',
+				'  <td></td>',
+				'  <td></td>',
+				'  <td></td>',
+				'  <td class="grabbable text-center"><?php echo f::draw_fonticon('icon-arrows-vertical'); ?></td>',
+				'  <td class="text-end"><button class="btn btn-danger btn-sm" name="remove" value="true" type="button" title="<?php echo f::escape_js(t('title_remove', 'Remove')); ?>"><?php echo f::draw_fonticon('icon-trash'); ?></button></td>',
+				'</tr>'
+			].join('\n')
+				.replace(/new_index_key_i/, new_index_key_i++));
+			$('table.indexes tbody').append($row);
 	});
 
 	$('table.indexes').on('click', 'button[name="remove"]', function(){

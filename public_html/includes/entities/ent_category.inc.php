@@ -258,7 +258,7 @@
 				limit 1;"
 			);
 
-		 $this->previous['image'] = $this->data['image'] = '';
+			$this->previous['image'] = $this->data['image'] = '';
 		}
 
 		public function delete() {

@@ -1,10 +1,10 @@
 <?php
 /**
- * Router script for PHP built-in server.
- * Replaces .htaccess rewrite rules for E2E testing.
- *
- * Usage: php -S localhost:8080 -t public_html router.php
- */
+	* Router script for PHP built-in server.
+	* Replaces .htaccess rewrite rules for E2E testing.
+	*
+	* Usage: php -S localhost:8080 -t public_html router.php
+	*/
 
 	$docroot = $_SERVER['DOCUMENT_ROOT'];
 	$uri = urldecode(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));

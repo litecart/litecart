@@ -5,31 +5,6 @@
  * @author T. Almroth, LiteCart AB
  */
 
-/* Minimal waitFor() implementation
- * Calls callback when objectName is defined in the global scope
- * waitTime is the time between retries, in milliseconds (default 50ms)
- * retries is the number of times to retry before giving up (default 100)
- */
-window.waitFor = (objectName, callback, waitTime=50, retries=100) => {
-
-	if (typeof(objectName) !== 'string') {
-		throw new TypeError('First argument to waitFor() must be a string');
-	}
-
-	if (typeof(window[objectName]) !== 'undefined') {
-		callback(window[objectName]);
-
-	} else if (retries > 0) {
-
-		setTimeout(() => {
-			waitFor(objectName, callback, waitTime, --retries);
-		}, waitTime);
-
-	} else {
-		console.warn(`waitFor(${objectName}) timed out`);
-	}
-};
-
 waitFor('jQuery', ($) => {
 
 	// Stylesheet Loader
@@ -226,8 +201,8 @@ waitFor('jQuery', ($) => {
 
 		getNext(direction, active) {
 			const activeIndex = this.$items.index(active);
-			const isGoingToWrap = (direction === 'prev' && activeIndex === 0) ||
-								  (direction === 'next' && activeIndex === this.$items.length - 1);
+			const isGoingToWrap = (direction === 'prev' && activeIndex === 0)
+				|| (direction === 'next' && activeIndex === this.$items.length - 1);
 
 			if (isGoingToWrap && !this.options.wrap) return active;
 
@@ -732,69 +707,6 @@ waitFor('jQuery', ($) => {
 
 });
 
-waitFor('jQuery', $ => {
-	// CSV Input
-	$('textarea[data-toggle="csv"] + table').on('click', '.remove', function (e) {
-		e.preventDefault();
-		var parent = $(this).closest('tbody');
-		$(this).closest('tr').remove();
-		$(parent).trigger('keyup');
-	});
-
-	$('textarea[data-toggle="csv"] + table .add-row').on('click', function (e) {
-		e.preventDefault();
-		var n = $(this).closest('table').find('thead th:not(:last-child)').length;
-		$(this)
-			.closest('table')
-			.find('tbody')
-			.append(
-				'<tr>' +
-					'<td contenteditable></td>'.repeat(n) +
-					'<td><a class="remove" href="#"><i class="icon-times" style="color: #d33;"></i></a></td>' +
-					'</tr>'
-			)
-			.trigger('keyup');
-	});
-
-	$('textarea[data-toggle="csv"] + table .add-column').on('click', function (e) {
-		e.preventDefault();
-		var table = $(this).closest('table');
-		var title = prompt('Column Title');
-		if (!title) return;
-		$(table)
-			.find('thead tr th:last-child:last-child')
-			.before('<th>' + title + '</th>');
-		$(table).find('tbody tr td:last-child:last-child').before('<td contenteditable></td>');
-		$(table)
-			.find('tfoot tr td')
-			.attr('colspan', $(this).closest('table').find('tfoot tr td').attr('colspan') + 1);
-		$(this).trigger('keyup');
-	});
-
-	$('textarea[data-toggle="csv"] + table').on('keyup', function (e) {
-		var csv = $(this)
-			.find('thead tr, tbody tr')
-			.map(function (i, row) {
-				return $(row)
-					.find('th:not(:last-child),td:not(:last-child)')
-					.map(function (j, col) {
-						var text = $(col).text();
-						if (/('|,)/.test(text)) {
-							return '"' + text.replace(/"/g, '""') + '"';
-						} else {
-							return text;
-						}
-					})
-					.get()
-					.join(',');
-			})
-			.get()
-			.join('\r\n');
-		$(this).next('textarea').val(csv);
-	});
-});
-
-
 waitFor('jQuery', ($) => {
 
 	// Form Input Tags
@@ -1071,59 +983,59 @@ waitFor('jQuery', ($) => {
 						return deferred.promise();
 					}
 				},
-			   youtube: {
-				   regex: /^(https?:\/\/)?(www\.)?(youtube\.com|youtube-nocookie\.com|youtu\.?be)\//,
-				   process: function (url) {
-							// Improved videoId extraction for various YouTube URL formats
-							let videoId = null;
-							// youtu.be/VIDEOID
-							let match = url.match(/youtu\.be\/([\w-]{11})/);
+				youtube: {
+					regex: /^(https?:\/\/)?(www\.)?(youtube\.com|youtube-nocookie\.com|youtu\.?be)\//,
+					process: function (url) {
+						// Improved videoId extraction for various YouTube URL formats
+						let videoId = null;
+						// youtu.be/VIDEOID
+						let match = url.match(/youtu\.be\/([\w-]{11})/);
+						if (match) videoId = match[1];
+						// youtube.com/watch?v=VIDEOID
+						if (!videoId) {
+							match = url.match(/[?&]v=([\w-]{11})/);
 							if (match) videoId = match[1];
-							// youtube.com/watch?v=VIDEOID
-							if (!videoId) {
-								match = url.match(/[?&]v=([\w-]{11})/);
-								if (match) videoId = match[1];
-							}
-							// youtube.com/embed/VIDEOID
-							if (!videoId) {
-								match = url.match(/embed\/([\w-]{11})/);
-								if (match) videoId = match[1];
-							}
-							// youtube.com/v/VIDEOID
-							if (!videoId) {
-								match = url.match(/\/v\/([\w-]{11})/);
-								if (match) videoId = match[1];
-							}
-							// fallback: try to extract last 11-char id
-							if (!videoId) {
-								match = url.match(/([\w-]{11})/);
-								if (match) videoId = match[1];
-							}
-							const deferred = $.Deferred();
-							let $iframe;
-							if (videoId) {
-								$iframe = $('<iframe/>', {
-									src: `https://www.youtube-nocookie.com/embed/${videoId}`,
-									allowfullscreen: true,
-									style: 'display: none; height: 50vh; aspect-ratio: 16/9;'
-								});
-							} else {
-								$iframe = $('<div>Failed to extract YouTube video ID</div>');
-							}
-							// Always append to modal before resolving
-							this.$instance.find('.litebox-modal').append($iframe);
-							if ($iframe.is('iframe')) {
-								$iframe.on('load', () => {
-									$iframe.show();
-									deferred.resolve($iframe);
-								});
-							} else {
+						}
+						// youtube.com/embed/VIDEOID
+						if (!videoId) {
+							match = url.match(/embed\/([\w-]{11})/);
+							if (match) videoId = match[1];
+						}
+						// youtube.com/v/VIDEOID
+						if (!videoId) {
+							match = url.match(/\/v\/([\w-]{11})/);
+							if (match) videoId = match[1];
+						}
+						// fallback: try to extract last 11-char id
+						if (!videoId) {
+							match = url.match(/([\w-]{11})/);
+							if (match) videoId = match[1];
+						}
+						const deferred = $.Deferred();
+						let $iframe;
+						if (videoId) {
+							$iframe = $('<iframe/>', {
+								src: `https://www.youtube-nocookie.com/embed/${videoId}`,
+								allowfullscreen: true,
+								style: 'display: none; height: 50vh; aspect-ratio: 16/9;'
+							});
+						} else {
+							$iframe = $('<div>Failed to extract YouTube video ID</div>');
+						}
+						// Always append to modal before resolving
+						this.$instance.find('.litebox-modal').append($iframe);
+						if ($iframe.is('iframe')) {
+							$iframe.on('load', () => {
 								$iframe.show();
 								deferred.resolve($iframe);
-							}
-							return deferred.promise();
-				   }
-			   },
+							});
+						} else {
+							$iframe.show();
+							deferred.resolve($iframe);
+						}
+						return deferred.promise();
+					}
+				},
 				raw: {
 					regex: /\.(log|md|txt)(\?\S*)?(\?|$)/i,
 					process: function(url) {
@@ -1576,7 +1488,7 @@ waitFor('jQuery', ($) => {
 
 
 waitFor('jQuery', ($) => {
-	
+
 	// jQuery Placeholders by LiteCart
 	let Placeholders = [];
 
@@ -1827,7 +1739,7 @@ waitFor('jQuery', ($) => {
  * waitTime is the time between retries, in milliseconds (default 50ms)
  * retries is the number of times to retry before giving up (default 100)
  */
-window.waitFor = waitFor || ((objectName, callback, waitTime=50, retries=100) => {
+window.waitFor = (objectName, callback, waitTime=50, retries=100) => {
 
 	if (typeof(objectName) !== 'string') {
 		throw new TypeError('First argument to waitFor() must be a string');
@@ -1845,4 +1757,4 @@ window.waitFor = waitFor || ((objectName, callback, waitTime=50, retries=100) =>
 	} else {
 		console.warn(`waitFor(${objectName}) timed out`);
 	}
-});
+};

@@ -49,7 +49,7 @@
 		// Daily Sales
 		switch (true) {
 
-		 // Western Week
+			// Western Week
 			case (class_exists('IntlCalendar', false) && IntlCalendar::createInstance(null, language::$selected['locale'])->getFirstDayOfWeek() == IntlCalendar::DOW_SUNDAY):
 				$daily_sales = [7 => [], 1 => [], 2 => [], 3 => [], 4 => [], 5 => [], 6 => []];
 				break;

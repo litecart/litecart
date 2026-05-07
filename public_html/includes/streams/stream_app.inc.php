@@ -18,7 +18,7 @@
 
 			if (!isset(self::$_cache[$path])) {
 
-				// File System				
+				// File System
 				foreach (glob($path.'*', GLOB_NOSORT) as $file) { // glob() seems faster than opendir() for this operation
 
 					$file = str_replace('\\', '/', $file) . (is_dir($file) ? '/' : '');
@@ -122,7 +122,7 @@
 		}
 
 		public function stream_close(): void {
-			 fclose($this->_stream);
+			fclose($this->_stream);
 		}
 
 		public function stream_eof(): bool {
@@ -130,7 +130,7 @@
 		}
 
 		public function stream_flush(): bool {
-			
+
 			if (!getenv('SUPER_MODE')) {
 				trigger_error('Flushing data to an app:// resource is prohibited', E_USER_WARNING);
 				return false;
@@ -140,7 +140,7 @@
 		}
 
 		public function stream_lock(int $operation): bool {
-			
+
 			if (!getenv('SUPER_MODE')) {
 				trigger_error('Adding a file lock for an app:// resource is prohibited', E_USER_WARNING);
 				return false;
@@ -195,7 +195,7 @@
 		}
 
 		public function stream_write(string $data): int|bool {
-			
+
 			if (!getenv('SUPER_MODE')) {
 				trigger_error('Writing to an app:// resource is prohibited', E_USER_WARNING);
 				return 0;
@@ -205,12 +205,12 @@
 		}
 
 		public function unlink(string $path): bool {
-			
+
 			if (!getenv('SUPER_MODE')) {
 				trigger_error('Removing an app:// resource is prohibited', E_USER_WARNING);
 				return false;
 			}
-		
+
 			return unlink($this->_resolve_path($path));
 		}
 

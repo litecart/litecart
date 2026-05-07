@@ -807,7 +807,7 @@
 		}
 	});
 
- 	// Migrate PHP serialized userdata to JSON
+	// Migrate PHP serialized userdata to JSON
 	database::query(
 		"select * from ". DB_TABLE_PREFIX ."cart_items;"
 	)->each(function($item){
@@ -836,7 +836,7 @@
 		);
 	});
 
- 	// Migrate Stock Options
+	// Migrate Stock Options
 	database::query(
 		"select * from ". DB_TABLE_PREFIX ."products_stock_options;"
 	)->each(function($stock_option){

@@ -22,7 +22,7 @@
 		$_page->snippets['brands'] = database::query(
 			"select b.id, b.image, json_value(b.name, '$.". database::input(language::$selected['code']) ."') as name,
 				json_value(b.short_description, '$.". database::input(language::$selected['code']) ."') as short_description,
-			 	json_value(b.link, '$.". database::input(language::$selected['code']) ."') as link
+				json_value(b.link, '$.". database::input(language::$selected['code']) ."') as link
 			from ". DB_TABLE_PREFIX ."brands b
 			where status
 			order by name;"

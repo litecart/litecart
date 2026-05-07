@@ -1,8 +1,8 @@
 <?php
 
 	/*!
-	 * Unattended Upgrade:
-	 *  upgrade.php?upgrade=true&redirect={url}
+		* Unattended Upgrade:
+		*  upgrade.php?upgrade=true&redirect={url}
 	*/
 
 	ini_set('memory_limit', -1);
@@ -855,11 +855,11 @@
 
 			echo '<p>Ensuring storage skeleton files... ';
 
-			$skeleton_files = [
-				'logs/.htaccess',
-			];
 			$copied = 0;
-			foreach ($skeleton_files as $rel) {
+
+			foreach ([
+				'logs/.htaccess',
+			] as $rel) {
 				$dst = FS_DIR_STORAGE . $rel;
 				$src = __DIR__ . '/data/default/storage/' . $rel;
 				if (is_file($dst)) continue;
@@ -869,13 +869,21 @@
 				if (@copy($src, $dst)) $copied++;
 			}
 
-			echo ($copied ? "$copied file(s) installed. " : 'Nothing to do. ')
-				 . '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+			echo implode(PHP_EOL, [
+				($copied ? "$copied file(s) installed. " : 'Nothing to do. '),
+				'<span class="ok">[OK]</span></p>',
+				'',
+				'',
+			]);
 
 			########################################################################
 
-			echo '<h2>Complete</h2>' . PHP_EOL . PHP_EOL
-				 . '<p style="font-weight: bold;">Upgrade complete! Please delete the <strong>~/install/</strong> folder.</p>' . PHP_EOL . PHP_EOL;
+			echo implode(PHP_EOL, [
+				'<h2>Complete</h2>',
+				'',
+				'<p style="font-weight: bold;">Upgrade complete! Please delete the <strong>~/install/</strong> folder.</p>',
+				'',
+			]);
 
 			if (!empty($_REQUEST['redirect'])) {
 				header('Location: '. $_REQUEST['redirect'], 303);

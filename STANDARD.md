@@ -2,13 +2,13 @@
 
 ## Code Compliance
 
- - PHP code must comply with modern PHP standards no earlier than 8.0+ (recommended 8.3+).
+	- PHP code must comply with modern PHP standards no earlier than 8.0+ (recommended 8.3+).
 
- - HTML code must comply with HTML 5. Self-closing tags required (`<br />`, `<img ... />`).
+	- HTML code must comply with HTML 5. Self-closing tags required (`<br />`, `<img ... />`).
 
- - Style definitions must be compliant with CSS 3. All color values must use CSS custom properties defined in `variables.less`.
+	- Style definitions must be compliant with CSS 3. All color values must use CSS custom properties defined in `variables.less`.
 
- - Any use of JavaScript should honour the jQuery framework.
+	- Any use of JavaScript should honour the jQuery framework.
 
 
 ## Character Encoding
@@ -131,10 +131,10 @@
 
 	Incorrect (using multiple spaces):
 
-    Level 1
-        Level 2
-            Level 3
-                Level 4
+		Level 1
+				Level 2
+						Level 3
+								Level 4
 
 	Correct (using TABs):
 
@@ -230,7 +230,7 @@
 
 		database::query(
 			"select * from `tablename`
-			 where `column` = 'string';"
+				where `column` = 'string';"
 		);
 
 		$('input[name="value"]').val();
@@ -251,7 +251,7 @@
 
 	Correct:
 
- 		<img src="..." alt="<?php echo f::escape_attr($title); ?>">
+			<img src="..." alt="<?php echo f::escape_attr($title); ?>">
 
 
 ## PHP Variable Scope
@@ -474,7 +474,7 @@
 
 	When it's okay to use for-iterating:
 
-	  for ($ts=time(); $ts < strtotime('+1 months'); $ts=strtotime('+1 days', $ts)) {
+		for ($ts=time(); $ts < strtotime('+1 months'); $ts=strtotime('+1 days', $ts)) {
 			...
 		}
 

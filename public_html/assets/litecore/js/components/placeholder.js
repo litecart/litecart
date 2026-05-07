@@ -1,5 +1,5 @@
 waitFor('jQuery', ($) => {
-	
+
 	// jQuery Placeholders by LiteCart
 	let Placeholders = [];
 

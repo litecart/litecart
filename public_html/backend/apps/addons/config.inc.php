@@ -1,16 +1,16 @@
 <?php
-	
+
 	return [
 		'name' => t('title_addons', 'Add-ons'),
 		'default' => 'marketplace',
 		'group' => 'system',
 		'priority' => 0,
-	
+
 		'theme' => [
 			'color' => '#4dcac3',
 			'icon' => 'icon-newsstand',
 		],
-	
+
 		'menu' => [
 			[
 				'title' => t('title_marketplace', 'Marketplace'),
@@ -28,7 +28,7 @@
 				'params' => [],
 			],
 		],
-	
+
 		'docs' => [
 			'addon' => 'addon.inc.php',
 			'catalog' => 'catalog.inc.php',

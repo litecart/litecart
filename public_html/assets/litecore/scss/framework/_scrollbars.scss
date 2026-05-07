@@ -1,21 +1,21 @@
 // Webkit Browsers (Chrome, Edge, Safari)
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+	width: 8px;
+	height: 8px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--scrollbar-thumb-background);
-  border-radius: 8px;
+	background: var(--scrollbar-thumb-background);
+	border-radius: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--scrollbar-track-background);
-  border-radius: 8px;
+	background: var(--scrollbar-track-background);
+	border-radius: 8px;
 }
 
 // Firefox
 * {
-  scrollbar-width: thin;
-  scrollbar-color: var(--scrollbar-thumb-background) var(--scrollbar-track-background);
+	scrollbar-width: thin;
+	scrollbar-color: var(--scrollbar-thumb-background) var(--scrollbar-track-background);
 }

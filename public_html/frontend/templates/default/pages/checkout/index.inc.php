@@ -96,7 +96,7 @@
 						</div>
 					</section>
 
-			 </div>
+				</div>
 			</div>
 
 			<div class="right-wrapper col-md-6">

@@ -535,7 +535,7 @@
 
 	$('#translator-tool button[name="prefill_fields"]').on('click', function() {
 		var $modal = $(this).closest('.litebox'),
-			 translated = $modal.find(':input[name="result"]').val().trim();
+			translated = $modal.find(':input[name="result"]').val().trim();
 
 		translated = translated.split(/\n(?=\[\d+\])/);
 

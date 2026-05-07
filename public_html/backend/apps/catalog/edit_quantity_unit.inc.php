@@ -84,7 +84,7 @@
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
 						<?php foreach (array_keys(language::$languages) as $language_code) echo f::form_regional_text('name['. $language_code .']', $language_code, true); ?>
-					 </label>
+					</label>
 				</div>
 
 				<div class="col-md-4">
@@ -98,7 +98,7 @@
 			<label class="form-group">
 				<div class="form-label"><?php echo t('title_description', 'Description'); ?></div>
 				<?php foreach (array_keys(language::$languages) as $language_code) echo f::form_regional_text('description['. $language_code .']', $language_code, true); ?>
-			 </label>
+			</label>
 
 			<div class="grid">
 				<div class="col-md-4">

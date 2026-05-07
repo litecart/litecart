@@ -267,21 +267,21 @@
 			}
 
 			// Uninstall
-		 if (!empty($this->data['uninstall'])) {
-			 $uninstall_node = $dom->createElement('uninstall');
-			 $uninstall_node->appendChild( $dom->createCDATASection(PHP_EOL . rtrim($this->data['uninstall']) . PHP_EOL . str_repeat(' ', 2)) );
-			 $vmod_node->appendChild( $uninstall_node );
-		 }
+			if (!empty($this->data['uninstall'])) {
+				$uninstall_node = $dom->createElement('uninstall');
+				$uninstall_node->appendChild( $dom->createCDATASection(PHP_EOL . rtrim($this->data['uninstall']) . PHP_EOL . str_repeat(' ', 2)) );
+				$vmod_node->appendChild( $uninstall_node );
+			}
 
-	 // Upgrade
-		 foreach ($this->data['upgrades'] as $upgrade) {
-			 $upgrade_node = $dom->createElement('upgrade');
-			 $attribute = $dom->createAttribute('version');
-			 $attribute->value = $upgrade['version'];
-			 $upgrade_node->appendChild( $attribute );
-			 $upgrade_node->appendChild( $dom->createCDATASection(PHP_EOL . rtrim($upgrade['script']) . PHP_EOL . str_repeat(' ', 4)) );
-			 $vmod_node->appendChild( $upgrade_node );
-		 }
+		// Upgrade
+			foreach ($this->data['upgrades'] as $upgrade) {
+				$upgrade_node = $dom->createElement('upgrade');
+				$attribute = $dom->createAttribute('version');
+				$attribute->value = $upgrade['version'];
+				$upgrade_node->appendChild( $attribute );
+				$upgrade_node->appendChild( $dom->createCDATASection(PHP_EOL . rtrim($upgrade['script']) . PHP_EOL . str_repeat(' ', 4)) );
+				$vmod_node->appendChild( $upgrade_node );
+			}
 
 			// Files
 			foreach ($this->data['files'] as $file) {

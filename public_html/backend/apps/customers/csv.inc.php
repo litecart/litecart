@@ -25,8 +25,12 @@
 
 			if (!empty($_POST['reset'])) {
 
-				echo PHP_EOL
-					 . 'Wiping data...' . PHP_EOL . PHP_EOL;
+				echo implode(PHP_EOL, [
+					'',
+					'Resetting storage for type: '. $_POST['type'],
+					'',
+					'',
+				]);
 
 				switch ($_POST['type']) {
 

@@ -163,8 +163,8 @@ waitFor('jQuery', ($) => {
 
 		getNext(direction, active) {
 			const activeIndex = this.$items.index(active);
-			const isGoingToWrap = (direction === 'prev' && activeIndex === 0) ||
-								  (direction === 'next' && activeIndex === this.$items.length - 1);
+			const isGoingToWrap = (direction === 'prev' && activeIndex === 0)
+				|| (direction === 'next' && activeIndex === this.$items.length - 1);
 
 			if (isGoingToWrap && !this.options.wrap) return active;
 

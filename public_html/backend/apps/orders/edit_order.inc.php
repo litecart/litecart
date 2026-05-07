@@ -1142,7 +1142,7 @@
 					</div>
 				</div>
 			</div>
-	 	</div>
+		</div>
 	</div>
 
 <?php echo f::form_end(); ?>

@@ -19,17 +19,14 @@
 		];
 
 		// Check if administrator is permitted to access document.
-		// Helper endpoints (*.json, *.csv, *_picker) aren't individually tickable in the
-		// administrator edit UI — they're auxiliary routes consumed by the main docs.
-		// Allow them implicitly as long as the admin has the app enabled.
-		$is_helper = preg_match('/\.(json|csv)$/', __DOC__)
-		          || str_ends_with(__DOC__, '_picker');
-
-		if (!empty(administrator::$data['apps'][__APP__]['status'])
-		    && !$is_helper
-		    && !in_array(__DOC__, administrator::$data['apps'][__APP__]['docs'])) {
-			notices::add('errors', t('title_access_denied', 'Access Denied'));
-			return;
+		// Allow helper endpoints implicitly as long as the admin has the app enabled.
+		if (!empty(administrator::$data['apps'][__APP__]['status'])) {
+			if (preg_match('/\.(json|csv)$/', __DOC__) || str_ends_with(__DOC__, '_picker')) {
+				if (!in_array(__DOC__, administrator::$data['apps'][__APP__]['docs'])) {
+					notices::add('errors', t('title_access_denied', 'Access Denied'));
+					return;
+				}
+			}
 		}
 
 		// Resolve requested document file

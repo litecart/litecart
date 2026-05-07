@@ -109,7 +109,7 @@
 			// Categories
 			$this->data['categories'] = database::query(
 				"select category_id from ". DB_TABLE_PREFIX ."products_to_categories
-				 where product_id = ". (int)$id .";"
+				where product_id = ". (int)$id .";"
 			)->fetch_all('category_id');
 
 			// Images

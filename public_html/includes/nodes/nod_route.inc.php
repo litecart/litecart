@@ -217,49 +217,52 @@
 			];
 
 			// Tunnel an asset stored in an add-on
-			if (preg_match('#^('. implode('|', f::array_each($static_folders, fn($folder) => preg_quote($folder, '#'))) .')#', $static_path)
-			 && is_file('app://'.$static_path) && preg_match('#\.(a?png|avif|bmp|css|eot|gif|ico|jpe?g|jp2|js|otf|pdf|svg|tiff?|ttf|webp|woff2?)$#', pathinfo($static_path, PATHINFO_BASENAME))) {
+			if (preg_match('#^('. implode('|', f::array_each($static_folders, fn($folder) => preg_quote($folder, '#'))) .')#', $static_path)) {
+				if (preg_match('#\.(a?png|avif|bmp|css|eot|gif|ico|jpe?g|jp2|js|otf|pdf|svg|tiff?|ttf|webp|woff2?)$#', pathinfo($static_path, PATHINFO_BASENAME))) {
+					if (is_file('app://'.$static_path)) {
 
-				if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']) >= filemtime('app://'.$static_path)) {
-					header('HTTP/1.1 304 Not Modified');
-					exit;
-				}
-
-				if (isset($_SERVER['HTTP_IF_NONE_MATCH'])) {
-					foreach (preg_split('#\s*,\s*#', $_SERVER['HTTP_IF_NONE_MATCH'], -1, PREG_SPLIT_NO_EMPTY) as $potential_match) {
-						if (trim($potential_match, '"') == md5_file('app://'.$static_path)) {
+						if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']) >= filemtime('app://'.$static_path)) {
 							header('HTTP/1.1 304 Not Modified');
 							exit;
 						}
+
+						if (isset($_SERVER['HTTP_IF_NONE_MATCH'])) {
+							foreach (preg_split('#\s*,\s*#', $_SERVER['HTTP_IF_NONE_MATCH'], -1, PREG_SPLIT_NO_EMPTY) as $potential_match) {
+								if (trim($potential_match, '"') == md5_file('app://'.$static_path)) {
+									header('HTTP/1.1 304 Not Modified');
+									exit;
+								}
+							}
+						}
+
+						switch (pathinfo($static_path, PATHINFO_EXTENSION)) {
+
+							case 'css': // Not supported by mime_content_type()
+								header('Content-Type: text/css; charset='. mb_http_output());
+								break;
+
+							case 'js': // Not supported by mime_content_type()
+								header('Content-Type: text/javascript; charset='. mb_http_output());
+								break;
+
+							default:
+								header('Content-Type: '. mime_content_type('app://'.$static_path));
+								break;
+						}
+
+						header('Content-Length: '. filesize('app://'.$static_path));
+						header('Etag: '. md5_file('app://'.$static_path));
+						header('Last-Modified: '. gmdate('D, d M Y H:i:s', filemtime('app://'.$static_path)) .' GMT');
+						header('Pragma: cache');
+						header('Cache-Control: public, max-age=604800');	// 7 days
+						header('Expires: '. gmdate('D, d M Y H:i:s', strtotime('+7 days')) .' GMT');
+						header('X-Content-Type-Options: nosniff');
+						header('X-Frame-Options: SAMEORIGIN');
+
+						readfile('app://'.$static_path);
+						exit;
 					}
 				}
-
-				switch (pathinfo($static_path, PATHINFO_EXTENSION)) {
-
-					case 'css': // Not supported by mime_content_type()
-						header('Content-Type: text/css; charset='. mb_http_output());
-						break;
-
-					case 'js': // Not supported by mime_content_type()
-						header('Content-Type: text/javascript; charset='. mb_http_output());
-						break;
-
-					default:
-						header('Content-Type: '. mime_content_type('app://'.$static_path));
-						break;
-				}
-
-				header('Content-Length: '. filesize('app://'.$static_path));
-				header('Etag: '. md5_file('app://'.$static_path));
-				header('Last-Modified: '. gmdate('D, d M Y H:i:s', filemtime('app://'.$static_path)) .' GMT');
-				header('Pragma: cache');
-				header('Cache-Control: public, max-age=604800');	// 7 days
-				header('Expires: '. gmdate('D, d M Y H:i:s', strtotime('+7 days')) .' GMT');
-				header('X-Content-Type-Options: nosniff');
-				header('X-Frame-Options: SAMEORIGIN');
-
-				readfile('app://'.$static_path);
-				exit;
 			}
 
 			// Redirect (Last Destination)

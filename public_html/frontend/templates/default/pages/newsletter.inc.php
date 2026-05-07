@@ -20,35 +20,35 @@
 								<label class="form-group">
 									<div class="form-label"><?php echo t('title_firstname', 'First Name'); ?></div>
 									<?php echo f::form_input_text('firstname', true); ?>
-								 </label>
+								</label>
 							</div>
 
 							<div class="col-md-6">
 								<label class="form-group">
 									<div class="form-label"><?php echo t('title_lastname', 'Last Name'); ?></div>
 									<?php echo f::form_input_text('lastname', true); ?>
-								 </label>
+								</label>
 							</div>
 						</div>
 
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_email_address', 'Email Address'); ?></div>
 							<?php echo f::form_input_email('email', true, 'required'); ?>
-						 </label>
+						</label>
 
 						<div class="grid">
 							<div class="col-md-6">
 								<label class="form-group">
 									<div class="form-label"><?php echo t('title_country', 'Country'); ?></div>
 									<?php echo f::form_select_country('country_code', true); ?>
-								 </label>
+								</label>
 							</div>
 
 							<div class="col-md-6">
 								<label class="form-group">
 									<div class="form-label"><?php echo t('title_language', 'Language'); ?></div>
 									<?php echo f::form_select_language('language_code', true); ?>
-								 </label>
+								</label>
 							</div>
 						</div>
 
@@ -58,7 +58,7 @@
 								<label class="form-group">
 									<div class="form-label"><?php echo t('title_captcha', 'CAPTCHA'); ?></div>
 									<?php echo f::form_captcha('newsletter_subscribe'); ?>
-								 </label>
+								</label>
 							</div>
 						</div>
 						<?php } ?>
@@ -86,12 +86,12 @@
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_email_address', 'Email Address'); ?></div>
 							<?php echo f::form_input_email('email', true, 'required'); ?>
-						 </label>
+						</label>
 
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_captcha', 'CAPTCHA'); ?></div>
 							<?php echo f::form_captcha('newsletter_unsubscribe'); ?>
-						 </label>
+						</label>
 
 						<?php echo f::form_button('unsubscribe', t('title_unsubscribe', 'Unsubscribe')); ?>
 

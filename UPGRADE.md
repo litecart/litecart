@@ -12,12 +12,12 @@
 
 2. **Upload the contents of the folder public_html/** to the corresponding path of your installation **replacing the current files**. Any modified files will be overwritten!
 
-	 If you have renamed your admin/ folder, make sure the files of the admin/ folder are uploaded to the right place.
+		If you have renamed your admin/ folder, make sure the files of the admin/ folder are uploaded to the right place.
 
 	3. Point your browser to http://www.yoursite.com/install/upgrade.php and follow the instructions on the page.
 
 	4. Make sure everything went fine and delete the install/ folder.
 
-		 If there are complications, try switching to the default template and disable any vMods.
+			If there are complications, try switching to the default template and disable any vMods.
 
 	If you need help, turn to our forums at https://www.litecart.net/forums/.

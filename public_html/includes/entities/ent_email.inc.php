@@ -405,8 +405,12 @@
 						$v = "$k: $v";
 					});
 
-					$data = implode("\r\n", $headers) . "\r\n\r\n"
-					 . $body;
+					$data = implode("\r\n", [
+						...$headers,
+						$body,
+						'',
+						'',
+					]);
 
 					$result = $smtp->send(settings::get('store_email'), $recipients, $data);
 

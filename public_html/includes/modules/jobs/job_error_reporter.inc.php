@@ -68,8 +68,10 @@
 
 			$buffer = '';
 			foreach ($errors as $checksum => $error) {
-				$buffer .= "[$error[last_occurrence]] ". ($occurrences[$checksum] > 1 ? "[$occurrences[$checksum] times] " : "") ."$error[error]\n"
-						 . (!empty($error['backtrace']) ? "$error[backtrace]\n\n" : "\n");
+				$buffer .= implode(PHP_EOL, array_filter([
+					"[$error[last_occurrence]] ". ($occurrences[$checksum] > 1 ? "[$occurrences[$checksum] times] " : "") . $error['error'],
+					!empty($error['backtrace']) ? $error['backtrace'] : ''
+				]));
 			}
 
 			if (!$this->settings['email_recipient']) {

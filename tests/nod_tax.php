@@ -45,11 +45,8 @@
 
 		database::query(
 			"insert into ". DB_TABLE_PREFIX ."tax_rates
-			(tax_class_id, geo_zone_id, code, name, rate, address_type,
-			 rule_companies_with_tax_id, rule_companies_without_tax_id,
-			 rule_individuals_with_tax_id, rule_individuals_without_tax_id)
-			values (". (int)$tax_class_id .", ". (int)$geo_zone_id .", 'DE_VAT', 'DE VAT 19%', 19.00, 'payment',
-			 0, 1, 1, 1);"
+			(tax_class_id, geo_zone_id, code, name, rate, address_type, rule_companies_with_tax_id, rule_companies_without_tax_id, rule_individuals_with_tax_id, rule_individuals_without_tax_id)
+			values (". (int)$tax_class_id .", ". (int)$geo_zone_id .", 'DE_VAT', 'DE VAT 19%', 19.00, 'payment', 0, 1, 1, 1);"
 		);
 
 		########################################################################

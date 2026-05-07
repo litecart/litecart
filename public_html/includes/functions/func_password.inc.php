@@ -18,18 +18,40 @@
 		};
 
 		$absolutes = '';
-		if ($min_lowercases && !is_bool($min_lowercases)) $absolutes .= $pick($lowercases, $min_lowercases);
-		if ($min_uppercases && !is_bool($min_uppercases)) $absolutes .= $pick($uppercases, $min_uppercases);
-		if ($min_numbers && !is_bool($min_numbers)) $absolutes .= $pick($numbers, $min_numbers);
-		if ($min_specials && !is_bool($min_specials)) $absolutes .= $pick($specials, $min_specials);
+		if ($min_lowercases && !is_bool($min_lowercases)) {
+			$absolutes .= $pick($lowercases, $min_lowercases);
+		}
+
+		if ($min_uppercases && !is_bool($min_uppercases)) {
+			$absolutes .= $pick($uppercases, $min_uppercases);
+		}
+
+		if ($min_numbers && !is_bool($min_numbers)) {
+			$absolutes .= $pick($numbers, $min_numbers);
+		}
+
+		if ($min_specials && !is_bool($min_specials)) {
+			$absolutes .= $pick($specials, $min_specials);
+		}
 
 		$remaining = $length - strlen($absolutes);
 
 		$pool = '';
-		if ($min_lowercases !== false) $pool .= $lowercases;
-		if ($min_uppercases !== false) $pool .= $uppercases;
-		if ($min_numbers !== false) $pool .= $numbers;
-		if ($min_specials !== false) $pool .= $specials;
+		if ($min_lowercases !== false) {
+			$pool .= $lowercases;
+		}
+
+		if ($min_uppercases !== false) {
+			$pool .= $uppercases;
+		}
+
+		if ($min_numbers !== false) {
+			$pool .= $numbers;
+		}
+
+		if ($min_specials !== false) {
+			$pool .= $specials;
+		}
 
 		$password = $absolutes . $pick($pool, $remaining);
 
@@ -52,8 +74,10 @@
 		preg_replace('#\d#', '', $password, -1, $numbers);
 		preg_replace('#[^\w]#', '', $password, -1, $symbols);
 
-		$score = ($numbers * 9) + ($lowercases * 11.25) + ($uppercases * 11.25) + ($symbols * 15)
-					 + ($numbers ? 10 : 0) + ($lowercases ? 10 : 0) + ($uppercases ? 10 : 0) + ($symbols ? 10 : 0);
+		$score = array_sum([
+			$numbers * 9, $lowercases * 11.25, $uppercases * 11.25, $symbols * 15,
+			$numbers ? 10 : 0, $lowercases ? 10 : 0, $uppercases ? 10 : 0, $symbols ? 10 : 0
+		]);
 
 		return ($score >= 80);
 	}

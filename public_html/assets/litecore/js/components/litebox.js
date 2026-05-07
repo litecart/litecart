@@ -188,59 +188,59 @@ waitFor('jQuery', ($) => {
 						return deferred.promise();
 					}
 				},
-			   youtube: {
-				   regex: /^(https?:\/\/)?(www\.)?(youtube\.com|youtube-nocookie\.com|youtu\.?be)\//,
-				   process: function (url) {
-							// Improved videoId extraction for various YouTube URL formats
-							let videoId = null;
-							// youtu.be/VIDEOID
-							let match = url.match(/youtu\.be\/([\w-]{11})/);
+				youtube: {
+					regex: /^(https?:\/\/)?(www\.)?(youtube\.com|youtube-nocookie\.com|youtu\.?be)\//,
+					process: function (url) {
+						// Improved videoId extraction for various YouTube URL formats
+						let videoId = null;
+						// youtu.be/VIDEOID
+						let match = url.match(/youtu\.be\/([\w-]{11})/);
+						if (match) videoId = match[1];
+						// youtube.com/watch?v=VIDEOID
+						if (!videoId) {
+							match = url.match(/[?&]v=([\w-]{11})/);
 							if (match) videoId = match[1];
-							// youtube.com/watch?v=VIDEOID
-							if (!videoId) {
-								match = url.match(/[?&]v=([\w-]{11})/);
-								if (match) videoId = match[1];
-							}
-							// youtube.com/embed/VIDEOID
-							if (!videoId) {
-								match = url.match(/embed\/([\w-]{11})/);
-								if (match) videoId = match[1];
-							}
-							// youtube.com/v/VIDEOID
-							if (!videoId) {
-								match = url.match(/\/v\/([\w-]{11})/);
-								if (match) videoId = match[1];
-							}
-							// fallback: try to extract last 11-char id
-							if (!videoId) {
-								match = url.match(/([\w-]{11})/);
-								if (match) videoId = match[1];
-							}
-							const deferred = $.Deferred();
-							let $iframe;
-							if (videoId) {
-								$iframe = $('<iframe/>', {
-									src: `https://www.youtube-nocookie.com/embed/${videoId}`,
-									allowfullscreen: true,
-									style: 'display: none; height: 50vh; aspect-ratio: 16/9;'
-								});
-							} else {
-								$iframe = $('<div>Failed to extract YouTube video ID</div>');
-							}
-							// Always append to modal before resolving
-							this.$instance.find('.litebox-modal').append($iframe);
-							if ($iframe.is('iframe')) {
-								$iframe.on('load', () => {
-									$iframe.show();
-									deferred.resolve($iframe);
-								});
-							} else {
+						}
+						// youtube.com/embed/VIDEOID
+						if (!videoId) {
+							match = url.match(/embed\/([\w-]{11})/);
+							if (match) videoId = match[1];
+						}
+						// youtube.com/v/VIDEOID
+						if (!videoId) {
+							match = url.match(/\/v\/([\w-]{11})/);
+							if (match) videoId = match[1];
+						}
+						// fallback: try to extract last 11-char id
+						if (!videoId) {
+							match = url.match(/([\w-]{11})/);
+							if (match) videoId = match[1];
+						}
+						const deferred = $.Deferred();
+						let $iframe;
+						if (videoId) {
+							$iframe = $('<iframe/>', {
+								src: `https://www.youtube-nocookie.com/embed/${videoId}`,
+								allowfullscreen: true,
+								style: 'display: none; height: 50vh; aspect-ratio: 16/9;'
+							});
+						} else {
+							$iframe = $('<div>Failed to extract YouTube video ID</div>');
+						}
+						// Always append to modal before resolving
+						this.$instance.find('.litebox-modal').append($iframe);
+						if ($iframe.is('iframe')) {
+							$iframe.on('load', () => {
 								$iframe.show();
 								deferred.resolve($iframe);
-							}
-							return deferred.promise();
-				   }
-			   },
+							});
+						} else {
+							$iframe.show();
+							deferred.resolve($iframe);
+						}
+						return deferred.promise();
+					}
+				},
 				raw: {
 					regex: /\.(log|md|txt)(\?\S*)?(\?|$)/i,
 					process: function(url) {

@@ -318,10 +318,10 @@ table td {
 
 <script>
 	var data = <?php echo f::format_json(
- 	array_map(function ($node) {
- 		return array_values($node);
- 	}, array_slice(session::$data['csv_batch']['rows'], 0, 100)),
- ); ?>;
+		array_map(function ($node) {
+			return array_values($node);
+		}, array_slice(session::$data['csv_batch']['rows'], 0, 100)),
+	); ?>;
 
 	$('button[name="previous"]').on('click', function(e){
 		//e.preventDefault();

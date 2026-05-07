@@ -25,7 +25,7 @@
 		<label class="form-group">
 			<div class="form-label"><?php echo t('title_search', 'Search'); ?></div>
 			<?php echo f::form_input_text('query', true, 'placeholder="'. f::escape_attr(t('title_search', 'Search')) .'" autocomplete="off"'); ?>
-		 </label>
+		</label>
 	</div>
 
 	<div class="results">

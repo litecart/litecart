@@ -13,45 +13,45 @@
 
 						<div class="grid">
 							<div class="col-md-6">
-								<div class="form-group">
+								<label class="form-group">
 									<div class="form-label"><?php echo t('title_firstname', 'First Name'); ?></div>
 									<?php echo f::form_input_text('firstname', true, 'required'); ?>
-								 </div>
+								</label>
 							</div>
 
 							<div class="col-md-6">
-								<div class="form-group">
+								<label class="form-group">
 									<div class="form-label"><?php echo t('title_lastname', 'Last Name'); ?></div>
 									<?php echo f::form_input_text('lastname', true, 'required'); ?>
-								 </div>
+								</label>
 							</div>
 						</div>
 
-						<div class="form-group">
+						<label class="form-group">
 							<div class="form-label"><?php echo t('title_email_address', 'Email Address'); ?></div>
 							<?php echo f::form_input_email('email', true, 'required'); ?>
-						</div>
+						</label>
 
-						<div class="form-group">
+						<label class="form-group">
 							<div class="form-label"><?php echo t('title_subject', 'Subject'); ?></div>
 							<?php echo f::form_input_text('subject', true, 'required'); ?>
-						 </div>
+						</label>
 
-						<div class="form-group">
+						<label class="form-group">
 							<div class="form-label"><?php echo t('title_message', 'Message'); ?></div>
 							<?php echo f::form_textarea('message', true, 'required style="height: 250px;"'); ?>
-						 </div>
+						</label>
 
-						<div class="form-group">
+						<label class="form-group">
 							<div class="form-label"><?php echo t('title_attachments', 'Attachments'); ?></div>
 							<?php echo f::form_input_file('attachments[]', 'multiple accept=".jpg,.jpeg,.png,.gif,.webp,.avif,.txt,.doc,.docx,.pdf,.mp4"'); ?>
-						</div>
+						</label>
 
 						<?php if (settings::get('captcha_enabled')) { ?>
-						<div class="form-group" style="max-width: 250px;">
+						<label class="form-group" style="max-width: 250px;">
 							<div class="form-label"><?php echo t('title_captcha', 'CAPTCHA'); ?></div>
 							<?php echo f::form_captcha('contact_us'); ?>
-						 </div>
+						</label>
 						<?php } ?>
 
 						<div>

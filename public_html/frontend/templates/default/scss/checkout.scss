@@ -193,7 +193,7 @@
 				overflow-y: auto;
 			}
 
-		 &::after {
+			&::after {
 				position: absolute;
 				top: .5em;
 				background: var(--default-title-color);
