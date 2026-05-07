@@ -13,7 +13,6 @@ for hook in $(dirname "$0")/pre-commit.d/*; do
 		else
 			echo "PHP could not be found. Skipping PHP hooks."
 		fi
-		continue
 
 	# Execute a JS hook with Bun or Node.js
 	elif [[ $hook == *.js ]]; then
@@ -24,7 +23,6 @@ for hook in $(dirname "$0")/pre-commit.d/*; do
 		else
 			echo "Bun or Node.js could not be found. Skipping JS hooks."
 		fi
-		continue
 
 	# Execute a Python hook with Python
 	elif [[ $hook == *.py ]]; then
@@ -33,12 +31,10 @@ for hook in $(dirname "$0")/pre-commit.d/*; do
 		else
 			echo "Python could not be found. Skipping Python hooks."
 		fi
-		continue
 
 	# Skip unknown hook
 	else
 		echo "Unknown hook type: $hook, skipping."
-		continue
 	fi
 
 	RESULT=$?
