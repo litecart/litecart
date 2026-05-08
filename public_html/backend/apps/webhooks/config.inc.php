@@ -3,18 +3,24 @@
 	return [
 		'name' => t('title_webhooks', 'Webhooks'),
 		'default' => 'webhooks',
-		'group' => 'system',
-		'priority' => 0,
-
 		'theme' => [
-			'color' => '#4dcac3',
-			'icon' => 'icon-link',
+			'icon' => 'icon-webhooks',
+			'color' => '#565a52',
 		],
-
-		'menu' => [],
-
+		'menu' => [
+			'webhooks' => [
+				'title' => t('title_webhooks', 'Webhooks'),
+				'doc' => 'webhooks',
+			],
+			'requests' => [
+				'title' => t('title_webhook_requests', 'Webhook Requests'),
+				'doc' => 'requests',
+			],
+		],
 		'docs' => [
-			'edit_webhook' => 'edit_webhook.inc.php',
 			'webhooks' => 'webhooks.inc.php',
+			'requests' => 'requests.inc.php',
+			'edit_webhook' => 'edit_webhook.inc.php',
+			'edit_request' => 'edit_request.inc.php',
 		],
 	];
