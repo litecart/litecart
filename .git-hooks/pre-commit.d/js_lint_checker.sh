@@ -37,9 +37,20 @@ do
 
 	# Create a processed copy that mocks top-level waitFor(...) calls to a safe noop
 	proc_file=$(mktemp --suffix="$suffix")
-	sed -E 's/(^|[^._[:alnum:]])waitFor[[:space:]]*\(/\1(typeof waitFor === "function" ? waitFor : function(){})(/g' "$tmp_file" > "$proc_file"
 
-	# Prefer Node's syntax check when available; fall back to Bun
+	# Prepend a safe lint prelude to avoid modifying source comments/strings.
+	# This defines harmless `window`, `globalThis`, and `waitFor` for the syntax checker.
+	cat > "$proc_file" <<'LINT_PRELUDE'
+// LINT PRELUDE - safe globals for syntax checking
+var globalThis = (typeof globalThis !== 'undefined') ? globalThis : (typeof window !== 'undefined' ? window : {});
+if (typeof window === 'undefined') { var window = globalThis; }
+if (typeof waitFor === 'undefined') { var waitFor = function(){}; }
+LINT_PRELUDE
+
+	# Append original file contents unchanged
+	cat "$tmp_file" >> "$proc_file"
+
+	# Prefer Bun's syntax check when available; fall back to Node
 	if command -v bun &> /dev/null; then
 		output=$(bun --check "$proc_file" 2>&1)
 		lint_result=$?

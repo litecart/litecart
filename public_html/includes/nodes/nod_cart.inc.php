@@ -205,16 +205,19 @@
 				'gtin' => $product->gtin,
 				'taric' => $product->taric,
 				'regular_price' => [
-					'value' => $product->regular_price, // Will be recalculated further down
-				'tax' => $product->tax,
-				],
-				'final_price' => [
-					'value' => $product->final_price, // Will be recalculated further down
+					'display_value' => tax::get_price($product->regular_price, $product->tax_class_id, customer::$data['display_prices_including_tax']),
+					'value' => $product->regular_price,
 					'tax' => $product->tax,
 				],
-				'discount' => [
-					'value' => $product->regular_price - $product->final_price,
-					'tax' => tax::get_tax($product->regular_price - $product->final_price, $product->tax_class_id),
+				'final_price' => [ // Is re-calculated further down
+					'display_value' => tax::get_price($product->regular_price, $product->tax_class_id, customer::$data['display_prices_including_tax']),
+					'value' => $product->regular_price,
+					'tax' => $product->tax,
+				],
+				'discount' => [ // Is calculated further down
+					'display_value' => '',
+					'value' => 0,
+					'tax' => 0,
 				],
 				'tax_class_id' => $product->tax_class_id,
 				'quantity' => $quantity,
@@ -324,8 +327,15 @@
 				}
 
 				$item['final_price'] = [
+					'display_value' => tax::get_price($calculated_price, $product->tax_class_id, customer::$data['display_prices_including_tax']),
 					'value' => $calculated_price,
 					'tax' => tax::get_tax($calculated_price, $product->tax_class_id),
+				];
+
+				$item['discount'] = [
+					'display_value' => tax::get_price($product->regular_price - $calculated_price, $product->tax_class_id, customer::$data['display_prices_including_tax']),
+					'value' => $product->regular_price - $calculated_price,
+					'tax' => tax::get_tax($product->regular_price - $calculated_price, $product->tax_class_id),
 				];
 
 				// Set image from stock option
@@ -347,20 +357,11 @@
 			}
 
 			// Round amounts (Gets rid of hidden decimals)
-			$item['regular_price'] = [
-				'value' => currency::round($item['regular_price']['value'], currency::$selected['code']),
-				'tax' => currency::round($item['regular_price']['tax'], currency::$selected['code']),
-			];
-
-			$item['final_price'] = [
-				'value' => currency::round($item['final_price']['value'], currency::$selected['code']),
-				'tax' => currency::round($item['final_price']['tax'], currency::$selected['code']),
-			];
-
-			$item['discount'] = [
-				'value' => currency::round($item['discount']['value'], currency::$selected['code']),
-				'tax' => currency::round($item['discount']['tax'], currency::$selected['code']),
-			];
+			foreach (['display_value', 'value', 'tax'] as $field) {
+				$item['regular_price'][$field] = currency::round($item['regular_price'][$field], currency::$selected['code']);
+				$item['final_price'][$field] = currency::round($item['final_price'][$field], currency::$selected['code']);
+				$item['discount'][$field] = currency::round($item['discount'][$field], currency::$selected['code']);
+			}
 
 			// Add new item or append to existing
 			if (isset(self::$items[$item_key])) {

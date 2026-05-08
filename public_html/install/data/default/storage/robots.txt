@@ -1,2 +1,5 @@
+Content-Signal: ai-train=no, search=yes, ai-input=no
+Crawl-delay: 10
+
 User-agent: *
 Allow: /

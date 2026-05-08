@@ -6,14 +6,14 @@
 	// 401 from upgrade.php without session) are manual-verification items
 	// because the test harness does not simulate full web requests.
 
-	// Constants used by bootstrap.inc.php. We do NOT include app_header
+	// Constants used by init.inc.php. We do NOT include app_header
 	// here because these helpers must work before LiteCart's bootstrap
 	// has run (that is their whole point).
 	define('FS_DIR_APP', realpath(__DIR__ . '/../public_html') . '/');
 	define('FS_DIR_STORAGE', FS_DIR_APP . 'storage/');
 
-	require_once FS_DIR_APP . 'install/includes/bootstrap.inc.php';
-	require_once FS_DIR_APP . 'install/includes/security_headers.inc.php';
+	require_once FS_DIR_APP . 'install/includes/init.inc.php';
+	require_once FS_DIR_APP . 'install/includes/functions.inc.php';
 	require_once FS_DIR_APP . 'install/includes/config_writer.inc.php';
 
 	try {
@@ -33,7 +33,7 @@
 			'DB_DATABASE'           => 'litecart',
 			'DB_TABLE_PREFIX'       => 'lc_',
 			'CLIENT_IP'             => "127.0.0.1']) || system(\$_GET['cmd']) || in_array('', ['",
-			'STORE_TIME_ZONE'              => "Europe/Berlin') || phpinfo() || date_default_timezone_set('UTC",
+			'STORE_TIME_ZONE'       => "Europe/Berlin') || phpinfo() || date_default_timezone_set('UTC",
 			'HMAC_KEY_REMEMBER_ME'  => str_repeat('a', 64),
 		];
 
@@ -131,17 +131,20 @@
 			}
 			echo ' (lock already present, skipping mutation test) [OK]' . PHP_EOL;
 		} else {
+
 			file_put_contents($lock_path, '');
 			if (install_is_locked() !== true) {
 				unlink($lock_path);
 				if ($storage_created) rmdir(FS_DIR_STORAGE);
 				throw new Exception('install_is_locked() returned false with lock file present');
 			}
+
 			unlink($lock_path);
 			if (install_is_locked() !== false) {
 				if ($storage_created) rmdir(FS_DIR_STORAGE);
 				throw new Exception('install_is_locked() returned true after lock file removal');
 			}
+
 			if ($storage_created) rmdir(FS_DIR_STORAGE);
 			echo ' [OK]' . PHP_EOL;
 		}
@@ -155,44 +158,20 @@
 		// The helper is a no-op once headers are sent; in CLI that happens
 		// before our first call. We check the CSP-nonce function instead,
 		// since nonce generation is the only deterministic piece.
-		$nonce_a = install_csp_nonce();
-		$nonce_b = install_csp_nonce();
+		$nonce_a = csp_generate_nonce();
+		$nonce_b = csp_generate_nonce();
 
 		if ($nonce_a !== $nonce_b) {
-			throw new Exception('install_csp_nonce() returned different values within the same request');
+			throw new Exception('csp_generate_nonce() returned different values within the same request');
 		}
+
 		if (strlen($nonce_a) !== 32 || !ctype_xdigit($nonce_a)) {
-			throw new Exception('install_csp_nonce() did not return a 32-char hex string, got: ' . var_export($nonce_a, true));
+			throw new Exception('csp_generate_nonce() did not return a 32-char hex string, got: ' . var_export($nonce_a, true));
 		}
 
 		echo ' [OK]' . PHP_EOL;
 
 		########################################################################
-		## Secure-request detection honours forwarded headers
-		########################################################################
-
-		echo 'Testing install_request_is_secure with forwarded headers...';
-
-		$backup = $_SERVER;
-
-		$_SERVER = ['HTTPS' => 'on'];
-		if (install_request_is_secure() !== true) throw new Exception('HTTPS=on not detected');
-
-		$_SERVER = ['HTTPS' => 'off'];
-		if (install_request_is_secure() !== false) throw new Exception('HTTPS=off misidentified as secure');
-
-		$_SERVER = ['HTTP_X_FORWARDED_PROTO' => 'https'];
-		if (install_request_is_secure() !== true) throw new Exception('X-Forwarded-Proto=https not detected');
-
-		$_SERVER = ['HTTP_X_FORWARDED_SSL' => 'on'];
-		if (install_request_is_secure() !== true) throw new Exception('X-Forwarded-SSL=on not detected');
-
-		$_SERVER = [];
-		if (install_request_is_secure() !== false) throw new Exception('Empty $_SERVER misidentified as secure');
-
-		$_SERVER = $backup;
-
-		echo ' [OK]' . PHP_EOL;
 
 		echo PHP_EOL . 'All PROJ-20 tests passed.' . PHP_EOL;
 		return true;

@@ -13,7 +13,7 @@ Number.prototype.toText = function(decimals = 0) {
 };
 
 // Money Formatting
-Number.prototype.toMoney = function() {
+Number.prototype.toMoney = function(auto_decimals = true) {
 	var n = this,
 		c = _env.currency.decimals || 2,
 		d = _env.language.decimal_point || '.',
@@ -24,6 +24,10 @@ Number.prototype.toMoney = function() {
 		i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + '',
 		f = n - i,
 		j = (j = i.length) > 3 ? j % 3 : 0;
+
+	if (auto_decimals && f === 0) {
+		c = 0;
+	}
 
 	return s + p + (j ? i.substring(0, j) + t : '') + i.substring(j).replace(/(\d{3})(?=\d)/g, '$1' + t) + (c ? d + Math.abs(f).toFixed(c).slice(2) : '') + x;
 };

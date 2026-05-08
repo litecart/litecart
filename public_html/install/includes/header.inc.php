@@ -1,10 +1,11 @@
 <?php
-	// AC-7, AC-8: emit security headers before any HTML output.
-	// The helper is idempotent and safe to call multiple times.
-	if (function_exists('install_send_security_headers')) {
-		install_send_security_headers();
-	}
-	$__install_nonce = function_exists('install_csp_nonce') ? install_csp_nonce() : '';
+
+	require_once __DIR__ . '/init.inc.php';
+
+	$nonce = csp_generate_nonce();
+
+	csp_send_headers();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -13,8 +14,8 @@
 <title>LiteCart Installer</title>
 <link rel="stylesheet" href="../backend/template/css/variables.css">
 <link rel="stylesheet" href="../assets/litecore/css/framework<?php echo is_file(__DIR__.'/../../assets/litecore/css/framework.min.css') ? '.min.css' : '.css'; ?>">
-<script<?php echo $__install_nonce ? ' nonce="'. htmlspecialchars($__install_nonce, ENT_QUOTES) .'"' : ''; ?>>window.waitFor=window.waitFor||((i,o)=>{void 0!==window.i?o(window.i):setTimeout((()=>waitFor(i,o)),50)});</script>
-<style<?php echo $__install_nonce ? ' nonce="'. htmlspecialchars($__install_nonce, ENT_QUOTES) .'"' : ''; ?>>
+<script<?php echo $nonce ? ' nonce="'. htmlspecialchars($nonce, ENT_QUOTES) .'"' : ''; ?>>window.waitFor=window.waitFor||((i,o)=>{void 0!==window.i?o(window.i):setTimeout((()=>waitFor(i,o)),50)});</script>
+<style<?php echo $nonce ? ' nonce="'. htmlspecialchars($nonce, ENT_QUOTES) .'"' : ''; ?>>
 html { background: radial-gradient(ellipse at center, #fff 20%, #d2d7de 100%); }
 body { padding: 15px; }
 header { margin: 2em 0; }

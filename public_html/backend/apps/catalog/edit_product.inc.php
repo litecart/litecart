@@ -882,14 +882,16 @@
 	$('input[name="name[<?php echo settings::get('store_language_code'); ?>]"]').first().trigger('input');
 
 	$('input[name^="name"]').on('input', function(e) {
-		let language_code = $(this).attr('name').match(/\[(.*)\]$/)[1];
-		$('input[name="head_title['+language_code+']"]').attr('placeholder', $(this).val());
-		$('input[name="h1_title['+language_code+']"]').attr('placeholder', $(this).val());
+		let $input = $(this);
+		let language_code = $input.attr('name').match(/\[(.*)\]$/)[1];
+		$('input[name="head_title['+language_code+']"]').attr('placeholder', $input.val());
+		$('input[name="h1_title['+language_code+']"]').attr('placeholder', $input.val());
 	});
 
 	$('input[name^="short_description"]').on('input', function(e) {
-		let language_code = $(this).attr('name').match(/\[(.*)\]$/)[1];
-		$('input[name="meta_description['+language_code+']"]').attr('placeholder', $(this).val());
+		let $input = $(this);
+		let language_code = $input.attr('name').match(/\[(.*)\]$/)[1];
+		$('input[name="meta_description['+language_code+']"]').attr('placeholder', $input.val());
 	});
 
 	// Default Category
@@ -1119,36 +1121,38 @@
 	});
 
 	$('#prices').on('input', 'input[name^="prices"][name$="[percentage]"]', function() {
-		let $parent = $(this).closest('tr'),
+		let $tr = $(this).closest('tr'),
 			value = 0;
 
 		<?php foreach (currency::$currencies as $currency) { ?>
 		if ($('input[name^="prices"][name$="[<?php echo $currency['code']; ?>]"]').val() > 0) {
 			value = parseFloat($('input[name="prices[<?php echo $currency['code']; ?>]"]').val() * (100 - $(this).val()) / 100).toFixed(<?php echo $currency['decimals']; ?>);
-			$('input[name$="[<?php echo $currency['code']; ?>]"]', $parent).val(value);
+			$tr.find('input[name$="[<?php echo $currency['code']; ?>]"]').val(value);
 		} else {
-			$('input[name$="[<?php echo $currency['code']; ?>]"]', $parent).val('');
+			$tr.find('input[name$="[<?php echo $currency['code']; ?>]"]').val('');
 		}
 		<?php } ?>
 
 		<?php foreach (currency::$currencies as $currency) { ?>
-		value = parseFloat($('input[name^="prices"][name$="[<?php echo settings::get('store_currency_code', $parent); ?>]"]').val() / <?php echo $currency['value']; ?>).toFixed(<?php echo $currency['decimals']; ?>);
-		$('input[name^="prices"][name$="[<?php echo $currency['code']; ?>]"]', $parent).attr('placeholder', value);
+		value = parseFloat($tr.find('input[name^="prices"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').val() / <?php echo $currency['value']; ?>).toFixed(<?php echo $currency['decimals']; ?>);
+		$tr.find('input[name^="prices"][name$="[<?php echo $currency['code']; ?>]"]').attr('placeholder', value);
 		<?php } ?>
 	});
 
 	$('#prices').on('input', 'input[name^="prices"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]', function() {
-		let $parent = $(this).closest('tr');
-		let percentage = ($('input[name="prices[<?php echo settings::get('store_currency_code'); ?>]"]').val() - $(this).val()) / $('input[name="prices[<?php echo settings::get('store_currency_code'); ?>]"]').val() * 100;
+		let $tr = $(this).closest('tr'),
+			percentage = ($('input[name="prices[<?php echo settings::get('store_currency_code'); ?>]"]').val() - $(this).val()) / $('input[name="prices[<?php echo settings::get('store_currency_code'); ?>]"]').val() * 100,
+			value = 0;
+
 		percentage = percentage.toFixed(2);
-		$('input[name$="[percentage]"]', $parent).val(percentage);
+		$tr.find('input[name$="[percentage]"]').val(percentage);
 
 		<?php foreach (currency::$currencies as $currency) { ?>
-		value = $('input[name^="prices"][name*="[price]"][name$="[<?php echo settings::get('store_currency_code', $parent); ?>]"]').val() / <?php echo $currency['value'] . PHP_EOL; ?>
+		value = $tr.find('input[name^="prices"][name*="[price]"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').val() / <?php echo $currency['value']; ?>;
 		value = value.toFixed(<?php echo $currency['decimals']; ?>);
-		$('input[name^="prices"][name*="[price]"][name$="[<?php echo $currency['code']; ?>]"]', $parent).attr("placeholder", value);
-		if ($('input[name^="prices"][name*="[price]"][name$="[<?php echo $currency['code']; ?>]"]', $parent).val() == 0) {
-			$('input[name^="prices"][name*="[price]"][name$="[<?php echo $currency['code']; ?>]"]', $parent).val('');
+		$tr.find('input[name^="prices"][name*="[price]"][name$="[<?php echo $currency['code']; ?>]"]').attr("placeholder", value);
+		if ($tr.find('input[name^="prices"][name*="[price]"][name$="[<?php echo $currency['code']; ?>]"]').val() == 0) {
+			$tr.find('input[name^="prices"][name*="[price]"][name$="[<?php echo $currency['code']; ?>]"]').val('');
 		}
 		<?php } ?>
 	});
@@ -1164,7 +1168,7 @@
 		e.preventDefault();
 
 		let __index__ = 0;
-		while ($(':input[name^="prices[' + __index__ + ']"]').length) __index__++;
+		while ($(':input[name^="prices[new_' + __index__ + ']"]').length) __index__++;
 
 		let $output = $([
 			'<tr>',
@@ -1174,8 +1178,8 @@
 			'  </td>',
 			'  <td><?php echo f::escape_js(f::form_select_geo_zone('prices[__index__][geo_zone_id]', '')); ?></td>',
 			'  <td><?php echo f::escape_js(f::form_select_campaign('prices[__index__][campaign_id]', '', 'style="width: 200px;"')); ?></td>',
-			'  <td><span class="date-valid-from"></span></td>',
-			'  <td><span class="date-valid-to"></span></td>',
+			'  <td><span class="date-valid-from">-</span></td>',
+			'  <td><span class="date-valid-to">-</span></td>',
 			'  <td><?php echo f::escape_js(f::form_input_decimal('prices[__index__][min_quantity]', '1', 'min="1"')); ?></td>',
 			'  <td>',
 			'    <div class="dropdown">',
@@ -1189,46 +1193,42 @@
 			'  </td>',
 			'  <td><?php echo f::escape_js(f::form_input_money('prices[__index__][gross]', settings::get('store_currency_code'), true, 'style="width: 125px;"')); ?></td>',
 			'  <td></td>',
-			'  <td>',
-			'    <a class="btn btn-default btn-sm remove" href="#" title="<?php echo f::escape_js(t('title_remove', 'Remove'), true); ?>">',
-			'      <?php echo f::escape_js(f::draw_fonticon('remove')); ?>',
-			'    </a>',
-			'  </td>',
+			'  <td><?php echo f::escape_js(f::form_button_predefined('remove-sm')); ?></td>',
 			'</tr>'
 		].join('\n')
 			.replace(/__index__/g, 'new_' + __index__)
 		);
 
-		$('.price-name', $output).text();
-		$('.price-valid-from', $output).text();
-		$('.price-valid-to', $output).text();
+		$output.find('.price-name').text();
+		$output.find('.price-valid-from').text();
+		$output.find('.price-valid-to').text();
 
 		$('#prices tbody').append($output);
 	});
 
 	$('#prices select[name$="[price_id]"]').on('change', function() {
-		let $row = $(this).closest('tr');
-		$('option:selected', $option = $(this));
+		let $row = $(this).closest('tr'),
+			$option = $(this).find('option:selected');
 
 		if ($(this).val() != '') {
-			$('.price-valid-from', $row).text($option.data('valid-from'));
-			$('.price-valid-to', $row).text($option.data('valid-to'));
+			$row.find('.price-valid-from').text($option.data('valid-from'));
+			$row.find('.price-valid-to').text($option.data('valid-to'));
 		} else {
-			$('.price-valid-from', $row).text('');
-			$('.price-valid-to', $row).text('');
+			$row.find('.price-valid-from').text('');
+			$row.find('.price-valid-to').text('');
 		}
 	});
 
 	$('#prices').on('change', 'select[name$="[campaign_id]"]', function(e) {
-		let $row = $(this).closest('tr');
-		$('option:selected', $option = $(this));
+		let $row = $(this).closest('tr'),
+			$option = $(this).find('option:selected');
 
 		if ($(this).val() != '') {
-			$('.date-valid-from', $row).text($option.data('valid-from'));
-			$('.date-valid-to', $row).text($option.data('valid-to'));
+			$row.find('.date-valid-from').text($option.data('valid-from'));
+			$row.find('.date-valid-to').text($option.data('valid-to'));
 		} else {
-			$('.date-valid-from', $row).text('-');
-			$('.date-valid-to', $row).text('-');
+			$row.find('.date-valid-from').text('-');
+			$row.find('.date-valid-to').text('-');
 		}
 	});
 
@@ -1287,9 +1287,8 @@
 
 	$('#attributes select[name="new_attribute[value_id]"]').on('change', function(e) {
 
-		let $row = $(this).closest('tr');
-
-		let $newAttributeGroup = $row.find('select[name="new_attribute[group_id]"]'),
+		let $row = $(this).closest('tr'),
+			$newAttributeGroup = $row.find('select[name="new_attribute[group_id]"]'),
 			$newAttributeValue = $row.find('select[name="new_attribute[value_id]"]'),
 			$newCustomValue = $row.find('input[name="new_attribute[custom_value]"]');
 
@@ -1302,9 +1301,8 @@
 	$('#attributes button[name="add"]').on('click', function(e) {
 		e.preventDefault();
 
-		let $row = $(this).closest('tr');
-
-		let $newAttributeGroup = $row.find('select[name="new_attribute[group_id]"]'),
+		let $row = $(this).closest('tr'),
+			$newAttributeGroup = $row.find('select[name="new_attribute[group_id]"]'),
 			$newAttributeValue = $row.find('select[name="new_attribute[value_id]"]'),
 			$newCustomValue = $row.find('input[name="new_attribute[custom_value]"]');
 
@@ -1369,15 +1367,15 @@
 			.replace(/__index__/g, 'new_' + __index__)
 		);
 
-		$(':input[name^="attributes[new_'+__index__+'][group_id]"]', $output)
+		$output.find(':input[name^="attributes[new_'+__index__+'][group_id]"]')
 			.val( $newAttributeGroup.val() )
 			.after( $('select[name="new_attribute[group_id]"] option:selected').text() );
 
-		$(':input[name^="attributes[new_'+__index__+'][value_id]"]', $output)
+		$output.find(':input[name^="attributes[new_'+__index__+'][value_id]"]')
 			.val( $newAttributeValue.val() )
 			.after(  $newAttributeValue.val() ? $('select[name="new_attribute[value_id]"] option:selected').text() : '' );
 
-		$(':input[name^="attributes[new_'+__index__+'][custom_value]"]', $output)
+		$output.find(':input[name^="attributes[new_'+__index__+'][custom_value]"]')
 			.val( $newCustomValue.val() )
 			.after( $newCustomValue.val() );
 
@@ -1574,13 +1572,13 @@
 		if (!$('#customizations input[name^="customizations"][name$="[group_id]"][value="'+ $groupElement.val() +'"]').length) {
 
 			var $output = $([
-				'<li data-group-id="'+ $groupElement.val().escapeAttr() +'" data-group-name="'+ $('option:selected', $groupElement).text().escapeAttr() +'">',
+				'<li data-group-id="'+ $groupElement.val().escapeAttr() +'" data-group-name="'+ $groupElement.find('option:selected').text().escapeAttr() +'">',
 				'  <div class="float-end">',
 				'    <a class="btn btn-default move-group-up" href="#" title="<?php echo f::escape_js(t('text_move_up', 'Move up')); ?>"><?php echo f::draw_fonticon('move-up'); ?></a>',
 				'    <a class="btn btn-default move-group-down" href="#" title="<?php echo f::escape_js(t('text_move_down', 'Move down')); ?>"><?php echo f::draw_fonticon('move-down'); ?></a>',
 				'    <a class="btn btn-default remove-group" href="#" title="<?php echo f::escape_js(t('title_remove', 'Remove')); ?>"><?php echo f::draw_fonticon('remove'); ?></a>',
 				'  </div>',
-				'  <h2>'+ $('option:selected', $groupElement).text() +'</h2>',
+				'  <h2>'+ $groupElement.find('option:selected').text() +'</h2>',
 				'  <?php echo f::escape_js(f::form_input_hidden('customizations[new_group_id][group_id]', 'new_group_id')); ?>',
 				'  <div class="grid">',
 				'    <div class="col-sm-4 col-md-2">',
@@ -1621,7 +1619,7 @@
 			].join('\n')
 				.replace(/new_customization_group_i/g, 'new_' + new_customization_group_i++)
 				.replace(/new_group_id/g, $groupElement.val())
-				.replace(/new_group_name/g, $('option:selected', $groupElement).text())
+				.replace(/new_group_name/g, $groupElement.find('option:selected').text())
 			);
 
 			$('#customizations').append($output);
@@ -1686,7 +1684,7 @@
 			'</li>'
 		].join('\n')
 			.replace(/new_group_id/g, $groupElement.val())
-			.replace(/new_group_name/g, $('option:selected', $groupElement).text())
+			.replace(/new_group_name/g, $groupElement.find('option:selected').text())
 		);
 
 		$('#customizations').append($output);
@@ -1844,8 +1842,8 @@
 					break;
 			}
 
-			$(':input[name$="['+ key +']"]', $output).val(value);
-			$('.'+ key, $output).text(value);
+			$output.find(':input[name$="['+ key +']"]').val(value);
+			$output.find('.'+ key).text(value);
 		});
 
 		if ($('#stock-options tbody tr[data-stock-item-id="'+ stock_item.id +'"]').length) {

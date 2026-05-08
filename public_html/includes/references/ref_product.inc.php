@@ -48,7 +48,7 @@
 						where p.status
 						and (ol.product_id != 0 and ol.product_id != ". (int)$this->_data['id'] .")
 						and order_id in (
-							select distinct order_id from ". DB_TABLE_PREFIX ."orders_lines
+							select order_id from ". DB_TABLE_PREFIX ."orders_lines
 							where product_id = ". (int)$this->_data['id'] ."
 						)
 						group by ol.product_id
@@ -247,6 +247,7 @@
 							where valid_from <= '". date('Y-m-d H:i:s') ."'
 							and valid_to >= '". date('Y-m-d H:i:s') ."'
 						))
+						and min_quantity = 1
 						group by product_id;"
 					)->fetch();
 

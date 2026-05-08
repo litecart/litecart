@@ -351,7 +351,7 @@
 						stock_option_id = ". ($line['stock_option_id'] ? (int)$line['stock_option_id'] : "null") .",
 						code = '". database::input($line['code']) ."',
 						name = '". database::input($line['name']) ."',
-						userdata = '". (!empty($line['userdata']) ? database::input(f::format_json($line['userdata'])) : '') ."',
+						userdata = '". (!empty($line['userdata']) ? database::input(f::format_json($line['userdata'])) : '{}') ."',
 						serial_number = '". database::input($line['serial_number']) ."',
 						quantity = ". (float)$line['quantity'] .",
 						price = ". (float)$line['price'] .",
@@ -601,26 +601,34 @@
 
 		public function add_line($line, $stock_items=[]) {
 
-			$structure = [];
+			$tax_rates = tax::get_rates($line['tax_class_id'] ?? null, $this->data['customer']['country_code'], $this->data['customer']['zone_code']);
+			$average_rate = !empty($tax_rates) ? array_sum($tax_rates) / count($tax_rates) : 0;
 
-			database::query(
-				"show fields from ". DB_TABLE_PREFIX ."orders_lines;"
-			)->each(function($field) use (&$structure) {
-				$structure[$field['Field']] = database::create_variable($field);
-			});
-
-			// Stripe some fields
-			$line = array_diff_assoc($line, ['id', 'order_id']);
-
-			// Merge with structure
-			$line = array_replace($structure, array_intersect_key($line, $structure));
+			$line = [
+				'id' => null,
+				'order_id' => null,
+				'product_id' => null,
+				'stock_option_id' => null,
+				'code' => $line['code'] ?? '',
+				'name' => $line['name'] ?? '',
+				'userdata' => $line['userdata'] ?? '',
+				'serial_number' => $line['serial_number'] ?? '',
+				'quantity' => $line['quantity'] ?? 1,
+				'price' => $line['price'] ?? 0,
+				'discount' => $line['discount'] ?? 0,
+				'tax' => $line['tax'] ?? tax::get_tax(($line['price'] ?? 0) - ($line['discount'] ?? 0), $line['tax_class_id'] ?? null, $this->data['customer']['country_code'], $this->data['customer']['zone_code']),
+				'tax_rate' => $line['tax_rate'] ?? $average_rate,
+				'tax_class_id' => $line['tax_class_id'] ?? null,
+				'sum' => 0,
+				'sum_tax' => 0,
+				'items' => [],
+			];
 
 			$line['sum'] = ($line['price'] - $line['discount']) * $line['quantity'];
-			$line['sum_tax'] = ($line['tax'] - $line['discount_tax']) * $line['quantity'];
+			$line['sum_tax'] = $line['tax'] * $line['quantity'];
 
-			// Merge stock items
-			$line['items'] = [];
 			foreach ($stock_items as $stock_item) {
+
 				$line['items'][] = [
 					'stock_item_id' => $stock_item['id'],
 					'quantity' => $stock_item['quantity'],
@@ -636,17 +644,18 @@
 					'weight' => $stock_item['weight'],
 					'weight_unit' => $stock_item['weight_unit'],
 				];
+
+				$this->data['weight_total'] += weight::convert($stock_item['weight'], $stock_item['weight_unit'], $this->data['weight_unit']) * $line['quantity'];
 			}
 
 			$this->data['lines'][] = $line;
 
-			$this->data['subtotal'] += $line['price'] * $line['quantity'];
-			$this->data['subtotal_tax'] += $line['tax'] * $line['quantity'];
-			$this->data['discount'] += $line['discount'] * $line['quantity'];
-			$this->data['discount_tax'] += $line['discount_tax'] * $line['quantity'];
-			$this->data['total'] += ($line['price'] + $line['tax']) * $line['quantity'];
-			$this->data['total_tax'] += $line['tax'] * $line['quantity'];
-			$this->data['weight_total'] += weight::convert($line['weight'], $line['weight_unit'], $this->data['weight_unit']) * $line['quantity'];
+			$this->data['subtotal'] += $line['regular_price']['value'] * $line['quantity'];
+			$this->data['subtotal_tax'] += $line['regular_price']['tax'] * $line['quantity'];
+			$this->data['discount'] += $line['discount']['value'] * $line['quantity'];
+			$this->data['discount_tax'] += $line['discount']['tax'] * $line['quantity'];
+			$this->data['total'] += ($line['final_price']['value'] + $line['final_price']['tax']) * $line['quantity'];
+			$this->data['total_tax'] += $line['final_price']['tax'] * $line['quantity'];
 		}
 
 		public function validate($filters=[], $shipping = null, $payment = null) {

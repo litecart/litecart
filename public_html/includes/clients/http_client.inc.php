@@ -11,6 +11,11 @@
 			'requests' => 0,
 		];
 
+		public function set_timeout($timeout) {
+			$this->timeout = $timeout;
+			return $this;
+		}
+
 		public function call($method, $url='', $data=null, $headers=[], $asynchronous=false) {
 
 			$this->last_request = [];

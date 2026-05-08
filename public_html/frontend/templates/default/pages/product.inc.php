@@ -204,15 +204,15 @@ form[name="buy_now_form"] .dropdown-menu .image {
 									<?php } ?>
 								</div>
 
-								<div class="col-xl-4">
+								<div id="price" class="col-xl-4">
 									<br>
 									<?php echo f::draw_price_tag($regular_price, $final_price, currency::$selected['code']); ?>
 
 									<?php if ($tax_class_id) { ?>
-									<?php if ($total_tax) { ?>
+									<?php if ($tax) { ?>
 									<div class="tax" style="margin: 0 0 1em;">
 									<?php if ($tax_rates) { ?>
-										<?php echo $including_tax ? t('text_tax_included', 'Tax included') : t('title_excluding_tax', 'Excluding Tax'); ?>: <span class="total-tax"><?php echo currency::format($total_tax); ?></span>
+										<?php echo $including_tax ? t('text_tax_included', 'Tax included') : t('title_excluding_tax', 'Excluding Tax'); ?>: <span class="total-tax"><?php echo currency::format($tax); ?></span>
 									<?php } else { ?>
 										<?php echo t('title_no_tax_included', 'No tax included'); ?>
 									<?php } ?>
@@ -506,27 +506,29 @@ form[name="buy_now_form"] .dropdown-menu .image {
 <script>
 	$('#box-product[data-id="<?php echo $product_id; ?>"] form[name="buy_now_form"]').on('input', function(e) {
 
-		var regular_price = <?php echo currency::format_raw($regular_price); ?>,
+		var
+			$form = $(this),
+			regular_price = <?php echo currency::format_raw($regular_price); ?>,
 			final_price = <?php echo currency::format_raw($final_price); ?>,
-			tax = <?php echo currency::format_raw($total_tax); ?>;
+			tax = <?php echo currency::format_raw($tax); ?>;
 
 		if (regular_price == 0) {
 			return;
 		}
 
-		$('input[type="radio"]:checked, input[type="checkbox"]:checked', this).each(function() {
+		$form.find('input[type="radio"]:checked, input[type="checkbox"]:checked').each(function() {
 			if ($(this).data('price-adjust')) regular_price += $(this).data('price-adjust');
 			if ($(this).data('price-adjust')) final_price += $(this).data('price-adjust');
 			if ($(this).data('tax-adjust')) tax += $(this).data('tax-adjust');
 		});
 
-		$(this).find('select option:checked').each(function() {
+		$form.find('select option:checked').each(function() {
 			if ($(this).data('price-adjust')) regular_price += $(this).data('price-adjust');
 			if ($(this).data('price-adjust')) final_price += $(this).data('price-adjust');
 			if ($(this).data('tax-adjust')) tax += $(this).data('tax-adjust');
 		});
 
-		$(this).find('input[type!="radio"][type!="checkbox"]').each(function() {
+		$form.find('input[type!="radio"][type!="checkbox"]').each(function() {
 			if ($(this).val() != '') {
 				if ($(this).data('price-adjust')) regular_price += $(this).data('price-adjust');
 				if ($(this).data('price-adjust')) final_price += $(this).data('price-adjust');
@@ -534,10 +536,10 @@ form[name="buy_now_form"] .dropdown-menu .image {
 			}
 		});
 
-		$(this).find('.regular-price').text(regular_price.toMoney());
-		$(this).find('.final-price').text(final_price.toMoney());
-		$(this).find('.price').text(final_price.toMoney());
-		$(this).find('.total-tax').text(tax.toMoney());
+		$form.find('#price .regular-price').text(regular_price.toMoney());
+		$form.find('#price .final-price').text(final_price.toMoney());
+		$form.find('#price .price').text(final_price.toMoney());
+		$form.find('#price .total-tax').text(tax.toMoney());
 	});
 
 	$('#box-product form[name="buy_now_form"] .options :input').on('change', function() {

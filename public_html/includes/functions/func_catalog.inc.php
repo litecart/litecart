@@ -13,7 +13,7 @@
 				union all
 				select cd.root_id, c2.id
 				from category_descendants cd
-				inner join ". DB_TABLE_PREFIX ."categories c2 on c2.parent_id = cd.descendant_id
+				left join ". DB_TABLE_PREFIX ."categories c2 on c2.parent_id = cd.descendant_id
 			)
 
 			select c.id, c.parent_id, c.image, c.priority, c.updated_at, ctv.num_products, c2.num_subcategories,
@@ -203,7 +203,7 @@
 		if (!empty($filter['categories'])) {
 			$sql_inner_where['categories'] = (
 				"p.id in (
-					select distinct product_id from ". DB_TABLE_PREFIX ."products_to_categories
+					select product_id from ". DB_TABLE_PREFIX ."products_to_categories
 					where category_id in ('". implode("', '", database::input($filter['categories'])) ."')
 				)"
 			);
@@ -216,7 +216,7 @@
 			foreach ($filter['attributes'] as $group_id => $values) {
 				$sql_where_attributes[] = (
 					"p.id in (
-						select distinct product_id from ". DB_TABLE_PREFIX ."products_attributes
+						select product_id from ". DB_TABLE_PREFIX ."products_attributes
 						where (group_id = ". (int)$group_id ." and (value_id in ('". implode("', '", database::input($values)) ."') or custom_value in ('". implode("', '", database::input($values)) ."')))
 					)"
 				);
@@ -429,7 +429,7 @@
 
 			$sql_select_relevance[] = (
 				"if(p.id in (
-					select distinct product_id from ". DB_TABLE_PREFIX ."products_stock_options
+					select product_id from ". DB_TABLE_PREFIX ."products_stock_options
 					where stock_item_id in (
 						select id from ". DB_TABLE_PREFIX ."stock_items
 						where sku regexp '". database::input($code_regex) ."'
@@ -467,7 +467,7 @@
 		if (!empty($filter['categories'])) {
 			$sql_select_relevance['categories'] = (
 				"if(p.id in (
-					select distinct product_id from ". DB_TABLE_PREFIX ."products_to_categories
+					select product_id from ". DB_TABLE_PREFIX ."products_to_categories
 					where category_id in ('". implode("', '", database::input($filter['categories'])) ."')
 				), 1, 0)"
 			);
@@ -482,8 +482,7 @@
 		if (!empty($filter['attributes']) && is_array($filter['attributes'])) {
 			$sql_where['attributes'] = (
 				"if(p.id in (
-					select distinct product_id
-					from ". DB_TABLE_PREFIX ."products_attributes
+					select product_id from ". DB_TABLE_PREFIX ."products_attributes
 					where concat(group_id, '-', value_id) in ('". implode("', '", database::input($filter['attributes'])) ."')
 				), 1, 0)"
 			);

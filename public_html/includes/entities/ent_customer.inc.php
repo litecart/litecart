@@ -210,7 +210,7 @@
 			$this->previous = $this->data;
 		}
 
-		public function send_email($type='account_created') {
+		public function send_email($type, $aliases=[]) {
 
 			if (empty($this->data['email'])) {
 				throw new Exception(t('error_cannot_send_email_to_customer_without_email', 'Cannot send email to customer without an email address'));
@@ -222,6 +222,7 @@
 				'{firstname}' => $this->data['firstname'],
 				'{lastname}' => $this->data['lastname'],
 				'{email}' => $this->data['email'],
+				...$aliases,
 			];
 
 			switch ($type) {
@@ -242,9 +243,19 @@
 
 					break;
 
-				//case 'password_reset':
-				//	$subject = t('email_subject_customer_password_reset', 'Password Reset');
-				//	break;
+				case 'reset_password':
+					$subject = t('email_subject_customer_password_reset', 'Password Reset');
+
+					$message = strtr(implode("\r\n", [
+						t('email_body_reset_password_intro', "You recently requested to reset your password for {store_name}."),
+						t('email_body_reset_password_ignore', "If you did not request a password reset, please ignore this email."),
+						t('email_body_reset_password_instruction', "Visit the link below to reset your password:"),
+						"",
+						"{link}",
+						"",
+						t('email_body_reset_password_token', "Reset Token: {token}")
+					]), $aliases);
+					break;
 
 				default:
 					throw new Exception(t('error_invalid_email_type', 'Invalid email type'));

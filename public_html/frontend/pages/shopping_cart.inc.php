@@ -127,8 +127,8 @@
 	$_page->snippets = [
 		'items' => [],
 		'subtotal' => [
-			'value' => cart::$total['value'],
-			'tax' => cart::$total['tax'],
+			'value' => cart::$total['total']['value'],
+			'tax' => cart::$total['total']['tax'],
 		],
 		'cheapest_shipping_fee' => null,
 		'display_prices_including_tax' => customer::$data['display_prices_including_tax'],
@@ -160,9 +160,10 @@
 					'sku' => $item['sku'],
 					'image' => $item['image'],
 					'quantity' => $item['quantity'],
-					'price' => $item['price'],
+					'regular_price' => $item['regular_price'],
+					'discount' => $item['discount'],
+					'final_price' => $item['final_price'],
 					'tax_class_id' => $item['tax_class_id'],
-					'tax' => $item['tax'],
 					'weight' => $item['weight'],
 					'weight_unit' => $item['weight_unit'],
 					'length' => $item['length'],
@@ -170,8 +171,8 @@
 					'height' => $item['height'],
 					'length_unit' => $item['length_unit'],
 				]),
-				'subtotal' => cart::$total['value'],
-				'subtotal_tax' => cart::$total['tax'],
+				'subtotal' => cart::$total['total']['value'],
+				'subtotal_tax' => cart::$total['total']['tax'],
 				'customer' => customer::$data,
 				'currency_code' => currency::$selected['code'],
 			],
@@ -197,12 +198,10 @@
 				'thumbnail_2x' => f::image_thumbnail('storage://images/'. ($item['image'] ?  $item['image'] : 'no_image.svg'), 128, 0, 'product'),
 			],
 			'link' => document::ilink('product', ['product_id' => $item['product_id']]),
-			'display_price' => customer::$data['display_prices_including_tax'] ? $item['price'] + $item['tax'] : $item['price'],
-			'price' => $item['price'],
-			'final_price' => $item['price'] ?? 0,
-			'tax' => $item['tax'] ?? 0,
-			'discount' => $item['discount'] ?? 0,
-			'discount_tax' => $item['discount_tax'] ?? 0,
+			'regular_price' => $item['regular_price'],
+			'discount' => $item['discount'],
+			'final_price' => $item['final_price'],
+			'tax_class_id' => $item['tax_class_id'],
 			'tax_class_id' => $item['tax_class_id'] ?? null,
 			'quantity' => (float)$item['quantity'],
 			'quantity_unit_name' => $item['quantity_unit_name'] ?? '',
@@ -226,7 +225,7 @@
 			where p.status
 			and (ol.product_id != 0 and ol.product_id not in ('". implode("', '", database::input(array_column(cart::$items, 'product_id'))) ."'))
 			and order_id in (
-				select distinct order_id as id from ". DB_TABLE_PREFIX ."orders_lines
+				select order_id as id from ". DB_TABLE_PREFIX ."orders_lines
 				where product_id in ('". implode("', '", database::input(array_column(cart::$items, 'product_id'))) ."')
 			)
 			group by ol.product_id

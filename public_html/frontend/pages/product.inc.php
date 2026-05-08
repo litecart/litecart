@@ -156,7 +156,7 @@
 				->send();
 
 			notices::$data['success'][] = t('success_thank_you_for_reviewing_product', 'Thank you for reviewing this product');
-			redirect(document::link());
+			reload();
 			exit;
 
 		} catch (Exception $e) {
@@ -387,9 +387,9 @@
 		'regular_price' => $product->regular_price ? tax::get_price($product->regular_price, $product->tax_class_id) : null,
 		'final_price' => $product->final_price ? tax::get_price($product->final_price, $product->tax_class_id) : null,
 		'tax_class_id' => $product->tax_class_id,
-		'including_tax' => !empty(customer::$data['display_prices_including_tax']),
-		'total_tax' => $product->tax,
+		'tax' => $product->tax,
 		'tax_rates' => [],
+		'including_tax' => !empty(customer::$data['display_prices_including_tax']),
 		'quantity_min' => ($product->quantity_min > 0) ? $product->quantity_min : 1,
 		'quantity_max' => ($product->quantity_max > 0) ? $product->quantity_max : null,
 		'quantity_step' => ($product->quantity_step > 0) ? $product->quantity_step : null,

@@ -7,9 +7,9 @@
 		}
 	}
 
-	// Shorthand q() for database::query()
-	function q(...$args){
-		return forward_static_call_array(['database', 'query'], $args);
+	// Shorthand sql() for database::prepare() e.g. sql("SELECT * FROM table WHERE id = :id", [$id])->bind(...)->fetch();
+	function sql(...$args) {
+		return forward_static_call_array(['database', 'prepare'], $args);
 	}
 
 	// Shorthand t() for language::translate()

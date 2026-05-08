@@ -18,7 +18,7 @@
 
 							<ul class="items list-unstyled">
 								<?php foreach ($items as $key => $item) { ?>
-								<li class="item" data-id="<?php echo $item['product_id']; ?>" data-sku="<?php echo $item['sku']; ?>" data-name="<?php echo f::escape_html($item['name']); ?>" data-price="<?php echo currency::format_raw($item['price']); ?>" data-quantity="<?php echo currency::format_raw($item['quantity']); ?>">
+								<li class="item" data-id="<?php echo $item['product_id']; ?>" data-sku="<?php echo $item['sku']; ?>" data-name="<?php echo f::escape_html($item['name']); ?>" data-price="<?php echo currency::format_raw($item['final_price']['value']); ?>" data-quantity="<?php echo currency::format_raw($item['quantity']); ?>">
 									<div class="grid" style="align-items: center;">
 										<div class="col-11">
 
@@ -35,13 +35,7 @@
 															<div><strong><a href="<?php echo f::escape_html($item['link']); ?>" style="color: inherit;"><?php echo $item['name']; ?></a></strong></div>
 															<?php if (!empty($item['sku'])) echo '<div class="sku">'. $item['sku'] .'</div>'; ?>
 															<?php if (!empty($item['error'])) echo '<div class="error">'. $item['error'] .'</div>'; ?>
-															<div class="price">
-																<?php if ($item['price'] != $item['final_price']) { ?>
-																<del class="regular-price"><?php echo currency::format($item['price'] * $item['quantity']); ?></del> <strong class="final-price"><?php echo currency::format($item['final_price'] * $item['quantity']); ?></strong>
-																<?php } else { ?>
-																<span class="price"><?php echo currency::format($item['price'] * $item['quantity']); ?></span>
-																<?php } ?>
-															</div>
+															<?php echo f::draw_price_tag($item['regular_price']['display_value'], $item['final_price']['display_value']); ?>
 														</div>
 
 														<div class="col-md-6 text-center">

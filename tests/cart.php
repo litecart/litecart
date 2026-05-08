@@ -85,8 +85,12 @@
 			throw new Exception('AC-B1: Cart item quantity should be 1. Got '. $item['quantity']);
 		}
 
-		if ((float)$item['price'] <= 0) {
-			throw new Exception('AC-B1: Cart item price should be greater than 0. Got '. $item['price']);
+		if ((float)$item['regular_price']['value'] <= 0) {
+			throw new Exception('AC-B1: Cart item price should be greater than 0. Got '. $item['regular_price']['value']);
+		}
+
+		if ((float)$item['final_price']['value'] <= 0) {
+			throw new Exception('AC-B1: Cart item price should be greater than 0. Got '. $item['final_price']['value']);
 		}
 
 		// Clear cart for next test

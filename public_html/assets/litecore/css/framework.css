@@ -1045,7 +1045,7 @@ summary {
 		input[type="radio"] {
 			display: none;
 		}
-		*/
+		 */
 }
 
 .form-select + .dropdown-menu,
@@ -2489,7 +2489,7 @@ label.form-check > input:is([type=radio]):checked {
 		.input-group + .input-group {
 			border-inline-start: var(--input-border);
 		}
-	*/
+	 */
 }
 
 .form-group > .form-input + .form-input,
