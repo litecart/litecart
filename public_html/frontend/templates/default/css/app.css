@@ -637,11 +637,12 @@ body {
 	transition: transform 100ms linear, box-shadow 100ms linear;
 	border: var(--listing-border-size) solid var(--listing-border-color);
 	border-radius: var(--border-radius);
+	overflow: hidden;
 }
 @media (width >= 576px) {
 	.listing .product:hover {
-		transform: translateY(-2px);
-		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+		transform: translateY(-6px);
+		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.03);
 	}
 	.listing .product:hover img {
 		scale: 1.05;
