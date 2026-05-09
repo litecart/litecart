@@ -9,6 +9,16 @@ form[name="buy_now_form"] .dropdown-menu .image {
 	border: 1px solid var(--default-border-color);
 	vertical-align: middle;
 }
+#quantity-prices {
+	font-size: 15px;
+}
+#quantity-prices td, #quantity-prices th {
+	cursor: pointer;
+}
+#quantity-prices tr.selected {
+	background: #ffeee0;
+	color: #c91c17;
+}
 </style>
 
 <main id="main" class="container">
@@ -212,7 +222,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 									<?php if ($tax) { ?>
 									<div class="tax" style="margin: 0 0 1em;">
 									<?php if ($tax_rates) { ?>
-										<?php echo $including_tax ? t('text_tax_included', 'Tax included') : t('title_excluding_tax', 'Excluding Tax'); ?>: <span class="total-tax"><?php echo currency::format($tax); ?></span>
+										<?php echo $including_tax ? t('text_tax_included', 'Tax included') : t('title_excluding_tax', 'Excluding Tax'); ?>: <span class="tax"><?php echo currency::format($tax); ?></span>
 									<?php } else { ?>
 										<?php echo t('title_no_tax_included', 'No tax included'); ?>
 									<?php } ?>
@@ -221,6 +231,33 @@ form[name="buy_now_form"] .dropdown-menu .image {
 									<?php } ?>
 								</div>
 							</div>
+
+							<?php if (!empty($quantity_prices)) { ?>
+							<div id="quantity-prices">
+								<table class="table table-striped data-table">
+									<thead>
+										<tr>
+											<th><?php echo language::translate('title_min_qty', 'Min. Qty'); ?></th>
+											<th><?php echo language::translate('title_unit_price', 'Unit Price'); ?></th>
+										<tr>
+									</thead>
+
+									<tbody>
+										<tr data-min-quantity="1" data-regular-price="<?php echo (float)$final_price; ?>" data-regular-price="<?php echo currency::format_raw($regular_price); ?>" data-final-price="<?php echo currency::format_raw($final_price); ?>" data-tax="<?php echo currency::format_raw($tax); ?>">
+											<td>1+</td>
+											<td><?php echo f::draw_price_tag($regular_price, $final_price); ?></td>
+										</tr>
+
+										<?php foreach ($quantity_prices as $quantity_price) { ?>
+										<tr data-min-quantity="<?php echo (float)$quantity_price['min_quantity']; ?>" data-regular-price="<?php echo currency::format_raw($quantity_price['regular_price']); ?>" data-final-price="<?php echo currency::format_raw($quantity_price['final_price']); ?>" data-tax="<?php echo currency::format_raw($quantity_price['final_price']); ?>">
+											<td><?php echo (float)$quantity_price['min_quantity']; ?>+</td>
+											<td><?php echo f::draw_price_tag($quantity_price['regular_price'], $quantity_price['final_price']); ?></td>
+										</tr>
+										<?php } ?>
+									</tbody>
+								</table>
+							</div>
+							<?php } ?>
 
 						</fieldset>
 
@@ -504,16 +541,44 @@ form[name="buy_now_form"] .dropdown-menu .image {
 </main>
 
 <script>
+
+	$('#quantity-prices tbody tr').on('click', function(){
+		let min_quantity = $(this).data('min-quantity');
+		$('#box-product input[name="quantity"]').val(min_quantity).trigger('input');
+	});
+
+	$('#box-product input[name="quantity"]').on('input', function(){
+		let current_quantity = $(this).val();
+		$('#quantity-prices tbody tr').each(function(i, row){
+			let $row = $(row);
+			if ($row.data('min-quantity') <= current_quantity) {
+				$row.addClass('selected');
+				$row.siblings('.selected').removeClass('selected');
+			}
+		});
+	}).trigger('input');
+
 	$('#box-product[data-id="<?php echo $product_id; ?>"] form[name="buy_now_form"]').on('input', function(e) {
 
-		var
-			$form = $(this),
-			regular_price = <?php echo currency::format_raw($regular_price); ?>,
-			final_price = <?php echo currency::format_raw($final_price); ?>,
-			tax = <?php echo currency::format_raw($tax); ?>;
+		var $form = $(this),
+			regular_price = <?php echo (float)$regular_price; ?>,
+			final_price = <?php echo (float)$final_price; ?>,
+			tax = <?php echo (float)$tax; ?>;
 
 		if (regular_price == 0) {
 			return;
+		}
+
+		if ($('#quantity-prices tbody tr.selected').length) {
+
+			let $row = $('#quantity-prices tbody tr.selected'),
+				quantity_price = Number($row.data('final-price')),
+				quantity_tax = Number($row.data('tax'));
+
+			if (quantity_price < final_price) {
+				final_price = quantity_price;
+				tax = quantity_tax;
+			}
 		}
 
 		$form.find('input[type="radio"]:checked, input[type="checkbox"]:checked').each(function() {
@@ -538,8 +603,10 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 		$form.find('#price .regular-price').text(regular_price.toMoney());
 		$form.find('#price .final-price').text(final_price.toMoney());
-		$form.find('#price .price').text(final_price.toMoney());
-		$form.find('#price .total-tax').text(tax.toMoney());
+		if (!$form.find('#price .final-price').length) { // If there is no separate regular and final price (e.g. when there is only one price), then update the displayed price with the adjusted final price.
+			$form.find('#price .regular-price').text(final_price.toMoney());
+		}
+		$form.find('#price .tax').text(tax.toMoney());
 	});
 
 	$('#box-product form[name="buy_now_form"] .options :input').on('change', function() {

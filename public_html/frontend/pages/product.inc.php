@@ -386,6 +386,7 @@
 		'recommended_price' => tax::get_price($product->recommended_price, $product->tax_class_id),
 		'regular_price' => $product->regular_price ? tax::get_price($product->regular_price, $product->tax_class_id) : null,
 		'final_price' => $product->final_price ? tax::get_price($product->final_price, $product->tax_class_id) : null,
+		'quantity_prices' => $product->quantity_prices,
 		'tax_class_id' => $product->tax_class_id,
 		'tax' => $product->tax,
 		'tax_rates' => [],

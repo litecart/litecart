@@ -445,6 +445,54 @@
 
 					break;
 
+				case 'quantity_prices':
+
+					$this->_data['quantity_prices'] = database::query(
+						"select min_quantity,
+							min(coalesce(
+								". implode(', ', f::array_each($this->_currency_codes, fn($currency_code) =>
+									"if(json_value(price, '$.". database::input($currency_code) ."') != 0, json_value(price, '$.". database::input($currency_code) ."') * ". currency::$currencies[$currency_code]['value'] .", null)"
+								)) ."
+							)) as regular_price,
+							max(coalesce(
+								". implode(', ', f::array_each($this->_currency_codes, fn($currency_code) =>
+									"if(json_value(price, '$.". database::input($currency_code) ."') != 0, json_value(price, '$.". database::input($currency_code) ."') * ". currency::$currencies[$currency_code]['value'] .", null)"
+								)) ."
+							)) as final_price
+						from ". DB_TABLE_PREFIX ."products_prices
+						where product_id = ". (int)$this->_data['id'] ."
+						and min_quantity > 1
+						and (customer_group_id is null or customer_group_id = ". (int)$this->_customer['group_id'] .")
+						and (geo_zone_id is null or geo_zone_id in (
+							select geo_zone_id from ". DB_TABLE_PREFIX ."zones_to_geo_zones
+							where country_code = '". database::input($this->_customer['country_code']) ."'
+							and (zone_code = '' or zone_code is null or zone_code = '". database::input($this->_customer['zone_code']) ."')
+						))
+						and (campaign_id is null or campaign_id in (
+							select id from ". DB_TABLE_PREFIX ."campaigns
+							where (valid_from is null or valid_from <= '". date('Y-m-d H:i:s') ."')
+							and (valid_to is null or valid_to >= '". date('Y-m-d H:i:s') ."')
+						))
+						group by min_quantity
+						order by min_quantity asc;"
+					)->fetch_all();
+
+					foreach ($this->_data['quantity_prices'] as $i => $quantity_price) {
+
+						if ($this->final_price <= $quantity_price['final_price']) {
+							$quantity_price[$i]['final_price'] = $this->final_price;
+						}
+
+						if (isset($last_final_price) && $quantity_price['final_price'] >= $last_final_price) {
+							$this->_data['quantity_prices'][$i] = $last_final_price;
+						}
+
+						$this->_data['quantity_prices'][$i]['tax'] = tax::get_tax($quantity_price['final_price'], $this->tax_class_id);
+						$last_final_price = $quantity_price['final_price'];
+					}
+
+					break;
+
 				case 'quantity_unit':
 
 					$this->_data['quantity_unit'] = database::query(
