@@ -39,7 +39,11 @@
           $deleted_files++;
         }
 
-        $is_empty_dir = !(new \FilesystemIterator($dir))->valid();
+        try {
+          $is_empty_dir = !(new \FilesystemIterator($dir))->valid();
+        } catch (\UnexpectedValueException $e) {
+          continue;
+        }
 
         if ($is_empty_dir) {
           rmdir($dir);
