@@ -54,15 +54,14 @@
 			}
 		}
 
-
 	} catch (Exception $e) {
 		http_response_code($e->getCode() ?: 500);
 		notices::add('errors', $e->getMessage());
-		redirect(document::ilink('shopping_cart'), 303);
+		return;
 	}
 
 	if (settings::get('catalog_only_mode')) {
-		notice::add('errors', t('warning_no_checkout_in_catalog_only_mode', 'The store is currently in catalog mode only and cannot accept orders.'));
+		notices::add('errors', t('warning_no_checkout_in_catalog_only_mode', 'The store is currently in catalog mode only and cannot accept orders.'));
 		return;
 	}
 
@@ -104,8 +103,9 @@
 	}
 
 	if (empty($order->shipping->selected['id'])) {
-		if ($cheapest = $order->shipping->cheapest($order->data['items'], $order->data['currency_code'], $order->data['customer'])) {
-			$order->shipping->select($cheapest['id'], $_POST);
+		$cheapest_shipping = $order->shipping->cheapest($order->data['items'], $order->data['currency_code'], $order->data['customer']);
+		if ($cheapest_shipping) {
+			$order->shipping->select($cheapest_shipping['id'], $_POST);
 		}
 	}
 

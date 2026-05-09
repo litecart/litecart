@@ -870,13 +870,13 @@ body {
 #box-product .video .video-icon .video-icon:hover {
 	background-color: rgba(0, 0, 0, 0.7);
 }
-#box-product .price-tag {
+#box-product #price .price-tag {
 	font-size: 1.75em;
 }
-#box-product .price-tag .regular-price {
+#box-product #price .price-tag .regular-price {
 	font-size: 0.75em;
 }
-#box-product .price-tag .final-price {
+#box-product #price .price-tag .final-price {
 	color: var(--color-sale-price);
 }
 #box-product .tax {
