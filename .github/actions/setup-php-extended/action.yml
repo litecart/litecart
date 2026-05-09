@@ -1,13 +1,13 @@
 name: Setup PHP with LiteCart Extensions
-description: Configure PHP 8.5 with extensions needed for LiteCart testing
+description: Configure latest stable PHP with extensions needed for LiteCart testing
 
 runs:
   using: composite
   steps:
-    - name: Setup PHP
+    - name: Setup PHP (latest)
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.5'
+        php-version: 'latest'
         extensions: mysqli, gd, intl, mbstring, zip, xml, curl, simplexml, apcu
         ini-values: date.timezone=America/New_York, apc.enable_cli=1
         tools: none
