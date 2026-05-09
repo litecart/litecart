@@ -81,14 +81,13 @@
 				$customer->set_password($_POST['new_password']);
 			}
 
-			$customer->data['password_reset_token'] = '';
 			$customer->data['sessions_expiry'] = date('Y-m-d H:i:s');
 			$customer->save();
 
 			customer::load($customer->data['id']);
 
 			session::regenerate_id();
-			session::$data['customer_security_timestamp'] = strtotime($customer->data['sessions_expiry']);
+			session::$data['security']['timestamp'] = strtotime($customer->data['sessions_expiry']);
 
 			customer::log([
 				'type' => 'edit_account_security',

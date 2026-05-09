@@ -20,12 +20,10 @@
 	// the generic save validation.
 	if (!empty($administrator->data['id']) && (!empty($_POST['totp_setup']) || !empty($_POST['totp_confirm']) || !empty($_POST['totp_disable']))) {
 
-		require_once 'app://includes/functions/func_totp.inc.php';
-
 		try {
 
 			if (!empty($_POST['totp_setup'])) {
-				session::$data['totp_pending_secret'] = totp_generate_secret();
+				session::$data['totp_pending_secret'] = f::totp_generate_secret();
 				reload();
 				exit;
 			}
@@ -131,7 +129,7 @@
 				$administrator->set_password($_POST['password']);
 			}
 
-			$administrator->data['administrator_security_timestamp'] = date('Y-m-d H:i:s');
+			$administrator->data['sessions_expiry'] = date('Y-m-d H:is');
 
 			$administrator->save();
 
@@ -248,9 +246,8 @@
 								<?php } elseif (!empty(session::$data['totp_pending_secret'])) { ?>
 
 									<?php
-										require_once 'app://includes/functions/func_totp.inc.php';
-										$totp_uri = totp_build_uri(session::$data['totp_pending_secret'], $administrator->data['username'], settings::get('store_name'));
-										$totp_svg = totp_generate_qr_svg($totp_uri, 200);
+										$totp_uri = f::totp_build_uri(session::$data['totp_pending_secret'], $administrator->data['username'], settings::get('store_name'));
+										$totp_svg = f::totp_generate_qr_svg($totp_uri, 200);
 									?>
 
 									<div style="text-align: center; margin-bottom: 1em;">

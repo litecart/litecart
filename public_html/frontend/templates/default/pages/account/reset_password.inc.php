@@ -26,10 +26,10 @@
 							</label>
 
 
-							<?php if (isset($_REQUEST['reset_token'])) { ?>
+							<?php if (isset($_REQUEST['verification_code'])) { ?>
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_reset_token', 'Reset Token'); ?></div>
-								<?php echo f::form_input_text('reset_token', true); ?>
+								<div class="form-label"><?php echo t('title_verification_code', 'Verification Code'); ?></div>
+								<?php echo f::form_input_text('verification_code', true); ?>
 							</label>
 
 							<label class="form-group">

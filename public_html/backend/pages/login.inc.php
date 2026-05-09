@@ -153,19 +153,21 @@
 
 			administrator::load($administrator['id']);
 
-			session::$data['administrator_security_timestamp'] = time();
+			session::$data['security.administrator']['timestamp'] = time();
 			session::regenerate_id();
 			session::rotate_csrf_token();
 
-			unset(session::$data['security_verification']);
+			unset(session::$data['security.administrator']['verification']);
 
 			// TOTP (opt-in per administrator). When enrolled, always challenge —
 			// independent of the known-IP check below. Email OTP remains the
 			// fallback for admins who haven't enrolled.
 			if (!empty($administrator['totp_secret'])) {
 
-				session::$data['security_verification'] = [
+				session::$data['security.administrator']['verification'] = [
 					'type' => 'totp',
+					'code' => random_int(100000, 999999), // Not used for TOTP, but required for the verification form.
+					'expires' => strtotime('+5 minutes'),
 					'attempts' => 0,
 				];
 
@@ -209,7 +211,8 @@
 
 					if (!empty($administrator['two_factor_auth']) && !empty($administrator['email'])) {
 
-						session::$data['security_verification'] = [
+						session::$data['security.administrator']['verification'] = [
+							'type' => 'eotp',
 							'code' => random_int(100000, 999999),
 							'expires' => strtotime('+15 minutes'),
 							'attempts' => 0,
@@ -219,7 +222,7 @@
 							->add_recipient($administrator['email'])
 							->set_subject(t('title_verification_code', 'Verification Code'))
 							->add_body(strtr(t('email_verification_code', 'Verification code: {code}'), [
-								'{code}' => session::$data['security_verification']['code']
+								'{code}' => session::$data['security.administrator']['verification']['code']
 							]))
 							->send();
 
@@ -258,7 +261,8 @@
 			exit;
 
 		} catch (Exception $e) {
-			http_response_code(401); // Troublesome with HTTP Auth (e.g. .htpasswd)
+			session::$data['security']['failed_authentications']++;
+			http_response_code(401); // Troublesome with HTTP Auth Basic (e.g. .htpasswd)
 			notices::add('errors', $e->getMessage());
 		}
 	}

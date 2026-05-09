@@ -69,7 +69,7 @@
 					}
 
 					self::load($customer['id']);
-					session::$data['security.timestamp'] = time();
+					session::$data['security']['timestamp'] = time();
 
 					database::query(
 						"update ". DB_TABLE_PREFIX ."customers
@@ -376,17 +376,21 @@
 		// Returns true when the current session's customer_security_timestamp is older than
 		// the customer's sessions_expiry (or missing entirely). Used by init() to revoke
 		// sessions after a password reset or similar security event.
-		public static function is_session_expired($customer_row) {
+		public static function is_session_expired($customer=null) {
 
-			if (empty($customer_row['sessions_expiry'])) {
+			if ($customer === null) {
+				$customer = self::$data;
+			}
+
+			if (empty($customer['sessions_expiry'])) {
 				return false;
 			}
 
-			if (!isset(session::$data['customer_security_timestamp'])) {
+			if (!isset(session::$data['security']['timestamp'])) {
 				return true;
 			}
 
-			return session::$data['customer_security_timestamp'] < strtotime($customer_row['sessions_expiry']);
+			return strtotime($customer['sessions_expiry']) > session::$data['security']['timestamp'];
 		}
 
 		public static function log($event) {

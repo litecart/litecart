@@ -1107,6 +1107,9 @@ UPDATE `lc_zones_to_geo_zones`
 SET `zone_code` = NULL
 WHERE `zone_code` = '';
 -- -----
+ALTER TABLE `lc_customers`
+DROP COLUMN `password_reset_token`;
+-- -----
 ALTER TABLE `lc_emails`
 DROP COLUMN `charset`;
 -- -----

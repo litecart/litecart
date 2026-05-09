@@ -125,7 +125,7 @@
 
 			customer::load($customer['id']);
 
-			session::$data['customer_security_timestamp'] = time();
+			session::$data['security']['timestamp'] = time();
 			session::regenerate_id();
 			session::rotate_csrf_token();
 
@@ -164,6 +164,8 @@
 			exit;
 
 		} catch (Exception $e) {
+
+			session::$data['security']['failed_authentications']++;
 
 			http_response_code(401);
 

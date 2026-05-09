@@ -131,7 +131,6 @@
 					shipping_phone = '". database::input($this->data['shipping_address']['phone']) ."',
 					language_code = '". database::input($this->data['language_code']) ."',
 					notes = '". database::input($this->data['notes']) ."',
-					password_reset_token = '". database::input($this->data['password_reset_token']) ."',
 					blocked_until = ". (!empty($this->data['blocked_until']) ? "'". database::input($this->data['blocked_until']) ."'" : "null") .",
 					sessions_expiry = ". (!empty($this->data['sessions_expiry']) ? "'". database::input($this->data['sessions_expiry']) ."'" : "null") .",
 					updated_at = '". ($this->data['updated_at'] = date('Y-m-d H:i:s')) ."'
@@ -198,12 +197,9 @@
 			database::query(
 				"update ". DB_TABLE_PREFIX ."customers
 				set password_hash = '". database::input($this->data['password_hash'] = password_hash($password, PASSWORD_DEFAULT)) ."',
-					password_reset_token = ''
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"
 			);
-
-			$this->data['password_reset_token'] = '';
 
 			// Re-sync the full snapshot so a later save() does not roll back values that were changed
 			// between set_password() and save() (e.g. sessions_expiry during the reset flow).
@@ -244,7 +240,8 @@
 					break;
 
 				case 'reset_password':
-					$subject = t('email_subject_customer_password_reset', 'Password Reset');
+
+					$subject = t('email_subject_reset_password', 'Reset Password');
 
 					$message = strtr(implode("\r\n", [
 						t('email_body_reset_password_intro', "You recently requested to reset your password for {store_name}."),
@@ -253,8 +250,19 @@
 						"",
 						"{link}",
 						"",
-						t('email_body_reset_password_token', "Reset Token: {token}")
+						t('email_body_reset_password_verification_code', "Verification Code: {token}")
 					]), $aliases);
+
+					break;
+
+				case 'verification_code':
+
+					$subject = t('email_subject_verification_code', 'Verification Code');
+
+					$message = strtr(implode("\r\n", [
+						t('email_body_verification_code_verification_code', "Verification Code: {code}")
+					]), $aliases);
+
 					break;
 
 				default:

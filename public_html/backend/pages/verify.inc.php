@@ -4,29 +4,10 @@
 
 	document::$head_tags[] = '<meta name="viewport" content="width=device-width, initial-scale=1">';
 
-	if (empty(session::$data['security_verification'])) {
+	if (empty(session::$data['security.administrator']['verification'])) {
 		redirect(document::ilink(''), 303);
 		exit;
 	}
-
-	$send_verification_code = function(){
-
-		session::$data['security_verification'] = [
-			'code' => random_int(100000, 999999),
-			'expires' => strtotime('+15 minutes'),
-			'attempts' => 0,
-		];
-
-		(new ent_email())
-			->add_recipient(administrator::$data['email'])
-			->set_subject(t('title_verification_code', 'Verification Code'))
-			->add_body(strtr(t('email_verification_code', 'Verification code: {code}'), [
-				'{code}' => session::$data['security_verification']['code']
-			]))
-			->send();
-
-		notices::add('notices', t('notice_verification_code_sent_via_email', 'A verification code was sent via email'));
-	};
 
 	if (isset($_POST['verify'])) {
 		try {
@@ -35,25 +16,23 @@
 				throw new Exception(t('error_must_provide_verification_code', 'You must provide a verification code'));
 			}
 
-			$is_totp = !empty(session::$data['security_verification']['type'])
-				&& session::$data['security_verification']['type'] === 'totp';
+			$is_totp = !empty(session::$data['security.administrator']['verification']['type'])
+				&& session::$data['security.administrator']['verification']['type'] === 'totp';
 
 			if ($is_totp) {
 
-				require_once 'app://includes/functions/func_totp.inc.php';
-
 				if (empty(administrator::$data['totp_secret'])
-					|| !totp_verify_code(administrator::$data['totp_secret'], $_POST['code'])) {
+					|| !f::totp_verify_code(administrator::$data['totp_secret'], $_POST['code'])) {
 					throw new Exception(t('error_invalid_verification_code', 'Invalid verification code'));
 				}
 
 			} else {
 
-				if ($_POST['code'] != session::$data['security_verification']['code']) {
+				if ($_POST['code'] != session::$data['security.administrator']['verification']['code']) {
 					throw new Exception(t('error_invalid_verification_code', 'Invalid verification code'));
 				}
 
-				if (time() > session::$data['security_verification']['expires']) {
+				if (time() > session::$data['security.administrator']['verification']['expires']) {
 					throw new Exception(t('error_verification_code_expired', 'The verification code has expired'));
 				}
 
@@ -61,7 +40,7 @@
 				// TOTP is location-independent and intentionally doesn't.
 				$known_ips = administrator::$data['known_ips'];
 				array_unshift($known_ips, $_SERVER['REMOTE_ADDR']);
-				$known_ips = array_alice(array_unique($known_ips), 0, 10);
+				$known_ips = array_slice(array_unique($known_ips), 0, 10);
 
 				database::query(
 					"update ". DB_TABLE_PREFIX ."administrators
@@ -71,7 +50,7 @@
 				);
 			}
 
-			unset(session::$data['security_verification']);
+			unset(session::$data['security.administrator']['verification']);
 
 			if (!empty($_POST['redirect_url'])) {
 				$redirect_url = new ent_link($_POST['redirect_url']);
@@ -89,10 +68,12 @@
 
 		} catch (Exception $e) {
 
+			session::$data['security']['failed_authentications']++;
+
 			notices::add('errors', $e->getMessage());
 
-			if (++session::$data['security_verification']['attempts'] >= 5) {
-				unset(session::$data['security_verification']);
+			if (++session::$data['security.administrator']['verification']['attempts'] >= 5) {
+				unset(session::$data['security.administrator']['verification']);
 				notices::add('errors', t('error_too_many_attempts', 'Too many failed attempts. Please sign in again.'));
 				redirect(document::ilink('login'));
 				exit;
@@ -102,7 +83,23 @@
 
 	if (isset($_POST['resend'])) {
 		try {
-			$send_verification_code();
+
+			session::$data['security.administrator']['verification'] = [
+				'code' => random_int(100000, 999999),
+				'expires' => strtotime('+15 minutes'),
+				'attempts' => 0,
+			];
+
+			(new ent_email())
+				->add_recipient(administrator::$data['email'])
+				->set_subject(t('title_verification_code', 'Verification Code'))
+				->add_body(strtr(t('email_verification_code', 'Verification code: {code}'), [
+					'{code}' => session::$data['security.administrator']['verification']['code']
+				]))
+				->send();
+
+			notices::add('notices', t('notice_verification_code_sent_via_email', 'A verification code was sent via email'));
+
 		} catch (Exception $e) {
 			notices::add('errors', $e->getMessage());
 		}
@@ -190,7 +187,7 @@ input[autocomplete="one-time-code"] {
 					<?php echo f::form_button('verify', t('title_verify', 'Verify'), 'submit', 'class="btn btn-default btn-block btn-lg"'); ?>
 				</label>
 
-				<?php if (empty(session::$data['security_verification']['type']) || session::$data['security_verification']['type'] !== 'totp') { ?>
+				<?php if (empty(session::$data['security.administrator']['verification']['type']) || session::$data['security.administrator']['verification']['type'] !== 'totp') { ?>
 				<label class="form-group text-center">
 					<?php echo f::form_button('resend', t('title_resend_code', 'Resend Code'), 'submit', 'class="btn btn-default btn-sm"'); ?>
 				</label>

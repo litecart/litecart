@@ -110,10 +110,10 @@
 				);
 
 				if (!empty($administrator['sessions_expiry'])) {
-					if (!isset(session::$data['administrator_security_timestamp']) || session::$data['administrator_security_timestamp'] < strtotime($administrator['sessions_expiry'])) {
+					if (!isset(session::$data['security.administrator']['timestamp']) || session::$data['security.administrator']['timestamp'] < strtotime($administrator['sessions_expiry'])) {
 						self::reset();
 						notices::add('errors', t('error_session_expired_due_to_account_changes', 'Session expired due to changes in the account'));
-						redirect(document::ilink('b:login'), 302);
+						redirect(document::ilink('b:login'));
 						exit;
 					}
 				}

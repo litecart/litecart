@@ -67,14 +67,14 @@
 		}
 
 		// Remove expired captchas
-		if (isset(session::$data['lc-captcha']) && is_array(session::$data['lc-captcha'])) {
-			foreach (session::$data['lc-captcha'] as $key => $captcha) {
-				if ($captcha['expires'] < date('Y-m-d H:i:s')) unset(session::$data['lc-captcha'][$key]);
+		if (isset(session::$data['security']['captcha']) && is_array(session::$data['security']['captcha'])) {
+			foreach (session::$data['security']['captcha'] as $key => $captcha) {
+				if ($captcha['expires'] < date('Y-m-d H:i:s')) unset(session::$data['security']['captcha'][$key]);
 			}
 		}
 
 		// Set captcha value to session
-		session::$data['lc-captcha'][$id] = [
+		session::$data['security']['captcha'][$id] = [
 			'value' => $code,
 			'expires' => date('Y-m-d H:i:s', strtotime('+5 minutes')),
 		];
@@ -91,15 +91,15 @@
 
 	function captcha_validate($id='default') {
 
-		if (!isset(session::$data['lc-captcha'][$id]['expires']) || session::$data['lc-captcha'][$id]['expires'] < date('Y-m-d H:i:s')) {
+		if (!isset(session::$data['security']['captcha'][$id]['expires']) || session::$data['security']['captcha'][$id]['expires'] < date('Y-m-d H:i:s')) {
 			return false;
 		}
 
-		if (empty(session::$data['lc-captcha'][$id]['value']) || empty($_POST['lc-captcha-response']) || $_POST['lc-captcha-response'] != session::$data['lc-captcha'][$id]['value']) {
+		if (empty(session::$data['security']['captcha'][$id]['value']) || empty($_POST['lc-captcha-response']) || $_POST['lc-captcha-response'] != session::$data['security']['captcha'][$id]['value']) {
 			return false;
 		}
 
-		unset(session::$data['lc-captcha'][$id]['value']);
+		unset(session::$data['security']['captcha'][$id]['value']);
 
 		return true;
 	}

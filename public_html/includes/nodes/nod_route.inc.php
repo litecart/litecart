@@ -291,6 +291,9 @@
 				exit;
 			}
 
+			session::$data['security']['404_hits'] ??= 0;
+			session::$data['security']['404_hits']++;
+
 			// Log not found URL
 			database::query(
 				"insert into ". DB_TABLE_PREFIX ."not_found

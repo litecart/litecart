@@ -400,7 +400,6 @@
 				"language_code": { "type": "CHAR", "length": 2, "nullable": true },
 				"notes": { "type": "TEXT" },
 				"password_hash": { "type": "VARCHAR", "length": 255, "default": "''" },
-				"password_reset_token": { "type": "VARCHAR", "length": 128, "default": "''" },
 				"login_attempts": { "type": "INT", "length": 11, "default": 0 },
 				"total_logins": { "type": "INT", "length": 10, "unsigned": true, "default": 0 },
 				"known_ips": { "type": "VARCHAR", "length": 1024, "default": "''" },
