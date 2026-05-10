@@ -1,1 +1,2 @@
 id,status,position,name,content,require_consent,priority,updated_at,created_at
+1,0,body,Google Analytics,"",0,0,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP

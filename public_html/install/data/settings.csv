@@ -1,43 +1,44 @@
 group_key,title,description,key,value,function,required,priority,updated_at,created_at
 ,Platform Database Version,The platform version of the database,platform_database_version,,text(),0,0,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 store_info,Store Name,The name of your store.,store_name,{STORE_NAME},text(),1,10,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
-store_info,Store Email,"The store\'s email address.,store_email,{STORE_EMAIL},text(),1, 11, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+store_info,Store Email,"The store\'s email address.,store_email,{STORE_EMAIL},text(),1,11,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
 store_info,Store Tax ID,The store\'s tax ID or VATIN.",store_tax_id,XX000000000000,text(),0,12,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
-store_info,Store Postal Address,"'The store\'s postal address.,store_postal_address,My Store\nStreet\nPostcode City\nCountry,bigtext(),0, 13, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-store_info,Store Visiting Address,The physical store address","if applicable.,store_visiting_address,,bigtext(),0, 14, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+store_info,Store Postal Address,"'The store\'s postal address.,store_postal_address,My Store\nStreet\nPostcode City\nCountry,bigtext(),0,13,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+store_info,Store Visiting Address,The physical store address","if applicable.,store_visiting_address,,bigtext(),0,14,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
 store_info,Store Phone Number,The store\'s phone number.'",store_phone,+1-212-555-DUCK,text(),0,15,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 store_info,Store Country,The country of your store.,store_country_code,{STORE_COUNTRY_CODE},country(),0,16,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 store_info,Store Zone,The zone of your store.,store_zone_code,,"zone(""default_zone_code"")",0,17,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 store_info,Store Postcode,The postcode of your store.,store_postcode,,text(),0,18,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
-store_info,Store Time Zone,"'The store\'s time zone.,store_timezone,{STORE_TIME_ZONE},timezone(),1, 19, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-store_info,Store Language,The spoken language of your organization.,store_language_code,en,language(),1, 20, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-store_info,Store Currency,The currency which all prices conform to.,store_currency_code,USD,currency(),1, 21, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-store_info,Store Weight Unit,The preferred weight unit.,store_weight_unit,kg,weight_unit(),1, 22, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-store_info,Store Length Unit,The preferred length unit.,store_length_unit,cm,length_unit(),1, 23, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-defaults,Default Language,The default language","if not identified.,default_language_code,en,language(),1, 10, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-defaults,Default Currency,The default currency","if not identified.,default_currency_code,USD,currency(),1, 11, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-defaults,Default Country,The default country","if not otherwise set.,default_country_code,{STORE_COUNTRY_CODE},country(),1, 12, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-defaults,Default Zone,The default zone","if not otherwise set.,default_zone_code,,zone(""default_country_code""),0, 14, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-defaults,Default Tax Class,The default tax class that will be preset when creating new products.,default_tax_class_id,1,tax_class(),0, 15, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-defaults,Default Customer Group,The default customer group for new customers.,default_customer_group_id,1,customer_group(),1, 13, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-defaults,Default Address Format,The default address format if not specified otherwise.,default_address_format,{company}\n{firstname} {lastname}\n{address1}\n{address2}\n{country_code}-{postcode} {city}\n{country_name},textarea(),1, 14, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-defaults,Default Display Prices Including Tax,Display prices including tax by default.,default_display_prices_including_tax,1,toggle(),0, 15, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-defaults,Default Quantity Unit,The default quantity unit","if not otherwise set.,default_quantity_unit_id,1,quantity_unit(),0, 16, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-defaults,Default Sold Out Status,The default sold-out status","if not otherwise set.,default_sold_out_status_id,1,sold_out_status(),0, 17, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-defaults,Default Delivery Status,The default delivery status","if not otherwise set.,default_delivery_status_id,1,delivery_status(),0, 18, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-defaults,Default Incoterm,Default Incoterm for new orders if nothing else is set.,default_incoterm,EXW,incoterms(),0, 19, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-defaults,Default Order Status,Default order status for new orders if nothing else is set.,default_order_status_id,1,order_status(),0, 20, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-defaults,Default Print Paper Size,Default paper size used for printing.,default_print_paper_size,A4,select(""A5""","""A5R""","""A4""","""A4R""","""US-Letter""),1, 30, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-email,Send Emails,Whether or not the platform should deliver outgoing emails.,email_status,1,toggle(""y/n""),0, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-email,SMTP Enabled,Whether or not to use an SMTP server for delivering email.,smtp_status,0,toggle(""e/d""),0, 10, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-email,SMTP Host,SMTP hostname","e.g. smtp.myprovider.com.,smtp_host,localhost,text(),0, 11, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-email,SMTP Port,SMTP port",e.g. 25,465 (SSL/TLS),"or 587 (STARTTLS).,smtp_port,25,number(),0, 12, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-email,SMTP Username,Username for SMTP authentication.,smtp_username,,text(),0, 13, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-email,SMTP Password,Password for SMTP authentication.,smtp_password,,password(),0, 14, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-customer_details,Regional Settings Screen,Enables the regional settings screen upon first visit.,regional_settings_screen,0,toggle(""e/d""),0, 10, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-customer_details,Enable Customer Accounts,Allow customers to create an account and sign in.,accounts_enabled,1,toggle(""e/d""),0, 11, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+store_info,Store Time Zone,"'The store\'s time zone.,store_timezone,{STORE_TIME_ZONE},timezone(),1,19,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+store_info,Store Language,The spoken language of your organization.,store_language_code,en,language(),1,20,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+store_info,Store Currency,The currency which all prices conform to.,store_currency_code,USD,currency(),1,21,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+store_info,Store Weight Unit,The preferred weight unit.,store_weight_unit,kg,weight_unit(),1,22,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+store_info,Store Length Unit,The preferred length unit.,store_length_unit,cm,length_unit(),1,23,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+defaults,Default Language,The default language","if not identified.,default_language_code,en,language(),1,10,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+defaults,Default Currency,The default currency","if not identified.,default_currency_code,USD,currency(),1,11,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+defaults,Default Country,The default country","if not otherwise set.,default_country_code,{STORE_COUNTRY_CODE},country(),1,12,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+defaults,Default Zone,The default zone","if not otherwise set.,default_zone_code,,zone(""default_country_code""),0,14,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+defaults,Default Tax Class,The default tax class that will be preset when creating new products.,default_tax_class_id,1,tax_class(),0,15,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+defaults,Default Customer Group,The default customer group for new customers.,default_customer_group_id,1,customer_group(),1,13,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+defaults,Default Address Format,The default address format if not specified otherwise.,default_address_format,{company}\n{firstname} {lastname}\n{address1}\n{address2}\n{country_code}-{postcode} {city}\n{country_name},textarea(),1,14,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+defaults,Default Display Prices Including Tax,Display prices including tax by default.,default_display_prices_including_tax,1,toggle(),0,15,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+defaults,Default Quantity Unit,The default quantity unit","if not otherwise set.,default_quantity_unit_id,1,quantity_unit(),0,16,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+defaults,Default Sold Out Status,The default sold-out status","if not otherwise set.,default_sold_out_status_id,1,sold_out_status(),0,17,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+defaults,Default Delivery Status,The default delivery status","if not otherwise set.,default_delivery_status_id,1,delivery_status(),0,18,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+defaults,Default Incoterm,Default Incoterm for new orders if nothing else is set.,default_incoterm,EXW,incoterms(),0,19,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+defaults,Default Order Status,Default order status for new orders if nothing else is set.,default_order_status_id,1,order_status(),0,20,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+defaults,Default Print Paper Size,Default paper size used for printing.,default_print_paper_size,A4,select(""A5""","""A5R""","""A4""","""A4R""","""US-Letter""),1,30,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+email,Send Emails,Whether or not the platform should deliver outgoing emails.,email_status,1,toggle(""y/n""),0,1,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+email,SMTP Enabled,Whether or not to use an SMTP server for delivering email.,smtp_status,0,toggle(""e/d""),0,10,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+email,SMTP Host,SMTP hostname","e.g. smtp.myprovider.com.,smtp_host,localhost,text(),0,11,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+email,SMTP Port,SMTP port",e.g. 25,465 (SSL/TLS),"or 587 (STARTTLS).,smtp_port,25,number(),0,12,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+email,SMTP Username,Username for SMTP authentication.,smtp_username,,text(),0,13,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+email,SMTP Password,Password for SMTP authentication.,smtp_password,,password(),0,14,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+customer_details,Regional Settings Screen,Enables the regional settings screen upon first visit.,regional_settings_screen,0,toggle(""e/d""),0,10,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+customer_details,Enable Customer Accounts,Allow customers to create an account and sign in.,accounts_enabled,1,toggle(""e/d""),0,11,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+customer_details,Account Verification,Verify customer accounts upon registration.,account_verification,1,select(""manual"",""automatic"",""email""),0,12,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
 customer_details,Company Field,Display the field for the customer\'s company name.'",customer_field_company,1,"toggle(""y/n"")",0,21,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
-customer_details,Tax ID Field,"Display the field for the customer\'s tax ID.,customer_field_tax_id,1,toggle(""y/n""),0, 22, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+customer_details,Tax ID Field,"Display the field for the customer\'s tax ID.,customer_field_tax_id,1,toggle(""y/n""),0,22,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
 customer_details,Zone/State/Province Field,Display the field for the customer\'s zone/state.",customer_field_zone,1,"toggle(""y/n"")",0,23,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 customer_details,Different Shipping Address,Allow customers to provide a different address for shipping.,customer_shipping_address,1,"toggle(""y/n"")",0,24,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 customer_details,Newsletter Subscription,Allow customers to subscribe to newsletter.,newsletter_enabled,1,"toggle(""e/d"")",0,25,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
@@ -79,7 +80,7 @@ images,WebP Enabled,Use WebP images if supported by the browser.,webp_enabled,0,
 images,Image Lazy Loading,Tells the browser to load images on the pages first when they are scrolled down to.,image_lazyload,1,"toggle(""e/d"")",0,46,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 checkout,Send Order Confirmation,Send order confirmations via email.,send_order_confirmation,1,"toggle(""y/n"")",0,11,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 checkout,BCC Order Copy Recipients,Send an email of the order copy to the given hidden BCC recipients. Separated by comma or semicolon.,email_order_copy,{STORE_EMAIL},text(),0,12,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
-checkout,Order Number Format,"Specify the format for creating order numbers. {id} = order id,  {yy} = year, {mm} = month, {q} = quarter, {l} length digit, {#} = luhn checksum digit",order_no_format,{id},text(),1,20,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+checkout,Order Number Format,"Specify the format for creating order numbers. {id} = order id, {yy} = year, {mm} = month, {q} = quarter, {l} length digit, {#} = luhn checksum digit",order_no_format,{id},text(),1,20,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 advanced,System Cache Enabled,Enables the system cache module which caches frequently used data.,cache_enabled,1,toggle(),0,10,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 advanced,Clear System Cache,Remove all cached system information.,cache_clear,0,toggle(),0,11,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 advanced,Static Content Domain Name,"Use the given alias domain name for static content (images, stylesheets, javascripts).",static_domain,,text(),0,12,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP

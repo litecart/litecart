@@ -50,70 +50,70 @@ id,status,name,domestic_name,iso_code_1,iso_code_2,iso_code_3,tax_id_format,addr
 49,1,Congo,,178,CG,COG,,,,0,fr,XAF,242,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 50,1,Cook Islands,,184,CK,COK,,,[0-9]{4},0,en,NZD,682,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 51,1,Costa Rica,,188,CR,CRI,,,"[0-9]{4,5}|[0-9]{3}-[0-9]{4}",0,es,CRC,506,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
-52,1,"'Cote D\'Ivoire', '', '384', 'CI', 'CIV', '', '', '', 0, 'fr', 'XOF', '225', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(53, 1, 'Croatia', '', '191', 'HR', 'HRV', '^(HR)?[0-9]{11}$', '', '[0-9]{5}', 0, 'hr', 'HRK', '385', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(54, 1, 'Cuba', '', '192', 'CU', 'CUB', '', '', '', 0, 'es', 'CUP', '53', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(55, 1, 'Cyprus', '', '196', 'CY', 'CYP', '^(CY)?[0-9]{8}L$', '', '[0-9]{4}', 0, 'el', 'EUR', '357', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(56, 1, 'Czech Republic', '', '203', 'CZ', 'CZE', '^(CZ)?[0-9]{8","10}$', '', '[0-9]{3}[ ]?[0-9]{2}', 0, 'cs', 'CZK', '420', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(57, 1, 'Denmark', '', '208', 'DK', 'DNK', '^(DK)?[0-9]{8}$', '', '[0-9]{4}', 0, 'da', 'DKK', '45', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(58, 1, 'Djibouti', '', '262', 'DJ', 'DJI', '', '', '', 0, 'fr', 'DJF', '253', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(59, 1, 'Dominica', '', '212', 'DM', 'DMA', '', '', '', 0, 'en', 'XCD', '176', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(60, 1, 'Dominican Republic', '', '214', 'DO', 'DOM', '', '', '[0-9]{5}', 0, 'es', 'DOP', '180', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(61, 1, 'East Timor', '', '626', 'TP', 'TMP', '', '', '', 0, '', 'USD', '670', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(62, 1, 'Ecuador', '', '218', 'EC', 'ECU', '', '', '([A-Z][0-9]{4}[A-Z]|(?:[A-Z]{2})?[0-9]{6})?', 0, 'es', 'ECS', '593', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(63, 1, 'Egypt', '', '818', 'EG', 'EGY', '', '', '[0-9]{5}', 0, 'ar', 'EGP', '20', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(64, 1, 'El Salvador', '', '222', 'SV', 'SLV', '', '', '', 0, 'es', 'SVC', '503', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(65, 1, 'Equatorial Guinea', '', '226', 'GQ', 'GNQ', '', '', '', 0, 'es', 'XAF', '240', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(66, 1, 'Eritrea', '', '232', 'ER', 'ERI', '', '', '', 0, 'aa', 'ERN', '291', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(67, 1, 'Estonia', '', '233', 'EE', 'EST', '^(EE)?[0-9]{9}$', '', '[0-9]{5}', 0, 'et', 'EUR', '372', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(68, 1, 'Ethiopia', '', '231', 'ET', 'ETH', '', '', '[0-9]{4}', 0, 'am', 'ETB', '251', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(69, 1, 'Falkland Islands (Malvinas)', '', '238', 'FK', 'FLK', '', '', 'FIQQ 1ZZ', 0, 'en', 'FKP', '500', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(70, 1, 'Faroe Islands', '', '234', 'FO', 'FRO', '', '', '[0-9]{3}', 0, 'fo', 'DKK', '298', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(71, 1, 'Fiji', '', '242', 'FJ', 'FJI', '', '', '', 0, 'en', 'FJD', '679', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(72, 1, 'Finland', '', '246', 'FI', 'FIN', '^(FI)?[0-9]{8}$', '', '[0-9]{5}', 0, 'fi', 'EUR', '358', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(73, 1, 'France', '', '250', 'FR', 'FRA', '^(FR)?[0-9A-Z]{2}[0-9]{9}$', '', '[0-9]{2}[ ]?[0-9]{3}', 0, 'fr', 'EUR', '33', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(75, 1, 'French Guiana', '', '254', 'GF', 'GUF', '', '', '9[78]3[0-9]{2}', 0, 'fr', 'EUR', '594', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(76, 1, 'French Polynesia', '', '258', 'PF', 'PYF', '', '', '987[0-9]{2}', 0, 'fr', 'XPF', '689', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(77, 1, 'French Southern Territories', '', '260', 'TF', 'ATF', '', '', '', 0, 'fr', 'EUR', '262', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(78, 1, 'Gabon', '', '266', 'GA', 'GAB', '', '', '', 0, 'fr', 'XAF', '241', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(79, 1, 'Gambia', '', '270', 'GM', 'GMB', '', '', '', 0, 'en', 'GMD', '220', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(80, 1, 'Georgia', '', '268', 'GE', 'GEO', '', '', '[0-9]{4}', 0, 'ka', 'GEL', '995', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(81, 1, 'Germany', '', '276', 'DE', 'DEU', '^(DE)?[0-9]{9}$', '', '[0-9]{5}', 0, 'de', 'EUR', '49', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(82, 1, 'Ghana', '', '288', 'GH', 'GHA', '', '', '', 0, 'en', 'GHS', '233', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(83, 1, 'Gibraltar', '', '292', 'GI', 'GIB', '', '', '', 0, 'en', 'GIP', '350', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(84, 1, 'Greece', '', '300', 'GR', 'GRC', '^(EL|GR)?[0-9]{9}$', '', '[0-9]{3}[ ]?[0-9]{2}', 0, 'el', 'EUR', '30', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(85, 1, 'Greenland', '', '304', 'GL', 'GRL', '', '', '39[0-9]{2}', 0, 'kl', 'DKK', '299', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(86, 1, 'Grenada', '', '308', 'GD', 'GRD', '', '', '', 0, 'en', 'XCD', '147', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(87, 1, 'Guadeloupe', '', '312', 'GP', 'GLP', '', '', '9[78][01][0-9]{2}', 0, 'fr', 'EUR', '590', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(88, 1, 'Guam', '', '316', 'GU', 'GUM', '', '', '969[123][0-9]([ \\-][0-9]{4})?', 0, 'en', 'USD', '167', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(89, 1, 'Guatemala', '', '320', 'GT', 'GTM', '', '', '[0-9]{5}', 0, 'es', 'QTQ', '502', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(90, 1, 'Guinea', '', '324', 'GN', 'GIN', '', '', '[0-9]{3}', 0, 'fr', 'GNF', '224', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(91, 1, 'Guinea-bissau', '', '624', 'GW', 'GNB', '', '', '[0-9]{4}', 0, 'pt', 'GWP', '245', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(92, 1, 'Guyana', '', '328', 'GY', 'GUY', '', '', '', 0, 'en', 'GYD', '592', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(93, 1, 'Haiti', '', '332', 'HT', 'HTI', '', '', '[0-9]{4}', 0, 'ht', 'HTG', '509', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(94, 1, 'Heard and McDonald Islands', '', '334', 'HM', 'HMD', '', '', '[0-9]{4}', 0, '', 'AUD', '0', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(95, 1, 'Honduras', '', '340', 'HN', 'HND', '', '', '(?:[0-9]{5})?', 0, 'es', 'HNL', '504', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(96, 1, 'Hong Kong', '', '344', 'HK', 'HKG', '', '', '', 0, 'zh', 'HKD', '852', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(97, 1, 'Hungary', '', '348', 'HU', 'HUN', '^(HU)?[0-9]{8}$', '', '[0-9]{4}', 0, 'hu', 'HUF', '36', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(98, 1, 'Iceland', '', '352', 'IS', 'ISL', '', '', '[0-9]{3}', 0, 'is', 'ISK', '354', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(99, 1, 'India', '', '356', 'IN', 'IND', '', '', '[0-9]{6}', 0, 'en', 'INR', '91', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(100, 1, 'Indonesia', '', '360', 'ID', 'IDN', '', '', '[0-9]{5}', 0, 'id', 'IDR', '62', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(101, 1, 'Iran","Islamic Republic of', '', '364', 'IR', 'IRN', '', '', '', 0, 'fa', 'IRR', '98', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(102, 1, 'Iraq', '', '368', 'IQ', 'IRQ', '', '', '[0-9]{5}', 0, 'ar', 'IQD', '964', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(103, 1, 'Ireland', '', '372', 'IE', 'IRL', '^(IE)?[0-9]S[0-9]{5}L$', '', '', 0, 'en', 'EUR', '353', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(104, 1, 'Israel', '', '376', 'IL', 'ISR', '', '', '[0-9]{7}', 0, 'he', 'ILS', '972', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(105, 1, 'Italy', '', '380', 'IT', 'ITA', '^(IT)?[0-9]{11}$', '', '[0-9]{5}', 0, 'it', 'EUR', '39', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(106, 1, 'Jamaica', '', '388', 'JM', 'JAM', '', '', '', 0, 'en', 'JMD', '187', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(107, 1, 'Japan', '', '392', 'JP', 'JPN', '', '', '[0-9]{3}-[0-9]{4}', 0, 'ja', 'JPY', '81', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(108, 1, 'Jordan', '', '400', 'JO', 'JOR', '', '', '[0-9]{5}', 0, 'ar', 'JOD', '962', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(109, 1, 'Kazakhstan', '', '398', 'KZ', 'KAZ', '', '', '[0-9]{6}', 0, 'kk', 'KZT', '7', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(110, 1, 'Kenya', '', '404', 'KE', 'KEN', '', '', '[0-9]{5}', 0, 'en', 'KES', '254', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(111, 1, 'Kiribati', '', '296', 'KI', 'KIR', '', '', '', 0, 'en', 'AUD', '686', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(112, 1, 'North Korea', '', '408', 'KP', 'PRK', '', '', '', 0, 'ko', 'KPW', '850', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(113, 1, 'Korea","Republic of', '', '410', 'KR', 'KOR', '', '', '[0-9]{3}[\\-][0-9]{3}', 0, 'ko', 'KRW', '82', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(114, 1, 'Kuwait', '', '414', 'KW', 'KWT', '', '', '[0-9]{5}', 0, 'ar', 'KWD', '965', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(115, 1, 'Kyrgyzstan', '', '417', 'KG', 'KGZ', '', '', '[0-9]{6}', 0, 'ky', 'KGS', '996', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(116, 1, 'Lao People\'s Democratic Republic'",,418,LA,LAO,,,[0-9]{5},0,lo,LAK,856,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+52,1,Cote D'Ivoire,,384,CI,CIV,,,,0,fr,XOF,225,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+53,1,Croatia,,191,HR,HRV,^(HR)?[0-9]{11}$,,[0-9]{5},0,hr,HRK,385,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+54,1,Cuba,,192,CU,CUB,,,,0,es,CUP,53,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+55,1,Cyprus,,196,CY,CYP,^(CY)?[0-9]{8}L$,,[0-9]{4},0,el,EUR,357,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+56,1,Czech Republic,,203,CZ,CZE,^(CZ)?[0-9]{8","10}$,,[0-9]{3}[ ]?[0-9]{2},0,cs,CZK,420,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+57,1,Denmark,,208,DK,DNK,^(DK)?[0-9]{8}$,,[0-9]{4},0,da,DKK,45,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+58,1,Djibouti,,262,DJ,DJI,,,,0,fr,DJF,253,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+59,1,Dominica,,212,DM,DMA,,,,0,en,XCD,176,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+60,1,Dominican Republic,,214,DO,DOM,,,,0,es,DOP,180,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+61,1,East Timor,,626,TP,TMP,,,,0,,USD,670,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+62,1,Ecuador,,218,EC,ECU,,,,0,es,ECS,593,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+63,1,Egypt,,818,EG,EGY,,,,0,ar,EGP,20,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+64,1,El Salvador,,222,SV,SLV,,,,0,es,SVC,503,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+65,1,Equatorial Guinea,,226,GQ,GNQ,,,,0,es,XAF,240,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+66,1,Eritrea,,232,ER,ERI,,,,0,aa,ERN,291,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+67,1,Estonia,,233,EE,EST,^(EE)?[0-9]{9}$,,[0-9]{5},0,et,EUR,372,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+68,1,Ethiopia,,231,ET,ETH,,,,0,am,ETB,251,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+69,1,Falkland Islands (Malvinas),,238,FK,FLK,,,,0,en,FKP,500,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+70,1,Faroe Islands,,234,FO,FRO,,,,0,fo,DKK,298,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+71,1,Fiji,,242,FJ,FJI,,,,0,en,FJD,679,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+72,1,Finland,,246,FI,FIN,^(FI)?[0-9]{8}$,,[0-9]{5},0,fi,EUR,358,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+73,1,France,,250,FR,FRA,^(FR)?[0-9A-Z]{2}[0-9]{9}$,,[0-9]{2}[ ]?[0-9]{3},0,fr,EUR,33,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+75,1,French Guiana,,254,GF,GUF,,,,0,fr,EUR,594,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+76,1,French Polynesia,,258,PF,PYF,,,,0,fr,XPF,689,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+77,1,French Southern Territories,,260,TF,ATF,,,,0,fr,EUR,262,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+78,1,Gabon,,266,GA,GAB,,,,0,fr,XAF,241,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+79,1,Gambia,,270,GM,GMB,,,,0,en,GMD,220,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+80,1,Georgia,,268,GE,GEO,,,,0,ka,GEL,995,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+81,1,Germany,,276,DE,DEU,^(DE)?[0-9]{9}$,,[0-9]{5},0,de,EUR,49,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+82,1,Ghana,,288,GH,GHA,,,,0,en,GHS,233,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+83,1,Gibraltar,,292,GI,GIB,,,,0,en,GIP,350,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+84,1,Greece,,300,GR,GRC,^(EL|GR)?[0-9]{9}$,,[0-9]{3}[ ]?[0-9]{2},0,el,EUR,30,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+85,1,Greenland,,304,GL,GRL,,,,0,kl,DKK,299,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+86,1,Grenada,,308,GD,GRD,,,,0,en,XCD,147,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+87,1,Guadeloupe,,312,GP,GLP,,,,0,fr,EUR,590,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+88,1,Guam,,316,GU,GUM,,,,0,en,USD,167,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+89,1,Guatemala,,320,GT,GTM,,,,0,es,QTQ,502,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+90,1,Guinea,,324,GN,GIN,,,,0,fr,GNF,224,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+91,1,Guinea-Bissau,,624,GW,GNB,,,,0,pt,GWP,245,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+92,1,Guyana,,328,GY,GUY,,,,0,en,GYD,592,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+93,1,Haiti,,332,HT,HTI,,,,0,ht,HTG,509,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+94,1,Heard and McDonald Islands,,334,HM,HMD,,,,0,,AUD,0,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+95,1,Honduras,,340,HN,HND,,,,0,es,HNL,504,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+96,1,Hong Kong,,344,HK,HKG,,,,0,zh,HKD,852,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+97,1,Hungary,,348,HU,HUN,^(HU)?[0-9]{8}$,,[0-9]{4},0,hu,HUF,36,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+98,1,Iceland,,352,IS,ISL,,,,0,is,ISK,354,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+99,1,India,,356,IN,IND,,,,0,en,INR,91,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+100,1,Indonesia,,360,ID,IDN,,,,0,id,IDR,62,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+101,1,Iran","Islamic Republic of,,364,IR,IRN,,,,0,'fa,IRR,98',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,
+102,1,Iraq,,368,IQ,IRQ,,,[0-9]{5}',0,'ar,IQD,964',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,
+103,1,'Ireland,,372,IE,IRL,^(IE)?[0-9]S[0-9]{5}L$,,,0,'en,EUR,353',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,
+104,1,'Israel,,376,IL,ISR,,,[0-9]{7}',0,'he,ILS,972',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,
+105,1,'Italy,,380,IT,ITA,^(IT)?[0-9]{11}$,,[0-9]{5}',0,'it,EUR,39',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,
+106,1,'Jamaica,,388,JM,JAM,,,,0,'en,JMD,187',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,
+107,1,'Japan,,392,JP,JPN,,,[0-9]{3}-[0-9]{4}',0,'ja,JPY,81',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,
+108,1,'Jordan,,400,JO,JOR,,,[0-9]{5}',0,'ar,JOD,962',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,
+109,1,'Kazakhstan,,398,KZ,KAZ,,,[0-9]{6}',0,'kk,KZT,7',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,
+110,1,'Kenya,,404,KE,KEN,,,[0-9]{5}',0,'en,KES,254',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+111,1,'Kiribati,,296,KI,KIR,,,,0,'en,AUD,686',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+112,1,'North Korea,,408,KP,PRK,,,,0,'ko,KPW,850',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+113,1,'Korea","Republic of,,410,KR,KOR,,,[0-9]{3}[\\-][0-9]{3}',0,'ko,KRW,82',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+114,1,'Kuwait,,414,KW,KWT,,,[0-9]{5}',0,'ar,KWD,965',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,
+115,1,'Kyrgyzstan,,417,KG,KGZ,,,[0-9]{6}',0,'ky,KGS,996',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,
+116,1,'Lao People\'s Democratic Republic'",,418,LA,LAO,,,[0-9]{5},0,lo,LAK,856,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 117,1,Latvia,,428,LV,LVA,^(LV)?[0-9]{11}$,,[0-9]{4},0,lv,LVL,371,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 118,1,Lebanon,,422,LB,LBN,,,([0-9]{4}([ ]?[0-9]{4})?)?,0,ar,LBP,961,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 119,1,Lesotho,,426,LS,LSO,,,[0-9]{3},0,en,LSL,266,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
@@ -136,8 +136,8 @@ id,status,name,domestic_name,iso_code_1,iso_code_2,iso_code_3,tax_id_format,addr
 136,1,Mauritius,,480,MU,MUS,,,([0-9]{3}[A-Z]{2}[0-9]{3})?,0,en,MUR,230,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 137,1,Mayotte,,175,YT,MYT,,,976[0-9]{2},0,fr,EUR,262,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 138,1,Mexico,,484,MX,MEX,,,[0-9]{5},0,es,MXN,52,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
-139,1,"Micronesia, Federated States of",,583,FM,FSM,,,(9694[1-4])([ \-][0-9]{4})?,0,en,USD,691,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
-140,1,"Moldova, Republic of",,498,MD,MDA,,,[0-9]{4},0,ro,MDL,373,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+139,1,"Micronesia,Federated States of",,583,FM,FSM,,,(9694[1-4])([ \-][0-9]{4})?,0,en,USD,691,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+140,1,"Moldova,Republic of",,498,MD,MDA,,,[0-9]{4},0,ro,MDL,373,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 141,1,Monaco,,492,MC,MCO,,,980[0-9]{2},0,fr,EUR,377,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 142,1,Mongolia,,496,MN,MNG,,,[0-9]{6},0,mn,MNT,976,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 143,1,Montserrat,,500,MS,MSR,,,,0,en,XCD,166,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
@@ -205,7 +205,7 @@ id,status,name,domestic_name,iso_code_1,iso_code_2,iso_code_3,tax_id_format,addr
 205,1,Syrian Arab Republic,,760,SY,SYR,,,,0,ar,SYP,963,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 206,1,Taiwan,,158,TW,TWN,,,[0-9]{3}([0-9]{2})?,0,zh,TWD,886,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 207,1,Tajikistan,,762,TJ,TJK,,,[0-9]{6},0,tg,TJS,992,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
-208,1,"Tanzania, United Republic of",,834,TZ,TZA,,,,0,sw,TZS,255,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+208,1,"Tanzania,United Republic of",,834,TZ,TZA,,,,0,sw,TZS,255,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 209,1,Thailand,,764,TH,THA,,,[0-9]{5},0,th,THB,66,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 210,1,Togo,,768,TG,TGO,,,,0,fr,XOF,228,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 211,1,Tokelau,,772,TK,TKL,,,,0,en,NZD,690,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
@@ -220,12 +220,7 @@ id,status,name,domestic_name,iso_code_1,iso_code_2,iso_code_3,tax_id_format,addr
 220,1,Ukraine,,804,UA,UKR,,,[0-9]{5},0,uk,UAH,380,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 221,1,United Arab Emirates,,784,AE,ARE,,,,0,ar,AED,971,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 222,1,United Kingdom,,826,GB,GBR,^(GB)?([0-9]{9}([0-9]{3})?|[A-Z]{2}[0-9]{3})$,,"[a-zA-Z]{1,2}[0-9][0-9a-zA-Z]? ?[0-9][a-zA-Z]{2}",1,en,GBP,44,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
-223,1,United States,,840,US,USA,,"{company}
-{firstname} {lastname}
-{address1}
-{address2}
-{city}, {zone_code} {postcode}
-{country_name}",[0-9]{5}([ \-][0-9]{4})?,0,en,USD,1,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+223,1,United States,,840,US,USA,,"{company}\n{firstname} {lastname}\n{address1}\n{address2}\n{city},{zone_code} {postcode}\n{country_name}",[0-9]{5}([ \-][0-9]{4})?,0,en,USD,1,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 224,1,United States Minor Outlying Islands,,581,UM,UMI,,,,0,en,USD,1,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 225,1,Uruguay,,858,UY,URY,,,[0-9]{5},0,es,UYU,598,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 226,1,Uzbekistan,,860,UZ,UZB,,,[0-9]{6},0,uz,UZS,998,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
