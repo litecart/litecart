@@ -38,7 +38,7 @@
 
 		protected function _load($field) {
 
-			switch($field) {
+			switch ($field) {
 
 				case 'also_purchased_products':
 

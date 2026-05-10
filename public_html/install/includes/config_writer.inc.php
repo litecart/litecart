@@ -43,9 +43,10 @@
 		Render the config file contents from the install/config template.
 
 		$values must contain every placeholder key expected by the template.
-		Keys: STORAGE_FOLDER, ADMIN_FOLDER, DB_SERVER, DB_USERNAME,
-		      DB_PASSWORD, DB_DATABASE, DB_TABLE_PREFIX, CLIENT_IP,
-		      STORE_TIME_ZONE, HMAC_KEY_REMEMBER_ME.
+		Keys:
+			STORAGE_FOLDER, ADMIN_FOLDER, DB_SERVER, DB_USERNAME,
+			DB_PASSWORD, DB_DATABASE, DB_TABLE_PREFIX, CLIENT_IP,
+			STORE_TIME_ZONE, HMAC_KEY_REMEMBER_ME.
 
 		Missing keys trigger an explicit Exception — we prefer failing the
 		install over silently writing 'null' into a security-relevant file.

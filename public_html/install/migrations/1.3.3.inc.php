@@ -4,13 +4,17 @@
 		FS_DIR_APP . 'includes/config.inc.php' => [
 			[
 				'search'  => "  ini_set('display_errors', 'Off');" . PHP_EOL,
-				'replace' => "  ini_set('display_startup_errors', 'Off');" . PHP_EOL
-									 . "  ini_set('display_errors', 'Off');" . PHP_EOL,
+				'replace' => implode(PHP_EOL, [
+					"  ini_set('display_startup_errors', 'Off');",
+					"  ini_set('display_errors', 'Off');",
+				]),
 			],
 			[
 				'search'  => "    ini_set('display_errors', 'On');" . PHP_EOL,
-				'replace' => "    ini_set('display_startup_errors', 'On');" . PHP_EOL
-									 . "    ini_set('display_errors', 'On');" . PHP_EOL,
+				'replace' => implode(PHP_EOL, [
+					"    ini_set('display_startup_errors', 'On');",
+					"    ini_set('display_errors', 'On');",
+				]),
 			],
 		],
 	], 'abort');

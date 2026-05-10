@@ -14,10 +14,14 @@
 				'replace' => "",
 			],
 			[
-				'search'  => "  <FilesMatch \"\\.(gif|ico|jpg|jpeg|js|pdf|png|ttf)$\">" . PHP_EOL
-									 . "    Header set Cache-Control \"max-age=86400, public, must-revalidate\"",
-				'replace' => "  <FilesMatch \"\\.(gif|ico|jpg|jpeg|js|pdf|png|ttf)$\">" . PHP_EOL
-									 . "    Header set Cache-Control \"max-age=604800, public, must-revalidate\"",
+				'search'  => implode(PHP_EOL, [
+					"  <FilesMatch \"\\.(gif|ico|jpg|jpeg|js|pdf|png|ttf)$\">",
+					"    Header set Cache-Control \"max-age=86400, public, must-revalidate\"",
+				]),
+				'replace' => implode(PHP_EOL, [
+					"  <FilesMatch \"\\.(gif|ico|jpg|jpeg|js|pdf|png|ttf)$\">",
+					"    Header set Cache-Control \"max-age=604800, public, must-revalidate\"",
+				]),
 			],
 		],
 	], 'abort');

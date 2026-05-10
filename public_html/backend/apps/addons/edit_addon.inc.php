@@ -116,6 +116,7 @@ if (!empty($_POST['storage_action'])) {
 		}
 
 		switch ($_POST['storage_action']) {
+
 			case 'delete':
 				f::file_delete($file, true);
 				break;

@@ -1,219 +1,220 @@
 <?php
 
-document::$title[] = t('title_import_export_csv', 'Import/Export CSV');
+	document::$title[] = t('title_import_export_csv', 'Import/Export CSV');
 
-breadcrumbs::add(t('title_database', 'Database'));
-breadcrumbs::add(t('title_import_export_csv', 'Import/Export CSV'));
+	breadcrumbs::add(t('title_database', 'Database'));
+	breadcrumbs::add(t('title_import_export_csv', 'Import/Export CSV'));
 
-if (isset($_POST['import']) || isset($_GET['resume'])) {
-	try {
-		ini_set('memory_limit', -1);
+	if (isset($_POST['import']) || isset($_GET['resume'])) {
+		try {
 
-		ob_clean();
+			ini_set('memory_limit', -1);
 
-		header('Content-Type: text/plain; charset=UTF-8');
+			ob_clean();
 
-		if (empty(session::$data['csv_batch'])) {
-			throw new Exception('Missing batch to resume');
-		}
+			header('Content-Type: text/plain; charset=UTF-8');
 
-		$batch = &session::$data['csv_batch'];
-
-		if (isset($_POST['import'])) {
-			if (empty($_POST['map']) || (is_array($_POST['map']) && !array_filter($_POST['map']))) {
-				throw new Exception(t('error_no_columns_mapped', 'No columns mapped'));
+			if (empty(session::$data['csv_batch'])) {
+				throw new Exception('Missing batch to resume');
 			}
 
-			if (empty($_POST['insert']) && empty($_POST['update'])) {
-				throw new Exception(t('error_nothing_to_do', 'Nothing to do'));
+			$batch = &session::$data['csv_batch'];
+
+			if (isset($_POST['import'])) {
+				if (empty($_POST['map']) || (is_array($_POST['map']) && !array_filter($_POST['map']))) {
+					throw new Exception(t('error_no_columns_mapped', 'No columns mapped'));
+				}
+
+				if (empty($_POST['insert']) && empty($_POST['update'])) {
+					throw new Exception(t('error_nothing_to_do', 'Nothing to do'));
+				}
+
+				if (empty($_POST['match_column'])) {
+					throw new Exception(t('error_no_match_column_selected', 'No match column selected'));
+				}
+
+				session::$data['csv_batch']['time_start'] = microtime(true);
+				session::$data['csv_batch']['map'] = array_filter($_POST['map']);
+				session::$data['csv_batch']['truncate'] = !empty($_POST['truncate']);
+				session::$data['csv_batch']['insert'] = !empty($_POST['insert']);
+				session::$data['csv_batch']['update'] = !empty($_POST['update']) ? $_POST['update'] : false;
 			}
 
-			if (empty($_POST['match_column'])) {
-				throw new Exception(t('error_no_match_column_selected', 'No match column selected'));
+			$progress = round((($batch['total_lines'] - count($batch['data'])) / $batch['total_lines']) * 100, 2, PHP_ROUND_HALF_DOWN);
+			$time_elapsed = round(microtime(true) - $batch['time_start'], 2);
+
+			if ($progress != 0) {
+				$time_remaining = round(($time_elapsed / $progress) * 100, 2) - $time_elapsed;
+			} else {
+				$time_remaining = 99;
 			}
 
-			session::$data['csv_batch']['time_start'] = microtime(true);
-			session::$data['csv_batch']['map'] = array_filter($_POST['map']);
-			session::$data['csv_batch']['truncate'] = !empty($_POST['truncate']);
-			session::$data['csv_batch']['insert'] = !empty($_POST['insert']);
-			session::$data['csv_batch']['update'] = !empty($_POST['update']) ? $_POST['update'] : false;
-		}
+			$memory_usage = round(memory_get_usage() / 1024 / 1024, 3);
 
-		$progress = round((($batch['total_lines'] - count($batch['data'])) / $batch['total_lines']) * 100, 2, PHP_ROUND_HALF_DOWN);
-		$time_elapsed = round(microtime(true) - $batch['time_start'], 2);
+			echo implode(PHP_EOL, [f::draw_progress_bar($progress, 15), 'Estimated Time Remaining: ' . $time_remaining . ' s', 'Memory Usage: ' . $memory_usage . ' MB', '', '']);
 
-		if ($progress != 0) {
-			$time_remaining = round(($time_elapsed / $progress) * 100, 2) - $time_elapsed;
-		} else {
-			$time_remaining = 99;
-		}
+			$time_start = microtime(true);
 
-		$memory_usage = round(memory_get_usage() / 1024 / 1024, 3);
+			ignore_user_abort(true);
 
-		echo implode(PHP_EOL, [f::draw_progress_bar($progress, 15), 'Estimated Time Remaining: ' . $time_remaining . ' s', 'Memory Usage: ' . $memory_usage . ' MB', '', '']);
+			echo implode(PHP_EOL, ['Processing batch...', '']);
 
-		$time_start = microtime(true);
+			while ($row = array_shift($batch['data'])) {
+				if (round(microtime(true) - $time_start) > 5) {
+					array_unshift($batch['data'], $row);
+					echo implode(PHP_EOL, ['', 'Resuming ' . number_format(count($batch['data']), 0, '', ' ') . ' remaining lines for processing...', '', '']);
+					header('Refresh: 0; url=' . document::link(null, ['resume' => 'true']));
+					exit;
+				}
 
-		ignore_user_abort(true);
+				if (connection_aborted()) {
+					throw new Exception('Connection aborted');
+				}
 
-		echo implode(PHP_EOL, ['Processing batch...', '']);
+				$batch['counters']['line']++;
 
-		while ($row = array_shift($batch['data'])) {
-			if (round(microtime(true) - $time_start) > 5) {
-				array_unshift($batch['data'], $row);
-				echo implode(PHP_EOL, ['', 'Resuming ' . number_format(count($batch['data']), 0, '', ' ') . ' remaining lines for processing...', '', '']);
-				header('Refresh: 0; url=' . document::link(null, ['resume' => 'true']));
-				exit;
-			}
+				switch ($batch['target']['type']) {
 
-			if (connection_aborted()) {
-				throw new Exception('Connection aborted');
-			}
+					// Process row for an entity
+					case 'entity':
+						$class_name = 'ent_' . $batch['target']['entity'];
+						$entity = new $class_name();
 
-			$batch['counters']['line']++;
-
-			switch ($batch['target']['type']) {
-				// Process row for an entity
-				case 'entity':
-					$class_name = 'ent_' . $batch['target']['entity'];
-					$entity = new $class_name();
-
-					try {
-						$entity->load($row[$batch['target']['identified_by']]);
-						$entity_exists = true;
-					} catch (Exception $e) {
-						$entity_exists = false;
-					}
-
-					if (!$entity_exists && $batch['insert']) {
-						foreach ($batch['map'] as $column => $to_column) {
-							$entity->data($to_column, $row[$column]);
+						try {
+							$entity->load($row[$batch['target']['identified_by']]);
+							$entity_exists = true;
+						} catch (Exception $e) {
+							$entity_exists = false;
 						}
 
-						$entity->save();
-					}
-
-					if ($entity_exists && $batch['update']) {
-						foreach ($batch['map'] as $column => $to_column) {
-							$entity->data($to_column, $row[$column]);
-						}
-
-						$entity->save();
-					}
-
-					if ($entity_exists && $batch['update'] == 'append') {
-						foreach ($batch['map'] as $column => $to_column) {
-							if (empty($entity->data[$to_column])) {
+						if (!$entity_exists && $batch['insert']) {
+							foreach ($batch['map'] as $column => $to_column) {
 								$entity->data($to_column, $row[$column]);
 							}
+
+							$entity->save();
 						}
 
-						$entity->save();
-					}
-
-				// Process row for a database table
-				case 'database':
-
-					$row_exists = database::query(
-						"select `". database::input($batch['match_column']) ."`
-						from `". database::input($batch['target']['table_name']) ."`
-						where `". database::input($batch['match_column']) ."` = '". database::input($row[$batch['match_column']]) ."'
-						limit 1;",
-					)->num_rows();
-
-					if (!$row_exists && $batch['insert']) {
-						$values = [];
-						foreach ($batch['map'] as $column => $to_column) {
-							if (empty($to_column)) {
-								continue;
+						if ($entity_exists && $batch['update']) {
+							foreach ($batch['map'] as $column => $to_column) {
+								$entity->data($to_column, $row[$column]);
 							}
-							$values[$to_column] = $row[$column];
+
+							$entity->save();
 						}
 
-						database::query(
-							'insert into `'. database::input($batch['target']['table_name']) ."`
-							(`". implode("`, `", database::input(array_keys($values))) ."`)
-							values ('". implode("', '", database::input($values)) ."');",
-						);
-					}
-
-					if ($row_exists && $batch['update']) {
-						$values = [];
-						foreach ($batch['map'] as $column => $to_column) {
-							if (empty($to_column)) {
-								continue;
+						if ($entity_exists && $batch['update'] == 'append') {
+							foreach ($batch['map'] as $column => $to_column) {
+								if (empty($entity->data[$to_column])) {
+									$entity->data($to_column, $row[$column]);
+								}
 							}
-							$values[$to_column] = $row[$column];
+
+							$entity->save();
 						}
 
-						database::query(
-							'update `'. database::input($batch['target']['table_name']) ."`
+					// Process row for a database table
+					case 'database':
+
+						$row_exists = database::query(
+							"select `". database::input($batch['match_column']) ."`
+							from `". database::input($batch['target']['table_name']) ."`
+							where `". database::input($batch['match_column']) ."` = '". database::input($row[$batch['match_column']]) ."'
+							limit 1;",
+						)->num_rows();
+
+						if (!$row_exists && $batch['insert']) {
+							$values = [];
+							foreach ($batch['map'] as $column => $to_column) {
+								if (empty($to_column)) {
+									continue;
+								}
+								$values[$to_column] = $row[$column];
+							}
+
+							database::query(
+								'insert into `'. database::input($batch['target']['table_name']) ."`
+								(`". implode("`, `", database::input(array_keys($values))) ."`)
+								values ('". implode("', '", database::input($values)) ."');",
+							);
+						}
+
+						if ($row_exists && $batch['update']) {
+							$values = [];
+							foreach ($batch['map'] as $column => $to_column) {
+								if (empty($to_column)) {
+									continue;
+								}
+								$values[$to_column] = $row[$column];
+							}
+
+							database::query(
+								'update `'. database::input($batch['target']['table_name']) ."`
+									set `". implode("` = '" . database::input($values) . "', `", array_keys($values)) ."'
+									where `". database::input($batch['match_column']) ."` = '". database::input($row[$batch['match_column']]) ."'
+									limit 1;",
+							);
+						}
+
+						if ($row_exists && $batch['update'] == 'append') {
+							$values = [];
+							foreach ($batch['map'] as $column => $to_column) {
+								if (empty($to_column)) {
+									continue;
+								}
+								if (empty($row[$column])) {
+									continue;
+								}
+								$values[$to_column] = $row[$column];
+							}
+
+							database::query(
+								"update `". database::input($batch['target']['table_name']) ."`
 								set `". implode("` = '" . database::input($values) . "', `", array_keys($values)) ."'
 								where `". database::input($batch['match_column']) ."` = '". database::input($row[$batch['match_column']]) ."'
-								limit 1;",
-						);
-					}
-
-					if ($row_exists && $batch['update'] == 'append') {
-						$values = [];
-						foreach ($batch['map'] as $column => $to_column) {
-							if (empty($to_column)) {
-								continue;
-							}
-							if (empty($row[$column])) {
-								continue;
-							}
-							$values[$to_column] = $row[$column];
+								limit 1;"
+							);
 						}
 
-						database::query(
-							"update `". database::input($batch['target']['table_name']) ."`
-							set `". implode("` = '" . database::input($values) . "', `", array_keys($values)) ."'
-							where `". database::input($batch['match_column']) ."` = '". database::input($row[$batch['match_column']]) ."'
-							limit 1;"
-						);
-					}
+						break;
+				}
+			}
 
-					break;
+			unset(session::$data['csv_batch']);
+
+			echo PHP_EOL . 'Completed!';
+
+			notices::add('success', t('success_import_completed', 'Import completed'));
+
+			header('Refresh: 5; url=' . document::ilink());
+			exit;
+		} catch (Exception $e) {
+			notices::add('errors', $e->getMessage());
+			echo 'Error: ' . $e->getMessage();
+			header('Refresh: 5; url=' . document::ilink());
+			exit;
+		}
+	}
+
+	if (isset($_POST['abort'])) {
+		unset(session::$data['csv_batch']);
+		redirect(document::ilink(__APP__ . '/import'), 303);
+		exit;
+	}
+
+	if (empty($_POST)) {
+		foreach (array_keys(session::$data['csv_batch']['rows'][0]) as $column) {
+			if (in_array($column, array_keys(session::$data['csv_batch']['properties']))) {
+				$_POST['map'][$column] = $column;
 			}
 		}
-
-		unset(session::$data['csv_batch']);
-
-		echo PHP_EOL . 'Completed!';
-
-		notices::add('success', t('success_import_completed', 'Import completed'));
-
-		header('Refresh: 5; url=' . document::ilink());
-		exit;
-	} catch (Exception $e) {
-		notices::add('errors', $e->getMessage());
-		echo 'Error: ' . $e->getMessage();
-		header('Refresh: 5; url=' . document::ilink());
-		exit;
 	}
-}
 
-if (isset($_POST['abort'])) {
-	unset(session::$data['csv_batch']);
-	redirect(document::ilink(__APP__ . '/import'), 303);
-	exit;
-}
+	$columns = array_merge(
+		['' => '-- ' . t('title_skip', 'Skip') . ' --'],
+		array_combine(array_keys(session::$data['csv_batch']['properties']), session::$data['csv_batch']['properties']),
+	);
 
-if (empty($_POST)) {
-	foreach (array_keys(session::$data['csv_batch']['rows'][0]) as $column) {
-		if (in_array($column, array_keys(session::$data['csv_batch']['properties']))) {
-			$_POST['map'][$column] = $column;
-		}
-	}
-}
-
-$columns = array_merge(
-	[
-		'' => '-- ' . t('title_skip', 'Skip') . ' --',
-	],
-	array_combine(array_keys(session::$data['csv_batch']['properties']), session::$data['csv_batch']['properties']),
-);
 ?>
 <style>
 table td {

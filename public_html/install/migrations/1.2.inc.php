@@ -74,27 +74,35 @@
 		FS_DIR_ADMIN . '.htaccess' => [
 			[
 				'search'  => "# Denied content",
-				'replace' => "# Solve 401 rewrite and auth conflict on some machines" . PHP_EOL
-									.  "ErrorDocument 401 \"Access Forbidden\"" . PHP_EOL
-									.  PHP_EOL
-									.  "# Denied content",
+				'replace' => implode(PHP_EOL, [
+					"# Solve 401 rewrite and auth conflict on some machines",
+					"ErrorDocument 401 \"Access Forbidden\"",
+					"",
+					"# Denied content",
+				]),
 			],
 		],
 		FS_DIR_APP . 'includes/config.inc.php' => [
 			[
 				'search'  => "  define('WS_DIR_INCLUDES',    WS_DIR_APP . 'includes/');",
-				'replace' => "  define('WS_DIR_INCLUDES',    WS_DIR_APP . 'includes/');" . PHP_EOL
-									 . "  define('WS_DIR_PAGES',       WS_DIR_APP . 'pages/');",
+				'replace' => implode(PHP_EOL, [
+					"  define('WS_DIR_INCLUDES',    WS_DIR_APP . 'includes/');",
+					"  define('WS_DIR_PAGES',       WS_DIR_APP . 'pages/');",
+				]),
 			],
 			[
 				'search'  => "  define('WS_DIR_REFERENCES',  WS_DIR_INCLUDES  . 'references/');",
-				'replace' => "  define('WS_DIR_REFERENCES',  WS_DIR_INCLUDES  . 'references/');" . PHP_EOL
-									 . "  define('WS_DIR_ROUTES',      WS_DIR_INCLUDES  . 'routes/');",
+				'replace' => implode(PHP_EOL, [
+					"  define('WS_DIR_REFERENCES',  WS_DIR_INCLUDES  . 'references/');",
+					"  define('WS_DIR_ROUTES',      WS_DIR_INCLUDES  . 'routes/');",
+				]),
 			],
 			[
 				'search'  => "  define('DB_SERVER',",
-				'replace' => "  define('DB_TYPE', 'mysql');" . PHP_EOL
-									 . "  define('DB_SERVER',",
+				'replace' => implode(PHP_EOL, [
+					"  define('DB_TYPE', 'mysql');",
+					"  define('DB_SERVER',",
+				]),
 			],
 			[
 				'search'  => "  define('DB_DATABASE_CHARSET',",

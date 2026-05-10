@@ -70,9 +70,9 @@
 		Redact sensitive parameter values in a URL or a bare query string.
 
 		Input forms supported:
-		  "/path?a=1&token=secret"   → "/path?a=1&token=[REDACTED]"
-		  "token=secret&a=1"         → "token=[REDACTED]&a=1"
-		  "https://host/x?token=s"   → "https://host/x?token=[REDACTED]"
+			"/path?a=1&token=secret"   → "/path?a=1&token=[REDACTED]"
+			"token=secret&a=1"         → "token=[REDACTED]&a=1"
+			"https://host/x?token=s"   → "https://host/x?token=[REDACTED]"
 
 		Values are matched against REDACT_SENSITIVE_KEYS case-insensitively.
 		Unknown parameters pass through unchanged. Fragment (#...) is
@@ -120,9 +120,9 @@
 		Redact sensitive values in a CLI argv array.
 
 		Supports the three forms getopt() accepts:
-		  --name=value    → value replaced
-		  --name value    → value in next slot replaced
-		  -x value        → value in next slot replaced
+			--name=value    → value replaced
+			--name value    → value in next slot replaced
+			-x value        → value in next slot replaced
 
 		Positional arguments (those not preceded by an option flag) pass
 		through untouched. Flags without values (e.g. "--cleanup") pass

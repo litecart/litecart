@@ -19,7 +19,7 @@
 		];
 
 		// Check if administrator is permitted to access document.
- 		// Allow helper endpoints implicitly as long as the admin has the app enabled.
+		// Allow helper endpoints implicitly as long as the admin has the app enabled.
 		if (!empty(administrator::$data['apps'][__APP__]['status'])) {
 			if (preg_match('/\.(json|csv)$/', __DOC__) || str_ends_with(__DOC__, '_picker')) {
 				if (!in_array(__DOC__, administrator::$data['apps'][__APP__]['docs'])) {

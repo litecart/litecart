@@ -46,7 +46,7 @@
 		"select customer_id, customer_email from ". DB_TABLE_PREFIX ."orders
 		where customer_id = 0;"
 	)->each(function($order) {
-		
+
 		$customer = database::query(
 			"select id from ". DB_TABLE_PREFIX ."customers
 			where lower(email) = lower('". database::input($order['customer_email']) ."');"

@@ -6,8 +6,20 @@
 
 root = true
 
-[*.{css,htaccess,html,js,json,less,md,php,scss,sql,svg,xml}]
+[*.{css,htaccess,html,js,json,less,md,php,scss,sh,sql,svg,xml},Dockerfile,pre-commit]
 charset = utf-8
 indent_style = tab
 indent_size = 2
 trim_trailing_whitespace = true
+
+[*.{htaccess,js,less,md,php,sh,scss,sql},Dockerfile]
+insert_final_newline = true
+
+[*.{csv,json,svg,xml}]
+insert_final_newline = false
+
+[*.{yaml,yml}]
+charset = utf-8
+indent_style = space
+indent_size = 2
+insert_final_newline = false

@@ -33,21 +33,27 @@
 		FS_DIR_APP . 'includes/config.inc.php' => [
 			[
 				'search'  => "  define('FS_DIR_ADMIN',       FS_DIR_APP . BACKEND_ALIAS . '/');",
-				'replace' => "  define('FS_DIR_STORAGE',     FS_DIR_APP);" . PHP_EOL
-									 . "  define('FS_DIR_ADMIN',       FS_DIR_APP . BACKEND_ALIAS . '/');",
+				'replace' => implode(PHP_EOL, [
+					"  define('FS_DIR_STORAGE',     FS_DIR_APP);",
+					"  define('FS_DIR_ADMIN',       FS_DIR_APP . BACKEND_ALIAS . '/');",
+				]),
 				'regex'   => false,
 			],
 			[
 				'search'  => "  define('WS_DIR_ADMIN',       WS_DIR_APP . BACKEND_ALIAS . '/');",
-				'replace' => "  define('WS_DIR_STORAGE',     WS_DIR_APP);" . PHP_EOL
-									 . "  define('WS_DIR_ADMIN',       WS_DIR_APP . BACKEND_ALIAS . '/');",
+				'replace' => implode(PHP_EOL, [
+					"  define('WS_DIR_STORAGE',     WS_DIR_APP);",
+					"  define('WS_DIR_ADMIN',       WS_DIR_APP . BACKEND_ALIAS . '/');",
+				]),
 				'regex'   => false,
 			],
 			[
-				'search'  => "~## Backwards Compatible Directory Definitions \(LiteCart <2\.2\)  #######\R+"
-									 . "######################################################################\R+"
-									 . ".*?"
-									 . "######################################################################\R+~s",
+				'search'  => implode(PHP_EOL, [
+					"## Backwards Compatible Directory Definitions (LiteCart <2.2)  #######",
+					"######################################################################",
+					".*?",
+					"######################################################################",
+				]),
 				'replace' => '',
 				'regex'   => true,
 			],
@@ -62,8 +68,10 @@
 				'regex'   => false,
 			],
 			[
-				'search'  => "#// Password Encryption Salt\R+"
-									 . "  define('PASSWORD_SALT', '[^']+');\R+#s",
+				'search'  => implode(PHP_EOL, [
+					"#// Password Encryption Salt",
+					"  define('PASSWORD_SALT', '[^']+');",
+				]),
 				'replace' => '',
 				'regex'   => true,
 			],

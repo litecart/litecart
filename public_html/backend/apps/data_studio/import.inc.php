@@ -185,6 +185,7 @@
 			}
 
 			switch (true) {
+
 				case substr($_POST['target'], 0, 4) == 'ent:':
 					$entity = basename(substr($_POST['target'], 4));
 

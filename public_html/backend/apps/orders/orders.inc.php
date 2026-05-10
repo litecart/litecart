@@ -198,12 +198,12 @@
 	}
 
 	$sql_sort = match($_GET['sort']) {
-		 'id' => "o.starred desc, o.id desc",
-		 'country' => "o.starred desc, o.customer_country_code",
-		 'customer' => "o.starred desc, if(o.customer_company, o.customer_company, concat(o.customer_firstname, ' ', o.customer_lastname)) asc",
-		 'order_status' => "o.starred desc, field(os.state, 'created', 'on_hold', 'ready', 'delayed', 'processing', 'dispatched', 'in_transit', 'completed', 'delivered', 'returning', 'returned', 'cancelled'), name",
-		 'payment_method' => "o.starred desc, o.payment_option_name asc",
-		 default => "if(o.starred, 1, 0) desc, o.created_at desc, o.id desc",
+		'id' => "o.starred desc, o.id desc",
+		'country' => "o.starred desc, o.customer_country_code",
+		'customer' => "o.starred desc, if(o.customer_company, o.customer_company, concat(o.customer_firstname, ' ', o.customer_lastname)) asc",
+		'order_status' => "o.starred desc, field(os.state, 'created', 'on_hold', 'ready', 'delayed', 'processing', 'dispatched', 'in_transit', 'completed', 'delivered', 'returning', 'returned', 'cancelled'), name",
+		'payment_method' => "o.starred desc, o.payment_option_name asc",
+		default => "if(o.starred, 1, 0) desc, o.created_at desc, o.id desc",
 	};
 
 	$sql_where_order_status = match($_GET['order_status_id']) {

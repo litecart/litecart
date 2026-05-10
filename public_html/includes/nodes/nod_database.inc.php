@@ -434,7 +434,7 @@
 
 			Optional allowlist: when provided, the name must also be a member
 			of that list. Use it to pin to e.g. configured language codes:
-			    database::identifier($code, array_keys(language::$languages))
+					database::identifier($code, array_keys(language::$languages))
 
 			Throws InvalidArgumentException on rejection. Callers catch this
 			and translate to a 400-level response or a skip-with-warning,
