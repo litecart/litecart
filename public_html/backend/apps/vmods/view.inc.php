@@ -94,22 +94,11 @@ pre {
 
 					<div class="insert">
 <?php
-	switch($operation->insert->attributes()['position']) {
-
-		case 'replace':
-			echo '** Replace with **';
-			break;
-
-		case 'before':
-		case 'ibefore':
-			echo '** Before that, add **';
-			break;
-
-		case 'after':
-		case 'iafter':
-			echo '** After that, add **';
-			break;
-	}
+	echo match($operation->insert->attributes()['position']) {
+		'replace' => '** Replace with **',
+		'before', 'ibefore' => '** Before that, add **',
+		'after', 'iafter' => '** After that, add **',
+	};
 ?>
 						<pre><code><?php echo f::escape_html($operation->insert); ?></code></pre>
 					</div>

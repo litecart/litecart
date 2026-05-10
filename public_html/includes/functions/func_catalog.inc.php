@@ -523,28 +523,13 @@
 		}
 
 		if (!empty($filter['sort'])) {
-			switch ($filter['sort']) {
-
-				case 'name':
-					$sql_order_by = "name asc";
-					break;
-
-				case 'price':
-					$sql_order_by = "final_price asc";
-					break;
-
-				case 'date':
-					$sql_order_by = "created_at desc";
-					break;
-
-				case 'rand':
-					$sql_order_by = "rand()";
-					break;
-
-				case 'popularity':
-					$sql_order_by = "st.views desc";
-					break;
-			}
+			$sql_order_by = match($filter['sort']) {
+				'name' => "name asc",
+				'price' => "final_price asc",
+				'date' => "created_at desc",
+				'rand' => "rand()",
+				'popularity' => "st.views desc",
+			};
 		}
 
 		$sql_column_price = "coalesce(". implode(", ", f::array_each(currency::$currencies, fn($currency) =>

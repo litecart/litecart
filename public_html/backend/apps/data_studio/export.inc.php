@@ -108,26 +108,15 @@
 						header('Content-Disposition: attachment; filename='. $_POST['source'] .'.csv');
 					}
 
-					switch ($_POST['eol']) {
+					$eol = match($_POST['eol']) {
+						'Linux' => "\r",
+						'Mac' => "\n",
+						'Win' => "\r\n",
+						default => throw new Exception(t('error_invalid_eol_format', 'Invalid EOL format')),
+					};
 
-						case 'Linux':
-							echo f::csv_encode($data, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\r");
-							exit;
-
-						case 'Mac':
-							echo f::csv_encode($data, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\n");
-							exit;
-
-						case 'Win':
-							echo f::csv_encode($data, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\r\n");
-							exit;
-
-						default:
-							throw new Exception(t('error_invalid_eol_format', 'Invalid EOL format'));
-							break;
-					}
-
-					break;
+					echo f::csv_encode($data, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], $eol);
+					exit;
 
 				case 'json':
 

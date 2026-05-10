@@ -56,37 +56,16 @@
 		];
 	}
 
-	switch($_GET['sort']) {
-
-		case 'session_id':
-			$sql_sort = "el.session_id";
-			break;
-
-		case 'customer_id':
-			$sql_sort = "el.customer_id";
-			break;
-
-		case 'type':
-			$sql_sort = "el.type";
-			break;
-
-		case 'description':
-			$sql_sort = "el.description";
-			break;
-
-		case 'ip_address':
-			$sql_sort = "el.ip_address";
-			break;
-
-		case 'expires':
-			$sql_sort = "el.expires_at desc";
-			break;
-
-		case 'created':
-		default:
-			$sql_sort = "el.created_at desc, el.id desc";
-			break;
-	}
+	$sql_sort = match($_GET['sort']) {
+		'session_id' => "el.session_id",
+		'customer_id' => "el.customer_id",
+		'type' => "el.type",
+		'description' => "el.description",
+		'ip_address' => "el.ip_address",
+		'expires' => "el.expires_at desc",
+		'created' => "el.created_at desc, el.id desc",
+		default => "el.created_at desc, el.id desc",
+	};
 
 	$events = database::query(
 		"select el.*, c.email, c.firstname, c.lastname from ". DB_TABLE_PREFIX ."event_logs el

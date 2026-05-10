@@ -135,39 +135,39 @@
 				return '<i class="mdi '. $icon .'"'. ($parameters ? ' ' . $parameters : '') .'></i>';
 		}
 
-		switch ($icon) {
-			case 'add':         return draw_fonticon('icon-plus');
-			case 'cancel':      return draw_fonticon('icon-times');
-			case 'create':      return draw_fonticon('icon-square-pen');
-			case 'company':     return draw_fonticon('icon-building', 'style="color: #888;"');
-			case 'delete':      return draw_fonticon('icon-trash');
-			case 'download':    return draw_fonticon('icon-download');
-			case 'edit':        return draw_fonticon('icon-pen');
-			case 'failed':      return draw_fonticon('icon-times', 'style="color: #c00;"');
-			case 'false':       return draw_fonticon('icon-times', 'style="color: #c00;"');
-			case 'female':      return draw_fonticon('icon-female', 'style="color: #e77be9;"');
-			case 'folder':      return draw_fonticon('icon-folder', 'style="color: #cc6;"');
-			case 'folder-open': return draw_fonticon('icon-folder-open', 'style="color: #cc6;"');
-			case 'group':       return draw_fonticon('icon-group', 'style="color: #888;"');
-			case 'remove':      return draw_fonticon('icon-times', 'style="color: #c33;"');
-			case 'male':        return draw_fonticon('icon-male', 'style="color: #0a94c3;"');
-			case 'move-up':     return draw_fonticon('icon-arrow-up', 'style="color: #39c;"');
-			case 'move-down':   return draw_fonticon('icon-arrow-down', 'style="color: #39c;"');
-			case 'ok':          return draw_fonticon('icon-check', 'style="color: #8c4;"');
-			case 'on':          return draw_fonticon('icon-bullet', 'style="color: #8c4;"');
-			case 'off':         return draw_fonticon('icon-bullet', 'style="color: #f64;"');
-			case 'print':       return draw_fonticon('icon-print', 'style="color: #ded90f;"');
-			case 'remove':      return draw_fonticon('icon-times', 'style="color: #c00;"');
-			case 'secure':      return draw_fonticon('icon-lock');
-			case 'semi-off':    return draw_fonticon('icon-bullet', 'style="color: #ded90f;"');
-			case 'save':        return draw_fonticon('icon-memory-card');
-			case 'send':        return draw_fonticon('icon-paper-plane');
-			case 'success':     return draw_fonticon('icon-check', 'style="color: #8c4;"');
-			case 'true':        return draw_fonticon('icon-check', 'style="color: #8c4;"');
-			case 'user':        return draw_fonticon('icon-user', 'style="color: #888;"');
-			case 'warning':     return draw_fonticon('icon-exclamation-triangle', 'style="color: #c00;"');
-			default: trigger_error('Unknown font icon ('. $icon .')', E_USER_WARNING); return;
-		}
+		return match($icon) {
+			'add'         => draw_fonticon('icon-plus'),
+			'cancel'      => draw_fonticon('icon-times'),
+			'create'      => draw_fonticon('icon-square-pen'),
+			'company'     => draw_fonticon('icon-building', 'style="color: #888;"'),
+			'delete'      => draw_fonticon('icon-trash'),
+			'download'    => draw_fonticon('icon-download'),
+			'edit'        => draw_fonticon('icon-pen'),
+			'failed'      => draw_fonticon('icon-times', 'style="color: #c00;"'),
+			'false'       => draw_fonticon('icon-times', 'style="color: #c00;"'),
+			'female'      => draw_fonticon('icon-female', 'style="color: #e77be9;"'),
+			'folder'      => draw_fonticon('icon-folder', 'style="color: #cc6;"'),
+			'folder-open' => draw_fonticon('icon-folder-open', 'style="color: #cc6;"'),
+			'group'       => draw_fonticon('icon-group', 'style="color: #888;"'),
+			'remove'      => draw_fonticon('icon-times', 'style="color: #c33;"'),
+			'male'        => draw_fonticon('icon-male', 'style="color: #0a94c3;"'),
+			'move-up'     => draw_fonticon('icon-arrow-up', 'style="color: #39c;"'),
+			'move-down'   => draw_fonticon('icon-arrow-down', 'style="color: #39c;"'),
+			'ok'          => draw_fonticon('icon-check', 'style="color: #8c4;"'),
+			'on'          => draw_fonticon('icon-bullet', 'style="color: #8c4;"'),
+			'off'         => draw_fonticon('icon-bullet', 'style="color: #f64;"'),
+			'print'       => draw_fonticon('icon-print', 'style="color: #ded90f;"'),
+			'remove'      => draw_fonticon('icon-times', 'style="color: #c00;"'),
+			'secure'      => draw_fonticon('icon-lock'),
+			'semi-off'    => draw_fonticon('icon-bullet', 'style="color: #ded90f;"'),
+			'save'        => draw_fonticon('icon-memory-card'),
+			'send'        => draw_fonticon('icon-paper-plane'),
+			'success'     => draw_fonticon('icon-check', 'style="color: #8c4;"'),
+			'true'        => draw_fonticon('icon-check', 'style="color: #8c4;"'),
+			'user'        => draw_fonticon('icon-user', 'style="color: #888;"'),
+			'warning'     => draw_fonticon('icon-exclamation-triangle', 'style="color: #c00;"'),
+			default       => trigger_error('Unknown font icon ('. $icon .')', E_USER_WARNING)
+		};
 	}
 
 	function draw_image($image, $width=null, $height=null, $clipping='fit', $parameters='') {
@@ -243,32 +243,13 @@
 			$aspect_ratio = f::image_aspect_ratio($width, $height);
 		}
 
-		switch (strtolower($clipping)) {
-
-			case '':
-				$clipping = '';
-				break;
-
-			case 'fit':
-				$clipping = 'fit';
-				break;
-
-			case 'crop':
-				$clipping = 'crop';
-				break;
-
-			case 'product':
-				$clipping = strtolower(settings::get('product_image_clipping'));
-				break;
-
-			case 'category':
-				$clipping = strtolower(settings::get('category_image_clipping'));
-				break;
-
-			default:
-				trigger_error('Invalid clipping mode ('. $clipping .')', E_USER_WARNING);
-				break;
-		}
+		$clipping = match(strtolower($clipping)) {
+			'fit' => 'fit',
+			'crop' => 'crop',
+			'product' => strtolower(settings::get('product_image_clipping')),
+			'category' => strtolower(settings::get('category_image_clipping')),
+			default => trigger_error('Invalid clipping mode ('. $clipping .')', E_USER_WARNING),
+		};
 
 		$thumbnail = f::image_thumbnail($image, $width, $height);
 		$thumbnail_2x = f::image_thumbnail($image, $width*2, $height*2);

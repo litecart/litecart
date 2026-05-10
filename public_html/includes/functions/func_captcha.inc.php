@@ -11,19 +11,11 @@
 			'font_size' => ($config['height'] ?? 40) * 0.7,
 		];
 
-		switch ($config['set']) {
-
-			case 'alphabet':
-				$possible = 'abcdefghijklmnopqrstuvwxyz';
-				break;
-
-			case 'numbers':
-				$possible = '1234567890';
-				break;
-
-			default:
-				throw new Error('Unknown captcha set');
-		}
+		$possible = match($config['set']) {
+			'alphabet' => 'abcdefghijklmnopqrstuvwxyz',
+			'numbers' => '1234567890',
+			default => throw new Error('Unknown captcha set'),
+		};
 
 		$code = '';
 		for ($i=0; $i<$config['length']; $i++) {

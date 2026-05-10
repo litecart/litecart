@@ -1,58 +1,50 @@
 <?php
 
-	switch (__DOC__) {
-
-		case 'customer':
-			$title = t('title_customer_modules', 'Customer Modules');
-			$files = f::file_search('app://includes/modules/customer/*.inc.php');
-			$mod_class = new mod_customer();
-			$type = 'customer';
-			$edit_doc = 'edit_customer';
-			break;
-
-		case 'jobs':
-			$title = t('title_job_modules', 'Job Modules');
-			$files = f::file_search('app://includes/modules/jobs/*.inc.php');
-			$mod_class = new mod_jobs();
-			$type = 'job';
-			$edit_doc = 'edit_job';
-			break;
-
-		case 'order':
-			$title = t('title_order_modules', 'Order Modules');
-			$files = f::file_search('app://includes/modules/order/*.inc.php');
-			$mod_class = new mod_order();
-			$type = 'order';
-			$edit_doc = 'edit_order';
-			break;
-
-		case 'payment':
-			$title = t('title_payment_modules', 'Payment Modules');
-			$files = f::file_search('app://includes/modules/payment/*.inc.php');
-			$mod_class = new mod_payment();
-			$type = 'payment';
-			$edit_doc = 'edit_payment';
-			break;
-
-		case 'shipping':
-			$title = t('title_shipping_modules', 'Shipping Modules');
-			$files = f::file_search('app://includes/modules/shipping/*.inc.php');
-			$mod_class = new mod_shipping();
-			$type = 'shipping';
-			$edit_doc = 'edit_shipping';
-			break;
-
-		case 'translation':
-			$title = language::translate('title_translation', 'Translation');
-			$files = glob(FS_DIR_APP . 'includes/modules/translation/tm_*.inc.php');
-			$mod_class = new mod_translation();
-			$type = 'translation';
-			$edit_doc = 'edit_translation';
-			break;
-
-		default:
-			throw new Error('Unknown module type ('. __DOC__ .')');
-	}
+	extract(match(__DOC__) {
+		'customer' => [
+			'title' => t('title_customer_modules', 'Customer Modules'),
+			'files' => f::file_search('app://includes/modules/customer/*.inc.php'),
+			'mod_class' => new mod_customer(),
+			'type' => 'customer',
+			'edit_doc' => 'edit_customer',
+		],
+		'jobs' => [
+			'title' => t('title_job_modules', 'Job Modules'),
+			'files' => f::file_search('app://includes/modules/jobs/*.inc.php'),
+			'mod_class' => new mod_jobs(),
+			'type' => 'job',
+			'edit_doc' => 'edit_job',
+		],
+		'order' => [
+			'title' => t('title_order_modules', 'Order Modules'),
+			'files' => f::file_search('app://includes/modules/order/*.inc.php'),
+			'mod_class' => new mod_order(),
+			'type' => 'order',
+			'edit_doc' => 'edit_order',
+		],
+		'payment' => [
+			'title' => t('title_payment_modules', 'Payment Modules'),
+			'files' => f::file_search('app://includes/modules/payment/*.inc.php'),
+			'mod_class' => new mod_payment(),
+			'type' => 'payment',
+			'edit_doc' => 'edit_payment',
+		],
+		'shipping' => [
+			'title' => t('title_shipping_modules', 'Shipping Modules'),
+			'files' => f::file_search('app://includes/modules/shipping/*.inc.php'),
+			'mod_class' => new mod_shipping(),
+			'type' => 'shipping',
+			'edit_doc' => 'edit_shipping',
+		],
+		'translation' => [
+			'title' => language::translate('title_translation', 'Translation'),
+			'files' => glob(FS_DIR_APP . 'includes/modules/translation/tm_*.inc.php'),
+			'mod_class' => new mod_translation(),
+			'type' => 'translation',
+			'edit_doc' => 'edit_translation',
+		],
+		default => throw new Error('Unknown module type ('. __DOC__ .')'),
+	});
 
 	document::$title[] = $title;
 

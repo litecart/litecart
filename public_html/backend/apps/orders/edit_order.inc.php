@@ -957,20 +957,11 @@
 	if (isset($_POST['comments'])) {
 		foreach (array_keys($_POST['comments']) as $key) {
 
-			switch ($_POST['comments'][$key]['author']) {
-
-				case 'customer':
-					$type = 'remote';
-					break;
-
-				case 'staff':
-					$type = 'local';
-					break;
-
-				default:
-					$type = 'event';
-					break;
-			}
+			$type = match($_POST['comments'][$key]['author']) {
+				'customer' => 'remote',
+				'staff' => 'local',
+				default => 'event',
+			};
 
 			if (!empty($_POST['comments'][$key]['hidden'])) {
 				$type .= ' semi-transparent';

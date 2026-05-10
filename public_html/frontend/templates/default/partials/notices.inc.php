@@ -2,44 +2,36 @@
 <?php
 	foreach (array_keys($notices) as $type) {
 		foreach ($notices[$type] as $notice) {
-			switch ($type) {
+			echo match($type) {
 
-				case 'errors':
-					echo implode(PHP_EOL, [
-						'<div class="notice notice-danger">',
-						'  <a href="#" class="close" data-dismiss="notice">&times;</a>',
-						'  ' . f::draw_fonticon('icon-exclamation-triangle') . ' ' . $notice,
-						'</div>',
-					]);
-					break;
+				'errors' => implode(PHP_EOL, [
+					'<div class="notice notice-danger">',
+					'  <a href="#" class="close" data-dismiss="notice">&times;</a>',
+					'  ' . f::draw_fonticon('icon-exclamation-triangle') . ' ' . $notice,
+					'</div>',
+				]),
 
-				case 'warnings':
-					echo implode(PHP_EOL, [
-						'<div class="notice notice-warning">',
-						'  <a href="#" class="close" data-dismiss="notice">&times;</a>',
-						'  ' . f::draw_fonticon('icon-exclamation-triangle') . ' ' . $notice,
-						'</div>',
-					]);
-					break;
+				'warnings' => implode(PHP_EOL, [
+					'<div class="notice notice-warning">',
+					'  <a href="#" class="close" data-dismiss="notice">&times;</a>',
+					'  ' . f::draw_fonticon('icon-exclamation-triangle') . ' ' . $notice,
+					'</div>',
+				]),
 
-				case 'notices':
-					echo implode(PHP_EOL, [
-						'<div class="notice notice-default">',
-						'  <a href="#" class="close" data-dismiss="notice">&times;</a>',
-						'  ' . f::draw_fonticon('icon-info') . ' ' . $notice,
-						'</div>',
-					]);
-					break;
+				'notices' => implode(PHP_EOL, [
+					'<div class="notice notice-default">',
+					'  <a href="#" class="close" data-dismiss="notice">&times;</a>',
+					'  ' . f::draw_fonticon('icon-info') . ' ' . $notice,
+					'</div>',
+				]),
 
-				case 'success':
-					echo implode(PHP_EOL, [
-						'<div class="notice notice-success">',
-						'  <a href="#" class="close" data-dismiss="notice">&times;</a>',
-						'  ' . f::draw_fonticon('icon-check') . ' ' . $notice,
-						'</div>',
-					]);
-					break;
-			}
+				'success' => implode(PHP_EOL, [
+					'<div class="notice notice-success">',
+					'  <a href="#" class="close" data-dismiss="notice">&times;</a>',
+					'  ' . f::draw_fonticon('icon-check') . ' ' . $notice,
+					'</div>',
+				]),
+			};
 		}
 	}
 ?>

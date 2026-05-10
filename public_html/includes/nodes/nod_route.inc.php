@@ -78,21 +78,11 @@
 				}
 			}
 
-			switch (true) {
-
-				case (preg_match('#^b:#', $resource)):
-					$route['endpoint'] = 'backend';
-					break;
-
-
-				case (preg_match('#^f:#', $resource)):
-					$route['endpoint'] = 'frontend';
-					break;
-
-				default:
-					$route['endpoint'] = 'frontend';
-					break;
-			}
+			$route['endpoint'] = match(true) {
+				(preg_match('#^b:#', $resource)) => 'backend',
+				(preg_match('#^f:#', $resource)) => 'frontend',
+				default => 'frontend',
+			};
 
 			if (!isset($route['patterns'])) {
 				$route['patterns'] = [$route['pattern']];

@@ -66,17 +66,11 @@
 		foreach ($order->data['comments'] as $comment) {
 			if (!empty($comment['hidden'])) continue;
 
-			switch($comment['author']) {
-				case 'customer':
-					$comment['type'] = 'local';
-					break;
-				case 'staff':
-					$comment['type'] = 'remote';
-					break;
-				default:
-					$comment['type'] = 'event';
-					break;
-			}
+			$comment['type'] = match($comment['author']) {
+				'customer' => 'local',
+				'staff' => 'remote',
+				default => 'event',
+			};
 
 			$_page->snippets['comments'][] = $comment;
 		}

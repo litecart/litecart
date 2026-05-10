@@ -70,16 +70,10 @@
 
 			if (empty(self::$data)) return '';
 
-			switch (route::$selected['endpoint'] ?? null) {
-
-				case 'backend':
-					$view = new ent_view('app://backend/template/partials/notices.inc.php');
-					break;
-
-				default:
-					$view = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/notices.inc.php');
-					break;
-			}
+			$view = match(route::$selected['endpoint'] ?? null) {
+				'backend' => new ent_view('app://backend/template/partials/notices.inc.php'),
+				default => new ent_view('app://frontend/templates/'.settings::get('template').'/partials/notices.inc.php'),
+			};
 
 			$view->snippets['notices'] = self::$data;
 			$output = $view->render();

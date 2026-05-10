@@ -197,50 +197,21 @@
 		];
 	}
 
-	switch ($_GET['sort']) {
+	$sql_sort = match($_GET['sort']) {
+		 'id' => "o.starred desc, o.id desc",
+		 'country' => "o.starred desc, o.customer_country_code",
+		 'customer' => "o.starred desc, if(o.customer_company, o.customer_company, concat(o.customer_firstname, ' ', o.customer_lastname)) asc",
+		 'order_status' => "o.starred desc, field(os.state, 'created', 'on_hold', 'ready', 'delayed', 'processing', 'dispatched', 'in_transit', 'completed', 'delivered', 'returning', 'returned', 'cancelled'), name",
+		 'payment_method' => "o.starred desc, o.payment_option_name asc",
+		 default => "if(o.starred, 1, 0) desc, o.created_at desc, o.id desc",
+	};
 
-		case 'id':
-			$sql_sort = "o.starred desc, o.id desc";
-			break;
-
-		case 'country':
-			$sql_sort = "o.starred desc, o.customer_country_code";
-			break;
-
-		case 'customer':
-			$sql_sort = "o.starred desc, if(o.customer_company, o.customer_company, concat(o.customer_firstname, ' ', o.customer_lastname)) asc";
-			break;
-
-		case 'order_status':
-			$sql_sort = "o.starred desc, field(os.state, 'created', 'on_hold', 'ready', 'delayed', 'processing', 'dispatched', 'in_transit', 'completed', 'delivered', 'returning', 'returned', 'cancelled'), name";
-			break;
-
-		case 'payment_method':
-			$sql_sort = "o.starred desc, o.payment_option_name asc";
-			break;
-
-		default:
-			$sql_sort = "if(o.starred, 1, 0) desc, o.created_at desc, o.id desc";
-			break;
-	}
-
-	switch ($_GET['order_status_id']) {
-
-		case '':
-			$sql_where_order_status = "and (os.is_archived is null or os.is_archived = 0 or unread = 1)";
-			break;
-
-		case 'archived':
-			$sql_where_order_status = "and (os.is_archived = 1)";
-			break;
-
-		case 'all':
-			break;
-
-		default:
-			$sql_where_order_status = "and o.order_status_id = ". (!empty($_GET['order_status_id']) ? (int)$_GET['order_status_id'] : '');
-			break;
-	}
+	$sql_where_order_status = match($_GET['order_status_id']) {
+		'' => "and (os.is_archived is null or os.is_archived = 0 or unread = 1)",
+		'archived' => "and (os.is_archived = 1)",
+		'all' => "",
+		default => "and o.order_status_id = ". (!empty($_GET['order_status_id']) ? (int)$_GET['order_status_id'] : ''),
+	};
 
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$orders = database::query(

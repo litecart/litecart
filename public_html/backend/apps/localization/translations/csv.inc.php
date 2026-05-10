@@ -268,22 +268,14 @@
 				header('Content-Disposition: attachment; filename=translations-'. $_filename_codes .'.csv');
 			}
 
-			switch($_POST['eol']) {
+			$eol = match($_POST['eol']) {
+				'Linux' => "\r",
+				'Mac' => "\n",
+				'Win' => "\r\n",
+				default => throw new Exception('Unsupported EOL character'),
+			};
 
-				case 'Linux':
-					echo f::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\r");
-					break;
-
-				case 'Mac':
-					echo f::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\n");
-					break;
-
-				case 'Win':
-				default:
-					echo f::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\r\n");
-					break;
-			}
-
+			echo f::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\r\n");
 			exit;
 
 		} catch (Exception $e) {

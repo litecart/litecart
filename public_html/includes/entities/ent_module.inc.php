@@ -13,31 +13,14 @@
 
 			preg_match('#^([^_]+)#', $module_id, $matches);
 
-			switch ($matches[1]) {
-
-				case 'cm':
-					$type = 'customer';
-					break;
-
-				case 'sm':
-					$type = 'shipping';
-					break;
-
-				case 'pm':
-					$type = 'payment';
-					break;
-
-				case 'om':
-					$type = 'order';
-					break;
-
-				case 'job':
-					$type = 'job';
-					break;
-
-				default:
-					throw new Exception('Unknown module type for module '. $module_id);
-			}
+			$type = match ($matches[1]) {
+				'cm' => 'customer',
+				'sm' => 'shipping',
+				'pm' => 'payment',
+				'om' => 'order',
+				'job' => 'job',
+				default => throw new Exception('Unknown module type for module '. $module_id),
+			};
 
 			$this->load($module_id, $type);
 

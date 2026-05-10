@@ -54,56 +54,33 @@
 
 	function form_button_predefined($name, $parameters='') {
 
-		switch ($name) {
+		$button = match($name) {
+			'cancel' => f::form_button('cancel', t('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"' . ($parameters ? ' '. $parameters : ''), 'cancel'),
+			'delete' => f::form_button('delete', t('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!confirm(&quot;'. t('text_are_you_sure', 'Are you sure?') .'&quot;)) return false;"' . ($parameters ? ' '. $parameters : ''), 'delete'),
+			'enable' => f::form_button('enable', t('title_enable', 'Enable'), 'submit', $parameters, 'on'),
+			'disable' => f::form_button('disable', t('title_disable', 'Disable'), 'submit', $parameters, 'off'),
+			'move-up' => f::form_button('move_up', t('title_move_up', 'Move Up'), 'button', 'class="btn btn-default"' . $parameters, 'move-up'),
+			'move-up-sm' => f::form_button('move_up', '', 'button', 'title="'. f::escape_attr(t('title_move_up', 'Move Up')) .'" class="btn btn-default btn-sm"' . $parameters, 'move-up'),
+			'move-down' => f::form_button('move_down', t('title_move_up', 'Move Up'), 'button', 'class="btn btn-default"' . $parameters, 'move-down'),
+			'move-down-sm' => f::form_button('move_down', '', 'button', 'title="'. f::escape_attr(t('title_move_down', 'Move Down')) .'" class="btn btn-default btn-sm"' . $parameters, 'move-down'),
+			'remove' => f::form_button('remove', t('title_remove', 'Remove'), 'button', 'class="btn btn-default"' . $parameters, 'remove'),
+			'remove-sm' => f::form_button('remove', '', 'button', 'title="'. f::escape_attr(t('title_remove', 'Remove')) .'" class="btn btn-default btn-sm"' . $parameters, 'remove'),
+			'save' => f::form_button('save', t('title_save', 'Save'), 'submit', 'class="btn btn-success"' . ($parameters ? ' '. $parameters : ''), 'save'),
+			'quicksave' => implode(PHP_EOL, [
+				'<div class="btn-group">',
+				'	'. f::form_button('quicksave', ['true', ''], 'submit', 'class="btn btn-success btn-icon" title="'. f::escape_attr(t('title_quicksave', 'Quicksave')) .'" style="padding-left: .75em; padding-right: .75em;"', 'save'),
+				'	'. f::form_button('save', t('title_save', 'Save'), 'submit', 'class="btn btn-success" style="padding-left: .75em;"' . ($parameters ? ' '. $parameters : '')),
+				'</div>',
+			]),
+			'send' => f::form_button('send', t('title_send', 'Send'), 'submit', 'class="btn btn-success"' . ($parameters ? ' '. $parameters : ''), 'send'),
+		};
 
-			case 'cancel':
-				return f::form_button('cancel', t('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"' . ($parameters ? ' '. $parameters : ''), 'cancel');
-
-			case 'delete':
-				return f::form_button('delete', t('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!confirm(&quot;'. t('text_are_you_sure', 'Are you sure?') .'&quot;)) return false;"' . ($parameters ? ' '. $parameters : ''), 'delete');
-
-			case 'enable':
-				return f::form_button('enable', t('title_enable', 'Enable'), 'submit', $parameters, 'on');
-
-			case 'disable':
-				return f::form_button('disable', t('title_disable', 'Disable'), 'submit', $parameters, 'off');
-
-			case 'move-up':
-				return f::form_button('move_up', t('title_move_up', 'Move Up'), 'button', 'class="btn btn-default"' . $parameters, 'move-up');
-
-			case 'move-up-sm':
-				return f::form_button('move_up', '', 'button', 'title="'. f::escape_attr(t('title_move_up', 'Move Up')) .'" class="btn btn-default btn-sm"' . $parameters, 'move-up');
-
-			case 'move-down':
-				return f::form_button('move_down', t('title_move_up', 'Move Up'), 'button', 'class="btn btn-default"' . $parameters, 'move-down');
-
-			case 'move-down-sm':
-				return f::form_button('move_down', '', 'button', 'title="'. f::escape_attr(t('title_move_down', 'Move Down')) .'" class="btn btn-default btn-sm"' . $parameters, 'move-down');
-
-			case 'remove':
-				return f::form_button('remove', t('title_remove', 'Remove'), 'button', 'class="btn btn-default"' . $parameters, 'remove');
-
-			case 'remove-sm':
-				return f::form_button('remove', '', 'button', 'title="'. f::escape_attr(t('title_remove', 'Remove')) .'" class="btn btn-default btn-sm"' . $parameters, 'remove');
-
-			case 'save':
-				return f::form_button('save', t('title_save', 'Save'), 'submit', 'class="btn btn-success"' . ($parameters ? ' '. $parameters : ''), 'save');
-
-			case 'quicksave':
-				return implode(PHP_EOL, [
-					'<div class="btn-group">',
-					'	'. f::form_button('quicksave', ['true', ''], 'submit', 'class="btn btn-success btn-icon" title="'. f::escape_attr(t('title_quicksave', 'Quicksave')) .'" style="padding-left: .75em; padding-right: .75em;"', 'save'),
-					'	'. f::form_button('save', t('title_save', 'Save'), 'submit', 'class="btn btn-success" style="padding-left: .75em;"' . ($parameters ? ' '. $parameters : '')),
-					'</div>',
-				]);
-
-			case 'send':
-				return f::form_button('send', t('title_send', 'Send'), 'submit', 'class="btn btn-success"' . ($parameters ? ' '. $parameters : ''), 'send');
+		if (!$button) {
+			trigger_error('Unknown predefined button ('. f::escape_html($name) .')', E_USER_WARNING);
+			$button = f::form_button($name, $name, 'submit', $parameters);
 		}
 
-		trigger_error('Unknown predefined button ('. f::escape_html($name) .')', E_USER_WARNING);
-
-		return form_button($name, $name, 'submit', $parameters);
+		return $button;
 	}
 
 	function form_button_link($url, $title, $parameters='', $fonticon='') {
@@ -111,21 +88,18 @@
 	}
 
 	function form_button_link_predefined($name, $url, $parameters='') {
-		switch ($name) {
+		$button = match($name) {
+			'create' => form_button_link($url, t('title_create', 'Create'), $parameters, 'add'),
+			'edit' => form_button_link($url, t('title_edit', 'Edit'), $parameters, 'edit'),
+			'edit-sm' => form_button_link($url, '', 'title="'. f::escape_attr(t('title_edit', 'Edit')) ."'". ($parameters ? ' '. $parameters : ''), 'edit'),
+		};
 
-			case 'create':
-				return form_button_link($url, t('title_create', 'Create'), $parameters, 'add');
-
-			case 'edit':
-				return form_button_link($url, t('title_edit', 'Edit'), $parameters, 'edit');
-
-			case 'edit-sm':
-				return form_button_link($url, '', 'title="'. f::escape_attr(t('title_edit', 'Edit')) ."'". ($parameters ? ' '. $parameters : ''), 'edit');
+		if (!$button) {
+			trigger_error('Unknown predefined link button ('. f::escape_html($name) .')', E_USER_WARNING);
+			$button = form_button_link($url, $name, $parameters);
 		}
 
-		trigger_error('Unknown predefined link button ('. f::escape_html($name) .')', E_USER_WARNING);
-
-		return form_button_link($url, $name, $parameters);
+		return $button;
 	}
 
 	function form_captcha($id, $config=[], $parameters='') {
@@ -930,50 +904,40 @@
 		}
 
 		if (is_string($options)) {
-			switch ($options) {
+			$options = match($options) {
 
-				case 'a/i':
-					$options = [
-						'1' => t('title_active', 'Active'),
-						'0' => t('title_inactive', 'Inactive'),
-					];
-					break;
+				'a/i' => [
+					'1' => t('title_active', 'Active'),
+					'0' => t('title_inactive', 'Inactive'),
+				],
 
-				case 'e/d':
-					$options = [
-						'1' => t('title_enabled', 'Enabled'),
-						'0' => t('title_disabled', 'Disabled'),
-					];
-					break;
+				'e/d' => [
+					'1' => t('title_enabled', 'Enabled'),
+					'0' => t('title_disabled', 'Disabled'),
+				],
 
-				case 'y/n':
-					$options = [
-						'1' => t('title_yes', 'Yes'),
-						'0' => t('title_no', 'No'),
-					];
-					break;
+				'y/n' => [
+					'1' => t('title_yes', 'Yes'),
+					'0' => t('title_no', 'No'),
+				],
 
-				case 'o/o':
-					$options = [
+				'o/o' => [
 						'1' => t('title_on', 'On'),
 						'0' => t('title_off', 'Off'),
-					];
-					break;
+					],
 
-				case 't/f':
-					$options = [
+				't/f' => [
 						'1' => t('title_true', 'True'),
 						'0' => t('title_false', 'False'),
-					];
-					break;
+					],
+			};
 
-				default:
-					trigger_error('Invalid option ("'. $options.'")', E_USER_WARNING);
-					$options = [
-						'1' => t('title_true', 'True'),
-						'0' => t('title_false', 'False'),
-					];
-					break;
+			if (!$options) {
+				trigger_error('Invalid toggle type ('. $options .')', E_USER_WARNING);
+				$options = [
+					'1' => t('title_true', 'True'),
+					'0' => t('title_false', 'False'),
+				];
 			}
 		}
 
@@ -1475,20 +1439,12 @@
 			}
 		}
 
-		switch ($input) {
-
-			case 'customer_country_code':
-				$input = customer::$data['country_code'];
-				break;
-
-			case 'default_country_code':
-				$input = settings::get('default_country_code');
-				break;
-
-			case 'store_country_code':
-				$input = settings::get('store_country_code');
-				break;
-		}
+		$input = match($input) {
+			'customer_country_code' => customer::$data['country_code'],
+			'default_country_code' => settings::get('default_country_code'),
+			'store_country_code' => settings::get('store_country_code'),
+			default => $input
+		};
 
 		$options = database::query(
 			"select * from ". DB_TABLE_PREFIX ."countries
@@ -2730,20 +2686,12 @@
 			if (isset($args[4])) $parameters = $args[3];
 		}
 
-		switch ($country_code) {
-
-			case 'customer_country_code':
-				$country_code = customer::$data['country_code'];
-				break;
-
-			case 'store_country_code':
-				$country_code = settings::get('store_country_code');
-				break;
-
-			default:
-				settings::get('default_country_code');
-				break;
-		}
+		$country_code = match($country_code) {
+			'customer_country_code' => customer::$data['country_code'],
+			'default_country_code' => settings::get('default_country_code'),
+			'store_country_code' => settings::get('store_country_code'),
+			default => $country_code,
+		};
 
 		$options = database::query(
 			"select * from ". DB_TABLE_PREFIX ."zones
@@ -2761,16 +2709,11 @@
 			return form_select_multiple($name, $options, $input, $parameters);
 		}
 
-		switch ($preamble) {
-
-			case 'all':
-				array_unshift($options, ['', '-- '. t('title_all_zones', 'All Zones') . ' --']);
-				break;
-
-			case 'select':
-				array_unshift($options, ['', '-- '. t('title_select', 'Select') . ' --']);
-				break;
-		}
+		match($preamble) {
+			'all' => array_unshift($options, ['', '-- '. t('title_all_zones', 'All Zones') . ' --']),
+			'select' => array_unshift($options, ['', '-- '. t('title_select', 'Select') . ' --']),
+			'none' => null,
+		};
 
 		return form_select($name, $options, $input, $parameters);
 	}

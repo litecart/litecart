@@ -6,41 +6,15 @@
 
 	$module_id = basename($_GET['module_id']);
 
-	switch (true) {
-
-		case (preg_match('#^cm_#', $module_id)):
-			$type = 'customer';
-			$return_doc = 'customer';
-			break;
-
-		case (preg_match('#^job_#', $module_id)):
-			$type = 'job';
-			$return_doc = 'jobs';
-			break;
-
-		case (preg_match('#^om_#', $module_id)):
-			$type = 'order';
-			$return_doc = 'order';
-			break;
-
-		case (preg_match('#^pm_#', $module_id)):
-			$type = 'payment';
-			$return_doc = 'payment';
-			break;
-
-		case (preg_match('#^sm_#', $module_id)):
-			$type = 'shipping';
-			$return_doc = 'shipping';
-			break;
-
-		case (preg_match('#^tm_#', $module_id)):
-			$type = 'translation';
-			$return_doc = 'translation';
-			break;
-
-		default:
-			throw new Error('Unknown module type');
-	}
+	list($type, $return_doc) = match(true) {
+		(preg_match('#^cm_#', $module_id)) => ['customer', 'customer'],
+		(preg_match('#^job_#', $module_id)) => ['job', 'jobs'],
+		(preg_match('#^om_#', $module_id)) => ['order', 'order'],
+		(preg_match('#^pm_#', $module_id)) => ['payment', 'payment'],
+		(preg_match('#^sm_#', $module_id)) => ['shipping', 'shipping'],
+		(preg_match('#^tm_#', $module_id)) => ['translation', 'translation'],
+		default => throw new Error('Unknown module type'),
+	};
 
 	$module = new ent_module($module_id);
 	$object = new $module_id();

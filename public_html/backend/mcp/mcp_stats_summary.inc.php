@@ -41,15 +41,11 @@
 		];
 
 		// Period filter
-		$sql_date_filter = '';
-		switch ($period) {
-			case 'month':
-				$sql_date_filter = "and created_at >= '" . date('Y-m-d H:i:s', mktime(0, 0, 0, date('m'), 1, date('Y'))) . "'";
-				break;
-			case 'year':
-				$sql_date_filter = "and created_at >= '" . date('Y-m-d H:i:s', mktime(0, 0, 0, 1, 1, date('Y'))) . "'";
-				break;
-		}
+		$sql_date_filter = match($period) {
+			'month' => "and created_at >= '" . date('Y-m-d H:i:s', mktime(0, 0, 0, date('m'), 1, date('Y'))) . "'",
+			'year' => "and created_at >= '" . date('Y-m-d H:i:s', mktime(0, 0, 0, 1, 1, date('Y'))) . "'",
+			default => '',
+		};
 
 		// Sales summary
 		$result['sales'] = database::query(

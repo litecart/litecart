@@ -309,22 +309,13 @@
 				'created_at' => date('Y-m-d H:i:s', filectime($file)),
 			];
 		} else {
-			switch (true) {
-				case (preg_match('#\.(a?png|avif|bmp|gif|ico|jpe?g|webp|tiff?)$#i', $file)):
-					$fonticon = 'icon-file-image';
-					break;
 
-				case (preg_match('#\.(css|html|js|less|php|scss)$#i', $file)):
-					$fonticon = 'icon-file-code';
-					break;
-				case (preg_match('#\.(doc|pdf|txt|csv)$#i', $file)):
-					$fonticon = 'icon-file-text';
-					break;
-
-				default:
-					$fonticon = 'icon-file';
-					break;
-			}
+			$fonticon = match(true) {
+				(preg_match('#\.(a?png|avif|bmp|gif|ico|jpe?g|webp|tiff?)$#i', $file)) => 'icon-file-image',
+				(preg_match('#\.(css|html|js|less|php|scss)$#i', $file)) => 'icon-file-code',
+				(preg_match('#\.(doc|pdf|txt|csv)$#i', $file)) => 'icon-file-text',
+				default => 'icon-file',
+			};
 
 			$files[] = [
 				'file' => $file,

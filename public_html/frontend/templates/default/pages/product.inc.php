@@ -9,12 +9,15 @@ form[name="buy_now_form"] .dropdown-menu .image {
 	border: 1px solid var(--default-border-color);
 	vertical-align: middle;
 }
+
 #quantity-prices {
 	font-size: 15px;
 }
+
 #quantity-prices td, #quantity-prices th {
 	cursor: pointer;
 }
+
 #quantity-prices tr.selected {
 	background: #ffeee0;
 	color: #c91c17;
@@ -415,20 +418,17 @@ form[name="buy_now_form"] .dropdown-menu .image {
 	if (!empty($review['attachments'])) {
 		echo '<div class="attachments" style="margin-top: 1em;">';
 		foreach ($review['attachments'] as $attachment) {
+			echo match(true) {
 
-			switch(true) {
-				case (preg_match('#\.(bmp|gif|jpe?g|png)$#', $attachment['filename'])):
-					echo '<div class="attachment"><a href="'. f::escape_html($attachment['link']) .'" class="thumbnail" data-toggle="lightbox" data-type="image"><img src="'. WS_DIR_APP . f::image_thumbnail($attachment['attachment'], 96, 96, 'FIT_USE_WHITESPACING') .'" alt=""></a></div>';
-					break;
+				(preg_match('#\.(bmp|gif|jpe?g|png)$#', $attachment['filename']))
+					=> '<div class="attachment"><a href="'. f::escape_html($attachment['link']) .'" class="thumbnail" data-toggle="lightbox" data-type="image"><img src="'. WS_DIR_APP . f::image_thumbnail($attachment['attachment'], 96, 96, 'FIT_USE_WHITESPACING') .'" alt=""></a></div>',
 
-				case (preg_match('#\.(avi|mp4|mov)$#', $attachment['filename'])):
-					echo '<div class="attachment"><a href="'. f::escape_html($attachment['link']) .'" class="thumbnail text-center">'. WS_DIR_APP . f::draw_fonticon('icon-film', 'style="font-size: 3rem; padding-top: 2rem;"') .'</a></div>';
-					break;
+				(preg_match('#\.(avi|mp4|mov)$#', $attachment['filename']))
+					=> '<div class="attachment"><a href="'. f::escape_html($attachment['link']) .'" class="thumbnail text-center">'. WS_DIR_APP . f::draw_fonticon('icon-film', 'style="font-size: 3rem; padding-top: 2rem;"') .'</a></div>',
 
-				default:
-					echo '<div class="attachment"><a href="'. f::escape_html($attachment['link']) .'" class="thumbnail text-center">'. f::draw_fonticon('icon-paperclip', 'style="font-size: 3rem; padding-top: 2rem;"') .'</a></div>';
-					break;
-			}
+				default
+					=> '<div class="attachment"><a href="'. f::escape_html($attachment['link']) .'" class="thumbnail text-center">'. f::draw_fonticon('icon-paperclip', 'style="font-size: 3rem; padding-top: 2rem;"') .'</a></div>'
+			};
 		}
 		echo '</div>';
 	}

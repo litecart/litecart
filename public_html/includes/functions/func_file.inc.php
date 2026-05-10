@@ -107,12 +107,15 @@
 	}
 
 	function file_format_size($size) {
-		switch (true) {
-			case ($size == 0): return '-';
-			case ($size < 1e3): return f::format_number($size, 0) . ' B';
-			case (($size/1024) < 1e3): return f::format_number($size/1024) . ' kB';
-			case (($size/1024/1024) < 1e3): return f::format_number($size/1024/1024, 2) . ' MB';
-			case (($size/1024/1024/1024) < 1e3): return f::format_number($size/1024/1024/1024, 2) . ' GB';
+		return match(true) {
+			($size == 0) => '-',
+			($size < 1e3) => f::format_number($size, 0) . ' B',
+			(($size/1024) < 1e3) => f::format_number($size/1024) . ' kB',
+			(($size/1024/1024) < 1e3) => f::format_number($size/1024/1024, 2) . ' MB',
+			(($size/1024/1024/1024) < 1e3) => f::format_number($size/1024/1024/1024, 2) . ' GB',
+			default => f::format_number($size/1024/1024/1024/1024, 2) . ' TB'
+		};
+	}
 		}
 	}
 

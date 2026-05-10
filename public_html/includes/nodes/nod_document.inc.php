@@ -74,16 +74,10 @@
 			self::$snippets['home_path'] = WS_DIR_APP;
 			self::$snippets['nonce'] = self::$nonce;
 
-			switch (route::$selected['endpoint'] ?? null) {
-
-				case 'backend':
-					self::$snippets['template_path'] = WS_DIR_APP . 'backend/template/';
-					break;
-
-				default:
-					self::$snippets['template_path'] = WS_DIR_APP . 'frontend/templates/'.settings::get('template').'/';
-					break;
-			}
+			self::$snippets['template_path'] = match(route::$selected['endpoint'] ?? null) {
+				'backend' => WS_DIR_APP . 'backend/template/',
+				default => WS_DIR_APP . 'frontend/templates/'.settings::get('template').'/',
+			};
 
 			// Alert errors if administrator
 			if (administrator::check_login()) {
@@ -143,16 +137,10 @@
 				'settings' => self::$settings,
 			];
 
-			switch (route::$selected['endpoint'] ?? null) {
-
-				case 'backend':
-					self::$jsenv['template']['url'] = WS_DIR_APP . 'backend/template/';
-					break;
-
-				default:
-					self::$jsenv['template']['url'] = WS_DIR_APP . 'frontend/templates/'. settings::get('template') .'/';
-					break;
-			}
+			self::$jsenv['template']['url'] = match(route::$selected['endpoint'] ?? null) {
+				'backend' => WS_DIR_APP . 'backend/template/',
+				default => WS_DIR_APP . 'frontend/templates/'. settings::get('template') .'/',
+			};
 
 			self::$jsenv['session']['id'] = session::$data['id'];
 			self::$jsenv['csrf_token'] = session::csrf_token();
@@ -321,16 +309,10 @@
 			stats::start_watch('rendering');
 
 			// Set view
-			switch (route::$selected['endpoint'] ?? null) {
-
-				case 'backend':
-					$_layout = new ent_view('app://backend/template/layouts/'.self::$layout.'.inc.php');
-					break;
-
-				default:
-					$_layout = new ent_view('app://frontend/templates/'.settings::get('template').'/layouts/'.self::$layout.'.inc.php');
-					break;
-			}
+			$_layout = new ent_view(match(route::$selected['endpoint'] ?? null) {
+				'backend' => 'app://backend/template/layouts/'.self::$layout.'.inc.php',
+				default => 'app://frontend/templates/'.settings::get('template').'/layouts/'.self::$layout.'.inc.php',
+			});
 
 			$_layout->snippets = array_merge(self::$snippets, [
 				'head_tags' => self::$head_tags,
@@ -512,15 +494,10 @@
 			if (!$type) {
 				$path = parse_url($url, PHP_URL_PATH);
 
-				switch (true) {
-					case (preg_match('#\.css$#', $path)):
-						$type = 'style';
-						break;
-
-					case (preg_match('#\.js$#', $path)):
-						$type = 'script';
-						break;
-				}
+				$type = match (true) {
+					(preg_match('#\.css$#', $path)) => 'style',
+					(preg_match('#\.js$#', $path)) => 'script',
+				};
 			}
 
 			self::$preloads[$url] = $type;
@@ -558,21 +535,11 @@
 					break;
 
 				default:
-
-					switch (route::$selected['endpoint'] ?? null) {
-
-						case 'backend':
-							$resource = WS_DIR_APP . BACKEND_ALIAS .'/'. $resource;
-							break;
-
-						case 'frontend':
-							$resource = WS_DIR_APP . $resource;
-							break;
-
-						default:
-							$resource = WS_DIR_APP . $resource;
-							break;
-					}
+					$resource = match(route::$selected['endpoint'] ?? null) {
+						'backend' => WS_DIR_APP . BACKEND_ALIAS .'/'. $resource,
+						'frontend' => WS_DIR_APP . $resource,
+						default => WS_DIR_APP . $resource,
+					};
 					break;
 			}
 

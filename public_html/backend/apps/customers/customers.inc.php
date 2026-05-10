@@ -72,32 +72,14 @@
 		];
 	}
 
-	switch($_GET['sort']) {
-
-		case 'id':
-			$sql_sort = "c.id desc";
-			break;
-
-		case 'email':
-			$sql_sort = "c.email";
-			break;
-
-		case 'name':
-			$sql_sort = "c.firstname, c.lastname";
-			break;
-
-		case 'company':
-			$sql_sort = "c.firstname, c.lastname";
-			break;
-
-		case 'group':
-			$sql_sort = "c.group_id, c.email";
-			break;
-
-		default:
-			$sql_sort = "c.created_at desc, c.id desc";
-			break;
-	}
+	$sql_sort = match($_GET['sort']) {
+		'id' => "c.id desc",
+		'email' => "c.email",
+		'name' => "c.firstname, c.lastname",
+		'company' => "c.firstname, c.lastname",
+		'group' => "c.group_id, c.email",
+		default => "c.created_at desc, c.id desc",
+	};
 
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$customers = database::query(
