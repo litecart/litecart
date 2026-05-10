@@ -106,17 +106,16 @@
 		return !in_array(false, $results);
 	}
 
-	function file_format_size($size) {
-		return match(true) {
-			($size == 0) => '-',
-			($size < 1e3) => f::format_number($size, 0) . ' B',
-			(($size/1024) < 1e3) => f::format_number($size/1024) . ' kB',
-			(($size/1024/1024) < 1e3) => f::format_number($size/1024/1024, 2) . ' MB',
-			(($size/1024/1024/1024) < 1e3) => f::format_number($size/1024/1024/1024, 2) . ' GB',
-			default => f::format_number($size/1024/1024/1024/1024, 2) . ' TB'
-		};
-	}
-		}
+	function file_format_size(int|float $bytes): string {
+
+		if ($bytes <= 0) return '-';
+
+		$units = ['B', 'kB', 'MB', 'GB', 'TB'];
+		$factor = min((int) floor(log($bytes, 1024)), count($units) - 1);
+
+		$value = $bytes / (1024 ** $factor);
+
+		return f::format_number($value,	($factor === 0) ? 0 : 2) . ' ' . $units[$factor];
 	}
 
 	function file_is_binary($file) {
