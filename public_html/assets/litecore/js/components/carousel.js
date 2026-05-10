@@ -1,11 +1,8 @@
-/*
- * Simplified Carousel with Swipe Support
- * Lightweight carousel with essential features
- */
 
 waitFor('jQuery', ($) => {
 	'use strict';
 
+	/* Lightweight carousel with swipe support */
 	class Carousel {
 		constructor(element, options) {
 			this.$element = $(element);

@@ -1,9 +1,9 @@
 /*!
- * LiteCart v3.0.0 - Superfast, lightweight e-commerce platform built built with for simplicity.
- * @link https://www.litecart.net/
- * @license CC-BY-ND-4.0
- * @author T. Almroth, LiteCart AB
- */
+	LiteCart v3.0.0 - Superfast, lightweight e-commerce platform built built with for simplicity.
+	Link: https://www.litecart.net/
+	License: CC-BY-ND-4.0
+	Author: T. Almroth, LiteCart AB
+*/
 
 waitFor('jQuery', ($) => {
 
@@ -44,12 +44,9 @@ waitFor('jQuery', ($) => {
 
 });
 
-/*
-	* jQuery Category Picker
-	* by LiteCart
-	*/
 waitFor('jQuery', ($) => {
 
+	/* jQuery Category Picker by LiteCart */
 	$.fn.categoryPicker = function(config){
 		this.each(function() {
 

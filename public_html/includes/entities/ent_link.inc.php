@@ -1,12 +1,11 @@
 <?php
 
-/*
- * Example usage:
- *
- * $link = new ent_link('//domain.tld/path/to/file');
- * $link->host = 'newdomain.tld';
- * echo $link;
- */
+	/*
+		Example usage:
+		$link = new ent_link('//domain.tld/path/to/file');
+		$link->host = 'newdomain.tld';
+		echo $link;
+	*/
 
 	class ent_link implements \JsonSerializable {
 

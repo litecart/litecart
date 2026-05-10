@@ -1,9 +1,6 @@
-/*
- * Momentum Scroll
- * by LiteCart
- */
 waitFor('jQuery', ($) => {
 
+	/*Momentum Scroll by LiteCart */
 	$.fn.momentumScroll = function() {
 		this.each(function() {
 

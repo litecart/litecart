@@ -1,8 +1,8 @@
 <?php
 
 	/*
-	* PHP wrapper for MariaDB/MySQL.
-	* Procedural style as performance seems a bit faster than object-oriented
+		PHP wrapper for MariaDB/MySQL.
+		Procedural style as performance seems a bit faster than object-oriented
 	*/
 
 	class database {
@@ -421,25 +421,25 @@
 			return $input;
 		}
 
-		/**
-		 * Validate a string for safe use as a backtick-quoted SQL identifier
-		 * (column or table base name). Unlike input(), which escapes string
-		 * literals, there is no portable way to escape inner backticks, so
-		 * the helper rejects anything outside the set A-Z / a-z / 0-9 / _ / -.
-		 *
-		 * Hyphen is included because BCP-47 locale codes ("zh-cn", "pt-br")
-		 * are valid inside MySQL backticks and LiteCart accepts them in the
-		 * language-create form. Everything else stays out so that semicolons,
-		 * quotes, whitespace and null bytes cannot leak through.
-		 *
-		 * Optional allowlist: when provided, the name must also be a member
-		 * of that list. Use it to pin to e.g. configured language codes:
-		 *     database::identifier($code, array_keys(language::$languages))
-		 *
-		 * Throws InvalidArgumentException on rejection. Callers catch this
-		 * and translate to a 400-level response or a skip-with-warning,
-		 * depending on whether the input came from a request or from the DB.
-		 */
+		/*
+			Validate a string for safe use as a backtick-quoted SQL identifier
+			(column or table base name). Unlike input(), which escapes string
+			literals, there is no portable way to escape inner backticks, so
+			the helper rejects anything outside the set A-Z / a-z / 0-9 / _ / -.
+
+			Hyphen is included because BCP-47 locale codes ("zh-cn", "pt-br")
+			are valid inside MySQL backticks and LiteCart accepts them in the
+			language-create form. Everything else stays out so that semicolons,
+			quotes, whitespace and null bytes cannot leak through.
+
+			Optional allowlist: when provided, the name must also be a member
+			of that list. Use it to pin to e.g. configured language codes:
+			    database::identifier($code, array_keys(language::$languages))
+
+			Throws InvalidArgumentException on rejection. Callers catch this
+			and translate to a 400-level response or a skip-with-warning,
+			depending on whether the input came from a request or from the DB.
+		*/
 		public static function identifier($name, $allowlist = null) {
 
 			if (!is_string($name) || !preg_match('#^[A-Za-z0-9_-]+$#', $name)) {

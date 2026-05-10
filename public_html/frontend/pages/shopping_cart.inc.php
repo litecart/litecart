@@ -1,11 +1,10 @@
 <?php
 
-	/*!
-	 * This file contains PHP logic that is separated from the HTML view.
-	 * Visual changes can be made to the file found in the template folder:
-	 *
-	 *   ~/frontend/templates/default/pages/shopping_cart.inc.php
-	 */
+	/*
+		This file contains PHP logic that is separated from the HTML view.
+		Visual changes can be made to the file found in the template folder:
+		- frontend/templates/default/pages/shopping_cart.inc.php
+	*/
 
 	header('X-Robots-Tag: noindex');
 

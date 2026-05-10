@@ -1,9 +1,9 @@
 /*!
- * LiteCart v3.0.0 - Superfast, lightweight e-commerce platform built built with for simplicity.
- * @link https://www.litecart.net/
- * @license CC-BY-ND-4.0
- * @author T. Almroth, LiteCart AB
- */
+	LiteCart v3.0.0 - Superfast, lightweight e-commerce platform built built with for simplicity.
+	Link: https://www.litecart.net/
+	License: CC-BY-ND-4.0
+	Author: T. Almroth, LiteCart AB
+*/
 
 * {
 	box-sizing: border-box;
@@ -1041,11 +1041,11 @@ summary {
 }
 .dropdown-item {
 	/*
-		input[type="checkbox"],
-		input[type="radio"] {
-			display: none;
-		}
-		 */
+	input[type="checkbox"],
+	input[type="radio"] {
+		display: none;
+	}
+	*/
 }
 
 .form-select + .dropdown-menu,
@@ -2489,7 +2489,7 @@ label.form-check > input:is([type=radio]):checked {
 		.input-group + .input-group {
 			border-inline-start: var(--input-border);
 		}
-	 */
+	*/
 }
 
 .form-group > .form-input + .form-input,

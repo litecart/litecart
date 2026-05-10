@@ -48,20 +48,20 @@
 		install_reject_locked();
 	}
 
-	/**
-		* Returns true when the installation is marked complete.
-		* A present storage/install.lock file is authoritative; file size and
-		* contents are irrelevant — only existence counts.
-		*/
+	/*
+		Returns true when the installation is marked complete.
+		A present storage/install.lock file is authoritative; file size and
+		contents are irrelevant — only existence counts.
+	*/
 	function install_is_locked() {
 		return is_file(FS_DIR_STORAGE . 'install.lock');
 	}
 
-	/**
-		* Terminate the current request with an HTTP 403 and a short,
-		* non-sensitive message. Used by installer entry points that detect
-		* a completed installation.
-		*/
+	/*
+		Terminate the current request with an HTTP 403 and a short,
+		non-sensitive message. Used by installer entry points that detect
+		a completed installation.
+	*/
 	function install_reject_locked() {
 		if (!headers_sent()) {
 			http_response_code(403);

@@ -1,11 +1,10 @@
 <?php
 
-	/*!
-	 * This file contains PHP logic that is separated from the HTML view.
-	 * Visual changes can be made to the file found in the template folder:
-	 *
-	 *   ~/frontend/templates/default/partials/site_privacy_consent.inc.php
-	 */
+	/*
+		This file contains PHP logic that is separated from the HTML view.
+		Visual changes can be made to the file found in the template folder:
+		- frontend/templates/default/partials/site_privacy_consent.inc.php
+	*/
 
 	// Honour browser "Do Not Track"
 	//if (isset($_SERVER['HTTP_DNT']) && $_SERVER['HTTP_DNT'] == 1) {

@@ -1,8 +1,8 @@
 <?php
 
-	/*!
-		* Unattended Upgrade:
-		*  upgrade.php?upgrade=true&redirect={url}
+	/*
+		Unattended Upgrade:
+		upgrade.php?upgrade=true&redirect={url}
 	*/
 
 	ini_set('memory_limit', -1);

@@ -1,19 +1,19 @@
 <?php
 
-	/*!
-	 * The original imagecopyresampled function is broken. This is a fixed version of it.
-	 *
-	 *  \param dst_im Destination image
-	 *  \param src_im Source image
-	 *  \param dstX X coordinate of the top left corner of the destination area
-	 *  \param dstY Y coordinate of the top left corner of the destination area
-	 *  \param srcX X coordinate of the top left corner of the source area
-	 *  \param srcY Y coordinate of the top left corner of the source area
-	 *  \param dstW Width of the destination area
-	 *  \param dstH Height of the destination area
-	 *  \param srcW Width of the source area
-	 *  \param srcH Height of the source area
-	 */
+	/*
+		The original imagecopyresampled function is broken. This is a fixed version of it.
+
+		\param dst_im Destination image
+		\param src_im Source image
+		\param dstX X coordinate of the top left corner of the destination area
+		\param dstY Y coordinate of the top left corner of the destination area
+		\param srcX X coordinate of the top left corner of the source area
+		\param srcY Y coordinate of the top left corner of the source area
+		\param dstW Width of the destination area
+		\param dstH Height of the destination area
+		\param srcW Width of the source area
+		\param srcH Height of the source area
+	*/
 	if (!function_exists('ImageCopyResampledFixed')) {
 		function ImageCopyResampledFixed(&$dst_im, &$src_im, $dstX, $dstY, $srcX, $srcY, $dstW, $dstH, $srcW, $srcH, $whiteSpace) {
 			$iSrcWidth = ImageSX($src_im);
@@ -722,12 +722,15 @@
 
 					// Align watermark and set vertical offset
 					switch (strtoupper($align_y)) {
+
 						case 'TOP':
 							$offset_y = $margin;
 							break;
+
 						case 'MIDDLE':
 							$offset_y = round(($this->height - $_watermark->height) / 2);
 							break;
+
 						case 'BOTTOM':
 						default:
 							$offset_y = $this->height - $_watermark->height - $margin;

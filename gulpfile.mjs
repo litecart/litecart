@@ -19,11 +19,11 @@ const sassOptions = { charset: false };
 
 const banner = [
 	'/*!',
-	' * <%= pkg.title %> v<%= pkg.version %> - <%= pkg.description %>',
-	' * @link <%= pkg.homepage %>',
-	' * @license <%= pkg.license %>',
-	' * @author <%= pkg.author.name %>',
-	' */',
+	'	<%= pkg.title %> v<%= pkg.version %> - <%= pkg.description %>',
+	'	Link: <%= pkg.homepage %>',
+	'	License: <%= pkg.license %>',
+	'	Author: <%= pkg.author.name %>',
+	'*/',
 	'',
 	'',
 ].join('\n');

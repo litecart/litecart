@@ -1,11 +1,10 @@
 <?php
 
-	/*!
-	 * This file contains PHP logic that is separated from the HTML view.
-	 * Visual changes can be made to the file found in the template folder:
-	 *
-	 *   ~/frontend/templates/default/partials/box_recently_viewed_products.inc.php
-	 */
+	/*
+		This file contains PHP logic that is separated from the HTML view.
+		Visual changes can be made to the file found in the template folder:
+		- frontend/templates/default/partials/box_recently_viewed_products.inc.php
+	*/
 
 	if (empty(session::$data['recently_viewed_products'])) return;
 

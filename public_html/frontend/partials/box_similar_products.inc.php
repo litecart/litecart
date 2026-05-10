@@ -1,11 +1,10 @@
 <?php
 
-	/*!
-	 * This file contains PHP logic that is separated from the HTML view.
-	 * Visual changes can be made to the file found in the template folder:
-	 *
-	 *   ~/frontend/templates/default/partials/box_similar_products.inc.php
-	 */
+	/*
+		This file contains PHP logic that is separated from the HTML view.
+		Visual changes can be made to the file found in the template folder:
+		- frontend/templates/default/partials/box_similar_products.inc.php
+	*/
 
 	if (empty($_GET['product_id'])) return;
 	if (!settings::get('box_similar_products_num_items')) return;
