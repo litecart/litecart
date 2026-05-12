@@ -1,6 +1,7 @@
 <?php
 
 	class language {
+
 		public static $selected = [];
 		public static $languages = [];
 		private static $_cache = [];
@@ -321,37 +322,5 @@
 		public static function strftime($format, $timestamp=null) {
 			trigger_error('Method language::strftime() is deprecated. Instead, use f::datetime_format()', E_USER_DEPRECATED);
 			return f::datetime_format($format, $timestamp);
-		}
-
-		public static function convert_characters($variable, $from_charset=null, $to_charset=null) {
-
-			if (!$from_charset) {
-				$from_charset = mb_internal_encoding();
-			}
-
-			if (!$to_charset) {
-				$to_charset = mb_internal_encoding();
-			}
-
-			if ($from_charset == $to_charset) {
-				return $variable;
-			}
-
-			if (!in_array(strtoupper($from_charset), mb_list_encodings())) {
-				trigger_error('Unknown charset: '. f::escape_html($from_charset), E_USER_WARNING);
-				return false;
-			}
-
-			if (!in_array(strtoupper($to_charset), mb_list_encodings())) {
-				trigger_error('Unknown charset: '. f::escape_html($to_charset), E_USER_WARNING);
-				return false;
-			}
-
-			if (!mb_convert_variables($to_charset, $from_charset, $variable)) {
-				trigger_error('Could not encode variable from '. f::escape_html($from_charset) .' to '. f::escape_html($to_charset), E_USER_WARNING);
-				return false;
-			}
-
-			return $variable;
 		}
 	}

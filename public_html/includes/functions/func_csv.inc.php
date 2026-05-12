@@ -35,7 +35,7 @@
 		}
 
 		// Convert charset
-		$output = language::convert_characters($output, mb_http_output(), $charset);
+		mb_convert_variables($charset, mb_http_output(), $output);
 
 		return preg_replace('#(\r\n?|\n)#', $eol, $output);
 	}
@@ -51,7 +51,7 @@
 		$string = preg_replace('#(\r\n?|\n)#', PHP_EOL, $string);
 
 		// Convert charset
-		$string = language::convert_characters($string, $charset, mb_http_output());
+		mb_convert_variables(mb_http_output(), $charset, $string);
 
 		// Trim preceeding and trailing whitespace
 		$string = trim($string, "\r\n ");
