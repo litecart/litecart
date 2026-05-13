@@ -91,7 +91,7 @@
 			// Write statistics
 			if (
 				$_SERVER['SERVER_SOFTWARE'] != 'CLI'  // Not a CLI request
-				&& !str_contains($_SERVER['REQUEST_URI'], '/'. BACKEND_ALIAS .'/')  // Not a backend request
+				&& !str_contains($_SERVER['REQUEST_URI'], '/'. BACKEND_ALIAS .'/') // Not a backend request
 				&& empty(self::$data['is_bot'])  // Not a bot (Needs an addon to detect bots)
 				&& !is_ajax_request()  // Not an AJAX request
 			) {
@@ -107,7 +107,7 @@
 			// Track who is online
 			if (
 				$_SERVER['SERVER_SOFTWARE'] != 'CLI'  // Not a CLI request
-				&& !str_contains($_SERVER['REQUEST_URI'], '/'. BACKEND_ALIAS .'/')  // Not a backend request
+				&& !str_contains($_SERVER['REQUEST_URI'], '/'. BACKEND_ALIAS .'/') // Not a backend request
 				&& empty(self::$data['is_bot'])  // Not a bot (Needs an addon to detect bots)
 				&& !is_ajax_request()  // Not an AJAX request
 			) {
