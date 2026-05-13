@@ -2,602 +2,740 @@
 
 ## Code Compliance
 
-	- PHP code must comply with modern PHP standards no earlier than 8.0+ (recommended 8.3+).
-
-	- HTML code must comply with HTML 5. Self-closing tags required (`<br />`, `<img ... />`).
-
-	- Style definitions must be compliant with CSS 3. All color values must use CSS custom properties defined in `variables.less`.
-
-	- Any use of JavaScript should honour the jQuery framework.
+- PHP code must comply with modern PHP standards no earlier than 8.0+ (recommended 8.3+).
+- HTML code must comply with HTML 5. Self-closing tags required (`<br />`, `<img ... />`).
+- Style definitions must be compliant with CSS 3. All color values must use CSS custom properties defined in `variables.less`.
+- Any use of JavaScript should honour the jQuery framework.
 
 
 ## Character Encoding
 
-	UTF-8 without Byte Order Mark (BOM)
+UTF-8 without Byte Order Mark (BOM)
 
 
 ## PHP File Paths
 
-	ALWAYS use Linux directory separator slash (/) as it works universally on all OS (Linux, Mac and Windows).
-	Windows backslash (\) does not work on Mac or Linux.
+ALWAYS use Linux directory separator slash (/) as it works universally on all OS (Linux, Mac and Windows).
+Windows backslash (\) does not work on Mac or Linux.
 
-	Incorrect:
+Incorrect:
 
-		C:\path\to\file.php
+- C:\path\to\file.php
 
-	Correct:
+Correct:
 
-		/C/path/to/file
-		C:/path/to/file
+- /C/path/to/file
+- C:/path/to/file
 
 
 ## Trailing Directory Separators
 
-	Directories should be ended with the directory separator. This communicates if the intended path is a file or directoy.
+Directories should be ended with the directory separator. This communicates if the intended path is a file or directoy.
 
-	/path/name/  # Oh it's a directory
-	/path/name   # Ah it's a file
+- /path/name/  # Oh it's a directory
+- /path/name   # Ah it's a file
 
 
 ## File Naming
 
-	The filename of the files should be all lowercase characters with underscore (_) for
-	word separation. No more than 31 characters to be Apple/Mac compatible.
+The filename of the files should be all lowercase characters with underscore (_) for
+word separation. No more than 31 characters to be Apple/Mac compatible.
 
-	When files can be grouped. Attempt to give them the same preceeding names.
+When files can be grouped. Attempt to give them the same preceeding names.
 
-	Incorrect:
+Incorrect:
 
-		red-background-box.png
-		greenBoxBackground.png
-		blue_background_box.png
+	- red-background-box.png
+	- greenBoxBackground.png
+	- blue_background_box.png
 
-	Correct:
+Correct:
 
-		box_background_red.png
-		box_background_green.png
-		box_background_blue.png
+	- box_background_red.png
+	- box_background_green.png
+	- box_background_blue.png
 
 
 ## File Extensions
 
-	Scripts that output something other than HTML should be named by their output format extension like the following:
+Scripts that output something other than HTML should be named by their output format extension like the following:
 
-		myoutput.json.php
+	- myoutput.json.php
 
-	Included files should be named .inc.php:
+Included files should be named .inc.php:
 
-		.php  >>  .inc.php
+	- .php  >>  .inc.php
 
 
 ## Line Breaks in Code
 
-	Use no more than one empty line when line separating logic.
+Use no more than one empty line when line separating logic.
 
 
 ## Outputting Line Breaks
 
-	Use the PHP_EOL constant for outputting line breaks in PHP.
+Use the PHP_EOL constant for outputting line breaks in PHP.
 
-	Incorrect:
+Incorrect:
 
-		echo "<p>Hello World!<br>\r\nThis is a new row</p>\r\n<p>And here is more</p>";
+```php
+	echo "<p>Hello World!<br>\r\nThis is a new row</p>\r\n<p>And here is more</p>";
+```
+Correct:
 
-	Correct:
+```php
+	echo implode(PHP_EOL, [
+		'<p>Hello World!<br>',
+		'This is a new row</p>',
+		'<p>And here is more</p>',
+	]);
+```
 
-		echo implode(PHP_EOL, [
-			'<p>Hello World!<br>',
-			'This is a new row</p>',
-			'<p>And here is more</p>',
-		]);
+For emails and HTTP headers we always use Windows style Carriage Return + Line Feed (CRLF) \r\n
+for new lines because the standard tells us to.
 
-	For emails and HTTP headers we always use Windows style Carriage Return + Line Feed (CRLF) \r\n
-	for new lines because the standard tells us to.
-
-		Content-Type: text/plain\r\n
-		Content-Length: 128\r\n
-		\r\n
-		Lorem ipsum dolor\r\n
-		\r\n
+```tex
+	Content-Type: text/plain\r\n
+	Content-Length: 128\r\n
+	\r\n
+	Lorem ipsum dolor\r\n
+	\r\n
+```
 
 
 ## No Trailing Whitespace
 
-	Make sure you have no trailing whitespace after your code
+Make sure you have no trailing whitespace after your code
 
-	Incorrect:
+Incorrect:
 
-		<?php
-		··echo·$variable;·····\n
-		··\n
-		\n
-		\EOF
+```php
+	<?php
+	··echo·$variable;·····\n
+	··\n
+	\n
+	\EOF
+```
 
-	Correct:
+Correct:
 
-		<?php
-		··echo·$variable;\n
-		\n
-		\EOF
+```php
+	<?php
+	··echo·$variable;\n
+	\n
+	\EOF
+```
 
-	Note: Most code editors offer a way to trim trailing whitespace upon save.
-	This is also covered by .editorconfig.
+Note: Most code editors offer a way to trim trailing whitespace upon save.
+This is also covered by .editorconfig.
 
 
 ## Indentation
 
-	Indentations are made using tabs with one tab character per depth level.
-	You can set the size of a tab character to your preference in the [.editorconfig](https://editorconfig.org/) file.
+Indentations are made using tabs with one tab character per depth level.
+You can set the size of a tab character to your preference in the [.editorconfig](https://editorconfig.org/) file.
 
-	Incorrect (using multiple spaces):
+Incorrect (using multiple spaces):
 
-		Level 1
-				Level 2
-						Level 3
-								Level 4
+```
+Level 1
+····Level 2
+········Level 3
+············Level 4
+```
+Correct (using TABs):
 
-	Correct (using TABs):
+```
+Level 1
+→ Level 2
+→ → Level 3
+→ → → Level 4
+```
 
-		Level 1
-			Level 2
-				Level 3
-					Level 4
+Code is immediately indented after opening a PHP or script tag:
 
-	Code is immediately indented after opening a PHP or script tag:
+```php
+<?php
+	...
+?>
+```
 
-		<?php
-			...
-		?>
+```html
+<script>
+	...
+<script/>
+```
 
-		<script>
-			...
-		<script/>
 
 ## Code Commenting
 
-	Comments should have the same indentation as the code:
+Comments should have the same indentation as the code:
 
-		// Title comment
-		echo 'Hello World!';
+```php
+	// Title comment
+	echo 'Hello World!';
+```
 
-	Inline side notes are made at the end of the line:
+Inline side notes are made at the end of the line:
 
-		$array = [
-			'foo' => 'bar', // Side note
-		];
+```php
+	$array = [
+		'foo' => 'bar', // Side note
+	];
+```
+
+
+## Block Comments
+
+Avoid legacy block comments as they break EditorConfig linting:
+
+```php
+	/**
+		* ...
+		*/
+```
+
+Instead to minimal style:
+
+```php
+	/*
+		...
+	*/
+```
+
 
 ## PHP Tags
 
-	When starting PHP logic, the tag should be written as "<?php", and not in the short form of "<?".
+When starting PHP logic, the tag should be written as "<?php", and not in the short form of "<?".
 
-	Incorrect:
+Incorrect:
 
-		<?=$variable?>
-		<? echo $variable; ?>
+```php
+	<?=$variable?>
+	<? echo $variable; ?>
+```
 
-	Correct:
+Correct:
 
-		<?php echo $variable; ?>
+```php
+	<?php echo $variable; ?>
+```
 
 
 ## PHP Closing Tags
 
-	We do NOT use PHP closing tags at the end of a script. This is industry standard to prevent any whitespace accidentally being sent to the output buffer.
+We do NOT use PHP closing tags at the end of a script. This is industry standard to prevent any whitespace accidentally being sent to the output buffer.
 
-	Incorrect:
+Incorrect:
 
-		<?php\n
-		··...\n
-		··last_line_of_code();\n
-		?>\n <-- See this
-		\EOF
+```php
+<?php\n
+	...code...\n
+?>\n <-- See this
+\EOF
+```
 
-	Correct:
+Correct:
 
-		<?php\n
-		··...\n
-		··last_line_of_code();\n
-		\EOF
+```php
+<?php\n
+	...code...\n
+\EOF
+```
 
 
 ## Encapsulating Parameters - Singe-Quotes vs. Double-Quotes
 
-	Single quote characters should be used for PHP and JavaScript code. Exceptions can be made for best convenience.
+Single quote characters should be used for PHP and JavaScript code. Exceptions can be made for best convenience.
 
-	Use double quotes for all HTML element parameters in accordance with SGML.
+Use double quotes for all HTML element parameters in accordance with SGML.
 
-	Incorrect:
+Incorrect:
 
-		$foo = "bar";
+```php
+	$foo = "bar";
 
-		<img src=''>
+	<img src=''>
 
-		echo "<a href='http://www.site.com'>Hello World</a>";
-		echo "<a href=\"http://www.site.com\">Hello World</a>";
+	echo "<a href='http://www.site.com'>Hello World</a>";
+	echo "<a href=\"http://www.site.com\">Hello World</a>";
 
-		database::query('select * from Table where id = \'string\'');
+	database::query('select * from Table where id = \'string\'');
 
-		$("input[name='value']").val();
-		$("input[name=\"value\"]").val();
+	$("input[name='value']").val();
+	$("input[name=\"value\"]").val();
+```
 
-	Correct:
+Correct:
 
-		$foo = 'bar';
+```php
+	$foo = 'bar';
 
-		<img src="">
+	<img src="">
 
-		echo '<a href="http://www.site.com">Hello World</a>';
+	echo '<a href="http://www.site.com">Hello World</a>';
 
-		database::query(
-			"select * from `tablename`
-				where `column` = 'string';"
-		);
+	database::query(
+		"select * from `tablename`
+			where `column` = 'string';"
+	);
 
-		$('input[name="value"]').val();
+	$('input[name="value"]').val();
+```
 
-	When it is being compromised for best convenience:
+When it is being compromised for best convenience:
 
-		echo "Hey y'all";
-		echo "Hello $name\r\n";
+```php
+	echo "Hey y'all";
+	echo "Hello $name\r\n";
+```
 
 
 ## Escaping HTML Parameters
 
-	HTML Parameters that contains special characters or user data must be escaped.
+HTML Parameters that contains special characters or user data must be escaped.
 
-	Incorrect:
+Incorrect:
 
-		<img src="..." alt="<?php echo $title; ?>">
+```html
+	<img src="..." alt="<?php echo $title; ?>">
+```
 
-	Correct:
+Correct:
 
-			<img src="..." alt="<?php echo f::escape_attr($title); ?>">
-
+```html
+	<img src="..." alt="<?php echo f::escape_attr($title); ?>">
+```
 
 ## PHP Variable Scope
 
-	Do not EVER enable register_globals in your PHP configuration as we use PHP Superglobals to access user data.
+Do not EVER enable register_globals in your PHP configuration as we use PHP Superglobals to access user data.
 
-		$_GET['variable']
-		$_POST['variable']
-		$_COOKIE['variable']
-		$_SESSION['variable']
+	$_GET['variable']
+	$_POST['variable']
+	$_COOKIE['variable']
+	$_SESSION['variable']
 
 
 ## Naming of Variables and Elements
 
-	Name your variables and elements using lowercases and underscores (a.k.a. snake_case). Don't use CAPS, camelCase, or PascalCase.
-	Don't make up abbreviations. Always use full words unless they are annoyingly long. Don't mix languages, use English only for code and comments.
+Name your variables and elements using lowercases and underscores (a.k.a. snake_case). Don't use CAPS, camelCase, or PascalCase.
+Don't make up abbreviations. Always use full words unless they are annoyingly long. Don't mix languages, use English only for code and comments.
 
-	Incorrect:
+Incorrect:
 
-		$CUSTOMER_ADDRESS // Yelling
-		$custaddr // Weird shortenings
-		$kundadress // Foreign language
-		$customerStreetAddress // Mixed cases
-		$customer['customer_address1'] // Duplicate prefix
-		$customer_shipping_street_address_name // Annoyingly long
+```php
+	$CUSTOMER_ADDRESS // YELLING!
+	$custaddr // Weird shortenings
+	$kundadress // Foreign language
+	$customerStreetAddress // Mixed cases
+	$customer['customer_address1'] // Repetitive naming
+	$customer_shipping_street_address_name // Annoyingly long
+```
 
-	Correct:
+Correct:
 
-		$address1
-		$customer['address1']
+```php
+	$address1
+	$customer['address1']
+```
 
 
 ## No Variable Duplication
 
-	No variable duplication. Unless there is a certain need for duplicating variables.
-	A common case for variable duplication is during santizing.
+No variable duplication. Unless there is a certain need for duplicating variables.
+A common case for variable duplication is during santizing.
 
-	Incorrect:
+Incorrect:
 
-		$name = $_POST['name'];
-		$trimmed_name = trim($name);
-		$trimmed_and_lowercase_name = lowercase($trimmed_name);
+```php
+	$name = $_POST['name'];
+	$trimmed_name = trim($name);
+	$trimmed_and_lowercase_name = lowercase($trimmed_name);
+```
 
-	Correct:
+Correct:
 
-		$_POST['name'] = strtolower(trim($_POST['name']));  // We most likely will not ever use the unsanitized data
+```php
+	$_POST['name'] = strtolower(trim($_POST['name']));  // We most likely will not ever use the unsanitized data
+```
 
 
 ## Avoid One-Time Variables
 
-	Creating variables for one-time use should be avoided (unless it serves good purpose).
+Creating variables for one-time use should be avoided (unless it serves good purpose).
 
-	Incorrect:
+Incorrect:
 
-		$array = ['foo', 'bar'];
+```php
+	$array = ['foo', 'bar'];
 
-		foreach ($array as $item) {
-			echo $item;
-		}
+	foreach ($array as $item) {
+		echo $item;
+	}
+```
+Correct:
 
-	Correct:
-
-		foreach ([
-			'foo',
-			'bar',
-		] as $item) {
-			echo $item;
-		}
+```php
+	foreach ([
+		'foo',
+		'bar',
+	] as $item) {
+		echo $item;
+	}
+```
 
 
 ## Naming of CSS IDs and Classes
 
-	Same rules as the naming of variables but we use dash - for separating words rather than underscore _.
-	We try to avoid repeatitive prefixes for subclasses.
+Same rules as the naming of variables but we use dash - for separating words rather than underscore _.
+We try to avoid repeatitive prefixes for subclasses.
 
-	Incorrect:
+Incorrect:
 
-		<div id="dummmyBox" class="white-box">
-			<div class="box-title">...</div>
-			<div class="box-text">...</div>
-		</div>
+```html
+	<div id="dummmyBox" class="white-box">
+		<div class="box-title">...</div>
+		<div class="box-text">...</div>
+	</div>
+```
+Correct:
 
-	Correct:
+```html
+	<div id="box-dummy" class="box box-white">
+		<div class="box-title">...</div>
+		<div class="box-body">...</div>
+	</div>
+```
 
-		<div id="box-dummy" class="box box-white">
-			<div class="box-title">...</div>
-			<div class="box-body">...</div>
-		</div>
+How to reference a class:
 
-	How to reference a class:
+Javascript/jQuery:
 
-		jQuery: $('#box-dummy .title')
-		jQuery: $('.box.white')
+```js
+	$('#box-dummy .title')
+	$('.box.white')
+```
 
-		CSS: #box-dummy .title {}
-		CSS: .box.white {}
+CSS:
 
-	Note: Some predefined CSS classes are not following this guideline as they are third party components or compatible with third party components.
+```css
+	#box-dummy .title {}
+	.box.white {}
+```
+
+Note: Some predefined CSS classes are not following this guideline as they are third party components or compatible with third party components.
 
 
 ## PHP Arrays
 
-	Inline arrays
+Inline arrays
 
-		$variable = my_function(param, ['this', 'that']);
+```php
+	$variable = my_function(param, ['this', 'that']);
+```
 
-	Defining a variable with more than a handful of values
+Defining a variable with more than a handful of values
 
-		$variable = [
-			'this',
-			'that',
-			...
-			'last', // <-- Make note of the ending comma
-		];
+```php
+	$variable = [
+		'this',
+		'that',
+		...
+		'last', // <-- Make note of the ending comma
+	];
+```
 
 
 ## Code Brackets
 
-	Do not start new lines for opening brackets.
+Do not start new lines for opening brackets.
 
-	Incorrect:
+Incorrect:
 
-		if (condition)
-		{
-			...
-		}
-		else
-		{
-			...
-		}
+```php
+	if (condition)
+	{
+		...
+	}
+	else
+	{
+		...
+	}
+```
 
-	Correct:
+Correct:
 
-		if (condition) {
-			...
-		} else {
-			...
-		}
+```php
+	if (condition) {
+		...
+	} else {
+		...
+	}
+```
 
-	Edge-Case:
+Edge-Case:
 
-		if (condition) {
-			...
-		}
+```
+	if (condition) {
+		...
+	}
 
-		else {
-			...
-		}
+	else {
+		...
+	}
+```
 
 
 ## PHP Conditions
 
-	Do not use if/endif or yoda expressions.
+Do not use if/endif or yoda expressions.
 
-	Incorrect:
+Incorrect:
 
-		if ('orange' == $fruit):
-			...
-		endif;
+```php
+	if ('orange' == $fruit):
+		...
+	endif;
+```
 
-	Correct:
+Correct:
 
-		if ($fruit == 'orange') {
-			...
-		}
+```php
+	if ($fruit == 'orange') {
+		...
+	}
+```
 
 
 ## PHP Class Variables and Methods
 
-		class dummy {
-			private $_data;
-			public $data;
+```php
+	class dummy {
+		private $_data;
+		public $data;
 
-			private function _private_method() {
-			}
-
-			public function public_method() {
-			}
+		private function _private_method() {
 		}
+
+		public function public_method() {
+		}
+	}
+```
 
 
 ## PHP Function Results
 
-	General functions should always return data, not output data to the buffer.
+General functions should always return data, not output data to the buffer.
 
-	Incorrect:
+Incorrect:
 
-		function my_function($string) {
-			echo $string;
-		}
+```php
+	function my_function($string) {
+		echo $string;
+	}
+```
 
-	Correct:
+Correct:
 
-		function my_function($string) {
-			return $string;
-		}
+```php
+	function my_function($string) {
+		return $string;
+	}
+```
 
-	Functions in a local variable scope that are just used inside the scope should be anonymous functions:
+Functions in a local variable scope that are just used inside the scope should be anonymous functions:
 
-		$my_function = function() {
-			...
-		};
+```php
+	$my_function = function() {
+		...
+	};
 
-		$variable = $my_function();
+	$variable = $my_function();
+```
 
 
 ## For Iterating
 
-	Try to avoid this at all costs:
+Try to avoid this at all costs:
 
-		for ($i=0, $n=count($array); $i<$n; $i++) {
-			$array[$i] = '...';
-		}
+```php
+	for ($i=0, $n=count($array); $i<$n; $i++) {
+		$array[$i] = '...';
+	}
+```
 
-	Instead do this:
+Instead do this:
 
-		foreach ($array as $key => $node) {
-			$array[$key] = '...';
-		}
+```php
+	foreach ($array as $key => $node) {
+		$array[$key] = '...';
+	}
+```
 
-	When it's okay to use for-iterating:
+When it's okay to use for-iterating:
 
-		for ($ts=time(); $ts < strtotime('+1 months'); $ts=strtotime('+1 days', $ts)) {
-			...
-		}
+```php
+	for ($ts=time(); $ts < strtotime('+1 months'); $ts=strtotime('+1 days', $ts)) {
+		...
+	}
+```
 
 
 ## Anonymous Functions
 
-	Use anonymous functions when they are not needed elsewhere in the platform.
+Use anonymous functions when they are not needed elsewhere in the platform.
 
-		$tempfunc = function($var) use (&$tempfunc)  {
-			$tempfunc();
-		};
+```php
+	$tempfunc = function($var) use (&$tempfunc)  {
+		$tempfunc();
+	};
+```
 
 
 ## Translating String Content
 
-	When translating variables in strings we use strtr to avoid cryptic coding.
+When translating variables in strings we use strtr to avoid cryptic coding.
 
-	Incorrect:
+Incorrect:
 
-		$string = sprintf('Text with %1$s %2$s', $a, $b);
-		$string = str_replace(['%a', %b], [$a, $b], 'Text with %a %b');
+```php
+	$string = sprintf('Text with %1$s %2$s', $a, $b);
+	$string = str_replace(['%a', %b], [$a, $b], 'Text with %a %b');
+```
 
-	Correct:
+Correct:
 
-		$string = strtr('Text with %a %b', [
-			'%a' => $a,
-			'%b' => $b,
-		]);
+```php
+	$string = strtr('Text with {a} {b}', [
+		'{a}' => $a,
+		'{b}' => $b,
+	]);
+```
 
 
 ## Database Queries in PHP
 
-	Database queries should be line breaked, indented, and presented in lowercase.
+Database queries should be line breaked, indented, and presented in lowercase.
 
-		database::query(
-			"select * from ". DB_TABLE_NAME ."
-			where id = ". (int)$integrer ."
-			". (isset($string) ? "and string = '". database::input($string) ."'" : "") ."
-			limit 1;"
-		);
+```php
+	database::query(
+		"select * from ". DB_TABLE_NAME ."
+		where id = ". (int)$integrer ."
+		". (isset($string) ? "and string = '". database::input($string) ."'" : "") ."
+		limit 1;"
+	);
+```
 
-	Use double quote characters to wrap a SQL query string.
+Use double quote characters to wrap a SQL query string.
 
 
 ## Processing User Input
 
-	Don't just assume a variable exists with a value:
+Don't just assume a variable exists with a value:
 
-		if ($_POST['variable'])
+```php
+	if ($_POST['variable'])
+```
 
-	See if it exists:
+See if it exists:
 
-		if (!empty($_POST['variable']))
-		if (isset($_POST['variable']) && $_POST['variable'] == 'value')
+```php
+	if (!empty($_POST['variable']))
+	if (isset($_POST['variable']) && $_POST['variable'] == 'value')
+```
 
-	Always assume user data is insecure by escaping the input:
+Always assume user data is insecure by escaping the input:
 
-		database::query(
-			"update mytable
-			set number = ". (int)$_POST['number'] .",
-				string = '". database::input($_POST['string']) ."',
-				date = '". date('Y-m-d', strtotime($_POST['string'])) ."',
-			where foo like '%". database::input_like($foo) ."%'
-			limit 1;"
-		);
+```php
+	database::query(
+		"update mytable
+		set number = ". (int)$_POST['number'] .",
+			string = '". database::input($_POST['string']) ."',
+			date = '". date('Y-m-d', strtotime($_POST['string'])) ."',
+		where foo like '%". database::input_like($foo) ."%'
+		limit 1;"
+	);
 
-		echo '<input value="<?php echo htmlspecialchars($_POST['variable']); ?>">
+	echo '<input value="<?php echo htmlspecialchars($_POST['variable']); ?>">
+```
 
 
 ## Autoloader Conventions
 
-	Class prefixes determine the autoloader directory:
+Class prefixes determine the autoloader directory:
 
-		nod_*    nodes/        Static singletons (core services)
-		ent_*    entities/     Data objects (product, order, customer, etc.)
-		ref_*    references/   Read-only factory models with lazy properties
-		abs_*    abstracts/    Base classes
-		cm_*     modules/customer/    Customer modules
-		om_*     modules/order/       Order modules
-		ot_*     modules/order_total/ Order total modules
-		pm_*     modules/payment/     Payment modules
-		sm_*     modules/shipping/    Shipping modules
-		job_*    modules/jobs/        Background job modules
-		mod_*    modules/             Generic modules
-		url_*    routes/              Route handlers
-		stream_* streams/             StreamWrappers
-		wrap_*   wrappers/            Service layers / API clients
-
-	All autoloaded files use `.inc.php` extension and pass through the vMod system.
+```
+	nod_*    nodes/               Static singletons (core services)
+	ent_*    entities/            Data objects (product, order, customer, etc.)
+	ref_*    references/          Read-only factory models with lazy properties
+	abs_*    abstracts/           Base classes
+	cm_*     modules/customer/    Customer modules
+	om_*     modules/order/       Order modules
+	ot_*     modules/order_total/ Order total modules
+	pm_*     modules/payment/     Payment modules
+	sm_*     modules/shipping/    Shipping modules
+	job_*    modules/jobs/        Background job modules
+	mod_*    modules/             Generic modules
+	url_*    routes/              Route handlers
+	stream_* streams/             StreamWrappers
+	wrap_*   wrappers/            Service layers / API clients
+```
+All autoloaded files use `.inc.php` extension and pass through the vMod system.
 
 
 ## Stream Wrappers
 
-	Use stream wrappers for file paths within the application:
+Use vMod FS stream wrappers for file paths within the application:
 
-		app://       Application files (templates, includes, assets)
-		storage://   User storage (images, config, cache)
+	app://       Application files (templates, includes, assets)
+	storage://   User storage (images, config, cache)
 
-	Incorrect:
+Incorrect:
 
-		include FS_DIR_APP . 'includes/templates/default/layouts/default.inc.php';
+	include FS_DIR_APP . 'includes/templates/default/layouts/default.inc.php';
 
-	Correct:
+Correct:
 
-		include 'app://frontend/templates/default/layouts/default.inc.php';
+	include 'app://frontend/templates/default/layouts/default.inc.php';
 
+
+## CSS Referencing
+
+Example:
+
+```html
+<style>
+#named-element { --text-color: white; --text-color-hover: red; }
+.generic { padding: 1 rem }
+.generic-detail { color: var(--text-color) }
+.generic-detail:hover { color: var(--text-color--hover) }
+<style>
+
+<div id="named-element" class="generic generic-detail">
+</div>
+```
 
 ## CSS Custom Properties
 
-	All color values in storefront LESS files must use CSS custom properties defined in `variables.less`.
+All coloring in CSS/LESS/SCSS files should use CSS variables defined in `variables.scss`.
 
-	Incorrect:
+Incorrect:
 
-		.element {
-			color: #cc0000;
-			background: rgba(0, 0, 0, 0.5);
-		}
+```css
+.element {
+	color: #c00;
+	background: rgba(0, 0, 0, 0.5);
+}
+```
 
-	Correct:
+Correct:
 
-		.element {
-			color: var(--color-sale-price);
-			background: var(--overlay-dark);
-		}
+```css
+.element {
+	color: var(--sale-price-tex-color);
+	background: var(--overlay-dark);
+}
+```
+Exceptions: `transparent`, `inherit`, `currentColor`.
 
-	Exceptions: `transparent`, `inherit`, `currentColor`.
