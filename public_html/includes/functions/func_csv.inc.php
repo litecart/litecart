@@ -60,7 +60,7 @@
 		if (empty($delimiter)) {
 			preg_match('#^.*$#m', $string, $matches);
 			foreach ([',', ';', "\t", '|', chr(124)] as $char) {
-				if (strpos($matches[0], $char) !== false) {
+				if (str_contains($matches[0], $char)) {
 					$delimiter = $char;
 					break;
 				}
