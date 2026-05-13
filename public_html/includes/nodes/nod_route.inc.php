@@ -72,7 +72,7 @@
 
 		public static function add($resource, $route) {
 
-			if (strpos($resource, ':') === false) {
+			if (!str_contains($resource, ':')) {
 				if (!preg_match('#^\w:#', $resource)) {
 					$resource = 'f:'.$resource;
 				}
