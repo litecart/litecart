@@ -90,10 +90,10 @@
 
 			// Write statistics
 			if (
-				$_SERVER['SERVER_SOFTWARE'] != 'CLI'  // Not a CLI request
+				$_SERVER['SERVER_SOFTWARE'] != 'CLI' // Not a CLI request
 				&& !str_contains($_SERVER['REQUEST_URI'], '/'. BACKEND_ALIAS .'/') // Not a backend request
-				&& empty(self::$data['is_bot'])  // Not a bot (Needs an addon to detect bots)
-				&& !is_ajax_request()  // Not an AJAX request
+				&& empty(self::$data['is_bot']) // Not a bot (Needs an addon to detect bots)
+				&& !is_ajax_request() // Not an AJAX request
 			) {
 				database::query(
 					"insert into ". DB_TABLE_PREFIX ."statistics
@@ -106,10 +106,10 @@
 
 			// Track who is online
 			if (
-				$_SERVER['SERVER_SOFTWARE'] != 'CLI'  // Not a CLI request
+				$_SERVER['SERVER_SOFTWARE'] != 'CLI' // Not a CLI request
 				&& !str_contains($_SERVER['REQUEST_URI'], '/'. BACKEND_ALIAS .'/') // Not a backend request
-				&& empty(self::$data['is_bot'])  // Not a bot (Needs an addon to detect bots)
-				&& !is_ajax_request()  // Not an AJAX request
+				&& empty(self::$data['is_bot']) // Not a bot (Needs an addon to detect bots)
+				&& !is_ajax_request() // Not an AJAX request
 			) {
 
 				// Find known visitor by session id
