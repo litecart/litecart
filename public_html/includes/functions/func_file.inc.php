@@ -327,7 +327,7 @@
 				$file = rtrim($file, '/') . '/';
 
 				// Resolve double globstars
-				if (strpos($pattern, '**') !== false) {
+				if (str_contains($pattern, '**')) {
 					$folders = array_merge($folders, file_search($file.$pattern.$remains, $flags));
 				}
 
