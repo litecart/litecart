@@ -1,5 +1,6 @@
 <?php
 
+	require_once __DIR__ . '/includes/init.inc.php';
 	require_once __DIR__ . '/includes/header.inc.php';
 
 	$countries_url = 'https://raw.githubusercontent.com/litecart/i18n/refs/heads/master/countries.csv';
