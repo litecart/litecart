@@ -5,6 +5,7 @@
 		public static $canonical = '';
 		public static $console = [];
 		public static $content = [];
+		public static $csp = [];
 		public static $description = '';
 		public static $head_tags = [];
 		public static $foot_tags = [];
@@ -42,27 +43,20 @@
 			header('Referrer-Policy: strict-origin-when-cross-origin'); // Referrer Policy
 			header('X-Content-Type-Options: nosniff'); // Prevent MIME type sniffing
 
-			//header('Content-Security-Policy-Report-Only: '. implode('; ', [
-			header('Content-Security-Policy: '. implode('; ', [
-				"default-src 'self' https://www.litecart.net 'unsafe-inline' 'unsafe-eval' data:", // Default policy
-				"frame-ancestors 'self'", // Clickjacking Protection
-				//"script-src 'self' 'unsafe-inline'",
-				//"img-src 'self'",
-				//"style-src 'self' 'unsafe-inline'",
-				//"style-src-elem 'self' 'unsafe-inline'",
-				//"base-uri 'self'",
-				//"form-action 'self'",
-				'report-uri '. self::ilink('f:csp_report'),
-			]));
+			// Content-Security-Policy headers are generated after capture to allow dynamic additions
+			self::add_csp('default-src', "'self' 'nonce-". self::$nonce ."' 'unsafe-inline' 'unsafe-eval' data: https://www.litecart.net");
+			self::add_csp('frame-ancestors', "'self'"); // Clickjacking Protection
+			self::add_csp('report-uri', self::ilink('f:csp_report')); // CSP Violation Reporting
+			self::add_csp('require-trusted-types-for', "'script'"); // Trusted Types for DOM XSS Protection
 
 			header('Permissions-Policy: ' . implode(',', [
-					'camera=()',
-					'clipboard-read=()',
-					'clipboard-write=()',
-					'fullscreen=(self)',
-					'payment=()',
-					'geolocation=()',
-					'browsing-topics=()',
+				'camera=()',
+				'clipboard-read=()',
+				'clipboard-write=()',
+				'fullscreen=(self)',
+				'payment=()',
+				'geolocation=()',
+				'browsing-topics=()',
 			]));
 
 			self::$title = [settings::get('store_name')];
@@ -125,6 +119,14 @@
 		}
 
 		public static function after_capture() {
+
+			// Content Security Policy
+			if (self::$csp) {
+				//header('Content-Security-Policy-Report-Only: '. implode('; ', [
+				header('Content-Security-Policy: '. implode(';', array_map(function($type, $values) {
+					return $type . ' ' . implode(' ', $values);
+				}, array_keys(self::$csp), self::$csp)));
+			}
 
 			// JavaScript Environment
 
@@ -405,6 +407,10 @@
 			$output .= PHP_EOL . stats::render();
 
 			return $output;
+		}
+
+		public static function add_csp($type, $value) {
+			self::$csp[$type][] = $value;
 		}
 
 		public static function add_head_tags($tags, $key=null) {
