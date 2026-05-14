@@ -94,7 +94,7 @@
 							case 19: $this->_data['type'] = 'avif'; break 2;
 
 							case false:
-								if (strpos(file_get_contents($this->_file, false, null, 0, 256), '<svg') !== false) {
+								if (srt_contains(file_get_contents($this->_file, false, null, 0, 256), '<svg')) {
 									$this->_data['type'] = 'svg';
 									break 2;
 								}
@@ -166,7 +166,7 @@
 								break 2;
 							}
 
-							list($this->_data['width'], $this->_data['height']) = GetImageSize($this->_file);
+							[$this->_data['width'], $this->_data['height']] = GetImageSize($this->_file);
 							break 2;
 					}
 
