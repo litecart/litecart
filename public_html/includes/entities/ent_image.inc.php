@@ -94,7 +94,7 @@
 							case 19: $this->_data['type'] = 'avif'; break 2;
 
 							case false:
-								if (srt_contains(file_get_contents($this->_file, false, null, 0, 256), '<svg')) {
+								if (str_contains(file_get_contents($this->_file, false, null, 0, 256), '<svg')) {
 									$this->_data['type'] = 'svg';
 									break 2;
 								}
