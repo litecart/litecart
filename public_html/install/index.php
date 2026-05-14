@@ -22,6 +22,11 @@
 
 	$requirements = json_decode(file_get_contents(__DIR__ . '/requirements.json'), true);
 
+	// Set defaults
+	if (!$_POST) {
+		$country_code = json_decode(file_get_contents('https://ipapi.co/json/'), true)['country'] ?? '';
+	}
+
 ?>
 <style>
 ul {
@@ -407,22 +412,4 @@ waitFor('jQuery', function($){
 </script>
 <?php } ?>
 
-<script>
-waitFor('jQuery', function($){
-
-	// Attempt to determine country from browser
-	if (!$('select[name="country_code"]').val() || !$('select[name="store_time_zone"]').val()) {
-		$.get('https://ipapi.co/json/', function(data){
-
-			if (!$('select[name="country_code"]').val() && data.country && data.country.length == 2) {
-				$('select[name="country_code"]').val(data.country);
-			}
-
-			if (!$('select[name="store_time_zone"]').val() && data.timezone && data.timezone.length) {
-				$('select[name="store_time_zone"]').val(data.timezone);
-			}
-		});
-	}
-});
-</script>
 <?php require(__DIR__.'/includes/footer.inc.php'); ?>
