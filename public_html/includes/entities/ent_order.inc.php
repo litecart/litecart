@@ -505,7 +505,7 @@
 				}
 			}
 
-			list($module_id, $option_id) = preg_split('#:#', $this->data['payment_option']['id'] ?? ':', 2);
+			[$module_id, $option_id] = preg_split('#:#', $this->data['payment_option']['id'] ?? ':', 2);
 			$payment_modules = new mod_payment();
 			$payment_modules->run('after_save', $module_id, $this);
 
@@ -575,13 +575,13 @@
 			]);
 
 			// Append length digit
-			if (strpos(settings::get('order_no_format'), '{l}') !== false) {
+			if (str_contains(settings::get('order_no_format'), '{l}')) {
 				$length = strlen(preg_replace('#[^\d]#', '', $order_no)) + (preg_match('#\{c\}#', settings::get('order_no_format')) ? 1 : 0);
 				$order_no = str_replace('{l}', $length, $order_no);
 			}
 
 			// Append checksum digit
-			if (strpos(settings::get('order_no_format'), '{c}') !== false) {
+			if (str_contains(settings::get('order_no_format'), '{c}')) {
 
 				$digits = preg_replace('#[^\d]#', '', $order_no);
 
@@ -821,7 +821,7 @@
 
 					if (!empty($this->data['shipping_option']['id'])) {
 
-						list($module_id, $option_id) = $this->data['shipping_option']['id'] ? preg_split('#:#', $this->data['shipping_option']['id'], 2) : ['', ''];
+						[$module_id, $option_id] = $this->data['shipping_option']['id'] ? preg_split('#:#', $this->data['shipping_option']['id'], 2) : ['', ''];
 
 						if (empty($shipping->data['options'][$module_id]['options'][$option_id])) {
 							return t('error_invalid_shipping_method_selected', 'Invalid shipping method selected');
@@ -848,7 +848,7 @@
 
 					if (!empty($this->data['payment_option']['id'])) {
 
-						list($module_id, $option_id) = $this->data['payment_option']['id'] ? preg_split('#:#', $this->data['payment_option']['id'], 2) : ['', ''];
+						[$module_id, $option_id] = $this->data['payment_option']['id'] ? preg_split('#:#', $this->data['payment_option']['id'], 2) : ['', ''];
 
 						if (empty($payment->options[$module_id]['options'][$option_id])) {
 							return t('error_invalid_payment_method_selected', 'Invalid payment method selected');

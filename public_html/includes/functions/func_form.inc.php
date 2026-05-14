@@ -416,7 +416,7 @@
 
 		if (preg_match('#^[A-Z]{3}$#', $name) && !preg_match('#^[A-Z]{3}$#', $currency_code)) {
 			trigger_error('Passing currency code as 1st parameter in form_input_money() is deprecated. Instead, use form_input_money($name, $currency_code, $input, $parameters)', E_USER_DEPRECATED);
-			list($name, $currency_code) = [$currency_code, $name];
+			[$name, $currency_code] = [$currency_code, $name];
 		}
 
 		if ($input === true) {
@@ -692,7 +692,7 @@
 
 		if (preg_match('#^[a-z]{2}$#', $name)) {
 			trigger_error('Passing $language code as 1st parameter in form_regional_text() is deprecated. Instead, use form_regional_text($name, $language_code, $input, $parameters)', E_USER_DEPRECATED);
-			list($name, $language_code) = [$language_code, $name];
+			[$name, $language_code] = [$language_code, $name];
 		}
 
 		if (!$language_code) {
@@ -729,7 +729,7 @@
 
 		if (preg_match('#^[a-z]{2}$#', $name)) {
 			trigger_error('Passing language code as 1st parameter in form_regional_textarea() is deprecated. Instead, use form_regional_textarea($name, $language_code, $input, $parameters)', E_USER_DEPRECATED);
-			list($name, $language_code) = [$language_code, $name];
+			[$name, $language_code] = [$language_code, $name];
 		}
 
 		if (!$language_code) {
@@ -748,7 +748,7 @@
 
 		if (preg_match('#^[a-z]{2}$#', $name)) {
 			trigger_error('Passing language code as 1st parameter in form_regional_wysiwyg() is deprecated. Instead, use form_regional_wysiwyg($name, $language_code, $input, $parameters)', E_USER_DEPRECATED);
-			list($name, $language_code) = [$language_code, $name];
+			[$name, $language_code] = [$language_code, $name];
 		}
 
 		if (!$language_code) {
@@ -890,9 +890,9 @@
 
 	function form_toggle($name, $options='t/f', $input=true, $parameters='') {
 
-		if (strpos($input, '/') !== false) {
+		if (str_contains($input, '/')) {
 			trigger_error('Passing type as 3rd parameter in form_toggle() is deprecated. Use instead form_toggle($name, $type, $input, $parameters)', E_USER_DEPRECATED);
-			list($options, $input) = [$input, $options];
+			[$options, $input] = [$input, $options];
 		}
 
 		if ($input === true) {
@@ -979,7 +979,7 @@
 
 		if (preg_match('#\)$#', $name)) {
 			trigger_error('Passing function as 1st parameter in form_function() is deprecated. Instead, use form_function($name, $function, $input, $parameters)', E_USER_DEPRECATED);
-			list($name, $function) = [$function, $name];
+			[$name, $function] = [$function, $name];
 		}
 
 		if (!preg_match('#(\w*)\((.*?)\)$#i', $function, $matches)) {
@@ -1234,7 +1234,7 @@
 
 		if (is_numeric($name)) {
 			trigger_error('form_select_attribute_value_list() no longer takes group ID as 1st parameter. Instead, use form_select_attribute_value($name, $group_id, $input, $parameters)', E_USER_DEPRECATED);
-			list($name, $group_id) = [$group_id, $name];
+			[$name, $group_id] = [$group_id, $name];
 		}
 
 		if (count($args = func_get_args()) > 3 && is_bool($args[3])) {
@@ -2678,7 +2678,7 @@
 
 		if (preg_match('#^([A-Z]{2}|default_country_code|store_country_code)$#', $name)) {
 			trigger_error('form_select_zone() no longer takes country code as 1st parameter. Instead, use form_zones($name, $country_code, $input)', E_USER_DEPRECATED);
-			list($name, $country_code) = [$country_code, $name];
+			[$name, $country_code] = [$country_code, $name];
 		}
 
 		if (count($args = func_get_args()) > 3 && is_bool($args[3])) {
