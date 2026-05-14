@@ -61,7 +61,8 @@
 		// Remove expired captchas
 		if (isset(session::$data['security']['captcha']) && is_array(session::$data['security']['captcha'])) {
 			foreach (session::$data['security']['captcha'] as $key => $captcha) {
-				if ($captcha['expires'] < date('Y-m-d H:i:s')) unset(session::$data['security']['captcha'][$key]);
+				if ($captcha['expires'] > date('Y-m-d H:i:s')) continue;
+				unset(session::$data['security']['captcha'][$key]);
 			}
 		}
 
@@ -82,16 +83,35 @@
 	}
 
 	function captcha_validate($id='default') {
+		try {
 
-		if (!isset(session::$data['security']['captcha'][$id]['expires']) || session::$data['security']['captcha'][$id]['expires'] < date('Y-m-d H:i:s')) {
+			if (!isset(session::$data['security']['captcha'][$id]['expires'])) {
+				throw new Exception('CAPTCHA ID not found in session');
+			}
+
+			if (session::$data['security']['captcha'][$id]['expires'] < date('Y-m-d H:i:s')) {
+				throw new Exception('CAPTCHA has expired');
+			}
+
+			if (empty(session::$data['security']['captcha'][$id]['value'])) {
+				throw new Exception('CAPTCHA value not found in session');
+			}
+
+			if (empty($_POST['lc-captcha-response'])) {
+				throw new Exception('CAPTCHA response not found in POST data');
+			}
+
+			if ($_POST['lc-captcha-response'] != session::$data['security']['captcha'][$id]['value']) {
+				throw new Exception('CAPTCHA validation failed');
+			}
+
+			return true;
+
+		} catch (Exception $e) {
 			return false;
+
+		} finally {
+			// Remove the captcha from session in any case to prevent reuse
+			unset(session::$data['security']['captcha'][$id]);
 		}
-
-		if (empty(session::$data['security']['captcha'][$id]['value']) || empty($_POST['lc-captcha-response']) || $_POST['lc-captcha-response'] != session::$data['security']['captcha'][$id]['value']) {
-			return false;
-		}
-
-		unset(session::$data['security']['captcha'][$id]['value']);
-
-		return true;
 	}

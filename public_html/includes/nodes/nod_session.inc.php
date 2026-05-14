@@ -181,10 +181,7 @@
 
 			// Do we need to check if human?
 			if (empty(self::$data['security']['is_human']) && (!isset(route::$selected['controller']))) {
-				if (!isset(route::$selected['resource']) || !in_array(route::$selected['resource'], [
-					'f:are_you_human',
-					'f:csp_report',
-				])) {
+				if (!preg_match('#(are_you_human|csp_report|account/sign_out|'. preg_quote(BACKEND_ALIAS, '#')  .'/logout)#', self::$request)) {
 
 					try {
 
@@ -197,11 +194,11 @@
 						}
 
 						if (isset(self::$data['security']['404_hits']) && self::$data['security']['404_hits'] >= 10) {
-							throw new Exception('Suspicious amount of 404 hits');
+							throw new Exception('Suspiciously large amount of 404 hits');
 						}
 
 						if (isset(self::$data['security']['page_loads']) && self::$data['security']['page_loads'] >= 100) {
-							throw new Exception('Suspicious amount of page loads');
+							throw new Exception('Suspiciously large amount of page loads');
 						}
 
 						if ($_SERVER['REMOTE_ADDR'] == gethostbyaddr($_SERVER['REMOTE_ADDR'])) {

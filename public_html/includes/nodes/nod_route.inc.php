@@ -43,8 +43,10 @@
 					limit 1;"
 				);
 
+				$redirect_url = preg_replace("'$redirect[pattern]'", $redirect['destination'], $requested_url); // MySQL regex wrapper ''
+
 				header('X-Redirect-Id: '. $redirect['id']);
-				redirect(preg_replace("'$redirect[pattern]'", $redirect['destination'], $requested_url), $redirect['http_response_code']); // MySQL regex wrapper ''
+				redirect($redirect_url, $redirect['http_response_code']);
 				exit;
 			}
 
@@ -132,6 +134,8 @@
 					}
 				}
 			}
+
+			return false;
 		}
 
 		public static function process() {

@@ -10,7 +10,7 @@
 	// Create list of files for checksums
 	$checksums = [];
 	foreach ($tracked_files as $file) {
-		if (!preg_match('#^public_html/#', $file)) continue;
+		if (!str_starts_with($file, 'public_html/')) continue;
 		if ($file == $checksums_file) continue;
 		$checksums[preg_replace('#^public_html/#', '', $file)] = str_repeat('0', 32);
 	}
@@ -36,7 +36,7 @@
 
 	// Update checksums for committed and tracked files
 	foreach ($committed_files as $file) {
-		$short_file = preg_replace('#^public_html/#', '', $file);
+		$short_file = str_starts_with($file, 'public_html/') ? substr($file, strlen('public_html/')) : $file;
 
 		if (isset($checksums[$short_file])) {
 
