@@ -420,10 +420,10 @@ form[name="buy_now_form"] .dropdown-menu .image {
 		foreach ($review['attachments'] as $attachment) {
 			echo match(true) {
 
-				(preg_match('#\.(bmp|gif|jpe?g|png)$#', $attachment['filename']))
+				(preg_match('#\.(bmp|gif|jpe?g|png)$#', $attachment['filename']) === 1)
 					=> '<div class="attachment"><a href="'. f::escape_html($attachment['link']) .'" class="thumbnail" data-toggle="lightbox" data-type="image"><img src="'. WS_DIR_APP . f::image_thumbnail($attachment['attachment'], 96, 96, 'FIT_USE_WHITESPACING') .'" alt=""></a></div>',
 
-				(preg_match('#\.(avi|mp4|mov)$#', $attachment['filename']))
+				(preg_match('#\.(avi|mp4|mov)$#', $attachment['filename']) === 1)
 					=> '<div class="attachment"><a href="'. f::escape_html($attachment['link']) .'" class="thumbnail text-center">'. WS_DIR_APP . f::draw_fonticon('icon-film', 'style="font-size: 3rem; padding-top: 2rem;"') .'</a></div>',
 
 				default

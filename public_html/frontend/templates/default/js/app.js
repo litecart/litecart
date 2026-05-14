@@ -603,20 +603,39 @@ waitFor('jQuery', $ => {
 		webglRenderer
 	});
 
-	const encoder = new TextEncoder();
-	const data = encoder.encode(raw);
+	let fingerprint = '';
 
-	const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+	try {
 
-	const fingerprint = Array.from(new Uint8Array(hashBuffer))
-		.map(b => b.toString(16).padStart(2, '0'))
-		.join('');
+		const encoder = new TextEncoder();
+		const data = encoder.encode(raw);
+		const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+
+		fingerprint = Array.from(new Uint8Array(hashBuffer))
+			.map(b => b.toString(16).padStart(2, '0'))
+			.join('');
+
+	} catch {
+
+		// Fallback: simple hash if crypto.subtle unavailable
+		let hash = 0;
+
+		for (let i = 0; i < raw.length; i++) {
+			const char = raw.charCodeAt(i);
+			hash = ((hash << 5) - hash) + char;
+			hash = hash & hash;
+		}
+
+		fingerprint = Math.abs(hash).toString(16);
+	}
 
 	// ----------------------------
 	// FINAL PAYLOAD
 	// ----------------------------
 
-	navigator.sendBeacon(`${window._env.platform_url}/event`, JSON.stringify({
+	let report_url = window._env?.platform?.path + 'event';
+
+	navigator.sendBeacon(report_url, JSON.stringify({
 		type: 'challenge',
 		data: {
 			fingerprint,

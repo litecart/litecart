@@ -1,13 +1,15 @@
 <?php
 
-document::$title[] = t('title_marketplace');
+	document::add_csp('img-src', 'https://www.litecart.net/');
 
-breadcrumbs::add(t('title_addons', 'Add-Ons'));
-breadcrumbs::add(t('title_marketplace'), document::ilink(__APP__ . '/marketplace'));
+	document::$title[] = t('title_marketplace');
 
-$marketplace = marketplace_client::get_marketplace(15);
+	breadcrumbs::add(t('title_addons', 'Add-Ons'));
+	breadcrumbs::add(t('title_marketplace'), document::ilink(__APP__ . '/marketplace'));
 
-$profile = marketplace_client::whoami();
+	$marketplace = marketplace_client::get_marketplace(15);
+	$profile = marketplace_client::whoami();
+
 ?>
 <style>
 h2 {
@@ -17,7 +19,7 @@ h2 {
 .placeholder {
 	background: #ccc;
 	border-radius: var(--border-radius);
-	background-image: url('http://litecarthq.local/storage/images/marketplace/test.svg?_=1655519433');
+	background-image: url('');
 	background-size: cover;
 	background-position: bottom;
 }

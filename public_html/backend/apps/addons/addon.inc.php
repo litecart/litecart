@@ -1,5 +1,7 @@
 <?php
 
+	document::add_csp('img-src', 'https://www.litecart.net/');
+
 	if (isset($_GET['addon_id'])) {
 		$_GET['addon_id'] = basename($_GET['addon_id']);
 	}

@@ -311,9 +311,9 @@
 		} else {
 
 			$fonticon = match(true) {
-				(preg_match('#\.(a?png|avif|bmp|gif|ico|jpe?g|webp|tiff?)$#i', $file)) => 'icon-file-image',
-				(preg_match('#\.(css|html|js|less|php|scss)$#i', $file)) => 'icon-file-code',
-				(preg_match('#\.(doc|pdf|txt|csv)$#i', $file)) => 'icon-file-text',
+				(preg_match('#\.(a?png|avif|bmp|gif|ico|jpe?g|webp|tiff?)$#i', $file) === 1) => 'icon-file-image',
+				(preg_match('#\.(css|html|js|less|php|scss)$#i', $file) === 1) => 'icon-file-code',
+				(preg_match('#\.(doc|pdf|txt|csv)$#i', $file) === 1) => 'icon-file-text',
 				default => 'icon-file',
 			};
 
@@ -397,7 +397,7 @@ table .icon-folder {
 				<?php echo f::form_input_text('path', $_GET['path']); ?>
 			</div>
 			<div class="expandable">
-				<div class="input-group" sytle="width: 400px;">
+				<div class="input-group" style="width: 400px;">
 					<span class="input-group-text"><?php echo t('title_filter', 'Filter') ?></span>
 					<?php echo f::form_input_text('filter[pattern]', true, 'placeholder="'. t('title_filter_pattern', 'Filter Pattern') .'" list="search-patterns"'); ?>
 					<?php echo f::form_input_text('filter[content]', true, 'placeholder="'. t('title_file_contents', 'File Contents') .'"'); ?>

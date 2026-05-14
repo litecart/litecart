@@ -326,8 +326,8 @@
 				and (campaign_id is null or campaign_id in (
 					select id from ". DB_TABLE_PREFIX ."campaigns
 					where status
-					and (valid_from is not null and valid_from > '". date('Y-m-d H:i:s') ."')
-					and (valid_to is not null and valid_to < '". date('Y-m-d H:i:s') ."')
+					and (valid_from is not null and valid_from <= '". date('Y-m-d H:i:s') ."')
+					and (valid_to is not null and valid_to >= '". date('Y-m-d H:i:s') ."')
 				))
 				group by product_id
 			) pp on (pp.product_id = p.id)
@@ -356,7 +356,9 @@
 					from ". DB_TABLE_PREFIX ."campaigns c
 					join ". DB_TABLE_PREFIX ."campaigns_scopes cs on (cs.campaign_id = c.id and cs.scope_type = 'category')
 					join ". DB_TABLE_PREFIX ."products_to_categories ptc on (ptc.category_id = cs.scope_id)
-					where c.status and c.discount_mode = 'percentage' and c.discount_percent > 0
+					where c.status
+					and c.discount_mode = 'percentage'
+					and c.discount_percent > 0
 					and (c.valid_from is null or c.valid_from <= '". date('Y-m-d H:i:s') ."')
 					and (c.valid_to is null or c.valid_to >= '". date('Y-m-d H:i:s') ."')
 					union all
@@ -364,7 +366,9 @@
 					from ". DB_TABLE_PREFIX ."campaigns c
 					join ". DB_TABLE_PREFIX ."campaigns_scopes cs on (cs.campaign_id = c.id and cs.scope_type = 'brand')
 					join ". DB_TABLE_PREFIX ."products pr on (pr.brand_id = cs.scope_id)
-					where c.status and c.discount_mode = 'percentage' and c.discount_percent > 0
+					where c.status
+					and c.discount_mode = 'percentage'
+					and c.discount_percent > 0
 					and (c.valid_from is null or c.valid_from <= '". date('Y-m-d H:i:s') ."')
 					and (c.valid_to is null or c.valid_to >= '". date('Y-m-d H:i:s') ."')
 				) scope_discounts
@@ -399,7 +403,6 @@
 		if (!empty($filter['categories'])) {
 			$filter['categories'] = array_filter($filter['categories']);
 		}
-		if (empty($filter['sort'])) $filter['sort'] = 'relevance';
 
 		if (!empty($filter['brands'])) {
 			$filter['brands'] = array_filter($filter['brands']);
@@ -529,6 +532,8 @@
 				'date' => "created_at desc",
 				'rand' => "rand()",
 				'popularity' => "st.views desc",
+				'relevance' => "relevance desc",
+				default => 'st.views desc',
 			};
 		}
 
@@ -578,7 +583,7 @@
 				group by pso.product_id
 			) pso on (pso.product_id = p.id)
 
-			". (($filter['sort'] === 'popularity') ?
+			". ((isset($filter['sort']) && $filter['sort'] === 'popularity') ?
 			"left join (
 				select entity_id as product_id, sum(count) as views
 				from ". DB_TABLE_PREFIX ."statistics
@@ -601,8 +606,8 @@
 				and (campaign_id is null or campaign_id in (
 					select id from ". DB_TABLE_PREFIX ."campaigns
 					where status
-					and (valid_from is not null and valid_from > '". date('Y-m-d H:i:s') ."')
-					and (valid_to is not null and valid_to < '". date('Y-m-d H:i:s') ."')
+					and (valid_from is not null and valid_from <= '". date('Y-m-d H:i:s') ."')
+					and (valid_to is not null and valid_to >= '". date('Y-m-d H:i:s') ."')
 				))
 				group by product_id
 			) pp on (pp.product_id = p.id)

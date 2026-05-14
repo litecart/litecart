@@ -44,10 +44,11 @@
 			header('X-Content-Type-Options: nosniff'); // Prevent MIME type sniffing
 
 			// Content-Security-Policy headers are generated after capture to allow dynamic additions
-			self::add_csp('default-src', "'self' 'nonce-". self::$nonce ."' 'unsafe-inline' 'unsafe-eval' data: https://www.litecart.net");
+			self::add_csp('default-src', "'self' 'unsafe-eval' data:");
+			self::add_csp('script-src', "'self' 'unsafe-inline' 'nonce-". self::$nonce ."'");
+			self::add_csp('style-src', "'self' 'unsafe-inline' data:");
 			self::add_csp('frame-ancestors', "'self'"); // Clickjacking Protection
 			self::add_csp('report-uri', self::ilink('f:csp_report')); // CSP Violation Reporting
-			self::add_csp('require-trusted-types-for', "'script'"); // Trusted Types for DOM XSS Protection
 
 			header('Permissions-Policy: ' . implode(',', [
 				'camera=()',
@@ -70,6 +71,7 @@
 
 			self::$snippets['template_path'] = match(route::$selected['endpoint'] ?? null) {
 				'backend' => WS_DIR_APP . 'backend/template/',
+				'frontend' => WS_DIR_APP . 'frontend/templates/'.settings::get('template').'/',
 				default => WS_DIR_APP . 'frontend/templates/'.settings::get('template').'/',
 			};
 
@@ -410,7 +412,16 @@
 		}
 
 		public static function add_csp($type, $value) {
-			self::$csp[$type][] = $value;
+
+			if (!isset(self::$csp[$type])) {
+				self::$csp[$type] = [];
+			}
+
+			foreach (f::string_split($value, ' ') as $value) {
+				if (!in_array($value, self::$csp[$type])) {
+					self::$csp[$type][] = $value;
+				}
+			}
 		}
 
 		public static function add_head_tags($tags, $key=null) {

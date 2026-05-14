@@ -6,13 +6,13 @@
 
 	$module_id = basename($_GET['module_id']);
 
-	list($type, $return_doc) = match(true) {
-		(preg_match('#^cm_#', $module_id)) => ['customer', 'customer'],
-		(preg_match('#^job_#', $module_id)) => ['job', 'jobs'],
-		(preg_match('#^om_#', $module_id)) => ['order', 'order'],
-		(preg_match('#^pm_#', $module_id)) => ['payment', 'payment'],
-		(preg_match('#^sm_#', $module_id)) => ['shipping', 'shipping'],
-		(preg_match('#^tm_#', $module_id)) => ['translation', 'translation'],
+	list($type, $return_doc) = match (true) {
+		str_starts_with($module_id, 'cm_') => ['customer', 'customer'],
+		str_starts_with($module_id, 'job_') => ['job', 'jobs'],
+		str_starts_with($module_id, 'om_') => ['order', 'order'],
+		str_starts_with($module_id, 'pm_') => ['payment', 'payment'],
+		str_starts_with($module_id, 'sm_') => ['shipping', 'shipping'],
+		str_starts_with($module_id, 'tm_') => ['translation', 'translation'],
 		default => throw new Error('Unknown module type'),
 	};
 

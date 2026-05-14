@@ -244,6 +244,7 @@
 		}
 
 		$clipping = match(strtolower($clipping)) {
+			'' => '',
 			'fit' => 'fit',
 			'crop' => 'crop',
 			'product' => strtolower(settings::get('product_image_clipping')),

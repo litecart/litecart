@@ -180,34 +180,40 @@
 			self::$data['last_request'] = $current_request;
 
 			// Do we need to check if human?
-			if (empty(self::$data['security']['is_human']) && (!isset(route::$selected['controller']) || route::$selected['resource'] != 'f:are_you_human')) {
-				try {
+			if (empty(self::$data['security']['is_human']) && (!isset(route::$selected['controller']))) {
+				if (!isset(route::$selected['resource']) || !in_array(route::$selected['resource'], [
+					'f:are_you_human',
+					'f:csp_report',
+				])) {
 
-				if (isset(self::$data['security']['failed_authentications']) && self::$data['security']['failed_authentications'] >= 5) {
-						throw new Exception('Many failed authentications');
+					try {
+
+						if (isset(self::$data['security']['failed_authentications']) && self::$data['security']['failed_authentications'] >= 5) {
+							throw new Exception('Many failed authentications');
+						}
+
+						if (!empty(self::$data['security']['stuck_in_honeypot'])) {
+							throw new Exception('Stuck in the honeypot');
+						}
+
+						if (isset(self::$data['security']['404_hits']) && self::$data['security']['404_hits'] >= 10) {
+							throw new Exception('Suspicious amount of 404 hits');
+						}
+
+						if (isset(self::$data['security']['page_loads']) && self::$data['security']['page_loads'] >= 100) {
+							throw new Exception('Suspicious amount of page loads');
+						}
+
+						if ($_SERVER['REMOTE_ADDR'] == gethostbyaddr($_SERVER['REMOTE_ADDR'])) {
+							throw new Exception('IP address without a hostname');
+						}
+
+						// All good for now
+
+					} catch (Exception $e) {
+						redirect(document::ilink('f:are_you_human', ['redirect_url' => $_SERVER['REQUEST_URI']]));
+						exit;
 					}
-
-					if (!empty(self::$data['security']['stuck_in_honeypot'])) {
-						throw new Exception('Stuck in the honeypot');
-					}
-
-					if (isset(self::$data['security']['404_hits']) && self::$data['security']['404_hits'] >= 10) {
-						throw new Exception('Suspicious amount of 404 hits');
-					}
-
-					if (isset(self::$data['security']['page_loads']) && self::$data['security']['page_loads'] >= 100) {
-						throw new Exception('Suspicious amount of page loads');
-					}
-
-					if ($_SERVER['REMOTE_ADDR'] == gethostbyaddr($_SERVER['REMOTE_ADDR'])) {
-						throw new Exception('IP address without a hostname');
-					}
-
-					// All good for now
-
-				} catch (Exception $e) {
-					redirect(document::ilink('are_you_human', ['redirect_url' => $_SERVER['REQUEST_URI']]));
-					exit;
 				}
 			}
 		}

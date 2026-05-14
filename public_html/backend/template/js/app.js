@@ -46,7 +46,6 @@ waitFor('jQuery', ($) => {
 
 waitFor('jQuery', ($) => {
 
-	/* jQuery Category Picker by LiteCart */
 	$.fn.categoryPicker = function(config){
 		this.each(function() {
 

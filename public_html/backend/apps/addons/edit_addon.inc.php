@@ -1,227 +1,228 @@
 <?php
 
-if (!empty($_GET['addon_id'])) {
-	$addon = new ent_addon($_GET['addon_id']);
-} else {
-	$addon = new ent_addon();
-}
+	if (!empty($_GET['addon_id'])) {
+		$addon = new ent_addon($_GET['addon_id']);
+	} else {
+		$addon = new ent_addon();
+	}
 
-if (!$_POST) {
-	$_POST = $addon->data;
-}
+	if (!$_POST) {
+		$_POST = $addon->data;
+	}
 
-breadcrumbs::add(!empty($addon->data['id']) ? t('title_edit_addon', 'Edit Add-on') : t('title_create_new_addon', 'Create New Add-on'));
+	breadcrumbs::add(!empty($addon->data['id']) ? t('title_edit_addon', 'Edit Add-on') : t('title_create_new_addon', 'Create New Add-on'));
 
-breadcrumbs::add(t('title_addons', 'Add-ons'), document::ilink(__APP__ . '/addons'));
-breadcrumbs::add(!empty($addon->data['id']) ? t('title_edit_addon', 'Edit Add-on') : t('title_create_new_addon', 'Create New Add-on'), document::ilink());
+	breadcrumbs::add(t('title_addons', 'Add-ons'), document::ilink(__APP__ . '/addons'));
+	breadcrumbs::add(!empty($addon->data['id']) ? t('title_edit_addon', 'Edit Add-on') : t('title_create_new_addon', 'Create New Add-on'), document::ilink());
 
-if (isset($_POST['save']) || isset($_POST['quicksave'])) {
-	try {
-		if (empty($_POST['id'])) {
-			throw new Exception(t('error_must_provide_id', 'You must provide an ID'));
-		}
-
-		if (empty($_POST['name'])) {
-			throw new Exception(t('error_must_provide_name', 'You must provide a name'));
-		}
-
-		foreach (['install', 'uninstall', 'upgrades', 'settings', 'aliases', 'files'] as $field) {
-			if (empty($_POST[$field])) {
-				$_POST[$field] = [];
+	if (isset($_POST['save']) || isset($_POST['quicksave'])) {
+		try {
+			if (empty($_POST['id'])) {
+				throw new Exception(t('error_must_provide_id', 'You must provide an ID'));
 			}
-		}
 
-		foreach (['id', 'status', 'name', 'description', 'author', 'version', 'aliases', 'settings', 'install', 'uninstall', 'upgrades', 'files'] as $field) {
-			if (isset($_POST[$field])) {
-				$addon->data[$field] = $_POST[$field];
+			if (empty($_POST['name'])) {
+				throw new Exception(t('error_must_provide_name', 'You must provide a name'));
 			}
-		}
 
-		$addon->save();
-
-
-		if (isset($_POST['quicksave'])) {
-			$redirect_url = document::ilink(__APP__ . '/edit_addon', ['addon_id' => $addon->data['id']]);
-		} else {
-			$redirect_url = document::ilink(__APP__ . '/addons');
-		}
-
-		notices::add('success', t('success_changes_saved', 'Changes saved'));
-		redirect($redirect_url, 303);
-		exit;
-
-	} catch (Exception $e) {
-		notices::add('errors', $e->getMessage());
-	}
-}
-
-if (isset($_POST['delete'])) {
-	try {
-		if (empty($addon->data['id'])) {
-			throw new Exception(t('error_must_provide_addon', 'You must provide an add-on'));
-		}
-
-		$addon->delete();
-
-		notices::add('success', t('success_changes_saved', 'Changes saved'));
-		redirect(document::ilink(__APP__ . '/addons'), 303);
-		exit;
-	} catch (Exception $e) {
-		notices::add('errors', $e->getMessage());
-	}
-}
-
-if (isset($_POST['upload'])) {
-	try {
-		if (empty($addon->data['id'])) {
-			throw new Exception(t('text_save_addon_to_establish_file_storage', 'Save the add-on to establish a file storage'));
-		}
-
-		if (empty($_FILES['files'])) {
-			throw new Exception('No files uploaded');
-		}
-
-		if (empty($_POST['paths'])) {
-			throw new Exception('No paths defined for uploaded files');
-		}
-
-		foreach (array_keys($_FILES['files']['tmp_name']) as $key) {
-			$new_file = $addon->data['location'] . f::file_strip_path($_POST['paths'][$key]);
-			mkdir(dirname($new_file), 0777, true);
-			move_uploaded_file($_FILES['files']['tmp_name'][$key], $new_file);
-		}
-
-		reload(303);
-		exit;
-	} catch (Exception $e) {
-		http_response_code(400);
-		notices::add('errors', $e->getMessage());
-	}
-}
-
-if (!empty($_POST['storage_action'])) {
-	try {
-		if (empty($addon->data['id'])) {
-			throw new Exception(t('text_save_addon_to_establish_file_storage', 'Save the add-on to establish a file storage'));
-		}
-
-		if (empty($_POST['file'])) {
-			throw new Exception(t('error_must_provide_file', 'You must provide a file'));
-		}
-
-		$file = $addon->data['location'] . f::file_strip_path($_POST['file']);
-
-		if (!file_exists($file)) {
-			throw new Exception(t('error_file_does_not_exist', 'File does not exist'));
-		}
-
-		switch ($_POST['storage_action']) {
-
-			case 'delete':
-				f::file_delete($file, true);
-				break;
-
-			case 'rename':
-				if (empty($_POST['new_name'])) {
-					throw new Exception(t('error_must_provide_new_name', 'You must provide a new name'));
+			foreach (['install', 'uninstall', 'upgrades', 'settings', 'aliases', 'files'] as $field) {
+				if (empty($_POST[$field])) {
+					$_POST[$field] = [];
 				}
+			}
 
-				f::file_move($file, $addon->data['location'] . f::file_strip_path($_POST['new_name']));
+			foreach (['id', 'status', 'name', 'description', 'author', 'version', 'aliases', 'settings', 'install', 'uninstall', 'upgrades', 'files'] as $field) {
+				if (isset($_POST[$field])) {
+					$addon->data[$field] = $_POST[$field];
+				}
+			}
 
-				break;
+			$addon->save();
 
-			default:
-				throw new Exception(t('error_unknown_action', 'Unknown action'));
-		}
 
-		reload(302);
-		exit;
-	} catch (Exception $e) {
-		die($e->getMessage());
-		http_response_code(400);
-		notices::add('errors', $e->getMessage());
-	}
-}
+			if (isset($_POST['quicksave'])) {
+				$redirect_url = document::ilink(__APP__ . '/edit_addon', ['addon_id' => $addon->data['id']]);
+			} else {
+				$redirect_url = document::ilink(__APP__ . '/addons');
+			}
 
-$on_error_options = [
-	'warning' => t('title_warning', 'Warning'),
-	'ignore' => t('title_ignore', 'Ignore'),
-	'cancel' => t('title_cancel', 'Cancel'),
-];
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
+			redirect($redirect_url, 303);
+			exit;
 
-$method_options = [
-	'replace' => t('title_replace', 'Replace'),
-	'before' => t('title_before', 'Before'),
-	'after' => t('title_after', 'After'),
-	'top' => t('title_top', 'Top'),
-	'bottom' => t('title_bottom', 'Bottom'),
-	'all' => t('title_all', 'All'),
-];
-
-$type_options = [
-	'inline' => t('title_inline', 'Inline'),
-	'multiline' => t('title_multiline', 'Multiline'),
-	'regex' => t('title_regex', 'RegEx'),
-];
-
-// List of files
-$files_datalist = [];
-
-$skip_list = [
-	'#.*(?<!\.inc\.php)$#',
-	'#^assets/#',
-	'#^index.php$#',
-	'#^includes/app_header.inc.php$#',
-	'#^includes/nodes/nod_vmod.inc.php$#',
-	'#^includes/wrappers/wrap_app.inc.php$#',
-	'#^includes/wrappers/wrap_storage.inc.php$#',
-	'#^install/#',
-	'#^storage/#',
-];
-
-$scripts = f::file_search(FS_DIR_APP . '**.php', GLOB_BRACE);
-
-foreach ($scripts as $script) {
-	$relative_path = f::file_relative_path($script);
-
-	foreach ($skip_list as $pattern) {
-		if (preg_match($pattern, $relative_path)) {
-			continue 2;
+		} catch (Exception $e) {
+			notices::add('errors', $e->getMessage());
 		}
 	}
 
-	$files_datalist[] = $relative_path;
-}
+	if (isset($_POST['delete'])) {
+		try {
+			if (empty($addon->data['id'])) {
+				throw new Exception(t('error_must_provide_addon', 'You must provide an add-on'));
+			}
 
-// Files tree
-$draw_folder_contents = function ($directory) use ($addon, &$draw_folder_contents) {
-	$output = [];
+			$addon->delete();
 
-	foreach (scandir($directory) as $file) {
-		if (in_array($file, ['.', '..'])) {
-			continue;
-		}
-		if ($directory == 'storage://addons/' . $addon->data['id'] . '/' && $file == 'vmod.xml') {
-			continue;
-		}
-
-		$relative_path = preg_replace('#^' . preg_quote('storage://addons/' . $addon->data['id'] . '/', '#') . '#', '', $directory . $file);
-
-		if (is_dir($directory . $file)) {
-			$output[] = '<li>' . f::draw_fonticon('icon-folder icon-lg', 'style="color: #7ccdff;"') . ' <span class="item" data-path="' . $relative_path . '">' . $file . '/</span>' . $draw_folder_contents($directory . $file . '/') . '</li>';
-		} else {
-			$output[] = '<li>' . f::draw_fonticon('icon-file-o') . ' <span class="item" data-path="' . $relative_path . '">' . $file . '</span><li>';
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
+			redirect(document::ilink(__APP__ . '/addons'), 303);
+			exit;
+		} catch (Exception $e) {
+			notices::add('errors', $e->getMessage());
 		}
 	}
 
-	if (!$output) {
-		return;
+	if (isset($_POST['upload'])) {
+		try {
+			if (empty($addon->data['id'])) {
+				throw new Exception(t('text_save_addon_to_establish_file_storage', 'Save the add-on to establish a file storage'));
+			}
+
+			if (empty($_FILES['files'])) {
+				throw new Exception('No files uploaded');
+			}
+
+			if (empty($_POST['paths'])) {
+				throw new Exception('No paths defined for uploaded files');
+			}
+
+			foreach (array_keys($_FILES['files']['tmp_name']) as $key) {
+				$new_file = $addon->data['location'] . f::file_strip_path($_POST['paths'][$key]);
+				mkdir(dirname($new_file), 0777, true);
+				move_uploaded_file($_FILES['files']['tmp_name'][$key], $new_file);
+			}
+
+			reload(303);
+			exit;
+		} catch (Exception $e) {
+			http_response_code(400);
+			notices::add('errors', $e->getMessage());
+		}
 	}
 
-	return implode(PHP_EOL, ['<ul class="list-unstyled">', implode(PHP_EOL, $output), '</ul>']);
-};
+	if (!empty($_POST['storage_action'])) {
+		try {
+			if (empty($addon->data['id'])) {
+				throw new Exception(t('text_save_addon_to_establish_file_storage', 'Save the add-on to establish a file storage'));
+			}
 
-f::draw_lightbox();
+			if (empty($_POST['file'])) {
+				throw new Exception(t('error_must_provide_file', 'You must provide a file'));
+			}
+
+			$file = $addon->data['location'] . f::file_strip_path($_POST['file']);
+
+			if (!file_exists($file)) {
+				throw new Exception(t('error_file_does_not_exist', 'File does not exist'));
+			}
+
+			switch ($_POST['storage_action']) {
+
+				case 'delete':
+					f::file_delete($file, true);
+					break;
+
+				case 'rename':
+					if (empty($_POST['new_name'])) {
+						throw new Exception(t('error_must_provide_new_name', 'You must provide a new name'));
+					}
+
+					f::file_move($file, $addon->data['location'] . f::file_strip_path($_POST['new_name']));
+
+					break;
+
+				default:
+					throw new Exception(t('error_unknown_action', 'Unknown action'));
+			}
+
+			reload(302);
+			exit;
+		} catch (Exception $e) {
+			die($e->getMessage());
+			http_response_code(400);
+			notices::add('errors', $e->getMessage());
+		}
+	}
+
+	$on_error_options = [
+		'warning' => t('title_warning', 'Warning'),
+		'ignore' => t('title_ignore', 'Ignore'),
+		'cancel' => t('title_cancel', 'Cancel'),
+	];
+
+	$method_options = [
+		'replace' => t('title_replace', 'Replace'),
+		'before' => t('title_before', 'Before'),
+		'after' => t('title_after', 'After'),
+		'top' => t('title_top', 'Top'),
+		'bottom' => t('title_bottom', 'Bottom'),
+		'all' => t('title_all', 'All'),
+	];
+
+	$type_options = [
+		'inline' => t('title_inline', 'Inline'),
+		'multiline' => t('title_multiline', 'Multiline'),
+		'regex' => t('title_regex', 'RegEx'),
+	];
+
+	// List of files
+	$files_datalist = [];
+
+	$skip_list = [
+		'#.*(?<!\.inc\.php)$#',
+		'#^assets/#',
+		'#^index.php$#',
+		'#^includes/app_header.inc.php$#',
+		'#^includes/nodes/nod_vmod.inc.php$#',
+		'#^includes/wrappers/wrap_app.inc.php$#',
+		'#^includes/wrappers/wrap_storage.inc.php$#',
+		'#^install/#',
+		'#^storage/#',
+	];
+
+	$scripts = f::file_search(FS_DIR_APP . '**.php', GLOB_BRACE);
+
+	foreach ($scripts as $script) {
+		$relative_path = f::file_relative_path($script);
+
+		foreach ($skip_list as $pattern) {
+			if (preg_match($pattern, $relative_path)) {
+				continue 2;
+			}
+		}
+
+		$files_datalist[] = $relative_path;
+	}
+
+	// Files tree
+	$draw_folder_contents = function ($directory) use ($addon, &$draw_folder_contents) {
+		$output = [];
+
+		foreach (scandir($directory) as $file) {
+			if (in_array($file, ['.', '..'])) {
+				continue;
+			}
+			if ($directory == 'storage://addons/' . $addon->data['id'] . '/' && $file == 'vmod.xml') {
+				continue;
+			}
+
+			$relative_path = preg_replace('#^' . preg_quote('storage://addons/' . $addon->data['id'] . '/', '#') . '#', '', $directory . $file);
+
+			if (is_dir($directory . $file)) {
+				$output[] = '<li>' . f::draw_fonticon('icon-folder icon-lg', 'style="color: #7ccdff;"') . ' <span class="item" data-path="' . $relative_path . '">' . $file . '/</span>' . $draw_folder_contents($directory . $file . '/') . '</li>';
+			} else {
+				$output[] = '<li>' . f::draw_fonticon('icon-file-o') . ' <span class="item" data-path="' . $relative_path . '">' . $file . '</span><li>';
+			}
+		}
+
+		if (!$output) {
+			return;
+		}
+
+		return implode(PHP_EOL, ['<ul class="list-unstyled">', implode(PHP_EOL, $output), '</ul>']);
+	};
+
+	f::draw_lightbox();
+
 ?>
 
 <style>

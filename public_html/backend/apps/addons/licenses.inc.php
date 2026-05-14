@@ -1,33 +1,34 @@
 <?php
 
-document::$title[] = t('title_licenses', 'Licenses');
+	document::$title[] = t('title_licenses', 'Licenses');
 
-breadcrumbs::add(t('title_addons', 'Add-Ons'), document::ilink(__APP__ . '/installed'));
-breadcrumbs::add(t('title_licenses', 'Licenses'), document::ilink());
+	breadcrumbs::add(t('title_addons', 'Add-Ons'), document::ilink(__APP__ . '/installed'));
+	breadcrumbs::add(t('title_licenses', 'Licenses'), document::ilink());
 
-// Installed add-ons
-$installed_marketplace_addons = [];
+	// Installed add-ons
+	$installed_marketplace_addons = [];
 
-foreach (f::file_search('storage://addons/*/vmod.xml') as $file) {
-	$dom = new DOMDocument();
-	$dom->load($file);
+	foreach (f::file_search('storage://addons/*/vmod.xml') as $file) {
+		$dom = new DOMDocument();
+		$dom->load($file);
 
-	if ($dom->getElementsByTagName('marketplace')->length) {
-		$addon_id = $dom->getElementsByTagName('marketplace')->item(0)->getElementsByTagName('addon_id')->item(0)->textContent;
-		$installed_marketplace_addons[$addon_id] = dirname($file) . '/';
+		if ($dom->getElementsByTagName('marketplace')->length) {
+			$addon_id = $dom->getElementsByTagName('marketplace')->item(0)->getElementsByTagName('addon_id')->item(0)->textContent;
+			$installed_marketplace_addons[$addon_id] = dirname($file) . '/';
+		}
 	}
-}
 
-// Licenses
-if (!($licenses = marketplace_client::get_licenses())) {
-	$licenses = [];
-}
+	// Licenses
+	if (!($licenses = marketplace_client::get_licenses())) {
+		$licenses = [];
+	}
 
-// Number of Rows
-$num_rows = count($licenses);
+	// Number of Rows
+	$num_rows = count($licenses);
 
-// Number of Pages
-$num_pages = ceil($num_rows / settings::get('data_table_rows_per_page'));
+	// Number of Pages
+	$num_pages = ceil($num_rows / settings::get('data_table_rows_per_page'));
+
 ?>
 
 <div class="card card-app">

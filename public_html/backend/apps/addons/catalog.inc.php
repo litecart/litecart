@@ -1,21 +1,22 @@
 <?php
 
-document::$title[] = t('title_marketplace', 'Marketplace');
+	document::$title[] = t('title_marketplace', 'Marketplace');
 
-breadcrumbs::add(t('title_marketplace', 'Marketplace'), document::ilink(__APP__ . '/marketplace'));
+	breadcrumbs::add(t('title_marketplace', 'Marketplace'), document::ilink(__APP__ . '/marketplace'));
 
-if (!empty($_GET['category'])) {
-	document::$title[] = $_GET['category'];
-	breadcrumbs::add($_GET['category'], document::ilink(__APP__ . '/marketplace', ['category' => $_GET['category']]));
-}
+	if (!empty($_GET['category'])) {
+		document::$title[] = $_GET['category'];
+		breadcrumbs::add($_GET['category'], document::ilink(__APP__ . '/marketplace', ['category' => $_GET['category']]));
+	}
 
-$categories_options = array_merge([['', '-- ' . t('title_all_categories', 'All Categories') . ' --']], array_column(marketplace_client::get_categories(), 'name'));
+	$categories_options = array_merge([['', '-- ' . t('title_all_categories', 'All Categories') . ' --']], array_column(marketplace_client::get_categories(), 'name'));
 
-$results = marketplace_client::get_addons([
-	'query' => $_GET['query'] ?? '',
-	'category' => $_GET['category'] ?? '',
-	'page' => $_GET['page'] ?? 1,
-]);
+	$results = marketplace_client::get_addons([
+		'query' => $_GET['query'] ?? '',
+		'category' => $_GET['category'] ?? '',
+		'page' => $_GET['page'] ?? 1,
+	]);
+
 ?>
 <style>
 .addons {

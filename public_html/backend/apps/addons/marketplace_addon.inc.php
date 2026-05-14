@@ -1,131 +1,135 @@
 <?php
 
-if (empty($_GET['addon_id'])) {
-	notices::add('errors', t('error_must_provide_addon', 'You must provide an add-on'));
-	redirect(document::ilink(__APP__ . '/catalog'), 303);
-	exit;
-}
+	document::add_csp('img-src', 'https://www.litecart.net/');
 
-if (!($addon = marketplace_client::get_addon($_GET['addon_id']))) {
-	notices::add('errors', t('error_invalid_addon', 'Invalid add-on'));
-	redirect(document::ilink(__APP__ . '/catalog'), 303);
-	exit;
-}
+	if (empty($_GET['addon_id'])) {
+		notices::add('errors', t('error_must_provide_addon', 'You must provide an add-on'));
+		redirect(document::ilink(__APP__ . '/catalog'), 303);
+		exit;
+	}
 
-$addon['installed'] = false;
+	if (!($addon = marketplace_client::get_addon($_GET['addon_id']))) {
+		notices::add('errors', t('error_invalid_addon', 'Invalid add-on'));
+		redirect(document::ilink(__APP__ . '/catalog'), 303);
+		exit;
+	}
 
-foreach (f::file_search('storage://addons/*/vmod.xml') as $file) {
-	$dom = new DOMDocument();
-	$dom->load($file);
+	$addon['installed'] = false;
 
-	if ($dom->getElementsByTagName('marketplace')->length) {
-		if ($dom->getElementsByTagName('marketplace')->item(0)->getElementsByTagName('addon_id')->item(0)->textContent == $addon['id']) {
-			$addon['installed'] = [
-				'location' => dirname($file) . '/',
-				'version' => $dom->getElementsByTagName('version')->item(0)->textContent,
-			];
-			break;
+	foreach (f::file_search('storage://addons/*/vmod.xml') as $file) {
+		$dom = new DOMDocument();
+		$dom->load($file);
+
+		if ($dom->getElementsByTagName('marketplace')->length) {
+			if ($dom->getElementsByTagName('marketplace')->item(0)->getElementsByTagName('addon_id')->item(0)->textContent == $addon['id']) {
+				$addon['installed'] = [
+					'location' => dirname($file) . '/',
+					'version' => $dom->getElementsByTagName('version')->item(0)->textContent,
+				];
+				break;
+			}
 		}
 	}
-}
 
-foreach ($addon['packages'] as $i => $package) {
-	$addon['packages'][$i]['installed'] = ($package['version'] == $addon['installed']['version']) ? true: false;
-}
+	foreach ($addon['packages'] as $i => $package) {
+		$addon['packages'][$i]['installed'] = ($package['version'] == $addon['installed']['version']) ? true: false;
+	}
 
-if (!($profile = marketplace_client::whoami())) {
-	notices::add('warnings', 'Failed to retrieve user profile');
-}
+	if (!($profile = marketplace_client::whoami())) {
+		notices::add('warnings', 'Failed to retrieve user profile');
+	}
 
-if (isset($_POST['install'])) {
-	try {
-		if (empty($_POST['package_id'])) {
-			throw new Exception(t('error_must_select_package', 'You must select a package'));
-		}
+	if (isset($_POST['install'])) {
+		try {
+			if (empty($_POST['package_id'])) {
+				throw new Exception(t('error_must_select_package', 'You must select a package'));
+			}
 
-		$result = marketplace_client::get_addon_package($_POST['package_id']);
+			$result = marketplace_client::get_addon_package($_POST['package_id']);
 
-		$tmp_file = f::file_create_tempfile();
-		file_put_contents($tmp_file, base64_decode($result['data']));
-
-		$zip = new ZipArchive();
-		if ($zip->open($tmp_file, ZipArchive::RDONLY) !== true) {
-			throw new Exception('Failed opening ZIP archive');
-		}
-
-		if (!($vmod = $zip->getFromName('vmod.xml'))) {
-			throw new Exception('Could not find vmod.xml in package');
-		}
-
-		$dom = new DOMDocument('1.0', 'UTF-8');
-
-		if (!@$dom->loadXML($vmod) || !$dom->getElementsByTagName('vmod')) {
-			throw new Exception(t('error_xml_file_is_not_valid_vmod', 'XML file is not a valid vMod file'));
-		}
-
-		if (!empty($dom->getElementsByTagName('id'))) {
-			$folder_name = $dom->getElementsByTagName('id')->item(0)->textContent;
-		} elseif (!empty($dom->getElementsByTagName('name'))) {
-			$folder_name = f::format_path_friendly($dom->getElementsByTagName('name')->item(0)->textContent);
-		} else {
-			throw new Exception(t('error_vmod_has_no_id_or_name', 'vMod has no ID or name'));
-		}
-
-		if (empty($folder_name)) {
-			throw new Exception(t('error_could_not_determine_storage_location_for_addon', 'Could not determine storage location for add-on'));
-		}
-
-		if (!empty($addon['installed']['location']) && is_dir($addon['installed']['location'])) {
-			f::file_delete($addon['installed']['location'], true);
-		}
-
-		if (!$zip->extractTo(f::file_realpath($folder))) {
-			throw new Exception('Failed extracting contents from ZIP archive');
-		}
-
-		$zip->close();
-
-		if (!empty($dom->getElementsByTagName('install'))) {
 			$tmp_file = f::file_create_tempfile();
-			file_put_contents($tmp_file, "<?php\r\n" . $dom->getElementsByTagName('install')->textContent);
+			file_put_contents($tmp_file, base64_decode($result['data']));
 
-			(function () {
-				include func_get_arg(0);
-			})($tmp_file);
+			$zip = new ZipArchive();
+			if ($zip->open($tmp_file, ZipArchive::RDONLY) !== true) {
+				throw new Exception('Failed opening ZIP archive');
+			}
+
+			if (!($vmod = $zip->getFromName('vmod.xml'))) {
+				throw new Exception('Could not find vmod.xml in package');
+			}
+
+			$dom = new DOMDocument('1.0', 'UTF-8');
+
+			if (!@$dom->loadXML($vmod) || !$dom->getElementsByTagName('vmod')) {
+				throw new Exception(t('error_xml_file_is_not_valid_vmod', 'XML file is not a valid vMod file'));
+			}
+
+			if (!empty($dom->getElementsByTagName('id'))) {
+				$folder_name = $dom->getElementsByTagName('id')->item(0)->textContent;
+			} elseif (!empty($dom->getElementsByTagName('name'))) {
+				$folder_name = f::format_path_friendly($dom->getElementsByTagName('name')->item(0)->textContent);
+			} else {
+				throw new Exception(t('error_vmod_has_no_id_or_name', 'vMod has no ID or name'));
+			}
+
+			if (empty($folder_name)) {
+				throw new Exception(t('error_could_not_determine_storage_location_for_addon', 'Could not determine storage location for add-on'));
+			}
+
+			if (!empty($addon['installed']['location']) && is_dir($addon['installed']['location'])) {
+				f::file_delete($addon['installed']['location'], true);
+			}
+
+			if (!$zip->extractTo(f::file_realpath($folder))) {
+				throw new Exception('Failed extracting contents from ZIP archive');
+			}
+
+			$zip->close();
+
+			if (!empty($dom->getElementsByTagName('install'))) {
+				$tmp_file = f::file_create_tempfile();
+				file_put_contents($tmp_file, "<?php\r\n" . $dom->getElementsByTagName('install')->textContent);
+
+				(function () {
+					include func_get_arg(0);
+				})($tmp_file);
+			}
+
+			notices::add('success', t('success_addon_installed', 'Add-on successfully installed'));
+
+			redirect(document::ilink(), 303);
+			exit;
+		} catch (Exception $e) {
+			notices::add('errors', $e->getMessage());
 		}
-
-		notices::add('success', t('success_addon_installed', 'Add-on successfully installed'));
-
-		redirect(document::ilink(), 303);
-		exit;
-	} catch (Exception $e) {
-		notices::add('errors', $e->getMessage());
 	}
-}
 
-if (isset($_POST['uninstall'])) {
-	try {
-		if (empty($addon['installed'])) {
-			throw new Exception(t('error_addon_not_installed', 'The add-on is not installed'));
+	if (isset($_POST['uninstall'])) {
+		try {
+			if (empty($addon['installed'])) {
+				throw new Exception(t('error_addon_not_installed', 'The add-on is not installed'));
+			}
+
+			if (!is_dir($addon['installed']['location'])) {
+				throw new Exception(t('error_addon_not_found_in_storage', 'Could not find add-on on storage location'));
+			}
+
+			$ent_addon = new ent_addon(basename($addon['installed']['location']));
+			$ent_addon->delete(!empty($_POST['cleanup']));
+
+			notices::add('success', t('success_addon_uninstalled', 'Add-on successfully uninstalled'));
+
+			redirect(document::ilink(__APP__ . '/installed'), 303);
+			exit;
+
+		} catch (Exception $e) {
+			notices::add('errors', $e->getMessage());
 		}
-
-		if (!is_dir($addon['installed']['location'])) {
-			throw new Exception(t('error_addon_not_found_in_storage', 'Could not find add-on on storage location'));
-		}
-
-		$ent_addon = new ent_addon(basename($addon['installed']['location']));
-		$ent_addon->delete(!empty($_POST['cleanup']));
-
-		notices::add('success', t('success_addon_uninstalled', 'Add-on successfully uninstalled'));
-
-		redirect(document::ilink(__APP__ . '/installed'), 303);
-		exit;
-	} catch (Exception $e) {
-		notices::add('errors', $e->getMessage());
 	}
-}
 
-f::draw_lightbox();
+	f::draw_lightbox();
+
 ?>
 <style>
 .images {

@@ -1,4 +1,3 @@
-
 waitFor('jQuery', ($) => {
 	'use strict';
 

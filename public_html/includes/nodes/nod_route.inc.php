@@ -22,7 +22,7 @@
 
 			$requested_url = document::link($_SERVER['REQUEST_URI']);
 
-			// Redirect (Immediate)
+			// Process an Immediate Redirect Rule (if any)
 			$redirect = database::query(
 				"select * from ". DB_TABLE_PREFIX ."redirects
 				where status
@@ -79,8 +79,8 @@
 			}
 
 			$route['endpoint'] = match(true) {
-				(preg_match('#^b:#', $resource)) => 'backend',
-				(preg_match('#^f:#', $resource)) => 'frontend',
+				str_starts_with($resource, 'b:') => 'backend',
+				str_starts_with($resource, 'f:') => 'frontend',
 				default => 'frontend',
 			};
 
