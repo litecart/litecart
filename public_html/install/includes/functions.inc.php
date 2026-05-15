@@ -2,25 +2,14 @@
 
 	include_once __DIR__.'/../../includes/functions/func_file.inc.php';
 
-	function csp_generate_nonce() {
-		static $nonce;
-
-		if (!$nonce) {
-			$nonce = bin2hex(random_bytes(16));
-		}
-
-		return $nonce;
-	}
-
 	function csp_send_headers() {
-		$nonce = csp_generate_nonce();
 
 		header('Content-Security-Policy: ' . implode('; ', [
 			"default-src 'self'",
-			"script-src 'self' 'nonce-$nonce'",
-			"style-src 'self' 'nonce-$nonce' 'unsafe-inline'", // 'unsafe-inline' kept for legacy inline style attributes on install wizard
-			"img-src 'self' data:",
-			"font-src 'self' data:",
+			"script-src 'self' 'nonce-". NONCE ."'",
+			"style-src 'self' 'unsafe-inline'",
+			"img-src 'self' data: ",
+			"font-src 'self' data: 'nonce-". NONCE ."'",
 			"connect-src 'self'",
 			"form-action 'self'",
 			"frame-ancestors 'none'",

@@ -2,8 +2,6 @@
 
 	require_once __DIR__ . '/init.inc.php';
 
-	$nonce = csp_generate_nonce();
-
 	csp_send_headers();
 
 ?>
@@ -12,10 +10,10 @@
 <head>
 <meta charset="<?php echo mb_http_output(); ?>">
 <title>LiteCart Installer</title>
-<link rel="stylesheet" href="../backend/template/css/variables.css">
-<link rel="stylesheet" href="../assets/litecore/css/framework<?php echo is_file(__DIR__.'/../../assets/litecore/css/framework.min.css') ? '.min.css' : '.css'; ?>">
-<script<?php echo $nonce ? ' nonce="'. htmlspecialchars($nonce, ENT_QUOTES) .'"' : ''; ?>>window.waitFor=window.waitFor||((i,o)=>{void 0!==window.i?o(window.i):setTimeout((()=>waitFor(i,o)),50)});</script>
-<style<?php echo $nonce ? ' nonce="'. htmlspecialchars($nonce, ENT_QUOTES) .'"' : ''; ?>>
+<link rel="stylesheet" href="../backend/template/css/variables.css"<?php echo ' nonce="'. htmlspecialchars(NONCE, ENT_QUOTES) .'"'; ?>>
+<link rel="stylesheet" href="../assets/litecore/css/framework<?php echo is_file(__DIR__.'/../../assets/litecore/css/framework.min.css') ? '.min.css' : '.css'; ?>"<?php echo ' nonce="'. htmlspecialchars(NONCE, ENT_QUOTES) .'"'; ?>>
+<script<?php echo ' nonce="'. htmlspecialchars(NONCE, ENT_QUOTES) .'"'; ?>>window.waitFor=window.waitFor||((i,o)=>{void 0!==window.i?o(window.i):setTimeout((()=>waitFor(i,o)),50)});</script>
+<style<?php echo ' nonce="'. htmlspecialchars(NONCE, ENT_QUOTES) .'"'; ?>>
 html { background: radial-gradient(ellipse at center, #fff 20%, #d2d7de 100%); }
 body { padding: 15px; }
 header { margin: 2em 0; }
@@ -61,7 +59,7 @@ span.warning {
 <body>
 
 <header class="text-center">
-	<img src="data/default/storage/images/logotype.png" alt="LiteCart" style="max-width: 300px; max-height: 100px;">
+	<img src="data/default/storage/images/logotype.png" nonce="<?php echo htmlspecialchars(NONCE, ENT_QUOTES); ?>" alt="LiteCart" style="max-width: 300px; max-height: 100px;">
 </header>
 
 <main class="glass-edges">

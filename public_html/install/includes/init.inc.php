@@ -29,6 +29,10 @@
 		define('WS_DIR_STORAGE', preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '', FS_DIR_STORAGE));
 	}
 
+	// Generate NONCE at the start of the request and reuse it throughout.
+	define('NONCE', bin2hex(random_bytes(16)));
+
+	// Polyfills
 	require_once __DIR__ . '/../../includes/compatibility.inc.php';
 
 	// Load virtual file system but leave vMod disabled

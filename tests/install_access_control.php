@@ -155,18 +155,12 @@
 
 		echo 'Testing security-headers helper...';
 
-		// The helper is a no-op once headers are sent; in CLI that happens
-		// before our first call. We check the CSP-nonce function instead,
-		// since nonce generation is the only deterministic piece.
-		$nonce_a = csp_generate_nonce();
-		$nonce_b = csp_generate_nonce();
-
-		if ($nonce_a !== $nonce_b) {
-			throw new Exception('csp_generate_nonce() returned different values within the same request');
+		if (!defined('NONCE')) {
+			throw new Exception('NONCE constant is not defined');
 		}
 
-		if (strlen($nonce_a) !== 32 || !ctype_xdigit($nonce_a)) {
-			throw new Exception('csp_generate_nonce() did not return a 32-char hex string, got: ' . var_export($nonce_a, true));
+		if (strlen(NONCE) !== 32 || !ctype_xdigit(NONCE)) {
+			throw new Exception('csp_generate_nonce() did not return a 32-char hex string, got: ' . var_export(NONCE, true));
 		}
 
 		echo ' [OK]' . PHP_EOL;

@@ -417,7 +417,8 @@ input[name="development_type"]:checked + div {
 	<p>Warning: An existing installation has been detected. It <u>will be deleted</u> if you continue!</p>
 	<p><a class="btn btn-default" href="upgrade.php">Click here to upgrade instead <i class="icon-arrow-right"></i></a></p>
 </div>
-<script>
+
+<script nonce="<?php echo htmlspecialchars(NONCE, ENT_QUOTES); ?>">
 waitFor('jQuery', function($){
 	$.litebox('#modal-warning-existing-installation');
 });
