@@ -181,7 +181,7 @@
 
 			// Do we need to check if human?
 			if (empty(self::$data['security']['is_human']) && (!isset(route::$selected['controller']))) {
-				if (!preg_match('#(are_you_human|csp_report|account/sign_out|'. preg_quote(BACKEND_ALIAS, '#')  .'/logout)#', self::$request)) {
+				if (!preg_match('#(are_you_human|csp_report|account/sign_out|'. preg_quote(BACKEND_ALIAS, '#')  .'/logout)#', route::$request)) {
 
 					try {
 
