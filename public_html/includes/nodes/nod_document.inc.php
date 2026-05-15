@@ -522,6 +522,8 @@
 				$path = parse_url($url, PHP_URL_PATH);
 
 				$type = match (true) {
+					(preg_match('#\.(ttf|otf|woff2?)$#', $path)) => 'font',
+					(preg_match('#\.(a?png|avif|gif|jpe?g|tiff?|webp)$#', $path)) => 'image',
 					(preg_match('#\.css$#', $path)) => 'style',
 					(preg_match('#\.js$#', $path)) => 'script',
 				};
