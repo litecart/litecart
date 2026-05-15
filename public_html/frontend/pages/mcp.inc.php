@@ -124,15 +124,20 @@
 				foreach (f::file_search('app://frontend/mcp/mcp_*.inc.php') as $mcp_file) {
 
 					// Include without polluting global scope
-					$tool_schema = (function() use ($mcp_file) {
+					$toolset = (function() use ($mcp_file) {
 						return include $mcp_file;
 					})();
 
-					if (!empty($tool_schema['name']) && is_array($tool_schema['inputSchema'])) {
+					if (!is_array($toolset) || empty($toolset['tools'])) continue;
+
+					foreach ($toolset['tools'] as $tool) {
+
+						if (empty($tool['name']) || !is_array($tool['inputSchema'])) continue;
+
 						$tool_schemas[] = [
-							'name' => $tool_schema['name'],
-							'description' => $tool_schema['description'] ?? '',
-							'inputSchema' => $tool_schema['inputSchema'] ?? [
+							'name' => $tool['name'],
+							'description' => $tool['description'] ?? '',
+							'inputSchema' => $tool['inputSchema'] ?? [
 								'type' => 'object',
 								'properties' => new stdClass(),
 							],
@@ -157,30 +162,30 @@
 				foreach (f::file_search('app://frontend/mcp/mcp_*.inc.php') as $mcp_file) {
 
 					// Include without polluting global scope
-					$tool_schema = (function() use ($mcp_file) {
+					$toolset = (function() use ($mcp_file) {
 						return include $mcp_file;
 					})();
 
-					if (is_array($tool_schema) && !empty($tool_schema['name']) && $tool_schema['name'] === $params['name']) {
-						$tool_function = 'mcp_' . str_replace(['/', '-'], '_', $tool_schema['name']);
+					if (!is_array($toolset) || empty($toolset['tools'])) continue;
 
-						if (function_exists($tool_function)) {
+					foreach ($toolset['tools'] as $tool) {
 
-							// Support both 'arguments' (MCP standard) and 'input' (legacy)
-							$tool_args = $params['arguments'] ?? $params['input'] ?? [];
+						if (empty($tool['name']) || $tool['name'] !== $params['name']) continue;
 
-							// Check input against required parameters
-							if (!empty($tool_schema['inputSchema']['required']) && is_array($tool_schema['inputSchema']['required'])) {
-								foreach ($tool_schema['inputSchema']['required'] as $field) {
-									if (!isset($tool_args[$field]) || $tool_args[$field] === '') {
-										throw new McpException("Missing required parameter: $field", 400, -32602);
-									}
+						// Support both 'arguments' (MCP standard) and 'input' (legacy)
+						$tool_args = $params['arguments'] ?? $params['input'] ?? [];
+
+						// Check input against required parameters
+						if (!empty($tool['inputSchema']['required']) && is_array($tool['inputSchema']['required'])) {
+							foreach ($tool['inputSchema']['required'] as $field) {
+								if (!isset($tool_args[$field]) || $tool_args[$field] === '') {
+									throw new McpException("Missing required parameter: $field", 400, -32602);
 								}
 							}
-
-							$tool_result = $tool_function($tool_args);
-							break;
 						}
+
+						$tool_result = ($tool['function'])($tool_args);
+						break 2;
 					}
 				}
 

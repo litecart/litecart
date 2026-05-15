@@ -1,16 +1,20 @@
 <?php
 
-	// Default dialect (2020-12):
-	return $schema = [
-		'name' => 'ping',
-		'description' => 'Returns a ping response',
-		'inputSchema' => [
-			'type' => 'object',
-			'params' => [],
-			'required' => [],
+	return [
+		'name' => 'system',
+		'description' => 'System tools.',
+		'tools' => [
+			[
+				'name' => 'ping',
+				'description' => 'Returns a ping response',
+				'inputSchema' => [
+					'type' => 'object',
+					'properties' => new stdClass(),
+					'required' => [],
+				],
+				'function' => function($params) {
+					return [];
+				},
+			],
 		],
 	];
-
-	function mcp_ping($params) {
-		return [];
-	}

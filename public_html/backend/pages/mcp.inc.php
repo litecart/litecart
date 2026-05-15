@@ -1,9 +1,9 @@
 <?php
 
-	// -----------------------------------------------------------------------------
-	// Model Context Protocol (MCP) server over HTTP JSON-RPC 2.0
-	// Provides CRUD tools that mirror LiteCart collections/entities.
-	// -----------------------------------------------------------------------------
+	/*
+		Model Context Protocol (MCP) server over HTTP JSON-RPC 2.0
+		Provides CRUD tools that mirror LiteCart collections/entities.
+	*/
 
 	// Custom exception for JSON-RPC error output
 	class McpException extends Exception {
@@ -39,65 +39,66 @@
 			throw new McpException('Authentication required', 401, -32000, $rpc_id);
 		}
 
+		$administrator = database::query(
+			"select * from ". DB_TABLE_PREFIX ."administrators
+			where status
+			and lower(username) = lower('". database::input($_SERVER['PHP_AUTH_USER']) ."')
+			and (valid_from is null or valid_from < '". database::input(date('Y-m-d H:i:s')) ."')
+			and (valid_to is null or valid_to > '". database::input(date('Y-m-d H:i:s')) ."')
+			and (blocked_until is null or blocked_until < '". database::input(date('Y-m-d H:i:s')) ."')
+			limit 1;",
+		)->fetch();
 
-			$administrator = database::query(
-				"select * from ". DB_TABLE_PREFIX ."administrators
-				where status
-				and lower(username) = lower('". database::input($_SERVER['PHP_AUTH_USER']) ."')
-				and (valid_from is null or valid_from < '". database::input(date('Y-m-d H:i:s')) ."')
-				and (valid_to is null or valid_to > '". database::input(date('Y-m-d H:i:s')) ."')
-				and (blocked_until is null or blocked_until < '". database::input(date('Y-m-d H:i:s')) ."')
-				limit 1;",
-			)->fetch();
+		if (!$administrator) {
+			throw new McpException(t('error_administrator_not_found', 'The administrator is either suspended or could not be found in our database'), 401);
+		}
 
-			if (!$administrator) {
-				throw new McpException(t('error_administrator_not_found', 'The administrator is either suspended or could not be found in our database'), 401);
-			}
+		// Password check and login attempts
+		if (!password_verify($_SERVER['PHP_AUTH_PW'], $administrator['password_hash'])) {
+			if (++$administrator['login_attempts'] < 3) {
 
-			// Password check and login attempts
-			if (!password_verify($_SERVER['PHP_AUTH_PW'], $administrator['password_hash'])) {
-				if (++$administrator['login_attempts'] < 3) {
-
-					database::query(
-							"update ". DB_TABLE_PREFIX ."administrators
-							set login_attempts = login_attempts + 1
-							where id = ". (int)$administrator['id'] ."
-							limit 1;"
-					);
-
-					throw new McpException(strtr(t('error_d_login_attempts_left', 'You have %d login attempts left until your account is temporary blocked'), ['%d' => 3 - $administrator['login_attempts']]), 403);
-
-				} else {
-
-					database::query(
-						"update ". DB_TABLE_PREFIX ."administrators
-						set login_attempts = 0,
-						blocked_until = '". date('Y-m-d H:i:00', strtotime('+15 minutes')) ."'
-						where id = ". (int)$administrator['id'] ."
-						limit 1;",
-					);
-
-					throw new McpException(strtr(t('error_account_has_been_blocked', 'The account has been temporary blocked %d minutes'), ['%d' => 15]), 403);
-				}
-
-			}
-
-			// Reset login attempts after successful login
-			if (!empty($administrator['login_attempts'])) {
 				database::query(
 					"update ". DB_TABLE_PREFIX ."administrators
-					set login_attempts = 0
+					set login_attempts = login_attempts + 1
+					where id = ". (int)$administrator['id'] ."
+					limit 1;"
+				);
+
+				throw new McpException(strtr(t('error_d_login_attempts_left', 'You have %d login attempts left until your account is temporary blocked'), ['%d' => 3 - $administrator['login_attempts']]), 403);
+
+			} else {
+
+				database::query(
+					"update ". DB_TABLE_PREFIX ."administrators
+					set login_attempts = 0,
+					blocked_until = '". date('Y-m-d H:i:00', strtotime('+15 minutes')) ."'
 					where id = ". (int)$administrator['id'] ."
 					limit 1;",
 				);
+
+				throw new McpException(strtr(t('error_account_has_been_blocked', 'The account has been temporary blocked %d minutes'), ['%d' => 15]), 403);
 			}
+
+		}
+
+		// Reset login attempts after successful login
+		if (!empty($administrator['login_attempts'])) {
+			database::query(
+				"update ". DB_TABLE_PREFIX ."administrators
+				set login_attempts = 0
+				where id = ". (int)$administrator['id'] ."
+				limit 1;",
+			);
+		}
 
 		// Resolve administrator's app permissions for per-tool gating
 		$admin_apps = !empty($administrator['apps']) ? json_decode($administrator['apps'], true) : [];
 
-		// Helper: is the administrator allowed to use this MCP tool?
-		// Tool schemas may declare an 'app' key. Tools without 'app' are system tools (allowed for any authenticated admin).
-		// When 'app' is set, restricted admins (non-empty apps map) must have status=1 on that app.
+		/*
+			Helper: is the administrator allowed to use this MCP tool?
+			Tool schemas may declare an 'app' key. Tools without 'app' are system tools (allowed for any authenticated admin).
+			When 'app' is set, restricted admins (non-empty apps map) must have status=1 on that app.
+		*/
 		$mcp_tool_allowed = function($tool_schema) use ($admin_apps) {
 			$app = $tool_schema['app'] ?? '';
 			if (!$app) return true;
@@ -137,18 +138,23 @@
 				foreach (f::file_search('app://backend/mcp/mcp_*.inc.php') as $mcp_file) {
 
 					// Include without polluting global scope
-					$tool_schema = (function() use ($mcp_file) {
+					$toolset = (function() use ($mcp_file) {
 						return include $mcp_file;
 					})();
 
-					// Skip tools the administrator isn't permitted to use
-					if (!$mcp_tool_allowed($tool_schema)) continue;
+					if (!is_array($toolset) || empty($toolset['tools'])) continue;
 
-					if (!empty($tool_schema['name']) && is_array($tool_schema['inputSchema'])) {
+					// Skip toolsets the administrator isn't permitted to use
+					if (!$mcp_tool_allowed($toolset)) continue;
+
+					foreach ($toolset['tools'] as $tool) {
+
+						if (empty($tool['name']) || !is_array($tool['inputSchema'])) continue;
+
 						$tool_schemas[] = [
-							'name' => $tool_schema['name'],
-							'description' => $tool_schema['description'] ?? '',
-							'inputSchema' => $tool_schema['inputSchema'] ?? [
+							'name' => $tool['name'],
+							'description' => $tool['description'] ?? '',
+							'inputSchema' => $tool['inputSchema'] ?? [
 								'type' => 'object',
 								'properties' => new stdClass(),
 							],
@@ -173,36 +179,35 @@
 				foreach (f::file_search('app://backend/mcp/mcp_*.inc.php') as $mcp_file) {
 
 					// Include without polluting global scope
-					$tool_schema = (function() use ($mcp_file) {
+					$toolset = (function() use ($mcp_file) {
 						return include $mcp_file;
 					})();
 
-					if (is_array($tool_schema) && !empty($tool_schema['name']) && $tool_schema['name'] === $params['name']) {
+					if (!is_array($toolset) || empty($toolset['tools'])) continue;
 
-						// Per-tool permission check
-						if (!$mcp_tool_allowed($tool_schema)) {
+					foreach ($toolset['tools'] as $tool) {
+
+						if (empty($tool['name']) || $tool['name'] !== $params['name']) continue;
+
+						// Per-toolset permission check
+						if (!$mcp_tool_allowed($toolset)) {
 							throw new McpException('Tool not permitted for this administrator', 403, -32001, $rpc_id);
 						}
 
-						$tool_function = 'mcp_' . str_replace(['/', '-'], '_', $tool_schema['name']);
+						// Support both 'arguments' (MCP standard) and 'input' (legacy)
+						$tool_args = $params['arguments'] ?? $params['input'] ?? [];
 
-						if (function_exists($tool_function)) {
-
-							// Support both 'arguments' (MCP standard) and 'input' (legacy)
-							$tool_args = $params['arguments'] ?? $params['input'] ?? [];
-
-							// Check input against required parameters
-							if (!empty($tool_schema['inputSchema']['required']) && is_array($tool_schema['inputSchema']['required'])) {
-								foreach ($tool_schema['inputSchema']['required'] as $field) {
-									if (!isset($tool_args[$field]) || $tool_args[$field] === '') {
-										throw new McpException("Missing required parameter: $field", 400, -32602);
-									}
+						// Check input against required parameters
+						if (!empty($tool['inputSchema']['required']) && is_array($tool['inputSchema']['required'])) {
+							foreach ($tool['inputSchema']['required'] as $field) {
+								if (!isset($tool_args[$field]) || $tool_args[$field] === '') {
+									throw new McpException("Missing required parameter: $field", 400, -32602);
 								}
 							}
-
-							$tool_result = $tool_function($tool_args);
-							break;
 						}
+
+						$tool_result = ($tool['function'])($tool_args);
+						break 2;
 					}
 				}
 
