@@ -22,9 +22,7 @@
 			)->each(function($field){
 				$this->data[$field['Field']] = database::create_variable($field);
 			});
-
-			$this->data['apps'] = [];
-			$this->data['widgets'] = [];
+			$this->data['permissions'] = [];
 			$this->data['known_ips'] = [];
 			$this->data['known_fingerprints'] = [];
 
@@ -53,8 +51,7 @@
 
 			$this->data = array_replace($this->data, array_intersect_key($administrator, $this->data));
 
-			$this->data['apps'] = !empty($this->data['apps']) ? json_decode($this->data['apps'], true) : [];
-			$this->data['widgets'] = !empty($this->data['widgets']) ? json_decode($this->data['widgets'], true) : [];
+			$this->data['permissions'] = $this->data['permissions'] ? json_decode($this->data['permissions'], true) : [];
 			$this->data['known_ips'] = f::string_split($this->data['known_ips']);
 			$this->data['known_fingerprints'] = f::string_split($this->data['known_fingerprints']);
 
@@ -86,6 +83,8 @@
 				$this->data['id'] = database::insert_id();
 			}
 
+			$this->data['permissions'] = f::array_filter_recursive($this->data['permissions']);
+
 			database::query(
 				"update ". DB_TABLE_PREFIX ."administrators
 				set status = ". (!empty($this->data['status']) ? 1 : 0) .",
@@ -93,8 +92,7 @@
 					firstname = '". database::input($this->data['firstname']) ."',
 					lastname = '". database::input($this->data['lastname']) ."',
 					email = '". database::input(strtolower($this->data['email'])) ."',
-					apps = '". database::input(f::format_json($this->data['apps'])) ."',
-					widgets = '". database::input(f::format_json($this->data['widgets'])) ."',
+					permissions = '". database::input(f::format_json($this->data['permissions'] ?: [])) ."',
 					two_factor_auth = ". (!empty($this->data['two_factor_auth']) ? 1 : 0) .",
 					valid_from = ". (empty($this->data['valid_from']) ? "null" : "'". date('Y-m-d H:i:s', strtotime($this->data['valid_from'])) ."'") .",
 					valid_to = ". (empty($this->data['valid_to']) ? "null" : "'". date('Y-m-d H:i:s', strtotime($this->data['valid_to'])) ."'") .",

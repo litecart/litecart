@@ -103,3 +103,35 @@
 
 		return $widgets;
 	}
+
+	function admin_get_mcp_tools() {
+
+		$tools_cache_token = cache::token('backend_mcp_tools', ['administrator', 'language']);
+		if (!$toolsets = cache::get($tools_cache_token)) {
+
+			$toolsets = [];
+
+			foreach (f::file_search('app://backend/mcp/mcp_*.inc.php') as $mcp_file) {
+
+				// Include without polluting global scope
+				$toolset = (function() use ($mcp_file) {
+					return include $mcp_file;
+				})();
+
+				if (empty($toolset['name']) || !is_array($toolset['tools'])) {
+					continue;
+				}
+
+				$toolsets[] = [
+					'id' => preg_replace('#^mcp_(.+)\.inc\.php$#', '$1', basename($mcp_file)),
+					'name' => $toolset['name'],
+					'description' => $toolset['description'] ?? '',
+					'tools' => array_column($toolset['tools'] ?? [], 'name'),
+				];
+			}
+
+			cache::set($tools_cache_token, $toolsets);
+		}
+
+		return $toolsets;
+	}

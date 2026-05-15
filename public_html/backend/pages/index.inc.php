@@ -20,9 +20,9 @@
 
 		// Check if administrator is permitted to access document.
 		// Allow helper endpoints implicitly as long as the admin has the app enabled.
-		if (!empty(administrator::$data['apps'][__APP__]['status'])) {
+		if (!empty(administrator::$data['permissions']['apps'][__APP__])) {
 			if (preg_match('/\.(json|csv)$/', __DOC__) || str_ends_with(__DOC__, '_picker')) {
-				if (!in_array(__DOC__, administrator::$data['apps'][__APP__]['docs'])) {
+				if (!in_array(__DOC__, administrator::$data['permissions']['apps'][__APP__])) {
 					notices::add('errors', t('title_access_denied', 'Access Denied'));
 					return;
 				}
@@ -83,7 +83,7 @@
 		$widgets = f::admin_get_widgets();
 
 		foreach ($widgets as $widget) {
-			if (!empty(administrator::$data['widgets']) && empty(administrator::$data['widgets'][$widget['id']])) continue;
+			if (!empty(administrator::$data['widgets']) && !in_array($widget['id'], administrator::$data['permissions']['widgets'])) continue;
 
 			ob_start();
 			include $widget['directory'] . $widget['file'];

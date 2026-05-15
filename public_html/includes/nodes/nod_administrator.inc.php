@@ -132,8 +132,7 @@
 				$administrator[$field['Field']] = database::create_variable($field);
 			});
 
-			$administrator['apps'] = [];
-			$administrator['widgets'] = [];
+			$administrator['permissions'] = [];
 
 			session::$data['administrator'] = $administrator;
 		}
@@ -152,8 +151,7 @@
 				throw new Exception('No administrator found');
 			}
 
-			$administrator['apps'] = $administrator['apps'] ? json_decode($administrator['apps'], true) : [];
-			$administrator['widgets'] = $administrator['widgets'] ? json_decode($administrator['widgets'], true) : [];
+			$administrator['permissions'] = $administrator['permissions'] ? json_decode($administrator['permissions'], true) : [];
 			$administrator['known_ips'] = f::string_split($administrator['known_ips']);
 			$administrator['known_fingerprints'] = f::string_split($administrator['known_fingerprints']);
 

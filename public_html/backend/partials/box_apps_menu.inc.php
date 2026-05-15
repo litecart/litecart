@@ -38,7 +38,9 @@
 			$app['group'] = 'other';
 		}
 
-		if (!empty(administrator::$data['apps']) && empty(administrator::$data['apps'][$app['id']]['status'])) continue;
+		if (!empty(administrator::$data['permissions']['apps'])) {
+			if (empty(administrator::$data['permissions']['apps'][$app['id']])) continue;
+		}
 
 		$app_item = [
 			'id' => $app['id'],
@@ -55,7 +57,9 @@
 		if (!empty($app['menu'])) {
 			foreach ($app['menu'] as $menu_item) {
 
-				if (!empty(administrator::$data['apps']) && (empty(administrator::$data['apps'][$app['id']]['status']) || !in_array($menu_item['doc'], administrator::$data['apps'][$app['id']]['docs']))) continue;
+				if (empty(administrator::$data['permissions']['apps'][$app['id']]) || !in_array($menu_item['doc'], administrator::$data['permissions']['apps'][$app['id']])) {
+					continue;
+				}
 
 				$params = !empty($menu_item['params']) ? array_merge(['app' => $app['id'], 'doc' => $menu_item['doc']], $menu_item['params']) : ['app' => $app['id'], 'doc' => $menu_item['doc']];
 

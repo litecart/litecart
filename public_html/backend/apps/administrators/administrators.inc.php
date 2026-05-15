@@ -39,6 +39,8 @@
 		order by username;"
 	)->fetch_page(function($administrator){
 
+		$administrator['permissions'] = $administrator['permissions'] ? json_decode($administrator['permissions'], true) : [];
+
 		try {
 
 			if ($administrator['valid_from'] && $administrator['valid_from'] > date('Y-m-d H:i:s')) {
@@ -109,7 +111,7 @@
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_administrator', ['administrator_id' => $administrator['id']]); ?>"><?php echo $administrator['username']; ?></a></td>
 					<td><?php echo $administrator['name']; ?></td>
 					<td><?php echo $administrator['email']; ?></td>
-					<td><?php echo (json_decode($administrator['apps'], true)) ? t('title_restricted', 'Restricted') : '-'; ?></td>
+					<td><?php echo $administrator['permissions'] ? t('title_restricted', 'Restricted') : '-'; ?></td>
 					<td class="text-end"><?php echo $administrator['valid_from'] ? f::datetime_when($administrator['valid_from']) : '-'; ?></td>
 					<td class="text-end"><?php echo $administrator['valid_to'] ? f::datetime_when($administrator['valid_to']) : '-'; ?></td>
 					<td class="text-end"><?php echo $administrator['last_login'] ? f::datetime_when($administrator['last_login']) : '-'; ?></td>

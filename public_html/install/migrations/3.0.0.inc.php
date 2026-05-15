@@ -1289,3 +1289,38 @@
 		drop column `length_unit`,
 		drop column `quantity`;"
 	);
+
+	// Merge apps, widgets into a single permissions column
+	database::query(
+		"alter table `". DB_TABLE_PREFIX ."administrators`
+		add column `permissions` TEXT NOT NULL DEFAULT '{}' AFTER `email`;"
+	);
+
+	database::query(
+		"select id, apps, widgets from ". DB_TABLE_PREFIX ."administrators;"
+	)->each(function($admin) {
+
+		$permissions = [
+			'apps' => $admin['apps'] ? json_decode($admin['apps'], true) : [],
+			'widgets' => $admin['widgets'] ? json_decode($admin['widgets'], true) : [],
+		];
+
+		foreach (array_keys($permissions['apps']) as $app_id) {
+			$permissions['apps'][$app_id] = array_values($permissions['apps'][$app_id]['docs']);
+		}
+
+		$permissions = f::array_filter_recursive($permissions);
+
+		database::query(
+			"update ". DB_TABLE_PREFIX ."administrators
+			set permissions = '". database::input(json_encode($permissions ?: [], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."'
+			where id = ". (int)$admin['id'] ."
+			limit 1;"
+		);
+	});
+
+	database::query(
+		"alter table `". DB_TABLE_PREFIX ."administrators`
+		drop column `apps`,
+		drop column `widgets`;"
+	);

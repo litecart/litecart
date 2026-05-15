@@ -8,6 +8,9 @@
 
 	if (!$_POST) {
 		$_POST = $administrator->data;
+		$_POST['apps_toggle'] = !empty($administrator->data['permissions']['apps']) ? 1 : 0;
+		$_POST['widgets_toggle'] = !empty($administrator->data['permissions']['widgets']) ? 1 : 0;
+		$_POST['mcp_toggle'] = !empty($administrator->data['permissions']['mcp']) ? 1 : 0;
 	}
 
 	document::$title[] = !empty($administrator->data['username']) ? t('title_edit_administrator', 'Edit Administrator') : t('title_create_new_administrator', 'Create New Administrator');
@@ -99,12 +102,8 @@
 				throw new Exception(t('error_passwords_missmatch', 'The passwords did not match'));
 			}
 
-			if (empty($_POST['apps'])) {
-				$_POST['apps'] = [];
-			}
-
-			if (empty($_POST['widgets'])) {
-				$_POST['widgets'] = [];
+			if (empty($_POST['permissions'])) {
+				$_POST['permissions'] = [];
 			}
 
 			foreach ([
@@ -114,8 +113,7 @@
 				'lastname',
 				'email',
 				'password',
-				'apps',
-				'widgets',
+				'permissions',
 				'two_factor_auth',
 				'valid_from',
 				'valid_to',
@@ -365,10 +363,10 @@
 	foreach (f::admin_get_apps() as $app) {
 		echo implode(PHP_EOL, [
 			'<li data-app="'. f::escape_attr($app['id']) .'">',
-			'  '. f::form_checkbox('apps['.$app['id'].'][status]', ['1', $app['name']], true),
+			'  '. f::form_checkbox('permissions_structure[apps]['.$app['id'].']', ['1', $app['name']], true),
 			'  <ul class="list-unstyled">',
 			implode(PHP_EOL, array_map(function($doc) use ($app) {
-				return '    <li data-doc="'. f::escape_attr($doc) .'">'. f::form_checkbox('apps['.$app['id'].'][docs][]', [$doc], true) .'</li>';
+				return '    <li data-doc="'. f::escape_attr($doc) .'">'. f::form_checkbox('permissions[apps]['.$app['id'].'][docs][]', [$doc], true) .'</li>';
 			}, array_keys($app['docs']))),
 			'  </ul>',
 			'</li>',
@@ -387,7 +385,28 @@
 	foreach (f::admin_get_widgets() as $widget) {
 		echo implode(PHP_EOL, [
 			'<li>',
-			'  '. f::form_checkbox('widgets['.$widget['id'].']', ['1', $widget['name']], true),
+			'  '. f::form_checkbox('permissions[widgets][]', ['1', $widget['name']], true),
+			'</li>',
+		]);
+	}
+?>
+							</ul>
+						</div>
+					</div>
+					<div id="mcp-permissions" class="form-group">
+						<?php echo f::form_checkbox('mcp_toggle', ['1', t('title_mcp_tools', 'MCP Tools')]); ?>
+						<div class="form-input" style="height: 150px; overflow-y: scroll;">
+							<ul class="list-unstyled">
+<?php
+	foreach (f::admin_get_mcp_tools() as $toolset) {
+		echo implode(PHP_EOL, [
+			'<li data-mcp-toolset-id="'. f::escape_attr($toolset['id']) .'">',
+			'  '. f::form_checkbox('permissions_structure[mcp]['.$toolset['id'].']', ['1', $toolset['name']], true),
+			'  <ul class="list-unstyled">',
+			implode(PHP_EOL, array_map(function($tool) use ($toolset) {
+				return '    <li data-tool="'. f::escape_attr($tool) .'">'. f::form_checkbox('permissions[mcp]['.$toolset['id'].'][]', [$tool], true) .'</li>';
+			}, $toolset['tools'])),
+			'  </ul>',
 			'</li>',
 		]);
 	}
@@ -409,12 +428,13 @@
 </div>
 
 <script>
+	// App permissions
 	$('input[name="apps_toggle"]').on('change', function() {
-		$('input[name^="apps"][name$="[status]"]').prop('disabled', !$(this).is(':checked'));
-		$('input[name^="apps"][name$="[docs][]"]').prop('disabled', !$(this).is(':checked'));
+		$('input[name^="permissions_structure[apps]"]').prop('disabled', !$(this).is(':checked'));
+		$('input[name^="permissions[apps]"][name$="[]"]').prop('disabled', !$(this).is(':checked'));
 	}).trigger('change');
 
-	$('input[name^="apps"][name$="[status]"]').on('change', function() {
+	$('input[name^="permissions_structure[apps]"]').on('change', function() {
 		if ($(this).prop('checked')) {
 			if (!$(this).closest('[data-app]').find('ul :input:checked').length) {
 				$(this).closest('[data-app]').find('ul :input').prop('checked', true);
@@ -424,13 +444,36 @@
 		}
 	});
 
-	$('input[name^="apps"][name$="[docs][]"]').on('change', function() {
+	$('input[name^="permissions[apps]"][name$="[]"]').on('change', function() {
 		if ($(this).is(':checked')) {
 			$(this).closest('ul').closest('[data-app]').children().not('ul').find(':input').prop('checked', true);
 		}
 	});
 
+	// Widget permissions
 	$('input[name="widgets_toggle"]').on('change', function() {
-		$('input[name^="widgets["]').prop('disabled', !$(this).is(':checked'));
+		$('input[name^="permissions[widgets]"]').prop('disabled', !$(this).is(':checked'));
 	}).trigger('change');
+
+	// MCP tool permissions
+	$('input[name="mcp_toggle"]').on('change', function() {
+		$('input[name^="permissions_structure[mcp]"]').prop('disabled', !$(this).is(':checked'));
+		$('input[name^="permissions[mcp]"][name$="[]"]').prop('disabled', !$(this).is(':checked'));
+	}).trigger('change');
+
+	$('input[name^="permissions_structure[mcp]"]').on('change', function() {
+		if ($(this).prop('checked')) {
+			if (!$(this).closest('[data-mcp-toolset-id]').find('ul :input:checked').length) {
+				$(this).closest('[data-mcp-toolset-id]').find('ul :input').prop('checked', true);
+			}
+		} else {
+			$(this).closest('[data-mcp-toolset-id]').find('ul :input').prop('checked', false);
+		}
+	});
+
+	$('input[name^="permissions[mcp]"][name$="[]"]').on('change', function() {
+		if ($(this).is(':checked')) {
+			$(this).closest('ul').closest('[data-mcp-toolset-id]').children().not('ul').find(':input').prop('checked', true);
+		}
+	});
 </script>
