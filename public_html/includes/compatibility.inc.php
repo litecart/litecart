@@ -1,8 +1,8 @@
 <?php
 
 	// Check version
-	if (version_compare(phpversion(), '5.6.0', '<') == true) {
-		die('This application requires at minimum PHP 5.6+ (Detected '. phpversion() .')');
+	if (version_compare(phpversion(), '8.0.0', '<') == true) {
+		die('This application requires at minimum PHP 8.0+ (Detected '. phpversion() .')');
 	}
 
 	// Polyfill for glob brace on Alpine

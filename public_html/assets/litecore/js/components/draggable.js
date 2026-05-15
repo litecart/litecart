@@ -1,14 +1,15 @@
 waitFor('jQuery', ($) => {
 	"use strict";
 
-	$('<style>', {type: 'text/css'})
-		.html([
-			'[draggable="true"] .grabbed { opacity: 0.5; }',
-			'[draggable="true"] .grabbable { cursor: ns-resize; }',
-		].join('\n'))
-		.appendTo('head');
-
 	$.fn.draggable = function(options) {
+
+		$('<style>')
+			.html([
+				'[draggable="true"] .grabbed { opacity: 0.5; }',
+				'[draggable="true"] .grabbable { cursor: ns-resize; }',
+			].join('\n')
+		).appendTo('head');
+
 		// Default settings
 		var settings = $.extend({
 			handle: '.grabbable',

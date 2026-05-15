@@ -276,7 +276,7 @@ waitFor('jQuery', ($) => {
 waitFor('jQuery', ($) => {
 	"use strict";
 
-	$('<style>', {type: 'text/css'})
+	$('<style>')
 		.html([
 			'[draggable="true"] .grabbed { opacity: 0.5; }',
 			'[draggable="true"] .grabbable { cursor: ns-resize; }',

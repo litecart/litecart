@@ -18,7 +18,7 @@
 	}
 
 	if (!defined('FS_DIR_STORAGE')) {
-		define('FS_DIR_STORAGE', __DIR__ . '/../storage/');
+		define('FS_DIR_STORAGE', str_replace('\\', '/', realpath(__DIR__ . '/../storage/')));
 	}
 
 	if (!defined('WS_DIR_APP')) {
@@ -31,6 +31,7 @@
 
 	require_once __DIR__ . '/../../includes/compatibility.inc.php';
 
+	// Load virtual file system but leave vMod disabled
 	define('VMOD_DISABLED', 'true');
 	require_once __DIR__ . '/../../includes/streams/stream_app.inc.php';
 	stream_wrapper_register('app', 'stream_app');

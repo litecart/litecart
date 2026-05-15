@@ -72,6 +72,7 @@
 
 			$view = match(route::$selected['endpoint'] ?? null) {
 				'backend' => new ent_view('app://backend/template/partials/notices.inc.php'),
+				'frontend' => new ent_view('app://frontend/templates/'.settings::get('template').'/partials/notices.inc.php'),
 				default => new ent_view('app://frontend/templates/'.settings::get('template').'/partials/notices.inc.php'),
 			};
 

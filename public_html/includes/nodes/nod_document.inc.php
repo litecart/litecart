@@ -107,8 +107,16 @@
 			self::load_script('app://assets/jquery/jquery-4.0.0.min.js', 'jquery');
 
 			// Get template settings
-			if (!$template_config = include 'app://frontend/templates/'. settings::get('template') .'/config.inc.php') {
-				$template_config = [];
+			self::$snippets['template_path'] = match(route::$selected['endpoint'] ?? null) {
+				$template_config_file => 'app://backend/template/config.inc.php',
+				$template_config_file => 'app://frontend/templates/'.settings::get('template').'/config.inc.php',
+				default => 'app://frontend/templates/'.settings::get('template').'/config.inc.php',
+			};
+			
+			if (is_file($template_config_file) {
+				if (!$template_config = include $template_config_file) {
+					$template_config = [];
+				}
 			}
 
 			self::$settings = settings::get('template_settings') ? json_decode(settings::get('template_settings'), true) : [];
@@ -143,6 +151,7 @@
 
 			self::$jsenv['template']['url'] = match(route::$selected['endpoint'] ?? null) {
 				'backend' => WS_DIR_APP . 'backend/template/',
+				'frontend' => WS_DIR_APP . 'frontend/template/',
 				default => WS_DIR_APP . 'frontend/templates/'. settings::get('template') .'/',
 			};
 
@@ -315,6 +324,7 @@
 			// Set view
 			$_layout = new ent_view(match(route::$selected['endpoint'] ?? null) {
 				'backend' => 'app://backend/template/layouts/'.self::$layout.'.inc.php',
+				'frontend' => 'app://frontend/templates/'.settings::get('template').'/layouts/'.self::$layout.'.inc.php',
 				default => 'app://frontend/templates/'.settings::get('template').'/layouts/'.self::$layout.'.inc.php',
 			});
 

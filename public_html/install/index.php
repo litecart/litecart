@@ -24,7 +24,12 @@
 
 	// Set defaults
 	if (!$_POST) {
-		$country_code = json_decode(file_get_contents('https://ipapi.co/json/'), true)['country'] ?? '';
+		$country_code = $_GET['country_code']
+			?? $_SERVER['HTTP_CF_IPCOUNTRY']
+			?? $_SERVER['HTTP_X_COUNTRY_CODE']
+			?? $_SERVER['HTTP_X_COUNTRY']
+			?? json_decode(file_get_contents('https://ipapi.co/json/'), true)['country']
+			?? '';
 	}
 
 ?>
@@ -79,7 +84,7 @@ input[name="development_type"]:checked + div {
 	<h3>PHP</h3>
 
 	<ul>
-		<li>PHP <?php echo $requirements['scripting']['php']['minimumVersion']; ?>+ (Recommended: <?php echo $requirements['scripting']['php']['recommendedVersion']; ?>+) <?php echo (version_compare(PHP_VERSION, '5.6', '>=') && version_compare(PHP_VERSION, '8.5', '<'))? '<span class="ok">['. PHP_VERSION .']</span>' : '<span class="error">['. PHP_VERSION .']</span>'; ?></li>
+		<li>PHP <?php echo $requirements['scripting']['php']['minimumVersion']; ?>+ (Recommended: <?php echo $requirements['scripting']['php']['recommendedVersion']; ?>+) <?php echo (version_compare(PHP_VERSION, '8.0', '>='))? '<span class="ok">['. PHP_VERSION .']</span>' : '<span class="error">['. PHP_VERSION .']</span>'; ?></li>
 		<li>register_globals = <?php echo ini_get('register_globals') ?: 'off'; ?> <?php echo in_array(strtolower(ini_get('register_globals')), ['off', 'false', '', '0']) ? '<span class="ok">[OK]</span>' : '<span class="error">[Alert! Must be disabled]</span>'; ?></li>
 		<li>arg_separator.output = <?php echo htmlspecialchars(ini_get('arg_separator.output')); ?> <?php echo (ini_get('arg_separator.output') == '&') ? '<span class="ok">[OK]</span>' : '<span class="error">[Not recommended]</span>'; ?></li>
 		<li>memory_limit = <?php echo ini_get('memory_limit'); ?> <?php echo (return_bytes(ini_get('memory_limit')) >= 128*1024*1024) ? '<span class="ok">[OK]</span>' : '<span class="warning">[128M+ recommended]</span>'; ?></li>
@@ -131,22 +136,18 @@ input[name="development_type"]:checked + div {
 
 	<ul>
 <?php
-	$paths = [
+	foreach ([
 		FS_DIR_STORAGE . 'cache/',
 		FS_DIR_STORAGE . 'data/',
 		FS_DIR_STORAGE . 'images/',
 		FS_DIR_STORAGE . 'config.inc.php',
 		FS_DIR_STORAGE . 'vmods/',
 		FS_DIR_STORAGE . '.htaccess',
-	];
-
-	foreach ($paths as $path) {
-		if (file_exists($path) && is_writable($path) || is_writable(dirname($path))) {
-			echo '    <li>~/'. preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $path) .' <span class="ok">[OK]</span></li>' . PHP_EOL;
-		} else if (is_writable('../' . pathinfo($path, PATHINFO_DIRNAME))) {
+	] as $path) {
+		if ((file_exists($path) && is_writable($path)) || is_writable(dirname($path))) {
 			echo '    <li>~/'. preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $path) .' <span class="ok">[OK]</span></li>' . PHP_EOL;
 		} else {
-			echo '    <li>~/'. preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $path) .' <span class="error">[Read-only, please make path writable]</span></li>' . PHP_EOL;
+			echo '    <li>~/'. preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $path) .' <span class="error">[Not writable]</span></li>' . PHP_EOL;
 		}
 	}
 ?>
@@ -312,9 +313,20 @@ input[name="development_type"]:checked + div {
 <?php
 	foreach (timezone_identifiers_list() as $timezone) {
 		$timezone = explode('/', $timezone);
-		if (!in_array($timezone[0], ['Africa', 'America', 'Antarctica', 'Arctic', 'Asia', 'Atlantic', 'Australia', 'Europe', 'Indian', 'Pacific'])) continue;
+		if (!in_array($timezone[0], [
+			'Africa',
+			'America',
+			'Antarctica',
+			'Arctic',
+			'Asia',
+			'Atlantic',
+			'Australia',
+			'Europe',
+			'Indian',
+			'Pacific'
+		])) continue;
 		if (empty($timezone[1])) continue;
-		echo '<option>'. implode('/', $timezone)  .'</option>';
+		echo '<option>'. implode('/', $timezone) .'</option>';
 	}
 ?>
 				</select>
