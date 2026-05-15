@@ -9,7 +9,7 @@
 			'options' => [
 				'redirect' => true,
 			],
-			'rewrite' => function(ent_link $link, $language_code) {
+			'rewrite' => function(type_url $link, $language_code) {
 				$link->path = 'b/';
 				return $link;
 			}
@@ -23,7 +23,7 @@
 			'options' => [
 				'redirect' => true,
 			],
-			'rewrite' => function(ent_link $link, $language_code) {
+			'rewrite' => function(type_url $link, $language_code) {
 
 				if (empty($link->query['brand_id'])) return;
 

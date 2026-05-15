@@ -17,7 +17,7 @@
 		try {
 
 			if (!empty($_GET['redirect_url']) && (empty($_POST['language_code']) || $_POST['language_code'] == language::$selected['code'])) {
-				$redirect_url = new ent_link($_GET['redirect_url']);
+				$redirect_url = new type_url($_GET['redirect_url']);
 				$redirect_url->host = '';
 				} else {
 					$redirect_url = document::ilink('', [], null, [], $_POST['language_code'] ?? null);
@@ -53,7 +53,7 @@
 			}
 
 			if (!empty($_GET['redirect_url'])) {
-				$redirect_url = new ent_link($_GET['redirect_url']);
+				$redirect_url = new type_url($_GET['redirect_url']);
 				$redirect_url->host = '';
 			} else {
 				$redirect_url = document::ilink('', [], null, [], $_POST['language_code'] ?? null);

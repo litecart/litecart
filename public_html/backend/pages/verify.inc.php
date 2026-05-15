@@ -53,7 +53,7 @@
 			unset(session::$data['security.administrator']['verification']);
 
 			if (!empty($_POST['redirect_url'])) {
-				$redirect_url = new ent_link($_POST['redirect_url']);
+				$redirect_url = new type_url($_POST['redirect_url']);
 				$redirect_url->host = '';
 			} else {
 				$redirect_url = document::ilink('b:');

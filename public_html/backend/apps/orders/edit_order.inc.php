@@ -320,7 +320,7 @@
 			}
 
 			if (!empty($_GET['redirect_url'])) {
-				$redirect_url = new ent_link($_GET['redirect_url']);
+				$redirect_url = new type_url($_GET['redirect_url']);
 				$redirect_url->host = '';
 			} else {
 				$redirect_url = document::ilink(__APP__.'/orders');
@@ -346,7 +346,7 @@
 			$order->delete();
 
 			if (!empty($_GET['redirect_url'])) {
-				$redirect_url = new ent_link($_GET['redirect_url']);
+				$redirect_url = new type_url($_GET['redirect_url']);
 				$redirect_url->host = '';
 			} else {
 				$redirect_url = document::ilink(__APP__.'/orders');

@@ -108,7 +108,7 @@
 			$product->save();
 
 			if (!empty($_GET['redirect_url'])) {
-				$_GET['redirect_url'] = new ent_link($_GET['redirect_url']);
+				$_GET['redirect_url'] = new type_url($_GET['redirect_url']);
 				$_GET['redirect_url']->host = '';
 			} else {
 				$_GET['redirect_url'] = document::ilink(__APP__.'/category_tree', ['category_id' => $_POST['categories'][0] ?? '']);

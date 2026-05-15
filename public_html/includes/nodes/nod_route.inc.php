@@ -311,7 +311,7 @@
 			// Display error document
 			http_response_code(404);
 
-			$request = new ent_link(document::link());
+			$request = new type_url(document::link());
 
 			// Don't return an error document for content with a defined extension (presumably static)
 			if (preg_match('#\.[a-z]{2,4}$#', $request->path) && !preg_match('#\.(html?|php)$#', $request->path)) exit;
@@ -365,7 +365,7 @@
 				$language_code = language::$selected['code'];
 			}
 
-			$link = new ent_link((string)$path);
+			$link = new type_url((string)$path);
 
 			if ($path === null && $inherit_params === null) {
 				$path = strtok($_SERVER['REQUEST_URI'], '?');
@@ -415,7 +415,7 @@
 			return $link;
 		}
 
-		public static function rewrite(ent_link $link, $language_code=null) {
+		public static function rewrite(type_url $link, $language_code=null) {
 
 			if ($link->host != $_SERVER['HTTP_HOST']) {
 				return $link;

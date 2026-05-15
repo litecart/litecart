@@ -2,7 +2,7 @@
 
 	/*
 		Example usage:
-		$link = new ent_link('//domain.tld/path/to/file');
+		$link = new type_url('//domain.tld/path/to/file');
 		$link->host = 'newdomain.tld';
 		echo $link;
 	*/

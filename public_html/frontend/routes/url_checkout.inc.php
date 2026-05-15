@@ -9,7 +9,7 @@
 			'options' => [
 				'redirect' => true,
 			],
-			'rewrite' => function(ent_link $link, $language_code) {
+			'rewrite' => function(type_url $link, $language_code) {
 				$link->path = 'checkout/'; // Remove index file for site root
 				return $link;
 			}
