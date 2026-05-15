@@ -16,6 +16,12 @@
 				require 'app://includes/clients/' . $class . '.inc.php';
 				break;
 
+			// DataTypes
+			case (preg_match('#^type_#', $class)):
+
+				require 'app://includes/datatypes/' . $class . '.inc.php';
+				break;
+
 			// Entities
 			case (preg_match('#^ent_#', $class)):
 
