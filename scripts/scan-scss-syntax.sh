@@ -4,20 +4,19 @@ set -euo pipefail
 
 errors=0
 
-# Initialize runner/tool vars to avoid unbound errors under `set -u`
-PKG_EXEC=""
+# Prefer the locally installed stylelint so that the matching
+# stylelint-config-standard-scss / postcss-scss versions from
+# package.json are picked up. node_modules absent? — skip
+# gracefully so the job stays green; CI just needs `bun install`
+# (or `npm install`) before this step to enable the check.
+STYLELINT_BIN="./node_modules/.bin/stylelint"
 
-# Detect available package executor: prefer bunx, then npx
-if command -v bunx >/dev/null 2>&1; then
-  PKG_EXEC="bunx"
-elif command -v npx >/dev/null 2>&1; then
-  PKG_EXEC="npx"
-else
-  echo "::warning::Skipping SCSS syntax check — no 'bunx' or 'npx' available"
+if [ ! -x "$STYLELINT_BIN" ]; then
+  echo "::warning::Skipping SCSS syntax check — stylelint not installed. Run 'bun install' (or 'npm install') before this step to enable the check."
   exit 0
 fi
 
-if ! "$PKG_EXEC" stylelint "public_html/**/*.scss" --custom-syntax postcss-scss --max-warnings=0; then
+if ! "$STYLELINT_BIN" "public_html/**/*.scss" --custom-syntax postcss-scss --max-warnings=0; then
   echo "::error::SCSS lint/syntax error (stylelint)"
   errors=$((errors + 1))
 fi
