@@ -49,16 +49,7 @@
 			exit;
 
 		} catch(Exception $e) {
-
-			if (!empty(customer::$data['id'])) {
-				database::query(
-					"update ". DB_TABLE_PREFIX ."customers
-					set num_human_fails = num_human_fails + 1
-					where id =". (int)customer::$data['id'] ."
-					limit 1;"
-				);
-			}
-
+			session::$data['security']['failed_authentications']++;
 			notices::add('errors', $e->getMessage());
 		}
 	}
