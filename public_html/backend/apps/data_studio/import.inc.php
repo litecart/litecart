@@ -14,10 +14,10 @@
 
 	$database_tables = database::query(
 		"select table_name from information_schema.tables
-			where table_schema = '". DB_DATABASE ."'
-			and table_type = 'BASE TABLE'
-			and table_name not like '%.%'
-			order by table_name asc;",
+		where table_schema = '". DB_DATABASE ."'
+		and table_type = 'BASE TABLE'
+		and table_name not like '%.%'
+		order by table_name asc;",
 	)->fetch_all('table_name');
 
 	if (!$_POST) {
@@ -82,7 +82,7 @@
 					// Determine delimited
 					if (empty($_POST['delimiter'])) {
 						foreach ([',', ';', "\t", '|', chr(124)] as $char) {
-							if (strpos($first_line, $char) !== false) {
+							if (str_contains($first_line, $char)) {
 								$_POST['delimiter'] = $char;
 								break;
 							}
@@ -213,12 +213,12 @@
 							$table_name,
 							$database_tables = database::query(
 								"select table_name from information_schema.tables
-							where table_schema = '" .
+								where table_schema = '" .
 									DB_DATABASE .
 									"'
-							and table_type = 'BASE TABLE'
-							and table_name not like '%.%'
-							order by table_name asc;",
+								and table_type = 'BASE TABLE'
+								and table_name not like '%.%'
+								order by table_name asc;",
 							)->fetch_all('table_name'),
 						)
 					) {

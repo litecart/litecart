@@ -103,7 +103,7 @@
 				case 'path':
 
 					// Pop path
-					if (strpos($value, '..') !== false) {
+					if (str_contains($value, '..')) {
 
 						$parts = array_filter(explode('/', $value), 'strlen');
 						$absolutes = [];

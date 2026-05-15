@@ -395,7 +395,7 @@
 			if ($keyword) {
 
 				foreach (array_keys(self::$_data) as $token_id) {
-					if (strpos($keyword, $token_id) !== false) {
+					if (str_contains($keyword, $token_id)) {
 						unset(self::$_data[$token_id]);
 					}
 				}
