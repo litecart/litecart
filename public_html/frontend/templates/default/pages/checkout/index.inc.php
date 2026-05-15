@@ -60,34 +60,34 @@
 								<div class="col-md-6 detail">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_buyer', 'Buyer'); ?></div>
-										<div class="billing-address"><?php echo nl2br(f::format_address($order['customer'])); ?></div>
+										<div class="billing-address"><?php echo nl2br(f::escape_html(f::format_address($order['customer']))); ?></div>
 									</label>
 
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_email_address', 'Email Address'); ?></div>
-										<div><?php echo $order['customer']['email'] ?? '&nbsp;'; ?></div>
+										<div><?php echo isset($order['customer']['email']) ? f::escape_html($order['customer']['email']) : '&nbsp;'; ?></div>
 									</label>
 
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_phone_number', 'Phone Number'); ?></div>
-										<div><?php echo $order['customer']['phone'] ?? '&nbsp;'; ?></div>
+										<div><?php echo isset($order['customer']['phone']) ? f::escape_html($order['customer']['phone']) : '&nbsp;'; ?></div>
 									</label>
 								</div>
 
 								<div class="col-md-6 detail">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_deliver_to', 'Deliver To'); ?></div>
-										<div class="shipping-address"><?php echo nl2br(f::format_address($order['customer']['shipping_address'])); ?></div>
+										<div class="shipping-address"><?php echo nl2br(f::escape_html(f::format_address($order['customer']['shipping_address']))); ?></div>
 									</label>
 
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_email_address', 'Email Address'); ?></div>
-										<div><?php echo $order['customer']['shipping_address']['email'] ?? '&nbsp;'; ?></div>
+										<div><?php echo isset($order['customer']['shipping_address']['email']) ? f::escape_html($order['customer']['shipping_address']['email']) : '&nbsp;'; ?></div>
 									</label>
 
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_phone_number', 'Phone Number'); ?></div>
-										<div><?php echo $order['customer']['shipping_address']['phone'] ?? '&nbsp;'; ?></div>
+										<div><?php echo isset($order['customer']['shipping_address']['phone']) ? f::escape_html($order['customer']['shipping_address']['phone']) : '&nbsp;'; ?></div>
 									</label>
 
 								</div>

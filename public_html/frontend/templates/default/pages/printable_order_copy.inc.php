@@ -92,7 +92,7 @@ h1 {
 			<div class="grid">
 				<div class="col-3 shipping-address">
 					<div class="label"><?php echo t('title_shipping_address', 'Shipping Address'); ?></div>
-					<div class="value"><?php echo nl2br(f::format_address($order['customer']['shipping_address'])); ?></div>
+					<div class="value"><?php echo nl2br(f::escape_html(f::format_address($order['customer']['shipping_address']))); ?></div>
 				</div>
 
 				<div class="col-3">
@@ -100,13 +100,13 @@ h1 {
 					<div class="value"><?php echo !empty($order['weight_total']) ? weight::format($order['weight_total'], $order['weight_unit'])  : '-'; ?></div>
 
 					<div class="label"><?php echo t('title_tax_id', 'Tax ID'); ?></div>
-					<div class="value"><?php echo $order['customer']['tax_id']; ?></div>
+					<div class="value"><?php echo f::escape_html($order['customer']['tax_id']); ?></div>
 				</div>
 
 				<div class="col-6 billing-address">
 					<div class="rounded-rectangle">
 						<div class="label"><?php echo t('title_billing_address', 'Billing Address'); ?></div>
-						<div class="value"><?php echo nl2br(f::format_address($order['customer'])); ?></div>
+						<div class="value"><?php echo nl2br(f::escape_html(f::format_address($order['customer']))); ?></div>
 					</div>
 				</div>
 			</div>
