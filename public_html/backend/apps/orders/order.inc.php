@@ -246,7 +246,7 @@ textarea[name="notes"]:focus {
 
 						<div class="form-group">
 							<div class="form-label"><?php echo t('title_shipping_address', 'Shipping Address'); ?></div>
-							<div class="detail"><?php echo nl2br(f::format_address($order->data['customer']['shipping_address'])); ?></div>
+							<div class="detail"><?php echo nl2br(f::escape_html(f::format_address($order->data['customer']['shipping_address']))); ?></div>
 						</div>
 
 						<div class="form-group">
@@ -274,12 +274,12 @@ textarea[name="notes"]:focus {
 
 					<div class="form-group">
 						<div class="form-label"><?php echo t('title_billing_address', 'Billing Address'); ?></div>
-						<div class="detail"><?php echo nl2br(f::format_address($order->data['customer'])); ?></div>
+						<div class="detail"><?php echo nl2br(f::escape_html(f::format_address($order->data['customer']))); ?></div>
 					</div>
 
 					<div class="form-group">
 						<div class="form-label"><?php echo t('title_tax_id', 'Tax ID'); ?></div>
-						<div class="detail"><?php echo $order->data['customer']['tax_id']; ?></div>
+						<div class="detail"><?php echo f::escape_html($order->data['customer']['tax_id']); ?></div>
 					</div>
 
 					<div class="form-group">

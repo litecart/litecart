@@ -133,6 +133,7 @@
 		}
 
 		public function set_subject($subject) {
+			$subject = preg_replace('#<(script|style)\b[^>]*>.*?</\1>#is', '', $subject);
 			$this->data['subject'] = trim(preg_replace('#(\R|\t|%0A|%0D)*#', '', $subject));
 			return $this;
 		}

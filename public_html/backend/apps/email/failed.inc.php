@@ -110,10 +110,10 @@
 				<tr class="<?php echo empty($email['status']) ? 'semi-transparent' : ''; ?>">
 					<td><?php echo f::form_checkbox('emails[]', $email['id']); ?></td>
 					<td><?php echo strtr($email['status'], $statuses); ?></td>
-					<td><?php echo implode(', ', array_column($email['recipients'], 'name')); ?></td>
+					<td><?php echo f::escape_html(implode(', ', array_column($email['recipients'], 'name'))); ?></td>
 					<td>
 						<a class="link" href="<?php echo document::href_ilink(__APP__ . '/view', ['email_id' => $email['id']]); ?>">
-							<?php echo $email['subject']; ?>
+							<?php echo f::escape_html($email['subject']); ?>
 						</a>
 					</td>
 					<td><?php echo f::datetime_format('datetime', $email['sent_at']); ?></td>

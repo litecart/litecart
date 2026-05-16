@@ -83,14 +83,14 @@ table.items tbody tr:nth-child(11) {
 				<div class="col-6 shipping-address">
 					<div class="rounded-rectangle">
 						<div class="label"><?php echo t('title_shipping_address', 'Shipping Address'); ?></div>
-						<div class="value"><?php echo nl2br(f::format_address($order['customer']['shipping_address'])); ?></div>
+						<div class="value"><?php echo nl2br(f::escape_html(f::format_address($order['customer']['shipping_address']))); ?></div>
 					</div>
 
 					<div class="label"><?php echo t('title_email', 'Email'); ?></div>
-					<div class="value"><?php echo $order['customer']['email'] ?? '-'; ?></div>
+					<div class="value"><?php echo isset($order['customer']['email']) ? f::escape_html($order['customer']['email']) : '-'; ?></div>
 
 					<div class="label"><?php echo t('title_phone_number', 'Phone Number'); ?></div>
-					<div class="value"><?php echo $order['customer']['shipping_address']['phone'] ?? '-'; ?></div>
+					<div class="value"><?php echo isset($order['customer']['shipping_address']['phone']) ? f::escape_html($order['customer']['shipping_address']['phone']) : '-'; ?></div>
 				</div>
 			</div>
 		</div>
