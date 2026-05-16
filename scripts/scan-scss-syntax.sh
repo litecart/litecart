@@ -4,21 +4,20 @@ set -euo pipefail
 
 errors=0
 
-# Initialize runner/tool vars to avoid unbound errors under `set -u`
-RUNNER_CMD=""
+# Prefer the locally installed stylelint so that the matching
+# stylelint-config-standard-scss / postcss-scss versions from
+# package.json are picked up. node_modules absent? — skip
+# gracefully so the job stays green; CI just needs `bun install`
+# (or `npm install`) before this step to enable the check.
+STYLELINT_BIN="./node_modules/.bin/stylelint"
 
-# Detect available tool: prefer Bun, then node
-if command -v bun >/dev/null 2>&1; then
-  RUNNER_CMD="bun"
-elif command -v node >/dev/null 2>&1; then
-  RUNNER_CMD="node"
-else
-  echo "::warning::Skipping SCSS syntax check — no 'bun' or 'node' available"
+if [ ! -x "$STYLELINT_BIN" ]; then
+  echo "::warning::Skipping SCSS syntax check — stylelint not installed. Run 'bun install' (or 'npm install') before this step to enable the check."
   exit 0
 fi
 
-if ! "${RUNNER[@]} run" stylelint "public_html/**/*.scss" --custom-syntax postcss-scss --max-warnings=0; then
-  echo "::error file=$file::SCSS lint/syntax error (stylelint)"
+if ! "$STYLELINT_BIN" "public_html/**/*.scss" --custom-syntax postcss-scss --max-warnings=0; then
+  echo "::error::SCSS lint/syntax error (stylelint)"
   errors=$((errors + 1))
 fi
 
