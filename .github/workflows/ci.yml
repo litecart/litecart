@@ -110,7 +110,7 @@ jobs:
         db:
           - image: mariadb:latest
             slug: mariadb-latest
-            health: 'mysqladmin ping -h localhost'
+            health: 'mariadb-admin ping -h localhost'
           - image: mysql:latest
             slug: mysql-latest
             health: 'mysqladmin ping -h localhost'
@@ -119,10 +119,17 @@ jobs:
       database:
         image: ${{ matrix.db.image }}
         env:
+          # Both env-var families are set so the service block works on
+          # mariadb:latest (which no longer accepts the legacy MYSQL_*
+          # aliases) and on mysql:latest (which ignores MARIADB_*).
           MYSQL_ROOT_PASSWORD: litecart
           MYSQL_DATABASE: litecart
           MYSQL_USER: litecart
           MYSQL_PASSWORD: litecart
+          MARIADB_ROOT_PASSWORD: litecart
+          MARIADB_DATABASE: litecart
+          MARIADB_USER: litecart
+          MARIADB_PASSWORD: litecart
         ports:
           - 3306:3306
         options: >-
@@ -156,14 +163,20 @@ jobs:
       mariadb:
         image: mariadb:latest
         env:
+          # mariadb:latest no longer accepts legacy MYSQL_* aliases — set
+          # both families so this block survives future image renames too.
           MYSQL_ROOT_PASSWORD: litecart
           MYSQL_DATABASE: litecart
           MYSQL_USER: litecart
           MYSQL_PASSWORD: litecart
+          MARIADB_ROOT_PASSWORD: litecart
+          MARIADB_DATABASE: litecart
+          MARIADB_USER: litecart
+          MARIADB_PASSWORD: litecart
         ports:
           - 3306:3306
         options: >-
-          --health-cmd="mysqladmin ping -h localhost"
+          --health-cmd="mariadb-admin ping -h localhost"
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
@@ -205,7 +218,7 @@ jobs:
         db:
           - image: mariadb:latest
             slug: mariadb-latest
-            health: 'mysqladmin ping -h localhost'
+            health: 'mariadb-admin ping -h localhost'
           - image: mysql:latest
             slug: mysql-latest
             health: 'mysqladmin ping -h localhost'
@@ -214,10 +227,16 @@ jobs:
       mariadb:
         image: ${{ matrix.db.image }}
         env:
+          # Set both env-var families so the block works on either engine
+          # (mariadb:latest no longer accepts legacy MYSQL_* aliases).
           MYSQL_ROOT_PASSWORD: litecart
           MYSQL_DATABASE: litecart
           MYSQL_USER: litecart
           MYSQL_PASSWORD: litecart
+          MARIADB_ROOT_PASSWORD: litecart
+          MARIADB_DATABASE: litecart
+          MARIADB_USER: litecart
+          MARIADB_PASSWORD: litecart
         ports:
           - 3306:3306
         options: >-
