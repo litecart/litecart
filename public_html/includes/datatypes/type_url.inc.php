@@ -2,29 +2,29 @@
 
 	/*
 		Example usage:
-		$link = new type_url('//domain.tld/path/to/file');
-		$link->host = 'newdomain.tld';
-		echo $link;
+		$url = new type_url('//domain.tld/path/to/file');
+		$url->host = 'newdomain.tld';
+		echo $url;
 	*/
 
-	class ent_link implements \JsonSerializable {
+	class type_url implements \JsonSerializable {
 
 		private $_components;
 		private $_serialized;
 
-		public function __construct($link='') {
+		public function __construct($url='') {
 
 			$this->reset();
 
-			if ($link instanceof ent_link) {
+			if ($url instanceof type_url) {
 
 				foreach (array_keys($this->_components) as $component) {
-					$this->$component = $link->$component;
+					$this->$component = $url->$component;
 				}
 
 			} else {
 
-				$components = is_array($link) ? $link : parse_url($link);
+				$components = is_array($url) ? $url : parse_url($url);
 
 				if ($components) {
 					foreach ($components as $component => $value) {
