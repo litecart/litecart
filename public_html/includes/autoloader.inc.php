@@ -16,12 +16,6 @@
 				require 'app://includes/clients/' . $class . '.inc.php';
 				break;
 
-			// DataTypes
-			case (preg_match('#^type_#', $class)):
-
-				require 'app://includes/datatypes/' . $class . '.inc.php';
-				break;
-
 			// Entities
 			case (preg_match('#^ent_#', $class)):
 
@@ -84,6 +78,12 @@
 			case (preg_match('#^stream_#', $class)):
 
 				require 'app://includes/streams/' . $class . '.inc.php';
+				break;
+
+			// Types
+			case (preg_match('#^type_#', $class)):
+
+				require 'app://includes/types/' . $class . '.inc.php';
 				break;
 
 			// System nodes
