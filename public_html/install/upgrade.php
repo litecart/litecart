@@ -15,10 +15,7 @@
 		'from_version::', 'development_type::', 'backup::', 'cleanup::',
 	];
 
-	require_once __DIR__ . '/includes/bootstrap.inc.php';
-	require_once __DIR__ . '/includes/security_headers.inc.php';
-
-	require_once __DIR__ . '/../includes/compatibility.inc.php';
+	require_once __DIR__ . '/includes/init.inc.php';
 
 	if ($_SERVER['SERVER_SOFTWARE'] == 'CLI') {
 
@@ -40,7 +37,7 @@
 			exit;
 		}
 
-		// $_REQUEST already populated by bootstrap.inc.php's getopt call.
+		// $_REQUEST already populated by init.inc.php's getopt call.
 		$_REQUEST['upgrade'] = true;
 
 		if (isset($_REQUEST['cleanup'])) {

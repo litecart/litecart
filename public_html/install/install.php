@@ -11,8 +11,7 @@
 		'client_ip::',
 	];
 
-	require_once __DIR__ . '/includes/bootstrap.inc.php';
-	require_once __DIR__ . '/includes/security_headers.inc.php';
+	require_once __DIR__ . '/includes/init.inc.php';
 	require_once __DIR__ . '/includes/config_writer.inc.php';
 
 	if (install_is_cli()) {
@@ -28,19 +27,27 @@
 		install_reject_locked();
 	}
 
-	if (!empty($_SERVER['DOCUMENT_ROOT'])) {
-		define('DOCUMENT_ROOT', rtrim(str_replace('\\', '/', realpath($_SERVER['DOCUMENT_ROOT'])), '/') . '/');
+	// DOCUMENT_ROOT may have been set by init.inc.php (from $_SERVER or
+	// --document_root). Only define it here as a fallback / error gate.
+	if (!defined('DOCUMENT_ROOT')) {
+		if (!empty($_SERVER['DOCUMENT_ROOT'])) {
+			define('DOCUMENT_ROOT', rtrim(str_replace('\\', '/', realpath($_SERVER['DOCUMENT_ROOT'])), '/') . '/');
 
-	} else if ($_SERVER['SERVER_SOFTWARE'] == 'CLI' && !empty($_REQUEST['document_root'])) {
-		define('DOCUMENT_ROOT', rtrim(str_replace('\\', '/', realpath($_REQUEST['document_root'])), '/') . '/');
+		} else if ($_SERVER['SERVER_SOFTWARE'] == 'CLI' && !empty($_REQUEST['document_root'])) {
+			define('DOCUMENT_ROOT', rtrim(str_replace('\\', '/', realpath($_REQUEST['document_root'])), '/') . '/');
 
-	} else {
-		throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . ' Could not detect \$_SERVER[\'DOCUMENT_ROOT\']. If you are using CLI, make sure you pass the parameter "document_root" e.g. --document_root="/var/www/mysite.com/public_html"</p>' . PHP_EOL  . PHP_EOL);
+		} else {
+			throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . ' Could not detect \$_SERVER[\'DOCUMENT_ROOT\']. If you are using CLI, make sure you pass the parameter "document_root" e.g. --document_root="/var/www/mysite.com/public_html"</p>' . PHP_EOL  . PHP_EOL);
+		}
 	}
 
-	// FS_DIR_APP and FS_DIR_STORAGE are already defined by bootstrap.inc.php.
-	define('WS_DIR_APP',     preg_replace('#^'. preg_quote(rtrim(DOCUMENT_ROOT, '/'), '#') .'#', '', FS_DIR_APP));
-	define('WS_DIR_STORAGE', WS_DIR_APP .'storage/');
+	// FS_DIR_APP and FS_DIR_STORAGE are already defined by init.inc.php.
+	if (!defined('WS_DIR_APP')) {
+		define('WS_DIR_APP', preg_replace('#^'. preg_quote(rtrim(DOCUMENT_ROOT, '/'), '#') .'#', '', FS_DIR_APP));
+	}
+	if (!defined('WS_DIR_STORAGE')) {
+		define('WS_DIR_STORAGE', WS_DIR_APP .'storage/');
+	}
 
 	// Set platform name
 	if (preg_match('#define\(\'PLATFORM_NAME\', \'([^\']+)\'\);#', file_get_contents(FS_DIR_APP . 'includes/app_header.inc.php'), $matches)) {
@@ -91,7 +98,7 @@
 			exit;
 		}
 
-		// getopt() and $_REQUEST['install'] already set by bootstrap.inc.php
+		// getopt() and $_REQUEST['install'] already set by init.inc.php
 	}
 
 	if (empty($_REQUEST['install'])) {
@@ -107,7 +114,9 @@
 		return $buffer;
 	});
 
-	define('VMOD_DISABLED', 'true');
+	if (!defined('VMOD_DISABLED')) {
+		define('VMOD_DISABLED', 'true');
+	}
 
 	require_once FS_DIR_APP . 'includes/shorthand.inc.php';
 
