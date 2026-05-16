@@ -68,19 +68,34 @@
 		return $output;
 	}
 
-	function draw_element($name, $parameters=[], $content='') {
+	function draw_element($tag, $attributes=[], $content='') {
 
-		$parameters = implode(' ', array_map(function($key, $value) {
+		if (is_array($attributes)) {
+			$attributes = implode(' ', array_map(function($key, $value) {
+				if ($value == '') {
+					return $key;
+				} else {
+					return $key .'="'. f::escape_attr($value) .'"';
+				}
+			}, array_keys($attributes), $attributes));
+		}
 
-			if ($value == '') {
-				return $key;
-			} else {
-				return $key .'="'. f::escape_attr($value) .'"';
+		if (in_array($tag, ['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source', 'track', 'wbr'])) {
+			if ($content) {
+				trigger_error('Self-closing tags should not have content', E_USER_WARNING);
 			}
+			return '<'. $tag . ($attributes ? ' '. $attributes : '') .'>';
+		}
 
-		}, array_keys($parameters, $parameters)));
+		if (preg_match('#^<[a-z]#i', $content, $m)) {
+			return implode(PHP_EOL, [
+				'<'. $tag . ($attributes ? ' '. $attributes : '') .'>',
+				'  '. $content,
+				'</'. $tag .'>',
+			]);
+		}
 
-		return '<'. $name . ($parameters ? ' ' . $parameters : '') .'>'. $content .'</'. $name .'>';
+		return '<'. $tag . ($attributes ? ' ' . $attributes : '') .'>'. $content .'</'. $tag .'>';
 	}
 
 	function draw_fonticon($icon, $parameters='') {
