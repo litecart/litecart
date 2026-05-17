@@ -37,7 +37,9 @@
 	}
 
 	if (!defined('FS_DIR_STORAGE')) {
-		define('FS_DIR_STORAGE', str_replace('\\', '/', realpath(__DIR__ . '/../storage/')));
+		// No realpath() — storage/ may not exist yet on a first-time install,
+		// in which case realpath() would return false and break the path.
+		define('FS_DIR_STORAGE', FS_DIR_APP . 'storage/');
 	}
 
 	if (!defined('WS_DIR_APP') && defined('DOCUMENT_ROOT')) {
