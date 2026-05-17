@@ -519,9 +519,9 @@
 
 	function form_input_money($name, $currency_code=null, $input=true, $attributes=[]) {
 
-		if (preg_match('#^[A-Z]{3}$#', $name) && !preg_match('#^[A-Z]{3}$#', $currency_code)) {
-			trigger_error('Passing currency code as 1st parameter in form_input_money() is deprecated. Instead, use form_input_money($name, $currency_code, $input, $attributes)', E_USER_DEPRECATED);
-			[$name, $currency_code] = [$currency_code, $name];
+		if ($input instanceof type_money) {
+			$currency_code = $currency_code ?: $input->currency_code;
+			$input = $input->in($currency_code);
 		}
 
 		if ($input === true) {
