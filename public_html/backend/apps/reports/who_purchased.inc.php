@@ -84,7 +84,7 @@
 		<div class="card-filter">
 
 			<div class="expandable">
-				<?php echo f::form_input_search('query', true, 'placeholder="'. f::escape_html(t('text_item_name_or_code', 'Item name or code')) .'"'); ?>
+				<?php echo f::form_input_search('query', true, ['placeholder' => f::escape_html(t('text_item_name_or_code', 'Item name or code'))]); ?>
 			</div>
 
 			<div class="input-group" style="width: 450px;">

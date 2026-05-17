@@ -9,12 +9,12 @@
 
 			<label class="form-group">
 				<div class="form-label"><?php echo t('title_email_address', 'Email Address'); ?></div>
-				<?php echo f::form_input_email('email', true, 'required placeholder="'. t('title_email_address', 'Email Address') .'"'); ?>
+				<?php echo f::form_input_email('email', true, ['required' => '', 'placeholder' => t('title_email_address', 'Email Address')]); ?>
 			</label>
 
 			<label class="form-group">
 				<div class="form-label"><?php echo t('title_password', 'Password'); ?></div>
-				<?php echo f::form_input_password('password', '', 'placeholder="'. t('title_password', 'Password') .'"'); ?>
+				<?php echo f::form_input_password('password', '', ['placeholder' => t('title_password', 'Password')]); ?>
 			</label>
 
 			<div class="btn-group btn-block">

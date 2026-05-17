@@ -82,7 +82,6 @@
 
 		// Auto-inject CSRF token for POST forms
 		if (strtolower($method) !== 'get' && class_exists('session', false)) {
-			//$html .= '<input type="hidden" name="csrf_token" value="'. f::escape_attr(session::csrf_token()) .'" />';
 			$html .= f::draw_element('input', ['type' => 'hidden', 'name' => 'csrf_token', 'value' => session::csrf_token()]);
 		}
 
@@ -139,15 +138,15 @@
 			'enable' => f::form_button('enable', t('title_enable', 'Enable'), 'submit', $attributes, 'on'),
 			'disable' => f::form_button('disable', t('title_disable', 'Disable'), 'submit', $attributes, 'off'),
 			'move-up' => f::form_button('move_up', t('title_move_up', 'Move Up'), 'button', ['class' => 'btn btn-default'] + $attributes, 'move-up'),
-			'move-up-sm' => f::form_button('move_up', '', 'button', ['title' => f::escape_attr(t('title_move_up', 'Move Up')), 'class' => 'btn btn-default btn-sm'] + $attributes, 'move-up'),
+			'move-up-sm' => f::form_button('move_up', '', 'button', ['title' => t('title_move_up', 'Move Up'), 'class' => 'btn btn-default btn-sm'] + $attributes, 'move-up'),
 			'move-down' => f::form_button('move_down', t('title_move_up', 'Move Up'), 'button', ['class' => 'btn btn-default'] + $attributes, 'move-down'),
-			'move-down-sm' => f::form_button('move_down', '', 'button', ['title' => f::escape_attr(t('title_move_down', 'Move Down')), 'class' => 'btn btn-default btn-sm'] + $attributes, 'move-down'),
+			'move-down-sm' => f::form_button('move_down', '', 'button', ['title' => t('title_move_down', 'Move Down'), 'class' => 'btn btn-default btn-sm'] + $attributes, 'move-down'),
 			'remove' => f::form_button('remove', t('title_remove', 'Remove'), 'button', ['class' => 'btn btn-default'] + $attributes, 'remove'),
-			'remove-sm' => f::form_button('remove', '', 'button', ['title' => f::escape_attr(t('title_remove', 'Remove')), 'class' => 'btn btn-default btn-sm'] + $attributes, 'remove'),
+			'remove-sm' => f::form_button('remove', '', 'button', ['title' => t('title_remove', 'Remove'), 'class' => 'btn btn-default btn-sm'] + $attributes, 'remove'),
 			'save' => f::form_button('save', t('title_save', 'Save'), 'submit', ['class' => 'btn btn-success'] + $attributes, 'save'),
 			'quicksave' => implode(PHP_EOL, [
 				'<div class="btn-group">',
-				'	'. f::form_button('quicksave', ['true', ''], 'submit', ['class' => 'btn btn-success btn-icon', 'title' => f::escape_attr(t('title_quicksave', 'Quicksave')), 'style' => 'padding-left: .75em; padding-right: .75em;'] + $attributes, 'save'),
+				'	'. f::form_button('quicksave', ['true', ''], 'submit', ['class' => 'btn btn-success btn-icon', 'title' => t('title_quicksave', 'Quicksave'), 'style' => 'padding-left: .75em; padding-right: .75em;'] + $attributes, 'save'),
 				'	'. f::form_button('save', t('title_save', 'Save'), 'submit', ['class' => 'btn btn-success', 'style' => 'padding-left: .75em;'] + $attributes, 'save'),
 				'</div>',
 			]),
@@ -176,7 +175,7 @@
 		$button = match($name) {
 			'create' => form_button_link($url, t('title_create', 'Create'), $attributes, 'add'),
 			'edit' => form_button_link($url, t('title_edit', 'Edit'), $attributes, 'edit'),
-			'edit-sm' => form_button_link($url, '', ['title' => f::escape_attr(t('title_edit', 'Edit'))] + $attributes, 'edit'),
+			'edit-sm' => form_button_link($url, '', ['title' => t('title_edit', 'Edit')] + $attributes, 'edit'),
 		};
 
 		if (!$button) {
@@ -1518,7 +1517,7 @@
 			$content .= implode(PHP_EOL, [
 				'      <li class="list-item flex">',
 				'        <div style="flex-grow: 1;">',
-				'          '. form_input_hidden($name, $category['id'], 'data-id="'. (int)$category['id'] .'" data-name="'. f::escape_attr($category['name']) .'"'),
+				'          '. form_input_hidden($name, $category['id'], ['data-id' => (int)$category['id'], 'data-name' => f::escape_attr($category['name'])]),
 				'          '. f::draw_fonticon('folder') .' '. implode(' &gt; ', $path),
 				'        </div>',
 				'        <button name="remove" class="btn btn-default btn-sm float-end" type="button">',
@@ -1533,7 +1532,7 @@
 			'  </div>',
 			'',
 			'  <div class="dropdown">',
-			'  '. form_input_search('', '', 'autocomplete="off" placeholder="'. f::escape_attr(t('text_search_categories', 'Search categories')) .'&hellip;"'),
+			'  '. form_input_search('', '', ['autocomplete' => 'off', 'placeholder' => t('text_search_categories', 'Search categories') . '&hellip;']),
 			'    <div class="dropdown-content" style="padding: 1em; inset-inline-end: 0; max-height: 480px; overflow-y: auto;">',
 			'    </div>',
 			'  </div>',
@@ -2609,7 +2608,7 @@
 				'    <div class="stock-item" data-id="'. $item['id'] .'">'. $item['name'] .' &mdash; '. $item['sku'] .' ['. (float)$item['quantity'] .']</div>'
 			)),
 			'  </div>',
-			'  '. form_button('add', t('title_add_item', 'Add'), 'button', 'data-toggle="lightbox" data-target="'. document::href_ilink('catalog/item_picker', ['js_callback' => '_callback_'.$uid]) .'"'),
+			'  '. form_button('add', t('title_add_item', 'Add'), 'button', ['data-toggle' => 'lightbox', 'data-target' => document::href_ilink('catalog/item_picker', ['js_callback' => '_callback_'.$uid])]),
 			'</div>',
 		]));
 

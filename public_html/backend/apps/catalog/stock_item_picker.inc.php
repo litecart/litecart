@@ -18,13 +18,13 @@
 	</div>
 
 	<div class="card-action">
-		<?php echo f::form_button_link(document::ilink(__APP__.'/edit_stock_item', [], ['js_callback']), t('title_create_new_stock_item', 'Create New Stock Item'), 'class="btn btn-default" data-toggle="lightbox" data-seamless=true data-width="980px"', 'add'); ?>
+		<?php echo f::form_button_link(document::ilink(__APP__.'/edit_stock_item', [], ['js_callback']), t('title_create_new_stock_item', 'Create New Stock Item'), ['class' => 'btn btn-default', 'data-toggle' => 'lightbox', 'data-seamless' => 'true', 'data-width' => '980px'], 'add'); ?>
 	</div>
 
 	<div class="card-body">
 		<label class="form-group">
 			<div class="form-label"><?php echo t('title_search', 'Search'); ?></div>
-			<?php echo f::form_input_text('query', true, 'placeholder="'. f::escape_attr(t('title_search', 'Search')) .'" autocomplete="off"'); ?>
+			<?php echo f::form_input_text('query', true, ['placeholder' => f::escape_attr(t('title_search', 'Search')) , 'autocomplete' => 'off']); ?>
 		</label>
 	</div>
 

@@ -16,7 +16,7 @@
 
 					<label class="form-group" style="position:absolute;width:0;height:0;overflow:hidden;">
 						<div class="form-label"><?php echo t('title_email_address', 'Email'); ?></div>
-						<?php echo f::form_input_email('email', false, 'autocomplete="off"'); ?>
+						<?php echo f::form_input_email('email', false, ['autocomplete' => 'off']); ?>
 					</label>
 
 					<label class="form-group">

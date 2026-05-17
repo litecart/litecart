@@ -260,7 +260,7 @@
 					<td class="text-center"><?php echo f::form_checkbox('columns['.$column['name'].'][unsigned]', '1', true); ?></td>
 					<td><?php echo f::form_input_text('columns['.$column['name'].'][length]', true); ?></td>
 					<td class="text-center"><?php echo f::form_checkbox('columns['.$column['name'].'][null]', '1', true); ?></td>
-					<td><?php echo f::form_input_text('columns['.$column['name'].'][default]', true, 'list="default-options"'); ?></td>
+					<td><?php echo f::form_input_text('columns['.$column['name'].'][default]', true, ['list' => 'default-options']); ?></td>
 					<td><?php echo f::form_select_mysql_collation('columns['.$column['name'].'][collation]', true); ?></td>
 					<td><?php echo f::form_input_text('columns['.$column['name'].'][comment]', true); ?></td>
 					<td class="grabbable text-center"><?php echo f::draw_fonticon('icon-arrows-vertical'); ?></td>
@@ -298,7 +298,7 @@
 		</table>
 
 		<div class="card-action">
-			<?php echo f::form_button('save', t('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
+			<?php echo f::form_button('save', t('title_save', 'Save'), 'submit', ['class' => 'btn btn-success'], 'save'); ?>
 			<?php echo (!empty($table->previous['name'])) ? f::form_button('delete', t('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\''. t('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
 			<?php echo f::form_button('cancel', t('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
 		</div>
@@ -340,7 +340,7 @@
 			'  <td class="text-center"><?php echo f::escape_js(f::form_checkbox('columns[new_key_i][unsigned]', 'YES', '')); ?></td>' +
 			'  <td><?php echo f::escape_js(f::form_input_text('columns[new_key_i][length]', '')); ?></td>' +
 			'  <td class="text-center"><?php echo f::escape_js(f::form_checkbox('columns[new_key_i][null]', 'YES', '')); ?></td>' +
-			'  <td><?php echo f::escape_js(f::form_input_text('columns[new_key_i][default]', '', 'list="default-options"')); ?></td>' +
+			'  <td><?php echo f::escape_js(f::form_input_text('columns[new_key_i][default]', '', ['list' => 'default-options'])); ?></td>' +
 			'  <td><?php echo f::escape_js(f::form_select_mysql_collation('columns[new_key_i][collation]', '')); ?></td>' +
 			'  <td><?php echo f::escape_js(f::form_input_text('columns[new_key_i][comment]', '')); ?></td>' +
 			'  <td class="grabbable text-center"><?php echo f::draw_fonticon('icon-arrows-vertical'); ?></td>' +

@@ -35,7 +35,7 @@
 								<div class="col-1 text-center">
 									<?php if ($class['id'] == 'necessary') { ?>
 									<?php echo f::form_input_hidden('consents['. $class['id'] .'][]', 'all'); ?>
-									<?php echo f::form_checkbox('consents['. $class['id'] .'][]', 'all', 'all', 'disabled'); ?>
+									<?php echo f::form_checkbox('consents['. $class['id'] .'][]', 'all', 'all', ['disabled' => '']); ?>
 									<?php } else { ?>
 									<?php echo $draw_checkbox($class['id'], 'all', 'all'); ?>
 									<?php } ?>
@@ -67,7 +67,7 @@
 			</div>
 
 			<div class="buttons text-center">
-				<?php echo f::form_button('privacy_consent', ['1', t('text_accept', 'Accept')], 'submit', 'style="font-weight: bold;"'); ?>
+				<?php echo f::form_button('privacy_consent', ['1', t('text_accept', 'Accept')], 'submit', ['style' => 'font-weight: bold;']); ?>
 				<?php echo f::form_button('privacy_consent', ['0', t('text_reject', 'Reject')], 'submit'); ?>
 			</div>
 

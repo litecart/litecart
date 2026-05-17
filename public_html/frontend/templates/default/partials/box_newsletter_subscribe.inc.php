@@ -31,7 +31,7 @@
 
 				<div class="form-label">
 					<div style="display: flex; flex-direction: row; gap: 1em">
-						<?php echo f::form_input_email('email', true, 'placeholder="'. f::escape_attr(t('text_enter_your_email_address', 'Enter your email address')) .'" required'); ?>
+						<?php echo f::form_input_email('email', true, ['placeholder' => f::escape_attr(t('text_enter_your_email_address', 'Enter your email address')), 'required' => '']); ?>
 						<?php echo f::form_button('subscribe', t('title_subscribe', 'Subscribe')); ?>
 					</div>
 				</div>

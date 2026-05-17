@@ -67,7 +67,7 @@
 
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_product_name', 'Product Name'); ?></div>
-										<?php echo f::form_input_search('product_name', true, 'autocomplete="off" data-token-group="name" data-token-title="'. t('title_name', 'Name') .'" placeholder="'. f::escape_attr(t('text_filter_by_product_name', 'Filter by product name')) .'"'); ?>
+										<?php echo f::form_input_search('product_name', true, ['autocomplete' => 'off', 'data-token-group' => 'name', 'data-token-title' => t('title_name', 'Name'), 'placeholder' => f::escape_attr(t('text_filter_by_product_name', 'Filter by product name'))]); ?>
 									</label>
 
 									<?php if ($brands) { ?>
@@ -79,7 +79,7 @@
 											</div>
 											<ul class="dropdown-content">
 												<?php foreach ($brands as $brand) { ?>
-												<li><?php echo f::form_checkbox('brands[]', [$brand['id'], $brand['name']], true, 'data-token-group="brand" data-token-title="'. t('title_brand', 'Brand') .'" data-token-value="'. $brand['name'] .'"'); ?></li>
+												<li><?php echo f::form_checkbox('brands[]', [$brand['id'], $brand['name']], true, ['data-token-group' => 'brand', 'data-token-title' => t('title_brand', 'Brand'), 'data-token-value' => $brand['name']]); ?></li>
 												<?php } ?>
 											</ul>
 										</div>
@@ -95,7 +95,7 @@
 											</div>
 											<ul class="dropdown-content">
 												<?php foreach ($attribute['values'] as $value) { ?>
-												<li><?php echo !empty($attribute['select_multiple']) ? f::form_checkbox('attributes['. $attribute['id'] .'][]', [$value['id'], $value['value']], true, 'data-token-group="attribute-'. $attribute['id'] .'" data-token-title="'. f::escape_attr($attribute['name']) .'" data-token-value="'. f::escape_attr($value['value']) .'"') : f::form_radio_button('attributes['. $group['id'] .'][]', [$value['id'], $value['value']], true, 'data-token-group="attribute-'. $attribute['id'] .'" data-token-title="'. f::escape_attr($attribute['name']) .'" data-token-value="'. f::escape_attr($value['value']) .'"'); ?></li>
+												<li><?php echo !empty($attribute['select_multiple']) ? f::form_checkbox('attributes['. $attribute['id'] .'][]', [$value['id'], $value['value']], true, ['data-token-group' => 'attribute-' . $attribute['id'], 'data-token-title' => f::escape_attr($attribute['name']), 'data-token-value' => f::escape_attr($value['value'])]) : f::form_radio_button('attributes['. $group['id'] .'][]', [$value['id'], $value['value']], true, ['data-token-group' => 'attribute-' . $attribute['id'], 'data-token-title' => f::escape_attr($attribute['name']), 'data-token-value' => f::escape_attr($value['value'])]); ?></li>
 												<?php } ?>
 											</ul>
 										</div>
@@ -105,9 +105,9 @@
 									<div class="form-group">
 										<div class="form-label"><?php echo t('title_price_range', 'Price Range'); ?></div>
 										<div class="input-group">
-											<?php echo f::form_input_number('price_range[min]', true, 'placeholder="'. t('title_min', 'Min') .'"'); ?>
+											<?php echo f::form_input_number('price_range[min]', true, ['placeholder' => t('title_min', 'Min')]); ?>
 											<span class="input-group-text"> &ndash; </span>
-											<?php echo f::form_input_number('price_range[max]', true, 'placeholder="'. t('title_max', 'Max') .'"'); ?>
+											<?php echo f::form_input_number('price_range[max]', true, ['placeholder' => t('title_max', 'Max')]); ?>
 										</div>
 									</div>
 
@@ -182,7 +182,7 @@
 								</div>
 
 								<div style="display: inline-block;">
-									<?php echo f::form_toggle('list_style', ['columns' => f::draw_fonticon('icon-th-large'), 'rows' => f::draw_fonticon('icon-bars')], true, 'data-token-group="list_style" data-token-title="'. t('title_list_style', 'List Style') .'"'); ?>
+									<?php echo f::form_toggle('list_style', ['columns' => f::draw_fonticon('icon-th-large'), 'rows' => f::draw_fonticon('icon-bars')], true, ['data-token-group' => 'list_style', 'data-token-title' => t('title_list_style', 'List Style')]); ?>
 								</div>
 							</div>
 						</div>

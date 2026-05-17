@@ -16,21 +16,21 @@
 					</div>
 
 					<div class="card-body">
-						<?php echo f::form_begin('customer_account_form', 'post', null, false, 'style="max-width: 720px;"'); ?>
+						<?php echo f::form_begin('customer_account_form', 'post', null, false, ['style' => 'max-width: 720px;']); ?>
 
 							<div class="form-grid">
 
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_email_address', 'Email Address'); ?></div>
-										<?php echo f::form_input_email('email', true, 'required'); ?>
+										<?php echo f::form_input_email('email', true, ['required' => '']); ?>
 									</label>
 								</div>
 
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_password', 'Password'); ?></div>
-										<?php echo f::form_input_password('password', '', 'required'); ?>
+										<?php echo f::form_input_password('password', '', ['required' => '']); ?>
 									</label>
 								</div>
 							</div>
@@ -63,7 +63,7 @@
 					</div>
 
 					<div class="card-body">
-						<?php echo f::form_begin('customer_details_form', 'post', null, false, 'style="max-width: 720px;"'); ?>
+						<?php echo f::form_begin('customer_details_form', 'post', null, false, ['style' => 'max-width: 720px;']); ?>
 
 							<?php if (settings::get('customer_field_company') || settings::get('customer_field_tax_id')) { ?>
 							<div class="grid">
@@ -81,7 +81,7 @@
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_company_name', 'Company Name'); ?></div>
-										<?php echo f::form_input_text('customer[company]', true, 'required' . ((isset($_POST['customer']['type']) && $_POST['customer']['type'] == 'individual') ? ' disabled' : '')); ?>
+										<?php echo f::form_input_text('customer[company]', true, ['required' => ''] + ((isset($_POST['customer']['type']) && $_POST['customer']['type'] == 'individual') ? ['disabled' => ''] : [])); ?>
 									</label>
 								</div>
 								<?php } ?>
@@ -100,14 +100,14 @@
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_firstname', 'First Name'); ?></div>
-										<?php echo f::form_input_text('firstname', true, 'required'); ?>
+										<?php echo f::form_input_text('firstname', true, ['required' => '']); ?>
 									</label>
 								</div>
 
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_lastname', 'Last Name'); ?></div>
-										<?php echo f::form_input_text('lastname', true, 'required'); ?>
+										<?php echo f::form_input_text('lastname', true, ['required' => '']); ?>
 									</label>
 								</div>
 							</div>
@@ -148,14 +148,14 @@
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_country', 'Country'); ?></div>
-										<?php echo f::form_select_country('country_code', true, 'required'); ?>
+										<?php echo f::form_select_country('country_code', true, ['required' => '']); ?>
 									</label>
 								</div>
 
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_zone_state_province', 'Zone/State/Province'); ?></div>
-										<?php echo form_select_zone('zone_code', $_POST['country_code'] ?? null, true, 'required'); ?>
+										<?php echo form_select_zone('zone_code', $_POST['country_code'] ?? null, true, ['required' => '']); ?>
 									</label>
 								</div>
 							</div>
@@ -164,7 +164,7 @@
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_phone_number', 'Phone Number'); ?></div>
-										<?php echo f::form_input_phone('phone', true, 'placeholder="'. (isset($_POST['country_code']) ? reference::country($_POST['country_code'])->phone_code : '') .'"'); ?>
+										<?php echo f::form_input_phone('phone', true, ['placeholder' => (isset($_POST['country_code']) ? reference::country($_POST['country_code'])->phone_code : '')]); ?>
 									</label>
 								</div>
 							</div>

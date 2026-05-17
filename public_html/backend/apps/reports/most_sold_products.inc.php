@@ -81,7 +81,7 @@ form[name="filter_form"] li {
 	<div class="card-action">
 		<?php echo f::form_begin('filter_form', 'get'); ?>
 			<ul class="list-inline">
-				<li><?php echo f::form_input_search('query', true, 'placeholder="'. f::escape_attr(t('title_item_name_or_sku', 'Item Name or SKU')) .'"'); ?></li>
+				<li><?php echo f::form_input_search('query', true, ['placeholder' => f::escape_attr(t('title_item_name_or_sku', 'Item Name or SKU'))]); ?></li>
 				<li>
 					<div class="input-group" style="max-width: 380px;">
 						<?php echo f::form_input_date('date_from', true); ?>
@@ -89,7 +89,7 @@ form[name="filter_form"] li {
 						<?php echo f::form_input_date('date_to', true); ?>
 					</div>
 				</li>
-				<li><?php //echo f::form_select_brand('brand_id', true, 'style="width: 320px;"'); ?></li>
+				<li><?php //echo f::form_select_brand('brand_id', true, ['style' => 'width: 320px;']); ?></li>
 				<li><?php echo f::form_button('filter', ['true', f::draw_fonticon('icon-funnel') .' '. t('title_filter_now', 'Filter')]); ?></li>
 				<li><?php echo f::form_button('download', ['true', f::draw_fonticon('icon-download') .' '. t('title_download', 'Download')]); ?></li>
 			</ul>

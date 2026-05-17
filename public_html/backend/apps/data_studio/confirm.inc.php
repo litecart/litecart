@@ -305,8 +305,8 @@ table td {
 							</div>
 
 							<div class="form-group">
-								<?php echo f::form_button('import', t('title_import_now', 'Import Now'), 'submit', 'class="btn btn-success"'); ?>
-								<?php echo f::form_button('abort', t('title_abort', 'Abort'), 'submit', 'class="btn btn-danger"'); ?>
+								<?php echo f::form_button('import', t('title_import_now', 'Import Now'), 'submit', ['class' => 'btn btn-success']); ?>
+								<?php echo f::form_button('abort', t('title_abort', 'Abort'), 'submit', ['class' => 'btn btn-danger']); ?>
 							</div>
 						</div>
 					</div>

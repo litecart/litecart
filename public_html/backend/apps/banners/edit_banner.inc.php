@@ -102,7 +102,7 @@ table th:last-child {
 	</div>
 
 	<div class="card-body">
-		<?php echo f::form_begin('banner_form', 'post', '', true, 'style="max-width: 640px;"'); ?>
+		<?php echo f::form_begin('banner_form', 'post', '', true, ['style' => 'max-width: 640px;']); ?>
 
 			<div class="grid">
 				<div class="col-md-6">
@@ -127,7 +127,7 @@ table th:last-child {
 
 			<label class="form-group">
 				<div class="form-label"><?php echo t('title_image', 'Image'); ?></div>
-				<?php echo f::form_input_file('image', 'accept="image/*"'); ?>
+				<?php echo f::form_input_file('image', ['accept' => 'image/*']); ?>
 				<?php if (!empty($banner->data['image'])) echo '<div>' . $banner->data['image'] .'</div>'; ?>
 			</label>
 
@@ -139,7 +139,7 @@ table th:last-child {
 			<label class="form-group">
 				<div class="form-label"><?php echo t('title_html', 'HTML'); ?></div>
 				<div class="form-input" style="padding: 0;">
-					<?php echo f::form_input_code('html', true, 'placeholder="'. f::escape_attr('<a href="$target_url"><img class="responsive" src="$image_url"></a>') .'" style="height: 150px;"'); ?>
+					<?php echo f::form_input_code('html', true, ['placeholder' => f::escape_attr('<a href="$target_url"><img class="responsive" src="$image_url"></a>') , 'style' => 'height: 150px;']); ?>
 					<div style="padding: 0.5em; background: var(--input-addon-background);">
 						<?php echo t('title_aliases', 'Aliases'); ?>: <em>$uid, $key, $language_code, $image_url, $target_url</em>
 					</div>
@@ -199,7 +199,7 @@ table th:last-child {
 
 		let $output = $([
 			'<tr>',
-			'  <td><?php echo f::form_input_text('keys[__index__]', '__index__', 'required pattern="[0-9A-Za-z_-]+" placeholder="keyname"'); ?></td>',
+			'  <td><?php echo f::form_input_text('keys[__index__]', '__index__', ['required' => '', 'pattern' => '[0-9A-Za-z_-]+', 'placeholder' => 'keyname']); ?></td>',
 			<?php foreach (language::$languages as $language) { ?>
 			'  <td><?php echo f::form_input_text('values['. $language['code'] .'][__index__]', true); ?></td>',
 			<?php } ?>

@@ -62,7 +62,7 @@
 	</div>
 
 	<div class="card-filter">
-		<div class="expandable"><?php echo f::form_input_search('query', false, 'placeholder="'. t('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"'); ?></div>
+		<div class="expandable"><?php echo f::form_input_search('query', false, ['placeholder' => t('text_search_phrase_or_keyword', 'Search phrase or keyword')]); ?></div>
 	</div>
 
 	<?php echo f::form_begin('countries_form', 'post'); ?>

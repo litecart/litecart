@@ -108,7 +108,7 @@
 	</div>
 
 	<div class="card-body">
-		<?php echo f::form_begin('tax_rate_form', 'post', false, false, 'style="max-width: 720px;"'); ?>
+		<?php echo f::form_begin('tax_rate_form', 'post', false, false, ['style' => 'max-width: 720px;']); ?>
 
 			<div class="grid">
 				<div class="col-md-6">

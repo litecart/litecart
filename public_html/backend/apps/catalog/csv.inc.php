@@ -1456,7 +1456,7 @@
 
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_csv_file', 'CSV File'); ?></div>
-							<?php echo f::form_input_file('file', 'accept=".csv, .dsv, .tab, .tsv"'); ?>
+							<?php echo f::form_input_file('file', ['accept' => '.csv, .dsv, .tab, .tsv']); ?>
 						</label>
 
 						<div class="grid">
@@ -1512,14 +1512,14 @@
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_type', 'Type'); ?></div>
 							<div class="form-input">
-								<?php echo f::form_radio_button('type', ['attributes', t('title_attributes', 'Attributes')], true, 'data-dependencies="language"'); ?>
-								<?php echo f::form_radio_button('type', ['brands', t('title_brands', 'Brands')], true, 'data-dependencies="language"'); ?>
+								<?php echo f::form_radio_button('type', ['attributes', t('title_attributes', 'Attributes')], true, ['data-dependencies' => 'language']); ?>
+								<?php echo f::form_radio_button('type', ['brands', t('title_brands', 'Brands')], true, ['data-dependencies' => 'language']); ?>
 								<?php echo f::form_radio_button('type', ['campaigns', t('title_campaigns', 'Campaigns')], true); ?>
-								<?php echo f::form_radio_button('type', ['categories', t('title_categories', 'Categories')], true, 'data-dependencies="language"'); ?>
-								<?php echo f::form_radio_button('type', ['products', t('title_products', 'Products')], true, 'data-dependencies="language"'); ?>
+								<?php echo f::form_radio_button('type', ['categories', t('title_categories', 'Categories')], true, ['data-dependencies' => 'language']); ?>
+								<?php echo f::form_radio_button('type', ['products', t('title_products', 'Products')], true, ['data-dependencies' => 'language']); ?>
 								<?php echo f::form_radio_button('type', ['product_prices', t('title_product_prices', 'Product Prices')], true); ?>
 								<?php echo f::form_radio_button('type', ['product_stock_options', t('title_product_stock_options', 'Product Stock Options')], true); ?>
-								<?php echo f::form_radio_button('type', ['stock_items', t('title_stock_items', 'Stock Items')], true, 'data-dependencies="language"'); ?>
+								<?php echo f::form_radio_button('type', ['stock_items', t('title_stock_items', 'Stock Items')], true, ['data-dependencies' => 'language']); ?>
 								<?php echo f::form_radio_button('type', ['suppliers', t('title_suppliers', 'Suppliers')], true); ?>
 							</div>
 						</label>
@@ -1528,14 +1528,14 @@
 							<div class="col-sm-6">
 								<label class="form-group">
 									<div class="form-label"><?php echo t('title_language', 'Language'); ?></div>
-									<?php echo f::form_select_language('language_code', true, 'required'); ?>
+									<?php echo f::form_select_language('language_code', true, ['required' => '']); ?>
 								</label>
 							</div>
 
 							<div class="col-sm-6">
 								<label class="form-group">
 									<div class="form-label"><?php echo t('title_currency', 'Currency'); ?></div>
-									<?php echo f::form_select_currency('currency_code', true, 'required'); ?>
+									<?php echo f::form_select_currency('currency_code', true, ['required' => '']); ?>
 								</label>
 							</div>
 						</div>

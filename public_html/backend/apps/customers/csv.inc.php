@@ -419,7 +419,7 @@
 
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_csv_file', 'CSV File'); ?></div>
-							<?php echo f::form_input_file('file', 'accept=".csv, .dsv, .tab, .tsv"'); ?>
+							<?php echo f::form_input_file('file', ['accept' => '.csv, .dsv, .tab, .tsv']); ?>
 						</label>
 
 						<div class="grid">

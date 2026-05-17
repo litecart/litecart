@@ -76,7 +76,7 @@
 	</div>
 
 	<div class="card-body">
-		<?php echo f::form_begin('sold_out_status_form', 'post', false, false, 'style="max-width: 720px;"'); ?>
+		<?php echo f::form_begin('sold_out_status_form', 'post', false, false, ['style' => 'max-width: 720px;']); ?>
 
 			<div class="grid">
 				<div class="col-md-8">
@@ -91,7 +91,7 @@
 				<div class="col-md-8">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_description', 'Description'); ?></div>
-						<?php foreach (array_keys(language::$languages) as $language_code) echo f::form_regional_textarea('description['. $language_code .']', $language_code, true, 'style="height: 60px;"'); ?>
+						<?php foreach (array_keys(language::$languages) as $language_code) echo f::form_regional_textarea('description['. $language_code .']', $language_code, true, ['style' => 'height: 60px;']); ?>
 					</label>
 				</div>
 			</div>
@@ -99,7 +99,7 @@
 			<div class="grid">
 				<div class="col-md-6">
 					<div class="form-group">
-						<?php echo f::form_checkbox('hidden', ['1', t('text_hide_from_listing', 'Hide from listing')], true); ?>
+						<?php echo f::form_checkbox(['hidden' => ''], ['1', t('text_hide_from_listing', 'Hide from listing')], true); ?>
 						<?php echo f::form_checkbox('orderable', ['1', t('text_product_is_orderable', 'Product is orderable')], true); ?>
 					</div>
 				</div>

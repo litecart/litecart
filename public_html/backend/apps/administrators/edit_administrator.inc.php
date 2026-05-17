@@ -168,7 +168,7 @@
 	</div>
 
 	<div class="card-body">
-		<?php echo f::form_begin('administrator_form', 'post', false, false, 'autocomplete="off"'); ?>
+		<?php echo f::form_begin('administrator_form', 'post', false, false, ['autocomplete' => 'off']); ?>
 
 			<div class="grid" style="max-width: 1200px;">
 
@@ -184,7 +184,7 @@
 						<div class="col-sm-6">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_username', 'Username'); ?></div>
-								<?php echo f::form_input_text('username', true, 'autocomplete="off" required'); ?>
+								<?php echo f::form_input_text('username', true, ['autocomplete' => 'off', 'required' => '']); ?>
 							</label>
 						</div>
 					</div>
@@ -193,13 +193,13 @@
 						<div class="col-sm-6">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_firstname', 'Firstname'); ?></div>
-								<?php echo f::form_input_text('firstname', true, 'required'); ?>
+								<?php echo f::form_input_text('firstname', true, ['required' => '']); ?>
 							</label>
 						</div>
 						<div class="col-sm-6">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_lastname', 'Lastname'); ?></div>
-								<?php echo f::form_input_text('lastname', true, 'required'); ?>
+								<?php echo f::form_input_text('lastname', true, ['required' => '']); ?>
 							</label>
 						</div>
 					</div>
@@ -208,7 +208,7 @@
 						<div class="col-sm-6">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_email', 'Email'); ?></div>
-								<?php echo f::form_input_email('email', true, 'autocomplete="off"'); ?>
+								<?php echo f::form_input_email('email', true, ['autocomplete' => 'off']); ?>
 							</label>
 						</div>
 
@@ -234,10 +234,10 @@
 
 									<div class="grid">
 										<div class="col-md-6">
-											<?php echo f::form_input_password('totp_disable_password', '', 'autocomplete="off" placeholder="'. t('title_password', 'Password') .'"'); ?>
+											<?php echo f::form_input_password('totp_disable_password', '', ['autocomplete' => 'off', 'placeholder' => t('title_password', 'Password')]); ?>
 										</div>
 										<div class="col-md-6">
-											<?php echo f::form_button('totp_disable', t('title_disable_totp', 'Disable TOTP'), 'submit', 'class="btn btn-danger"'); ?>
+											<?php echo f::form_button('totp_disable', t('title_disable_totp', 'Disable TOTP'), 'submit', ['class' => 'btn btn-danger']); ?>
 										</div>
 									</div>
 
@@ -259,16 +259,16 @@
 
 									<div class="grid">
 										<div class="col-md-6">
-											<?php echo f::form_input_text('totp_code', '', 'placeholder="'. t('title_verification_code', 'Verification Code') .'" autocomplete="one-time-code" inputmode="numeric" maxlength="6" pattern="\d{6}"'); ?>
+											<?php echo f::form_input_text('totp_code', '', ['placeholder' => t('title_verification_code', 'Verification Code') , 'autocomplete' => 'one-time-code', 'inputmode' => 'numeric', 'maxlength' => '6', 'pattern' => '\d{6}']); ?>
 										</div>
 										<div class="col-md-6">
-											<?php echo f::form_button('totp_confirm', t('title_confirm', 'Confirm'), 'submit', 'class="btn btn-success"'); ?>
+											<?php echo f::form_button('totp_confirm', t('title_confirm', 'Confirm'), 'submit', ['class' => 'btn btn-success']); ?>
 										</div>
 									</div>
 
 								<?php } else { ?>
 
-									<?php echo f::form_button('totp_setup', t('title_enable_totp', 'Enable TOTP'), 'submit', 'class="btn btn-default"'); ?>
+									<?php echo f::form_button('totp_setup', t('title_enable_totp', 'Enable TOTP'), 'submit', ['class' => 'btn btn-default']); ?>
 
 								<?php } ?>
 							</div>
@@ -280,13 +280,13 @@
 						<div class="col-md-6">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_new_password', 'New Password'); ?></div>
-								<?php echo f::form_input_password_unmaskable('password', '', 'autocomplete="new-password"'); ?>
+								<?php echo f::form_input_password_unmaskable('password', '', ['autocomplete' => 'new-password']); ?>
 							</label>
 						</div>
 						<div class="col-md-6">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_confirm_password', 'Confirm Password'); ?></div>
-								<?php echo f::form_input_password_unmaskable('confirmed_password', '', 'autocomplete="new-password"'); ?>
+								<?php echo f::form_input_password_unmaskable('confirmed_password', '', ['autocomplete' => 'new-password']); ?>
 							</label>
 						</div>
 					</div>
@@ -312,13 +312,13 @@
 						<div class="col-md-6">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_last_ip_address', 'Last IP Address'); ?></div>
-								<?php echo f::form_input_text('last_ip_address', true, 'readonly'); ?>
+								<?php echo f::form_input_text('last_ip_address', true, ['readonly' => '']); ?>
 							</label>
 						</div>
 						<div class="col-md-6">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_last_hostname', 'Last Hostname'); ?></div>
-								<?php echo f::form_input_text('last_hostname', true, 'readonly'); ?>
+								<?php echo f::form_input_text('last_hostname', true, ['readonly' => '']); ?>
 							</label>
 						</div>
 					</div>
@@ -327,13 +327,13 @@
 						<div class="col-md-6">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_last_login', 'Last Login'); ?></div>
-								<?php echo f::form_input_text('last_login', true, 'readonly'); ?>
+								<?php echo f::form_input_text('last_login', true, ['readonly' => '']); ?>
 							</label>
 						</div>
 						<div class="col-md-6">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_last_active', 'Last Active'); ?></div>
-								<?php echo f::form_input_text('last_active', true, 'readonly'); ?>
+								<?php echo f::form_input_text('last_active', true, ['readonly' => '']); ?>
 							</label>
 						</div>
 					</div>

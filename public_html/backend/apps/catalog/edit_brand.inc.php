@@ -97,7 +97,7 @@
 	</div>
 
 	<div class="card-body">
-		<?php echo f::form_begin('brand_form', 'post', false, true, 'style="max-width: 720px;"'); ?>
+		<?php echo f::form_begin('brand_form', 'post', false, true, ['style' => 'max-width: 720px;']); ?>
 
 			<div class="grid">
 				<div class="col-md-6">
@@ -142,7 +142,7 @@
 
 						<label class="form-group">
 							<div class="form-label"><?php echo !empty($brand->data['image']) ? t('title_new_image', 'New Image') : t('title_image', 'Image'); ?></div>
-							<?php echo f::form_input_file('image', 'accept="image/*"'); ?>
+							<?php echo f::form_input_file('image', ['accept' => 'image/*']); ?>
 							<?php if (!empty($brand->data['image'])) { ?>
 							<?php echo f::form_checkbox('delete_image', ['true', t('title_delete', 'Delete')], true); ?>
 							<?php } ?>
@@ -181,7 +181,7 @@
 
 					<div class="form-group">
 						<div class="form-label"><?php echo t('title_description', 'Description'); ?></div>
-						<?php echo f::form_regional_wysiwyg('description['. $language_code .']', $language_code, true, 'style="height: 240px;"'); ?>
+						<?php echo f::form_regional_wysiwyg('description['. $language_code .']', $language_code, true, ['style' => 'height: 240px;']); ?>
 					</div>
 
 					<label class="form-group">

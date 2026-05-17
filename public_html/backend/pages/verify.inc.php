@@ -180,16 +180,16 @@ input[autocomplete="one-time-code"] {
 
 				<label class="form-group">
 					<div class="form-label"><?php echo t('title_verification_code', 'Verification Code'); ?></div>
-					<?php echo f::form_input_text('code', '', 'autocomplete="one-time-code" inputmode="numeric" maxlength="6" pattern="\d{6}"'); ?>
+					<?php echo f::form_input_text('code', '', ['autocomplete' => 'one-time-code', 'inputmode' => 'numeric', 'maxlength' => '6', 'pattern' => '\d{6}']); ?>
 				</label>
 
 				<label class="form-group">
-					<?php echo f::form_button('verify', t('title_verify', 'Verify'), 'submit', 'class="btn btn-default btn-block btn-lg"'); ?>
+					<?php echo f::form_button('verify', t('title_verify', 'Verify'), 'submit', ['class' => 'btn btn-default btn-block btn-lg']); ?>
 				</label>
 
 				<?php if (empty(session::$data['security.administrator']['verification']['type']) || session::$data['security.administrator']['verification']['type'] !== 'totp') { ?>
 				<label class="form-group text-center">
-					<?php echo f::form_button('resend', t('title_resend_code', 'Resend Code'), 'submit', 'class="btn btn-default btn-sm"'); ?>
+					<?php echo f::form_button('resend', t('title_resend_code', 'Resend Code'), 'submit', ['class' => 'btn btn-default btn-sm']); ?>
 				</label>
 				<?php } ?>
 			</div>

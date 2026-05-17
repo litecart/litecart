@@ -167,10 +167,10 @@ form[name="buy_now_form"] .dropdown-menu .image {
 						<?php echo f::form_begin('notification_form', 'post'); ?>
 							<div class="form-group">
 								<label><?php echo t('description_get_notified_when_in_stock', 'Would you like to receive a notification when this item is back in stock?'); ?></label>
-								<?php echo f::form_input_email('email', customer::$data['email'] ?? '', 'placeholder="'. t('title_email', 'Email') .'"'); ?>
+								<?php echo f::form_input_email('email', customer::$data['email'] ?? '', ['placeholder' => t('title_email', 'Email')]); ?>
 							</div>
 							<div>
-								<?php echo f::form_button('notify_me', t('title_notify_me', 'Notify Me'), 'submit', 'class="btn btn-success"'); ?>
+								<?php echo f::form_button('notify_me', t('title_notify_me', 'Notify Me'), 'submit', ['class' => 'btn btn-success']); ?>
 							</div>
 						<?php echo f::form_end(); ?>
 					</div>
@@ -475,11 +475,11 @@ form[name="buy_now_form"] .dropdown-menu .image {
 									</div>
 
 									<div class="form-group">
-										<?php echo f::form_input_text('title', !empty($customer_review['title']) ? $customer_review['title'] : true, 'placeholder="'. f::escape_html(t('title_title', 'Title')) .'"'); ?>
+										<?php echo f::form_input_text('title', !empty($customer_review['title']) ? $customer_review['title'] : true, ['placeholder' => f::escape_html(t('title_title', 'Title'))]); ?>
 									</div>
 
 											<div class="form-group">
-										<?php echo f::form_textarea('description', !empty($customer_review['description']) ? $customer_review['description'] : true, 'placeholder="'. f::escape_html(t('title_review', 'Review')) .'"'); ?>
+										<?php echo f::form_textarea('description', !empty($customer_review['description']) ? $customer_review['description'] : true, ['placeholder' => f::escape_html(t('title_review', 'Review'))]); ?>
 									</div>
 
 									<div class="attachments">
@@ -513,7 +513,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 									<?php if (settings::get('captcha_enabled')) { ?>
 									<div class="form-group">
 										<label><?php echo t('title_captcha', 'CAPTCHA'); ?></label>
-										<div style="max-width: 250px;"><?php echo f::form_captcha('captcha', 'review_product', 'required'); ?></div>
+										<div style="max-width: 250px;"><?php echo f::form_captcha('captcha', 'review_product', ['required' => '']); ?></div>
 									</div>
 									<?php } ?>
 
@@ -681,7 +681,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 		var output = [
 			'<div class="attachment form-group">',
 			'  <div class="input-group">',
-			'    <?php echo f::form_input_file('new_attachments[]', 'accept=".gif,.jpg,.png"'); ?>',
+			'    <?php echo f::form_input_file('new_attachments[]', ['accept' => '.gif,.jpg,.png']); ?>',
 			'    <?php echo f::form_button_predefined('remove-sm'); ?>',
 			'  </div>',
 			'</div>'

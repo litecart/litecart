@@ -575,7 +575,7 @@
 				<div class="col-md-4">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_notes', 'Notes'); ?></div>
-						<?php echo f::form_textarea('notes', true, 'style="height: 191px;"'); ?>
+						<?php echo f::form_textarea('notes', true, ['style' => 'height: 191px;']); ?>
 					</label>
 				</div>
 			</div>
@@ -705,7 +705,7 @@
 							<h2><?php echo t('title_shipping_address', 'Shipping Address'); ?></h2>
 
 							<div class="form-group">
-								<?php echo f::form_button('copy_billing_address', t('title_copy_billing_address', 'Copy Billing Address'), 'button', 'class="btn btn-default btn-block" style="margin: 3px 0;"'); ?>
+								<?php echo f::form_button('copy_billing_address', t('title_copy_billing_address', 'Copy Billing Address'), 'button', ['class' => 'btn btn-default btn-block', 'style' => 'margin: 3px 0;']); ?>
 							</div>
 
 							<div class="grid">
@@ -799,7 +799,7 @@
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_email_address', 'Email Address'); ?></div>
-										<?php echo f::form_input_email('shipping_address[email]', true, 'required'); ?>
+										<?php echo f::form_input_email('shipping_address[email]', true, ['required' => '']); ?>
 									</label>
 								</div>
 							</div>
@@ -1196,7 +1196,7 @@
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_weight', 'Weight'); ?></div>
 							<div class="input-group">
-								<?php echo f::form_input_decimal('weight', true, 3, 'min="0"'); ?>
+								<?php echo f::form_input_decimal('weight', true, 3, ['min' => '0']); ?>
 								<?php echo f::form_select_weight_unit('weight_unit', true); ?>
 							</div>
 						</label>
@@ -1206,11 +1206,11 @@
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_dimensions', 'Dimensions'); ?></div>
 							<div class="input-group">
-								<?php echo f::form_input_decimal('length', true, 3, 'min="0"'); ?>
+								<?php echo f::form_input_decimal('length', true, 3, ['min' => '0']); ?>
 								<span class="input-group-text">x</span>
-								<?php echo f::form_input_decimal('width', true, 3, 'min="0"'); ?>
+								<?php echo f::form_input_decimal('width', true, 3, ['min' => '0']); ?>
 								<span class="input-group-text">x</span>
-								<?php echo f::form_input_decimal('height', true, 3, 'min="0"'); ?>
+								<?php echo f::form_input_decimal('height', true, 3, ['min' => '0']); ?>
 								<?php echo f::form_select_length_unit('length_unit', true); ?>
 							</div>
 						</label>
@@ -1255,7 +1255,7 @@
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_tax_rate', 'Tax Rate'); ?></div>
 							<div class="input-group">
-								<?php echo f::form_input_decimal('tax_rate', true, 2, 'readonly'); ?>
+								<?php echo f::form_input_decimal('tax_rate', true, 2, ['readonly' => '']); ?>
 								<span class="input-group-text">%</span>
 							</div>
 						</label>
@@ -1264,7 +1264,7 @@
 					<div class="col-md-4">
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_tax', 'Tax'); ?></div>
-							<?php echo f::form_input_money('tax', $_POST['currency_code'], true, 'readonly'); ?>
+							<?php echo f::form_input_money('tax', $_POST['currency_code'], true, ['readonly' => '']); ?>
 						</label>
 					</div>
 				</div>
@@ -1273,7 +1273,7 @@
 			<div class="col-md-4">
 				<label class="form-group">
 					<div class="form-label"><?php echo t('title_stock_items', 'Stock Items'); ?></div>
-					<?php echo f::form_select_stock_item('stock_items', true, 'style="height: 490px;"'); ?>
+					<?php echo f::form_select_stock_item('stock_items', true, ['style' => 'height: 490px;']); ?>
 				</label>
 			</div>
 		</div>
@@ -1350,7 +1350,7 @@
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_weight', 'Weight'); ?></div>
 							<div class="input-group">
-								<?php echo f::form_input_decimal('weight', true, 3, 'min="0"'); ?>
+								<?php echo f::form_input_decimal('weight', true, 3, ['min' => '0']); ?>
 								<?php echo f::form_select_weight_unit('weight_unit', true); ?>
 							</div>
 						</label>
@@ -1360,11 +1360,11 @@
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_dimensions', 'Dimensions'); ?></div>
 							<div class="input-group">
-								<?php echo f::form_input_decimal('length', true, 3, 'min="0"'); ?>
+								<?php echo f::form_input_decimal('length', true, 3, ['min' => '0']); ?>
 								<span class="input-group-text">x</span>
-								<?php echo f::form_input_decimal('width', true, 3, 'min="0"'); ?>
+								<?php echo f::form_input_decimal('width', true, 3, ['min' => '0']); ?>
 								<span class="input-group-text">x</span>
-								<?php echo f::form_input_decimal('height', true, 3, 'min="0"'); ?>
+								<?php echo f::form_input_decimal('height', true, 3, ['min' => '0']); ?>
 								<?php echo f::form_select_length_unit('length_unit', true); ?>
 							</div>
 						</label>
@@ -1409,7 +1409,7 @@
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_tax_rate', 'Tax Rate'); ?></div>
 							<div class="input-group">
-								<?php echo f::form_input_decimal('tax_rate', true, 2, 'readonly'); ?>
+								<?php echo f::form_input_decimal('tax_rate', true, 2, ['readonly' => '']); ?>
 								<span class="input-group-text">%</span>
 							</div>
 						</label>
@@ -1418,7 +1418,7 @@
 					<div class="col-md-4">
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_tax', 'Tax'); ?></div>
-							<?php echo f::form_input_money('tax', $_POST['currency_code'], true, 'readonly'); ?>
+							<?php echo f::form_input_money('tax', $_POST['currency_code'], true, ['readonly' => '']); ?>
 						</label>
 					</div>
 				</div>
@@ -1427,7 +1427,7 @@
 			<div class="col-md-4">
 				<label class="form-group">
 					<div class="form-label"><?php echo t('title_stock_items', 'Stock Items'); ?></div>
-					<?php echo f::form_select_stock_item('stock_items[]', true, 'style="height: 490px;"'); ?>
+					<?php echo f::form_select_stock_item('stock_items[]', true, ['style' => 'height: 490px;']); ?>
 				</label>
 			</div>
 		</div>

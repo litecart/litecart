@@ -244,7 +244,7 @@
 			<?php echo f::form_dropdown('collections[]', $collection_options, true); ?>
 
 			<div class="expandable">
-				<?php echo f::form_input_search('query', true, 'placeholder="'. t('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"'); ?>
+				<?php echo f::form_input_search('query', true, ['placeholder' => t('text_search_phrase_or_keyword', 'Search phrase or keyword')]); ?>
 			</div>
 
 			<?php echo f::form_dropdown('languages[]', $language_options, true); ?>
@@ -330,7 +330,7 @@
 
 		<div class="card-action">
 			<?php echo f::form_button('translate', f::draw_fonticon('icon-language') .' '. t('title_translate_missing', 'Translate Missing'), 'button'); ?>
-			<?php echo f::form_button('translator_tool', t('title_translator_tool', 'Translator Tool'), 'button', 'class="btn btn-default translator-tool" data-toggle="lightbox" data-target="#translator-tool" data-width="980px"'); ?>
+			<?php echo f::form_button('translator_tool', t('title_translator_tool', 'Translator Tool'), 'button', ['class' => 'btn btn-default translator-tool', 'data-toggle' => 'lightbox', 'data-target' => '#translator-tool', 'data-width' => '980px']); ?>
 			<?php echo f::form_button_predefined('save'); ?>
 		</div>
 

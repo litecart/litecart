@@ -95,7 +95,7 @@
 	</div>
 
 	<div class="card-body">
-		<?php echo f::form_begin('request_form', 'post', false, false, 'autocomplete="off" style="max-width: 720px;"'); ?>
+		<?php echo f::form_begin('request_form', 'post', false, false, ['autocomplete' => 'off', 'style' => 'max-width: 720px;']); ?>
 
 			<div class="row">
 				<div class="col-md-6">
@@ -124,19 +124,19 @@
 				<div class="col-md-9">
 					<label class="form-group">
 						<div><?php echo t('title_url', 'URL'); ?></div>
-						<?php echo f::form_input_url('url', true, 'required'); ?>
+						<?php echo f::form_input_url('url', true, ['required' => '']); ?>
 					</label>
 				</div>
 			</div>
 
 			<label class="form-group">
 				<div><?php echo t('title_headers', 'Headers (JSON)'); ?></div>
-				<?php echo f::form_textarea('headers', true, 'rows="6"'); ?>
+				<?php echo f::form_textarea('headers', true, ['rows' => '6']); ?>
 			</label>
 
 			<label class="form-group">
 				<div><?php echo t('title_body', 'Body'); ?></div>
-				<?php echo f::form_textarea('body', true, 'rows="10"'); ?>
+				<?php echo f::form_textarea('body', true, ['rows' => '10']); ?>
 			</label>
 
 			<?php if (!empty($request->data['last_attempt'])) { ?>

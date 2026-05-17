@@ -131,7 +131,7 @@
 			<div class="form-group" style="max-width: 480px;">
 				<label><?php echo t('title_new_icon', 'New Icon'); ?></label>
 				<div class="input-group">
-					<?php echo f::form_input_file('image', 'accept=".ico,.png,.svg"'); ?>
+					<?php echo f::form_input_file('image', ['accept' => '.ico,.png,.svg']); ?>
 					<?php echo f::form_button('upload', t('title_upload', 'Upload'), 'submit'); ?>
 				</div>
 			</div>

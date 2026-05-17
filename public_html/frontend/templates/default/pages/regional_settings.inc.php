@@ -30,7 +30,7 @@
 					</div>
 
 					<div class="card-body">
-						<?php echo f::form_begin('region_form', 'post', document::ilink(), false, 'style="max-width: 640px;"'); ?>
+						<?php echo f::form_begin('region_form', 'post', document::ilink(), false, ['style' => 'max-width: 640px;']); ?>
 
 							<div class="grid">
 

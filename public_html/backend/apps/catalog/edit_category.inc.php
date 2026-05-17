@@ -256,7 +256,7 @@
 
 							<div class="form-group">
 								<div class="form-label"><?php echo t('title_description', 'Description'); ?></div>
-								<?php echo f::form_regional_wysiwyg('description['. $language_code .']', $language_code, true, 'style="height: 240px;"'); ?>
+								<?php echo f::form_regional_wysiwyg('description['. $language_code .']', $language_code, true, ['style' => 'height: 240px;']); ?>
 							</div>
 
 							<label class="form-group">
@@ -407,7 +407,7 @@
 			'	<?php echo f::escape_js(f::form_input_hidden('filters[__index__][attribute_group_id]', 'new_attribute_group_id')); ?>',
 			'	<?php echo f::escape_js(f::form_input_hidden('filters[__index__][attribute_group_name]', 'new_attribute_group_name')); ?>',
 			'	<td>new_attribute_group_name</td>',
-			'	<td><?php echo f::form_checkbox('filters[__index__][select_multiple]', true); ?></td>',
+			'	<td><?php echo f::form_checkbox(['filters[__index__][select_multiple]' => ''], true); ?></td>',
 			'	<td class="text-end">',
 			'		<div class="btn-group">',
 			'			<a class="btn btn-default btn-sm move-up" href="#" title="<?php echo f::escape_html(t('title_move_up', 'Move Up')); ?>"><?php echo f::draw_fonticon('move-up'); ?></a>',

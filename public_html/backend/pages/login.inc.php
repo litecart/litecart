@@ -333,12 +333,12 @@ body {
 				<h1><?php echo t('title_sign_in', 'Sign In'); ?></h1>
 
 				<label class="form-group">
-					<?php echo f::form_input_username('username', true, 'placeholder="'. t('title_username_or_email_address', 'Username or Email Address') .'"'); ?>
+					<?php echo f::form_input_username('username', true, ['placeholder' => t('title_username_or_email_address', 'Username or Email Address')]); ?>
 					<div class="form-label"></div>
 				</label>
 
 				<label class="form-group">
-					<?php echo f::form_input_password('password', '', 'placeholder="'. t('title_password', 'Password') .'" autocomplete="current-password"'); ?>
+					<?php echo f::form_input_password('password', '', ['placeholder' => t('title_password', 'Password') , 'autocomplete' => 'current-password']); ?>
 					<div class="form-label"></div>
 				</label>
 
@@ -355,7 +355,7 @@ body {
 						</a>
 					</div>
 					<div class="col-md-6 text-end">
-						<?php echo f::form_button('login', t('title_login', 'Login'), 'submit', 'class="btn btn-default btn-lg"'); ?>
+						<?php echo f::form_button('login', t('title_login', 'Login'), 'submit', ['class' => 'btn btn-default btn-lg']); ?>
 					</div>
 				</div>
 			</div>

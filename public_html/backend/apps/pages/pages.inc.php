@@ -125,7 +125,7 @@ table tbody .toggle {
 	<?php echo f::form_begin('search_form', 'get'); ?>
 		<div class="card-filter">
 			<div class="max-width: max-content;"><?php echo f::form_select('dock', $dock_options, true); ?></div>
-			<div class="expandable"><?php echo f::form_input_search('query', true, 'placeholder="'. t('text_search_phrase_or_keyword', 'Search phrase or keyword').'"'); ?></div>
+			<div class="expandable"><?php echo f::form_input_search('query', true, ['placeholder' => t('text_search_phrase_or_keyword', 'Search phrase or keyword')]); ?></div>
 			<?php echo f::form_button('filter', t('title_search', 'Search'), 'submit'); ?>
 		</div>
 	<?php echo f::form_end(); ?>

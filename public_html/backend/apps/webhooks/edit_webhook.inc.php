@@ -94,7 +94,7 @@
 		</div>
 	</div>
 
-	<?php echo f::form_begin('webhook_form', 'post', false, false, 'autocomplete="off" style="max-width: 640px;"'); ?>
+	<?php echo f::form_begin('webhook_form', 'post', false, false, ['autocomplete' => 'off', 'style' => 'max-width: 640px;']); ?>
 
 		<div class="card-body">
 
@@ -116,7 +116,7 @@
 
 			<div class="form-group">
 				<label><?php echo t('title_url', 'URL'); ?></label>
-				<?php echo f::form_input_url('url', true, 'required'); ?>
+				<?php echo f::form_input_url('url', true, ['required' => '']); ?>
 			</div>
 
 			<?php if (!empty($webhook->data['id'])) { ?>

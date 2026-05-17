@@ -106,8 +106,8 @@
 	<?php echo f::form_begin('search_form', 'get'); ?>
 
 		<div class="card-filter">
-			<div><?php echo f::form_select_customer_group('group_id', true, 'style="min-width: 200px;"'); ?></div>
-			<div class="expandable"><?php echo f::form_input_search('query', true, 'placeholder="'. t('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"'); ?></div>
+			<div><?php echo f::form_select_customer_group('group_id', true, ['style' => 'min-width: 200px;']); ?></div>
+			<div class="expandable"><?php echo f::form_input_search('query', true, ['placeholder' => t('text_search_phrase_or_keyword', 'Search phrase or keyword')]); ?></div>
 			<?php echo f::form_button('filter', t('title_search', 'Search'), 'submit'); ?>
 		</div>
 

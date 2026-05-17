@@ -72,7 +72,7 @@
 	</div>
 
 	<div class="card-body">
-		<?php echo f::form_begin('delivery_status_form', 'post', false, false, 'style="max-width: 720px;"'); ?>
+		<?php echo f::form_begin('delivery_status_form', 'post', false, false, ['style' => 'max-width: 720px;']); ?>
 
 			<div class="grid">
 				<div class="col-md-8">
@@ -87,7 +87,7 @@
 				<div class="col-md-8">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_description', 'Description'); ?></div>
-						<?php foreach (array_keys(language::$languages) as $language_code) echo f::form_regional_textarea('description['. $language_code .']', $language_code, true, 'style="height: 50px;"'); ?>
+						<?php foreach (array_keys(language::$languages) as $language_code) echo f::form_regional_textarea('description['. $language_code .']', $language_code, true, ['style' => 'height: 50px;']); ?>
 					</label>
 				</div>
 			</div>

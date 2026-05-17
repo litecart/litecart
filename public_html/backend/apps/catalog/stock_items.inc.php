@@ -120,7 +120,7 @@
 
 	<?php echo f::form_begin('search_form', 'get'); ?>
 	<div class="card-filter">
-		<div class="expandable"><?php echo f::form_input_search('query', true, 'placeholder="'. t('text_search_items', 'Search items').'"'); ?></div>
+		<div class="expandable"><?php echo f::form_input_search('query', true, ['placeholder' => t('text_search_items', 'Search items')]); ?></div>
 		<?php echo f::form_button('filter', t('title_search', 'Search'), 'submit'); ?>
 	</div>
 	<?php echo f::form_end(); ?>

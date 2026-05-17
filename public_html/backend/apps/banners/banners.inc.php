@@ -52,7 +52,7 @@
 	<div class="card-action">
 		<?php echo f::form_begin('filter_form', 'get'); ?>
 			<ul class="list-inline">
-				<li><?php echo f::form_input_search('query', true, 'placeholder="'. t('text_search_phrase_or_keyword', 'Search phrase or keyword') .'" style="width: 250px;"'); ?></li>
+				<li><?php echo f::form_input_search('query', true, ['placeholder' => t('text_search_phrase_or_keyword', 'Search phrase or keyword') , 'style' => 'width: 250px;']); ?></li>
 				<li><?php echo f::form_button_link(document::ilink(__APP__.'/edit_banner'), t('title_create_new_banner', 'Create New Banner'), '', 'create'); ?></li>
 			</ul>
 		<?php echo f::form_end(); ?>

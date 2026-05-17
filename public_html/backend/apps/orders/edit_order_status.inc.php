@@ -159,14 +159,14 @@
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_font_icon', 'Font Icon'); ?></div>
-										<?php echo f::form_input_text('icon', true, 'placeholder="icon-circle-thin"'); ?>
+										<?php echo f::form_input_text('icon', true, ['placeholder' => 'icon-circle-thin']); ?>
 									</label>
 								</div>
 
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_color', 'Color'); ?></div>
-										<?php echo f::form_input_color('color', empty($_POST['color']) ? '#cccccc' : true, 'placeholder="#cccccc"'); ?>
+										<?php echo f::form_input_color('color', empty($_POST['color']) ? '#cccccc' : true, ['placeholder' => '#cccccc']); ?>
 									</label>
 								</div>
 							</div>
@@ -175,7 +175,7 @@
 
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_description', 'Description'); ?></div>
-						<?php foreach (array_keys(language::$languages) as $language_code) echo f::form_regional_textarea('description['. $language_code .']', $language_code, true, 'style="height: 50px;"'); ?>
+						<?php foreach (array_keys(language::$languages) as $language_code) echo f::form_regional_textarea('description['. $language_code .']', $language_code, true, ['style' => 'height: 50px;']); ?>
 					</label>
 
 					<div class="grid">
@@ -184,7 +184,7 @@
 								<div class="form-label"><?php echo t('title_properties', 'Properties'); ?></div>
 
 								<div>
-									<strong><?php echo f::form_checkbox('hidden', ['1', t('text_hidden', 'Hidden')], empty($_POST['hidden']) ? '0' : '1'); ?></strong>
+									<strong><?php echo f::form_checkbox(['hidden' => ''], ['1', t('text_hidden', 'Hidden')], empty($_POST['hidden']) ? '0' : '1'); ?></strong>
 									<?php echo t('text_hidden_from_customer', 'Hidden from the customer\'s order history'); ?>
 								</div>
 

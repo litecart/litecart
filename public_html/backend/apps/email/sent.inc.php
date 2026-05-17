@@ -83,7 +83,7 @@
 
 			<ul class="list-inline">
 				<li class="expandable">
-					<?php echo f::form_input_search('query', true, 'placeholder="' . t('text_search_phrase_or_keyword', 'Search phrase or keyword') . '" style="width: 400px;"'); ?>
+					<?php echo f::form_input_search('query', true, ['placeholder' => t('text_search_phrase_or_keyword', 'Search phrase or keyword') , 'style' => 'width: 400px;']); ?>
 				</li>
 				<li>
 					<?php echo f::form_button('search', t('title_search', 'Search'), 'submit'); ?>

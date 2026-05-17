@@ -356,7 +356,7 @@
 	</div>
 
 	<div class="card-body">
-		<?php echo f::form_begin('language_form', 'post', false, false, 'style="max-width: 720px;"'); ?>
+		<?php echo f::form_begin('language_form', 'post', false, false, ['style' => 'max-width: 720px;']); ?>
 
 			<?php if (!empty($prefillable_language_options)) { ?>
 			<label class="form-group">
@@ -385,7 +385,7 @@
 				<div class="col-md-6">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
-						<?php echo f::form_input_text('name', true, 'list="available-languages"'); ?>
+						<?php echo f::form_input_text('name', true, ['list' => 'available-languages']); ?>
 					</label>
 				</div>
 
@@ -401,14 +401,14 @@
 				<div class="col-md-4">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_code', 'Code'); ?> (ISO 639-1) <a href="https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes" target="_blank"><?php echo f::draw_fonticon('icon-square-out'); ?></a></div>
-						<?php echo f::form_input_text('code', true, 'required pattern="[a-z]{2}"'); ?>
+						<?php echo f::form_input_text('code', true, ['required' => '', 'pattern' => '[a-z]{2}']); ?>
 					</label>
 				</div>
 
 				<div class="col-md-4">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_code', 'Code'); ?> 2 (ISO 639-2) <a href="https://en.wikipedia.org/wiki/List_of_ISO_639-2_codes" target="_blank"><?php echo f::draw_fonticon('icon-square-out'); ?></a></div>
-						<?php echo f::form_input_text('code2', true, 'required pattern="[a-z]{3}"'); ?>
+						<?php echo f::form_input_text('code2', true, ['required' => '', 'pattern' => '[a-z]{3}']); ?>
 					</label>
 				</div>
 

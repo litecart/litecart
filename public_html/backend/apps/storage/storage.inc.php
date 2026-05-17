@@ -383,7 +383,7 @@ table .icon-folder {
 	<?php echo f::form_begin('upload_form', 'post', '', true); ?>
 	<div class="card-action">
 		<ul class="flex flex-columns">
-			<li><?php echo f::form_input_file('new_files[]', 'multiple'); ?></li>
+			<li><?php echo f::form_input_file('new_files[]', ['multiple' => '']); ?></li>
 			<li><?php echo f::form_button('upload', ['true', f::draw_fonticon('icon-upload') . ' ' . t('title_upload', 'Upload')]); ?></li>
 			<li><?php echo f::form_button('create_folder', ['true', f::draw_fonticon('icon-folder') . ' ' . t('title_create_new_folder', 'Create New Folder')]); ?></li>
 		</ul>
@@ -399,8 +399,8 @@ table .icon-folder {
 			<div class="expandable">
 				<div class="input-group" style="width: 400px;">
 					<span class="input-group-text"><?php echo t('title_filter', 'Filter') ?></span>
-					<?php echo f::form_input_text('filter[pattern]', true, 'placeholder="'. t('title_filter_pattern', 'Filter Pattern') .'" list="search-patterns"'); ?>
-					<?php echo f::form_input_text('filter[content]', true, 'placeholder="'. t('title_file_contents', 'File Contents') .'"'); ?>
+					<?php echo f::form_input_text('filter[pattern]', true, ['placeholder' => t('title_filter_pattern', 'Filter Pattern') , 'list' => 'search-patterns']); ?>
+					<?php echo f::form_input_text('filter[content]', true, ['placeholder' => t('title_file_contents', 'File Contents')]); ?>
 				</div>
 			</div>
 			<?php echo f::form_button('search', t('title_search', 'Search'), 'submit'); ?>
@@ -502,7 +502,7 @@ table .icon-folder {
 				</legend>
 
 				<div class="flex">
-					<?php echo f::form_button('download', t('title_download', 'Download'), 'submit', 'class="btn btn-default"', 'icon-download'); ?>
+					<?php echo f::form_button('download', t('title_download', 'Download'), 'submit', ['class' => 'btn btn-default'], 'icon-download'); ?>
 					<?php echo f::form_button_predefined('delete'); ?>
 				</div>
 

@@ -446,7 +446,7 @@
 			</div>
 
 			<div class="card-action">
-				<?php echo f::form_input_search('filter', true, 'placeholder="'. t('title_filter', 'Filter') .'"'); ?>
+				<?php echo f::form_input_search('filter', true, ['placeholder' => t('title_filter', 'Filter')]); ?>
 			</div>
 
 			<table id="php-config" class="table data-table">

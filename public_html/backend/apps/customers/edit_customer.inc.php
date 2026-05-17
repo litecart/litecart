@@ -230,7 +230,7 @@
 			</div>
 
 			<div class="card-body">
-				<?php echo f::form_begin('customer_form', 'post', '', false, 'autocomplete="off"'); ?>
+				<?php echo f::form_begin('customer_form', 'post', '', false, ['autocomplete' => 'off']); ?>
 
 					<div class="grid">
 
@@ -240,7 +240,7 @@
 
 							<?php if (!empty($customer->data['id'])) { ?>
 							<label class="form-group">
-								<?php echo f::form_button('sign_in', ['true', t('text_sign_in_as_customer', 'Sign in as customer')], 'submit', 'class="btn btn-default btn-block"'); ?>
+								<?php echo f::form_button('sign_in', ['true', t('text_sign_in_as_customer', 'Sign in as customer')], 'submit', ['class' => 'btn btn-default btn-block']); ?>
 							</label>
 							<?php } ?>
 
@@ -293,7 +293,7 @@
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo !empty($customer->data['id']) ? t('title_new_password', 'New Password') : t('title_password', 'Password'); ?></div>
-										<?php echo f::form_input_password_unmaskable('new_password', '', 'autocomplete="new-password"'); ?>
+										<?php echo f::form_input_password_unmaskable('new_password', '', ['autocomplete' => 'new-password']); ?>
 									</label>
 								</div>
 
@@ -310,14 +310,14 @@
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_last_ip_address', 'Last IP Address'); ?></div>
-										<?php echo f::form_input_text('last_ip_address', true, 'readonly'); ?>
+										<?php echo f::form_input_text('last_ip_address', true, ['readonly' => '']); ?>
 									</label>
 								</div>
 
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_last_hostname', 'Last Hostname'); ?></div>
-										<?php echo f::form_input_text('last_hostname', true, 'readonly'); ?>
+										<?php echo f::form_input_text('last_hostname', true, ['readonly' => '']); ?>
 									</label>
 								</div>
 							</div>
@@ -325,7 +325,7 @@
 
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_notes', 'Notes'); ?></div>
-								<?php echo f::form_textarea('notes', true, 'style="height: 250px;"'); ?>
+								<?php echo f::form_textarea('notes', true, ['style' => 'height: 250px;']); ?>
 							</label>
 
 							<?php if (!empty($customer->data['id'])) { ?>
@@ -427,7 +427,7 @@
 								</div>
 							</div>
 
-							<h3><?php echo f::form_checkbox('different_shipping_address', ['1', t('title_different_shipping_address', 'Different Shipping Address')], !empty($_POST['different_shipping_address']) ? '1' : '', 'style="margin: 0px;"'); ?></h3>
+							<h3><?php echo f::form_checkbox('different_shipping_address', ['1', t('title_different_shipping_address', 'Different Shipping Address')], !empty($_POST['different_shipping_address']) ? '1' : '', ['style' => 'margin: 0px;']); ?></h3>
 
 							<fieldset class="shipping-address"<?php echo (empty($_POST['different_shipping_address'])) ? ' style="display: none;" disabled' : ''; ?>>
 

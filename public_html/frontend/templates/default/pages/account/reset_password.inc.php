@@ -18,7 +18,7 @@
 					</div>
 
 					<div class="card-body">
-						<?php echo f::form_begin('reset_password_form', 'post', null, false, 'style="max-width: 480px;"'); ?>
+						<?php echo f::form_begin('reset_password_form', 'post', null, false, ['style' => 'max-width: 480px;']); ?>
 
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_email_address', 'Email Address'); ?></div>

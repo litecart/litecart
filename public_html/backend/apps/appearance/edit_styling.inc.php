@@ -62,7 +62,7 @@
 
 			<label class="form-group">
 				<div class="form-label"><?php echo t('title_content', 'Content'); ?></div>
-				<?php echo f::form_input_code('content', true, 'style="height: 600px;"'); ?>
+				<?php echo f::form_input_code('content', true, ['style' => 'height: 600px;']); ?>
 			</label>
 
 			<div class="card-action">

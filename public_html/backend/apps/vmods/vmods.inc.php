@@ -284,7 +284,7 @@
 					<legend><?php echo t('title_upload_new_vmod', 'Upload a New vMod'); ?>:</legend>
 
 					<div class="input-group">
-						<?php echo f::form_input_file('vmod', 'accept="application/zip"'); ?>
+						<?php echo f::form_input_file('vmod', ['accept' => 'application/zip']); ?>
 						<?php echo f::form_button('upload', t('title_upload', 'Upload'), 'submit'); ?>
 					</div>
 				</fieldset>

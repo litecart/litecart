@@ -87,7 +87,7 @@
 		</div>
 	</div>
 
-	<?php echo f::form_begin('attribute_form', 'post', false, false, 'style="max-width: 720px;"'); ?>
+	<?php echo f::form_begin('attribute_form', 'post', false, false, ['style' => 'max-width: 720px;']); ?>
 
 	<div class="card-body">
 

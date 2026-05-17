@@ -87,7 +87,7 @@
 	</div>
 
 	<div class="card-body">
-		<?php echo f::form_begin('pages_form', 'post', false, false, 'style="max-width: 720px;"'); ?>
+		<?php echo f::form_begin('pages_form', 'post', false, false, ['style' => 'max-width: 720px;']); ?>
 
 			<div class="grid">
 				<div class="col-md-6">
@@ -132,7 +132,7 @@
 
 					<div class="form-group">
 						<div class="form-label"><?php echo t('title_content', 'Content'); ?></div>
-						<?php echo f::form_regional_wysiwyg('content['. $language_code .']', $language_code, true, 'style="height: 400px;"'); ?>
+						<?php echo f::form_regional_wysiwyg('content['. $language_code .']', $language_code, true, ['style' => 'height: 400px;']); ?>
 					</div>
 
 					<label class="form-group">

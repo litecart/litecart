@@ -284,7 +284,7 @@
 						</div>
 					</div>
 
-					<?php echo f::form_button('install', t('title_change', 'Change'), 'submit', 'class="btn btn-success"'); ?>
+					<?php echo f::form_button('install', t('title_change', 'Change'), 'submit', ['class' => 'btn btn-success']); ?>
 				</div>
 
 				<div id="uninstall" style="margin-top: 2em;">
@@ -299,7 +299,7 @@
 						</div>
 
 						<div>
-							<?php echo f::form_button('uninstall', t('title_uninstall', 'Uninstall'), 'submit', 'class="btn btn-danger"'); ?>
+							<?php echo f::form_button('uninstall', t('title_uninstall', 'Uninstall'), 'submit', ['class' => 'btn btn-danger']); ?>
 						</div>
 
 					<?php echo f::form_end(); ?>
@@ -330,7 +330,7 @@
 					</div>
 
 					<div>
-						<?php echo f::form_button('install', t('title_install', 'Install'), 'submit', 'class="btn btn-success"'); ?>
+						<?php echo f::form_button('install', t('title_install', 'Install'), 'submit', ['class' => 'btn btn-success']); ?>
 					</div>
 				</div>
 				<?php } ?>

@@ -271,7 +271,7 @@
 					<legend><?php echo t('title_upload_new_addon', 'Upload a New Add-on'); ?>:</legend>
 
 					<div class="input-group">
-						<?php echo f::form_input_file('addon', 'accept="application/zip,application/xml"'); ?>
+						<?php echo f::form_input_file('addon', ['accept' => 'application/zip,application/xml']); ?>
 						<?php echo f::form_button('upload', t('title_upload', 'Upload'), 'submit'); ?>
 					</div>
 				</fieldset>

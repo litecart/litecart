@@ -33,7 +33,7 @@
 
 			<label class="form-group">
 				<div class="form-label"><?php echo t('text_are_you_sure', 'Are you sure?'); ?></div>
-				<?php echo f::form_button('disconnect', t('title_disconnect', 'Disconnect'), 'submit', 'class="btn btn-default"'); ?>
+				<?php echo f::form_button('disconnect', t('title_disconnect', 'Disconnect'), 'submit', ['class' => 'btn btn-default']); ?>
 			</label>
 
 		<?php echo f::form_end(); ?>

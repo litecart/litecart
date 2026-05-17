@@ -68,7 +68,7 @@
 
 	<div class="card-body">
 
-		<?php echo f::form_begin('customer_group_form', 'post', null, false, 'style="max-width: 720px;"'); ?>
+		<?php echo f::form_begin('customer_group_form', 'post', null, false, ['style' => 'max-width: 720px;']); ?>
 
 			<div class="grid">
 				<div class="col-md-4">

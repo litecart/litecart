@@ -19,7 +19,7 @@
 </style>
 
 <main id="box-checkout">
-	<?php echo f::form_begin('checkout_form', 'post', '', false, 'autocomplete="off"'); ?>
+	<?php echo f::form_begin('checkout_form', 'post', '', false, ['autocomplete' => 'off']); ?>
 
 		{{notices}}
 
@@ -247,7 +247,7 @@
 
 							<div class="comments form-group">
 								<label><?php echo t('title_comments', 'Comments'); ?></label>
-								<?php echo f::form_textarea('comments', true, 'maxlength="250" rows="2"'); ?>
+								<?php echo f::form_textarea('comments', true, ['maxlength' => '250', 'rows' => '2']); ?>
 								<small class="remaining"></small>
 							</div>
 
@@ -258,7 +258,7 @@
 
 								<?php if (!$error && $consent) { ?>
 								<div class="consent text-center" style="font-size: 1.25em; margin-top: 0.5em;">
-									<?php echo '<label>'. f::form_checkbox('terms_agreed', ['1', $consent], true, 'required') .'</label>'; ?>
+									<?php echo '<label>'. f::form_checkbox('terms_agreed', ['1', $consent], true, ['required' => '']) .'</label>'; ?>
 								</div>
 								<?php } ?>
 

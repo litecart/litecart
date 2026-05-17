@@ -254,7 +254,7 @@
 
 		<div class="card-body">
 
-			<?php echo f::form_begin('export_form', 'post', null, false, 'style="max-width: 600px;"'); ?>
+			<?php echo f::form_begin('export_form', 'post', null, false, ['style' => 'max-width: 600px;']); ?>
 
 				<label class="form-group">
 					<div class="form-label"><?php echo t('title_source', 'Source'); ?></div>
@@ -352,7 +352,7 @@
 				</label>
 
 				<div class="text-center">
-					<?php echo f::form_button('export', t('title_export', 'Export') . ' ' . f::draw_fonticon('icon-arrow-right'), 'submit', 'class="btn btn-default btn-lg"'); ?>
+					<?php echo f::form_button('export', t('title_export', 'Export') . ' ' . f::draw_fonticon('icon-arrow-right'), 'submit', ['class' => 'btn btn-default btn-lg']); ?>
 				</div>
 
 			<?php echo f::form_end(); ?>

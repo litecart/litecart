@@ -18,7 +18,7 @@
 	<div class="modal-body">
 		<label class="form-group">
 			<div class="form-label"><?php echo t('title_search', 'Search'); ?></div>
-			<?php echo f::form_input_search('query', true, 'placeholder="'. f::escape_attr(t('title_search', 'Search')) .'"'); ?>
+			<?php echo f::form_input_search('query', true, ['placeholder' => f::escape_attr(t('title_search', 'Search'))]); ?>
 		</label>
 
 		<div class="form-group results table-responsive">

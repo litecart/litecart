@@ -131,7 +131,7 @@
 					<td><?php echo f::form_input_hidden('new_zone[id]', ''); ?></td>
 					<td><?php echo f::form_select_country('new_zone[country_code]', ''); ?></td>
 					<td><?php echo f::form_select_zone('', 'new_zone[zone_code]', '', '', 'all'); ?></td>
-					<td><?php echo f::form_input_text('new_zone[city]', '', 'placeholder="-- '. t('text_all_cities', 'All cities') .' --"'); ?></td>
+					<td><?php echo f::form_input_text('new_zone[city]', '', ['placeholder' => '-- ' . t('text_all_cities', 'All cities') . ' --']); ?></td>
 					<td><?php echo f::form_button('add', ['', t('title_add', 'Add')], 'button'); ?></td>
 				</tr>
 			</tfoot>

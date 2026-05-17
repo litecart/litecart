@@ -486,7 +486,7 @@
 						$price_adjustment_text .= currency::format(tax::get_price(abs($value['price_adjustment']), $product->tax_class_id));
 					}
 
-					$values .= f::form_checkbox('customizations['.$group['name'].'][]', [$value['name'], $value['name'] . $price_adjustment_text], true, 'data-group-id="'. (int)$group['group_id'] .'" data-value-id="'. (int)$value['value_id'] .'" data-price-adjust="'. (float)$price_adjustment .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? ' required' : ''));
+					$values .= f::form_checkbox('customizations['.$group['name'].'][]', [$value['name'], $value['name'] . $price_adjustment_text], true, ['data-group-id' => (int)$group['group_id'], 'data-value-id' => (int)$value['value_id'], 'data-price-adjust' => (float)$price_adjustment, 'data-tax-adjust' => (float)$tax_adjust] + (!empty($group['required']) ? ['required' => ''] : []));
 				}
 
 				break;
@@ -512,7 +512,7 @@
 
 					$values .= implode(PHP_EOL, [
 						'<div class="radio">',
-						'  <label>'. f::form_radio_button('customizations['.$group['name'].']', $value['name'], true, 'data-group-id="'. (int)$group['group_id'] .'" data-value-id="'. (int)$value['value_id'] .'" data-price-adjust="'. (float)$price_adjustment .'" data-tax-adjust="'. (float)$tax_adjust .'"' . (!empty($group['required']) ? ' required' : '')) .' '. $value['name'] . $price_adjustment_text . '</label>',
+						'  <label>'. f::form_radio_button('customizations['.$group['name'].']', $value['name'], true, ['data-group-id' => (int)$group['group_id'], 'data-value-id' => (int)$value['value_id'], 'data-price-adjust' => (float)$price_adjustment, 'data-tax-adjust' => (float)$tax_adjust] + (!empty($group['required']) ? ['required' => ''] : [])) .' '. $value['name'] . $price_adjustment_text . '</label>',
 						'</div>',
 					]);
 				}
@@ -542,12 +542,12 @@
 					$customizations[] = [$value['name'] . $price_adjustment_text, $value['name'], 'data-value-id="'. (int)$value['value_id'] .'" data-price-adjust="'. (float)$price_adjustment .'" data-tax-adjust="'. (float)$tax_adjust .'"'];
 				}
 
-				$values .= f::form_select('customizations['.$group['name'].']', $customizations, true, 'data-group-id="'. (int)$group['group_id'] .'"'. (!empty($group['required']) ? ' required' : ''));
+				$values .= f::form_select('customizations['.$group['name'].']', $customizations, true, ['data-group-id' => (int)$group['group_id']] + (!empty($group['required']) ? ['required' => ''] : []));
 				break;
 
 			case 'text':
 
-				$values .= f::form_input_text('customizations['.$group['name'].']', true, 'data-group-id="'. (int)$group['group_id'] .'"' . (!empty($group['required']) ? ' required' : '')) . PHP_EOL;
+				$values .= f::form_input_text('customizations['.$group['name'].']', true, ['data-group-id' => (int)$group['group_id']] + (!empty($group['required']) ? ['required' => ''] : [])) . PHP_EOL;
 				break;
 
 			case 'textarea':

@@ -136,7 +136,7 @@
 							<tbody>
 								<?php foreach ($product->stock_options as $stock_option) { ?>
 								<tr>
-									<td><?php echo f::form_radio_button('stock_item_id', $stock_option['stock_item_id'], true, 'required'); ?></td>
+									<td><?php echo f::form_radio_button('stock_item_id', $stock_option['stock_item_id'], true, ['required' => '']); ?></td>
 									<td><?php echo $stock_option['name']; ?></td>
 									<td><?php echo $stock_option['sku']; ?></td>
 									<td class="text-end"><?php echo (float)$stock_option['quantity']; ?></td>

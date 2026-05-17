@@ -71,7 +71,7 @@
 	</div>
 
 	<div class="card-body">
-		<?php echo f::form_begin('template_form', 'post', null, false, 'style="max-width: 320px;"'); ?>
+		<?php echo f::form_begin('template_form', 'post', null, false, ['style' => 'max-width: 320px;']); ?>
 
 			<label class="form-group">
 				<div class="form-label"><?php echo t('title_frontend_template', 'Frontend Template'); ?></div>

@@ -197,7 +197,7 @@
 		<div class="inconsistency-warning">
 			<?php echo f::draw_fonticon('icon-exclamation-triangle'); ?>
 			<?php echo strtr(t('text_expected_quantity_mismatch', 'The expected quantity {expected} does not match the actual quantity {actual} set in the database. This can happen if there is a malfunction while items are withdrawn or reinserted to the stock.'), ['{expected}' => $stock_item->data['quantity_expected'], '{actual}' => $stock_item->data['quantity']]); ?>
-			<?php echo f::form_button('repair', t('button_repair', 'Repair'), 'submit', 'class="btn btn-default btn-sm float-end"'); ?>
+			<?php echo f::form_button('repair', t('button_repair', 'Repair'), 'submit', ['class' => 'btn btn-default btn-sm float-end']); ?>
 		</div>
 		<?php } ?>
 
@@ -215,7 +215,7 @@
 								<small class="float-end"><?php echo f::form_checkbox('delete_image', ['1', t('text_delete', 'Delete')], true); ?></small>
 								<?php } ?>
 
-								<?php echo f::form_input_file('image', 'accept="image/*"'); ?>
+								<?php echo f::form_input_file('image', ['accept' => 'image/*']); ?>
 							</div>
 						</div>
 
@@ -230,7 +230,7 @@
 								<div class="form-label"><?php echo t('title_references', 'References'); ?></div>
 								<div class="input-group">
 									<label class="input-group-text" style="width: 125px;"><?php echo t('title_sku', 'SKU'); ?> <a href="https://en.wikipedia.org/wiki/Stock_keeping_unit" target="_blank"><?php echo f::draw_fonticon('icon-square-out'); ?></a></label>
-									<?php echo f::form_input_text('sku', true, 'style="text-transform: uppercase;"'); ?>
+									<?php echo f::form_input_text('sku', true, ['style' => 'text-transform: uppercase;']); ?>
 								</div>
 
 								<div class="input-group">
@@ -261,7 +261,7 @@
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_purchase_price', 'Purchase Price'); ?></div>
 										<div class="input-group">
-											<?php echo f::form_input_decimal('purchase_price', true, 2, 'min="0"'); ?>
+											<?php echo f::form_input_decimal('purchase_price', true, 2, ['min' => '0']); ?>
 											<?php echo f::form_select_currency('purchase_price_currency_code', true); ?>
 										</div>
 									</label>
@@ -284,7 +284,7 @@
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_stock_quantity', 'Stock Quantity'); ?></div>
 								<div class="input-group">
-									<?php echo f::form_input_decimal('quantity', true, 2, 'data-quantity="'. (!empty($stock_item->data['id']) ? (float)$stock_item->data['quantity'] : '0') .'"'); ?>
+									<?php echo f::form_input_decimal('quantity', true, 2, ['data-quantity' => (!empty($stock_item->data['id']) ? (float)$stock_item->data['quantity'] : '0')]); ?>
 									<?php echo f::form_select_quantity_unit('quantity_unit_id', true); ?>
 								</div>
 							</label>
@@ -305,7 +305,7 @@
 								<div class="form-label"><?php echo t('title_backordered', 'Backordered'); ?></div>
 								<div class="input-group">
 									<?php echo f::form_button('transfer', f::draw_fonticon('icon-arrow-left'), 'button'); ?>
-									<?php echo f::form_input_decimal('backordered', true, 2, 'min="0"'); ?>
+									<?php echo f::form_input_decimal('backordered', true, 2, ['min' => '0']); ?>
 								</div>
 							</div>
 						</div>
@@ -316,7 +316,7 @@
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_weight', 'Weight'); ?></div>
 								<div class="input-group">
-									<?php echo f::form_input_decimal('weight', true, 3, 'min="0"'); ?>
+									<?php echo f::form_input_decimal('weight', true, 3, ['min' => '0']); ?>
 									<?php echo f::form_select_weight_unit('weight_unit', true); ?>
 								</div>
 							</label>
@@ -326,11 +326,11 @@
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_dimensions', 'Dimensions'); ?></div>
 								<div class="input-group">
-									<?php echo f::form_input_decimal('length', true, 3, 'min="0"'); ?>
+									<?php echo f::form_input_decimal('length', true, 3, ['min' => '0']); ?>
 									<span class="input-group-text">x</span>
-									<?php echo f::form_input_decimal('width', true, 3, 'min="0"'); ?>
+									<?php echo f::form_input_decimal('width', true, 3, ['min' => '0']); ?>
 									<span class="input-group-text">x</span>
-									<?php echo f::form_input_decimal('height', true, 3, 'min="0"'); ?>
+									<?php echo f::form_input_decimal('height', true, 3, ['min' => '0']); ?>
 									<?php echo f::form_select_length_unit('length_unit', true); ?>
 								</div>
 							</label>
@@ -351,7 +351,7 @@
 						<div class="col-md-2">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_downloads', 'Downloads'); ?></div>
-								<?php echo f::form_input_number('downloads', true, 'readonly'); ?>
+								<?php echo f::form_input_number('downloads', true, ['readonly' => '']); ?>
 							</label>
 						</div>
 					</div>

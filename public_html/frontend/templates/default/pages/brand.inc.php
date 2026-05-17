@@ -40,7 +40,7 @@
 							</div>
 
 							<div style="flex-grow: 0;">
-								<?php echo f::form_toggle('list_style', ['columns' => f::draw_fonticon('icon-th-large'), 'rows' => f::draw_fonticon('icon-bars')], true, 'data-token-group="list_style" data-token-title="'. t('title_list_style', 'List Style') .'"'); ?>
+								<?php echo f::form_toggle('list_style', ['columns' => f::draw_fonticon('icon-th-large'), 'rows' => f::draw_fonticon('icon-bars')], true, ['data-token-group' => 'list_style', 'data-token-title' => t('title_list_style', 'List Style')]); ?>
 							</div>
 						</div>
 

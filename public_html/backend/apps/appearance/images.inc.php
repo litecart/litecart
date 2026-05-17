@@ -153,7 +153,7 @@
 							<div class="format"><?php echo strtoupper(pathinfo($image['file'], PATHINFO_EXTENSION)); ?></div>
 							<img class="thumbnail fit" src="<?php echo document::href_rlink($image['file']); ?>" data-original="<?php echo document::href_rlink($image['file']); ?>" alt="<?php echo f::escape_attr($image['name']); ?>">
 						</div>
-						<?php echo f::form_input_file($image['id'], 'accept="'. f::escape_attr($image['mime']) .'"'); ?>
+						<?php echo f::form_input_file($image['id'], ['accept' => f::escape_attr($image['mime'])]); ?>
 					</label>
 				</div>
 				<?php } ?>

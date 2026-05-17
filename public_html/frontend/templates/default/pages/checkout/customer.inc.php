@@ -46,7 +46,7 @@
 						<div class="col-sm-6">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_company_name', 'Company Name'); ?></div>
-								<?php echo f::form_input_text('customer[company]', true, 'required' . ((isset($_POST['customer']['type']) && $_POST['customer']['type'] == 'individual') ? ' disabled' : '')); ?>
+								<?php echo f::form_input_text('customer[company]', true, ['required' => ''] + ((isset($_POST['customer']['type']) && $_POST['customer']['type'] == 'individual') ? ['disabled' => ''] : [])); ?>
 							</label>
 						</div>
 						<?php } ?>
@@ -66,14 +66,14 @@
 					<div class="col-sm-6">
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_firstname', 'First Name'); ?></div>
-							<?php echo f::form_input_text('customer[firstname]', true, 'required'); ?>
+							<?php echo f::form_input_text('customer[firstname]', true, ['required' => '']); ?>
 						</label>
 					</div>
 
 					<div class="col-sm-6">
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_lastname', 'Last Name'); ?></div>
-							<?php echo f::form_input_text('customer[lastname]', true, 'required'); ?>
+							<?php echo f::form_input_text('customer[lastname]', true, ['required' => '']); ?>
 						</label>
 					</div>
 				</div>
@@ -82,7 +82,7 @@
 					<div class="col-sm-6">
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_address1', 'Address 1'); ?></div>
-							<?php echo f::form_input_text('customer[address1]', true, 'required'); ?>
+							<?php echo f::form_input_text('customer[address1]', true, ['required' => '']); ?>
 						</label>
 					</div>
 
@@ -98,14 +98,14 @@
 					<div class="col-sm-6">
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_postcode', 'Postal Code'); ?></div>
-							<?php echo f::form_input_text('customer[postcode]', true, 'required'); ?>
+							<?php echo f::form_input_text('customer[postcode]', true, ['required' => '']); ?>
 						</label>
 					</div>
 
 					<div class="col-sm-6">
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_city', 'City'); ?></div>
-							<?php echo f::form_input_text('customer[city]', true, 'required'); ?>
+							<?php echo f::form_input_text('customer[city]', true, ['required' => '']); ?>
 						</label>
 					</div>
 				</div>
@@ -132,21 +132,21 @@
 					<div class="col-sm-6">
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_email_address', 'Email Address'); ?></div>
-							<?php echo f::form_input_email('customer[email]', true, 'required'. (customer::check_login() ? ' readonly' : '')); ?>
+							<?php echo f::form_input_email('customer[email]', true, ['required' => ''] + (customer::check_login() ? ['readonly' => ''] : [])); ?>
 						</label>
 					</div>
 
 					<div class="col-sm-6">
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_phone_number', 'Phone Number'); ?></div>
-							<?php echo f::form_input_phone('customer[phone]', true, 'required'); ?>
+							<?php echo f::form_input_phone('customer[phone]', true, ['required' => '']); ?>
 						</label>
 					</div>
 				</div>
 
 				<div class="address shipping-address">
 
-					<h3><?php echo f::form_checkbox('different_shipping_address', ['1', t('text_use_a_different_address_for_shipping', 'Use a different address for shipping')], !empty($_POST['different_shipping_address']) ? '1' : '', 'style="margin: 0px;"'); ?></h3>
+					<h3><?php echo f::form_checkbox('different_shipping_address', ['1', t('text_use_a_different_address_for_shipping', 'Use a different address for shipping')], !empty($_POST['different_shipping_address']) ? '1' : '', ['style' => 'margin: 0px;']); ?></h3>
 
 					<fieldset<?php echo (empty($_POST['different_shipping_address'])) ? ' style="display: none;" disabled' : ''; ?>>
 
@@ -197,14 +197,14 @@
 							<div class="col-sm-6">
 								<label class="form-group">
 									<div class="form-label"><?php echo t('title_postcode', 'Postal Code'); ?></div>
-									<?php echo f::form_input_text('shipping_address[postcode]', true, 'required'); ?>
+									<?php echo f::form_input_text('shipping_address[postcode]', true, ['required' => '']); ?>
 								</label>
 							</div>
 
 							<div class="col-sm-6">
 								<label class="form-group">
 									<div class="form-label"><?php echo t('title_city', 'City'); ?></div>
-									<?php echo f::form_input_text('shipping_address[city]', true, 'required'); ?>
+									<?php echo f::form_input_text('shipping_address[city]', true, ['required' => '']); ?>
 								</label>
 							</div>
 						</div>
@@ -259,7 +259,7 @@
 
 					<?php } else { ?>
 
-					<h3><?php echo f::form_checkbox('sign_up', ['1', t('text_create_an_account', 'Create an account')], !empty($_POST['sign_up']) ? '1' : '', 'style="margin: 0px;"'); ?></h3>
+					<h3><?php echo f::form_checkbox('sign_up', ['1', t('text_create_an_account', 'Create an account')], !empty($_POST['sign_up']) ? '1' : '', ['style' => 'margin: 0px;']); ?></h3>
 
 					<fieldset<?php echo (empty($_POST['sign_up'])) ? ' style="display: none;" disabled' : ''; ?>>
 
@@ -267,14 +267,14 @@
 							<div class="col-sm-6">
 								<label class="form-group">
 									<div class="form-label"><?php echo t('title_desired_password', 'Desired Password'); ?></div>
-									<?php echo f::form_input_password('password', '', 'autocomplete="new-password"'); ?>
+									<?php echo f::form_input_password('password', '', ['autocomplete' => 'new-password']); ?>
 								</label>
 							</div>
 
 							<div class="col-sm-6">
 								<label class="form-group">
 									<div class="form-label"><?php echo t('title_confirm_password', 'Confirm Password'); ?></div>
-									<?php echo f::form_input_password('confirmed_password', '', 'autocomplete="off"'); ?>
+									<?php echo f::form_input_password('confirmed_password', '', ['autocomplete' => 'off']); ?>
 								</label>
 							</div>
 						</div>
@@ -288,7 +288,7 @@
 					<?php echo f::form_checkbox('newsletter', ['1', t('consent_newsletter', 'I would like to be notified occasionally via email when there are new products or campaigns.')], true); ?>
 
 					<?php if ($privacy_policy) { ?>
-					<?php echo f::form_checkbox('privacy_policy_consent', ['1', t('consent_privacy_policy', 'I have read and I consent to the terms and policy for privacy data management.')], true, 'required'); ?>
+					<?php echo f::form_checkbox('privacy_policy_consent', ['1', t('consent_privacy_policy', 'I have read and I consent to the terms and policy for privacy data management.')], true, ['required' => '']); ?>
 					<?php } ?>
 				</div>
 

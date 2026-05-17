@@ -152,15 +152,15 @@ textarea[name="query"] {
 						<?php echo f::form_select('table', $table_options, $_GET['name']); ?>
 					</label>
 
-					<?php echo f::form_begin('query_form', 'post', '', false, 'style="max-width: 100vw;"'); ?>
+					<?php echo f::form_begin('query_form', 'post', '', false, ['style' => 'max-width: 100vw;']); ?>
 
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_query', 'Query'); ?></div>
-						<?php echo f::form_textarea('query', true, 'style="min-height: 100px;" spellcheck="false"'); ?>
+						<?php echo f::form_textarea('query', true, ['style' => 'min-height: 100px;', 'spellcheck' => 'false']); ?>
 						</label>
 
 						<div class="form-group">
-							<?php echo f::form_button('run', t('title_run_query', 'Run Query'), 'submit', 'class="btn btn-success"'); ?>
+							<?php echo f::form_button('run', t('title_run_query', 'Run Query'), 'submit', ['class' => 'btn btn-success']); ?>
 							<?php echo f::form_button('pretty_print', t('title_pretty_print', 'Pretty Print'), 'button'); ?>
 						</div>
 

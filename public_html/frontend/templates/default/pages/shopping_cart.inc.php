@@ -42,13 +42,13 @@
 															<div style="display: inline-flex;">
 																<?php if (!empty($item['quantity_unit']->name)) { ?>
 																<div class="input-group" style="max-width: 150px;">
-																	<?php echo !empty($item['quantity_unit']->decimals) ? f::form_input_decimal('item['.$key.'][quantity]', $item['quantity'], $item['quantity_unit']->decimals, 'min="0" max="'. ($item['quantity_max'] ?: '') .'" step="'. ($item['quantity_step'] ?: '') .'"') : f::form_input_number('item['.$key.'][quantity]', $item['quantity'], 'min="0" max="'. ($item['quantity_max'] ?: '') .'" step="'. ($item['quantity_step'] ?: '') .'"'); ?>
+																	<?php echo !empty($item['quantity_unit']->decimals) ? f::form_input_decimal('item['.$key.'][quantity]', $item['quantity'], $item['quantity_unit']->decimals, ['min' => '0', 'max' => ($item['quantity_max'] ?: ''), 'step' => ($item['quantity_step'] ?: '')]) : f::form_input_number('item['.$key.'][quantity]', $item['quantity'], ['min' => '0', 'max' => ($item['quantity_max'] ?: ''), 'step' => ($item['quantity_step'] ?: '')]); ?>
 																	<?php echo $item['quantity_unit_name']; ?>
 																</div>
 																<?php } else { ?>
-																<?php echo !empty($item['quantity_unit']->decimals) ? f::form_input_decimal('item['.$key.'][quantity]', $item['quantity'], $item['quantity_unit']->decimals, 'min="0"') : f::form_input_number('item['.$key.'][quantity]', $item['quantity'], 'min="0" style="width: 125px;"'); ?>
+																<?php echo !empty($item['quantity_unit']->decimals) ? f::form_input_decimal('item['.$key.'][quantity]', $item['quantity'], $item['quantity_unit']->decimals, ['min' => '0']) : f::form_input_number('item['.$key.'][quantity]', $item['quantity'], ['min' => '0', 'style' => 'width: 125px;']); ?>
 																<?php } ?>
-																<?php echo f::form_button('update_cart_item', [$key, f::draw_fonticon('icon-sync')], 'submit', 'title="'. f::escape_attr(t('title_update', 'Update')) .'" formnovalidate style="margin-inline-start: 0.5em;"'); ?>
+																<?php echo f::form_button('update_cart_item', [$key, f::draw_fonticon('icon-sync')], 'submit', ['title' => f::escape_attr(t('title_update', 'Update')) , 'formnovalidate' => '', 'style' => 'margin-inline-start: 0.5em;']); ?>
 															</div>
 														</div>
 													</div>
@@ -58,7 +58,7 @@
 										</div>
 
 										<div class="col-1 text-end">
-											<?php echo f::form_button('remove_cart_item', [$key, f::draw_fonticon('icon-trash')], 'submit', 'class="btn btn-danger" title="'. f::escape_attr(t('title_remove', 'Remove')) .'" formnovalidate'); ?>
+											<?php echo f::form_button('remove_cart_item', [$key, f::draw_fonticon('icon-trash')], 'submit', ['class' => 'btn btn-danger', 'title' => f::escape_attr(t('title_remove', 'Remove')), 'formnovalidate' => '']); ?>
 										</div>
 									</div>
 								</li>
@@ -134,12 +134,12 @@
 							<?php if (empty(customer::$data['email'])) { ?>
 							<div class="form-group">
 								<div class="form-label"><?php echo t('title_email_address', 'Email Address'); ?></div>
-								<?php echo f::form_input_email('email', true, 'required'. (!empty($shopping_cart->data['customer']['id']) ? ' readonly' : '')); ?>
+								<?php echo f::form_input_email('email', true, ['required' => ''] + (!empty($shopping_cart->data['customer']['id']) ? ['readonly' => ''] : [])); ?>
 							</div>
 							<?php } ?>
 
 							<div class="">
-								<?php echo f::form_button('checkout', ['standard', t('title_continue_to_checkout', 'Continue To Checkout') .' '. f::draw_fonticon('icon-arrow-right')], 'submit', 'class="btn btn-success btn-block btn-lg"'); ?>
+								<?php echo f::form_button('checkout', ['standard', t('title_continue_to_checkout', 'Continue To Checkout') .' '. f::draw_fonticon('icon-arrow-right')], 'submit', ['class' => 'btn btn-success btn-block btn-lg']); ?>
 							</div>
 
 							<?php if ($checkouts) { ?>
@@ -149,7 +149,7 @@
 
 							<?php foreach ($checkouts as $checkout) { ?>
 							<div id="alternative-checkout">
-								<?php echo f::form_button('checkout', [$checkout['module_id'], $checkout['label']], 'button', 'class="option btn btn-default btn-lg btn-block" title="'. f::escape_attr($checkout['description']) .'"'); ?>
+								<?php echo f::form_button('checkout', [$checkout['module_id'], $checkout['label']], 'button', ['class' => 'option btn btn-default btn-lg btn-block', 'title' => f::escape_attr($checkout['description'])]); ?>
 							</div>
 							<?php } ?>
 							<?php } ?>

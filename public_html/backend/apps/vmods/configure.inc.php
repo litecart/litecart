@@ -103,7 +103,7 @@ pre {
 
 		<h1><?php echo $xml->name; ?></h1>
 
-		<?php echo f::form_begin('settings_form', 'post', false, false, 'style="max-width: 960px;"'); ?>
+		<?php echo f::form_begin('settings_form', 'post', false, false, ['style' => 'max-width: 960px;']); ?>
 
 			<table class="table">
 				<tbody>

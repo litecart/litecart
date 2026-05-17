@@ -125,25 +125,25 @@
 				return f::form_select($column['name'], $options, true);
 
 			case (preg_match('#^((tiny|small|medium|big)?int|bytes)\(([0-9]+)\)( unsigned)?#i', $column['type'], $matches)):
-				return f::form_input_number($column['name'], true, 'size="'. $matches[3] .'" maxlength="'. $matches[3] .'"' . (isset($matches[4]) ? ' min="0"' : ''));
+				return f::form_input_number($column['name'], true, ['size' => $matches[3], 'maxlength' => $matches[3]] + (isset($matches[4]) ? ['min' => '0'] : []));
 
 			case (preg_match('#^(float|double|decimal)\(([0-9]+)?(,([0-9]+))?\)( unsigned)?#', $column['type'], $matches)):
-				return f::form_input_decimal($column['name'], true, $matches[5], 'size="'. ($matches[3]+1) .'" maxlength="'. ($matches[3]+1) .'"' . (isset($matches[4]) ? ' min="0"' : ''));
+				return f::form_input_decimal($column['name'], true, $matches[5], ['size' => ($matches[3]+1), 'maxlength' => ($matches[3]+1)] + (isset($matches[4]) ? ['min' => '0'] : []));
 
 			case (preg_match('#^(timestamp|datetime)$#', $column['type'])):
-				return f::form_input_datetime($column['name'], true, 'size="19" maxlength="19"');
+				return f::form_input_datetime($column['name'], true, ['size' => '19', 'maxlength' => '19']);
 
 			case (preg_match('#^date$#', $column['type'])):
-				return f::form_input_date($column['name'], true, 'size="10" maxlength="10"');
+				return f::form_input_date($column['name'], true, ['size' => '10', 'maxlength' => '10']);
 
 			case (preg_match('#^time$#', $column['type'])):
-				return f::form_input_time($column['name'], true, 'size="8" maxlength="8"');
+				return f::form_input_time($column['name'], true, ['size' => '8', 'maxlength' => '8']);
 
 			default:
 				if (preg_match('#\(([0-9]+)\)$#', $column['type'], $matches) && $matches[1] < 255)  {
-					return f::form_input_text($column['name'], true, 'size="'. $matches[1] .'" maxlength="'. $matches[1] .'"');
+					return f::form_input_text($column['name'], true, ['size' => $matches[1], 'maxlength' => $matches[1]]);
 				} else {
-					return f::form_textarea($column['name'], true, 'style="max-height: 250px;"');
+					return f::form_textarea($column['name'], true, ['style' => 'max-height: 250px;']);
 				}
 		}
 	};
@@ -195,7 +195,7 @@
 		</table>
 
 		<div class="card-action">
-			<?php echo f::form_button('save', t('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
+			<?php echo f::form_button('save', t('title_save', 'Save'), 'submit', ['class' => 'btn btn-success'], 'save'); ?>
 			<?php echo (!empty($row[$primary_column])) ? f::form_button('delete', t('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\''. t('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
 			<?php echo f::form_button('cancel', t('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
 		</div>

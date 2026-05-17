@@ -39,7 +39,7 @@
 
 						<div class="filter">
 							<div>
-								<?php echo f::form_input_search('query', true, 'autocomplete="off" placeholder="'. f::escape_attr(t('text_search_products', 'Search products')) .' ..."'); ?>
+								<?php echo f::form_input_search('query', true, ['autocomplete' => 'off', 'placeholder' => f::escape_attr(t('text_search_products', 'Search products')) . ' ...']); ?>
 							</div>
 
 							<div>

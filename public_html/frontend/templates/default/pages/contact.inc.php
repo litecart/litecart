@@ -15,36 +15,36 @@
 							<div class="col-md-6">
 								<label class="form-group">
 									<div class="form-label"><?php echo t('title_firstname', 'First Name'); ?></div>
-									<?php echo f::form_input_text('firstname', true, 'required'); ?>
+									<?php echo f::form_input_text('firstname', true, ['required' => '']); ?>
 								</label>
 							</div>
 
 							<div class="col-md-6">
 								<label class="form-group">
 									<div class="form-label"><?php echo t('title_lastname', 'Last Name'); ?></div>
-									<?php echo f::form_input_text('lastname', true, 'required'); ?>
+									<?php echo f::form_input_text('lastname', true, ['required' => '']); ?>
 								</label>
 							</div>
 						</div>
 
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_email_address', 'Email Address'); ?></div>
-							<?php echo f::form_input_email('email', true, 'required'); ?>
+							<?php echo f::form_input_email('email', true, ['required' => '']); ?>
 						</label>
 
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_subject', 'Subject'); ?></div>
-							<?php echo f::form_input_text('subject', true, 'required'); ?>
+							<?php echo f::form_input_text('subject', true, ['required' => '']); ?>
 						</label>
 
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_message', 'Message'); ?></div>
-							<?php echo f::form_textarea('message', true, 'required style="height: 250px;"'); ?>
+							<?php echo f::form_textarea('message', true, ['required' => '', 'style' => 'height: 250px;']); ?>
 						</label>
 
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_attachments', 'Attachments'); ?></div>
-							<?php echo f::form_input_file('attachments[]', 'multiple accept=".jpg,.jpeg,.png,.gif,.webp,.avif,.txt,.doc,.docx,.pdf,.mp4"'); ?>
+							<?php echo f::form_input_file('attachments[]', ['multiple' => '', 'accept' => '.jpg,.jpeg,.png,.gif,.webp,.avif,.txt,.doc,.docx,.pdf,.mp4']); ?>
 						</label>
 
 						<?php if (settings::get('captcha_enabled')) { ?>
@@ -55,7 +55,7 @@
 						<?php } ?>
 
 						<div>
-							<?php echo f::form_button('send', t('title_send', 'Send'), 'submit', 'style="font-weight: bold;"'); ?>
+							<?php echo f::form_button('send', t('title_send', 'Send'), 'submit', ['style' => 'font-weight: bold;']); ?>
 						</div>
 
 					<?php echo f::form_end(); ?>

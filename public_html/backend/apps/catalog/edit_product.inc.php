@@ -241,7 +241,7 @@
 
 							<div class="form-group">
 								<div class="form-label"><?php echo t('title_categories', 'Categories'); ?></div>
-								<?php echo f::form_select_category('categories[]', true, 'style="max-height: 480px;"'); ?>
+								<?php echo f::form_select_category('categories[]', true, ['style' => 'max-height: 480px;']); ?>
 							</div>
 
 							<label class="form-group">
@@ -377,7 +377,7 @@
 
 									<div class="form-group">
 										<div class="form-label"><?php echo t('title_description', 'Description'); ?></div>
-										<?php echo f::form_regional_wysiwyg('description['. $language_code .']', $language_code, true, 'style="height: 250px;"'); ?>
+										<?php echo f::form_regional_wysiwyg('description['. $language_code .']', $language_code, true, ['style' => 'height: 250px;']); ?>
 									</div>
 
 									<label class="form-group">
@@ -405,7 +405,7 @@
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_technical_data', 'Technical Data'); ?> <a class="technical-data-hint" href="#"><?php echo f::draw_fonticon('icon-question'); ?></a></div>
-										<?php echo f::form_regional_textarea('technical_data['. $language_code .']', $language_code, true, 'style="height: 640px;"'); ?>
+										<?php echo f::form_regional_textarea('technical_data['. $language_code .']', $language_code, true, ['style' => 'height: 640px;']); ?>
 										<div><?php echo f::form_checkbox('autofill_technical_data', ['1', t('text_autogenerate_from_attributes', 'Generate from attributes')], ''); ?></div>
 									</label>
 								</div>
@@ -466,20 +466,20 @@
 									<td><?php echo f::form_select_campaign('prices['.$key.'][campaign_id]', true); ?></td>
 									<td><span class="date-valid-from"><?php echo $price['valid_from'] ? f::datetime_when($price['valid_from']) : '-'; ?></span></td>
 									<td><span class="date-valid-to"><?php echo $price['valid_to'] ? f::datetime_when($price['valid_to']) : '-'; ?></span></td>
-									<td><?php echo f::form_input_decimal('prices['.$key.'][min_quantity]', true, 'min="0"'); ?></td>
+									<td><?php echo f::form_input_decimal('prices['.$key.'][min_quantity]', true, ['min' => '0']); ?></td>
 									<td>
 										<div class="dropdown dropdown-end">
-											<?php echo f::form_input_money('prices['.$key.'][price]['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), true, 'style="width: 125px;"'); ?>
+											<?php echo f::form_input_money('prices['.$key.'][price]['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), true, ['style' => 'width: 125px;']); ?>
 											<ul class="dropdown-menu">
 												<?php foreach (array_diff($currency_codes, [settings::get('store_currency_code')]) as $currency_code) { ?>
 												<li>
-													<?php echo f::form_input_money('prices['.$key.'][price]['. $currency_code .']', $currency_code, true, 'style="width: 125px;"'); ?>
+													<?php echo f::form_input_money('prices['.$key.'][price]['. $currency_code .']', $currency_code, true, ['style' => 'width: 125px;']); ?>
 												</li>
 												<?php } ?>
 											</ul>
 										</div>
 									</td>
-									<td><?php echo f::form_input_money('prices['.$key.'][gross]', settings::get('store_currency_code'), true, 'style="width: 125px;"'); ?></td>
+									<td><?php echo f::form_input_money('prices['.$key.'][gross]', settings::get('store_currency_code'), true, ['style' => 'width: 125px;']); ?></td>
 									<td></td>
 									<td>
 										<a class="btn btn-default btn-sm remove" href="#" title="<?php echo t('title_remove', 'Remove'); ?>">
@@ -544,7 +544,7 @@
 								<td><?php echo f::form_select_attribute_group('new_attribute[group_id]', ''); ?></td>
 								<td>
 									<?php echo f::form_select('new_attribute[value_id]', [], ''); ?>
-									<?php echo f::form_input_text('new_attribute[custom_value]', '', 'disabled hidden'); ?>
+									<?php echo f::form_input_text('new_attribute[custom_value]', '', ['disabled' => '', 'hidden' => '']); ?>
 								</td>
 								<td class="text-end"><?php echo f::form_button('add', t('title_add', 'Add'), 'button'); ?></td>
 							</tr>
@@ -615,7 +615,7 @@
 										<tr draggable="true" data-value-id="<?php echo f::escape_html($value['value_id']); ?>" data-value-name="<?php echo f::escape_html($_POST['customizations'][$group_id]['values'][$value_id]['name']); ?>">
 											<td class="grabbable"><?php echo f::form_input_hidden('customizations['.$group_id.'][values]['. $value_id .'][id]', true) . f::form_input_hidden('customizations['.$group_id.'][values]['. $value_id .'][value_id]', true) . f::form_input_hidden('customizations['.$group_id.'][values]['. $value_id .'][custom_value]', true) . f::form_input_hidden('customizations['.$group_id.'][values]['. $value_id .'][name]', true); ?><?php echo $value['name']; ?></td>
 											<td class="text-center"><?php echo f::form_select('customizations['.$group_id.'][values]['. $value_id .'][price_modifier]', ['+','%','*','='], true); ?></td>
-											<?php foreach ($currency_codes as $currency_code) echo '<td>'. f::form_select_currency($currency_code, 'customizations['.$group_id.'][values]['. $value_id .']['. $currency_code. ']', (!empty($_POST['customizations'][$group_id]['values'][$value_id][$currency_code]) || $_POST['customizations'][$group_id]['values'][$value_id][$currency_code] != 0) ? true : '', 'style="width: 100px;"') .'</td>'; ?>
+											<?php foreach ($currency_codes as $currency_code) echo '<td>'. f::form_select_currency($currency_code, 'customizations['.$group_id.'][values]['. $value_id .']['. $currency_code. ']', (!empty($_POST['customizations'][$group_id]['values'][$value_id][$currency_code]) || $_POST['customizations'][$group_id]['values'][$value_id][$currency_code] != 0) ? true : '', ['style' => 'width: 100px;']) .'</td>'; ?>
 											<td class="text-end">
 												<button name="move-up" type="button" class="btn btn-default btn-sm" title="<?php echo f::escape_html(t('title_move_up', 'Move Up')); ?>">
 													<?php echo f::draw_fonticon('move-up'); ?>
@@ -666,7 +666,7 @@
 								<div class="col-md-3">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_value', 'Value'); ?></div>
-										<?php echo f::form_select('new_predefined_customization[value_id]', [['','']], '', 'disabled'); ?>
+										<?php echo f::form_select('new_predefined_customization[value_id]', [['','']], '', ['disabled' => '']); ?>
 									</label>
 								</div>
 
@@ -679,7 +679,7 @@
 
 								<div class="col-md-3">
 									<br>
-									<?php echo f::form_button('add_predefined_customization', t('title_add', 'Add'), 'button', 'class="btn btn-default btn-block"'); ?>
+									<?php echo f::form_button('add_predefined_customization', t('title_add', 'Add'), 'button', ['class' => 'btn btn-default btn-block']); ?>
 								</div>
 							</div>
 
@@ -703,7 +703,7 @@
 
 								<div class="col-md-4">
 									<br>
-									<?php echo f::form_button('add_user_input_customization', t('title_add', 'Add'), 'button', 'class="btn btn-default btn-block"'); ?>
+									<?php echo f::form_button('add_user_input_customization', t('title_add', 'Add'), 'button', ['class' => 'btn btn-default btn-block']); ?>
 								</div>
 							</div>
 
@@ -717,21 +717,21 @@
 						<div class="col-md-3">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_min_order_qty', 'Min. Order Qty'); ?></div>
-								<?php echo f::form_input_decimal('quantity_min', true, 2, 'min="0"'); ?>
+								<?php echo f::form_input_decimal('quantity_min', true, 2, ['min' => '0']); ?>
 							</label>
 						</div>
 
 						<div class="col-md-3">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_max_order_quantity', 'Max. Order Qty'); ?></div>
-								<?php echo f::form_input_decimal('quantity_max', true, 2, 'min="0"'); ?>
+								<?php echo f::form_input_decimal('quantity_max', true, 2, ['min' => '0']); ?>
 							</label>
 						</div>
 
 						<div class="col-md-3">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_quantity_step', 'Quantity Step'); ?></div>
-								<?php echo f::form_input_decimal('quantity_step', true, 2, 'min="0"'); ?>
+								<?php echo f::form_input_decimal('quantity_step', true, 2, ['min' => '0']); ?>
 							</label>
 						</div>
 
@@ -807,18 +807,18 @@
 									<td><?php echo f::form_select('stock_options['.$key.'][price_modifier]', ['+', '*', '%', '='], '+'); ?></td>
 									<td>
 										<div class="dropdown">
-											<?php echo f::form_input_money('stock_options['.$key.'][price_adjustment]['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), true, 'style="width: 125px;"'); ?>
+											<?php echo f::form_input_money('stock_options['.$key.'][price_adjustment]['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), true, ['style' => 'width: 125px;']); ?>
 											<ul class="dropdown-menu">
 												<?php foreach (currency::$currencies as $currency) { ?>
 												<?php if ($currency['code'] == settings::get('store_currency_code')) continue; ?>
 												<li>
-													<?php echo f::form_input_money('stock_options['.$key.'][price_adjustment]['. $currency['code'] .']', $currency['code'], true, 'style="width: 125px;"'); ?>
+													<?php echo f::form_input_money('stock_options['.$key.'][price_adjustment]['. $currency['code'] .']', $currency['code'], true, ['style' => 'width: 125px;']); ?>
 												</li>
 												<?php } ?>
 											</ul>
 										</div>
 									</td>
-									<td><?php echo f::form_input_decimal('stock_options['.$key.'][quantity]', true, 2, 'data-quantity="'. (isset($product->data['stock_options'][$key]) ? (float)$product->data['stock_options'][$key]['quantity'] : '0') .'"'); ?></td>
+									<td><?php echo f::form_input_decimal('stock_options['.$key.'][quantity]', true, 2, ['data-quantity' => (isset($product->data['stock_options'][$key]) ? (float)$product->data['stock_options'][$key]['quantity'] : '0')]); ?></td>
 									<td>
 										<label class="input-group">
 											<span class="input-group-text">&plusmn;</span>
@@ -828,7 +828,7 @@
 									<td>
 										<div class="input-group">
 											<?php echo f::form_button('transfer', f::draw_fonticon('icon-arrow-left'), 'button'); ?>
-											<?php echo f::form_input_decimal('stock_options['. $key .'][backordered]', true, 2, 'min="0"'); ?>
+											<?php echo f::form_input_decimal('stock_options['. $key .'][backordered]', true, 2, ['min' => '0']); ?>
 										</div>
 									</td>
 									<td class="text-end">
@@ -1177,21 +1177,21 @@
 			'    <?php echo f::escape_js(f::form_select_customer_group('prices[__index__][customer_group_id]', '')); ?>',
 			'  </td>',
 			'  <td><?php echo f::escape_js(f::form_select_geo_zone('prices[__index__][geo_zone_id]', '')); ?></td>',
-			'  <td><?php echo f::escape_js(f::form_select_campaign('prices[__index__][campaign_id]', '', 'style="width: 200px;"')); ?></td>',
+			'  <td><?php echo f::escape_js(f::form_select_campaign('prices[__index__][campaign_id]', '', ['style' => 'width: 200px;'])); ?></td>',
 			'  <td><span class="date-valid-from">-</span></td>',
 			'  <td><span class="date-valid-to">-</span></td>',
-			'  <td><?php echo f::escape_js(f::form_input_decimal('prices[__index__][min_quantity]', '1', 'min="1"')); ?></td>',
+			'  <td><?php echo f::escape_js(f::form_input_decimal('prices[__index__][min_quantity]', '1', ['min' => '1'])); ?></td>',
 			'  <td>',
 			'    <div class="dropdown">',
-			'      <?php echo f::escape_js(f::form_input_money('prices[__index__][price]['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), true, 'style="width: 125px;"')); ?>',
+			'      <?php echo f::escape_js(f::form_input_money('prices[__index__][price]['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), true, ['style' => 'width: 125px;'])); ?>',
 			'      <ul class="dropdown-menu" style="right:0;">',
 			<?php echo implode(PHP_EOL, f::array_each(array_diff($currency_codes, [settings::get('store_currency_code')]), fn($currency_code) =>
-				'\'      <li>'. f::escape_js(f::form_input_money('prices[__index__][price]['. $currency_code .']', $currency_code, true, 'style="width: 125px;"')) .'</li>\','
+				'\'      <li>'. f::escape_js(f::form_input_money('prices[__index__][price]['. $currency_code .']', $currency_code, true, ['style' => 'width: 125px;'])) .'</li>\','
 			)); ?>
 			'      </ul>',
 			'    </div>',
 			'  </td>',
-			'  <td><?php echo f::escape_js(f::form_input_money('prices[__index__][gross]', settings::get('store_currency_code'), true, 'style="width: 125px;"')); ?></td>',
+			'  <td><?php echo f::escape_js(f::form_input_money('prices[__index__][gross]', settings::get('store_currency_code'), true, ['style' => 'width: 125px;'])); ?></td>',
 			'  <td></td>',
 			'  <td><?php echo f::escape_js(f::form_button_predefined('remove-sm')); ?></td>',
 			'</tr>'
@@ -1596,7 +1596,7 @@
 				'    <div class="col-sm-4 col-md-2">',
 				'      <div class="form-group">',
 				'        <label class="form-label"><?php echo f::escape_js(t('title_required', 'Required')); ?></label>',
-				'          <?php echo f::escape_js(f::form_checkbox('customizations[new_group_id][required]', ['1', t('title_required', 'Required')], true)); ?>',
+				'          <?php echo f::escape_js(f::form_checkbox(['customizations[new_group_id][required]' => ''], ['1', t('title_required', 'Required')], true)); ?>',
 				'        </div>',
 				'      </div>',
 				'    </div>',
@@ -1677,7 +1677,7 @@
 			'    <div class="col-sm-4 col-md-2">',
 			'      <div class="form-group">',
 			'        <label><?php echo f::escape_js(t('title_required', 'Required')); ?></label>',
-			'        <?php echo f::escape_js(f::form_checkbox('customizations[new_group_id][required]', ['1', t('title_required', 'Required')], true)); ?>',
+			'        <?php echo f::escape_js(f::form_checkbox(['customizations[new_group_id][required]' => ''], ['1', t('title_required', 'Required')], true)); ?>',
 			'      </div>',
 			'    </div>',
 			'  </div>',
@@ -1784,16 +1784,16 @@
 			'  <td><?php echo f::escape_js(f::form_select('stock_options[new_stock_item_i][price_modifier]', ['+', '*', '%', '='], '+')); ?></td>',
 			'  <td>',
 			'    <div class="dropdown">',
-			'      <?php echo f::escape_js(f::form_input_money('stock_options[new_stock_item_i][price_adjustment]['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), '', 'style="width: 125px;"')); ?>',
+			'      <?php echo f::escape_js(f::form_input_money('stock_options[new_stock_item_i][price_adjustment]['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), '', ['style' => 'width: 125px;'])); ?>',
 			'      <ul class="dropdown-menu">',
 			<?php foreach (currency::$currencies as $currency) { ?>
 			<?php if ($currency['code'] == settings::get('store_currency_code')) continue; ?>
-			'        <li><?php echo f::escape_js(f::form_input_money('stock_options[new_stock_item_i][price_adjustment]['. $currency['code'] .']', $currency['code'], '', 'style="width: 125px;"')); ?></li>',
+			'        <li><?php echo f::escape_js(f::form_input_money('stock_options[new_stock_item_i][price_adjustment]['. $currency['code'] .']', $currency['code'], '', ['style' => 'width: 125px;'])); ?></li>',
 			<?php } ?>
 			'      </ul>',
 			'    </div>',
 			'  </td>',
-			'  <td><?php echo f::escape_js(f::form_input_decimal('stock_options[new_stock_item_i][quantity]', '0', 2, 'data-quantity="new_stock_item_quantity"')); ?></td>',
+			'  <td><?php echo f::escape_js(f::form_input_decimal('stock_options[new_stock_item_i][quantity]', '0', 2, ['data-quantity' => 'new_stock_item_quantity'])); ?></td>',
 			'  <td>',
 			'    <label class="input-group">',
 			'      <span class="input-group-text">&plusmn;</span>',
@@ -1803,7 +1803,7 @@
 			'  <td>',
 			'    <div class="input-group">',
 			'      <?php echo f::escape_js(f::form_button('transfer', f::draw_fonticon('icon-arrow-left'), 'button')); ?>',
-			'      <?php echo f::escape_js(f::form_input_decimal('stock_options[new_stock_item_i][backordered]', '', 2, 'min="0"')); ?>',
+			'      <?php echo f::escape_js(f::form_input_decimal('stock_options[new_stock_item_i][backordered]', '', 2, ['min' => '0'])); ?>',
 			'    </div>',
 			'  </td>',
 			'  <td class="text-end">',

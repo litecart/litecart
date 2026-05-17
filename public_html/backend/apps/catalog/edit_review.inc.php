@@ -95,7 +95,7 @@
 
 	<div class="card-body">
 
-		<?php echo f::form_begin(false, 'post', false, true, 'style="max-width: 640px;"'); ?>
+		<?php echo f::form_begin(false, 'post', false, true, ['style' => 'max-width: 640px;']); ?>
 
 			<div class="row">
 				<div class="col-md-6">
@@ -158,7 +158,7 @@
 
 					<div class="form-group">
 						<label><?php echo t('title_review', 'Review'); ?></label>
-						<?php echo f::form_regional_textarea($language_code, 'review['. $language_code .']', true, 'style="height: 250px;"'); ?>
+						<?php echo f::form_regional_textarea($language_code, 'review['. $language_code .']', true, ['style' => 'height: 250px;']); ?>
 					</div>
 				</div>
 				<?php } ?>
@@ -216,7 +216,7 @@
 			</div>
 
 			<div class="card-action">
-				<?php echo f::form_button('save', t('title_save', 'Save'), 'submit', 'class="btn btn-success"', 'save'); ?>
+				<?php echo f::form_button('save', t('title_save', 'Save'), 'submit', ['class' => 'btn btn-success'], 'save'); ?>
 				<?php echo !empty($review->data['id']) ? f::form_button('delete', t('title_delete', 'Delete'), 'submit', 'class="btn btn-danger" onclick="if (!confirm(&quot;'. t('text_are_you_sure', 'Are you sure?') .'&quot;)) return false;"', 'delete') : ''; ?>
 				<?php echo f::form_button('cancel', t('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
 			</div>
@@ -231,7 +231,7 @@
 
 	<div class="modal-body">
 		<div class="form-group">
-			<?php echo f::form_input_text('query', true, 'placeholder="'. f::escape_html(t('title_search', 'Search')) .'"'); ?>
+			<?php echo f::form_input_text('query', true, ['placeholder' => f::escape_html(t('title_search', 'Search'))]); ?>
 		</div>
 
 		<div class="form-group results table-responsive">

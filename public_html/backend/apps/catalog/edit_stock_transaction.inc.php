@@ -100,7 +100,7 @@
 					<div class="col-md-12">
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_description', 'Description'); ?></div>
-							<?php echo f::form_textarea('description', true, 'style="height: 60px;"'); ?>
+							<?php echo f::form_textarea('description', true, ['style' => 'height: 60px;']); ?>
 						</label>
 					</div>
 				</div>
@@ -150,7 +150,7 @@
 						<?php echo f::escape_html($_POST['contents'][$key]['sku']); ?>
 					</td>
 					<td><?php echo f::escape_html($_POST['contents'][$key]['name']); ?></td>
-					<td><?php echo f::form_input_decimal('contents['. $key .'][quantity]', true, 2, 'readonly'); ?></td>
+					<td><?php echo f::form_input_decimal('contents['. $key .'][quantity]', true, 2, ['readonly' => '']); ?></td>
 					<td class="text-center">
 						<div class="input-group">
 							<span class="input-group-text">&plusmn;</span>
@@ -170,9 +170,9 @@
 
 			<tfoot>
 				<tr>
-					<td><?php echo f::form_input_text('new[sku]', true, 'list="available-stock-items"'); ?></td>
-					<td><?php echo f::form_input_text('new[name]', true, 'tabindex="-1"'); ?></td>
-					<td><?php echo f::form_input_decimal('new[quantity]', true, 2, 'tabindex="-1" readonly'); ?></td>
+					<td><?php echo f::form_input_text('new[sku]', true, ['list' => 'available-stock-items']); ?></td>
+					<td><?php echo f::form_input_text('new[name]', true, ['tabindex' => '-1']); ?></td>
+					<td><?php echo f::form_input_decimal('new[quantity]', true, 2, ['tabindex' => '-1', 'readonly' => '']); ?></td>
 					<td>
 						<div class="input-group">
 							<span class="input-group-text">&plusmn;</span>
@@ -181,7 +181,7 @@
 					</td>
 					<td class="text-center">
 						<div class="input-group">
-							<?php echo f::form_button('transfer', f::draw_fonticon('icon-arrow-left'), 'button', 'tabindex="-1"'); ?>
+							<?php echo f::form_button('transfer', f::draw_fonticon('icon-arrow-left'), 'button', ['tabindex' => '-1']); ?>
 							<?php echo f::form_input_decimal('new[backordered]', true, 2); ?>
 						</div>
 					</td>
@@ -266,7 +266,7 @@
 			'       ' + $option.attr('value'),
 			'    </td>',
 			'    <td><?php echo f::escape_js(f::form_input_hidden('contents[__index__][name]', '')); ?>'+ $option.data('name') +'</td>',
-			'    <td><?php echo f::escape_js(f::form_input_decimal('contents[__index__][quantity]', '', 2, 'readonly')); ?></td>',
+			'    <td><?php echo f::escape_js(f::form_input_decimal('contents[__index__][quantity]', '', 2, ['readonly' => ''])); ?></td>',
 			'    <td>',
 			'      <div class="input-group">',
 			'        <span class="input-group-text">&plusmn;</span>',

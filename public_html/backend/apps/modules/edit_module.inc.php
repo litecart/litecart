@@ -88,7 +88,7 @@
 
 		<?php echo !empty($object->description) ? '<p style="max-width: 960px;">'. $object->description .'</p>' : ''; ?>
 
-		<?php echo f::form_begin('module_form', 'post', false, false, 'autocomplete="off" style="max-width: 960px;"'); ?>
+		<?php echo f::form_begin('module_form', 'post', false, false, ['autocomplete' => 'off', 'style' => 'max-width: 960px;']); ?>
 
 			<table class="table">
 				<tbody>

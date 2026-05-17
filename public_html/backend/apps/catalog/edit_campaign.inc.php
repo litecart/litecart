@@ -165,7 +165,7 @@
 						<div class="col-md-4">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_discount_percent', 'Discount (%)'); ?></div>
-								<?php echo f::form_input_number('discount_percent', true, 'min="0" max="100" step="0.01"'); ?>
+								<?php echo f::form_input_number('discount_percent', true, ['min' => '0', 'max' => '100', 'step' => '0.01']); ?>
 							</label>
 						</div>
 					</div>
@@ -226,17 +226,17 @@
 						<td class="text-end"><?php echo currency::format($product['regular_price'], false, settings::get('store_currency_code')); ?></td>
 						<td>
 							<div class="dropdown dropdown-end">
-								<?php echo f::form_input_money('products['.$key.'][price]['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), true, 'style="width: 125px;"'); ?>
+								<?php echo f::form_input_money('products['.$key.'][price]['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), true, ['style' => 'width: 125px;']); ?>
 								<ul class="dropdown-menu">
 									<?php foreach (array_diff($currency_codes, [settings::get('store_currency_code')]) as $currency_code) { ?>
 									<li>
-										<?php echo f::form_input_money('products['.$key.'][price]['. $currency_code .']', $currency_code, true, 'style="width: 125px;"'); ?>
+										<?php echo f::form_input_money('products['.$key.'][price]['. $currency_code .']', $currency_code, true, ['style' => 'width: 125px;']); ?>
 									</li>
 									<?php } ?>
 								</ul>
 							</div>
 						</td>
-						<td><?php echo f::form_input_percent('products['.$key.'][percentage]', true, 2, 'style="width: 100px;"'); ?></td>
+						<td><?php echo f::form_input_percent('products['.$key.'][percentage]', true, 2, ['style' => 'width: 100px;']); ?></td>
 						<td class="text-end">
 							<button class="btn btn-danger btn-sm" name="remove" type="button" title="<?php echo t('title_edit', 'Edit'); ?>">
 								<?php echo f::draw_fonticon('remove'); ?>
@@ -356,11 +356,11 @@
 			'  <td class="text-end">'+ Number(product.price.value).toMoney() +'</td>',
 			'  <td>',
 			'    <div class="dropdown dropdown-end">',
-			'      <?php echo f::escape_js(f::form_input_money('products[__index__][price]['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), '', 'style="width: 125px;"')); ?>',
+			'      <?php echo f::escape_js(f::form_input_money('products[__index__][price]['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), '', ['style' => 'width: 125px;'])); ?>',
 			'      <ul class="dropdown-menu">',
 			'        <?php foreach (array_diff($currency_codes, [settings::get('store_currency_code')]) as $currency_code) { ?>',
 			'        <li>',
-			'          <?php echo f::escape_js(f::form_input_money('products[__index__][price]['. $currency_code .']', $currency_code, '', 'style="width: 125px;"')); ?>',
+			'          <?php echo f::escape_js(f::form_input_money('products[__index__][price]['. $currency_code .']', $currency_code, '', ['style' => 'width: 125px;'])); ?>',
 			'        </li>',
 			'        <?php } ?>',
 			'      </ul>',

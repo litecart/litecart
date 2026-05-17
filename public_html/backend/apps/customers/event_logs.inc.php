@@ -97,8 +97,8 @@
 
 	<?php echo f::form_begin('search_form', 'get'); ?>
 		<div class="card-filter">
-			<div style="vertical-align: middle; width: 160px;"><?php echo f::form_select('type', $type_options, true, 'onchange="$(this).closest(\'form\').submit();"'); ?></div>
-			<div class="expandable"><?php echo f::form_input_search('query', true, 'placeholder="'. t('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"'); ?></div>
+			<div style="vertical-align: middle; width: 160px;"><?php echo f::form_select('type', $type_options, true, ['onchange' => '$(this).closest(\'form\').submit();']); ?></div>
+			<div class="expandable"><?php echo f::form_input_search('query', true, ['placeholder' => t('text_search_phrase_or_keyword', 'Search phrase or keyword')]); ?></div>
 			<div>
 				<div class="input-group" style="max-width: 450px;">
 					<?php echo f::form_input_datetime('from'); ?>

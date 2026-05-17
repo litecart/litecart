@@ -384,8 +384,8 @@ table .tag {
 
 	<?php echo f::form_begin('search_form', 'get'); ?>
 		<div class="card-filter">
-			<?php echo f::form_select_optgroup('order_status_id', $order_status_options, true, 'style="width: auto;"'); ?>
-			<div class="expandable"><?php echo f::form_input_search('query', true, 'placeholder="'. t('text_search_phrase_or_keyword', 'Search phrase or keyword').'"'); ?></div>
+			<?php echo f::form_select_optgroup('order_status_id', $order_status_options, true, ['style' => 'width: auto;']); ?>
+			<div class="expandable"><?php echo f::form_input_search('query', true, ['placeholder' => t('text_search_phrase_or_keyword', 'Search phrase or keyword')]); ?></div>
 			<div class="input-group" style="max-width: 380px;">
 				<?php echo f::form_input_date('date_from', true); ?>
 				<span class="input-group-text"> - </span>
@@ -515,7 +515,7 @@ table .tag {
 					<fieldset title="<?php echo f::escape_html($module['description']); ?>">
 						<legend><?php echo $module['name']; ?></legend>
 						<div class="btn-group">
-							<?php foreach ($module['actions'] as $action) echo f::form_button('action', [$module['id'].':'.$action['id'], $action['title']], 'submit', 'formtarget="'. f::escape_attr($action['target']) .'" title="'. f::escape_attr($action['description']) .'"'); ?>
+							<?php foreach ($module['actions'] as $action) echo f::form_button('action', [$module['id'].':'.$action['id'], $action['title']], 'submit', ['formtarget' => f::escape_attr($action['target']), 'title' => f::escape_attr($action['description'])]); ?>
 						</div>
 					</fieldset>
 				</li>

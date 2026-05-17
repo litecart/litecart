@@ -317,7 +317,7 @@ textarea[name="notes"]:focus {
 					<?php } ?>
 
 					<label class="form-group">
-						<div class="detail"><?php echo f::form_textarea('notes', true, 'style="height: 100px;" placeholder="'. f::escape_html(t('title_notes', 'Notes')) .'..." spellcheck="false"'); ?></div>
+						<div class="detail"><?php echo f::form_textarea('notes', true, ['style' => 'height: 100px;', 'placeholder' => f::escape_html(t('title_notes', 'Notes')) . '..." spellcheck="false']); ?></div>
 					</label>
 				</div>
 			</div>

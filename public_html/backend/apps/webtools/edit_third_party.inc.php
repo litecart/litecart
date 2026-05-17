@@ -100,7 +100,7 @@
 	</div>
 
 	<div class="card-body">
-		<?php echo f::form_begin('third_party_form', 'post', false, false, 'autocomplete="off" style="max-width: 720px;"'); ?>
+		<?php echo f::form_begin('third_party_form', 'post', false, false, ['autocomplete' => 'off', 'style' => 'max-width: 720px;']); ?>
 
 			<div class="grid">
 				<div class="col-md-6">
@@ -113,7 +113,7 @@
 				<div class="col-md-6">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
-						<?php echo f::form_input_text('name', true, 'required'); ?>
+						<?php echo f::form_input_text('name', true, ['required' => '']); ?>
 					</label>
 				</div>
 			</div>
@@ -164,29 +164,29 @@
 				<div class="col-md-6">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_homepage', 'Homepage'); ?></div>
-						<?php echo f::form_input_url('homepage', true, 'placeholder="https://..."'); ?>
+						<?php echo f::form_input_url('homepage', true, ['placeholder' => 'https://...']); ?>
 					</label>
 				</div>
 			</div>
 
 			<label class="form-group">
 				<div class="form-label"><?php echo t('title_third_policy', 'Cookie Policy'); ?></div>
-				<?php echo f::form_input_url('cookie_policy_url', true, 'placeholder="https://..."'); ?>
+				<?php echo f::form_input_url('cookie_policy_url', true, ['placeholder' => 'https://...']); ?>
 			</label>
 
 			<label class="form-group">
 				<div class="form-label"><?php echo t('title_privacy_policy', 'Privacy Policy'); ?></div>
-				<?php echo f::form_input_url('privacy_policy_url', true, 'placeholder="https://..."'); ?>
+				<?php echo f::form_input_url('privacy_policy_url', true, ['placeholder' => 'https://...']); ?>
 			</label>
 
 			<label class="form-group">
 				<div class="form-label"><?php echo t('title_opt_out', 'Opt Out'); ?></div>
-				<?php echo f::form_input_url('opt_out_url', true, 'placeholder="https://..."'); ?>
+				<?php echo f::form_input_url('opt_out_url', true, ['placeholder' => 'https://...']); ?>
 			</label>
 
 			<label class="form-group">
 				<div class="form-label"><?php echo t('title_do_not_sell', 'Do Not Sell'); ?></div>
-				<?php echo f::form_input_url('do_not_sell_url', true, 'placeholder="https://..."'); ?>
+				<?php echo f::form_input_url('do_not_sell_url', true, ['placeholder' => 'https://...']); ?>
 			</label>
 
 			<div class="card-action">

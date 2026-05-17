@@ -46,13 +46,13 @@
 		<div class="card-filter">
 
 			<div class="expandable">
-				<?php echo f::form_input_search('query', true, 'placeholder="'. t('text_search_phrase_or_keyword', 'Search phrase or keyword').'"'); ?>
+				<?php echo f::form_input_search('query', true, ['placeholder' => t('text_search_phrase_or_keyword', 'Search phrase or keyword')]); ?>
 			</div>
 
 			<div class="input-group">
-				<?php echo f::form_input_datetime('date_from', true, 'style="width: 50%;"'); ?>
+				<?php echo f::form_input_datetime('date_from', true, ['style' => 'width: 50%;']); ?>
 				<span class="input-group-text">-</span>
-				<?php echo f::form_input_datetime('date_to', true, 'style="width: 50%;"'); ?>
+				<?php echo f::form_input_datetime('date_to', true, ['style' => 'width: 50%;']); ?>
 			</div>
 
 			<div>

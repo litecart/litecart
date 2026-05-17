@@ -75,7 +75,7 @@
 				<ul class="list-inline">
 
 					<li class="expandable">
-						<?php echo f::form_input_search('query', true, 'placeholder="'. f::escape_html(t('title_search', 'Search')) .'"'); ?>
+						<?php echo f::form_input_search('query', true, ['placeholder' => f::escape_html(t('title_search', 'Search'))]); ?>
 					</li>
 
 					<li>

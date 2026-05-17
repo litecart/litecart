@@ -153,7 +153,7 @@
 
 	<?php echo f::form_begin('search_form', 'get'); ?>
 		<div class="card-filter">
-			<div class="expandable"><?php echo f::form_input_search('query', true, 'placeholder="'. t('text_search_phrase_or_keyword', 'Search phrase or keyword') .'"'); ?></div>
+			<div class="expandable"><?php echo f::form_input_search('query', true, ['placeholder' => t('text_search_phrase_or_keyword', 'Search phrase or keyword')]); ?></div>
 			<div><?php echo f::form_button('filter', t('title_search', 'Search'), 'submit'); ?></div>
 		</div>
 	<?php echo f::form_end(); ?>
@@ -208,8 +208,8 @@
 				<div class="flex">
 
 					<div class="btn-group">
-						<?php echo f::form_button('subscribe', t('title_set_as_subscribed', 'Set As Subscribed'), 'submit', 'class="btn btn-default"', 'icon-check'); ?>
-						<?php echo f::form_button('unsubscribe', t('title_set_as_unsubscribed', 'Set As Unsubscribed'), 'submit', 'class="btn btn-default"', 'remove'); ?>
+						<?php echo f::form_button('subscribe', t('title_set_as_subscribed', 'Set As Subscribed'), 'submit', ['class' => 'btn btn-default'], 'icon-check'); ?>
+						<?php echo f::form_button('unsubscribe', t('title_set_as_unsubscribed', 'Set As Unsubscribed'), 'submit', ['class' => 'btn btn-default'], 'remove'); ?>
 					</div>
 
 					<?php echo f::form_button_predefined('delete'); ?>
@@ -232,7 +232,7 @@
 
 		<label class="form-group">
 			<div class="form-label"><?php echo t('title_recipients', 'Recipients'); ?></div>
-			<?php echo f::form_textarea('recipients', '', 'style="height: 480px;"'); ?>
+			<?php echo f::form_textarea('recipients', '', ['style' => 'height: 480px;']); ?>
 		</label>
 
 		<label class="form-group">
@@ -240,7 +240,7 @@
 			<?php echo f::form_toggle('subscribe', [1 => t('title_subscribe', 'Subscribed'), 0 => t('title_unsubscribe', 'Unsubscribed')], '1'); ?>
 		</label>
 
-		<?php echo f::form_button('add', t('title_add', 'Add'), 'submit', 'class="btn btn-default btn-block"'); ?>
+		<?php echo f::form_button('add', t('title_add', 'Add'), 'submit', ['class' => 'btn btn-default btn-block']); ?>
 
 	<?php echo f::form_end(); ?>
 </div>
