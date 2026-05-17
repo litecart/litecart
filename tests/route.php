@@ -142,8 +142,8 @@
 
 		// Test basic link creation
 		$link = route::create_link('/products');
-		if (!$link instanceof ent_link) {
-			throw new Exception('create_link should return an ent_link object');
+		if (!$link instanceof type_url) {
+			throw new Exception('create_link should return an type_url object');
 		}
 
 		// Test link with new parameters

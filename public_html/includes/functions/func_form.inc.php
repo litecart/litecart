@@ -648,6 +648,8 @@
 
 	function form_radio_button($name, $value, $input=true, $attributes=[]) {
 
+		$attributes = is_array($attributes) ? $attributes : form_attributes($attributes);
+
 		if (is_array($value)) {
 			return f::draw_element('label', ['class' => 'form-check', ...$attributes], implode(PHP_EOL, [
 				'  ' . form_radio_button($name, $value[0], $input, $attributes),
