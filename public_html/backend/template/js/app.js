@@ -383,30 +383,47 @@ waitFor('jQuery', ($) => {
 							return;
 						}
 
+						// Defense-in-depth: only allow http(s), mailto, root-relative or scheme-less
+						// URLs as result links. Today all providers build links via document::ilink()
+						// (relative), so this guards against future providers leaking javascript:,
+						// data: or protocol-relative (//) URLs.
+						function safe_link(url) {
+							if (typeof url !== 'string') return '#';
+							if (url.startsWith('//')) return '#';                          // Protocol-relative — inherits page scheme
+							if (/^(https?:\/\/|mailto:)/i.test(url)) return url;           // Allowed absolute schemes
+							if (url.startsWith('/')) return url;                           // Root-relative
+							if (!/^[a-z][a-z0-9+.\-]*:/i.test(url)) return url;            // Scheme-less = relative
+							return '#';                                                    // Everything else (javascript:, data:, vbscript:, ...)
+						}
+
 						$.each(json, function(i, group) {
 
-							if (group.results.length) {
+							if (!group.results.length) return;
 
-								$('#search .results').append(
-									'<h3>'+ group.name +'</h3>' +
-									'<ul class="flex flex-rows flex-nogap" data-group="'+ group.name +'"></ul>'
-								);
+							// Build group header and list via DOM APIs so untrusted fields
+							// (group.name, result.title, result.description, result.link)
+							// can't break out of text/attribute context.
+							var $heading = $('<h3>').text(group.name);
+							var $ul = $('<ul>').addClass('flex flex-rows flex-nogap').attr('data-group', group.name);
 
-								$.each(group.results, function(i, result) {
+							$('#search .results').append($heading).append($ul);
 
-									var $li = $([
-										'<li class="result">',
-										'  <a class="list-group-item" href="'+ result.link +'" style="border-inline-start: 3px solid '+ group.theme.color +'; background: '+ group.theme.color +'11;">',
-										'    <small class="id float-end">#'+ result.id +'</small>',
-										'    <div class="title">'+ result.title +'</div>',
-										'    <div class="description"><small>'+ result.description +'</small></div>',
-										'  </a>',
-										'</li>'
-									].join('\n'));
+							$.each(group.results, function(i, result) {
 
-									$('#search .results ul[data-group="'+ group.name +'"]').append($li);
-								});
-							}
+								var $a = $('<a>')
+									.addClass('list-group-item')
+									.attr('href', safe_link(result.link))
+									.css({
+										'border-inline-start': '3px solid ' + group.theme.color,
+										'background': group.theme.color + '11'
+									});
+
+								$('<small>').addClass('id float-end').text('#' + result.id).appendTo($a);
+								$('<div>').addClass('title').text(result.title).appendTo($a);
+								$('<div>').addClass('description').append($('<small>').text(result.description)).appendTo($a);
+
+								$('<li>').addClass('result').append($a).appendTo($ul);
+							});
 						});
 
 						if ($('#search .results').html() == '') {

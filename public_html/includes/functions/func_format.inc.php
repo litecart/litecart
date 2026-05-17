@@ -1,5 +1,12 @@
 <?php
 
+	/**
+	 * Formats an address array into a multi-line plain-text string.
+	 *
+	 * Return value is NOT HTML-safe — caller is responsible for output escaping.
+	 * Canonical render pattern: nl2br(f::escape_html(f::format_address(...))).
+	 * Escape MUST run before nl2br, otherwise the <br /> tags get escaped too.
+	 */
 	function format_address($address) {
 
 		$country = database::query(

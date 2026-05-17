@@ -139,12 +139,12 @@
 					<td><?php echo $customer['id']; ?></td>
 					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_customer', ['customer_id' => $customer['id']]); ?>">
 						<?php echo f::draw_fonticon($customer['company'] ? 'icon-building' : 'icon-user', 'style="opacity: .5;"'); ?>
-						<?php echo $customer['company'] ?: $customer['firstname'] .' '. $customer['lastname']; ?>
-					</td>
-					<td><?php echo $customer['email']; ?></a></td>
-					<td><?php echo $customer['company']; ?></td>
-					<td><?php echo $customer['last_hostname']; ?></td>
-					<td class="text-center"><?php echo $customer['group_name']; ?></td>
+						<?php echo f::escape_html($customer['company'] ?: $customer['firstname'] .' '. $customer['lastname']); ?>
+					</a></td>
+					<td><?php echo f::escape_html($customer['email']); ?></td>
+					<td><?php echo f::escape_html($customer['company']); ?></td>
+					<td><?php echo f::escape_html($customer['last_hostname']); ?></td>
+					<td class="text-center"><?php echo f::escape_html($customer['group_name']); ?></td>
 					<td class="text-end"><?php echo f::datetime_when($customer['created_at']); ?></td>
 					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_customer', ['customer_id' => $customer['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo f::draw_fonticon('edit'); ?></a></td>
 				</tr>
