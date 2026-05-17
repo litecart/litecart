@@ -822,13 +822,12 @@
 
 	function form_regional($name, $language_code='', $input=true, $type='text', $attributes=[]) {
 
-		if (preg_match('#^[a-z]{2}$#', $name)) {
-			trigger_error('Passing $language code as 1st parameter in form_regional_text() is deprecated. Instead, use form_regional_text($name, $language_code, $input, $attributes)', E_USER_DEPRECATED);
-			[$name, $language_code] = [$language_code, $name];
-		}
-
 		if (!$language_code) {
 			$language_code = settings::get('store_language_code');
+		}
+
+		if ($input instanceof type_translation) {
+			$input = $input->in($language_code);
 		}
 
 		if ($input === true) {
@@ -851,6 +850,10 @@
 			$language_code = settings::get('store_language_code');
 		}
 
+		if ($input instanceof type_translation) {
+			$input = $input->in($language_code);
+		}
+
 		return implode(PHP_EOL, [
 			'<div class="input-group">',
 			'  <span class="input-group-text" style="font-family: monospace;" title="'. f::escape_attr(language::$languages[$language_code]['name']) .'">'. f::escape_html($language_code) .'</span>',
@@ -861,13 +864,12 @@
 
 	function form_regional_textarea($name, $language_code='', $input=true, $attributes=[]) {
 
-		if (preg_match('#^[a-z]{2}$#', $name)) {
-			trigger_error('Passing language code as 1st parameter in form_regional_textarea() is deprecated. Instead, use form_regional_textarea($name, $language_code, $input, $attributes)', E_USER_DEPRECATED);
-			[$name, $language_code] = [$language_code, $name];
-		}
-
 		if (!$language_code) {
 			$language_code = settings::get('store_language_code');
+		}
+
+		if ($input instanceof type_translation) {
+			$input = $input->in($language_code);
 		}
 
 		return implode(PHP_EOL, [
@@ -880,13 +882,12 @@
 
 	function form_regional_wysiwyg($name, $language_code='', $input=true, $attributes=[]) {
 
-		if (preg_match('#^[a-z]{2}$#', $name)) {
-			trigger_error('Passing language code as 1st parameter in form_regional_wysiwyg() is deprecated. Instead, use form_regional_wysiwyg($name, $language_code, $input, $attributes)', E_USER_DEPRECATED);
-			[$name, $language_code] = [$language_code, $name];
-		}
-
 		if (!$language_code) {
 			$language_code = settings::get('store_language_code');
+		}
+
+		if ($input instanceof type_translation) {
+			$input = $input->in($language_code);
 		}
 
 		return implode(PHP_EOL, [
