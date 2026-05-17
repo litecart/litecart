@@ -550,7 +550,7 @@
 				$this->data['discount_tax'] += (float)$item['discount_tax'] * (float)$item['quantity'];
 				$this->data['total'] += ($item['price'] - (float)$item['discount']) * (float)$item['quantity'];
 				$this->data['total_tax'] += ((float)$item['tax'] - (float)$item['discount_tax']) * (float)$item['quantity'];
-				$this->data['weight_total'] += (float)weight::convert($item['weight'], $item['weight_unit'], $this->data['weight_unit']) * abs($item['quantity']);
+				$this->data['weight_total'] += (new type_weight($item['weight'], $item['weight_unit']))->convert($this->data['weight_unit']) * abs($item['quantity']);
 			}
 
 			// Add shipping fee
@@ -645,7 +645,7 @@
 					'weight_unit' => $stock_item['weight_unit'],
 				];
 
-				$this->data['weight_total'] += weight::convert($stock_item['weight'], $stock_item['weight_unit'], $this->data['weight_unit']) * $line['quantity'];
+				$this->data['weight_total'] += (new type_weight($stock_item['weight'], $stock_item['weight_unit']))->convert($this->data['weight_unit']) * $line['quantity'];
 			}
 
 			$this->data['lines'][] = $line;

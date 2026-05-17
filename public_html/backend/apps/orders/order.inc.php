@@ -251,7 +251,7 @@ textarea[name="notes"]:focus {
 
 						<div class="form-group">
 							<div class="form-label"><?php echo t('title_shipping_weight', 'Shipping Weight'); ?></div>
-							<div class="detail"><?php echo !empty($order->data['weight_total']) ? weight::format($order->data['weight_total'], $order->data['weight_unit'])  : '-'; ?></div>
+							<div class="detail"><?php echo !empty($order->data['weight_total']) ? new type_weight($order->data['weight_total'], $order->data['weight_unit']) : '-'; ?></div>
 						</div>
 
 						<label class="form-group">

@@ -2107,7 +2107,7 @@
 			}
 		}
 
-		$options = f::array_each(length::$units, fn($unit) =>
+		$options = f::array_each(type_length::UNITS, fn($unit) =>
 			[$unit['unit'], $unit['unit'], 'data-value="'. (float)$unit['value'] .'" data-decimals="'. (int)$unit['decimals'] .'" title="'. f::escape_attr($unit['name']) .'"']
 		);
 
@@ -2733,7 +2733,7 @@
 			}
 		}
 
-		$options = f::array_each(weight::$units, fn($unit) =>
+		$options = f::array_each(type_weight::UNITS, fn($unit) =>
 			[$unit['unit'], $unit['unit'], 'data-value="'. (float)$unit['value'] .'" data-decimals="'. (int)$unit['decimals'] .'" title="'. f::escape_attr($unit['name']) .'"']
 		);
 
@@ -2752,7 +2752,7 @@
 		}
 
 		$options = [];
-		foreach (volume::$units as $unit) {
+		foreach (type_volume::UNITS as $unit) {
 			$options[] = [$unit['unit'], $unit['unit'], 'data-value="'. (float)$unit['value'] .'" data-decimals="'. (int)$unit['decimals'] .'" title="'. f::escape_attr($unit['name']) .'"'];
 		}
 

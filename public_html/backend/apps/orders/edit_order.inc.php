@@ -918,7 +918,7 @@
 								<div class="col-md-5">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_total_weight', 'Total Weight'); ?></div>
-										<div class="form-input"><?php echo weight::format($order->data['weight_total'], $order->data['weight_unit']) ?></div>
+										<div class="form-input"><?php echo new type_weight($order->data['weight_total'], $order->data['weight_unit']); ?></div>
 									</label>
 								</div>
 							</div>

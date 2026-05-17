@@ -1,34 +1,44 @@
 <?php
 
-	class volume {
+	/*
+		Example usage:
+		$volume = new type_volume(1.5, 'l');
+		echo $volume->convert('cl'); // 150 cl
+		echo $volume; // 150 cl
+	*/
 
-		public static $units = [
-			'L' => [
-				'name' => 'Litres',
-				'unit' => 'L',
+	class type_volume implements JsonSerializable {
+
+		public $value;
+		public $unit;
+
+		public const UNITS = [
+			'l' => [
+				'name' => 'Liters',
+				'unit' => 'l',
 				'value' => 1,
 				'decimals' => 2,
 			],
-			'cL' => [
-				'name' => 'Centilitres',
-				'unit' => 'cL',
+			'cl' => [
+				'name' => 'Centiliters',
+				'unit' => 'cl',
 				'value' => 0.01,
 				'decimals' => 0,
 			],
-			'dL' => [
-				'name' => 'Decilitres',
-				'unit' => 'dL',
+			'dl' => [
+				'name' => 'Deciliters',
+				'unit' => 'dl',
 				'value' => 0.1,
 				'decimals' => 1,
 			],
 			'dm3' => [
-				'name' => 'Cubic Decimetres',
+				'name' => 'Cubic Decimeters',
 				'unit' => 'dm3',
 				'value' => 1,
 				'decimals' => 2,
 			],
 			'cm3' => [
-				'name' => 'Cubic Centimetres',
+				'name' => 'Cubic Centimeters',
 				'unit' => 'cm3',
 				'value' => 1000,
 				'decimals' => 3,
@@ -42,7 +52,7 @@
 			'gal' => [
 				'name' => 'Gallons (US, liquid)',
 				'unit' => 'gal',
-				'value' =>  0.26417205236,
+				'value' =>	0.26417205236,
 				'decimals' => 2,
 			],
 			'in3' => [
@@ -57,9 +67,9 @@
 				'value' => 0.001,
 				'decimals' => 3,
 			],
-			'mL' => [
-				'name' => 'Millilitres',
-				'unit' => 'mL',
+			'ml' => [
+				'name' => 'Milliliters',
+				'unit' => 'ml',
 				'value' => 0.001,
 				'decimals' => 0,
 			],
@@ -101,50 +111,52 @@
 			],
 		];
 
-		## Node specific methods
+		public function __construct($value, $unit) {
 
-		public static function convert($value, $from, $to) {
+			$unit = strtolower($unit);
 
-			if ($value == 0) {
-				return 0;
+			if (!isset(self::UNITS[$unit])) {
+				trigger_error('The unit '. $unit .' is not a valid volume unit.', E_USER_WARNING);
 			}
 
-			if ($from == $to) {
-				return (float)$value;
-			}
-
-			if (!isset(self::$units[$from])) {
-				trigger_error('Invalid volume unit ('. $from .')', E_USER_WARNING);
-				return false;
-			}
-
-			if (!isset(self::$units[$to])) {
-				trigger_error('Invalid volume unit ('. $to .')', E_USER_WARNING);
-				return false;
-			}
-
-			if (self::$units[$from]['value'] == 0 || self::$units[$to]['value'] == 0) {
-				return 0;
-			}
-
-			return $value * (self::$units[$to]['value'] / self::$units[$from]['value']);
+			$this->value = (float)$value;
+			$this->unit = $unit;
 		}
 
-		public static function format($value, $unit) {
+		public function __toString() {
+			return $this->format();
+		}
 
-			if (!isset(self::$units[$unit])) {
+		public function jsonSerialize(): mixed {
+			return $this->value;
+		}
 
-				if ($value > 0) {
-					trigger_error('Invalid volume unit ('. $unit .')', E_USER_WARNING);
-				}
+		public function convert($to) {
 
-				return f::format_number((float)$value, 2);
+			$to = strtolower($to);
+
+			if ($this->value == 0) {
+				return $this;
 			}
 
-			$decimals = self::$units[$unit]['decimals'];
+			if ($this->unit == $to) {
+				return $this;
+			}
 
-			$formatted = f::format_number((float)$value, (int)$decimals) .' '. self::$units[$unit]['unit'];
+			if (!isset(self::UNITS[$to])) {
+				trigger_error('The unit '. $to .' is not a valid volume unit.', E_USER_WARNING);
+				return false;
+			}
 
+			$this->value = $this->value * (self::UNITS[$to]['value'] / self::UNITS[$this->unit]['value']);
+			$this->unit = $to;
+
+			return $this;
+		}
+
+		public function format() {
+			$decimals = self::UNITS[$this->unit]['decimals'];
+			$formatted = f::format_number($this->value, $decimals) .' '. self::UNITS[$this->unit]['unit'];
 			return $formatted;
 		}
 	}

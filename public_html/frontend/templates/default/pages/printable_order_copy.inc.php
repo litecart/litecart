@@ -97,7 +97,7 @@ h1 {
 
 				<div class="col-3">
 					<div class="label"><?php echo t('title_shipping_weight', 'Shipping Weight'); ?></div>
-					<div class="value"><?php echo !empty($order['weight_total']) ? weight::format($order['weight_total'], $order['weight_unit'])  : '-'; ?></div>
+					<div class="value"><?php echo !empty($order['weight_total']) ? new type_weight($order['weight_total'], $order['weight_unit'])->format() : '-'; ?></div>
 
 					<div class="label"><?php echo t('title_tax_id', 'Tax ID'); ?></div>
 					<div class="value"><?php echo f::escape_html($order['customer']['tax_id']); ?></div>

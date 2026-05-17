@@ -19,7 +19,7 @@
 			// Calculate cart weight
 			$total_weight = 0;
 			foreach ($items as $item) {
-				$total_weight += weight::convert($item['quantity'] * $item['weight'], $item['weight_unit'], $this->settings['weight_unit']);
+				$total_weight += (new type_weight($item['quantity'] * $item['weight'], $item['weight_unit']))->convert($this->settings['weight_unit']);
 			}
 
 			$options = [];
