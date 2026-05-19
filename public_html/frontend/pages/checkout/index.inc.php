@@ -28,7 +28,7 @@
 		// Redirect to customer details if not sufficient
 		if ($validation_error = $order->validate('customer')) {
 			notices::add('notices', t('error_we_need_some_additional_info_from_you', 'We need some additional information from you'));
-			redirect(document::ilink('checkout/customer'), 302);
+			redirect(document::ilink('checkout/customer', ['redirect_url' => document::ilink('checkout/index')]));
 			exit;
 		}
 
@@ -44,7 +44,7 @@
 					". (!empty($order->data['customer']['shipping_address']['zone_code']) ? "and (zone_code = '' or zone_code = '". database::input($order->data['customer']['shipping_address']['zone_code']) ."')" : "and zone_code = ''") ."
 					". (!empty($order->data['customer']['shipping_address']['city']) ? "and (city = '' or city like '". addcslashes(database::input($order->data['customer']['shipping_address']['city']), '%_') ."')" : "and city = ''") .";"
 				)->num_rows()) {
-					notices::add('errors', strtr(t('error_geo_zone_restriction', 'Your shopping cart contains items that can not be shipped to %country'), [
+					notices::add('errors', strtr(t('error_geo_zone_restriction', 'Your shopping cart contains items that cannot be shipped to %country'), [
 						'%country' => reference::country($order->data['customer']['shipping_address']['country_code'])->name,
 					]) .'['.$item['sku'].']');
 					redirect(document::ilink('checkout/customer'), 302);
@@ -60,7 +60,7 @@
 	}
 
 	if (settings::get('catalog_only_mode')) {
-		notices::add('errors', t('warning_no_checkout_in_catalog_only_mode', 'The store is currently in catalog mode only and cannot accept orders.'));
+		notices::add('errors', t('warning_no_checkout_in_catalog_only_mode', 'The store is currently in catalog only mode and will not accept orders.'));
 		return;
 	}
 

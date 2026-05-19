@@ -4,7 +4,7 @@
 	<div id="content">
 		<div class="grid">
 
-			<div class="col-md-7">
+			<div class="col-md-8">
 
 				<section id="box-shopping-cart" class="card">
 
@@ -84,7 +84,7 @@
 
 			</div>
 
-			<div class="col-md-5">
+			<div class="col-md-4">
 
 				<section id="box-checkout-start" class="card">
 

@@ -86,7 +86,8 @@
 	foreach ($files as $file) {
 		$module_id = substr(basename($file), 0, -8);
 
-		$module = new $module_id;
+		$installed = in_array($module_id, $installed_modules);
+		$module = ($installed && isset($mod_class->modules[$module_id])) ? $mod_class->modules[$module_id] : new $module_id;
 
 		$modules[] = [
 			'id' => $module_id,
@@ -96,7 +97,7 @@
 			'priority' => $module->priority,
 			'author' => $module->author,
 			'website' => $module->website,
-			'installed' => in_array($module_id, $installed_modules) ? true : false,
+			'installed' => $installed,
 		];
 	}
 

@@ -39,12 +39,10 @@
 		try {
 
 			// Do we have an existing order in the session?
-			if (!empty(session::$data['checkout']['order']->data['id'])) {
-				$resume_id = session::$data['checkout']['order']->data['id'];
-			}
+			$resume_id = session::$data['checkout']['order']->data['id'] ?? null;
 
 			// Resume incomplete order in session
-			if (!empty($resume_id)) {
+			if ($resume_id) {
 				if (database::query(
 					"select * from ". DB_TABLE_PREFIX ."orders
 					where id = ". (int)$resume_id ."

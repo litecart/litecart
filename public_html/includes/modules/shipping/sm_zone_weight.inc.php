@@ -10,6 +10,7 @@
 
 		public function __construct() {
 			$this->name = t(__CLASS__.':title_zone_based_shipping', 'Zone Based Shipping');
+			parent::__construct();
 		}
 
 		public function options($items, $subtotal, $tax, $currency_code, $address) {

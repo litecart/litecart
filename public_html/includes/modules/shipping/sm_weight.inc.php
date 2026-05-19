@@ -11,6 +11,7 @@
 
 		public function __construct() {
 			$this->name = t(__CLASS__.':title_weight_based_shipping', 'Weight Based Shipping');
+			parent::__construct();
 		}
 
 		public function options($items, $subtotal, $tax, $currency_code, $customer) {
@@ -105,7 +106,7 @@
 			];
 		}
 
-		function settings() {
+		public function settings() {
 			return [
 				[
 					'key' => 'status',

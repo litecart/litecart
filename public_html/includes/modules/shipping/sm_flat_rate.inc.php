@@ -11,6 +11,7 @@
 
 		public function __construct() {
 			$this->name = t(__CLASS__.':title_flat_rate', 'Flat Rate');
+			parent::__construct();
 		}
 
 		public function options($items, $subtotal, $tax, $currency_code, $customer) {

@@ -11,6 +11,7 @@
 
 		public function __construct() {
 			$this->name = t(__CLASS__.':title_cash_on_delivery', 'Cash on Delivery');
+			parent::__construct();
 		}
 
 		public function options($items, $subtotal, $tax, $currency_code, $customer) {
