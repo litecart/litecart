@@ -1,4 +1,3 @@
-
 # No Nonsense Coding
 
 No Nonsense Coding is a provocative coding concept that probably upsets many. Used and promoted by T. Almroth - author of LiteCart and the LiteCore framework. The purpose is to make as much sense as possible with as little effort as possible when writing code.
@@ -6,188 +5,223 @@ No Nonsense Coding is a provocative coding concept that probably upsets many. Us
 
 ## Overcomplications - That's total nonsense
 
-		function anOverComplicatedFrameworkFunctionName() {
+```php
+	function anOverComplicatedFrameworkFunctionName() {
 
-			$anOverComplicatedFrameworkFunctionNameResult = [];
+		$anOverComplicatedFrameworkFunctionNameResult = [];
 
-			$anExtremelyLongDescriptiveNameForAnArrayNode = '...';
-			$anotherExtremelyLongDescriptiveNameForAnArrayNode = '...';
+		$anExtremelyLongDescriptiveNameForAnArrayNode = '...';
+		$anotherExtremelyLongDescriptiveNameForAnArrayNode = '...';
 
-			$anOverComplicatedFrameworkFunctionNameResult['anExtremelyLongDescriptiveNameForAnArrayNode'] = $anExtremelyLongDescriptiveNameForAnArrayNode;
-			$anOverComplicatedFrameworkFunctionNameResult['anotherExtremelyLongDescriptiveNameForAnArrayNode'] = $anotherExtremelyLongDescriptiveNameForAnArrayNode;
+		$anOverComplicatedFrameworkFunctionNameResult['anExtremelyLongDescriptiveNameForAnArrayNode'] = $anExtremelyLongDescriptiveNameForAnArrayNode;
+		$anOverComplicatedFrameworkFunctionNameResult['anotherExtremelyLongDescriptiveNameForAnArrayNode'] = $anotherExtremelyLongDescriptiveNameForAnArrayNode;
 
-			...
+		...
 
-			return $anOverComplicatedFrameworkFunctionNameResult;
-		}
+		return $anOverComplicatedFrameworkFunctionNameResult;
+	}
+```
 
 Better:
 
-		function simpleFunctionName() {
+```php
+	function simpleFunctionName() {
 
-			$result = [
-				'nodeName' => '...',
-				'anotherNodeName' => '...',
-			];
+		$result = [
+			'nodeName' => '...',
+			'anotherNodeName' => '...',
+		];
 
-			...
+		...
 
-			return $result;
-		}
+		return $result;
+	}
+```
 
 
 ## Cryptic Naming - That's also nonsense
 
 This will just have anyone looking back at code overwhelmed, confused, or frustrated:
 
-		function fmt_CustBillAddr(custObj $c) {
-			$result = fmthlp::fmtAddr($c->billAddr->identity['custFName'], $c->billAddr->identity['custLName'], $c->billAddr->identity['custAddr1'], $c->delAddr->identity['custAddr2'], $c->billAddr->identity['zip'], $c->billAddr->identity['country']);
-			return $result;
-		}
+```php
+	function fmt_CustBillAddr(custObj $c) {
+		$result = fmthlp::fmtAddr($c->billAddr->identity['custFName'], $c->billAddr->identity['custLName'], $c->billAddr->identity['custAddr1'], $c->delAddr->identity['custAddr2'], $c->billAddr->identity['zip'], $c->billAddr->identity['country']);
+		return $result;
+	}
 
-		function fmt_CustDelAddr(custObj $c) {
-			$result = fmthlp::fmtAddr($c->delAddr->identity['custFName'], $c->delAddr->identity['custLName'], $c->delAddr->identity['custAddr1'], $c->delAddr->identity['custAddr2'], $c->delAddr->identity['zip'], $c->delAddr->identity['country']);
-			return $result;
-		}
+	function fmt_CustDelAddr(custObj $c) {
+		$result = fmthlp::fmtAddr($c->delAddr->identity['custFName'], $c->delAddr->identity['custLName'], $c->delAddr->identity['custAddr1'], $c->delAddr->identity['custAddr2'], $c->delAddr->identity['zip'], $c->delAddr->identity['country']);
+		return $result;
+	}
 
-		echo fmt_CustBillAddr($custObj);
-		echo fmt_CustDelAddr($custObj);
+	echo fmt_CustBillAddr($custObj);
+	echo fmt_CustDelAddr($custObj);
+```
 
 Better:
 
-		function formatAddress(addressObject $address) {
-			return = '...';
-		}
+```php
+	function formatAddress(addressObject $address) {
+		return = '...';
+	}
 
-		echo formatAddress($customer->billingAddress);
-		echo formatAddress($customer->deliveryAddress);
+	echo formatAddress($customer->billingAddress);
+	echo formatAddress($customer->deliveryAddress);
+```
 
 
 ## Duplicate Naming - No naming the names nonsense
 
 This will just take longer to type, longer to read, longer to analyze, and leave a bigger footprint:
 
-		foreach ($webshopCustomers as $webshopCustomer) {
-			function($webshopCustomer['webshopCustomerShippingAddress']['webshopCustomerShippingAddressStreetName']);
-		}
+```php
+	foreach ($webshopCustomers as $webshopCustomer) {
+		function($webshopCustomer['webshopCustomerShippingAddress']['webshopCustomerShippingAddressStreetName']);
+	}
+```
 
 Better:
 
-		foreach ($customers as $customer) {
-			function($customer['shippingAddress']['street']);
-		}
+```php
+	foreach ($customers as $customer) {
+		function($customer['shippingAddress']['street']);
+	}
+```
 
 
 ## Variable Duplication - No nonsense for nonsense
 
 Variable duplication is a challenge to backtrace. If we have no use of the raw user input, we can just overwrite it with safer polished and sanitized data.
 
-		$userInput = $_POST['userInput'];
-		$sanitizedUserInput = sanitize($userInput);
-		$polishSanitizedUserInput = polish($sanitizedUserInput);
+```php
+	$userInput = $_POST['userInput'];
+	$sanitizedUserInput = sanitize($userInput);
+	$trimmedSanitizedUserInput = trim($sanitizedUserInput);
 
-		passToFunction($trimmedSanitizedUserInput); // Wait, what is the origin of the data again?
+	passToFunction($trimmedSanitizedUserInput); // Wait, what is the origin of the data again?
+```
 
 Better:
 
-		$_POST['userInput'] = sanitize($_POST['userInput']); // Sanitize so we don't accidentally use the raw input again
-		$_POST['userInput'] = polish($_POST['userInput']); // Do some polishing
+```php
+	$_POST['userInput'] = sanitize($_POST['userInput']); // Sanitize so we don't accidentally use the raw input again
+	$_POST['userInput'] = polish($_POST['userInput']); // Do some polishing
 
-		passToFunction($_POST['userInput']); // Oh we are passing something that came from a user input
+	passToFunction($_POST['userInput']); // Oh we are passing something that came from a user input
+```
 
 
 ## Single-Use Variables - Avoid the unnecessery nonsense
 
-	Creating variables for one-time use should be avoided unless serving a good purpose.
+Creating variables for one-time use should be avoided unless serving a good purpose.
 
-		$array = ['foo', 'bar'];
+```php
+	$array = ['foo', 'bar'];
 
-		foreach ($array as $item) {
-			echo $item;
-		}
+	foreach ($array as $item) {
+		echo $item;
+	}
+```
 
-	Better:
+Better:
 
-		foreach ([
-			'foo',
-			'bar',
-		] as $item) {
-			echo $item;
-		}
+```php
+	foreach ([
+		'foo',
+		'bar',
+	] as $item) {
+		echo $item;
+	}
+```
 
 
 ## Repetitive Use - Avoid the repetitive nonsense
 
-	Repeating things can be annoying:
+Repeating things can be annoying:
 
-		$long_descriptive_object['key1'] = $_POST['key1'] ?? '';
-		$long_descriptive_object['key2'] = $_POST['key2'] ?? '';
-		$long_descriptive_object['key3'] = $_POST['key3'] ?? '';
-		$long_descriptive_object['key4'] = $_POST['key4'] ?? '';
-		$long_descriptive_object['key5'] = $_POST['key5'] ?? '';
+```php
+	$my_object['key1'] = $_POST['key1'] ?? '';
+	$my_object['key2'] = $_POST['key2'] ?? '';
+	$my_object['key3'] = $_POST['key3'] ?? '';
+	$my_object['key4'] = $_POST['key4'] ?? '';
+	$my_object['key5'] = $_POST['key5'] ?? '';
+```
 
-	Better:
+Better:
 
-		foreach ([
-			'key1',
-			'key2',
-			'key3',
-			'key4',
-			'key5',
-		] as $key) {
-			$long_descriptive_object[$key] = $_POST[$key] ?? '';
-		}
+```php
+	foreach ([
+		'key1',
+		'key2',
+		'key3',
+		'key4',
+		'key5',
+	] as $key) {
+		$my_object[$key] = $_POST[$key] ?? '';
+	}
+```
 
 
 ## Use codes others recognize - No made up nonsense
 
 Very bad:
 
-		$country = 'us';     // Invalid. Country codes should be uppercase
-		$lang = 'EN';        // Invalid. Language codes should be lowercase
-		$currencyId = 1234;  // Nonsense. No one but you recognize your internal IDs and they are hard to migrate
+```php
+	$country = 'us';     // Invalid. Country codes should be uppercase
+	$lang = 'EN';        // Invalid. Language codes should be lowercase
+	$currencyId = 1234;  // Nonsense. No one but you recognize your internal IDs and they are hard to migrate
+```
 
 Better:
 
-		$countryCode = 'US';   // ISO 3166-1 Alpha 2
-		$languageCode = 'en';  // ISO 639-1
-		$currencyCode = 'USD'  // ISO 4217
-
+```php
+	$countryCode = 'US';   // ISO 3166-1 Alpha 2
+	$languageCode = 'en';  // ISO 639-1
+	$currencyCode = 'USD'  // ISO 4217
+```
 
 Refusing ISO codes can be a lot of work:
 
-		$country = $_POST['country'];
+```php
+	$country = $_POST['country'];
 
-		if (in_array(strtolower($country), ['united states', 'united states of america', 'usa', 'u.s.a.', 'u.s.', 'us', 'federal kingdom of walmart'])) {
-			doSomethingWith('USA');
-		}
+	if (in_array(strtolower($country), ['united states', 'united states of america', 'usa', 'u.s.a.', 'u.s.', 'us', 'federal kingdom of walmart'])) {
+		doSomethingWith('USA');
+	}
 
-		if (in_array(strtolower($country), ['great britain', 'britain', 'gb', 'g.b.', 'united kingdom', 'united kingdom of great britain and northern ireland', 'fish and chips land'])) {
-			doSomethingWith('Great Britain');
-		}
+	if (in_array(strtolower($country), ['great britain', 'britain', 'gb', 'g.b.', 'united kingdom', 'united kingdom of great britain and northern ireland', 'fish and chips land'])) {
+		doSomethingWith('Great Britain');
+	}
+```
 
 Better:
 
-		$_POST['countryCode'] = strtoupper($_POST['countryCode']);
+```php
+	$_POST['countryCode'] = strtoupper($_POST['countryCode']);
 
-		doSomethingWith($_POST['countryCode']);
+	doSomethingWith($_POST['countryCode']);
+```
 
 
-# No Yoda Conditions - Strange nonsense this is
+# No Yoda Conditions - Strange nonsense that is
 
-Unless a galaxy far from, you are. Expressions like Yoda, do you should not.
+Unless a galaxy far from, you are. Express like Yoda, you should not.
 
 Avoid:
 
-		if ('orange' == $fruit) {
-			...
-		}
+```php
+	if ('orange' == $fruit) {
+		...
+	}
+```
 
 Better:
 
-		if ($fruit == 'orange') {
-			...
-		}
+```php
+	if ($fruit == 'orange') {
+		...
+	}
+```
 
 
 ## No Conditional Conditions Inside Iterators - That's if nonsense
@@ -195,7 +229,7 @@ Better:
 	Avoid conditional conditions during iteration.
 
 	Avoid:
-
+```php
 		foreach ($array => $node) {
 			if ($node['first'] == 'a') {
 				if ($node['second'] == 'b') {
@@ -205,15 +239,18 @@ Better:
 				}
 			}
 		}
+```
 
 	Better:
-
+	
+```php
 		foreach ($array => $node) {
 			if ($node['first'] != 'a') continue;
 			if ($node['second'] != 'b') continue;
 			if ($node['third'] != 'c') continue;
 			// Do some stuff
 		}
+```
 
 
 ## Fat third party libraries for small features - Stay away from other people's nonsense
