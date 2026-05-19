@@ -23,11 +23,11 @@
 		"bun": ">=1.3"
 	},
 	"devDependencies": {
-		"@playwright/test": "^1.59.1",
+		"@playwright/test": "^1.60.0",
 		"@sequencemedia/gulp-clean-css": "^1.0.285",
 		"@sequencemedia/gulp-sourcemaps": "^1.0.301",
 		"editorconfig-checker": "^6.1.1",
-		"eslint": "^10.3.0",
+		"eslint": "^10.4.0",
 		"eslint-plugin-html": "^8.1.4",
 		"gulp": "^5.0.1",
 		"gulp-clean-css": "^4.3.0",
@@ -44,7 +44,7 @@
 		"postcss-html": "^1.8.1",
 		"postcss-scss": "^4.0.9",
 		"sass": "^1.99.0",
-		"stylelint": "^17.11.0",
+		"stylelint": "^17.11.1",
 		"stylelint-config-standard-scss": "^17.0.0"
 	},
 	"scripts": {
@@ -58,7 +58,7 @@
 		"test:e2e": "npx playwright test",
 		"uglify": "gulp replace",
 		"watch": "gulp watch",
-		"upgrade": "ncu -u && npm install",
+		"update": "bun update --latest",
 		"dependencies": "npm list --depth=1",
 		"dedupe": "npm dedupe",
 		"lint": "eslint \"public_html/**/*.{js,php,html}\"",
