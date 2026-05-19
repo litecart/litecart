@@ -5,7 +5,7 @@
 	</div>
 
 	<div class="card-body">
-		<div class="listing products columns">
+		<div class="listing products mini-columns">
 			<?php foreach ($products as $product) echo f::draw_listing_product($product); ?>
 		</div>
 	</div>
