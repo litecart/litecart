@@ -77,7 +77,7 @@ table.items tbody tr:nth-child(11) {
 					<div class="value"><?php echo $order['shipping_tracking_id'] ?? '-'; ?></div>
 
 					<div class="label"><?php echo t('title_shipping_weight', 'Shipping Weight'); ?></div>
-					<div class="value"><?php echo !empty($order['weight_total']) ? (new type_weight($order['weight_total'], $order['weight_unit']))->format()  : '-'; ?></div>
+					<div class="value"><?php echo !empty($order['weight_total']) ? f::format_weight($order['weight_total'], $order['weight_unit']) : '-'; ?></div>
 				</div>
 
 				<div class="col-6 shipping-address">

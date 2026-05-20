@@ -210,11 +210,23 @@
 		return $text;
 	}
 
-	function format_number($number, $decimals=0) {
+	function format_number(float $number, int $decimals=0): string {
 		return language::number_format($number, $decimals);
 	}
 
-	function format_regex_code($string) {
+	function format_length(float $length, string $unit): string {
+		return (new type_length($length, $unit))->format();
+	}
+
+	function format_weight(float $weight, string $unit): string {
+		return (new type_weight($weight, $unit))->format();
+	}
+
+	function format_volume(float $volume, string $unit): string {
+		return (new type_volume($volume, $unit))->format();
+	}
+
+	function format_regex_code(string $string): string {
 
 		$string = strip_tags($string);
 

@@ -23,7 +23,7 @@
 			// Calculate cart weight
 			$total_weight = 0;
 			foreach ($items as $item) {
-				$total_weight += (new type_weight($item['quantity'] * $item['weight'], $item['weight_unit']))->convert($this->settings['weight_unit']);
+				$total_weight += f::convert_weight($item['quantity'] * $item['weight'], $item['weight_unit'], $this->settings['weight_unit']);
 			}
 
 			$rate_tables_map = preg_split('#\R+#', trim($this->settings['rate_tables_map']), -1, PREG_SPLIT_NO_EMPTY);
@@ -89,7 +89,7 @@
 						'id' => $table_name,
 						'icon' => $this->settings['icon'],
 						'name' => reference::country($customer['shipping_address']['country_code'])->name,
-						'description' => (new type_weight($total_weight, $this->settings['weight_unit']))->format(),
+						'description' => f::format_weight($total_weight, $this->settings['weight_unit']),
 						'fields' => '',
 						'cost' => $cost,
 						'tax_class_id' => $this->settings['tax_class_id'],
