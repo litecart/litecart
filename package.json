@@ -51,6 +51,7 @@
 		"iconly": "gulp iconly && gulp scss-framework",
 		"archive": "git archive --format=zip --output latest.zip",
 		"build": "gulp build",
+		"build:once": "gulp build:once",
 		"changelog": "git log --oneline 'master'..'dev' > changelog.txt",
 		"hash": "php .git-hooks/pre-commit.d/calculate_checksums.php",
 		"phplint": "gulp phplint",

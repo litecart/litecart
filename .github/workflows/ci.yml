@@ -83,7 +83,7 @@ jobs:
 
       - name: Build assets
         run: |
-          bun run build
+          bun run build:once
 
       - name: Upload built assets
         uses: actions/upload-artifact@v7

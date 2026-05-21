@@ -262,7 +262,7 @@ gulp.task('watch', function() {
 });
 
 // Task aliases
-gulp.task('build', gulp.series(
+const buildTasks = [
 	'js-framework',
 	'js-backend',
 	'js-frontend',
@@ -272,10 +272,11 @@ gulp.task('build', gulp.series(
 	'scss-frontend',
 	'scss-chartist',
 	'scss-trumbowyg',
-	'watch',
-));
+];
+
+gulp.task('build', gulp.series(...buildTasks, 'watch'));
+gulp.task('build:once', gulp.series(...buildTasks));
 
 gulp.task('default', gulp.series(
 	'build',
-	'watch'
 ));
