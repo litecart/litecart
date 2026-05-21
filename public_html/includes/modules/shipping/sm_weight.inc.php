@@ -14,10 +14,10 @@
 			parent::__construct();
 		}
 
-		public function options($items, $subtotal, $tax, $currency_code, $customer) {
+		public function options(array $items, float $subtotal, float $tax, string $currency_code, array $customer): ?array {
 
 			if (!$this->settings['status']) {
-				return;
+				return null;
 			}
 
 			// Calculate cart weight
@@ -98,7 +98,7 @@
 				}
 			}
 
-			if (!$options) return;
+			if (!$options) return null;
 
 			return [
 				'title' => $this->name,
@@ -106,7 +106,7 @@
 			];
 		}
 
-		public function settings() {
+		public function settings(): array {
 			return [
 				[
 					'key' => 'status',
@@ -167,7 +167,7 @@
 			];
 		}
 
-		public function install() {}
+		public function install(): void {}
 
-		public function uninstall() {}
+		public function uninstall(): void {}
 	}

@@ -36,7 +36,7 @@
 		private $_image = null;
 		private $_whitespace = [255, 255, 255];
 
-		public function __construct($file=null, $library=null) {
+		public function __construct(string|null $file = null, string|null $library = null) {
 
 			if ($file) {
 				$this->set($file);
@@ -51,7 +51,7 @@
 			}
 		}
 
-		public function &__get($name) {
+		public function &__get(string $name): mixed {
 
 			if (array_key_exists($name, $this->_data)) {
 				return $this->_data[$name];
@@ -189,15 +189,15 @@
 			return $this->_data[$name];
 		}
 
-		public function &__isset($name) {
+		public function &__isset(string $name): bool {
 			return $this->__get($name);
 		}
 
-		public function __set($name, $value) {
+		public function __set(string $name, mixed $value): void {
 			trigger_error("Setting data is prohibited ($name)", E_USER_WARNING);
 		}
 
-		public function set($file) {
+		public function set(string $file): ?bool {
 
 			$this->_file = null;
 			$this->_image = null;
@@ -235,7 +235,7 @@
 			return true;
 		}
 
-		public function load($file=null) {
+		public function load(string|null $file = null): ?bool {
 
 			if (!empty($file)) {
 				$this->set($file);
@@ -323,20 +323,20 @@
 			}
 		}
 
-		public function load_from_string($binary) {
+		public function load_from_string(string $binary): ?bool {
 
 			$tmp_file = f::file_create_tempfile($binary);
 
 			return $this->load($tmp_file);
 		}
 
-		public function resample($max_width=1024, $max_height=1024, $clipping='FIT_ONLY_BIGGER') {
+		public function resample(int $max_width = 1024, int $max_height = 1024, string $clipping = 'FIT_ONLY_BIGGER'): ?bool {
 
 			settype($max_width, 'integer');
 			settype($max_height, 'integer');
 			$clipping = strtoupper($clipping);
 
-			if ($max_width == 0 && $max_height == 0) return;
+			if ($max_width == 0 && $max_height == 0) return null;
 
 			if ($this->width == 0 || $this->height == 0) {
 				throw new Exception('Error getting source image dimensions ('. $this->_file .').');
@@ -373,7 +373,7 @@
 
 						if ($this->type == 'svg') {
 							$this->_image->scaleImage($max_width, $max_height);
-							return;
+							return null;
 						}
 
 						$this->_image->setImageBackgroundColor('rgba('.$this->_whitespace[0].','.$this->_whitespace[1].','.$this->_whitespace[2].',0)');
@@ -564,7 +564,7 @@
 			}
 		}
 
-		public function trim() {
+		public function trim(): ?bool {
 
 			if (!$this->_image) {
 				$this->load();
@@ -611,7 +611,7 @@
 			}
 		}
 
-		public function watermark($watermark, $align_x='RIGHT', $align_y='BOTTOM', $margin=5) {
+		public function watermark(string $watermark, string $align_x = 'RIGHT', string $align_y = 'BOTTOM', int $margin = 5): ?bool {
 
 			$align_x = strtoupper($align_x);
 			$align_y = strtoupper($align_y);
@@ -749,12 +749,12 @@
 			}
 		}
 
-		public function write($destination, $quality=90, $interlaced=false) {
+		public function write(string $destination, int $quality = 90, bool $interlaced = false): ?bool {
 			trigger_error(__CLASS__.'->write() is deprecated. Instead, use '.__CLASS__.'->save()', E_USER_DEPRECATED);
 			return $this->save($destination, $quality, $interlaced);
 		}
 
-		public function save($destination='', $quality=90, $interlaced=false) {
+		public function save(string $destination = '', int $quality = 90, bool $interlaced = false): ?bool {
 
 			settype($quality, 'integer');
 			settype($interlaced, 'boolean');

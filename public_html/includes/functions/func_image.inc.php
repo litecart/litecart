@@ -1,18 +1,18 @@
 <?php
 
-	function image_scale_by_width($width, $aspect_ratio) {
+	function image_scale_by_width(int $width, string $aspect_ratio): array {
 		list($x, $y) = preg_split('#[:/]#', $aspect_ratio, 2);
 		if (!$y) return [$width, $width];
 		return [$width, round($width / $x * $y)];
 	}
 
-	function image_scale_by_height($height, $aspect_ratio) {
+	function image_scale_by_height(int $height, string $aspect_ratio): array {
 		list($x, $y) = preg_split('#[:/]#', $aspect_ratio, 2);
 		if (!$x) return [$height, $height];
 		return [round($height / $y * $x), $height];
 	}
 
-	function image_process($source, $options) {
+	function image_process(string $source, array $options): string|bool {
 
 		try {
 
@@ -83,8 +83,7 @@
 
 			if (!is_dir(dirname($options['destination']))) {
 				if (!mkdir(dirname($options['destination']), 0777, true)) {
-					trigger_error('Could not create destination folder', E_USER_WARNING);
-					return false;
+					throw new Exception('Could not create destination folder');
 				}
 			}
 
@@ -96,7 +95,9 @@
 			}
 
 			if ($options['width'] > 0 || $options['height'] > 0) {
-				if (!$image->resample($options['width'], $options['height'])) return;
+				if (!$image->resample($options['width'], $options['height'])) {
+					throw new Exception('Failed to resample image');
+				}
 			}
 
 			if (!empty($options['watermark'])) {
@@ -105,19 +106,24 @@
 					$options['watermark'] = 'storage://images/logotype.png';
 				}
 
-				if (!$image->watermark($options['watermark'], 'RIGHT', 'BOTTOM')) return;
+				if (!$image->watermark($options['watermark'], 'RIGHT', 'BOTTOM')) {
+					throw new Exception('Failed to apply watermark');
+				}
 			}
 
-			if (!$image->save($options['destination'], $options['quality'], !empty($options['interlaced']))) return;
+			if (!$image->save($options['destination'], $options['quality'], !empty($options['interlaced']))) {
+				throw new Exception('Failed to save image');
+			}
 
 			return $options['destination'];
 
 		} catch (Exception $e) {
 			trigger_error('Could not process image: ' . $e->getMessage(), E_USER_WARNING);
+			return false;
 		}
 	}
 
-	function image_aspect_ratio($width, $height) {
+	function image_aspect_ratio(int $width, int $height): string {
 
 		$ratio = [$width, $height];
 
@@ -130,7 +136,7 @@
 		return implode('/', $ratio);
 	}
 
-	function image_resample($source, $destination, $width=0, $height=0, $quality=null) {
+	function image_resample(string $source, string $destination, int $width=0, int $height=0, ?int $quality=null): string|bool {
 
 		return image_process($source, [
 			'destination' => $destination,
@@ -141,7 +147,7 @@
 		]);
 	}
 
-	function image_thumbnail($source, $width=0, $height=0, $trim=false) {
+	function image_thumbnail(string $source, int $width=0, int $height=0, bool $trim=false): string|bool {
 
 		if (!is_file($source)) {
 			$source = 'storage://images/no_image.svg';
@@ -160,7 +166,7 @@
 		]);
 	}
 
-	function image_relative_file($file) {
+	function image_relative_file(string $file): string {
 
 		$file = str_replace('\\', '/', $file);
 		$file = preg_replace('#^(storage://|'. preg_quote(FS_DIR_STORAGE, '#') .')#', '', $file);
@@ -169,7 +175,7 @@
 		return preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '', $file);
 	}
 
-	function image_delete_cache($file) {
+	function image_delete_cache(string $file): void {
 
 		$cache_name = sha1(image_relative_file($file));
 

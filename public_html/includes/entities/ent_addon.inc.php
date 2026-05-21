@@ -4,7 +4,7 @@
 		public $data;
 		public $previous;
 
-		public function __construct($id=null) {
+		public function __construct(string|null $id = null) {
 
 			if ($id) {
 				$this->load($id);
@@ -13,7 +13,7 @@
 			}
 		}
 
-		public function reset() {
+		public function reset(): void {
 
 			$this->data = [
 				'id' => '',
@@ -42,7 +42,7 @@
 			$this->previous = $this->data;
 		}
 
-		public function load($id) {
+		public function load(string $id): void {
 
 			$this->reset();
 
@@ -195,7 +195,7 @@
 			$this->previous = $this->data;
 		}
 
-		public function save() {
+		public function save(): void {
 
 			if (!$this->data['id']) {
 				throw new Exception('vMod ID cannot be empty');
@@ -363,7 +363,7 @@
 			cache::clear_cache('vmods');
 		}
 
-		public function delete($cleanup=false) {
+		public function delete(bool $cleanup = false): void {
 
 			if (!$this->previous['folder']) {
 				return;

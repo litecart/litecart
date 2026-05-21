@@ -5,7 +5,7 @@
 		public static $data;
 		public static $scraps;
 
-		public static function init() {
+		public static function init(): void {
 
 			if (empty(session::$data['customer']) || !is_array(session::$data['customer'])) {
 				self::reset();
@@ -169,7 +169,7 @@
 			event::register('after_capture', [__CLASS__, 'after_capture']);
 		}
 
-		public static function after_capture() {
+		public static function after_capture(): void {
 
 			// Load regional settings screen
 			if (route::$selected['endpoint'] == 'frontend') {
@@ -187,7 +187,7 @@
 
 		######################################################################
 
-		public static function identify() {
+		public static function identify(): void {
 
 			// Build list of supported countries
 			$countries = database::query(
@@ -318,7 +318,7 @@
 			}
 		}
 
-		public static function reset() {
+		public static function reset(): void {
 
 			$customer = [];
 
@@ -333,7 +333,7 @@
 			session::$data['customer'] = $customer;
 		}
 
-		public static function load($id) {
+		public static function load(int $id): void {
 
 			self::reset();
 
@@ -359,7 +359,7 @@
 			}
 		}
 
-		public static function require_login() {
+		public static function require_login(): void {
 
 			if (!self::check_login()) {
 				notices::add('warnings', t('warning_must_login_page', 'You must be logged in to view the page.'));
@@ -369,14 +369,15 @@
 			}
 		}
 
-		public static function check_login() {
+		public static function check_login(): bool {
 			if (!empty(self::$data['id'])) return true;
+			return false;
 		}
 
 		// Returns true when the current session's customer_security_timestamp is older than
 		// the customer's sessions_expiry (or missing entirely). Used by init() to revoke
 		// sessions after a password reset or similar security event.
-		public static function is_session_expired($customer=null) {
+		public static function is_session_expired($customer=null): bool {
 
 			if ($customer === null) {
 				$customer = self::$data;
@@ -393,7 +394,7 @@
 			return strtotime($customer['sessions_expiry']) > session::$data['security']['timestamp'];
 		}
 
-		public static function log($event) {
+		public static function log(array $event): void {
 
 			$event = [
 				'session_id' => $event['session_id'] ?? session::$data['id'] ?? null,

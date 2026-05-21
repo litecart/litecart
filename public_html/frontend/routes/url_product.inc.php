@@ -9,14 +9,14 @@
 			'options' => [
 				'redirect' => true,
 			],
-			'rewrite' => function(type_url $link, $language_code) {
+			'rewrite' => function(type_url $link, string $language_code): ?type_url {
 
 				if (!is_array($link->query)) {
-					return;
+					return null;
 				}
 
 				if (empty($link->query['product_id'])) {
-					return;
+					return null;
 				}
 
 				$product = reference::product($link->query['product_id'], $language_code);

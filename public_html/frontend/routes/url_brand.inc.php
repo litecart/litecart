@@ -9,7 +9,7 @@
 			'options' => [
 				'redirect' => true,
 			],
-			'rewrite' => function(type_url $link, $language_code) {
+			'rewrite' => function(type_url $link, string $language_code): type_url {
 				$link->path = 'b/';
 				return $link;
 			}
@@ -23,9 +23,9 @@
 			'options' => [
 				'redirect' => true,
 			],
-			'rewrite' => function(type_url $link, $language_code) {
+			'rewrite' => function(type_url $link, string $language_code): ?type_url {
 
-				if (empty($link->query['brand_id'])) return;
+				if (empty($link->query['brand_id'])) return null;
 
 				$brand = reference::brand($link->query['brand_id'], $language_code);
 				if (empty($brand->id)) return $link;

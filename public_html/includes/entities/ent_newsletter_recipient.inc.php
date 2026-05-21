@@ -4,7 +4,7 @@
 		public $data;
 		public $previous;
 
-		public function __construct($id=null) {
+		public function __construct(int|string|null $id = null) {
 
 			if ($id) {
 				$this->load($id);
@@ -13,7 +13,7 @@
 			}
 		}
 
-		public function reset() {
+		public function reset(): void {
 
 			$this->data = [];
 
@@ -30,7 +30,7 @@
 			$this->previous = $this->data;
 		}
 
-		public function load($id) {
+		public function load(int|string $id): void {
 
 			if (!preg_match('#(^\d+$|@)#', $id)) {
 				throw new Exception('Invalid newsletter recipient (ID: '. $id .')');
@@ -54,7 +54,7 @@
 			$this->previous = $this->data;
 		}
 
-		public function save() {
+		public function save(): void {
 
 			if (!$this->data['id']) {
 				database::query(
@@ -86,7 +86,7 @@
 			cache::clear_cache('newsletter_recipients');
 		}
 
-		public function delete() {
+		public function delete(): void {
 
 			database::query(
 				"delete from ". DB_TABLE_PREFIX ."newsletter_recipients

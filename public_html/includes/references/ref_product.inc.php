@@ -6,7 +6,7 @@
 		protected $_currency_codes;
 		protected $_customer;
 
-		function __construct($product_id, $language_code=null, $currency_code=null, $customer=null) {
+		function __construct(int $product_id, ?string $language_code=null, ?string $currency_code=null, ?array $customer=null) {
 
 			if (!$language_code) {
 				$language_code = language::$selected['code'];
@@ -36,7 +36,7 @@
 			$this->_customer = $customer;
 		}
 
-		protected function _load($field) {
+		protected function _load(string $field): void {
 
 			switch ($field) {
 

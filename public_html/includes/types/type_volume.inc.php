@@ -111,7 +111,7 @@
 			],
 		];
 
-		public function __construct($value, $unit) {
+		public function __construct(float $value, string $unit) {
 
 			$unit = strtolower($unit);
 
@@ -123,7 +123,7 @@
 			$this->unit = $unit;
 		}
 
-		public function __toString() {
+		public function __toString(): string {
 			return $this->format();
 		}
 
@@ -131,7 +131,7 @@
 			return $this->value;
 		}
 
-		public function convert($to) {
+		public function convert(string $to): self {
 
 			$to = strtolower($to);
 
@@ -145,7 +145,7 @@
 
 			if (!isset(self::UNITS[$to])) {
 				trigger_error('The unit '. $to .' is not a valid volume unit.', E_USER_WARNING);
-				return false;
+				return $this;
 			}
 
 			$this->value = $this->value * (self::UNITS[$to]['value'] / self::UNITS[$this->unit]['value']);
@@ -154,7 +154,7 @@
 			return $this;
 		}
 
-		public function format() {
+		public function format(): string {
 			$decimals = self::UNITS[$this->unit]['decimals'];
 			$formatted = f::format_number($this->value, $decimals) .' '. self::UNITS[$this->unit]['unit'];
 			return $formatted;

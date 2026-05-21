@@ -1,12 +1,12 @@
 <?php
 
 	// Turns "a, b,,c," into ['a', 'b', 'c']. For line breaks pass $delimiter \r\n.
-	function string_split($string, $delimiters=',') {
-		return preg_split('#(\s*['. preg_quote($delimiters, '#') .']\s*)+#', (string)$string, -1, PREG_SPLIT_NO_EMPTY);
+	function string_split(string $string, string $delimiters=','): array {
+		return preg_split('#(\s*['. preg_quote($delimiters, '#') .']\s*)+#', $string, -1, PREG_SPLIT_NO_EMPTY);
 	}
 
 	// Turns string into str... or ...str
-	function string_ellipsis($string, $length=0, $ellipsis='…') {
+	function string_ellipsis(string $string, int $length=0, string $ellipsis='…'): string {
 
 		if (!$string) return '';
 

@@ -8,7 +8,7 @@
 		public $cleanup = false;
 		private $_parsers = [];
 
-		public function __construct($view='', $snippets=[]) {
+		public function __construct(string $view = '', array $snippets = []) {
 
 			if ($view) {
 
@@ -82,22 +82,22 @@
 			});
 		}
 
-		public function register_parser($pattern, $callable) {
+		public function register_parser(string $pattern, callable $callable): void {
 			$pattern = '#'. preg_quote($this->wrapper[0], '#') . $pattern . preg_quote($this->wrapper[1], '#') .'#s';
 			$this->_parsers = [$pattern => $callable] + $this->_parsers;
 		}
 
-		public function __toString() {
+		public function __toString(): string {
 			return $this->render();
 		}
 
 		// Render and make it stick
-		public function stitch($view=null, $cleanup=null) {
+		public function stitch(string|null $view = null, bool|null $cleanup = null): string {
 			return $this->html = $this->render($view, $cleanup);
 		}
 
 		// Render but don't make it stick
-		public function render($view=null, $cleanup=null) {
+		public function render(string|null $view = null, bool|null $cleanup = null): string {
 
 			if ($view) {
 

@@ -5,13 +5,13 @@
 		private $_stream;
 		public $context;
 
-		public function dir_opendir($path) {
+		public function dir_opendir(string $path): bool {
 			$path = $this->_resolve_path($path);
-			$this->_directory = opendir($path);
+			$this->_directory = opendir($path, $this->context ?: null);
 			return true;
 		}
 
-		public function dir_readdir() {
+		public function dir_readdir(): string|false {
 
 			$file = readdir($this->_directory);
 
@@ -23,7 +23,7 @@
 			return $file;
 		}
 
-		public function dir_closedir() {
+		public function dir_closedir(): bool {
 
 			if (is_resource($this->_directory)) {
 				closedir($this->_directory);
@@ -34,7 +34,7 @@
 			return true;
 		}
 
-		public function dir_rewinddir() {
+		public function dir_rewinddir(): bool|null {
 			return rewinddir($this->_directory);
 		}
 
@@ -131,7 +131,7 @@
 
 		## Non-Standard StreamWrapper Methods
 
-		private function _resolve_path($path) {
+		private function _resolve_path(string $path): string {
 			return preg_replace('#^storage://#', FS_DIR_STORAGE, str_replace('\\', '/', $path));
 		}
 	}

@@ -4,7 +4,7 @@
 
 		private static $_cache;
 
-		public static function init() {
+		public static function init(): void {
 
 			database::query(
 				"select `key`, `value`, `function`
@@ -43,7 +43,7 @@
 
 		## Node specific methods
 
-		public static function get(string $key, $fallback=null) {
+		public static function get(string $key, mixed $fallback=null): mixed {
 
 			if (isset(self::$_cache[$key])) return self::$_cache[$key];
 
@@ -67,7 +67,7 @@
 
 				case (substr($setting['function'], 0, 9) == 'regional_'):
 
-					if (!class_exists('language') || empty(language::$selected)) return;
+					if (!class_exists('language') || empty(language::$selected)) return $fallback;
 
 					if ($setting['value']) {
 						$setting['value'] = json_decode($setting['value'], true);
@@ -75,7 +75,7 @@
 						if (!empty($setting['value'][language::$selected['code']])) {
 							$setting['value'] = $setting['value'][language::$selected['code']];
 
-						} else if (!empty($value['en'])) {
+						} else if (!empty($setting['value']['en'])) {
 							$setting['value'] = $setting['value']['en'];
 
 						} else {
@@ -93,7 +93,7 @@
 			return self::$_cache[$key] = $setting['value'];
 		}
 
-		public static function set($key, $value) {
+		public static function set(string $key, mixed $value): void {
 			self::$_cache[$key] = $value;
 		}
 	}

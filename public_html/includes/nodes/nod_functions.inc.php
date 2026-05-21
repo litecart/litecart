@@ -4,7 +4,7 @@
 
 		## Node specific methods
 
-		public static function __callstatic($function, $arguments) {
+		public static function __callstatic(string $function, array $arguments) {
 
 			// Handle deprecated or renamed functions by rerouting them
 			foreach ([

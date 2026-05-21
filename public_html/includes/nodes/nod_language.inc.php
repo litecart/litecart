@@ -8,7 +8,7 @@
 		private static $_cache_token;
 		private static $_accessed_translations = [];
 
-		public static function init() {
+		public static function init(): void {
 
 			// Bind selected language to session
 			if (preg_match('#^'. preg_quote(WS_DIR_APP . BACKEND_ALIAS, '#') .'/#', $_SERVER['REQUEST_URI'])) {
@@ -69,11 +69,11 @@
 			event::register('shutdown', [__CLASS__, 'shutdown']);
 		}
 
-		public static function before_output() {
+		public static function before_output(): void {
 			header('Content-Language: '. self::$selected['code']);
 		}
 
-		public static function shutdown() {
+		public static function shutdown(): void {
 
 			database::query(
 				"update ". DB_TABLE_PREFIX ."translations
@@ -87,7 +87,7 @@
 
 		## Node specific methods
 
-		public static function load() {
+		public static function load(): void {
 			self::$languages = database::query(
 				"select * from ". DB_TABLE_PREFIX ."languages
 				where status
@@ -95,7 +95,7 @@
 			)->fetch_all(null, 'code');
 		}
 
-		public static function set($code='') {
+		public static function set(string $code=''): void {
 
 			if (!$code) {
 				$code = self::identify();
@@ -147,7 +147,7 @@
 			}
 		}
 
-		public static function identify() {
+		public static function identify(): ?string {
 
 			$all_languages = array_keys(self::$languages);
 			$enabled_languages = [];
@@ -242,7 +242,7 @@
 			return (!empty($enabled_languages)) ? $enabled_languages[0] : $all_languages[0];
 		}
 
-		public static function translate($code, $default='', $language_code='') {
+		public static function translate(string $code, string $default='', string $language_code=''): string {
 
 			$code = strtolower($code);
 
@@ -254,7 +254,7 @@
 
 			if (!$language_code || empty(self::$languages[$language_code])) {
 				trigger_error('Unknown language code for translation ('. $language_code .')', E_USER_WARNING);
-				return;
+				return $default;
 			}
 
 			// Return from cache
@@ -315,11 +315,11 @@
 			return self::$_cache['translations'][$language_code][$code] = $default;
 		}
 
-		public static function number_format($number, $decimals=0) {
-			return number_format((float)$number, (int)$decimals, self::$selected['decimal_point'], self::$selected['thousands_sep']);
+		public static function number_format(float $number, int $decimals=0): string {
+			return number_format($number, $decimals, self::$selected['decimal_point'], self::$selected['thousands_sep']);
 		}
 
-		public static function strftime($format, $timestamp=null) {
+		public static function strftime(string $format, ?int $timestamp=null): string {
 			trigger_error('Method language::strftime() is deprecated. Instead, use f::datetime_format()', E_USER_DEPRECATED);
 			return f::datetime_format($format, $timestamp);
 		}

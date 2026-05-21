@@ -4,7 +4,7 @@
 		public $data;
 		public $previous;
 
-		public function __construct($country_code=null) {
+		public function __construct(string|null $country_code = null) {
 
 			if ($country_code) {
 				$this->load($country_code);
@@ -13,7 +13,7 @@
 			}
 		}
 
-		public function reset() {
+		public function reset(): void {
 
 			$this->data = [];
 
@@ -28,7 +28,7 @@
 			$this->previous = $this->data;
 		}
 
-		public function load($country_code) {
+		public function load(string $country_code): void {
 
 			if (!preg_match('#^(\d+|[A-Z]{2,3}|[a-z ]{4,})$#i', $country_code)) {
 				throw new Exception('Invalid country ('. $country_code .')');
@@ -61,7 +61,7 @@
 			$this->previous = $this->data;
 		}
 
-		public function save() {
+		public function save(): void {
 
 			if (!$this->data['status'] && $this->data['iso_code_2'] == settings::get('store_country_code')) {
 				throw new Exception(t('error_cannot_disable_store_country', 'You must change the store country before disabling it.'));
@@ -150,7 +150,7 @@
 			cache::clear_cache('countries');
 		}
 
-		public function delete() {
+		public function delete(): void {
 
 			if ($this->data['iso_code_2'] == settings::get('store_country_code')) {
 				throw new Exception(t('error_cannot_delete_store_country', 'You must change the store country before it can be deleted.'));

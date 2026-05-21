@@ -4,7 +4,7 @@
 		public $data;
 		public $previous;
 
-		public function __construct($table_name='') {
+		public function __construct(string $table_name = '') {
 
 			if ($table_name) {
 				$this->load($table_name);
@@ -13,7 +13,7 @@
 			}
 		}
 
-		public function reset() {
+		public function reset(): void {
 
 			$this->data = [
 				'name' => '',
@@ -29,7 +29,7 @@
 			$this->previous = $this->data;
 		}
 
-		public function load($table_name) {
+		public function load(string $table_name): void {
 
 			$this->reset();
 
@@ -95,7 +95,7 @@
 			$this->previous = $this->data;
 		}
 
-		public function save() {
+		public function save(): void {
 
 			$alterings = [];
 
@@ -126,7 +126,7 @@
 			}
 
 			foreach ($this->data['indexes'] as $index) {
-				return implode(' ', array_filter([
+				$alterings[] = implode(' ', array_filter([
 					!empty($column['primary']) ? 'primary key' : (!empty($column['unique']) ? 'unique key' : 'key'),
 					'`'. database::input($index['name']) .'`',
 					"(`". implode("`, `", $index['columns']) ."`)"
@@ -156,7 +156,7 @@
 			$this->previous = $this->data;
 		}
 
-		public function delete() {
+		public function delete(): void {
 
 			if (!$this->previous['name']) return;
 

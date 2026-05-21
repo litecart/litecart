@@ -4,7 +4,7 @@
 
 		public static $data;
 
-		public static function init() {
+		public static function init(): void {
 
 			$_SESSION = &self::$data;
 
@@ -181,7 +181,7 @@
 
 			// Do we need to check if human?
 			if (empty(self::$data['security']['is_human']) && (!isset(route::$selected['controller']))) {
-				if (!preg_match('#(are_you_human|csp_report|account/sign_out|'. preg_quote(BACKEND_ALIAS, '#')  .'/logout)#', route::$request)) {
+				if (!preg_match('#(are_you_human|csp_report|account/sign_out|'. preg_quote(BACKEND_ALIAS, '#')  .'/(logout|manifest))#', route::$request)) {
 
 					try {
 
@@ -217,7 +217,7 @@
 
 		## Node specific methods
 
-		public static function reset() {
+		public static function reset(): void {
 			self::$data = (new ent_session())->data;
 
 			// Security
@@ -229,7 +229,7 @@
 			];
 		}
 
-		public static function load($session_id) {
+		public static function load(string $session_id): bool {
 
 			self::reset();
 
@@ -257,7 +257,7 @@
 			return true;
 		}
 
-		public static function save() {
+		public static function save(): bool {
 
 			// If we don't have an id we should generate one
 			if (empty(self::$data['id'])) {
@@ -286,14 +286,14 @@
 			return database::affected_rows() ? true : false;
 		}
 
-		public static function generate_id() {
+		public static function generate_id(): string {
 			$id = bin2hex(random_bytes(24)); // 48 characters
 			self::$data['id'] = $id;
 			self::set_cookie();
 			return $id;
 		}
 
-		public static function validate_id($session_id) {
+		public static function validate_id(string $session_id): bool {
 
 			if (preg_match('#^[0-9a-z]+$#i', $session_id)) {
 				return true;
@@ -302,7 +302,7 @@
 			return false;
 		}
 
-		public static function regenerate_id() {
+		public static function regenerate_id(): void {
 
 			if (!empty(self::$data['id'])) {
 				database::query(
@@ -316,7 +316,7 @@
 			self::$data['id'] = self::generate_id();
 		}
 
-		public static function set_cookie() {
+		public static function set_cookie(): void {
 
 			$is_secure = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
 				|| (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https');
@@ -327,19 +327,19 @@
 			header('Set-Cookie: LCSESSID='. rawurlencode(self::$data['id']) .';Path=/;'. ($is_secure ? 'Secure;' : '') .'HttpOnly;SameSite=' . $samesite);
 		}
 
-		public static function csrf_token() {
+		public static function csrf_token(): string {
 			if (empty(self::$data['csrf_token'])) {
 				self::$data['csrf_token'] = bin2hex(random_bytes(32));
 			}
 			return self::$data['csrf_token'];
 		}
 
-		public static function rotate_csrf_token() {
+		public static function rotate_csrf_token(): string {
 			self::$data['csrf_token'] = bin2hex(random_bytes(32));
 			return self::$data['csrf_token'];
 		}
 
-		public static function close() {
+		public static function close(): void {
 			trigger_error('Calling '.__CLASS__.'::close() is deprecated and can be removed.', E_USER_DEPRECATED);
 		}
 	}

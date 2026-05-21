@@ -12,7 +12,7 @@
 		private $_components;
 		private $_serialized;
 
-		public function __construct($url='') {
+		public function __construct(string|type_url $url='') {
 
 			$this->reset();
 
@@ -34,15 +34,15 @@
 			}
 		}
 
-		public function __isset($component) {
-			return $this->__get($component);
+		public function __isset(string $component): bool {
+			return $this->__get($component) !== null;
 		}
 
-		public function __unset($component) {
-			return $this->__get($component);
+		public function __unset(string $component): void {
+			$this->__set($component, null);
 		}
 
-		public function __get($component) {
+		public function __get(string $component): mixed {
 
 			if (!isset($this->_components[$component])) {
 				trigger_error("Unknown link component ($component)", E_USER_WARNING);
@@ -61,11 +61,11 @@
 			return $this->_components[$component];
 		}
 
-		public function __set($component, $value) {
+		public function __set(string $component, mixed $value): void {
 
 			if (!isset($this->_components[$component])) {
 				trigger_error("Unknown link component ($component)", E_USER_WARNING);
-				return $this;
+				return;
 			}
 
 			switch ($component) {
@@ -136,10 +136,10 @@
 				$this->_serialized = '';
 			}
 
-			return $this;
+			return;
 		}
 
-		public function __toString() {
+		public function __toString(): string {
 
 			if (!empty($this->_serialized)) return $this->_serialized;
 
@@ -189,21 +189,20 @@
 			return $output;
 		}
 
-		#[\ReturnTypeWillChange] // Fix PHP 8.1
-		public function jsonSerialize() {
+		public function jsonSerialize(): mixed {
 			return $this->__toString();
 		}
 
 		// Workaround as overloaded array items cannot be set
-		public function set_query($key, $value) {
+		public function set_query($key, $value): void {
 
 			$this->_components['query'][$key] = is_object($value) ? (string)$value : $value;
 
-			return $this;
+			return;
 		}
 
 		// Workaround as overloaded array items cannot be unset
-		public function unset_query($key) {
+		public function unset_query($key): void {
 
 			if (is_array($key)) {
 
@@ -233,10 +232,10 @@
 				unset($this->_components['query'][$key]);
 			}
 
-			return $this;
+			return;
 		}
 
-		public function reset() {
+		public function reset(): void {
 			$this->_components = [
 				'scheme' => '',
 				'host' => '',

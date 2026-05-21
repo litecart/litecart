@@ -14,12 +14,12 @@
 			parent::__construct();
 		}
 
-		public function options($items, $subtotal, $tax, $currency_code, $customer) {
+		public function options(array $items, float $subtotal, float $tax, string $currency_code, array $customer): ?array {
 
-			if (empty($this->settings['status'])) return;
+			if (empty($this->settings['status'])) return null;
 
 			if (!empty($this->settings['geo_zones'])) {
-				if (!reference::country($customer['shipping_address']['country_code'])->in_geo_zone($this->settings['geo_zones'], $customer['shipping_address'])) return;
+				if (!reference::country($customer['shipping_address']['country_code'])->in_geo_zone($this->settings['geo_zones'], $customer['shipping_address'])) return null;
 			}
 
 			return [
@@ -35,7 +35,7 @@
 			];
 		}
 
-		function settings() {
+		public function settings(): array {
 
 			return [
 				[

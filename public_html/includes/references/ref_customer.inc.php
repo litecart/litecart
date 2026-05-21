@@ -4,11 +4,11 @@
 
 		protected $_data = [];
 
-		function __construct($customer_id) {
-			$this->_data['id'] = (int)$customer_id;
+		public function __construct(int $customer_id) {
+			$this->_data['id'] = $customer_id;
 		}
 
-		protected function _load($field) {
+		protected function _load(string $field): void {
 
 			switch($field) {
 

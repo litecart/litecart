@@ -6,7 +6,7 @@
 		public static $items = [];
 		public static $total = [];
 
-		public static function init() {
+		public static function init(): void {
 
 			if (!isset(session::$data['cart']) || !is_array(session::$data['cart'])) {
 				session::$data['cart'] = [
@@ -119,14 +119,14 @@
 
 		## Node specific methods
 
-		public static function reset() {
+		public static function reset(): void {
 
 			self::$items = [];
 
 			self::_calculate_total();
 		}
 
-		public static function clear() {
+		public static function clear(): void {
 
 			self::reset();
 
@@ -136,7 +136,7 @@
 			);
 		}
 
-		public static function load() {
+		public static function load(): void {
 
 			self::reset();
 
@@ -177,7 +177,7 @@
 			});
 		}
 
-		public static function add_product($product_id, $stock_option_id=null, $userdata=[], $quantity=1, $force=false, $item_key=null) {
+		public static function add_product(int $product_id, ?int $stock_option_id=null, array $userdata=[], float $quantity=1, bool $force=false, ?string $item_key=null): bool {
 
 			$product = reference::product($product_id, language::$selected['code'], currency::$selected['code'], customer::$data);
 			$quantity = round((float)$quantity, $product->quantity_unit ? (int)$product->quantity_unit['decimals'] : 0, PHP_ROUND_HALF_UP);
@@ -404,20 +404,20 @@
 			return true;
 		}
 
-		public static function update($item_key, $quantity, $force=false) {
+		public static function update(string $item_key, float $quantity, bool $force=false): bool {
 
 			if (!isset(self::$items[$item_key])) {
 				notices::add('errors', 'The item does not exist in cart.');
-				return;
+				return false;
 			}
 
 			if (self::$items[$item_key]['quantity'] == $quantity) {
-				return;
+				return false;
 			}
 
 			if ($quantity <= 0) {
 				self::remove($item_key, true);
-				return;
+				return true;
 				}
 
 			// Re-add quantity for validation
@@ -431,11 +431,13 @@
 				reload();
 				exit;
 			}
+
+			return true;
 		}
 
-		public static function remove($item_key, $force=false) {
+		public static function remove(string $item_key, bool $force=false): bool {
 
-			if (!isset(self::$items[$item_key])) return;
+			if (!isset(self::$items[$item_key])) return false;
 
 			database::query(
 				"delete from ". DB_TABLE_PREFIX ."cart_items
@@ -452,9 +454,11 @@
 				reload();
 				exit;
 			}
+
+			return true;
 		}
 
-		private static function _calculate_total() {
+		private static function _calculate_total(): void {
 
 			self::$total = [
 				'items' => 0,

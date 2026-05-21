@@ -4,7 +4,7 @@
 		public $data;
 		public $previous;
 
-		public function __construct($file=null) {
+		public function __construct(string|null $file = null) {
 
 			if ($file) {
 				$this->load($file);
@@ -13,7 +13,7 @@
 			}
 		}
 
-		public function reset() {
+		public function reset(): void {
 
 			$this->data = [
 				'id' => null,
@@ -37,7 +37,7 @@
 			$this->previous = $this->data;
 		}
 
-		public function load($file) {
+		public function load(string $file): void {
 
 			// If absolute path is not provided, search for the file in the vmods directory
 			if (!preg_match('#^(\w:)?/#', str_replace('\\', '/', $file))) {
@@ -173,7 +173,7 @@
 			$this->previous = $this->data;
 		}
 
-		public function save() {
+		public function save(): void {
 
 			if (!empty($this->data['file'])) {
 				$this->data['file'] = dirname($this->data['file']) .'/'. basename($this->data['id']) . ($this->data['status'] ? '.xml' : '.disabled');
@@ -332,7 +332,7 @@
 			cache::clear_cache('vmods');
 		}
 
-		public function delete() {
+		public function delete(): void {
 
 			if (empty($this->previous['file'])) return;
 

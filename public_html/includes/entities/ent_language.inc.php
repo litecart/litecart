@@ -4,7 +4,7 @@
 		public $data;
 		public $previous;
 
-		public function __construct($language_code=null) {
+		public function __construct(string|null $language_code = null) {
 
 			if ($language_code) {
 				$this->load($language_code);
@@ -13,7 +13,7 @@
 			}
 		}
 
-		public function reset() {
+		public function reset(): void {
 
 			$this->data = [];
 
@@ -29,7 +29,7 @@
 			$this->previous = $this->data;
 		}
 
-		public function load($language_code) {
+		public function load(string $language_code): void {
 
 			if (!preg_match('#^(\d+|[a-z]{2,3}|[a-z A-Z]{4,})$#', $language_code)) {
 				throw new Exception('Invalid language ('. $language_code .')');
@@ -55,7 +55,7 @@
 			$this->previous = $this->data;
 		}
 
-		public function save() {
+		public function save(): void {
 
 			if (!$this->data['status'] && $this->data['code'] == settings::get('default_language_code')) {
 				throw new Exception(t('error_cannot_disable_default_language', 'You must change the default language before disabling it.'));
@@ -195,7 +195,7 @@
 			cache::clear_cache('languages');
 		}
 
-		public function delete() {
+		public function delete(): void {
 
 			if ($this->data['code'] == 'en') {
 				throw new Exception(t('error_cannot_delete_framework_language', 'You cannot delete the PHP framework language. But you can disable it.'));

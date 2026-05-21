@@ -4,7 +4,7 @@
 		public $data;
 		public $previous;
 
-		public function __construct($id=null) {
+		public function __construct(int|null $id = null) {
 
 			if ($id) {
 				$this->load($id);
@@ -13,7 +13,7 @@
 			}
 		}
 
-		public function reset() {
+		public function reset(): void {
 
 			$this->data = [];
 
@@ -34,7 +34,7 @@
 			$this->previous = $this->data;
 		}
 
-		public function load($id) {
+		public function load(int $id): void {
 
 			$this->reset();
 
@@ -127,7 +127,7 @@
 			$this->previous = $this->data;
 		}
 
-		public function save() {
+		public function save(): void {
 
 			if (!$this->data['id']) {
 
@@ -299,7 +299,7 @@
 			cache::clear_cache('stock_item');
 		}
 
-		public function save_image($file) {
+		public function save_image(string $file): void {
 
 			if (!$file) {
 				return;
@@ -340,7 +340,7 @@
 			$this->previous['image'] = $this->data['image'] = $filename;
 		}
 
-		public function delete_image() {
+		public function delete_image(): void {
 
 			if (!$this->data['id']) return;
 
@@ -359,7 +359,7 @@
 			$this->previous['image'] = $this->data['image'] = '';
 		}
 
-		public function save_file($source, $filename, $mime_type) {
+		public function save_file(string $source, string $filename, string $mime_type): void {
 
 			if (!$source) return;
 
@@ -391,7 +391,7 @@
 			);
 		}
 
-		public function delete_file() {
+		public function delete_file(): void {
 
 			if (!$this->data['id']) return;
 
@@ -408,7 +408,7 @@
 			$this->previous['file'] = $this->data['file'] = '';
 		}
 
-		public function delete() {
+		public function delete(): void {
 
 			database::query(
 				"delete si, sir, pso

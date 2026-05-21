@@ -5,7 +5,7 @@
 		public $data;
 		public $previous;
 
-		public function __construct($request_id=null) {
+		public function __construct(int|null $request_id = null) {
 
 			if ($request_id) {
 				$this->load($request_id);
@@ -14,7 +14,7 @@
 			}
 		}
 
-		public function reset() {
+		public function reset(): void {
 
 			$this->data = [];
 
@@ -27,7 +27,7 @@
 			$this->previous = $this->data;
 		}
 
-		public function load($request_id) {
+		public function load(int $request_id): void {
 
 			if (!preg_match('#^[0-9]+$#', $request_id)) {
 				throw new Exception('Invalid webhook request (ID: '. $request_id .')');
@@ -50,7 +50,7 @@
 			$this->previous = $this->data;
 		}
 
-		public function save() {
+		public function save(): void {
 
 			if (!$this->data['id']) {
 
@@ -84,7 +84,7 @@
 			$this->previous = $this->data;
 		}
 
-		public function delete() {
+		public function delete(): void {
 
 			database::query(
 				"delete from ". DB_TABLE_PREFIX ."webhook_requests

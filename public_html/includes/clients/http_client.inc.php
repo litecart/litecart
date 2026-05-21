@@ -11,12 +11,12 @@
 			'requests' => 0,
 		];
 
-		public function set_timeout($timeout) {
+		public function set_timeout(int $timeout): self {
 			$this->timeout = $timeout;
 			return $this;
 		}
 
-		public function call($method, $url='', $data=null, $headers=[], $asynchronous=false) {
+		public function call(string $method, string $url='', mixed $data=null, array $headers=[], bool $asynchronous=false): string|false {
 
 			$this->last_request = [];
 			$this->last_response = [];
@@ -25,7 +25,7 @@
 
 			if (empty($parts['host'])) {
 				trigger_error('No host to connect to', E_USER_WARNING);
-				return;
+				return false;
 			}
 
 			if (!$method) {
@@ -140,7 +140,7 @@
 			];
 
 			if (!$socket = stream_socket_client(strtr('scheme://host:port', $parts), $errno, $errstr, $this->timeout)) {
-				return;
+				return false;
 			}
 
 			stream_set_timeout($socket, $this->timeout);
@@ -211,6 +211,7 @@
 
 				if (!$redirect_url) {
 					trigger_error('Destination is redirecting to a null destination', E_USER_WARNING);
+					return false;
 				}
 
 				if (in_array($status_code, [307, 308]) && $method != 'HEAD') {
@@ -223,7 +224,7 @@
 			return $response_body;
 		}
 
-		public function http_decode_chunked_data($data) {
+		public function http_decode_chunked_data(string $data): string {
 
 			for ($result = ''; $data; $data = trim($data)) {
 				$position = strpos($data, "\r\n");

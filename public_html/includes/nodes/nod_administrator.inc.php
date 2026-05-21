@@ -4,7 +4,7 @@
 
 		public static $data;
 
-		public static function init() {
+		public static function init(): void {
 
 			if (empty(session::$data['administrator']) || !is_array(session::$data['administrator'])) {
 				self::reset();
@@ -122,7 +122,7 @@
 
 		## Node specific methods
 
-		public static function reset() {
+		public static function reset(): void {
 
 			$administrator = [];
 
@@ -137,7 +137,7 @@
 			session::$data['administrator'] = $administrator;
 		}
 
-		public static function load($administrator_id) {
+		public static function load(int $administrator_id): void {
 
 			self::reset();
 
@@ -158,7 +158,7 @@
 			session::$data['administrator'] = $administrator;
 		}
 
-		public static function require_login() {
+		public static function require_login(): void {
 
 			if (!self::check_login()) {
 				redirect(document::ilink('b:login', ['redirect_url' => $_SERVER['REQUEST_URI']]), 302);
@@ -173,7 +173,7 @@
 			}
 		}
 
-		public static function check_login() {
+		public static function check_login(): bool {
 			return !empty(self::$data['id']);
 		}
 	}

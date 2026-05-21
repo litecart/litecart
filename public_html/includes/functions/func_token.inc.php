@@ -1,21 +1,21 @@
 <?php
 
-	function token_create_remember($id, $password_hash, $expiry_days=30) {
+	function token_create_remember(int $id, string $password_hash, int $expiry_days=30): string {
 
 		if (!defined('HMAC_KEY_REMEMBER_ME')) return '';
 
-		$exp = time() + (int)$expiry_days * 86400;
+		$exp = time() + $expiry_days * 86400;
 		$payload = $id . ':' . $exp . ':' . substr($password_hash, 0, 16);
 		$sig = hash_hmac('sha256', $payload, HMAC_KEY_REMEMBER_ME);
 
 		return base64_encode(f::format_json([
-			'id' => (int)$id,
+			'id' => $id,
 			'exp' => $exp,
 			'sig' => $sig,
 		], ''));
 	}
 
-	function token_verify_remember($cookie_value, $password_hash) {
+	function token_verify_remember(string $cookie_value, string $password_hash): int|false {
 
 		if (!defined('HMAC_KEY_REMEMBER_ME')) return false;
 
@@ -34,5 +34,5 @@
 
 		if (!hash_equals($expected_sig, $token['sig'])) return false;
 
-		return (int)$token['id'];
+		return $token['id'];
 	}

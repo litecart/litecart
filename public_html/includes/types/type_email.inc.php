@@ -17,7 +17,7 @@
 
 		private $_components;
 
-		public function __construct($input='') {
+		public function __construct(string|type_email|array $input='') {
 
 			$this->reset();
 
@@ -48,15 +48,15 @@
 			}
 		}
 
-		public function __isset($component) {
+		public function __isset(string $component): bool {
 			return !empty($this->_components[$component]);
 		}
 
-		public function __unset($component) {
+		public function __unset(string $component): void {
 			$this->__set($component, '');
 		}
 
-		public function __get($component) {
+		public function __get(string $component): mixed {
 
 			switch ($component) {
 
@@ -83,7 +83,7 @@
 			return null;
 		}
 
-		public function __set($component, $value) {
+		public function __set(string $component, mixed $value): void {
 
 			switch ($component) {
 
@@ -105,27 +105,27 @@
 						$this->_components['local'] = $value;
 						$this->_components['domain'] = '';
 					}
-					return $this;
+					return;
 
 				case 'local':
 					$this->_components['local'] = trim((string)$value);
-					return $this;
+					return;
 
 				case 'domain':
 					$this->_components['domain'] = strtolower(trim((string)$value));
-					return $this;
+					return;
 
 				case 'name':
 					// Strip CRLF / tabs so the value is safe for mail headers.
 					$this->_components['name'] = trim(preg_replace('#[\r\n\t]#', '', (string)$value));
-					return $this;
+					return;
 			}
 
 			trigger_error("Unknown email component ($component)", E_USER_WARNING);
-			return $this;
+			return;
 		}
 
-		public function __toString() {
+		public function __toString(): string {
 
 			$address = $this->__get('address');
 
@@ -147,14 +147,14 @@
 		}
 
 		#[\ReturnTypeWillChange] // Fix PHP 8.1
-		public function jsonSerialize() {
+		public function jsonSerialize(): array {
 			return [
 				'email' => $this->__get('address'),
 				'name'  => $this->_components['name'] ?? '',
 			];
 		}
 
-		public function reset() {
+		public function reset(): void {
 			$this->_components = [
 				'local'  => '',
 				'domain' => '',

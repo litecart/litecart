@@ -8,7 +8,7 @@
 		public static $selected = [];
 		public static $request = '';
 
-		public static function init() {
+		public static function init(): void {
 
 			// Neutralize request path (removes logical prefixes)
 			self::$request = self::strip_url_logic($_SERVER['REQUEST_URI']);
@@ -53,13 +53,13 @@
 			event::register('after_capture', [__CLASS__, 'after_capture']);
 		}
 
-		public static function after_capture() {
+		public static function after_capture(): void {
 			cache::set(self::$_links_cache_token, self::$_links_cache);
 		}
 
 		## Node specific methods
 
-		public static function load($pattern) {
+		public static function load(string $pattern): void {
 
 			foreach (f::file_search($pattern) as $file) {
 
@@ -72,7 +72,7 @@
 			}
 		}
 
-		public static function add($resource, $route) {
+		public static function add(string $resource, array $route): void {
 
 			if (!str_contains($resource, ':')) {
 				if (!preg_match('#^\w:#', $resource)) {
@@ -102,7 +102,7 @@
 		}
 
 		// Resolve the request to a route
-		public static function identify() {
+		public static function identify(): array|false {
 
 			// Step through each route
 			foreach (self::$_routes as $route) {
@@ -138,7 +138,7 @@
 			return false;
 		}
 
-		public static function process() {
+		public static function process(): void {
 
 			if (!self::$selected) {
 				self::identify();
@@ -321,7 +321,7 @@
 			exit;
 		}
 
-		public static function strip_url_logic($path) {
+		public static function strip_url_logic(string $path): string {
 
 			if (!$path) {
 				return '';
@@ -359,7 +359,7 @@
 			return $path;
 		}
 
-		public static function create_link($path=null, $new_params=[], $inherit_params=null, $skip_params=[], $language_code=null, $rewrite=false) {
+		public static function create_link(?string $path=null, array|null $new_params=[], bool|array|null $inherit_params=null, array|null $skip_params=[], string|null $language_code=null, bool $rewrite=false): string|type_url {
 
 			if (!$language_code) {
 				$language_code = language::$selected['code'];
@@ -415,7 +415,7 @@
 			return $link;
 		}
 
-		public static function rewrite(type_url $link, $language_code=null) {
+		public static function rewrite(type_url $link, string|null $language_code=null): string|type_url {
 
 			if ($link->host != $_SERVER['HTTP_HOST']) {
 				return $link;

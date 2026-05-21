@@ -4,23 +4,23 @@
 
 		public static $data = [];
 
-		public static function init() {
+		public static function init(): void {
 		}
 
 		## Node specific methods
 
-		public static function reset() {
+		public static function reset(): void {
 			self::$data = [];
 		}
 
-		public static function add($title, $link='') {
+		public static function add(string $title, ?string $link=''): void {
 			self::$data[] = [
 				'title' => $title,
 				'link' => ($link === true) ? document::link() : $link,
 			];
 		}
 
-		public static function render() {
+		public static function render(): string {
 
 			if (!count(self::$data)) {
 				return '';

@@ -4,7 +4,7 @@
 		public $data;
 		public $previous;
 
-		public function __construct($id=null) {
+		public function __construct(int|string|null $id = null) {
 
 			if ($id) {
 				$this->load($id);
@@ -13,7 +13,7 @@
 			}
 		}
 
-		public function reset() {
+		public function reset(): void {
 
 			$this->data = [];
 
@@ -29,7 +29,7 @@
 			$this->previous = $this->data;
 		}
 
-		public function load($id) {
+		public function load(int|string $id): void {
 
 			if (!preg_match('#(^\d+$|^[0-9a-zA-Z_]$|@)#', $id)){
 				throw new Exception('Invalid administrator (ID: '. $id .')');
@@ -58,7 +58,7 @@
 			$this->previous = $this->data;
 		}
 
-		public function save() {
+		public function save(): void {
 
 			if (database::query(
 				"select id from ". DB_TABLE_PREFIX ."administrators
@@ -106,7 +106,7 @@
 			cache::clear_cache('administrators');
 		}
 
-		public function set_password($password) {
+		public function set_password(string $password): void {
 
 			if (!$this->data['id']) {
 				$this->save();
@@ -122,7 +122,7 @@
 			$this->previous['password_hash'] = $this->data['password_hash'];
 		}
 
-		public function delete() {
+		public function delete(): void {
 
 			database::query(
 				"delete from ". DB_TABLE_PREFIX ."administrators

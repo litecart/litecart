@@ -6,7 +6,7 @@
 		public $_table;
 		public $_primary_column;
 
-		public function __construct($table, $id='') {
+		public function __construct(string $table, int|string $id = '') {
 
 			if (!database::query(
 				"select table from information_schema.tables
@@ -32,7 +32,7 @@
 			}
 		}
 
-		public function reset() {
+		public function reset(): void {
 
 			$this->data = database::query(
 				"show fields from `". database::input($this->_table) ."`;"
@@ -43,7 +43,7 @@
 			$this->previous = $this->data;
 		}
 
-		public function load($id) {
+		public function load(int|string $id): void {
 
 			$this->reset();
 
@@ -62,7 +62,7 @@
 			$this->previous = $this->data;
 		}
 
-		public function save() {
+		public function save(): void {
 
 			if (!$this->data[$this->_primary_column]) {
 				database::query(
@@ -88,7 +88,7 @@
 			cache::clear_cache();
 		}
 
-		public function delete() {
+		public function delete(): void {
 
 			if (empty($this->data['id'])) return;
 

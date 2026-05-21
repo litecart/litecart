@@ -4,7 +4,7 @@
 		public $data;
 		public $previous;
 
-		public function __construct($id=null) {
+		public function __construct(int|null $id = null) {
 
 			if ($id) {
 				$this->load($id);
@@ -13,7 +13,7 @@
 			}
 		}
 
-		public function reset() {
+		public function reset(): self {
 
 			$this->data = [];
 
@@ -40,7 +40,7 @@
 			return $this;
 		}
 
-		public function load($id) {
+		public function load(int $id): self {
 
 			if (!preg_match('#^\d+$#', $id)) {
 				throw new Exception('Invalid email (ID: '. $id .')');
@@ -71,7 +71,7 @@
 			return $this;
 		}
 
-		public function save() {
+		public function save(): void {
 
 			if (!$this->data['id']) {
 				database::query(
@@ -106,7 +106,7 @@
 			cache::clear_cache('email');
 		}
 
-		public function set_sender($email, $name=null) {
+		public function set_sender(string $email, string|null $name = null): self {
 
 			if (!$name) {
 				$name = preg_replace('#"?(.*)"?\s*<[^>]+>#', '$1', $email);
@@ -127,23 +127,23 @@
 			return $this;
 		}
 
-		public function set_language($language_code) {
+		public function set_language(string $language_code): self {
 			$this->data['language_code'] = $language_code;
 			return $this;
 		}
 
-		public function set_subject($subject) {
+		public function set_subject(string $subject): self {
 			$subject = preg_replace('#<(script|style)\b[^>]*>.*?</\1>#is', '', $subject);
 			$this->data['subject'] = trim(preg_replace('#(\R|\t|%0A|%0D)*#', '', $subject));
 			return $this;
 		}
 
-		public function set_reference($id) {
+		public function set_reference(mixed $id): self {
 			$this->data['reference'] = $id;
 			return $this;
 		}
 
-		public function add_body($content, $html=false) {
+		public function add_body(string $content, bool $html = false): self {
 
 			$content = trim($content);
 
@@ -178,7 +178,7 @@
 			return $this;
 		}
 
-		public function add_attachment($file, $filename=null, $parse_as_string=false) {
+		public function add_attachment(string $file, string|null $filename = null, bool $parse_as_string = false): self {
 
 			if (!$filename) {
 				$filename = pathinfo($file, PATHINFO_BASENAME);
@@ -206,7 +206,7 @@
 			return $this;
 		}
 
-		public function add_recipient($email, $name=null) {
+		public function add_recipient(string $email, string|null $name = null): self {
 
 			if (!$name) {
 				$name = preg_replace('#"?(.*)"?\s*<[^>]+>#', '$1', $email);
@@ -227,7 +227,7 @@
 			return $this;
 		}
 
-		public function add_cc($email, $name=null) {
+		public function add_cc(string $email, string|null $name = null): self {
 
 			if (empty($name)) {
 				$name = preg_replace('#"?(.*)"?\s*<[^>]+>#', '$1', $email);
@@ -248,7 +248,7 @@
 			return $this;
 		}
 
-		public function add_bcc($email, $name=null) {
+		public function add_bcc(string $email, string|null $name = null): self {
 
 			if (empty($name)) {
 				$name = preg_replace('#"?(.*)"?\s*<[^>]+>#', '$1', $email);
@@ -269,7 +269,7 @@
 			return $this;
 		}
 
-		public function format_contact($contact) {
+		public function format_contact(array $contact): string {
 
 			if (empty($contact['name']) || $contact['name'] == $contact['email']) {
 				return $contact['email'];
@@ -278,7 +278,7 @@
 			return mb_encode_mimeheader($contact['name']) .' <'. $contact['email'] .'>';
 		}
 
-		public function queue($scheduled, $code=null) {
+		public function queue(string $scheduled, string|null $code = null): void {
 
 			$this->data['status'] = 'scheduled';
 			$this->data['scheduled_at'] = date('Y-m-d H:i:s', strtotime($scheduled));
@@ -290,9 +290,9 @@
 			}
 		}
 
-		public function send() {
+		public function send(): ?bool {
 
-			if (!settings::get('email_status')) return;
+			if (!settings::get('email_status')) return null;
 
 			$this->save();
 
@@ -460,7 +460,7 @@
 			return $result ? true : false;
 		}
 
-		public function delete() {
+		public function delete(): void {
 
 			database::query(
 				"delete from ". DB_TABLE_PREFIX ."emails
@@ -472,7 +472,7 @@
 			cache::clear_cache('email');
 		}
 
-		public function cleanup($time_ago='-30 days') {
+		public function cleanup(string $time_ago = '-30 days'): void {
 
 			database::query(
 				"delete from ". DB_TABLE_PREFIX ."emails

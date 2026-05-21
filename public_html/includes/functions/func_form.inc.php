@@ -1,7 +1,7 @@
 <?php
 
 	// Helper function to parse a legacy string of HTML attributes into an array of key-value pairs
-	function form_attributes($attributes) {
+	function form_attributes(string|array $attributes): array {
 
 		if (is_array($attributes)) {
 			return $attributes;
@@ -74,7 +74,7 @@
 		return $result;
 	}
 
-	function form_begin($name='', $method='post', $action='', $multipart=false, $attributes=[]) {
+	function form_begin(string $name='', string $method='post', ?string $action='', bool $multipart=false, array|string $attributes=[]): string {
 
 		$attributes = is_array($attributes) ? implode(' ', array_map(function($k, $v) { return $k.'="'. f::escape_attr($v) .'"'; }, array_keys($attributes), $attributes)) : $attributes;
 
@@ -88,11 +88,11 @@
 		return $html;
 	}
 
-	function form_end() {
+	function form_end(): string {
 		return '</form>';
 	}
 
-	function form_reinsert_value($name) {
+	function form_reinsert_value(string $name): string|array {
 
 		if ($name == '') {
 			return '';
@@ -119,7 +119,7 @@
 		return preg_match('#\[\]$#', $name) ? [] : '';
 	}
 
-	function form_button($name, $value, $type='submit', $attributes=[], $fonticon='') {
+	function form_button(string $name, array|string $value, string $type='submit', array|string $attributes=[], string $fonticon=''): string {
 
 		if (!is_array($value)) {
 			$value = [$value, $value];
@@ -130,7 +130,7 @@
 		return f::draw_element('button', ['class' => 'btn btn-default', 'type' => $type, 'name' => $name, 'value' => $value[0], ...$attributes], ($fonticon ? f::draw_fonticon($fonticon) . ' ' : '') . ($value[1] ?? $value[0]));
 	}
 
-	function form_button_predefined($name, $attributes=[]) {
+	function form_button_predefined(string $name, array|string $attributes=[]): string {
 
 		$button = match($name) {
 			'cancel' => f::form_button('cancel', t('title_cancel', 'Cancel'), 'button', ['onclick' => 'history.go(-1);'] + $attributes, 'cancel'),
@@ -161,14 +161,14 @@
 		return $button;
 	}
 
-	function form_button_link($url, $title, $attributes=[], $fonticon='') {
+	function form_button_link(string $url, string $title, array|string $attributes=[], string $fonticon=''): string {
 
 		$attributes = is_array($attributes) ? $attributes : form_attributes($attributes);
 
 		return f::draw_element('a', ['class'=>'btn btn-default', 'href'=>$url, ...(is_array($attributes) ? $attributes : form_parse_attributes($attributes))], ($fonticon ? f::draw_fonticon($fonticon) . ' ' : '') . $title);
 	}
 
-	function form_button_link_predefined($name, $url, $attributes=[]) {
+	function form_button_link_predefined(string $name, string $url, array|string $attributes=[]): string {
 
 		$attributes = is_array($attributes) ? $attributes : form_attributes($attributes);
 
@@ -186,7 +186,7 @@
 		return $button;
 	}
 
-	function form_captcha($id, $config=[], $attributes=[]) {
+	function form_captcha(string $id, array $config=[], array|string $attributes=[]): string {
 
 		$config = [
 			'width' => $config['width'] ?? 100,
@@ -200,7 +200,7 @@
 		return f::captcha_draw($id, $config, $attributes);
 	}
 
-	function form_checkbox($name, $value, $input=true, $attributes=[]) {
+	function form_checkbox(string $name, array|string $value, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		$attributes = is_array($attributes) ? $attributes : form_attributes($attributes);
 
@@ -222,7 +222,7 @@
 		}
 	}
 
-	function form_dropdown($name, $options=[], $input=true, $attributes=[]) {
+	function form_dropdown(string $name, array $options=[], bool|array|string $input=true, array|string $attributes=[]): string {
 
 		$content = [];
 
@@ -257,7 +257,7 @@
 		]));
 	}
 
-	function form_input_code($name, $input=true, $attributes=[]) {
+	function form_input_code(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if ($input === true) {
 			$input = form_reinsert_value($name);
@@ -278,7 +278,7 @@
 		return f::draw_element('textarea', ['class' => 'form-code', 'name' => $name, ...$attributes], f::escape_html($input));
 	}
 
-	function form_input_color($name, $input=true, $attributes=[]) {
+	function form_input_color(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if ($input === true) {
 			$input = form_reinsert_value($name);
@@ -289,7 +289,7 @@
 		return f::draw_element('input', ['class' => 'form-input', 'type' => 'color', 'name' => $name, 'value' => $input, ...$attributes]);
 	}
 
-	function form_input_csv($name, $input=true, $attributes=[]) {
+	function form_input_csv(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if ($input === true) {
 			$input = form_reinsert_value($name);
@@ -386,7 +386,7 @@
 		return $html;
 	}
 
-	function form_input_date($name, $input=true, $attributes=[]) {
+	function form_input_date(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if ($input === true) {
 			$input = form_reinsert_value($name);
@@ -403,7 +403,7 @@
 		return f::draw_element('input', ['class' => 'form-input', 'type' => 'date', 'name' => $name, 'value' => $input, 'placeholder' => 'YYYY-MM-DD', ...$attributes]);
 	}
 
-	function form_input_datetime($name, $input=true, $attributes=[]) {
+	function form_input_datetime(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if ($input === true) {
 			$input = form_reinsert_value($name);
@@ -420,7 +420,7 @@
 		return f::draw_element('input', ['class' => 'form-input', 'type' => 'datetime-local', 'name' => $name, 'value' => $input, 'placeholder' => 'YYYY-MM-DD [hh:nn]', ...$attributes]);
 	}
 
-	function form_input_decimal($name, $input=true, $decimals=null, $attributes=[]) {
+	function form_input_decimal(string $name, bool|array|string $input=true, ?int $decimals=null, array|string $attributes=[]): string {
 
 		if (count($args = func_get_args()) > 4) {
 			trigger_error('Passing min and max as 3rd and 4th parameter in form_input_decimal() is deprecated. Instead define min="0" and max="999" in 3rd parameter $attributes', E_USER_DEPRECATED);
@@ -455,7 +455,7 @@
 		return f::draw_element('input', ['class' => 'form-input', 'type' => 'number', 'name' => $name, 'value' => $input, 'step' => 'any', 'data-decimals' => (int)$decimals, ...$attributes]);
 	}
 
-	function form_input_decimal_toggle($name, $input=true, $decimals=null, $attributes=[]) {
+	function form_input_decimal_toggle(string $name, bool|array|string $input=true, ?int $decimals=null, array|string $attributes=[]): string {
 
 		return implode(PHP_EOL, [
 			'<div class="input-group">',
@@ -466,7 +466,7 @@
 		]);
 	}
 
-	function form_input_email($name, $input=true, $attributes=[]) {
+	function form_input_email(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if ($input === true) {
 			$input = form_reinsert_value($name);
@@ -482,14 +482,14 @@
 		]);
 	}
 
-	function form_input_file($name, $attributes=[]) {
+	function form_input_file(string $name, array|string $attributes=[]): string {
 
 		$attributes = is_array($attributes) ? $attributes : form_attributes($attributes);
 
 		return f::draw_element('input', ['class' => 'form-input', 'type' => 'file', 'name' => $name, ...$attributes]);
 	}
 
-	function form_input_hidden($name, $input=true, $attributes=[]) {
+	function form_input_hidden(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if ($input === true) {
 			$input = form_reinsert_value($name);
@@ -500,7 +500,7 @@
 		return f::draw_element('input', ['type' => 'hidden', 'name' => $name, 'value' => $input, ...$attributes]);
 	}
 
-	function form_input_month($name, $input=true, $attributes=[]) {
+	function form_input_month(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if ($input === true) {
 			$input = form_reinsert_value($name);
@@ -517,7 +517,7 @@
 		return f::draw_element('input', ['class' => 'form-input', 'type' => 'month', 'name' => $name, 'value' => $input, 'maxlength' => 7, 'pattern' => '\d{4}-\d{2}', 'placeholder' => 'YYYY-MM', ...$attributes]);
 	}
 
-	function form_input_money($name, $currency_code=null, $input=true, $attributes=[]) {
+	function form_input_money(string $name, ?string $currency_code=null, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if ($input instanceof type_money) {
 			$currency_code = $currency_code ?: $input->currency_code;
@@ -552,7 +552,7 @@
 		]);
 	}
 
-	function form_input_number($name, $input=true, $attributes=[]) {
+	function form_input_number(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if ($input === true) {
 			$input = form_reinsert_value($name);
@@ -567,7 +567,7 @@
 		return f::draw_element('input', ['class' => 'form-input', 'type' => 'number', 'name' => $name, 'value' => $input, 'step' => 1, ...$attributes]);
 	}
 
-	function form_input_number_toggle($name, $input=true, $attributes=[]) {
+	function form_input_number_toggle(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if ($input === true) {
 			$input = form_reinsert_value($name);
@@ -586,7 +586,7 @@
 		]);
 	}
 
-	function form_input_password($name, $input='', $attributes=[]) {
+	function form_input_password(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if ($input === true) {
 			$input = form_reinsert_value($name);
@@ -602,7 +602,7 @@
 		]);
 	}
 
-	function form_input_password_unmaskable($name, $input='', $attributes=[]) {
+	function form_input_password_unmaskable(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if ($input === true) {
 			$input = form_reinsert_value($name);
@@ -619,7 +619,7 @@
 		]);
 	}
 
-	function form_input_percent($name, $input=true, $decimals=2, $attributes=[]) {
+	function form_input_percent(string $name, bool|array|string $input=true, int $decimals=2, array|string $attributes=[]): string {
 
 		return implode(PHP_EOL, [
 			'<div class="input-group">',
@@ -629,7 +629,7 @@
 		]);
 	}
 
-	function form_input_phone($name, $input=true, $attributes=[]) {
+	function form_input_phone(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if ($input === true) {
 			$input = form_reinsert_value($name);
@@ -645,7 +645,7 @@
 		]);
 	}
 
-	function form_radio_button($name, $value, $input=true, $attributes=[]) {
+	function form_radio_button(string $name, string|int|array $value, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		$attributes = is_array($attributes) ? $attributes : form_attributes($attributes);
 
@@ -665,7 +665,7 @@
 		return f::draw_element('input', ['class' => 'form-radio', 'type' => 'radio', 'name' => $name, 'value' => $value, ...$attributes] + (!strcmp($input, $value) ? ['checked' => ''] : []));
 	}
 
-	function form_input_range($name, $input=true, $min='', $max='', $step='', $attributes=[]) {
+	function form_input_range(string $name, bool|array|string $input=true, string|int|float $min='', string|int|float $max='', string|int|float $step='', array|string $attributes=[]): string {
 
 		if ($input === true) {
 			$input = form_reinsert_value($name);
@@ -676,7 +676,7 @@
 		return f::draw_element('input', ['class' => 'form-range', 'type' => 'range', 'name' => $name, 'value' => $input, 'min' => (float)$min, 'max' => (float)$max, 'step' => (float)$step, ...$attributes]);
 	}
 
-	function form_input_search($name, $input=true, $attributes=[]) {
+	function form_input_search(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if ($input === true) {
 			$input = form_reinsert_value($name);
@@ -692,7 +692,7 @@
 		]);
 	}
 
-	function form_input_tags($name, $input=true, $attributes=[]) {
+	function form_input_tags(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if ($input === true) {
 			$input = form_reinsert_value($name);
@@ -703,7 +703,7 @@
 		return f::draw_element('input', ['class' => 'form-input', 'type' => 'text', 'data-toggle' => 'tags', 'name' => $name, 'value' => $input, ...$attributes]);
 	}
 
-	function form_input_text($name, $input=true, $attributes=[]) {
+	function form_input_text(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if ($input === true) {
 			$input = form_reinsert_value($name);
@@ -714,7 +714,7 @@
 		return f::draw_element('input', ['class' => 'form-input', 'type' => 'text', 'name' => $name, 'value' => $input, ...$attributes]);
 	}
 
-	function form_input_time($name, $input=true, $attributes=[]) {
+	function form_input_time(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if ($input === true) {
 			$input = form_reinsert_value($name);
@@ -725,7 +725,7 @@
 		return f::draw_element('input', ['class' => 'form-input', 'type' => 'time', 'name' => $name, 'value' => $input, ...$attributes]);
 	}
 
-	function form_input_url($name, $input=true, $attributes=[]) {
+	function form_input_url(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if ($input === true) {
 			$input = form_reinsert_value($name);
@@ -736,7 +736,7 @@
 		return f::draw_element('input', ['class' => 'form-input', 'type' => 'url', 'name' => $name, 'value' => $input, ...$attributes]);
 	}
 
-	function form_input_username($name, $input=true, $attributes=[]) {
+	function form_input_username(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if ($input === true) {
 			$input = form_reinsert_value($name);
@@ -752,7 +752,7 @@
 		]);
 	}
 
-	function form_input_week($name, $input=true, $attributes=[]) {
+	function form_input_week(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if ($input === true) {
 			$input = form_reinsert_value($name);
@@ -769,7 +769,7 @@
 		return f::draw_element('input', ['class' => 'form-input', 'type' => 'week', 'name' => $name, 'value' => $input, 'maxlength' => 7, 'pattern' => '\d{4}-W\d{2}', 'placeholder' => 'YYYY-WW', ...$attributes]);
 	}
 
-	function form_input_wysiwyg($name, $input=true, $attributes=[]) {
+	function form_input_wysiwyg(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if ($input === true) {
 			$input = form_reinsert_value($name);
@@ -820,7 +820,7 @@
 		return f::draw_element('textarea', ['name' => $name, ...$attributes], f::escape_html($input));
 	}
 
-	function form_regional($name, $language_code='', $input=true, $type='text', $attributes=[]) {
+	function form_regional(string $name, string $language_code='', bool|array|string $input=true, string $type='text', array|string $attributes=[]): string {
 
 		if (!$language_code) {
 			$language_code = settings::get('store_language_code');
@@ -844,7 +844,7 @@
 		]);
 	}
 
-	function form_regional_text($name, $language_code='', $input=true, $attributes=[]) {
+	function form_regional_text(string $name, string $language_code='', bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if (!$language_code) {
 			$language_code = settings::get('store_language_code');
@@ -862,7 +862,7 @@
 		]);
 	}
 
-	function form_regional_textarea($name, $language_code='', $input=true, $attributes=[]) {
+	function form_regional_textarea(string $name, string $language_code='', bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if (!$language_code) {
 			$language_code = settings::get('store_language_code');
@@ -880,7 +880,7 @@
 		]);
 	}
 
-	function form_regional_wysiwyg($name, $language_code='', $input=true, $attributes=[]) {
+	function form_regional_wysiwyg(string $name, string $language_code='', bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if (!$language_code) {
 			$language_code = settings::get('store_language_code');
@@ -898,7 +898,7 @@
 		]);
 	}
 
-	function form_select($name, $options=[], $input=true, $attributes=[]) {
+	function form_select(string $name, array $options=[], bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if (preg_match('#\[\]$#', $name)) {
 			return form_select_multiple($name, $options, $input, $attributes);
@@ -935,7 +935,7 @@
 		return f::draw_element('select', ['class' => 'form-select', 'name' => $name, ...$attributes], implode(PHP_EOL, $content));
 	}
 
-	function form_select_multiple($name, $options=[], $input=true, $attributes=[]) {
+	function form_select_multiple(string $name, array $options=[], bool|array|string $input=true, array|string $attributes=[]): string {
 
 		$attributes = is_array($attributes) ? $attributes : form_attributes($attributes);
 
@@ -959,7 +959,7 @@
 		return f::draw_element('div', ['class' => 'form-input', ...$attributes], implode(PHP_EOL, $content));
 	}
 
-	function form_select_optgroup($name, $groups=[], $input=true, $attributes=[]) {
+	function form_select_optgroup(string $name, array $groups=[], bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if (count($args = func_get_args()) > 3 && is_bool($args[3])) {
 			trigger_error('Passing $multiple as 4th parameter in form_select_optgroup() is deprecated as determined by input name instead.', E_USER_DEPRECATED);
@@ -1005,7 +1005,7 @@
 		return f::draw_element('select', ['class' => 'form-select', 'name' => $name, ...$attributes], implode(PHP_EOL, $content));
 	}
 
-	function form_switch($name, $input=true, $attributes=[]) {
+	function form_switch(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if ($input === true) {
 			$input = form_reinsert_value($name);
@@ -1016,7 +1016,7 @@
 		return f::draw_element('div', ['class' => 'form-switch', ...$attributes], f::draw_element('label', [], f::draw_element('input', ['type' => 'checkbox', 'name' => $name, 'value' => 1, 'hidden' => '', ...($input ? ['checked' => ''] : [])])));
 	}
 
-	function form_textarea($name, $input=true, $attributes=[]) {
+	function form_textarea(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if ($input === true) {
 			$input = form_reinsert_value($name);
@@ -1027,7 +1027,7 @@
 		return f::draw_element('textarea', ['class' => 'form-input', 'name' => $name, ...$attributes], f::escape_html($input));
 	}
 
-	function form_toggle($name, $options='t/f', $input=true, $attributes=[]) {
+	function form_toggle(string $name, string|array $options='t/f', bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if (str_contains($input, '/')) {
 			trigger_error('Passing type as 3rd parameter in form_toggle() is deprecated. Use instead form_toggle($name, $type, $input, $attributes)', E_USER_DEPRECATED);
@@ -1114,7 +1114,7 @@
 	# Platform specific form helpers #
 	##################################
 
-	function form_function($name, $function, $input=true, $attributes=[]) {
+	function form_function(string $name, string $function, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if (preg_match('#\)$#', $name)) {
 			trigger_error('Passing function as 1st parameter in form_function() is deprecated. Instead, use form_function($name, $function, $input, $attributes)', E_USER_DEPRECATED);
@@ -1167,7 +1167,7 @@
 				return form_select_customer($name, $input, $attributes);
 
 			case 'customer_group':
-				return form_select_customer_group($name, $input);
+				return form_select_customer_group($name, $input, $attributes);
 
 			case 'country':
 				return form_select_country($name, $input, $attributes);
@@ -1225,10 +1225,10 @@
 				return form_select_payment_term($name, $input, $attributes);
 
 			case 'percent':
-				return form_input_percent($name, $input);
+				return form_input_percent($name, $input, $attributes);
 
 			case 'phone':
-				return form_input_phone($name, $input);
+				return form_input_phone($name, $input, $attributes);
 
 			case 'product':
 				return form_select_product($name, $input, $attributes);
@@ -1323,7 +1323,7 @@
 		}
 	}
 
-	function form_select_administrator($name, $input=true, $attributes=[]) {
+	function form_select_administrator(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
 			trigger_error('Passing $multiple as 3rd parameter in form_select_administrator() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
@@ -1345,7 +1345,7 @@
 		}
 	}
 
-	function form_select_attribute_group($name, $input=true, $attributes=[]) {
+	function form_select_attribute_group(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
 			trigger_error('Passing $multiple as 3rd parameter in form_select_attribute_group() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
@@ -1369,7 +1369,7 @@
 		}
 	}
 
-	function form_select_attribute_value($name, $group_id, $input=true, $attributes=[]) {
+	function form_select_attribute_value(string $name, int $group_id, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if (is_numeric($name)) {
 			trigger_error('form_select_attribute_value_list() no longer takes group ID as 1st parameter. Instead, use form_select_attribute_value($name, $group_id, $input, $attributes)', E_USER_DEPRECATED);
@@ -1398,7 +1398,7 @@
 		}
 	}
 
-	function form_select_brand($name, $input=true, $attributes=[]) {
+	function form_select_brand(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
 			trigger_error('Passing $multiple as 3rd parameter in form_select_brand() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
@@ -1420,7 +1420,7 @@
 		}
 	}
 
-	function form_select_campaign($name, $input=true, $attributes=[]) {
+	function form_select_campaign(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		$options = database::query(
 			"select id, name, valid_from, valid_to
@@ -1438,7 +1438,7 @@
 		}
 	}
 
-	function form_select_category($name, $input=true, $attributes=[]) {
+	function form_select_category(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if (preg_match('#\[\]$#', $name)) {
 			return form_select_multiple_categories($name, $input, $attributes);
@@ -1469,7 +1469,7 @@
 		]));
 	}
 
-	function form_select_multiple_categories($name, $input=true, $attributes=[]) {
+	function form_select_multiple_categories(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
 			trigger_error('Passing $multiple as 3rd parameter in form_select_multiple_categories() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
@@ -1562,7 +1562,7 @@
 		return f::draw_element('div', ['data-toggle' => 'category-picker', ...$attributes], $content);
 	}
 
-	function form_select_country($name, $input=true, $attributes=[]) {
+	function form_select_country(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
 			trigger_error('Passing $multiple as 3rd parameter in form_select_country() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
@@ -1600,7 +1600,7 @@
 		}
 	}
 
-	function form_select_currency($name, $input=true, $attributes=[]) {
+	function form_select_currency(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
 			trigger_error('Passing $multiple as 3rd parameter in form_select_currency() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
@@ -1619,7 +1619,7 @@
 		}
 	}
 
-	function form_select_customer($name, $input = true, $attributes = '') {
+	function form_select_customer(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if (empty(administrator::$data['id'])) {
 			throw new Error('Must be logged in to use form_select_customer()');
@@ -1772,7 +1772,7 @@
 		]));
 	}
 
-	function form_select_customer_group($name, $input=true, $attributes=[]) {
+	function form_select_customer_group(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if (!administrator::check_login()) {
 			throw new Error('Must be logged in to use form_select_customer_group()');
@@ -1794,7 +1794,7 @@
 		}
 	}
 
-	function form_select_multiple_customers($name, $input=true, $attributes=[]) {
+	function form_select_multiple_customers(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if (!administrator::check_login()) {
 			throw new Error('Must be logged in to use form_select_multiple_customers()');
@@ -1825,7 +1825,7 @@
 		}
 	}
 
-	function form_select_delivery_status($name, $input=true, $attributes=[]) {
+	function form_select_delivery_status(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
 			trigger_error('Passing $multiple as 3rd parameter in form_select_delivery_status() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
@@ -1858,7 +1858,7 @@
 		}
 	}
 
-	function form_select_encoding($name, $input=true, $attributes=[]) {
+	function form_select_encoding(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
 			trigger_error('Passing $multiple as 3rd parameter in form_select_encoding() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
@@ -1910,7 +1910,7 @@
 		}
 	}
 
-	function form_select_function($name, $input=true, $attributes=[]) {
+	function form_select_function(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		$options = [
 			'administrator()',
@@ -1959,7 +1959,7 @@
 		}
 	}
 
-	function form_select_file($name, $pattern, $input=true, $attributes=[]) {
+	function form_select_file(string $name, string $pattern, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if (preg_match('#\[\]$#', $name)) {
 			return form_select_multiple_files($name, $pattern, $input, $attributes);
@@ -1977,7 +1977,7 @@
 		]));
 	}
 
-	function form_select_multiple_files($name, $pattern, $input=true, $attributes=[]) {
+	function form_select_multiple_files(string $name, string $pattern, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if (!preg_match('#\[\]$#', $name)) {
 			return form_select_file($name, $pattern, $input, $attributes);
@@ -2003,7 +2003,7 @@
 		return form_select($name, $options, $input, $attributes);
 	}
 
-	function form_select_geo_zone($name, $input=true, $attributes=[]) {
+	function form_select_geo_zone(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
 			trigger_error('Passing $multiple as 3rd parameter in form_select_geo_zone() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
@@ -2029,7 +2029,7 @@
 		}
 	}
 
-	function form_select_incoterm($name, $input=true, $attributes=[]) {
+	function form_select_incoterm(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		$options = [
 			['EXW', 'EXW &ndash; '. t('title_incoterm_exw', 'Ex Works')],
@@ -2053,7 +2053,7 @@
 		}
 	}
 
-	function form_select_intl_locale($name, $input=true, $attributes=[]) {
+	function form_select_intl_locale(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if ($input === true) {
 			$input = form_reinsert_value($name);
@@ -2074,7 +2074,7 @@
 		}
 	}
 
-	function form_select_language($name, $input=true, $attributes=[]) {
+	function form_select_language(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
 			trigger_error('Passing $multiple as 3rd parameter in form_select_language() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
@@ -2093,7 +2093,7 @@
 		}
 	}
 
-	function form_select_length_unit($name, $input=true, $attributes=[]) {
+	function form_select_length_unit(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
 			trigger_error('Passing $multiple as 3rd parameter in form_select_length_unit() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
@@ -2120,7 +2120,7 @@
 		}
 	}
 
-	function form_select_mysql_collation($name, $input=true, $attributes=[]) {
+	function form_select_mysql_collation(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
 			trigger_error('Passing $multiple as 3rd parameter in form_select_mysql_collation() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
@@ -2141,7 +2141,7 @@
 		}
 	}
 
-	function form_select_mysql_engine($name, $input=true, $attributes=[]) {
+	function form_select_mysql_engine(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		$options = database::query(
 			"SHOW ENGINES;"
@@ -2159,7 +2159,7 @@
 		}
 	}
 
-	function form_select_order_status($name, $input=true, $attributes=[]) {
+	function form_select_order_status(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
 			trigger_error('Passing $multiple as 3rd parameter in form_select_order_status() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
@@ -2181,7 +2181,7 @@
 		return form_dropdown($name, $options, $input, $attributes);
 	}
 
-	function form_select_page($name, $input=true, $attributes=[]) {
+	function form_select_page(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
 			trigger_error('Passing $multiple as 3rd parameter in form_select_page() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
@@ -2228,7 +2228,7 @@
 		}
 	}
 
-	function form_select_parent_page($name, $input=true, $attributes=[]) {
+	function form_select_parent_page(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
 			trigger_error('Passing $multiple as 3rd parameter in form_select_page() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
@@ -2268,7 +2268,7 @@
 		}
 	}
 
-	function form_select_payment_module($name, $input=true, $attributes=[]) {
+	function form_select_payment_module(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
 			trigger_error('Passing $multiple as 3rd parameter in form_select_payment_module() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
@@ -2292,7 +2292,7 @@
 		}
 	}
 
-	function form_select_payment_term($name, $input=true, $attributes=[]) {
+	function form_select_payment_term(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		$options = [
 			['PIA', 'PIA &ndash; '. t('title_payment_terms_pia', 'Payment In Advance')],
@@ -2313,7 +2313,7 @@
 		}
 	}
 
-	function form_select_product($name, $input=true, $attributes=[]) {
+	function form_select_product(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if (preg_match('#\[\]$#', $name)) {
 			return form_select_multiple_products($name, $input, $attributes);
@@ -2362,7 +2362,7 @@
 		]));
 	}
 
-	function form_select_multiple_products($name, $input=true, $attributes=[]) {
+	function form_select_multiple_products(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
 			trigger_error('Passing $multiple as 3rd parameter in form_select_product() is deprecated.', E_USER_DEPRECATED);
@@ -2389,13 +2389,13 @@
 		}
 	}
 
-	function form_select_product_stock_option($name, $product_id, $input=true, $attributes=[]) {
+	function form_select_product_stock_option(string $name, int $product_id, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		$product = reference::product($product_id);
 
 		if ($product->stock_option_type != 'variants' || !$product->stock_options) {
 			trigger_error('Product '. $product->id .' has no stock options', E_USER_WARNING);
-			return;
+			return '';
 		}
 
 		$has_images = array_filter(array_column($product->stock_options, 'image')) ? true : false;
@@ -2454,7 +2454,7 @@
 		return form_dropdown($name, $options, $input, $attributes);
 	}
 
-	function form_select_quantity_unit($name, $input=true, $attributes=[]) {
+	function form_select_quantity_unit(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
 			trigger_error('Passing $multiple as 3rd parameter in form_select_quantity_unit() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
@@ -2487,7 +2487,7 @@
 		}
 	}
 
-	function form_select_shipping_module($name, $input=true, $attributes=[]) {
+	function form_select_shipping_module(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
 			trigger_error('Passing $multiple as 3rd parameter in form_select_shipping_module() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
@@ -2511,7 +2511,7 @@
 		}
 	}
 
-	function form_select_sold_out_status($name, $input=true, $attributes=[]) {
+	function form_select_sold_out_status(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
 			trigger_error('Passing $multiple as 3rd parameter in form_select_sold_out_status() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
@@ -2544,7 +2544,7 @@
 		}
 	}
 
-	function form_select_stock_item($name, $input=true, $attributes=[]) {
+	function form_select_stock_item(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if (preg_match('#\[\]$#', $name)) {
 			return form_select_multiple_stock_items($name, $input, $attributes);
@@ -2577,7 +2577,7 @@
 		]));
 	}
 
-	function form_select_multiple_stock_items($name, $input=true, $attributes=[]) {
+	function form_select_multiple_stock_items(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if (!preg_match('#\[\]$#', $name)) {
 			return form_select_stock_item($name, $input, $attributes);
@@ -2624,7 +2624,7 @@
 		return $output;
 	}
 
-	function form_select_supplier($name, $input=true, $attributes=[]) {
+	function form_select_supplier(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
 			trigger_error('Passing $multiple as 3rd parameter in form_select_supplier() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
@@ -2646,7 +2646,7 @@
 		}
 	}
 
-	function form_select_tax_class($name, $input=true, $attributes=[]) {
+	function form_select_tax_class(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
 			trigger_error('Passing $multiple as 3rd parameter in form_select_tax_class() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
@@ -2675,7 +2675,7 @@
 		}
 	}
 
-	function form_select_template($name, $input=true, $attributes=[]) {
+	function form_select_template(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
 			trigger_error('Passing $multiple as 3rd parameter in form_select_template() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
@@ -2694,7 +2694,7 @@
 		}
 	}
 
-	function form_select_timezone($name, $input=true, $attributes=[]) {
+	function form_select_timezone(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
 			trigger_error('Passing $multiple as 3rd parameter in form_select_timezone() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
@@ -2719,7 +2719,7 @@
 		}
 	}
 
-	function form_select_weight_unit($name, $input=true, $attributes=[]) {
+	function form_select_weight_unit(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if (count($args = func_get_args()) > 2 && is_bool($args[2])) {
 			trigger_error('Passing $multiple as 3rd parameter in form_select_weight_unit() is deprecated as instead determined by input name.', E_USER_DEPRECATED);
@@ -2746,7 +2746,7 @@
 		}
 	}
 
-	function form_select_volume_unit($name, $input=true, $attributes=[]) {
+	function form_select_volume_unit(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if ($input === true) {
 			$input = form_reinsert_value($name);
@@ -2765,7 +2765,7 @@
 		}
 	}
 
-	function form_select_zone($name, $country_code='', $input=true, $attributes=[], $preamble='none') {
+	function form_select_zone(string $name, string $country_code='', bool|array|string $input=true, array|string $attributes=[], string $preamble='none'): string {
 
 		if (preg_match('#^([A-Z]{2}|default_country_code|store_country_code)$#', $name)) {
 			trigger_error('form_select_zone() no longer takes country code as 1st parameter. Instead, use form_zones($name, $country_code, $input)', E_USER_DEPRECATED);

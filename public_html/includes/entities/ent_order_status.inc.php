@@ -4,7 +4,7 @@
 		public $data;
 		public $previous;
 
-		public function __construct($id=null) {
+		public function __construct(int|null $id = null) {
 
 			if ($id) {
 				$this->load($id);
@@ -13,7 +13,7 @@
 			}
 		}
 
-		public function reset() {
+		public function reset(): void {
 
 			$this->data = [];
 
@@ -37,7 +37,7 @@
 			$this->previous = $this->data;
 		}
 
-		public function load($id) {
+		public function load(int $id): void {
 
 			if (!preg_match('#^\d+$#', $id)) {
 				throw new Exception('Invalid order status (ID: '. $id .')');
@@ -76,7 +76,7 @@
 			$this->previous = $this->data;
 		}
 
-		public function save() {
+		public function save(): void {
 
 			if ($this->data['num_orders'] && $this->data['stock_action'] != $this->previous['stock_action']) {
 				throw new Exception(t('error_cannot_change_stock_action_while_used_by_orders', 'You cannot change stock action while there are orders using this status'));
@@ -119,7 +119,7 @@
 			cache::clear_cache('order_statuses');
 		}
 
-		public function delete() {
+		public function delete(): void {
 
 			if ($this->data['num_orders']) {
 				throw new Exception(t('error_cannot_delete_order_status_while_used', 'Cannot delete the order status while it is in use by orders'));

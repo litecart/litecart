@@ -1,6 +1,6 @@
 <?php
 
-	function webhook_send($event, $data) {
+	function webhook_send(string $event, array $data): void {
 
 		try {
 

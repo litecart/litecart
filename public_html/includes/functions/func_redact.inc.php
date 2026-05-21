@@ -48,7 +48,7 @@
 		any `_` / `-`-separated segment of $key matches a
 		REDACT_SENSITIVE_SEGMENTS entry. All comparisons case-insensitive.
 	*/
-	function redact_key_is_sensitive($key) {
+	function redact_key_is_sensitive(string $key): bool {
 		$needle = strtolower((string)$key);
 		if ($needle === '') return false;
 
@@ -79,7 +79,7 @@
 		preserved but its contents are not rewritten (browsers never send
 		fragments to the server, so they don't appear in REQUEST_URI).
 	*/
-	function redact_query_string($url_or_query) {
+	function redact_query_string(string $url_or_query): string {
 		$input = (string)$url_or_query;
 		if ($input === '') return $input;
 
@@ -131,7 +131,7 @@
 		Input:  ['install.php', '--db_password=s3cret', '--timezone=UTC', '--password', 'x']
 		Output: ['install.php', '--db_password=[REDACTED]', '--timezone=UTC', '--password', '[REDACTED]']
 	*/
-	function redact_argv(array $argv) {
+	function redact_argv(array $argv): array {
 		$out = [];
 		$redact_next = false;
 		foreach ($argv as $arg) {
@@ -168,6 +168,6 @@
 		that `implode(' ', $argv)` would produce and returns the redacted
 		equivalent. Implemented by running redact_argv on the array form.
 	*/
-	function redact_argv_line(array $argv) {
+	function redact_argv_line(array $argv): string {
 		return implode(' ', redact_argv($argv));
 	}

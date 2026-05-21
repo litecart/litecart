@@ -1,6 +1,6 @@
 <?php
 
-	function catalog_categories_query($parent_ids=null, $filter=[]) {
+	function catalog_categories_query(int|array|null $parent_ids=null, array $filter=[]): database_statement {
 
 		if ($parent_ids && !is_array($parent_ids)) {
 			$parent_ids = [$parent_ids];
@@ -45,7 +45,7 @@
 		return $statement;
 	}
 
-	function catalog_categories_search_query($filter=[]) {
+	function catalog_categories_search_query(array $filter=[]): database_statement {
 
 		if (!empty($filter['categories'])) {
 			$filter['categories'] = array_filter($filter['categories']);
@@ -123,7 +123,7 @@
 	}
 
 	// Filter function using AND syntax
-	function catalog_products_query($filter=[]) {
+	function catalog_products_query(array $filter=[]): database_statement {
 
 		if (!is_array($filter)) {
 			throw new Error('Invalid array filter for products query');
@@ -394,7 +394,7 @@
 	}
 
 	// Search function using OR syntax
-	function catalog_products_search_query($filter=[]) {
+	function catalog_products_search_query(array $filter=[]): database_statement {
 
 		if (!is_array($filter)) {
 			throw new Error('Invalid array filter for products query');

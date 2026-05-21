@@ -1,6 +1,6 @@
 <?php
 
-	function file_copy($source, $target, $overwrite=false, &$results=[]) {
+	function file_copy(string $source, string $target, bool $overwrite=false, array &$results=[]): bool {
 
 		$source = str_replace('\\', '/', $source);
 		$target = str_replace('\\', '/', $target);
@@ -53,7 +53,7 @@
 	}
 
 	// PHP doesn't always clean up temp files, so let's create a function that does
-	function file_create_tempfile($data='', $extension='') {
+	function file_create_tempfile(string $data='', string $extension=''): string {
 
 		while (!isset($tmp_file) || is_file($tmp_file)) {
 			$tmp_file = stream_get_meta_data(tmpfile())['uri'].$extension;
@@ -70,7 +70,7 @@
 		return $tmp_file;
 	}
 
-	function file_delete($file, $recursive=false, &$results=[]) {
+	function file_delete(string $file, bool $recursive=false, array &$results=[]): bool {
 
 		if (!isset($results) || !is_array($results)) {
 			$results = [];
@@ -118,7 +118,7 @@
 		return f::format_number($value,	($factor === 0) ? 0 : 2) . ' ' . $units[$factor];
 	}
 
-	function file_is_binary($file) {
+	function file_is_binary(string $file): bool {
 
 		$fh = fopen($file, 'r');
 		$block = fread($fh, 512);
@@ -127,7 +127,7 @@
 		return (substr_count($block, "^ -~")/512 > 0.3) or (substr_count($block, "\x00") > 0);
 	}
 
-	function file_move($source, $target, $overwrite=false, &$results=[]) {
+	function file_move(string $source, string $target, bool $overwrite=false, array &$results=[]): bool {
 
 		$source = str_replace('\\', '/', $source);
 		$target = str_replace('\\', '/', $target);
@@ -158,7 +158,7 @@
 		return !in_array(false, $results);
 	}
 
-	function file_permissions($file) {
+	function file_permissions(string $file): string {
 		return '-'.strtr(substr(decoct(fileperms($file)), -3), [
 			'0'	=> '---', // No Permission
 			'1'	=> '--x', // Execute
@@ -171,7 +171,7 @@
 		]);
 	}
 
-	function file_realpath($path) {
+	function file_realpath(string $path): string {
 
 		if (!$path) {
 			return '';
@@ -201,7 +201,7 @@
 		return $path;
 	}
 
-	function file_relative_path($target, $base = FS_DIR_APP) {
+	function file_relative_path(string $target, string $base = FS_DIR_APP): string {
 
 		if ($base === null) {
 			$base = getcwd();
@@ -219,7 +219,7 @@
 	}
 
 	// Strip paths from logic e.g. ./ ../
-	function file_resolve_path($path) {
+	function file_resolve_path(string $path): string {
 
 		if (empty($path)) return $path;
 
@@ -241,7 +241,7 @@
 
 	// PHP glob() does not support stream wrappers, so let's create our own glob.
 	// And while we are at it, let's throw in support for double globstars **. :)
-	function file_search($glob, $flags=0) {
+	function file_search(string $glob, int $flags=0): array {
 
 		// Unixify paths
 		$glob = str_replace('\\', '/', $glob);
@@ -361,7 +361,7 @@
 		return $results;
 	}
 
-	function file_size($file) {
+	function file_size(string $file): int|false {
 
 		if (is_file($file)) {
 			return filesize($file);
@@ -378,14 +378,14 @@
 		return false;
 	}
 
-	function file_webpath($file) {
+	function file_webpath(string $file): string {
 
 		$file = file_realpath($file);
 
 		return preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '/', $file);
 	}
 
-	function file_xcopy($source, $target, $overwrite=false, &$results=[]) {
+	function file_xcopy(string $source, string $target, bool $overwrite=false, array &$results=[]): bool {
 		if (!isset($results) || !is_array($results)) {
 			$results = [];
 		}

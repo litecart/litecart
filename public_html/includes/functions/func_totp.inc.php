@@ -2,13 +2,13 @@
 
 	// TOTP (RFC 6238) helper functions — no external dependencies
 
-	function totp_generate_secret($length = 20) {
+	function totp_generate_secret(int $length = 20): string {
 
 		$bytes = random_bytes($length);
 		return totp_base32_encode($bytes);
 	}
 
-	function totp_generate_code($secret, $time = null, $digits = 6, $period = 30) {
+	function totp_generate_code(string $secret, ?int $time = null, int $digits = 6, int $period = 30): string {
 
 		if ($time === null) $time = time();
 
@@ -27,7 +27,7 @@
 		return str_pad($code, $digits, '0', STR_PAD_LEFT);
 	}
 
-	function totp_verify_code($secret, $code, $window = 1, $period = 30) {
+	function totp_verify_code(string $secret, string $code, int $window = 1, int $period = 30): bool {
 
 		$time = time();
 
@@ -41,7 +41,7 @@
 		return false;
 	}
 
-	function totp_build_uri($secret, $account, $issuer) {
+	function totp_build_uri(string $secret, string $account, string $issuer): string {
 
 		return 'otpauth://totp/' . rawurlencode($issuer) . ':' . rawurlencode($account)
 			. '?secret=' . $secret
@@ -51,7 +51,7 @@
 			. '&period=30';
 	}
 
-	function totp_base32_encode($data) {
+	function totp_base32_encode(string $data): string {
 
 		$alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
 		$binary = '';
@@ -69,7 +69,7 @@
 		return $encoded;
 	}
 
-	function totp_base32_decode($data) {
+	function totp_base32_decode(string $data): string {
 
 		$alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
 		$binary = '';
@@ -89,8 +89,6 @@
 		return $decoded;
 	}
 
-	function totp_generate_qr_svg($data, $size = 200) {
+	function totp_generate_qr_svg(string $data, int $size = 200): string {
 		return f::qr_generate_svg($data, $size);
 	}
-
-

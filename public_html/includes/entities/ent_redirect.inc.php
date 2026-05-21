@@ -5,7 +5,7 @@
 		public $data;
 		public $previous;
 
-		public function __construct($redirect_id=null) {
+		public function __construct(int|null $redirect_id = null) {
 
 			if ($redirect_id) {
 				$this->load((int)$redirect_id);
@@ -14,7 +14,7 @@
 			}
 		}
 
-		public function reset() {
+		public function reset(): void {
 
 			$this->data = [];
 
@@ -27,7 +27,7 @@
 			$this->previous = $this->data;
 		}
 
-		public function load($redirect_id) {
+		public function load(int $redirect_id): void {
 
 			if (!preg_match('#^\d+$#', $redirect_id)) {
 				throw new Exception('Invalid redirect (ID: '. $redirect_id .')');
@@ -50,7 +50,7 @@
 			$this->previous = $this->data;
 		}
 
-		public function save() {
+		public function save(): void {
 
 			if (empty($this->data['id'])) {
 
@@ -89,7 +89,7 @@
 			$this->previous = $this->data;
 		}
 
-		public function delete() {
+		public function delete(): void {
 
 			database::query(
 				"delete from ". DB_TABLE_PREFIX ."redirects

@@ -11,7 +11,7 @@
 		public $website = 'https://www.litecart.net/';
 		public $priority = 0;
 
-		public function process($force, $last_run) {
+		public function process(string $force, string $last_run): void {
 
 			if (!$force) {
 				if (!$this->settings['status']) return;
@@ -62,7 +62,7 @@
 			}
 		}
 
-		function settings() {
+		public function settings(): array {
 
 			return [
 				[
@@ -76,7 +76,7 @@
 					'key' => 'frequency',
 					'default_value' => 'Hourly',
 					'title' => t(__CLASS__.':title_frequency', 'Frequency'),
-					'description' => t(__CLASS__.':description_check_frequency', 'How often the modification scanner should run.'),
+					'description' => t(__CLASS__.':description_frequency', 'How often the job should be processed.'),
 					'function' => 'radio("15 min","Hourly","3 Hours","6 Hours","12 Hours","Daily")',
 				],
 				[

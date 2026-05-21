@@ -7,7 +7,7 @@
 		public $shipping;
 		public $payment;
 
-		public function __construct($id=null) {
+		public function __construct(int|null $id = null) {
 
 			if ($id) {
 				$this->load($id);
@@ -16,7 +16,7 @@
 			}
 		}
 
-		public function reset() {
+		public function reset(): void {
 
 			$this->data = [];
 
@@ -82,7 +82,7 @@
 			$this->previous = $this->data;
 		}
 
-		public function load($id) {
+		public function load(int $id): void {
 
 			if (!preg_match('#^\d+$#', $id)) {
 				throw new Exception('Invalid order (ID: '. $id .')');
@@ -174,7 +174,7 @@
 			$this->previous = $this->data;
 		}
 
-		public function save() {
+		public function save(): void {
 
 			database::begin_transaction();
 
@@ -533,7 +533,7 @@
 			}
 		}
 
-		public function refresh_total() {
+		public function refresh_total(): void {
 
 			$this->data['subtotal'] = 0;
 			$this->data['subtotal_tax'] = 0;
@@ -599,7 +599,7 @@
 			return $this->data['no'];
 		}
 
-		public function add_line($line, $stock_items=[]) {
+		public function add_line(array $line, array $stock_items = []): void {
 
 			$tax_rates = tax::get_rates($line['tax_class_id'] ?? null, $this->data['customer']['country_code'], $this->data['customer']['zone_code']);
 			$average_rate = !empty($tax_rates) ? array_sum($tax_rates) / count($tax_rates) : 0;
@@ -658,7 +658,7 @@
 			$this->data['total_tax'] += $line['final_price']['tax'] * $line['quantity'];
 		}
 
-		public function validate($filters=[], $shipping = null, $payment = null) {
+		public function validate(array $filters = [], mixed $shipping = null, mixed $payment = null): string|false {
 
 			if (!is_array($filters)) {
 				$filters = [];
@@ -882,7 +882,7 @@
 			return false;
 		}
 
-		public function send_order_copy($recipient, $ccs=[], $bccs=[], $language_code='') {
+		public function send_order_copy(string $recipient, array $ccs = [], array $bccs = [], string $language_code = ''): void {
 
 			if (!$recipient) return;
 
@@ -974,7 +974,7 @@
 						->send();
 		}
 
-		public function send_email_notification() {
+		public function send_email_notification(): void {
 
 			if (!$this->data['order_status_id']) return;
 
@@ -1046,13 +1046,13 @@
 				->send();
 		}
 
-		public function adjust_stock_quantity($product_id, $combination, $quantity_adjustment) {
+		public function adjust_stock_quantity(int $product_id, array $combination, float|int $quantity_adjustment): void {
 			if ($quantity_adjustment == 0) return;
 			$product = new ent_product($product_id);
 			$product->adjust_quantity((float)$quantity_adjustment, $combination);
 		}
 
-		public function delete() {
+		public function delete(): void {
 
 			if (!$this->data['id']) return;
 

@@ -6,12 +6,12 @@
 			$this->load();
 		}
 
-		public function actions() {
+		public function actions(): array {
 
 			$actions = [];
 
 			if (!$this->modules) {
-				return;
+				return $actions;
 			}
 
 			foreach ($this->modules as $module) {

@@ -1,6 +1,6 @@
 <?php
 
-	function draw_banner($keywords, $limit=0) {
+	function draw_banner(array|string $keywords, int $limit=0): string|null {
 
 		if (!is_array($keywords)) {
 			$keywords = preg_split('#\s*,\s*#', $keywords, -1, PREG_SPLIT_NO_EMPTY);
@@ -19,7 +19,7 @@
 			". ($limit ? "limit ". (int)$limit : '') .";"
 		)->fetch_all();
 
-		if (!$banners) return;
+		if (!$banners) return null;
 
 		database::query(
 			"update ". DB_TABLE_PREFIX ."banners
@@ -64,11 +64,9 @@
 		$carousel = new ent_view('app://frontend/templates/'. settings::get('template') .'/partials/carousel.inc.php');
 		$carousel->snippets['items'] = array_column($banners, 'output');
 		return $carousel->render();
-
-		return $output;
 	}
 
-	function draw_element($tag, $attributes=[], $content='') {
+	function draw_element(string $tag, array $attributes=[], string $content=''): string {
 
 		if (is_array($attributes)) {
 			$attributes = implode(' ', array_map(function($key, $value) {
@@ -98,7 +96,7 @@
 		return '<'. $tag . ($attributes ? ' ' . $attributes : '') .'>'. $content .'</'. $tag .'>';
 	}
 
-	function draw_fonticon($icon, $parameters='') {
+	function draw_fonticon(string $icon, string $parameters=''): string {
 
 		if (!$icon) {
 			return '';
@@ -132,7 +130,7 @@
 			case (substr($icon, 0, 7) == 'fab fa-'):
 			case (substr($icon, 0, 7) == 'fas fa-'):
 				document::$foot_tags['fontawesome7'] = '<script src="https://use.fontawesome.com/releases/v7.1.0/js/all.js" crossorigin="anonymous"></script>';
-				return '<i class="'. $icon .'"'. (!empty($parameters) ? ' ' . $parameters : null) .'></i>';
+				return '<i class="'. $icon .'"'. (!empty($parameters) ? ' ' . $parameters : '') .'></i>';
 
 			// Foundation
 			case (preg_match('#^fi-#', $icon)):
@@ -185,7 +183,7 @@
 		};
 	}
 
-	function draw_image($image, $width=null, $height=null, $clipping='fit', $parameters='') {
+	function draw_image(string $image, int|null $width=null, int|null $height=null, string $clipping='fit', string $parameters=''): string {
 
 		if ($width && $height) {
 			if (preg_match('#style="#', $parameters)) {
@@ -198,7 +196,7 @@
 		return '<img '. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="'. f::escape_attr($clipping) .'"' : '') .' src="'. document::href_rlink($image) .'" '. ($parameters ? ' '. $parameters : '') .'>';
 	}
 
-	function draw_script($src) {
+	function draw_script(string $src): string {
 
 		if (preg_match('#^(app|storage)://#', $src)) {
 			$tag = '<script defer nonce="'. document::$nonce .'" integrity="sha256-'. base64_encode(hash_file('sha256', $src, true)) .'" src="'. document::href_rlink($src) .'"></script>';
@@ -209,7 +207,7 @@
 		return $tag;
 	}
 
-	function draw_style($href) {
+	function draw_style(string $href): string {
 
 		if (preg_match('#^(app|storage)://#', $href)) {
 			$tag = '<link rel="stylesheet" nonce="'. document::$nonce .'" integrity="sha256-'. base64_encode(hash_file('sha256', $href, true)) .'" href="'. document::href_rlink($href) .'">';
@@ -220,7 +218,7 @@
 		return $tag;
 	}
 
-	function draw_thumbnail($image, $width=0, $height=0, $clipping='fit', $parameters='') {
+	function draw_thumbnail(string $image, int $width=0, int $height=0, string $clipping='fit', string $parameters=''): string {
 
 		if (!$image || !is_file($image)) {
 			$image = 'storage://images/no_image.svg';
@@ -281,7 +279,7 @@
 		return '<img '. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="thumbnail '. f::escape_attr($clipping) .'"' : '') .' src="'. document::href_rlink($thumbnail) .'" srcset="'. document::href_rlink($thumbnail) .' 1x, '. document::href_rlink($thumbnail_2x) .' 2x"'. ($parameters ? ' '. $parameters : '') .'>';
 	}
 
-	function draw_price_tag($regular_price, $final_price=null, $currency_code=null, $currency_value=null) {
+	function draw_price_tag(float $regular_price, ?float $final_price=null, ?string $currency_code=null, ?float $currency_value=null): string {
 
 		if ($regular_price === null && $final_price === null) {
 			return '';
@@ -312,7 +310,7 @@
 		return implode(PHP_EOL, $price_tag);
 	}
 
-	function draw_listing_category($category, $view='views/listing_category') {
+	function draw_listing_category(array $category, string $view='views/listing_category'): string {
 
 		$listing_category = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/listing_category.inc.php');
 
@@ -327,7 +325,7 @@
 		return $listing_category->render();
 	}
 
-	function draw_listing_product($product, $inherit_params=[], $view='views/listing_product') {
+	function draw_listing_product(array $product, array $inherit_params=[], string $view='views/listing_product'): string {
 
 		$listing_product = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/listing_product.inc.php');
 
@@ -391,7 +389,7 @@
 		return $listing_product->render();
 	}
 
-	function draw_lightbox($selector='', $parameters=[]) {
+	function draw_lightbox(string $selector='', array $parameters=[]): void {
 
 		if (!$selector && !$parameters) return;
 
@@ -439,7 +437,7 @@
 		document::add_script($js, 'litebox-'. $selector);
 	}
 
-	function draw_pagination($pages) {
+	function draw_pagination(int $pages): string|false {
 
 		$pages = ceil($pages);
 
@@ -525,12 +523,12 @@
 	}
 
 	// ▮▮▮▯▯▯▯▯▯▯▯▯▯▯▯ 25%
-	function draw_progress_bar($progress, $width=15) {
+	function draw_progress_bar(float $progress, int $width=15): string {
 		$percentage = floor($progress);
 		return str_pad(str_repeat("\u{25AE}", floor(($width / 100) * $percentage)), $width, "\u{25AF}", STR_PAD_RIGHT) . ' '. $percentage .'%';
 	}
 
-	function draw_rating($rating, $max_rating=5) {
+	function draw_rating(float $rating, int $max_rating=5): string {
 
 		$rating = round($rating * 2) / 2;
 

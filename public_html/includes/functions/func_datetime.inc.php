@@ -1,7 +1,7 @@
 <?php
 
 	// Returns a stfrftime-style formatted date-time string
-	function datetime_format($format, $timestamp=null) {
+	function datetime_format(string $format, int|string|\DateTimeInterface|null $timestamp=null): string {
 
 		if ($timestamp === null) {
 			$timestamp = new \DateTime();
@@ -177,7 +177,7 @@
 		return $out;
 	}
 
-	function datetime_when($timestamp=null) {
+	function datetime_when(int|string|\DateTimeInterface|null $timestamp=null): string {
 
 		if ($timestamp === null) {
 			$timestamp = new \DateTime();
@@ -231,7 +231,7 @@
 	}
 
 	// Returns the last point in time by step interval
-	function datetime_last_by_interval($interval, $timestamp=null) {
+	function datetime_last_by_interval(string $interval, int|string|\DateTimeInterface|null $timestamp=null): int|false {
 
 		if ($timestamp === null) {
 			$timestamp = time();

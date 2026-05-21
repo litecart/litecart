@@ -13,9 +13,9 @@
 			parent::__construct();
 		}
 
-		public function options($items, $subtotal, $tax, $currency_code, $address) {
+		public function options(array $items, float $subtotal, float $tax, string $currency_code, array $address): ?array {
 
-			if (empty($this->settings['status'])) return;
+			if (empty($this->settings['status'])) return null;
 
 			// Calculate cart weight
 			$total_weight = 0;
@@ -46,7 +46,7 @@
 
 			if (empty($options)) {
 
-				if (empty($this->settings['weight_rate_table_x'])) return;
+				if (empty($this->settings['weight_rate_table_x'])) return null;
 
 				$fee = $this->calculate_fee($this->settings['weight_rate_table_x'], $total_weight);
 
@@ -120,7 +120,7 @@
 			return $fee;
 		}
 
-		public function settings() {
+		public function settings(): array {
 			return [
 				[
 					'key' => 'status',

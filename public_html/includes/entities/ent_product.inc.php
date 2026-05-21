@@ -4,7 +4,7 @@
 		public $data;
 		public $previous;
 
-		public function __construct($id=null) {
+		public function __construct(int|string|null $id = null) {
 
 			if ($id) {
 				$this->load($id);
@@ -13,7 +13,7 @@
 			}
 		}
 
-		public function reset() {
+		public function reset(): void {
 
 			$this->data = [];
 
@@ -59,7 +59,7 @@
 			$this->previous = $this->data;
 		}
 
-		public function load($id) {
+		public function load(int|string $id): void {
 
 			if (!$id) {
 				throw new Exception('Invalid product (ID: n/a)');
@@ -164,7 +164,7 @@
 			$this->previous = $this->data;
 		}
 
-		public function save() {
+		public function save(): void {
 
 			if (!$this->data['id']) {
 
@@ -525,7 +525,7 @@
 			cache::clear_cache('products');
 		}
 
-		public function add_image($file, $filename='') {
+		public function add_image(string $file, string $filename = ''): ?bool {
 
 			if (!$file) {
 				throw new Exception('Missing image');
@@ -586,7 +586,7 @@
 			$this->previous['images'][] = $row;
 		}
 
-		public function delete() {
+		public function delete(): void {
 
 			if (!$this->data['id']) return;
 

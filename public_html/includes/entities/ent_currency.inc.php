@@ -4,7 +4,7 @@
 		public $data;
 		public $previous;
 
-		public function __construct($currency_code=null) {
+		public function __construct(string|null $currency_code = null) {
 
 			if ($currency_code) {
 				$this->load($currency_code);
@@ -13,7 +13,7 @@
 			}
 		}
 
-		public function reset() {
+		public function reset(): void {
 
 			$this->data = [];
 
@@ -26,7 +26,7 @@
 			$this->previous = $this->data;
 		}
 
-		public function load($currency_code) {
+		public function load(string $currency_code): void {
 
 			if (!preg_match('#^(\d{1,3}|[A-Z]{3}|[a-z A-Z]{4,})$#', $currency_code)) {
 				throw new Exception('Invalid currency ('. $currency_code .')');
@@ -52,7 +52,7 @@
 			$this->previous = $this->data;
 		}
 
-		public function save() {
+		public function save(): void {
 
 			if (!$this->data['status'] && $this->data['code'] == settings::get('store_currency_code')) {
 				throw new Exception(t('error_cannot_disable_store_currency', 'You must change the store currency before disabling it.'));
@@ -112,7 +112,7 @@
 			cache::clear_cache('currencies');
 		}
 
-		public function delete() {
+		public function delete(): void {
 
 			if ($this->data['code'] == settings::get('store_currency_code')) {
 				throw new Exception(t('error_cannot_delete_store_currency', 'You must change the store currency before it can be deleted.'));

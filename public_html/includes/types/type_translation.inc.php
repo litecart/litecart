@@ -21,7 +21,7 @@
 
 		private $_translations = [];
 
-		public function __construct($input = '', ?string $locale = null) {
+		public function __construct(string|array|type_translation $input = '', ?string $locale = null) {
 
 			if ($input instanceof type_translation) {
 				$this->_translations = $input->_translations;
@@ -111,8 +111,7 @@
 			return '';
 		}
 
-		#[\ReturnTypeWillChange] // Fix PHP 8.1
-		public function jsonSerialize() {
+		public function jsonSerialize(): mixed {
 			// Matches the existing JSON column shape — {locale => string}.
 			return $this->_translations;
 		}
@@ -123,8 +122,7 @@
 			return $this->has((string)$offset);
 		}
 
-		#[\ReturnTypeWillChange]
-		public function offsetGet($offset) {
+		public function offsetGet($offset): mixed {
 			return $this->in((string)$offset);
 		}
 

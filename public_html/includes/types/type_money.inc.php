@@ -31,7 +31,7 @@
 		private $_mode;
 		private $_origin_currency;
 
-		public function __construct($input = 0, ?string $currency_code = null) {
+		public function __construct(float $input = 0, ?string $currency_code = null) {
 
 			if ($input instanceof type_money) {
 				$this->_amounts         = $input->_amounts;
@@ -40,7 +40,7 @@
 				return;
 			}
 
-			$store_currency = (string)settings::get('store_currency_code');
+			$store_currency = settings::get('store_currency_code');
 
 			if (is_array($input)) {
 
@@ -70,7 +70,7 @@
 			];
 		}
 
-		public function __get($name) {
+		public function __get(string $name): mixed {
 
 			switch ($name) {
 
@@ -97,9 +97,8 @@
 			return null;
 		}
 
-		public function __set($name, $value) {
+		public function __set(string $name, $value): void {
 			trigger_error("type_money is immutable — use convert() / with_amount() for derived values", E_USER_WARNING);
-			return $this;
 		}
 
 		/*

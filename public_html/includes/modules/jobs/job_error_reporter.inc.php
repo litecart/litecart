@@ -9,7 +9,7 @@
 		public $website = 'https://www.litecart.net/';
 		public $priority = 0;
 
-		public function process($force, $last_run) {
+		public function process(string $force, string $last_run): void {
 
 			$log_file = ini_get('error_log');
 
@@ -93,7 +93,7 @@
 			file_put_contents($log_file, '');
 		}
 
-		function settings() {
+		public function settings(): array {
 
 			return [
 				[

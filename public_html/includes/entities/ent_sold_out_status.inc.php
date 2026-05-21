@@ -4,7 +4,7 @@
 		public $data;
 		public $previous;
 
-		public function __construct($id=null) {
+		public function __construct(int|null $id = null) {
 
 			if ($id) {
 				$this->load($id);
@@ -13,7 +13,7 @@
 			}
 		}
 
-		public function reset() {
+		public function reset(): void {
 
 			$this->data = [];
 
@@ -33,7 +33,7 @@
 			$this->previous = $this->data;
 		}
 
-		public function load($id) {
+		public function load(int $id): void {
 
 			if (!preg_match('#^\d+$#', $id))  {
 				throw new Exception('Invalid sold out status (ID: '. $id .')');
@@ -64,7 +64,7 @@
 			$this->previous = $this->data;
 		}
 
-		public function save() {
+		public function save(): void {
 
 			if (!$this->data['id']) {
 				database::query(
@@ -91,7 +91,7 @@
 			cache::clear_cache('sold_out_statuses');
 		}
 
-		public function delete() {
+		public function delete(): void {
 
 			if (database::query(
 				"select id from ". DB_TABLE_PREFIX ."products

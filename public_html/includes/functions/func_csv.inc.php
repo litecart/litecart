@@ -1,6 +1,6 @@
 <?php
 
-	function csv_encode($array, $delimiter=',', $enclosure='"', $escape='"', $charset='utf-8', $eol="\r\n") {
+	function csv_encode(array $array, string $delimiter=',', string $enclosure='"', string $escape='"', string $charset='utf-8', string $eol="\r\n"): string {
 
 		$output = '';
 
@@ -40,7 +40,7 @@
 		return preg_replace('#(\r\n?|\n)#', $eol, $output);
 	}
 
-	function csv_decode($string, $delimiter='', $enclosure='"', $escape='"', $charset='utf-8') {
+	function csv_decode(string $string, string $delimiter='', string $enclosure='"', string $escape='"', string $charset='utf-8'): array {
 
 		$output = [];
 

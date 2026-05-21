@@ -13,11 +13,11 @@
 			'queries' => 0,
 		];
 
-		public static function init() {
+		public static function init(): void {
 			event::register('shutdown', [__CLASS__, 'disconnect']);
 		}
 
-		public static function connect($link='default', $server=DB_SERVER, $username=DB_USERNAME, $password=DB_PASSWORD, $database=DB_DATABASE, $charset='utf8mb4') {
+		public static function connect(string $link='default', string $server=DB_SERVER, string $username=DB_USERNAME, string $password=DB_PASSWORD, string $database=DB_DATABASE, string $charset='utf8mb4'): mysqli {
 
 			if (!isset(self::$links[$link])) {
 
@@ -93,7 +93,7 @@
 			return self::$links[$link];
 		}
 
-		public static function server_info($link='default') {
+		public static function server_info(string $link='default'): string|false {
 
 			if (!$result = mysqli_get_server_info(self::$links[$link])) {
 				trigger_error('Could not get server info for MySQL connection: '. mysqli_errno(self::$links[$link]) .' - '. mysqli_error(self::$links[$link]), E_USER_WARNING);
@@ -103,7 +103,7 @@
 			return $result;
 		}
 
-		public static function set_charset($charset, $link='default') {
+		public static function set_charset(string $charset, string $link='default'): bool {
 
 			if (!$result = mysqli_set_charset(self::$links[$link], $charset)) {
 				trigger_error('Could not set charset for MySQL connection: '. mysqli_errno(self::$links[$link]) .' - '. mysqli_error(self::$links[$link]), E_USER_WARNING);
@@ -112,7 +112,7 @@
 			return true;
 		}
 
-		public static function set_option($option, $value, $link='default') {
+		public static function set_option(int $option, $value, string $link='default'): bool {
 
 			if (!$result = mysqli_options(self::$links[$link], $option, $value)) {
 				trigger_error('Could not set option '. $option .' to '. $value, E_USER_WARNING);
@@ -121,7 +121,7 @@
 			return true;
 		}
 
-		public static function disconnect($link=null) {
+		public static function disconnect(string|int|null $link=null): bool {
 
 			if ($link) {
 				$links = [$link => self::$links[$link]];
@@ -144,7 +144,7 @@
 			return $errors;
 		}
 
-		public static function query($sql, $link='default') {
+		public static function query(string $sql, string $link='default'): database_statement|bool {
 
 			if (!isset(self::$links[$link])) {
 				self::connect($link);
@@ -182,7 +182,7 @@
 			return $result;
 		}
 
-		public static function multi_query($sql, $link='default') {
+		public static function multi_query(string $sql, string $link='default'): array {
 
 			if (!isset(self::$links[$link])) {
 				self::connect($link);
@@ -218,7 +218,7 @@
 			return $results;
 		}
 
-		public static function prepare($sql, $link='default') {
+		public static function prepare(string $sql, string $link='default'): database_statement {
 
 			if (!isset(self::$links[$link])) {
 				self::connect($link);
@@ -237,27 +237,27 @@
 			return $result;
 		}
 
-		public static function fetch($result, $column='') {
+		public static function fetch(database_statement $result, string $column=''): array|false|string|int|float|null {
 			return $result->fetch($column);
 		}
 
-		public static function fetch_all($result, $column=null, $index_column=null) {
+		public static function fetch_all(database_statement $result, string|int|null $column=null, string|int|null $index_column=null): array {
 			return $result->fetch_all($column, $index_column);
 		}
 
-		public static function seek($result, $offset) {
+		public static function seek(database_statement $result, int $offset): database_statement {
 			return $result->seek($offset);
 		}
 
-		public static function num_rows($result) {
+		public static function num_rows(database_statement $result): int {
 			return $result->num_rows;
 		}
 
-		public static function free($result) {
+		public static function free(database_statement $result): bool {
 			return $result->free();
 		}
 
-		public static function insert_id($link='default') {
+		public static function insert_id(string $link='default'): int|false {
 
 			if (!isset(self::$links[$link])) {
 				return false;
@@ -266,7 +266,7 @@
 			return mysqli_insert_id(self::$links[$link]);
 		}
 
-		public static function affected_rows($link='default') {
+		public static function affected_rows(string $link='default'): int|false {
 
 			if (!isset(self::$links[$link])) {
 				return false;
@@ -275,8 +275,7 @@
 			return mysqli_affected_rows(self::$links[$link]);
 		}
 
-		public static function info($link='default') {
-
+		public static function info(string $link='default'): string|false {
 			if (!isset(self::$links[$link])) {
 				self::connect($link);
 			}
@@ -284,7 +283,7 @@
 			return mysqli_info(self::$links[$link]);
 		}
 
-		public static function begin_transaction($link='default') {
+		public static function begin_transaction(string $link='default'): bool {
 
 			if (!isset(self::$links[$link])) {
 				self::connect($link);
@@ -293,7 +292,7 @@
 			return mysqli_begin_transaction(self::$links[$link]);
 		}
 
-		public static function commit($link='default') {
+		public static function commit(string $link='default'): bool {
 
 			if (!isset(self::$links[$link])) {
 				return false;
@@ -302,7 +301,7 @@
 			return mysqli_commit(self::$links[$link]);
 		}
 
-		public static function rollback($link='default') {
+		public static function rollback(string $link='default'): bool {
 
 			if (!isset(self::$links[$link])) {
 				return false;
@@ -311,7 +310,7 @@
 			return mysqli_rollback(self::$links[$link]);
 		}
 
-		public static function create_variable($field, $value=null) {
+		public static function create_variable(array|string $field, int|float|string|array|null $value=null): int|float|string|array|null {
 
 			if (!$field) {
 				return null;
@@ -368,7 +367,7 @@
 			}
 		}
 
-		public static function input($input, $allowable_tags=false, $trim=true, $link='default') {
+		public static function input(array|string|int|float|null $input, bool $allowable_tags=false, bool $trim=true, string $link='default'): array|string|int|float|null {
 
 			if (is_array($input)) {
 				foreach (array_keys($input) as $key) {
@@ -409,13 +408,13 @@
 			return mysqli_real_escape_string(self::$links[$link], $input);
 		}
 
-		public static function input_fulltext($input, $allowable_tags=false, $trim=true, $link='default') {
+		public static function input_fulltext(array|string|int|float|null $input, bool $allowable_tags=false, bool $trim=true, string $link='default'): array|string|int|float|null {
 			$input = self::input($input, $allowable_tags, $trim, $link);
 			$input = preg_replace('#[+\-<>\(\)~*\"@; ]+#', ' ', $input);
 			return $input;
 		}
 
-		public static function input_like($input, $allowable_tags=false, $trim=true, $link='default') {
+		public static function input_like(array|string|int|float|null $input, bool $allowable_tags=false, bool $trim=true, string $link='default'): array|string|int|float|null {
 			$input = self::input($input, $allowable_tags, $trim, $link);
 			$input = addcslashes($input, '%_');
 			return $input;
@@ -440,7 +439,7 @@
 			and translate to a 400-level response or a skip-with-warning,
 			depending on whether the input came from a request or from the DB.
 		*/
-		public static function identifier($name, $allowlist = null) {
+		public static function identifier(string $name, array|null $allowlist = null): string {
 
 			if (!is_string($name) || !preg_match('#^[A-Za-z0-9_-]+$#', $name)) {
 				throw new InvalidArgumentException('Invalid SQL identifier');
@@ -462,7 +461,7 @@
 		private $_statement;
 		private $_link;
 
-		public function __construct($statement, $link = 'default', $result = null) {
+		public function __construct(string $statement, string $link = 'default', mysqli_result|null $result = null) {
 			$this->_statement = $statement;
 			$this->_link = $link;
 			$this->_result = $result;
@@ -475,12 +474,12 @@
 			}
 		}
 
-		public function __call($method, $arguments) {
+		public function __call(string $method, array $arguments) {
 			return call_user_func_array([$this->_result, $method], $arguments);
 		}
 
 		// Magic getters for properties of mysqli_result
-		public function __get($name) {
+		public function __get(string $name): mixed {
 
 			if (!isset($this->_result)) {
 				$this->execute();
@@ -489,11 +488,11 @@
 			return $this->_result->$name;
 		}
 
-		public function __set($name, $value) {
+		public function __set(string $name, mixed $value): void {
 			// Do nothing
 		}
 
-		public function bind(...$args) {
+		public function bind(mixed ...$args): self {
 
 			if (!$this->_statement) {
 				trigger_error('No prepared statement available for binding parameters', E_USER_WARNING);
@@ -631,7 +630,7 @@
 			return $this;
 		}
 
-		public function execute() {
+		public function execute(): self {
 
 			if ($this->_result) {
 				return $this; // Already executed
@@ -674,15 +673,15 @@
 			return $this;
 		}
 
-		public function export(&$object) {
+		public function export(&$object): self {
 			return $object = $this;
 		}
 
-		public function fields() {
+		public function fields(): array {
 			return array_column(mysqli_fetch_fields($this->_result), 'name');
 		}
 
-		public function fetch($filter=null) {
+		public function fetch($filter=null): mixed {
 
 			if (!isset($this->_result)) {
 				$this->execute();
@@ -728,7 +727,7 @@
 			return $result;
 		}
 
-		public function fetch_all($filter=null, $index_column=null) {
+		public function fetch_all(array|callable|string|null $filter=null, string|int|null $index_column=null): array {
 
 			if (!isset($this->_result)) {
 				$this->execute();
@@ -800,7 +799,7 @@
 			return $rows;
 		}
 
-		public function fetch_page($filter=null, $index_column=null, &$page=1, $items_per_page=null, &$num_rows=null, &$num_pages=null) {
+		public function fetch_page(array|callable|string|null $filter=null, string|int|null $index_column=null, int &$page=1, int|null $items_per_page=null, int|null &$num_rows=null, int|null &$num_pages=null): array {
 
 			$timestamp = microtime(true);
 
@@ -883,13 +882,13 @@
 			return $rows;
 		}
 
-		public function each(callable $function) {
+		public function each(callable $function): void {
 			while ($row = $this->fetch()) {
 				call_user_func($function, $row);
 			}
 		}
 
-		public function seek($offset) {
+		public function seek(int $offset): self {
 
 			if (!isset($this->_result)) {
 				$this->execute();
@@ -900,7 +899,7 @@
 			return $this;
 		}
 
-		public function num_rows() {
+		public function num_rows(): int {
 
 			if (!isset($this->_result)) {
 				$this->execute();
@@ -909,7 +908,7 @@
 			return mysqli_num_rows($this->_result);
 		}
 
-		public function free() {
+		public function free(): bool {
 
 			if ($this->_result) {
 				return mysqli_free_result($this->_result);

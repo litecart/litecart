@@ -4,7 +4,7 @@
 		public $data;
 		public $previous;
 
-		public function __construct($id=null) {
+		public function __construct(int|null $id = null) {
 
 			if ($id) {
 				$this->load($id);
@@ -13,7 +13,7 @@
 			}
 		}
 
-		public function reset() {
+		public function reset(): void {
 
 			$this->data = [];
 
@@ -35,7 +35,7 @@
 			$this->previous = $this->data;
 		}
 
-		public function load($id) {
+		public function load(int $id): void {
 
 			if (!preg_match('#^\d+$#', $id)) {
 				throw new Exception('Invalid page (ID: '. $id .')');
@@ -68,7 +68,7 @@
 			$this->previous = $this->data;
 		}
 
-		public function save() {
+		public function save(): void {
 
 			if (!empty($this->data['parent_id']) && $this->data['parent_id'] == $this->data['id']) {
 				throw new Exception(t('error_cannot_attach_page_to_itself', 'You cannot attach a page to itself'));
@@ -108,7 +108,7 @@
 			cache::clear_cache('pages');
 		}
 
-		public function delete() {
+		public function delete(): void {
 
 			database::query(
 				"delete p

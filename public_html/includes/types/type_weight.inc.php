@@ -51,7 +51,9 @@
 			],
 		];
 
-		public function __construct($value, $unit) {
+		public function __construct(float $value, string $unit) {
+
+			$unit = strtolower($unit);
 
 			if (!isset(self::UNITS[$unit])) {
 				trigger_error('The unit '. $unit .' is not a valid weight unit.', E_USER_WARNING);
@@ -61,7 +63,7 @@
 			$this->unit = $unit;
 		}
 
-		public function __toString() {
+		public function __toString(): string {
 			return $this->format();
 		}
 
@@ -69,7 +71,7 @@
 			return $this->value;
 		}
 
-		public function convert($to) {
+		public function convert(string $to): self {
 
 			$to = strtolower($to);
 
@@ -83,7 +85,7 @@
 
 			if (!isset(self::UNITS[$to])) {
 				trigger_error('The unit '. $to .' is not a valid weight unit.', E_USER_WARNING);
-				return false;
+				return $this;
 			}
 
 			$this->value = $this->value * (self::UNITS[$to]['value'] / self::UNITS[$this->unit]['value']);
@@ -92,7 +94,7 @@
 			return $this;
 		}
 
-		public function format() {
+		public function format(): string {
 			$decimals = self::UNITS[$this->unit]['decimals'];
 			$formatted = f::format_number($this->value, $decimals) .' '. self::UNITS[$this->unit]['unit'];
 			return $formatted;

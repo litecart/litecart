@@ -4,7 +4,7 @@
 		public $data;
 		public $previous;
 
-		public function __construct($site_tag_id=null) {
+		public function __construct(int|null $site_tag_id = null) {
 
 			if ($site_tag_id) {
 				$this->load($site_tag_id);
@@ -13,7 +13,7 @@
 			}
 		}
 
-		public function reset() {
+		public function reset(): void {
 
 			$this->data = [];
 
@@ -26,7 +26,7 @@
 			$this->previous = $this->data;
 		}
 
-		public function load($site_tag_id) {
+		public function load(int $site_tag_id): void {
 
 			if (!preg_match('#^\d+$#', $site_tag_id)) {
 				throw new Exception('Invalid site tag (ID: '. $site_tag_id .')');
@@ -49,7 +49,7 @@
 			$this->previous = $this->data;
 		}
 
-		public function save() {
+		public function save(): void {
 
 			if (!$this->data['id']) {
 
@@ -80,7 +80,7 @@
 			cache::clear_cache('site_tags');
 		}
 
-		public function delete() {
+		public function delete(): void {
 
 			database::query(
 				"delete from ". DB_TABLE_PREFIX ."site_tags

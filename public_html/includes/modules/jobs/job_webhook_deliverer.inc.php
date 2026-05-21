@@ -11,7 +11,7 @@
 		public $website = 'https://www.litecart.net';
 		public $priority = 0;
 
-		public function process($force, $last_run) {
+		public function process(string $force, string $last_run): void {
 
 			if (empty($this->settings['status'])) return;
 
@@ -94,7 +94,7 @@
 			}
 		}
 
-		function settings() {
+		public function settings(): array {
 			return [
 				[
 					'key' => 'status',

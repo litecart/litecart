@@ -1,6 +1,6 @@
 <?php
 
-	function admin_get_apps() {
+	function admin_get_apps(): array {
 
 		$apps_cache_token = cache::token('backend_apps', ['administrator', 'language']);
 		if (!$apps = cache::get($apps_cache_token)) {
@@ -47,7 +47,7 @@
 		return $apps;
 	}
 
-	function admin_get_grouped_apps() {
+	function admin_get_grouped_apps(): array {
 
 		$apps_cache_token = cache::token('backend_apps', ['administrator', 'language']);
 		if (!$apps = cache::get($apps_cache_token)) {
@@ -66,7 +66,7 @@
 		return $groups;
 	}
 
-	function admin_get_widgets() {
+	function admin_get_widgets(): array {
 
 		$widgets_cache_token = cache::token('backend_widgets', ['administrator', 'language']);
 		if (!$widgets = cache::get($widgets_cache_token)) {
@@ -81,7 +81,7 @@
 				$directory = 'app://backend/widgets/'. $folder_name .'/';
 
 				if (in_array($directory, ['.', '..']) || !is_dir($directory)) continue;
-				if (!$config = require $directory . 'config.inc.php') return;
+				if (!$config = require $directory . 'config.inc.php') continue;
 
 				$widgets[$id] = array_merge(['id' => $id, 'directory' => $directory], $config);
 			}
@@ -104,7 +104,7 @@
 		return $widgets;
 	}
 
-	function admin_get_mcp_tools() {
+	function admin_get_mcp_tools(): array {
 
 		$tools_cache_token = cache::token('backend_mcp_tools', ['administrator', 'language']);
 		if (!$toolsets = cache::get($tools_cache_token)) {

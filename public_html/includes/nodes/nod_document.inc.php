@@ -21,7 +21,7 @@
 		public static $style = [];
 		public static $title = [];
 
-		public static function init() {
+		public static function init(): void {
 
 			// Default to AJAX layout on AJAX request
 			if (is_ajax_request()) {
@@ -35,7 +35,7 @@
 			event::register('after_capture', [__CLASS__, 'after_capture']);
 		}
 
-		public static function before_capture() {
+		public static function before_capture(): void {
 
 			header('X-Powered-By: '. PLATFORM_NAME);
 			header('Strict-Transport-Security: max-age=63072000; includeSubDomains; preload'); // HSTS
@@ -128,7 +128,7 @@
 			}
 		}
 
-		public static function after_capture() {
+		public static function after_capture(): void {
 
 			// Content Security Policy
 			if (self::$csp) {
@@ -185,7 +185,7 @@
 
 		## Node specific methods
 
-		public static function optimize(&$output) {
+		public static function optimize(string &$output): void {
 
 			// Strip HTML comments
 			$output = preg_replace('#<!--[\s\S]*?-->#', '', $output);
@@ -421,20 +421,24 @@
 			return $output;
 		}
 
-		public static function add_csp($type, $value) {
+		public static function add_csp(string $type, string|array $values): void {
 
 			if (!isset(self::$csp[$type])) {
 				self::$csp[$type] = [];
 			}
 
-			foreach (f::string_split($value, ' ') as $value) {
+			if (is_string($values)) {
+				$values = f::string_split($values, ' ');
+			}
+
+			foreach ($values as $value) {
 				if (!in_array($value, self::$csp[$type])) {
 					self::$csp[$type][] = $value;
 				}
 			}
 		}
 
-		public static function add_head_tags($tags, $key=null) {
+		public static function add_head_tags(string|array $tags, ?string $key=''): void {
 
 			if (is_array($tags)) {
 				$tags = implode(PHP_EOL, $tags);
@@ -443,7 +447,7 @@
 			self::$head_tags[$key] = $tags;
 		}
 
-		public static function add_foot_tags($tags, $key=null) {
+		public static function add_foot_tags(string|array $tags, ?string $key=''): void {
 
 			if (is_array($tags)) {
 				$tags = implode(PHP_EOL, $tags);
@@ -452,7 +456,7 @@
 			self::$foot_tags[$key] = $tags;
 		}
 
-		public static function load_style($resources, $key=null) {
+		public static function load_style(string|array $resources, ?string $key=null): void {
 
 			if (!is_array($resources)) {
 				$resources = [$resources];
@@ -471,7 +475,7 @@
 			self::$head_tags[$key] = implode(PHP_EOL, $styles);
 		}
 
-		public static function load_script($resources, $key=null) {
+		public static function load_script(string|array $resources, ?string $key=null): void {
 
 			if (!is_array($resources)) {
 				$resources = [$resources];
@@ -490,7 +494,7 @@
 			self::$foot_tags[$key] = implode(PHP_EOL, $scripts);
 		}
 
-		public static function add_script($lines, $key='') {
+		public static function add_script(string|array $lines, string $key=''): void {
 
 			if (is_array($lines)) {
 				$lines = implode(PHP_EOL, $lines);
@@ -503,7 +507,7 @@
 			self::$javascript[$key] = $lines;
 		}
 
-		public static function add_style($lines, $key='') {
+		public static function add_style(string|array $lines, string $key=''): void {
 
 			if (is_array($lines)) {
 				$lines = implode(PHP_EOL, $lines);
@@ -516,7 +520,7 @@
 			self::$style[$key] = $lines;
 		}
 
-		public static function add_preload($url, $type='') {
+		public static function add_preload(string $url, string $type=''): void {
 
 			if (!$type) {
 				$path = parse_url($url, PHP_URL_PATH);
@@ -533,7 +537,7 @@
 		}
 
 		// Send a message to the console
-		public static function console(string $type, string $message, $data=null) {
+		public static function console(string $type, string $message, mixed $data=null): void {
 
 			if (!in_array($type, ['debug', 'log', 'info', 'warn', 'error', 'table'])) {
 				$type = 'log';
@@ -546,7 +550,7 @@
 			];
 		}
 
-		public static function ilink($resource=null, $new_params=[], $inherit_params=null, $skip_params=[], $language_code=null) {
+		public static function ilink(?string $resource=null, array|null $new_params=[], bool|array|null $inherit_params=null, array|null $skip_params=[], ?string $language_code=null): string {
 
 			switch (true) {
 
@@ -575,11 +579,11 @@
 			return (string)route::create_link($resource, $new_params, $inherit_params, $skip_params, $language_code, true);
 		}
 
-		public static function href_ilink($resource=null, $new_params=[], $inherit_params=null, $skip_params=[], $language_code=null) {
+		public static function href_ilink(?string $resource=null, array $new_params=[], bool|array|null $inherit_params=null, array|null $skip_params=[], ?string $language_code=null): string {
 			return f::escape_attr(self::ilink($resource, $new_params, $inherit_params, $skip_params, $language_code));
 		}
 
-		public static function link($path=null, $new_params=[], $inherit_params=null, $skip_params=[], $language_code=null) {
+		public static function link(?string $path=null, array|null $new_params=[], bool|array|null $inherit_params=null, array|null $skip_params=[], ?string $language_code=null): string {
 
 			if (!$path) {
 				$path = strtok($_SERVER['REQUEST_URI'], '?'); // Don't rely on parse_url(..., PHP_URL_PATH) as it can be spoofed by the client.
@@ -596,11 +600,11 @@
 			return (string)route::create_link($path, $new_params, $inherit_params, $skip_params, $language_code, false);
 		}
 
-		public static function href_link($path=null, $new_params=[], $inherit_params=null, $skip_params=[], $language_code=null) {
+		public static function href_link(?string $path=null, array|null $new_params=[], bool|array|null $inherit_params=null, array|null $skip_params=[], ?string $language_code=null): string {
 			return f::escape_attr(self::link($path, $new_params, $inherit_params, $skip_params, $language_code));
 		}
 
-		public static function rlink($resource, $new_params=[], $inherit_params=null, $skip_params=[]) {
+		public static function rlink(?string $resource, array|null $new_params=[], bool|array|null $inherit_params=null, array|null $skip_params=[]): string {
 
 			if (!$resource) {
 				return '';
@@ -623,7 +627,7 @@
 			return self::link($webpath, $new_params, $inherit_params, $skip_params);
 		}
 
-		public static function href_rlink($resource, $new_params=[], $inherit_params=null, $skip_params=[]) {
+		public static function href_rlink(?string $resource, array|null $new_params=[], bool|array|null $inherit_params=null, array|null $skip_params=[]): string {
 			return f::escape_attr(self::rlink($resource, $new_params, $inherit_params, $skip_params));
 		}
 	}

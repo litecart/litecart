@@ -69,17 +69,17 @@
 			],
 		];
 
-		public function __construct($value, $unit) {
+		public function __construct(float $value, string $unit) {
 
 			if (!isset(self::UNITS[$unit])) {
 				trigger_error('The unit '. $unit .' is not a valid length unit.', E_USER_WARNING);
 			}
 
-			$this->value = (float)$value;
+			$this->value = $value;
 			$this->unit = $unit;
 		}
 
-		public function __toString() {
+		public function __toString(): string {
 			return $this->format();
 		}
 
@@ -87,7 +87,7 @@
 			return $this->value;
 		}
 
-		public function convert($to) {
+		public function convert(string $to): self|false {
 
 			$to = strtolower($to);
 
@@ -110,7 +110,7 @@
 			return $this;
 		}
 
-		public function format() {
+		public function format(): string {
 			$decimals = self::UNITS[$this->unit]['decimals'];
 			$formatted = f::format_number($this->value, $decimals) .' '. self::UNITS[$this->unit]['unit'];
 			return $formatted;

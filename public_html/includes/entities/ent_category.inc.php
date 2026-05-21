@@ -4,7 +4,7 @@
 		public $data;
 		public $previous;
 
-		public function __construct($id=null) {
+		public function __construct(int|null $id = null) {
 
 			if ($id) {
 				$this->load($id);
@@ -13,7 +13,7 @@
 			}
 		}
 
-		public function reset() {
+		public function reset(): void {
 
 			$this->data = [];
 
@@ -41,7 +41,7 @@
 			$this->previous = $this->data;
 		}
 
-		public function load($id) {
+		public function load(int $id): void {
 
 			if (!preg_match('#^\d+$#', $id)) {
 				throw new Exception('Invalid category (ID: '. $id .')');
@@ -93,7 +93,7 @@
 			$this->previous = $this->data;
 		}
 
-		public function save() {
+		public function save(): void {
 
 			if (!empty($this->data['id']) && $this->data['parent_id'] == $this->data['id']) {
 				throw new Exception(t('error_cannot_attach_category_to_self', 'Cannot attach category to itself'));
@@ -195,7 +195,7 @@
 			cache::clear_cache('categories');
 		}
 
-		public function save_image($file, $filename='') {
+		public function save_image(string $file, string $filename = ''): void {
 
 			if (!$file) {
 				return;
@@ -241,7 +241,7 @@
 			$this->previous['image'] = $this->data['image'] = $filename;
 		}
 
-		public function delete_image() {
+		public function delete_image(): void {
 
 			if (empty($this->data['image'])) return;
 
@@ -261,7 +261,7 @@
 			$this->previous['image'] = $this->data['image'] = '';
 		}
 
-		public function delete() {
+		public function delete(): void {
 
 			if (!$this->data['id']) return;
 

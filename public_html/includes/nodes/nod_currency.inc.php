@@ -5,7 +5,7 @@
 		public static $currencies;
 		public static $selected;
 
-		public static function init() {
+		public static function init(): void {
 
 			// Bind selected to session
 			if (!isset(session::$data['currency']) || !is_array(session::$data['currency'])) {
@@ -23,7 +23,7 @@
 
 		## Node specific methods
 
-		public static function load() {
+		public static function load(): void {
 
 			// Get currencies from database
 			self::$currencies = database::query(
@@ -33,7 +33,7 @@
 			)->fetch_all(null, 'code');
 		}
 
-		public static function set($code='') {
+		public static function set(string $code=''): void {
 
 			if (empty($code)) $code = self::identify();
 
@@ -60,7 +60,7 @@
 			}
 		}
 
-		public static function identify() {
+		public static function identify(): string {
 
 			$all_currencies = array_keys(self::$currencies);
 
@@ -130,7 +130,7 @@
 			return (!empty($enabled_currencies)) ? $enabled_currencies[0] : $all_currencies[0];
 		}
 
-		public static function calculate($value, $to=null, $from=null) {
+		public static function calculate(float $value, ?string $to=null, ?string $from=null): float {
 
 			if (!$to) {
 				$to = self::$selected['code'];
@@ -151,7 +151,7 @@
 			return ($value * self::$currencies[$from]['value']) / self::$currencies[$to]['value'];
 		}
 
-		public static function convert($value, $from, $to='') {
+		public static function convert(float $value, string $from, string $to=''): float {
 
 			if (!$to) {
 				$to = settings::get('store_currency_code');
@@ -160,7 +160,7 @@
 			return self::calculate($value, $to, $from);
 		}
 
-		public static function format($value, $auto_decimals=true, $currency_code='', $currency_value=null) {
+		public static function format(float $value, bool $auto_decimals=true, string $currency_code='', ?float $currency_value=null): string {
 
 			if (empty($currency_code)) {
 				$currency_code = self::$selected['code'];
@@ -189,7 +189,7 @@
 			return ($is_negative ? '-' : '') . $prefix . number_format(abs((float)$amount), (int)$decimals, language::$selected['decimal_point'], language::$selected['thousands_sep']) . $suffix;
 		}
 
-		public static function format_html($value, $auto_decimals=true, $currency_code=null, $currency_value=null) {
+		public static function format_html(float $value, bool $auto_decimals=true, ?string $currency_code=null, ?float $currency_value=null): string|false {
 
 			if (!$currency_code) {
 				$currency_code = self::$selected['code'];
@@ -242,7 +242,7 @@
 			]);
 		}
 
-		public static function format_raw($value, $currency_code=null, $currency_value=null) {
+		public static function format_raw(float $value, ?string $currency_code=null, ?float $currency_value=null): float|false {
 
 			settype($value, 'float');
 
@@ -273,7 +273,7 @@
 		}
 
 		// Round a store currency amount in a remote currency
-		public static function round($value, $currency_code) {
+		public static function round(int|float|string $value, string $currency_code): float {
 
 			settype($value, 'float');
 

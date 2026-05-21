@@ -6,7 +6,7 @@
 		private static $_data;
 		public static $enabled = true;
 
-		public static function init() {
+		public static function init(): void {
 
 			self::$enabled = settings::get('cache_enabled');
 
@@ -62,11 +62,11 @@
 
 		## Node specific methods
 
-		public static function token($keyword, $dependencies=[], $storage='memory', $ttl=900) {
+		public static function token(string $keyword, array $dependencies=[], string $storage='memory', int $ttl=900): array|false {
 
 			if (!in_array($storage, ['file', 'memory'])) {
 				trigger_error('The storage type is not supported ('. $storage .')', E_USER_WARNING);
-				return;
+				return false;
 			}
 
 			$hash_string = $keyword;
@@ -189,14 +189,14 @@
 			];
 		}
 
-		public static function get($token, $max_age=900, $force_cache=false) {
+		public static function get(array $token, int $max_age=900, bool $force_cache=false): mixed {
 
 			if (!$force_cache && !self::$enabled) {
-				return;
+				return false;
 			}
 
 			if (isset($_SERVER['HTTP_CACHE_CONTROL']) && preg_match('#no-cache|max-age=0#i', $_SERVER['HTTP_CACHE_CONTROL'])) {
-				return;
+				return false;
 			}
 
 			stats::start_watch('cache');
@@ -246,10 +246,10 @@
 			return $data;
 		}
 
-		public static function set($token, $data) {
+		public static function set(array $token, $data): bool {
 
 			if (!self::$enabled || !$data) {
-				return;
+				return false;
 			}
 
 			stats::start_watch('cache');
@@ -303,7 +303,7 @@
 		}
 
 		// Output recorder (This option is not affected by self::$enabled as fresh data is always building up cache)
-		public static function capture($token, $max_age=900, $force_cache=false) {
+		public static function capture(array $token, int $max_age=900, bool $force_cache=false): bool {
 
 			if (isset(self::$_recorders[$token['id']])) {
 				throw new Error('Cache recorder already initiated ('. $token['id'] .')');
@@ -324,7 +324,7 @@
 			return true;
 		}
 
-		public static function end_capture($token=[]) {
+		public static function end_capture(array $token=[]): bool {
 
 			if (empty($token['id'])) {
 				$token['id'] = current(array_reverse(self::$_recorders));
@@ -349,7 +349,7 @@
 			return true;
 		}
 
-		public static function clear_cache($keyword='') {
+		public static function clear_cache(string $keyword=''): void {
 
 			// Clear modifications
 			if (!$keyword) {

@@ -9,9 +9,9 @@
 			'options' => [
 				'redirect' => true,
 			],
-			'rewrite' => function(type_url $link, $language_code) {
+			'rewrite' => function(type_url $link, string $language_code): ?type_url {
 
-				if (empty($link->query['category_id'])) return;
+				if (empty($link->query['category_id'])) return null;
 
 				$link->path = 'c/'. $link->query['category_id'];
 

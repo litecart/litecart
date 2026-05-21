@@ -49,5 +49,5 @@
 		}
 
 		// Last destination method handler to prevent throwing an error if called methods are not defined
-		public function __call($name, $arguments) {}
+		public function __call(string $name, array $arguments): void {}
 	}

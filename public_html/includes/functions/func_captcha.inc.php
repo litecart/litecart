@@ -1,6 +1,6 @@
 <?php
 
-	function captcha_draw($id='default', $config=[], $parameters='') {
+	function captcha_draw(string $id='default', array $config=[], string|array $attributes=''): string|bool {
 
 		$config = [
 			'width' => $config['width'] ?? 100,
@@ -42,7 +42,7 @@
 		}
 
 		// Create textbox and add text
-		if (($textbox = imagettfbbox($config['font_size'], 0, $config['font'], $code)) === false) return;
+		if (($textbox = imagettfbbox($config['font_size'], 0, $config['font'], $code)) === false) return false;
 
 		$x = round(($config['width'] - $textbox[4]) / 2);
 		$y = round(($config['height'] - $textbox[5]) / 2);
@@ -82,7 +82,7 @@
 		]);
 	}
 
-	function captcha_validate($id='default') {
+	function captcha_validate(string $id='default'): bool {
 		try {
 
 			if (!isset(session::$data['security']['captcha'][$id]['expires'])) {

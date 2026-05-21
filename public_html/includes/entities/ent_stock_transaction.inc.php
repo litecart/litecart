@@ -4,7 +4,7 @@
 		public $data;
 		public $previous;
 
-		public function __construct($id=null) {
+		public function __construct(int|string|null $id = null) {
 
 			if ($id) {
 				$this->load($id);
@@ -13,7 +13,7 @@
 			}
 		}
 
-		public function reset() {
+		public function reset(): void {
 
 			$this->data = [];
 
@@ -28,7 +28,7 @@
 			$this->previous = $this->data;
 		}
 
-		public function load($id) {
+		public function load(int|string $id): void {
 
 			if (!preg_match('#^(system|\d+)$#', $id)) {
 				throw new Exception('Invalid stock transaction (ID: '. f::escape_html($id) .')');
@@ -76,7 +76,7 @@
 			$this->previous = $this->data;
 		}
 
-		public function save() {
+		public function save(): void {
 
 			// Insert/update transaction
 			if (!$this->data['id']) {
@@ -158,7 +158,7 @@
 			cache::clear_cache('product');
 		}
 
-		public function adjust_quantity($stock_item_id, $quantity_adjustment) {
+		public function adjust_quantity(int $stock_item_id, float|int $quantity_adjustment): void {
 
 			foreach ($this->data['contents'] as $content) {
 				if ($content['stock_item_id'] == $stock_item_id) {
@@ -176,7 +176,7 @@
 			$this->save();
 		}
 
-		public function delete() {
+		public function delete(): void {
 
 			if (!$this->data['id']) return;
 

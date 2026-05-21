@@ -9,11 +9,11 @@
 	class type_array implements JsonSerializable {
 		private $_array;
 
-		public function __construct($array) {
+		public function __construct(array $array) {
 			$this->_array = $array;
 		}
 
-		public function __get($name) {
+		public function __get(string $name): mixed {
 
 			switch ($name) {
 
@@ -28,26 +28,25 @@
 			}
 		}
 
-		public function __set($name, $value) {
+		public function __set(string $name, mixed $value): void {
 
 			switch ($name) {
 
 				case 'value':
 					$this->_array = $value;
-					return $this;
 
 				case 'first_key':
-					return array_key_first(array_map('trim', $this->_array));
+					array_key_first(array_map('trim', $this->_array));
 
 				case 'last_key':
-					return array_key_last(array_map('trim', $this->_array));
+					array_key_last(array_map('trim', $this->_array));
 
 				default:
 					trigger_error('Unknown array property ('.$name.')', E_USER_WARNING);
 			}
 		}
 
-		public function __call($method, $args) {
+		public function __call(string $method, array $args): mixed {
 
 			switch ($method) {
 

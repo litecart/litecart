@@ -7,7 +7,7 @@
 		private $_stream;
 		public $context;
 
-		public function dir_opendir($path, $options) {
+		public function dir_opendir(string $path, int $options): bool {
 
 			$microtime = microtime(true);
 
@@ -61,7 +61,7 @@
 			return true;
 		}
 
-		public function dir_readdir() {
+		public function dir_readdir(): string|false {
 
 			$result = key($this->_directory);
 
@@ -74,7 +74,7 @@
 			return $result;
 		}
 
-		public function dir_closedir() {
+		public function dir_closedir(): bool {
 			if (is_resource($this->_directory)) {
 				closedir($this->_directory);
 			}
@@ -82,7 +82,7 @@
 			return true;
 		}
 
-		public function dir_rewinddir() {
+		public function dir_rewinddir(): bool {
 			reset($this->_directory);
 			return true;
 		}
@@ -227,11 +227,11 @@
 
 		## Non-Standard StreamWrapper Methods
 
-		private function _resolve_path($path) {
+		private function _resolve_path(string $path): string {
 			return preg_replace('#^app://#', FS_DIR_APP, str_replace('\\', '/', $path));
 		}
 
-		private function _resolve_file($path) {
+		private function _resolve_file(string $path): string {
 
 			$path = $this->_resolve_path($path);
 			$relative_path = preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $path);

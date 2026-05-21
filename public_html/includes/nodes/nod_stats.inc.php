@@ -7,13 +7,13 @@
 
 		## Node specific methods
 
-		public static function start_watch($id) {
+		public static function start_watch(string $id): void {
 			if (!isset(self::$_watches[$id])) {
 				self::$_watches[$id] = microtime(true);
 			}
 		}
 
-		public static function stop_watch($id) {
+		public static function stop_watch(string $id): void {
 
 			if (!isset(self::$_watches[$id])) {
 				trigger_error('Cannot stop a non-existing timer ('. $id .')', E_USER_NOTICE);
@@ -31,7 +31,7 @@
 			unset(self::$_watches[$id]);
 		}
 
-		public static function render() {
+		public static function render(): ?string {
 
 			// Page parse time
 			$page_parse_time = microtime(true) - SCRIPT_TIMESTAMP_START;
@@ -71,5 +71,7 @@
 			if (class_exists('administrator', false) && administrator::check_login()) {
 				return $output;
 			}
+
+			return null;
 		}
 	}

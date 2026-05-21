@@ -7,7 +7,7 @@
 
 		## Node specific methods
 
-		public static function register($event, $callback) {
+		public static function register(string $event, callable $callback): void {
 
 			$checksum = crc32(f::format_json($callback, false));
 
@@ -24,7 +24,7 @@
 			self::$_callbacks[$event][$checksum] = $callback;
 		}
 
-		public static function fire($event) {
+		public static function fire(string $event): void {
 
 			if (in_array($event, self::$_fired_events)) {
 				trigger_error("Event already fired ($event)", E_USER_WARNING);

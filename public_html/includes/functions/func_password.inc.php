@@ -1,6 +1,6 @@
 <?php
 
-	function password_generate($length=8, $min_lowercases=1, $min_uppercases=1, $min_numbers=1, $min_specials=0) {
+	function password_generate(int $length=8, int $min_lowercases=1, int $min_uppercases=1, int $min_numbers=1, int $min_specials=0): string {
 
 		$lowercases = 'abcdefghijklmnopqrstuvwxyz';
 		$uppercases = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -65,7 +65,7 @@
 		return implode('', $chars);
 	}
 
-	function password_check_strength($password) {
+	function password_check_strength(string $password): bool {
 
 		if (strlen($password) < 12) return false;
 

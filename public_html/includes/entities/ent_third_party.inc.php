@@ -4,7 +4,7 @@
 		public $data;
 		public $previous;
 
-		public function __construct($third_party_id=null) {
+		public function __construct(int|null $third_party_id = null) {
 
 			if ($third_party_id !== null) {
 				$this->load($third_party_id);
@@ -13,7 +13,7 @@
 			}
 		}
 
-		public function reset() {
+		public function reset(): void {
 
 			$this->data = [];
 
@@ -36,7 +36,7 @@
 			$this->previous = $this->data;
 		}
 
-		public function load($third_party_id) {
+		public function load(int $third_party_id): void {
 
 			if (!preg_match('#^\d+$#', $third_party_id)) {
 				throw new Exception('Invalid third party (ID: '. $third_party_id .')');
@@ -70,7 +70,7 @@
 			$this->previous = $this->data;
 		}
 
-		public function save() {
+		public function save(): void {
 
 			if (!$this->data['id']) {
 
@@ -107,7 +107,7 @@
 			cache::clear_cache('third_parties');
 		}
 
-		public function delete() {
+		public function delete(): void {
 
 			database::query(
 				"delete tp

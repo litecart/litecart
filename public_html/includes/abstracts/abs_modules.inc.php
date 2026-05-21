@@ -7,11 +7,11 @@
 			$this->load();
 		}
 
-		public function reset() {
+		public function reset(): void {
 			$this->modules = [];
 		}
 
-		public function load($filter=[]) {
+		public function load(array $filter=[]): void {
 
 			$this->reset();
 
@@ -75,7 +75,7 @@
 			});
 		}
 
-		public function run($method_name, $module_id=null) {
+		public function run(string $method_name, ?string $module_id=null): mixed {
 
 			if (empty($module_id) && !empty($this->selected['id'])) {
 				list($module_id, $option_id) = explode(':', $this->selected['id']);
@@ -87,5 +87,5 @@
 		}
 
 		// Last destination method handler for prevent throwing errors if called methods are not defined
-		public function call($name, $arguments) {}
+		public function call(string $name, array $arguments): void {}
 	}

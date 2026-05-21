@@ -10,7 +10,7 @@
 		public $website = 'https://www.litecart.net';
 		public $priority = 0;
 
-		public function process($force, $last_run) {
+		public function process(string $force, string $last_run): void {
 
 			if (!$force) {
 
@@ -206,7 +206,7 @@
 			echo 'Siteindex with '. $indexes . ' sitemaps generated' . PHP_EOL;
 		}
 
-		function settings() {
+		public function settings(): array {
 
 			return [
 				[

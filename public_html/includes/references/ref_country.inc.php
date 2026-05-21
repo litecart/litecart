@@ -5,7 +5,7 @@
 		protected $_country_code;
 		protected $_language_codes;
 
-		function __construct($country_code) {
+		public function __construct(string $country_code) {
 
 			if (!preg_match('#[A-Z]{2}#', $country_code)) {
 				trigger_error('Invalid country code ('. $country_code .')', E_USER_WARNING);
@@ -14,7 +14,7 @@
 			$this->_country_code = $country_code;
 		}
 
-		protected function _load($field) {
+		protected function _load(string $field): void {
 
 			switch ($field) {
 
@@ -50,12 +50,12 @@
 			}
 		}
 
-		public function format_address($address) {
+		public function format_address(array $address): string {
 			trigger_error('The method format_address() is deprecated. Use f::format_address() instead.', E_USER_DEPRECATED);
 			return f::format_address($address);
 		}
 
-		public function in_geo_zone($geo_zones, $address=[]) {
+		public function in_geo_zone(array $geo_zones, array $address = []): bool {
 
 			$args = func_get_args();
 

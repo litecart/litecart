@@ -7,7 +7,7 @@
 	 * Canonical render pattern: nl2br(f::escape_html(f::format_address(...))).
 	 * Escape MUST run before nl2br, otherwise the <br /> tags get escaped too.
 	 */
-	function format_address($address) {
+	function format_address(array $address): string {
 
 		$country = database::query(
 			"select * from ". DB_TABLE_PREFIX ."countries
@@ -54,7 +54,7 @@
 		return reference::country($address['country_code'])->format_address($address);
 	}
 
-	function format_json($data, $indent="\t") {
+	function format_json(mixed $data, string $indent="\t"): string {
 
 		$json = json_encode($data, ($indent ? JSON_PRETTY_PRINT : 0) | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 
@@ -71,7 +71,7 @@
 		return $json;
 	}
 
-	function format_path_friendly($text, $language_code='') {
+	function format_path_friendly(string $text, string $language_code=''): string {
 
 		if (!$text) return '';
 
@@ -210,7 +210,8 @@
 		return $text;
 	}
 
-	function format_number(float $number, int $decimals=0): string {
+	function format_number(float|null $number, ?int $decimals=0): string {
+		if ($number === null) return '';
 		return language::number_format($number, $decimals);
 	}
 

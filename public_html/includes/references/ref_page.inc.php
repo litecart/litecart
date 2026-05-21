@@ -4,7 +4,7 @@
 
 		protected $_language_codes;
 
-		function __construct($page_id, $language_code=null) {
+		function __construct(int $page_id, ?string $language_code=null) {
 
 			if (empty($language_code)) {
 				$language_code = language::$selected['code'];
@@ -18,7 +18,7 @@
 			]);
 		}
 
-		protected function _load($field) {
+		protected function _load(string $field): void {
 
 			switch ($field) {
 

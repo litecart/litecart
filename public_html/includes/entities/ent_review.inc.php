@@ -6,7 +6,7 @@
 
 		const FS_DIR_ATTACHMENTS = FS_DIR_STORAGE . 'data/reviews_attachments/';
 
-		public function __construct($review_id=null) {
+		public function __construct(int|null $review_id = null) {
 
 			if ($review_id) {
 				$this->load($review_id);
@@ -15,7 +15,7 @@
 			}
 		}
 
-		public function reset() {
+		public function reset(): void {
 
 			$this->data = [];
 
@@ -33,7 +33,7 @@
 			$this->previous = $this->data;
 		}
 
-		public function load($review_id) {
+		public function load(int $review_id): void {
 
 			if (!preg_match('#^\d+$#', $review_id)) {
 				throw new Exception('Invalid review (ID: '. $review_id .')');
@@ -62,7 +62,7 @@
 			$this->previous = $this->data;
 		}
 
-		public function save() {
+		public function save(): void {
 
 			if (empty($this->data['id'])) {
 				database::query(
@@ -149,9 +149,9 @@
 			cache::clear_cache('reviews');
 		}
 
-		public function add_attachment($src, $filename, $mime='') {
+		public function add_attachment(string $src, string $filename, string $mime = ''): ?bool {
 
-			if (empty($src)) return;
+			if (empty($src)) return null;
 
 			if (empty($this->data['id'])) $this->save();
 
@@ -185,7 +185,7 @@
 			);
 		}
 
-		public function delete() {
+		public function delete(): void {
 
 			// remove attachment files listed in attachments JSON
 			$attachments = json_decode($this->data['attachments'], true) ?: [];

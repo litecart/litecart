@@ -6,7 +6,7 @@
 
 		## Node specific methods
 
-		public static function __callStatic($resource, $arguments) {
+		public static function __callStatic(string $resource, array $arguments): mixed {
 
 			$checksum = crc32(http_build_query($arguments));
 
