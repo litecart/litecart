@@ -33,12 +33,12 @@
 
 		// Generate random dots in background
 		for ($i=0; $i<($config['width'] * $config['height']) / 3; $i++) {
-			imagefilledellipse($image, mt_rand(0, $config['width']), mt_rand(0, $config['height']), 1, 1, $noise_color);
+			imagefilledellipse($image, random_int(0, $config['width']), random_int(0, $config['height']), 1, 1, $noise_color);
 		}
 
 		// Generate random lines in background
 		for ($i=0; $i<($config['width'] * $config['height']) / 150; $i++) {
-			imageline($image, mt_rand(0, $config['width']), mt_rand(0, $config['height']), mt_rand(0, $config['width']), mt_rand(0, $config['height']), $noise_color);
+			imageline($image, random_int(0, $config['width']), random_int(0, $config['height']), random_int(0, $config['width']), random_int(0, $config['height']), $noise_color);
 		}
 
 		// Create textbox and add text

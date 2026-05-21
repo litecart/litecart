@@ -124,7 +124,7 @@
 			$priority = 1;
 			foreach ($this->data['attachments'] as $key => $attachment) {
 				if (empty($attachment['id'])) {
-					$attachment['id'] = time() . '-' . mt_rand(1000,9999);
+					$attachment['id'] = time() . '-' . random_int(1000, 9999);
 					$this->data['attachments'][$key]['id'] = $attachment['id'];
 				}
 				if (!empty($attachment['new_filename']) && !is_file(FS_DIR_APP . 'images/' . $attachment['new_filename'])) {
@@ -168,7 +168,7 @@
 			if (!@rename($src, self::FS_DIR_ATTACHMENTS . $file)) return false;
 
 			// add attachment to attachments array and persist
-			$attachment_id = time() . '-' . mt_rand(1000,9999);
+			$attachment_id = time() . '-' . random_int(1000, 9999);
 			$this->data['attachments'][$attachment_id] = [
 				'id' => $attachment_id,
 				'attachment' => $file,
