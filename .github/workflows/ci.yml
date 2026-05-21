@@ -257,6 +257,9 @@ jobs:
           curl -fsSL https://bun.sh/install | bash
           echo "$HOME/.bun/bin" >> $GITHUB_PATH
 
+      - name: Install dependencies
+        run: bun install --no-audit --no-fund
+
       - name: Download built assets
         uses: actions/download-artifact@v8
         with:
