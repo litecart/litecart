@@ -62,11 +62,14 @@
 	if (!defined('VMOD_DISABLED')) {
 		define('VMOD_DISABLED', 'true');
 	}
-	require_once __DIR__ . '/../../includes/streams/stream_app.inc.php';
-	if (!in_array('app', stream_get_wrappers())) {
-		stream_wrapper_register('app', 'stream_app');
-	}
 
+	require_once __DIR__ . '/../../includes/streams/stream_app.inc.php';
+	stream_wrapper_register('app', 'stream_app');
+
+	require_once __DIR__ . '/../../includes/streams/stream_storage.inc.php';
+	stream_wrapper_register('storage', 'stream_storage');
+
+	// Load other additional dependencies
 	require_once __DIR__ . '/../../includes/nodes/nod_vmod.inc.php';
 	require_once __DIR__ . '/../../includes/autoloader.inc.php';
 	require_once __DIR__ . '/../../includes/error_handler.inc.php';
