@@ -250,7 +250,9 @@
 				$path = $file;
 			}
 
-			$path = vmod::check($path);
+			if (!defined('VMOD_DISABLED') || VMOD_DISABLED !== 'true') {
+				$path = vmod::check($path);
+			}
 
 			return $path;
 		}
