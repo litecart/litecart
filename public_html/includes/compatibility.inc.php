@@ -49,7 +49,7 @@
 	}
 
 	if (empty($_SERVER['HTTP_HOST'])) {
-		$_SERVER['HTTP_HOST'] = $_SERVER['SERVER_NAME'];
+		$_SERVER['HTTP_HOST'] = $_SERVER['SERVER_NAME'] ?? 'localhost';
 	}
 
 	if (!isset($_SERVER['HTTP_USER_AGENT'])) {
