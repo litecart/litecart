@@ -8,7 +8,7 @@ runs:
       uses: shivammathur/setup-php@v2
       with:
         php-version: 'latest'
-        extensions: mysqli, gd, intl, mbstring, zip, xml, curl, simplexml, apcu
+        extensions: apcu, curl, gd, intl, mbstring, mysqli, simplexml, xml, zip
         ini-values: date.timezone=America/New_York, apc.enable_cli=1
         tools: none
         coverage: none
