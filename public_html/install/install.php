@@ -205,7 +205,7 @@
 			throw new Exception(PHP_VERSION .' <span class="error">[Error] PHP 8.0+ minimum requirement</span></p>' . PHP_EOL . PHP_EOL);
 
 		} else {
-			$min_active_version = json_decode(file_get_contents('https://www.php.net/releases/active.php'), true)[0][0] ?? null;
+			$min_active_version = json_decode(file_get_contents('https://www.php.net/releases/active.php'), true)[0][0]['version'] ?? '';
 			if (version_compare(PHP_VERSION, $min_active_version, '<')) {
 				echo PHP_VERSION .' <span class="warning">[Warning] PHP '. PHP_VERSION .' has reached <a href="https://www.php.net/supported-versions.php" target="_blank">end of life</a>. Use minimum PHP '. htmlspecialchars($min_active_version) .'</span></p>' . PHP_EOL . PHP_EOL;
 			} else {
