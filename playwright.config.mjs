@@ -10,7 +10,7 @@ export default defineConfig({
   retries: process.env.CI ? 1 : 0,
   workers: 1,
   reporter: process.env.CI ? [['html', { open: 'never' }], ['github']] : [['html', { open: 'on-failure' }]],
-  timeout: 30_000,
+  timeout: 10_000,
 
   use: {
     baseURL: BASE_URL,
@@ -44,7 +44,7 @@ export default defineConfig({
   webServer: {
     command: `php -S localhost:${PORT} -t public_html router.php`,
     url: BASE_URL,
-    timeout: 30_000,
+    timeout: 10_000,
     reuseExistingServer: !process.env.CI,
     stdout: 'ignore',
     stderr: 'pipe',
