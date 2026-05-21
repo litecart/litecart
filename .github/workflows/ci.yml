@@ -66,7 +66,7 @@ jobs:
           bash scripts/scan-insecure-prng.sh
 
   build:
-    name: Gulp Build
+    name: Build Assets
     runs-on: ubuntu-latest
 
     steps:
@@ -83,15 +83,7 @@ jobs:
 
       - name: Build assets
         run: |
-          bunx gulp js-framework
-          bunx gulp js-backend
-          bunx gulp js-frontend
-          bunx gulp js-trumbowyg
-          bunx gulp scss-framework
-          bunx gulp scss-backend
-          bunx gulp scss-frontend
-          bunx gulp scss-chartist
-          bunx gulp scss-trumbowyg
+          bun run build
 
       - name: Upload built assets
         uses: actions/upload-artifact@v7
