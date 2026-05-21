@@ -6,11 +6,15 @@
 
 	// Get config
 	if (!defined('FS_DIR_APP')) {
-		if (!file_exists(__DIR__ . '/../storage/config.inc.php')) {
-			redirect('./install/', 302);
+		if (file_exists(__DIR__ . '/../storage/config.inc.php')) {
+			require_once __DIR__ . '/../storage/config.inc.php';
+		} else if (!isset($_SERVER['REQUEST_METHOD'])) { // CLI
+			echo 'Configuration file not found. Please run the installer.';
+			exit(1);
+		} else {
+			header('Location: ./install/', true, 302);
 			exit;
 		}
-		require_once __DIR__ . '/../storage/config.inc.php';
 	}
 
 	// Capture output to buffer
