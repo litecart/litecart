@@ -102,7 +102,7 @@
 
 	<li style="flex-grow: 1;">
 		<div id="search" class="dropdown">
-			<?php echo f::form_input_search('query', false, ['placeholder' => f::escape_attr(t('title_search_entire_platform', 'Search entire platform')) . '&hellip;" autocomplete="off']); ?>
+			<?php echo f::form_input_search('query', false, ['placeholder' => f::escape_attr(t('title_search_entire_platform', 'Search entire platform')) . '…" autocomplete="off']); ?>
 			<div class="results dropdown-menu"></div>
 		</div>
 	</li>

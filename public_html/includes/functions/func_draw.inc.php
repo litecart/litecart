@@ -201,7 +201,7 @@
 		if (preg_match('#^(app|storage)://#', $src)) {
 			$tag = '<script defer nonce="'. document::$nonce .'" integrity="sha256-'. base64_encode(hash_file('sha256', $src, true)) .'" src="'. document::href_rlink($src) .'"></script>';
 		} else {
-			$tag = '<script nonce="'. document::$nonce .'" src="'. document::href_link($src) .'"></script>';
+			$tag = '<script defer nonce="'. document::$nonce .'" src="'. document::href_link($src) .'"></script>';
 		}
 
 		return $tag;

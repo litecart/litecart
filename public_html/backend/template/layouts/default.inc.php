@@ -29,7 +29,7 @@
 		</a>
 
 		<div class="filter">
-			<?php echo f::form_input_search('filter', false, ['placeholder' => (t('title_filter', 'Filter') . '&hellip;'), 'autocomplete' => 'off']); ?>
+			<?php echo f::form_input_search('filter', false, ['placeholder' => (t('title_filter', 'Filter') . '…'), 'autocomplete' => 'off']); ?>
 		</div>
 
 		<?php include 'app://backend/partials/box_apps_menu.inc.php'; ?>

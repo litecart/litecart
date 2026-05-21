@@ -6,7 +6,7 @@
 
 	$module_id = basename($_GET['module_id']);
 
-	list($type, $return_doc) = match (true) {
+	list($type, $return_doc) = match(true) {
 		str_starts_with($module_id, 'cm_') => ['customer', 'customer'],
 		str_starts_with($module_id, 'job_') => ['job', 'jobs'],
 		str_starts_with($module_id, 'om_') => ['order', 'order'],

@@ -1533,7 +1533,7 @@
 			'  </div>',
 			'',
 			'  <div class="dropdown">',
-			'  '. form_input_search('', '', ['autocomplete' => 'off', 'placeholder' => t('text_search_categories', 'Search categories') . '&hellip;']),
+			'  '. form_input_search('', '', ['autocomplete' => 'off', 'placeholder' => t('text_search_categories', 'Search categories') . '…']),
 			'    <div class="dropdown-content" style="padding: 1em; inset-inline-end: 0; max-height: 480px; overflow-y: auto;">',
 			'    </div>',
 			'  </div>',
@@ -2792,8 +2792,10 @@
 			return [$zone['code'], $zone['name']];
 		});
 
+		$attributes = is_array($attributes) ? $attributes : form_attributes($attributes);
+
 		if (!$options) {
-			$attributes .= ' disabled';
+			$attributes['disabled'] = '';
 		}
 
 		if (preg_match('#\[\]$#', $name)) {

@@ -434,7 +434,7 @@
 
 	// Replace submit button with spinner when form is submitting
 	$('form[name="checkout_form"]').submit(function(e) {
-		let new_button = '<div class="btn btn-block btn-default btn-lg disabled"><?php echo f::draw_fonticon('icon-spinner'); ?> <?php echo f::escape_js(t('text_please_wait', 'Please wait')); ?>&hellip;</div>';
+		let new_button = '<div class="btn btn-block btn-default btn-lg disabled"><?php echo f::draw_fonticon('icon-spinner'); ?> <?php echo f::escape_js(t('text_please_wait', 'Please wait')); ?>…</div>';
 		$('#box-checkout-summary button[name="confirm"]').css('display', 'none').before(new_button);
 	});
 </script>

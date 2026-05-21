@@ -44,11 +44,11 @@
 			header('X-Content-Type-Options: nosniff'); // Prevent MIME type sniffing
 
 			// Content-Security-Policy headers are generated after capture to allow dynamic additions
-			self::add_csp('default-src', "'self' 'unsafe-eval' data:");
-			self::add_csp('script-src', "'self' 'unsafe-inline' 'nonce-". self::$nonce ."'");
-			self::add_csp('style-src', "'self' 'unsafe-inline' data:");
-			self::add_csp('frame-ancestors', "'self'"); // Clickjacking Protection
-			self::add_csp('report-uri', self::ilink('f:csp_report')); // CSP Violation Reporting
+			self::add_csp('default-src', ["'self'", "'unsafe-eval'", "data:"]);
+			self::add_csp('script-src', ["'self'", "'unsafe-inline'", "'nonce-". self::$nonce ."'"]);
+			self::add_csp('style-src', ["'self'", "'unsafe-inline'", "data:"]);
+			self::add_csp('frame-ancestors', ["'self'"]); // Clickjacking Protection
+			self::add_csp('report-uri', [self::ilink('f:csp_report')]); // CSP Violation Reporting
 
 			header('Permissions-Policy: ' . implode(',', [
 				'camera=()',

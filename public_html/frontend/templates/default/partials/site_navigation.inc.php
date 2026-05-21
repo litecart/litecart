@@ -40,7 +40,7 @@
 		<div class="navbar-search" data-hint="<?php echo f::escape_html(''); ?>">
 			<?php echo f::form_begin('search_form', 'get', document::ilink('search')); ?>
 			<div class="navbar-link dropdown">
-				<?php echo f::form_input_search('query', true, ['autocomplete' => 'off', 'placeholder' => t('title_search', 'Search') . '&hellip;']); ?>
+				<?php echo f::form_input_search('query', true, ['autocomplete' => 'off', 'placeholder' => t('title_search', 'Search') . '…']); ?>
 				<ul class="dropdown-menu" style="left: 0; right: 0;">
 				</ul>
 			</div>

@@ -550,7 +550,7 @@
 				$this->data['discount_tax'] += (float)$item['discount_tax'] * (float)$item['quantity'];
 				$this->data['total'] += ($item['price'] - (float)$item['discount']) * (float)$item['quantity'];
 				$this->data['total_tax'] += ((float)$item['tax'] - (float)$item['discount_tax']) * (float)$item['quantity'];
-				$this->data['weight_total'] += (new type_weight($item['weight'], $item['weight_unit']))->convert($this->data['weight_unit']) * abs($item['quantity']);
+				$this->data['weight_total'] += f::convert_weight($item['weight'], $item['weight_unit'], $this->data['weight_unit']) * $item['quantity'];
 			}
 
 			// Add shipping fee
@@ -601,7 +601,7 @@
 
 		public function add_line(array $line, array $stock_items = []): void {
 
-			$tax_rates = tax::get_rates($line['tax_class_id'] ?? null, $this->data['customer']['country_code'], $this->data['customer']['zone_code']);
+			$tax_rates = tax::get_rates($line['tax_class_id'] ?? null, $this->data['customer']);
 			$average_rate = !empty($tax_rates) ? array_sum($tax_rates) / count($tax_rates) : 0;
 
 			$line = [
@@ -645,7 +645,7 @@
 					'weight_unit' => $stock_item['weight_unit'],
 				];
 
-				$this->data['weight_total'] += (new type_weight($stock_item['weight'], $stock_item['weight_unit']))->convert($this->data['weight_unit']) * $line['quantity'];
+				$this->data['weight_total'] += f::convert_weight($stock_item['weight'], $stock_item['weight_unit'], $this->data['weight_unit']) * $line['quantity'];
 			}
 
 			$this->data['lines'][] = $line;

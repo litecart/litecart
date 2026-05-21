@@ -61,7 +61,7 @@
 
 			if (is_numeric($args[1]) || (is_array($args[1]) && count($args[1]) === count(array_filter($args[1], 'is_array')) && count($args[1]) === count(array_filter($args[1], 'is_numeric')))) {
 				trigger_error('Passing geo zone last preceeded by zone is deprecated. Instead do \$country->in_geo_zone($geo_zones, $address)', E_USER_DEPRECATED);
-				list($zone_code, $geo_zones) = $args;
+				[$zone_code, $geo_zones] = $args;
 				$address = [
 					'country_code' => $this->_country_code,
 					'zone_code' => $zone_code,
