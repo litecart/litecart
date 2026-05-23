@@ -95,7 +95,7 @@ jobs:
   install:
     name: Install Application
     runs-on: ubuntu-latest
-    needs: [check]
+    needs: [check, build]
     strategy:
       fail-fast: false
       matrix:
@@ -149,7 +149,7 @@ jobs:
   platform-tests:
     name: Platform Tests
     runs-on: ubuntu-latest
-    needs: [check, install]
+    needs: [check, build, install]
 
     services:
       mariadb:
