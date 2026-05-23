@@ -62,19 +62,18 @@
       success: function(json) {
         $('#modal-product-picker .results tbody').html('');
         $.each(json, function(i, row){
-          if (row) {
-            $('#modal-product-picker .results tbody').append([
-              '<tr>',
-              '  <td class="id">' + row.id + '</td>',
-              '  <td><i class="fa fa-circle" style="color: ' + (row.status ? '#88cc44' : '#ff6644') + ';"></i></td>',
-              '  <td class="name">' + row.name + '</td>',
-              '  <td class="sku">' + row.sku + '</td>',
-              '  <td class="quantity text-end">' + row.quantity + '</td>',
-              '  <td class="price text-end">' + row.price.formatted + '</td>',
-              '  <td class="date-created">' + row.date_created + '</td>',
-              '</tr>'
-            ].join('\n'));
-          }
+          let $new_row = $([
+            '<tr>',
+            '  <td class="id">' + row.id + '</td>',
+            '  <td><i class="fa fa-circle" style="color: ' + (row.status ? '#88cc44' : '#ff6644') + ';"></i></td>',
+            '  <td class="name">' + row.name + '</td>',
+            '  <td class="sku">' + row.sku + '</td>',
+            '  <td class="quantity text-end">' + row.quantity + '</td>',
+            '  <td class="price text-end">' + row.price.formatted + '</td>',
+            '  <td class="date-created">' + row.date_created + '</td>',
+            '</tr>'
+          ].join('\n')).data(row);
+          $('#modal-product-picker .results tbody').append($new_row);
         });
         if ($('#modal-product-picker .results tbody').html() == '') {
           $('#modal-product-picker .results tbody').html([
@@ -100,7 +99,7 @@
 
     $field.val(product.id || 0)
       .data('sku', product.sku || '')
-      .data('price', product.price.amount || 0)
+      .data('price', product.priceValue || 0)
       .data('price-formatted', product.priceFormatted || '')
       .trigger('change');
 
