@@ -182,6 +182,10 @@
 			'[ABORTED] ' . $t->getMessage(),
 			'',
 		]);
+		// Surface the failure to the caller (CI, shell) so silent aborts
+		// stop being mistaken for success. The shutdown handler still
+		// runs and flushes the captured buffer before the process ends.
+		exit(1);
 	}
 
 	if (!empty($_REQUEST['redirect'])) {

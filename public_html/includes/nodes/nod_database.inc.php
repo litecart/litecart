@@ -76,17 +76,26 @@
 			// Set default storage engine
 			self::query("SET SESSION default_storage_engine = InnoDB;", $link);
 
-			// Set time zone for current session
+			// Set time zone for current session. The settings table may not
+			// exist yet (installer runs connect() before step 080 creates
+			// tables); silently fall through in that case so install/upgrade
+			// can proceed and reach the schema build step.
 			if (defined('DB_TABLE_PREFIX')) {
-				$timezone = database::query(
-					"SELECT `value` FROM ". DB_TABLE_PREFIX ."settings
-					WHERE `key` = 'store_timezone'
-					LIMIT 1;", 'default'
-				)->fetch('value');
+				try {
+					$timezone = database::query(
+						"SELECT `value` FROM ". DB_TABLE_PREFIX ."settings
+						WHERE `key` = 'store_timezone'
+						LIMIT 1;", 'default'
+					)->fetch('value');
 
-				if ($timezone) {
-					$datetime = new \DateTime('now', new \DateTimezone($timezone));
-					self::query("SET time_zone = '". database::input($datetime->format('P')) ."';", $link);
+					if ($timezone) {
+						$datetime = new \DateTime('now', new \DateTimezone($timezone));
+						self::query("SET time_zone = '". database::input($datetime->format('P')) ."';", $link);
+					}
+				} catch (\Throwable $t) {
+					if (mysqli_errno(self::$links[$link]) !== 1146) {
+						throw $t;
+					}
 				}
 			}
 

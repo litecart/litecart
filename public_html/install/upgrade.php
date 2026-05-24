@@ -904,6 +904,12 @@
 				'<p>Error: '. htmlspecialchars($t->getMessage()) .'</p>',
 				'',
 			]);
+
+			// Surface the failure to the caller (CI, shell) so silent
+			// aborts stop being mistaken for success. ob_get_clean() runs
+			// the buffer callback (strip_tags for CLI) before we exit.
+			echo ob_get_clean();
+			exit(1);
 		}
 
 		echo ob_get_clean();
