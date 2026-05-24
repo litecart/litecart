@@ -179,8 +179,8 @@
 
 		ob_start(function($buffer) {
 
-			if ($_SERVER['SERVER_SOFTWARE'] == 'CLI') {
-				$buffer = strip_tags($buffer);
+			if (install_is_cli()) {
+				$buffer = install_cli_format($buffer);
 			}
 
 			return $buffer;
