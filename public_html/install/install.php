@@ -138,7 +138,7 @@
 
 		register_shutdown_function(function(){
 			$buffer = ob_get_clean();
-			echo ($_SERVER['SERVER_SOFTWARE'] == 'CLI') ? strip_tags($buffer) : $buffer;
+			echo install_is_cli() ? install_cli_format($buffer) : $buffer;
 		});
 
 		echo '<h1>LiteCart Installer</h1>' . PHP_EOL . PHP_EOL;
