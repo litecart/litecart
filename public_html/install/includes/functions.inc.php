@@ -22,6 +22,28 @@
 		csp_send_headers();
 	}
 
+	/*
+		Format installer HTML output for CLI consumption. Status spans
+		(<span class="ok|warning|error">) are converted to ANSI color
+		escapes when STDOUT is a terminal; remaining tags are stripped.
+		Non-TTY destinations (pipes, file redirects, CI logs without
+		color support) get plain stripped text so log files stay clean.
+	*/
+	function install_cli_format($html) {
+		static $is_tty = null;
+		if ($is_tty === null) {
+			$is_tty = function_exists('stream_isatty') && defined('STDOUT') && @stream_isatty(STDOUT);
+		}
+
+		if ($is_tty) {
+			$html = preg_replace('#<span class="ok">([^<]*)</span>#', "\033[32m$1\033[0m", $html);
+			$html = preg_replace('#<span class="warning">([^<]*)</span>#', "\033[33m$1\033[0m", $html);
+			$html = preg_replace('#<span class="error">([^<]*)</span>#', "\033[31m$1\033[0m", $html);
+		}
+
+		return strip_tags($html);
+	}
+
 	function csp_send_headers() {
 
 		header('Content-Security-Policy: ' . implode('; ', [
