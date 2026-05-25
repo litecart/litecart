@@ -528,13 +528,17 @@
 		return str_pad(str_repeat("\u{25AE}", floor(($width / 100) * $percentage)), $width, "\u{25AF}", STR_PAD_RIGHT) . ' '. $percentage .'%';
 	}
 
-	function draw_rating(float $rating, int $max_rating=5): string {
+	function draw_rating(float|null $rating, int $max_rating=5): string {
+
+		if ($rating === null) {
+			$rating = 0;
+		}
 
 		$rating = round($rating * 2) / 2;
 
 		$output = '';
 
-		for ($i=1; $i<=$max_rating; $i++) {
+		foreach (range(1, $max_rating) as $i) {
 			if ($rating >= $i) {
 				$output .= draw_fonticon('icon-star', 'style="color: #f90;"');
 			} else if ($rating == $i-0.5) {

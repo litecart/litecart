@@ -114,28 +114,33 @@
 				and id not in ('". implode("', '", database::input(array_column($this->data['products'], 'id'))) ."');"
 			);
 
-			foreach ($this->data['products'] as $key => $campaign_product) {
+			foreach ($this->data['products'] as $key => $product) {
 
-				if (empty($campaign_product['id'])) {
+				if (isset($product['campaign_id']) && $product['campaign_id'] != $this->data['id']) {
+					$product['id'] = null;
+				}
+
+				if (empty($product['id'])) {
+
 					database::query(
 						"insert into ". DB_TABLE_PREFIX ."products_prices
 						(product_id, campaign_id)
-						values (". (int)$campaign_product['product_id'] .", ". (int)$this->data['id'] .");"
+						values (". (int)$product['product_id'] .", ". (int)$this->data['id'] .");"
 					);
 
-					$this->data['products'][$key]['id'] = $campaign_product['id'] = database::insert_id();
+					$this->data['products'][$key]['id'] = $product['id'] = database::insert_id();
 				}
 
-				$campaign_product['price'] = array_filter($campaign_product['price']);
+				$product['price'] = array_filter($product['price']);
 
 				database::query(
 					"update ". DB_TABLE_PREFIX ."products_prices
-					set product_id = ". (int)$campaign_product['product_id'] .",
+					set product_id = ". (int)$product['product_id'] .",
 						campaign_id = ". (int)$this->data['id'] .",
-						customer_group_id = ". (!empty($campaign_product['customer_group_id']) ? (int)$campaign_product['customer_group_id'] : "null") .",
-						geo_zone_id = ". (!empty($campaign_product['geo_zone_id']) ? (int)$campaign_product['geo_zone_id'] : "null") .",
-						price = ". (!empty($campaign_product['price']) ? "'". database::input(f::format_json($campaign_product['price'])) ."'" : "{}") ."
-					where id = ". (int)$campaign_product['id'] ."
+						customer_group_id = ". (!empty($product['customer_group_id']) ? (int)$product['customer_group_id'] : "null") .",
+						geo_zone_id = ". (!empty($product['geo_zone_id']) ? (int)$product['geo_zone_id'] : "null") .",
+						price = ". (!empty($product['price']) ? "'". database::input(f::format_json($product['price'])) ."'" : "{}") ."
+					where id = ". (int)$product['id'] ."
 					limit 1;"
 				);
 			}
@@ -148,15 +153,15 @@
 					where campaign_id = ". (int)$this->data['id'] .";"
 				);
 
-				if (!empty($this->data['scopes'])) {
-					foreach ($this->data['scopes'] as $scope) {
-						if (empty($scope['scope_type']) || empty($scope['scope_id'])) continue;
-						database::query(
-							"insert ignore into ". DB_TABLE_PREFIX ."campaigns_scopes
-							(campaign_id, scope_type, scope_id)
-							values (". (int)$this->data['id'] .", '". database::input($scope['scope_type']) ."', ". (int)$scope['scope_id'] .");"
-						);
-					}
+				foreach ($this->data['scopes'] as $scope) {
+
+					if (empty($scope['scope_type']) || empty($scope['scope_id'])) continue;
+
+					database::query(
+						"insert ignore into ". DB_TABLE_PREFIX ."campaigns_scopes
+						(campaign_id, scope_type, scope_id)
+						values (". (int)$this->data['id'] .", '". database::input($scope['scope_type']) ."', ". (int)$scope['scope_id'] .");"
+					);
 				}
 			}
 

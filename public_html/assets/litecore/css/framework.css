@@ -329,7 +329,7 @@ summary {
 	line-height: 1em;
 	padding: 0.5em 1em;
 	vertical-align: middle;
-	transition: all 250ms linear;
+	transition: all 75ms linear;
 }
 .breadcrumbs-2 .breadcrumb-item:hover {
 	transform: translateY(-2px);

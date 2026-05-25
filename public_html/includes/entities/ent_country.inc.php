@@ -122,27 +122,32 @@
 				and id not in ('". implode("', '", array_column($this->data['zones'], 'id')) ."');"
 			);
 
-			if (!empty($this->data['zones'])) {
-				foreach ($this->data['zones'] as $key => $zone) {
-					if (empty($zone['id'])) {
-						database::query(
-							"insert into ". DB_TABLE_PREFIX ."zones
-							(country_code, created_at)
-							values ('". database::input($this->data['iso_code_2']) ."', '". date('Y-m-d H:i:s') ."');"
-						);
-						$zone['id'] = $this->data['zones'][$key]['id'] = database::insert_id();
-					}
+			foreach ($this->data['zones'] as $key => $zone) {
+
+				if (isset($zone['country_code']) && $zone['country_code'] != $this->data['iso_code_2']) {
+					$zone['id'] = null;
+				}
+
+				if (empty($zone['id'])) {
 
 					database::query(
-						"update ". DB_TABLE_PREFIX ."zones
-						set code = '". database::input($zone['code']) ."',
-							name = '". database::input($zone['name']) ."',
-							updated_at = '". ($this->data['zones'][$key]['updated_at'] = date('Y-m-d H:i:s')) ."'
-						where country_code = '". database::input(strtoupper($this->data['iso_code_2'])) ."'
-						and id = ". (int)$zone['id'] ."
-						limit 1;"
+						"insert into ". DB_TABLE_PREFIX ."zones
+						(country_code, created_at)
+						values ('". database::input($this->data['iso_code_2']) ."', '". date('Y-m-d H:i:s') ."');"
 					);
+
+					$zone['id'] = $this->data['zones'][$key]['id'] = database::insert_id();
 				}
+
+				database::query(
+					"update ". DB_TABLE_PREFIX ."zones
+					set code = '". database::input($zone['code']) ."',
+						name = '". database::input($zone['name']) ."',
+						updated_at = '". ($this->data['zones'][$key]['updated_at'] = date('Y-m-d H:i:s')) ."'
+					where country_code = '". database::input(strtoupper($this->data['iso_code_2'])) ."'
+					and id = ". (int)$zone['id'] ."
+					limit 1;"
+				);
 			}
 
 			$this->previous = $this->data;

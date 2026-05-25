@@ -1,9 +1,9 @@
 <?php
 
 	class ent_order implements JsonSerializable {
+
 		public $data;
 		public $previous;
-
 		public $shipping;
 		public $payment;
 
@@ -334,6 +334,10 @@
 			$i = 0;
 			foreach ($this->data['lines'] as $key => $line) {
 
+				if (isset($line['order_id']) && $line['order_id'] != $this->data['id']) {
+					$line['id'] = null;
+				}
+
 				if (empty($line['id'])) {
 
 					database::query(
@@ -364,7 +368,7 @@
 						sum_tax = ". (float)$line['sum_tax'] .",
 						weight = ". (float)$line['weight'] .",
 						weight_unit = '". database::input($line['weight_unit']) ."',
-						priority = ". ++$i ."
+						priority = ". ($this->data['lines'][$line_key]['priority'] = $line['priority'] = ++$i) ."
 					where id = ". (int)$line['id'] ."
 					and order_id = ". (int)$this->data['id'] ."
 					limit 1;"
@@ -373,10 +377,14 @@
 
 			// Insert/update order items
 			$i = 0;
-			foreach ($this->data['lines'] as $key => $line) {
-				foreach ($line['items'] as $key2 => $item) {
+			foreach ($this->data['lines'] as $line_key => $line) {
+				foreach ($line['items'] as $item_key => $item) {
 
-					if (empty($line['id'])) {
+					if (isset($line['order_id']) && $line['order_id'] != $this->data['id']) {
+						$line['id'] = null;
+					}
+
+					if (empty($item['id'])) {
 
 						database::query(
 							"insert into ". DB_TABLE_PREFIX ."orders_items
@@ -384,7 +392,7 @@
 							values (". (int)$this->data['id'] .", ". (int)$line['id'] .");"
 						);
 
-						$this->data['lines'][$key]['items'][$key2]['id'] = $item['id'] = database::insert_id();
+						$this->data['lines'][$line_key]['items'][$item_key]['id'] = $item['id'] = database::insert_id();
 					}
 
 					// Withdraw stock
@@ -413,7 +421,7 @@
 							width = ". (float)$item['width'] .",
 							height = ". (float)$item['height'] .",
 							length_unit = '". database::input($item['length_unit']) ."',
-							priority = ". ++$i ."
+							priority = ". ($this->data['lines'][$line_key]['items'][$item_key]['priority'] = $item['priority'] = ++$i) ."
 						where id = ". (int)$item['id'] ."
 						and line_id = ". (int)$line['id'] ."
 						and order_id = ". (int)$this->data['id'] ."
@@ -455,7 +463,12 @@
 						$comment['author_id'] = ($comment['author'] == 'customer') ? -1 : 0;
 					}
 
+					if (isset($line['order_id']) && $line['order_id'] != $this->data['id']) {
+						$comment['id'] = null;
+					}
+
 					if (empty($comment['id'])) {
+
 						database::query(
 							"insert into ". DB_TABLE_PREFIX ."orders_comments
 							(order_id, created_at)

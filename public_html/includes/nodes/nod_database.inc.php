@@ -791,7 +791,7 @@
 			return $rows;
 		}
 
-		public function fetch_page(array|callable|string|null $filter=null, string|int|null $index_column=null, int &$page=1, int|null $items_per_page=null, int|null &$num_rows=null, int|null &$num_pages=null): array {
+		public function fetch_page(array|callable|string|null $filter=null, string|int|null $index_column=null, int|null &$page=1, int|null $items_per_page=null, int|null &$num_rows=null, int|null &$num_pages=null): array {
 
 			$timestamp = microtime(true);
 

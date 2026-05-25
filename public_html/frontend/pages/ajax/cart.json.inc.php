@@ -7,7 +7,7 @@
 		$result = [
 			'items' => [],
 			'num_items' => cart::$total['items'],
-			'total_value' => !empty(customer::$data['display_prices_including_tax']) ? cart::$total['value'] + cart::$total['tax'] : cart::$total['value'],
+			'total_value' => !empty(customer::$data['display_prices_including_tax']) ? cart::$total['subtotal']['value'] + cart::$total['subtotal']['tax'] : cart::$total['subtotal']['value'],
 			'text_total' => t('title_total', 'Total'),
 		];
 
@@ -28,7 +28,7 @@
 				'sku' => $item['sku'],
 				'gtin' => $item['gtin'],
 				'taric' => $item['taric'],
-				'price' => !empty(customer::$data['display_prices_including_tax']) ? $item['final_price']['price'] + $item['final_price']['tax']: $item['final_price']['price'],
+				'price' => !empty(customer::$data['display_prices_including_tax']) ? $item['final_price']['value'] + $item['final_price']['tax']: $item['final_price']['value'],
 				'tax' => $item['final_price']['tax'],
 				'tax_class_id' => $item['tax_class_id'],
 				'quantity' => $item['quantity'],

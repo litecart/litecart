@@ -104,11 +104,13 @@
 			}
 
 			if (!$this->data['id']) {
+
 				database::query(
 					"insert into ". DB_TABLE_PREFIX ."categories
 					(parent_id, code, created_at)
 					values (". (!empty($this->data['parent_id']) ? (int)$this->data['parent_id'] : "null") .", '". database::input($this->data['code']) ."', '". ($this->data['created_at'] = date('Y-m-d H:i:s')) ."');"
 				);
+
 				$this->data['id'] = database::insert_id();
 			}
 
@@ -151,12 +153,19 @@
 			// Update filters
 			$priority = 1;
 			foreach ($this->data['filters'] as $key => $filter) {
+
+				if (isset($filter['category_id']) && $filter['category_id'] != $this->data['id']) {
+					$filter['id'] = null;
+				}
+
 				if (empty($filter['id'])) {
+
 					database::query(
 						"insert into ". DB_TABLE_PREFIX ."categories_filters
 						(category_id, attribute_group_id)
 						values (". (int)$this->data['id'] .", ". (int)$filter['attribute_group_id'] .");"
 					);
+
 					$this->data['filters'][$key]['id'] = $filter['id'] = database::insert_id();
 				}
 
@@ -180,6 +189,7 @@
 
 			// Insert product mountpoints
 			foreach ($this->data['products'] as $product_id) {
+
 				if (empty($filter['id'])) {
 					database::query(
 						"insert ignore into ". DB_TABLE_PREFIX ."products_to_categories

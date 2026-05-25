@@ -324,6 +324,10 @@
 			// Update prices
 			foreach ($this->data['prices'] as $key => $price) {
 
+				if (isset($price['product_id']) && $price['product_id'] != $this->data['id']) {
+					$price['id'] = null;
+				}
+
 				if (empty($price['id'])) {
 
 					database::query(
@@ -362,6 +366,10 @@
 
 				$i = 0;
 				foreach ($this->data['attributes'] as $key => $attribute) {
+
+					if (isset($price['product_id']) && $price['product_id'] != $this->data['id']) {
+						$price['id'] = null;
+					}
 
 					if (empty($attribute['id'])) {
 
@@ -404,15 +412,21 @@
 			if (!empty($this->data['customizations'])) {
 
 				$i = 0;
-				foreach ($this->data['customizations'] as &$option) {
+				foreach ($this->data['customizations'] as $key => $option) {
+
+					if (isset($option['product_id']) && $option['product_id'] != $this->data['id']) {
+						$option['id'] = null;
+					}
 
 					if (empty($option['id'])) {
+
 						database::query(
 							"insert into ". DB_TABLE_PREFIX ."products_customizations
 							(product_id, group_id)
 							values (". (int)$this->data['id'] .", ". (int)$option['group_id'] .");"
 						);
-						$option['id'] = database::insert_id();
+
+						$option['id'] = $this->data['customizations'][$key]['id'] = database::insert_id();
 					}
 
 					database::query(
@@ -439,7 +453,7 @@
 					if (!empty($option['values'])) {
 
 						$j = 0;
-						foreach ($option['values'] as &$value) {
+						foreach ($option['values'] as $value_key => $value) {
 
 							if (empty($value['id'])) {
 
@@ -449,7 +463,7 @@
 									values (". (int)$this->data['id'] .", ". (int)$option['group_id'] .", ". (int)$value['value_id'] .");"
 								);
 
-								$value['id'] = database::insert_id();
+								$value['id'] = $this->data['customizations'][$key]['values'][$value_key]['id'] = database::insert_id();
 							}
 
 							$prices = array_filter($value['price']);
@@ -467,9 +481,9 @@
 								and id = ". (int)$value['id'] ."
 								limit 1;"
 							);
-						} unset($value);
+						}
 					}
-				} unset($option);
+				}
 			}
 
 			// Delete stock options
@@ -484,6 +498,10 @@
 
 				$i = 0;
 				foreach ($this->data['stock_options'] as $key => $stock_option) {
+
+					if (isset($stock_option['product_id']) && $stock_option['product_id'] != $this->data['id']) {
+						$stock_option['id'] = null;
+					}
 
 					if (empty($stock_option['id'])) {
 

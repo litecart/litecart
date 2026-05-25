@@ -572,10 +572,14 @@
 	}
 
 	// Stock Status
-	if (!empty($product->quantity_unit['name'])) {
-		$_page->snippets['stock_status'] = settings::get('display_stock_count') ? language::number_format($product->quantity_available, $product->quantity_unit['decimals']) .' '. $product->quantity_unit['name'] : t('title_in_stock', 'In Stock');
+	if (settings::get('display_stock_count')) {
+		if (!empty($product->quantity_unit['name'])) {
+			$_page->snippets['stock_status'] = ($product->quantity_available !== null) ? f::format_number($product->quantity_available, $product->quantity_unit['decimals']) .' '. $product->quantity_unit['name'] : t('title_in_stock', 'In Stock');
+		} else {
+			$_page->snippets['stock_status'] = ($product->quantity_available !== null) ? f::format_number($product->quantity_available) : t('title_in_stock', 'In Stock');
+		}
 	} else {
-		$_page->snippets['stock_status'] = settings::get('display_stock_count') ? f::format_number($product->quantity_available) : t('title_in_stock', 'In Stock');
+		$_page->snippets['stock_status'] = ($product->quantity_available > 0) ? t('title_in_stock', 'In Stock') : t('title_out_of_stock', 'Out of Stock');
 	}
 
 	// Cheapest shipping

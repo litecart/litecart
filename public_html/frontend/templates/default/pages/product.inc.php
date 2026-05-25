@@ -681,8 +681,8 @@ form[name="buy_now_form"] .dropdown-menu .image {
 		var output = [
 			'<div class="attachment form-group">',
 			'  <div class="input-group">',
-			'    <?php echo f::form_input_file('new_attachments[]', ['accept' => '.gif,.jpg,.png']); ?>',
-			'    <?php echo f::form_button_predefined('remove-sm'); ?>',
+			'    <?php echo f::escape_js(f::form_input_file('new_attachments[]', ['accept' => '.gif,.jpg,.png'])); ?>',
+			'    <?php echo f::escape_js(f::form_button_predefined('remove-sm')); ?>',
 			'  </div>',
 			'</div>'
 		].join('\n');

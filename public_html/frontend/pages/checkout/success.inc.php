@@ -35,15 +35,12 @@
 		return;
 	}
 
-	$payment = new mod_payment();
-	$order_module = new mod_order();
-
 	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/order_success.inc.php');
 	$_page->snippets = [
 		'order' => $order->data,
 		'printable_link' => document::ilink('printable_order_copy', ['order_id' => $order->data['id'], 'public_key' => $order->data['public_key']]),
-		'payment_receipt' => $payment->receipt($order),
-		'order_success_modules_output' => $order_module->success($order),
+		'payment_receipt' => (new mod_payment)->receipt($order),
+		'order_success_modules_output' => (new mod_order)->success($order),
 	];
 
 	echo $_page;
