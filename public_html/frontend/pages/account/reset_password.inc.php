@@ -34,15 +34,15 @@
 					throw new Exception(t('error_invalid_verification_code', 'Invalid verification code'));
 				}
 
-				if (!isset(session::$data['security']['verification']['code'])) {
+				if (!isset(security::$data['verification']['code'])) {
 					throw new Exception(t('error_invalid_verification_code', 'Invalid verification code'));
 				}
 
-				if ($_REQUEST['verification_code'] != session::$data['security']['verification']['code']) {
+				if ($_REQUEST['verification_code'] != security::$data['verification']['code']) {
 					throw new Exception(t('error_incorrect_verification_code', 'Incorrect verification code'));
 				}
 
-				if (session::$data['security']['verification']['expires'] < time()) {
+				if (security::$data['verification']['expires'] < time()) {
 					throw new Exception(t('error_verification_code_expired', 'The verification code has expired'));
 				}
 

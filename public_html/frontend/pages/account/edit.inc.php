@@ -86,7 +86,7 @@
 			customer::load($customer->data['id']);
 
 			session::regenerate_id();
-			session::$data['security']['timestamp'] = strtotime($customer->data['sessions_expiry']);
+			security::$data['timestamp'] = strtotime($customer->data['sessions_expiry']);
 
 			customer::log([
 				'type' => 'edit_account_security',

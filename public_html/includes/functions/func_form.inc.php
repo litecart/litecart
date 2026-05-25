@@ -82,7 +82,7 @@
 
 		// Auto-inject CSRF token for POST forms
 		if (strtolower($method) !== 'get' && class_exists('session', false)) {
-			$html .= f::draw_element('input', ['type' => 'hidden', 'name' => 'csrf_token', 'value' => session::csrf_token()]);
+			$html .= f::draw_element('input', ['type' => 'hidden', 'name' => 'csrf_token', 'value' => security::csrf_token()]);
 		}
 
 		return $html;

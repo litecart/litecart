@@ -285,8 +285,8 @@
 				exit;
 			}
 
-			session::$data['security']['404_hits'] ??= 0;
-			session::$data['security']['404_hits']++;
+			security::$data['404_hits'] ??= 0;
+			security::$data['404_hits']++;
 
 			// Log not found URL
 			database::query(

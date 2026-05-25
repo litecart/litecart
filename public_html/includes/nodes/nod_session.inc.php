@@ -165,53 +165,21 @@
 			// Keep track on some updated information
 			self::$data['last_url'] = document::link() ?: null;
 
-			// Count page view when the current request differs from the last one
-			$current_request = $_SERVER['REQUEST_METHOD'] .' '. $_SERVER['REQUEST_URI'];
-			if (isset(self::$data['last_request']) && self::$data['last_request'] !== $current_request) {
-				self::$data['page_views'] = (!empty(self::$data['page_views']) ? (int)self::$data['page_views'] : 0) + 1;
+			// Keep track of the last 10 requests in the session (excluding AJAX requests)
+			if (!is_ajax_request()) {
+				self::$data['last_requests'] = array_slice((self::$data['last_requests'] ?? []) + [
+					'method' => $_SERVER['REQUEST_METHOD'],
+					'url' => $_SERVER['REQUEST_URI'],
+					'timestamp' => date('Y-m-d H:i:s'),
+				], -10);
 			}
 
-			if (empty(self::$data['referrer']) && !empty($_SERVER['HTTP_REFERER'])) {
-				if (empty(self::$data['referrer']) && !empty($_SERVER['HTTP_REFERER'])) {
-					self::$data['referrer'] = $_SERVER['HTTP_REFERER'];
-				}
-			}
+			// Keep track of page views in the session
+			self::$data['page_views'] = (!empty(self::$data['page_views']) ? (int)self::$data['page_views'] : 0) + 1;
 
-			self::$data['last_request'] = $current_request;
-
-			// Do we need to check if human?
-			if (empty(self::$data['security']['is_human']) && (!isset(route::$selected['controller']))) {
-				if (!preg_match('#(are_you_human|csp_report|account/sign_out|'. preg_quote(BACKEND_ALIAS, '#')  .'/(logout|manifest))#', route::$request)) {
-
-					try {
-
-						if (isset(self::$data['security']['failed_authentications']) && self::$data['security']['failed_authentications'] >= 5) {
-							throw new Exception('Many failed authentications');
-						}
-
-						if (!empty(self::$data['security']['stuck_in_honeypot'])) {
-							throw new Exception('Stuck in the honeypot');
-						}
-
-						if (isset(self::$data['security']['404_hits']) && self::$data['security']['404_hits'] >= 10) {
-							throw new Exception('Suspiciously large amount of 404 hits');
-						}
-
-						if (isset(self::$data['security']['page_loads']) && self::$data['security']['page_loads'] >= 100) {
-							throw new Exception('Suspiciously large amount of page loads');
-						}
-
-						if ($_SERVER['REMOTE_ADDR'] == gethostbyaddr($_SERVER['REMOTE_ADDR'])) {
-							throw new Exception('IP address without a hostname');
-						}
-
-						// All good for now
-
-					} catch (Exception $e) {
-						redirect(document::ilink('f:are_you_human', ['redirect_url' => $_SERVER['REQUEST_URI']]));
-						exit;
-					}
-				}
+			// Keep track of external referrer (but only the first one in the session)
+			if (empty(self::$data['referrer']) && !empty($_SERVER['HTTP_REFERER']) && parse_url($_SERVER['HTTP_REFERER'], PHP_URL_HOST) != $_SERVER['HTTP_HOST']) {
+				self::$data['referrer'] = $_SERVER['HTTP_REFERER'];
 			}
 		}
 
@@ -219,14 +187,6 @@
 
 		public static function reset(): void {
 			self::$data = (new ent_session())->data;
-
-			// Security
-			self::$data['security'] = [
-				'page_loads' => 0,
-				'404_hits' => 0,
-				'failed_authentications' => 0,
-				'last_failed_login' => null,
-			];
 		}
 
 		public static function load(string $session_id): bool {
@@ -264,21 +224,21 @@
 				self::generate_id();
 			}
 
-			// Save only the payload without pretty printing to reduce storage
 			$expires_at = date('Y-m-d H:i:s', strtotime('+1 hour'));
+			$indent = '';
 
 			database::query(
 				"insert into ". DB_TABLE_PREFIX ."sessions
 				(id, data, expires_at, updated_at, created_at)
 				values (
 					'". database::input(self::$data['id']) ."',
-					'". database::input(f::format_json(self::$data)) ."',
+					'". database::input(f::format_json(self::$data, $indent)) ."',
 					'". database::input($expires_at) ."',
 					'". database::input(date('Y-m-d H:i:s')) ."',
 					'". database::input(date('Y-m-d H:i:s')) ."'
 				)
 				on duplicate key update
-					data = '". database::input(f::format_json(self::$data)) ."',
+					data = '". database::input(f::format_json(self::$data, $indent)) ."',
 					expires_at = '". database::input($expires_at) ."',
 					updated_at = '". database::input(date('Y-m-d H:i:s')) ."';"
 			);
@@ -325,18 +285,6 @@
 			$samesite = $is_secure ? 'None' : 'Lax';
 
 			header('Set-Cookie: LCSESSID='. rawurlencode(self::$data['id']) .';Path=/;'. ($is_secure ? 'Secure;' : '') .'HttpOnly;SameSite=' . $samesite);
-		}
-
-		public static function csrf_token(): string {
-			if (empty(self::$data['csrf_token'])) {
-				self::$data['csrf_token'] = bin2hex(random_bytes(32));
-			}
-			return self::$data['csrf_token'];
-		}
-
-		public static function rotate_csrf_token(): string {
-			self::$data['csrf_token'] = bin2hex(random_bytes(32));
-			return self::$data['csrf_token'];
 		}
 
 		public static function close(): void {

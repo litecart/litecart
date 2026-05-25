@@ -69,7 +69,7 @@
 					}
 
 					self::load($customer['id']);
-					session::$data['security']['timestamp'] = time();
+					security::$data['timestamp'] = time();
 
 					database::query(
 						"update ". DB_TABLE_PREFIX ."customers
@@ -387,11 +387,11 @@
 				return false;
 			}
 
-			if (!isset(session::$data['security']['timestamp'])) {
+			if (!isset(security::$data['timestamp'])) {
 				return true;
 			}
 
-			return strtotime($customer['sessions_expiry']) > session::$data['security']['timestamp'];
+			return strtotime($customer['sessions_expiry']) > security::$data['timestamp'];
 		}
 
 		public static function log(array $event): void {

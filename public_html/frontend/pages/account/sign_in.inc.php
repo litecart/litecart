@@ -124,9 +124,9 @@
 
 			customer::load($customer['id']);
 
-			session::$data['security']['timestamp'] = time();
+			security::$data['timestamp'] = time();
 			session::regenerate_id();
-			session::rotate_csrf_token();
+			security::rotate_csrf_token();
 
 			if (!empty($_POST['remember_me']) && defined('HMAC_KEY_REMEMBER_ME')) {
 				$token = f::token_create_remember($customer['id'], $customer['password_hash']);
@@ -164,7 +164,7 @@
 
 		} catch (Exception $e) {
 
-			session::$data['security']['failed_authentications']++;
+			security::$data['failed_authentications']++;
 
 			http_response_code(401);
 

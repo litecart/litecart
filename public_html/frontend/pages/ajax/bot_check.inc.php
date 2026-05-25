@@ -41,7 +41,7 @@
 			'suspicious',
 		] as $key) {
 			if (isset($report[$key])) {
-				session::$data['security']['bot_challenge'][$key] = $report[$key];
+				security::$data['bot_challenge'][$key] = $report[$key];
 			}
 		}
 
