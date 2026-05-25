@@ -1129,7 +1129,17 @@ ALTER TABLE `lc_categories`
 DROP COLUMN `list_style`;
 -- -----
 DELETE FROM `lc_settings`
-WHERE `key` IN ('auto_decimals', 'cache_system_breakpoint', 'development_mode', 'jobs_interval', 'auto_decimals', 'round_amounts', 'store_template_admin', 'store_template_admin_settings', 'gzip_enabled');
+WHERE `key` IN (
+	'auto_decimals',
+	'cache_system_breakpoint',
+	'development_mode',
+	'gzip_enabled'
+	'jobs_interval',
+	'round_amounts',
+	'store_template_admin',
+	'store_template_admin_settings',
+	'store_timezone'
+);
 -- -----
 DELETE FROM `lc_modules`
 WHERE `module_id` = 'ot_subtotal'

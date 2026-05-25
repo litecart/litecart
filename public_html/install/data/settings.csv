@@ -9,7 +9,6 @@ store_info,Store Phone Number,The store\'s phone number.'",store_phone,+1-212-55
 store_info,Store Country,The country of your store.,store_country_code,{STORE_COUNTRY_CODE},country(),0,16,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 store_info,Store Zone,The zone of your store.,store_zone_code,,"zone(""default_zone_code"")",0,17,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 store_info,Store Postcode,The postcode of your store.,store_postcode,,text(),0,18,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
-store_info,Store Time Zone,"'The store\'s time zone.,store_timezone,{STORE_TIME_ZONE},timezone(),1,19,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
 store_info,Store Language,The spoken language of your organization.,store_language_code,en,language(),1,20,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
 store_info,Store Currency,The currency which all prices conform to.,store_currency_code,USD,currency(),1,21,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
 store_info,Store Weight Unit,The preferred weight unit.,store_weight_unit,kg,weight_unit(),1,22,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
