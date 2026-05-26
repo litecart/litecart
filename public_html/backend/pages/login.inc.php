@@ -155,7 +155,7 @@
 
 			session::$data['security.administrator']['timestamp'] = time();
 			session::regenerate_id();
-			session::rotate_csrf_token();
+			security::rotate_csrf_token();
 
 			unset(session::$data['security.administrator']['verification']);
 
@@ -261,7 +261,7 @@
 			exit;
 
 		} catch (Exception $e) {
-			session::$data['security']['failed_authentications']++;
+			security::$data['failed_authentications']++;
 			http_response_code(401); // Troublesome with HTTP Auth Basic (e.g. .htpasswd)
 			notices::add('errors', $e->getMessage());
 		}

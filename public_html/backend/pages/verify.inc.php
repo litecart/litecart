@@ -68,7 +68,7 @@
 
 		} catch (Exception $e) {
 
-			session::$data['security']['failed_authentications']++;
+			security::$data['failed_authentications']++;
 
 			notices::add('errors', $e->getMessage());
 

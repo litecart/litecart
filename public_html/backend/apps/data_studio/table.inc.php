@@ -317,7 +317,7 @@ textarea[name="query"] {
 
 	$('button[name="pretty_print"]').on('click', function() {
 		$.post('<?php echo document::ilink(__APP__.'/pretty_print'); ?>', {
-			'csrf_token': '<?php echo session::csrf_token(); ?>',
+			'csrf_token': '<?php echo security::csrf_token(); ?>',
 			'query': $('form[name="query_form"] textarea[name="query"]').val(),
 		}).then(function(response){
 			$('form[name="query_form"] textarea[name="query"]').val(response);
@@ -401,7 +401,7 @@ textarea[name="query"] {
 			if (sendVal === '' && nullable) sendVal = '';
 
 			$.post('<?php echo document::ilink(__APP__.'/edit_cell'); ?>', {
-				'csrf_token': '<?php echo session::csrf_token(); ?>',
+				'csrf_token': '<?php echo security::csrf_token(); ?>',
 				'table': '<?php echo f::escape_attr($_GET['name'] ?? ''); ?>',
 				'primary_column': '<?php echo f::escape_attr($primary_column); ?>',
 				'pkv': pkv,

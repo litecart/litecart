@@ -24,8 +24,8 @@
 		try {
 
 			if (!empty($_POST['email'])) {
-				session::$data['security']['stuck_in_honeypot'] = true;
-				throw new Exception(t('error_stuck_in_honeypot', 'Stuck in the honeypot!'));
+				security::$data['caught_in_honeypot'] = true;
+				throw new Exception(t('error_caught_in_honeypot', 'Caught in the honeypot!'));
 			}
 
 			if (empty($_POST['is_human'])) {
@@ -36,7 +36,7 @@
 				throw new Exception(t('error_captcha_failed', 'CAPTCHA failed verifying a human, try again'));
 			}
 
-			session::$data['security']['is_human'] = true;
+			security::$data['is_human'] = true;
 
 			if (!empty($_GET['redirect_url'])) {
 				$redirect_url = new type_url($_GET['redirect_url']);
@@ -49,7 +49,7 @@
 			exit;
 
 		} catch(Exception $e) {
-			session::$data['security']['failed_authentications']++;
+			security::$data['failed_authentications']++;
 			notices::add('errors', $e->getMessage());
 		}
 	}
