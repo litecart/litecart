@@ -110,7 +110,7 @@
 
 			// LiteCore Fonticons
 			case (preg_match('#^icon-#', $icon)):
-				return '<i class="'. $icon .'"'. ($parameters ? ' ' . $parameters : '') .'></i>';
+				return '<i class="icon '. $icon .'"'. ($parameters ? ' ' . $parameters : '') .'></i>';
 
 			// Bootstrap Icons
 			case (preg_match('#^bi-#', $icon)):

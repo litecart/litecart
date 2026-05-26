@@ -160,7 +160,11 @@
 			return self::calculate($value, $to, $from);
 		}
 
-		public static function format(float $value, bool $auto_decimals=true, string $currency_code='', ?float $currency_value=null): string {
+		public static function format(float|null $value, bool $auto_decimals=true, string $currency_code='', ?float $currency_value=null): string {
+
+			if ($value === null) {
+				return '';
+			}
 
 			if (empty($currency_code)) {
 				$currency_code = self::$selected['code'];
@@ -189,7 +193,11 @@
 			return ($is_negative ? '-' : '') . $prefix . number_format(abs((float)$amount), (int)$decimals, language::$selected['decimal_point'], language::$selected['thousands_sep']) . $suffix;
 		}
 
-		public static function format_html(float $value, bool $auto_decimals=true, ?string $currency_code=null, ?float $currency_value=null): string|false {
+		public static function format_html(float|null $value, bool $auto_decimals=true, ?string $currency_code=null, ?float $currency_value=null): string|false {
+
+			if ($value === null) {
+				return '';
+			}
 
 			if (!$currency_code) {
 				$currency_code = self::$selected['code'];
@@ -242,7 +250,7 @@
 			]);
 		}
 
-		public static function format_raw(float $value, ?string $currency_code=null, ?float $currency_value=null): float|false {
+		public static function format_raw(float|null $value, ?string $currency_code=null, ?float $currency_value=null): float|false {
 
 			settype($value, 'float');
 

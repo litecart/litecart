@@ -2400,7 +2400,7 @@
 
 		$has_images = array_filter(array_column($product->stock_options, 'image')) ? true : false;
 
-		$options = array_map(function($stock_option) use ($product, $has_images) {
+		$options = array_map(function($stock_option) use ($product, $has_images, $attributes) {
 
 			if ($product->quantity_unit) {
 				$formatted_quantity_available = f::format_number($stock_option['quantity_available'], $product->quantity_unit['decimals']) .' '. $product->quantity_unit['name'];
@@ -2444,7 +2444,7 @@
 				}
 			}
 
-			return [$stock_option['id'], $option, 'hidden '.$attributes];
+			return [$stock_option['id'], $option, [...$attributes, 'hidden' => '']];
 		}, $product->stock_options);
 
 		if (preg_match('#\[\]$#', $name)) {
