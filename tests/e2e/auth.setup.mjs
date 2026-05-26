@@ -9,7 +9,7 @@ const ADMIN_USER = process.env.E2E_ADMIN_USER || 'litecart';
 const ADMIN_PASS = process.env.E2E_ADMIN_PASS || 'litecart';
 
 setup('authenticate as admin', async ({ page }) => {
-  await page.goto('/admin/');
+  await page.goto('/admin/login');
 
   // Fill login form
   await page.getByPlaceholder('Username or Email Address').fill(ADMIN_USER);
