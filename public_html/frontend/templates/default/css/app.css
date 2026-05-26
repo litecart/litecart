@@ -944,27 +944,38 @@ body {
 	color: var(--color-stock-unavailable);
 }
 #box-product .social-bookmarks {
+	font-size: 0.8em;
 	display: flex;
-}
-#box-product .social-bookmarks a {
-	display: inline-flex;
-	font-size: 1.25em;
-	padding: 0.5em;
-	border-radius: 50%;
-	aspect-ratio: 1/1;
-	line-height: 1;
+	gap: 1em;
+	flex-wrap: wrap;
 }
 #box-product .social-bookmarks .btn {
+	display: inline-flex;
+	border-radius: var(--border-radius);
+	line-height: 1;
 	background: var(--social-button-background);
 	color: var(--social-button-text-color);
+	overflow: hidden;
 	transition: background-color 500ms linear;
+	padding: 0;
+	margin: 0;
+	transition: all 75ms linear;
+	border: none;
 }
 #box-product .social-bookmarks .btn:hover {
 	background: var(--social-button-background--hover);
-	color: var(--social-button-text-color--hover) !important;
+	/*color: var(--social-button-text-color--hover);*/
+	transform: scale(1.1);
 }
-#box-product .social-bookmarks .btn:hover i {
-	color: var(--social-button-text-color--hover) !important;
+#box-product .social-bookmarks .btn .icon {
+	padding: 0.5em 1em;
+	width: auto;
+	height: auto;
+}
+#box-product .social-bookmarks .btn .description {
+	background: #fff;
+	padding: 0.5em 0.75em;
+	flex-grow: 1;
 }
 #box-product .description p:first-child {
 	margin-top: 0;

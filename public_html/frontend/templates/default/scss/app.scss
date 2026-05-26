@@ -1121,29 +1121,39 @@ body {
 	}
 
 	.social-bookmarks {
+		font-size: .8em;
 		display: flex;
-
-		a {
-			display: inline-flex;
-			font-size: 1.25em;
-			padding: 0.5em;
-			border-radius: 50%;
-			aspect-ratio: 1 / 1;
-			line-height: 1;
-		}
+		gap: 1em;
+		flex-wrap: wrap;
 
 		.btn {
+			display: inline-flex;
+			border-radius: var(--border-radius);
+			line-height: 1;
 			background: var(--social-button-background);
 			color: var(--social-button-text-color);
+			overflow: hidden;
 			transition: background-color 500ms linear;
+			padding: 0;
+			margin: 0;
+			transition: all 75ms linear;
+			border: none;
 
 			&:hover {
 				background: var(--social-button-background--hover);
-				color: var(--social-button-text-color--hover) !important;
+				/*color: var(--social-button-text-color--hover);*/
+				transform: scale(1.1);
+			}
 
-				i {
-					color: var(--social-button-text-color--hover) !important;
-				}
+			.icon {
+				padding: .5em 1em;
+				width: auto;
+				height: auto;
+			}
+			.description {
+				background: #fff;
+				padding: .5em .75em;
+				flex-grow: 1;
 			}
 		}
 	}
