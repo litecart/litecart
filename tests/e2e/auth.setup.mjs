@@ -5,8 +5,8 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const authFile = path.join(__dirname, '../../playwright/.auth/admin.json');
 
-const ADMIN_USER = process.env.E2E_ADMIN_USER || 'admin';
-const ADMIN_PASS = process.env.E2E_ADMIN_PASS || 'admin123456';
+const ADMIN_USER = process.env.E2E_ADMIN_USER || 'litecart';
+const ADMIN_PASS = process.env.E2E_ADMIN_PASS || 'litecart';
 
 setup('authenticate as admin', async ({ page }) => {
   await page.goto('/admin/');
