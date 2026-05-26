@@ -1,8 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512">
-	<g transform="translate(0 -540.3622)">
-		<rect width="171.2554" height="72.5974" x="174.4892" y="660.9335" fill="#abb3be" rx="32.5758"/>
-		<rect width="372.2944" height="199.1774" x="68.5714" y="707.4704" fill="#abb3be" rx="32.5758"/>
-		<ellipse cx="258.2554" cy="805.7561" fill="#acd9bf" fill-opacity=".251" stroke="#fff" stroke-width="18.9739" rx="66.2197" ry="63.4275"/>
-		<ellipse cx="108.2857" cy="730.0764" fill="#b8b3be" stroke="#fff" stroke-width="18.4437" rx="12.921" ry="1.4924"/>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="100%" height="100%" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+	<g id="nedladdning--4-.png" serif:id="nedladdning (4).png">
+		<path d="M127.769,175.31l155.608,38.141l0.733,168.953l-156.34,-45.039l0,-162.055Z" style="fill:#dadada;fill-opacity:1;"/>
+		<path d="M384.231,164.692l0,162.757l-100.147,54.956l-0.706,-168.953l100.854,-48.759Z" style="fill:#c8c8c8;fill-opacity:1;"/>
+		<path d="M227.655,129.595l156.576,35.097l-100.854,48.759l-155.608,-38.141l99.886,-45.715Z" style="fill:#e6e5e5;fill-opacity:0.99;"/>
+		<path d="M287.318,142.952l28.95,6.406l-95.771,48.58l-31.049,-7.538l97.87,-47.449Z" style="fill:#cccbcb;fill-opacity:0.99;"/>
+		<path d="M189.309,190.4l31.188,7.538c0,0 -0.289,43.375 -0.137,47.144c0.074,1.826 -0.787,3.126 -2.182,1.035c-2.825,-4.235 -5.038,1.497 -7.333,-1.084c-2.193,-2.466 -2.484,-3.2 -5.427,-1.432c-2.178,1.309 -3.868,-4.084 -5.483,-3.342c-3.028,1.391 -3.414,1.366 -5.563,-1.149c-1.175,-1.375 -1.428,-0.415 -4.418,0.833c-0.264,0.11 -1.203,0.502 -1.123,-3.392c0.117,-5.735 0.478,-46.15 0.478,-46.15Z" style="fill:#c2c2c2;"/>
 	</g>
 </svg>
