@@ -24,11 +24,10 @@
 
 	// Set defaults
 	if (!$_POST) {
-		$country_code = $_GET['country_code']
+		$_POST['country_code'] = $_GET['country_code']
 			?? $_SERVER['HTTP_CF_IPCOUNTRY']
 			?? $_SERVER['HTTP_X_COUNTRY_CODE']
 			?? $_SERVER['HTTP_X_COUNTRY']
-			?? json_decode(file_get_contents('https://ipapi.co/json/'), true)['country']
 			?? '';
 	}
 
@@ -424,5 +423,24 @@ waitFor('jQuery', function($){
 });
 </script>
 <?php } ?>
+
+<script nonce="<?php echo htmlspecialchars(NONCE, ENT_QUOTES); ?>">
+waitFor('jQuery', function($){
+
+	// Attempt to determine country from browser
+	if (!$('select[name="country_code"]').val() || !$('select[name="store_time_zone"]').val()) {
+		$.get('http://ip-api.com/json/?fields=countryCode,timezone', function(data){
+
+			if (!$('select[name="country_code"]').val() && data.countryCode && data.countryCode.length == 2) {
+				$('select[name="country_code"]').val(data.countryCode);
+			}
+
+			if (!$('select[name="store_time_zone"]').val() && data.timezone && data.timezone.length) {
+				$('select[name="store_time_zone"]').val(data.timezone);
+			}
+		});
+	}
+});
+</script>
 
 <?php require(__DIR__.'/includes/footer.inc.php'); ?>
