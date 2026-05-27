@@ -12,7 +12,8 @@
 			echo 'Configuration file not found. Please run the installer.';
 			exit(1);
 		} else {
-			header('Location: ./install/', true, 302);
+			$home_dir = preg_replace('#^'. preg_quote(rtrim(str_replace('\\', '/', $_SERVER['DOCUMENT_ROOT']), '/'), '#') .'#', '', str_replace('\\', '/', realpath(__DIR__ . '/..')));
+			header('Location: ' . $home_dir . '/install/', true, 302);
 			exit;
 		}
 	}
