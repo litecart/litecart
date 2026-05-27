@@ -27,6 +27,7 @@
 				'',
 				'Command:',
 				'  push_jobs          Run the background jobs',
+				'  navigate {uri}     Navigate to a specific URI',
 				'',
 			]);
 			exit;
@@ -39,6 +40,18 @@
 				// Run the background jobs
 				require_once 'app://frontend/pages/push_jobs.inc.php';
 				exit;
+
+			case 'navigate':
+
+				// Navigate to a specific URI
+				if (empty($argv[2])) {
+					echo 'Error: Missing URI argument.' . PHP_EOL;
+					exit(1);
+				}
+
+				$_SERVER['REQUEST_URI'] = $argv[2];
+
+				break;
 
 			default:
 				echo 'Unknown command: '. $argv[1] . PHP_EOL;
