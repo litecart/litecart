@@ -179,11 +179,11 @@
 
 						// Send HTTP 302 if it's the start page
 						if (parse_url(self::$request, PHP_URL_PATH) == WS_DIR_APP) {
-							redirect($rewritten_url, true, 302);
+							redirect($rewritten_url, 302);
 							exit;
 						}
 
-						redirect($rewritten_url, true, 301);
+						redirect($rewritten_url, 301);
 						exit;
 					}
 				}
@@ -465,23 +465,6 @@
 				}
 			}
 
-			// Detect URL rewrite support
-			if (isset($_SERVER['HTTP_MOD_REWRITE']) && filter_var($_SERVER['HTTP_MOD_REWRITE'], FILTER_VALIDATE_BOOLEAN)) { // PHP-FPM
-				$use_rewrite = true;
-
-			} else if (isset($_SERVER['REDIRECT_HTTP_MOD_REWRITE']) && filter_var($_SERVER['REDIRECT_HTTP_MOD_REWRITE'], FILTER_VALIDATE_BOOLEAN)) {  // Fast CGI
-				$use_rewrite = true;
-
-			} else if (function_exists('apache_get_modules') && in_array('mod_rewrite', apache_get_modules())) {
-				$use_rewrite = true;
-
-			} else if (preg_match('#(apache)#i', $_SERVER['SERVER_SOFTWARE'])) {
-				$use_rewrite = true;
-
-			} else {
-				$use_rewrite = false;
-			}
-
 			// Set language to URL
 			switch (language::$languages[$language_code]['url_type']) {
 
@@ -498,12 +481,9 @@
 				$link->unset_query('language');
 			}
 
-			// Set base (/index.php/ or /)
-			if ($use_rewrite) {
-				$link->path = WS_DIR_APP . ltrim($link->path, '/');
-			} else {
-				$link->path = WS_DIR_APP . 'index.php/' . ltrim($link->path, '/');
-			}
+			// Set base
+			$link->path = WS_DIR_APP . ltrim($link->path, '/');
+			//$link->path = WS_DIR_APP . 'index.php/' . ltrim($link->path, '/'); // No rewrite support
 
 			return self::$_links_cache[$language_code][$checksum] = (string)$link;
 		}
