@@ -56,7 +56,7 @@
 		"hash": "php .git-hooks/pre-commit.d/calculate_checksums.php",
 		"phplint": "gulp phplint",
 		"test": "php .git-hooks/pre-commit.d/platform_tests.php",
-		"test:e2e": "npx playwright test",
+		"test:e2e": "npx playwright test --reporter=list",
 		"uglify": "gulp replace",
 		"watch": "gulp watch",
 		"update": "bun update --latest",
