@@ -22,8 +22,8 @@ env:
       --store_language_code=en \
       --store_time_zone='America/New_York' \
       --backend_alias=admin \
-      --username=admin \
-      --password=admin123456 \
+      --username=litecart \
+      --password=litecart \
       --development_type=standard \
       --cleanup=0
 
