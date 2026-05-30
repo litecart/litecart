@@ -4,6 +4,8 @@ LiteCart is a lightweight e-commerce platform for online merchants. Developed in
 
 LiteCart is a registered trademark, property of founder T. Almroth - [LiteCart AB](https://www.litecart.net/).
 
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/litecart/litecart)
+
 
 ## Tech Stack
 
