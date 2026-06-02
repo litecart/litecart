@@ -77,8 +77,8 @@
 				'country_code',
 				'postcode',
 			] as $field) {
-				if (isset($_POST[$field])) {
-					$order->data['customer'][$field] = $_POST[$field];
+				if (isset($_POST['customer'][$field])) {
+					$order->data['customer'][$field] = $_POST['customer'][$field];
 				}
 			}
 
@@ -198,7 +198,6 @@
 			'regular_price' => $item['regular_price'],
 			'discount' => $item['discount'],
 			'final_price' => $item['final_price'],
-			'tax_class_id' => $item['tax_class_id'],
 			'tax_class_id' => $item['tax_class_id'] ?? null,
 			'quantity' => (float)$item['quantity'],
 			'quantity_unit_name' => $item['quantity_unit_name'] ?? '',

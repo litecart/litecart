@@ -204,27 +204,21 @@
 	padding: .5em 1em;
 	border-radius: var(--border-radius);
 }
-
 #tokens .token[data-name^="endpoint"] {
 	background: #d6d4b4;
 }
-
 #tokens .token[data-name^="collections"] {
 	background: #bcd6bc;
 }
-
 #tokens .token[data-name^="languages"] {
 	background: #c2d3e3;
 }
-
 #tokens .token[data-name^="untranslated"] {
 	background: #ddd;
 }
-
 #tokens .token + .token {
 	margin-left: .5em;
 }
-
 #tokens .token .remove {
 	margin-left: 1em;
 	color: inherit;

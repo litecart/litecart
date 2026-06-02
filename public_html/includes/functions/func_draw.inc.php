@@ -279,7 +279,7 @@
 		return '<img '. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="thumbnail '. f::escape_attr($clipping) .'"' : '') .' src="'. document::href_rlink($thumbnail) .'" srcset="'. document::href_rlink($thumbnail) .' 1x, '. document::href_rlink($thumbnail_2x) .' 2x"'. ($parameters ? ' '. $parameters : '') .'>';
 	}
 
-	function draw_price_tag(float $regular_price, ?float $final_price=null, ?string $currency_code=null, ?float $currency_value=null): string {
+	function draw_price_tag(float|null $regular_price, float|null $final_price=null, string|null $currency_code=null, float|null $currency_value=null): string {
 
 		if ($regular_price === null && $final_price === null) {
 			return '';

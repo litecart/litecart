@@ -57,9 +57,11 @@
 		if (!empty($app['menu'])) {
 			foreach ($app['menu'] as $menu_item) {
 
-				if (empty(administrator::$data['permissions']['apps'][$app['id']]) || !in_array($menu_item['doc'], administrator::$data['permissions']['apps'][$app['id']])) {
+				if (!empty(administrator::$data['permissions']['apps'][$app['id']]) && !in_array($menu_item['doc'], administrator::$data['permissions']['apps'][$app['id']])) {
 					continue;
 				}
+
+				$selected = false;
 
 				$params = !empty($menu_item['params']) ? array_merge(['app' => $app['id'], 'doc' => $menu_item['doc']], $menu_item['params']) : ['app' => $app['id'], 'doc' => $menu_item['doc']];
 
@@ -73,8 +75,6 @@
 							}
 						}
 					}
-				} else {
-					$selected = false;
 				}
 
 				$app_item['menu'][] = [

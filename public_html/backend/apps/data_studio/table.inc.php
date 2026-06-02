@@ -77,8 +77,15 @@
 	}
 
 	// Table Rows
-	$rows = database::query($_POST['query'])
-		->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
+	if (preg_match('#^\s*(SELECT|SHOW|EXPLAIN|DESCRIBE|WITH)\b#i', $_POST['query'])) {
+		$rows = database::query($_POST['query'])
+			->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
+	} else {
+		database::query($_POST['query']);
+		$rows = [];
+		$num_rows = 0;
+		$num_pages = 0;
+	}
 
 	$affected_rows = database::affected_rows();
 	if (preg_match('#^\s*(INSERT|UPDATE|DELETE|ALTER) #i', $_POST['query'])) {
@@ -183,6 +190,7 @@ textarea[name="query"] {
 
 		</div>
 
+		<?php if (!empty($rows)) { ?>
 		<div style="overflow-x: auto;">
 			<table class="table table-striped table-hover table-sortable data-table">
 				<thead>
@@ -200,7 +208,7 @@ textarea[name="query"] {
 					<tr data-pkv="<?php echo f::escape_attr($row[$primary_column]); ?>">
 						<td><?php echo f::form_checkbox('rows[]', $row[$primary_column]); ?></td>
 						<?php foreach ($row as $column => $value) { ?>
-						<td data-column-name="<?php echo f::escape_attr($column); ?>"><?php echo $value ? addcslashes(f::escape_html($value), "\t\r\n") : '<em>NULL</em>'; ?></td>
+						<td data-column-name="<?php echo f::escape_attr($column); ?>"><?php echo $value !== null ? addcslashes(f::escape_html($value), "\t\r\n") : '<em>NULL</em>'; ?></td>
 						<?php } ?>
 						<td class="text-end">
 							<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_row', ['table' => $_GET['name'], $primary_column => $row[$primary_column]]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>">
@@ -218,6 +226,7 @@ textarea[name="query"] {
 				</tfoot>
 			</table>
 		</div>
+		<?php } ?>
 
 		<?php if ($rows && in_array($primary_column, array_column($columns, 'name'))) { ?>
 		<div class="card-body">
@@ -335,7 +344,8 @@ textarea[name="query"] {
 		// Prevent multiple editors
 		if ($td.find('input, textarea, select').length) return;
 
-		const original = $td.text().trim();
+		const isNullValue = !!$td.find('em').length && $td.text().trim() === 'NULL';
+		const original = isNullValue ? null : $td.text().trim();
 		const colIndex = $td.index();
 		const $th = $('.data-table thead tr th').eq(colIndex);
 		const column = $th.data('name') || $td.data('column-name');
@@ -350,27 +360,40 @@ textarea[name="query"] {
 		// Choose input element based on type (switch for clarity)
 		let $input;
 		switch (true) {
-
+/*
 			case /tinyint\(1\)/i.test(type):
 				$input = $('<input type="checkbox">').addClass('form-check-input');
-				$input.prop('checked', original === '1' || original.toLowerCase() === 'true');
+				$input.prop('checked', original === '1' || (original && original.toLowerCase() === 'true'));
 				break;
+*/
 
 			case /int|tinyint|smallint|mediumint|bigint/i.test(type):
 				$input = $('<input class="form-input" type="number">');
 				if (unsigned) $input.attr('min', 0);
-				$input.val(original.replace(/[^0-9\-]/g, ''));
+				$input.val(original ? original.replace(/[^0-9\-]/g, '') : '');
 				break;
 
 			case /decimal|float|double/i.test(type):
 				$input = $('<input class="form-input" type="number">').attr('step', 'any');
 				if (unsigned) $input.attr('min', 0);
-				$input.val(original.replace(/[^0-9\.\-]/g, ''));
+				$input.val(original ? original.replace(/[^0-9\.\-]/g, '') : '');
 				break;
 
 			case /text|blob/i.test(type):
 				$input = $('<textarea class="form-input">');
 				$input.val(original);
+				break;
+
+			case /timestamp/i.test(type):
+				$input = $('<input class="form-input" type="datetime-local">');
+				if (original && original !== '0') {
+					const dt = new Date(original.replace(' ', 'T') + 'Z');
+					if (!isNaN(dt.getTime())) {
+						// Format as YYYY-MM-DDTHH:mm for datetime-local input
+						const local = new Date(dt.getTime() - dt.getTimezoneOffset() * 60000);
+						$input.val(local.toISOString().slice(0, 16));
+					}
+				}
 				break;
 
 			default:
@@ -383,22 +406,32 @@ textarea[name="query"] {
 				}
 		}
 
-		$td.empty().append($input);
-
-		// focus the input (avoid unsupported ':number' pseudo-selector)
-		$input.focus();
+		const nullRestore = isNullValue ? '<em>NULL</em>' : null;
+		let cancelled = false;
 
 		const finalize = function(displayVal, fallback) {
-			if (displayVal) $td.html(displayVal); else $td.text(fallback || original);
+			if (displayVal !== null && displayVal !== undefined) $td.html(displayVal);
+			else if (nullRestore) $td.html(nullRestore);
+			else $td.text(fallback || '');
 		};
 
 		const save = function() {
+			if (cancelled) return;
 			let sendVal;
-			if ($input.is(':checkbox')) sendVal = $input.prop('checked') ? '1' : '0';
-			else sendVal = $input.val();
+			const $nullCheck = $td.find('.null-toggle');
+			if ($nullCheck.length && !$nullCheck.prop('checked')) {
+				sendVal = '';
+			} else if ($input.is(':checkbox')) {
+				sendVal = $input.prop('checked') ? '1' : '0';
+			} else {
+				sendVal = $input.val();
+			}
 
-			// Treat empty string as NULL only when column is nullable
-			if (sendVal === '' && nullable) sendVal = '';
+			// Skip POST if value hasn't changed
+			if ((original === null && sendVal === '') || (original !== null && sendVal === original)) {
+				finalize(null, original);
+				return;
+			}
 
 			$.post('<?php echo document::ilink(__APP__.'/edit_cell'); ?>', {
 				'csrf_token': '<?php echo security::csrf_token(); ?>',
@@ -407,13 +440,7 @@ textarea[name="query"] {
 				'pkv': pkv,
 				'column': column,
 				'value': sendVal,
-				}).done(function(resp) {
-
-					try {
-						var result = JSON.parse(resp);
-					} catch(e) {
-						result = { error: resp };
-					}
+				}).done(function(result) {
 
 				if (result.success) {
 					finalize(result.value, original);
@@ -428,14 +455,52 @@ textarea[name="query"] {
 			});
 		};
 
-		$input.on('blur', save).on('keydown', function(e){
-			if (e.key === 'Enter' && $input.is(':text')) {
-				e.preventDefault();
-				$input.blur();
+		if (nullable) {
+			const $nullCheck = $('<input type="checkbox" class="null-toggle">').attr('title', 'Uncheck to set NULL');
+			$nullCheck.prop('checked', !isNullValue);
+			if (isNullValue) {
+				$input.prop('disabled', true).attr('placeholder', 'NULL').val('');
 			}
-			if (e.key === 'Escape') {
-				$td.text(original);
-			}
-		});
+			$nullCheck.on('change', function() {
+				const hasValue = $(this).prop('checked');
+				$input.prop('disabled', !hasValue);
+				if (hasValue) $input.focus();
+			});
+			const $wrapper = $('<span class="null-cell-editor">').css({display: 'inline-flex', gap: '4px', alignItems: 'center'});
+			$wrapper.on('focusout', function(e) {
+				if (!$wrapper[0].contains(e.relatedTarget)) save();
+			});
+			$td.empty().append($wrapper.append($nullCheck).append($input));
+			if (!isNullValue) $input.focus(); else $nullCheck.focus();
+			$input.on('keydown', function(e) {
+				if (e.key === 'Enter' && !$input.is('textarea')) {
+					e.preventDefault();
+					$input.blur();
+				}
+				if (e.key === 'Escape') {
+					cancelled = true;
+					finalize(null, original);
+				}
+			});
+			$nullCheck.on('keydown', function(e) {
+				if (e.key === 'Escape') {
+					cancelled = true;
+					finalize(null, original);
+				}
+			});
+		} else {
+			$td.empty().append($input);
+			// focus the input (avoid unsupported ':number' pseudo-selector)
+			$input.focus();
+			$input.on('blur', save).on('keydown', function(e){
+				if (e.key === 'Enter' && $input.is(':text')) {
+					e.preventDefault();
+					$input.blur();
+				}
+				if (e.key === 'Escape') {
+					$td.text(original);
+				}
+			});
+		}
 	});
 </script>

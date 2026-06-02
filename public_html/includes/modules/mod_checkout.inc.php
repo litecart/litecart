@@ -3,10 +3,6 @@
 	class mod_checkout extends abs_modules {
 		private $_selected;
 
-		public function __construct() {
-			$this->load();
-		}
-
 		public function select($module_id) {
 
 			if (!in_array($module_id, array_column($this->options, 'module_id'))) {

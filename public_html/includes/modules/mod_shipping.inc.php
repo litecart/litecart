@@ -24,6 +24,8 @@
 			if (!empty($this->selected['userdata']) && !empty($this->modules[$this->selected['module_id']])) {
 				$this->modules[$this->selected['module_id']]->userdata = &$this->selected['userdata'];
 			}
+
+			parent::__construct();
 		}
 
 		public function select($id, $userdata=[]) {

@@ -4,10 +4,8 @@
 		private $_cache;
 
 		public function __construct() {
-
 			$this->_cache = &session::$data['get_address_cache'];
-
-			$this->load();
+			parent::__construct();
 		}
 
 		public function get_address($fields) {

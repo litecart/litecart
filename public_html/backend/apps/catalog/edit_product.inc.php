@@ -466,7 +466,7 @@
 									<td><?php echo f::form_select_campaign('prices['.$key.'][campaign_id]', true); ?></td>
 									<td><span class="date-valid-from"><?php echo $price['valid_from'] ? f::datetime_when($price['valid_from']) : '-'; ?></span></td>
 									<td><span class="date-valid-to"><?php echo $price['valid_to'] ? f::datetime_when($price['valid_to']) : '-'; ?></span></td>
-									<td><?php echo f::form_input_decimal('prices['.$key.'][min_quantity]', true, ['min' => '0']); ?></td>
+									<td><?php echo f::form_input_decimal('prices['.$key.'][min_quantity]', true, 2, ['min' => '0']); ?></td>
 									<td>
 										<div class="dropdown dropdown-end">
 											<?php echo f::form_input_money('prices['.$key.'][price]['. settings::get('store_currency_code') .']', settings::get('store_currency_code'), true, ['style' => 'width: 125px;']); ?>

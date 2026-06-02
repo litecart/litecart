@@ -395,6 +395,7 @@
 						</div>
 					</fieldset>
 
+					<!--
 					<fieldset id="json" class="options">
 						<legend><?php echo t('title_format_options', 'Format Options'); ?></legend>
 						<div><em><?php echo t('text_no_options_for_selected_format', 'There are no options for this format.'); ?></em></div>
@@ -409,6 +410,7 @@
 						<legend><?php echo t('title_format_options', 'Format Options'); ?></legend>
 						<div><em><?php echo t('text_no_options_for_selected_format', 'There are no options for this format.'); ?></em></div>
 					</fieldset>
+					-->
 				</div>
 
 				<div class="text-center">

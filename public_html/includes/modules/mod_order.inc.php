@@ -2,10 +2,6 @@
 
 	class mod_order extends abs_modules {
 
-		public function __construct() {
-			$this->load();
-		}
-
 		public function actions(): array {
 
 			$actions = [];

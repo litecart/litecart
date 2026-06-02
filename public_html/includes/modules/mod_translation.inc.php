@@ -2,10 +2,6 @@
 
 	class mod_translation extends abs_modules {
 
-		public function __construct() {
-			$this->load();
-		}
-
 		public function translate($from_language_code, $to_language_code, $translations, $html = false) {
 
 			if (!$this->modules) {

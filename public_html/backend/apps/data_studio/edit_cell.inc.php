@@ -18,8 +18,7 @@
 		// Get column metadata
 		$column_info = database::query(
 			"SHOW FULL COLUMNS FROM `". database::input($_POST['table']) ."`
-			WHERE `Field` = '". database::input($_POST['column']) ."'
-			LIMIT 1;"
+			WHERE Field = '". database::input($_POST['column']) ."';"
 		)->fetch(function($column) {
 			return [
 				'name' => $column['Field'],

@@ -151,7 +151,11 @@
 			return ($value * self::$currencies[$from]['value']) / self::$currencies[$to]['value'];
 		}
 
-		public static function convert(float $value, string $from, string $to=''): float {
+		public static function convert(float|null $value, string $from, string $to=''): float {
+
+			if ($value === null) {
+				return null;
+			}
 
 			if (!$to) {
 				$to = settings::get('store_currency_code');

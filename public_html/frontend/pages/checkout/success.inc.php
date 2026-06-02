@@ -1,10 +1,11 @@
 <?php
 
-	/*
-		This file contains PHP logic that is separated from the HTML view.
-		Visual changes can be made to the file found in the template folder:
-		- frontend/templates/default/pages/checkout/success.inc.php
-	*/
+	/*!
+	 * This file contains PHP logic that is separated from the HTML view.
+	 * Visual changes can be made to the file found in the template folder:
+	 *
+	 *   ~/frontend/templates/default/pages/checkout/success.inc.php
+	 */
 
 	header('X-Robots-Tag: noindex');
 
@@ -19,15 +20,32 @@
 
 	try {
 
-		if (empty($_GET['order_id']) || empty($_GET['public_key'])) {
-			throw new Exception('Missing order_id or public_key');
+		if (!empty($_GET['order_id'])) {
+
+			$order = database::query(
+				"select id from ". DB_TABLE_PREFIX ."orders
+				where id = ". (int)$_GET['order_id'] ."
+				limit 1;"
+			)->fetch();
+
+			if (!$order) {
+				throw new Exception('Invalid order_id', 404);
+			}
+
+		} else if (!empty($_GET['order_no'])) {
+
+			$order = database::query(
+				"select id from ". DB_TABLE_PREFIX ."orders
+				where no = '". database::input($_GET['order_no']) ."'
+				limit 1;"
+			)->fetch();
+
+			if (!$order) {
+				throw new Exception('Invalid order_no', 404);
+			}
 		}
 
-		$order = new ent_order($_GET['order_id']);
-
-		if (empty($order->data['id']) || $_GET['public_key'] != $order->data['public_key']) {
-			throw new Exception('Not found or invalid public_key');
-		}
+		$order = new ent_order($order['id']);
 
 	} catch (Exception $e) {
 		http_response_code(404);
@@ -35,12 +53,11 @@
 		return;
 	}
 
-	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/order_success.inc.php');
+	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/checkout/success.inc.php');
+
 	$_page->snippets = [
 		'order' => $order->data,
-		'printable_link' => document::ilink('printable_order_copy', ['order_id' => $order->data['id'], 'public_key' => $order->data['public_key']]),
-		'payment_receipt' => (new mod_payment)->receipt($order),
-		'order_success_modules_output' => (new mod_order)->success($order),
+		'printable_link' => document::ilink('printable_order_copy', ['order_no' => $order->data['no'], 'public_key' => $order->data['public_key']]),
 	];
 
-	echo $_page;
+	echo $_page->render();

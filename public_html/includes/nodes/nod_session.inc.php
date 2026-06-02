@@ -209,11 +209,6 @@
 
 			self::$data = $session['data'];
 
-		// Restore ent_order from serialized data
-			if (!empty(self::$data['checkout']['order']) && is_array(self::$data['checkout']['order'])) {
-				self::$data['checkout']['order'] = ent_order::from_data(self::$data['checkout']['order']);
-			}
-
 			return true;
 		}
 
