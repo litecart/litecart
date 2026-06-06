@@ -40,7 +40,7 @@
 
 					echo 'Tracking order '. $order->data['id'] .' with tracking no '. $order->data['shipping_tracking_id'] . '...';
 
-					list($module_id, $option_id) = explode(':', $order->data['shipping_option']['id']);
+					[$module_id, $option_id] = explode(':', $order->data['shipping_option']['id']);
 
 					if (!$module_id) {
 						throw new Exception('No module ID');
