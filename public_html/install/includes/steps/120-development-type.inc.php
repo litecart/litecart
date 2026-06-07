@@ -15,10 +15,12 @@
 			file_put_contents(FS_DIR_APP . 'frontend/templates/default/.development', 'advanced');
 
 			perform_action('delete', [
+				FS_DIR_APP . 'assets/litecore/css/email.css',
+				FS_DIR_APP . 'assets/litecore/css/framework.css',
+				FS_DIR_APP . 'assets/litecore/css/printable.css',
+				FS_DIR_APP . 'assets/litecore/js/framework.js',
 				FS_DIR_APP . 'frontend/templates/*/css/app.css',
 				FS_DIR_APP . 'frontend/templates/*/css/checkout.css',
-				FS_DIR_APP . 'frontend/templates/*/css/framework.css',
-				FS_DIR_APP . 'frontend/templates/*/css/printable.css',
 				FS_DIR_APP . 'frontend/templates/*/js/app.js',
 			]);
 
@@ -27,21 +29,24 @@
 			file_put_contents(FS_DIR_APP . 'frontend/templates/default/.development', 'standard');
 
 			perform_action('delete', [
+				FS_DIR_APP . 'assets/litecore/css/*.min.css',
+				FS_DIR_APP . 'assets/litecore/css/*.min.css.map',
+				FS_DIR_APP . 'assets/litecore/css/*.min.css.map',
+				FS_DIR_APP . 'assets/litecore/scss/',
 				FS_DIR_APP . 'frontend/templates/*/css/*.min.css',
 				FS_DIR_APP . 'frontend/templates/*/css/*.min.css.map',
 				FS_DIR_APP . 'frontend/templates/*/scss/',
-				FS_DIR_APP . 'assets/litecore/css/*.min.css',
-				FS_DIR_APP . 'assets/litecore/css/*.min.css.map',
-				FS_DIR_APP . 'assets/litecore/scss/',
 			]);
 
 			perform_action('modify', [
 				FS_DIR_APP . 'frontend/templates/*/layouts/*.inc.php' => [
 					['search' => 'app.min.css',       'replace' => 'app.css'],
 					['search' => 'checkout.min.css',  'replace' => 'checkout.css'],
+					['search' => 'email.min.css',     'replace' => 'email.css'],
 					['search' => 'framework.min.css', 'replace' => 'framework.css'],
 					['search' => 'printable.min.css', 'replace' => 'printable.css'],
 					['search' => 'app.min.js',        'replace' => 'app.js'],
+					['search' => 'framework.min.js',  'replace' => 'framework.js'],
 				],
 			]);
 		}
