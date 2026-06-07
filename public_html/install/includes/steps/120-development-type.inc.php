@@ -30,6 +30,9 @@
 				FS_DIR_APP . 'frontend/templates/*/css/*.min.css',
 				FS_DIR_APP . 'frontend/templates/*/css/*.min.css.map',
 				FS_DIR_APP . 'frontend/templates/*/scss/',
+				FS_DIR_APP . 'assets/litecore/css/*.min.css',
+				FS_DIR_APP . 'assets/litecore/css/*.min.css.map',
+				FS_DIR_APP . 'assets/litecore/scss/',
 			]);
 
 			perform_action('modify', [
