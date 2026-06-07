@@ -164,6 +164,7 @@
 			$view->snippets = [
 				'content' => $content,
 				'language_code' => $this->data['language_code'],
+				'text_direction' => language::$languages[$this->data['language_code']]['direction'] ?? 'ltr',
 			];
 
 			$this->data['multiparts'][] = [
