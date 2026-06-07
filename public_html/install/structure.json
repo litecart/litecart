@@ -1297,7 +1297,7 @@
 				"min_quantity": ["min_quantity"]
 			},
 			"unique_keys": {
-				"price": ["product_id", "customer_id", "customer_group_id", "price_list_id", "geo_zone_id", "campaign_id", "min_quantity"]
+				"price": ["product_id", "customer_group_id", "geo_zone_id", "campaign_id", "min_quantity"]
 			},
 			"foreign_keys": {
 				"product_price_to_product": {
