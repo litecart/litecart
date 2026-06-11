@@ -17,7 +17,7 @@
 			"SHOW TABLE STATUS LIKE '". DB_TABLE_PREFIX ."brands';"
 		)->fetch('Auto_increment');
 
-		database::query("start transaction;");
+		database::begin_transaction();
 
 		// Create test category
 		$category = new ent_category();
@@ -196,7 +196,7 @@
 
 	} finally {
 
-		database::query('rollback;');
+		database::rollback();
 
 		database::query("ALTER TABLE ". DB_TABLE_PREFIX ."products AUTO_INCREMENT = ". (int)$products_auto_id .";");
 		database::query("ALTER TABLE ". DB_TABLE_PREFIX ."categories AUTO_INCREMENT = ". (int)$categories_auto_id .";");

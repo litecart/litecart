@@ -51,7 +51,11 @@
 		return (float)$amount * type_currency::CURRENCIES[$to_currency_code]['value'] / type_currency::CURRENCIES[$from_currency_code]['value'];
 	}
 
-	function convert_length(float $length, string $from_unit, string $to_unit): float|false {
+	function convert_length(float|null $length, string $from_unit, string $to_unit): float|false {
+
+		if ($length === null) {
+			return null;
+		}
 
 		if ($from_unit == $to_unit) {
 			return $length;
@@ -70,7 +74,11 @@
 		return (float)$length * type_length::UNITS[$to_unit] / type_length::UNITS[$from_unit];
 	}
 
-	function convert_weight(float $weight, string $from_unit, string $to_unit): float|false {
+	function convert_weight(float|null $weight, string $from_unit, string $to_unit): float|false {
+
+		if ($weight === null) {
+			return null;
+		}
 
 		if ($from_unit == $to_unit) {
 			return $weight;
@@ -89,7 +97,11 @@
 		return (float)$weight * type_weight::UNITS[$to_unit] / type_weight::UNITS[$from_unit];
 	}
 
-	function convert_volume(float $volume, string $from_unit, string $to_unit): float|false {
+	function convert_volume(float|null $volume, string $from_unit, string $to_unit): float|false {
+
+		if ($volume === null) {
+			return null;
+		}
 
 		if ($from_unit == $to_unit) {
 			return $volume;

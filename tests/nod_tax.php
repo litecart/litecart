@@ -21,7 +21,7 @@
 			"SHOW TABLE STATUS LIKE '". DB_TABLE_PREFIX ."tax_rates';"
 		)->fetch('Auto_increment');
 
-		database::query("start transaction;");
+		database::begin_transaction();
 
 		// Create test fixtures: geo zone + zone mapping + tax class + tax rate
 
@@ -187,7 +187,7 @@
 
 	} finally {
 
-		database::query('rollback;');
+		database::rollback();
 
 		database::query("ALTER TABLE ". DB_TABLE_PREFIX ."geo_zones AUTO_INCREMENT = ". (int)$geo_zones_auto_id .";");
 		database::query("ALTER TABLE ". DB_TABLE_PREFIX ."zones_to_geo_zones AUTO_INCREMENT = ". (int)$zones_to_geo_zones_auto_id .";");

@@ -21,7 +21,7 @@
 			"SHOW TABLE STATUS LIKE '". DB_TABLE_PREFIX ."tax_rates';"
 		)->fetch('Auto_increment');
 
-		database::query("start transaction;");
+		database::begin_transaction();
 
 		########################################################################
 		## AC-D1: Multilingual product fields (JSON columns)
@@ -186,7 +186,7 @@
 
 	} finally {
 
-		database::query('rollback;');
+		database::rollback();
 
 		database::query("ALTER TABLE ". DB_TABLE_PREFIX ."products AUTO_INCREMENT = ". (int)$products_auto_id .";");
 		database::query("ALTER TABLE ". DB_TABLE_PREFIX ."categories AUTO_INCREMENT = ". (int)$categories_auto_id .";");

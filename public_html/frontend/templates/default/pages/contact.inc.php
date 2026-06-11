@@ -1,11 +1,11 @@
 <main id="main" class="container">
+	{{notices}}
 
 	<div class="grid">
 
 		<div class="col-md-8">
 			<section id="box-contact-us" class="card">
 				<div class="card-body">
-					{{notices}}
 
 					<h1><?php echo t('title_contact_us', 'Contact Us'); ?></h1>
 

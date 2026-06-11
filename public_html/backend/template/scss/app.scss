@@ -375,9 +375,9 @@ h4 { font-size: 1.10em; }
 	line-height: 100%;
 	font-size: 1.25em;
 
-	// color: var(--app-color);
 	// color: #555;
-	color: color-mix(in srgb, var(--app-color) 100%, #777 50%);
+	//color: color-mix(in srgb, var(--app-color) 100%, #777 50%);
+	color: var(--app-color);
 
 	// background: var(--app-icon-background);
 	// clip-path: circle(50%);
@@ -544,4 +544,3 @@ html.condensed {
 	animation-iteration-count: infinite;
 	animation-timing-function: linear;
 }
-

@@ -15,7 +15,7 @@
 		)->fetch('Auto_increment');
 
 		// Start a MySQL transaction so we can rollback the test
-		database::query("start transaction;");
+		database::begin_transaction();
 
 		########################################################################
 		## Creating a new email
@@ -420,7 +420,7 @@
 	} finally {
 
 		// Rollback changes to the database
-		database::query('rollback;');
+		database::rollback();
 
 		// Revert the auto increment ID
 		database::query(

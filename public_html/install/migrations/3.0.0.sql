@@ -1,3 +1,17 @@
+RENAME TABLE `lc_manufacturers` TO `lc_brands`;
+-- -----
+RENAME TABLE `lc_manufacturers_info` TO `lc_brands_info`;
+-- -----
+RENAME TABLE `lc_orders_items` TO `lc_orders_stock_items`;
+-- -----
+RENAME TABLE `lc_products_options` TO `lc_products_customizations`;
+-- -----
+RENAME TABLE `lc_products_options_values` TO `lc_products_customizations_values`;
+-- -----
+RENAME TABLE `lc_products_options_stock` TO `lc_products_stock_options`;
+-- -----
+RENAME TABLE `lc_users` TO `lc_administrators`;
+-- -----
 CREATE TABLE `lc_banners` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
@@ -243,18 +257,6 @@ CREATE TABLE `lc_third_parties` (
 	INDEX `status` (`status`),
 	INDEX `country_code` (`country_code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
--- -----
-RENAME TABLE `lc_manufacturers` TO `lc_brands`;
--- -----
-RENAME TABLE `lc_manufacturers_info` TO `lc_brands_info`;
--- -----
-RENAME TABLE `lc_products_options` TO `lc_products_customizations`;
--- -----
-RENAME TABLE `lc_products_options_values` TO `lc_products_customizations_values`;
--- -----
-RENAME TABLE `lc_products_options_stock` TO `lc_products_stock_options`;
--- -----
-RENAME TABLE `lc_users` TO `lc_administrators`;
 -- -----
 ALTER TABLE `lc_administrators`
 CHANGE COLUMN `status` `status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',

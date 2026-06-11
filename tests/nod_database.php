@@ -177,7 +177,7 @@
 		## transaction — rollback works
 		########################################################################
 
-		database::query("start transaction;");
+		database::begin_transaction();
 
 		database::query(
 			"insert into ". DB_TABLE_PREFIX ."settings_groups
@@ -191,7 +191,7 @@
 			throw new Exception('transaction: INSERT should return an ID');
 		}
 
-		database::query("rollback;");
+		database::rollback();
 
 		$found = database::query(
 			"select id from ". DB_TABLE_PREFIX ."settings_groups

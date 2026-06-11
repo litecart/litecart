@@ -148,8 +148,8 @@
 	}
 }
 
-#box-checkout-shipping,
-#box-checkout-payment {
+#shipping-options,
+#payment-options {
 	.option {
 		display: block;
 		position: relative;
@@ -226,7 +226,7 @@
 	height: 100%;
 }
 
-#box-checkout-summary {
+#order-summary {
 	.alert {
 		padding: var(--input-padding-y) var(--input-padding-x);
 		text-align: center;
@@ -244,7 +244,7 @@
 	}
 }
 
-#box-checkout-summary tr td:first-child {
+#order-summary tr td:first-child {
 	width: 75px;
 }
 

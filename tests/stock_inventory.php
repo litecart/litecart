@@ -17,7 +17,7 @@
 			"SHOW TABLE STATUS LIKE '". DB_TABLE_PREFIX ."stock_transactions';"
 		)->fetch('Auto_increment');
 
-		database::query("start transaction;");
+		database::begin_transaction();
 
 		########################################################################
 		## AC-A1: Product with stock options references stock items
@@ -202,7 +202,7 @@
 
 	} finally {
 
-		database::query('rollback;');
+		database::rollback();
 
 		database::query("ALTER TABLE ". DB_TABLE_PREFIX ."stock_items AUTO_INCREMENT = ". (int)$stock_items_auto_id .";");
 		database::query("ALTER TABLE ". DB_TABLE_PREFIX ."products AUTO_INCREMENT = ". (int)$products_auto_id .";");

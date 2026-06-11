@@ -7,18 +7,18 @@
 
 		public static function init(): void {
 
+			// Bind customer to session
 			if (empty(session::$data['customer']) || !is_array(session::$data['customer'])) {
 				self::reset();
 			}
 
-			// Bind customer to session
 			self::$data = &session::$data['customer'];
 
+			// Bind scraps to session
 			if (empty(session::$data['scraps']) || !is_array(session::$data['scraps'])) {
 				session::$data['scraps'] = [];
 			}
 
-			// Bind scraps to session
 			self::$scraps = &session::$data['scraps'];
 
 			// Sign in a remembered customer (HMAC-based token)

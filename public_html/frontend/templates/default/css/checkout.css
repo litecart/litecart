@@ -126,8 +126,8 @@
 	color: var(--color-error);
 }
 
-#box-checkout-shipping .option,
-#box-checkout-payment .option {
+#shipping-options .option,
+#payment-options .option {
 	display: block;
 	position: relative;
 	padding: 0.5em;
@@ -137,42 +137,42 @@
 	user-select: none;
 	overflow: hidden;
 }
-#box-checkout-shipping .option .error,
-#box-checkout-payment .option .error {
+#shipping-options .option .error,
+#payment-options .option .error {
 	color: var(--color-error);
 }
-#box-checkout-shipping .option .content,
-#box-checkout-payment .option .content {
+#shipping-options .option .content,
+#payment-options .option .content {
 	max-height: 0;
 	overflow: hidden;
 	text-align: start;
 	transition: max-height 0.25s ease, padding 0.25s ease;
 }
-#box-checkout-shipping .option:hover:not(:has(input[name$="_option[id]"]:checked), :has(input[name$="_option[id]"][disabled])),
-#box-checkout-payment .option:hover:not(:has(input[name$="_option[id]"]:checked), :has(input[name$="_option[id]"][disabled])) {
+#shipping-options .option:hover:not(:has(input[name$="_option[id]"]:checked), :has(input[name$="_option[id]"][disabled])),
+#payment-options .option:hover:not(:has(input[name$="_option[id]"]:checked), :has(input[name$="_option[id]"][disabled])) {
 	cursor: pointer;
 	border-color: var(--default-border-color);
 }
-#box-checkout-shipping .option:has(input[name$="_option[id]"]:checked),
-#box-checkout-payment .option:has(input[name$="_option[id]"]:checked) {
+#shipping-options .option:has(input[name$="_option[id]"]:checked),
+#payment-options .option:has(input[name$="_option[id]"]:checked) {
 	cursor: default;
 	border-color: var(--default-title-color);
 }
-#box-checkout-shipping .option:has(input[name$="_option[id]"]:checked) .thumbnail,
-#box-checkout-payment .option:has(input[name$="_option[id]"]:checked) .thumbnail {
+#shipping-options .option:has(input[name$="_option[id]"]:checked) .thumbnail,
+#payment-options .option:has(input[name$="_option[id]"]:checked) .thumbnail {
 	padding: 0.5em;
 }
-#box-checkout-shipping .option:has(input[name$="_option[id]"]:checked) .name,
-#box-checkout-payment .option:has(input[name$="_option[id]"]:checked) .name {
+#shipping-options .option:has(input[name$="_option[id]"]:checked) .name,
+#payment-options .option:has(input[name$="_option[id]"]:checked) .name {
 	font-weight: bold;
 }
-#box-checkout-shipping .option:has(input[name$="_option[id]"]:checked) .content,
-#box-checkout-payment .option:has(input[name$="_option[id]"]:checked) .content {
+#shipping-options .option:has(input[name$="_option[id]"]:checked) .content,
+#payment-options .option:has(input[name$="_option[id]"]:checked) .content {
 	max-height: 200px;
 	overflow-y: auto;
 }
-#box-checkout-shipping .option:has(input[name$="_option[id]"]:checked)::after,
-#box-checkout-payment .option:has(input[name$="_option[id]"]:checked)::after {
+#shipping-options .option:has(input[name$="_option[id]"]:checked)::after,
+#payment-options .option:has(input[name$="_option[id]"]:checked)::after {
 	position: absolute;
 	top: 0.5em;
 	background: var(--default-title-color);
@@ -185,17 +185,17 @@
 	border-start-start-radius: var(--border-radius);
 	border-end-start-radius: var(--border-radius);
 }
-#box-checkout-shipping .option .option:has(input[name$="_option[id]"][disabled]),
-#box-checkout-payment .option .option:has(input[name$="_option[id]"][disabled]) {
+#shipping-options .option .option:has(input[name$="_option[id]"][disabled]),
+#payment-options .option .option:has(input[name$="_option[id]"][disabled]) {
 	opacity: 0.75;
 }
-#box-checkout-shipping .option + .option,
-#box-checkout-payment .option + .option {
+#shipping-options .option + .option,
+#payment-options .option + .option {
 	margin-top: 1em;
 }
 @media (min-width: 576px) {
-	#box-checkout-shipping .option,
-	#box-checkout-payment .option {
+	#shipping-options .option,
+	#payment-options .option {
 		padding: 1em;
 	}
 }
@@ -204,23 +204,23 @@
 	height: 100%;
 }
 
-#box-checkout-summary .alert {
+#order-summary .alert {
 	padding: var(--input-padding-y) var(--input-padding-x);
 	text-align: center;
 	line-height: 24px;
 }
-#box-checkout-summary input[type=checkbox][required]:not(:checked) {
+#order-summary input[type=checkbox][required]:not(:checked) {
 	outline: 2px solid var(--color-error);
 	outline-offset: 2px;
 }
 @media (min-width: 768px) {
-	#box-checkout-summary {
+	#order-summary {
 		position: sticky;
 		top: 3.5em;
 	}
 }
 
-#box-checkout-summary tr td:first-child {
+#order-summary tr td:first-child {
 	width: 75px;
 }
 

@@ -17,7 +17,7 @@
 			"SHOW TABLE STATUS LIKE '". DB_TABLE_PREFIX ."modules';"
 		)->fetch('Auto_increment');
 
-		database::query("start transaction;");
+		database::begin_transaction();
 
 		// Create test geo zone for DE
 		database::query(
@@ -166,7 +166,7 @@
 
 	} finally {
 
-		database::query('rollback;');
+		database::rollback();
 
 		database::query("ALTER TABLE ". DB_TABLE_PREFIX ."geo_zones AUTO_INCREMENT = ". (int)$geo_zones_auto_id .";");
 		database::query("ALTER TABLE ". DB_TABLE_PREFIX ."zones_to_geo_zones AUTO_INCREMENT = ". (int)$zones_to_geo_zones_auto_id .";");

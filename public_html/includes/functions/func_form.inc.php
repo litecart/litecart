@@ -700,7 +700,7 @@
 
 		$attributes = is_array($attributes) ? $attributes : form_attributes($attributes);
 
-		return f::draw_element('input', ['class' => 'form-input', 'type' => 'text', 'data-toggle' => 'tags', 'name' => $name, 'value' => $input, ...$attributes]);
+		return f::draw_element('input', ['class' => 'form-input', 'type' => 'text', 'data-toggle' => 'tags', 'name' => $name, 'value' => implode(', ', (array)$input), ...$attributes]);
 	}
 
 	function form_input_text(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
@@ -2765,7 +2765,7 @@
 		}
 	}
 
-	function form_select_zone(string $name, string $country_code='', bool|array|string $input=true, array|string $attributes=[], string $preamble='none'): string {
+	function form_select_zone(string $name, string|null $country_code=null, bool|array|string $input=true, array|string $attributes=[], string $preamble='none'): string {
 
 		if (preg_match('#^([A-Z]{2}|default_country_code|store_country_code)$#', $name)) {
 			trigger_error('form_select_zone() no longer takes country code as 1st parameter. Instead, use form_zones($name, $country_code, $input)', E_USER_DEPRECATED);

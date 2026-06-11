@@ -467,16 +467,10 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 									<div class="form-group">
 										<div class="rate-now">
-											<input type="radio" id="star5" name="rating" value="5"<?php echo ($customer_review['rating'] == 5) ? ' checked' : ''; ?>>
-												<label for="star5"></label>
-											<input type="radio" id="star4" name="rating" value="4"<?php echo ($customer_review['rating'] == 4) ? ' checked' : ''; ?>>
-												<label for="star4"></label>
-											<input type="radio" id="star3" name="rating" value="3"<?php echo ($customer_review['rating'] == 3) ? ' checked' : ''; ?>>
-												<label for="star3"></label>
-											<input type="radio" id="star2" name="rating" value="2"<?php echo ($customer_review['rating'] == 2) ? ' checked' : ''; ?>>
-												<label for="star2"></label>
-											<input type="radio" id="star1" name="rating" value="1"<?php echo ($customer_review['rating'] == 1) ? ' checked' : ''; ?>>
-												<label for="star1"></label>
+											<?php foreach (range(5, 1) as $i) { ?>
+											<input type="radio" id="star<?php echo $i; ?>" name="rating" value="<?php echo $i; ?>"<?php echo (isset($customer_review['rating']) && $customer_review['rating'] == $i) ? ' checked' : ''; ?>>
+												<label for="star<?php echo $i; ?>"><?php echo f::draw_fonticon('icon-star'); ?></label>
+											<?php } ?>
 										</div>
 									</div>
 
@@ -519,7 +513,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 									<?php if (settings::get('captcha_enabled')) { ?>
 									<div class="form-group">
 										<label><?php echo t('title_captcha', 'CAPTCHA'); ?></label>
-										<div style="max-width: 250px;"><?php echo f::form_captcha('captcha', 'review_product', ['required' => '']); ?></div>
+										<div style="max-width: 250px;"><?php echo f::form_captcha('review_product', ['required' => '']); ?></div>
 									</div>
 									<?php } ?>
 

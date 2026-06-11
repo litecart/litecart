@@ -37,7 +37,7 @@
 			'currency_value' => 1.0,
 		];
 
-		$lines = [
+		$items = [
 			[
 				'product_id' => 1,
 				'name' => 'Test Product',
@@ -143,7 +143,7 @@
 	} finally {
 
 		// Rollback changes to the database
-		database::query("rollback;");
+		database::rollback();
 
 		// Revert the auto increment ID
 		database::query(

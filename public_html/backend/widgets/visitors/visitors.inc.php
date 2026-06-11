@@ -81,7 +81,7 @@
 <div class="widget">
 	<div class="card">
 		<div class="card-header">
-			<h2 class="card-title"><?php echo t('title_website_traffic', 'Website Traffic'); ?></h2>
+			<h2 class="card-title"><?php echo t('title_visitors', 'Visitors'); ?></h2>
 		</div>
 
 		<div class="card-body">

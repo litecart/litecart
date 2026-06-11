@@ -117,9 +117,7 @@
 			}
 
 			// Commit the transaction
-			database::query(
-				"commit;"
-			);
+			database::commit();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			reload();
@@ -128,9 +126,7 @@
 		} catch (Exception $e) {
 
 			// Rollback the transaction
-			database::query(
-				"rollback;"
-			);
+			database::rollback();
 
 			notices::add('errors', $e->getMessage());
 		}

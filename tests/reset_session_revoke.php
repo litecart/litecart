@@ -8,7 +8,7 @@
 			"SHOW TABLE STATUS LIKE '". DB_TABLE_PREFIX ."customers';"
 		)->fetch('Auto_increment');
 
-		database::query("start transaction;");
+		database::begin_transaction();
 
 		########################################################################
 		## Create a customer
@@ -97,7 +97,7 @@
 
 	} finally {
 
-		database::query('rollback;');
+		database::rollback();
 
 		database::query(
 			"ALTER TABLE ". DB_TABLE_PREFIX ."customers AUTO_INCREMENT = ". (int)$auto_increment_id .";"

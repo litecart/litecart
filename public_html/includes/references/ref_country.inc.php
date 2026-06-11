@@ -55,7 +55,7 @@
 			return f::format_address($address);
 		}
 
-		public function in_geo_zone(array $geo_zones, array $address = []): bool {
+		public function in_geo_zone(int|array $geo_zones, array $address = []): bool {
 
 			$args = func_get_args();
 

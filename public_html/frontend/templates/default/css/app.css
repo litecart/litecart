@@ -1001,7 +1001,6 @@ body {
 	margin-bottom: 0.5em;
 }
 #box-product .rate-now {
-	width: 270px;
 	display: inline-block;
 }
 #box-product .rate-now fieldset {
@@ -1017,26 +1016,21 @@ body {
 	float: right;
 	padding: 10px;
 	font-size: 36px;
-	color: #444;
+	color: #777;
 	transition: all 0.2s;
 }
-#box-product .rate-now input[name=rating]:checked ~ label::before {
-	content: "\f005";
+#box-product .rate-now input[name=rating]:checked ~ label {
 	color: orange;
 	transition: all 0.25s;
 }
-#box-product .rate-now input[name=rating][value="5"]:checked ~ label::before {
+#box-product .rate-now input[name=rating][value="5"]:checked ~ label {
 	text-shadow: 0 0 10px orange;
 }
-#box-product .rate-now input[name=rating][value="1"]:checked ~ label::before {
+#box-product .rate-now input[name=rating][value="1"]:checked ~ label {
 	color: #F62;
 }
 #box-product .rate-now input[name=rating] ~ label:hover {
 	transform: rotate(-15deg) scale(1.3);
-}
-#box-product .rate-now input[name=rating] ~ label::before {
-	content: "\f006";
-	font-family: FontAwesome;
 }
 #box-product .review {
 	position: relative;

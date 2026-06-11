@@ -3,5 +3,5 @@
 	return [
 		'name' => t('title_graphs', 'Graphs'),
 		'file' => 'graphs.inc.php',
-		'priority' => 1,
+		'priority' => 10,
 	];

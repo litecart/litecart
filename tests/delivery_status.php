@@ -5,7 +5,7 @@
 	try {
 
 		// Start a MySQL transaction so we can rollback the test
-		database::query("start transaction;");
+		database::begin_transaction();
 
 		// Fetch the current auto increment ID
 		$auto_increment_id = database::query(
@@ -112,5 +112,5 @@
 		);
 
 		// Rollback changes to the database
-		database::query("rollback;");
+		database::rollback();
 	}

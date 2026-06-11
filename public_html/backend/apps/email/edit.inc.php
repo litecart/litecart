@@ -105,7 +105,14 @@
 		),
 	];
 
-	$templates = glob('app://frontend/templates/default/email/*.inc.php');
+	$_layout = new ent_view('app://frontend/templates/'. settings::get('template') .'/layouts/email.inc.php');
+	$_layout->snippets = [
+		'content' => '{{content}}',
+		'language_code' => language::$selected['code'],
+		'text_direction' => language::$languages[language::$selected['code']]['direction'] ?? 'ltr',
+	];
+
+	$html = $_layout->render();
 
 ?>
 <style>
@@ -180,11 +187,6 @@
 
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_template', 'Template'); ?></div>
-						<?php echo f::form_select('template', $templates, true); ?>
-					</label>
-
-					<label class="form-group">
 						<div class="form-label"><?php echo t('title_preview', 'Preview'); ?></div>
 						<iframe id="preview"></iframe>
 					</label>
@@ -203,11 +205,7 @@
 </div>
 
 <script>
-	var template = [
-		'<div style="background: #f0f0f0; padding: 1em;">',
-		'\{\{content\}\}',
-		'</div>'
-	].join('\n');
+	var template = `<?php echo f::escape_js($html); ?>`;
 
 	$('textarea[name="multiparts[0][body]"]').on('input', function(){
 		let content = template.replace(/\{\{content\}\}/g, $(this).val());

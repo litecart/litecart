@@ -184,7 +184,7 @@
 								<div class="form-label"><?php echo t('title_properties', 'Properties'); ?></div>
 
 								<div>
-									<strong><?php echo f::form_checkbox(['hidden' => ''], ['1', t('text_hidden', 'Hidden')], empty($_POST['hidden']) ? '0' : '1'); ?></strong>
+									<strong><?php echo f::form_checkbox('hidden', ['1', t('text_hidden', 'Hidden')], empty($_POST['hidden']) ? '0' : '1'); ?></strong>
 									<?php echo t('text_hidden_from_customer', 'Hidden from the customer\'s order history'); ?>
 								</div>
 

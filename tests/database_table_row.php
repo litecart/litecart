@@ -14,7 +14,7 @@
 			"SHOW TABLE STATUS LIKE '". DB_TABLE_PREFIX ."redirects';"
 		)->fetch('Auto_increment');
 
-		database::query("start transaction;");
+		database::begin_transaction();
 
 		########################################################################
 		## Create via ent_database_table_row
@@ -104,7 +104,7 @@
 
 	} finally {
 
-		database::query('rollback;');
+		database::rollback();
 
 		database::query(
 			"ALTER TABLE ". DB_TABLE_PREFIX ."redirects

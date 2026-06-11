@@ -4,7 +4,7 @@
 
 	try {
 
-		database::query("start transaction;");
+		database::begin_transaction();
 
 		########################################################################
 		## Expired session row must be rejected by session::load()
@@ -138,5 +138,5 @@
 
 	} finally {
 
-		database::query('rollback;');
+		database::rollback();
 	}

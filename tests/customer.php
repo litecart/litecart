@@ -10,7 +10,7 @@
 		)->fetch('Auto_increment');
 
 		// Start a MySQL transaction - so we can rollback the changes
-		database::query("start transaction;");
+		database::begin_transaction();
 
 		// Define some example data
 		$data = [
@@ -103,7 +103,7 @@
 	} finally {
 
 		// Rollback changes to the database
-		database::query('rollback;');
+		database::rollback();
 
 		// Reset the auto increment
 		database::query(

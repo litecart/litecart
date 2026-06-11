@@ -17,7 +17,7 @@
 			"SHOW TABLE STATUS LIKE '". DB_TABLE_PREFIX ."cart_items';"
 		)->fetch('Auto_increment');
 
-		database::query("start transaction;");
+		database::begin_transaction();
 
 		// Create a simple product for cart tests
 		$product = new ent_product();
@@ -179,7 +179,7 @@
 
 		cart::clear();
 
-		database::query('rollback;');
+		database::rollback();
 
 		database::query("ALTER TABLE ". DB_TABLE_PREFIX ."products AUTO_INCREMENT = ". (int)$products_auto_id .";");
 		database::query("ALTER TABLE ". DB_TABLE_PREFIX ."stock_items AUTO_INCREMENT = ". (int)$stock_items_auto_id .";");
