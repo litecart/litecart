@@ -1,6 +1,6 @@
 <?php
 
-	### Installer > Update #################################################
+	### Download Latest Updates #########################################
 
 	if (!empty($_REQUEST['skip_updates'])) {
 

@@ -1,7 +1,6 @@
 <?php
 
-
-	########################################################################
+	### Update Database Structure ##########################################
 
 	echo 'Update table structures...' . PHP_EOL;
 
@@ -42,7 +41,7 @@
 		}
 	}
 
-	#############################################
+	### Ensure Specific Table Properties ###################################
 
 	// Iterate through each table (this is to ensure specific table properties)
 	foreach ($structure['tables'] as $table) {
@@ -73,7 +72,7 @@
 		}
 	}
 
-	########################################################################
+	### Modify Table Columns ############################################
 
 	// Iterate through each table and add/change columns and keys
 	foreach ($structure['tables'] as $table) {
@@ -284,5 +283,3 @@
 
 		echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 	}
-
-	########################################################################

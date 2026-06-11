@@ -1,6 +1,6 @@
 <?php
 
-	### Installer > Update #################################################
+	### Run Migrations #####################################################
 
 	$current_version = PLATFORM_DATABASE_VERSION;
 
