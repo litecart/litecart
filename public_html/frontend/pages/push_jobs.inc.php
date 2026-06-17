@@ -6,17 +6,20 @@
 	header('X-Robots-Tag: noindex');
 	header('Content-type: text/plain; charset='. mb_http_output());
 
-	if ($last_push = settings::get('jobs_last_push')) {
-		$last_push = strtotime($last_push);
-		if (date('Ymdh', $last_push) == date('Ymdh') && floor(date('i', $last_push)/5) == floor(date('i')/5)) {
-			die('Zzz...');
+	if ($_SERVER['SERVER_SOFTWARE'] != 'CLI') {
+		if ($last_push = settings::get('jobs_last_push')) {
+			$last_push = strtotime($last_push);
+			if (date('Ymdh', $last_push) == date('Ymdh') && floor(date('i', $last_push)/5) == floor(date('i')/5)) {
+				header('HTTP/1.1 429 Too Many Requests');
+				die('Zzz...');
+			}
 		}
 	}
 
 	database::query(
 		"update ". DB_TABLE_PREFIX ."settings
 		set value = '". date('Y-m-d H:i:s') ."'
-		where `key` = 'jobs_last_run'
+		where `key` = 'jobs_last_push'
 		limit 1;"
 	);
 

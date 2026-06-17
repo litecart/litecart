@@ -7,7 +7,7 @@
 	];
 
 	$toolset['tools'][] = [
-		'name' => 'stats_summary',
+		'name' => 'summary_stats',
 		'description' => 'Returns shop statistics: sales totals (month/year/all-time), order counts, averages, top 5 products by quantity, and customer/product/category counts. All monetary values in the store\'s base currency.',
 		'inputSchema' => [
 			'type' => 'object',
@@ -93,16 +93,20 @@
 			// Counts
 			$result['counts'] = [
 				'customers' => (int)database::query(
-					"select count(id) as n from ". DB_TABLE_PREFIX ."customers;"
-				)->fetch('n'),
-
-				'products' => (int)database::query(
-					"select count(id) as n from ". DB_TABLE_PREFIX ."products where status;"
-				)->fetch('n'),
+					"select count(id) as num_customers from ". DB_TABLE_PREFIX ."customers;"
+				)->fetch('num_customers'),
 
 				'categories' => (int)database::query(
-					"select count(id) as n from ". DB_TABLE_PREFIX ."categories where status;"
-				)->fetch('n'),
+					"select count(id) as num_categories from ". DB_TABLE_PREFIX ."categories where status;"
+				)->fetch('num_categories'),
+
+				'products' => (int)database::query(
+					"select count(id) as num_products from ". DB_TABLE_PREFIX ."products where status;"
+				)->fetch('num_products'),
+
+				'stock_items' => (int)database::query(
+					"select count(id) as num_stock_items from ". DB_TABLE_PREFIX ."products where status;"
+				)->fetch('num_stock_items'),
 			];
 
 			return $result;

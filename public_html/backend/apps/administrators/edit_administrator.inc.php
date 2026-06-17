@@ -245,7 +245,7 @@
 
 									<?php
 										$totp_uri = f::totp_build_uri(session::$data['totp_pending_secret'], $administrator->data['username'], settings::get('store_name'));
-										$totp_svg = f::totp_generate_qr_svg($totp_uri, 200);
+										$totp_svg = f::qr_generate($totp_uri, 200);
 									?>
 
 									<div style="text-align: center; margin-bottom: 1em;">

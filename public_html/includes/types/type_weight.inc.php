@@ -71,6 +71,20 @@
 			return $this->value;
 		}
 
+		public function add(float|type_weight $value, $unit = null): self {
+
+			if ($value instanceof type_weight) {
+				$weight = $value;
+			} else {
+				$weight = new self($value, $unit);
+			}
+
+			$weight->convert($this->unit);
+			$this->value += $weight->value;
+
+			return $this;
+		}
+
 		public function convert(string $to): self {
 
 			$to = strtolower($to);

@@ -2,7 +2,7 @@
 
 	// Minimal QR Code generator (Byte mode, ECC Level L) — reusable functions
 
-	function qr_generate_svg(string $data, int $size = 200): string {
+	function qr_generate(string $data, int $size = 200): string {
 		$encoded = qr_encode($data);
 		if (!$encoded) return '';
 

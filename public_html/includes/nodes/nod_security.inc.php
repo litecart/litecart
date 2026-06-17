@@ -82,6 +82,38 @@
 					}
 				}
 			}
+
+			// CSRF protection for state-changing requests
+			if ($_SERVER['SERVER_SOFTWARE'] != 'CLI' && !in_array($_SERVER['REQUEST_METHOD'], ['GET', 'HEAD', 'OPTIONS'])) {
+
+				// Excluded paths (payment gateway callbacks, MCP endpoints)
+				$csrf_excluded_paths = ['checkout/verify', 'mcp'];
+				$csrf_skip = false;
+				$request_path = strtok($_SERVER['REQUEST_URI'], '?');
+				foreach ($csrf_excluded_paths as $path) {
+					if (preg_match('#/' . preg_quote($path, '#') . '(?:/|$)#', $request_path)) {
+						$csrf_skip = true;
+						break;
+					}
+				}
+
+				if (!$csrf_skip) {
+					$submitted_token = $_POST['csrf_token'] ?? $_SERVER['HTTP_X_CSRF_TOKEN'] ?? '';
+					if (!hash_equals(security::csrf_token(), $submitted_token)) {
+						http_response_code(403);
+						if (is_ajax_request()) {
+							header('Content-Type: application/json');
+							echo f::format_json(['error' => 'CSRF token mismatch. Please reload the page and try again.']);
+						} else {
+							echo implode(PHP_EOL, [
+								'<h1>403 Forbidden</h1>',
+								'<p>CSRF token mismatch. Please <a href="javascript:history.back()">go back</a> and try again.</p>'
+							]);
+						}
+						exit;
+					}
+				}
+			}
 		}
 
 		public static function is_human() {

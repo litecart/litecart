@@ -31,6 +31,32 @@
 			?? '';
 	}
 
+	$writables = [
+		FS_DIR_STORAGE . 'cache/',
+		FS_DIR_STORAGE . 'data/',
+		FS_DIR_STORAGE . 'images/',
+		FS_DIR_STORAGE . 'config.inc.php',
+		FS_DIR_STORAGE . 'vmods/',
+		FS_DIR_STORAGE . '.htaccess',
+	];
+
+	$timezones = [];
+	foreach (timezone_identifiers_list() as $timezone) {
+		$timezone = explode('/', $timezone);
+		if (!in_array($timezone[0], [
+			'Africa',
+			'America',
+			'Antarctica',
+			'Arctic',
+			'Asia',
+			'Atlantic',
+			'Australia',
+			'Europe',
+			'Indian',
+			'Pacific'
+		]) || empty($timezone[1])) continue;
+		$timezones[] = implode('/', $timezone);
+	}
 ?>
 <style>
 ul {
@@ -135,14 +161,7 @@ input[name="development_type"]:checked + div {
 
 	<ul>
 <?php
-	foreach ([
-		FS_DIR_STORAGE . 'cache/',
-		FS_DIR_STORAGE . 'data/',
-		FS_DIR_STORAGE . 'images/',
-		FS_DIR_STORAGE . 'config.inc.php',
-		FS_DIR_STORAGE . 'vmods/',
-		FS_DIR_STORAGE . '.htaccess',
-	] as $path) {
+	foreach ($writables as $path) {
 		if ((file_exists($path) && is_writable($path)) || is_writable(dirname($path))) {
 			echo '    <li>~/'. preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $path) .' <span class="ok">[OK]</span></li>' . PHP_EOL;
 		} else {
@@ -309,25 +328,9 @@ input[name="development_type"]:checked + div {
 				<div class="form-label">Time Zone</div>
 				<select class="form-input" name="store_time_zone" required>
 					<option value="">-- Select --</option>
-<?php
-	foreach (timezone_identifiers_list() as $timezone) {
-		$timezone = explode('/', $timezone);
-		if (!in_array($timezone[0], [
-			'Africa',
-			'America',
-			'Antarctica',
-			'Arctic',
-			'Asia',
-			'Atlantic',
-			'Australia',
-			'Europe',
-			'Indian',
-			'Pacific'
-		])) continue;
-		if (empty($timezone[1])) continue;
-		echo '<option>'. implode('/', $timezone) .'</option>';
-	}
-?>
+					<?php	foreach ($timezones as $timezone) { ?>
+					<option><?php echo $timezone; ?></option>
+					<?php } ?>
 				</select>
 			</label>
 		</div>
@@ -416,16 +419,15 @@ input[name="development_type"]:checked + div {
 	<p>Warning: An existing installation has been detected. It <u>will be deleted</u> if you continue!</p>
 	<p><a class="btn btn-default" href="upgrade.php">Click here to upgrade instead <i class="icon-arrow-right"></i></a></p>
 </div>
-
-<script nonce="<?php echo htmlspecialchars(NONCE, ENT_QUOTES); ?>">
-waitFor('jQuery', function($){
-	$.litebox('#modal-warning-existing-installation');
-});
-</script>
 <?php } ?>
 
 <script nonce="<?php echo htmlspecialchars(NONCE, ENT_QUOTES); ?>">
 waitFor('jQuery', function($){
+
+	<?php if (!empty($installation_detected)) { ?>
+	// Warn about existing installation
+	$.litebox('#modal-warning-existing-installation');
+	<?php } ?>
 
 	// Attempt to determine country from browser
 	if (!$('select[name="country_code"]').val() || !$('select[name="store_time_zone"]').val()) {
@@ -440,6 +442,7 @@ waitFor('jQuery', function($){
 			}
 		});
 	}
+
 });
 </script>
 

@@ -87,6 +87,20 @@
 			return $this->value;
 		}
 
+		public function add(float|type_length $value, $unit = null): self {
+
+			if ($value instanceof type_length) {
+				$length = $value;
+			} else {
+				$length = new self($value, $unit);
+			}
+
+			$length->convert($this->unit);
+			$this->value += $length->value;
+
+			return $this;
+		}
+
 		public function convert(string $to): self|false {
 
 			$to = strtolower($to);

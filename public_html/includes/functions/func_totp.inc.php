@@ -43,12 +43,13 @@
 
 	function totp_build_uri(string $secret, string $account, string $issuer): string {
 
-		return 'otpauth://totp/' . rawurlencode($issuer) . ':' . rawurlencode($account)
-			. '?secret=' . $secret
-			. '&issuer=' . rawurlencode($issuer)
-			. '&algorithm=SHA1'
-			. '&digits=6'
-			. '&period=30';
+		return 'otpauth://totp/' . rawurlencode($issuer) . ':' . rawurlencode($account) .'?'. http_build_query([
+			'secret' => $secret,
+			'issuer' => $issuer,
+			'algorithm' => 'SHA1',
+			'digits' => 6,
+			'period' => 30,
+		]);
 	}
 
 	function totp_base32_encode(string $data): string {
@@ -87,8 +88,4 @@
 		}
 
 		return $decoded;
-	}
-
-	function totp_generate_qr_svg(string $data, int $size = 200): string {
-		return f::qr_generate_svg($data, $size);
 	}

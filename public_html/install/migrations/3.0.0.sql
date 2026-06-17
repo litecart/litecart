@@ -1078,8 +1078,7 @@ SET `function` = 'page()'
 WHERE `function` = 'pages()';
 -- -----
 UPDATE `lc_settings`
-SET `key` = 'jobs_last_push',
-	`title` = 'Background Jobs Last Push',
+SET `title` = 'Background Jobs Last Push',
 	`description` = 'Time when background jobs were last pushed.'
 WHERE `key` = 'jobs_last_push'
 LIMIT 1;

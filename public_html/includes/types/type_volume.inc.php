@@ -131,6 +131,20 @@
 			return $this->value;
 		}
 
+		public function add(float|type_volume $value, $unit = null): self {
+
+			if ($value instanceof type_volume) {
+				$volume = $value;
+			} else {
+				$volume = new self($value, $unit);
+			}
+
+			$volume->convert($this->unit);
+			$this->value += $volume->value;
+
+			return $this;
+		}
+
 		public function convert(string $to): self {
 
 			$to = strtolower($to);

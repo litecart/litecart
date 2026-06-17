@@ -28,8 +28,8 @@
 		$_SERVER['DOCUMENT_ROOT'] = realpath(__DIR__.'/..');
 		$_SERVER['REMOTE_ADDR'] = '127.0.0.1';
 		$_SERVER['SERVER_NAME'] = 'localhost';
-		$_SERVER['SERVER_PORT'] = '80';
-		$_SERVER['SERVER_PROTOCOL'] = 'https';
+		$_SERVER['SERVER_PORT'] = '443';
+		$_SERVER['SERVER_PROTOCOL'] = 'HTTP/1.1';
 		$_SERVER['REQUEST_METHOD'] = 'GET';
 		$_SERVER['REQUEST_URI'] = '/';
 		$_SERVER['SERVER_SOFTWARE'] = 'CLI';
@@ -59,7 +59,6 @@
 /*
 	// Proxy users (enable only if these headers are passed safely by your server stack)
 	if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
-		$_SERVER['SERVER_PROTOCOL'] = 'https';
 		$_SERVER['HTTPS'] = 'on';
 		$_SERVER['SERVER_PORT'] = 443;
 	}
