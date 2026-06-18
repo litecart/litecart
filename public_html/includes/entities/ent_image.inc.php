@@ -22,7 +22,9 @@
       ImageFill($imgCropped, 0, 0, ImageColorAllocateAlpha($imgCropped, $whiteSpace[0], $whiteSpace[1], $whiteSpace[2], 127));
       ImageCopy($imgCropped, $src_im, 0, 0, $srcX, $srcY, $iSrcWidth-$srcX, $iSrcHeight-$srcY);
       $result = ImageCopyResampled($dst_im, $imgCropped, 0, 0, 0, 0, $dstW, $dstH, $srcW, $srcH);
-      ImageDestroy($imgCropped);
+      if (version_compare(PHP_VERSION, '8.0.0', '<')) {
+        ImageDestroy($imgCropped);
+      }
       return $result;
     }
   }
@@ -432,7 +434,10 @@
           $this->_width = $destination_width;
           $this->_height = $destination_height;
 
-          ImageDestroy($this->_image);
+          if (version_compare(PHP_VERSION, '8.0.0', '<')) {
+            ImageDestroy($this->_image);
+          }
+
           $this->_image = $_resized;
 
           return true;
@@ -644,7 +649,9 @@
           $result = ImageCopy($_image, $this->_image, $padding, $padding, $left, $top, $width, $height);
 
           if ($result) {
-            ImageDestroy($this->_image);
+            if (version_compare(PHP_VERSION, '8.0.0', '<')) {
+              ImageDestroy($this->_image);
+            }
             $this->_image = $_image;
             $this->_width = $width + $padding * 2;
             $this->_height = $height + $padding * 2;
@@ -760,7 +767,9 @@
           $result = ImageCopy($this->_image, $_watermark->_image, $offset_x, $offset_y, 0, 0, $_watermark->width(), $_watermark->height());
 
         // Free some RAM memory
-          ImageDestroy($_watermark->_image);
+          if (version_compare(PHP_VERSION, '8.0.0', '<')) {
+            ImageDestroy($_watermark->_image);
+          }
 
           return $result;
       }
@@ -892,7 +901,9 @@
               }
               ImageSaveAlpha($this->_image, true);
               $result = ImageAVIF($this->_image, $destination, $quality);
-              ImageDestroy($this->_image);
+              if (version_compare(PHP_VERSION, '8.0.0', '<')) {
+                ImageDestroy($this->_image);
+              }
               return $result;
 
             case 'gif':
@@ -903,8 +914,10 @@
               ImageAlphaBlending($_background, false);
               imagetruecolortopalette($_background, false, 255);
               $result = ImageGIF($_background, $destination);
-              ImageDestroy($this->_image);
-              ImageDestroy($_background);
+              if (version_compare(PHP_VERSION, '8.0.0', '<')) {
+                ImageDestroy($this->_image);
+                ImageDestroy($_background);
+              }
               return $result;
 
             case 'jpeg':
@@ -915,14 +928,18 @@
               ImageCopy($_background, $this->_image, 0, 0, 0, 0, imagesx($this->_image), imagesy($this->_image));
               ImageAlphaBlending($_background, false);
               $result = ImageJPEG($_background, $destination, (int)$quality);
-              ImageDestroy($this->_image);
-              ImageDestroy($_background);
+              if (version_compare(PHP_VERSION, '8.0.0', '<')) {
+                ImageDestroy($this->_image);
+                ImageDestroy($_background);
+              }
               return $result;
 
             case 'png':
               ImageSaveAlpha($this->_image, true);
               $result = ImagePNG($this->_image, $destination);
-              ImageDestroy($this->_image);
+              if (version_compare(PHP_VERSION, '8.0.0', '<')) {
+                ImageDestroy($this->_image);
+              }
               return $result;
 
             case 'webp':
@@ -931,11 +948,15 @@
               }
               ImageSaveAlpha($this->_image, true);
               $result = ImageWebP($this->_image, $destination, (int)$quality);
-              ImageDestroy($this->_image);
+              if (version_compare(PHP_VERSION, '8.0.0', '<')) {
+                ImageDestroy($this->_image);
+              }
               return $result;
 
             default:
-              ImageDestroy($this->_image);
+              if (version_compare(PHP_VERSION, '8.0.0', '<')) {
+                ImageDestroy($this->_image);
+              }
               throw new Exception("Unknown image output format ($type)");
           }
       }
@@ -984,8 +1005,10 @@
               ImageAlphaBlending($_background, false);
               imagetruecolortopalette($_background, false, 255);
               $result = ImageGIF($_background, false);
-              ImageDestroy($this->_image);
-              ImageDestroy($_background);
+              if (version_compare(PHP_VERSION, '8.0.0', '<')) {
+                ImageDestroy($this->_image);
+                ImageDestroy($_background);
+              }
               return $result;
 
             case 'jpeg':
@@ -996,14 +1019,18 @@
               ImageCopy($_background, $this->_image, 0, 0, 0, 0, imagesx($this->_image), imagesy($this->_image));
               ImageAlphaBlending($_background, false);
               $result = ImageJPEG($_background, false, (int)$quality);
-              ImageDestroy($this->_image);
-              ImageDestroy($_background);
+              if (version_compare(PHP_VERSION, '8.0.0', '<')) {
+                ImageDestroy($this->_image);
+                ImageDestroy($_background);
+              }
               return $result;
 
             case 'png':
               ImageSaveAlpha($this->_image, true);
               $result = ImagePNG($this->_image, false);
-              ImageDestroy($this->_image);
+              if (version_compare(PHP_VERSION, '8.0.0', '<')) {
+                ImageDestroy($this->_image);
+              }
               return $result;
 
             case 'webp':
@@ -1012,11 +1039,15 @@
               }
               ImageSaveAlpha($this->_image, true);
               $result = ImageWebP($this->_image, false, (int)$quality);
-              ImageDestroy($this->_image);
+              if (version_compare(PHP_VERSION, '8.0.0', '<')) {
+                ImageDestroy($this->_image);
+              }
               return $result;
 
             default:
-              ImageDestroy($this->_image);
+              if (version_compare(PHP_VERSION, '8.0.0', '<')) {
+                ImageDestroy($this->_image);
+              }
               throw new Exception('Unknown output format');
           }
       }
