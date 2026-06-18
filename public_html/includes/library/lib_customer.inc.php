@@ -120,7 +120,7 @@
       if (!preg_match('#^('. preg_quote(WS_DIR_ADMIN, '#') .')#', strtok($_SERVER['REQUEST_URI'], '?'))) {
         if (settings::get('regional_settings_screen')) {
           if (empty(customer::$data['id']) && empty(session::$data['skip_regional_settings_screen']) && empty($_COOKIE['skip_regional_settings_screen'])) {
-            if (!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) != 'xmlhttprequest') {
+            if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) != 'xmlhttprequest') {
               functions::draw_lightbox(document::ilink('regional_settings'), ['seamless' => true]);
             }
           }
