@@ -3,7 +3,6 @@ import cleancss from '@sequencemedia/gulp-clean-css';
 import concat from 'gulp-concat';
 import download from 'gulp-fetch';
 import header from 'gulp-header';
-import phplint from 'gulp-phplint';
 import rename from 'gulp-rename';
 import replace from 'gulp-replace';
 import * as dartSass from 'sass';
@@ -65,7 +64,6 @@ const tabify = function() {
 }
 
 gulp.task('scss-framework', function() {
-
 	return gulp.src('public_html/assets/litecore/scss/{framework/main,email,printable}.scss', { allowEmpty: true })
 		.pipe(sourcemaps.init())
 		.pipe(sass(sassOptions).on('error', sass.logError))
@@ -99,7 +97,6 @@ gulp.task('js-framework', function() {
 });
 
 gulp.task('scss-backend', function() {
-
 	gulp.src('public_html/backend/template/scss/vari*bles.scss')
 		.pipe(sass(sassOptions).on('error', sass.logError))
 		.pipe(header(banner, { pkg: packageData }))
@@ -144,7 +141,6 @@ gulp.task('js-trumbowyg', function() {
 });
 
 gulp.task('scss-frontend', function() {
-
 	gulp.src('public_html/frontend/templates/default/scss/vari*bles.scss')
 		.pipe(sass(sassOptions).on('error', sass.logError))
 		.pipe(header(banner, { pkg: packageData }))
@@ -203,16 +199,7 @@ gulp.task('scss-trumbowyg', function() {
 		.pipe(sourcemaps.write('.', { includeContent: false }));
 });
 
-// Lint PHP files
-gulp.task('phplint', function() {
-	return gulp
-		.src('public_html/**/*.php')
-		.pipe(phplint())
-		.pipe(phplint.reporter('fail'));
-});
-
 gulp.task('iconly', function() {
-
 	download({ url: 'https://dev.iconly.io/public/OoTc8FJRmnEY/iconly.woff2', filename: 'fonticons.woff2' })
 		.pipe(gulp.dest('public_html/assets/litecore/fonts/'));
 
