@@ -33,7 +33,7 @@
 /******************** Light Theme ********************/
 :root {
 	/* General */
-	--site-background: #e9e9e9;
+	--site-background: #f2f4f7;
 	--top-background: var(--card-background);
 	--top-text-color: var(--card-text-color);
 	--copyright-text-color: #444;
@@ -78,7 +78,7 @@
 :root {
 	--border-radius: 6px;
 	--whitespace-color: #fff;
-	--default-text-font: inter, arial, 'Helvetica Neue', helvetica, sans-serif;
+	--default-text-font: Inter, Arial, 'Helvetica Neue', Helvetica, sans-serif;
 	--default-text-color: #222;
 	--default-text-size: 12px;
 	--default-line-height: 1.2;
@@ -95,7 +95,7 @@
 	--input-border-width: 1px;
 	--input-outline-color: #bbb;
 	--input-outline-color--hover: #dcdcdc;
-	--input-outline-width: 1px;
+	--input-outline-width: 2px;
 	--input-shadow: none;
 	--input-addon-background: #dadbdf;
 	--input-checkbox-background: #e6e7eb;
@@ -168,7 +168,7 @@
 	--card-border-color: transparent;
 	--card-border-width: 0;
 	--card-shadow: 0 0 0 0 #0000, 0 0 0 0 #0000, 0 5px 8px -3px rgb(0 0 0 / 10%), 0 2px 3px -2px rgb(0 0 0 / 10%);
-	--card-footer-background: #f4f6fb;
+	--card-footer-background: #f9f9f9;
 	--carousel-shadow: 0 10px 20px rgb(0 0 0 / 15%);
 	/* Dropdowns */
 	--dropdown-background: #fff;

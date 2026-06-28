@@ -12,11 +12,13 @@
 
 	breadcrumbs::add(!empty($addon->data['id']) ? t('title_edit_addon', 'Edit Add-on') : t('title_create_new_addon', 'Create New Add-on'));
 
-	breadcrumbs::add(t('title_addons', 'Add-ons'), document::ilink(__APP__ . '/addons'));
+	breadcrumbs::add(t('title_addons', 'Add-ons'), document::ilink(__APP__.'/addons'));
 	breadcrumbs::add(!empty($addon->data['id']) ? t('title_edit_addon', 'Edit Add-on') : t('title_create_new_addon', 'Create New Add-on'), document::ilink());
 
 	if (isset($_POST['save']) || isset($_POST['quicksave'])) {
+
 		try {
+
 			if (empty($_POST['id'])) {
 				throw new Exception(t('error_must_provide_id', 'You must provide an ID'));
 			}
@@ -25,13 +27,33 @@
 				throw new Exception(t('error_must_provide_name', 'You must provide a name'));
 			}
 
-			foreach (['install', 'uninstall', 'upgrades', 'settings', 'aliases', 'files'] as $field) {
+			foreach ([
+				'install',
+				'uninstall',
+				'upgrades',
+				'settings',
+				'aliases',
+				'files',
+			] as $field) {
 				if (empty($_POST[$field])) {
 					$_POST[$field] = [];
 				}
 			}
 
-			foreach (['id', 'status', 'name', 'description', 'author', 'version', 'aliases', 'settings', 'install', 'uninstall', 'upgrades', 'files'] as $field) {
+			foreach ([
+				'id',
+				'status',
+				'name',
+				'description',
+				'author',
+				'version',
+				'aliases',
+				'settings',
+				'install',
+				'uninstall',
+				'upgrades',
+				'files',
+			] as $field) {
 				if (isset($_POST[$field])) {
 					$addon->data[$field] = $_POST[$field];
 				}
@@ -41,9 +63,9 @@
 
 
 			if (isset($_POST['quicksave'])) {
-				$redirect_url = document::ilink(__APP__ . '/edit_addon', ['addon_id' => $addon->data['id']]);
+				redirect(document::ilink(__APP__.'/edit_addon', ['addon_id' => $addon->data['id']]), 303);
 			} else {
-				$redirect_url = document::ilink(__APP__ . '/addons');
+				redirect(document::ilink(__APP__.'/addons'), 303);
 			}
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
@@ -56,7 +78,9 @@
 	}
 
 	if (isset($_POST['delete'])) {
+
 		try {
+
 			if (empty($addon->data['id'])) {
 				throw new Exception(t('error_must_provide_addon', 'You must provide an add-on'));
 			}
@@ -64,15 +88,18 @@
 			$addon->delete();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink(__APP__ . '/addons'), 303);
+			redirect(document::ilink(__APP__.'/addons'), 303);
 			exit;
+
 		} catch (Exception $e) {
 			notices::add('errors', $e->getMessage());
 		}
 	}
 
 	if (isset($_POST['upload'])) {
+
 		try {
+
 			if (empty($addon->data['id'])) {
 				throw new Exception(t('text_save_addon_to_establish_file_storage', 'Save the add-on to establish a file storage'));
 			}
@@ -93,6 +120,7 @@
 
 			reload(303);
 			exit;
+
 		} catch (Exception $e) {
 			http_response_code(400);
 			notices::add('errors', $e->getMessage());
@@ -100,7 +128,9 @@
 	}
 
 	if (!empty($_POST['storage_action'])) {
+
 		try {
+
 			if (empty($addon->data['id'])) {
 				throw new Exception(t('text_save_addon_to_establish_file_storage', 'Save the add-on to establish a file storage'));
 			}
@@ -118,10 +148,12 @@
 			switch ($_POST['storage_action']) {
 
 				case 'delete':
+
 					f::file_delete($file, true);
 					break;
 
 				case 'rename':
+
 					if (empty($_POST['new_name'])) {
 						throw new Exception(t('error_must_provide_new_name', 'You must provide a new name'));
 					}
@@ -136,6 +168,7 @@
 
 			reload(302);
 			exit;
+
 		} catch (Exception $e) {
 			die($e->getMessage());
 			http_response_code(400);
@@ -182,6 +215,7 @@
 	$scripts = f::file_search(FS_DIR_APP . '**.php', GLOB_BRACE);
 
 	foreach ($scripts as $script) {
+
 		$relative_path = f::file_relative_path($script);
 
 		foreach ($skip_list as $pattern) {
@@ -194,23 +228,26 @@
 	}
 
 	// Files tree
-	$draw_folder_contents = function ($directory) use ($addon, &$draw_folder_contents) {
+	$draw_folder_contents = function($directory) use ($addon, &$draw_folder_contents) {
+
 		$output = [];
 
 		foreach (scandir($directory) as $file) {
+
 			if (in_array($file, ['.', '..'])) {
 				continue;
 			}
+
 			if ($directory == 'storage://addons/' . $addon->data['id'] . '/' && $file == 'vmod.xml') {
 				continue;
 			}
 
-			$relative_path = preg_replace('#^' . preg_quote('storage://addons/' . $addon->data['id'] . '/', '#') . '#', '', $directory . $file);
+			$relative_path = preg_replace('#^'. preg_quote('storage://addons/'.$addon->data['id'].'/', '#') .'#', '', $directory . $file);
 
-			if (is_dir($directory . $file)) {
-				$output[] = '<li>' . f::draw_fonticon('icon-folder icon-lg', 'style="color: #7ccdff;"') . ' <span class="item" data-path="' . $relative_path . '">' . $file . '/</span>' . $draw_folder_contents($directory . $file . '/') . '</li>';
+			if (is_dir($directory.$file)) {
+				$output[] = '<li>'. f::draw_fonticon('icon-folder icon-lg', 'style="color: #7ccdff;"') .' <span class="item" data-path="'. $relative_path .'">'. $file .'/</span>'. $draw_folder_contents($directory.$file.'/') .'</li>';
 			} else {
-				$output[] = '<li>' . f::draw_fonticon('icon-file-o') . ' <span class="item" data-path="' . $relative_path . '">' . $file . '</span><li>';
+				$output[] = '<li>'. f::draw_fonticon('icon-file-o') .' <span class="item" data-path="'. $relative_path .'">'. $file .'</span><li>';
 			}
 		}
 
@@ -218,7 +255,11 @@
 			return;
 		}
 
-		return implode(PHP_EOL, ['<ul class="list-unstyled">', implode(PHP_EOL, $output), '</ul>']);
+		return implode(PHP_EOL, [
+			'<ul class="list-unstyled">',
+			implode(PHP_EOL, $output),
+			'</ul>',
+		]);
 	};
 
 	f::draw_lightbox();
@@ -241,7 +282,7 @@
 }
 
 .file-browser .item:hover {
-	background: rgb(255 255 255 / 50%);
+	background: rgba(255, 255, 255, 0.5);
 }
 
 .file-browser .upload-bar {
@@ -290,7 +331,7 @@
 	justify-content: center;
 	text-align: center;
 	flex-direction: column;
-	background: rgb(0 0 0 / 25%);
+	background: rgba(0, 0, 0, 0.25);
 	font-size: 2.5em;
 	color: #fff;
 }
@@ -364,7 +405,7 @@ textarea[name*="[insert]"][name$="[content]"] {
 
 input.warning,
 textarea.warning {
-	box-shadow: 0 0 5px 3px rgb(255 0 0 70%);
+	box-shadow: 0 0 5px 3px rgba(255 0,0, 0.7);
 }
 </style>
 
@@ -511,7 +552,7 @@ textarea.warning {
 
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_file_pattern', 'File Pattern'); ?></div>
-										<?php echo f::form_input_text('files[' . $f . '][name]', true, ['placeholder' => 'path/to/file.php', 'list' => 'scripts']); ?>
+										<?php echo f::form_input_text('files['.$f.'][name]', true, ['placeholder' => 'path/to/file.php', 'list' => 'scripts']); ?>
 									</label>
 
 									<div class="sources"></div>
@@ -522,7 +563,7 @@ textarea.warning {
 									<h3><?php echo t('title_operations', 'Operations'); ?></h3>
 
 									<div class="operations">
-										<?php $i = 1; foreach (array_keys($_POST['files'][$f]['operations']) as $o) { ?>
+										<?php $i=1; foreach (array_keys($_POST['files'][$f]['operations']) as $o) { ?>
 										<fieldset class="operation">
 
 											<div class="float-end">
@@ -537,21 +578,21 @@ textarea.warning {
 												<div class="col-md-3">
 													<label class="form-group">
 														<div class="form-label"><?php echo t('title_method', 'Method'); ?></div>
-														<?php echo f::form_select('files[' . $f . '][operations][' . $o . '][method]', $method_options, true); ?>
+														<?php echo f::form_select('files['.$f.'][operations]['.$o.'][method]', $method_options, true); ?>
 													</label>
 												</div>
 
 												<div class="col-md-6">
 													<label class="form-group">
 														<div class="form-label"><?php echo t('title_match_type', 'Match Type'); ?></div>
-														<?php echo f::form_toggle('files[' . $f . '][operations][' . $o . '][type]', $type_options, !isset($_POST['files'][$f]['operations'][$o]['type']) || $_POST['files'][$f]['operations'][$o]['type'] == '' ? 'multiline' : true); ?>
+														<?php echo f::form_toggle('files['.$f.'][operations]['.$o.'][type]', $type_options, (!isset($_POST['files'][$f]['operations'][$o]['type']) || $_POST['files'][$f]['operations'][$o]['type'] == '') ? 'multiline' : true); ?>
 													</label>
 												</div>
 
 												<div class="col-md-3">
 													<label class="form-group">
 														<div class="form-label"><?php echo t('title_on_error', 'On Error'); ?></div>
-														<?php echo f::form_select('files[' . $f . '][operations][' . $o . '][onerror]', $on_error_options, true); ?>
+														<?php echo f::form_select('files['.$f.'][operations]['.$o.'][onerror]', $on_error_options, true); ?>
 													</label>
 												</div>
 											</div>
@@ -559,9 +600,9 @@ textarea.warning {
 											<label class="form-group">
 												<h4><?php echo t('title_find', 'Find'); ?></h4>
 												<?php if (isset($_POST['files'][$f]['operations'][$o]['type']) && in_array($_POST['files'][$f]['operations'][$o]['type'], ['inline', 'regex'])) { ?>
-												<?php echo f::form_input_text('files[' . $f . '][operations][' . $o . '][find][content]', true, ['class' => 'form-code', 'required' => '']); ?>
+												<?php echo f::form_input_text('files['.$f.'][operations]['.$o.'][find][content]', true, 'class="form-code" required'); ?>
 												<?php } else { ?>
-												<?php echo f::form_input_code('files[' . $f . '][operations][' . $o . '][find][content]', true, ['required' => '']); ?>
+												<?php echo f::form_input_code('files['.$f.'][operations]['.$o.'][find][content]', true, 'required'); ?>
 												<?php } ?>
 											</label>
 
@@ -569,21 +610,21 @@ textarea.warning {
 												<div class="col-md-2">
 													<label class="form-group">
 														<div class="form-label"><?php echo t('title_index', 'Index'); ?></div>
-														<?php echo f::form_input_text('files[' . $f . '][operations][' . $o . '][find][index]', true, ['placeholder' => '1,3,..']); ?>
+														<?php echo f::form_input_text('files['.$f.'][operations]['.$o.'][find][index]', true, 'placeholder="1,3,.."'); ?>
 													</label>
 												</div>
 
 												<div class="col-md-2">
 													<label class="form-group">
 														<div class="form-label"><?php echo t('title_offset_before', 'Offset Before'); ?></div>
-														<?php echo f::form_input_text('files[' . $f . '][operations][' . $o . '][find][offset-before]', true, ['placeholder' => '0']); ?>
+														<?php echo f::form_input_text('files['.$f.'][operations]['.$o.'][find][offset-before]', true, 'placeholder="0"'); ?>
 													</label>
 												</div>
 
 												<div class="col-md-2">
 													<label class="form-group">
 														<div class="form-label"><?php echo t('title_offset_after', 'Offset After'); ?></div>
-														<?php echo f::form_input_text('files[' . $f . '][operations][' . $o . '][find][offset-after]', true, ['placeholder' => '0']); ?>
+														<?php echo f::form_input_text('files['.$f.'][operations]['.$o.'][find][offset-after]', true, 'placeholder="0"'); ?>
 													</label>
 												</div>
 											</div>
@@ -591,9 +632,9 @@ textarea.warning {
 											<label class="form-group">
 												<h4><?php echo t('title_insert', 'Insert'); ?></h4>
 												<?php if (isset($_POST['files'][$f]['operations'][$o]['type']) && in_array($_POST['files'][$f]['operations'][$o]['type'], ['inline', 'regex'])) { ?>
-												<?php echo f::form_input_text('files[' . $f . '][operations][' . $o . '][insert][content]', true, ['class' => 'form-code']); ?>
+												<?php echo f::form_input_text('files['.$f.'][operations]['.$o.'][insert][content]', true, 'class="form-code"'); ?>
 												<?php } else { ?>
-												<?php echo f::form_input_code('files[' . $f . '][operations][' . $o . '][insert][content]', true); ?>
+												<?php echo f::form_input_code('files['.$f.'][operations]['.$o.'][insert][content]', true); ?>
 												<?php } ?>
 											</label>
 
@@ -632,7 +673,7 @@ textarea.warning {
 										<div class="form-label"><?php echo t('title_key', 'Key'); ?></div>
 										<div class="input-group">
 											<span class="input-group-text" style="font-family: monospace;">{alias:</span>
-											<?php echo f::form_input_text('aliases[' . $key . '][key]', true, ['required' => '']); ?>
+											<?php echo f::form_input_text('aliases['.$key.'][key]', true, ['required' => '']); ?>
 											<span class="input-group-text" style="font-family: monospace;">}</span>
 										</div>
 									</label>
@@ -641,7 +682,7 @@ textarea.warning {
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_value', 'Value'); ?></div>
-										<?php echo f::form_input_text('aliases[' . $key . '][value]'); ?>
+										<?php echo f::form_input_text('aliases['.$key.'][value]'); ?>
 									</label>
 								</div>
 
@@ -676,7 +717,7 @@ textarea.warning {
 										<div class="form-label"><?php echo t('title_key', 'Key'); ?></div>
 										<div class="input-group">
 											<span class="input-group-text" style="font-family: monospace;">{setting:</span>
-											<?php echo f::form_input_text('settings[' . $key . '][key]', true, ['required' => '']); ?>
+											<?php echo f::form_input_text('settings['.$key.'][key]', true, 'required'); ?>
 											<span class="input-group-text" style="font-family: monospace;">}</span>
 										</div>
 									</label>
@@ -685,34 +726,34 @@ textarea.warning {
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_title', 'Title'); ?></div>
-										<?php echo f::form_input_text('settings[' . $key . '][title]', true, ['required' => '']); ?>
+										<?php echo f::form_input_text('settings['.$key.'][title]', true, ['required' => '']); ?>
 									</label>
 								</div>
 
 								<div class="col-md-2 text-center" style="align-self: center;">
-									<?php echo f::form_button('settings[' . $key . '][move_up]', f::draw_fonticon('move-up'), 'button', ['class' => 'btn btn-default btn-sm', 'title' => f::escape_attr(t('title_move_up', 'Move Up'))]); ?>
-									<?php echo f::form_button('settings[' . $key . '][move_down]', f::draw_fonticon('move-down'), 'button', ['class' => 'btn btn-default btn-sm', 'title' => f::escape_attr(t('title_move_down', 'Move Down'))]); ?>
-									<?php echo f::form_button('settings[' . $key . '][remove]', f::draw_fonticon('remove'), 'button', ['class' => 'btn btn-default btn-sm', 'title' => f::escape_attr(t('title_remove', 'Remove'))]); ?>
+									<?php echo f::form_button('settings['.$key.'][move_up]', f::draw_fonticon('move-up'), 'button', ['class' => 'btn btn-default btn-sm', 'title' => f::escape_attr(t('title_move_up', 'Move Up'))]); ?>
+									<?php echo f::form_button('settings['.$key.'][move_down]', f::draw_fonticon('move-down'), 'button', ['class' => 'btn btn-default btn-sm', 'title' => f::escape_attr(t('title_move_down', 'Move Down'))]); ?>
+									<?php echo f::form_button('settings['.$key.'][remove]', f::draw_fonticon('remove'), 'button', ['class' => 'btn btn-default btn-sm', 'title' => f::escape_attr(t('title_remove', 'Remove'))]); ?>
 								</div>
 							</div>
 
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_description', 'Description'); ?></div>
-								<?php echo f::form_input_text('settings[' . $key . '][description]', true, ['required' => '']); ?>
+								<?php echo f::form_input_text('settings['.$key.'][description]', true, ['required' => '']); ?>
 							</label>
 
 							<div class="grid">
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_function', 'Function'); ?></div>
-										<?php echo f::form_input_text('settings[' . $key . '][function]', true, ['required' => '', 'placeholder' => 'text()']); ?>
+										<?php echo f::form_input_text('settings['.$key.'][function]', true, ['required' => '', 'placeholder' => 'text()']); ?>
 									</label>
 								</div>
 
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_default_value', 'Default Value'); ?></div>
-										<?php echo f::form_input_text('settings[' . $key . '][default_value]'); ?>
+										<?php echo f::form_input_text('settings['.$key.'][default_value]'); ?>
 									</label>
 								</div>
 							</div>
@@ -754,12 +795,12 @@ textarea.warning {
 						<fieldset class="upgrade">
 							<label class="form-group" style="max-width: 250px;">
 								<div class="form-label"><?php echo t('title_version', 'Version'); ?></div>
-								<?php echo f::form_input_text('upgrades[' . $key . '][version]', true); ?>
+								<?php echo f::form_input_text('upgrades['.$key.'][version]', true); ?>
 							</label>
 
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_script', 'Script'); ?></div>
-								<?php echo f::form_input_code('upgrades[' . $key . '][script]', true, ['style' => 'height: 200px;']); ?>
+								<?php echo f::form_input_code('upgrades['.$key.'][script]', true, ['style' => 'height: 200px;']); ?>
 							</label>
 						</fieldset>
 						<?php } ?>
@@ -923,10 +964,13 @@ textarea.warning {
 		let __index__ = 1;
 		while ($('.tab-content[id="tab-new_'+__index__+'"]').length) __index__++;
 
-		let $tab = '<a class="nav-link" data-toggle="tab" href="#tab-__index__"><span class="file">__index__</span> <span class="btn btn-default btn-sm remove" title="<?php t('title_remove', 'Remove'); ?>"><?php echo f::draw_fonticon(
-	'remove',
-); ?></span></a>'
-			.replace(/__index__/g, 'new_' + __index__);
+		let $tab = $([
+			'<a class="nav-link" data-toggle="tab" href="#tab-__index__">',
+			'	<span class="file">__index__</span> <span class="btn btn-default btn-sm remove" title="<?php t('title_remove', 'Remove'); ?>">',
+			'		<?php echo f::draw_fonticon('remove'); ?></span></a>',
+		].join('\n')
+			.replace(/__index__/g, 'new_' + __index__)
+		);
 
 		$tab_pane = $(
 			$('#new-tab-content-template').html()
@@ -1073,13 +1117,13 @@ textarea.warning {
 			'<nav class="context-menu">',
 			'	<ul class="list-unstyled">',
 			'		<li class="item rename"><?php echo f::draw_fonticon('edit'); ?> <?php echo t('title_rename', 'Rename'); ?></a>',
-			'		<li class="item delete"><?php echo f::draw_fonticon('icon-trash'); ?> <?php echo t('title_delete', 'Delete'); ?></a>',
+			'		<li class="item delete"><?php echo f::draw_fonticon('delete'); ?> <?php echo t('title_delete', 'Delete'); ?></a>',
 			'	</ul>',
 			'</nav>',
 		].join('\n'));
 
 
-		$('.rename', $contextmenu).on('click', function(){
+		$contextmenu.find('.rename').on('click', function(){
 
 			let form_data = new FormData();
 			form_data.append('storage_action', 'rename');
@@ -1111,7 +1155,7 @@ textarea.warning {
 			});
 		});
 
-		$('.delete', $contextmenu).on('click', function(){
+		$contextmenu.find('.delete').on('click', function(){
 
 			if (!confirm("<?php echo t('text_are_you_sure', 'Are you sure?'); ?>")) {
 				$('.context-menu').remove();
@@ -1140,7 +1184,7 @@ textarea.warning {
 		$('body').on('click', function(e) {
 			$conextmenu = $(e.target).closest('.context-menu');
 			if (!$conextmenu.length) {
-				$('.context-menu').remove();
+				$contextmenu.remove();
 				$('body').off('click');
 			}
 		});
@@ -1155,8 +1199,8 @@ textarea.warning {
 
 	let reindex_operations = function($operations) {
 		let index = 1;
-		$('.operation', $operations).each(function(i, $operation){
-			$('.number', $operation).text(index++);
+		$operations.find('.operation').each(function(i, $operation){
+			$operation.find('.number').text(index++);
 		});
 	};
 
@@ -1208,17 +1252,17 @@ textarea.warning {
 	$('.tab-content').on('input', ':input[name^="files"][name$="[name]"]', function() {
 		let $tab_pane = $(this).closest('.tab-content'),
 			tab_index = $tab_pane.attr('id').replace(/^tab-/, ''),
-			tab_name = $('input[name$="[name]"]', $tab_pane).val();
+			tab_name = $tab_pane.find('input[name$="[name]"]').val();
 
 		$('a[href="#tab-'+ tab_index +'"] .file').text(tab_name);
 
 		let file_pattern = $(this).closest('.grid').find(':input[name^="files"][name$="[name]"]').val(),
-			url = '<?php echo document::ilink(__APP__ . '/sources', [
+			url = '<?php echo document::ilink(__APP__.'/sources', [
 				'pattern' => 'thepattern',
 			]); ?>'.replace(/thepattern/, file_pattern);
 
 		$.get(url, function(result) {
-			$('.sources', $tab_pane).html('');
+			$tab_pane.find('.sources').html('');
 
 			$.each(result, function(file, source_code) {
 
@@ -1229,12 +1273,12 @@ textarea.warning {
 					'</div>'
 				);
 
-				$('.form-code', $script).text(source_code);
-				$('.filename', $script).text(file);
-				$('.sources', $tab_pane).append($script);
+				$script.find('.form-code').text(source_code);
+				$script.find('.filename').text(file);
+				$tab_pane.find('.sources').append($script);
 			});
 
-			$(':input[name$="[find][content]"]', $tab_pane).trigger('input');
+			$tab_pane.find(':input[name$="[find][content]"]').trigger('input');
 		});
 	});
 
@@ -1281,7 +1325,7 @@ textarea.warning {
 		$(this).closest('.operation').remove();
 		reindex_operations($operations);
 
-		$(':input[name$="[find][content]"]', $operations).trigger('input');
+		$operations.find(':input[name$="[find][content]"]').trigger('input');
 	});
 
 	// Validate operation
@@ -1289,13 +1333,13 @@ textarea.warning {
 
 		let $tab = $(this).closest('.tab-content'),
 			$operation = $(this).closest('.operation'),
-			method = $(':input[name$="[method]"]', $operation).val(),
-			find = $(':input[name$="[find][content]"]', $operation).val(),
-			type = $(':input[name$="[type]"]:checked', $operation).val(),
-			indexes = $(':input[name$="[index]"]', $operation).val().split(/\s*,\s*/).filter(Boolean),
-			offset_before = $(':input[name$="[offset-before]"]', $operation).val(),
-			offset_after = $(':input[name$="[offset-after]"]', $operation).val(),
-			onerror = $(':input[name$="[onerror]"]', $operation).val(),
+			method = $operation.find(':input[name$="[method]"]').val(),
+			find = $operation.find(':input[name$="[find][content]"]').val(),
+			type = $operation.find(':input[name$="[type]"]:checked').val(),
+			indexes = $operation.find(':input[name$="[index]"]').val().split(/\s*,\s*/).filter(Boolean),
+			offset_before = $operation.find(':input[name$="[offset-before]"]').val(),
+			offset_after = $operation.find(':input[name$="[offset-after]"]').val(),
+			onerror = $operation.find(':input[name$="[onerror]"]').val(),
 			regex_flags = 's';
 
 		try {
@@ -1363,7 +1407,7 @@ textarea.warning {
 					throw new Error('Unknown error');
 			}
 
-			$.each($('.script', $tab), function() {
+			$.each($tab.find('.script'), function() {
 
 				let regex = new RegExp(find, regex_flags),
 					source = $(this).find('.form-code').text(),
@@ -1378,15 +1422,15 @@ textarea.warning {
 				}
 			});
 
-			$(':input[name$="[find][content]"]', $operation).removeAttr('title').removeClass('warning');
+			$operation.find(':input[name$="[find][content]"]').removeAttr('title').removeClass('warning');
 
 		} catch (err) {
 			if (onerror != 'ignore') {
-				$(':input[name$="[find][content]"]', $operation).attr('title', err.message).addClass('warning');
+				$operation.find(':input[name$="[find][content]"]').attr('title', err.message).addClass('warning');
 			}
 		}
 
-		if ($(':input.warning', $tab).length) {
+		if ($tab.find(':input.warning').length) {
 			$('.nav-link[href="#'+ $tab.attr('id') +'"]').addClass('warning');
 		} else {
 			$('.nav-link[href="#'+ $tab.attr('id') +'"]').removeClass('warning');

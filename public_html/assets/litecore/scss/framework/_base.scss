@@ -11,6 +11,7 @@ body {
 	line-height: var(--default-line-height);
 	color: var(--default-text-color);
 	text-size-adjust: 100%;
+	-webkit-text-size-adjust: 100%;
 }
 
 a {
@@ -47,7 +48,7 @@ progress, sub, sup {
 	vertical-align: baseline;
 }
 
-input[type="checkbox"], input[type="radio"], legend {
+input[type=checkbox], input[type=radio], legend {
 	padding: 0;
 }
 
@@ -109,8 +110,9 @@ button, select {
 	text-transform: none;
 }
 
-button, input[type="button"], input[type="reset"], input[type="submit"] {
-	appearance: auto;
+button, input[type=button], input[type=reset], input[type=submit] {
+	appearance: button;
+	-webkit-appearance: button;
 }
 
 fieldset {
@@ -145,6 +147,7 @@ input, button, select, textarea {
 
 input[type="number"] {
 	appearance: textfield;
+	-moz-appearance: textfield;
 	text-align: end;
 
 	&::-webkit-outer-spin-button,
@@ -160,11 +163,13 @@ input[type="number"]::-webkit-outer-spin-button {
 
 input[type="search"] {
 	appearance: textfield;
+	-webkit-appearance: textfield;
 	outline-offset: -2px;
 }
 
 input::-webkit-file-upload-button {
-	appearance: auto;
+	-webkit-appearance: button;
+	appearance: button;
 	font: inherit;
 }
 

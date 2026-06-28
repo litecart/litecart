@@ -80,12 +80,13 @@
 
 			echo 'Sending report to '. $this->settings['email_recipient'];
 
-			$email = (new ent_email())
+			$result = (new ent_email())
 				->add_recipient($this->settings['email_recipient'])
 				->set_subject('[Error Report] '. settings::get('store_name'))
-				->add_body(PLATFORM_NAME .' '. PLATFORM_VERSION ."\r\n\r\n". $buffer);
+				->add_body(PLATFORM_NAME .' '. PLATFORM_VERSION ."\r\n\r\n". $buffer)
+				->send();
 
-			if ($email->send() !== true) {
+			if (!$result) {
 				echo ' [Failed]';
 				return;
 			}

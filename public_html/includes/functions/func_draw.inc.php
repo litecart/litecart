@@ -229,27 +229,19 @@
 			$width = $entity->width;
 			$height = $entity->height;
 		}
-
-		if (!$width) {
-			if ($clipping == 'product') {
-				list($width, $height) = f::image_scale_by_height($height, settings::get('product_image_ratio'));
-			} else if ($clipping == 'category') {
-				list($width, $height) = f::image_scale_by_height($height, settings::get('category_image_ratio'));
-			} else {
-				$aspect_ratio = (new ent_image($image))->aspect_ratio;
-				list($width, $height) = f::image_scale_by_height($height, $aspect_ratio);
-			}
+	
+		$target_ratio = match($clipping) {
+				'product' => settings::get('product_image_ratio'),
+				'category' => settings::get('category_image_ratio'),
+				default => (new ent_image($image))->aspect_ratio
 		}
 
+		if (!$width) {
+			($width, $height) = f::image_scale_by_height($height, $target_ratio);
+		}
+		
 		if (!$height) {
-			if ($clipping == 'product') {
-				list($width, $height) = f::image_scale_by_width($width, settings::get('product_image_ratio'));
-			} else if ($clipping == 'category') {
-				list($width, $height) = f::image_scale_by_width($width, settings::get('category_image_ratio'));
-			} else {
-				$aspect_ratio = (new ent_image($image))->aspect_ratio;
-				list($width, $height) = f::image_scale_by_width($width, $aspect_ratio);
-			}
+			($width, $height) = f::image_scale_by_height($width, $target_ratio);
 		}
 
 		if (empty($aspect_ratio)) {

@@ -71,9 +71,9 @@
 						$customer = [
 							'tax_id' => !empty(customer::$data['tax_id']) ? true : false,
 							'company' => !empty(customer::$data['company']) ? true : false,
-							'country_code' => customer::$data['country_code'],
-							'zone_code' => customer::$data['zone_code'],
-							'city' => customer::$data['city'],
+							'country_code' => customer::$data['country_code'] ?? settings::get('default_country_code'),
+							'zone_code' => customer::$data['zone_code'] ?? settings::get('default_zone_code'),
+							'city' => customer::$data['city'] ?? '',
 						];
 
 						break;

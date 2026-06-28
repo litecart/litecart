@@ -4,11 +4,11 @@
 
 		public function actions(): array {
 
-			$actions = [];
-
 			if (!$this->modules) {
-				return $actions;
+				return [];
 			}
+
+			$actions = [];
 
 			foreach ($this->modules as $module) {
 

@@ -11,8 +11,7 @@
 	thead {
 		background: var(--table-header-background);
 		color: var(--table-header-text-color);
-		border-bottom: calc(var(--table-border-width) *2) solid var(--table-border-color);
-
+		border-bottom: ~"calc(var(--table-border-width) *2)" solid var(--table-border-color);
 		tr {
 			th {
 				padding: .5em 1em;
@@ -106,11 +105,6 @@
 				}
 			}
 
-			// @media only screen {
-				// position: sticky;
-				// top: 0;
-				// z-index: 1;
-			// }
 		}
 
 		tbody {
@@ -123,8 +117,6 @@
 
 		tfoot {
 			@media only screen {
-				// position: sticky;
-				// bottom: 0;
 			}
 		}
 

@@ -34,7 +34,7 @@
 :root {
 	/* General */
 
-	--site-background: #e9e9e9;
+	--site-background: #f2f4f7;
 	--top-background: var(--card-background);
 	--top-text-color: var(--card-text-color);
 	--copyright-text-color: #444;
@@ -83,7 +83,8 @@
 
 	--border-radius: 6px;
 	--whitespace-color: #fff;
-	--default-text-font: inter, arial, 'Helvetica Neue', helvetica, sans-serif;
+
+	--default-text-font: Inter, Arial, 'Helvetica Neue', Helvetica, sans-serif;
 	--default-text-color: #222;
 	--default-text-size: 12px;
 	--default-line-height: 1.2;
@@ -103,7 +104,7 @@
 	--input-border-width: 1px;
 	--input-outline-color: #bbb;
 	--input-outline-color--hover: #dcdcdc;
-	--input-outline-width: 1px;
+	--input-outline-width: 2px;
 	--input-shadow: none;
 	--input-addon-background: #dadbdf;
 	--input-checkbox-background: #e6e7eb;
@@ -277,6 +278,7 @@ html.dark-mode {
 	--top-background: #283144;
 	--top-text-color: var(--card-text-color);
 	--toolbar-background: #2c313c;
+
 	--page-background: #1a2133;
 
 	/* Scrollbar */
@@ -293,18 +295,24 @@ html.dark-mode {
 	--sidebar-doc-background--active: #1a2133;
 	--sidebar-border: 1px solid #1d2431;
 	--sidebar-text-color: #acb6c2;
+
 	--app-icon-background: #1b212d;
+
 	--navigation-background: #1a2133;
 	--navigation-background--hover: #262a33;
+
 	--navigation-toggle-background: #2c313c;
+
 	--default-background: #283042;
 	--default-border-color: #1b212d;
 	--default-title-color: #acb6c2;
 	--default-text-color: #acb6c2;
 	--default-input-color: #fff;
 	--copyright-text-color: #acb6c2;
+
 	--link-text-color: #acb6c7;
 	--whitespace-color: #1d2026;
+
 	--input-background: #1d2026;
 	--input-border-color: #31384a;
 	--input-border-width: 1px;
@@ -317,10 +325,13 @@ html.dark-mode {
 	--input-text-color: #acb6c2;
 	--input-checkbox-background: #1d2026;
 	--input-checkbox-background--active: #495abd;
+
 	--breadcrumbs-background: #242934;
+
 	--breadcrumb-item-background: transparent;
 	--breadcrumb-item-text-color: #727881;
 	--breadcrumbs-border-color: transparent;
+
 	--card-background: linear-gradient(180deg, #363c48, #2c313c 200px);
 	--card-text-color: #acb6c2;
 	--card-border-color: #253046;
@@ -332,8 +343,10 @@ html.dark-mode {
 	--pill-item-background: #333c4e;
 	--pill-item-text-color: #acb6c2;
 	--pill-item-border-color: transparent;
+
 	--tab-bar-background: transparent;
 	--tab-bar-border-color: var(--default-border-color);
+
 	--tab-item-background: #232832;
 	--tab-item-text-color: #acb6c2;
 	--tab-item-border-color: transparent;
@@ -343,6 +356,7 @@ html.dark-mode {
 	--tab-item-text-color--hover: #acb6c2;
 	--tab-item-background--active: #363c48;
 	--tab-item-text-color--active: #acb6c2;
+
 	--table-header-background: transparent;
 	--table-header-text-color: #acb6c2;
 	--table-body-background: #252a32;
@@ -356,6 +370,7 @@ html.dark-mode {
 	--table-footer-text-color: #acb6c2;
 	--table-border-color: #23252c;
 	--table-border-width: 1px;
+
 	--pagination-background: #1a2133;
 	--pagination-item-background: #1a2133;
 	--pagination-item-background--hover: #35415a;
@@ -363,11 +378,13 @@ html.dark-mode {
 	--pagination-item-text-color: #acb6c2;
 	--pagination-item-border-color: #1c243a;
 	--pagination-item-border-width: 1px;
+
 	--button-default-background: #252a34;
 	--button-default-background--hover: #29303e;
 	--button-default-background--active: #29303e;
 	--button-default-text-color: #acb6c2;
 	--button-default-border-color: #202020;
+
 	--button-success-background: #557417;
 	--button-success-background--hover: #63871b;
 	--button-success-background--active: #63871b;

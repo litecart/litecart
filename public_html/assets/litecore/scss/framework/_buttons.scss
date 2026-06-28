@@ -54,7 +54,7 @@
 
 	.btn-outline-gradient {
 		border: solid 2px transparent;
-		background-image: linear-gradient(rgb(255 255 255 / 0%), rgb(255 255 255 / 0%)), linear-gradient(101deg, #78e4ff, #ff48fa);
+		background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(101deg, #78e4ff, #ff48fa);
 	}
 
 	&.btn-sm { font-size: .65em; }
@@ -77,15 +77,18 @@
 	+ .btn, + .btn-group {
 		margin-inline-start: .5em;
 	}
+
+	> [class^="icon-"] {
+		margin-inline-end: .5em;
+	}
 }
 
 .btn-block {
 	width: 100%;
-
-	// .btn + .btn {
+	//.btn + .btn {
 	//	margin-inline-start: 0;
 	//	margin-top: .5em;
-	// }
+	//}
 }
 
 .btn-group {
@@ -111,7 +114,7 @@
 			border-end-end-radius: 0;
 	}
 
-	>.btn:not(:first-child, :last-child, [data-toggle="dropdown"]) {
+	>.btn:not(:first-child):not(:last-child, [data-toggle="dropdown"]) {
 		border-radius: 0;
 	}
 

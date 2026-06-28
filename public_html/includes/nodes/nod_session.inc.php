@@ -83,6 +83,11 @@
 				}
 			}
 
+			event::register('before_capture', [__CLASS__, 'before_capture']);
+		}
+
+		public static function before_capture(): void {
+
 			// Security Stats
 			if (!is_ajax_request()) {
 				self::$data['security']['page_loads'] = (self::$data['security']['page_loads'] ?? 0) + 1;
@@ -151,7 +156,7 @@
 					set pageviews = pageviews + 1,
 						cart_uid = '". database::input(cart::$data['uid']) ."',
 						language = '". database::input(language::$selected['code']) ."',
-						country_code = '". database::input(customer::$data['country_code']) ."',
+						country_code = '". database::input(customer::$data['country_code'] ?? '') ."',
 						last_page = '". database::input((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']) ."',
 						ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."',
 						hostname = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
@@ -220,20 +225,19 @@
 			}
 
 			$expires_at = date('Y-m-d H:i:s', strtotime('+1 hour'));
-			$indent = '';
 
 			database::query(
 				"insert into ". DB_TABLE_PREFIX ."sessions
 				(id, data, expires_at, updated_at, created_at)
 				values (
 					'". database::input(self::$data['id']) ."',
-					'". database::input(f::format_json(self::$data, $indent)) ."',
+					'". database::input(f::format_json(self::$data, '')) ."',
 					'". database::input($expires_at) ."',
 					'". database::input(date('Y-m-d H:i:s')) ."',
 					'". database::input(date('Y-m-d H:i:s')) ."'
 				)
 				on duplicate key update
-					data = '". database::input(f::format_json(self::$data, $indent)) ."',
+					data = '". database::input(f::format_json(self::$data, '')) ."',
 					expires_at = '". database::input($expires_at) ."',
 					updated_at = '". database::input(date('Y-m-d H:i:s')) ."';"
 			);

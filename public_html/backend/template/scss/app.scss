@@ -97,8 +97,6 @@ h4 { font-size: 1.10em; }
 			display: none;
 		}
 
-
-
 		.logotype,
 		.filter,
 		//.platform .name,
@@ -112,7 +110,7 @@ h4 { font-size: 1.10em; }
 #toolbar {
 	display: flex;
 	gap: .75em 1em;
-	padding: .75em 1em;
+	padding: .5em .75em;
 	list-style: none;
 	border-radius: var(--border-radius);
 	margin: 0;
@@ -194,7 +192,6 @@ h4 { font-size: 1.10em; }
 				padding: .5em 1em;
 				border-radius: var(--border-radius);
 				transition: all 100ms linear;
-
 				&:hover {
 					transform: scale(1.03);
 				}
@@ -245,10 +242,10 @@ h4 { font-size: 1.10em; }
 		list-style: none;
 
 		> .title {
-		font-size: .8em;
-		text-transform: uppercase;
-		font-weight: 500;
-		letter-spacing: .25pt;
+			font-size: .8em;
+			text-transform: uppercase;
+			font-weight: 500;
+			letter-spacing: .25pt;
 		}
 	}
 
@@ -257,7 +254,6 @@ h4 { font-size: 1.10em; }
 		display: block;
 		border: var(--sidebar-app-border-size) solid transparent;
 
-		// border-inline-start: 5px solid transparent;
 		border-radius: var(--border-radius);
 		transition: all 100ms linear;
 		overflow: hidden;
@@ -291,9 +287,6 @@ h4 { font-size: 1.10em; }
 		}
 
 		&.active {
-			background: color-mix(in lab, var(--app-color) 5%, transparent 100%);
-			border-radius: var(--border-radius);
-			border: var(--sidebar-app-border-size) solid color-mix(in lab, var(--app-color) 50%, transparent 100%);
 			margin-bottom: .25em;
 
 			a {
@@ -302,6 +295,7 @@ h4 { font-size: 1.10em; }
 
 			> a {
 				background: color-mix(in lab,var(--app-color) 25%,transparent);
+				border-radius: var(--border-radius);
 
 				.name {
 					font-weight: 700;
@@ -310,8 +304,7 @@ h4 { font-size: 1.10em; }
 
 			.docs {
 				display: block;
-				padding: .5em;
-				border-radius: var(--border-radius);
+				padding: .5em 0;
 			}
 
 			.doc {
@@ -329,7 +322,7 @@ h4 { font-size: 1.10em; }
 				}
 
 				a {
-					padding: .25em 1em;
+					padding: .15em 1em;
 				}
 			}
 		}
@@ -375,15 +368,9 @@ h4 { font-size: 1.10em; }
 	line-height: 100%;
 	font-size: 1.25em;
 
-	// color: #555;
 	//color: color-mix(in srgb, var(--app-color) 100%, #777 50%);
 	color: var(--app-color);
 
-	// background: var(--app-icon-background);
-	// clip-path: circle(50%);
-	// clip-path: polygon(50% 0%, 83% 12%, 100% 43%, 94% 78%, 68% 100%, 32% 100%, 6% 78%, 0% 43%, 17% 12%);
-	// clip-path: xywh(0 0 100% 100% round var(--border-radius) 0); // 2-rounded corners
-	// clip-path: xywh(0 0 100% 100% round var(--border-radius)); // Standard rounded corners
 	border-radius: var(--border-radius); // Instead of clip path
 	place-items: center;
 	aspect-ratio: 1;
@@ -400,12 +387,14 @@ h4 { font-size: 1.10em; }
 /* Dark Mode */
 
 html.dark-mode {
+
 	#toolbar > li > a {
 		color: inherit;
 	}
 
 	#box-apps-menu .app {
-	.icon {
+
+		.icon {
 			color: #000;
 		}
 
@@ -435,7 +424,6 @@ html.condensed {
 	}
 
 	#content {
-		// background: var(--card-background);
 		margin: 0;
 		padding: .5em;
 
@@ -527,9 +515,6 @@ html.condensed {
 	}
 
 	.card-action {
-		// position: initial !important;
-		// top: auto;
-		// inset-inline-end: auto;
 	}
 }
 
@@ -539,8 +524,8 @@ html.condensed {
 	display: inline-block;
 	background: url('../images/loader.svg');
 	background-size: cover;
-	animation-name: spin;
-	animation-duration: 2000ms;
-	animation-iteration-count: infinite;
-	animation-timing-function: linear;
+	//animation-name: spin;
+	//animation-duration: 2000ms;
+	//animation-iteration-count: infinite;
+	//animation-timing-function: linear;
 }

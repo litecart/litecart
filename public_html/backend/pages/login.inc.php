@@ -30,14 +30,14 @@
 				where username = '". database::input(strtolower($_POST['username'])) ."'
 				or email = '". database::input(strtolower($_POST['username'])) ."'
 				limit 1;"
-			)->fetch();
+			)->fetch(function($administrator){
+				$administrator['known_ips'] = f::string_split($administrator['known_ips']);
+				$administrator['known_fingerprints'] = f::string_split($administrator['known_fingerprints']);
+			});
 
 			if (!$administrator) {
 				throw new Exception(t('error_administrator_not_found', 'The administrator could not be found in our database'));
 			}
-
-			$administrator['known_ips'] = f::string_split($administrator['known_ips']);
-			$administrator['known_fingerprints'] = f::string_split($administrator['known_fingerprints']);
 
 			if (empty($administrator['status'])) {
 				throw new Exception(t('error_administrator_account_disabled', 'The administrator account is disabled'));

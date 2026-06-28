@@ -10,6 +10,14 @@
 }
 
 .page {
+	--default-text-color: #000;
+	--table-header-background: transparent;
+	--table-header-text-color: #000;
+	--table-body-background: transparent;
+	--table-body-background--hover: transparent;
+	--table-body-text-color: #000;
+	--table-footer-background: transparent;
+	--table-footer-text-color: #000;
 	position: relative;
 	display: flex;
 	flex-direction: column;
@@ -19,42 +27,42 @@
 	overflow: hidden;
 }
 .page[data-size=A4] {
-	page: a4;
+	page: A4;
 	width: 210mm;
 	height: 297mm;
 }
 .page[data-size=A4R] {
-	page: a4r;
+	page: A4R;
 	width: 297mm;
 	height: 210mm;
 }
 .page[data-size=A5] {
-	page: a5;
+	page: A5;
 	width: 148mm;
 	height: 210mm;
 }
 .page[data-size=A5R] {
-	page: a5r;
+	page: A5R;
 	width: 210mm;
 	height: 148mm;
 }
 .page[data-size=A6] {
-	page: a6;
+	page: A6;
 	width: 105mm;
 	height: 148mm;
 }
 .page[data-size=A6R] {
-	page: a6r;
+	page: A6R;
 	width: 148mm;
 	height: 105mm;
 }
 .page[data-size=US-Letter] {
-	page: us-letter;
+	page: US-Letter;
 	width: 8.5in;
 	height: 11in;
 }
 .page[data-size=US-Legal] {
-	page: us-legal;
+	page: US-Legal;
 	width: 8.5in;
 	height: 14in;
 }
@@ -71,6 +79,7 @@
 	flex: 0 1 auto;
 	padding: var(--page-margin);
 	padding-top: 0;
+	font-size: 0.85em;
 }
 
 hr {
@@ -84,22 +93,22 @@ hr {
 		padding: 0;
 	}
 	@page A4 {
-		size: a4 portrait;
+		size: A4 portrait;
 	}
 	@page A4R {
-		size: a4 landscape;
+		size: A4 landscape;
 	}
 	@page A5 {
-		size: a5 portrait;
+		size: A5 portrait;
 	}
 	@page A5R {
-		size: a5 landscape;
+		size: A5 landscape;
 	}
 	@page A6 {
-		size: a6 portrait;
+		size: A6 portrait;
 	}
 	@page A6R {
-		size: a6 landscape;
+		size: A6 landscape;
 	}
 	@page US-Letter {
 		size: letter portrait;
@@ -109,8 +118,8 @@ hr {
 	}
 	.page {
 		position: relative;
-		break-inside: avoid;
-		break-after: always;
+		page-break-inside: avoid;
+		page-break-after: always;
 		height: 100vh;
 	}
 	h1 {
@@ -120,7 +129,7 @@ hr {
 		color: inherit;
 	}
 	.page-break {
-		break-before: always;
+		page-break-before: always;
 	}
 	#actions {
 		display: none;

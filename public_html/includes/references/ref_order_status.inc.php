@@ -4,7 +4,7 @@
 
 		protected $_language_codes;
 
-		function __construct(int $order_status_id, string $language_code=null) {
+		function __construct(int $order_status_id, ?string $language_code=null) {
 
 			if (!$language_code) {
 				$language_code = language::$selected['code'];

@@ -127,7 +127,7 @@
 				$administrator->set_password($_POST['password']);
 			}
 
-			$administrator->data['sessions_expiry'] = date('Y-m-d H:is');
+			$administrator->data['sessions_expiry'] = date('Y-m-d H:i:s');
 
 			$administrator->save();
 

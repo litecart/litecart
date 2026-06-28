@@ -17,7 +17,7 @@
 
 			// Skip apps the administrator doesn't have access to.
 			// Empty apps map = unrestricted; non-empty = restricted to listed apps.
-			if (!empty(administrator::$data['apps']) && empty(administrator::$data['apps'][$app]['status'])) continue;
+			if (!empty(administrator::$data['permissions']['apps']) && empty(administrator::$data['permissions']['apps'][$app]['status'])) continue;
 
 			$results = (function($app, $file, $query) {
 				return include 'app://backend/apps/' . $app .'/' . $file;

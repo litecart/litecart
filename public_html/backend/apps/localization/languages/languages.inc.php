@@ -91,7 +91,11 @@
 					<td class="text-center"><?php echo ($language['code'] == settings::get('default_language_code')) ? f::draw_fonticon('icon-check') : ''; ?></td>
 					<td class="text-center"><?php echo ($language['code'] == settings::get('store_language_code')) ? f::draw_fonticon('icon-check') : ''; ?></td>
 					<td class="text-center"><?php echo $language['priority']; ?></td>
-					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/languages/edit_language', ['language_code' => $language['code']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo f::draw_fonticon('edit'); ?></a></td>
+					<td class="text-end">
+						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/languages/edit_language', ['language_code' => $language['code']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>">
+							<?php echo f::draw_fonticon('edit'); ?>
+						</a>
+					</td>
 				</tr>
 				<?php } ?>
 			</tbody>

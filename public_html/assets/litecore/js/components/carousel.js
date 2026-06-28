@@ -1,7 +1,11 @@
+/*
+	Simplified Carousel with Swipe Support
+	Lightweight carousel with essential features
+*/
+
 waitFor('jQuery', ($) => {
 	'use strict';
 
-	/* Lightweight carousel with swipe support */
 	class Carousel {
 		constructor(element, options) {
 			this.$element = $(element);
@@ -159,8 +163,8 @@ waitFor('jQuery', ($) => {
 
 		getNext(direction, active) {
 			const activeIndex = this.$items.index(active);
-			const isGoingToWrap = (direction === 'prev' && activeIndex === 0)
-				|| (direction === 'next' && activeIndex === this.$items.length - 1);
+			const isGoingToWrap = (direction === 'prev' && activeIndex === 0) ||
+								  (direction === 'next' && activeIndex === this.$items.length - 1);
 
 			if (isGoingToWrap && !this.options.wrap) return active;
 
@@ -201,7 +205,7 @@ waitFor('jQuery', ($) => {
 		const $target = $($this.attr('data-target') || $this.closest('.carousel'));
 		if (!$target.hasClass('carousel')) return;
 
-		const options = $.extend({}, $target.data(), $(this).data());
+		const options = $.extend({}, $target.data(), $this.data());
 		const slideIndex = $this.attr('data-slide-to');
 
 		if (slideIndex) options.interval = false;

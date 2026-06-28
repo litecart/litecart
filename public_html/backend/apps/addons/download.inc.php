@@ -2,30 +2,35 @@
 
 	try {
 
-		if (empty($_GET['vmod'])) {
-			throw new Exception(t('error_must_provide_vmod', 'You must provide a vMod'));
+		if (empty($_GET['addon_id'])) {
+			throw new Exception(t('error_must_provide_an_addon', 'You must provide an add-on'));
 		}
 
-		$vmod = new ent_addon($_GET['vmod']);
+		$addon = new ent_addon($_GET['addon_id']);
 
 		// Create temporary zip archive
 		$tmp_file = f::file_create_tempfile();
 
 		$zip = new ZipArchive();
-		if ($zip->open($tmp_file, ZipArchive::OVERWRITE) !== true) {
-			// ZipArchive::CREATE throws an error with temp files in PHP 8.
+		if ($zip->open($tmp_file, ZipArchive::OVERWRITE) !== true) { // ZipArchive::CREATE throws an error with temp files in PHP 8.
 			throw new Exception('Failed creating ZIP archive');
 		}
 
-		if (!($files = f::file_search($vmod->data['location'] . '**'))) {
+		if (empty($addon->data['location'])) {
+			throw new Exception('Failed to determine addon location');
+		}
+
+		if (!$files = f::file_search($addon->data['location'].'**')) {
 			throw new Exception('No files to add to ZIP archive');
 		}
 
 		foreach ($files as $file) {
+
 			if (is_dir($file)) {
 				continue;
 			}
-			if (!$zip->addFile(f::file_realpath($file), preg_replace('#^' . preg_quote($vmod->data['location'], '#') . '#', '', $file))) {
+
+			if (!$zip->addFile(f::file_realpath($file), preg_replace('#^'. preg_quote($addon->data['location'], '#') .'#', '', $file))) {
 				throw new Exception('Failed adding contents to ZIP archive');
 			}
 		}
@@ -36,7 +41,7 @@
 		header('Cache-Control: must-revalidate');
 		header('Content-Description: File Transfer');
 		header('Content-Type: application/octet-stream');
-		header('Content-Disposition: attachment; filename=' . f::format_path_friendly($vmod->data['id']) . '-' . $vmod->data['version'] . '.zip');
+		header('Content-Disposition: attachment; filename='. f::format_path_friendly($addon->data['id']) . ($addon->data['version'] ? '-'. $addon->data['version'] : '') .'.zip');
 		header('Content-Length: ' . filesize($tmp_file));
 		header('Expires: 0');
 

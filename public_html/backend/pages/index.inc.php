@@ -83,7 +83,7 @@
 		$widgets = f::admin_get_widgets();
 
 		foreach ($widgets as $widget) {
-			if (!empty(administrator::$data['widgets']) && !in_array($widget['id'], administrator::$data['permissions']['widgets'])) continue;
+			if (!empty(administrator::$data['permissions']['widgets']) && !in_array($widget['id'], administrator::$data['permissions']['widgets'])) continue;
 
 			ob_start();
 			include $widget['directory'] . $widget['file'];

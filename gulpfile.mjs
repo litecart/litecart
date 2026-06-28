@@ -107,7 +107,7 @@ gulp.task('scss-backend', function() {
 		.pipe(sourcemaps.init())
 		.pipe(sass(sassOptions).on('error', sass.logError))
 		.pipe(header(banner, { pkg: packageData }))
-		//.pipe(tabify()) // Use tab indentation
+		.pipe(tabify()) // Use tab indentation
 		//.pipe(gulp.dest('public_html/backend/template/css/', { overwrite: true }))
 		.pipe(cleancss())
 		.pipe(rename({ extname: '.min.css' }))
@@ -121,6 +121,7 @@ gulp.task('js-backend', function() {
 		.src('public_html/backend/template/js/components/*.js')
 		.pipe(concat('app.js', {'newLine': '\r\n\r\n'}))
 		.pipe(header(banner, { pkg: packageData }))
+		.pipe(tabify()) // Use tab indentation
 		.pipe(gulp.dest('public_html/backend/template/js/', { overwrite: true }))
 		.pipe(sourcemaps.init())
 		.pipe(uglify())
@@ -175,7 +176,7 @@ gulp.task('js-frontend', function() {
 gulp.task('scss-chartist', function() {
 	return gulp.src('public_html/assets/chartist/chartist.scss', { allowEmpty: true })
 		.pipe(sass(sassOptions).on('error', sass.logError))
-		//.pipe(tabify()) // Use tab indentation
+		.pipe(tabify()) // Use tab indentation
 		//.pipe(gulp.dest('public_html/assets/chartist/', { overwrite: true }))
 		//.pipe(sourcemaps.write('.', { includeContent: false }))
 		.pipe(cleancss())
@@ -190,7 +191,7 @@ gulp.task('scss-trumbowyg', function() {
 		.src('public_html/assets/trumbowyg/ui/*.scss')
 		.pipe(sass({ ...sassOptions, silenceDeprecations: ['legacy-js-api'] })
 		.on('error', sass.logError))
-		//.pipe(tabify()) // Use tab indentation
+		.pipe(tabify()) // Use tab indentation
 		//.pipe(gulp.dest('public_html/assets/trumbowyg/ui/'))
 		//.pipe(sourcemaps.write('.', { includeContent: false }))
 		.pipe(cleancss())
@@ -232,6 +233,7 @@ gulp.task('iconly', function() {
 			'',
 		].join('\n')))
 		.pipe(replace(/(\.icon-[^:]+:before)\s*\{\s*([^}]+?)\s*\}\s*/g, '$1 { $2 }\n'))
+		.pipe(tabify()) // Use tab indentation
 		.pipe(gulp.dest('public_html/assets/litecore/scss/framework/'));
 });
 

@@ -118,6 +118,7 @@ a {
 }
 
 .btn {
+	box-sizing: border-box;
 	background: #3460ac;
 	border: 1px solid #fff;
 	border-radius: 5px;
@@ -199,7 +200,7 @@ hr {
 	margin: 30px 0;
 }
 
-@media only screen and (width <= 620px) {
+@media only screen and (max-width: 620px) {
 	table.body h1 {
 		font-size: 28px !important;
 		margin-bottom: 15px !important;

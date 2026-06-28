@@ -7,14 +7,24 @@
 		}
 	}
 
-	// Shorthand sql() for database::prepare() e.g. sql("SELECT * FROM table WHERE id = :id", [$id])->bind(...)->fetch();
+	// Shorthand sql() for database::query() e.g. sql("SELECT * FROM table WHERE id = :id", $input)->fetch_all();
 	function sql(...$args) {
+		return forward_static_call_array(['database', 'query'], $args);
+	}
+
+	// Shorthand sqlp() for database::prepare() e.g. sqlp("SELECT * FROM table WHERE id = :id")->bind(...)->fetch();
+	function sqlp(...$args) {
 		return forward_static_call_array(['database', 'prepare'], $args);
 	}
 
 	// Shorthand t() for language::translate()
 	function t(...$args) {
 		return forward_static_call_array(['language', 'translate'], $args);
+	}
+
+	// Shorthand multiline() for imploding an array of strings with newlines
+	function multiline(...$lines) {
+		return implode(PHP_EOL, $lines);
 	}
 
 	// Redirect to a URL and stop script execution

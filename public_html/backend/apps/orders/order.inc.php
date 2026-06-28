@@ -43,46 +43,8 @@
 		}
 	}
 
-	$items = database::query(
-		"select
-			oi.stock_item_id,
-			COALESCE(JSON_VALUE(si.name, '$.". database::input(language::$selected['code']) ."'), oi.name) as name,
-			si.sku,
-			si.gtin,
-			sum(ol.quantity * ol.quantity) as quantity,
-			si.quantity as stock_quantity,
-			COALESCE(r.reserved_quantity, 0) as quantity_reserved,
-			(si.quantity - COALESCE(r.reserved_quantity, 0)) as quantity_available
-		from ". DB_TABLE_PREFIX ."orders_items oi
-		left join ". DB_TABLE_PREFIX ."orders_lines ol on (ol.id = oi.line_id and ol.order_id = oi.order_id)
-		left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = oi.stock_item_id)
-		left join (
-			select stock_item_id, sum(quantity) as reserved_quantity
-			from ". DB_TABLE_PREFIX ."orders_items
-			where order_id in (
-				select id from ". DB_TABLE_PREFIX ."orders
-				where order_status_id in (
-					select id from ". DB_TABLE_PREFIX ."order_statuses
-					where stock_action = 'reserve'
-				)
-				and id != '". (int)$order->data['id'] ."'
-			)
-			group by stock_item_id
-		) r on (oi.stock_item_id = r.stock_item_id)
-		where oi.order_id = '". (int)$order->data['id'] ."'
-		group by oi.stock_item_id
-		order by oi.priority;"
-	)->fetch_all();
-
 	// Actions
-	$actions = [];
-
-	$mod_order = new mod_order();
-	if ($modules = $mod_order->actions()) {
-		foreach ($modules as $module) {
-			$actions[] = $module;
-		}
-	}
+	$actions = (new mod_order)->actions();
 
 	$previous_order_id = database::query(
 		"select id from ". DB_TABLE_PREFIX ."orders
@@ -121,16 +83,16 @@
 	margin: 0 !important;
 }
 
-#lines {
+#items {
 	margin-bottom: 2em;
 	display: block;
 }
 
-#lines tr th:last-child, .order-total tr td:last-child {
+#items tr th:last-child, .order-total tr td:last-child {
 	width: 30mm;
 }
 
-#lines .items {
+#items .items {
 	margin: 0;
 	padding: 0.5em 1em;
 	border: 1px solid var(--default-border-color);
@@ -291,7 +253,6 @@ textarea[name="notes"]:focus {
 						<div class="form-label"><?php echo t('title_transaction_number', 'Transaction Number'); ?></div>
 						<div class="detail"><?php echo $order->data['payment_transaction_id'] ?? '-'; ?></div>
 					</div>
-
 				</div>
 
 				<div class="col-3" style="padding-top: 1em;">
@@ -317,7 +278,7 @@ textarea[name="notes"]:focus {
 					<?php } ?>
 
 					<label class="form-group">
-						<div class="detail"><?php echo f::form_textarea('notes', true, ['style' => 'height: 100px;', 'placeholder' => f::escape_html(t('title_notes', 'Notes')) . '..." spellcheck="false']); ?></div>
+						<div class="detail"><?php echo f::form_textarea('notes', true, ['style' => 'height: 100px;', 'placeholder' => f::escape_html(t('title_notes', 'Notes')) . '...', 'spellcheck' => 'false']); ?></div>
 					</label>
 				</div>
 			</div>
@@ -325,23 +286,28 @@ textarea[name="notes"]:focus {
 		</div>
 
 		<div class="card-action">
-			<?php echo f::form_button_predefined('save', t('title_save', 'Save'), 'submit'); ?>
-			<?php echo f::form_button_predefined('cancel', t('title_cancel', 'Cancel'), 'cancel', 'btn-default'); ?>
+			<?php echo f::form_button_predefined('save'); ?>
+			<?php echo f::form_button_predefined('cancel'); ?>
 		</div>
 		<?php echo f::form_end(); ?>
 </div>
 
 <div class="card">
 	<div class="card-header">
-		<h2><?php echo t('title_Lines', 'Lines'); ?></h2>
+		<h2><?php echo t('title_items', 'Items'); ?></h2>
 	</div>
 
-	<table id="lines" class="table data-table">
+	<table id="items" class="table data-table">
 		<thead>
 			<tr>
 				<th class="main"><?php echo t('title_item', 'Item'); ?></th>
-				<th><?php echo t('title_code', 'Code'); ?></th>
 				<th><?php echo t('title_qty', 'Qty'); ?></th>
+				<th><?php echo t('title_code', 'Code'); ?></th>
+				<th><?php echo t('title_sku', 'SKU'); ?></th>
+				<th><?php echo t('title_gtin', 'GTIN'); ?></th>
+				<th><?php echo t('title_in_stock', 'In Stock'); ?></th>
+				<th><?php echo t('title_available', 'Available'); ?></th>
+				<th><?php echo t('title_reserved', 'Reserved'); ?></th>
 				<th class="text-end"><?php echo t('title_unit_price', 'Unit Price'); ?></th>
 				<th class="text-end"><?php echo t('title_discount', 'Discount'); ?></th>
 				<th class="text-end"><?php echo t('title_tax', 'Tax'); ?> </th>
@@ -350,16 +316,38 @@ textarea[name="notes"]:focus {
 		</thead>
 
 		<tbody>
-			<?php foreach ($order->data['lines'] as $line) { ?>
+			<?php foreach ($order->data['items'] as $item) { ?>
 			<tr>
-				<td colspan="3" style="white-space: normal;"><?php echo f::escape_html($line['name']); ?></td>
-				<td><?php echo f::escape_html($line['code']); ?></td>
-				<td><?php echo ($line['quantity'] > 1) ? '<strong>'. (float)$line['quantity'].'</strong>' : (float)$line['quantity']; ?></td>
-				<td class="text-end"><?php echo currency::format($line['price'], false, $order->data['currency_code'], $order->data['currency_value']); ?></td>
-				<td class="text-end"><?php echo currency::format($line['discount'], false, $order->data['currency_code'], $order->data['currency_value']); ?></td>
-				<td class="text-end"><?php echo currency::format($line['sum_tax'], false, $order->data['currency_code'], $order->data['currency_value']); ?></td>
-				<td class="text-end"><?php echo currency::format($line['sum'] + $line['sum_tax'], false, $order->data['currency_code'], $order->data['currency_value']); ?></td>
+				<td style="white-space: normal;"><?php echo ($item['quantity'] > 1) ? '<strong>'. (float)$item['quantity'].'</strong>' : (float)$item['quantity']; ?> &times; <?php echo f::escape_html($item['name']); ?></td>
+				<td></td>
+				<td><?php echo f::escape_html($item['code']); ?></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td class="text-end"><?php echo currency::format($item['final_price'], false, $order->data['currency_code'], $order->data['currency_value']); ?></td>
+				<td class="text-end"><?php echo currency::format($item['discount'], false, $order->data['currency_code'], $order->data['currency_value']); ?></td>
+				<td class="text-end"><?php echo currency::format($item['sum_tax'], false, $order->data['currency_code'], $order->data['currency_value']); ?></td>
+				<td class="text-end"><?php echo currency::format($item['sum'] + $item['sum_tax'], false, $order->data['currency_code'], $order->data['currency_value']); ?></td>
 			</tr>
+
+			<?php foreach ($item['stock_items'] as $stock_item) { ?>
+			<tr>
+				<td style="padding-inline-start: 40px;"><?php echo f::escape_html($item['quantity']); ?> &times; <?php echo f::escape_html($stock_item['name']); ?></td>
+				<td><?php echo f::escape_html($item['quantity'] * $stock_item['quantity']); ?></td>
+				<td></td>
+				<td><?php echo f::escape_html($stock_item['sku']); ?></td>
+				<td><?php echo f::escape_html($stock_item['gtin']); ?></td>
+				<td class="text-end"><?php echo f::escape_html($stock_item['stock_quantity']); ?></td>
+				<td class="text-end"><?php echo f::escape_html($stock_item['quantity_available']); ?></td>
+				<td class="text-end"><?php echo f::escape_html($stock_item['quantity_reserved']); ?></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<?php } ?>
 			<?php } ?>
 		</tbody>
 	</table>
@@ -369,7 +357,7 @@ textarea[name="notes"]:focus {
 
 			<div id="subtotal" class="summary">
 				<div class="title"><?php echo t('title_subtotal', 'Subtotal'); ?></div>
-				<div class="amount"><?php echo currency::format($_POST['discount'] ?? 0, true, $order->data['currency_code'], $order->data['currency_value']); ?></div>
+				<div class="amount"><?php echo currency::format($_POST['subtotal'] ?? 0, true, $order->data['currency_code'], $order->data['currency_value']); ?></div>
 			</div>
 
 			<div id="total-discount" class="summary">
@@ -388,39 +376,4 @@ textarea[name="notes"]:focus {
 			</div>
 		</div>
 	</div>
-</div>
-
-<div class="card">
-	<div class="card-header">
-		<h2><?php echo t('text_stock_items_in_this_order', 'Stock items in this order'); ?></h2>
-	</div>
-
-		<table id="lines" class="table data-table">
-			<thead>
-				<tr>
-					<th class="main"><?php echo t('title_item', 'Item'); ?></th>
-					<th><?php echo t('title_qty', 'Qty'); ?></th>
-					<th><?php echo t('title_sku', 'SKU'); ?></th>
-					<th><?php echo t('title_gtin', 'GTIN'); ?></th>
-					<th><?php echo t('title_in_stock', 'In Stock'); ?></th>
-					<th><?php echo t('title_available', 'Available'); ?></th>
-					<th><?php echo t('title_reserved', 'Reserved'); ?></th>
-				</tr>
-			</thead>
-
-			<tbody>
-				<?php foreach ($items as $item) { ?>
-				<tr>
-					<td style="white-space: normal;"><?php echo $item['name']; ?></td>
-					<td><?php echo (float)$item['quantity']; ?></td>
-					<td class="text-end"><?php echo f::escape_html($item['sku']); ?></td>
-					<td class="text-end"><?php echo f::escape_html($item['gtin']); ?></td>
-					<td class="text-end"><?php echo f::escape_html($item['stock_quantity']); ?></td>
-					<td class="text-end"><?php echo f::escape_html($item['quantity_available']); ?></td>
-					<td class="text-end"><?php echo f::escape_html($item['quantity_reserved']); ?></td>
-				</tr>
-				<?php } ?>
-		</tbody>
-	</table>
-
 </div>

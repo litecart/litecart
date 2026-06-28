@@ -29,7 +29,7 @@
 	stream_wrapper_register('storage', 'stream_storage');
 
 	// Virtual Modification System
-	require FS_DIR_APP .'includes/nodes/nod_vmod.inc.php';
+	require_once FS_DIR_APP .'includes/nodes/nod_vmod.inc.php';
 	vmod::init();
 
 	// Compatibility and Polyfills

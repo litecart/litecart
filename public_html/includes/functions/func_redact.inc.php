@@ -22,11 +22,8 @@
 		particular are too generic to allow as substrings.
 	*/
 	const REDACT_SENSITIVE_EXACT = [
-		'password', 'passwd',
-		'secret', 'credential',
-		'token', 'auth',
-		'api_key', 'apikey',
-		'reset_token', 'public_key',
+		'password', 'passwd', 'secret', 'credential', 'token', 'auth',
+		'api_key', 'apikey', 'reset_token', 'public_key',
 	];
 
 	/*

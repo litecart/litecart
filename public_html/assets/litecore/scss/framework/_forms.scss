@@ -155,7 +155,7 @@ label.form-check > input {
 	display: block;
 
 	input[type="checkbox"] {
-		clip-path: inset(0 0 0 0);
+		clip: rect(0,0,0,0);
 		height: 1px;
 		margin: -1px;
 		overflow: hidden;
@@ -165,8 +165,7 @@ label.form-check > input {
 		&:checked + .switch {
 			background: #254461;
 			border-color: #254461;
-
-			&::before {
+			&:before {
 				inset-inline-start: 11px;
 			}
 		}
@@ -184,7 +183,7 @@ label.form-check > input {
 		cursor: pointer;
 		transition: background .2s, border .2s, box-shadow .2s, color .2s;
 
-		&::before {
+		&:before {
 			content: '';
 			display: block;
 			background: #fff;
@@ -219,16 +218,13 @@ label.form-check > input {
 			background: var(--input-toggle-background);
 			border: var(--input-border-width) solid var(--input-border-color);
 		}
-
-		&:hover:not(:has(:checked), :disabled) {
+		&:hover:not(:has(:checked)):not(:disabled) {
 			background: var(--input-toggle-background--hover);
 			cursor: pointer;
 		}
-
 		&:has(:focus) {
 			outline: var(--input-outline-width) solid var(--input-outline-color);
 		}
-
 		&:has(:disabled) {
 			opacity: .5;
 		}
@@ -241,7 +237,7 @@ label.form-check > input {
 	min-height: 320px;
 	font-size: .85em;
 	overflow-y: auto;
-	font-family: "Lucida Console", monospace;
+	font-family: Lucida Console, Monospace;
 	white-space: pre-wrap;
 	tab-size: 2;
 }
@@ -288,8 +284,6 @@ label.form-check > input {
 		background: var(--input-addon-background);
 		border-inline-start: var(--input-border-width) solid var(--input-border-color);
 		border-inline-end: var(--input-border-width) solid var(--input-border-color);
-
-		// align-self: center;
 		align-self: stretch;
 		font-weight: normal;
 		text-align: center;
@@ -312,13 +306,11 @@ label.form-check > input {
 	> *:not(:first-child) {
 	}
 
-	// > *:first-child:is(.btn, .form-select, .form-input) {
 	> *:first-child {
 		border-start-end-radius: 0;
 		border-end-end-radius: 0;
 	}
 
-	// > *:last-child:is(.btn, .form-select, .form-input) {
 	> *:last-child {
 		border-start-start-radius: 0;
 		border-end-start-radius: 0;
@@ -399,9 +391,11 @@ fieldset[disabled] > :not(legend),
 }
 
 input[data-toggle="tags"] + .form-input {
+
 	.tokens {
 		display: flex;
-		flex-flow: row wrap;
+		flex-direction: row;
+		flex-wrap: wrap;
 		list-style: none;
 		padding: 0;
 		margin: -.5em;
@@ -410,21 +404,21 @@ input[data-toggle="tags"] + .form-input {
 	}
 
 	.tag {
-		background: rgb(0 93 152 / 20%);
+		background: rgba(0, 93, 152, 0.2);
 		padding: 0.25em 0.5em;
 		margin: .25em;
 		border-radius: .25em;
 		cursor: default;
 
 		.remove {
-			background: rgb(255 15 15 / 40%);
+			background: rgba(255, 15, 15, 0.4);
 			color: #fff;
 			border-radius: .25em;
 			padding: 0 .25em;
 			cursor: pointer;
 
 			&:hover {
-				background: rgb(255 15 15 / 60%);
+				background: rgba(255, 15, 15, 0.6);
 			}
 		}
 	}
@@ -434,7 +428,7 @@ input[data-toggle="tags"] + .form-input {
 		background: transparent;
 		border: none;
 		outline: none;
-		padding: .5em;
+		padding: .5em .5em;
 	}
 }
 

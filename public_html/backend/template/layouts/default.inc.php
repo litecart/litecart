@@ -11,7 +11,7 @@
 {{head_tags}}
 <style>
 :root {
-	--default-text-size: <?php echo $_COOKIE['font_size'] ?? '13'; ?>px;
+	--default-text-size: <?php echo isset($_COOKIE['font_size']) ? (int)$_COOKIE['font_size'] : 13; ?>px;
 }
 </style>
 </head>

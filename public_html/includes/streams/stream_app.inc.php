@@ -150,7 +150,12 @@
 		}
 
 		public function stream_metadata(string $path, int $option, mixed $value): bool {
-			trigger_error('Changing metadata for an app:// resource is prohibited', E_USER_WARNING);
+
+			if (!getenv('SUPER_MODE')) {
+				trigger_error('Changing metadata for an app:// resource is prohibited', E_USER_WARNING);
+				return false;
+			}
+
 			return false;
 		}
 

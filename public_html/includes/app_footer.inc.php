@@ -35,6 +35,7 @@
 		$disabled_functions = f::string_split(ini_get('disable_functions'));
 
 		if (!in_array('exec', $disabled_functions)) {
+
 			exec(implode('', [
 				'(',
 				' command -v wget >/dev/null',

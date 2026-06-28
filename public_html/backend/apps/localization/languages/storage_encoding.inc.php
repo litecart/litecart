@@ -48,11 +48,6 @@
 				}
 			}
 
-			// Start transaction in case we need to rollback
-			database::query(
-				"start transaction;"
-			);
-
 			// Collect foreign keys, then drop them
 			$foreign_keys = [];
 
@@ -116,18 +111,11 @@
 				);
 			}
 
-			// Commit the transaction
-			database::commit();
-
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			reload();
 			exit;
 
 		} catch (Exception $e) {
-
-			// Rollback the transaction
-			database::rollback();
-
 			notices::add('errors', $e->getMessage());
 		}
 	}

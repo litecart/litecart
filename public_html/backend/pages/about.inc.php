@@ -7,6 +7,21 @@
 		$_GET['page'] = 1;
 	}
 
+	if (isset($_POST['clear_all'])) {
+
+		try {
+
+			$log_file = ini_get('error_log');
+			file_put_contents($log_file, '');
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
+			reload();
+			exit;
+
+		} catch (Exception $e) {
+			notices::add('errors', $e->getMessage());
+		}
+	}
+
 	if (isset($_POST['delete'])) {
 
 		try {
@@ -237,7 +252,7 @@
 	padding: 2em;
 	background: #fff;
 	border: 1px solid var(--default-border-color);
-	box-shadow: 0 0 10px rgb(0 0 0 / 5%);
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
 	border-radius: var(--border-radius);
 	overflow: hidden;
 	transform: translateY(0%);
@@ -446,7 +461,7 @@
 			</div>
 
 			<div class="card-action">
-				<?php echo f::form_input_search('filter', true, ['placeholder' => t('title_filter', 'Filter')]); ?>
+				<?php echo f::form_input_search('filter', true, 'placeholder="'. t('title_filter', 'Filter') .'"'); ?>
 			</div>
 
 			<table id="php-config" class="table data-table">
@@ -479,43 +494,47 @@
 
 			<?php echo f::form_begin('errors_form', 'post'); ?>
 
-			<table class="table data-table">
-				<thead>
-					<tr>
-						<th><?php echo f::draw_fonticon('icon-square-check checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
-						<th class="main"><?php echo t('title_error', 'Error'); ?></th>
-						<th><?php echo t('title_occurrences', 'Occurrences'); ?></th>
-						<th><?php echo t('title_last_occurrence', 'Last Occurrence'); ?></th>
-					</tr>
-				</thead>
+				<div class="card-action">
+					<?php echo f::form_button('clear_all', t('title_clear_all', 'Clear All'), 'submit', [], 'icon-broom'); ?>
+				</div>
 
-				<tbody>
-					<?php foreach ($errors as $error) { ?>
-					<tr<?php echo $error['critical'] ? ' class="critical"' : ''; ?>>
-						<td><?php echo f::form_checkbox('errors[]', $error['error']); ?></td>
-						<td style="white-space: normal;">
-							<?php echo f::escape_html($error['error']); ?><br>
-							<div class="backtrace"><?php echo f::escape_html($error['backtrace']); ?></div>
-						</td>
-						<td class="text-center"><?php echo $error['occurrences']; ?></td>
-						<td><?php echo f::datetime_when($error['last_occurrence']); ?></td>
-					</tr>
-					<?php } ?>
-				</tbody>
-			</table>
+				<table class="table data-table">
+					<thead>
+						<tr>
+							<th><?php echo f::draw_fonticon('icon-square-check checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
+							<th class="main"><?php echo t('title_error', 'Error'); ?></th>
+							<th><?php echo t('title_occurrences', 'Occurrences'); ?></th>
+							<th><?php echo t('title_last_occurrence', 'Last Occurrence'); ?></th>
+						</tr>
+					</thead>
 
-			<div class="card-body">
-				<fieldset id="actions">
-					<legend><?php echo t('title_with_selected', 'With Selected'); ?></legend>
-					<?php echo f::form_button_predefined('delete'); ?>
-				</fieldset>
-			</div>
+					<tbody>
+						<?php foreach ($errors as $error) { ?>
+						<tr<?php echo $error['critical'] ? ' class="critical"' : ''; ?>>
+							<td><?php echo f::form_checkbox('errors[]', $error['error']); ?></td>
+							<td style="white-space: normal;">
+								<?php echo f::escape_html($error['error']); ?><br>
+								<div class="backtrace"><?php echo f::escape_html($error['backtrace']); ?></div>
+							</td>
+							<td class="text-center"><?php echo $error['occurrences']; ?></td>
+							<td><?php echo f::datetime_when($error['last_occurrence']); ?></td>
+						</tr>
+						<?php } ?>
+					</tbody>
+				</table>
 
-			<?php if ($num_pages > 1) { ?>
-			<div class="card-body">
-				<?php echo f::draw_pagination($num_pages); ?>
-			</div>
-			<?php } ?>
+				<div class="card-body">
+					<fieldset id="actions">
+						<legend><?php echo t('title_with_selected', 'With Selected'); ?></legend>
+						<?php echo f::form_button_predefined('delete'); ?>
+					</fieldset>
+				</div>
+
+				<?php if ($num_pages > 1) { ?>
+				<div class="card-body">
+					<?php echo f::draw_pagination($num_pages); ?>
+				</div>
+				<?php } ?>
 
 			<?php echo f::form_end(); ?>
 		</div>

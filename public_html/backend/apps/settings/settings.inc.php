@@ -28,10 +28,33 @@
 					throw new Exception(t('error_cannot_set_empty_value_for_setting', 'You cannot set an empty value for this setting'));
 				}
 
-				if (substr($setting['function'], 0, 8) == 'regional') {
-					$value = f::format_json($_POST['settings'][$key]);
-				} else {
-					$value = $_POST['settings'][$key];
+				switch ($setting['datatype']) {
+
+					case 'boolean':
+						$value = (int)$_POST['settings'][$key];
+						break;
+
+					case 'csv':
+						$value = implode(',', array_map(function($value){
+							return preg_match('#", \R#', $value) ? '"' . str_replace('"', '""', $value) . '"' : $value;
+						}, $_POST['settings'][$key]));
+						break;
+
+					case 'array':
+						$value = json_encode($_POST['settings'][$key], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+						break;
+
+					case 'json':
+						$value = (string)$_POST['settings'][$key];
+						break;
+
+					case 'number':
+						$value = (int)$_POST['settings'][$key];
+						break;
+
+					case 'decimal':
+						$value = (float)$_POST['settings'][$key];
+						break;
 				}
 
 				database::query(
@@ -79,55 +102,88 @@
 		"select * from ". DB_TABLE_PREFIX ."settings
 		where `group_key` = '". database::input($settings_group['key']) ."'
 		order by priority, `key` asc;"
-	)->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
+	)->fetch_page(function($setting){
 
-	foreach ($settings as $i => $setting) {
-		if (isset($_GET['action']) && $_GET['action'] == 'edit' && $_GET['key'] == $setting['key']) {
-
+		// Set Display Value
 			switch (true) {
-				case (substr($setting['function'], 0, 14) == 'regional_input'):
-					if (!isset($_POST['settings'][$setting['key']])) {
-						$_POST['settings'][$setting['key']] = !empty($setting['value']) ? json_decode($setting['value'], true) : null;
-					}
+
+				case (preg_match('#^password#', $setting['function'])):
+					$setting['display_value'] = '****************';
 					break;
 
-				default:
-					$_POST['settings'][$setting['key']] = $setting['value'];
-					break;
-			}
-
-		} else {
-
-			switch (true) {
-				case (substr($setting['function'], 0, 8) == 'password'):
-					$setting['value'] = '****************';
+				case (preg_match('#^order_status$#', $setting['function'])):
+					$setting['display_value'] = $setting['value'] ? reference::order_status($setting['value'])->name : '';
 					break;
 
-				case (substr($setting['function'], 0, 12) == 'order_status'):
-					$setting['value'] = $setting['value'] ? reference::order_status($setting['value'])->name : '';
+				case (preg_match('#^page$#', $setting['function'])):
+					$setting['display_value'] = $setting['value'] ? reference::page($setting['value'])->title : '';
 					break;
 
-				case (substr($setting['function'], 0, 4) == 'page'):
-					$setting['value'] = $setting['value'] ? reference::page($setting['value'])->title : '';
+				case (preg_match('#^regional_#', $setting['function'])):
+					$setting['value'] = !empty($setting['value']) ? json_decode($setting['value'], true) : [];
+					$setting['display_value'] = isset($setting['value'][language::$selected['code']]) ? $setting['value'][language::$selected['code']] : '';
 					break;
 
-				case (substr($setting['function'], 0, 14) == 'regional_input'):
-					$setting['value'] = !empty($setting['value']) ? json_decode($setting['value'], true) : null;
-					$setting['value'] = $setting['value'][language::$selected['code']] ?? null;
-					break;
-
-				case (substr($setting['function'], 0, 6) == 'toggle'):
+				case (preg_match('#^toggle$#', $setting['function'])):
 					if (in_array($setting['value'], ['1', 'active', 'enabled', 'on', 'true', 'yes'])) {
-						$setting['value'] = t('title_true', 'True');
+						$setting['display_value'] = t('title_true', 'True');
 					} else if (in_array(($setting['value']), ['', '0', 'inactive', 'disabled', 'off', 'false', 'no'])) {
-						$setting['value'] = t('title_false', 'False');
+						$setting['display_value'] = t('title_false', 'False');
 					}
 					break;
-			}
+
+			default:
+
+				switch ($setting['datatype']) {
+
+					case 'array':
+					case 'json':
+						$setting['display_value'] = json_encode($setting['value'], true);
+						break;
+
+					default:
+						$setting['display_value'] = $setting['value'];
+						break;
+				}
+
+				break;
 		}
 
-		$settings[$i] = $setting;
+		// Set HTTP POST Value
+		switch ($setting['datatype']) {
+
+			case 'boolean':
+				$_POST['settings'][$setting['key']] = !empty($setting['value']) ? '1' : '0';
+				break;
+
+			case 'csv':
+				$_POST['settings'][$setting['key']] = str_getcsv($setting['value']);
+				break;
+
+			case 'array':
+				$_POST['settings'][$setting['key']] = (array)$setting['value'];
+				break;
+
+			case 'json':
+				$_POST['settings'][$setting['key']] = $setting['value'] ? json_decode($setting['value'], true) : [];
+				break;
+
+			case 'number':
+				$_POST['settings'][$setting['key']] = (int)$setting['value'];
+				break;
+
+			case 'decimal':
+				$_POST['settings'][$setting['key']] = (float)$setting['value'];
+				break;
+
+			default:
+				$_POST['settings'][$setting['key']] = (string)$setting['value'];
+				break;
 	}
+
+		return $setting;
+
+	}, null, $_GET['page'], null, $num_rows, $num_pages);
 
 ?>
 <div class="card">
@@ -167,7 +223,7 @@
 					<td class="text-start"><a class="link" href="<?php echo document::href_ilink(null, ['action' => 'edit', 'key' => $setting['key']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo t('settings_key:title_'.$setting['key'], $setting['title']); ?></a></td>
 					<td style="white-space: normal;">
 						<div style="max-height: 200px; overflow-y: auto;" title="<?php echo f::escape_html(t('settings_key:description_'.$setting['key'], $setting['description'])); ?>">
-							<?php echo nl2br($setting['value'], false); ?>
+							<?php echo nl2br($setting['display_value'], false); ?>
 						</div>
 					</td>
 					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(null, ['action' => 'edit', 'key' => $setting['key']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo f::draw_fonticon('edit'); ?></a></td>

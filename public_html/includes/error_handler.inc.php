@@ -86,24 +86,19 @@
 
 		if (filter_var(ini_get('log_errors'), FILTER_VALIDATE_BOOLEAN)) {
 
-			// Redaction helpers (PROJ-21): sensitive parameter values in
-			// argv / REQUEST_URI / HTTP_REFERER are replaced before the
-			// line hits error_log. The file is loaded defensively —
+			// Redaction helpers: sensitive parameter values in  argv / REQUEST_URI / HTTP_REFERER are replaced before the line hits error_log.
 			// error_handler may run before the autoloader in some paths.
 			if (!function_exists('redact_query_string')) {
-				$redact_file = __DIR__ . '/functions/func_redact.inc.php';
-				if (is_file($redact_file)) require_once $redact_file;
+				include_once __DIR__ . '/functions/func_redact.inc.php';
 			}
-			$_redact_q = function_exists('redact_query_string') ? 'redact_query_string' : function($s) { return $s; };
-			$_redact_a = function_exists('redact_argv_line') ? 'redact_argv_line' : function($a) { return implode(' ', $a); };
 
 			$output = array_merge($output, array_filter([
-				($_SERVER['SERVER_SOFTWARE'] == 'CLI') ? 'Command: '. $_redact_a($GLOBALS['argv']) : '',
-				!empty($_SERVER['REQUEST_URI']) ? 'Request: '. $_SERVER['REQUEST_METHOD'] .' '. $_redact_q($_SERVER['REQUEST_URI']) .' '. $_SERVER['SERVER_PROTOCOL'] : '',
+				($_SERVER['SERVER_SOFTWARE'] == 'CLI') ? 'Command: '. redact_argv_line($GLOBALS['argv']) : '',
+				!empty($_SERVER['REQUEST_URI']) ? 'Request: '. $_SERVER['REQUEST_METHOD'] .' '. redact_query_string($_SERVER['REQUEST_URI']) .' '. $_SERVER['SERVER_PROTOCOL'] : '',
 				!empty($_SERVER['HTTP_HOST']) ? 'Host: '. $_SERVER['HTTP_HOST'] : '',
 				!empty($_SERVER['REMOTE_ADDR']) ? 'Client: '. $_SERVER['REMOTE_ADDR'] .' ('. gethostbyaddr($_SERVER['REMOTE_ADDR']) .')' : '',
 				!empty($_SERVER['HTTP_USER_AGENT']) ? 'User Agent: '. $_SERVER['HTTP_USER_AGENT'] : '',
-				!empty($_SERVER['HTTP_REFERER']) ? 'Referer: '. $_redact_q($_SERVER['HTTP_REFERER']) : '',
+				!empty($_SERVER['HTTP_REFERER']) ? 'Referer: '. redact_query_string($_SERVER['HTTP_REFERER']) : '',
 			]));
 
 			if (defined('SCRIPT_TIMESTAMP_START')) {

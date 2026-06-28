@@ -1138,7 +1138,7 @@
 				return form_select_administrator($name, $input, $attributes);
 
 			case 'bigtext':
-				return form_textarea($name, $input, $attributes . ' rows="10"');
+				return form_textarea($name, $input, [...$attributes, 'rows' => 10]);
 
 			case 'campaign':
 				return form_select_campaign($name, $input, $attributes);
