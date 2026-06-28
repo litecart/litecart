@@ -11,35 +11,35 @@
 		<div class="col-md-9">
 			<div id="content">
 
-				<section id="box-reset-password" class="card">
+				<section id="box-reset-password" class="card" aria-label="<?php echo f::escape_attr(t('title_reset_password', 'Reset Password')); ?>">
 
 					<div class="card-header">
 						<h2 class="card-title"><?php echo t('title_reset_password', 'Reset Password'); ?></h2>
 					</div>
 
 					<div class="card-body">
-						<?php echo f::form_begin('reset_password_form', 'post', null, false, ['style' => 'max-width: 480px;']); ?>
+						<?php echo f::form_begin('reset_password_form', 'post', null, false, ['style' => 'max-width: 480px;', 'aria-label' => f::escape_attr(t('title_reset_password', 'Reset Password'))]); ?>
 
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_email_address', 'Email Address'); ?></div>
-								<?php echo f::form_input_email('email', true); ?>
+								<?php echo f::form_input_email('email', true, ['autocomplete' => 'email']); ?>
 							</label>
 
 
 							<?php if (isset($_REQUEST['verification_code'])) { ?>
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_verification_code', 'Verification Code'); ?></div>
-								<?php echo f::form_input_text('verification_code', true); ?>
+								<?php echo f::form_input_text('verification_code', true, ['autocomplete' => 'one-time-code']); ?>
 							</label>
 
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_new_password', 'New Password'); ?></div>
-								<?php echo f::form_input_password('new_password', ''); ?>
+								<?php echo f::form_input_password('new_password', '', ['autocomplete' => 'new-password']); ?>
 							</label>
 
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_confirmed_password', 'Confirmed Password'); ?></div>
-								<?php echo f::form_input_password('confirmed_password', ''); ?>
+								<?php echo f::form_input_password('confirmed_password', '', ['autocomplete' => 'new-password']); ?>
 							</label>
 							<?php } ?>
 

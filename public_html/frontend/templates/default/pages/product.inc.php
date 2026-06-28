@@ -30,13 +30,13 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 	<div id="content">
 
-		<article id="box-product" data-id="<?php echo $product_id; ?>" data-name="<?php echo f::escape_attr($name); ?>" data-price="<?php echo currency::format_raw($final_price); ?>">
+		<article id="box-product" data-id="<?php echo $product_id; ?>" data-name="<?php echo f::escape_attr($name); ?>" data-price="<?php echo currency::format_raw($final_price); ?>" aria-label="<?php echo f::escape_attr($name); ?>">
 
 			<div class="grid" style="margin-bottom: 0;">
 				<div class="col-md-6">
 					<div class="images">
 
-						<a class="main-image" href="<?php echo document::href_rlink($image); ?>" data-toggle="lightbox" data-gallery="product">
+						<a class="main-image" href="<?php echo document::href_rlink($image); ?>" data-toggle="lightbox" data-gallery="product" aria-label="<?php echo f::escape_attr(t('title_view_image', 'View image') .': '. $name); ?>">
 							<?php echo f::draw_thumbnail($image, 720, 0, 'product', 'alt="'. f::escape_attr($name) .'"'); ?>
 							<?php echo ($sticker); ?>
 						</a>
@@ -45,7 +45,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 						<div class="grid">
 							<?php foreach ($extra_images as $extra_image) { ?>
 							<div class="col-4">
-								<a class="extra-image" href="<?php echo document::href_rlink($extra_image); ?>" data-toggle="lightbox" data-gallery="product">
+								<a class="extra-image" href="<?php echo document::href_rlink($extra_image); ?>" data-toggle="lightbox" data-gallery="product" aria-label="<?php echo f::escape_attr(t('title_view_image', 'View image') .': '. $name); ?>">
 									<?php echo f::draw_thumbnail($extra_image, 320, 0, 'product', 'alt="'. f::escape_attr($name) .'"'); ?>
 								</a>
 							</div>
@@ -53,9 +53,9 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 							<?php if ($video_url) { ?>
 							<div class="col-4">
-								<a class="video" href="<?php echo document::href_rlink($video_url); ?>" data-toggle="lightbox" data-gallery="product">
+								<a class="video" href="<?php echo document::href_rlink($video_url); ?>" data-toggle="lightbox" data-gallery="product" aria-label="<?php echo f::escape_attr(t('title_play_video', 'Play video') .': '. $name); ?>">
 									<?php echo f::draw_thumbnail($image, 320, 0, 'product', 'alt="'. f::escape_attr($name) .'"'); ?>
-									<span class="video-icon"><?php echo f::draw_fonticon('icon-play'); ?></span>
+									<span class="video-icon" aria-hidden="true"><?php echo f::draw_fonticon('icon-play'); ?></span>
 								</a>
 							</div>
 							<?php } ?>
@@ -70,7 +70,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 					<?php //if ($average_rating) { ?>
 					<div class="average-rating">
-						<a href="#reviews" style="text-decoration: none;">
+						<a href="#reviews" style="text-decoration: none;" aria-label="<?php echo f::escape_attr(t('title_view_reviews', 'View reviews')); ?>">
 							<?php echo f::draw_rating($average_rating); ?>
 						</a>
 					</div>
@@ -84,9 +84,9 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 					<?php if (!empty($brand)) { ?>
 					<div class="brand">
-						<a href="<?php echo f::escape_html($brand['link']); ?>">
+						<a href="<?php echo f::escape_html($brand['link']); ?>" aria-label="<?php echo f::escape_attr($brand['name']); ?>">
 							<?php if ($brand['image']) { ?>
-							<?php echo f::draw_thumbnail($brand['image'], 0, 40, '', 'style="margin: 0; max-height: 80px; margin-inline-start: 0;"'); ?>
+							<?php echo f::draw_thumbnail($brand['image'], 0, 40, '', 'alt="'. f::escape_attr($brand['name']) .'" style="margin: 0; max-height: 80px; margin-inline-start: 0;"'); ?>
 							<?php } else { ?>
 							<h3><?php echo f::escape_html($brand['name']); ?></h3>
 							<?php } ?>
@@ -103,7 +103,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 					<?php if ($cheapest_shipping_fee !== null) { ?>
 					<div class="cheapest-shipping" style="margin: 1em 0;">
-						<?php echo f::draw_fonticon('icon-truck'); ?> <?php echo strtr(t('text_cheapest_shipping_from_price', 'Cheapest shipping from <strong class="value">{price}</strong>'), [
+						<?php echo f::draw_fonticon('icon-truck', 'aria-hidden="true"'); ?> <?php echo strtr(t('text_cheapest_shipping_from_price', 'Cheapest shipping from <strong class="value">{price}</strong>'), [
 							'{price}' => currency::format($cheapest_shipping_fee)
 						]); ?>
 					</div>
@@ -135,7 +135,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 					<?php } ?>
 
 					<?php if ($quantity_available) { ?>
-					<div class="stock-status" style="margin: 1em 0;">
+					<div class="stock-status" style="margin: 1em 0;" aria-live="polite">
 						<?php if ($quantity_available > 0) { ?>
 						<div class="stock-available">
 							<?php echo t('title_stock_status', 'Stock Status'); ?>:
@@ -164,10 +164,10 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 					<?php if (!$orderable) { ?>
 					<div class="notify-me" style="margin-top: 1em;">
-						<?php echo f::form_begin('notification_form', 'post'); ?>
+						<?php echo f::form_begin('notification_form', 'post', false, false, ['aria-label' => f::escape_attr(t('title_notify_when_in_stock', 'Notify me when this product is back in stock'))]); ?>
 							<div class="form-group">
-								<label><?php echo t('description_get_notified_when_in_stock', 'Would you like to receive a notification when this item is back in stock?'); ?></label>
-								<?php echo f::form_input_email('email', customer::$data['email'] ?? '', ['placeholder' => t('title_email', 'Email')]); ?>
+								<label for="notification_email"><?php echo t('description_get_notified_when_in_stock', 'Would you like to receive a notification when this item is back in stock?'); ?></label>
+								<?php echo f::form_input_email('email', customer::$data['email'] ?? '', ['id' => 'notification_email', 'autocomplete' => 'email', 'placeholder' => t('title_email', 'Email')]); ?>
 							</div>
 							<div>
 								<?php echo f::form_button('notify_me', t('title_notify_me', 'Notify Me'), 'submit', ['class' => 'btn btn-success']); ?>
@@ -182,7 +182,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 				<?php } ?>
 
 				<?php if ($final_price) { ?>
-					<?php echo f::form_begin('buy_now_form', 'post'); ?>
+					<?php echo f::form_begin('buy_now_form', 'post', false, false, ['aria-label' => f::escape_attr(t('title_purchase_now', 'Purchase Now') .': '. $name)]); ?>
 
 						<fieldset style="margin: 2em 0;">
 
@@ -192,7 +192,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 							<?php if ($stock_options) { ?>
 							<div class="form-group">
-								<div class="form-label"><?php echo t('text_select_desired_option', 'Select desired option'); ?></div>
+								<div class="form-label" id="stock-option-label"><?php echo t('text_select_desired_option', 'Select desired option'); ?></div>
 								<?php echo form_select_product_stock_option('stock_option_id', $product_id, true); ?>
 							</div>
 							<?php } ?>
@@ -205,19 +205,19 @@ form[name="buy_now_form"] .dropdown-menu .image {
 										<div class="form-label"><?php echo t('title_quantity', 'Quantity'); ?></div>
 										<div style="display: flex">
 											<div class="input-group" style="flex: 0 1 150px;">
-												<?php echo !empty($quantity_unit['decimals']) ? f::form_input_decimal('quantity', isset($_POST['quantity']) ? true : 1, $quantity_unit['decimals'], 'min="'. ($quantity_min ?: '1') .'" max="'. ($quantity_max ?: '') .'" step="'. ($quantity_step ?: '') .'"') : f::form_input_number('quantity', isset($_POST['quantity']) ? true : 1, 'min="'. ($quantity_min ?: '1') .'" max="'. ($quantity_max ?: '') .'" step="'. ($quantity_step ?: '') .'"'); ?>
-												<?php if (!empty($quantity_unit['name'])) echo '<div class="input-group-text">'. $quantity_unit['name'] .'</div>'; ?>
+												<?php echo !empty($quantity_unit['decimals']) ? f::form_input_decimal('quantity', isset($_POST['quantity']) ? true : 1, $quantity_unit['decimals'], 'autocomplete="off" min="'. ($quantity_min ?: '1') .'" max="'. ($quantity_max ?: '') .'" step="'. ($quantity_step ?: '') .'"') : f::form_input_number('quantity', isset($_POST['quantity']) ? true : 1, 'autocomplete="off" min="'. ($quantity_min ?: '1') .'" max="'. ($quantity_max ?: '') .'" step="'. ($quantity_step ?: '') .'"'); ?>
+												<?php if (!empty($quantity_unit['name'])) echo '<div class="input-group-text">'. f::escape_html($quantity_unit['name']) .'</div>'; ?>
 											</div>
 
 											<div style="flex: 1 0 auto; padding-inline-start: 1em;">
-												<?php echo '<button class="btn btn-success" name="add_cart_product" value="true" type="submit"'. (($quantity_available <= 0 && !$orderable) ? ' disabled' : '') .'>'. t('title_add_to_cart', 'Add To Cart') .'</button>'; ?>
+												<?php echo '<button class="btn btn-success" name="add_cart_product" value="true" type="submit" aria-label="'. f::escape_attr(t('title_add_to_cart', 'Add To Cart') .': '. $name) .'"'. (($quantity_available <= 0 && !$orderable) ? ' disabled aria-disabled="true"' : '') .'>'. f::escape_html(t('title_add_to_cart', 'Add To Cart')) .'</button>'; ?>
 											</div>
 										</div>
 									</label>
 									<?php } ?>
 								</div>
 
-								<div id="price" class="col-xl-4">
+								<div id="price" class="col-xl-4" aria-label="<?php echo f::escape_attr(t('title_price', 'Price')); ?>">
 									<br>
 									<?php echo f::draw_price_tag($regular_price, $final_price, currency::$selected['code']); ?>
 
@@ -238,10 +238,11 @@ form[name="buy_now_form"] .dropdown-menu .image {
 							<?php if (!empty($quantity_prices)) { ?>
 							<div id="quantity-prices">
 								<table class="table table-striped data-table">
+									<caption class="visually-hidden"><?php echo t('title_quantity_pricing', 'Quantity pricing'); ?></caption>
 									<thead>
 										<tr>
-											<th><?php echo language::translate('title_min_qty', 'Min. Qty'); ?></th>
-											<th><?php echo language::translate('title_unit_price', 'Unit Price'); ?></th>
+											<th scope="col"><?php echo language::translate('title_min_qty', 'Min. Qty'); ?></th>
+											<th scope="col"><?php echo language::translate('title_unit_price', 'Unit Price'); ?></th>
 										<tr>
 									</thead>
 
@@ -267,15 +268,15 @@ form[name="buy_now_form"] .dropdown-menu .image {
 					<?php echo f::form_end(); ?>
 					<?php } ?>
 
-					<div class="social-bookmarks">
+					<div class="social-bookmarks" aria-label="<?php echo f::escape_attr(t('title_share', 'Share')); ?>">
 
-						<a class="link btn btn-default" href="#">
-							<?php echo f::draw_fonticon('icon-link', 'style="background: #333; color: #fff;"'); ?>
+						<a class="link btn btn-default" href="#" aria-label="<?php echo f::escape_attr(t('text_share_url', 'Share URL') .': '. $name); ?>">
+							<?php echo f::draw_fonticon('icon-link', 'style="background: #333; color: #fff;" aria-hidden="true"'); ?>
 							<div class="description"><?php echo f::escape_html(t('text_share_url', 'Share URL')); ?></div>
 						</a>
 
-						<a class="btn btn-default" href="<?php echo 'mailto:user@email.com?', http_build_query(['subject' => t('text_is_this_a_product_for_you', 'Is this a product for you?'), 'body' => document::ilink()]); ?>" >
-							<?php echo f::draw_fonticon('icon-envelope', 'style="background: #333; color: #fff;"'); ?>
+						<a class="btn btn-default" href="<?php echo 'mailto:user@email.com?', http_build_query(['subject' => t('text_is_this_a_product_for_you', 'Is this a product for you?'), 'body' => document::ilink()]); ?>" aria-label="<?php echo f::escape_attr(t('text_share_via_email', 'Share via Email')); ?>">
+							<?php echo f::draw_fonticon('icon-envelope', 'style="background: #333; color: #fff;" aria-hidden="true"'); ?>
 							<div class="description"><?php echo f::escape_html(t('text_share_via_email', 'Share via Email')); ?></div>
 						</a>
 
@@ -286,23 +287,23 @@ form[name="buy_now_form"] .dropdown-menu .image {
 						</a>
 							*/ ?>
 
-						<a class="x btn btn-default" href="<?php echo document::href_link('https://wa.me/', ['text' => $name .' - '. $link]); ?>" target="_blank">
-							<?php echo f::draw_fonticon('icon-brand-whatsapp', 'style="background: #25D366; color: #fff;"'); ?>
+						<a class="x btn btn-default" href="<?php echo document::href_link('https://wa.me/', ['text' => $name .' - '. $link]); ?>" target="_blank" rel="noopener noreferrer" aria-label="<?php echo f::escape_attr(strtr(t('text_share_on_s', 'Share on {s}'), ['{s}' => 'WhatsApp'])); ?>">
+							<?php echo f::draw_fonticon('icon-brand-whatsapp', 'style="background: #25D366; color: #fff;" aria-hidden="true"'); ?>
 							<div class="description"><?php echo f::escape_html(strtr(t('text_share_on_s', 'Share on {s}'), ['{s}' => 'WhatsApp'])); ?></div>
 						</a>
 
-						<a class="facebook btn btn-default" href="<?php echo document::href_link('https://www.facebook.com/sharer.php', ['u' => $link]); ?>" target="_blank">
-							<?php echo f::draw_fonticon('icon-brand-facebook', 'style="background: #3b5998; color: #fff;"'); ?>
+						<a class="facebook btn btn-default" href="<?php echo document::href_link('https://www.facebook.com/sharer.php', ['u' => $link]); ?>" target="_blank" rel="noopener noreferrer" aria-label="<?php echo f::escape_attr(strtr(t('text_share_on_s', 'Share on {s}'), ['{s}' => 'Facebook'])); ?>">
+							<?php echo f::draw_fonticon('icon-brand-facebook', 'style="background: #3b5998; color: #fff;" aria-hidden="true"'); ?>
 							<div class="description"><?php echo f::escape_html(strtr(t('text_share_on_s', 'Share on {s}'), ['{s}' => 'Facebook'])); ?></div>
 						</a>
 
-						<a class="x btn btn-default" href="<?php echo document::href_link('https://x.com/intent/tweet/', ['text' => $name .' - '. $link]); ?>" target="_blank">
-							<?php echo f::draw_fonticon('icon-brand-x', 'style="background: #000; color: #fff;"'); ?>
+						<a class="x btn btn-default" href="<?php echo document::href_link('https://x.com/intent/tweet/', ['text' => $name .' - '. $link]); ?>" target="_blank" rel="noopener noreferrer" aria-label="<?php echo f::escape_attr(strtr(t('text_share_on_s', 'Share on {s}'), ['{s}' => 'X'])); ?>">
+							<?php echo f::draw_fonticon('icon-brand-x', 'style="background: #000; color: #fff;" aria-hidden="true"'); ?>
 							<div class="description"><?php echo f::escape_html(strtr(t('text_share_on_s', 'Share on {s}'), ['{s}' => 'X'])); ?></div>
 						</a>
 
-						<a class="pinterest btn btn-default" href="<?php echo document::href_link('https://pinterest.com/pin/create/button/', ['url' => $link]); ?>" target="_blank">
-							<?php echo f::draw_fonticon('icon-brand-pinterest', 'style="background: #bd081c; color: #fff;"'); ?>
+						<a class="pinterest btn btn-default" href="<?php echo document::href_link('https://pinterest.com/pin/create/button/', ['url' => $link]); ?>" target="_blank" rel="noopener noreferrer" aria-label="<?php echo f::escape_attr(strtr(t('text_share_on_s', 'Share on {s}'), ['{s}' => 'Pinterest'])); ?>">
+							<?php echo f::draw_fonticon('icon-brand-pinterest', 'style="background: #bd081c; color: #fff;" aria-hidden="true"'); ?>
 							<div class="description"><?php echo f::escape_html(strtr(t('text_share_on_s', 'Share on {s}'), ['{s}' => 'Pinterest'])); ?></div>
 						</a>
 					</div>
@@ -377,7 +378,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 			<?php } ?>
 
 			<?php //if (!is_ajax_request() && $reviews) { ?>
-			<section id="reviews" class="card ">
+			<section id="reviews" class="card" aria-label="<?php echo f::escape_attr(t('title_customer_reviews', 'Customer Reviews')); ?>">
 				<a name="reviews"></a>
 
 			<div class="card-header">
@@ -391,16 +392,16 @@ form[name="buy_now_form"] .dropdown-menu .image {
 						<div class="col-md-6">
 
 							<?php if (!empty($reviews)) { ?>
-							<div class="reviews">
+							<div class="reviews" role="list" aria-label="<?php echo f::escape_attr(t('title_customer_reviews', 'Customer Reviews')); ?>">
 								<?php foreach ($reviews as $review) { ?>
-								<div class="review" data-review-id="<?php echo $review['id']; ?>">
+								<article class="review" data-review-id="<?php echo $review['id']; ?>" role="listitem" aria-label="<?php echo f::escape_attr(t('title_review_by', 'Review by {author}', ['{author}' => $review['customer_name']])); ?>">
 
 									<div class="vote">
-										<a class="upvote" href="#">
-											<?php echo f::draw_fonticon('icon-thumbs-up'); ?> <span class="num-votes"><?php echo $review['upvotes']; ?></span>
+										<a class="upvote" href="#" aria-label="<?php echo f::escape_attr(t('title_upvote', 'Upvote')); ?>">
+											<?php echo f::draw_fonticon('icon-thumbs-up', 'aria-hidden="true"'); ?> <span class="num-votes" aria-label="<?php echo (int)$review['upvotes']; ?>"><?php echo $review['upvotes']; ?></span>
 										</a>
-										<a class="downvote" href="#">
-											<?php echo f::draw_fonticon('icon-thumbs-down'); ?> <span class="num-votes"><?php echo $review['downvotes']; ?></span>
+										<a class="downvote" href="#" aria-label="<?php echo f::escape_attr(t('title_downvote', 'Downvote')); ?>">
+											<?php echo f::draw_fonticon('icon-thumbs-down', 'aria-hidden="true"'); ?> <span class="num-votes" aria-label="<?php echo (int)$review['downvotes']; ?>"><?php echo $review['downvotes']; ?></span>
 										</a>
 									</div>
 
@@ -408,7 +409,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 										<?php echo f::escape_html($review['customer_name']); ?>
 									</div>
 
-									<div class="rating">
+									<div class="rating" aria-label="<?php echo f::escape_attr(t('title_rating', 'Rating') .': '. round($review['rating'] * 2) .'/10'); ?>">
 										<?php echo f::draw_rating($review['rating']); ?>
 									</div>
 
@@ -422,25 +423,25 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 <?php
 	if (!empty($review['attachments'])) {
-		echo '<div class="attachments" style="margin-top: 1em;">';
+		echo '<div class="attachments" style="margin-top: 1em;" aria-label="'. f::escape_attr(t('title_attachments', 'Attachments')) .'">';
 		foreach ($review['attachments'] as $attachment) {
 			echo match(true) {
 
 				(preg_match('#\.(bmp|gif|jpe?g|png)$#', $attachment['filename']) === 1)
-					=> '<div class="attachment"><a href="'. f::escape_html($attachment['link']) .'" class="thumbnail" data-toggle="lightbox" data-type="image"><img src="'. WS_DIR_APP . f::image_thumbnail($attachment['attachment'], 96, 96, 'FIT_USE_WHITESPACING') .'" alt=""></a></div>',
+					=> '<div class="attachment"><a href="'. f::escape_html($attachment['link']) .'" class="thumbnail" data-toggle="lightbox" data-type="image" aria-label="'. f::escape_attr($attachment['filename']) .'"><img src="'. WS_DIR_APP . f::image_thumbnail($attachment['attachment'], 96, 96, 'FIT_USE_WHITESPACING') .'" alt="'. f::escape_attr($attachment['filename']) .'"></a></div>',
 
 				(preg_match('#\.(avi|mp4|mov)$#', $attachment['filename']) === 1)
-					=> '<div class="attachment"><a href="'. f::escape_html($attachment['link']) .'" class="thumbnail text-center">'. WS_DIR_APP . f::draw_fonticon('icon-film', 'style="font-size: 3rem; padding-top: 2rem;"') .'</a></div>',
+					=> '<div class="attachment"><a href="'. f::escape_html($attachment['link']) .'" class="thumbnail text-center" aria-label="'. f::escape_attr($attachment['filename']) .'">'. WS_DIR_APP . f::draw_fonticon('icon-film', 'style="font-size: 3rem; padding-top: 2rem;" aria-hidden="true"') .'</a></div>',
 
 				default
-					=> '<div class="attachment"><a href="'. f::escape_html($attachment['link']) .'" class="thumbnail text-center">'. f::draw_fonticon('icon-paperclip', 'style="font-size: 3rem; padding-top: 2rem;"') .'</a></div>'
+					=> '<div class="attachment"><a href="'. f::escape_html($attachment['link']) .'" class="thumbnail text-center" aria-label="'. f::escape_attr($attachment['filename']) .'">'. f::draw_fonticon('icon-paperclip', 'style="font-size: 3rem; padding-top: 2rem;" aria-hidden="true"') .'</a></div>'
 			};
 		}
 		echo '</div>';
 	}
 ?>
 
-								</div>
+								</article>
 								<?php } ?>
 							</div>
 
@@ -452,9 +453,9 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 						<div class="col-md-6">
 
-							<?php echo f::form_begin('rating_form', 'post', '', true); ?>
+							<?php echo f::form_begin('rating_form', 'post', '', true, ['aria-label' => f::escape_attr(t('title_customer_reviews', 'Customer Reviews'))]); ?>
 
-								<fieldset<?php echo empty(customer::$data['id']) ? ' disabled' : ''; ?>>
+								<fieldset<?php echo empty(customer::$data['id']) ? ' disabled aria-disabled="true"' : ''; ?>>
 									<h3><?php echo t('title_rate_this_product', 'Rate This Product'); ?></h3>
 
 									<?php if (empty(customer::$data['id'])) { ?>
@@ -466,23 +467,25 @@ form[name="buy_now_form"] .dropdown-menu .image {
 									<?php } else { ?>
 
 									<div class="form-group">
-										<div class="rate-now">
+										<div class="rate-now" role="radiogroup" aria-label="<?php echo f::escape_attr(t('title_rate_this_product', 'Rate This Product')); ?>">
 											<?php foreach (range(5, 1) as $i) { ?>
 											<input type="radio" id="star<?php echo $i; ?>" name="rating" value="<?php echo $i; ?>"<?php echo (isset($customer_review['rating']) && $customer_review['rating'] == $i) ? ' checked' : ''; ?>>
-												<label for="star<?php echo $i; ?>"><?php echo f::draw_fonticon('icon-star'); ?></label>
+												<label for="star<?php echo $i; ?>" aria-label="<?php echo f::escape_attr($i .'/5 '. t('title_stars', 'stars')); ?>"><?php echo f::draw_fonticon('icon-star', 'aria-hidden="true"'); ?></label>
 											<?php } ?>
 										</div>
 									</div>
 
 									<div class="form-group">
-										<?php echo f::form_input_text('title', !empty($customer_review['title']) ? $customer_review['title'] : true, ['placeholder' => f::escape_html(t('title_title', 'Title'))]); ?>
+										<label for="review_title" class="visually-hidden"><?php echo t('title_title', 'Title'); ?></label>
+										<?php echo f::form_input_text('title', !empty($customer_review['title']) ? $customer_review['title'] : true, ['id' => 'review_title', 'autocomplete' => 'off', 'placeholder' => f::escape_html(t('title_title', 'Title'))]); ?>
 									</div>
 
 											<div class="form-group">
-										<?php echo f::form_textarea('description', !empty($customer_review['description']) ? $customer_review['description'] : true, ['placeholder' => f::escape_html(t('title_review', 'Review'))]); ?>
+										<label for="review_description" class="visually-hidden"><?php echo t('title_review', 'Review'); ?></label>
+										<?php echo f::form_textarea('description', !empty($customer_review['description']) ? $customer_review['description'] : true, ['id' => 'review_description', 'autocomplete' => 'off', 'placeholder' => f::escape_html(t('title_review', 'Review'))]); ?>
 									</div>
 
-									<div class="attachments">
+									<div class="attachments" aria-label="<?php echo f::escape_attr(t('title_attachments', 'Attachments')); ?>">
 
 										<div class="current-attachments">
 											<?php if (!empty($_POST['attachments'])) foreach (array_keys($_POST['attachments']) as $key) { ?>
@@ -506,7 +509,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 										<div class="form-group">
 											<p><?php echo t('text_add_review_attachment', 'Add a photo to your review.'); ?></p>
-											<a href="#" class="add" title="<?php echo t('text_add', 'Add'); ?>"><?php echo f::draw_fonticon('add'); ?> <?php echo t('title_add_attachment', 'Add Attachment'); ?></a>
+											<a href="#" class="add" title="<?php echo f::escape_attr(t('text_add', 'Add')); ?>" aria-label="<?php echo f::escape_attr(t('title_add_attachment', 'Add Attachment')); ?>"><?php echo f::draw_fonticon('add', 'aria-hidden="true"'); ?> <?php echo t('title_add_attachment', 'Add Attachment'); ?></a>
 										</div>
 									</div>
 

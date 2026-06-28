@@ -4,42 +4,42 @@
 	<div class="grid">
 
 		<div class="col-md-8">
-			<section id="box-contact-us" class="card">
+			<section id="box-contact-us" class="card" aria-label="<?php echo f::escape_attr(t('title_contact_us', 'Contact Us')); ?>">
 				<div class="card-body">
 
 					<h1><?php echo t('title_contact_us', 'Contact Us'); ?></h1>
 
-					<?php echo f::form_begin('contact_form', 'post', null, true); ?>
+					<?php echo f::form_begin('contact_form', 'post', null, true, ['aria-label' => f::escape_attr(t('title_contact_us', 'Contact Us'))]); ?>
 
 						<div class="grid">
 							<div class="col-md-6">
 								<label class="form-group">
 									<div class="form-label"><?php echo t('title_firstname', 'First Name'); ?></div>
-									<?php echo f::form_input_text('firstname', true, ['required' => '']); ?>
+									<?php echo f::form_input_text('firstname', true, ['required' => '', 'autocomplete' => 'given-name']); ?>
 								</label>
 							</div>
 
 							<div class="col-md-6">
 								<label class="form-group">
 									<div class="form-label"><?php echo t('title_lastname', 'Last Name'); ?></div>
-									<?php echo f::form_input_text('lastname', true, ['required' => '']); ?>
+									<?php echo f::form_input_text('lastname', true, ['required' => '', 'autocomplete' => 'family-name']); ?>
 								</label>
 							</div>
 						</div>
 
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_email_address', 'Email Address'); ?></div>
-							<?php echo f::form_input_email('email', true, ['required' => '']); ?>
+							<?php echo f::form_input_email('email', true, ['required' => '', 'autocomplete' => 'email']); ?>
 						</label>
 
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_subject', 'Subject'); ?></div>
-							<?php echo f::form_input_text('subject', true, ['required' => '']); ?>
+							<?php echo f::form_input_text('subject', true, ['required' => '', 'autocomplete' => 'off']); ?>
 						</label>
 
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_message', 'Message'); ?></div>
-							<?php echo f::form_textarea('message', true, ['required' => '', 'style' => 'height: 250px;']); ?>
+							<?php echo f::form_textarea('message', true, ['required' => '', 'autocomplete' => 'off', 'style' => 'height: 250px;']); ?>
 						</label>
 
 						<label class="form-group">
@@ -64,7 +64,7 @@
 		</div>
 
 		<div class="col-md-4">
-			<article class="card">
+			<article class="card" aria-label="<?php echo f::escape_attr(t('title_contact_details', 'Contact Details')); ?>">
 
 				<div class="card-header">
 					<h2 class="card-title"><?php echo t('title_contact_details', 'Contact Details'); ?></h2>
@@ -73,17 +73,17 @@
 				<div class="card-body">
 
 					<div class="address">
-						<?php echo nl2br(settings::get('store_postal_address')); ?>
+						<?php echo nl2br(f::escape_html(settings::get('store_postal_address'))); ?>
 					</div>
 
 					<?php if (settings::get('store_phone')) { ?>
 					<div class="phone">
-						<?php echo f::draw_fonticon('icon-phone'); ?> <a href="tel:<?php echo settings::get('store_phone'); ?>"><?php echo settings::get('store_phone'); ?></a>
+						<?php echo f::draw_fonticon('icon-phone', 'aria-hidden="true"'); ?> <a href="tel:<?php echo f::escape_attr(settings::get('store_phone')); ?>"><?php echo f::escape_html(settings::get('store_phone')); ?></a>
 					</div>
 					<?php } ?>
 
 					<div class="email">
-						<?php echo f::draw_fonticon('icon-envelope'); ?> <a href="mailto:<?php echo settings::get('store_email'); ?>"><?php echo settings::get('store_email'); ?></a>
+						<?php echo f::draw_fonticon('icon-envelope', 'aria-hidden="true"'); ?> <a href="mailto:<?php echo f::escape_attr(settings::get('store_email')); ?>"><?php echo f::escape_html(settings::get('store_email')); ?></a>
 					</div>
 
 				</div>

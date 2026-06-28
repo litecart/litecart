@@ -24,13 +24,13 @@
 		<div class="col-md-9">
 			<div id="content">
 
-				<section id="box-regional-settings" class="card">
+				<section id="box-regional-settings" class="card" aria-label="<?php echo f::escape_attr(t('title_regional_settings', 'Regional Settings')); ?>">
 					<div class="card-header">
 						<h1 class="card-title"><?php echo t('title_regional_settings', 'Regional Settings'); ?></h1>
 					</div>
 
 					<div class="card-body">
-						<?php echo f::form_begin('region_form', 'post', document::ilink(), false, ['style' => 'max-width: 640px;']); ?>
+						<?php echo f::form_begin('region_form', 'post', document::ilink(), false, ['style' => 'max-width: 640px;', 'aria-label' => f::escape_attr(t('title_regional_settings', 'Regional Settings'))]); ?>
 
 							<div class="grid">
 
@@ -38,7 +38,7 @@
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_language', 'Language'); ?></div>
-										<?php echo f::form_select('language_code', $language_options, language::$selected['code']); ?>
+										<?php echo f::form_select('language_code', $language_options, language::$selected['code'], ['autocomplete' => 'language']); ?>
 									</label>
 								</div>
 								<?php } ?>
@@ -57,14 +57,14 @@
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_country', 'Country'); ?></div>
-										<?php echo f::form_select_country('country_code', customer::$data['country_code']); ?>
+										<?php echo f::form_select_country('country_code', customer::$data['country_code'], ['autocomplete' => 'country']); ?>
 									</label>
 								</div>
 
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_zone_state_province', 'Zone/State/Province'); ?></div>
-										<?php echo f::form_select_zone('zone_code', customer::$data['country_code'], customer::$data['zone_code']); ?>
+										<?php echo f::form_select_zone('zone_code', customer::$data['country_code'], customer::$data['zone_code'], ['autocomplete' => 'address-level1']); ?>
 									</label>
 								</div>
 							</div>
@@ -73,7 +73,7 @@
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_postcode', 'Postal Code'); ?></div>
-										<?php echo f::form_input_text('postcode', customer::$data['postcode']); ?>
+										<?php echo f::form_input_text('postcode', customer::$data['postcode'], ['autocomplete' => 'postal-code']); ?>
 									</label>
 								</div>
 

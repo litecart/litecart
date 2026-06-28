@@ -5,7 +5,7 @@
 	<div class="grid">
 		<div class="col-md-6">
 
-			<section id="box-newsletter-subscribe" class="card">
+			<section id="box-newsletter-subscribe" class="card" aria-label="<?php echo f::escape_attr(t('box_newsletter_subscribe:title', 'Subscribe to our newsletter!')); ?>">
 				<div class="card-body">
 					<h2><?php echo t('box_newsletter_subscribe:title', 'Subscribe to our newsletter!'); ?></h2>
 
@@ -13,34 +13,34 @@
 						<?php echo t('box_newsletter_subscribe:description', 'Get the latest news and offers straight to your inbox. Subscribe now.'); ?>
 					</p>
 
-					<?php echo f::form_begin('newsletter_subscribe_form', 'post', document::ilink('newsletter')); ?>
+					<?php echo f::form_begin('newsletter_subscribe_form', 'post', document::ilink('newsletter'), false, ['aria-label' => f::escape_attr(t('box_newsletter_subscribe:title', 'Subscribe to our newsletter!'))]); ?>
 
 						<div class="grid">
 							<div class="col-md-6">
 								<label class="form-group">
 									<div class="form-label"><?php echo t('title_firstname', 'First Name'); ?></div>
-									<?php echo f::form_input_text('firstname', true); ?>
+									<?php echo f::form_input_text('firstname', true, ['autocomplete' => 'given-name']); ?>
 								</label>
 							</div>
 
 							<div class="col-md-6">
 								<label class="form-group">
 									<div class="form-label"><?php echo t('title_lastname', 'Last Name'); ?></div>
-									<?php echo f::form_input_text('lastname', true); ?>
+									<?php echo f::form_input_text('lastname', true, ['autocomplete' => 'family-name']); ?>
 								</label>
 							</div>
 						</div>
 
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_email_address', 'Email Address'); ?></div>
-							<?php echo f::form_input_email('email', true, ['required' => '']); ?>
+							<?php echo f::form_input_email('email', true, ['required' => '', 'autocomplete' => 'email']); ?>
 						</label>
 
 						<div class="grid">
 							<div class="col-md-6">
 								<label class="form-group">
 									<div class="form-label"><?php echo t('title_country', 'Country'); ?></div>
-									<?php echo f::form_select_country('country_code', true); ?>
+									<?php echo f::form_select_country('country_code', true, ['autocomplete' => 'country']); ?>
 								</label>
 							</div>
 
@@ -77,15 +77,15 @@
 		</div>
 
 		<div class="col-md-6">
-			<section id="box-newsletter-unsubscribe" class="card">
+			<section id="box-newsletter-unsubscribe" class="card" aria-label="<?php echo f::escape_attr(t('box_newsletter_unsubscribe:title', 'Unsubscribe from our newsletter')); ?>">
 				<div class="card-body">
 					<h2><?php echo t('box_newsletter_unsubscribe:title', 'Unsubscribe from our newsletter'); ?></h2>
 
-					<?php echo f::form_begin('newsletter_unsubscribe_form', 'post', document::ilink('newsletter')); ?>
+					<?php echo f::form_begin('newsletter_unsubscribe_form', 'post', document::ilink('newsletter'), false, ['aria-label' => f::escape_attr(t('box_newsletter_unsubscribe:title', 'Unsubscribe from our newsletter'))]); ?>
 
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_email_address', 'Email Address'); ?></div>
-							<?php echo f::form_input_email('email', true, ['required' => '']); ?>
+							<?php echo f::form_input_email('email', true, ['required' => '', 'autocomplete' => 'email']); ?>
 						</label>
 
 						<label class="form-group">

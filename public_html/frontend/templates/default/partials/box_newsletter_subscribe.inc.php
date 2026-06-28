@@ -15,15 +15,15 @@
 }
 </style>
 
-<section id="box-newsletter-subscribe">
+<section id="box-newsletter-subscribe" aria-label="<?php echo f::escape_attr(t('box-newsletter-subscribe:title', 'Subscribe to our newsletter!')); ?>">
 	<div class="container text-center">
 
 		<div class="flex-columns" style="place-content: center;">
 			<div class="hidden-xs" style="flex: 0 1 170px;">
-				<img class="responsive" src="<?php echo document::href_rlink('storage://images/illustration/newsletter.svg'); ?>" style="max-height: 150px;">
+				<img class="responsive" src="<?php echo document::href_rlink('storage://images/illustration/newsletter.svg'); ?>" alt="" style="max-height: 150px;">
 			</div>
 
-			<?php echo f::form_begin('newsletter_subscribe_form', 'post'); ?>
+			<?php echo f::form_begin('newsletter_subscribe_form', 'post', false, false, ['aria-label' => f::escape_attr(t('box-newsletter-subscribe:title', 'Subscribe to our newsletter!'))]); ?>
 
 				<h2><?php echo t('box-newsletter-subscribe:title', 'Subscribe to our newsletter!'); ?></h2>
 
@@ -31,7 +31,8 @@
 
 				<div class="form-label">
 					<div style="display: flex; flex-direction: row; gap: 1em">
-						<?php echo f::form_input_email('email', true, ['placeholder' => f::escape_attr(t('text_enter_your_email_address', 'Enter your email address')), 'required' => '']); ?>
+						<label for="newsletter_subscribe_email" class="visually-hidden"><?php echo t('title_email_address', 'Email Address'); ?></label>
+						<?php echo f::form_input_email('email', true, ['id' => 'newsletter_subscribe_email', 'placeholder' => f::escape_attr(t('text_enter_your_email_address', 'Enter your email address')), 'autocomplete' => 'email', 'required' => '']); ?>
 						<?php echo f::form_button('subscribe', t('title_subscribe', 'Subscribe')); ?>
 					</div>
 				</div>

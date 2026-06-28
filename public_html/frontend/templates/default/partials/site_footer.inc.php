@@ -1,4 +1,4 @@
-<footer id="site-footer" class="hidden-print">
+<footer id="site-footer" class="hidden-print" role="contentinfo">
 	<div class="container my-2">
 
 		<div class="grid">
@@ -7,7 +7,7 @@
 				<div class="grid">
 
 					<?php if (settings::get('accounts_enabled')) { ?>
-					<section class="account col-6 col-sm-4">
+					<section class="account col-6 col-sm-4" aria-label="<?php echo f::escape_attr(t('title_account', 'Account')); ?>">
 
 						<h3 class="title">
 							<?php echo t('title_account', 'Account'); ?>
@@ -67,7 +67,7 @@
 					</section>
 					<?php } ?>
 
-					<section class="information col-6 col-sm-4">
+					<section class="information col-6 col-sm-4" aria-label="<?php echo f::escape_attr(t('title_information', 'Information')); ?>">
 
 						<h3 class="title">
 							<?php echo t('title_information', 'Information'); ?>
@@ -79,24 +79,24 @@
 
 					</section>
 
-					<section class="store-info hidden-xs col-sm-4">
+					<section class="store-info hidden-xs col-sm-4" aria-label="<?php echo f::escape_attr(t('title_contact', 'Contact')); ?>">
 
 						<h3 class="title">
 							<?php echo t('title_contact', 'Contact'); ?>
 						</h3>
 
 						<p class="address">
-							<?php echo nl2br(settings::get('store_postal_address')); ?>
+							<?php echo nl2br(f::escape_html(settings::get('store_postal_address'))); ?>
 						</p>
 
 						<?php if (settings::get('store_phone')) { ?>
 						<p class="phone">
-							<?php echo f::draw_fonticon('icon-phone'); ?> <a href="tel:<?php echo settings::get('store_phone'); ?>"><?php echo settings::get('store_phone'); ?></a>
+							<?php echo f::draw_fonticon('icon-phone', 'aria-hidden="true"'); ?> <a href="tel:<?php echo f::escape_attr(settings::get('store_phone')); ?>"><?php echo f::escape_html(settings::get('store_phone')); ?></a>
 						</p>
 						<?php } ?>
 
 						<p class="email">
-							<?php echo f::draw_fonticon('icon-envelope'); ?> <a href="mailto:<?php echo settings::get('store_email'); ?>"><?php echo settings::get('store_email'); ?></a>
+							<?php echo f::draw_fonticon('icon-envelope', 'aria-hidden="true"'); ?> <a href="mailto:<?php echo f::escape_attr(settings::get('store_email')); ?>"><?php echo f::escape_html(settings::get('store_email')); ?></a>
 						</p>
 
 					</section>
@@ -115,18 +115,18 @@
 					</div>
 
 					<?php if ($modules) { ?>
-					<div id="modules" class="buttons">
+					<div id="modules" class="buttons" aria-label="<?php echo f::escape_attr(t('title_payment_methods', 'Payment Methods')); ?>">
 						<?php foreach ($modules as $module) { ?>
-						<img class="thumbnail responsive" src="<?php echo document::href_rlink($module['icon']); ?>" alt="">
+						<img class="thumbnail responsive" src="<?php echo document::href_rlink($module['icon']); ?>" alt="<?php echo f::escape_attr(!empty($module['title']) ? $module['title'] : ''); ?>">
 						<?php } ?>
 					</div>
 					<?php } ?>
 
 					<?php if ($social_bookmarks) { ?>
-					<div id="social-bookmarks" class="buttons">
+					<div id="social-bookmarks" class="buttons" aria-label="<?php echo f::escape_attr(t('title_social_media', 'Social Media')); ?>">
 						<?php foreach ($social_bookmarks as $bookmark) { ?>
-						<a href="<?php echo f::escape_html($bookmark['link']); ?>" target="_blank">
-							<?php echo f::draw_fonticon($bookmark['icon'] .'', 'title="'. f::escape_attr($bookmark['title']) .'"'); ?>
+						<a href="<?php echo f::escape_html($bookmark['link']); ?>" target="_blank" rel="noopener noreferrer" aria-label="<?php echo f::escape_attr($bookmark['title']); ?>">
+							<?php echo f::draw_fonticon($bookmark['icon'] .'', 'aria-hidden="true"'); ?>
 						</a>
 						<?php } ?>
 					</div>

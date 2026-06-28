@@ -53,33 +53,33 @@
 					</a>
 				</nav>
 
-				<div class="card">
+				<div class="card" aria-label="<?php echo f::escape_attr($main_category['name']); ?>">
 					<div class="card-header">
-						<h1 class="card-title"><?php echo $main_category['name']; ?></h1>
+						<h1 class="card-title"><?php echo f::escape_html($main_category['name']); ?></h1>
 					</div>
 
 					<div class="card-body">
 
 						<?php include 'app://frontend/partials/box_category_tree.inc.php'; ?>
 
-						<section id="box-category-filter">
-							<?php echo f::form_begin('filter_form', 'get'); ?>
+						<section id="box-category-filter" role="search" aria-label="<?php echo f::escape_attr(t('title_filter_products', 'Filter Products')); ?>">
+							<?php echo f::form_begin('filter_form', 'get', false, false, ['role' => 'search', 'aria-label' => f::escape_attr(t('title_filter_products', 'Filter Products'))]); ?>
 
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_product_name', 'Product Name'); ?></div>
-										<?php echo f::form_input_search('product_name', true, ['autocomplete' => 'off', 'data-token-group' => 'name', 'data-token-title' => t('title_name', 'Name'), 'placeholder' => f::escape_attr(t('text_filter_by_product_name', 'Filter by product name'))]); ?>
+										<?php echo f::form_input_search('product_name', true, ['autocomplete' => 'off', 'data-token-group' => 'name', 'data-token-title' => t('title_name', 'Name'), 'placeholder' => f::escape_attr(t('text_filter_by_product_name', 'Filter by product name')), 'aria-label' => f::escape_attr(t('title_product_name', 'Product Name'))]); ?>
 									</label>
 
 									<?php if ($brands) { ?>
 									<div class="form-group">
 										<div class="form-label"><?php echo t('title_brands', 'Brands'); ?></div>
 										<div class="dropdown">
-											<div class="form-select" data-toggle="dropdown">
+											<div class="form-select" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 												<?php echo t('title_brands', 'Brands'); ?>
 											</div>
-											<ul class="dropdown-content">
+											<ul class="dropdown-content" role="menu" aria-label="<?php echo f::escape_attr(t('title_brands', 'Brands')); ?>">
 												<?php foreach ($brands as $brand) { ?>
-												<li><?php echo f::form_checkbox('brands[]', [$brand['id'], $brand['name']], true, ['data-token-group' => 'brand', 'data-token-title' => t('title_brand', 'Brand'), 'data-token-value' => $brand['name']]); ?></li>
+												<li role="none"><?php echo f::form_checkbox('brands[]', [$brand['id'], $brand['name']], true, ['data-token-group' => 'brand', 'data-token-title' => t('title_brand', 'Brand'), 'data-token-value' => $brand['name']]); ?></li>
 												<?php } ?>
 											</ul>
 										</div>
@@ -90,12 +90,12 @@
 									<div class="form-group">
 										<div class="form-label"><?php echo t('title_product_attributes', 'Product Attributes'); ?></div>
 										<div class="dropdown">
-											<div class="form-select" data-toggle="dropdown">
+											<div class="form-select" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 												<?php echo $attribute['name']; ?>
 											</div>
-											<ul class="dropdown-content">
+											<ul class="dropdown-content" role="menu" aria-label="<?php echo f::escape_attr($attribute['name']); ?>">
 												<?php foreach ($attribute['values'] as $value) { ?>
-												<li><?php echo !empty($attribute['select_multiple']) ? f::form_checkbox('attributes['. $attribute['id'] .'][]', [$value['id'], $value['value']], true, ['data-token-group' => 'attribute-' . $attribute['id'], 'data-token-title' => f::escape_attr($attribute['name']), 'data-token-value' => f::escape_attr($value['value'])]) : f::form_radio_button('attributes['. $group['id'] .'][]', [$value['id'], $value['value']], true, ['data-token-group' => 'attribute-' . $attribute['id'], 'data-token-title' => f::escape_attr($attribute['name']), 'data-token-value' => f::escape_attr($value['value'])]); ?></li>
+												<li role="none"><?php echo !empty($attribute['select_multiple']) ? f::form_checkbox('attributes['. $attribute['id'] .'][]', [$value['id'], $value['value']], true, ['data-token-group' => 'attribute-' . $attribute['id'], 'data-token-title' => f::escape_attr($attribute['name']), 'data-token-value' => f::escape_attr($value['value'])]) : f::form_radio_button('attributes['. $group['id'] .'][]', [$value['id'], $value['value']], true, ['data-token-group' => 'attribute-' . $attribute['id'], 'data-token-title' => f::escape_attr($attribute['name']), 'data-token-value' => f::escape_attr($value['value'])]); ?></li>
 												<?php } ?>
 											</ul>
 										</div>
@@ -105,9 +105,11 @@
 									<div class="form-group">
 										<div class="form-label"><?php echo t('title_price_range', 'Price Range'); ?></div>
 										<div class="input-group">
-											<?php echo f::form_input_number('price_range[min]', true, ['placeholder' => t('title_min', 'Min')]); ?>
-											<span class="input-group-text"> &ndash; </span>
-											<?php echo f::form_input_number('price_range[max]', true, ['placeholder' => t('title_max', 'Max')]); ?>
+											<label for="price_range_min" class="visually-hidden"><?php echo t('title_min', 'Min'); ?></label>
+											<?php echo f::form_input_number('price_range[min]', true, ['id' => 'price_range_min', 'autocomplete' => 'off', 'placeholder' => t('title_min', 'Min')]); ?>
+											<span class="input-group-text" aria-hidden="true"> &ndash; </span>
+											<label for="price_range_max" class="visually-hidden"><?php echo t('title_max', 'Max'); ?></label>
+											<?php echo f::form_input_number('price_range[max]', true, ['id' => 'price_range_max', 'autocomplete' => 'off', 'placeholder' => t('title_max', 'Max')]); ?>
 										</div>
 									</div>
 
@@ -127,7 +129,7 @@
 			<div id="content">
 
 				<?php if ($description) { ?>
-				<article id="box-category-description" class="card">
+				<article id="box-category-description" class="card" aria-label="<?php echo f::escape_attr($h1_title); ?>">
 					<div class="card-header">
 						<h1 class="card-title"><?php echo $h1_title; ?></h1>
 					</div>
@@ -159,7 +161,7 @@
 				</article>
 				<?php } ?>
 
-				<article id="box-category" class="card">
+				<article id="box-category" class="card" aria-label="<?php echo f::escape_attr($h1_title); ?>">
 					<div class="card-header hidden-xs">
 						<div class="grid">
 
@@ -170,13 +172,13 @@
 							<div class="col-6 text-end" style="display: flex; gap: 1em; justify-content: end;">
 
 								<div class="dropdown" style="display: inline-block; margin-inline-start: 1em;">
-									<div class="form-select" data-toggle="dropdown">
+									<div class="form-select" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 										<?php echo t('title_sort_by', 'Sort By'); ?>
 									</div>
 
-									<ul class="dropdown-content">
+									<ul class="dropdown-content" role="menu" aria-label="<?php echo f::escape_attr(t('title_sort_by', 'Sort By')); ?>">
 										<?php foreach ($sort_alternatives as $key => $title) { ?>
-										<li><?php echo f::form_radio_button('sort', [$key, $title], true); ?></li>
+										<li role="none"><?php echo f::form_radio_button('sort', [$key, $title], true); ?></li>
 										<?php } ?>
 									</ul>
 								</div>
@@ -191,7 +193,7 @@
 					<div class="card-body">
 
 						<?php if ($products) { ?>
-						<div id="filter-tokens"></div>
+						<div id="filter-tokens" role="status" aria-live="polite" aria-label="<?php echo f::escape_attr(t('title_active_filters', 'Active Filters')); ?>"></div>
 
 <?php /*
 						<nav class="pills hidden-xs" style="margin-bottom: 1em;">

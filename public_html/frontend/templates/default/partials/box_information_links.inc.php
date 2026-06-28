@@ -4,7 +4,7 @@
 
 		$output = [
 			'<li class="page-'. $page['id'] .'">',
-			'  <a class="pill-item'. (!empty($page['opened']) ? ' opened' : '') . (!empty($page['active']) ? ' active' : '') .'" href="'. f::escape_attr($page['link']) .'">'. $page['title'] .'</a>',
+			'  <a class="pill-item'. (!empty($page['opened']) ? ' opened' : '') . (!empty($page['active']) ? ' active' : '') .'" href="'. f::escape_attr($page['link']) .'"'. (!empty($page['active']) ? ' aria-current="page"' : '') .'>'. $page['title'] .'</a>',
 		];
 
 		if (!empty($page['subpages'])) {
@@ -21,11 +21,11 @@
 	};
 ?>
 
-<section id="box-information-links">
+<section id="box-information-links" aria-label="<?php echo f::escape_attr(t('title_information', 'Information')); ?>">
 
 	<h2 class="title"><?php echo t('title_information', 'Information'); ?></h2>
 
-	<nav class="pills">
+	<nav class="pills" aria-label="<?php echo f::escape_attr(t('title_information_navigation', 'Information navigation')); ?>">
 		<ul>
 			<?php foreach ($pages as $page) echo $draw_page($page, $page_path, 0, $draw_page); ?>
 		</ul>

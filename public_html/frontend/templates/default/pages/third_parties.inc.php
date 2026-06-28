@@ -49,21 +49,21 @@
 <main id="content" class="container">
 	{{notices}}
 
-	<section id="box-third-parties" class="box card">
+	<section id="box-third-parties" class="box card" aria-label="<?php echo f::escape_attr(t('title_thrid_parties_and_data_collecting', 'Third Parties and Data Collecting')); ?>">
 
 		<div class="card-header">
 			<h1><?php echo t('title_thrid_parties_and_data_collecting', 'Third Parties and Data Collecting'); ?></h1>
 		</div>
 
 		<div class="card-body">
-			<button name="privacy_settings" class="btn btn-default" type="button" onclick="">
+			<button name="privacy_settings" class="btn btn-default" type="button" onclick="" aria-expanded="false">
 				<?php echo t('title_privacy_settings', 'Display Privacy Settings'); ?>
 			</button>
 
 			<?php foreach ($third_parties as $third_party) { ?>
-			<article class="third-party">
-				<a class="name" href="<?php echo document::href_ilink('third_parties', ['third_party_id' => $third_party['id']]); ?>">
-					<span class="toggle"><?php echo !empty($third_party['active']) ? f::draw_fonticon('icon-chevron-up') : f::draw_fonticon('icon-chevron-down'); ?></span>
+			<article class="third-party" aria-label="<?php echo f::escape_attr(htmlspecialchars($third_party['name'])); ?>">
+				<a class="name" href="<?php echo document::href_ilink('third_parties', ['third_party_id' => $third_party['id']]); ?>" aria-expanded="<?php echo !empty($third_party['active']) ? 'true' : 'false'; ?>">
+					<span class="toggle" aria-hidden="true"><?php echo !empty($third_party['active']) ? f::draw_fonticon('icon-chevron-up') : f::draw_fonticon('icon-chevron-down'); ?></span>
 					<?php echo htmlspecialchars($third_party['name']); ?>
 				</a>
 

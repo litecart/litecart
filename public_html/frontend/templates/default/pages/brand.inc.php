@@ -13,7 +13,7 @@
 		<div class="col-md-9">
 			<div id="content">
 
-				<article id="box-brand" class="card">
+				<article id="box-brand" class="card" aria-label="<?php echo f::escape_attr(!empty($title) ? $title : t('title_brand', 'Brand')); ?>">
 
 					<div class="card-header">
 						<h1 class="card-title">{{title}}</h1>
@@ -28,25 +28,25 @@
 
 						<div class="flex flex-gap">
 							<div class="dropdown" style="flex-grow: 0;">
-								<div class="form-select" data-toggle="dropdown">
+								<div class="form-select" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 									<?php echo t('title_sort_by', 'Sort By'); ?>
 								</div>
 
-								<ul class="dropdown-content">
+								<ul class="dropdown-content" role="menu" aria-label="<?php echo f::escape_attr(t('title_sort_by', 'Sort By')); ?>">
 									<?php foreach ($sort_alternatives as $key => $title) { ?>
-									<li><?php echo f::form_radio_button('sort', [$key, $title], true); ?></li>
+									<li role="none"><?php echo f::form_radio_button('sort', [$key, $title], true); ?></li>
 									<?php } ?>
 								</ul>
 							</div>
 
 							<div style="flex-grow: 0;">
-								<?php echo f::form_toggle('list_style', ['columns' => f::draw_fonticon('icon-th-large'), 'rows' => f::draw_fonticon('icon-bars')], true, ['data-token-group' => 'list_style', 'data-token-title' => t('title_list_style', 'List Style')]); ?>
+								<?php echo f::form_toggle('list_style', ['columns' => f::draw_fonticon('icon-th-large'), 'rows' => f::draw_fonticon('icon-bars')], true, ['data-token-group' => 'list_style', 'data-token-title' => t('title_list_style', 'List Style'), 'aria-label' => f::escape_attr(t('title_list_style', 'List Style'))]); ?>
 							</div>
 						</div>
 
-						<section class="listing products columns">
-							<?php foreach ($products as $product) echo f::draw_listing_product($product, ['brand_id']); ?>
-						</section>
+						<ul class="listing products columns" role="list" aria-label="<?php echo f::escape_attr(t('title_products', 'Products')); ?>">
+							<?php foreach ($products as $product) echo '<li role="listitem">' . f::draw_listing_product($product, ['brand_id']) . '</li>'; ?>
+						</ul>
 
 						<?php } ?>
 					</div>

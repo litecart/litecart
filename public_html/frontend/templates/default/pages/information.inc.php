@@ -10,7 +10,7 @@
 			<div id="content">
 				{{notices}}
 
-				<section id="box-information" class="card">
+				<section id="box-information" class="card" aria-label="<?php echo f::escape_attr(!empty($title) ? $title : t('title_information', 'Information')); ?>">
 					<div class="card-body">
 						{{content}}
 					</div>

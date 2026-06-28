@@ -12,10 +12,10 @@
 <body>
 
 <div id="page">
-	<header class="container">
+	<header class="container" role="banner">
 
 		<?php if ($important_notice) { ?>
-		<div id="important-notice">
+		<div id="important-notice" role="alert">
 			<?php echo f::escape_html($important_notice); ?>
 		</div>
 		<?php } ?>
@@ -29,8 +29,8 @@
 </div>
 
 <?php if (document::$settings['scroll_up'] ?? null) { ?>
-<a id="scroll-up" class="hidden-print" href="#">
-	<?php echo f::draw_fonticon('icon-chevron-up', 'style="color: #000; font-size: 3rem;"'); ?>
+<a id="scroll-up" class="hidden-print" href="#" aria-label="<?php echo f::escape_attr(t('title_back_to_top', 'Back to top')); ?>">
+	<?php echo f::draw_fonticon('icon-chevron-up', 'style="color: #000; font-size: 3rem;" aria-hidden="true"'); ?>
 </a>
 <?php } ?>
 

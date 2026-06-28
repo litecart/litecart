@@ -1,13 +1,15 @@
-<ul class="breadcrumbs-2">
+<nav class="breadcrumbs-wrapper" aria-label="<?php echo f::escape_attr(t('title_breadcrumb', 'Breadcrumb')); ?>">
+<ol class="breadcrumbs-2">
 	<?php foreach ($breadcrumbs as $breadcrumb) { ?>
 	<li>
 		<?php
 			if (!empty($breadcrumb['link'])) {
 					echo '<a class="breadcrumb-item" href="'. f::escape_attr($breadcrumb['link']) .'">'. $breadcrumb['title'] .'</a>';
 				} else {
-					echo '<span class="breadcrumb-item">'. $breadcrumb['title'] .'</span>';
+					echo '<span class="breadcrumb-item" aria-current="page">'. $breadcrumb['title'] .'</span>';
 			}
 		?>
 	</li>
 	<?php } ?>
-</ul>
+</ol>
+</nav>

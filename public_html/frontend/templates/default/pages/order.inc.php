@@ -29,17 +29,17 @@ body {
 </style>
 
 <main id="main">
-	<iframe id="order-copy" src="<?php echo document::ilink('printable_order_copy', [], ['order_no', 'public_key']); ?>" style="border: 0;"></iframe>
+	<iframe id="order-copy" src="<?php echo document::ilink('printable_order_copy', [], ['order_no', 'public_key']); ?>" style="border: 0;" title="<?php echo f::escape_attr(t('title_order_copy', 'Order Copy')); ?>"></iframe>
 
 	<div id="sidebar" class="hidden-print shadow">
 
 		<ul id="actions" class="list-unstyled">
-			<li><button id="print" class="btn btn-default btn-block btn-lg" type="button"><?php echo f::draw_fonticon('icon-print'); ?> <?php echo t('title_print', 'Print'); ?></button></li>
+			<li><button id="print" class="btn btn-default btn-block btn-lg" type="button" aria-label="<?php echo f::escape_attr(t('title_print', 'Print')); ?>"><?php echo f::draw_fonticon('icon-print', 'aria-hidden="true"'); ?> <?php echo t('title_print', 'Print'); ?></button></li>
 		</ul>
 
 		<h1 style="margin-top: 0;"><?php echo t('title_comments', 'Comments'); ?></h1>
 
-		<div id="comments" class="bubbles">
+		<div id="comments" class="bubbles" role="log" aria-live="polite" aria-label="<?php echo f::escape_attr(t('title_comments', 'Comments')); ?>">
 			<?php foreach ($comments as $comment) { ?>
 			<div class="bubble <?php echo $comment['type']; ?>">
 				<div class="text"><?php echo nl2br($comment['text']); ?></div>

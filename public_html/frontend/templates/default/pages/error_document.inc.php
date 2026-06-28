@@ -28,16 +28,16 @@ main {
 <main id="main">
 	{{notices}}
 
-	<article id="box-error-document" class="text-center">
+	<article id="box-error-document" class="text-center" aria-label="<?php echo f::escape_attr(t('title_error_document', 'Error: {code}', ['{code}' => '{{code}}'])); ?>">
 
-		<div class="code">{{code}}</div>
+		<div class="code" role="status">{{code}}</div>
 		<span class="title">{{title}}</span>
 
 		<p class="description">{{description}}</p>
 
 		<div>
 			<a class="btn btn-default" href="<?php echo document::href_ilink(''); ?>">
-				<?php echo f::draw_fonticon('icon-home'); ?> <?php echo t('title_home', 'Home'); ?>
+				<?php echo f::draw_fonticon('icon-home', 'aria-hidden="true"'); ?> <?php echo t('title_home', 'Home'); ?>
 			</a>
 		</div>
 	</article>

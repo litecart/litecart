@@ -10,21 +10,22 @@
 			<div id="content">
 				{{notices}}
 
-				<section id="box-order-history" class="card">
+				<section id="box-order-history" class="card" aria-label="<?php echo f::escape_attr(t('title_order_history', 'Order History')); ?>">
 
 					<div class="card-header">
 						<h1 class="card-title"><?php echo t('title_order_history', 'Order History'); ?></h1>
 					</div>
 
 					<table class="table data-table">
+						<caption class="visually-hidden"><?php echo t('title_order_history', 'Order History'); ?></caption>
 						<thead>
 						<tr>
-							<th class="main"><?php echo t('title_order', 'Order'); ?></th>
-							<th class="text-end"></th>
-							<th class="text-center"><?php echo t('title_order_status', 'Order Status'); ?></th>
-							<th class="text-end"><?php echo t('title_amount', 'Amount'); ?></th>
-							<th class="text-end"><?php echo t('title_date', 'Date'); ?></th>
-							<th></th>
+							<th scope="col" class="main"><?php echo t('title_order', 'Order'); ?></th>
+							<th scope="col" class="text-end"></th>
+							<th scope="col" class="text-center"><?php echo t('title_order_status', 'Order Status'); ?></th>
+							<th scope="col" class="text-end"><?php echo t('title_amount', 'Amount'); ?></th>
+							<th scope="col" class="text-end"><?php echo t('title_date', 'Date'); ?></th>
+							<th scope="col"><span class="visually-hidden"><?php echo t('title_actions', 'Actions'); ?></span></th>
 						</tr>
 						</thead>
 						<tbody>
@@ -35,7 +36,7 @@
 							<td class="text-center"><?php echo $order['order_status']; ?></td>
 							<td class="text-end"><?php echo $order['total']; ?></td>
 							<td class="text-end"><?php echo $order['created_at']; ?></td>
-							<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo f::escape_html($order['printable_link']); ?>" target="_blank" title="<?php echo f::escape_html(t('title_print', 'Print')); ?>"><?php echo f::draw_fonticon('icon-print'); ?></a></td>
+							<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo f::escape_html($order['printable_link']); ?>" target="_blank" rel="noopener noreferrer" title="<?php echo f::escape_html(t('title_print', 'Print')); ?>" aria-label="<?php echo f::escape_attr(t('title_print', 'Print') .': '. $order['no']); ?>"><?php echo f::draw_fonticon('icon-print', 'aria-hidden="true"'); ?></a></td>
 						</tr>
 						<?php } ?>
 						</tbody>

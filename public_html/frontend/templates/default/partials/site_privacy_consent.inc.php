@@ -9,20 +9,21 @@
 	};
 
 ?>
-<div id="site-privacy-consent"<?php if (isset($_COOKIE['privacy_consents'])) echo ' style="display: none;"'; ?>>
+<div id="site-privacy-consent" role="dialog" aria-modal="false" aria-label="<?php echo f::escape_attr(t('title_cookie_notice', 'Cookie Notice')); ?>"<?php if (isset($_COOKIE['privacy_consents'])) echo ' style="display: none;"'; ?>>
 	<div class="fourteen-forty">
 
 		<div class="notice">
-			<button name="customize" class="btn btn-default btn-sm" type="button">
+			<button name="customize" class="btn btn-default btn-sm" type="button" aria-expanded="false" aria-controls="privacy-classes">
 				<?php echo t('title_customize', 'Customize'); ?>
 			</button>
 
-			<?php echo strtr(t('text_cookie_notice', 'We rely on some data regulated by the EU ePrivacy Directive (EPD) for analyzing, marketing or retargeting that relies on the use of third party services.'), [
+			<h2 class="visually-hidden"><?php echo t('title_cookie_notice', 'Cookie Notice'); ?></h2>
+			<span><?php echo strtr(t('text_cookie_notice', 'We rely on some data regulated by the EU ePrivacy Directive (EPD) for analyzing, marketing or retargeting that relies on the use of third party services.'), [
 				'%url' => document::href_ilink('information', ['page_id' => settings::get('cookie_policy')])
-			]); ?>
+			]); ?></span>
 		</div>
 
-		<?php echo f::form_begin('cookies_form', 'post'); ?>
+		<?php echo f::form_begin('cookies_form', 'post', false, false, ['aria-label' => f::escape_attr(t('title_privacy_consent', 'Privacy Consent'))]); ?>
 
 			<div class="privacy-classes">
 

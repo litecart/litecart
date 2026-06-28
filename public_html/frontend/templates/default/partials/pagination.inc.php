@@ -1,11 +1,11 @@
-<nav class="pagination">
+<nav class="pagination" aria-label="<?php echo f::escape_attr(t('title_pagination', 'Pagination')); ?>">
 	<?php foreach ($items as $item) { ?>
 		<?php if ($item['disabled']) { ?>
-		<span class="pagination-item disabled" data-page="<?php echo $item['page']; ?>">
+		<span class="pagination-item disabled" data-page="<?php echo $item['page']; ?>" aria-disabled="true">
 			<?php echo $item['title']; ?>
 		</span>
 		<?php } else { ?>
-		<a class="pagination-item<?php if ($item['active']) echo ' active'; ?>" href="<?php echo f::escape_html($item['link']); ?>" data-page="<?php echo $item['page']; ?>">
+		<a class="pagination-item<?php if ($item['active']) echo ' active'; ?>" href="<?php echo f::escape_html($item['link']); ?>" data-page="<?php echo $item['page']; ?>"<?php if (!empty($item['active'])) echo ' aria-current="page"'; ?>>
 			<?php echo $item['title']; ?>
 		</a>
 		<?php } ?>

@@ -1,25 +1,25 @@
-<div id="site-navigation" class="navbar">
+<div id="site-navigation" class="navbar" role="navigation" aria-label="<?php echo f::escape_attr(t('title_primary_navigation', 'Primary navigation')); ?>">
 
 	<div class="navbar-brand">
-		<a href="<?php echo document::href_ilink(''); ?>">
-			<img src="<?php echo document::href_rlink('storage://images/symbol.svg'); ?>" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>">
+		<a href="<?php echo document::href_ilink(''); ?>" aria-label="<?php echo f::escape_attr(settings::get('store_name') .' - '. t('title_home', 'Home')); ?>">
+			<img src="<?php echo document::href_rlink('storage://images/symbol.svg'); ?>" alt="<?php echo f::escape_attr(settings::get('store_name')); ?>" title="<?php echo f::escape_attr(settings::get('store_name')); ?>">
 			<?php echo settings::get('store_name'); ?>
 		</a>
 	</div>
 
-	<nav class="navbar-menu">
+	<nav class="navbar-menu" aria-label="<?php echo f::escape_attr(t('title_primary_navigation', 'Primary navigation')); ?>">
 		<ul class="navbar-nav">
 
 			<?php if ($categories) { ?>
 			<li class="categories dropdown">
-				<div class="navbar-item" data-toggle="dropdown">
+				<div class="navbar-item" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					<?php echo t('title_catalog', 'Catalog'); ?>
 				</div>
 
-				<ul class="dropdown-menu">
+				<ul class="dropdown-menu" role="menu">
 					<?php foreach ($categories as $item) { ?>
-					<li>
-						<a class="navbar-item" href="<?php echo f::escape_html($item['link']); ?>">
+					<li role="none">
+						<a class="navbar-item" role="menuitem" href="<?php echo f::escape_html($item['link']); ?>">
 							<?php echo $item['title']; ?>
 						</a>
 					</li>
@@ -37,11 +37,12 @@
 			<?php }*/ ?>
 		</ul>
 
-		<div class="navbar-search" data-hint="<?php echo f::escape_html(''); ?>">
-			<?php echo f::form_begin('search_form', 'get', document::ilink('search')); ?>
+		<div class="navbar-search" data-hint="<?php echo f::escape_html(''); ?>" role="search">
+			<?php echo f::form_begin('search_form', 'get', document::ilink('search'), false, ['role' => 'search', 'aria-label' => f::escape_attr(t('title_search', 'Search'))]); ?>
 			<div class="navbar-link dropdown">
-				<?php echo f::form_input_search('query', true, ['autocomplete' => 'off', 'placeholder' => t('title_search', 'Search') . '…']); ?>
-				<ul class="dropdown-menu" style="left: 0; right: 0;">
+				<label for="search-query" class="visually-hidden"><?php echo t('title_search', 'Search'); ?></label>
+				<?php echo f::form_input_search('query', true, ['id' => 'search-query', 'autocomplete' => 'off', 'placeholder' => t('title_search', 'Search') . '…', 'aria-label' => f::escape_attr(t('title_search', 'Search'))]); ?>
+				<ul class="dropdown-menu" style="left: 0; right: 0;" role="listbox" aria-label="<?php echo f::escape_attr(t('title_search_suggestions', 'Search suggestions')); ?>">
 				</ul>
 			</div>
 			<?php echo f::form_end(); ?>
@@ -51,14 +52,14 @@
 
 			<?php if ($pages) { ?>
 			<li class="information dropdown">
-				<div class="navbar-item" data-toggle="dropdown">
+				<div class="navbar-item" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					<?php echo t('title_information', 'Information'); ?>
 				</div>
 
-				<ul class="dropdown-menu">
+				<ul class="dropdown-menu" role="menu">
 					<?php foreach ($pages as $item) { ?>
-					<li>
-						<a class="navbar-item" href="<?php echo f::escape_html($item['link']); ?>">
+					<li role="none">
+						<a class="navbar-item" role="menuitem" href="<?php echo f::escape_html($item['link']); ?>">
 							<?php echo $item['title']; ?>
 						</a>
 					</li>
@@ -69,7 +70,7 @@
 
 			<li class="contact">
 				<a class="navbar-item" href="<?php echo document::href_ilink('contact'); ?>">
-					<?php echo f::draw_fonticon('icon-envelope hidden-xs hidden-sm hidden-md hidden-lg'); ?> <?php echo t('title_contact', 'Contact'); ?>
+					<?php echo f::draw_fonticon('icon-envelope hidden-xs hidden-sm hidden-md hidden-lg', 'aria-hidden="true"'); ?> <?php echo t('title_contact', 'Contact'); ?>
 				</a>
 			</li>
 
@@ -77,33 +78,33 @@
 			<?php if (customer::check_login()) { ?>
 			<li class="account dropdown dropdown-end">
 
-				<div class="navbar-item" data-toggle="dropdown">
-					<?php echo f::draw_fonticon('icon-user hidden-xs hidden-sm hidden-md hidden-lg'); ?>
+				<div class="navbar-item" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<?php echo f::draw_fonticon('icon-user hidden-xs hidden-sm hidden-md hidden-lg', 'aria-hidden="true"'); ?>
 					<span class="hidden-sm"><?php echo customer::check_login() ? customer::$data['firstname'] : t('title_sign_in', 'Sign In'); ?></span>
 				</div>
 
-				<ul class="dropdown-menu">
+				<ul class="dropdown-menu" role="menu">
 
-					<li>
-						<a class="navbar-item" href="<?php echo document::href_ilink('account/edit'); ?>">
+					<li role="none">
+						<a class="navbar-item" role="menuitem" href="<?php echo document::href_ilink('account/edit'); ?>">
 							<?php echo t('title_edit_account', 'Edit Account'); ?>
 						</a>
 					</li>
 
-					<li>
-						<a class="navbar-item" href="<?php echo document::href_ilink('account/addresses'); ?>">
+					<li role="none">
+						<a class="navbar-item" role="menuitem" href="<?php echo document::href_ilink('account/addresses'); ?>">
 							<?php echo t('title_addresses', 'Addresses'); ?>
 						</a>
 					</li>
 
-					<li>
-						<a class="navbar-item" href="<?php echo document::href_ilink('account/order_history'); ?>">
+					<li role="none">
+						<a class="navbar-item" role="menuitem" href="<?php echo document::href_ilink('account/order_history'); ?>">
 							<?php echo t('title_order_history', 'Order History'); ?>
 						</a>
 					</li>
 
-					<li>
-						<a class="navbar-item" href="<?php echo document::href_ilink('account/sign_out'); ?>">
+					<li role="none">
+						<a class="navbar-item" role="menuitem" href="<?php echo document::href_ilink('account/sign_out'); ?>">
 							<?php echo t('title_sign_out', 'Sign Out'); ?>
 						</a>
 					</li>
@@ -113,7 +114,7 @@
 			<?php } else { ?>
 			<li class="account">
 				<a class="navbar-item" href="<?php echo document::href_ilink('account/sign_in'); ?>">
-					<?php echo f::draw_fonticon('icon-user hidden-xs hidden-sm hidden-md hidden-lg'); ?> <?php echo t('title_sign_in', 'Sign In'); ?>
+					<?php echo f::draw_fonticon('icon-user hidden-xs hidden-sm hidden-md hidden-lg', 'aria-hidden="true"'); ?> <?php echo t('title_sign_in', 'Sign In'); ?>
 				</a>
 			</li>
 			<?php } ?>
@@ -122,24 +123,24 @@
 			<?php if (!empty($regional_settings)) { ?>
 			<li class="regional-settings">
 				<a class="navbar-item" href="<?php echo f::escape_attr($regional_settings['link']); ?>">
-				<?php echo f::draw_fonticon('icon-world hidden-xs hidden-sm hidden-md hidden-lg'); ?> <?php echo $regional_settings['title']; ?>
+				<?php echo f::draw_fonticon('icon-world hidden-xs hidden-sm hidden-md hidden-lg', 'aria-hidden="true"'); ?> <?php echo $regional_settings['title']; ?>
 				</a>
 			</li>
 			<?php } ?>
 
 			<li class="favourites<?php if (!empty($favourites['items'])) echo ' filled'; ?> dropdown dropdown-end">
-				<a class="navbar-item" href="<?php echo document::href_ilink('favourites'); ?>">
-					<img class="img-responsive hidden-xs" src="<?php echo document::href_rlink('app://frontend/templates/'.settings::get('template') .'/images/'. (!empty($favourites['items']) ? 'favourites_filled.svg' : 'favourites.svg')); ?>">
+				<a class="navbar-item" href="<?php echo document::href_ilink('favourites'); ?>" aria-label="<?php echo f::escape_attr(t('title_favourites', 'Favourites')); ?>">
+					<img class="img-responsive hidden-xs" src="<?php echo document::href_rlink('app://frontend/templates/'.settings::get('template') .'/images/'. (!empty($favourites['items']) ? 'favourites_filled.svg' : 'favourites.svg')); ?>" alt="">
 					<span class="hidden-sm hidden-md hidden-lg hidden-xl hidden-xxl"><?php echo t('title_favourites', 'Favourites'); ?></span>
-					<span class="badge"><?php echo $favourites['num_items']; ?></span>
+					<span class="badge" aria-label="<?php echo f::escape_attr(t('title_num_items', '{num} items', ['{num}' => (int)$favourites['num_items']])); ?>"><?php echo $favourites['num_items']; ?></span>
 				</a>
 			</li>
 
 			<li class="shopping-cart<?php if (!empty($shopping_cart['items'])) echo ' filled'; ?> dropdown dropdown-end">
-				<div class="navbar-item" data-toggle="dropdown">
-					<img class="img-responsive hidden-xs" src="<?php echo document::href_rlink('app://frontend/templates/'.settings::get('template') .'/images/'. (!empty($shopping_cart['items']) ? 'cart_filled.svg' : 'cart.svg')); ?>">
+				<div class="navbar-item" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<img class="img-responsive hidden-xs" src="<?php echo document::href_rlink('app://frontend/templates/'.settings::get('template') .'/images/'. (!empty($shopping_cart['items']) ? 'cart_filled.svg' : 'cart.svg')); ?>" alt="">
 					<span class="hidden-sm hidden-md hidden-lg hidden-xl hidden-xxl"><?php echo t('title_shopping_cart', 'Shopping Cart'); ?></span>
-					<span class="badge"><?php echo $shopping_cart['num_items']; ?></span>
+					<span class="badge" aria-label="<?php echo f::escape_attr(t('title_num_items', '{num} items', ['{num}' => (int)$shopping_cart['num_items']])); ?>"><?php echo $shopping_cart['num_items']; ?></span>
 				</div>
 
 				<div class="dropdown-content" style="min-width: 275px; max-width: 480px;">
@@ -180,7 +181,7 @@
 
 					<div class="checkout" style="margin-top: 2em;">
 						<a class="btn btn-success btn-block btn-lg" href="<?php echo document::href_ilink('shopping_cart'); ?>">
-							<?php echo t('title_go_to_checkout', 'Go To Checkout'); ?> <?php echo f::draw_fonticon('icon-arrow-right'); ?>
+							<?php echo t('title_go_to_checkout', 'Go To Checkout'); ?> <?php echo f::draw_fonticon('icon-arrow-right', 'aria-hidden="true"'); ?>
 						</a>
 					</div>
 
@@ -190,10 +191,10 @@
 	</nav>
 
 	<div class="navbar-toggle">
-		<button type="button" class="btn btn-default navbar-toggler hidden-md hidden-lg hidden-xl hidden-xxl" data-toggle="offcanvas" data-target="#offcanvas">
-			<span class="navbar-toggler-bar"></span>
-			<span class="navbar-toggler-bar"></span>
-			<span class="navbar-toggler-bar"></span>
+		<button type="button" class="btn btn-default navbar-toggler hidden-md hidden-lg hidden-xl hidden-xxl" data-toggle="offcanvas" data-target="#offcanvas" aria-label="<?php echo f::escape_attr(t('title_toggle_navigation', 'Toggle navigation')); ?>" aria-expanded="false">
+			<span class="navbar-toggler-bar" aria-hidden="true"></span>
+			<span class="navbar-toggler-bar" aria-hidden="true"></span>
+			<span class="navbar-toggler-bar" aria-hidden="true"></span>
 		</button>
 	</div>
 </div>

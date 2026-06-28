@@ -26,7 +26,7 @@
 
 	<div id="content">
 
-		<section id="box-search-results" class="card">
+		<section id="box-search-results" class="card" aria-label="<?php echo f::escape_attr(!empty($title) ? $title : t('title_search_results', 'Search Results')); ?>">
 			<div class="card-header">
 				<h1 class="card-title">{{title}}</h1>
 			</div>
@@ -34,24 +34,25 @@
 			<div class="card-body">
 				<?php if ($products) { ?>
 
-					<section id="box-filter">
-					<?php echo f::form_begin('filter_form', 'get'); ?>
+					<section id="box-filter" role="search" aria-label="<?php echo f::escape_attr(t('title_filter_results', 'Filter Results')); ?>">
+					<?php echo f::form_begin('filter_form', 'get', false, false, ['role' => 'search', 'aria-label' => f::escape_attr(t('title_filter_results', 'Filter Results'))]); ?>
 
 						<div class="filter">
 							<div>
-								<?php echo f::form_input_search('query', true, ['autocomplete' => 'off', 'placeholder' => f::escape_attr(t('text_search_products', 'Search products')) . ' ...']); ?>
+								<label for="filter_query" class="visually-hidden"><?php echo t('title_search_products', 'Search products'); ?></label>
+								<?php echo f::form_input_search('query', true, ['id' => 'filter_query', 'autocomplete' => 'off', 'placeholder' => f::escape_attr(t('text_search_products', 'Search products')) . ' ...']); ?>
 							</div>
 
 							<div>
 								<div class="dropdown">
 
-									<div class="form-select" data-toggle="dropdown">
+									<div class="form-select" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 										<?php echo t('title_sort_by', 'Sort By'); ?>
 									</div>
 
-									<ul class="dropdown-menu">
+									<ul class="dropdown-menu" role="menu">
 										<?php foreach ($sort_alternatives as $key => $title) { ?>
-										<li class="dropdown-item">
+										<li class="dropdown-item" role="none">
 											<?php echo f::form_radio_button('sort', [$key, $title], true); ?>
 										</li>
 										<?php } ?>
@@ -65,9 +66,9 @@
 				<?php } ?>
 
 				<?php if ($categories) { ?>
-				<nav class="pills" style="margin-bottom: 1em;">
+				<nav class="pills" style="margin-bottom: 1em;" aria-label="<?php echo f::escape_attr(t('title_subcategories', 'Subcategories')); ?>">
 					<a class="pill-item" href="<?php echo !empty($parent_id) ? document::href_ilink('category', ['category_id' => $parent_id]) : document::href_ilink(''); ?>">
-						<?php echo f::draw_fonticon('icon-chevron-left'); ?> <?php echo t('title_back', 'Back'); ?>
+						<?php echo f::draw_fonticon('icon-chevron-left', 'aria-hidden="true"'); ?> <?php echo t('title_back', 'Back'); ?>
 					</a>
 
 					<?php foreach ($categories as $subcategory) { ?>
@@ -79,9 +80,9 @@
 				<?php } ?>
 
 				<?php if ($products) { ?>
-				<section class="listing products columns">
-					<?php foreach ($products as $product) echo f::draw_listing_product($product, null); ?>
-				</section>
+				<ul class="listing products columns" role="list" aria-label="<?php echo f::escape_attr(t('title_products', 'Products')); ?>">
+					<?php foreach ($products as $product) echo '<li role="listitem">' . f::draw_listing_product($product, null) . '</li>'; ?>
+				</ul>
 				<?php } ?>
 
 				<?php if (!$categories && !$products) { ?>
