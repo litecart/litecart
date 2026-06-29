@@ -225,8 +225,10 @@
 					if (!$category) {
 						$category = database::query(
 							"show fields from ". DB_TABLE_PREFIX ."categories;"
-						)->fetch(function($field) {
-							return database::create_variable($field);
+						)->fetch(function(&$fields) {
+							foreach ($fields as $key => $value) {
+								$fields[$key] = database::create_variable($value);
+							}
 						});
 					}
 

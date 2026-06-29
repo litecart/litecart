@@ -229,19 +229,19 @@
 			$width = $entity->width;
 			$height = $entity->height;
 		}
-	
+
 		$target_ratio = match($clipping) {
-				'product' => settings::get('product_image_ratio'),
-				'category' => settings::get('category_image_ratio'),
-				default => (new ent_image($image))->aspect_ratio
-		}
+			'product' => settings::get('product_image_ratio'),
+			'category' => settings::get('category_image_ratio'),
+			default => (new ent_image($image))->aspect_ratio
+		};
 
 		if (!$width) {
-			($width, $height) = f::image_scale_by_height($height, $target_ratio);
+			[$width, $height] = f::image_scale_by_height($height, $target_ratio);
 		}
-		
+
 		if (!$height) {
-			($width, $height) = f::image_scale_by_height($width, $target_ratio);
+			[$width, $height] = f::image_scale_by_height($width, $target_ratio);
 		}
 
 		if (empty($aspect_ratio)) {

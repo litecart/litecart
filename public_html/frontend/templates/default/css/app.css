@@ -524,6 +524,11 @@ body {
 	display: grid;
 	gap: 0.5em;
 }
+.listing:is(ul) {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
 @media (width >= 576px) {
 	.listing {
 		gap: 0.75em;
@@ -840,8 +845,6 @@ body {
 	overflow: hidden;
 }
 [data-toggle=momentum-scroll] .listing {
-	display: flex;
-	flex-wrap: nowrap;
 	gap: 0.75em;
 }
 @media (width >= 576px) {

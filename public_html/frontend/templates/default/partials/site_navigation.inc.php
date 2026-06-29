@@ -40,7 +40,7 @@
 		<div class="navbar-search" data-hint="<?php echo f::escape_html(''); ?>" role="search">
 			<?php echo f::form_begin('search_form', 'get', document::ilink('search'), false, ['role' => 'search', 'aria-label' => f::escape_attr(t('title_search', 'Search'))]); ?>
 			<div class="navbar-link dropdown">
-				<label for="search-query" class="visually-hidden"><?php echo t('title_search', 'Search'); ?></label>
+				<label for="search-query" class="hidden"><?php echo t('title_search', 'Search'); ?></label>
 				<?php echo f::form_input_search('query', true, ['id' => 'search-query', 'autocomplete' => 'off', 'placeholder' => t('title_search', 'Search') . '…', 'aria-label' => f::escape_attr(t('title_search', 'Search'))]); ?>
 				<ul class="dropdown-menu" style="left: 0; right: 0;" role="listbox" aria-label="<?php echo f::escape_attr(t('title_search_suggestions', 'Search suggestions')); ?>">
 				</ul>
@@ -132,7 +132,7 @@
 				<a class="navbar-item" href="<?php echo document::href_ilink('favourites'); ?>" aria-label="<?php echo f::escape_attr(t('title_favourites', 'Favourites')); ?>">
 					<img class="img-responsive hidden-xs" src="<?php echo document::href_rlink('app://frontend/templates/'.settings::get('template') .'/images/'. (!empty($favourites['items']) ? 'favourites_filled.svg' : 'favourites.svg')); ?>" alt="">
 					<span class="hidden-sm hidden-md hidden-lg hidden-xl hidden-xxl"><?php echo t('title_favourites', 'Favourites'); ?></span>
-					<span class="badge" aria-label="<?php echo f::escape_attr(t('title_num_items', '{num} items', ['{num}' => (int)$favourites['num_items']])); ?>"><?php echo $favourites['num_items']; ?></span>
+					<span class="badge" aria-label="<?php echo f::escape_attr(strtr(t('title_num_items', '{num} items'), ['{num}' => (int)$favourites['num_items']])); ?>"><?php echo $favourites['num_items']; ?></span>
 				</a>
 			</li>
 
@@ -140,7 +140,7 @@
 				<div class="navbar-item" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					<img class="img-responsive hidden-xs" src="<?php echo document::href_rlink('app://frontend/templates/'.settings::get('template') .'/images/'. (!empty($shopping_cart['items']) ? 'cart_filled.svg' : 'cart.svg')); ?>" alt="">
 					<span class="hidden-sm hidden-md hidden-lg hidden-xl hidden-xxl"><?php echo t('title_shopping_cart', 'Shopping Cart'); ?></span>
-					<span class="badge" aria-label="<?php echo f::escape_attr(t('title_num_items', '{num} items', ['{num}' => (int)$shopping_cart['num_items']])); ?>"><?php echo $shopping_cart['num_items']; ?></span>
+					<span class="badge" aria-label="<?php echo f::escape_attr(strtr(t('title_num_items', '{num} items'), ['{num}' => (int)$shopping_cart['num_items']])); ?>"><?php echo $shopping_cart['num_items']; ?></span>
 				</div>
 
 				<div class="dropdown-content" style="min-width: 275px; max-width: 480px;">

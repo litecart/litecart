@@ -882,7 +882,7 @@ waitFor('jQuery', ($) => {
 					'<button class="btn btn-default"></button>'
 				].join('\n'));
 
-				$('button', $output).text("<?php echo f::escape_js(language::translate('text_click_here_to_manage_cookie_consents', 'Click here to manage your cookie consents')); ?>");
+				$('button', $output).text("Click here to manage your cookie consents");
 
 				$('button', $output).on('click', function() {
 					$element.trigger('openExpanded');

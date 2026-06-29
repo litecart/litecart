@@ -17,7 +17,7 @@
 				<?php echo t('title_customize', 'Customize'); ?>
 			</button>
 
-			<h2 class="visually-hidden"><?php echo t('title_cookie_notice', 'Cookie Notice'); ?></h2>
+			<h2 class="hidden"><?php echo t('title_cookie_notice', 'Cookie Notice'); ?></h2>
 			<span><?php echo strtr(t('text_cookie_notice', 'We rely on some data regulated by the EU ePrivacy Directive (EPD) for analyzing, marketing or retargeting that relies on the use of third party services.'), [
 				'%url' => document::href_ilink('information', ['page_id' => settings::get('cookie_policy')])
 			]); ?></span>

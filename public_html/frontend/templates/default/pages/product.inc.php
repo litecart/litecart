@@ -238,11 +238,11 @@ form[name="buy_now_form"] .dropdown-menu .image {
 							<?php if (!empty($quantity_prices)) { ?>
 							<div id="quantity-prices">
 								<table class="table table-striped data-table">
-									<caption class="visually-hidden"><?php echo t('title_quantity_pricing', 'Quantity pricing'); ?></caption>
+									<caption class="hidden"><?php echo t('title_quantity_pricing', 'Quantity pricing'); ?></caption>
 									<thead>
 										<tr>
-											<th scope="col"><?php echo language::translate('title_min_qty', 'Min. Qty'); ?></th>
-											<th scope="col"><?php echo language::translate('title_unit_price', 'Unit Price'); ?></th>
+											<th scope="col"><?php echo t('title_min_qty', 'Min. Qty'); ?></th>
+											<th scope="col"><?php echo t('title_unit_price', 'Unit Price'); ?></th>
 										<tr>
 									</thead>
 
@@ -476,12 +476,12 @@ form[name="buy_now_form"] .dropdown-menu .image {
 									</div>
 
 									<div class="form-group">
-										<label for="review_title" class="visually-hidden"><?php echo t('title_title', 'Title'); ?></label>
+										<label for="review_title" class="hidden"><?php echo t('title_title', 'Title'); ?></label>
 										<?php echo f::form_input_text('title', !empty($customer_review['title']) ? $customer_review['title'] : true, ['id' => 'review_title', 'autocomplete' => 'off', 'placeholder' => f::escape_html(t('title_title', 'Title'))]); ?>
 									</div>
 
 											<div class="form-group">
-										<label for="review_description" class="visually-hidden"><?php echo t('title_review', 'Review'); ?></label>
+										<label for="review_description" class="hidden"><?php echo t('title_review', 'Review'); ?></label>
 										<?php echo f::form_textarea('description', !empty($customer_review['description']) ? $customer_review['description'] : true, ['id' => 'review_description', 'autocomplete' => 'off', 'placeholder' => f::escape_html(t('title_review', 'Review'))]); ?>
 									</div>
 

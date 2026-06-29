@@ -11,7 +11,7 @@
 	thead {
 		background: var(--table-header-background);
 		color: var(--table-header-text-color);
-		border-bottom: ~"calc(var(--table-border-width) *2)" solid var(--table-border-color);
+		border-bottom: calc(var(--table-border-width) * 2) solid var(--table-border-color);
 		tr {
 			th {
 				padding: .5em 1em;

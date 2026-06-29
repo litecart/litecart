@@ -31,7 +31,7 @@
 
 				<div class="form-label">
 					<div style="display: flex; flex-direction: row; gap: 1em">
-						<label for="newsletter_subscribe_email" class="visually-hidden"><?php echo t('title_email_address', 'Email Address'); ?></label>
+						<label for="newsletter_subscribe_email" class="hidden"><?php echo t('title_email_address', 'Email Address'); ?></label>
 						<?php echo f::form_input_email('email', true, ['id' => 'newsletter_subscribe_email', 'placeholder' => f::escape_attr(t('text_enter_your_email_address', 'Enter your email address')), 'autocomplete' => 'email', 'required' => '']); ?>
 						<?php echo f::form_button('subscribe', t('title_subscribe', 'Subscribe')); ?>
 					</div>

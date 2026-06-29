@@ -33,24 +33,10 @@
 	touch-action: manipulation;
 	user-select: none;
 
-	&.btn-default {
-		@include btn('default');
-	}
-
-	&.btn-success {
-		@include btn('success');
-	}
-
-	&.btn-danger {
-		@include btn('danger');
-	}
-
-	&.btn-outline {
-		@include btn('outline');
-
-		box-shadow: none;
-		border: var(--button-outline-text-color) solid var(--button-outline-border-width);
-	}
+	&.btn-default { @include btn('default'); }
+	&.btn-success { @include btn('success'); }
+	&.btn-danger { @include btn('danger'); }
+	&.btn-outline { @include btn('outline'); box-shadow: none; border: var(--button-outline-text-color) solid var(--button-outline-border-width); }
 
 	.btn-outline-gradient {
 		border: solid 2px transparent;

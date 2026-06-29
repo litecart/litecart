@@ -127,6 +127,20 @@
 				}
 			}
 
+			self::identify();
+
+			document::$jsenv['customer'] = [
+				'id' => &self::$data['id'],
+				'country_code' => &self::$data['country_code'],
+				'display_prices_including_tax' => &self::$data['display_prices_including_tax'],
+			];
+
+			event::register('before_capture', [__CLASS__, 'before_capture']);
+			event::register('after_capture', [__CLASS__, 'after_capture']);
+		}
+
+		public static function before_capture(): void {
+
 			// Collect scraps
 			if (!empty(route::$selected['endpoint']) && route::$selected['endpoint'] == 'frontend' && file_get_contents('php://input')) {
 
@@ -157,16 +171,6 @@
 					self::$data[$key] = $value;
 				}
 			}
-
-			self::identify();
-
-			document::$jsenv['customer'] = [
-				'id' => &self::$data['id'],
-				'country_code' => &self::$data['country_code'],
-				'display_prices_including_tax' => &self::$data['display_prices_including_tax'],
-			];
-
-			event::register('after_capture', [__CLASS__, 'after_capture']);
 		}
 
 		public static function after_capture(): void {
@@ -296,8 +300,8 @@
 
 			// Set shipping country if empty
 			if (empty(self::$data['shipping_address']['country_code'])) {
-				self::$data['shipping_address']['country_code'] = self::$data['country_code'];
-				self::$data['shipping_address']['zone_code'] = self::$data['zone_code'];
+				self::$data['shipping_address']['country_code'] = self::$data['country_code'] ?? settings::get('default_country_code');
+				self::$data['shipping_address']['zone_code'] = self::$data['zone_code'] ?? settings::get('default_zone_code');
 			}
 
 			// Unset zone if not in country

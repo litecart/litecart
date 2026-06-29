@@ -320,9 +320,8 @@
 
 			// Prepend path
 			$file = $basedir . $file;
-			$filetype = filetype($file);
 
-			if ($filetype == 'dir') {
+			if (is_dir($file)) {
 
 				$file = rtrim($file, '/') . '/';
 
@@ -340,7 +339,7 @@
 					}
 				}
 
-			} else if ($filetype == 'file') {
+			} else if (is_file($file) || is_link($file)) {
 
 				// Skip if not a directory during GLOB_ONLYDIR
 				if ($flags & GLOB_ONLYDIR) continue;

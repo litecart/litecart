@@ -12,6 +12,10 @@
 <body>
 
 <div id="page">
+	<a class="hidden focusable skip-link" href="#main">
+		<?php echo t('title_skip_to_main_content', 'Skip to main content'); ?>
+	</a>
+
 	<header class="container" role="banner">
 
 		<?php if ($important_notice) { ?>

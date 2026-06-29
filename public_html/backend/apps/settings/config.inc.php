@@ -20,8 +20,11 @@
 		order by priority, `key`;"
 	)->each(function($group) use (&$app_config) {
 
+		$group['name'] = !empty($group['name']) ? json_decode($group['name'], true) : [];
+		$group['name'] = $group['name'][language::$selected['code']] ?? $group['name']['en'] ?? '';
+
 		$app_config['menu'][] = [
-			'title' => t('settings_group:title_'.$group['key'], $group['name']),
+			'title' => $group['name'],
 			'doc' => $group['key'],
 			'params' => [],
 		];

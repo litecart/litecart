@@ -105,10 +105,10 @@
 									<div class="form-group">
 										<div class="form-label"><?php echo t('title_price_range', 'Price Range'); ?></div>
 										<div class="input-group">
-											<label for="price_range_min" class="visually-hidden"><?php echo t('title_min', 'Min'); ?></label>
+											<label for="price_range_min" class="hidden"><?php echo t('title_min', 'Min'); ?></label>
 											<?php echo f::form_input_number('price_range[min]', true, ['id' => 'price_range_min', 'autocomplete' => 'off', 'placeholder' => t('title_min', 'Min')]); ?>
 											<span class="input-group-text" aria-hidden="true"> &ndash; </span>
-											<label for="price_range_max" class="visually-hidden"><?php echo t('title_max', 'Max'); ?></label>
+											<label for="price_range_max" class="hidden"><?php echo t('title_max', 'Max'); ?></label>
 											<?php echo f::form_input_number('price_range[max]', true, ['id' => 'price_range_max', 'autocomplete' => 'off', 'placeholder' => t('title_max', 'Max')]); ?>
 										</div>
 									</div>

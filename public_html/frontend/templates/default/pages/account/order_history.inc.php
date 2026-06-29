@@ -17,7 +17,7 @@
 					</div>
 
 					<table class="table data-table">
-						<caption class="visually-hidden"><?php echo t('title_order_history', 'Order History'); ?></caption>
+						<caption class="hidden"><?php echo t('title_order_history', 'Order History'); ?></caption>
 						<thead>
 						<tr>
 							<th scope="col" class="main"><?php echo t('title_order', 'Order'); ?></th>
@@ -25,7 +25,7 @@
 							<th scope="col" class="text-center"><?php echo t('title_order_status', 'Order Status'); ?></th>
 							<th scope="col" class="text-end"><?php echo t('title_amount', 'Amount'); ?></th>
 							<th scope="col" class="text-end"><?php echo t('title_date', 'Date'); ?></th>
-							<th scope="col"><span class="visually-hidden"><?php echo t('title_actions', 'Actions'); ?></span></th>
+							<th scope="col"><span class="hidden"><?php echo t('title_actions', 'Actions'); ?></span></th>
 						</tr>
 						</thead>
 						<tbody>

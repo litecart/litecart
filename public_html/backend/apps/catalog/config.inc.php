@@ -15,13 +15,13 @@
 
 		'menu' => [
 			[
-				'title' => t('title_products', 'Products'),
-				'doc' => 'products',
+				'title' => t('title_category_tree', 'Category Tree'),
+				'doc' => 'category_tree',
 				'params' => [],
 			],
 			[
-				'title' => t('title_category_tree', 'Category Tree'),
-				'doc' => 'category_tree',
+				'title' => t('title_products', 'Products'),
+				'doc' => 'products',
 				'params' => [],
 			],
 			[

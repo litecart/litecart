@@ -39,7 +39,7 @@
 
 						<div class="filter">
 							<div>
-								<label for="filter_query" class="visually-hidden"><?php echo t('title_search_products', 'Search products'); ?></label>
+								<label for="filter_query" class="hidden"><?php echo t('title_search_products', 'Search products'); ?></label>
 								<?php echo f::form_input_search('query', true, ['id' => 'filter_query', 'autocomplete' => 'off', 'placeholder' => f::escape_attr(t('text_search_products', 'Search products')) . ' ...']); ?>
 							</div>
 

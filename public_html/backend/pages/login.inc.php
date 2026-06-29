@@ -30,7 +30,7 @@
 				where username = '". database::input(strtolower($_POST['username'])) ."'
 				or email = '". database::input(strtolower($_POST['username'])) ."'
 				limit 1;"
-			)->fetch(function($administrator){
+			)->fetch(function(&$administrator){
 				$administrator['known_ips'] = f::string_split($administrator['known_ips']);
 				$administrator['known_fingerprints'] = f::string_split($administrator['known_fingerprints']);
 			});

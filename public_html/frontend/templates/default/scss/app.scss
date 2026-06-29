@@ -632,6 +632,12 @@ body {
 	display: grid;
 	gap: 0.5em;
 
+	&:is(ul) {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+	}
+
 	@media (width >= 576px) {
 		gap: 0.75em;
 	}

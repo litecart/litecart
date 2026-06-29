@@ -71,19 +71,11 @@
 		$sql_union = [];
 
 		if (in_array('translations', $selected_collection_ids)) {
-			$sql_union[] = $build_translation_select($source_code, $target_codes, "code not regexp '^(settings_group:|settings_key:|cm|job|om|ot|pm|sm)_'");
+			$sql_union[] = $build_translation_select($source_code, $target_codes, "code not regexp '^(cm|job|om|ot|pm|sm)_'");
 		}
 
 		if (in_array('modules', $selected_collection_ids)) {
 			$sql_union[] = $build_translation_select($source_code, $target_codes, "code regexp '^(cm|job|om|ot|pm|sm)_'");
-		}
-
-		if (in_array('setting_groups', $selected_collection_ids)) {
-			$sql_union[] = $build_translation_select($source_code, $target_codes, "code regexp '^settings_group:'");
-		}
-
-		if (in_array('settings', $selected_collection_ids)) {
-			$sql_union[] = $build_translation_select($source_code, $target_codes, "code regexp '^settings_key:'");
 		}
 
 		foreach ($collections as $collection) {

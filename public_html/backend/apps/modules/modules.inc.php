@@ -37,7 +37,7 @@
 			'edit_doc' => 'edit_shipping',
 		],
 		'translation' => [
-			'title' => language::translate('title_translation', 'Translation'),
+			'title' => t('title_translation', 'Translation'),
 			'files' => glob(FS_DIR_APP . 'includes/modules/translation/tm_*.inc.php'),
 			'mod_class' => new mod_translation(),
 			'type' => 'translation',

@@ -112,32 +112,32 @@
 		$setting['description'] = $setting['description'][language::$selected['code']] ?? $setting['description']['en'] ?? '';
 
 		// Set Display Value
-			switch (true) {
+		switch (true) {
 
-				case (preg_match('#^password#', $setting['function'])):
-					$setting['display_value'] = '****************';
-					break;
+			case (preg_match('#^password#', $setting['function'])):
+				$setting['display_value'] = '****************';
+				break;
 
-				case (preg_match('#^order_status$#', $setting['function'])):
-					$setting['display_value'] = $setting['value'] ? reference::order_status($setting['value'])->name : '';
-					break;
+			case (preg_match('#^order_status$#', $setting['function'])):
+				$setting['display_value'] = $setting['value'] ? reference::order_status($setting['value'])->name : '';
+				break;
 
-				case (preg_match('#^page$#', $setting['function'])):
-					$setting['display_value'] = $setting['value'] ? reference::page($setting['value'])->title : '';
-					break;
+			case (preg_match('#^page$#', $setting['function'])):
+				$setting['display_value'] = $setting['value'] ? reference::page($setting['value'])->title : '';
+				break;
 
-				case (preg_match('#^regional_#', $setting['function'])):
-					$setting['value'] = !empty($setting['value']) ? json_decode($setting['value'], true) : [];
-					$setting['display_value'] = isset($setting['value'][language::$selected['code']]) ? $setting['value'][language::$selected['code']] : '';
-					break;
+			case (preg_match('#^regional_#', $setting['function'])):
+				$setting['value'] = !empty($setting['value']) ? json_decode($setting['value'], true) : [];
+				$setting['display_value'] = isset($setting['value'][language::$selected['code']]) ? $setting['value'][language::$selected['code']] : '';
+				break;
 
-				case (preg_match('#^toggle$#', $setting['function'])):
-					if (in_array($setting['value'], ['1', 'active', 'enabled', 'on', 'true', 'yes'])) {
-						$setting['display_value'] = t('title_true', 'True');
-					} else if (in_array(($setting['value']), ['', '0', 'inactive', 'disabled', 'off', 'false', 'no'])) {
-						$setting['display_value'] = t('title_false', 'False');
-					}
-					break;
+			case (preg_match('#^toggle$#', $setting['function'])):
+				if (in_array($setting['value'], ['1', 'active', 'enabled', 'on', 'true', 'yes'])) {
+					$setting['display_value'] = t('title_true', 'True');
+				} else if (in_array(($setting['value']), ['', '0', 'inactive', 'disabled', 'off', 'false', 'no'])) {
+					$setting['display_value'] = t('title_false', 'False');
+				}
+				break;
 
 			default:
 
@@ -159,6 +159,10 @@
 		// Set HTTP POST Value
 		switch ($setting['datatype']) {
 
+			case 'array':
+				$_POST['settings'][$setting['key']] = (array)$setting['value'];
+				break;
+
 			case 'boolean':
 				$_POST['settings'][$setting['key']] = !empty($setting['value']) ? '1' : '0';
 				break;
@@ -167,8 +171,8 @@
 				$_POST['settings'][$setting['key']] = str_getcsv($setting['value']);
 				break;
 
-			case 'array':
-				$_POST['settings'][$setting['key']] = (array)$setting['value'];
+			case 'decimal':
+				$_POST['settings'][$setting['key']] = (float)$setting['value'];
 				break;
 
 			case 'json':
@@ -179,8 +183,8 @@
 				$_POST['settings'][$setting['key']] = (int)$setting['value'];
 				break;
 
-			case 'decimal':
-				$_POST['settings'][$setting['key']] = (float)$setting['value'];
+			case 'string':
+				$_POST['settings'][$setting['key']] = (string)$setting['value'];
 				break;
 
 			default:
@@ -233,7 +237,11 @@
 							<?php echo nl2br($setting['display_value'], false); ?>
 						</div>
 					</td>
-					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(null, ['action' => 'edit', 'key' => $setting['key']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo f::draw_fonticon('edit'); ?></a></td>
+					<td class="text-end">
+						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(null, ['action' => 'edit', 'key' => $setting['key']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>">
+							<?php echo f::draw_fonticon('edit'); ?>
+						</a>
+					</td>
 				</tr>
 				<?php } ?>
 				<?php } ?>
