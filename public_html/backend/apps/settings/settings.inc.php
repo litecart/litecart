@@ -104,6 +104,13 @@
 		order by priority, `key` asc;"
 	)->fetch_page(function($setting){
 
+		// Decode JSON translations for title and description
+		$setting['title'] = !empty($setting['title']) ? json_decode($setting['title'], true) : [];
+		$setting['description'] = !empty($setting['description']) ? json_decode($setting['description'], true) : [];
+
+		$setting['title'] = $setting['title'][language::$selected['code']] ?? $setting['title']['en'] ?? '';
+		$setting['description'] = $setting['description'][language::$selected['code']] ?? $setting['description']['en'] ?? '';
+
 		// Set Display Value
 			switch (true) {
 
@@ -209,8 +216,8 @@
 				<?php if (isset($_GET['action']) && $_GET['action'] == 'edit' && $_GET['key'] == $setting['key']) { ?>
 				<tr>
 					<td>
-						<strong><?php echo t('settings_key:title_'.$setting['key'], $setting['title']); ?></strong><br>
-						<?php echo t('settings_key:description_'.$setting['key'], $setting['description']); ?>
+						<strong><?php echo $setting['title']; ?></strong><br>
+						<?php echo $setting['description']; ?>
 					</td>
 					<td><?php echo f::form_function('settings['.$setting['key'].']', $setting['function'], true); ?></td>
 					<td class="text-end">
@@ -220,9 +227,9 @@
 				</tr>
 				<?php } else { ?>
 				<tr>
-					<td class="text-start"><a class="link" href="<?php echo document::href_ilink(null, ['action' => 'edit', 'key' => $setting['key']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo t('settings_key:title_'.$setting['key'], $setting['title']); ?></a></td>
+					<td class="text-start"><a class="link" href="<?php echo document::href_ilink(null, ['action' => 'edit', 'key' => $setting['key']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo $setting['title']; ?></a></td>
 					<td style="white-space: normal;">
-						<div style="max-height: 200px; overflow-y: auto;" title="<?php echo f::escape_html(t('settings_key:description_'.$setting['key'], $setting['description'])); ?>">
+						<div style="max-height: 200px; overflow-y: auto;" title="<?php echo f::escape_html($setting['description']); ?>">
 							<?php echo nl2br($setting['display_value'], false); ?>
 						</div>
 					</td>

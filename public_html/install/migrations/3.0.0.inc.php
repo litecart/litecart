@@ -1221,6 +1221,50 @@
 		'attribute_value_id' => 'value_id',
 	];
 
+	// Migrate settings titles from translations to settings table
+	database::query(
+		"select * from ". DB_TABLE_PREFIX ."translations
+		where `code` like 'settings_key:title_%';"
+	)->each(function($translation) {
+
+		foreach (array_keys(language::$languages) as $language_code) {
+			$key = preg_replace('#^settings_key:title_#', '', $translation['code']);
+			database::query(
+				"update ". DB_TABLE_PREFIX ."settings
+				set title = json_set(title, '$.". $language_code ."', '". database::input($translation['text_'.$language_code] ?? '') ."')
+				where `key` = '". database::input($key) ."'
+				limit 1;"
+			);
+		}
+
+		database::query(
+			"delete from ". DB_TABLE_PREFIX ."translations
+			where `code` = '". database::input($translation['code']) ."';"
+		);
+	});
+
+	// Migrate settings descriptions from translations to settings table
+	database::query(
+		"select * from ". DB_TABLE_PREFIX ."translations
+		where `code` like 'settings_key:description_%';"
+	)->each(function($translation) {
+
+		foreach (array_keys(language::$languages) as $language_code) {
+			$key = preg_replace('#^settings_key:description_#', '', $translation['code']);
+			database::query(
+				"update ". DB_TABLE_PREFIX ."settings
+				set description = json_set(description, '$.". $language_code ."', '". database::input($translation['text_'.$language_code] ?? '') ."')
+				where `key` = '". database::input($key) ."'
+				limit 1;"
+			);
+		}
+
+		database::query(
+			"delete from ". DB_TABLE_PREFIX ."translations
+			where `code` = '". database::input($translation['code']) ."';"
+		);
+	});
+
 	// Step through collections
 	foreach ($collections as $collection) {
 

@@ -1100,6 +1100,16 @@ UPDATE `lc_settings`
 SET `function` = 'select("1:1","1:2","2:1","2:3","3:2","3:4","4:3","9:16","16:9")'
 WHERE `key` IN ('category_image_ratio', 'product_image_ratio');
 -- -----
+UPDATE `lc_settings`
+SET `title` = concat('{"en":"', title, '"}'),
+	`description` = concat('{"en":"', description, '"}');
+WHERE `title` NOT LIKE '{%';
+-- -----
+UPDATE `lc_settings`
+SET `title` = concat('{"en":"', title, '"}'),
+	`description` = concat('{"en":"', description, '"}');
+WHERE `title` NOT LIKE '{%';
+-- -----
 UPDATE `lc_sold_out_statuses`
 SET name = '{}',
 	description = '{}';

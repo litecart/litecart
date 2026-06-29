@@ -163,6 +163,20 @@
 			'translatable' => false,
 		],
 		[
+			'id' => 'settings',
+			'name' => t('title_settings', 'Settings'),
+			'entity' => 'setting',
+			'identified_by' => ['key'],
+			'translatable' => ['title', 'description'],
+		],
+		[
+			'id' => 'settings_groups',
+			'name' => t('title_settings_groups', 'Settings Groups'),
+			'entity' => 'setting_group',
+			'identified_by' => ['key'],
+			'translatable' => ['name'],
+		],
+		[
 			'id' => 'site_tags',
 			'name' => t('title_site_tags', 'Site Tags'),
 			'entity' => 'site_tag',
