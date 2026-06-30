@@ -49,7 +49,7 @@
 
 		$order = new ent_order();
 		$order->data = f::array_update($order->data, $customer_data);
-		$order->add_line([
+		$order->add_item([
 			'product_id' => 0,
 			'name' => 'Simple Test Product',
 			'quantity' => 2,
@@ -119,7 +119,7 @@
 		// Create order with variant line (no stock_items — just line with stock_option_id)
 		$variant_order = new ent_order();
 		$variant_order->data = f::array_update($variant_order->data, $customer_data);
-		$variant_order->add_line([
+		$variant_order->add_item([
 			'product_id' => $product_id,
 			'stock_option_id' => $stock_option_id,
 			'name' => 'Checkout Variant Product',
@@ -170,7 +170,7 @@
 		$multi_order = new ent_order();
 		$multi_order->data = f::array_update($multi_order->data, $customer_data);
 
-		$multi_order->add_line([
+		$multi_order->add_item([
 			'product_id' => 0,
 			'name' => 'Product A',
 			'quantity' => 2,
@@ -180,7 +180,7 @@
 			'weight_unit' => 'kg',
 		]);
 
-		$multi_order->add_line([
+		$multi_order->add_item([
 			'product_id' => 0,
 			'name' => 'Product B',
 			'quantity' => 1,
@@ -190,7 +190,7 @@
 			'weight_unit' => 'kg',
 		]);
 
-		// Verify totals calculated by add_line() in memory
+		// Verify totals calculated by add_item() in memory
 		// Note: save() calls refresh_total() which recalculates from $data['items'],
 		// not from $data['lines']. So we verify totals before save().
 		$expected_subtotal = 105.00; // (30 * 2) + (45 * 1)

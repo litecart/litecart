@@ -216,15 +216,17 @@
 		$box_also_purchased_products = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/box_also_purchased_products.inc.php');
 
 		$product_ids = database::query(
-			"select ol.product_id, sum(ol.quantity) as num_purchases from ". DB_TABLE_PREFIX ."orders_lines ol
-			left join ". DB_TABLE_PREFIX ."products p on (p.id = ol.product_id)
+			"select oi.product_id, sum(oi.quantity) as num_purchases
+			from ". DB_TABLE_PREFIX ."orders_items oi
+			left join ". DB_TABLE_PREFIX ."products p on (p.id = oi.product_id)
 			where p.status
-			and (ol.product_id != 0 and ol.product_id not in ('". implode("', '", database::input(array_column(cart::$items, 'product_id'))) ."'))
+			and (oi.product_id != 0 and oi.product_id not in ('". implode("', '", database::input(array_column(cart::$items, 'product_id'))) ."'))
 			and order_id in (
-				select order_id as id from ". DB_TABLE_PREFIX ."orders_lines
+				select order_id as id
+				from ". DB_TABLE_PREFIX ."orders_items
 				where product_id in ('". implode("', '", database::input(array_column(cart::$items, 'product_id'))) ."')
 			)
-			group by ol.product_id
+			group by oi.product_id
 			order by num_purchases desc
 			limit ". (settings::get('box_also_purchased_products_num_items') * 3) .";"
 		)->fetch_all('product_id');

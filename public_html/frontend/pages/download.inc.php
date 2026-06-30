@@ -16,42 +16,42 @@
 			throw new Exception('Not found or invalid public_key');
 		}
 
-		if (empty($_GET['order_item_id'])) {
-			throw new Exception('Missing order_item_id');
+		if (empty($_GET['order_stock_item_id'])) {
+			throw new Exception('Missing order_stock_item_id');
 		}
 
-		$item = database::query(
-			"select oi.id, oi.product_id, p.file, p.filename, p.mime_type
-			from ". DB_TABLE_PREFIX ."orders_lines oi
-			left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = oi.product_id)
-			where oi.order_id = ". (int)$order['id'] ."
-			and oi.id = ". (int)$_GET['order_item_id'] ."
-			and oi.file
+		$stock_item = database::query(
+			"select osi.id, osi.product_id, p.file, p.filename, p.mime_type
+			from ". DB_TABLE_PREFIX ."orders_stock_items osi
+			left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = osi.product_id)
+			where osi.order_id = ". (int)$order['id'] ."
+			and osi.id = ". (int)$_GET['order_stock_item_id'] ."
+			and osi.file
 			limit 1;"
 		)->fetch();
 
-		if (!$item) {
-			throw new Exception('Could not find a download for the given order_item_id', 400);
+		if (!$stock_item) {
+			throw new Exception('Could not find a download for the given order_stock_item_id', 400);
 		}
 
-		$file = 'storage://files/' . $item['file'];
+		$file = 'storage://files/' . $stock_item['file'];
 
 		if (!is_file($file)) {
-			trigger_error('Missing download for product ' . $item['id'], E_USER_WARNING);
+			trigger_error('Missing download for product ' . $stock_item['id'], E_USER_WARNING);
 			throw new Exception('The downloadable file does not exist on the server', 404);
 		}
 
 		database::query(
-			"update ". DB_TABLE_PREFIX ."orders_lines
+			"update ". DB_TABLE_PREFIX ."orders_stock_items
 			set downloads = downloads + 1
-			where id = ". (int)$item['id'] ."
+			where id = ". (int)$stock_item['id'] ."
 			limit 1;"
 		);
 
 		header('Content-Description: File Transfer');
 		header('Content-Type: application/octet-stream');
-		header('Content-Type: ' . $item['mime_type']);
-		header('Content-Disposition: attachment; filename="' . $item['filename'] .'"');
+		header('Content-Type: ' . $stock_item['mime_type']);
+		header('Content-Disposition: attachment; filename="' . $stock_item['filename'] .'"');
 		header('Content-Length: ' . filesize($file));
 
 		$fh = fopen($file, 'r');

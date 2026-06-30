@@ -187,11 +187,11 @@
 			"o.shipping_option_name like '%". database::input($_GET['query']) ."%'",
 			"o.shipping_tracking_id like '". database::input($_GET['query']) ."'",
 			"o.id in (
-				select order_id from ". DB_TABLE_PREFIX ."orders_lines
+				select order_id from ". DB_TABLE_PREFIX ."orders_items
 				where name like '%". database::input($_GET['query']) ."%'
 			)",
 			"o.id in (
-				select order_id from ". DB_TABLE_PREFIX ."orders_lines
+				select order_id from ". DB_TABLE_PREFIX ."orders_items
 				where name like '%". database::input($_GET['query']) ."%'
 			)",
 		];
@@ -268,18 +268,18 @@
 			$order['tags'][] = $order['shipping_country_code'];
 		}
 
-		// Order Lines
-		$order['lines'] = database::query(
-			"select * from ". DB_TABLE_PREFIX ."orders_lines ol
+		// Order Items
+		$order['items'] = database::query(
+			"select * from ". DB_TABLE_PREFIX ."orders_items oi
 			where order_id = ". (int)$order['id'] .";"
-		)->fetch_all(function(&$line){
+		)->fetch_all(function(&$item){
 
-			$line['items'] = database::query(
-				"select oi.*, si.quantity as stock_quantity
-				from ". DB_TABLE_PREFIX ."orders_items oi
-				left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = oi.stock_item_id)
-				where oi.order_id = ". (int)$line['order_id'] ."
-				and oi.line_id = ". (int)$line['id'] .";"
+			$item['stock_items'] = database::query(
+				"select osi.*, si.quantity as stock_quantity
+				from ". DB_TABLE_PREFIX ."orders_stock_items osi
+				left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = osi.stock_item_id)
+				where osi.order_id = ". (int)$item['order_id'] ."
+				and osi.item_id = ". (int)$item['id'] .";"
 			)->fetch_all(function(&$item){
 				if ($item['stock_quantity'] !== null) {
 					$item['sufficient_stock'] = null;
@@ -291,11 +291,11 @@
 			});
 		});
 
-		if (in_array(false, array_column($order['lines'], 'sufficient_stock'), true)) {
+		if (in_array(false, array_column($order['items'], 'sufficient_stock'), true)) {
 			$order['sufficient_stock'] = false;
 			$order['sufficient_stock_icon'] = f::draw_fonticon('icon-check', 'style="color: #88cc44;"');
 
-		} else if (array_unique(array_column($order['lines'], 'sufficient_stock'), true) == [true]) {
+		} else if (array_unique(array_column($order['items'], 'sufficient_stock'), true) == [true]) {
 			$order['sufficient_stock'] = true;
 			$order['sufficient_stock_icon'] = f::draw_fonticon('remove');
 		} else {
@@ -405,11 +405,13 @@ table .tag {
 					<th class="text-end"><?php echo t('title_id', 'ID'); ?></th>
 					<th data-sort="id" class="text-end"><?php echo t('title_order_no', 'Order No'); ?></th>
 					<th></th>
-					<th data-sort="order_status"><?php echo t('title_order_status', 'Order Status'); ?></th>
+					<th></th>
+					<th class="text-center" data-sort="order_status"><?php echo t('title_order_status', 'Order Status'); ?></th>
 					<th data-sort="customer" class="main"><?php echo t('title_customer', 'Customer'); ?></th>
 					<th><?php echo t('title_in_stock', 'In Stock'); ?></th>
 					<th data-sort="payment_method"><?php echo t('title_payment_method', 'Payment Method'); ?></th>
 					<th class="text-center"><?php echo t('title_amount', 'Amount'); ?></th>
+					<th class="text-center"><?php echo t('title_tax', 'Tax'); ?></th>
 					<th class="text-end" data-sort="created_at"><?php echo t('title_created_at', 'Created At'); ?></th>
 					<th></th>
 					<th></th>
@@ -424,7 +426,8 @@ table .tag {
 					<td class="text-end"><?php echo (int)$order['id']; ?></td>
 					<td class="text-center"><?php echo $order['no']; ?></td>
 					<td></td>
-					<td><?php echo f::draw_fonticon($order['order_status_icon'], 'style="color: '. $order['order_status_color'] .';"'); ?> <?php echo $order['order_status_id'] ? $order['order_status_name'] : t('title_uncompleted', 'Uncompleted'); ?></td>
+					<td><?php echo f::draw_fonticon($order['order_status_icon'], 'style="color: '. $order['order_status_color'] .';"'); ?></td>
+					<td class="text-center"><?php echo $order['order_status_id'] ? $order['order_status_name'] : t('title_uncompleted', 'Uncompleted'); ?></td>
 					<td>
 						<a class="link" href="<?php echo document::href_ilink(__APP__.'/order', ['order_id' => $order['id'], 'redirect_url' => $_SERVER['REQUEST_URI']]); ?>">
 							<?php echo f::draw_fonticon($order['customer_company'] ? 'icon-building' : 'icon-user', 'style="opacity: .5;"'); ?>
@@ -437,9 +440,10 @@ table .tag {
 						<?php echo f::draw_fonticon('icon-sticky-note', 'title="'. t('title_notes', 'Notes') .'" style="color: #f2b01e; margin-left: .5em;"'); ?>
 						<?php } ?>
 					</td>
-					<td class="text-center"><?php $order['sufficient_stock_icon'] ?: '-'; ?></td>
+					<td class="text-center"><?php echo $order['sufficient_stock_icon'] ?: '-'; ?></td>
 					<td><?php echo $order['payment_option_name']; ?></td>
 					<td class="text-end"><?php echo currency::format($order['total'], false, $order['currency_code'], $order['currency_value']); ?></td>
+					<td class="text-end"><?php echo ($order['total_tax'] != 0) ? currency::format($order['total_tax'], false, $order['currency_code'], $order['currency_value']) : '-'; ?></td>
 					<td class="text-end"><?php echo f::datetime_when($order['created_at']); ?></td>
 					<td>
 						<div class="dropdown dropdown-end">

@@ -745,39 +745,34 @@
 		);
 	});
 
-	// Migrate order items to line items
+	// Migrate order items
 	database::query(
-		"select * from ". DB_TABLE_PREFIX ."orders_items
-		order by id asc;"
+		"select osi.*, p.default_image from ". DB_TABLE_PREFIX ."orders_stock_items osi
+		left join ". DB_TABLE_PREFIX ."products p on (p.product_id = osi.product_id)
+		order by osi.id asc;"
 	)->each(function($item){
 
 		$item['userdata'] = unserialize($item['userdata']);
 
 		database::query(
-			"insert into ". DB_TABLE_PREFIX ."orders_lines (order_id, product_id, code, name, userdata, quantity, price, tax_class_id, discount, priority)
+			"insert into ". DB_TABLE_PREFIX ."orders_items (id, order_id, product_id, code, name, image, userdata, quantity, regular_price, final_price, tax_class_id, tax_rate, sum, sum_tax, priority)
 			values (
+				". (int)$item['id'] .",
 				". (int)$item['order_id'] .",
 				". (int)$item['product_id'] .",
+				'". database::input($item['code']) ."',
 				'". database::input($item['name']) ."',
+				'". database::input($item['image']) ."',
 				". json_encode($item['userdata'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) .",
 				". (int)$item['quantity'] .",
 				". (float)$item['price'] .",
+				". (float)$item['price'] .",
 				". ($item['tax_class_id'] ? (int)$item['tax_class_id'] : "NULL") .",
 				". (($item['tax'] > 0) ? round($item['tax'] / $item['price'], 2) : "NULL") .",
-				". (float)$item['discount'] .",
 				". ($item['price'] * (float)$item['quantity']) .",
 				". ($item['tax'] * (float)$item['quantity']) .",
 				". (int)$item['priority'] ."
 			);"
-		);
-
-		$line_id = database::insert_id();
-
-		database::query(
-			"update ". DB_TABLE_PREFIX ."orders_items
-			set line_id = ". (int)$line_id ."
-			where id = ". (int)$item['id'] ."
-			limit 1;"
 		);
 	});
 
@@ -817,20 +812,6 @@
 
 		database::query(
 			"update ". DB_TABLE_PREFIX ."cart_items
-			set userdata = '". (!empty($item['userdata']) ? json_encode($item['userdata'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) : '') ."'
-			where id = ". (int)$item['id'] ."
-			limit 1;"
-		);
-	});
-
-	database::query(
-		"select * from ". DB_TABLE_PREFIX ."orders_items;"
-	)->each(function($item){
-
-		$item['userdata'] = $item['userdata'] ? unserialize($item['userdata']) : [];
-
-		database::query(
-			"update ". DB_TABLE_PREFIX ."orders_items
 			set userdata = '". (!empty($item['userdata']) ? json_encode($item['userdata'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) : '') ."'
 			where id = ". (int)$item['id'] ."
 			limit 1;"
@@ -1316,7 +1297,7 @@
 
 	// Remove deprecated columns
 	database::query(
-		"alter table `". DB_TABLE_PREFIX ."orders_items`
+		"alter table `". DB_TABLE_PREFIX ."orders_stock_items`
 		drop column `attributes`,
 		drop column `tax`;"
 	);

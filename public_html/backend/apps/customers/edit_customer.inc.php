@@ -158,7 +158,7 @@
 			from ". DB_TABLE_PREFIX ."orders o
 			left join (
 				select order_id, sum(price * quantity) as total_sales
-				from ". DB_TABLE_PREFIX ."orders_lines
+				from ". DB_TABLE_PREFIX ."orders_items
 				group by order_id
 			) oi on (oi.order_id = o.id)
 			where o.order_status_id in (

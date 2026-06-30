@@ -60,32 +60,32 @@
 		) stt on (stt.stock_item_id = si.id)
 
 		left join (
-			select oi.stock_item_id, sum(ol.quantity * oi.quantity) as quantity_reserved
-			from ". DB_TABLE_PREFIX ."orders_items oi
-			left join ". DB_TABLE_PREFIX ."orders_lines ol on (ol.id = oi.line_id)
-			where oi.order_id in (
+			select osi.stock_item_id, sum(oi.quantity * osi.quantity) as quantity_reserved
+			from ". DB_TABLE_PREFIX ."orders_stock_items osi
+			left join ". DB_TABLE_PREFIX ."orders_items oi on (oi.id = osi.item_id)
+			where osi.order_id in (
 				select id from ". DB_TABLE_PREFIX ."orders o
 				where order_status_id in (
 					select id from ". DB_TABLE_PREFIX ."order_statuses os
 					where stock_action = 'reserve'
 				)
 			)
-			group by oi.stock_item_id
+			group by osi.stock_item_id
 		) oi on (oi.stock_item_id = si.id)
 
 		left join (
-			select oi.stock_item_id, sum(ol.quantity * oi.quantity) as quantity_withdrawn
-			from ". DB_TABLE_PREFIX ."orders_items oi
-			left join ". DB_TABLE_PREFIX ."orders_lines ol on (ol.id = oi.line_id)
-			where oi.order_id in (
+			select osi.stock_item_id, sum(oi.quantity * osi.quantity) as quantity_withdrawn
+			from ". DB_TABLE_PREFIX ."orders_stock_items osi
+			left join ". DB_TABLE_PREFIX ."orders_items oi on (oi.id = osi.item_id)
+			where osi.order_id in (
 				select id from ". DB_TABLE_PREFIX ."orders o
 				where order_status_id in (
 					select id from ". DB_TABLE_PREFIX ."order_statuses os
 					where stock_action = 'withdraw'
 				)
 			)
-			group by oi.stock_item_id
-		) oit on (oi.stock_item_id = si.id)
+			group by osi.stock_item_id
+		) oit on (oit.stock_item_id = si.id)
 
 		where si.id
 		". (!empty($sql_where_query) ? "and (". implode(" or ", $sql_where_query) .")" : "") ."

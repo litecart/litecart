@@ -244,7 +244,7 @@
 		}
 
 		if (!empty($filter['purchased'])) {
-			$sql_inner_where['purchased'] = "p.id in (select product_id from ". DB_TABLE_PREFIX ."orders_items group by product_id)";
+			$sql_inner_where['purchased'] = "p.id in (select product_id from ". DB_TABLE_PREFIX ."orders_stock_items group by product_id)";
 		}
 
 		if (!empty($filter['exclude_products'])) {
@@ -285,21 +285,21 @@
 					pso.id as stock_option_id,
 					count(pso.id) as num_stock_options,
 					sum(si.quantity) as total_quantity,
-					sum(si.quantity - ol.quantity_reserved) as quantity_available
+					sum(si.quantity - oi.quantity_reserved) as quantity_available
 				from ". DB_TABLE_PREFIX ."products_stock_options pso
 
 				left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
 
 				left join (
-					select ol.stock_option_id, sum(ol.quantity) as quantity_reserved
-					from ". DB_TABLE_PREFIX ."orders_lines ol
-					left join ". DB_TABLE_PREFIX ."orders o on (o.id = ol.order_id)
+					select oi.stock_option_id, sum(oi.quantity) as quantity_reserved
+					from ". DB_TABLE_PREFIX ."orders_items oi
+					left join ". DB_TABLE_PREFIX ."orders o on (o.id = oi.order_id)
 					where o.order_status_id in (
 						select id from ". DB_TABLE_PREFIX ."order_statuses
 						where stock_action = 'reserve'
 					)
-					group by ol.stock_option_id
-				) ol on (ol.stock_option_id = pso.id)
+					group by oi.stock_option_id
+				) oi on (oi.stock_option_id = pso.id)
 				group by pso.product_id
 			) pso on (pso.product_id = p.id)
 
@@ -565,21 +565,21 @@
 					pso.id as stock_option_id,
 					count(pso.id) as num_stock_options,
 					sum(si.quantity) as total_quantity,
-					sum(si.quantity - ol.quantity_reserved) as quantity_available
+					sum(si.quantity - oi.quantity_reserved) as quantity_available
 				from ". DB_TABLE_PREFIX ."products_stock_options pso
 
 				left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
 
 				left join (
-					select ol.stock_option_id, sum(ol.quantity) as quantity_reserved
-					from ". DB_TABLE_PREFIX ."orders_lines ol
-					left join ". DB_TABLE_PREFIX ."orders o on (o.id = ol.order_id)
+					select oi.stock_option_id, sum(oi.quantity) as quantity_reserved
+					from ". DB_TABLE_PREFIX ."orders_items oi
+					left join ". DB_TABLE_PREFIX ."orders o on (o.id = oi.order_id)
 					where o.order_status_id in (
 						select id from ". DB_TABLE_PREFIX ."order_statuses
 						where stock_action = 'reserve'
 					)
-					group by ol.stock_option_id
-				) ol on (ol.stock_option_id = pso.id)
+					group by oi.stock_option_id
+				) oi on (oi.stock_option_id = pso.id)
 				group by pso.product_id
 			) pso on (pso.product_id = p.id)
 

@@ -26,15 +26,15 @@
 
 	$order_items_query = database::query(
 		"select
-			ol.product_id,
-			ol.code,
-			if(JSON_VALUE(p.name, '$.". database::input(language::$selected['code']) ."'), JSON_VALUE(p.name, '$.". database::input(language::$selected['code']) ."'), ol.name) as name,
-			sum(ol.quantity) as total_quantity,
-			sum(ol.price * ol.quantity * o.currency_value) as total_sales,
-			sum(ol.tax * ol.quantity * o.currency_value) as total_tax
-		from ". DB_TABLE_PREFIX ."orders_lines ol
-		left join ". DB_TABLE_PREFIX ."orders o on (o.id = ol.order_id)
-		left join ". DB_TABLE_PREFIX ."products p on (p.id = ol.product_id)
+			oi.product_id,
+			oi.code,
+			if(JSON_VALUE(p.name, '$.". database::input(language::$selected['code']) ."'), JSON_VALUE(p.name, '$.". database::input(language::$selected['code']) ."'), oi.name) as name,
+			sum(oi.quantity) as total_quantity,
+			sum(oi.final_price * oi.quantity * o.currency_value) as total_sales,
+			sum(oi.sum_tax * o.currency_value) as total_tax
+		from ". DB_TABLE_PREFIX ."orders_items oi
+		left join ". DB_TABLE_PREFIX ."orders o on (o.id = oi.order_id)
+		left join ". DB_TABLE_PREFIX ."products p on (p.id = oi.product_id)
 		where o.order_status_id in (
 			select id from ". DB_TABLE_PREFIX ."order_statuses
 			where is_sale
@@ -42,12 +42,12 @@
 		and o.created_at >= '". date('Y-m-d 00:00:00', strtotime($_GET['date_from'])) ."'
 		and o.created_at <= '". date('Y-m-d 23:59:59', strtotime($_GET['date_to'])) ."'
 		". (!empty($_GET['query']) ? "and (
-			ol.product_id = '". database::input($_GET['query']) ."'
-			or ol.name like '%". addcslashes(database::input($_GET['query']), '%_') ."%'
-			or ol.code like '%". addcslashes(database::input($_GET['query']), '%_') ."%'
-			or ol.gtin like '%". addcslashes(database::input($_GET['query']), '%_') ."%'
+			oi.product_id = '". database::input($_GET['query']) ."'
+			or oi.name like '%". addcslashes(database::input($_GET['query']), '%_') ."%'
+			or oi.code like '%". addcslashes(database::input($_GET['query']), '%_') ."%'
+			or p.gtin like '%". addcslashes(database::input($_GET['query']), '%_') ."%'
 		)" : "") ."
-		group by ol.product_id, ol.code
+		group by oi.product_id, oi.code
 		order by total_quantity desc;"
 	);
 

@@ -41,19 +41,19 @@
 
 	$result = database::query(
 		"select
-			ol.product_id, ol.quantity, ol.code, ol.name,
+			oi.product_id, oi.quantity, oi.code, oi.name,
 			o.id as order_id, o.created_at as order_created_at,
 			if(o.customer_company, o.customer_company, concat(o.customer_firstname, ' ', o.customer_lastname)) as customer_name, o.customer_country_code, o.customer_email
-		from ". DB_TABLE_PREFIX ."orders_lines ol
-		left join ". DB_TABLE_PREFIX ."orders o on (o.id = ol.order_id)
+		from ". DB_TABLE_PREFIX ."orders_items oi
+		left join ". DB_TABLE_PREFIX ."orders o on (o.id = oi.order_id)
 		where o.order_status_id in (
 			select id from ". DB_TABLE_PREFIX ."order_statuses where is_sale
 		)
-		". (!empty($_GET['query']) ? "and (ol.product_id = '". database::input($_GET['query']) ."' or ol.code like '". database::input($_GET['query']) ."' or ol.name like '%". addcslashes(database::input($_GET['query']), '%_') ."%')" : null) ."
+		". (!empty($_GET['query']) ? "and (oi.product_id = '". database::input($_GET['query']) ."' or oi.code like '". database::input($_GET['query']) ."' or oi.name like '%". addcslashes(database::input($_GET['query']), '%_') ."%')" : null) ."
 		and o.created_at >= '". date('Y-m-d H:i:s', mktime(0, 0, 0, date('m', $timestamp_from), date('d', $timestamp_from), date('Y', $timestamp_from))) ."'
 		and o.created_at <= '". date('Y-m-d H:i:s', mktime(23, 59, 59, date('m', $timestamp_to), date('d', $timestamp_to), date('Y', $timestamp_to))) ."'
 		having quantity > 0
-		order by ol.name asc, o.created_at desc, customer_name asc;"
+		order by oi.name asc, o.created_at desc, customer_name asc;"
 	);
 
 	if (isset($_GET['download'])) {

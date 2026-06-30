@@ -1,6 +1,6 @@
 <?php
 
-	class ent_order implements JsonSerializable {
+	class ent_order {
 
 		public $data;
 		public $previous;
@@ -54,7 +54,7 @@
 				'currency_value' => currency::$selected['value'],
 				'language_code' => language::$selected['code'],
 				'incoterm' => settings::get('default_incoterm'),
-				'lines' => [],
+				'items' => [],
 				'comments' => [],
 				'subtotal' => 0,
 				'subtotal_tax' => 0,
@@ -72,12 +72,9 @@
 			$this->data['shipping_option']['userdata'] = [];
 			$this->data['payment_option']['userdata'] = [];
 
-			$this->shipping = new mod_shipping($this, $this->data['shipping_option']);
-			$this->payment = new mod_payment($this, $this->data['payment_option']);
-
 			$this->data['payment_due'] = &$this->data['total']; // Backwards compatibility <3.0.0
 			$this->data['tax_total'] = &$this->data['total_tax']; // Backwards compatibility <3.0.0
-			$this->data['items'] = &$this->data['lines']; // Alias: add_line() writes to lines, checkout reads items
+			$this->data['items'] = [];
 
 			$this->previous = $this->data;
 		}
@@ -125,33 +122,39 @@
 
 			$this->data['conversions'] = $this->data['conversions'] ? json_decode($this->data['conversions'], true) : [];
 
-			$this->data['lines'] = database::query(
-				"select *	from ". DB_TABLE_PREFIX ."orders_lines
+			$this->data['items'] = database::query(
+				"select *	from ". DB_TABLE_PREFIX ."orders_items
 				where order_id = ". (int)$id ."
 				order by priority;"
-			)->fetch_all(function(&$line) {
+			)->fetch_all(function(&$item) {
 
-				$line['userdata'] = $line['userdata'] ? json_decode($line['userdata'], true) : '';
+				$item['userdata'] = $item['userdata'] ? json_decode($item['userdata'], true) : '';
 
-				$line['items'] = database::query(
-					"select oi.*, (ol.quantity * oi.quantity) as ordered_quantity, si.quantity as stock_quanity
-					from ". DB_TABLE_PREFIX ."orders_lines ol
-					left join ". DB_TABLE_PREFIX ."orders_items oi on (oi.line_id = ol.id)
-					left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = oi.stock_item_id)
-					where oi.line_id = ". (int)$line['id'] ."
-					and oi.order_id = ". (int)$line['order_id'] ."
+				$item['stock_items'] = database::query(
+					"select osi.*,
+						coalesce(si.quantity, 0) as stock_quantity,
+						coalesce(o.quantity_reserved, 0) as quantity_reserved,
+						(coalesce(si.quantity, 0) - coalesce(o.quantity_reserved, 0)) as quantity_available
+					from ". DB_TABLE_PREFIX ."orders_stock_items osi
+					left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = osi.stock_item_id)
+					left join (
+						select osi.stock_item_id, sum(osi.quantity * oi.quantity) as quantity_reserved
+						from ". DB_TABLE_PREFIX ."orders_stock_items osi
+						left join ". DB_TABLE_PREFIX ."orders_items oi on (oi.id = osi.item_id and oi.order_id = osi.order_id)
+						where osi.order_id in (
+							select id from ". DB_TABLE_PREFIX ."orders
+							where order_status_id in (
+								select id from ". DB_TABLE_PREFIX ."order_statuses
+								where stock_action = 'reserve'
+							)
+						)
+						group by stock_item_id
+					) o on (o.stock_item_id = si.id)
+					where osi.item_id = ". (int)$item['id'] ."
+					and osi.order_id = ". (int)$item['order_id'] ."
 					order by priority;"
 				)->fetch_all(function(&$item) {
-
-					$item['sufficient_stock'] = null;
-
-					if (isset($item['stock_quanity'])) {
-						if ($item['ordered_quantity'] >= $item['stock_quanity']) {
-							$item['sufficient_stock'] = true;
-						} else {
-							$item['sufficient_stock'] = false;
-						}
-					}
+					$item['sufficient_stock'] = $item['quantity_available'] >= 0;
 				});
 			});
 
@@ -167,9 +170,6 @@
 
 			$this->data['shipping_option']['userdata'] = @json_decode($this->data['shipping_option']['userdata'], true);
 			$this->data['payment_option']['userdata'] = @json_decode($this->data['payment_option']['userdata'], true);
-
-			$this->shipping = new mod_shipping($this, $this->data['shipping_option']);
-			$this->payment = new mod_payment($this, $this->data['payment_option']);
 
 			$this->previous = $this->data;
 		}
@@ -293,9 +293,7 @@
 					weight_unit = '". database::input($this->data['weight_unit']) ."',
 					display_prices_including_tax = ". (int)$this->data['display_prices_including_tax'] .",
 					subtotal = ". (float)$this->data['subtotal'] .",
-					subtotal_tax = ". (float)$this->data['subtotal_tax'] .",
 					discount = ". (float)$this->data['discount'] .",
-					discount_tax = ". (float)$this->data['discount_tax'] .",
 					total = ". (float)$this->data['total'] .",
 					total_tax = ". (float)$this->data['total_tax'] .",
 					notes = '". database::input($this->data['notes']) ."',
@@ -322,108 +320,104 @@
 				}
 			}
 
-			// Delete order lines not in current data
-			$line_ids = array_filter(array_column($this->data['lines'], 'id'));
+			// Delete order items not in current data
+			$item_ids = array_map('intval', array_filter(array_column($this->data['items'], 'id')));
 			database::query(
-				"delete from ". DB_TABLE_PREFIX ."orders_lines
+				"delete from ". DB_TABLE_PREFIX ."orders_items
 				where order_id = ". (int)$this->data['id'] ."
-				". ($line_ids ? "and id not in (". implode(",", array_map('intval', $line_ids)) .")" : "") .";"
+				". ($item_ids ? "and id not in (". implode(", ", $item_ids) .")" : "") .";"
 			);
 
-			// Insert/update order lines
+			// Insert/update order items
 			$i = 0;
-			foreach ($this->data['lines'] as $key => $line) {
+			foreach ($this->data['items'] as $key => $item) {
 
-				if (isset($line['order_id']) && $line['order_id'] != $this->data['id']) {
-					$line['id'] = null;
+				if (isset($item['order_id']) && $item['order_id'] != $this->data['id']) {
+					$item['id'] = null;
 				}
 
-				if (empty($line['id'])) {
+				if (empty($item['id'])) {
 
 					database::query(
-						"insert into ". DB_TABLE_PREFIX ."orders_lines
+						"insert into ". DB_TABLE_PREFIX ."orders_items
 						(order_id)
 						values (". (int)$this->data['id'] .");"
 					);
 
-					$this->data['lines'][$key]['id'] = $line['id'] = database::insert_id();
+					$this->data['items'][$key]['id'] = $item['id'] = database::insert_id();
 				}
 
 				database::query(
-					"update ". DB_TABLE_PREFIX ."orders_lines
-					set product_id = ". (int)$line['product_id'] .",
-						stock_option_id = ". ($line['stock_option_id'] ? (int)$line['stock_option_id'] : "null") .",
-						code = '". database::input($line['code']) ."',
-						name = '". database::input($line['name']) ."',
-						userdata = '". (!empty($line['userdata']) ? database::input(f::format_json($line['userdata'])) : '{}') ."',
-						serial_number = '". database::input($line['serial_number']) ."',
-						quantity = ". (float)$line['quantity'] .",
-						price = ". (float)$line['price'] .",
-						tax_class_id = ". (int)$line['tax_class_id'] .",
-						tax_rate = ". ($line['tax_rate'] ? (float)$line['tax_rate'] : "null") .",
-						tax = ". (float)$line['tax'] .",
-						discount = ". (float)$line['discount'] .",
-						discount_tax = ". (float)$line['discount_tax'] .",
-						sum = ". (float)$line['sum'] .",
-						sum_tax = ". (float)$line['sum_tax'] .",
-						weight = ". (float)$line['weight'] .",
-						weight_unit = '". database::input($line['weight_unit']) ."',
-						priority = ". ($this->data['lines'][$line_key]['priority'] = $line['priority'] = ++$i) ."
-					where id = ". (int)$line['id'] ."
+					"update ". DB_TABLE_PREFIX ."orders_items
+					set product_id = ". (int)$item['product_id'] .",
+						code = '". database::input($item['code']) ."',
+						name = '". database::input($item['name']) ."',
+						image = '". database::input($item['image']) ."',
+						userdata = '". (!empty($item['userdata']) ? database::input(f::format_json($item['userdata'])) : '{}') ."',
+						quantity = ". (float)$item['quantity'] .",
+						regular_price = ". (float)$item['regular_price'] .",
+						final_price = ". (float)$item['final_price'] .",
+						discount = ". (float)$item['discount'] .",
+						tax_class_id = ". ($item['tax_class_id'] ? (int)$item['tax_class_id'] : "null") .",
+						tax_rate = ". ($item['tax_rate'] ? (float)$item['tax_rate'] : "null") .",
+						sum = ". (float)$item['sum'] .",
+						sum_tax = ". (float)$item['sum_tax'] .",
+						priority = ". ($this->data['items'][$item_key]['priority'] = $item['priority'] = ++$i) ."
+					where id = ". (int)$item['id'] ."
 					and order_id = ". (int)$this->data['id'] ."
 					limit 1;"
 				);
 			}
 
-			// Insert/update order items
+			// Insert/update order stock items
 			$i = 0;
-			foreach ($this->data['lines'] as $line_key => $line) {
-				foreach ($line['items'] as $item_key => $item) {
+			foreach ($this->data['items'] as $item_key => $item) {
+				foreach ($item['stock_items'] as $stock_item_key => $stock_item) {
 
-					if (isset($line['order_id']) && $line['order_id'] != $this->data['id']) {
-						$line['id'] = null;
+					if (isset($item['order_id']) && $item['order_id'] != $this->data['id']) {
+						$item['id'] = null;
 					}
 
-					if (empty($item['id'])) {
+					if (empty($stock_item['id'])) {
 
 						database::query(
-							"insert into ". DB_TABLE_PREFIX ."orders_items
-							(order_id, line_id)
-							values (". (int)$this->data['id'] .", ". (int)$line['id'] .");"
+							"insert into ". DB_TABLE_PREFIX ."orders_stock_items
+							(order_id, item_id)
+							values (". (int)$this->data['id'] .", ". (int)$item['id'] .");"
 						);
 
-						$this->data['lines'][$line_key]['items'][$item_key]['id'] = $item['id'] = database::insert_id();
+						$this->data['items'][$item_key]['stock_items'][$stock_item_key]['id'] = $stock_item['id'] = database::insert_id();
 					}
 
 					// Withdraw stock
-					if ($this->data['order_status_id'] && !empty(reference::order_status($this->data['order_status_id'])->is_sale) && !empty($item['stock_item_id'])) {
+					if ($this->data['order_status_id'] && !empty(reference::order_status($this->data['order_status_id'])->is_sale) && !empty($stock_item['stock_stock_item_id'])) {
 						database::query(
-							"update ". DB_TABLE_PREFIX ."stock_items
-							set quantity = quantity + ". ($line['quantity'] * (float)$item['quantity']) ."
-							where id = ". (int)$item['stock_item_id'] ."
+							"update ". DB_TABLE_PREFIX ."stock_stock_items
+							set quantity = quantity + ". ($item['quantity'] * (float)$stock_item['quantity']) ."
+							where id = ". (int)$stock_item['stock_stock_item_id'] ."
 							limit 1;"
 						);
 					}
 
 					database::query(
-						"update ". DB_TABLE_PREFIX ."orders_items
-						set line_id = ". (int)$line['id'] .",
-							stock_item_id = ". (int)$item['stock_item_id'] .",
-							name = '". database::input($item['name']) ."',
-							serial_number = '". database::input($item['serial_number']) ."',
-							sku = '". database::input($item['sku']) ."',
-							gtin = '". database::input($item['gtin']) ."',
-							taric = '". database::input($item['taric']) ."',
-							quantity = ". (float)$item['quantity'] .",
-							weight = ". (float)$item['weight'] .",
-							weight_unit = '". database::input($item['weight_unit']) ."',
-							length = ". (float)$item['length'] .",
-							width = ". (float)$item['width'] .",
-							height = ". (float)$item['height'] .",
-							length_unit = '". database::input($item['length_unit']) ."',
-							priority = ". ($this->data['lines'][$line_key]['items'][$item_key]['priority'] = $item['priority'] = ++$i) ."
-						where id = ". (int)$item['id'] ."
-						and line_id = ". (int)$line['id'] ."
+						"update ". DB_TABLE_PREFIX ."orders_stock_items
+						set item_id = ". (int)$item['id'] .",
+							stock_stock_item_id = ". (int)$stock_item['stock_stock_item_id'] .",
+							name = '". database::input($stock_item['name']) ."',
+							serial_number = '". database::input($stock_item['serial_number']) ."',
+							sku = '". database::input($stock_item['sku']) ."',
+							gtin = '". database::input($stock_item['gtin']) ."',
+							taric = '". database::input($stock_item['taric']) ."',
+							quantity = ". (float)$stock_item['quantity'] .",
+							weight = ". (float)$stock_item['weight'] .",
+							weight_unit = '". database::input($stock_item['weight_unit']) ."',
+							length = ". (float)$stock_item['length'] .",
+							width = ". (float)$stock_item['width'] .",
+							height = ". (float)$stock_item['height'] .",
+							length_unit = '". database::input($stock_item['length_unit']) ."',
+							priority = ". ($this->data['items'][$item_key]['stock_items'][$stock_item_key]['priority'] = $stock_item['priority'] = ++$i) ."
+						where id = ". (int)$stock_item['id'] ."
+						and item_id = ". (int)$item['id'] ."
 						and order_id = ". (int)$this->data['id'] ."
 						limit 1;"
 					);
@@ -431,9 +425,9 @@
 					// Withdraw stock
 					if ($this->data['order_status_id'] && reference::order_status($this->data['order_status_id'])->stock_action == 'commit') {
 						database::query(
-							"update ". DB_TABLE_PREFIX ."stock_items
-							set quantity = quantity - ". ($line['quantity'] * (float)$item['quantity']) ."
-							where id = ". (int)$item['stock_item_id'] ."
+							"update ". DB_TABLE_PREFIX ."stock_stock_items
+							set quantity = quantity - ". ($item['quantity'] * (float)$stock_item['quantity']) ."
+							where id = ". (int)$stock_item['stock_stock_item_id'] ."
 							limit 1;"
 						);
 					}
@@ -463,7 +457,7 @@
 						$comment['author_id'] = ($comment['author'] == 'customer') ? -1 : 0;
 					}
 
-					if (isset($line['order_id']) && $line['order_id'] != $this->data['id']) {
+					if (isset($item['order_id']) && $item['order_id'] != $this->data['id']) {
 						$comment['id'] = null;
 					}
 
@@ -519,7 +513,7 @@
 			}
 
 			[$module_id, $option_id] = preg_split('#:#', $this->data['payment_option']['id'] ?? ':', 2);
-			$payment_modules = new mod_payment();
+			$payment_modules = new mod_payment($this, $this->data['payment_option']);
 			$payment_modules->run('after_save', $module_id, $this);
 
 			$order_modules = new mod_order();
@@ -551,19 +545,19 @@
 			$this->data['subtotal'] = 0;
 			$this->data['subtotal_tax'] = 0;
 			$this->data['discount'] = 0;
-			$this->data['discount_tax'] = 0;
 			$this->data['total'] = 0;
 			$this->data['total_tax'] = 0;
 			$this->data['weight_total'] = 0;
 
 			foreach ($this->data['items'] as $item) {
-				$this->data['subtotal'] += (float)$item['price'] * (float)$item['quantity'];
-				$this->data['subtotal_tax'] += (float)$item['tax'] * (float)$item['quantity'];
+				$this->data['subtotal'] += (float)$item['sum'];
+				$this->data['subtotal_tax'] += (float)$item['sum_tax'];
 				$this->data['discount'] += (float)$item['discount'] * (float)$item['quantity'];
-				$this->data['discount_tax'] += (float)$item['discount_tax'] * (float)$item['quantity'];
-				$this->data['total'] += ($item['price'] - (float)$item['discount']) * (float)$item['quantity'];
-				$this->data['total_tax'] += ((float)$item['tax'] - (float)$item['discount_tax']) * (float)$item['quantity'];
-				$this->data['weight_total'] += f::convert_weight($item['weight'], $item['weight_unit'], $this->data['weight_unit']) * $item['quantity'];
+				$this->data['total'] += $item['final_price'] * (float)$item['quantity'];
+				$this->data['total_tax'] += tax::get_tax($item['final_price'] * (float)$item['quantity'], $item['tax_class_id'], $this->data['customer']);
+				foreach ($item['stock_items'] as $stock_item) {
+					$this->data['weight_total'] += f::convert_weight($stock_item['weight'] * $stock_item['quantity'], $item['weight_unit'], $this->data['weight_unit']) * $item['quantity'];
+				}
 			}
 
 			// Add shipping fee
@@ -612,37 +606,36 @@
 			return $this->data['no'];
 		}
 
-		public function add_line(array $line, array $stock_items = []): void {
+		public function add_item(array $cart_item): void {
 
-			$tax_rates = tax::get_rates($line['tax_class_id'] ?? null, $this->data['customer']);
+			$tax_rates = tax::get_rates($cart_item['tax_class_id'] ?? null, $this->data['customer']);
 			$average_rate = !empty($tax_rates) ? array_sum($tax_rates) / count($tax_rates) : 0;
 
-			$line = [
+			$item = [
 				'id' => null,
 				'order_id' => null,
 				'product_id' => null,
-				'stock_option_id' => null,
-				'code' => $line['code'] ?? '',
-				'name' => $line['name'] ?? '',
-				'userdata' => $line['userdata'] ?? '',
-				'serial_number' => $line['serial_number'] ?? '',
-				'quantity' => $line['quantity'] ?? 1,
-				'price' => $line['price'] ?? 0,
-				'discount' => $line['discount'] ?? 0,
-				'tax' => $line['tax'] ?? tax::get_tax(($line['price'] ?? 0) - ($line['discount'] ?? 0), $line['tax_class_id'] ?? null, $this->data['customer']['country_code'], $this->data['customer']['zone_code']),
-				'tax_rate' => $line['tax_rate'] ?? $average_rate,
-				'tax_class_id' => $line['tax_class_id'] ?? null,
+				'code' => $cart_item['code'] ?? '',
+				'name' => $cart_item['name'] ?? '',
+				'image' => $cart_item['image'] ?? '',
+				'userdata' => $cart_item['userdata'] ?? '',
+				'quantity' => $cart_item['quantity'] ?? 1,
+				'regular_price' => $cart_item['regular_price']['value'] ?? 0,
+				'final_price' => $cart_item['final_price']['value'] ?? 0,
+				'discount' => $cart_item['discount']['value'] ?? $cart_item['discount'] ?? 0,
+				'tax_rate' => $cart_item['tax_rate'] ?? $average_rate,
+				'tax_class_id' => $cart_item['tax_class_id'] ?? null,
 				'sum' => 0,
 				'sum_tax' => 0,
-				'items' => [],
+				'stock_items' => [],
 			];
 
-			$line['sum'] = ($line['price'] - $line['discount']) * $line['quantity'];
-			$line['sum_tax'] = $line['tax'] * $line['quantity'];
+			$item['sum'] = ($item['final_price'] || $item['discount']) ? ($item['final_price'] - $item['discount']) * $item['quantity'] : 0;
+			$item['sum_tax'] = tax::get_tax($item['sum'], $item['tax_class_id'] ?? null, $this->data['customer']);
 
-			foreach ($stock_items as $stock_item) {
+			foreach ($cart_item['stock_items'] as $stock_item) {
 
-				$line['items'][] = [
+				$item['stock_items'][] = [
 					'stock_item_id' => $stock_item['id'],
 					'quantity' => $stock_item['quantity'],
 					'name' => $stock_item['name'],
@@ -658,17 +651,16 @@
 					'weight_unit' => $stock_item['weight_unit'],
 				];
 
-				$this->data['weight_total'] += f::convert_weight($stock_item['weight'], $stock_item['weight_unit'], $this->data['weight_unit']) * $line['quantity'];
+				$this->data['weight_total'] += f::convert_weight($stock_item['weight'], $stock_item['weight_unit'], $this->data['weight_unit']) * $item['quantity'];
 			}
 
-			$this->data['lines'][] = $line;
+			$this->data['items'][] = $item;
 
-			$this->data['subtotal'] += $line['regular_price']['value'] * $line['quantity'];
-			$this->data['subtotal_tax'] += $line['regular_price']['tax'] * $line['quantity'];
-			$this->data['discount'] += $line['discount']['value'] * $line['quantity'];
-			$this->data['discount_tax'] += $line['discount']['tax'] * $line['quantity'];
-			$this->data['total'] += ($line['final_price']['value'] + $line['final_price']['tax']) * $line['quantity'];
-			$this->data['total_tax'] += $line['final_price']['tax'] * $line['quantity'];
+			$this->data['subtotal'] += $item['sum'];
+			$this->data['subtotal_tax'] += $item['sum_tax'];
+			$this->data['discount'] += $item['discount'] * $item['quantity'];
+			$this->data['total'] += ($item['final_price'] - $item['discount']) * $item['quantity'] + $item['sum_tax'];
+			$this->data['total_tax'] += $item['sum_tax'];
 		}
 
 		public function validate(array $filters = [], mixed $shipping = null, mixed $payment = null): string|false {
@@ -981,10 +973,11 @@
 				}
 			}
 
-			$email->add_recipient($recipient)
-						->set_subject($subject)
-						->add_body($message)
-						->send();
+			$email
+				->add_recipient($recipient)
+				->set_subject($subject)
+				->add_body($message)
+				->send();
 		}
 
 		public function send_email_notification(): void {
@@ -1073,10 +1066,10 @@
 			$order_modules->delete($this->previous);
 
 			database::query(
-				"delete o, ol, oi, oc
+				"delete o, oi, osi, oc
 				from ". DB_TABLE_PREFIX ."orders o
-				left join ". DB_TABLE_PREFIX ."orders_lines ol on (ol.order_id = o.id)
 				left join ". DB_TABLE_PREFIX ."orders_items oi on (oi.order_id = o.id)
+				left join ". DB_TABLE_PREFIX ."orders_stock_items osi on (osi.order_id = o.id)
 				left join ". DB_TABLE_PREFIX ."orders_comments oc on (oc.order_id = o.id)
 				where o.id = ". (int)$this->data['id'] .";"
 			);
@@ -1089,17 +1082,5 @@
 			cache::clear_cache('category');
 			cache::clear_cache('brand');
 			cache::clear_cache('products');
-		}
-
-	// Serialize only $data for session storage (json_encode compatibility)
-		public function jsonSerialize(): mixed {
-			return $this->data;
-		}
-
-	// Restore from session data
-		public static function from_data(array $data): self {
-			$order = new self();
-			$order->data = $data;
-			return $order;
 		}
 	}

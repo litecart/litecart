@@ -43,15 +43,15 @@
 				case 'also_purchased_products':
 
 					$this->_data['also_purchased_products'] = database::query(
-						"select ol.product_id, sum(ol.quantity) as num_purchases from ". DB_TABLE_PREFIX ."orders_lines ol
-						left join ". DB_TABLE_PREFIX ."products p on (p.id = ol.product_id)
+						"select oi.product_id, sum(oi.quantity) as num_purchases from ". DB_TABLE_PREFIX ."orders_items oi
+						left join ". DB_TABLE_PREFIX ."products p on (p.id = oi.product_id)
 						where p.status
-						and (ol.product_id != 0 and ol.product_id != ". (int)$this->_data['id'] .")
+						and (oi.product_id != 0 and oi.product_id != ". (int)$this->_data['id'] .")
 						and order_id in (
-							select order_id from ". DB_TABLE_PREFIX ."orders_lines
+							select order_id from ". DB_TABLE_PREFIX ."orders_items
 							where product_id = ". (int)$this->_data['id'] ."
 						)
-						group by ol.product_id
+						group by oi.product_id
 						order by num_purchases desc;"
 					)->fetch_all(function($product) {
 						return reference::product($product['product_id'], $this->_language_codes[0], $this->_currency_codes[0], $this->_customer);

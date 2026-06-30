@@ -20,7 +20,7 @@
 		$_POST = $order->data;
 
 		// Convert to local currency
-		foreach ($_POST['lines'] as $i => $line) {
+		foreach ($_POST['items'] as $i => $line) {
 			foreach ([
 				'price',
 				'tax',
@@ -29,7 +29,7 @@
 				'sum',
 				'sum_tax'
 			] as $field) {
-				$_POST['lines'][$i][$field] = !empty($line[$field]) ? $line[$field] / $_POST['currency_value'] : 0;
+				$_POST['items'][$i][$field] = !empty($line[$field]) ? $line[$field] / $_POST['currency_value'] : 0;
 			}
 		}
 
@@ -60,8 +60,8 @@
 
 		try {
 
-			if (empty($_POST['selected_lines'])) {
-				throw new Exception(t('error_must_select_lines', 'You must select lines'));
+			if (empty($_POST['selected_items'])) {
+				throw new Exception(t('error_must_select_items', 'You must select items'));
 			}
 
 			$return_order = new ent_order();
@@ -76,8 +76,8 @@
 				$return_order->data[$field] = $order->data[$field];
 			}
 
-			foreach ($_POST['selected_lines'] as $line_id) {
-				$return_order->add_line(array_merge($order->data['lines'][$line_id], ['quantity' => 0 - $order->data['lines'][$line_id]['quantity']]));
+			foreach ($_POST['selected_items'] as $item_id) {
+				$return_order->add_item(array_merge($order->data['items'][$item_id], ['quantity' => 0 - $order->data['items'][$item_id]['quantity']]));
 			}
 
 			$return_order->data['comments'] = [[
@@ -102,8 +102,8 @@
 
 		try {
 
-			if (empty($_POST['selected_lines'])) {
-				throw new Exception(t('error_must_select_lines', 'You must select lines'));
+			if (empty($_POST['selected_items'])) {
+				throw new Exception(t('error_must_select_items', 'You must select items'));
 			}
 
 			$next_order = new ent_order();
@@ -125,9 +125,9 @@
 				$next_order->data[$field] = $order->data[$field];
 			}
 
-			foreach ($_POST['selected_lines'] as $key) {
-				$next_order->add_line($order->data['lines'][$key]);
-				unset($order->data['lines'][$key]);
+			foreach ($_POST['selected_items'] as $key) {
+				$next_order->add_item($order->data['items'][$key]);
+				unset($order->data['items'][$key]);
 			}
 
 			$next_order->data['shipping_option'] = $order->data['shipping_option'];
@@ -158,7 +158,6 @@
 
 			// Set default values for missing fields
 			foreach ([
-				'lines' => [],
 				'items' => [],
 				'order_totals' => [],
 				'comments' => [],
@@ -169,7 +168,7 @@
 			}
 
 			// Convert to store currency
-			foreach ($_POST['lines'] as $i => $line) {
+			foreach ($_POST['items'] as $i => $line) {
 				foreach ([
 					'price',
 					'tax',
@@ -178,7 +177,7 @@
 					'sum',
 					'sum_tax',
 				] as $field) {
-					$_POST['lines'][$i][$field] = !empty($line[$field]) ? (float)$line[$field] * (float)$_POST['currency_value'] : 0;
+					$_POST['items'][$i][$field] = !empty($line[$field]) ? (float)$line[$field] * (float)$_POST['currency_value'] : 0;
 				}
 			}
 
@@ -252,7 +251,7 @@
 				'language_code',
 				'currency_code',
 				'currency_value',
-				'lines',
+				'items',
 				'order_status_id',
 				'shipping_tracking_id',
 				'shipping_tracking_url',
@@ -394,15 +393,15 @@
 	white-space: nowrap;
 }
 
-#order-lines tr.highlight {
+#order-items tr.highlight {
 	border: 1px #f00 solid;
 }
 
-#order-lines tr.extended {
+#order-items tr.extended {
 	display: none;
 }
 
-#order-lines tr.highlight + tr.extended {
+#order-items tr.highlight + tr.extended {
 	display: table-row;
 }
 
@@ -447,7 +446,7 @@
 	cursor: pointer;
 }
 
-#order-lines {
+#order-items {
 	margin-bottom: 2em;
 }
 
@@ -463,6 +462,7 @@
 	background: var(--card-background);
 	padding: 1em;
 	border-radius: var(--border-radius);
+	border: 1px solid var(--default-border-color);
 }
 
 #order-totals #order-total {
@@ -997,10 +997,10 @@
 
 	<div class="card card-default">
 		<div class="card-body">
-			<h2><?php echo t('title_order_lines', 'Order Lines'); ?></h2>
+			<h2><?php echo t('title_order_items', 'Order Items'); ?></h2>
 		</div>
 
-		<table id="order-lines" class="table table-input data-table">
+		<table id="order-items" class="table table-input data-table">
 			<thead>
 				<tr>
 					<th style="width: 50px;"><?php echo f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
@@ -1018,27 +1018,27 @@
 			</thead>
 
 			<tbody>
-				<?php if (!empty($_POST['lines'])) foreach (array_keys($_POST['lines']) as $key) { ?>
+				<?php if (!empty($_POST['items'])) foreach (array_keys($_POST['items']) as $key) { ?>
 				<div draggable="true" class="line">
 					<tr>
-						<td><?php echo f::form_checkbox('selected_lines[]', $key, true); ?></td>
+						<td><?php echo f::form_checkbox('selected_items[]', $key, true); ?></td>
 						<td>
-							<?php echo !empty($_POST['lines'][$key]['product_id']) ? '<a class="link" href="'. document::href_ilink('f:product', ['product_id' => $_POST['lines'][$key]['product_id']]) .'" target="_blank">'. $_POST['lines'][$key]['name'] .'</a>' : $_POST['lines'][$key]['name']; ?>
-							<?php echo f::form_input_hidden('lines['.$key.'][id]', true); ?>
-							<?php echo f::form_input_hidden('lines['.$key.'][product_id]', true); ?>
-							<?php echo f::form_input_hidden('lines['.$key.'][stock_option_id]', true); ?>
-							<?php echo f::form_input_hidden('lines['.$key.'][name]', true); ?>
-							<?php echo f::form_input_hidden('lines['.$key.'][userdata]', true); ?>
-							<?php echo f::form_input_hidden('lines['.$key.'][tax_class_id]', true); ?>
-							<?php echo f::form_input_hidden('lines['.$key.'][tax_rate]', true); ?>
+							<?php echo !empty($_POST['items'][$key]['product_id']) ? '<a class="link" href="'. document::href_ilink('f:product', ['product_id' => $_POST['items'][$key]['product_id']]) .'" target="_blank">'. $_POST['items'][$key]['name'] .'</a>' : $_POST['items'][$key]['name']; ?>
+							<?php echo f::form_input_hidden('items['.$key.'][id]', true); ?>
+							<?php echo f::form_input_hidden('items['.$key.'][product_id]', true); ?>
+							<?php echo f::form_input_hidden('items['.$key.'][stock_option_id]', true); ?>
+							<?php echo f::form_input_hidden('items['.$key.'][name]', true); ?>
+							<?php echo f::form_input_hidden('items['.$key.'][userdata]', true); ?>
+							<?php echo f::form_input_hidden('items['.$key.'][tax_class_id]', true); ?>
+							<?php echo f::form_input_hidden('items['.$key.'][tax_rate]', true); ?>
 						</td>
-						<td class="sku"><?php echo f::escape_html($_POST['lines'][$key]['sku']); ?></td>
-						<td class="text-center"><?php if (isset($_POST['lines'][$key]['sufficient_stock'])) echo $line['sufficient_stock'] ? '<span style="color: #88cc44;">'. f::draw_fonticon('icon-check') .' '. $line['stock_quantity'] .'</span>' : '<span style="color: #f64;">'. f::draw_fonticon('remove') .' '. $line['stock_quantity'] .'</span>'; ?></td>
-						<td><?php echo f::form_input_decimal('lines['.$key.'][quantity]', true, 2); ?></td>
-						<td><?php echo f::form_input_decimal('lines['.$key.'][price]', true); ?></td>
-						<td><?php echo f::form_input_decimal('lines['.$key.'][discount]', true); ?></td>
-						<td class="text-end sum"><?php echo currency::format($_POST['lines'][$key]['sum'], false, $_POST['currency_code'], $_POST['currency_value']); ?></td>
-						<td class="text-end sum_tax"><?php echo currency::format($_POST['lines'][$key]['sum_tax'], false, $_POST['currency_code'], $_POST['currency_value']); ?></td>
+						<td class="sku"><?php echo f::escape_html($_POST['items'][$key]['sku']); ?></td>
+						<td class="text-center"><?php if (isset($_POST['items'][$key]['sufficient_stock'])) echo $_POST['items'][$key]['sufficient_stock'] ? '<span style="color: #88cc44;">'. f::draw_fonticon('icon-check') .' '. $_POST['items'][$key]['stock_quantity'] .'</span>' : '<span style="color: #f64;">'. f::draw_fonticon('remove') .' '. $_POST['items'][$key]['stock_quantity'] .'</span>'; ?></td>
+						<td><?php echo f::form_input_decimal('items['.$key.'][quantity]', true, 2); ?></td>
+						<td><?php echo f::form_input_decimal('items['.$key.'][price]', true); ?></td>
+						<td><?php echo f::form_input_decimal('items['.$key.'][discount]', true); ?></td>
+						<td class="text-end sum"><?php echo currency::format($_POST['items'][$key]['sum'], false, $_POST['currency_code'], $_POST['currency_value']); ?></td>
+						<td class="text-end sum_tax"><?php echo currency::format($_POST['items'][$key]['sum_tax'], false, $_POST['currency_code'], $_POST['currency_value']); ?></td>
 						<td class="grabbable">
 							<?php echo f::draw_fonticon('icon-arrows-v'); ?>
 						</td>
@@ -1049,28 +1049,29 @@
 							</a>
 						</td>
 					</tr>
-					<?php foreach ($_POST['lines'][$key]['items'] as $key2 => $item) { ?>
+
+					<?php foreach ($_POST['items'][$key]['stock_items'] as $key2 => $stock_item) { ?>
 					<div class="items">
 						<div draggable="true" class="item">
 							<tr>
-								<td class="text-center"><?php echo f::form_checkbox('selected_items[]', $item['id']); ?></td>
+								<td class="text-center"><?php echo f::form_checkbox('selected_stock_items[]', $stock_item['id']); ?></td>
 								<td class="name">
-									<?php echo f::form_input_hidden('lines['.$key.'][name]', true); ?>
-									<?php echo f::form_input_hidden('lines['.$key.'][serial_number]', true); ?>
-									<?php echo f::form_input_hidden('lines['.$key.'][sku]', true); ?>
-									<?php echo f::form_input_hidden('lines['.$key.'][gtin]', true); ?>
-									<?php echo f::form_input_hidden('lines['.$key.'][taric]', true); ?>
-									<?php echo f::form_input_hidden('lines['.$key.'][weight]', true); ?>
-									<?php echo f::form_input_hidden('lines['.$key.'][weight_unit]', true); ?>
-									<?php echo f::form_input_hidden('lines['.$key.'][length]', true); ?>
-									<?php echo f::form_input_hidden('lines['.$key.'][width]', true); ?>
-									<?php echo f::form_input_hidden('lines['.$key.'][height]', true); ?>
-									<?php echo f::form_input_hidden('lines['.$key.'][length_unit]', true); ?>
-									<?php echo f::escape_html($item['name']); ?>
+									<?php echo f::form_input_hidden('items['.$key.'][stock_items]['.$key2.'][name]', true); ?>
+									<?php echo f::form_input_hidden('items['.$key.'][stock_items]['.$key2.'][serial_number]', true); ?>
+									<?php echo f::form_input_hidden('items['.$key.'][stock_items]['.$key2.'][sku]', true); ?>
+									<?php echo f::form_input_hidden('items['.$key.'][stock_items]['.$key2.'][gtin]', true); ?>
+									<?php echo f::form_input_hidden('items['.$key.'][stock_items]['.$key2.'][taric]', true); ?>
+									<?php echo f::form_input_hidden('items['.$key.'][stock_items]['.$key2.'][weight]', true); ?>
+									<?php echo f::form_input_hidden('items['.$key.'][stock_items]['.$key2.'][weight_unit]', true); ?>
+									<?php echo f::form_input_hidden('items['.$key.'][stock_items]['.$key2.'][length]', true); ?>
+									<?php echo f::form_input_hidden('items['.$key.'][stock_items]['.$key2.'][width]', true); ?>
+									<?php echo f::form_input_hidden('items['.$key.'][stock_items]['.$key2.'][height]', true); ?>
+									<?php echo f::form_input_hidden('items['.$key.'][stock_items]['.$key2.'][length_unit]', true); ?>
+									<?php echo f::escape_html($stock_item['name']); ?>
 								</td>
-								<td class="sku"><?php echo f::escape_html($item['sku']); ?></td>
-								<td class="text-center"><?php if (isset($item['sufficient_stock'])) echo $item['sufficient_stock'] ? '<span style="color: #88cc44;">'. f::draw_fonticon('icon-check') .' '. $item['stock_quantity'] .'</span>' : '<span style="color: #f64;">'. f::draw_fonticon('remove') .' '. $item['stock_quantity'] .'</span>'; ?></td>
-								<td><?php echo f::form_input_decimal('lines['.$key.'][items]['.$key2.'][quantity]', true, 2); ?></td>
+								<td class="sku"><?php echo f::escape_html($stock_item['sku']); ?></td>
+								<td class="text-center"><?php if (isset($stock_item['sufficient_stock'])) echo $stock_item['sufficient_stock'] ? '<span style="color: #88cc44;">'. f::draw_fonticon('icon-check') .' '. $stock_item['stock_quantity'] .'</span>' : '<span style="color: #f64;">'. f::draw_fonticon('remove') .' '. $stock_item['stock_quantity'] .'</span>'; ?></td>
+								<td><?php echo f::form_input_decimal('items['.$key.'][stock_items]['.$key2.'][quantity]', true, 2); ?></td>
 								<td></td>
 							</tr>
 						</div>
@@ -1084,9 +1085,9 @@
 				<tr>
 					<td colspan="99">
 						<button name="add_product" class="btn btn-default" href="<?php echo document::href_ilink('catalog/product_picker'); ?>" data-toggle="lightbox" data-callback="selectProduct"><?php echo f::draw_fonticon('add'); ?> <?php echo t('title_add_product', 'Add Product'); ?></button>
-						<?php echo f::form_button('add', t('title_add_line', 'Add Line'), 'button', '', 'add'); ?>
+						<?php echo f::form_button('add', t('title_add_item', 'Add Item'), 'button', '', 'add'); ?>
 						<?php echo f::form_button('return', t('title_return_items', 'Return Items'), 'submit', 'formnovalidate onclick="if (!confirm(\''. t('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'icon-reply'); ?>
-						<?php echo f::form_button('split', t('title_split_lines_from_order', 'Split Lines From Order'), 'submit', 'formnovalidate onclick="if (!confirm(\''. t('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'icon-clone'); ?>
+						<?php echo f::form_button('split', t('title_split_items_from_order', 'Split Items From Order'), 'submit', 'formnovalidate onclick="if (!confirm(\''. t('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'icon-clone'); ?>
 					</td>
 				</tr>
 			</tfoot>
@@ -1733,9 +1734,9 @@
 		});
 	});
 
-	// Order Lines
+	// Order Items
 
-	$('#order-lines').on('input change', ':input[name$="[quantity]"], :input[name$="[price]"], :input[name$="[tax_rate]"], :input[name$="[discount]"]', function() {
+	$('#order-items').on('input change', ':input[name$="[quantity]"], :input[name$="[price]"], :input[name$="[tax_rate]"], :input[name$="[discount]"]', function() {
 
 		let $row = $(this).closest('tr'),
 			quantity = parseFloat($(':input[name$="[quantity]"]', $row).val() || 0),
@@ -1755,7 +1756,7 @@
 		refresh_total();
 	});
 
-	$('#order-lines').on('click', '.edit', function() {
+	$('#order-items').on('click', '.edit', function() {
 
 		let $row = $(this).closest('tr'),
 			type = $(':input[name$="[type]"]', $row).val();
@@ -1824,7 +1825,7 @@
 		}, 'html');
 	};
 
-	$('#order-lines button[name="add"]').on('click', function() {
+	$('#order-items button[name="add"]').on('click', function() {
 
 		$.litebox('#modal-edit-line');
 
@@ -1834,13 +1835,12 @@
 		$modal.data('row', '');
 	});
 
-	$('#order-lines').on('click', 'button[name="remove"]', function(e) {
+	$('#order-items').on('click', 'button[name="remove"]', function(e) {
 		e.preventDefault();
 		$(this).closest('tr').remove();
 	});
 
 	// Edit Line Item Modal
-
 
 	window.addItem = function(line) {
 		$('*[name$="[product_id]"]', $output).val(line.product_id);
@@ -1878,28 +1878,28 @@
 		if (!$row) {
 
 			let __index__ = 0;
-			while ($(':input[name^="lines[new_'+__index__+']"]').length) __index__++;
+			while ($(':input[name^="items[new_'+__index__+']"]').length) __index__++;
 
 			let $output = $([
 				'  <tr draggable="true" class="line">',
 				'    <td></td>',
 				'    <td class="grabbable">' + line.name,
-				'      <?php echo f::escape_js(f::form_input_hidden('lines[__index__][id]', '')); ?>',
-				'      <?php echo f::escape_js(f::form_input_hidden('lines[__index__][product_id]', '')); ?>',
-				'      <?php echo f::escape_js(f::form_input_hidden('lines[__index__][stock_item_id]', '')); ?>',
-				'      <?php echo f::escape_js(f::form_input_hidden('lines[__index__][name]', '')); ?>',
-				'      <?php echo f::escape_js(f::form_input_hidden('lines[__index__][description]', '')); ?>',
-				'      <?php echo f::escape_js(f::form_input_hidden('lines[__index__][data]', '')); ?>',
-				'      <?php echo f::escape_js(f::form_input_hidden('lines[__index__][serial_number]', '')); ?>',
-				'      <?php echo f::escape_js(f::form_input_hidden('lines[__index__][sku]', '')); ?>',
-				'      <?php echo f::escape_js(f::form_input_hidden('lines[__index__][gtin]', '')); ?>',
-				'      <?php echo f::escape_js(f::form_input_hidden('lines[__index__][taric]', '')); ?>',
-				'      <?php echo f::escape_js(f::form_input_hidden('lines[__index__][weight]', '')); ?>',
-				'      <?php echo f::escape_js(f::form_input_hidden('lines[__index__][weight_unit]', '')); ?>',
-				'      <?php echo f::escape_js(f::form_input_hidden('lines[__index__][length]', '')); ?>',
-				'      <?php echo f::escape_js(f::form_input_hidden('lines[__index__][width]', '')); ?>',
-				'      <?php echo f::escape_js(f::form_input_hidden('lines[__index__][height]', '')); ?>',
-				'      <?php echo f::escape_js(f::form_input_hidden('lines[__index__][length_unit]', '')); ?>',
+				'      <?php echo f::escape_js(f::form_input_hidden('items[__index__][id]', '')); ?>',
+				'      <?php echo f::escape_js(f::form_input_hidden('items[__index__][product_id]', '')); ?>',
+				'      <?php echo f::escape_js(f::form_input_hidden('items[__index__][stock_item_id]', '')); ?>',
+				'      <?php echo f::escape_js(f::form_input_hidden('items[__index__][name]', '')); ?>',
+				'      <?php echo f::escape_js(f::form_input_hidden('items[__index__][description]', '')); ?>',
+				'      <?php echo f::escape_js(f::form_input_hidden('items[__index__][data]', '')); ?>',
+				'      <?php echo f::escape_js(f::form_input_hidden('items[__index__][serial_number]', '')); ?>',
+				'      <?php echo f::escape_js(f::form_input_hidden('items[__index__][sku]', '')); ?>',
+				'      <?php echo f::escape_js(f::form_input_hidden('items[__index__][gtin]', '')); ?>',
+				'      <?php echo f::escape_js(f::form_input_hidden('items[__index__][taric]', '')); ?>',
+				'      <?php echo f::escape_js(f::form_input_hidden('items[__index__][weight]', '')); ?>',
+				'      <?php echo f::escape_js(f::form_input_hidden('items[__index__][weight_unit]', '')); ?>',
+				'      <?php echo f::escape_js(f::form_input_hidden('items[__index__][length]', '')); ?>',
+				'      <?php echo f::escape_js(f::form_input_hidden('items[__index__][width]', '')); ?>',
+				'      <?php echo f::escape_js(f::form_input_hidden('items[__index__][height]', '')); ?>',
+				'      <?php echo f::escape_js(f::form_input_hidden('items[__index__][length_unit]', '')); ?>',
 				'    </td>',
 				'    <td class="grabbable sku">'+ line.sku +'</td>',
 				'    <td class="grabbable">',
@@ -1908,9 +1908,9 @@
 				'    <td class="grabbable">',
 				'      <span class="length"></span> x <span class="width"></span> x <span class="height"></span> <span class="length_unit"></span>',
 				'    </td>',
-				'    <td><?php echo f::escape_js(f::form_input_decimal('lines[__index__][quantity]', '')); ?></td>',
-				'    <td><?php echo f::escape_js(f::form_input_money('lines[__index__][price]', $_POST['currency_code'], '')); ?></td>',
-				'    <td><?php echo f::escape_js(f::form_input_money('lines[__index__][discount]', $_POST['currency_code'], '')); ?></td>',
+				'    <td><?php echo f::escape_js(f::form_input_decimal('items[__index__][quantity]', '')); ?></td>',
+				'    <td><?php echo f::escape_js(f::form_input_money('items[__index__][price]', $_POST['currency_code'], '')); ?></td>',
+				'    <td><?php echo f::escape_js(f::form_input_money('items[__index__][discount]', $_POST['currency_code'], '')); ?></td>',
 				'    <td class="sum"><?php echo currency::format(0, true, $_POST['currency_code'], $_POST['currency_value']); ?></td>',
 				'    <td class="sum_tax"><?php echo currency::format(0, true, $_POST['currency_code'], $_POST['currency_value']); ?></td>',
 				'    <td class="text-end">',
@@ -1925,7 +1925,7 @@
 			);
 
 			$row = $output;
-			$('#order-lines tbody').append($output);
+			$('#order-items tbody').append($output);
 		}
 
 		$.each($(':input', $modal), function(i, $element) {
@@ -1950,7 +1950,7 @@
 			tax = 0,
 			total = 0;
 
-		$('#order-lines tbody tr').each(function() {
+		$('#order-items tbody tr').each(function() {
 
 			let final_price = parseFloat(this).find($(':input[name$="[price]"]').val(this).find() || 0) - parseFloat($(':input[name$="[discount]"]').val() || 0),
 				sum = final_price * parseFloat(this).find($(':input[name$="[quantity]"]').val() || 0),
@@ -1975,11 +1975,11 @@
 
 /*
 	$('body').on('input change', [
-		'#order-lines :input[name$="[quantity]"]',
-		'#order-lines :input[name$="[price]"]',
-		'#order-lines :input[name$="[discount]"]',
-		'#order-lines :input[name$="[tax_rate]"]',
-		'#order-lines button[name="remove"]',
+		'#order-items :input[name$="[quantity]"]',
+		'#order-items :input[name$="[price]"]',
+		'#order-items :input[name$="[discount]"]',
+		'#order-items :input[name$="[tax_rate]"]',
+		'#order-items button[name="remove"]',
 	].join(', '), function() {
 		refresh_total();
 	});

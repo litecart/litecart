@@ -56,7 +56,7 @@
 		// Create a new entity
 		$order = new ent_order();
 		$order->data = f::array_update($order->data, $data);
-		foreach ($lines as $line) $order->add_line($line);
+		foreach ($items as $item) $order->add_item($item);
 		$order->save();
 
 		// Check if the entity was created

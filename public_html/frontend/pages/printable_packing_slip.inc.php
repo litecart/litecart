@@ -57,11 +57,11 @@
 		$_page->snippets['max_first_page_items'] = 15;
 		$_page->snippets['action_menu'] = true;
 		$_page->snippets['items'] = database::query(
-			"select oi.stock_item_id, oi.name, oi.sku, oi.gtin, oi.taric, sum(ol.quantity * oi.quantity) as total_quantity
-			from ". DB_TABLE_PREFIX ."orders_items oi
-			left join ". DB_TABLE_PREFIX ."orders_lines ol on (ol.id = oi.line_id)
-			left join ". DB_TABLE_PREFIX ."orders o on (o.id = oi.order_id)
-			where oi.order_id = ". (int)$order->data['id'] .";"
+			"select osi.stock_item_id, osi.name, osi.sku, osi.gtin, osi.taric, sum(oi.quantity * osi.quantity) as total_quantity
+			from ". DB_TABLE_PREFIX ."orders_stock_items osi
+			left join ". DB_TABLE_PREFIX ."orders_items oi on (oi.id = osi.item_id)
+			left join ". DB_TABLE_PREFIX ."orders o on (o.id = osi.order_id)
+			where osi.order_id = ". (int)$order->data['id'] .";"
 		)->fetch_all();
 
 		echo $_page->render();

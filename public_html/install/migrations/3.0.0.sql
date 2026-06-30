@@ -81,7 +81,7 @@ CREATE TABLE IF NOT EXISTS `lc_event_logs` (
 	INDEX `expires_at` (`expires_at`)
 );
 -- -----
-CREATE TABLE `lc_orders_lines` (
+CREATE TABLE `lc_orders_items` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`order_id` INT(10) UNSIGNED NOT NULL,
 	`product_id` INT(10) UNSIGNED NULL,
@@ -94,9 +94,11 @@ CREATE TABLE `lc_orders_lines` (
 	`tax_class_id` INT(10) UNSIGNED NULL,
 	`tax_rate` DECIMAL(6,4) NOT NULL DEFAULT '0.0000',
 	`tax` DECIMAL(11,4) NOT NULL DEFAULT '0.0000',
+	`sum` DECIMAL(11,4) NOT NULL DEFAULT '0.0000',
+	`sum_tax` DECIMAL(11,4) NOT NULL DEFAULT '0.0000',
 	PRIMARY KEY (`id`) USING BTREE,
 	INDEX `order_id` (`order_id`) USING BTREE,
-	INDEX `order_line_to_tax_class` (`tax_class_id`) USING BTREE,
+	INDEX `order_item_to_tax_class` (`tax_class_id`) USING BTREE,
 	INDEX `product_id` (`product_id`) USING BTREE,
 	INDEX `code` (`code`) USING BTREE
 );
@@ -516,7 +518,7 @@ CHANGE COLUMN `order_id` `order_id` INT(10) UNSIGNED NOT NULL,
 CHANGE COLUMN `author_id` `author_id` INT(10) UNSIGNED NULL,
 CHANGE COLUMN `hidden` `hidden` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0';
 -- -----
-ALTER TABLE `lc_orders_items`
+ALTER TABLE `lc_orders_stock_items`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 CHANGE COLUMN `order_id` `order_id` INT(10) UNSIGNED NOT NULL,
 CHANGE COLUMN `product_id` `product_id` INT(10) UNSIGNED NULL,
@@ -528,17 +530,6 @@ CHANGE COLUMN `dim_class` `length_unit` VARCHAR(2) NOT NULL DEFAULT '',
 CHANGE COLUMN `options` `userdata` VARCHAR(2048) NULL AFTER `name`,
 CHANGE COLUMN `option_stock_combination` `attributes` VARCHAR(32) NOT NULL DEFAULT '',
 CHANGE COLUMN `priority` `priority` INT NOT NULL DEFAULT '0',
-ADD COLUMN `line_id` INT(10) UNSIGNED NULL AFTER `order_id`,
-ADD COLUMN `stock_option_id` INT(10) UNSIGNED NULL AFTER `product_id`,
-ADD COLUMN `stock_items` VARCHAR(255) DEFAULT '[]' AFTER `stock_option_id`,
-ADD COLUMN `serial_number` VARCHAR(32) NOT NULL DEFAULT '' AFTER `name`,
-ADD COLUMN `tax_rate` DECIMAL(4,2) UNSIGNED NULL AFTER `tax`,
-ADD COLUMN `tax_class_id` INT(10) UNSIGNED NULL AFTER `tax_rate`,
-ADD COLUMN `discount` DECIMAL(11,4) NOT NULL DEFAULT '0' AFTER `tax_class_id`,
-ADD COLUMN `discount_tax` DECIMAL(11,4) NOT NULL DEFAULT '0' AFTER `discount`,
-ADD COLUMN `sum` DECIMAL(11,4) NOT NULL DEFAULT '0' AFTER `discount_tax`,
-ADD COLUMN `sum_tax` DECIMAL(11,4) NOT NULL DEFAULT '0' AFTER `sum`,
-ADD COLUMN `downloads` INT(10) UNSIGNED NOT NULL DEFAULT '0' AFTER `length_unit`,
 ADD INDEX `product_id` (`product_id`),
 ADD INDEX `stock_option_id` (`stock_option_id`),
 ADD INDEX `stock_items` (`stock_items`);
@@ -790,11 +781,6 @@ VALUES (NULL, 'retail', 'Default', '', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO `lc_modules` (`module_id`, `type`, `status`, `priority`, `settings`)
 VALUES ('job_sitemap_generator', 'job', 1, 0, '{"status":"1","frequency":"Daily","priority":"0"}');
 -- -----
-INSERT INTO `lc_orders_items` (order_id, sku, name, quantity, price, tax_rate)
-SELECT order_id, module_id, `title`, 1, amount, ROUND(tax / `amount` * 100, 2) from `lc_orders_totals`
-WHERE calculate
-ORDER BY order_id, priority;
--- -----
 INSERT INTO `lc_settings_groups` (`key`, `name`, `description`, `priority`) VALUES
 ('social_media', 'Social Media', 'Social media related settings.', 30);
 -- -----
@@ -956,19 +942,6 @@ UPDATE `lc_order_statuses` SET icon = 'icon-undo' WHERE icon = 'fa-undo';
 UPDATE `lc_order_statuses` SET icon = 'icon-building' WHERE icon = 'fa-building';
 -- -----
 UPDATE `lc_order_statuses` SET icon = 'icon-exclamation' WHERE icon = 'fa-exclamation';
--- -----
-UPDATE `lc_orders_items` oi
-LEFT JOIN `lc_orders` o ON (o.id = oi.order_id)
-LEFT JOIN `lc_products` p ON (p.id = oi.product_id)
-SET oi.tax_class_id = p.tax_class_id,
-	oi.discount = oi.price * (o.discount/o.total),
-	oi.discount_tax = oi.price * (o.discount_tax/o.total),
-	oi.`sum` = oi.price - (oi.price * (o.discount/o.total)),
-	oi.sum_tax = oi.tax - (oi.tax * (o.discount/o.total));
--- -----
-UPDATE `lc_orders_items`
-SET sum = price * quantity,
-	sum_tax = tax * quantity;
 -- -----
 UPDATE `lc_products_to_categories`
 SET `category_id` = NULL
@@ -1211,10 +1184,7 @@ OR language_code NOT IN (SELECT code from `lc_languages`);
 DELETE FROM `lc_orders_comments`
 WHERE order_id NOT IN (SELECT id from `lc_orders`);
 -- -----
-DELETE FROM `lc_orders_items`
-WHERE order_id NOT IN (SELECT id from `lc_orders`);
--- -----
-UPDATE `lc_orders_items`
+UPDATE `lc_orders_stock_items`
 SET product_id = NULL
 WHERE product_id NOT IN (SELECT id from `lc_products`);
 -- -----

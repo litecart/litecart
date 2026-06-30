@@ -57,7 +57,7 @@
 
 		left join (
 			select ol.product_id, sum(ol.quantity) as quantity_reserved
-			from ". DB_TABLE_PREFIX ."orders_lines ol
+			from ". DB_TABLE_PREFIX ."orders_items ol
 			left join ". DB_TABLE_PREFIX ."orders o on (o.id = ol.order_id)
 			where o.order_status_id in (
 				select id from ". DB_TABLE_PREFIX ."order_statuses
