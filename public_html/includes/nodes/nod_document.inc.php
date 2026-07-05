@@ -57,7 +57,6 @@
 				'fullscreen=(self)',
 				'payment=()',
 				'geolocation=()',
-				'browsing-topics=()',
 			]));
 
 			self::$title = [settings::get('store_name')];
