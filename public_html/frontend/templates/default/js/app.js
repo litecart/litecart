@@ -633,7 +633,7 @@ waitFor('jQuery', $ => {
 	// FINAL PAYLOAD
 	// ----------------------------
 
-	let report_url = window._env?.platform?.path + 'event';
+	let report_url = window._env?.platform?.path + 'ajax/event';
 
 	navigator.sendBeacon(report_url, JSON.stringify({
 		type: 'challenge',

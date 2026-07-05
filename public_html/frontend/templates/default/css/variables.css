@@ -32,6 +32,7 @@
 	--site-background: #f2f4f7;
 	--listing-border-size: 1px;
 	--listing-border-color: var(--default-border-color);
+	--modal-background: var(--whitespace-color);
 	/* Scrollbar */
 	--scrollbar-thumb-background: #c1c1c1;
 	--scrollbar-track-background: #f4f4f4;

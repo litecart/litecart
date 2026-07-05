@@ -14,7 +14,7 @@ import { Transform } from 'stream';
 import packageData from './package.json' with { type: 'json' };
 
 const sass = gulpSass(dartSass);
-const sassOptions = { charset: false };
+const sassOptions = { charset: false, silenceDeprecations: ['legacy-js-api'] };
 
 const banner = [
 	'/*!',
@@ -150,7 +150,7 @@ gulp.task('scss-frontend', function() {
 
 	return gulp.src(['public_html/frontend/templates/default/scss/*.scss', '!public_html/frontend/templates/default/scss/variables*.scss'])
 		.pipe(sourcemaps.init())
-		.pipe(sass({ ...sassOptions, silenceDeprecations: ['import'] }).on('error', sass.logError))
+		.pipe(sass(sassOptions).on('error', sass.logError))
 		.pipe(tabify()) // Use tab indentation
 		.pipe(gulp.dest('public_html/frontend/templates/default/css/', { overwrite: true }))
 		.pipe(cleancss())
@@ -189,8 +189,7 @@ gulp.task('scss-chartist', function() {
 gulp.task('scss-trumbowyg', function() {
 	return gulp
 		.src('public_html/assets/trumbowyg/ui/*.scss')
-		.pipe(sass({ ...sassOptions, silenceDeprecations: ['legacy-js-api'] })
-		.on('error', sass.logError))
+		.pipe(sass(sassOptions).on('error', sass.logError))
 		.pipe(tabify()) // Use tab indentation
 		//.pipe(gulp.dest('public_html/assets/trumbowyg/ui/'))
 		//.pipe(sourcemaps.write('.', { includeContent: false }))
