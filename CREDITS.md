@@ -3,14 +3,14 @@
 ## Graphics
 
 * (cart) T. Almroth - CC BY-SA 4.0 - https://www.tim-international.net/
-* (favourites) T. Almroth - CC BY-SA 4.0 - https://www.tim-international.net/
+* (favorites) T. Almroth - CC BY-SA 4.0 - https://www.tim-international.net/
 * (logotype) T. Almroth - CC BY-SA 4.0 - https://www.tim-international.net/
 * (no-image/camera) T. Almroth - CC BY-SA 4.0 - https://www.tim-international.net/
 * (newsletter) T. Almroth - CC BY-SA 4.0 - http://www.tim-international.net/
 
 ## Fonts
 
-* Fira Sans - Google Fonts - Free for commercial use - https://www.googlefonts.com/
+* Anuphan - Google Fonts - Free for commercial use - https://www.googlefonts.com/
 * Inter - Google Fonts - Free for commercial use - https://www.googlefonts.com/
 * Reprobate (captcha) - Handwriting of Mike Sedillo - Free for commercial use - https://www.apostrophiclab.com/
 
