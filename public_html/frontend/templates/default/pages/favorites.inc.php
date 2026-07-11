@@ -1,13 +1,13 @@
 <main id="main" class="container">
-	<div class="card" aria-label="<?php echo f::escape_attr(t('title_favourites', 'Favourites')); ?>">
+	<div class="card" aria-label="<?php echo f::escape_attr(t('title_favorites', 'Favorites')); ?>">
 		<div class="card-header">
-			<h1 class="card-title"><?php echo t('title_favourites', 'Favourites'); ?></h1>
+			<h1 class="card-title"><?php echo t('title_favorites', 'favorites'); ?></h1>
 		</div>
 		<div class="card-body">
 
 			<?php if (empty($products)) { ?>
 
-			<p><?php echo t('text_you_have_not_added_any_favourites', 'You have not added any favourites.'); ?></p>
+			<p><?php echo t('text_you_have_not_added_any_favorites', 'You have not added any favorites.'); ?></p>
 
 			<?php } else { ?>
 

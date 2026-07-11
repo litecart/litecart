@@ -3,16 +3,16 @@
 	/*
 		This file contains PHP logic that is separated from the HTML view.
 		Visual changes can be made to the file found in the template folder:
-		- frontend/templates/default/pages/favourites.inc.php
+		- frontend/templates/default/pages/favorites.inc.php
 	*/
 
 	header('X-Robots-Tag: noindex');
 
 	if (settings::get('catalog_only_mode')) return;
 
-	document::$title[] = t('title_favourites', 'Favourites');
+	document::$title[] = t('title_favorites', 'Favorites');
 
-	breadcrumbs::add(t('title_favourites', 'Favourites'), document::ilink('favourites'));
+	breadcrumbs::add(t('title_favorites', 'Favorites'), document::ilink('favorites'));
 
 	if (!empty($_POST['add'])) {
 		try {
@@ -22,7 +22,7 @@
 			}
 
 			database::query(
-				"insert ignore into ". DB_TABLE_PREFIX ."favourites
+				"insert ignore into ". DB_TABLE_PREFIX ."favorites
 				(customer_id, cart_uid, product_id, created_at)
 				values (" . (int)customer::$data['id'] .", '". database::input(cart::$data['uid']) ."', ". (int)$_POST['product_id'] .", '". date('Y-m-d H:i:s') ."');",
 			);
@@ -34,7 +34,7 @@
 				exit;
 			}
 
-			notices::add('success', t('success_added_to_favourites', 'The product was added to your favourites'));
+			notices::add('success', t('success_added_to_favorites', 'The product was added to your favorites'));
 			reload();
 			exit;
 
@@ -57,7 +57,7 @@
 			}
 
 			database::query(
-				"delete from ". DB_TABLE_PREFIX ."favourites
+				"delete from ". DB_TABLE_PREFIX ."favorites
 				where (
 					customer_id = ". (int) customer::$data['id'] ."
 					or cart_uid = '". database::input(cart::$data['uid']) ."'
@@ -73,7 +73,7 @@
 				exit;
 			}
 
-			notices::add('success', t('success_removed_from_favourites', 'The product was removed from your favourites'));
+			notices::add('success', t('success_removed_from_favorites', 'The product was removed from your favorites'));
 			reload();
 			exit;
 
@@ -97,10 +97,10 @@
 
 	// Output
 
-	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/favourites.inc.php');
+	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/favorites.inc.php');
 
 	$product_ids = database::query(
-		"select product_id from ". DB_TABLE_PREFIX ."favourites
+		"select product_id from ". DB_TABLE_PREFIX ."favorites
 		where customer_id = ". (int)customer::$data['id'] ."
 		or cart_uid = '". database::input(cart::$data['uid']) ."';"
 	)->fetch_all('product_id');

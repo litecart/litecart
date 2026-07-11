@@ -83,7 +83,7 @@
 
 				</section>
 
-				<?php include 'app://frontend/partials/box_favourites.inc.php'; ?>
+				<?php include 'app://frontend/partials/box_favorites.inc.php'; ?>
 
 				<?php include 'app://frontend/partials/box_also_purchased_products.inc.php'; ?>
 

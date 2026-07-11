@@ -110,22 +110,22 @@
 		cache::set($site_navigation_cache_token, $site_navigation->snippets);
 	}
 
-	// Favourites
-	$num_favourites = database::query(
-		"select count(*) as num_items from ". DB_TABLE_PREFIX ."favourites
+	// Favorites
+	$num_favorites = database::query(
+		"select count(*) as num_items from ". DB_TABLE_PREFIX ."favorites
 		where customer_id = ". (int)customer::$data['id'] .";"
 	)->fetch('num_items');
 
-	$site_navigation->snippets['favourites'] = [
+	$site_navigation->snippets['favorites'] = [
 		'items' => [],
-		'link' => document::ilink('favourites'),
-		'num_items' => $num_favourites,
+		'link' => document::ilink('favorites'),
+		'num_items' => $num_favorites,
 		'total' => null,
 	];
 
-	$site_navigation->snippets['favourites']['items'] = database::query(
+	$site_navigation->snippets['favorites']['items'] = database::query(
 		"select p.id, json_value(p.name, '$.". database::input(language::$selected['code']) ."') as name, p.default_image as image
-		from ". DB_TABLE_PREFIX ."favourites f
+		from ". DB_TABLE_PREFIX ."favorites f
 		left join ". DB_TABLE_PREFIX ."products p on (p.id = f.product_id)
 		where f.customer_id = ". (int)customer::$data['id'] .";"
 	)->fetch_all(function(&$item) {

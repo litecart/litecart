@@ -32,11 +32,11 @@
 		</button>
 
 		<?php if ($is_favourite) { ?>
-		<button type="submit" class="favourites btn btn-default btn-sm" name="remove_from_favourites" title="<?php echo f::escape_attr(t('title_remove_favourites', 'Remove From Favourites')); ?>" aria-label="<?php echo f::escape_attr(t('title_remove_favourites', 'Remove From Favourites')); ?>" aria-pressed="true">
+		<button type="submit" class="favorites btn btn-default btn-sm" name="remove_from_favorites" title="<?php echo f::escape_attr(t('title_remove_favorites', 'Remove From Favourites')); ?>" aria-label="<?php echo f::escape_attr(t('title_remove_favorites', 'Remove From Favourites')); ?>" aria-pressed="true">
 			<?php echo f::draw_fonticon('icon-heart', 'style="color: #c00;" aria-hidden="true"'); ?>
 		</button>
 		<?php } else { ?>
-		<button type="submit" class="favourites btn btn-default btn-sm" name="add_to_favourites" title="<?php echo f::escape_attr(t('title_add_to_favourites', 'Add To Favourites')); ?>" aria-label="<?php echo f::escape_attr(t('title_add_to_favourites', 'Add To Favourites')); ?>" aria-pressed="false">
+		<button type="submit" class="favorites btn btn-default btn-sm" name="add_to_favorites" title="<?php echo f::escape_attr(t('title_add_to_favorites', 'Add To Favourites')); ?>" aria-label="<?php echo f::escape_attr(t('title_add_to_favorites', 'Add To Favourites')); ?>" aria-pressed="false">
 			<?php echo f::draw_fonticon('icon-heart-o', 'aria-hidden="true"'); ?>
 		</button>
 		<?php } ?>
