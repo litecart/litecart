@@ -14,17 +14,16 @@
 			parent::__construct();
 		}
 
-		public function options(array $items, float $subtotal, float $tax, string $currency_code, array $customer): ?array {
+		public function options(array $items, array $total, string $currency_code, array $customer): ?array {
 
 			if (!$this->settings['status']) {
 				return null;
 			}
 
 			// Calculate cart weight
-			$total_weight = 0;
-			foreach ($items as $item) {
+			$total_weight = f::convert_weight($total['weight']->value, 'g', $this->settings['weight_unit']);
 				$total_weight += f::convert_weight($item['quantity'] * $item['weight'], $item['weight_unit'], $this->settings['weight_unit']);
-			}
+
 
 			$rate_tables_map = preg_split('#\R+#', trim($this->settings['rate_tables_map']), -1, PREG_SPLIT_NO_EMPTY);
 			$rate_tables = preg_split('#\R+#', trim($this->settings['rate_tables']), -1, PREG_SPLIT_NO_EMPTY);

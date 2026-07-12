@@ -18,7 +18,7 @@ body {
 	color: var(--important-notice-text-color);
 	border: var(--important-notice-border-size) solid var(--important-notice-border-color);
 	border-radius: var(--border-radius);
-	margin-bottom: 1em;
+	margin-bottom: .5em;
 	text-align: center;
 }
 
@@ -1005,8 +1005,6 @@ body {
 	overflow: hidden;
 
 	.listing {
-		display: flex;
-		flex-wrap: nowrap;
 		gap: 0.75em;
 
 		@media (width >= 576px) {

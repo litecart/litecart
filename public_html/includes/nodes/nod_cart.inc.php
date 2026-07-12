@@ -177,7 +177,7 @@
 			});
 		}
 
-		public static function add_product(int $product_id, ?int $stock_option_id=null, array $userdata=[], float $quantity=1, bool $force=false, ?string $item_key=null): bool {
+		public static function add_product(int $product_id, ?int $stock_option_id=null, array|null $userdata=[], float $quantity=1, bool $force=false, ?string $item_key=null): bool {
 
 			$product = reference::product($product_id, language::$selected['code'], currency::$selected['code'], customer::$data);
 			$quantity = round((float)$quantity, $product->quantity_unit ? (int)$product->quantity_unit['decimals'] : 0, PHP_ROUND_HALF_UP);
@@ -204,20 +204,20 @@
 				'mpn' => $product->mpn,
 				'gtin' => $product->gtin,
 				'taric' => $product->taric,
-				'regular_price' => [
-					'display_value' => tax::get_price($product->regular_price, $product->tax_class_id, customer::$data['display_prices_including_tax']),
+				'regular_price' => [ // Will be recalculated further down
+					'display_value' => !empty(customer::$data['display_prices_including_tax']) ? currency::format((float)$product->regular_price + $product->tax, false, currency::$selected['code'], false) : currency::format($product->regular_price, false, currency::$selected['code'], false),
 					'value' => $product->regular_price,
 					'tax' => $product->tax,
 				],
-				'final_price' => [ // Is re-calculated further down
-					'display_value' => tax::get_price($product->regular_price, $product->tax_class_id, customer::$data['display_prices_including_tax']),
-					'value' => $product->regular_price,
+				'final_price' => [ // Will be recalculated further down
+					'display_value' => !empty(customer::$data['display_prices_including_tax']) ? currency::format((float)$product->final_price + $product->tax, false, currency::$selected['code'], false) : currency::format($product->final_price, false, currency::$selected['code'], false),
+					'value' => $product->final_price,
 					'tax' => $product->tax,
 				],
-				'discount' => [ // Is calculated further down
-					'display_value' => '',
-					'value' => 0,
-					'tax' => 0,
+				'discount' => [
+					'display_value' => !empty(customer::$data['display_prices_including_tax']) ? currency::format((float)$product->regular_price + $product->tax - ($product->final_price + $product->tax), false, currency::$selected['code'], false) : currency::format($product->regular_price - $product->final_price, false, currency::$selected['code'], false),
+					'value' => $product->regular_price - $product->final_price,
+					'tax' => tax::get_tax($product->regular_price - $product->final_price, $product->tax_class_id),
 				],
 				'tax_class_id' => $product->tax_class_id,
 				'quantity' => $quantity,
@@ -486,21 +486,14 @@
 
 				self::$total['items'] += $num_items;
 
-				self::$total['subtotal'] = [
-					'value' => $item['regular_price']['value'] * $item['quantity'],
-					'tax' => $item['regular_price']['tax'] * $item['quantity'],
-				];
+				self::$total['subtotal']['value'] += $item['regular_price']['value'] * $item['quantity'];
+				self::$total['subtotal']['tax'] += $item['regular_price']['tax'] * $item['quantity'];
 
-				self::$total['discount'] = [
-					'value' => $item['discount']['value'] * $item['quantity'],
-					'tax' => $item['discount']['tax'] * $item['quantity'],
-				];
+				self::$total['discount']['value'] += $item['discount']['value'] * $item['quantity'];
+				self::$total['discount']['tax'] += $item['discount']['tax'] * $item['quantity'];
 
-
-				self::$total['total'] = [
-					'value' => $item['final_price']['value'] * $item['quantity'],
-					'tax' => $item['final_price']['tax'] * $item['quantity'],
-				];
+				self::$total['total']['value'] += $item['final_price']['value'] * $item['quantity'];
+				self::$total['total']['tax'] += $item['final_price']['tax'] * $item['quantity'];
 			}
 		}
 	}

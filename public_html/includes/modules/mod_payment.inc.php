@@ -1,31 +1,26 @@
 <?php
 
 	class mod_payment extends abs_modules {
+
 		private $_cache = [];
-		private $_shopping_cart;
+		private $_order;
 		private $_options = [];
+
 		public $selected = [];
 
-		public function __construct($shopping_cart=[], $selected=[]) {
-
-			$this->_shopping_cart = $shopping_cart;
+		public function __construct(ent_order $order, array $selected = []) {
+			$this->_order = $order;
 
 			if (!empty($selected['id'])) {
 				$this->selected = $selected;
-				list($module_id, $option_id) = explode(':', $this->selected['id']);
-				$this->selected['module_id'] = $module_id;
-				$this->selected['option_id'] = $option_id;
 			}
 
-			// Load modules
-			$this->load();
+			parent::__construct();
 
 			// Rettach userdata to module
 			if (!empty($this->selected['userdata']) && !empty($this->modules[$this->selected['module_id']])) {
 				$this->modules[$this->selected['module_id']]->userdata = &$this->selected['userdata'];
 			}
-
-			parent::__construct();
 		}
 
 		public function select($id, $userdata=[]) {
@@ -62,15 +57,9 @@
 
 			if (empty($this->modules)) return [];
 
-			if (empty($this->_shopping_cart->data['items'])) return [];
+			if (empty($this->_order->data['items'])) return [];
 
-			$subtotal = ['amount' => 0, 'tax' => 0];
-			foreach ($this->_shopping_cart->data['items'] as $item) {
-				$subtotal['amount'] += $item['price'] * $item['quantity'];
-				$subtotal['tax'] += $item['tax'] * $item['quantity'];
-			}
-
-			$checksum = crc32(f::format_json($this->_shopping_cart->data['items'], false));
+			$checksum = crc32(f::format_json($this->_order->data['items'], false));
 
 			if (!empty($this->_cache[$checksum]['options'])) {
 				return $this->_cache[$checksum]['options'];
@@ -78,7 +67,7 @@
 
 			foreach ($this->modules as $module) {
 
-				$data = &$this->_shopping_cart->data;
+				$data = &$this->_order->data;
 				if (!$options = $module->options($data['items'], $data['subtotal'], $data['subtotal_tax'], $data['currency_code'], $data['customer'])) continue;
 
 				if (!empty($options['options'])) {
@@ -99,7 +88,7 @@
 						'id' => $module->id.':'.$option['id'],
 						'module_id' => $module->id,
 						'option_id' => $option['id'],
-						'icon' => $option['icon'],
+						'icon' => ($option['icon'] ?? '') ?: 'storage://images/no_image.svg',
 						'vendor' => $option['vendor'] ?? '',
 						'name' => $option['name'],
 						'description' => !empty($option['fields']) ? $option['description'] : '',
@@ -169,7 +158,7 @@
 		public function cheapest() {
 
 			if (empty($this->_options)) {
-				$options = $this->options($this->_shopping_cart->data['items'], $this->_shopping_cart->data['currency_code'], $this->_shopping_cart->data['customer']);
+				$options = $this->options($this->_order->data['items'], $this->_order->data['currency_code'], $this->_order->data['customer']);
 			}
 
 			if (empty($options)) return false;

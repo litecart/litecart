@@ -61,7 +61,7 @@
 	--border-radius: 10px;
 	--whitespace-color: #fff;
 	/* Defaults */
-	--default-text-font: 'Anuphan', arial, 'Helvetica Neue', helvetica, sans-serif;
+	--default-text-font: Anuphan, Arial, 'Helvetica Neue', Helvetica, Sans-Serif;
 	--default-text-color: #333;
 	--default-text-size: 15px;
 	--default-line-height: 1.5;

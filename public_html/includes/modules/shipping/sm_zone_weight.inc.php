@@ -13,22 +13,20 @@
 			parent::__construct();
 		}
 
-		public function options(array $items, float $subtotal, float $tax, string $currency_code, array $address): ?array {
+		public function options(array $items, array $total, string $currency_code, array $customer): ?array {
 
-			if (empty($this->settings['status'])) return null;
-
-			// Calculate cart weight
-			$total_weight = 0;
-			foreach ($items as $item) {
-				$total_weight += f::convert_weight($item['quantity'] * $item['weight'], $item['weight_unit'], $this->settings['weight_unit']);
+			if (empty($this->settings['status'])) {
+				return null;
 			}
+
+			$total_weight = f::convert_weight($total['weight']['value'], $total['weight']['unit'], $this->settings['weight_unit']);
 
 			$options = [];
 
 			for ($i=1; $i <= 3; $i++) {
 
 				if (empty($this->settings['geo_zone_id_'.$i])) continue;
-				if (!reference::country($address['country_code'])->in_geo_zone($this->settings['geo_zone_id_'.$i], $address)) continue;
+				if (!reference::country($customer['country_code'])->in_geo_zone($this->settings['geo_zone_id_'.$i], $customer)) continue;
 
 				$fee = $this->calculate_fee($this->settings['weight_rate_table_'.$i], $total_weight);
 

@@ -179,6 +179,16 @@
 </main>
 
 <script>
+
+	// Replace add to cart animation with a simple non-ajax request
+	$('.listing.products .product button[name="add_cart_product"]').off('click').on('click', function(e) {
+		e.preventDefault();
+		let $form = $('<form method="post"></form>');
+		$form.append($('<input>').attr('type', 'hidden').attr('name', 'product_id').val($(this).closest('.product').data('id')));
+		$form.append($('<input>').attr('type', 'hidden').attr('name', 'add_cart_product').val('true'));
+		$form.appendTo('body').submit();
+	});
+
 	<?php if (!empty(notices::$data['errors'])) { ?>
 	alert("<?php echo f::escape_js(notices::$data['errors'][0]); notices::$data['errors'] = []; ?>");
 	<?php } ?>
@@ -228,7 +238,7 @@
 	// Toggles
 
 	$('#box-customer-details input[name="customer[different_shipping_address]"]').on('change', function(e) {
-		if ($(this).is(':checked') == true) {
+		if (this.checked == true) {
 			$('#box-customer-details .shipping-address fieldset').prop('disabled', false).slideDown('fast');
 		} else {
 			$('#box-customer-details .shipping-address fieldset').prop('disabled', true).slideUp('fast');
@@ -236,7 +246,7 @@
 	});
 
 	$('#box-customer-details input[name="sign_up"]').on('change', function() {
-		if ($(this).is(':checked') == true) {
+		if (this.checked == true) {
 			$('#box-customer-details .account fieldset').prop('disabled', false).slideDown('fast');
 		} else {
 			$('#box-customer-details .account fieldset').prop('disabled', true).slideUp('fast');

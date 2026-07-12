@@ -1,21 +1,64 @@
 <?php
 
 	class mod_shipping extends abs_modules {
+
 		private $_cache = [];
-		private $_shopping_cart;
-		private $_options = [];
+		private $_currency_code = '';
+		private $_customer = [];
+		private $_items = [];
+		private $_options	= [];
+		private $_total = [
+			'amount' => [
+				'value' => 0,
+				'tax' => 0,
+			],
+			'weight' => [
+				'value' => 0,
+				'unit' => null,
+			],
+			'volume' => [
+				'value' => 0,
+				'unit' => null,
+			],
+		];
+
 		public $selected = [];
 
-		public function __construct($shopping_cart=[], $selected=[]) {
+		public function __construct(array $items = [], string|null $currency_code = null, array $customer = [], array $selected = []) {
 
-			$this->_shopping_cart = $shopping_cart;
+			$currency_code = $currency_code ?: currency::$selected['code'];
 
-			if (!empty($selected['id'])) {
-				$this->selected = $selected;
-				list($module_id, $option_id) = explode(':', $this->selected['id']);
-				$this->selected['module_id'] = $module_id;
-				$this->selected['option_id'] = $option_id;
+			$this->_total['weight']['unit'] = settings::get('store_weight_unit');
+			$this->_total['volume']['unit'] = settings::get('store_length_unit').'3';
+
+			foreach ($items as $item) {
+
+				$this->_items[] = [
+					'product_id' => $item['product_id'] ?? null,
+					'name' => $item['name'] ?? null,
+					'image' => $item['image'] ?? null,
+					'quantity' => $item['quantity'] ?? null,
+					'regular_price' => $item['regular_price'] ?? null,
+					'final_price' => $item['final_price'] ?? null,
+					'tax_class_id' => $item['tax_class_id'] ?? null,
+					'stock_items' => $item['stock_items'] ?? [],
+					'sum' => $item['sum'] ?? null,
+					'sum_tax' => $item['sum_tax'] ?? null,
+				];
+
+				$this->_total['amount']['value'] += $item['sum'];
+				$this->_total['amount']['tax'] += $item['sum_tax'];
+
+				foreach ($item['stock_items'] ?? [] as $stock_item) {
+					$this->_total['weight']['value'] += f::convert_weight($stock_item['weight'], $stock_item['weight_unit'], $this->_total['weight']['unit']) * $item['quantity'] * $stock_item['quantity'];
+					$this->_total['volume']['value'] += f::convert_volume($stock_item['length'] * $stock_item['width'] * $stock_item['height'], $stock_item['length_unit'].'3', $this->_total['volume']['unit']) * $item['quantity'] * $stock_item['quantity'];
+				}
 			}
+
+			$this->_currency_code = $currency_code ?: currency::$selected['code'];
+			$this->_customer = $customer ?: customer::$data;
+
+			$this->selected = $selected;
 
 			// Load modules
 			$this->load();
@@ -28,11 +71,13 @@
 			parent::__construct();
 		}
 
-		public function select($id, $userdata=[]) {
+		public function select(string $id, array $userdata = []) {
 
 			$this->selected = [];
 
-			if (!$options = $this->options()) return;
+			$options = $this->options();
+
+			if (!$options) return;
 
 			if (($key = array_search($id, array_combine(array_keys($options), array_column($options, 'id')))) === false) return;
 			if (!empty($this->data['options'][$key]['error'])) return;
@@ -59,17 +104,17 @@
 
 		public function options() {
 
-			if (empty($this->modules)) return [];
-
-			if (empty($this->_shopping_cart->data['items'])) return [];
-
-			$subtotal = ['amount' => 0, 'tax' => 0];
-			foreach ($this->_shopping_cart->data['items'] as $item) {
-				$subtotal['amount'] += $item['price'] * $item['quantity'];
-				$subtotal['tax'] += $item['tax'] * $item['quantity'];
+			if (!$this->modules || !$this->_items) {
+				return [];
 			}
 
-			$checksum = crc32(f::format_json($this->_shopping_cart->data['items'], false));
+			$subtotal = ['amount' => 0, 'tax' => 0];
+			foreach ($this->_items as $item) {
+				$subtotal['amount'] += $item['sum'];
+				$subtotal['tax'] += $item['sum_tax'];
+			}
+
+			$checksum = crc32(f::format_json($this->_items, false));
 
 			if (!empty($this->_cache[$checksum]['options'])) {
 				return $this->_cache[$checksum]['options'];
@@ -79,8 +124,9 @@
 
 			foreach ($this->modules as $module) {
 
-				$data = &$this->_shopping_cart->data;
-				if (!$options = $module->options($data['items'], $data['subtotal'], $data['subtotal_tax'], $data['currency_code'], $data['customer'])) continue;
+				$options = $module->options($this->_items, $this->_total, $this->_currency_code, $this->_customer);
+
+				if (!$options) continue;
 
 				if (!empty($options['options'])) {
 					$options = $options['options']; // Backwards compatibility LiteCart <3.0.0
@@ -116,14 +162,14 @@
 
 			// Sort options by fee
 			uasort($this->_cache[$checksum]['options'], function($a, $b) {
-				if ($a['fee'] == $b['fee']) return;
+				if ($a['fee'] == $b['fee']) return 0;
 				return ($a['fee'] > $b['fee']) ? 1 : -1;
 			});
 
 			return $this->_cache[$checksum]['options'];
 		}
 
-		public function after_process($order) {
+		public function after_process(ent_order $order) {
 
 			if (empty($this->selected['module_id'])) return;
 			if (empty($this->modules[$this->selected['module_id']])) return;
@@ -132,20 +178,24 @@
 			return $this->modules[$this->selected['module_id']]->after_process($order);
 		}
 
-		public function cheapest($order) {
+		public function cheapest() {
 
-			if (empty($this->_options)) {
+			if (!$this->_options) {
 				$options = $this->options();
 			}
 
-			if (empty($options)) return false;
+			if (!$options) return false;
+
+			$cheapest = null;
 
 			foreach ($options as $option) {
 				if (!empty($option['error'])) continue;
 				if (!empty($option['exclude_cheapest'])) continue;
-				if (empty($cheapest) || $option['fee'] < $cheapest['fee']) {
-					return $option;
+				if (!$cheapest || $option['fee'] < $cheapest['fee']) {
+					$cheapest = $option;
 				}
 			}
+
+			return $cheapest;
 		}
 	}

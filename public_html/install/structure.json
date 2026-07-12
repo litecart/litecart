@@ -829,77 +829,20 @@
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"order_id": { "type": "INT", "length": 10, "unsigned": true },
-				"line_id": { "type": "INT", "length": 10, "unsigned": true },
-				"stock_item_id": { "type": "INT", "length": 10, "unsigned": true },
-				"name": { "type": "VARCHAR", "length": 128, "default": "''" },
-				"serial_number": { "type": "VARCHAR", "length": 32, "default": "''" },
-				"sku": { "type": "VARCHAR", "length": 32, "default": "''" },
-				"gtin": { "type": "VARCHAR", "length": 32, "default": "''" },
-				"taric": { "type": "VARCHAR", "length": 32, "default": "''" },
-				"quantity": { "type": "DECIMAL", "length": "10,4", "default": 0 },
-				"price": { "type": "DECIMAL", "length": "10,4", "default": 0 },
-				"tax": { "type": "DECIMAL", "length": "10,4", "default": 0 },
-				"tax_rate": { "type": "DECIMAL", "length": "4,2", "unsigned": true, "default": 0 },
-				"tax_class_id": { "type": "INT", "length": "10", "unsigned": true, "nullable": true },
-				"discount": { "type": "DECIMAL", "length": "10,4", "default": 0 },
-				"discount_tax": { "type": "DECIMAL", "length": "10,4", "default": 0 },
-				"sum": { "type": "DECIMAL", "length": "10,4", "default": 0 },
-				"sum_tax": { "type": "DECIMAL", "length": "10,4", "default": 0 },
-				"weight": { "type": "DECIMAL", "length": "10,4", "unsigned": true, "default": 0 },
-				"weight_unit": { "type": "VARCHAR", "length": 2, "default": "''" },
-				"length": { "type": "DECIMAL", "length": "10,4", "unsigned": true, "default": 0 },
-				"width": { "type": "DECIMAL", "length": "10,4", "unsigned": true, "default": 0 },
-				"height": { "type": "DECIMAL", "length": "10,4", "unsigned": true, "default": 0 },
-				"length_unit": { "type": "VARCHAR", "length": 2, "default": "''" },
-				"downloads": { "type": "INT", "length": 10, "unsigned": true, "default": 0 },
-				"priority": { "type": "INT", "length": 11, "default": 0 }
-			},
-			"primary_key": ["id"],
-			"keys": {
-				"order_id": ["order_id"]
-			},
-			"foreign_keys": {
-				"order_item_to_order": {
-					"columns": ["order_id"],
-					"references": {
-						"table": "orders",
-						"columns": ["id"],
-						"on_update": "NO ACTION",
-						"on_delete": "CASCADE"
-					}
-				},
-				"order_item_to_product": {
-					"columns": ["product_id"],
-					"references": {
-						"table": "products",
-						"columns": ["id"],
-						"on_update": "CASCADE",
-						"on_delete": "SET NULL"
-					}
-				}
-			}
-		},
-		"orders_lines": {
-			"columns": {
-				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
-				"order_id": { "type": "INT", "length": 10, "unsigned": true },
 				"product_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
 				"stock_option_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
 				"code": { "type": "VARCHAR", "length": 32, "nullable": true },
 				"name": { "type": "VARCHAR", "length": 128, "default": "''" },
-				"serial_number": { "type": "VARCHAR", "length": 32, "default": "''" },
+				"image": { "type": "VARCHAR", "length": 256, "nullable": true },
 				"userdata": { "type": "VARCHAR", "length": 2048, "default": "'{}'", "comment": "TYPE:JSON" },
 				"quantity": { "type": "DECIMAL", "length": "11,4", "default": 0 },
-				"price": { "type": "DECIMAL", "length": "11,4", "default": 0 },
+				"regular_price": { "type": "DECIMAL", "length": "11,4", "default": 0 },
+				"final_price": { "type": "DECIMAL", "length": "11,4", "default": 0 },
 				"tax_class_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
 				"tax_rate": { "type": "DECIMAL", "length": "6,4", "unsigned": true, "default": 0 },
-				"tax": { "type": "DECIMAL", "length": "11,4", "default": 0 },
 				"discount": { "type": "DECIMAL", "length": "11,4", "default": 0 },
-				"discount_tax": { "type": "DECIMAL", "length": "11,4", "default": 0 },
 				"sum": { "type": "DECIMAL", "length": "11,4", "default": 0 },
 				"sum_tax": { "type": "DECIMAL", "length": "11,4", "default": 0 },
-				"weight": { "type": "DECIMAL", "length": "10,4", "unsigned": true, "default": 0 },
-				"weight_unit": { "type": "VARCHAR", "length": 2, "default": "''" },
 				"priority": { "type": "INT", "length": 11, "default": 0 }
 			},
 			"primary_key": ["id"],
@@ -920,7 +863,7 @@
 						"on_delete": "RESTRICT"
 					}
 				},
-				"order_line_to_tax_class": {
+				"order_item_to_tax_class": {
 					"columns": ["tax_class_id"],
 					"references": {
 						"table": "tax_classes",
@@ -929,7 +872,7 @@
 						"on_delete": "RESTRICT"
 					}
 				},
-				"order_line_to_stock_option": {
+				"order_item_to_stock_option": {
 					"columns": ["stock_option_id"],
 					"references": {
 						"table": "products_stock_options",
@@ -941,6 +884,52 @@
 			},
 			"check_constraints": {
 				"chk_userdata": "JSON_VALID(userdata)"
+			}
+		},
+		"orders_stock_items": {
+			"columns": {
+				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
+				"order_id": { "type": "INT", "length": 10, "unsigned": true },
+				"item_id": { "type": "INT", "length": 10, "unsigned": true },
+				"stock_item_id": { "type": "INT", "length": 10, "unsigned": true },
+				"name": { "type": "VARCHAR", "length": 128, "default": "''" },
+				"serial_number": { "type": "VARCHAR", "length": 32, "default": "''" },
+				"sku": { "type": "VARCHAR", "length": 32, "default": "''" },
+				"gtin": { "type": "VARCHAR", "length": 32, "default": "''" },
+				"taric": { "type": "VARCHAR", "length": 32, "default": "''" },
+				"quantity": { "type": "DECIMAL", "length": "10,4", "default": 0 },
+				"weight": { "type": "DECIMAL", "length": "10,4", "unsigned": true, "default": 0 },
+				"weight_unit": { "type": "VARCHAR", "length": 2, "default": "''" },
+				"length": { "type": "DECIMAL", "length": "10,4", "unsigned": true, "default": 0 },
+				"width": { "type": "DECIMAL", "length": "10,4", "unsigned": true, "default": 0 },
+				"height": { "type": "DECIMAL", "length": "10,4", "unsigned": true, "default": 0 },
+				"length_unit": { "type": "VARCHAR", "length": 2, "default": "''" },
+				"downloads": { "type": "INT", "length": 10, "unsigned": true, "default": 0 },
+				"priority": { "type": "INT", "length": 11, "default": 0 }
+			},
+			"primary_key": ["id"],
+			"keys": {
+				"order_id": ["order_id"]
+			},
+			"foreign_keys": {
+				"order_stock_item_to_order": {
+					"columns": ["order_id"],
+					"references": {
+						"table": "orders",
+						"columns": ["id"],
+						"on_update": "NO ACTION",
+						"on_delete": "CASCADE"
+					}
+				},
+				"order_stock_item_to_product": {
+					"columns": ["product_id"],
+					"references": {
+						"table": "products",
+						"columns": ["id"],
+						"on_update": "CASCADE",
+						"on_delete": "SET NULL"
+					}
+				}
 			}
 		},
 		"order_statuses": {

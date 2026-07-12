@@ -124,12 +124,13 @@
 						and (valid_from is null or valid_from <= '". date('Y-m-d H:i:s') ."')
 						and (valid_to is null or valid_to >= '". date('Y-m-d H:i:s') ."')
 					)
-					and (customer_group_id is null or customer_group_id = ". (int)$this->_customer_group_id .")
-					and (geo_zone_id is null or geo_zone_id in (
+					". (!empty($this->_customer_group_id) ? "and (customer_group_id is null or customer_group_id = ". (int)$this->_customer_group_id .")" : "") ."
+					". (!empty(customer::$data['country_code']) ? "and (geo_zone_id is null or geo_zone_id in (
 						select geo_zone_id from ". DB_TABLE_PREFIX ."zones_to_geo_zones
 						where country_code = '". database::input(customer::$data['country_code']) ."'
 						and (zone_code = '' or zone_code is null or zone_code = '". database::input(customer::$data['zone_code']) ."')
-					))
+					))" : "") ."
+
 					group by product_id
 					limit 1;"
 				)->fetch();
@@ -236,12 +237,12 @@
 							max($sql_column_price) / min_quantity as regular_price
 							from ". DB_TABLE_PREFIX ."products_prices
 						where product_id = '". database::input($this->_data['id']) ."'
-						and (customer_group_id is null or customer_group_id = ". (int)$this->_customer['group_id'] .")
-						and (geo_zone_id is null or geo_zone_id in (
+						". (!empty($this->_customer['group_id']) ? "and (customer_group_id is null or customer_group_id = ". (int)$this->_customer['group_id'] .")" : "") ."
+						". (!empty($this->_customer['country_code']) ? "and (geo_zone_id is null or geo_zone_id in (
 							select geo_zone_id from ". DB_TABLE_PREFIX ."zones_to_geo_zones
 							where country_code = '". database::input($this->_customer['country_code']) ."'
 							and (zone_code = '' or zone_code is null or zone_code = '". database::input($this->_customer['zone_code']) ."')
-						))
+						))" : "") ."
 						and (campaign_id is null or campaign_id in (
 							select id from ". DB_TABLE_PREFIX ."campaigns
 							where valid_from <= '". date('Y-m-d H:i:s') ."'
@@ -515,13 +516,13 @@
 					}
 
 					$this->_data['stock_items'] = database::query(
-						"select si.*, ifnull(ol.quantity_reserved, 0) as quantity_reserved, si.quantity - ifnull(ol.quantity_reserved, 0) as quantity_available
+						"select si.*, ifnull(oi.quantity_reserved, 0) as quantity_reserved, si.quantity - ifnull(oi.quantity_reserved, 0) as quantity_available
 						from ". DB_TABLE_PREFIX ."stock_items si
 
 						left join (
-							select product_id, stock_item_id, sum(ol.quantity * oi.quantity) as quantity_reserved
-							from ". DB_TABLE_PREFIX ."orders_items oi
-							left join ". DB_TABLE_PREFIX ."orders_lines ol on (ol.id = oi.line_id and ol.order_id = oi.order_id)
+							select product_id, stock_item_id, sum(oi.quantity * osi.quantity) as quantity_reserved
+							from ". DB_TABLE_PREFIX ."orders_stock_items osi
+							left join ". DB_TABLE_PREFIX ."orders_items oi on (oi.id = osi.item_id and osi.order_id = oi.order_id)
 							where oi.order_id in (
 								select id from ". DB_TABLE_PREFIX ."orders
 								where order_status_id in (
@@ -530,7 +531,7 @@
 								)
 							)
 							group by stock_item_id
-						) ol on (ol.product_id = ". (int)$this->_data['id'] ." and ol.stock_item_id = si.id)
+						) oi on (oi.product_id = ". (int)$this->_data['id'] ." and oi.stock_item_id = si.id)
 
 						where si.id in (
 							select pso.stock_item_id from ". DB_TABLE_PREFIX ."products_stock_options pso
@@ -560,10 +561,10 @@
 						left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
 
 						left join (
-							select product_id, stock_option_id, sum(ol.quantity * oi.quantity) as quantity_reserved
-							from ". DB_TABLE_PREFIX ."orders_items oi
-							left join ". DB_TABLE_PREFIX ."orders_lines ol on (ol.id = oi.line_id and ol.order_id = oi.order_id)
-							where oi.order_id in (
+							select product_id, stock_option_id, sum(oi.quantity * osi.quantity) as quantity_reserved
+							from ". DB_TABLE_PREFIX ."orders_stock_items osi
+							left join ". DB_TABLE_PREFIX ."orders_items oi on (oi.id = osi.item_id and osi.order_id = oi.order_id)
+							where osi.order_id in (
 								select id from ". DB_TABLE_PREFIX ."orders
 								where order_status_id in (
 									select id from ". DB_TABLE_PREFIX ."order_statuses

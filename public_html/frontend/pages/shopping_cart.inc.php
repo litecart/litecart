@@ -38,30 +38,27 @@
 
 		try {
 
-			// Do we have an existing order in the session?
-			$resume_id = session::$data['checkout']['order']->data['id'] ?? null;
+			$order = new ent_order();
 
-			// Resume incomplete order in session
-			if ($resume_id) {
-				if (database::query(
+			if (!isset(session::$data['checkout_order'])) {
+				session::$data['checkout_order'] = $order->data;
+			}
+
+			$order->data = &session::$data['checkout_order'];
+
+			if (!empty($order->data['id'])) {
+				if (!database::query(
 					"select * from ". DB_TABLE_PREFIX ."orders
-					where id = ". (int)$resume_id ."
+						where id = ". (int)$order->data['id'] ."
 					and order_status_id is null
 					and created_at > '". date('Y-m-d H:i:s', strtotime('-15 minutes')) ."'
 					limit 1;"
 				)->num_rows) {
-					session::$data['checkout']['order'] = new ent_order($resume_id);
-					session::$data['checkout']['order']->reset();
-				} else {
-					session::$data['checkout']['order'] = new ent_order();
+					$order->data['id'] = null;
+					$order->data['no'] = null;
+					$order->data['public_key'] = null;
 				}
-
-			} else {
-				session::$data['checkout']['order'] = new ent_order();
 			}
-
-			// Connect session order to shorthand variable
-			$order = &session::$data['checkout']['order'];
 
 			// Build Order
 			$order->data['weight_unit'] = settings::get('store_weight_unit');
@@ -73,24 +70,74 @@
 			$order->data['conversions'] = session::$data['conversions'] ?? [];
 
 			foreach ([
-				'email',
-				'country_code',
+				'type',
+				'company',
+				'firstname',
+				'lastname',
+				'address1',
+				'address2',
 				'postcode',
+				'city',
+				'country_code',
+				'zone_code',
+				'phone',
+				'email',
 			] as $field) {
-				if (isset($_POST['customer'][$field])) {
-					$order->data['customer'][$field] = $_POST['customer'][$field];
+				$order->data['customer'][$field] = customer::$data[$field] ?: $_POST['customer'][$field] ?? '';
+			}
+
+			foreach ([
+				'type',
+				'company',
+				'firstname',
+				'lastname',
+				'address1',
+				'address2',
+				'postcode',
+				'city',
+				'country_code',
+				'zone_code',
+				'phone',
+				'email',
+			] as $field) {
+				if (!empty(customer::$data['different_shipping_address'])) {
+					$order->data['customer']['shipping_address'][$field] = customer::$data['shipping_address'][$field] ?? '';
+				} else {
+					$order->data['customer']['shipping_address'][$field] = customer::$data[$field] ?: $_POST['customer'][$field] ?? '';
 				}
 			}
 
-			foreach (cart::$items as $item) {
-				$order->add_line($item, $item['stock_items']);
+			// Shipping Options
+			$mod_shipping = new mod_shipping(
+				items: $order->data['items'],
+				currency_code: $order->data['currency_code'],
+				customer: $order->data['customer'],
+			);
+
+			$cheapest_shipping = $mod_shipping->cheapest();
+
+			if (!empty($cheapest_shipping)) {
+				$order->data['shipping_option']['id'] = $cheapest_shipping['id'];
+				$order->data['shipping_option']['name'] = $cheapest_shipping['name'];
 			}
 
+			$order->data['items'] = [];
+			foreach (cart::$items as $item) {
+				$order->add_item($item);
+			}
+
+			// Process a standard checkout
 			if ($_POST['checkout'] == 'standard') {
+
+				if ($order->validate(['customer'])) {
+					redirect(document::ilink('checkout/customer'), 303);
+					exit;
+				}
 
 				redirect(document::ilink('checkout/index'), 303);
 				exit;
 
+			// Process an express checkout
 			} else if (in_array($_POST['checkout'], array_column($checkouts, 'id'))) {
 
 				$mod_checkout = new mod_checkout();
@@ -105,7 +152,7 @@
 				$mod_checkout->select($_POST['checkout']);
 				$mod_checkout->process($order);
 
-				redirect(document::ilink('checkout/verify_checkout'), 303);
+				redirect(document::ilink('checkout/verify'), 303);
 				exit;
 
 			} else {
@@ -148,34 +195,24 @@
 	// Cheapest shipping
 	if (settings::get('display_cheapest_shipping')) {
 
-		$tmp_order = (object)[
-			'data' => [
-				'items' => f::array_each(cart::$items, fn($item) => [
-					'product_id' => $item['product_id'],
-					'stock_option_id' => $item['stock_option_id'],
-					'name' => $item['name'],
-					'sku' => $item['sku'],
-					'image' => $item['image'],
-					'quantity' => $item['quantity'],
-					'regular_price' => $item['regular_price'],
-					'discount' => $item['discount'],
-					'final_price' => $item['final_price'],
-					'tax_class_id' => $item['tax_class_id'],
-					'weight' => $item['weight'],
-					'weight_unit' => $item['weight_unit'],
-					'length' => $item['length'],
-					'width' => $item['width'],
-					'height' => $item['height'],
-					'length_unit' => $item['length_unit'],
-				]),
-				'subtotal' => cart::$total['total']['value'],
-				'subtotal_tax' => cart::$total['total']['tax'],
-				'customer' => customer::$data,
-				'currency_code' => currency::$selected['code'],
-			],
-		];
-
-		$cheapest_shipping = (new mod_shipping)->cheapest($tmp_order);
+		$cheapest_shipping = (new mod_shipping(
+			items: f::array_each(cart::$items, fn($item) => [
+				'product_id' => $item['product_id'],
+				'stock_option_id' => $item['stock_option_id'],
+				'name' => $item['name'],
+				'image' => $item['image'],
+				'quantity' => $item['quantity'],
+				'regular_price' => $item['regular_price'],
+				'discount' => $item['discount'],
+				'final_price' => $item['final_price'],
+				'tax_class_id' => $item['tax_class_id'],
+				'stock_items' => $item['stock_items'],
+				'sum' => $item['sum'] ?? 0,
+				'sum_tax' => $item['sum_tax'] ?? 0,
+			]),
+			customer: customer::$data,
+			currency_code: currency::$selected['code']
+		))->cheapest();
 
 		if ($cheapest_shipping) {
 			$_page->snippets['cheapest_shipping'] = $cheapest_shipping;
@@ -195,9 +232,21 @@
 				'thumbnail_2x' => f::image_thumbnail('storage://images/'. ($item['image'] ?  $item['image'] : 'no_image.svg'), 128, 0, 'product'),
 			],
 			'link' => document::ilink('product', ['product_id' => $item['product_id']]),
-			'regular_price' => $item['regular_price'],
-			'discount' => $item['discount'],
-			'final_price' => $item['final_price'],
+			'regular_price' => [
+				'display_value' => customer::$data['display_prices_including_tax'] ? $item['regular_price']['value'] + $item['regular_price']['tax'] : $item['regular_price']['value'],
+				'value' => $item['regular_price']['value'],
+				'tax' => $item['regular_price']['tax'],
+			],
+			'final_price' => [
+				'display_value' => customer::$data['display_prices_including_tax'] ? $item['final_price']['value'] + $item['final_price']['tax'] : $item['final_price']['value'],
+				'value' => $item['final_price']['value'],
+				'tax' => $item['final_price']['tax'],
+			],
+			'discount' => [
+				'display_value' => customer::$data['display_prices_including_tax'] ? $item['discount']['value'] + $item['discount']['tax'] : $item['discount']['value'],
+				'value' => $item['discount']['value'],
+				'tax' => $item['discount']['tax'],
+			],
 			'tax_class_id' => $item['tax_class_id'] ?? null,
 			'quantity' => (float)$item['quantity'],
 			'quantity_unit_name' => $item['quantity_unit_name'] ?? '',
