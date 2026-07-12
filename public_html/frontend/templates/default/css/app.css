@@ -64,65 +64,65 @@ body {
 #site-navigation .search form {
 	padding: 0.5em;
 }
-#site-navigation .favourites {
+#site-navigation .favorites {
 	line-height: 1.2;
 	transition: opacity 200ms ease-out;
 }
-#site-navigation .favourites .navbar-item {
+#site-navigation .favorites .navbar-item {
 	border-radius: 0;
 }
-#site-navigation .favourites img {
+#site-navigation .favorites img {
 	max-height: 32px;
 }
-#site-navigation .favourites .badge {
+#site-navigation .favorites .badge {
 	position: absolute;
 	bottom: 12px;
 	inset-inline-end: 12px;
 }
-#site-navigation .favourites .badge,
-#site-navigation .favourites .checkout {
+#site-navigation .favorites .badge,
+#site-navigation .favorites .checkout {
 	display: none;
 }
-#site-navigation .favourites .name {
+#site-navigation .favorites .name {
 	white-space: normal;
 }
-#site-navigation .favourites .price {
+#site-navigation .favorites .price {
 	font-weight: 500;
 }
-#site-navigation .favourites .items a {
+#site-navigation .favorites .items a {
 	color: inherit;
 }
-#site-navigation .favourites .row {
+#site-navigation .favorites .row {
 	margin-bottom: 0;
 }
-#site-navigation .favourites.filled .badge {
+#site-navigation .favorites.filled .badge {
 	display: inline-block;
 	background: var(--default-text-color);
 }
-#site-navigation .favourites.filled .checkout {
+#site-navigation .favorites.filled .checkout {
 	display: block;
 }
-#site-navigation .favourites.filled .empty {
+#site-navigation .favorites.filled .empty {
 	display: none;
 }
 @media (width >= 768px) {
-	#site-navigation .favourites .dropdown-menu {
+	#site-navigation .favorites .dropdown-menu {
 		width: 360px;
 		max-height: calc(100vh - 125px);
 		display: flex;
 		flex-direction: column;
 	}
-	#site-navigation .favourites .dropdown-menu li {
+	#site-navigation .favorites .dropdown-menu li {
 		flex-shrink: 0;
 		flex-grow: 0;
 	}
-	#site-navigation .favourites .dropdown-menu .items {
+	#site-navigation .favorites .dropdown-menu .items {
 		overflow-y: auto;
 		flex-shrink: 1 !important;
 		flex-grow: 1 !important;
 	}
 }
-#site-navigation .favourites .search {
+#site-navigation .favorites .search {
 	flex-grow: 1;
 	order: initial;
 }

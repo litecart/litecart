@@ -333,7 +333,7 @@
 		list($width, $height) = f::image_scale_by_width(320, settings::get('product_image_ratio'));
 
 		$is_favourite = database::query(
-			"select id from ". DB_TABLE_PREFIX ."favourites
+			"select id from ". DB_TABLE_PREFIX ."favorites
 			where product_id = ". (int)$product['id'] ."
 			and customer_id = ". (int)customer::$data['id'] ."
 			limit 1;"
