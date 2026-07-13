@@ -10,7 +10,7 @@
 
 	document::$title[] = t('title_event_logs', 'Event Logs');
 
-	breadcrumbs::add(t('title_customers', 'Customers'), document::link(WS_DIR_ADMIN, ['app' => 'customers']));
+	breadcrumbs::add(t('title_customers', 'Customers'), document::ilink('customers/customers'));
 	breadcrumbs::add(t('title_event_logs', 'Event Logs'));
 
 	if (isset($_POST['delete'])) {

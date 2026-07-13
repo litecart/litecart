@@ -89,6 +89,10 @@
 		return preg_match('#[^\x09\x0A\x0D\x20-\x7E]#', $string) === 1;
 	}
 
+	function is_cli() {
+		return !empty($_SERVER['SERVER_SOFTWARE']) && $_SERVER['SERVER_SOFTWARE'] == 'CLI';
+	}
+
 	// Attempt to determine if the request was loaded via JavaScript
 	function is_ajax_request() {
 

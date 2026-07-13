@@ -30,16 +30,6 @@
 	}
 
 	/*
-		Serialise a string value into a safe PHP literal.
-		Wrapper around var_export so callers don't have to import the
-		idiom repeatedly and to give us a single choke point if we ever
-		need to switch the escape strategy.
-	*/
-	function install_config_literal($value) {
-		return var_export((string)$value, true);
-	}
-
-	/*
 		Render the config file contents from the install/config template.
 
 		$values must contain every placeholder key expected by the template.
@@ -76,12 +66,7 @@
 
 		$output = $template;
 		foreach ($values as $key => $value) {
-			// Replace the quoted placeholder token "'{KEY}'" (including
-			// the surrounding single quotes in the template) with a
-			// var_export-generated literal.
-			$token = "'{" . $key . "}'";
-			$literal = install_config_literal($value);
-			$output = str_replace($token, $literal, $output);
+			$output = str_replace('{' . $key . '}', addcslashes($value, "\\'\""), $output);
 		}
 
 		return $output;

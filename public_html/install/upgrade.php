@@ -17,7 +17,7 @@
 
 	require_once __DIR__ . '/includes/init.inc.php';
 
-	if ($_SERVER['SERVER_SOFTWARE'] == 'CLI') {
+	if (is_cli()) {
 
 		if (!isset($argv[1]) || (in_array($argv[1], ['help', '-h', '--help', '/?']))) {
 			echo implode(PHP_EOL, [
@@ -72,7 +72,7 @@
 	ini_set('display_errors', 'On');
 	ini_set('html_errors', 'On');
 
-	if ($_SERVER['SERVER_SOFTWARE'] != 'CLI') {
+	if (!is_cli()) {
 		ini_set('display_errors', 'Off');
 		require_once __DIR__ . '/includes/header.inc.php';
 	}
@@ -99,11 +99,11 @@
 	require FS_DIR_APP . 'includes/nodes/nod_stats.inc.php';
 
 	// AC-5, AC-6: the web upgrader requires an authenticated administrator.
-	// CLI runs are exempt (see install_is_cli() for detection rules).
+	// CLI runs are exempt (see is_cli() for detection rules).
 	// Session and administrator nodes are loaded lazily so that a broken
 	// schema can still reach the CLI path; any exception during init is
 	// treated as "not logged in" and the user gets redirected to login.
-	if (!install_is_cli()) {
+	if (!is_cli()) {
 		try {
 			if (!class_exists('session')) {
 				require_once FS_DIR_APP . 'includes/nodes/nod_session.inc.php';
@@ -179,7 +179,7 @@
 
 		ob_start(function($buffer) {
 
-			if (install_is_cli()) {
+			if (is_cli()) {
 				$buffer = install_cli_format($buffer);
 			}
 
@@ -196,7 +196,7 @@
 
 			register_shutdown_function(function(){
 				$buffer = ob_get_clean();
-				echo install_is_cli() ? install_cli_format($buffer) : $buffer;
+				echo is_cli() ? install_cli_format($buffer) : $buffer;
 			});
 
 			echo '<h1>LiteCart Installer</h1>' . PHP_EOL . PHP_EOL;
@@ -241,7 +241,7 @@
 
 		echo ob_get_clean();
 
-		if ($_SERVER['SERVER_SOFTWARE'] == 'CLI') exit;
+		if (is_cli()) exit;
 
 		require('includes/footer.inc.php');
 		exit;

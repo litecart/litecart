@@ -12,9 +12,8 @@
 	];
 
 	require_once __DIR__ . '/includes/init.inc.php';
-	require_once __DIR__ . '/includes/config_writer.inc.php';
 
-	if (install_is_cli()) {
+	if (is_cli()) {
 		// CLI sets $_REQUEST['install'] explicitly after option parsing below.
 		$_REQUEST['install'] = true;
 	}
@@ -33,20 +32,12 @@
 		if (!empty($_SERVER['DOCUMENT_ROOT'])) {
 			define('DOCUMENT_ROOT', rtrim(str_replace('\\', '/', realpath($_SERVER['DOCUMENT_ROOT'])), '/') . '/');
 
-		} else if ($_SERVER['SERVER_SOFTWARE'] == 'CLI' && !empty($_REQUEST['document_root'])) {
+		} else if (is_cli() && !empty($_REQUEST['document_root'])) {
 			define('DOCUMENT_ROOT', rtrim(str_replace('\\', '/', realpath($_REQUEST['document_root'])), '/') . '/');
 
 		} else {
 			throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . ' Could not detect \$_SERVER[\'DOCUMENT_ROOT\']. If you are using CLI, make sure you pass the parameter "document_root" e.g. --document_root="/var/www/mysite.com/public_html"</p>' . PHP_EOL  . PHP_EOL);
 		}
-	}
-
-	// FS_DIR_APP and FS_DIR_STORAGE are already defined by init.inc.php.
-	if (!defined('WS_DIR_APP')) {
-		define('WS_DIR_APP', preg_replace('#^'. preg_quote(rtrim(DOCUMENT_ROOT, '/'), '#') .'#', '', FS_DIR_APP));
-	}
-	if (!defined('WS_DIR_STORAGE')) {
-		define('WS_DIR_STORAGE', WS_DIR_APP .'storage/');
 	}
 
 	// Set platform name
@@ -65,7 +56,7 @@
 
 	require_once FS_DIR_APP . 'includes/compatibility.inc.php';
 
-	if ($_SERVER['SERVER_SOFTWARE'] == 'CLI') {
+	if (is_cli()) {
 
 		if (!isset($argv[1]) || (in_array($argv[1], ['help', '-h', '--help', '/?']))) {
 			echo implode(PHP_EOL, [
@@ -107,7 +98,7 @@
 	}
 
 	ob_start(function($buffer) {
-		if ($_SERVER['SERVER_SOFTWARE'] == 'cli') {
+		if (is_cli()) {
 			$buffer = strip_tags($buffer);
 			exit;
 		}
@@ -138,7 +129,7 @@
 
 		register_shutdown_function(function(){
 			$buffer = ob_get_clean();
-			echo install_is_cli() ? install_cli_format($buffer) : $buffer;
+			echo  is_cli() ? install_cli_format($buffer) : $buffer;
 		});
 
 		echo '<h1>LiteCart Installer</h1>' . PHP_EOL . PHP_EOL;
@@ -162,7 +153,7 @@
 			'<p>Check out the <a href="https://wiki.litecart.net/" target="_blank">LiteCart Wiki</a> website for some great tips. Turn to our <a href="https://www.litecart.net/forums/" target="_blank">Community Forums</a> if you have questions.</p>',
 		]);
 
-		if ($_SERVER['SERVER_SOFTWARE'] != 'CLI') {
+		if (!is_cli()) {
 			echo implode(PHP_EOL, [
 				'<form method="get" action="http://x.com/intent/tweet" target="_blank">',
 				'  <input type="hidden" value="https://www.litecart.net/">',
@@ -191,6 +182,6 @@
 
 	echo ob_get_clean();
 
-	if ($_SERVER['SERVER_SOFTWARE'] == 'CLI') exit;
+	if (is_cli()) exit;
 
 	require __DIR__ . '/includes/footer.inc.php';

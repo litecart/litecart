@@ -3,17 +3,6 @@
 	include_once __DIR__.'/../../includes/functions/func_file.inc.php';
 
 	/*
-		Returns true when the current process is a CLI invocation. The CLI
-		polyfill in init.inc.php normalises $_SERVER['SERVER_SOFTWARE'] to
-		'CLI' before this function is reachable, so a single comparison
-		suffices. Defense-in-depth against mis-configured FPM pools is left
-		to the SAPI check; entry points may also gate on php_sapi_name().
-	*/
-	function install_is_cli() {
-		return ($_SERVER['SERVER_SOFTWARE'] ?? '') === 'CLI';
-	}
-
-	/*
 		Backwards-compatible alias for the previous standalone helper. Both
 		install.php and upgrade.php still call this name; future call sites
 		may use csp_send_headers() directly.
@@ -62,7 +51,7 @@
 		header('X-Frame-Options: DENY');
 		header('Referrer-Policy: same-origin');
 
-		if ($_SERVER['SERVER_SOFTWARE'] !== 'CLI' && $_SERVER['HTTPS'] !== 'off') {
+		if (!is_cli() && $_SERVER['HTTPS'] !== 'off') {
 			header('Strict-Transport-Security: max-age=31536000; includeSubDomains');
 		}
 	}
