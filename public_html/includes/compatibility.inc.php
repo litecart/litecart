@@ -31,6 +31,7 @@
 		$_SERVER['SERVER_PORT'] = '443';
 		$_SERVER['SERVER_PROTOCOL'] = 'HTTP/1.1';
 		$_SERVER['REQUEST_METHOD'] = 'GET';
+		$_SERVER['REQUEST_SCHEME'] = 'https';
 		$_SERVER['REQUEST_URI'] = '/';
 		$_SERVER['SERVER_SOFTWARE'] = 'CLI';
 		$_SERVER['SCRIPT_FILENAME'] = $argv[0] ?? 'index.php';
@@ -44,8 +45,16 @@
 		$_SERVER['SERVER_SOFTWARE'] = 'Unknown';
 	}
 
+	if (!isset($_SERVER['SERVER_PROTOCOL'])) {
+		$_SERVER['SERVER_PROTOCOL'] = 'HTTP/1.1';
+	}
+
+	if (!isset($_SERVER['REQUEST_SCHEME'])) {
+		$_SERVER['REQUEST_SCHEME'] = 'http';
+	}
+
 	if (empty($_SERVER['HTTPS'])) {
-		$_SERVER['HTTPS'] = ($_SERVER['SERVER_PROTOCOL'] == 'https') ? 'on' : 'off';
+		$_SERVER['HTTPS'] = 'off';
 	}
 
 	if (empty($_SERVER['HTTP_HOST'])) {
