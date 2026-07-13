@@ -9,7 +9,7 @@
 	// AC-3, AC-4: values are serialised through var_export() via
 	// install_render_config(), which also validates client_ip.
 	$config = install_render_config(dirname(__DIR__, 2) . '/config', [
-		'STORAGE_FOLDER'        => FS_DIR_APP . 'storage/',
+		'STORAGE_FOLDER'        => 'storage',
 		'ADMIN_FOLDER'          => BACKEND_ALIAS,
 		'DB_SERVER'             => DB_SERVER,
 		'DB_USERNAME'           => DB_USERNAME,
