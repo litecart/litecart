@@ -735,6 +735,7 @@
 				"currency_value": { "type": "DECIMAL", "length": "11,6", "unsigned": true, "default": 0 },
 				"display_prices_including_tax": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
 				"subtotal": { "type": "DECIMAL", "length": "10,4", "default": 0 },
+				"subtotal_tax": { "type": "DECIMAL", "length": "10,4", "default": 0 },
 				"discount": { "type": "DECIMAL", "length": "10,4", "default": 0 },
 				"total": { "type": "DECIMAL", "length": "10,4", "default": 0 },
 				"total_tax": { "type": "DECIMAL", "length": "10,4", "default": 0 },

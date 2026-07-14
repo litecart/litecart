@@ -2,7 +2,7 @@
 
 	### Download Latest Updates #########################################
 
-	if (!empty($_REQUEST['skip_updates'])) {
+	if (!empty($_REQUEST['download_updates'])) {
 
 		echo '<p>Checking for updates... ';
 

@@ -17,7 +17,20 @@
 	)->fetch('DEFAULT_COLLATION_NAME');
 
 	// Fetch MySQL table structures from structure.json
-	$structure = json_decode(file_get_contents(__DIR__ . '/structure.json'), true);
+	$structure_file = __DIR__ . '/../../../structure.json';
+
+	if (!is_file($structure_file)) {
+		throw new Exception('Could not find structure.json');
+	}
+
+	// Read structure.json
+	$structure = file_get_contents($structure_file);
+
+	// Set table prefixes
+	$structure = str_replace('"table": "', '"table": "'. DB_TABLE_PREFIX, $structure);
+
+	// Decode database structure
+	$structure = json_decode($structure, true);
 
 	// Check if structure.json could be decoded
 	if ($structure === null) {
@@ -266,9 +279,9 @@
 		if (!empty($table['check_constraints'])) {
 			foreach ($table['check_constraints'] as $name => $expression) {
 				if ($table_exists) {
-					$sql .= 'ADD CONSTRAINT `'. database::input($name) .'` CHECK ('. database::input($expression) .'),' . PHP_EOL;
+					$sql .= 'ADD CONSTRAINT `'. database::input($name) .'` CHECK ('. $expression .'),' . PHP_EOL;
 				} else {
-					$sql .= '  CONSTRAINT `'. database::input($name) .'` CHECK ('. database::input($expression) .'),' . PHP_EOL;
+					$sql .= '  CONSTRAINT `'. database::input($name) .'` CHECK ('. $expression .'),' . PHP_EOL;
 				}
 			}
 		}

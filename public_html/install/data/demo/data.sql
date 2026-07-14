@@ -50,8 +50,8 @@ INSERT INTO `lc_orders_comments` (`id`, `order_id`, `author`, `text`, `hidden`, 
 INSERT INTO `lc_orders_items` (`id`, `order_id`, `product_id`, `name`, `quantity`, `regular_price`, `final_price`, `sum`, `sum_tax`) VALUES
 (1, 1, 1, 'Yellow Duck', 1, 10.00, 8.00, 8.00, 0);
 -- -----
-INSERT INTO `lc_orders_items` (`id`, `order_id`, `item_id`, `stock_item_id`, `name`, `sku`, `gtin`, `quantity`, `price`, `tax`, `weight`, `weight_unit`) VALUES
-(1, 1, 1, 1, 'Yellow Duck', 'RD001-S', '4006381333931', 1, 8.00, 0, 1.00, 'kg');
+INSERT INTO `lc_orders_stock_items` (`id`, `order_id`, `item_id`, `stock_item_id`, `name`, `sku`, `gtin`, `quantity`, `weight`, `weight_unit`) VALUES
+(1, 1, 1, 1, 'Yellow Duck', 'RD001-S', '4006381333931', 1, 1.00, 'kg');
 -- -----
 INSERT INTO `lc_products` (`id`, `status`, `brand_id`, `supplier_id`, `delivery_status_id`, `sold_out_status_id`, `default_category_id`, `code`, `name`, `quantity_unit_id`, `tax_class_id`, `default_image`, `valid_from`, `valid_to`, `updated_at`, `created_at`) VALUES
 (1, 1, 1, 0, 1, 2, 2, 'rd001', '{"en": "Yellow Duck"}', 1, 1, 'products/1-yellow-duck-1.webp', NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),

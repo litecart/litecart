@@ -2,14 +2,20 @@
 
 	### Database > Load Structure #######################################
 
-	if (!$structure = file_get_contents('structure.json')) {
-		throw new Exception('Could not read structure.json file.');
+	// Fetch MySQL table structures from structure.json
+	$structure_file = __DIR__ . '/../../structure.json';
+
+	if (!is_file($structure_file)) {
+		throw new Exception('Could not find structure.json');
 	}
 
-	// Insert some table prefixes in structure.json
+	// Read structure.json
+	$structure = file_get_contents($structure_file);
+
+	// Set table prefixes
 	$structure = str_replace('"table": "', '"table": "'. DB_TABLE_PREFIX, $structure);
 
-	// Decode database structure defined in structure.json
+	// Decode database structure
 	$structure = json_decode($structure, true);
 
 	// Check if structure.json could be decoded

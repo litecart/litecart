@@ -1,6 +1,6 @@
 <?php
 
-	require_once FS_DIR_APP . '/includes/config_writer.inc.php';
+	require_once __DIR__ . '/../config_writer.inc.php';
 
 	### Config > Write ############################################
 

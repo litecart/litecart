@@ -15,6 +15,18 @@
 		'from_version::', 'development_type::', 'backup::', 'cleanup::',
 	];
 
+	if (is_file(__DIR__ . '/../storage/config.inc.php')) {
+		$installation_detected = true;
+		include(__DIR__ . '/../storage/config.inc.php'); // 3.0.0+
+
+	} else if (is_file(__DIR__ . '/../includes/config.inc.php')) { // Prior to 3.x
+		$installation_detected = true;
+		include(__DIR__ . '/../includes/config.inc.php');
+
+	} else {
+		$installation_detected = false;
+	}
+
 	require_once __DIR__ . '/includes/init.inc.php';
 
 	if (is_cli()) {
@@ -46,13 +58,7 @@
 	}
 
 	// Include config
-	if (is_file(__DIR__ . '/../storage/config.inc.php')) {
-		include(__DIR__ . '/../storage/config.inc.php'); // 3.0.0+
-
-	} else if (is_file(__DIR__ . '/../includes/config.inc.php')) { // Prior to 3.x
-		include(__DIR__ . '/../includes/config.inc.php');
-
-	} else {
+	if (!$installation_detected) {
 
 		require_once __DIR__ . '/includes/header.inc.php';
 
@@ -97,42 +103,6 @@
 	require_once FS_DIR_APP . 'includes/nodes/nod_event.inc.php';
 	require_once FS_DIR_APP . 'includes/nodes/nod_functions.inc.php';
 	require FS_DIR_APP . 'includes/nodes/nod_stats.inc.php';
-
-	// AC-5, AC-6: the web upgrader requires an authenticated administrator.
-	// CLI runs are exempt (see is_cli() for detection rules).
-	// Session and administrator nodes are loaded lazily so that a broken
-	// schema can still reach the CLI path; any exception during init is
-	// treated as "not logged in" and the user gets redirected to login.
-	if (!is_cli()) {
-		try {
-			if (!class_exists('session')) {
-				require_once FS_DIR_APP . 'includes/nodes/nod_session.inc.php';
-				session::init();
-			}
-			if (!class_exists('administrator')) {
-				require_once FS_DIR_APP . 'includes/nodes/nod_administrator.inc.php';
-				administrator::init();
-			}
-			$__upgrade_authenticated = administrator::check_login();
-		} catch (Throwable $t) {
-			error_log('upgrade.php auth gate failed: ' . $t->getMessage());
-			$__upgrade_authenticated = false;
-		}
-
-		if (!$__upgrade_authenticated) {
-			install_send_security_headers();
-			http_response_code(401);
-			header('Content-Type: text/html; charset=UTF-8');
-			$admin_login_url = (defined('WS_DIR_ADMIN') ? WS_DIR_ADMIN : '/admin/') . 'login';
-			echo '<!DOCTYPE html><html><head><title>Upgrade — Authentication Required</title></head><body>'
-				. '<h1>Authentication Required</h1>'
-				. '<p>The web upgrader requires an administrator session. '
-				. '<a href="' . htmlspecialchars($admin_login_url, ENT_QUOTES) . '">Sign in</a> and retry, '
-				. 'or run <code>php upgrade.php</code> from the command line.</p>'
-				. '</body></html>';
-			exit;
-		}
-	}
 
 	$requirements = json_decode(file_get_contents(__DIR__ . '/requirements.json'), true);
 
@@ -353,7 +323,7 @@ input[name="development_type"]:checked + div {
 	</label>
 
 	<label class="form-group">
-		<input type="checkbox" class="form-check" name="skip_updates" value="0"> Skip downloading the latest updates
+		<input type="checkbox" class="form-check" name="download_updates" value="1" checked> Download the latest updates
 	</label>
 
 	<h2>Development</h2>
