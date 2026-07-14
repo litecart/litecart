@@ -137,8 +137,8 @@
 			$this->data['stock_options'] = database::query(
 				"select si.*, pso.*,
 					json_value(si.name, '$.". database::input(language::$selected['code']) ."') as name,
-					ifnull(ol.reserved, 0) as quantity_reserved,
-					si.quantity - ifnull(ol.reserved, 0) as quantity_available
+					ifnull(oi.reserved, 0) as quantity_reserved,
+					si.quantity - ifnull(oi.reserved, 0) as quantity_available
 				from ". DB_TABLE_PREFIX ."products_stock_options pso
 				left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
 
