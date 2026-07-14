@@ -195,9 +195,9 @@
 		echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 	}
 
-	if ($data_files = glob(__DIR__.'/data/*.csv')) {
+	if ($data_files = glob(__DIR__.'/../../data/*.csv')) {
 
-		echo '<p>Writing database table data from CSV files... ';
+		echo '<p>Writing database table data from CSV files... ' . PHP_EOL;
 
 		foreach ($data_files as $file) {
 
@@ -215,10 +215,10 @@
 
 			$rows = f::csv_decode($contents);
 
-			$query = "INSERT INTO `". database::input($table) ."` (". implode(', ', array_keys($rows[0])) .") VALUES ";
+			$query = "INSERT INTO `". database::input($table) ."` (`". implode('`, `', database::input(array_keys($rows[0]))) ."`) VALUES ";
 
 			foreach ($rows as $columns) {
-				$query .= "(". implode(', ', $columns) ."),";
+				$query .= "('". implode("', '", database::input($columns)) ."'),";
 			}
 
 			$query = rtrim($query, ',') . ";";
