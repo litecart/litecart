@@ -76,7 +76,3 @@
 	require_once __DIR__ . '/../../includes/shorthand.inc.php';
 
 	require_once __DIR__ . '/functions.inc.php';
-
-	// Lock-check is intentionally NOT enforced here.
-	// install.php enforces it explicitly (rejects when locked).
-	// upgrade.php must run *while* the lock is present (that's its job).

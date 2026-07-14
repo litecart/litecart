@@ -3,24 +3,10 @@
 	require_once __DIR__ . '/includes/init.inc.php';
 	require_once __DIR__ . '/includes/header.inc.php';
 
-	$countries_url = 'https://raw.githubusercontent.com/litecart/i18n/refs/heads/master/countries.csv';
-
-	if (!$response = file_get_contents($countries_url)) {
-		throw new Exception('Unable to retrieve country data');
-	}
-
-	if (!$result = f::csv_decode($response)) {
-		throw new Exception('Unable to parse country data');
-	}
-
-	$countries = array_column($result, 'name', 'code');
-
 	// Detect an existing installation
 	if (is_file(FS_DIR_APP . 'includes/config.inc.php') || is_file(FS_DIR_STORAGE . 'config.inc.php')) {
 		$installation_detected = true;
 	}
-
-	$requirements = json_decode(file_get_contents(__DIR__ . '/requirements.json'), true);
 
 	// Set defaults
 	if (!$_POST) {
@@ -30,6 +16,8 @@
 			?? $_SERVER['HTTP_X_COUNTRY']
 			?? '';
 	}
+
+	$requirements = json_decode(file_get_contents(__DIR__ . '/requirements.json'), true);
 
 	$writables = [
 		FS_DIR_STORAGE . 'cache/',
@@ -57,6 +45,18 @@
 		]) || empty($timezone[1])) continue;
 		$timezones[] = implode('/', $timezone);
 	}
+
+	// Get list over countries from the i18n repository
+	$countries = (function() {
+		if (!$response = file_get_contents('https://raw.githubusercontent.com/litecart/i18n/refs/heads/master/countries.csv')) {
+			throw new Error('Unable to retrieve country data');
+		}
+		if (!$result = f::csv_decode($response)) {
+			throw new Error('Unable to parse country data');
+		}
+		return array_column($result, 'name', 'code');
+	})();
+
 ?>
 <style>
 ul {

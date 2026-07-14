@@ -15,7 +15,7 @@
 	require_once __DIR__ . '/includes/app_header.inc.php';
 
 	// Process a CLI request
-	if ($_SERVER['SERVER_SOFTWARE'] == 'CLI') {
+	if (is_cli()) {
 
 		if (!isset($argv[1]) || (in_array($argv[1], ['help', '-h', '--help', '/?']))) {
 			echo implode(PHP_EOL, [

@@ -1,10 +1,6 @@
 <?php
 
-	ini_set('display_errors', 'On');
-	mb_internal_encoding('UTF-8');
-	mb_http_output('UTF-8');
-
-	// CLI option list used by the shared bootstrap when getopt() runs.
+	// CLI option list used by the shared init when getopt() runs.
 	$INSTALL_CLI_OPTIONS = [
 		'db_server::', 'db_username:', 'db_password::', 'db_database:', 'db_table_prefix::', 'db_collation::',
 		'document_root:', 'timezone::', 'backend_alias::', 'username::', 'password::', 'development_type::', 'cleanup::',
