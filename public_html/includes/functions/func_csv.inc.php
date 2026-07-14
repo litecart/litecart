@@ -40,7 +40,7 @@
 		return preg_replace('#(\r\n?|\n)#', $eol, $output);
 	}
 
-	function csv_decode(string $string, string $delimiter='', string $enclosure='"', string $escape='"', string $charset='utf-8'): array {
+	function csv_decode(string $string, string $delimiter='', string $enclosure='"', string $escape='"', string $charset='utf-8'): array|false {
 
 		$output = [];
 
