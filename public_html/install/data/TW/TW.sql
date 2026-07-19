@@ -1,13 +1,3 @@
-INSERT INTO `lc_languages` (`status`, `code`, `code2`, `name`, `locale`, `charset`, `raw_date`, `format_date`, `format_time`, `format_datetime`, `decimal_point`, `thousands_sep`, `currency_code`, `currency_size`, `image`, `direction`, `updated_at`, `created_at`) VALUES
-('1', 'zh-TW', 'zho', '繁體中文', 'zh_TW.UTF-8', 'UTF-8', '%Y年%m月%e日', '%Y/%m/%e', '%H:%M', '%Y/%m/%e %H:%M', '.', ',', 'TWD', '0', '', 'ltr', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
--- -----
-INSERT INTO `lc_currencies` (`status`, `code`, `number`, `name`, `value`, `decimals`, `prefix`, `suffix`, `priority`, `updated_at`) VALUES
-(WD', '901', 'New Taiwan Dollar', '1.00000000', '0', 'NT$', '', '1', CURRENT_TIMESTAMP);
--- -----
-ALTER TABLE `lc_products` ADD `price_twd` DECIMAL(11,4) NOT NULL AFTER `price_usd`;
--- -----
-ALTER TABLE `lc_products` ADD `campaign_price_twd` DECIMAL(11,4) NOT NULL AFTER `campaign_price_usd`;
--- -----
 UPDATE `lc_settings` SET `value` = 'TWD' WHERE `key` = 'default_currency_code';
 -- -----
 UPDATE `lc_settings` SET `value` = 'TWD' WHERE `key` = 'store_currency_code';

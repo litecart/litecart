@@ -1,0 +1,2 @@
+id,status,featured,code,name,keywords,image,updated_at,created_at
+1,1,1,acme,ACME Corp.,,brands/1-acme-corp.webp,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP

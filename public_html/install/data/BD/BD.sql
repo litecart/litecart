@@ -1,13 +1,3 @@
-INSERT INTO `lc_languages` (`status`, `code`, `code2`, `name`, `locale`, `charset`, `raw_date`, `format_date`, `format_time`, `format_datetime`, `decimal_point`, `thousands_sep`, `currency_code`, `currency_size`, `image`, `direction`, `updated_at`, `created_at`) VALUES
-('1', 'bn', 'ben', 'বাংলা', 'bn_BD.UTF-8', 'UTF-8', '%e %B %Y', '%e %b %Y', '%H:%M', '%e %b %Y %H:%M', '.', ',', 'BDT', '2', '', 'ltr', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
--- -----
-INSERT INTO `lc_currencies` (`status`, `code`, `number`, `name`, `value`, `decimals`, `prefix`, `suffix`, `priority`, `updated_at`) VALUES
-('1', 'BDT', '050', 'Bangladeshi Taka', '1.00000000', '2', '৳', '', '1', CURRENT_TIMESTAMP);
--- -----
-ALTER TABLE `lc_products` ADD `price_bdt` DECIMAL(11,4) NOT NULL AFTER `price_usd`;
--- -----
-ALTER TABLE `lc_products` ADD `campaign_price_bdt` DECIMAL(11,4) NOT NULL AFTER `campaign_price_usd`;
--- -----
 UPDATE `lc_settings` SET `value` = 'BDT' WHERE `key` = 'default_currency_code';
 -- -----
 UPDATE `lc_settings` SET `value` = 'BDT' WHERE `key` = 'store_currency_code';

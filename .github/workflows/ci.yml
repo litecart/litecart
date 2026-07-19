@@ -146,6 +146,15 @@ jobs:
       - name: Run installer via CLI
         run: ${{ env.INSTALLER_CMD }}
 
+      - name: Verify installation
+        run: |
+          test -f public_html/storage/config.inc.php && echo "config.inc.php exists"
+          ! grep -q '{STORAGE_FOLDER}' public_html/storage/config.inc.php
+          mysql -h 127.0.0.1 -u litecart -plitecart litecart \
+            -e "SELECT COUNT(*) as tables FROM information_schema.tables WHERE table_schema='litecart' AND table_name LIKE 'lc_%';"
+          mysql -h 127.0.0.1 -u litecart -plitecart litecart \
+            -e "SELECT COUNT(*) as sessions_table FROM information_schema.tables WHERE table_schema='litecart' AND table_name='lc_sessions';"
+
   platform-tests:
     name: Platform Tests
     runs-on: ubuntu-latest

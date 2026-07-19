@@ -1,9 +1,4 @@
-INSERT INTO `lc_currencies` (`status`, `code`, `number`, `name`, `value`, `decimals`, `prefix`, `suffix`, `priority`, `updated_at`) VALUES
-('1', 'AOA', '973', 'Angolan Kwanza', '1.00000000', '2', '', ' Kz', '1', CURRENT_TIMESTAMP);
--- -----
 ALTER TABLE `lc_products` ADD `price_aoa` DECIMAL(11,4) NOT NULL AFTER `price_usd`
--- -----
-ALTER TABLE `lc_products` ADD `campaign_price_aoa` DECIMAL(11,4) NOT NULL AFTER `campaign_price_usd`;
 -- -----
 UPDATE `lc_settings` SET `value` = 'AOA' WHERE `key` = 'default_currency_code'
 -- -----

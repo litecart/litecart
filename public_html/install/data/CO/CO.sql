@@ -1,10 +1,3 @@
-INSERT INTO `lc_currencies` (`status`, `code`, `number`, `name`, `value`, `decimals`, `prefix`, `suffix`, `priority`, `updated_at`) VALUES
-('1', 'COP', '170', 'Colombian Peso', '1.00000000', '2', '$', '', '1', CURRENT_TIMESTAMP);
--- -----
-ALTER TABLE `lc_products` ADD `price_cop` DECIMAL(11,4) NOT NULL AFTER `price_usd`;
--- -----
-ALTER TABLE `lc_products` ADD `campaign_price_cop` DECIMAL(11,4) NOT NULL AFTER `campaign_price_usd`;
--- -----
 UPDATE `lc_settings` SET `value` = 'COP' WHERE `key` = 'default_currency_code';
 -- -----
 UPDATE `lc_settings` SET `value` = 'COP' WHERE `key` = 'store_currency_code';

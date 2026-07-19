@@ -1,0 +1,2 @@
+status,code,code2,name,locale,raw_date,format_date,format_time,format_datetime,decimal_point,thousands_sep,direction,updated_at,created_at
+1,si,sin,සිංහල,si_LK.UTF-8,%Y %B %e,%Y %b %e,%H:%M,%Y %b %e %H:%M,.,",",ltr,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP

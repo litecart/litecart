@@ -1,0 +1,3 @@
+id,code,name,sort,updated_at,created_at
+1,size,"{""en"": ""Size""}",alphabetical,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+2,color,"{""en"": ""Color""}",priority,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP

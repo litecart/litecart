@@ -1,0 +1,2 @@
+status,code,code2,name,locale,raw_date,format_date,format_time,format_datetime,decimal_point,thousands_sep,direction,updated_at,created_at
+1,zh-TW,zho,繁體中文,zh_TW.UTF-8,%Y年%m月%e日,%Y/%m/%e,%H:%M,%Y/%m/%e %H:%M,.,",",ltr,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP

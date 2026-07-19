@@ -1,0 +1,5 @@
+id,name,description,updated_at,created_at
+1,Australia,All states in Australia,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+2,Canada,All provinces in Canada,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+3,European Union,All countries in the European Union,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+4,United States,All states in the United States,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP

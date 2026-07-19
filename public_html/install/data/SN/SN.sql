@@ -1,10 +1,3 @@
-INSERT INTO `lc_currencies` (`status`, `code`, `number`, `name`, `value`, `decimals`, `prefix`, `suffix`, `priority`, `updated_at`) VALUES
-('1', 'XOF', '952', 'West African CFA Franc', '1.00000000', '0', '', ' CFA', '1', CURRENT_TIMESTAMP);
--- -----
-ALTER TABLE `lc_products` ADD `price_xof` DECIMAL(11,4) NOT NULL AFTER `price_usd`;
--- -----
-ALTER TABLE `lc_products` ADD `campaign_price_xof` DECIMAL(11,4) NOT NULL AFTER `campaign_price_usd`;
--- -----
 UPDATE `lc_settings` SET `value` = 'XOF' WHERE `key` = 'default_currency_code';
 -- -----
 UPDATE `lc_settings` SET `value` = 'XOF' WHERE `key` = 'store_currency_code';

@@ -173,29 +173,7 @@
 
 	### Database > Tables > Data ##################################
 
-	if (file_exists(__DIR__.'/data.sql')) {
-
-		echo '<p>Writing database table data from SQL file... ';
-
-		$sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, file_get_contents(__DIR__.'/data.sql'));
-
-		foreach ([
-			'{STORE_NAME}' => isset($_REQUEST['store_name']) ? $_REQUEST['store_name'] : '',
-			'{STORE_EMAIL}' => isset($_REQUEST['store_email']) ? $_REQUEST['store_email'] : '',
-			'{STORE_COUNTRY_CODE}' => isset($_REQUEST['country_code']) ? $_REQUEST['country_code'] : '',
-		] as $search => $replace) {
-			$sql = str_replace($search, database::input($replace), $sql);
-		}
-
-		foreach (preg_split('#^-- -----*$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {
-			$query = preg_replace('#^-- .*?\R+#m', '', $query);
-			database::query($query);
-		}
-
-		echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
-	}
-
-	if ($data_files = glob(__DIR__.'/../../data/*.csv')) {
+	if ($data_files = glob(__DIR__.'/../../data/default/*.csv')) {
 
 		echo '<p>Writing database table data from CSV files... ' . PHP_EOL;
 
@@ -209,6 +187,7 @@
 				'{STORE_NAME}' => isset($_REQUEST['store_name']) ? $_REQUEST['store_name'] : '',
 				'{STORE_EMAIL}' => isset($_REQUEST['store_email']) ? $_REQUEST['store_email'] : '',
 				'{STORE_COUNTRY_CODE}' => isset($_REQUEST['country_code']) ? $_REQUEST['country_code'] : '',
+				'CURRENT_TIMESTAMP' => date('Y-m-d H:i:s'),
 			] as $search => $replace) {
 				$contents = str_replace($search, database::input($replace), $contents);
 			}
@@ -230,6 +209,28 @@
 		}
 
 		echo PHP_EOL;
+	}
+
+	if (file_exists(__DIR__.'/../../data/default/data.sql')) {
+
+		echo '<p>Writing database table data from SQL file... ';
+
+		$sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, file_get_contents(__DIR__.'/../../data/default/data.sql'));
+
+		foreach ([
+			'{STORE_NAME}' => isset($_REQUEST['store_name']) ? $_REQUEST['store_name'] : '',
+			'{STORE_EMAIL}' => isset($_REQUEST['store_email']) ? $_REQUEST['store_email'] : '',
+			'{STORE_COUNTRY_CODE}' => isset($_REQUEST['country_code']) ? $_REQUEST['country_code'] : '',
+		] as $search => $replace) {
+			$sql = str_replace($search, database::input($replace), $sql);
+		}
+
+		foreach (preg_split('#^-- -----*$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {
+			$query = preg_replace('#^-- .*?\R+#m', '', $query);
+			database::query($query);
+		}
+
+		echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 	}
 
 	### Admin > Database > Administrators ##################################

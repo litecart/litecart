@@ -1,0 +1,2 @@
+id,order_id,item_id,stock_item_id,name,sku,gtin,quantity,weight,weight_unit
+1,1,1,1,Yellow Duck,RD001-S,4006381333931,1,1.00,kg

@@ -1,0 +1,3 @@
+status,code,code2,name,locale,locale_intl,raw_date,raw_time,raw_datetime,format_date,format_time,format_datetime,decimal_point,thousands_sep,priority,updated_at,created_at
+1,fr,fra,Français,"fr_LU.utf8,fr_LU.UTF-8,french",fr_LU,Y-m-d,H:i,Y-m-d H:i,%b %e %Y,%H:%M,%b %e %Y %H:%M,",", ,0,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+1,de,deu,Deutsch,"de_LU.utf8,de_LU.UTF-8,german",de_LU,Y-m-d,H:i,Y-m-d H:i,%b %e %Y,%H:%M,%b %e %Y %H:%M,",", ,0,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP

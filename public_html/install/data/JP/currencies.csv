@@ -1,0 +1,2 @@
+status,code,number,name,value,decimals,prefix,suffix,priority,updated_at,created_at
+1,JPY,392,円,1.00,0,¥,,0,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP

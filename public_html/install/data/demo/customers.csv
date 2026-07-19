@@ -1,0 +1,2 @@
+id,code,status,email,tax_id,company,firstname,lastname,address1,address2,postcode,city,country_code,zone_code,phone,different_shipping_address,shipping_company,shipping_firstname,shipping_lastname,shipping_address1,shipping_address2,shipping_city,shipping_postcode,shipping_country_code,shipping_zone_code,shipping_phone,updated_at,created_at
+1,,1,user@email.com,0000000000,ACME Corp.,John,Doe,Longway Street 1,,12345,Newtown,US,CA,1-555-123-4567,0,,,,,,,,,,,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP

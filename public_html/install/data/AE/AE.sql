@@ -1,10 +1,3 @@
-INSERT INTO `lc_currencies` (`status`, `code`, `number`, `name`, `value`, `decimals`, `prefix`, `suffix`, `priority`, `updated_at`) VALUES
-('1', 'AED', '784', 'UAE Dirham', '1.00000000', '2', '', ' د.إ', '1', CURRENT_TIMESTAMP);
--- -----
-ALTER TABLE `lc_products` ADD `price_aed` DECIMAL(11,4) NOT NULL AFTER `price_usd`;
--- -----
-ALTER TABLE `lc_products` ADD `campaign_price_aed` DECIMAL(11,4) NOT NULL AFTER `campaign_price_usd`;
--- -----
 UPDATE `lc_settings` SET `value` = 'AED' WHERE `key` = 'default_currency_code';
 -- -----
 UPDATE `lc_settings` SET `value` = 'AED' WHERE `key` = 'store_currency_code';

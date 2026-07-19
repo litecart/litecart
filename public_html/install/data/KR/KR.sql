@@ -1,13 +1,3 @@
-INSERT INTO `lc_languages` (`status`, `code`, `code2`, `name`, `locale`, `charset`, `raw_date`, `format_date`, `format_time`, `format_datetime`, `decimal_point`, `thousands_sep`, `currency_code`, `currency_size`, `image`, `direction`, `updated_at`, `created_at`) VALUES
-('1', 'ko', 'kor', '한국어', 'ko_KR.UTF-8', 'UTF-8', '%Y년 %m월 %e일', '%Y. %m. %e.', '%H:%M', '%Y. %m. %e. %H:%M', '.', ',', 'KRW', '0', '', 'ltr', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
--- -----
-INSERT INTO `lc_currencies` (`status`, `code`, `number`, `name`, `value`, `decimals`, `prefix`, `suffix`, `priority`, `updated_at`) VALUES
-('1', 'KRW', '410', 'South Korean Won', '1.00000000', '0', '₩', '', '1', CURRENT_TIMESTAMP);
--- -----
-ALTER TABLE `lc_products` ADD `price_krw` DECIMAL(11,4) NOT NULL AFTER `price_usd`;
--- -----
-ALTER TABLE `lc_products` ADD `campaign_price_krw` DECIMAL(11,4) NOT NULL AFTER `campaign_price_usd`;
--- -----
 UPDATE `lc_settings` SET `value` = 'KRW' WHERE `key` = 'default_currency_code';
 -- -----
 UPDATE `lc_settings` SET `value` = 'KRW' WHERE `key` = 'store_currency_code';

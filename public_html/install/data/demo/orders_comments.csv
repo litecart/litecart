@@ -1,0 +1,5 @@
+id,order_id,author,text,hidden,created_at
+1,1,customer,This is a message from the customer.,0,CURRENT_TIMESTAMP
+2,1,staff,This is a message from the store crew.,0,CURRENT_TIMESTAMP
+3,1,staff,This is a hidden message by the store crew.,1,CURRENT_TIMESTAMP
+4,1,system,Order status changed to Dispatched,1,CURRENT_TIMESTAMP

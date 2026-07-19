@@ -1,0 +1,2 @@
+id,order_id,product_id,name,quantity,regular_price,final_price,sum,sum_tax
+1,1,1,Yellow Duck,1,10.00,8.00,8.00,0

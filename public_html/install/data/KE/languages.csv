@@ -1,0 +1,2 @@
+status,code,code2,name,locale,raw_date,format_date,format_time,format_datetime,decimal_point,thousands_sep,direction,updated_at,created_at
+1,sw,swa,Kiswahili,sw_KE.UTF-8,%e %B %Y,%e %b %Y,%H:%M,%e %b %Y %H:%M,.,",",ltr,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP

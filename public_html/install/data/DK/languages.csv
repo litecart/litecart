@@ -1,0 +1,2 @@
+status,code,code2,name,locale,locale_intl,raw_date,raw_time,raw_datetime,format_date,format_time,format_datetime,decimal_point,thousands_sep,priority,updated_at,created_at
+1,da,dan,Danske,"da_DK.utf8,da_DK.UTF-8,danish",da_DK,Y-m-d,H:i,Y-m-d H:i,%b %e %Y,%H:%M,%b %e %Y %H:%M,",", ,0,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP

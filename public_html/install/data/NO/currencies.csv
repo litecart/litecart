@@ -1,0 +1,2 @@
+status,code,number,name,value,decimals,prefix,suffix,priority,updated_at,created_at
+1,NOK,578,Norske kroner,1.00,2,kr. ,,0,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP

@@ -1,0 +1,2 @@
+status,code,number,name,value,decimals,prefix,suffix,priority,updated_at,created_at
+1,CLP,152,Peso Chileno,1.00,0,$,,0,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP

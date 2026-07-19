@@ -1,0 +1,2 @@
+status,code,code2,name,locale,raw_date,format_date,format_time,format_datetime,decimal_point,thousands_sep,direction,updated_at,created_at
+1,tl,tgl,Tagalog,tl_PH.UTF-8,"%B %e, %Y","%b %e, %Y",%I:%M %p,"%b %e, %Y %I:%M %p",.,",",ltr,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP

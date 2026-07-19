@@ -1,0 +1,2 @@
+status,code,number,name,value,decimals,prefix,suffix,priority,updated_at,created_at
+1,VND,704,Đồng,1.00,0,₫,,0,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP

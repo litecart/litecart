@@ -1,0 +1,4 @@
+id,brand_id,sku,gtin,name,image,weight,weight_unit,length,width,height,length_unit,quantity,backordered,priority,updated_at,created_at
+1,1,RD001-S,4006381333931,"{""en"": ""Yellow Duck (Small)""}",stock_items/1-yellow-duck-small.webp,1.0000,kg,10.0000,10.0000,10.0000,cm,50.0000,0.0000,1,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+2,1,RD001-M,4006381333932,"{""en"": ""Yellow Duck (Medium)""}",stock_items/2-yellow-duck-medium.webp,1.0000,kg,12.0000,12.0000,12.0000,cm,50.0000,0.0000,2,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+3,1,RD001-L,4006381333933,"{""en"": ""Yellow Duck (Large)""}",stock_items/3-yellow-duck-large.webp,1.0000,kg,15.0000,15.0000,15.0000,cm,0.0000,50.0000,3,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP

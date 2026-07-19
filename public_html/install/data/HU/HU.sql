@@ -1,12 +1,4 @@
-INSERT INTO `lc_languages` (`status`, `code`, `code2`, `name`, `locale`, `locale_intl`, `raw_date`, `raw_time`, `raw_datetime`, `format_date`, `format_time`, `format_datetime`, `decimal_point`, `thousands_sep`, `priority`, `updated_at`, `created_at`) VALUES
-(1, 'hu', 'hun', 'Magyar', 'hu_HU.utf8,hu_HU.UTF-8,hungarian', 'hu_HU', 'Y-m-d', 'H:i', 'Y-m-d H:i', '%b %e %Y', '%H:%M', '%b %e %Y %H:%M', ',', ' ', 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
--- -----
 ALTER TABLE `lc_translations` ADD `text_hu` text NOT NULL AFTER `text_en`;
--- -----
-INSERT INTO `lc_currencies` (`status`, `code`, `number`, `name`, `value`, `decimals`, `prefix`, `suffix`, `priority`, `updated_at`, `created_at`) VALUES
-(1, 'HUF', '348', 'Forint', 1.00, 0, '', ' Ft', 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
--- -----
-ALTER TABLE `lc_products_prices` ADD `HUF` DECIMAL(11,4) NOT NULL;
 -- -----
 UPDATE `lc_settings` SET `value` = 'HUF' WHERE `key` in ('store_currency_code', 'default_currency_code');
 -- -----
@@ -54,11 +46,6 @@ INSERT INTO `lc_zones_to_geo_zones` (`geo_zone_id`, `country_code`, `zone_code`,
 (@EU_VAT_ZONE, 'SE', '', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 (@EU_VAT_ZONE, 'SI', '', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 (@EU_VAT_ZONE, 'SK', '', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
--- -----
-INSERT INTO `lc_tax_classes` (`name`, `description`, `updated_at`, `created_at`) VALUES
-('Standard', '', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('Reduced', '', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('Low', '', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 -- -----
 INSERT INTO `lc_tax_rates` (`tax_class_id`, `geo_zone_id`, `name`, `description`, `rate`, `rule_companies_with_tax_id`, `rule_companies_without_tax_id`, `rule_individuals_with_tax_id`, `rule_individuals_without_tax_id`, `updated_at`, `created_at`) VALUES
 (1, @HU_VAT_ZONE, 'HU VAT 27%', '', 27.0000, 1, 1, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),

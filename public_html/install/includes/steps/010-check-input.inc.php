@@ -29,6 +29,14 @@
 		throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . 'No MySQL/MariaDB database provided</p>' . PHP_EOL  . PHP_EOL);
 	}
 
+	if (empty($_REQUEST['country_code'])) {
+		throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . 'No country code provided</p>' . PHP_EOL  . PHP_EOL);
+	}
+
+	if (!preg_match('#^[A-Z]{2}$#', $_REQUEST['country_code'])) {
+		throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . 'Invalid country code provided</p>' . PHP_EOL  . PHP_EOL);
+	}
+
 	if (empty($_REQUEST['timezone'])) {
 		throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . 'No time zone provided</p>' . PHP_EOL  . PHP_EOL);
 	}

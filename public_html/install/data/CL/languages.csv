@@ -1,0 +1,2 @@
+status,code,code2,name,locale,locale_intl,raw_date,raw_time,raw_datetime,format_date,format_time,format_datetime,decimal_point,thousands_sep,priority,updated_at,created_at
+1,es,spa,Español,"es_CL.utf8,es_CL.UTF-8,spanish",es_CL,Y-m-d,H:i,Y-m-d H:i,%b %e %Y,%H:%M,%b %e %Y %H:%M,",",.,0,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP

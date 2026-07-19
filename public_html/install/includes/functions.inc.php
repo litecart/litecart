@@ -58,10 +58,11 @@
 
 	function br($output) {
 		if (is_array($output)) {
-			echo implode('<br>'.PHP_EOL, $output);
+			echo implode('<br>' . PHP_EOL, $output);
 		} else {
-			echo $output .'<br>'. PHP_EOL;
+			echo $output;
 		}
+		echo '<br>' . PHP_EOL;
 	}
 
 	function return_bytes($string) {
