@@ -43,20 +43,19 @@
 			if (!self::$_cache['translations'] = cache::get(self::$_cache_token)) {
 				self::$_cache['translations'] = [];
 
-				// Guard: the selected code is embedded as a backtick-less
-				// column reference below. If it isn't a safe identifier
-				// (legacy data from before PROJ-22 hardening), fall back
-				// to text_en so the storefront still renders instead of
-				// crashing — and leave a trace in errors.log.
+				// Guard: the selected code is embedded in the JSON path
+				// expression below. If it isn't a safe identifier (legacy
+				// data from before identifier hardening), fall back to
+				// "en" so the storefront still renders instead of crashing.
 				try {
-					$selected_column = 'text_' . database::identifier(self::$selected['code']);
+					$selected_path = '$.' . database::identifier(self::$selected['code']);
 				} catch (InvalidArgumentException $e) {
-					error_log('nod_language: skipping invalid language code ' . var_export(self::$selected['code'], true) . ', falling back to text_en');
-					$selected_column = 'text_en';
+					error_log('nod_language: skipping invalid language code ' . var_export(self::$selected['code'], true) . ', falling back to en');
+					$selected_path = '$.en';
 				}
 
 				database::query(
-					"select id, code, if($selected_column != '', $selected_column, text_en) as text
+					"select id, code, json_unquote(coalesce(nullif(json_value(`text`, '$selected_path'), ''), json_value(`text`, '$.en'))) as text
 					from ". DB_TABLE_PREFIX ."translations
 					where ". ((isset(route::$request['endpoint']) && route::$request['endpoint'] == 'backend') ? "backend = 1" : "frontend = 1") ."
 					having text != '';"
@@ -264,7 +263,8 @@
 
 			// Get translation from database
 			$translation = database::query(
-				"select id, text_en, `text_". $language_code ."` from ". DB_TABLE_PREFIX ."translations
+				"select id, json_value(`text`, '$.en') as text_en, json_value(`text`, '$.". database::input($language_code) ."') as text_". $language_code ."
+				from ". DB_TABLE_PREFIX ."translations
 				where code = '". database::input($code) ."'
 				limit 1;"
 			)->fetch();
@@ -273,9 +273,13 @@
 			if (!$translation) {
 				database::query(
 					"insert into ". DB_TABLE_PREFIX ."translations
-					(code, text_en, html, updated_at, created_at)
-					values ('". database::input($code) ."', '". database::input($default, true) ."', '". (($default != strip_tags($default)) ? 1 : 0) ."', '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
+					(code, `text`, html, updated_at, created_at)
+					values ('". database::input($code) ."', '{\"en\":\"". database::input($default, true) ."\"}', '". (($default != strip_tags($default)) ? 1 : 0) ."', '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
 				);
+				$translation = [
+					'text_en' => $default,
+					'text_'.$language_code => '',
+				];
 			}
 
 			// Return translation
@@ -287,21 +291,23 @@
 			if (!empty($translation['text_en'])) {
 
 				// Find same english translation by different key
+				$selected_code_path = '$.'. database::input(self::$selected['code']);
 				$secondary_translation = database::query(
-					"select id, text_en, `text_". $language_code ."` from ". DB_TABLE_PREFIX ."translations
-					where text_en = '". database::input($translation['text_en']) ."'
-					and (text_en is not null and text_en != '')
-					and (text_". self::$selected['code'] ." is not null and text_". self::$selected['code'] ." != '')
+					"select id, json_value(`text`, '$.en') as text_en, json_value(`text`, '$.". database::input($language_code) ."') as text_". $language_code ."
+					from ". DB_TABLE_PREFIX ."translations
+					where json_value(`text`, '$.en') = '". database::input($translation['text_en']) ."'
+					and (json_value(`text`, '$.en') is not null and json_value(`text`, '$.en') != '')
+					and (json_value(`text`, '$selected_code_path') is not null and json_value(`text`, '$selected_code_path') != '')
 					limit 1;"
 				)->fetch();
 
 				if ($secondary_translation) {
 					database::query(
 						"update ". DB_TABLE_PREFIX ."translations
-						set `text_". $language_code ."` = '". database::input($translation['text_'.$language_code], true) ."',
+						set `text` = json_set(`text`, '$.". database::input($language_code) ."', '". database::input($secondary_translation['text_'.$language_code] ?? '', true) ."'),
 						updated_at = '". date('Y-m-d H:i:s') ."'
-						where text_en = '". database::input($translation['text_en']) ."'
-						and text_". self::$selected['code'] ." = '';"
+						where json_value(`text`, '$.en') = '". database::input($translation['text_en']) ."'
+						and coalesce(json_value(`text`, '$.". database::input(self::$selected['code']) ."'), '') = '';"
 					);
 
 					return self::$_cache['translations'][$language_code][$code] = $secondary_translation['text_'.$language_code];

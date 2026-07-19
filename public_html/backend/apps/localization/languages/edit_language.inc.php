@@ -27,7 +27,8 @@
 			// AC-7: server-side validation of the language code. The HTML
 			// input has a pattern attribute, but that is client-side only —
 			// an attacker can POST any value. The code is persisted and
-			// later spliced into `text_<code>` column names in DDL, so it
+			// later spliced into JSON paths inside the `text` column on
+			// lc_translations, so it must be a safe identifier.
 			// must match a strict locale pattern before we accept it.
 			if (!preg_match('#^[a-z]{2,5}(-[a-z0-9]{2,8})?$#i', $_POST['code'])) {
 				throw new Exception(t('error_invalid_language_code', 'Language code must be a BCP-47 style locale (e.g. "en", "de", "zh-cn")'));
@@ -173,14 +174,14 @@
 
 					$csv = f::csv_decode($response);
 
-					foreach ($csv as $row) {
-						database::query(
-							"insert into ". DB_TABLE_PREFIX ."translations
-							(`code`, `text_". database::identifier($language->data['code']) ."`)
-							values ('". database::input($row['code']) ."', '". database::input($row['text_'.$language->data['code']]) ."')
-							on duplicate key update `text_". database::identifier($language->data['code']) ."` = '". database::input($row['text_'.$language->data['code']]) ."');"
-						);
-					}
+				foreach ($csv as $row) {
+					database::query(
+						"insert into ". DB_TABLE_PREFIX ."translations
+						(`code`, `text`)
+						values ('". database::input($row['code']) ."', json_object('". database::input($language->data['code']) ."', '". database::input($row['text_'.$language->data['code']]) ."'))
+						on duplicate key update `text` = json_set(coalesce(`text`, '{}'), '$.". database::input($language->data['code']) ."', '". database::input($row['text_'.$language->data['code']]) ."');"
+					);
+				}
 
 					language::set($language->data['code']);
 

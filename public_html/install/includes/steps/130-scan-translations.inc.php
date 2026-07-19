@@ -31,8 +31,8 @@
 	foreach ($translations as $code => $translation) {
 		database::query(
 			"insert ignore into ". DB_TABLE_PREFIX ."translations
-			(code, text_en, html, created_at)
-			values ('". database::input($code) ."', '". database::input($translation, true) ."', '". (($translation != strip_tags($translation)) ? 1 : 0) ."', '". date('Y-m-d H:i:s') ."');"
+			(code, `text`, html, created_at)
+			values ('". database::input($code) ."', '{\"en\":\"". database::input($translation, true) ."\"}', '". (($translation != strip_tags($translation)) ? 1 : 0) ."', '". date('Y-m-d H:i:s') ."');"
 		);
 	}
 

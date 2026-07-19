@@ -233,6 +233,13 @@
 			'translatable' => ['description', 'collected_data', 'purposes'],
 		],
 		[
+			'id' => 'translations',
+			'name' => t('title_translations', 'Translations'),
+			'entity' => 'translation',
+			'identified_by' => ['code'],
+			'translatable' => ['text'],
+		],
+		[
 			'id' => 'vmods',
 			'name' => t('title_vmods', 'vMods'),
 			'entity' => 'vmod',

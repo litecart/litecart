@@ -1,5 +1,3 @@
-ALTER TABLE `lc_translations` ADD `text_pl` text NOT NULL AFTER `text_en`;
--- -----
 UPDATE `lc_settings` SET `value` = 'PLN' WHERE `key` in ('store_currency_code', 'default_currency_code');
 -- -----
 UPDATE `lc_currencies` SET `value` = 3.86 WHERE `code` = 'USD' LIMIT 1;

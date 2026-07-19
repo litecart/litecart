@@ -124,17 +124,15 @@
 					throw new Exception('You cannot not rename the english language because it is used for the PHP framework.');
 				}
 
-				// Rename language column in translations table
-
-				if (database::query(
-					"show fields from ". DB_TABLE_PREFIX ."translations
-					where `Field` = 'text_". database::identifier($this->data['code']) ."';"
-				)->num_rows) {
-					database::query(
-						"alter table ". DB_TABLE_PREFIX ."translations
-						change `text_". database::identifier($this->previous['code']) ."` `text_". database::identifier($this->data['code']) ."` text not null;"
-					);
-				}
+				// Rename language code in translations table
+				database::query(
+					"update ". DB_TABLE_PREFIX ."translations
+					set `text` = if(
+							json_contains_path(`text`, 'one', '$.". database::input($this->previous['code']) ."'),
+							json_set(json_remove(`text`, '$.". database::input($this->previous['code']) ."'),
+							'$.". database::input($this->data['code']) ."', json_value(`text`, '$.". database::input($this->previous['code']) ."')
+						), `text`);"
+				);
 
 				// Rename language code in entity collections
 
@@ -159,18 +157,6 @@
 				}
 
 			} else {
-
-				// Add new language to translations table if not already exists.
-
-				if (!database::query(
-					"show fields from ". DB_TABLE_PREFIX ."translations
-					where `Field` = 'text_". database::identifier($this->data['code']) ."';"
-				)->num_rows) {
-					database::query(
-						"alter table ". DB_TABLE_PREFIX ."translations
-						add `text_". database::identifier($this->data['code']) ."` text not null after text_en;"
-					);
-				}
 
 				// Add new language to entity collections
 
@@ -215,28 +201,11 @@
 				limit 1;"
 			);
 
-			// If the persisted code is a legacy/invalid identifier we still
-			// want the delete above to succeed — the bogus row is removed —
-			// but skip the column drop rather than crashing with a helper
-			// exception. A maligned code almost certainly never had a real
-			// text_<code> column anyway.
-			try {
-
-				$safe_code = database::identifier($this->data['code']);
-
-				if (database::query(
-					"show fields from ". DB_TABLE_PREFIX ."translations
-					where `Field` = 'text_". $safe_code ."';"
-				)->num_rows) {
-					database::query(
-						"alter table ". DB_TABLE_PREFIX ."translations
-						drop `". 'text_' . $safe_code ."`;"
-					);
-				}
-
-			} catch (InvalidArgumentException $e) {
-				error_log('ent_language::delete: skipping text_<code> drop for invalid code ' . var_export($this->data['code'], true));
-			}
+			// Drop the language key from every translation row.
+			database::query(
+				"update ". DB_TABLE_PREFIX ."translations
+				set `text` = json_remove(`text`, '$.". database::input($this->data['code']) ."');"
+			);
 
 			$collections = include 'app://includes/collections.inc.php';
 

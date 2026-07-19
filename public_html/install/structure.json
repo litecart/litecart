@@ -1893,13 +1893,16 @@
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"code": { "type": "VARCHAR", "length": 128, "default": "''" },
-				"text_en": { "type": "TEXT", "default": "''" },
+				"text": { "type": "MEDIUMTEXT", "default": "'{}'", "comment": "TYPE:JSON_TRANSLATIONS" },
 				"html": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
 				"frontend": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
 				"backend": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
 				"last_accessed": { "type": "TIMESTAMP", "nullable": true },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
 				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
+			},
+			"check_constraints": {
+				"chk_text": "JSON_VALID(text)"
 			},
 			"primary_key": ["id"],
 			"unique_keys": {

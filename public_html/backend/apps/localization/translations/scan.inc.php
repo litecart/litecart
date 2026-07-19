@@ -59,7 +59,7 @@
 				$found++;
 
 				$row = database::query(
-					"select text_en from ". DB_TABLE_PREFIX ."translations
+					"select json_value(`text`, '$.en') as text_en from ". DB_TABLE_PREFIX ."translations
 					where code = '". database::input($code) ."'
 					limit 1;"
 				)->fetch();
@@ -70,8 +70,8 @@
 
 					database::query(
 						"insert into ". DB_TABLE_PREFIX ."translations
-						(code, text_en, html, created_at)
-						values ('". database::input($code) ."', '". database::input($translation, true) ."', '". (($translation != strip_tags($translation)) ? 1 : 0) ."', '". date('Y-m-d H:i:s') ."');"
+						(code, `text`, html, created_at)
+						values ('". database::input($code) ."', '{\"en\":\"". database::input($translation, true) ."\"}', '". (($translation != strip_tags($translation)) ? 1 : 0) ."', '". date('Y-m-d H:i:s') ."');"
 					);
 
 					echo  $code . ' [ADDED]<br/>' . PHP_EOL;
@@ -82,9 +82,9 @@
 
 					database::query(
 						"update ". DB_TABLE_PREFIX ."translations
-						set text_en = '". database::input($translation, true) ."'
+						set `text` = json_set(coalesce(`text`, '{}'), '$.en', '". database::input($translation, true) ."')
 						where code = '". database::input($code) ."'
-						and (text_en is null or text_en = '')
+						and (json_value(`text`, '$.en') is null or json_value(`text`, '$.en') = '')
 						limit 1;"
 					);
 

@@ -89,7 +89,7 @@
 				} else {
 
 					$translation = database::query(
-						"select * from ". DB_TABLE_PREFIX ."translations
+						"select id from ". DB_TABLE_PREFIX ."translations
 						where code = '". database::input($row['code']) ."'
 						limit 1;"
 					)->fetch();
@@ -100,13 +100,23 @@
 
 							if (empty($row[$language_code])) continue;
 							if (empty($_POST['update']) && empty($_POST['append'])) continue;
-							if (empty($translation['text_'.$language_code]) && empty($_POST['append'])) continue;
-							if (!empty($translation['text_'.$language_code]) && empty($_POST['update'])) continue;
 							if (!in_array($language_code, $installed_language_codes)) continue;
+
+							$current_value = database::query(
+								"select json_unquote(coalesce(json_value(`text`, '$.". database::input($language_code) ."'), '')) as v
+								from ". DB_TABLE_PREFIX ."translations
+								where code = '". database::input($row['code']) ."'
+								limit 1;"
+							)->fetch();
+
+							$current_value = $current_value['v'] ?? '';
+
+							if (empty($current_value) && empty($_POST['append'])) continue;
+							if (!empty($current_value) && empty($_POST['update'])) continue;
 
 							database::query(
 								"update ". DB_TABLE_PREFIX ."translations
-								set `text_". database::identifier($language_code) ."` = '". database::input($row[$language_code], true) ."'
+								set `text` = json_set(coalesce(`text`, '{}'), '$.". database::input($language_code) ."', '". database::input($row[$language_code], true) ."')
 								where code = '". database::input($row['code']) ."'
 								limit 1;"
 							);
@@ -118,25 +128,31 @@
 
 						if (empty($_POST['insert'])) continue;
 
-						database::query(
-							"insert into ". DB_TABLE_PREFIX ."translations
-							(code) values ('". database::input($row['code']) ."');"
-						);
-
+						$languages = [];
 						foreach ($language_codes as $language_code) {
-
 							if (empty($row[$language_code])) continue;
 							if (!in_array($language_code, $installed_language_codes)) continue;
-
-							database::query(
-								"update ". DB_TABLE_PREFIX ."translations
-								set text_". $language_code ." = '". database::input($row[$language_code], true) ."'
-								where code = '". database::input($row['code']) ."'
-								limit 1;"
-							);
-
-							$inserted++;
+							$languages[$language_code] = $row[$language_code];
 						}
+
+						if (!$languages) continue;
+
+						$object_parts = [];
+						foreach ($languages as $lang_code => $value) {
+							$object_parts[] = "'". database::input($lang_code) ."', '". database::input($value, true) ."'";
+						}
+						$object_sql = 'json_object('. implode(', ', $object_parts) .')';
+
+						database::query(
+							"insert into ". DB_TABLE_PREFIX ."translations
+							(code, `text`, created_at) values (
+								'". database::input($row['code']) ."',
+								$object_sql,
+								'". date('Y-m-d H:i:s') ."'
+							);"
+						);
+
+						$inserted++;
 					}
 				}
 			}
@@ -187,7 +203,7 @@
 			if (in_array('translations', $_POST['collections'])) {
 				$sql_union[] = (
 					"select 'translation' as entity, frontend, backend, code, updated_at, html,
-					". implode(", ", f::array_each($_POST['language_codes'], fn($language_code) => "`text_". database::identifier($language_code) ."`")) ."
+					". implode(", ", f::array_each($_POST['language_codes'], fn($language_code) => "json_unquote(coalesce(json_value(`text`, '$.". database::input($language_code) ."'), '')) as `text_". database::identifier($language_code) ."`")) ."
 					from ". DB_TABLE_PREFIX ."translations
 					where code not regexp '^(settings_group:|settings_key:|cm|job|om|ot|pm|sm)_'"
 				);
@@ -196,7 +212,7 @@
 			if (in_array('modules', $_POST['collections'])) {
 				$sql_union[] = (
 					"select 'translation' as entity, frontend, backend, code, updated_at, html,
-					". implode(", ", f::array_each($_POST['language_codes'], fn($language_code) => "`text_". database::identifier($language_code) ."`")) ."
+					". implode(", ", f::array_each($_POST['language_codes'], fn($language_code) => "json_unquote(coalesce(json_value(`text`, '$.". database::input($language_code) ."'), '')) as `text_". database::identifier($language_code) ."`")) ."
 					from ". DB_TABLE_PREFIX ."translations
 					where code regexp '^(cm|job|om|ot|pm|sm)_'"
 				);
@@ -205,7 +221,7 @@
 			if (in_array('setting_groups', $_POST['collections'])) {
 				$sql_union[] = (
 					"select 'translation' as entity, frontend, backend, code, updated_at, html,
-					". implode(", ", f::array_each($_POST['language_codes'], fn($language_code) => "`text_". database::identifier($language_code) ."`")) ."
+					". implode(", ", f::array_each($_POST['language_codes'], fn($language_code) => "json_unquote(coalesce(json_value(`text`, '$.". database::input($language_code) ."'), '')) as `text_". database::identifier($language_code) ."`")) ."
 					from ". DB_TABLE_PREFIX ."translations
 					where code regexp '^settings_group:'"
 				);
@@ -214,7 +230,7 @@
 			if (in_array('settings', $_POST['collections'])) {
 				$sql_union[] = (
 					"select 'translation' as entity, frontend, backend, code, updated_at, html,
-					". implode(", ", f::array_each($_POST['language_codes'], fn($language_code) => "`text_". database::identifier($language_code) ."`")) ."
+					". implode(", ", f::array_each($_POST['language_codes'], fn($language_code) => "json_unquote(coalesce(json_value(`text`, '$.". database::input($language_code) ."'), '')) as `text_". database::identifier($language_code) ."`")) ."
 					from ". DB_TABLE_PREFIX ."translations
 					where code regexp '^settings_key:'"
 				);

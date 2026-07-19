@@ -23,12 +23,12 @@
 		$selects = [
 			"'translation' as entity",
 			't.code',
-			"coalesce(t.`text_". database::input($source_code) ."`, '') as source_text",
+			"coalesce(json_unquote(json_value(t.`text`, '$.". database::input($source_code) ."')), '') as source_text",
 			't.html',
 		];
 
 		foreach ($target_codes as $target_language_code) {
-			$selects[] = "coalesce(t.`text_". database::input($target_language_code) ."`, '') as `text_". database::input($target_language_code) ."`";
+			$selects[] = "coalesce(json_unquote(json_value(t.`text`, '$.". database::input($target_language_code) ."')), '') as `text_". database::input($target_language_code) ."`";
 		}
 
 		return (
@@ -151,7 +151,7 @@
 		if ($row['entity'] == 'translation') {
 			database::query(
 				"update ". DB_TABLE_PREFIX ."translations
-				set `text_". database::input($row['target_language_code']) ."` = '". database::input($translated_text, true) ."'
+				set `text` = json_set(coalesce(`text`, '{}'), '$.". database::input($row['target_language_code']) ."', '". database::input($translated_text, true) ."')
 				where code = '". database::input($row['code']) ."'
 				limit 1;"
 			);

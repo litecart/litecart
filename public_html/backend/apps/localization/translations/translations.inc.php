@@ -15,20 +15,6 @@
 		$_GET['languages'] = array_slice(array_unique(array_merge($defined_languages, $all_languages)), 0, 2);
 	}
 
-	// AC-3, AC-4: language codes flow into backtick-quoted SQL identifiers
-	// further down (text_<code> column references). Validate them once here
-	// against the configured language allowlist; reject the whole request
-	// if any entry is bogus — no query gets built with an injected token.
-	$allowed_language_codes = array_keys(language::$languages);
-	foreach ((array)$_GET['languages'] as $_lang_code) {
-		try {
-			database::identifier($_lang_code, $allowed_language_codes);
-		} catch (InvalidArgumentException $e) {
-			http_response_code(400);
-			exit('Invalid language code');
-		}
-	}
-
 	$collections = include 'app://backend/apps/localization/translations/collections.inc.php';
 
 	if (isset($_POST['save'])) {
@@ -47,10 +33,18 @@
 				$collection = $collections[array_search($translation['entity'], array_column($collections, 'entity'))];
 
 				if ($translation['entity'] == 'translation') {
+					foreach ($_GET['languages'] as $language_code) {
+						database::query(
+							"update ". DB_TABLE_PREFIX ."translations
+							set `text` = json_set(coalesce(`text`, '{}'), '$.". database::input($language_code) ."', '". database::input($translation['text_'.$language_code], !empty($translation['html'])) ."')
+							where code = '". database::input($translation['code']) ."'
+							limit 1;"
+						);
+					}
+
 					database::query(
 						"update ". DB_TABLE_PREFIX ."translations
-						set ". implode(', ' . PHP_EOL, array_map(function($language_code) use($translation) { return "text_". database::identifier($language_code) ." = '". database::input($translation['text_'.$language_code], !empty($translation['html'])) ."'"; }, $_GET['languages'])) .",
-							html = ". (!empty($translation['html']) ? 1 : 0) ."
+						set html = ". (!empty($translation['html']) ? 1 : 0) ."
 						where code = '". database::input($translation['code']) ."'
 						limit 1;"
 					);
@@ -116,19 +110,10 @@
 
 	$sql_union = [];
 
-	if (empty($_GET['collections']) || in_array('translations', $_GET['collections'])) {
-		$sql_union[] = (
-			"select 'translation' as entity, frontend, backend, code, updated_at, html,
-				". implode(", ", f::array_each($_GET['languages'], fn($language_code) => "`text_". database::identifier($language_code) ."`")) ."
-			from ". DB_TABLE_PREFIX ."translations
-			where code not regexp '^(settings_group:|settings_key:|cm|job|om|ot|pm|sm)_'"
-		);
-	}
-
 	if (empty($_GET['collections']) || in_array('modules', $_GET['collections'])) {
 		$sql_union[] = (
 			"select 'translation' as entity, frontend, backend, code, updated_at, html,
-				". implode(", ", f::array_each($_GET['languages'], fn($language_code) => "`text_". database::identifier($language_code) ."`")) ."
+				". implode(", ", f::array_each($_GET['languages'], fn($language_code) => "json_unquote(coalesce(json_value(`text`, '$.". database::input($language_code) ."'), '')) as `text_". database::identifier($language_code) ."`")) ."
 			from ". DB_TABLE_PREFIX ."translations
 			where code regexp '^(cm|job|om|ot|pm|sm)_'"
 		);
@@ -137,7 +122,7 @@
 	if (empty($_GET['collections']) || in_array('setting_groups', $_GET['collections'])) {
 		$sql_union[] = (
 			"select 'translation' as entity, frontend, backend, code, updated_at, html,
-				". implode(", ", f::array_each($_GET['languages'], fn($language_code) => "`text_". database::identifier($language_code) ."`")) ."
+				". implode(", ", f::array_each($_GET['languages'], fn($language_code) => "json_unquote(coalesce(json_value(`text`, '$.". database::input($language_code) ."'), '')) as `text_". database::identifier($language_code) ."`")) ."
 			from ". DB_TABLE_PREFIX ."translations
 			where code regexp '^settings_group:'"
 		);
@@ -146,7 +131,7 @@
 	if (empty($_GET['collections']) || in_array('settings', $_GET['collections'])) {
 		$sql_union[] = (
 			"select 'translation' as entity, frontend, backend, code, updated_at, html,
-				". implode(", ", f::array_each($_GET['languages'], fn($language_code) => "`text_". database::identifier($language_code) ."`")) ."
+				". implode(", ", f::array_each($_GET['languages'], fn($language_code) => "json_unquote(coalesce(json_value(`text`, '$.". database::input($language_code) ."'), '')) as `text_". database::identifier($language_code) ."`")) ."
 			from ". DB_TABLE_PREFIX ."translations
 			where code regexp '^settings_key:'"
 		);
@@ -179,8 +164,8 @@
 		where x.code != ''
 		". ((!empty($_GET['endpoint']) && $_GET['endpoint'] == 'frontend') ? "and frontend = 1" : "") ."
 		". ((!empty($_GET['endpoint']) && $_GET['endpoint'] == 'backend') ? "and backend = 1" : "") ."
-		". (!empty($_GET['untranslated']) ? "and (". implode(" or ", f::array_each($_GET['languages'], fn($language_code) => "`text_". database::identifier($language_code) ."` = ''")) .")" : "") ."
-		". (!empty($_GET['query']) ? "and (code like '%". addcslashes(database::input($_GET['query']), '%_') ."%' or ". implode(' or ', f::array_each($_GET['languages'], fn($language_code) => "`text_". database::identifier($language_code) ."` like '%". addcslashes(database::input($_GET['query']), '%_') ."%'")) .")" : "") ."
+		". (!empty($_GET['untranslated']) ? "and (". implode(" or ", f::array_each($_GET['languages'], fn($language_code) => "coalesce(json_unquote(json_value(`text`, '$.". database::input($language_code) ."')), '') = ''")) .")" : "") ."
+		". (!empty($_GET['query']) ? "and (code like '%". addcslashes(database::input($_GET['query']), '%_') ."%' or ". implode(' or ', f::array_each($_GET['languages'], fn($language_code) => "json_unquote(json_value(`text`, '$.". database::input($language_code) ."')) like '%". addcslashes(database::input($_GET['query']), '%_') ."%'")) .")" : "") ."
 		order by x.updated_at desc;"
 	)->fetch_page(null, null, $_GET['page'], settings::get('data_table_rows_per_page'), $num_rows, $num_pages);
 
