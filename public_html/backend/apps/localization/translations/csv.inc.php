@@ -218,7 +218,7 @@
 				);
 			}
 
-			if (in_array('setting_groups', $_POST['collections'])) {
+			if (in_array('settings_groups', $_POST['collections'])) {
 				$sql_union[] = (
 					"select 'translation' as entity, frontend, backend, code, updated_at, html,
 					". implode(", ", f::array_each($_POST['language_codes'], fn($language_code) => "json_unquote(coalesce(json_value(`text`, '$.". database::input($language_code) ."'), '')) as `text_". database::identifier($language_code) ."`")) ."

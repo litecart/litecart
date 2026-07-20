@@ -26,6 +26,7 @@
 		$product->data['status'] = 1;
 		$product->data['prices'] = [['price' => [currency::$selected['code'] => 49.99]]];
 		$product->save();
+
 		$product_id = $product->data['id'];
 
 		if (!$product_id) {

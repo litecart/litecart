@@ -1204,6 +1204,12 @@
 
 	// Migrate settings titles from translations to settings table
 	database::query(
+		"update ". DB_TABLE_PREFIX ."settings
+		set `title` = JSON_SET('{}', '$.en', title),
+			`description` = JSON_SET('{}', '$.en', description);"
+	);
+
+	database::query(
 		"select * from ". DB_TABLE_PREFIX ."translations
 		where `code` like 'settings_key:title_%';"
 	)->each(function($translation) {
@@ -1234,6 +1240,61 @@
 			$key = preg_replace('#^settings_key:description_#', '', $translation['code']);
 			database::query(
 				"update ". DB_TABLE_PREFIX ."settings
+				set description = json_set(description, '$.". $language_code ."', '". database::input($translation['text_'.$language_code] ?? '') ."')
+				where `key` = '". database::input($key) ."'
+				limit 1;"
+			);
+		}
+
+		database::query(
+			"delete from ". DB_TABLE_PREFIX ."translations
+			where `code` = '". database::input($translation['code']) ."';"
+		);
+	});
+
+
+	// Migrate setting group translations to setting groups table
+	database::query(
+		"update ". DB_TABLE_PREFIX ."settings_groups
+		set `name` = JSON_SET('{}', '$.en', name),
+			`description` = JSON_SET('{}', '$.en', description);"
+	);
+
+	database::query(
+		"select * from ". DB_TABLE_PREFIX ."translations
+		where `code` like 'setting_group:title_%';"
+	)->each(function($translation) {
+
+		foreach (array_keys(language::$languages) as $language_code) {
+
+			$key = preg_replace('#^setting_group_key:title_#', '', $translation['code']);
+
+			database::query(
+				"update ". DB_TABLE_PREFIX ."settings_groups
+				set name = json_set(name, '$.". $language_code ."', '". database::input($translation['text_'.$language_code] ?? '') ."')
+				where `key` = '". database::input($key) ."'
+				limit 1;"
+			);
+		}
+
+		database::query(
+			"delete from ". DB_TABLE_PREFIX ."translations
+			where `code` = '". database::input($translation['code']) ."';"
+		);
+	});
+
+	// Migrate setting group descriptions from translations to setting groups table
+	database::query(
+		"select * from ". DB_TABLE_PREFIX ."translations
+		where `code` like 'settings_group:description_%';"
+	)->each(function($translation) {
+
+		foreach (array_keys(language::$languages) as $language_code) {
+
+			$key = preg_replace('#^settings_group:description_#', '', $translation['code']);
+
+			database::query(
+				"update ". DB_TABLE_PREFIX ."settings_groups
 				set description = json_set(description, '$.". $language_code ."', '". database::input($translation['text_'.$language_code] ?? '') ."')
 				where `key` = '". database::input($key) ."'
 				limit 1;"
@@ -1360,10 +1421,12 @@
 	database::query(
 		"select * from ". DB_TABLE_PREFIX ."languages;"
 	)->each(function($language) {
+
 		database::query(
 			"update ". DB_TABLE_PREFIX ."translations
-			set `text` = json_set(coalesce(`text`, '{}'), '$.". database::input($language['code']) ."', `text_". database::input($language['code']) ."`);"
+			set `text` = json_set(`text`, '$.". database::input($language['code']) ."', `text_". database::input($language['code']) ."`);"
 		);
+
 		database::query(
 			"alter table ". DB_TABLE_PREFIX ."translations
 			drop column `text_". database::input($language['code']) ."`;"

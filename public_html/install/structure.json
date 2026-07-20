@@ -523,7 +523,7 @@
 				"chk_conversions": "JSON_VALID(conversions)"
 			}
 		},
-		"favourites": {
+		"favorites": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"customer_id": { "type": "INT", "length": 10, "unsigned": true },

@@ -172,7 +172,7 @@
 		[
 			'id' => 'settings_groups',
 			'name' => t('title_settings_groups', 'Settings Groups'),
-			'entity' => 'setting_group',
+			'entity' => 'settings_group',
 			'identified_by' => ['key'],
 			'translatable' => ['name'],
 		],

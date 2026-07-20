@@ -129,9 +129,9 @@
 			<?php } ?>
 
 			<li class="favorites<?php if (!empty($favorites['items'])) echo ' filled'; ?> dropdown dropdown-end">
-				<a class="navbar-item" href="<?php echo document::href_ilink('favorites'); ?>" aria-label="<?php echo f::escape_attr(t('title_favorites', 'favorites')); ?>">
+				<a class="navbar-item" href="<?php echo document::href_ilink('favorites'); ?>" aria-label="<?php echo f::escape_attr(t('title_favorites', 'Favorites')); ?>">
 					<img class="img-responsive hidden-xs" src="<?php echo document::href_rlink('app://frontend/templates/'.settings::get('template') .'/images/'. (!empty($favorites['items']) ? 'favorites_filled.svg' : 'favorites.svg')); ?>" alt="">
-					<span class="hidden-sm hidden-md hidden-lg hidden-xl hidden-xxl"><?php echo t('title_favorites', 'favorites'); ?></span>
+					<span class="hidden-sm hidden-md hidden-lg hidden-xl hidden-xxl"><?php echo t('title_favorites', 'Favorites'); ?></span>
 					<span class="badge" aria-label="<?php echo f::escape_attr(strtr(t('title_num_items', '{num} items'), ['{num}' => (int)$favorites['num_items']])); ?>"><?php echo $favorites['num_items']; ?></span>
 				</a>
 			</li>

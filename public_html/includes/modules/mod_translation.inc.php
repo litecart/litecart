@@ -20,10 +20,10 @@
 			return [];
 		}
 
-		public function run($method_name, $module_id=null) {
+		public function run(string $method_name, ?string $module_id=null): mixed {
 
 			if (empty($module_id)) {
-				if (empty($this->data['selected']['id'])) return;
+				if (empty($this->data['selected']['id'])) return false;
 				list($module_id, $option_id) = explode(':', $this->data['selected']['id']);
 			}
 

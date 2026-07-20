@@ -17,10 +17,10 @@
 			'entity' => 'translation',
 			'name' => t('title_modules', 'Modules'),
 		],
-		'setting_groups' => [
-			'id' => 'setting_groups',
+		'settings_groups' => [
+			'id' => 'settings_groups',
 			'entity' => 'translation',
-			'name' => t('title_setting_groups', 'Setting Groups'),
+			'name' => t('title_settings_groups', 'Setting Groups'),
 		],
 		'settings' => [
 			'id' => 'settings',

@@ -119,7 +119,7 @@
 		);
 	}
 
-	if (empty($_GET['collections']) || in_array('setting_groups', $_GET['collections'])) {
+	if (empty($_GET['collections']) || in_array('settings_groups', $_GET['collections'])) {
 		$sql_union[] = (
 			"select 'translation' as entity, frontend, backend, code, updated_at, html,
 				". implode(", ", f::array_each($_GET['languages'], fn($language_code) => "json_unquote(coalesce(json_value(`text`, '$.". database::input($language_code) ."'), '')) as `text_". database::identifier($language_code) ."`")) ."
@@ -165,7 +165,7 @@
 		". ((!empty($_GET['endpoint']) && $_GET['endpoint'] == 'frontend') ? "and frontend = 1" : "") ."
 		". ((!empty($_GET['endpoint']) && $_GET['endpoint'] == 'backend') ? "and backend = 1" : "") ."
 		". (!empty($_GET['untranslated']) ? "and (". implode(" or ", f::array_each($_GET['languages'], fn($language_code) => "coalesce(json_unquote(json_value(`text`, '$.". database::input($language_code) ."')), '') = ''")) .")" : "") ."
-		". (!empty($_GET['query']) ? "and (code like '%". addcslashes(database::input($_GET['query']), '%_') ."%' or ". implode(' or ', f::array_each($_GET['languages'], fn($language_code) => "json_unquote(json_value(`text`, '$.". database::input($language_code) ."')) like '%". addcslashes(database::input($_GET['query']), '%_') ."%'")) .")" : "") ."
+		". (!empty($_GET['query']) ? "and (code like '%". addcslashes(database::input($_GET['query']), '%_') ."%' or ". implode(' or ', f::array_each($_GET['languages'], fn($language_code) => "`text_". database::identifier($language_code) ."` like '%". addcslashes(database::input($_GET['query']), '%_') ."%'")) .")" : "") ."
 		order by x.updated_at desc;"
 	)->fetch_page(null, null, $_GET['page'], settings::get('data_table_rows_per_page'), $num_rows, $num_pages);
 

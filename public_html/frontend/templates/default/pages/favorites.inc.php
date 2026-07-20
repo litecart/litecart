@@ -1,7 +1,7 @@
 <main id="main" class="container">
 	<div class="card" aria-label="<?php echo f::escape_attr(t('title_favorites', 'Favorites')); ?>">
 		<div class="card-header">
-			<h1 class="card-title"><?php echo t('title_favorites', 'favorites'); ?></h1>
+			<h1 class="card-title"><?php echo t('title_favorites', 'Favorites'); ?></h1>
 		</div>
 		<div class="card-body">
 

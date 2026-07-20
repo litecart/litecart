@@ -32,7 +32,7 @@
 		</button>
 
 		<?php if ($is_favourite) { ?>
-		<button type="submit" class="favorites btn btn-default btn-sm" name="remove_from_favorites" title="<?php echo f::escape_attr(t('title_remove_favorites', 'Remove From Favourites')); ?>" aria-label="<?php echo f::escape_attr(t('title_remove_favorites', 'Remove From Favourites')); ?>" aria-pressed="true">
+		<button type="submit" class="favorites btn btn-default btn-sm" name="remove_from_favorites" title="<?php echo f::escape_attr(t('title_remove_favorites', 'Remove From favorites')); ?>" aria-label="<?php echo f::escape_attr(t('title_remove_favorites', 'Remove From favorites')); ?>" aria-pressed="true">
 			<?php echo f::draw_fonticon('icon-heart', 'style="color: #c00;" aria-hidden="true"'); ?>
 		</button>
 		<?php } else { ?>

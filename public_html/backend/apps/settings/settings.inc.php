@@ -90,10 +90,19 @@
 		where `key` = '". database::input(__DOC__) ."'
 		order by priority, `key`
 		limit 1;"
-	)->fetch();
+	)->fetch(function(&$group){
+
+		// Decode JSON translations for title and description
+		$group['name'] = !empty($group['name']) ? json_decode($group['name'], true) : [];
+		$group['name'] = $group['name'][language::$selected['code']] ?? $group['name']['en'] ?? '';
+
+		$group['description'] = !empty($group['description']) ? json_decode($group['description'], true) : [];
+		$group['description'] = $group['description'][language::$selected['code']] ?? $group['description']['en'] ?? '';
+
+	});
 
 	if (!$settings_group) {
-		notices::add('errors', 'Invalid settings group ('. __DOC__ .')');
+		notices::add('errors', 'Invalid setting group ('. __DOC__ .')');
 		return;
 	}
 
@@ -102,13 +111,13 @@
 		"select * from ". DB_TABLE_PREFIX ."settings
 		where `group_key` = '". database::input($settings_group['key']) ."'
 		order by priority, `key` asc;"
-	)->fetch_page(function($setting){
+	)->fetch_page(function(&$setting){
 
 		// Decode JSON translations for title and description
 		$setting['title'] = !empty($setting['title']) ? json_decode($setting['title'], true) : [];
-		$setting['description'] = !empty($setting['description']) ? json_decode($setting['description'], true) : [];
-
 		$setting['title'] = $setting['title'][language::$selected['code']] ?? $setting['title']['en'] ?? '';
+
+		$setting['description'] = !empty($setting['description']) ? json_decode($setting['description'], true) : [];
 		$setting['description'] = $setting['description'][language::$selected['code']] ?? $setting['description']['en'] ?? '';
 
 		// Set Display Value
@@ -190,17 +199,14 @@
 			default:
 				$_POST['settings'][$setting['key']] = (string)$setting['value'];
 				break;
-	}
-
-		return $setting;
-
+		}
 	}, null, $_GET['page'], null, $num_rows, $num_pages);
 
 ?>
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo t('title_settings', 'Settings').' &ndash; '.$settings_group['name']; ?>
+			<?php echo $app_icon; ?> <?php echo t('title_settings', 'Settings'); ?> &ndash; <?php echo f::escape_html($settings_group['name']); ?>
 		</div>
 	</div>
 

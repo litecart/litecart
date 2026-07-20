@@ -8,7 +8,7 @@
 
 		public $selected = [];
 
-		public function __construct(ent_order $order, array $selected = []) {
+		public function __construct(ent_order|null $order = null, array $selected = []) {
 			$this->_order = $order;
 
 			if (!empty($selected['id'])) {
