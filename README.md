@@ -106,6 +106,44 @@ public_html/
 └── index.php                   - Main application entry point
 ```
 
+## Connect an AI agent to LiteCart's MCP Tools
+
+LiteCart has built in MCP server allowing an AI agent to access your MCP Tools.
+
+To configure use via CLI, edit your agent's MCP settings (mcp.json):
+
+```json
+{
+	"servers": {
+		...
+		"litecart": {
+			"command": "php",
+			"args": ["/path/to/index.php", "mcp"],
+			"env": {
+				"PHP_AUTH_USER": "your-username-here",
+				"PHP_AUTH_PW": "your-password-here"
+			}
+		}
+	}
+}
+```
+
+To configure remote use via Web:
+
+```json
+{
+	"servers": {
+		...
+		"litecart-web": {
+			"url": "https://litecart.tld/admin/mcp",
+			"type": "http",
+			"headers": {
+				"Authorization": "Basic YWRtaW46MTIzNA=="
+			}
+		}
+	}
+}
+
 ## Build On LiteCart
 
 Make sure you have a good understanding of LiteCart's platform model.

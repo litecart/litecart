@@ -1,8 +1,9 @@
 <?php
 
 	/*
-		Model Context Protocol (MCP) server over HTTP JSON-RPC 2.0
-		Provides CRUD tools that mirror LiteCart collections/entities.
+		Model Context Protocol (MCP) Server
+		- HTTP: single POST JSON-RPC 2.0 request → response
+		- CLI stdio: persistent process, reads one JSON-RPC 2.0 message per line until stdin closes
 	*/
 
 	// Custom exception for JSON-RPC error output
@@ -16,27 +17,34 @@
 		}
 	}
 
+	$indent = ''; // No indentation by default for compact output; can be set to e.g. '  ' for pretty-printing
+
+	// Only allow POST requests (HTTP only — CLI uses stdio)
+	if (!is_cli() && $_SERVER['REQUEST_METHOD'] !== 'POST') {
+
+		$out = f::format_json([
+			'jsonrpc' => '2.0',
+			'id' => null,
+			'error' => [
+				'code' => -32600,
+				'message' => 'MCP server expects HTTP POST JSON-RPC requests'
+			],
+		], $indent);
+
+		ob_clean();
+		http_response_code(405);
+		header('Date: '. date('r'));
+		header('Content-Type: application/json; charset=UTF-8');
+		header('Content-Length: '. strlen($out));
+		echo $out;
+		exit;
+	}
+
+	// Authenticate once for the lifetime of the process
 	try {
 
-		// Only allow POST requests
-		if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-			throw new McpException('MCP server expects HTTP POST JSON-RPC requests', 405, -32600);
-		}
-
-		// Parse JSON-RPC request (max 64KB)
-		$raw = file_get_contents('php://input', false, null, 0, 65536);
-		$rpc = json_decode($raw, true);
-
-		if (!is_array($rpc) || empty($rpc['jsonrpc']) || $rpc['jsonrpc'] !== '2.0' || empty($rpc['method'])) {
-			throw new McpException('Invalid Request', 400, -32600);
-		}
-
-		$rpc_id = $rpc['id'] ?? null;
-		$params = isset($rpc['params']) && is_array($rpc['params']) ? $rpc['params'] : [];
-
-		// HTTP Basic Authentication (mandatory)
 		if (empty($_SERVER['PHP_AUTH_USER']) || empty($_SERVER['PHP_AUTH_PW'])) {
-			throw new McpException('Authentication required', 401, -32000, $rpc_id);
+			throw new McpException('Authentication required', 401, -32000);
 		}
 
 		$administrator = database::query(
@@ -64,7 +72,9 @@
 					limit 1;"
 				);
 
-				throw new McpException(strtr(t('error_d_login_attempts_left', 'You have %d login attempts left until your account is temporary blocked'), ['%d' => 3 - $administrator['login_attempts']]), 403);
+				throw new McpException(strtr(t('error_d_login_attempts_left', 'You have %d login attempts left until your account is temporary blocked'), [
+					'%d' => 3 - $administrator['login_attempts']
+				]), 403);
 
 			} else {
 
@@ -91,16 +101,52 @@
 			);
 		}
 
-		// Resolve administrator's app permissions for per-tool gating
-		$permissions = !empty($administrator['permissions']) ? json_decode($administrator['permissions'], true) : [];
+		$permissions   = !empty($administrator['permissions']) ? json_decode($administrator['permissions'], true) : [];
+		$allowed_tools = array_merge(...($permissions['mcp'] ?? []));
 
-		$allowed_tools =  array_merge(...($permissions['mcp'] ?? []));
+	} catch (McpException $e) {
 
-		// MCP method dispatch
-		switch ($rpc['method']) {
+		$out = f::format_json([
+			'jsonrpc' => '2.0',
+			'id'      => $e->rpc_id,
+			'error'   => ['code' => $e->rpc_code, 'message' => $e->getMessage()],
+		], $indent);
 
-			// MCP built-in: initialize
-			case 'initialize':
+		if (is_cli()) {
+			fwrite(STDOUT, $out . "\n");
+		} else {
+			http_response_code($e->getCode() ?: 500);
+			if ($e->getCode() == 401) header('WWW-Authenticate: Basic realm="'. PLATFORM_NAME .' MCP Server"');
+			ob_clean();
+			header('Date: '. date('r'));
+			header('Content-Type: application/json; charset=UTF-8');
+			header('Content-Length: '. strlen($out));
+			echo $out;
+		}
+
+		exit;
+	}
+
+	// Dispatch one JSON-RPC request. Returns the JSON response string, or null for notifications (no response).
+	$dispatch = function(string $raw) use ($indent, $allowed_tools): ?string {
+
+		$rpc_id = null;
+
+		try {
+
+			$rpc = json_decode($raw, true);
+
+			if (!is_array($rpc) || empty($rpc['jsonrpc']) || $rpc['jsonrpc'] !== '2.0' || empty($rpc['method'])) {
+				throw new McpException('Invalid Request', 400, -32600);
+			}
+
+			$rpc_id = $rpc['id'] ?? null;
+			$params = isset($rpc['params']) && is_array($rpc['params']) ? $rpc['params'] : [];
+
+			switch ($rpc['method']) {
+
+				// MCP built-in: initialize
+				case 'initialize':
 
 				$result = [
 					'protocolVersion' => '2024-11-05', // Protocol 2024-11-05 for custom authentication and tool schema format
@@ -115,10 +161,9 @@
 
 				break;
 
-			case 'notifications/initialized':
-
-				$result = null;
-				break;
+				// MCP notification: no response required
+				case 'notifications/initialized':
+					return null;
 
 			// MCP: list available tools
 			case 'tools/list':
@@ -134,14 +179,12 @@
 
 					if (!is_array($toolset) || empty($toolset['tools'])) continue;
 
-					// Skip toolsets the administrator isn't permitted to use
-					if (!empty($allowed_tools) || !in_array($tool['name'], $allowed_tools)) {
-						continue;
-					}
-
 					foreach ($toolset['tools'] as $tool) {
 
 						if (empty($tool['name']) || !is_array($tool['inputSchema'])) continue;
+
+						// Skip tools the administrator isn't permitted to use
+						if (!empty($allowed_tools) && !in_array($tool['name'], $allowed_tools)) continue;
 
 						$tool_schemas[] = [
 							'name' => $tool['name'],
@@ -208,88 +251,83 @@
 				}
 
 				$result = [
-					'content' => [[
-						'type' => 'text',
-						'text' => f::format_json($tool_result),
-					]],
+					'content' => [
+						[
+							'type' => 'text',
+							'text' => f::format_json($tool_result),
+						]
+					],
 					'structuredContent' => $tool_result,
 					'isError' => false,
 				];
 
 				break;
 
-			// Unknown method
-			default:
-				throw new McpException('Method not found', 404, -32601);
-		}
+				// Unknown method
+				default:
+					throw new McpException('Method not found', 404, -32601);
+			}
 
-		$output = f::format_json([
-			'jsonrpc' => '2.0',
-			'id' => $rpc_id,
-			'result' => $result,
-		]);
+			$output = f::format_json(['jsonrpc' => '2.0', 'id' => $rpc_id, 'result' => $result], $indent);
 
-		if ($output === false) {
-			throw new McpException('Encoding error', 500, -32603);
-		}
+			if ($output === false) {
+				throw new McpException('Encoding error', 500, -32603);
+			}
 
-	// Error handling: output JSON-RPC error response
-	} catch (McpException $e) {
+			return $output;
 
-		http_response_code($e->getCode() ?: 500);
+		} catch (McpException $e) {
 
-		if ($e->getCode() == 401) {
-			header('WWW-Authenticate: Basic realm="' . PLATFORM_NAME . ' MCP Server"');
-		}
-
-		$output = f::format_json([
-			'jsonrpc' => '2.0',
-			'id' => $e->rpc_id,
-			'error' => [
-				'code' => $e->rpc_code,
-				'message' => $e->getMessage(),
-			],
-		]);
-
-		if ($output === false) {
-			$output = f::format_json([
+			return f::format_json([
 				'jsonrpc' => '2.0',
-				'error' => [
-					'code' => -32603,
-					'message' => 'Encoding error',
-				],
-				'id' => $e->rpc_id,
-			]);
-		}
+				'id'      => $e->rpc_id ?? $rpc_id,
+				'error'   => ['code' => $e->rpc_code, 'message' => $e->getMessage()],
+			], $indent) ?: '{"jsonrpc":"2.0","id":null,"error":{"code":-32603,"message":"Encoding error"}}';
 
-	} catch (Exception $e) {
+		} catch (Exception $e) {
 
-		http_response_code($e->getCode() ?: 500);
-
-		$output = f::format_json([
-			'jsonrpc' => '2.0',
-			'error' => [
-				'code' => -32000,
-				'message' => $e->getMessage(),
-			],
-			'id' => $rpc_id ?? null,
-		]);
-
-		if ($output === false) {
-			$output = f::format_json([
+			return f::format_json([
 				'jsonrpc' => '2.0',
-				'id' => $rpc_id ?? null,
-				'error' => [
-					'code' => -32603,
-					'message' => 'Encoding error',
-				],
-			]);
+				'id'      => $rpc_id,
+				'error'   => ['code' => -32000, 'message' => $e->getMessage()],
+			], $indent) ?: '{"jsonrpc":"2.0","id":null,"error":{"code":-32603,"message":"Encoding error"}}';
 		}
+	};
+
+	// CLI stdio: persistent loop — one JSON-RPC message per line until stdin closes
+	if (is_cli()) {
+
+		set_time_limit(0); // No time limit for CLI mode
+
+		while (($line = fgets(STDIN)) !== false) {
+			$line = trim($line);
+			if ($line === '') continue;
+
+			$out = $dispatch($line);
+
+			if ($out !== null) {
+				ob_clean(); // Discard any buffered output from tool execution
+				fwrite(STDOUT, $out . "\n");
+				fflush(STDOUT);
+			}
+		}
+
+		ob_end_clean(); // Discard anything left in the buffer at shutdown
+		exit;
+	}
+
+	// HTTP: single request → response
+	$out = $dispatch(file_get_contents('php://input', false, null, 0, 65536));
+
+	if ($out === null) {
+		ob_clean();
+		http_response_code(204);
+		exit;
 	}
 
 	ob_clean();
 	header('Date: '. date('r'));
 	header('Content-Type: application/json; charset=UTF-8');
-	header('Content-Length: '. strlen($output));
-	echo $output;
+	header('Content-Length: '. strlen($out));
+	echo $out;
 	exit;

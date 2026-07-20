@@ -4,7 +4,7 @@
 	header('X-Robots-Tag: noindex');
 
 	// Don't require login for login page
-	if (!in_array(route::$selected['resource'], ['b:login', 'b:manifest.json'])) {
+	if (!in_array(route::$selected['resource'], ['b:login', 'b:manifest.json', 'b:mcp'])) {
 		administrator::require_login();
 	}
 
