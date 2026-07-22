@@ -433,7 +433,7 @@
 		*/
 		public static function identifier(string $name, array|null $allowlist = null): string {
 
-			if (!is_string($name) || !preg_match('#^[A-Za-z0-9_-]+$#', $name)) {
+			if (!preg_match('#^[A-Za-z0-9_-]+$#', $name)) {
 				throw new InvalidArgumentException('Invalid SQL identifier');
 			}
 

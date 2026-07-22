@@ -41,7 +41,16 @@
 
 	// Same as array_map but without speaking Yoda (by doing the callable function last)
 	function array_each(array $array, callable $function):array {
-		return array_map($function, $array);
+		$result = [];
+
+		foreach ($array as $key => $value) {
+			$mapped = $function($value, $key);
+			if ($mapped !== null) {
+				$result[$key] = $mapped;
+			}
+		}
+
+		return $result;
 	}
 
 	// Return an array of values not defined by the given keys

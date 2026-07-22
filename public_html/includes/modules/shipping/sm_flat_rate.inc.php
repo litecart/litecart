@@ -14,7 +14,7 @@
 			parent::__construct();
 		}
 
-		public function options(array $items, array $total, string $currency_code, array $customer): ?array {
+		public function options(array $items, array $total, array $customer): ?array {
 
 			if (empty($this->settings['status'])) {
 				return null;
@@ -38,7 +38,6 @@
 		}
 
 		public function settings(): array {
-
 			return [
 				[
 					'key' => 'status',

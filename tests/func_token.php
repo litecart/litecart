@@ -5,7 +5,7 @@
 	try {
 
 		if (!defined('HMAC_KEY_REMEMBER_ME')) {
-			throw new Exception('HMAC_KEY_REMEMBER_ME not defined, cannot test tokens');
+			define('HMAC_KEY_REMEMBER_ME', str_repeat('a', 64));
 		}
 
 		$user_id = 42;

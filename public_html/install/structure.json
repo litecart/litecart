@@ -855,7 +855,7 @@
 				"code": ["code"]
 			},
 			"foreign_keys": {
-				"order_line_to_order": {
+				"order_item_to_order": {
 					"columns": ["order_id"],
 					"references": {
 						"table": "orders",
@@ -917,6 +917,15 @@
 					"columns": ["order_id"],
 					"references": {
 						"table": "orders",
+						"columns": ["id"],
+						"on_update": "NO ACTION",
+						"on_delete": "CASCADE"
+					}
+				},
+				"order_stock_item_to_order_item": {
+					"columns": ["item_id"],
+					"references": {
+						"table": "orders_items",
 						"columns": ["id"],
 						"on_update": "NO ACTION",
 						"on_delete": "CASCADE"

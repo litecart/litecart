@@ -69,11 +69,11 @@
 		// Reload and verify
 		$order = new ent_order($order_id);
 
-		if (empty($order->data['lines'])) {
+		if (empty($order->data['items'])) {
 			throw new Exception('AC-C1: Order should have at least one line');
 		}
 
-		$line = $order->data['lines'][0];
+		$line = $order->data['items'][0];
 
 		if ($line['name'] !== 'Simple Test Product') {
 			throw new Exception('AC-C1: Order line name mismatch');
@@ -139,7 +139,7 @@
 
 		// Reload and verify order line references the product
 		$variant_order = new ent_order($variant_order_id);
-		$line = $variant_order->data['lines'][0];
+		$line = $variant_order->data['items'][0];
 
 		if ((int)$line['product_id'] !== $product_id) {
 			throw new Exception('AC-C2: Order line should reference product_id '. $product_id .'. Got '. $line['product_id']);
@@ -155,7 +155,7 @@
 
 		// Verify order lines are stored in DB
 		$line_count = database::query(
-			"select count(*) as cnt from ". DB_TABLE_PREFIX ."orders_lines
+			"select count(*) as cnt from ". DB_TABLE_PREFIX ."orders_items
 			where order_id = ". (int)$variant_order_id .";"
 		)->fetch('cnt');
 
@@ -214,8 +214,8 @@
 
 		$multi_order = new ent_order($multi_order_id);
 
-		if (count($multi_order->data['lines']) != 2) {
-			throw new Exception('AC-C4: Order should have 2 lines after reload. Got '. count($multi_order->data['lines']));
+		if (count($multi_order->data['items']) != 2) {
+			throw new Exception('AC-C4: Order should have 2 lines after reload. Got '. count($multi_order->data['items']));
 		}
 
 		########################################################################
@@ -239,7 +239,7 @@
 
 		// Verify order lines are cleaned up
 		$remaining_lines = database::query(
-			"select id from ". DB_TABLE_PREFIX ."orders_lines
+			"select id from ". DB_TABLE_PREFIX ."orders_items
 			where order_id = ". (int)$variant_order_id ."
 			limit 1;"
 		)->num_rows;

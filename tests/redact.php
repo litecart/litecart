@@ -5,7 +5,9 @@
 	// processing and must work even before LiteCart's bootstrap has run
 	// (error_handler may run very early).
 
-	require_once __DIR__ . '/../public_html/includes/functions/func_redact.inc.php';
+	if (!function_exists('redact_query_string')) {
+		require_once __DIR__ . '/../public_html/includes/functions/func_redact.inc.php';
+	}
 
 	try {
 

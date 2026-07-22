@@ -78,8 +78,10 @@
 		public function run(string $method_name, ?string $module_id=null): mixed {
 
 			if (empty($module_id) && !empty($this->selected['id'])) {
-				list($module_id, $option_id) = explode(':', $this->selected['id']);
+				[$module_id, $option_id] = preg_split('#:#', ($this->selected['id'] ?? '') ?: ':', 2);
 			}
+
+			$module_id = (string)$module_id;
 
 			if (empty($this->modules[$module_id]) || !method_exists($this->modules[$module_id], $method_name)) return false;
 

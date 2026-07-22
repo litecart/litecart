@@ -160,6 +160,8 @@
 			if ($is_new_language) {
 				try {
 
+					$language_code = database::identifier($language->data['code']);
+
 					// Download language pack from the web
 
 					$client = new http_client();
@@ -174,14 +176,14 @@
 
 					$csv = f::csv_decode($response);
 
-				foreach ($csv as $row) {
-					database::query(
-						"insert into ". DB_TABLE_PREFIX ."translations
-						(`code`, `text`)
-						values ('". database::input($row['code']) ."', json_object('". database::input($language->data['code']) ."', '". database::input($row['text_'.$language->data['code']]) ."'))
-						on duplicate key update `text` = json_set(coalesce(`text`, '{}'), '$.". database::input($language->data['code']) ."', '". database::input($row['text_'.$language->data['code']]) ."');"
-					);
-				}
+					foreach ($csv as $row) {
+						database::query(
+							"insert into ". DB_TABLE_PREFIX ."translations
+							(`code`, `text`)
+							values ('". database::input($row['code']) ."', json_object('". database::input($language_code) ."', '". database::input($row['text_'.$language_code]) ."'))
+							on duplicate key update `text` = json_set(coalesce(`text`, '{}'), '$.". database::input($language_code) ."', '". database::input($row['text_'.$language_code]) ."');"
+						);
+					}
 
 					language::set($language->data['code']);
 

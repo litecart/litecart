@@ -367,28 +367,44 @@
 
 			// Clear memory
 			if (function_exists('apcu_delete')) {
+				try {
 
-				if ($keyword) {
-					$cached_keys = new APCUIterator('#^'. preg_quote($_SERVER['HTTP_HOST'], '#') .':.*'. preg_quote($keyword, '#') .'.*#', APC_ITER_KEY);
-				} else {
-					$cached_keys = new APCUIterator('#^'. preg_quote($_SERVER['HTTP_HOST'], '#') .':.*#', APC_ITER_KEY);
-				}
+					if (class_exists('APCUIterator') && (bool)ini_get('apc.enabled')) {
 
-				foreach ($cached_keys as $key) {
-					apcu_delete($key);
+						if ($keyword) {
+							$cached_keys = new APCUIterator('#^'. preg_quote($_SERVER['HTTP_HOST'], '#') .':.*'. preg_quote($keyword, '#') .'.*#', APC_ITER_KEY);
+						} else {
+							$cached_keys = new APCUIterator('#^'. preg_quote($_SERVER['HTTP_HOST'], '#') .':.*#', APC_ITER_KEY);
+						}
+
+						foreach ($cached_keys as $key) {
+							apcu_delete($key);
+						}
+
+					} else if (!$keyword && function_exists('apcu_clear_cache')) {
+						// Fallback for environments where APCu is available but iterators are not.
+						apcu_clear_cache();
+					}
+
+				} catch (Throwable $e) {
+					if (!$keyword && function_exists('apcu_clear_cache')) {
+						apcu_clear_cache();
+					}
 				}
 			}
 
 			if (function_exists('apc_delete')) {
+				if (class_exists('APCIterator') && (bool)ini_get('apc.enabled')) {
 
-				if ($keyword) {
-					$cached_keys = new APCIterator('user', '#^'. preg_quote($_SERVER['HTTP_HOST'], '#') .':.*'. preg_quote($keyword, '#') .'.*#', APC_ITER_KEY);
-				} else {
-					$cached_keys = new APCIterator('user', '#^'. preg_quote($_SERVER['HTTP_HOST'], '#') .':.*#', APC_ITER_KEY);
-				}
+					if ($keyword) {
+						$cached_keys = new APCIterator('user', '#^'. preg_quote($_SERVER['HTTP_HOST'], '#') .':.*'. preg_quote($keyword, '#') .'.*#', APC_ITER_KEY);
+					} else {
+						$cached_keys = new APCIterator('user', '#^'. preg_quote($_SERVER['HTTP_HOST'], '#') .':.*#', APC_ITER_KEY);
+					}
 
-				foreach ($cached_keys as $key) {
-					apc_delete($key);
+					foreach ($cached_keys as $key) {
+						apc_delete($key);
+					}
 				}
 			}
 

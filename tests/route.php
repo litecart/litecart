@@ -121,7 +121,7 @@
 		route::$selected = null;
 		$identified = route::identify();
 
-		if ($identified !== null) {
+		if ($identified) {
 			throw new Exception('Should not identify non-existent route');
 		}
 

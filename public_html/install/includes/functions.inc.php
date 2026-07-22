@@ -1,6 +1,8 @@
 <?php
 
-	include_once __DIR__.'/../../includes/functions/func_file.inc.php';
+	if (!function_exists('file_copy')) {
+		include_once __DIR__.'/../../includes/functions/func_file.inc.php';
+	}
 
 	/*
 		Backwards-compatible alias for the previous standalone helper. Both
@@ -309,4 +311,29 @@
 		}
 		echo 'Installation already completed. Remove storage/install.lock to reinstall.' . PHP_EOL;
 		exit;
+	}
+
+	// Sanitize installer client IP input for config rendering.
+	function install_sanitise_client_ip(string $client_ip): string {
+		return filter_var($client_ip, FILTER_VALIDATE_IP) ?: '127.0.0.1';
+	}
+
+	// Render install config from template with safely escaped placeholder values.
+	function install_render_config(string $template_path, array $values): string {
+
+		if (!is_file($template_path)) {
+			throw new Exception('Could not read config template at ' . $template_path);
+		}
+
+		$template = file_get_contents($template_path);
+		if ($template === false) {
+			throw new Exception('Could not read config template at ' . $template_path);
+		}
+
+		$escaped_values = [];
+		foreach ($values as $key => $value) {
+			$escaped_values['{'. $key .'}'] = addcslashes((string)$value, "\\\\'");
+		}
+
+		return strtr($template, $escaped_values);
 	}

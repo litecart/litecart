@@ -5,8 +5,10 @@
 
 	echo PHP_EOL;
 
-	$tracked_files = preg_split('#(\r\n?|\n)#', shell_exec('git ls-files'), -1, PREG_SPLIT_NO_EMPTY);
-	$staged_files = preg_split('#(\r\n?|\n)#', shell_exec('git diff --cached --name-only 2>&1'), -1, PREG_SPLIT_NO_EMPTY);
+	$tracked_output = shell_exec('git ls-files') ?? '';
+	$staged_output = shell_exec('git diff --cached --name-only 2>&1') ?? '';
+	$tracked_files = preg_split('#(\r\n?|\n)#', $tracked_output, -1, PREG_SPLIT_NO_EMPTY) ?: [];
+	$staged_files = preg_split('#(\r\n?|\n)#', $staged_output, -1, PREG_SPLIT_NO_EMPTY) ?: [];
 	$files_to_check = preg_grep('#\.php$#', $staged_files);
 
 	if ($files_to_check) {
@@ -28,6 +30,7 @@
 		shell_exec('git cat-file blob :'. $file .' > '. $tmp_file);
 
 		// Check if content has valid PHP syntax
+		$output = [];
 		exec('php -l '. escapeshellarg($tmp_file) .' 2>&1', $output, $result_code);
 
 		// Remove temporary file

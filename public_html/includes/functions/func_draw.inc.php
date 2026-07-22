@@ -70,11 +70,20 @@
 
 		if (is_array($attributes)) {
 			$attributes = implode(' ', array_map(function($key, $value) {
-				if ($value == '') {
+
+				$boolean_attributes = [
+					'allowfullscreen', 'async', 'autofocus', 'autoplay', 'checked', 'controls', 'default',
+					'defer', 'disabled', 'formnovalidate', 'hidden', 'inert', 'ismap', 'itemscope',
+					'loop', 'multiple', 'muted', 'nomodule', 'novalidate', 'open', 'playsinline',
+					'readonly', 'required', 'reversed', 'selected',
+				];
+
+				if (in_array(strtolower((string)$key), $boolean_attributes, true)) {
 					return $key;
 				} else {
 					return $key .'="'. f::escape_attr($value) .'"';
 				}
+
 			}, array_keys($attributes), $attributes));
 		}
 

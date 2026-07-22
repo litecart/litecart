@@ -7,6 +7,7 @@
 		private $_customer = [];
 		private $_items = [];
 		private $_options	= [];
+
 		private $_total = [
 			'amount' => [
 				'value' => 0,
@@ -28,8 +29,21 @@
 
 			$currency_code = $currency_code ?: currency::$selected['code'];
 
-			$this->_total['weight']['unit'] = settings::get('store_weight_unit');
-			$this->_total['volume']['unit'] = settings::get('store_length_unit').'3';
+			$this->_total = [
+				'amount' => [
+					'value' => 0,
+					'tax' => 0,
+					'currency_code' => $currency_code,
+				],
+				'weight' => [
+					'value' => 0,
+					'unit' => settings::get('store_weight_unit'),
+				],
+				'volume' => [
+					'value' => 0,
+					'unit' => settings::get('store_length_unit').'3',
+				],
+			];
 
 			foreach ($items as $item) {
 
@@ -49,7 +63,7 @@
 				$this->_total['amount']['value'] += $item['sum'];
 				$this->_total['amount']['tax'] += $item['sum_tax'];
 
-				foreach ($item['stock_items'] ?? [] as $stock_item) {
+				foreach (($item['stock_items'] ?? []) as $stock_item) {
 					$this->_total['weight']['value'] += f::convert_weight($stock_item['weight'], $stock_item['weight_unit'], $this->_total['weight']['unit']) * $item['quantity'] * $stock_item['quantity'];
 					$this->_total['volume']['value'] += f::convert_volume($stock_item['length'] * $stock_item['width'] * $stock_item['height'], $stock_item['length_unit'].'3', $this->_total['volume']['unit']) * $item['quantity'] * $stock_item['quantity'];
 				}
@@ -124,7 +138,7 @@
 
 			foreach ($this->modules as $module) {
 
-				$options = $module->options($this->_items, $this->_total, $this->_currency_code, $this->_customer);
+				$options = $module->options($this->_items, $this->_total, $this->_customer);
 
 				if (!$options) continue;
 
@@ -178,13 +192,15 @@
 			return $this->modules[$this->selected['module_id']]->after_process($order);
 		}
 
-		public function cheapest() {
+		public function cheapest(): array|false|null {
 
 			if (!$this->_options) {
 				$options = $this->options();
 			}
 
-			if (!$options) return false;
+			if (!$options) {
+				return false;
+			}
 
 			$cheapest = null;
 

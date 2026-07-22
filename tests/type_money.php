@@ -28,7 +28,11 @@
 		## TC-02: Fixed-amounts-per-currency constructor stores verbatim
 		########################################################################
 
-		$price = new type_money([$store_currency => 100, 'EUR' => 92, 'SEK' => 1050]);
+		$price = new type_money([
+			$store_currency => 100,
+			'EUR' => 92,
+			'SEK' => 1050
+		]);
 
 		if ($price->mode !== type_money::MODE_FIXED) {
 			throw new Exception('TC-02: expected mode=fixed, got "'. $price->mode .'"');

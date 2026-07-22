@@ -5,7 +5,7 @@
 		with type_money — inherits dual-mode money handling and JSON serialization,
 		adds net/gross/tax accessors that delegate to the tax:: node.
 
-		    $amount = new type_taxable_amount(100, 'USD', $tax_class_id);
+		    $amount = new type_taxable_amount(100, $tax_class_id, 'USD');
 		    echo $amount->net;        // 100
 		    echo $amount->gross;      // 100 + tax via tax::get_price()
 		    echo $amount->tax;        // tax via tax::get_tax()
@@ -20,34 +20,34 @@
 		triplets — jsonSerialize() preserves tax_class_id alongside the money payload.
 	*/
 
-	class type_taxable_amount extends type_money {
+	class type_taxable_amount extends type_money implements \JsonSerializable {
 
+		private $_amount;
 		private $_tax_class_id;
 
-		public function __construct($input = 0, ?string $currency_code = null, $tax_class_id = null) {
+		public function __construct(mixed $amount = 0, int|null $tax_class_id = null, ?string $currency_code = null) {
 
-			// Copy from a sibling instance — must come before parent's type_money
-			// check so the tax_class_id carries over.
-			if ($input instanceof type_taxable_amount) {
-				parent::__construct($input);
-				$this->_tax_class_id = $input->_tax_class_id;
+			if ($amount instanceof self) {
+				$this->_tax_class_id = $tax_class_id ?? $amount->tax_class_id;
+				parent::__construct($amount, $currency_code);
 				return;
 			}
 
-			// jsonSerialize() round-trip — peel tax_class_id and let the parent
-			// constructor handle the rest of the array shape.
-			if (is_array($input) && array_key_exists('tax_class_id', $input)) {
-				$this->_tax_class_id = $input['tax_class_id'];
-				unset($input['tax_class_id']);
-				parent::__construct($input, $currency_code);
-				return;
+			if (is_array($amount) && array_key_exists('tax_class_id', $amount)) {
+				$tax_class_id = $tax_class_id ?? ($amount['tax_class_id'] === null ? null : (int)$amount['tax_class_id']);
 			}
 
-			parent::__construct($input, $currency_code);
 			$this->_tax_class_id = $tax_class_id;
+
+			if (is_array($amount) && array_key_exists('amount', $amount)) {
+				parent::__construct($amount['amount'], $currency_code);
+				return;
+			}
+
+			parent::__construct($amount, $currency_code);
 		}
 
-		public function __get($name) {
+		public function __get(string $name): mixed {
 
 			switch ($name) {
 
@@ -55,15 +55,15 @@
 					return $this->in($this->currency_code);
 
 				case 'gross':
-					return (float)tax::get_price($this->net, $this->_tax_class_id, true);
+					return $this->gross_for('customer');
 
 				case 'tax':
-					return (float)tax::get_tax($this->net, $this->_tax_class_id);
+					return $this->tax_for('customer');
 
 				case 'tax_rate':
 					$rates = tax::get_rates($this->_tax_class_id);
 					if (empty($rates)) return 0.0;
-					$sum = 0;
+					$sum = 0.0;
 					foreach ($rates as $rate) {
 						$sum += (float)($rate['rate'] ?? 0);
 					}
@@ -76,22 +76,21 @@
 			return parent::__get($name);
 		}
 
-		/*
-			Region-aware variants — accept a customer array (or preset string)
-			and resolve tax against that context instead of the default.
-		*/
 		public function gross_for($customer): float {
-			return (float)tax::get_price($this->net, $this->_tax_class_id, true, $customer);
+			if ($this->_tax_class_id === null) return $this->net;
+			return tax::get_price($this->net, $this->_tax_class_id, true, $customer);
 		}
 
 		public function tax_for($customer): float {
-			return (float)tax::get_tax($this->net, $this->_tax_class_id, $customer);
+			if ($this->_tax_class_id === null) return 0.0;
+			return tax::get_tax($this->net, $this->_tax_class_id, $customer);
 		}
 
-		#[\ReturnTypeWillChange] // Fix PHP 8.1
-		public function jsonSerialize() {
-			return array_merge((array)parent::jsonSerialize(), [
+		public function jsonSerialize(): mixed {
+			return [
+				...parent::jsonSerialize(),
 				'tax_class_id' => $this->_tax_class_id,
-			]);
+			];
 		}
+
 	}

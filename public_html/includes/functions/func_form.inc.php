@@ -820,7 +820,7 @@
 		return f::draw_element('textarea', ['name' => $name, ...$attributes], f::escape_html($input));
 	}
 
-	function form_regional(string $name, string $language_code='', bool|array|string $input=true, string $type='text', array|string $attributes=[]): string {
+	function form_regional(string $name, string $language_code='', type_translation|bool|array|string $input=true, string $type='text', array|string $attributes=[]): string {
 
 		if (!$language_code) {
 			$language_code = settings::get('store_language_code');
@@ -835,16 +835,17 @@
 		}
 
 		$attributes = is_array($attributes) ? $attributes : form_attributes($attributes);
+		$language_name = language::$languages[$language_code]['name'] ?? '';
 
 		return implode(PHP_EOL, [
 			'<div class="input-group">',
-			'  <span class="input-group-text" style="font-family: monospace;" title="'. f::escape_attr(language::$languages[$language_code]['name']) .'">'. f::escape_html($language_code) .'</span>',
+			'  <span class="input-group-text" style="font-family: monospace;" title="'. f::escape_attr($language_name) .'">'. f::escape_html($language_code) .'</span>',
 			'	 ' . f::draw_element('input', ['class' => 'form-input', 'name' => $name, 'type' => $type, 'value' => $input, ...$attributes]),
 			'</div>'
 		]);
 	}
 
-	function form_regional_text(string $name, string $language_code='', bool|array|string $input=true, array|string $attributes=[]): string {
+	function form_regional_text(string $name, string $language_code='', type_translation|bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if (!$language_code) {
 			$language_code = settings::get('store_language_code');
@@ -854,15 +855,17 @@
 			$input = $input->in($language_code);
 		}
 
+		$language_name = language::$languages[$language_code]['name'] ?? '';
+
 		return implode(PHP_EOL, [
 			'<div class="input-group">',
-			'  <span class="input-group-text" style="font-family: monospace;" title="'. f::escape_attr(language::$languages[$language_code]['name']) .'">'. f::escape_html($language_code) .'</span>',
+			'  <span class="input-group-text" style="font-family: monospace;" title="'. f::escape_attr($language_name) .'">'. f::escape_html($language_code) .'</span>',
 			'  ' . form_input_text($name, $input, $attributes),
 			'</div>',
 		]);
 	}
 
-	function form_regional_textarea(string $name, string $language_code='', bool|array|string $input=true, array|string $attributes=[]): string {
+	function form_regional_textarea(string $name, string $language_code='', type_translation|bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if (!$language_code) {
 			$language_code = settings::get('store_language_code');
@@ -872,15 +875,17 @@
 			$input = $input->in($language_code);
 		}
 
+		$language_name = language::$languages[$language_code]['name'] ?? '';
+
 		return implode(PHP_EOL, [
 			'<div class="input-group">',
-			'  <span class="input-group-text" style="font-family: monospace;" title="'. f::escape_attr(language::$languages[$language_code]['name']) .'">'. f::escape_html($language_code) .'</span>',
+			'  <span class="input-group-text" style="font-family: monospace;" title="'. f::escape_attr($language_name) .'">'. f::escape_html($language_code) .'</span>',
 			'  ' . form_textarea($name, $input, $attributes),
 			'</div>',
 		]);
 	}
 
-	function form_regional_wysiwyg(string $name, string $language_code='', bool|array|string $input=true, array|string $attributes=[]): string {
+	function form_regional_wysiwyg(string $name, string $language_code='', type_translation|bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if (!$language_code) {
 			$language_code = settings::get('store_language_code');
@@ -890,9 +895,11 @@
 			$input = $input->in($language_code);
 		}
 
+		$language_name = language::$languages[$language_code]['name'] ?? '';
+
 		return implode(PHP_EOL, [
 			'<div class="input-group">',
-			'  <span class="input-group-text" style="font-family: monospace;" title="'. f::escape_attr(language::$languages[$language_code]['name']) .'">'. f::escape_html($language_code) .'</span>',
+			'  <span class="input-group-text" style="font-family: monospace;" title="'. f::escape_attr($language_name) .'">'. f::escape_html($language_code) .'</span>',
 			'  ' . form_input_wysiwyg($name, $input, $attributes),
 			'</div>',
 		]);

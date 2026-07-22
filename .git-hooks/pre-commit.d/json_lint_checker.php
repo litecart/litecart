@@ -3,7 +3,8 @@
 
 	declare(strict_types=1);
 
-	$staged_files = preg_split('#(\r\n?|\n)#', shell_exec('git diff --cached --name-only 2>&1'), -1, PREG_SPLIT_NO_EMPTY);
+	$staged_output = shell_exec('git diff --cached --name-only 2>&1') ?? '';
+	$staged_files = preg_split('#(\r\n?|\n)#', $staged_output, -1, PREG_SPLIT_NO_EMPTY) ?: [];
 	$json_files = preg_grep('#\.json$#', $staged_files);
 
 	if (!$json_files) {
@@ -25,13 +26,13 @@
 
 		echo '- ' . $file;
 
-		// Get the staged content of the file
-		$tmp_file = tempnam(sys_get_temp_dir(), '_json_lint');
-		shell_exec('git cat-file blob :' . $file . ' > ' . $tmp_file);
-		$content = file_get_contents($tmp_file);
-
-		// Remove temporary file
-		unlink($tmp_file);
+		// Get staged content from the index
+		$content = shell_exec('git cat-file blob ' . escapeshellarg(':' . $file));
+		if (!is_string($content)) {
+			echo ' [ERROR]' . PHP_EOL;
+			echo ' - Unable to read staged file content for linting.' . PHP_EOL;
+			exit(1);
+		}
 
 		// Check if content is valid JSON
 		$decoded = json_decode($content, true);

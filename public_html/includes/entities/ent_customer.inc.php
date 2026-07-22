@@ -196,7 +196,7 @@
 
 			database::query(
 				"update ". DB_TABLE_PREFIX ."customers
-				set password_hash = '". database::input($this->data['password_hash'] = password_hash($password, PASSWORD_DEFAULT)) ."',
+				set password_hash = '". database::input($this->data['password_hash'] = password_hash($password, PASSWORD_DEFAULT)) ."'
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"
 			);

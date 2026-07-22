@@ -31,7 +31,7 @@
 		private $_mode;
 		private $_origin_currency;
 
-		public function __construct(float $input = 0, ?string $currency_code = null) {
+		public function __construct(float|array|type_money $input = 0, ?string $currency_code = null) {
 
 			if ($input instanceof type_money) {
 				$this->_amounts         = $input->_amounts;
@@ -121,6 +121,10 @@
 
 			if ($base_currency === $currency) {
 				return $base_amount;
+			}
+
+			if (empty(currency::$currencies[$base_currency]) || empty(currency::$currencies[$currency])) {
+				return (float)$base_amount;
 			}
 
 			return (float)currency::convert($base_amount, $base_currency, $currency);

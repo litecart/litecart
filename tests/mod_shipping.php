@@ -55,15 +55,44 @@
 
 		// Simulate cart items: 2 items, 3kg total
 		$items = [
-			['quantity' => 1, 'weight' => 2, 'weight_unit' => 'kg', 'price' => 29.99],
-			['quantity' => 1, 'weight' => 1, 'weight_unit' => 'kg', 'price' => 19.99],
+			[
+				'quantity' => 1,
+				'price' => 29.99,
+				'weight' => 2,
+				'weight_unit' => 'kg',
+			],
+			[
+				'quantity' => 1,
+				'price' => 19.99,
+				'weight' => 1,
+				'weight_unit' => 'kg',
+			],
 		];
 
-		$address = ['country_code' => 'US', 'zone_code' => '', 'city' => ''];
+		$total = [
+			'amount' => [
+				'value' => 49.98,
+				'currency' => currency::$selected['code'],
+			],
+			'weight' => [
+				'value' => 3,
+				'unit' => 'kg',
+			],
+			'volume' => [
+				'value' => 0.003,
+				'unit' => 'm3',
+			],
+		];
 
-		$options = $module->options($items, 49.98, 0, currency::$selected['code'], $address);
+		$address = [
+			'country_code' => 'US',
+			'zone_code' => '',
+			'city' => '',
+		];
 
-		if (empty($options)) {
+		$options = $module->options($items, $total, $address);
+
+		if (!$options) {
 			throw new Exception('sm_zone_weight: Fallback zone should return options for non-matched country');
 		}
 
@@ -72,7 +101,7 @@
 		$fee = (float)$options[0]['cost'];
 
 		if (abs($fee - 5.00) > 0.01) {
-			throw new Exception('sm_zone_weight: Expected fee 5.00 for 3kg (fallback zone), got '. $fee);
+			throw new Exception('sm_zone_weight: Expected fee 5.00 for 3 kg (fallback zone), got '. $fee);
 		}
 
 		########################################################################
@@ -80,16 +109,36 @@
 		########################################################################
 
 		$heavy_items = [
-			['quantity' => 1, 'weight' => 12, 'weight_unit' => 'kg', 'price' => 99.99],
+			[
+				'quantity' => 1,
+				'price' => 99.99,
+				'weight' => 12,
+				'weight_unit' => 'kg',
+			],
 		];
 
-		$options = $module->options($heavy_items, 99.99, 0, currency::$selected['code'], $address);
+		$heavy_total = [
+			'amount' => [
+				'value' => 99.99,
+				'currency' => currency::$selected['code'],
+			],
+			'weight' => [
+				'value' => 12,
+				'unit' => 'kg',
+			],
+			'volume' => [
+				'value' => 0.012,
+				'unit' => 'm3',
+			],
+		];
+
+		$options = $module->options($heavy_items, $heavy_total, $address);
 
 		// 12kg, method >= : 0:5.00, 5:8.95, 10:15.95 all match, last wins → 15.95
 		$fee = (float)$options[0]['cost'];
 
 		if (abs($fee - 15.95) > 0.01) {
-			throw new Exception('sm_zone_weight: Expected fee 15.95 for 12kg, got '. $fee);
+			throw new Exception('sm_zone_weight: Expected fee 15.95 for 12 kg, got '. $fee);
 		}
 
 		########################################################################
@@ -101,7 +150,7 @@
 
 		$de_address = ['country_code' => 'DE', 'zone_code' => '', 'city' => ''];
 
-		$options = $module->options($items, 49.98, 0, currency::$selected['code'], $de_address);
+		$options = $module->options($items, $total, $de_address);
 
 		if (empty($options)) {
 			throw new Exception('sm_zone_weight: Zone 1 should match for DE address');
@@ -122,13 +171,13 @@
 		$module->settings['geo_zone_id_1'] = '';
 		$module->settings['weight_rate_table_1'] = '';
 
-		$options = $module->options($items, 49.98, 0, currency::$selected['code'], $address);
+		$options = $module->options($items, $total, $address);
 
 		// Fallback zone: 3kg → 5.00 + handling 2.50 = 7.50
 		$fee = (float)$options[0]['cost'];
 
 		if (abs($fee - 7.50) > 0.01) {
-			throw new Exception('sm_zone_weight: Expected fee 7.50 (5.00 + 2.50 handling) for 3kg, got '. $fee);
+			throw new Exception('sm_zone_weight: Expected fee 7.50 (5.00 + 2.50 handling) for 3 kg, got '. $fee);
 		}
 
 		########################################################################
@@ -137,7 +186,7 @@
 
 		$module->settings['status'] = '0';
 
-		$options = $module->options($items, 49.98, 0, currency::$selected['code'], $address);
+		$options = $module->options($items, $total, $address);
 
 		if ($options !== null) {
 			throw new Exception('sm_zone_weight: Disabled module should return null');
@@ -151,7 +200,7 @@
 		$module->settings['weight_rate_table_x'] = '';
 		$module->settings['handling_fee'] = '0';
 
-		$options = $module->options($items, 49.98, 0, currency::$selected['code'], $address);
+		$options = $module->options($items, $total, $address);
 
 		if ($options !== null) {
 			throw new Exception('sm_zone_weight: Empty fallback rate table should return null');

@@ -6,15 +6,19 @@
 	// 401 from upgrade.php without session) are manual-verification items
 	// because the test harness does not simulate full web requests.
 
-	// Constants used by init.inc.php. We do NOT include app_header
-	// here because these helpers must work before LiteCart's bootstrap
-	// has run (that is their whole point).
-	define('FS_DIR_APP', realpath(__DIR__ . '/../public_html') . '/');
-	define('FS_DIR_STORAGE', FS_DIR_APP . 'storage/');
+	if (!defined('FS_DIR_APP')) {
+		define('FS_DIR_APP', realpath(__DIR__ . '/../public_html') . '/');
+	}
 
-	require_once FS_DIR_APP . 'install/includes/init.inc.php';
+	if (!defined('FS_DIR_STORAGE')) {
+		define('FS_DIR_STORAGE', FS_DIR_APP . 'storage/');
+	}
+
+	if (!defined('NONCE')) {
+		define('NONCE', bin2hex(random_bytes(16)));
+	}
+
 	require_once FS_DIR_APP . 'install/includes/functions.inc.php';
-	require_once FS_DIR_APP . 'install/includes/config_writer.inc.php';
 
 	try {
 

@@ -17,6 +17,12 @@
 
 	$collections = include 'app://backend/apps/localization/translations/collections.inc.php';
 
+	// Validate requested language codes before they are used in SQL identifier contexts.
+	$allowed_language_codes = array_keys(language::$languages);
+	foreach ($_GET['languages'] as $_lang_code) {
+		database::identifier($_lang_code, $allowed_language_codes);
+	}
+
 	if (isset($_POST['save'])) {
 		try {
 

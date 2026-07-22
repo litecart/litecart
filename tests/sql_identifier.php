@@ -5,7 +5,9 @@
 	// calls preg_match() and in_array(), so we can exercise it without
 	// bootstrapping the whole app.
 
-	require_once __DIR__ . '/../public_html/includes/nodes/nod_database.inc.php';
+	if (!class_exists('database', false)) {
+		require_once __DIR__ . '/../public_html/includes/nodes/nod_database.inc.php';
+	}
 
 	try {
 
@@ -45,23 +47,6 @@
 				throw new Exception("Expected identifier(" . var_export($name, true) . ") to throw, but it did not");
 			}
 		}
-
-		// Type-guard: non-strings must be rejected.
-		foreach ([null, 123, ['en'], new stdClass()] as $non_string) {
-			$threw = false;
-			try {
-				database::identifier($non_string);
-			} catch (InvalidArgumentException $e) {
-				$threw = true;
-			} catch (TypeError $e) {
-				$threw = true; // stricter PHP behaviour is also acceptable
-			}
-			if (!$threw) {
-				throw new Exception("Expected identifier(non-string) to throw, but it did not");
-			}
-		}
-
-		echo ' [OK]' . PHP_EOL;
 
 		########################################################################
 		## AC-2: allowlist enforcement

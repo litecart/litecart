@@ -12,7 +12,7 @@
 		private $_components;
 		private $_serialized;
 
-		public function __construct(string|type_url $url='') {
+		public function __construct(string|array|type_url $url='') {
 
 			$this->reset();
 
@@ -24,7 +24,7 @@
 
 			} else {
 
-				$components = is_array($url) ? $url : parse_url($url);
+				$components = is_array($url) ? $url : parse_url((string)$url);
 
 				if ($components) {
 					foreach ($components as $component => $value) {
@@ -194,15 +194,20 @@
 		}
 
 		// Workaround as overloaded array items cannot be set
-		public function set_query($key, $value): void {
+		public function set_query($key, $value): type_url {
+
+			if (!is_array($this->_components['query'])) {
+				$this->_components['query'] = [];
+			}
 
 			$this->_components['query'][$key] = is_object($value) ? (string)$value : $value;
+			$this->_serialized = '';
 
-			return;
+			return $this;
 		}
 
 		// Workaround as overloaded array items cannot be unset
-		public function unset_query($key): void {
+		public function unset_query($key): type_url {
 
 			if (is_array($key)) {
 
@@ -232,7 +237,9 @@
 				unset($this->_components['query'][$key]);
 			}
 
-			return;
+			$this->_serialized = '';
+
+			return $this;
 		}
 
 		public function reset(): void {
@@ -246,5 +253,6 @@
 				'query' => [],
 				'fragment' => '',
 			];
+			$this->_serialized = '';
 		}
 	}

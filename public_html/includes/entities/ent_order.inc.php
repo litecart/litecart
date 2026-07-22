@@ -102,6 +102,7 @@
 			foreach ($order as $field => $value) {
 
 				switch (true) {
+
 					case (preg_match('#^customer_#', $field)):
 						$this->data['customer'][preg_replace('#^(customer_)#', '', $field)] = $value;
 						break;
@@ -350,6 +351,7 @@
 				database::query(
 					"update ". DB_TABLE_PREFIX ."orders_items
 					set product_id = ". (int)$item['product_id'] .",
+						stock_option_id = ". (!empty($item['stock_option_id']) ? (int)$item['stock_option_id'] : "null") .",
 						code = '". database::input($item['code']) ."',
 						name = '". database::input($item['name']) ."',
 						image = '". database::input($item['image']) ."',
@@ -362,7 +364,7 @@
 						tax_rate = ". ($item['tax_rate'] ? (float)$item['tax_rate'] : "null") .",
 						sum = ". (float)$item['sum'] .",
 						sum_tax = ". (float)$item['sum_tax'] .",
-						priority = ". ($this->data['items'][$item_key]['priority'] = $item['priority'] = ++$i) ."
+						priority = ". ($this->data['items'][$key]['priority'] = $item['priority'] = ++$i) ."
 					where id = ". (int)$item['id'] ."
 					and order_id = ". (int)$this->data['id'] ."
 					limit 1;"
@@ -372,7 +374,7 @@
 			// Insert/update order stock items
 			$i = 0;
 			foreach ($this->data['items'] as $item_key => $item) {
-				foreach ($item['stock_items'] as $stock_item_key => $stock_item) {
+				foreach (($item['stock_items'] ?? []) as $stock_item_key => $stock_item) {
 
 					if (isset($item['order_id']) && $item['order_id'] != $this->data['id']) {
 						$item['id'] = null;
@@ -512,7 +514,7 @@
 				}
 			}
 
-			[$module_id, $option_id] = preg_split('#:#', $this->data['payment_option']['id'] ?? ':', 2);
+			[$module_id, $option_id] = preg_split('#:#', ($this->data['payment_option']['id'] ?? '') ?: ':', 2);
 			$payment_modules = new mod_payment($this, $this->data['payment_option']);
 			$payment_modules->run('after_save', $module_id, $this);
 
@@ -610,18 +612,21 @@
 
 			$tax_rates = tax::get_rates($cart_item['tax_class_id'] ?? null, $this->data['customer']);
 			$average_rate = !empty($tax_rates) ? array_sum($tax_rates) / count($tax_rates) : 0;
+			$regular_price = (float)($cart_item['regular_price']['value'] ?? $cart_item['price'] ?? 0);
+			$final_price = (float)($cart_item['final_price']['value'] ?? $cart_item['price'] ?? 0);
 
 			$item = [
 				'id' => null,
 				'order_id' => null,
-				'product_id' => null,
+				'product_id' => (int)($cart_item['product_id'] ?? 0),
+				'stock_option_id' => !empty($cart_item['stock_option_id']) ? (int)$cart_item['stock_option_id'] : null,
 				'code' => $cart_item['code'] ?? '',
 				'name' => $cart_item['name'] ?? '',
 				'image' => $cart_item['image'] ?? '',
 				'userdata' => $cart_item['userdata'] ?? '',
 				'quantity' => $cart_item['quantity'] ?? 1,
-				'regular_price' => $cart_item['regular_price']['value'] ?? 0,
-				'final_price' => $cart_item['final_price']['value'] ?? 0,
+				'regular_price' => $regular_price,
+				'final_price' => $final_price,
 				'discount' => $cart_item['discount']['value'] ?? $cart_item['discount'] ?? 0,
 				'tax_rate' => $cart_item['tax_rate'] ?? $average_rate,
 				'tax_class_id' => $cart_item['tax_class_id'] ?? null,
@@ -631,12 +636,17 @@
 			];
 
 			$item['sum'] = ($item['final_price'] || $item['discount']) ? ($item['final_price'] - $item['discount']) * $item['quantity'] : 0;
-			$item['sum_tax'] = tax::get_tax($item['sum'], $item['tax_class_id'] ?? null, $this->data['customer']);
+			if (isset($cart_item['tax'])) {
+				$item['sum_tax'] = (float)$cart_item['tax'] * (float)$item['quantity'];
+			} else {
+				$item['sum_tax'] = tax::get_tax($item['sum'], $item['tax_class_id'] ?? null, $this->data['customer']);
+			}
 
-			foreach ($cart_item['stock_items'] as $stock_item) {
+			foreach (($cart_item['stock_items'] ?? []) as $stock_item) {
 
 				$item['stock_items'][] = [
-					'stock_item_id' => $stock_item['id'],
+					'stock_stock_item_id' => (int)($stock_item['stock_stock_item_id'] ?? $stock_item['stock_item_id'] ?? $stock_item['id'] ?? 0),
+					'stock_item_id' => (int)($stock_item['stock_item_id'] ?? $stock_item['id'] ?? 0),
 					'quantity' => $stock_item['quantity'],
 					'name' => $stock_item['name'],
 					'serial_number' => $stock_item['serial_number'],
@@ -826,7 +836,7 @@
 
 					if (!empty($this->data['shipping_option']['id'])) {
 
-						[$module_id, $option_id] = $this->data['shipping_option']['id'] ? preg_split('#:#', $this->data['shipping_option']['id'], 2) : ['', ''];
+						[$module_id, $option_id] = preg_split('#:#', ($this->data['shipping_option']['id'] ?? '') ?: ':', 2);
 
 						if (empty($shipping->data['options'][$module_id]['options'][$option_id])) {
 							return t('error_invalid_shipping_method_selected', 'Invalid shipping method selected');
@@ -853,7 +863,7 @@
 
 					if (!empty($this->data['payment_option']['id'])) {
 
-						[$module_id, $option_id] = $this->data['payment_option']['id'] ? preg_split('#:#', $this->data['payment_option']['id'], 2) : ['', ''];
+						[$module_id, $option_id] = preg_split('#:#', ($this->data['payment_option']['id'] ?? '') ?: ':', 2);
 
 						if (empty($payment->options[$module_id]['options'][$option_id])) {
 							return t('error_invalid_payment_method_selected', 'Invalid payment method selected');
@@ -1065,22 +1075,45 @@
 			$order_modules = new mod_order();
 			$order_modules->delete($this->previous);
 
-			database::query(
-				"delete o, oi, osi, oc
-				from ". DB_TABLE_PREFIX ."orders o
-				left join ". DB_TABLE_PREFIX ."orders_items oi on (oi.order_id = o.id)
-				left join ". DB_TABLE_PREFIX ."orders_stock_items osi on (osi.order_id = o.id)
-				left join ". DB_TABLE_PREFIX ."orders_comments oc on (oc.order_id = o.id)
-				where o.id = ". (int)$this->data['id'] .";"
-			);
+			database::begin_transaction();
 
-			f::webhook_send('order:deleted', $this->previous);
+			try {
 
-			$this->reset();
+				database::query(
+					"delete from ". DB_TABLE_PREFIX ."orders_stock_items
+					where order_id = ". (int)$this->data['id'] .";"
+				);
 
-			cache::clear_cache('order');
-			cache::clear_cache('category');
-			cache::clear_cache('brand');
-			cache::clear_cache('products');
+				database::query(
+					"delete from ". DB_TABLE_PREFIX ."orders_comments
+					where order_id = ". (int)$this->data['id'] .";"
+				);
+
+				database::query(
+					"delete from ". DB_TABLE_PREFIX ."orders_items
+					where order_id = ". (int)$this->data['id'] .";"
+				);
+
+				database::query(
+					"delete from ". DB_TABLE_PREFIX ."orders
+					where id = ". (int)$this->data['id'] ."
+					limit 1;"
+				);
+
+					database::commit();
+
+				f::webhook_send('order:deleted', $this->previous);
+
+				$this->reset();
+
+				cache::clear_cache('order');
+				cache::clear_cache('category');
+				cache::clear_cache('brand');
+				cache::clear_cache('products');
+
+			} catch (Throwable $e) {
+				database::rollback();
+				throw $e;
+			}
 		}
 	}

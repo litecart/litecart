@@ -124,13 +124,16 @@
 					throw new Exception('You cannot not rename the english language because it is used for the PHP framework.');
 				}
 
+				$previous_code = database::identifier($this->previous['code']);
+				$language_code = database::identifier($this->data['code']);
+
 				// Rename language code in translations table
 				database::query(
 					"update ". DB_TABLE_PREFIX ."translations
 					set `text` = if(
-							json_contains_path(`text`, 'one', '$.". database::input($this->previous['code']) ."'),
-							json_set(json_remove(`text`, '$.". database::input($this->previous['code']) ."'),
-							'$.". database::input($this->data['code']) ."', json_value(`text`, '$.". database::input($this->previous['code']) ."')
+							json_contains_path(`text`, 'one', '$.". database::input($previous_code) ."'),
+							json_set(json_remove(`text`, '$.". database::input($previous_code) ."'),
+							'$.". database::input($language_code) ."', json_value(`text`, '$.". database::input($previous_code) ."')
 						), `text`);"
 				);
 
@@ -147,9 +150,9 @@
 						database::query(
 							"update `$table`
 							set `{$column}` = if(
-									json_contains_path(`{$column}`, 'one', '$.". database::input($this->previous['code']) ."'),
-									json_set(json_remove(`{$column}`, '$.". database::input($this->previous['code']) ."'),
-									'$.". database::input($this->data['code']) ."', json_value(`{$column}`, '$.". database::input($this->previous['code']) ."')
+									json_contains_path(`{$column}`, 'one', '$.". database::input($previous_code) ."'),
+									json_set(json_remove(`{$column}`, '$.". database::input($previous_code) ."'),
+									'$.". database::input($language_code) ."', json_value(`{$column}`, '$.". database::input($previous_code) ."')
 								), `{$column}`)
 							limit 1;"
 						);
@@ -157,6 +160,8 @@
 				}
 
 			} else {
+
+				$language_code = database::identifier($this->data['code']);
 
 				// Add new language to entity collections
 
@@ -170,7 +175,7 @@
 					foreach ($collection['translatable'] as $column) {
 						database::query(
 							"update `$table`
-							set `{$column}` = json_set(ifnull(`{$column}`, '{}'), '$.". database::input($this->data['code']) ."', '')"
+							set `{$column}` = json_set(ifnull(`{$column}`, '{}'), '$.". database::input($language_code) ."', '')"
 						);
 					}
 				}
@@ -202,9 +207,11 @@
 			);
 
 			// Drop the language key from every translation row.
+			$language_code = database::identifier($this->data['code']);
+
 			database::query(
 				"update ". DB_TABLE_PREFIX ."translations
-				set `text` = json_remove(`text`, '$.". database::input($this->data['code']) ."');"
+				set `text` = json_remove(`text`, '$.". database::input($language_code) ."');"
 			);
 
 			$collections = include 'app://includes/collections.inc.php';
@@ -217,9 +224,7 @@
 				foreach ($collection['translatable'] as $column) {
 					database::query(
 						"update `$table`
-						set `{$column}` = json_remove(`{$column}`, '$.". database::input($this->data['code']) ."')
-						where id = ". (int)$row['id'] ."
-						limit 1;"
+						set `{$column}` = json_remove(`{$column}`, '$.". database::input($language_code) ."');"
 					);
 				}
 			}

@@ -25,6 +25,7 @@
 
 				default:
 					trigger_error('Unknown array property ('.$name.')', E_USER_WARNING);
+					return null;
 			}
 		}
 
@@ -34,15 +35,19 @@
 
 				case 'value':
 					$this->_array = $value;
+					break;
 
 				case 'first_key':
-					array_key_first(array_map('trim', $this->_array));
+					trigger_error('Property is read-only ('.$name.')', E_USER_WARNING);
+					break;
 
 				case 'last_key':
-					array_key_last(array_map('trim', $this->_array));
+					trigger_error('Property is read-only ('.$name.')', E_USER_WARNING);
+					break;
 
 				default:
 					trigger_error('Unknown array property ('.$name.')', E_USER_WARNING);
+					break;
 			}
 		}
 
@@ -132,6 +137,7 @@
 
 				default:
 					trigger_error('Unknown array method ('.$method.')', E_USER_WARNING);
+					return null;
 			}
 		}
 

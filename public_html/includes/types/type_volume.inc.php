@@ -145,7 +145,7 @@
 			return $this;
 		}
 
-		public function convert(string $to): self {
+		public function convert(string $to): self|false {
 
 			$to = strtolower($to);
 
@@ -159,7 +159,7 @@
 
 			if (!isset(self::UNITS[$to])) {
 				trigger_error('The unit '. $to .' is not a valid volume unit.', E_USER_WARNING);
-				return $this;
+				return false;
 			}
 
 			$this->value = $this->value * (self::UNITS[$to]['value'] / self::UNITS[$this->unit]['value']);

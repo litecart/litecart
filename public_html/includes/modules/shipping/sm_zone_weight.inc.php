@@ -13,7 +13,7 @@
 			parent::__construct();
 		}
 
-		public function options(array $items, array $total, string $currency_code, array $customer): ?array {
+		public function options(array $items, array $total, array $customer): ?array {
 
 			if (empty($this->settings['status'])) {
 				return null;
@@ -25,8 +25,13 @@
 
 			for ($i=1; $i <= 3; $i++) {
 
-				if (empty($this->settings['geo_zone_id_'.$i])) continue;
-				if (!reference::country($customer['country_code'])->in_geo_zone($this->settings['geo_zone_id_'.$i], $customer)) continue;
+				if (empty($this->settings['geo_zone_id_'.$i])) {
+					continue;
+				}
+
+				if (!reference::country($customer['country_code'])->in_geo_zone($this->settings['geo_zone_id_'.$i], $customer)) {
+					continue;
+				}
 
 				$fee = $this->calculate_fee($this->settings['weight_rate_table_'.$i], $total_weight);
 
@@ -42,9 +47,11 @@
 				];
 			}
 
-			if (empty($options)) {
+			if (!$options) {
 
-				if (empty($this->settings['weight_rate_table_x'])) return null;
+				if (!$this->settings['weight_rate_table_x']) {
+					return null;
+				}
 
 				$fee = $this->calculate_fee($this->settings['weight_rate_table_x'], $total_weight);
 
@@ -73,6 +80,7 @@
 				case '<':
 				case '&lt;':
 				case 'ITEM_WEIGHT_LOWER_THAN_VALUE':
+
 					foreach (array_reverse(preg_split('#[\|;]#', $rate_table, -1, PREG_SPLIT_NO_EMPTY)) as $rate) {
 						list($rate_weight, $rate_fee) = explode(':', $rate);
 						if ($shipping_weight < $rate_weight) {
@@ -84,6 +92,7 @@
 				case '<=':
 				case '&lt;=':
 				case 'ITEM_WEIGHT_LOWER_THAN_OR_EQUALS_VALUE':
+
 					foreach (array_reverse(preg_split('#[\|;]#', $rate_table, -1, PREG_SPLIT_NO_EMPTY)) as $rate) {
 						list($rate_weight, $rate_fee) = explode(':', $rate);
 						if ($shipping_weight <= $rate_weight) {
@@ -95,6 +104,7 @@
 				case '>':
 				case '&gt;':
 				case 'ITEM_WEIGHT_HIGHER_THAN_VALUE':
+
 					foreach (preg_split('#[|;]#', $rate_table, -1, PREG_SPLIT_NO_EMPTY) as $rate) {
 						list($rate_weight, $rate_fee) = explode(':', $rate);
 						if ($shipping_weight > $rate_weight) {
@@ -107,6 +117,7 @@
 				case '&gt;=':
 				case 'ITEM_WEIGHT_HIGHER_THAN_OR_EQUALS_VALUE':
 				default:
+
 					foreach (preg_split('#[|;]#', $rate_table, -1, PREG_SPLIT_NO_EMPTY) as $rate) {
 						list($rate_weight, $rate_fee) = explode(':', $rate);
 						if ($shipping_weight >= $rate_weight) {
@@ -115,6 +126,7 @@
 					}
 					break;
 			}
+
 			return $fee;
 		}
 

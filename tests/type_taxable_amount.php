@@ -10,7 +10,7 @@
 		## TC-01: Basic construction with tax_class_id
 		########################################################################
 
-		$amount = new type_taxable_amount(100, $store_currency, 1);
+		$amount = new type_taxable_amount(100, 1, $store_currency);
 
 		if ($amount->tax_class_id !== 1) {
 			throw new Exception('TC-01: tax_class_id not stored (got '. var_export($amount->tax_class_id, true) .')');
@@ -28,7 +28,7 @@
 		## TC-02: tax_class_id = null behaves like a plain type_money
 		########################################################################
 
-		$amount = new type_taxable_amount(100, $store_currency, null);
+		$amount = new type_taxable_amount(100, null, $store_currency);
 
 		if ($amount->tax_class_id !== null) {
 			throw new Exception('TC-02: tax_class_id should be null');
@@ -51,7 +51,7 @@
 		## TC-03: jsonSerialize includes tax_class_id alongside money payload
 		########################################################################
 
-		$amount = new type_taxable_amount(100, $store_currency, 42);
+		$amount = new type_taxable_amount(100, 42, $store_currency);
 		$serialized = $amount->jsonSerialize();
 
 		if (!is_array($serialized)) {
@@ -77,7 +77,7 @@
 		## TC-04: JSON round-trip preserves tax_class_id and money
 		########################################################################
 
-		$original = new type_taxable_amount(100, $store_currency, 7);
+		$original = new type_taxable_amount(100, 7, $store_currency);
 		$json = json_encode($original);
 		$decoded = json_decode($json, true);
 		$rebuilt = new type_taxable_amount($decoded);
@@ -94,7 +94,7 @@
 		## TC-05: Copy constructor preserves tax_class_id
 		########################################################################
 
-		$original = new type_taxable_amount(50, $store_currency, 3);
+		$original = new type_taxable_amount(50, 3, $store_currency);
 		$copy = new type_taxable_amount($original);
 
 		if ($copy->tax_class_id !== 3) {
@@ -109,7 +109,7 @@
 		## TC-06: Construction from type_money (without tax_class) keeps null
 		########################################################################
 
-		$money = new type_money(75, $store_currency);
+		$money = new type_money(75, null, $store_currency);
 		$amount = new type_taxable_amount($money);
 
 		if ($amount->tax_class_id !== null) {
@@ -124,7 +124,7 @@
 		## TC-07: Customer-aware variants exist and accept a customer arg
 		########################################################################
 
-		$amount = new type_taxable_amount(100, $store_currency, null);
+		$amount = new type_taxable_amount(100, null, $store_currency);
 
 		// With tax_class_id null these must still return floats (not error).
 		$gross_for = $amount->gross_for('store');
@@ -147,7 +147,7 @@
 		}, E_USER_WARNING);
 
 		try {
-			$amount = new type_taxable_amount(100, $store_currency, 1);
+			$amount = new type_taxable_amount(100, 1, $store_currency);
 			$_ = $amount->unknown_component;
 			throw new Exception('TC-08: expected E_USER_WARNING on unknown component');
 		} catch (ErrorException $ex) {
@@ -162,7 +162,7 @@
 		## TC-09: __toString() falls through to type_money's format()
 		########################################################################
 
-		$amount = new type_taxable_amount(100, $store_currency, 1);
+		$amount = new type_taxable_amount(100, 1, $store_currency);
 		$rendered = (string)$amount;
 
 		if ($rendered === '') {
@@ -177,7 +177,7 @@
 		## TC-10: Fixed-amounts-per-currency mode round-trips with tax_class_id
 		########################################################################
 
-		$amount = new type_taxable_amount([$store_currency => 100, 'EUR' => 92], null, 5);
+		$amount = new type_taxable_amount([$store_currency => 100, 'EUR' => 92], 5, null);
 
 		if ($amount->tax_class_id !== 5) {
 			throw new Exception('TC-10: tax_class_id not preserved in fixed-map mode');
