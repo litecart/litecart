@@ -83,7 +83,7 @@
 				'phone',
 				'email',
 			] as $field) {
-				$order->data['customer'][$field] = customer::$data[$field] ?: $_POST['customer'][$field] ?? '';
+				$order->data['customer'][$field] = ($_POST[$field] ?? '') ?: customer::$data[$field];
 			}
 
 			foreach ([
@@ -101,9 +101,9 @@
 				'email',
 			] as $field) {
 				if (!empty(customer::$data['different_shipping_address'])) {
-					$order->data['customer']['shipping_address'][$field] = customer::$data['shipping_address'][$field] ?? '';
+					$order->data['customer']['shipping_address'][$field] = ($_POST['shipping_address'][$field] ?? '') ?: customer::$data['shipping_address'][$field];
 				} else {
-					$order->data['customer']['shipping_address'][$field] = customer::$data[$field] ?: $_POST['customer'][$field] ?? '';
+					$order->data['customer']['shipping_address'][$field] = ($_POST[$field] ?? '') ?: customer::$data[$field];
 				}
 			}
 
@@ -128,11 +128,6 @@
 
 			// Process a standard checkout
 			if ($_POST['checkout'] == 'standard') {
-
-				if ($order->validate(['customer'])) {
-					redirect(document::ilink('checkout/customer'), 303);
-					exit;
-				}
 
 				redirect(document::ilink('checkout/index'), 303);
 				exit;

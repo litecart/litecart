@@ -48,14 +48,7 @@
 		if (empty($order->data['items'])) {
 			throw new Exception(t('error_order_appears_empty', 'The order appears empty'), 404);
 		}
-/*
-		// Redirect to customer details if not sufficient
-		if ($validation_error = $order->validate('customer')) {
-			notices::add('notices', t('error_we_need_some_additional_info_from_you', 'We need some additional information from you'));
-			redirect(document::ilink('checkout/customer', ['redirect_url' => document::ilink('checkout/index')]));
-			exit;
-		}
-*/
+
 		if (!$_POST) {
 			$_POST = $order->data;
 			$_POST['comments'] = '';
@@ -131,6 +124,13 @@
 				'text' => $_POST['comments'] ?? '',
 				'hidden' => false,
 			];
+
+			// Abort if customer details are not sufficient
+			if ($validation_error = $order->validate(['customer'])) {
+				notices::add('notices', t('error_we_need_some_additional_info_from_you', 'We need some additional information from you'));
+				reload();
+				exit;
+			}
 
 			$shipping = new mod_shipping(
 				items: $order->data['items'],
@@ -234,7 +234,11 @@
                    . '<form name="gateway_form" method="post" action="'. (!empty($gateway['action']) ? $gateway['action'] : document::ilink('order_process')) .'">' . PHP_EOL;
 
                 if (is_array($gateway['fields'])) {
-                  foreach ($gateway['fields'] as $key => $value) echo '  ' . functions::form_draw_hidden_field($key, $value) . PHP_EOL;
+
+                  foreach ($gateway['fields'] as $key => $value) {
+										echo '  ' . functions::form_draw_hidden_field($key, $value) . PHP_EOL;
+									}
+
                 } else {
                   echo $gateway['fields'];
                 }
@@ -294,6 +298,7 @@
 		'cheapest_shipping_fee' => null,
 		'display_prices_including_tax' => $order->data['display_prices_including_tax'],
 		'box_also_purchased_products' => null,
+		'sufficient_customer_details' => $validation_error = $order->validate('customer') ? false : true,
 		'error' => $order->validate(),
 	];
 

@@ -673,10 +673,10 @@
 			$this->data['total_tax'] += $item['sum_tax'];
 		}
 
-		public function validate(array $filters = [], mixed $shipping = null, mixed $payment = null): string|false {
+		public function validate(string|array $filters = [], mixed $shipping = null, mixed $payment = null): string|false {
 
-			if (!is_array($filters)) {
-				$filters = [];
+			if (is_string($filters)) {
+				$filters = [$filters];
 			}
 
 			// Items

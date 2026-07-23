@@ -293,5 +293,5 @@ jobs:
         if: ${{ !cancelled() }}
         with:
           name: playwright-report-${{ matrix.db.slug }}
-          path: playwright-report/
+          path: playwright/report/
           retention-days: 14

@@ -14,7 +14,7 @@
 	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/third_parties.inc.php');
 
 	$_page->snippets['third_parties'] =  database::query(
-		"select *, JSON_VALUE(name, '$.". language::$selected['code'] ."') as name
+		"select *, json_value(name, '$.". language::$selected['code'] ."') as name
 		from ". DB_TABLE_PREFIX ."third_parties
 		where status
 		order by name;"

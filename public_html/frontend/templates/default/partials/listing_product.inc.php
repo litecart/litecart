@@ -49,7 +49,7 @@
 
 		<?php if ($num_stock_options) { ?>
 		<a class="view-options btn btn-default btn-sm" href="<?php echo f::escape_html($link) ?>" title="<?php echo f::escape_attr(t('title_view_options', 'View Options')); ?>" aria-label="<?php echo f::escape_attr(t('title_view_options', 'View Options') .': '. $name); ?>">
-			<?php echo f::draw_fonticon('icon-copy', 'aria-hidden="true"'); ?>
+			<?php echo f::draw_fonticon('icon-info', 'aria-hidden="true"'); ?>
 			<?php //echo $num_stock_options; ?>
 		</a>
 		<?php } ?>

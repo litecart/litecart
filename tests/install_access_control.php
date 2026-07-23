@@ -1,5 +1,7 @@
 <?php
 
+	include_once __DIR__.'/../public_html/includes/app_header.inc.php';
+
 	// Platform test for PROJ-20: Installer & Upgrade Access-Control.
 	// Covers the unit-level invariants of the new helpers. Full request-
 	// level scenarios (HTTP 403 from install.php with lock present,

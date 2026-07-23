@@ -208,9 +208,9 @@
 	function draw_script(string $src): string {
 
 		if (preg_match('#^(app|storage)://#', $src)) {
-			$tag = '<script defer nonce="'. document::$nonce .'" integrity="sha256-'. base64_encode(hash_file('sha256', $src, true)) .'" src="'. document::href_rlink($src) .'"></script>';
+			$tag = '<script defer nonce="'. security::$data['nonce'] .'" integrity="sha256-'. base64_encode(hash_file('sha256', $src, true)) .'" src="'. document::href_rlink($src) .'"></script>';
 		} else {
-			$tag = '<script defer nonce="'. document::$nonce .'" src="'. document::href_link($src) .'"></script>';
+			$tag = '<script defer nonce="'. security::$data['nonce'] .'" src="'. document::href_link($src) .'"></script>';
 		}
 
 		return $tag;
@@ -219,9 +219,9 @@
 	function draw_style(string $href): string {
 
 		if (preg_match('#^(app|storage)://#', $href)) {
-			$tag = '<link rel="stylesheet" nonce="'. document::$nonce .'" integrity="sha256-'. base64_encode(hash_file('sha256', $href, true)) .'" href="'. document::href_rlink($href) .'">';
+			$tag = '<link rel="stylesheet" nonce="'. security::$data['nonce'] .'" integrity="sha256-'. base64_encode(hash_file('sha256', $href, true)) .'" href="'. document::href_rlink($href) .'">';
 		} else {
-			$tag = '<link rel="stylesheet" nonce="'. document::$nonce .'" href="'. document::href_link($href) .'">';
+			$tag = '<link rel="stylesheet" nonce="'. security::$data['nonce'] .'" href="'. document::href_link($href) .'">';
 		}
 
 		return $tag;

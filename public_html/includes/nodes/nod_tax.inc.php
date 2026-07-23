@@ -47,7 +47,6 @@
 			if (is_string($customer)) {
 				switch(strtolower($customer)) {
 
-					case 'site':
 					case 'store':
 
 						$customer = [

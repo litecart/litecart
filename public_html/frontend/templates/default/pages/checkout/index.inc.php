@@ -307,6 +307,14 @@ h2 {
 
 <script>
 
+	<?php if (!$sufficient_customer_details) { ?>
+	$.litebox('<?php echo document::href_ilink('checkout/customer', ['redirect_url' => document::ilink('checkout/index')]); ?>', {
+		seamless: true,
+		closeOnClick: false,
+		closeIcon: false,
+	});
+	<?php } ?>
+
 	$('input[name="shipping_option[id]"], input[name="payment_option[id]"]').on('change', function() {
 		let formData = $(this).closest('form').serialize() + '&update=true';
 		$.ajax({

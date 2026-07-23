@@ -176,7 +176,7 @@
 		public static function after_capture(): void {
 
 			// Load regional settings screen
-			if (route::$selected['endpoint'] == 'frontend') {
+			if (!empty(route::$selected['endpoint']) && route::$selected['endpoint'] == 'frontend') {
 				if (settings::get('regional_settings_screen')) {
 					if (empty(session::$data['skip_regional_settings_screen'])) {
 

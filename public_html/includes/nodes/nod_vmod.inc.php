@@ -362,7 +362,7 @@
 
 				$vmod = self::parse_xml($dom, $file);
 
-				// Load modification if it's installed
+				// Load modification if installed
 				if (in_array($vmod['id'], array_keys(self::$_installed))) {
 
 					self::$_modifications[$vmod['id']] = $vmod;

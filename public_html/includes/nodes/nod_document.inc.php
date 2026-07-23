@@ -12,7 +12,6 @@
 		public static $javascript = [];
 		public static $jsenv = [];
 		public static $layout = 'default';
-		public static $nonce = '';
 		public static $opengraph = [];
 		public static $preloads = [];
 		public static $schema = [];
@@ -28,9 +27,6 @@
 				self::$layout = 'ajax';
 			}
 
-			// Generate a cryptographic nonce for Content Security Policy
-			self::$nonce = bin2hex(random_bytes(16));
-
 			event::register('before_capture', [__CLASS__, 'before_capture']);
 			event::register('after_capture', [__CLASS__, 'after_capture']);
 		}
@@ -45,7 +41,7 @@
 
 			// Content-Security-Policy headers are generated after capture to allow dynamic additions
 			self::add_csp('default-src', ["'self'", "'unsafe-eval'", "data:"]);
-			self::add_csp('script-src', ["'self'", "'unsafe-inline'", "'nonce-". self::$nonce ."'"]);
+			self::add_csp('script-src', ["'self'", "'unsafe-inline'", "'nonce-". security::$data['nonce'] ."'"]);
 			self::add_csp('style-src', ["'self'", "'unsafe-inline'", "data:"]);
 			self::add_csp('frame-ancestors', ["'self'"]); // Clickjacking Protection
 			self::add_csp('report-uri', [self::ilink('f:csp_report')]); // CSP Violation Reporting
@@ -66,7 +62,7 @@
 			self::$snippets['text_direction'] = language::$selected['direction'];
 			self::$snippets['charset'] = mb_http_output();
 			self::$snippets['home_path'] = WS_DIR_APP;
-			self::$snippets['nonce'] = self::$nonce;
+			self::$snippets['nonce'] = security::$data['nonce'];
 
 			self::$snippets['template_path'] = match(route::$selected['endpoint'] ?? null) {
 				'backend' => WS_DIR_APP . 'backend/template/',
@@ -77,7 +73,7 @@
 			// Alert errors if administrator
 			if (administrator::check_login()) {
 				self::add_head_tags(implode(PHP_EOL, [
-					'<script nonce="'. self::$nonce .'">let _alertedErrors=0;window.onerror=(c,r,a,p)=>{_alertedErrors++<5&&alert(c+" in "+r.split("/").pop().split("?")[0]+" on line "+a)};</script>',
+					'<script nonce="'. security::$data['nonce'] .'">let _alertedErrors=0;window.onerror=(c,r,a,p)=>{_alertedErrors++<5&&alert(c+" in "+r.split("/").pop().split("?")[0]+" on line "+a)};</script>',
 				]), 'alert_errors');
 
 				// Client-side error reporter
@@ -99,7 +95,7 @@
 
 			// Wait For (Mini version)
 			self::add_head_tags(implode(PHP_EOL, [
-				'<script nonce="'. self::$nonce .'">window.waitFor=window.waitFor||((i,o)=>{void 0!==window[i]?o(window[i]):setTimeout((()=>waitFor(i,o)),50)});</script>',
+				'<script nonce="'. security::$data['nonce'] .'">window.waitFor=window.waitFor||((i,o)=>{void 0!==window[i]?o(window[i]):setTimeout((()=>waitFor(i,o)),50)});</script>',
 			]), 'waitFor');
 
 			// Load jQuery
@@ -179,7 +175,7 @@
 				'country_code' => customer::$data['country_code'],
 			];
 
-			self::$head_tags[] = '<script nonce="'. self::$nonce .'">window._env='. f::format_json(self::$jsenv, false) .'</script>';
+			self::$head_tags[] = '<script nonce="'. security::$data['nonce'] .'">window._env='. f::format_json(self::$jsenv, false) .'</script>';
 		}
 
 		## Node specific methods
@@ -264,7 +260,7 @@
 
 				// Prepare style tag
 				$style = implode(PHP_EOL, [
-					'<style nonce="'. self::$nonce .'" integrity="sha256-'. base64_encode($checksum) .'" crossorigin="anonymous">',
+					'<style nonce="'. security::$data['nonce'] .'" integrity="sha256-'. base64_encode($checksum) .'" crossorigin="anonymous">',
 					$style,
 					'</style>',
 				]);
@@ -294,7 +290,7 @@
 
 				// Prepare script tag
 				$javascript = implode(PHP_EOL, [
-					'<script nonce="'. self::$nonce .'" integrity="sha256-'. base64_encode($checksum) .'" crossorigin="anonymous">',
+					'<script nonce="'. security::$data['nonce'] .'" integrity="sha256-'. base64_encode($checksum) .'" crossorigin="anonymous">',
 					$javascript,
 					'</script>',
 				]) . PHP_EOL;
@@ -362,7 +358,7 @@
 			// Prepare JSON Schema
 			if (!empty(self::$schema)) {
 				$_layout->snippets['head_tags']['schema_json'] = implode('', [
-					'<script type="application/ld+json" nonce="'. self::$nonce .'">',
+					'<script type="application/ld+json" nonce="'. security::$data['nonce'] .'">',
 					f::format_json(self::$schema, false),
 					'</script>',
 				]);
@@ -394,7 +390,7 @@
 			// Prepare internal javascript
 			if (!empty(self::$javascript)) {
 				$_layout->snippets['foot_tags'][] = implode(PHP_EOL, [
-					'<script nonce="'. self::$nonce .'">',
+					'<script nonce="'. security::$data['nonce'] .'">',
 					implode(PHP_EOL . PHP_EOL, self::$javascript),
 					'</script>',
 				]);
@@ -484,9 +480,9 @@
 
 			foreach ($resources as $resource) {
 				if (preg_match('#^(app://|storage://|'. preg_quote(DOCUMENT_ROOT, '#') .')#', $resource) && is_file($resource)) {
-					$scripts[] = '<script defer nonce="'. self::$nonce .'" integrity="sha256-'. base64_encode(hash_file('sha256', $resource, true)) .'" crossorigin="anonymous" src="'. self::href_rlink($resource) .'"></script>';
+					$scripts[] = '<script defer nonce="'. security::$data['nonce'] .'" integrity="sha256-'. base64_encode(hash_file('sha256', $resource, true)) .'" crossorigin="anonymous" src="'. self::href_rlink($resource) .'"></script>';
 				} else {
-					$scripts[] = '<script nonce="'. self::$nonce .'" src="'. self::href_link($resource) .'"></script>';
+					$scripts[] = '<script nonce="'. security::$data['nonce'] .'" src="'. self::href_link($resource) .'"></script>';
 				}
 			}
 

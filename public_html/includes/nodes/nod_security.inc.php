@@ -13,6 +13,7 @@
 
 			// Set default values for security data
 			foreach ([
+				'nonce' => bin2hex(random_bytes(16)),
 				'is_bot' => false,
 				'is_human' => false,
 				'is_whitelisted' => null,
@@ -104,13 +105,14 @@
 						if (is_ajax_request()) {
 							header('Content-Type: application/json');
 							echo f::format_json(['error' => 'CSRF token mismatch. Please reload the page and try again.']);
+							exit;
 						} else {
-							echo implode(PHP_EOL, [
-								'<h1>403 Forbidden</h1>',
-								'<p>CSRF token mismatch. Please <a href="javascript:history.back()">go back</a> and try again.</p>'
-							]);
+							http_response_code(403);
+							notices::add('errors', t('error_csrf_token_mismatch', 'CSRF token mismatch. Please go back and try again.'));
+							include 'app://frontend/pages/error_document.inc.php';
+							include 'app://includes/app_footer.inc.php';
+							exit;
 						}
-						exit;
 					}
 				}
 			}

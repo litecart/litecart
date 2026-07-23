@@ -14,130 +14,31 @@
 					</div>
 
 					<div class="card-body">
+						<div style="max-width: 800px;">
 
-						<div id="billing-address">
+							<div id="billing-address">
 
-							<?php echo f::form_input_hidden('customer[type]', 'business'); ?>
-
-							<?php if (settings::get('customer_field_company')) { ?>
-							<div id="business-details" class="grid"<?php echo (isset($_POST['customer']['type']) && $_POST['customer']['type'] == 'individual') ? ' style="display: none;"' : ''; ?>>
-								<?php if (settings::get('customer_field_company')) { ?>
-								<div class="col-sm-6">
-									<label class="form-group">
-										<div class="form-label"><?php echo t('title_company_name', 'Company Name'); ?></div>
-										<?php echo f::form_input_text('customer[company]', true, ['required' => '', 'autocomplete' => 'organization'] + ((isset($_POST['customer']['type']) && $_POST['customer']['type'] == 'individual') ? ['disabled' => ''] : [])); ?>
-									</label>
-								</div>
-								<?php } ?>
-
-								<?php if (settings::get('customer_field_tax_id')) { ?>
-								<div class="col-sm-6">
-									<label class="form-group">
-										<div class="form-label"><?php echo t('title_tax_id', 'Tax ID'); ?></div>
-										<?php echo f::form_input_text('customer[tax_id]', true, ['readonly' => '', 'autocomplete' => 'off'] + ((isset($_POST['customer']['type']) && $_POST['customer']['type'] == 'individual') ? ['disabled' => ''] : [])); ?>
-									</label>
-								</div>
-								<?php } ?>
-							</div>
-							<?php } ?>
-
-							<div class="grid">
-								<div class="col-sm-6">
-									<label class="form-group">
-										<div class="form-label"><?php echo t('title_firstname', 'First Name'); ?></div>
-										<?php echo f::form_input_text('customer[firstname]', true, ['required' => '', 'autocomplete' => 'given-name']); ?>
-									</label>
-								</div>
-
-								<div class="col-sm-6">
-									<label class="form-group">
-										<div class="form-label"><?php echo t('title_lastname', 'Last Name'); ?></div>
-										<?php echo f::form_input_text('customer[lastname]', true, ['required' => '', 'autocomplete' => 'family-name']); ?>
-									</label>
-								</div>
-							</div>
-
-							<div class="grid">
-								<div class="col-sm-6">
-									<label class="form-group">
-										<div class="form-label"><?php echo t('title_address1', 'Address 1'); ?></div>
-										<?php echo f::form_input_text('customer[address1]', true, ['autocomplete' => 'address-line1']); ?>
-									</label>
-								</div>
-
-								<div class="col-sm-6">
-									<label class="form-group">
-										<div class="form-label"><?php echo t('title_address2', 'Address 2'); ?></div>
-										<?php echo f::form_input_text('customer[address2]', true, ['autocomplete' => 'address-line2']); ?>
-									</label>
-								</div>
-							</div>
-
-							<div class="grid">
-								<div class="col-sm-6">
-									<label class="form-group">
-										<div class="form-label"><?php echo t('title_postcode', 'Postal Code'); ?></div>
-										<?php echo f::form_input_text('customer[postcode]', true, ['autocomplete' => 'postal-code']); ?>
-									</label>
-								</div>
-
-								<div class="col-sm-6">
-									<label class="form-group">
-										<div class="form-label"><?php echo t('title_city', 'City'); ?></div>
-										<?php echo f::form_input_text('customer[city]', true, ['autocomplete' => 'address-level2']); ?>
-									</label>
-								</div>
-							</div>
-
-							<div class="grid">
-								<div class="col-sm-<?php echo settings::get('customer_field_zone') ? 6 : 12; ?>">
-									<label class="form-group">
-										<div class="form-label"><?php echo t('title_country', 'Country'); ?></div>
-										<?php echo f::form_select_country('customer[country_code]', true, ['required' => '', 'autocomplete' => 'country']); ?>
-									</label>
-								</div>
-
-								<?php if (settings::get('customer_field_zone')) { ?>
-								<div class="col-sm-6">
-									<label class="form-group">
-										<div class="form-label"><?php echo t('title_zone_state_province', 'Zone/State/Province'); ?></div>
-										<?php echo f::form_select_zone('customer[zone_code]', $_POST['customer']['country_code'] ?? null, true, ['required' => '', 'autocomplete' => 'address-level1']); ?>
-									</label>
-								</div>
-								<?php } ?>
-							</div>
-
-							<div class="grid">
-								<div class="col-sm-6">
-									<label class="form-group">
-										<div class="form-label"><?php echo t('title_email', 'Email'); ?></div>
-										<?php echo f::form_input_email('customer[email]', true, ['required' => '', 'autocomplete' => 'email']); ?>
-									</label>
-								</div>
-
-								<div class="col-sm-6">
-									<label class="form-group">
-										<div class="form-label"><?php echo t('title_phone_number', 'Phone Number'); ?></div>
-										<?php echo f::form_input_phone('customer[phone]', true, ['autocomplete' => 'tel']); ?>
-									</label>
-								</div>
-							</div>
-						</div>
-
-						<div id="shipping-address">
-
-							<h3><?php echo f::form_checkbox('customer[different_shipping_address]', ['1', t('title_different_shipping_address', 'Different Shipping Address')], true); ?></h3>
-
-							<fieldset class="details"<?php echo empty($_POST['customer']['different_shipping_address']) ? ' style="display: none;" disabled' : ''; ?>>
+								<?php echo f::form_input_hidden('customer[type]', 'business'); ?>
 
 								<?php if (settings::get('customer_field_company')) { ?>
-								<div class="grid">
+								<div id="business-details" class="grid"<?php echo (isset($_POST['customer']['type']) && $_POST['customer']['type'] == 'individual') ? ' style="display: none;"' : ''; ?>>
+									<?php if (settings::get('customer_field_company')) { ?>
 									<div class="col-sm-6">
 										<label class="form-group">
-											<div class="form-label"><?php echo t('title_company_name', 'Company Name'); ?> (<?php echo t('text_or_leave_blank', 'Or leave blank'); ?>)</div>
-											<?php echo f::form_input_text('customer[shipping_address][company]', true, ['autocomplete' => 'organization']); ?>
+											<div class="form-label"><?php echo t('title_company_name', 'Company Name'); ?></div>
+											<?php echo f::form_input_text('customer[company]', true, ['required' => '', 'autocomplete' => 'organization'] + ((isset($_POST['customer']['type']) && $_POST['customer']['type'] == 'individual') ? ['disabled' => ''] : [])); ?>
 										</label>
 									</div>
+									<?php } ?>
+
+									<?php if (settings::get('customer_field_tax_id')) { ?>
+									<div class="col-sm-6">
+										<label class="form-group">
+											<div class="form-label"><?php echo t('title_tax_id', 'Tax ID'); ?></div>
+											<?php echo f::form_input_text('customer[tax_id]', true, ['readonly' => '', 'autocomplete' => 'off'] + ((isset($_POST['customer']['type']) && $_POST['customer']['type'] == 'individual') ? ['disabled' => ''] : [])); ?>
+										</label>
+									</div>
+									<?php } ?>
 								</div>
 								<?php } ?>
 
@@ -145,14 +46,14 @@
 									<div class="col-sm-6">
 										<label class="form-group">
 											<div class="form-label"><?php echo t('title_firstname', 'First Name'); ?></div>
-											<?php echo f::form_input_text('customer[shipping_address][firstname]', true, ['autocomplete' => 'given-name']); ?>
+											<?php echo f::form_input_text('customer[firstname]', true, ['required' => '', 'autocomplete' => 'given-name']); ?>
 										</label>
 									</div>
 
 									<div class="col-sm-6">
 										<label class="form-group">
 											<div class="form-label"><?php echo t('title_lastname', 'Last Name'); ?></div>
-											<?php echo f::form_input_text('customer[shipping_address][lastname]', true, ['autocomplete' => 'family-name']); ?>
+											<?php echo f::form_input_text('customer[lastname]', true, ['required' => '', 'autocomplete' => 'family-name']); ?>
 										</label>
 									</div>
 								</div>
@@ -161,14 +62,14 @@
 									<div class="col-sm-6">
 										<label class="form-group">
 											<div class="form-label"><?php echo t('title_address1', 'Address 1'); ?></div>
-											<?php echo f::form_input_text('customer[shipping_address][address1]', true, ['autocomplete' => 'address-line1']); ?>
+											<?php echo f::form_input_text('customer[address1]', true, ['autocomplete' => 'address-line1']); ?>
 										</label>
 									</div>
 
 									<div class="col-sm-6">
 										<label class="form-group">
 											<div class="form-label"><?php echo t('title_address2', 'Address 2'); ?></div>
-											<?php echo f::form_input_text('customer[shipping_address][address2]', true, ['autocomplete' => 'address-line2']); ?>
+											<?php echo f::form_input_text('customer[address2]', true, ['autocomplete' => 'address-line2']); ?>
 										</label>
 									</div>
 								</div>
@@ -177,23 +78,23 @@
 									<div class="col-sm-6">
 										<label class="form-group">
 											<div class="form-label"><?php echo t('title_postcode', 'Postal Code'); ?></div>
-											<?php echo f::form_input_text('customer[shipping_address][postcode]', true, ['autocomplete' => 'postal-code']); ?>
+											<?php echo f::form_input_text('customer[postcode]', true, ['autocomplete' => 'postal-code']); ?>
 										</label>
 									</div>
 
 									<div class="col-sm-6">
 										<label class="form-group">
 											<div class="form-label"><?php echo t('title_city', 'City'); ?></div>
-											<?php echo f::form_input_text('customer[shipping_address][city]', true, ['autocomplete' => 'address-level2']); ?>
+											<?php echo f::form_input_text('customer[city]', true, ['autocomplete' => 'address-level2']); ?>
 										</label>
 									</div>
 								</div>
 
 								<div class="grid">
-									<div class="col-<?php echo settings::get('customer_field_zone') ? 6 : 12; ?>">
+									<div class="col-sm-<?php echo settings::get('customer_field_zone') ? 6 : 12; ?>">
 										<label class="form-group">
 											<div class="form-label"><?php echo t('title_country', 'Country'); ?></div>
-											<?php echo f::form_select_country('customer[shipping_address][country_code]', true, ['autocomplete' => 'country']); ?>
+											<?php echo f::form_select_country('customer[country_code]', true, ['required' => '', 'autocomplete' => 'country']); ?>
 										</label>
 									</div>
 
@@ -201,7 +102,7 @@
 									<div class="col-sm-6">
 										<label class="form-group">
 											<div class="form-label"><?php echo t('title_zone_state_province', 'Zone/State/Province'); ?></div>
-											<?php echo f::form_select_zone('customer[shipping_address][zone_code]', $_POST['shipping_address']['country_code'] ?? $_POST['customer']['country_code'] ?? null, true, ['autocomplete' => 'address-level1']); ?>
+											<?php echo f::form_select_zone('customer[zone_code]', $_POST['customer']['country_code'] ?? null, true, ['required' => '', 'autocomplete' => 'address-level1']); ?>
 										</label>
 									</div>
 									<?php } ?>
@@ -210,29 +111,130 @@
 								<div class="grid">
 									<div class="col-sm-6">
 										<label class="form-group">
-											<div class="form-label"><?php echo t('title_email_address', 'Email Address'); ?></div>
-											<?php echo f::form_input_email('customer[shipping_address][email]', true, ['autocomplete' => 'email']); ?>
+											<div class="form-label"><?php echo t('title_email', 'Email'); ?></div>
+											<?php echo f::form_input_email('customer[email]', true, ['required' => '', 'autocomplete' => 'email']); ?>
 										</label>
 									</div>
 
 									<div class="col-sm-6">
 										<label class="form-group">
 											<div class="form-label"><?php echo t('title_phone_number', 'Phone Number'); ?></div>
-											<?php echo f::form_input_phone('customer[shipping_address][phone]', true, ['autocomplete' => 'tel']); ?>
+											<?php echo f::form_input_phone('customer[phone]', true, ['autocomplete' => 'tel']); ?>
 										</label>
 									</div>
 								</div>
+							</div>
 
-							</fieldset>
-						</div>
+							<div id="shipping-address">
 
-						<div class="form-group">
-							<?php echo f::form_checkbox('save_details', ['1', t('text_save_details_to_my_account', 'Save details to my account')], true); ?>
-						</div>
+								<h3><?php echo f::form_checkbox('customer[different_shipping_address]', ['1', t('title_different_shipping_address', 'Different Shipping Address')], true); ?></h3>
 
-						<div class="form-group">
-							<!--<button class="btn btn-default" type="button" data-dismiss="modal"><?php echo t('title_cancel', 'Cancel'); ?></button>-->
-							<?php echo f::form_button('save', t('title_save', 'Save'), 'submit'); ?>
+								<fieldset class="details"<?php echo empty($_POST['customer']['different_shipping_address']) ? ' style="display: none;" disabled' : ''; ?>>
+
+									<?php if (settings::get('customer_field_company')) { ?>
+									<div class="grid">
+										<div class="col-sm-6">
+											<label class="form-group">
+												<div class="form-label"><?php echo t('title_company_name', 'Company Name'); ?> (<?php echo t('text_or_leave_blank', 'Or leave blank'); ?>)</div>
+												<?php echo f::form_input_text('customer[shipping_address][company]', true, ['autocomplete' => 'organization']); ?>
+											</label>
+										</div>
+									</div>
+									<?php } ?>
+
+									<div class="grid">
+										<div class="col-sm-6">
+											<label class="form-group">
+												<div class="form-label"><?php echo t('title_firstname', 'First Name'); ?></div>
+												<?php echo f::form_input_text('customer[shipping_address][firstname]', true, ['autocomplete' => 'given-name']); ?>
+											</label>
+										</div>
+
+										<div class="col-sm-6">
+											<label class="form-group">
+												<div class="form-label"><?php echo t('title_lastname', 'Last Name'); ?></div>
+												<?php echo f::form_input_text('customer[shipping_address][lastname]', true, ['autocomplete' => 'family-name']); ?>
+											</label>
+										</div>
+									</div>
+
+									<div class="grid">
+										<div class="col-sm-6">
+											<label class="form-group">
+												<div class="form-label"><?php echo t('title_address1', 'Address 1'); ?></div>
+												<?php echo f::form_input_text('customer[shipping_address][address1]', true, ['autocomplete' => 'address-line1']); ?>
+											</label>
+										</div>
+
+										<div class="col-sm-6">
+											<label class="form-group">
+												<div class="form-label"><?php echo t('title_address2', 'Address 2'); ?></div>
+												<?php echo f::form_input_text('customer[shipping_address][address2]', true, ['autocomplete' => 'address-line2']); ?>
+											</label>
+										</div>
+									</div>
+
+									<div class="grid">
+										<div class="col-sm-6">
+											<label class="form-group">
+												<div class="form-label"><?php echo t('title_postcode', 'Postal Code'); ?></div>
+												<?php echo f::form_input_text('customer[shipping_address][postcode]', true, ['autocomplete' => 'postal-code']); ?>
+											</label>
+										</div>
+
+										<div class="col-sm-6">
+											<label class="form-group">
+												<div class="form-label"><?php echo t('title_city', 'City'); ?></div>
+												<?php echo f::form_input_text('customer[shipping_address][city]', true, ['autocomplete' => 'address-level2']); ?>
+											</label>
+										</div>
+									</div>
+
+									<div class="grid">
+										<div class="col-<?php echo settings::get('customer_field_zone') ? 6 : 12; ?>">
+											<label class="form-group">
+												<div class="form-label"><?php echo t('title_country', 'Country'); ?></div>
+												<?php echo f::form_select_country('customer[shipping_address][country_code]', true, ['autocomplete' => 'country']); ?>
+											</label>
+										</div>
+
+										<?php if (settings::get('customer_field_zone')) { ?>
+										<div class="col-sm-6">
+											<label class="form-group">
+												<div class="form-label"><?php echo t('title_zone_state_province', 'Zone/State/Province'); ?></div>
+												<?php echo f::form_select_zone('customer[shipping_address][zone_code]', $_POST['shipping_address']['country_code'] ?? $_POST['customer']['country_code'] ?? null, true, ['autocomplete' => 'address-level1']); ?>
+											</label>
+										</div>
+										<?php } ?>
+									</div>
+
+									<div class="grid">
+										<div class="col-sm-6">
+											<label class="form-group">
+												<div class="form-label"><?php echo t('title_email_address', 'Email Address'); ?></div>
+												<?php echo f::form_input_email('customer[shipping_address][email]', true, ['autocomplete' => 'email']); ?>
+											</label>
+										</div>
+
+										<div class="col-sm-6">
+											<label class="form-group">
+												<div class="form-label"><?php echo t('title_phone_number', 'Phone Number'); ?></div>
+												<?php echo f::form_input_phone('customer[shipping_address][phone]', true, ['autocomplete' => 'tel']); ?>
+											</label>
+										</div>
+									</div>
+
+								</fieldset>
+							</div>
+
+							<div class="form-group">
+								<?php echo f::form_checkbox('save_details', ['1', t('text_save_details_to_my_account', 'Save details to my account')], true); ?>
+							</div>
+
+							<div class="form-group">
+								<!--<button class="btn btn-default" type="button" data-dismiss="modal"><?php echo t('title_cancel', 'Cancel'); ?></button>-->
+								<?php echo f::form_button('save', t('title_save', 'Save'), 'submit'); ?>
+							</div>
 						</div>
 					</div>
 				</div>

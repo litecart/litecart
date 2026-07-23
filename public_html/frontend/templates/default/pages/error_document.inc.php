@@ -28,7 +28,7 @@ main {
 <main id="main">
 	{{notices}}
 
-	<article id="box-error-document" class="text-center" aria-label="<?php echo f::escape_attr(t('title_error_document', 'Error: {code}', ['{code}' => '{{code}}'])); ?>">
+	<article id="box-error-document" class="text-center" aria-label="<?php echo f::escape_attr(strtr(t('title_error_document', 'Error: {code}'), ['{code}' => '{{code}}'])); ?>">
 
 		<div class="code" role="status">{{code}}</div>
 		<span class="title">{{title}}</span>

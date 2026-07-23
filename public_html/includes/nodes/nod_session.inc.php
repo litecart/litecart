@@ -10,9 +10,11 @@
 
 			event::register('before_output', [__CLASS__, 'save']);
 			register_shutdown_function([__CLASS__, 'save']);
+			
+			$session_name = ini_get('session.name');
 
-			if (!empty($_COOKIE['LCSESSID']) && self::validate_id($_COOKIE['LCSESSID'])) {
-				self::load($_COOKIE['LCSESSID']);
+			if (!empty($_COOKIE[$session_name]) && self::validate_id($_COOKIE[$session_name])) {
+				self::load($_COOKIE[$session_name]);
 
 			} else {
 
@@ -33,7 +35,7 @@
 					self::regenerate_id();
 				}
 
-				if (empty($_COOKIE['LCSESSID'])) {
+				if (empty($_COOKIE[$session_name])) {
 					self::generate_id();
 				}
 
@@ -282,8 +284,10 @@
 
 			// Only use SameSite=None when cookie is Secure (required by modern browsers)
 			$samesite = $is_secure ? 'None' : 'Lax';
+			
+			$session_name = ini_get('session.name');
 
-			header('Set-Cookie: LCSESSID='. rawurlencode(self::$data['id']) .';Path=/;'. ($is_secure ? 'Secure;' : '') .'HttpOnly;SameSite=' . $samesite);
+			header('Set-Cookie: '. $session_name .'='. rawurlencode(self::$data['id']) .';Path=/;'. ($is_secure ? 'Secure;' : '') .'HttpOnly;SameSite=' . $samesite);
 		}
 
 		public static function close(): void {

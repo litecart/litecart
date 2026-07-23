@@ -1,6 +1,6 @@
 <?php
 
-	include_once __DIR__.'/../public_html/includes/datatypes/type_email.inc.php';
+	include_once __DIR__.'/../public_html/includes/types/type_email.inc.php';
 
 	try {
 

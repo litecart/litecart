@@ -35,7 +35,9 @@
 
 		public static function set(string $code=''): void {
 
-			if (empty($code)) $code = self::identify();
+			if (!$code) {
+				$code = self::identify();
+			}
 
 			if (!isset(self::$currencies[$code])) {
 				trigger_error('Cannot set unsupported currency ('. $code .')', E_USER_WARNING);

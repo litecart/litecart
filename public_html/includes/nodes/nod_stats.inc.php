@@ -3,7 +3,12 @@
 	class stats {
 
 		private static $_watches;
-		public static $data;
+		public static $data = [
+			'before_content' => 0,
+			'content_capture' => 0,
+			'after_content' => 0,
+			'rendering' => 0,
+		];
 
 		## Node specific methods
 
