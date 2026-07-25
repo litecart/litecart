@@ -37,7 +37,8 @@ h1 {
 }
 
 .page .label {
-	font-weight: 500;
+	font-size: .8em;
+	font-weight: 700;
 	margin-bottom: 3pt;
 }
 
@@ -76,7 +77,7 @@ h1 {
 	<header class="header">
 		<div class="grid">
 			<div class="col-6">
-				<?php echo f::draw_image('storage://images/logotype.png', 0, 0, null, 'class="logotype" alt="'. f::escape_attr(settings::get('store_name')) .'"'); ?>
+				<?php echo f::draw_image('storage://images/logotype.png', 0, 0, 'fit', 'class="logotype" alt="'. f::escape_attr(settings::get('store_name')) .'"'); ?>
 			</div>
 
 			<div class="col-6 text-end">

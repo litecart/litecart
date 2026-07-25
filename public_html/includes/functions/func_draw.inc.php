@@ -105,33 +105,35 @@
 		return '<'. $tag . ($attributes ? ' ' . $attributes : '') .'>'. $content .'</'. $tag .'>';
 	}
 
-	function draw_fonticon(string $icon, string $parameters=''): string {
+	function draw_fonticon(string $icon, array|string $attributes=[]): string {
 
 		if (!$icon) {
 			return '';
 		}
 
+		$attributes = is_array($attributes) ? $attributes : f::form_attributes($attributes);
+
 		switch(true) {
 
 			// Graphics elements
 			case (preg_match('#\.(avif|gif|jpe?g|png|webp|svg)$#', $icon)):
-				return '<img class="icon" src="'. document::href_rlink($icon) .'"'. ($parameters ? ' ' . $parameters : '') .'>';
+				return draw_element('img', ['class' => 'icon', 'src' => document::rlink($icon), ...$attributes]);
 
 			// LiteCore Fonticons
 			case (preg_match('#^icon-#', $icon)):
-				return '<i class="icon '. $icon .'"'. ($parameters ? ' ' . $parameters : '') .'></i>';
+				return draw_element('i', ['class' => 'icon '. $icon, ...$attributes]);
 
 			// Bootstrap Icons
 			case (preg_match('#^bi-#', $icon)):
 				document::$head_tags['bootstrap-icons'] = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">';
-				return '<i class="bi '. $icon .'"'. ($parameters ? ' ' . $parameters : '') .'></i>';
+				return draw_element('i', ['class' => 'bi '. $icon, ...$attributes]);
 
 			// Fontawesome 4
 			case (preg_match('#^fa-#', $icon)):
 				trigger_error('Fontawesome 4 icon `'. f::escape_html($icon) .'` is deprecated. Please use Fontawesome 5 instead.', E_USER_DEPRECATED);
 				document::$head_tags['fontawesome4'] = '<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/v4-shims.css">';
 				document::$head_tags['fontawesome5'] = '<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">';
-				return '<i class="fa '. $icon .'"'. ($parameters ? ' ' . $parameters : '') .'></i>';
+				return draw_element('i', ['class' => 'fa '. $icon, ...$attributes]);
 
 			// Fontawesome 7
 			case (substr($icon, 0, 6) == 'fa fa-'):
@@ -139,22 +141,22 @@
 			case (substr($icon, 0, 7) == 'fab fa-'):
 			case (substr($icon, 0, 7) == 'fas fa-'):
 				document::$foot_tags['fontawesome7'] = '<script src="https://use.fontawesome.com/releases/v7.1.0/js/all.js" crossorigin="anonymous"></script>';
-				return '<i class="'. $icon .'"'. (!empty($parameters) ? ' ' . $parameters : '') .'></i>';
+				return draw_element('i', ['class' => $icon, ...$attributes]);
 
 			// Foundation
 			case (preg_match('#^fi-#', $icon)):
 				document::$head_tags['foundation-icons'] = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/foundation-icons/latest/foundation-icons.min.css">';
-				return '<i class="'. $icon .'"'. ($parameters ? ' ' . $parameters : '') .'></i>';
+				return draw_element('i', ['class' => $icon, ...$attributes]);
 
 			// Ion Icons
 			case (preg_match('#^ion-#', $icon)):
 				document::$head_tags['ionicons'] = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/ionicons/latest/css/ionicons.min.css">';
-				return '<i class="'. $icon .'"'. ($parameters ? ' ' . $parameters : '') .'></i>';
+				return draw_element('i', ['class' => $icon, ...$attributes]);
 
 			// Material Design Icons
 			case (preg_match('#^mdi-#', $icon)):
 				document::$head_tags['material-design-icons'] = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css">';
-				return '<i class="mdi '. $icon .'"'. ($parameters ? ' ' . $parameters : '') .'></i>';
+				return draw_element('i', ['class' => 'mdi '. $icon, ...$attributes]);
 		}
 
 		return match($icon) {
@@ -188,46 +190,49 @@
 			'true'        => draw_fonticon('icon-check', 'style="color: #8c4;"'),
 			'user'        => draw_fonticon('icon-user', 'style="color: #888;"'),
 			'warning'     => draw_fonticon('icon-exclamation-triangle', 'style="color: #c00;"'),
-			default       => trigger_error('Unknown font icon ('. $icon .')', E_USER_WARNING)
 		};
+		
+		trigger_error('Unknown font icon ('. $icon .')', E_USER_WARNING);
+		
+		return '';
 	}
 
-	function draw_image(string $image, int|null $width=null, int|null $height=null, string $clipping='fit', string $parameters=''): string {
+	function draw_image(string $image, int|null $width=null, int|null $height=null, string $clipping='fit', string $attributes=[]): string {
+
+		$attributes = is_array($attributes) ? $attributes : f::form_attributes($attributes);
 
 		if ($width && $height) {
-			if (preg_match('#style="#', $parameters)) {
-				$parameters = preg_replace('#style="(.*?)"#', 'style="$1 aspect-ratio: '. f::image_aspect_ratio($width, $height) .';"', $parameters);
+			if (preg_match('#style="#', $attributes)) {
+				$attributes = preg_replace('#style="(.*?)"#', 'style="$1 aspect-ratio: '. f::image_aspect_ratio($width, $height) .';"', $attributes);
 			} else {
-				$parameters .= ' style="aspect-ratio: '. f::image_aspect_ratio($width, $height) .';"';
+				$attributes .= ' style="aspect-ratio: '. f::image_aspect_ratio($width, $height) .';"';
 			}
 		}
 
-		return '<img '. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="'. f::escape_attr($clipping) .'"' : '') .' src="'. document::href_rlink($image) .'" '. ($parameters ? ' '. $parameters : '') .'>';
+		return draw_element('img', ['class' => $clipping, 'src' => document::rlink($image), ...$attributes]);
 	}
 
 	function draw_script(string $src): string {
 
 		if (preg_match('#^(app|storage)://#', $src)) {
-			$tag = '<script defer nonce="'. security::$data['nonce'] .'" integrity="sha256-'. base64_encode(hash_file('sha256', $src, true)) .'" src="'. document::href_rlink($src) .'"></script>';
+			$checksum = base64_encode(hash_file('sha256', $src, true));
+			return draw_element('script', ['src' => document::href_rlink($src), 'defer' => true, 'nonce' => security::$data['nonce'], 'integrity' => 'sha256-'. $checksum,]);
 		} else {
-			$tag = '<script defer nonce="'. security::$data['nonce'] .'" src="'. document::href_link($src) .'"></script>';
+			return draw_element('script', ['src' => document::href_link($src), 'defer' => true, 'nonce' => security::$data['nonce']], $content);
 		}
-
-		return $tag;
 	}
 
 	function draw_style(string $href): string {
 
 		if (preg_match('#^(app|storage)://#', $href)) {
-			$tag = '<link rel="stylesheet" nonce="'. security::$data['nonce'] .'" integrity="sha256-'. base64_encode(hash_file('sha256', $href, true)) .'" href="'. document::href_rlink($href) .'">';
+			$checksum = base64_encode(hash_file('sha256', $href, true));
+			return draw_element('link', ['rel' => 'stylesheet', 'href' => document::href_rlink($href), 'nonce' => security::$data['nonce'], 'integrity' => 'sha256-'. $checksum, ]);
 		} else {
-			$tag = '<link rel="stylesheet" nonce="'. security::$data['nonce'] .'" href="'. document::href_link($href) .'">';
+			return draw_element('link', ['rel' => 'stylesheet', 'href' => document::href_link($href), 'nonce' => security::$data['nonce']]);
 		}
-
-		return $tag;
 	}
 
-	function draw_thumbnail(string $image, int $width=0, int $height=0, string $clipping='fit', string $parameters=''): string {
+	function draw_thumbnail(string $image, int $width=0, int $height=0, string $clipping='fit', array|string $attributes=[]): string {
 
 		if (!$image || !is_file($image)) {
 			$image = 'storage://images/no_image.svg';
@@ -277,38 +282,12 @@
 			}
 		}
 
-		return '<img '. (!preg_match('#class="([^"]+)?"#', $parameters) ? ' class="thumbnail '. f::escape_attr($clipping) .'"' : '') .' src="'. document::href_rlink($thumbnail) .'" srcset="'. document::href_rlink($thumbnail) .' 1x, '. document::href_rlink($thumbnail_2x) .' 2x"'. ($parameters ? ' '. $parameters : '') .'>';
-	}
-
-	function draw_price_tag(float|null $regular_price, float|null $final_price=null, string|null $currency_code=null, float|null $currency_value=null): string {
-
-		if ($regular_price === null && $final_price === null) {
-			return '';
-		}
-
-		if ($final_price > $regular_price) {
-			list($regular_price, $final_price) = [$final_price, $regular_price];
-		}
-
-		if (!isset($currency_code)) {
-			$currency_code = currency::$selected['code'];
-		}
-
-		if (!isset($currency_value)) {
-			$currency_value = currency::$selected['value'];
-		}
-
-		$price_tag = ['<div class="price-tag">'];
-
-		if ($final_price !== null && $final_price < $regular_price) {
-			$price_tag[] = '	<del class="regular-price">'. currency::format($regular_price, true, $currency_code, $currency_value) .'</del> <strong class="sale-price">'. currency::format($final_price, true, $currency_code, $currency_value) .'</strong>';
-		} else {
-			$price_tag[] = '	<span class="regular-price">'. currency::format($regular_price, true, $currency_code, $currency_value) .'</span>';
-		}
-
-		$price_tag[] = '</div>';
-
-		return implode(PHP_EOL, $price_tag);
+		return draw_element('img', [
+			'class' => 'thumbnail '. f::escape_attr($clipping),
+			'src' => document::href_rlink($thumbnail),
+			'srcset' => document::href_rlink($thumbnail) .' 1x, '. document::href_rlink($thumbnail_2x) .' 2x',
+			...$attributes,
+		]);
 	}
 
 	function draw_listing_category(array $category, string $view='views/listing_category'): string {
@@ -392,7 +371,7 @@
 
 	function draw_lightbox(string $selector='', array $parameters=[]): void {
 
-		if (!$selector && !$parameters) return;
+		if (!$selector && !$attributes) return;
 
 		if (preg_match('#^(https?:)?//#', $selector)) {
 			$js = ['$.litebox(\''. $selector .'\', {'];
@@ -522,6 +501,38 @@
 
 		return (string)$pagination;
 	}
+
+	function draw_price_tag(float|null $regular_price, float|null $final_price=null, string|null $currency_code=null, float|null $currency_value=null): string {
+
+		if ($regular_price === null && $final_price === null) {
+			return '';
+		}
+
+		if ($final_price > $regular_price) {
+			list($regular_price, $final_price) = [$final_price, $regular_price];
+		}
+
+		if (!isset($currency_code)) {
+			$currency_code = currency::$selected['code'];
+		}
+
+		if (!isset($currency_value)) {
+			$currency_value = currency::$selected['value'];
+		}
+
+		$price_tag = ['<div class="price-tag">'];
+
+		if ($final_price !== null && $final_price < $regular_price) {
+			$price_tag[] = '	<del class="regular-price">'. currency::format($regular_price, true, $currency_code, $currency_value) .'</del> <strong class="sale-price">'. currency::format($final_price, true, $currency_code, $currency_value) .'</strong>';
+		} else {
+			$price_tag[] = '	<span class="regular-price">'. currency::format($regular_price, true, $currency_code, $currency_value) .'</span>';
+		}
+
+		$price_tag[] = '</div>';
+
+		return implode(PHP_EOL, $price_tag);
+	}
+
 
 	// ▮▮▮▯▯▯▯▯▯▯▯▯▯▯▯ 25%
 	function draw_progress_bar(float $progress, int $width=15): string {

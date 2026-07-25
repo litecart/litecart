@@ -10,13 +10,6 @@
 		'CLIENT_IP', 'STORE_TIME_ZONE', 'HMAC_KEY_REMEMBER_ME',
 	];
 
-	// Check mandatory parameters are present
-	foreach ($placeholders as $key) {
-		if (!array_key_exists($key, $values)) {
-			throw new Exception('Missing a value for placeholder key "' . $key . '"');
-		}
-	}
-
 	// Get config template
 	if (!($config_template_path = dirname(__DIR__, 2) . '/config')) {
 		throw new Exception('Could not determine config template path');
@@ -27,7 +20,6 @@
 		throw new Exception('Could not read config template at ' . $config_template_path);
 	}
 
-	// Replace placeholders in template with values, escaping quotes to avoid breaking the config file syntax. Note that we use addcslashes() to escape single and double quotes, but not backslashes, because the config template uses single-quoted strings and we don't want to double-escape backslashes.
 	$values = [
 		'STORAGE_FOLDER'        => 'storage',
 		'ADMIN_FOLDER'          => BACKEND_ALIAS,
@@ -41,13 +33,21 @@
 		'HMAC_KEY_REMEMBER_ME'  => bin2hex(random_bytes(32)),
 	];
 
+	// Check mandatory parameters are present
+	foreach ($placeholders as $key) {
+		if (!array_key_exists($key, $values)) {
+			throw new Exception('Missing a value for placeholder key "' . $key . '"');
+		}
+	}
+
+	// Replace placeholders in template with values, escaping quotes to avoid breaking the config file syntax. Note that we use addcslashes() to escape single and double quotes, but not backslashes, because the config template uses single-quoted strings and we don't want to double-escape backslashes.
 	$values = array_map(function($value) {
 		return addcslashes($value, "\\'\"");
 	}, $values);
 
 	$config = $template;
 	foreach ($values as $key => $value) {
-		$config = strtr($config, $values);
+		$config = str_replace('{' . $key . '}', $value, $config);
 	}
 
 	// Write config file

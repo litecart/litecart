@@ -143,7 +143,7 @@ textarea[name="query"] {
 	<div class="card-action">
 		<ul class="list-inline">
 			<li><a class="btn btn-default" href="<?php echo document::href_ilink(__APP__.'/edit_table', ['name' => $_GET['name']]); ?>"><?php echo f::draw_fonticon('edit'); ?> <?php echo t('title_edit_table_structure', 'Edit Table Structure'); ?></a></li>
-			<li><a class="btn btn-default" href="<?php echo document::href_ilink(__APP__.'/edit_row', ['table' => $_GET['name']]); ?>"><?php echo f::draw_fonticon('add'); ?> <?php echo t('title_create_new_row', 'Create New Row'); ?></a></li>
+			<li><a class="btn btn-default" href="<?php echo document::href_ilink(__APP__.'/edit_row', ['table' => $_GET['name']]); ?>"><?php echo f::draw_fonticon('create'); ?> <?php echo t('title_create_new_row', 'Create New Row'); ?></a></li>
 		</ul>
 	</div>
 

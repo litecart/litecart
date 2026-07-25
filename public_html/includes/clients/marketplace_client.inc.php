@@ -17,7 +17,7 @@
 		}
 */
 		public static function whoami() {
-			return [];
+
 			try {
 
 				$marketplace_profile_cache_token = cache::token('marketplace_profile', [], 'memory', 43200);

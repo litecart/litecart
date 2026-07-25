@@ -1,6 +1,6 @@
 <?php
 
-	document::add_csp('img-src', 'https://www.litecart.net/');
+	document::add_csp('img-src', ["'self'", 'data:', 'https://*.litecart.net/']);
 
 	if (empty($_GET['addon_id'])) {
 		notices::add('errors', t('error_must_provide_addon', 'You must provide an add-on'));
@@ -194,6 +194,10 @@
 		<div class="card-title">
 			<?php echo $app_icon; ?> <?php echo t('title_addons_market', 'Add-Ons Market'); ?>
 		</div>
+	</div>
+
+	<div class="card-action">
+		<?php echo f::form_button_link('back', t('title_back', 'Back'), document::ilink(__APP__ . '/catalog')); ?>
 	</div>
 
 	<div class="card-body">

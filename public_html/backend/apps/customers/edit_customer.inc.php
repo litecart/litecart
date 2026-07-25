@@ -157,7 +157,7 @@
 			"select count(o.id) as total_count, sum(oi.total_sales) as total_sales
 			from ". DB_TABLE_PREFIX ."orders o
 			left join (
-				select order_id, sum(price * quantity) as total_sales
+				select order_id, sum(final_price * quantity) as total_sales
 				from ". DB_TABLE_PREFIX ."orders_items
 				group by order_id
 			) oi on (oi.order_id = o.id)
@@ -635,7 +635,7 @@
 		$('input[name="shipping_address[postcode]"]').closest('td').find('.required').hide();
 	}
 
-	if ($('select[name="shipping_address[country_code]"]' option:selected').data('phone-code') != '') {
+	if ($('select[name="shipping_address[country_code]"] option:selected').data('phone-code') != '') {
 		$('input[name="shipping_address[phone]"]').attr('placeholder', '+' + $('select[name="shipping_address[country_code]"]').find('option:selected').data('phone-code'));
 	} else {
 		$('input[name="shipping_address[phone]"]').removeAttr('placeholder');

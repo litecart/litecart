@@ -1,6 +1,7 @@
 <?php
 
-	document::add_csp('img-src', ["'self'", 'data:', 'https://www.litecart.net/']);
+	document::add_csp('img-src', ["'self'", 'data:', 'https://*.litecart.net/']);
+	document::add_csp('img-src', ["'self'", 'data:', 'https://*.libravatar.org']);
 
 	document::$title[] = t('title_marketplace');
 

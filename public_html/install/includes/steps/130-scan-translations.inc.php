@@ -32,7 +32,7 @@
 		database::query(
 			"insert ignore into ". DB_TABLE_PREFIX ."translations
 			(code, `text`, html, created_at)
-			values ('". database::input($code) ."', '{\"en\":\"". database::input($translation, true) ."\"}', '". (($translation != strip_tags($translation)) ? 1 : 0) ."', '". date('Y-m-d H:i:s') ."');"
+			values ('". database::input($code) ."', '". database::input(json_encode(['en' => $translation], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), true) ."', '". (($translation != strip_tags($translation)) ? 1 : 0) ."', '". date('Y-m-d H:i:s') ."');"
 		);
 	}
 

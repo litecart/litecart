@@ -25,6 +25,10 @@
 
 			$result = marketplace_client::whoami();
 
+			if (empty($result['user']['username'])) {
+				throw new Exception(t('error_failed_retrieving_username_from_remote_machine', 'Failed retrieving username from remote machine'));
+			}
+
 			database::query(
 				"update ". DB_TABLE_PREFIX ."settings
 				set `value` = '".	database::input($_GET['access_token']) ."'

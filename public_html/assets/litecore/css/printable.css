@@ -157,8 +157,8 @@ hr {
 	#actions {
 		display: block;
 		position: fixed;
-		top: 1cm;
-		inset-inline-end: 1cm;
+		top: 1em;
+		inset-inline-end: 1em;
 		font-size: 1.25em;
 		z-index: 999999;
 	}

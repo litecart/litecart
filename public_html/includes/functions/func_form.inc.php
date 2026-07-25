@@ -2471,7 +2471,7 @@
 		if ($input === true) {
 			$input = form_reinsert_value($name);
 
-			if ($input == '' && file_get_contents('php://input') == ''){
+			if ($input == '' && file_get_contents('php://input') == '') {
 				$input = settings::get('default_quantity_unit_id');
 			}
 		}

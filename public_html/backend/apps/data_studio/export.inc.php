@@ -177,15 +177,20 @@
 		}
 	}
 
-	$indentations = [
+	$indentation = [
 		"\t" => t('title_tabs', 'Tabs'),
 		'  ' => t('title_two_spaces', 'Two Spaces'),
 		'    ' => t('title_four_spaces', 'Four Spaces'),
 	];
 
-	$json_indentations = [
+	$json_indentation = [
 		'' => t('title_none', 'None'),
 		"\t" => t('title_tabs', 'Tabs'),
+		'  ' => t('title_two_spaces', 'Two Spaces'),
+		'    ' => t('title_four_spaces', 'Four Spaces'),
+	];
+
+	$yaml_indentation = [
 		'  ' => t('title_two_spaces', 'Two Spaces'),
 		'    ' => t('title_four_spaces', 'Four Spaces'),
 	];
@@ -224,6 +229,10 @@
 #formats .options {
 	display: none;
 	transition: all 200ms linear;
+}
+
+#formats fieldset {
+	margin-bottom: 2em;
 }
 
 #formats:has(input[name="format"][value="csv"]:checked) #csv.options,
@@ -299,12 +308,12 @@
 					</fieldset>
 
 					<fieldset id="json" class="options">
-						<legend><?php echo t('title_json_options', 'JSON Options'); ?></legend>
+						<legend><?php echo t('title_format_options', 'Format Options'); ?></legend>
 
 						<div class="grid">
 							<label class="form-group col-sm-6">
 								<div class="form-label"><?php echo t('title_indentation', 'Indentation'); ?></div>
-								<?php echo f::form_select('indentation', $json_indentations, true); ?>
+								<?php echo f::form_select('indentation', $json_indentation, file_get_contents('php://input') ? true : "\t"); ?>
 							</label>
 						</div>
 					</fieldset>
@@ -315,7 +324,7 @@
 						<div class="grid">
 							<label class="form-group col-sm-6">
 								<div class="form-label"><?php echo t('title_indentation', 'Indentation'); ?></div>
-								<?php echo f::form_select('indentation', $indentations, true); ?>
+								<?php echo f::form_select('indentation', $yaml_indentation, file_get_contents('php://input') ? true : '    '); ?>
 							</label>
 						</div>
 					</fieldset>
@@ -326,7 +335,7 @@
 						<div class="grid">
 							<label class="form-group col-sm-6">
 								<div class="form-label"><?php echo t('title_indentation', 'Indentation'); ?></div>
-								<?php echo f::form_select('indentation', $indentations, true); ?>
+								<?php echo f::form_select('indentation', $indentation, file_get_contents('php://input') ? true : "\t"); ?>
 							</label>
 						</div>
 					</fieldset>

@@ -158,11 +158,11 @@
 					throw new Exception(t('error_invalid_shipping_option', 'Invalid shipping option'). '(ID: '. $_POST['shipping_option']['id'] .')');
 				}
 
-				$order->data['shipping_option']['id'] = $_POST['shipping_option']['id'];
-				$order->data['shipping_option']['name'] = $matched_shipping_option['name'];
-				$order->data['shipping_option']['fee'] = $matched_shipping_option['fee'];
-				$order->data['shipping_option']['tax'] = $matched_shipping_option['tax'];
-				$order->data['shipping_option']['tax_class_id'] = $matched_shipping_option['tax_class_id'];
+				$order->data['shipping_option']['id'] = $_POST['shipping_option']['id'] ?? ':';
+				$order->data['shipping_option']['name'] = $matched_shipping_option['name'] ?? '';
+				$order->data['shipping_option']['fee'] = $matched_shipping_option['fee'] ?? 0;
+				$order->data['shipping_option']['tax'] = $matched_shipping_option['tax'] ?? 0;
+				$order->data['shipping_option']['tax_class_id'] = $matched_shipping_option['tax_class_id'] ?? 0;
 
 			} else {
 				if ($shipping_options) {

@@ -54,7 +54,7 @@
 		if (!$result = f::csv_decode($response)) {
 			throw new Error('Unable to parse country data');
 		}
-		return array_column($result, 'name', 'code');
+		return array_column($result, 'name', 'iso_code_2');
 	})();
 
 ?>
