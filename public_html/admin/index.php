@@ -26,7 +26,7 @@
         'icon' => !(empty($app['theme']['icon'])) ? $app['theme']['icon'] : 'fa-plus',
         'color' => !(empty($app['theme']['color'])) ? $app['theme']['color'] : '#97a3b5',
       ],
-      'active' => (isset($_GET['app']) && $_GET['app'] == $app['code']) ? true : false,
+      'active' => isset($_GET['app']) && $_GET['app'] == $app['code'],
       'menu' => [],
     ];
 
@@ -55,7 +55,7 @@
           'title' => $item['title'],
           'doc' => $item['doc'],
           'link' => document::link(WS_DIR_ADMIN, ['app' => $app['code'], 'doc' => $item['doc']] + (!empty($item['params']) ? $item['params'] : [])),
-          'active' => $selected ? true : false,
+          'active' => $selected,
         ];
       }
     }
