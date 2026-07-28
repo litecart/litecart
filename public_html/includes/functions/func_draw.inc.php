@@ -214,7 +214,7 @@
       'page' => $_GET['page']-1,
       'title' => language::translate('title_previous', 'Previous'),
       'link' => document::link($_SERVER['REQUEST_URI'], ['page' => $_GET['page']-1]),
-      'disabled' => ($_GET['page'] <= 1) ? true : false,
+      'disabled' => $_GET['page'] <= 1,
       'active' => false,
     ];
 
@@ -254,7 +254,7 @@
         'title' => $i,
         'link' => document::link($_SERVER['REQUEST_URI'], ['page' => $i]),
         'disabled' => false,
-        'active' => ($i == $_GET['page']) ? true : false,
+        'active' => $i == $_GET['page'],
       ];
     }
 
@@ -262,7 +262,7 @@
       'page' => $_GET['page']+1,
       'title' => language::translate('title_next', 'Next'),
       'link' => document::link($_SERVER['REQUEST_URI'], ['page' => $_GET['page']+1]),
-      'disabled' => ($_GET['page'] >= $pages) ? true : false,
+      'disabled' => $_GET['page'] >= $pages,
       'active' => false,
     ];
 

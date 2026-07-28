@@ -20,7 +20,7 @@
         'name' => $manufacturer['name'],
         'link' => document::ilink('manufacturer', ['manufacturer_id' => $manufacturer['id']]),
         'date_created' => $manufacturer['date_created'],
-        'active' => (isset($_GET['manufacturer_id']) && $_GET['manufacturer_id'] == $manufacturer['id']) ? true : false,
+        'active' => isset($_GET['manufacturer_id']) && $_GET['manufacturer_id'] == $manufacturer['id'],
       ];
     }
 
