@@ -30,8 +30,8 @@
           'parent_id' => $category['parent_id'],
           'name' => $category['name'],
           'link' => document::ilink('category', ['category_id' => $category['id']], false),
-          'active' => !empty($_GET['category_id']) && $category['id'] == $_GET['category_id'],
-          'opened' => !empty($category_path) && in_array($category['id'], $category_path),
+          'active' => (!empty($_GET['category_id']) && $category['id'] == $_GET['category_id']) ? true : false,
+          'opened' => (!empty($category_path) && in_array($category['id'], $category_path)) ? true : false,
           'subcategories' => [],
         ];
 

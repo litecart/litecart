@@ -61,7 +61,7 @@
       foreach ($free_shipping_table as $row) {
         if (!empty($row['country_code']) && $row['country_code'] == $address['country_code']) {
           if (empty($row['zone_code']) || $row['zone_code'] == $address['zone_code']) {
-            return $subtotal >= $row['min_subtotal'];
+            return ($subtotal >= $row['min_subtotal']) ? true : false;
           }
         }
       }

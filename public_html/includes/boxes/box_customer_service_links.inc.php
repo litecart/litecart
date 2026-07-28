@@ -19,7 +19,7 @@
     'title' => language::translate('title_contact_us', 'Contact Us'),
     'link' => document::ilink('customer_service'),
     'opened' => false,
-    'active' => isset(route::$route['page']) && route::$route['page'] == 'customer_service' && empty($_GET['page_id']),
+    'active' => (isset(route::$route['page']) && route::$route['page'] == 'customer_service' && empty($_GET['page_id'])) ? true : false,
     'subpages' => [],
   ];
 
@@ -42,8 +42,8 @@
         'parent_id' => $page['parent_id'],
         'title' => $page['title'],
         'link' => document::ilink('customer_service', ['page_id' => $page['id']], false),
-        'active' => !empty($_GET['page_id']) && $page['id'] == $_GET['page_id'],
-        'opened' => !empty($current_page_path) && in_array($page['id'], $current_page_path),
+        'active' => (!empty($_GET['page_id']) && $page['id'] == $_GET['page_id']) ? true : false,
+        'opened' => (!empty($current_page_path) && in_array($page['id'], $current_page_path)) ? true : false,
         'subpages' => [],
       ];
 

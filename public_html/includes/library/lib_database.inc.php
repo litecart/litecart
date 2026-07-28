@@ -184,7 +184,7 @@
         }
       }
 
-      return $errors;
+      return $errors ? true : false;
     }
 
     public static function query($query, $link='default') {
