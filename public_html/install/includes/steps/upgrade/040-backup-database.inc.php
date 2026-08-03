@@ -30,7 +30,7 @@
 
     $separator = '-- -----';
 
-    database::query('SHOW TABLES')->each(function($table) {
+    database::query('SHOW TABLES')->each(function($table) use ($backup_handle, $separator) {
 
       $table = array_shift($table);
 
@@ -49,8 +49,8 @@
       // Create Table
       $query = database::query("SHOW CREATE TABLE `" . $table . "`;");
       if ($row = database::fetch($query)) {
-        $output = $separator . PHP_EOL
-                . $row['Create Table'] . ';' . PHP_EOL;
+        $output .= $separator . PHP_EOL
+                 . $row['Create Table'] . ';' . PHP_EOL;
       }
 
       fwrite($backup_handle, $output);
@@ -78,18 +78,18 @@
       foreach ($rows as $row) {
         foreach ($columns as $column) {
           if (!isset($row[$column])) {
-            $row[$column] = "NULL, ";
+            $row[$column] = 'NULL';
           } elseif ($row[$column] != '') {
             $row[$column] = "'". addcslashes($row[$column], "\\'\r\n") ."'";
           } else {
-            $row[$column] = "'', ";
+            $row[$column] = "''";
           }
         }
 
         $output .= "(". implode(", ", $row) . ")," . PHP_EOL;
       }
 
-      $output = rtrim($output, ", ") . ";" . PHP_EOL;
+      $output = rtrim($output, ", \r\n") . ";" . PHP_EOL;
 
       fwrite($backup_handle, $output);
     });
