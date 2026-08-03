@@ -14,11 +14,11 @@
 			database::query('start transaction;');
 		}
 
-		if (file_exists(__DIR__ . '/migrations/'. $version .'.sql')) {
+		if (file_exists(__DIR__ . '/../../../migrations/'. $version .'.sql')) {
 
 			echo '<p>Upgrading database to '. $version .'...</p>' . PHP_EOL . PHP_EOL;
 
-			$sql = file_get_contents(__DIR__ . '/migrations/'. $version .'.sql');
+			$sql = file_get_contents(__DIR__ . '/../../../migrations/'. $version .'.sql');
 			$sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, $sql);
 			$sql = str_replace("'lc_", "'".DB_TABLE_PREFIX, $sql);
 
@@ -30,9 +30,9 @@
 			}
 		}
 
-		if (file_exists(__DIR__ . '/migrations/'. $version .'.inc.php')) {
+		if (file_exists(__DIR__ . '/../../../migrations/'. $version .'.inc.php')) {
 			echo '<p>Upgrading system to '. $version .'...</p>' . PHP_EOL . PHP_EOL;
-			include(__DIR__ . '/migrations/'. $version .'.inc.php');
+			include(__DIR__ . '/../../../migrations/'. $version .'.inc.php');
 		}
 
 		if (version_compare($current_version, '3.0.0', '>=')) {

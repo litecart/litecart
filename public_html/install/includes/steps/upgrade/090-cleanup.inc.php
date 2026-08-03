@@ -40,7 +40,7 @@
 	] as $file) {
 
 		$dst = FS_DIR_STORAGE . $file;
-		$src = __DIR__ . '/data/default/storage/' . $file;
+		$src = __DIR__ . '/../../../data/default/storage/' . $file;
 
 		if (is_file($dst) || !is_file($src)) continue;
 

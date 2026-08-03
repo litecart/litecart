@@ -2,7 +2,7 @@
 
 	### Installer > Set Development Type ########################################
 
-	if (!is_dir(__DIR__.'/../../.git')) {
+	if (!is_dir(__DIR__.'/../../../../../.git')) {
 
 		echo '<p>Preparing CSS files...</p>' . PHP_EOL . PHP_EOL;
 
