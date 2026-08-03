@@ -191,13 +191,13 @@
 			'user'        => draw_fonticon('icon-user', 'style="color: #888;"'),
 			'warning'     => draw_fonticon('icon-exclamation-triangle', 'style="color: #c00;"'),
 		};
-		
+
 		trigger_error('Unknown font icon ('. $icon .')', E_USER_WARNING);
-		
+
 		return '';
 	}
 
-	function draw_image(string $image, int|null $width=null, int|null $height=null, string $clipping='fit', string $attributes=[]): string {
+	function draw_image(string $image, int|null $width=null, int|null $height=null, string $clipping='fit', array|string $attributes=[]): string {
 
 		$attributes = is_array($attributes) ? $attributes : f::form_attributes($attributes);
 
@@ -217,9 +217,9 @@
 		if (preg_match('#^(app|storage)://#', $src)) {
 			$checksum = base64_encode(hash_file('sha256', $src, true));
 			return draw_element('script', ['src' => document::href_rlink($src), 'defer' => true, 'nonce' => security::$data['nonce'], 'integrity' => 'sha256-'. $checksum,]);
-		} else {
-			return draw_element('script', ['src' => document::href_link($src), 'defer' => true, 'nonce' => security::$data['nonce']], $content);
 		}
+
+		return draw_element('script', ['src' => document::href_link($src), 'defer' => true, 'nonce' => security::$data['nonce']], $content);
 	}
 
 	function draw_style(string $href): string {
@@ -227,9 +227,9 @@
 		if (preg_match('#^(app|storage)://#', $href)) {
 			$checksum = base64_encode(hash_file('sha256', $href, true));
 			return draw_element('link', ['rel' => 'stylesheet', 'href' => document::href_rlink($href), 'nonce' => security::$data['nonce'], 'integrity' => 'sha256-'. $checksum, ]);
-		} else {
-			return draw_element('link', ['rel' => 'stylesheet', 'href' => document::href_link($href), 'nonce' => security::$data['nonce']]);
 		}
+
+		return draw_element('link', ['rel' => 'stylesheet', 'href' => document::href_link($href), 'nonce' => security::$data['nonce']]);
 	}
 
 	function draw_thumbnail(string $image, int $width=0, int $height=0, string $clipping='fit', array|string $attributes=[]): string {
@@ -250,12 +250,14 @@
 			default => (new ent_image($image))->aspect_ratio
 		};
 
+		$attributes = is_array($attributes) ? $attributes : f::form_attributes($attributes);
+
 		if (!$width) {
 			[$width, $height] = f::image_scale_by_height($height, $target_ratio);
 		}
 
 		if (!$height) {
-			[$width, $height] = f::image_scale_by_height($width, $target_ratio);
+			[$width, $height] = f::image_scale_by_width($width, $target_ratio);
 		}
 
 		if (empty($aspect_ratio)) {
@@ -275,10 +277,10 @@
 		$thumbnail_2x = f::image_thumbnail($image, $width*2, $height*2);
 
 		if ($width && $height) {
-			if (preg_match('#style="#', $parameters)) {
-				$parameters = preg_replace('#style="(.*?)"#', 'style="$1 aspect-ratio: '. $aspect_ratio .';"', $parameters);
+			if (!empty($attributes['style'])) {
+				$attributes['style'] .= ' aspect-ratio: '. $aspect_ratio .';';
 			} else {
-				$parameters .= ' style="aspect-ratio: '. $aspect_ratio .';"';
+				$attributes['style'] = 'aspect-ratio: '. $aspect_ratio .';';
 			}
 		}
 
