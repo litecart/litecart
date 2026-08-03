@@ -264,18 +264,18 @@ ALTER TABLE `lc_administrators`
 CHANGE COLUMN `status` `status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
 CHANGE COLUMN `last_ip` `last_ip_address` VARCHAR(39) NOT NULL DEFAULT '',
 CHANGE COLUMN `last_host` `last_hostname` VARCHAR(64) NOT NULL DEFAULT '',
+ADD COLUMN `last_user_agent` VARCHAR(255) NOT NULL DEFAULT '' AFTER `last_hostname`,
+ADD COLUMN `two_factor_auth` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0 AFTER `widgets`,
+ADD COLUMN `known_ips` VARCHAR(512) NOT NULL DEFAULT '' AFTER `two_factor_auth`,
 CHANGE COLUMN `login_attempts` `login_attempts` INT(10) UNSIGNED NOT NULL DEFAULT '0' AFTER `two_factor_auth`,
 CHANGE COLUMN `total_logins` `total_logins` INT(10) UNSIGNED NOT NULL DEFAULT '0' AFTER `login_attempts`,
 CHANGE COLUMN `date_active` `last_active` TIMESTAMP NULL AFTER `last_user_agent`,
 CHANGE COLUMN `date_login` `last_login` TIMESTAMP NULL AFTER `last_active`,
+ADD COLUMN `sessions_expiry` TIMESTAMP NULL AFTER `last_login`,
 CHANGE COLUMN `date_valid_from` `valid_from` TIMESTAMP NULL AFTER `known_ips`,
 CHANGE COLUMN `date_valid_to` `valid_to` TIMESTAMP NULL AFTER `valid_from`,
 ADD COLUMN `firstname` VARCHAR(32) NOT NULL DEFAULT '' AFTER `username`,
-ADD COLUMN `lastname` VARCHAR(32) NOT NULL DEFAULT '' AFTER `firstname`,
-ADD COLUMN `two_factor_auth` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0 AFTER `widgets`,
-ADD COLUMN `last_user_agent` VARCHAR(255) NOT NULL DEFAULT '' AFTER `last_hostname`,
-ADD COLUMN `known_ips` VARCHAR(512) NOT NULL DEFAULT '' AFTER `two_factor_auth`,
-ADD COLUMN `sessions_expiry` TIMESTAMP NULL AFTER `last_login`;
+ADD COLUMN `lastname` VARCHAR(32) NOT NULL DEFAULT '' AFTER `firstname`;
 -- ------
 ALTER TABLE `lc_attribute_groups`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
