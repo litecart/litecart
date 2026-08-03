@@ -3,6 +3,9 @@
 	/*
 		Unattended Upgrade:
 		upgrade.php?upgrade=true&redirect={url}
+
+		CLI Usage:
+		php upgrade.php --from_version=2.3.0 --development_type=standard
 	*/
 
 	ini_set('memory_limit', -1);
