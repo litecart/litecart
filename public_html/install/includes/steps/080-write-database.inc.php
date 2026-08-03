@@ -197,7 +197,7 @@
 			$query = "INSERT INTO `". database::input($table) ."` (`". implode('`, `', database::input(array_keys($rows[0]))) ."`) VALUES ";
 
 			foreach ($rows as $columns) {
-				$query .= "('". implode("', '", database::input($columns)) ."'),";
+				$query .= "('". implode("', '", database::input($columns), true) ."'),";
 			}
 
 			$query = rtrim($query, ',') . ";";
