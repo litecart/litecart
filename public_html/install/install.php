@@ -182,12 +182,14 @@
     ### Environment > Set #########################################
 
     error_reporting(E_ALL);
-    ini_set('ignore_repeated_errors', 'Off');
-    ini_set('log_errors', 'Off');
+    ini_set('ignore_repeated_errors', 'On');
+    ini_set('log_errors', 'On');
     ini_set('display_errors', 'On');
     ini_set('html_errors', 'On');
     ini_set('error_log', FS_DIR_STORAGE . 'logs/errors.log');
     date_default_timezone_set(!empty($_REQUEST['timezone']) ? $_REQUEST['timezone'] : ini_get('date.timezone'));
+
+    file_put_contents(ini_get('error_log'), '');
 
     ### PHP > Check Version #######################################
 
