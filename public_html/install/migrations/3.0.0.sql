@@ -529,10 +529,7 @@ CHANGE COLUMN `dim_z` `height` DECIMAL(11,4) NOT NULL DEFAULT '0',
 CHANGE COLUMN `dim_class` `length_unit` VARCHAR(2) NOT NULL DEFAULT '',
 CHANGE COLUMN `options` `userdata` VARCHAR(2048) NULL AFTER `name`,
 CHANGE COLUMN `option_stock_combination` `attributes` VARCHAR(32) NOT NULL DEFAULT '',
-CHANGE COLUMN `priority` `priority` INT NOT NULL DEFAULT '0',
-ADD INDEX `product_id` (`product_id`),
-ADD INDEX `stock_option_id` (`stock_option_id`),
-ADD INDEX `stock_items` (`stock_items`);
+CHANGE COLUMN `priority` `priority` INT NOT NULL DEFAULT '0';
 -- -----
 ALTER TABLE `lc_orders_totals`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,

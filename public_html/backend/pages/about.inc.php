@@ -98,7 +98,7 @@
 			} else if ($hours) {
 				$uptime = $hours .' hour(s)';
 			} else if ($minutes) {
-				$iptime = $minutes .' minute(s)';
+				$uptime = $minutes .' minute(s)';
 			} else if ($seconds) {
 				$uptime = $seconds .' second(s)';
 			}
@@ -115,7 +115,7 @@
 		'ip_address' => $_SERVER['SERVER_ADDR'],
 		'hostname' => gethostbyaddr($_SERVER['SERVER_ADDR']),
 		'cpu_usage' => $cpu_usage ?? '',
-		'memory_usage' => $memory_usage ?? '',
+		'memory_usage' => $ram_usage ?? '',
 		'uptime' =>  $uptime ?? '',
 	];
 

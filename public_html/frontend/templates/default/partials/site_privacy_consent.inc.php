@@ -79,9 +79,15 @@
 <script>
 	waitFor('jQuery', function($) {
 		try {
+
+			if ($('#site-privacy-consent').privacyConsent === undefined) {
+				throw new Error('privacyConsent plugin not loaded');
+			}
+
 			var privacy_classes = <?php echo f::format_json($privacy_classes, ''); ?>;
 			var consents = <?php echo f::format_json($consents, ''); ?>;
 			$('#site-privacy-consent').privacyConsent(privacy_classes, consents);
+
 		} catch (e) {
 			console.error('Could not initiate privacy consent manager: ' + e.message);
 		}

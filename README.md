@@ -19,15 +19,15 @@ Please note running your own website requires some common sense of web knowledge
 
 2. Transfer the contents of the folder public_html/ in this archive (yes the contents inside the folder - not the folder itself). Transfer it to your website root directory. Using subdirectories is supported but not recommended.
 
-		```text
-		Examples:
+```text
+Examples:
 
-		* /var/www/
-		* /home/username/public_html/
-		* C:\xampp\htdocs\
-		```
+* /var/www/
+* /home/username/public_html/
+* C:\xampp\htdocs\
+```
 
-		Paths are machine specific, ask your web hosting provider if you are uncertain where this folder is.
+Paths are machine specific, ask your web hosting provider if you are uncertain where this folder is.
 
 3. Point your web browser to the URL of your website followed by the subfolder `install/` e.g. `http://www.mysite.com/install/`. If you placed LiteCart in a subfolder of the web root, the path should be something like `http://www.mysite.com/litecart/install`. The installation page should now load.
 
@@ -143,6 +143,7 @@ To configure remote use via Web:
 		}
 	}
 }
+```
 
 ## Build On LiteCart
 

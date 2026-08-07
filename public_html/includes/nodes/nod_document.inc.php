@@ -185,6 +185,18 @@
 			// Strip HTML comments
 			$output = preg_replace('#<!--[\s\S]*?-->#', '', $output);
 
+			// Fragment responses (e.g. AJAX partials) are not wrapped in
+			// <html>/<body>, so the inline-script extraction below never runs
+			// for them and their <script> blocks would go out without a nonce.
+			// When jQuery injects such a partial into the DOM it evaluates those
+			// inline scripts, which the parent page's CSP then blocks (because a
+			// nonce in the policy disables 'unsafe-inline'). Tag them here.
+			if (stripos($output, '</body>') === false) {
+				$output = preg_replace_callback('#<script\b(?![^>]*\ssrc=)(?![^>]*\snonce=)([^>]*)>#is', function($match) {
+					return '<script nonce="'. security::$data['nonce'] .'"'. $match[1] .'>';
+				}, $output);
+			}
+
 			// Extract styling
 			$output = preg_replace_callback('#(<html[^>]*>)(.*)(</html>)#is', function($matches) use (&$stylesheets, &$style, &$javascripts, &$javascript) {
 

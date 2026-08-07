@@ -16,6 +16,7 @@ trim_trailing_whitespace = true
 charset = utf-8
 indent_style = space
 indent_size = 2
+insert_final_newline = false
 
 [*.{cjs,htaccess,js,jsx,less,md,mjs,php,sh,scss,sql,ts,tsx},Dockerfile]
 insert_final_newline = true

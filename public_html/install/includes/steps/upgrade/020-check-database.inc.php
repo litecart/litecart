@@ -9,15 +9,15 @@
       return [
         'name' => 'MariaDB',
         'version' => strtok($row['VERSION()'], '-'),
-        'min_version' => $requirements['databases']['mariadb']['minimumVersion'],
-        'recommended_version' => $requirements['databases']['mariadb']['recommendedVersion'],
+        'min_version' => $requirements['database']['mariadb']['minimumVersion'],
+        'recommended_version' => $requirements['database']['mariadb']['recommendedVersion'],
       ];
     }
     return [
       'name' => 'MySQL',
       'version' => $row['VERSION()'],
-      'min_version' => $requirements['databases']['mysql']['minimumVersion'],
-      'recommended_version' => $requirements['databases']['mysql']['recommendedVersion'],
+      'min_version' => $requirements['database']['mysql']['minimumVersion'],
+      'recommended_version' => $requirements['database']['mysql']['recommendedVersion'],
     ];
   });
 
