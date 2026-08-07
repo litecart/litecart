@@ -1,0 +1,58 @@
+name: Update Checksums
+
+# Regenerates public_html/install/checksums.md5 from the tracked files on the
+# canonical distribution branch (master) and commits any changes back to the
+# branch. Mirrors the local pre-commit hook so contributors who skip the hook
+# still get the manifest refreshed before a release.
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-checksums:
+    name: Regenerate and Commit Checksums
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          # Full history so the PHP hook can enumerate every tracked file via
+          # `git ls-files` and `git show :<file>`.
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 'latest'
+          coverage: none
+
+      - name: Setup Git committer
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Run checksum pre-commit hook
+        # The hook reads `git ls-files` and the staged/indexed blobs, then
+        # rewrites public_html/install/checksums.md5 in place. Because we
+        # checkout the whole tree without a working-tree diff to drive it,
+        # the hook falls back to scanning every tracked file (see the
+        # "No committed files detected" branch in the script).
+        run: php .git-hooks/pre-commit.d/calculate_checksums.php
+
+      - name: Commit updated checksums
+        run: |
+          if git diff --quiet -- public_html/install/checksums.md5; then
+            echo "checksums.md5 is up to date — nothing to commit."
+            exit 0
+          fi
+
+          git add public_html/install/checksums.md5
+          git commit -m "* Auto-update checksums.md5 from CI"
+          git push origin HEAD:master
