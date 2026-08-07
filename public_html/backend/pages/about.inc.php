@@ -145,6 +145,24 @@
 		'hostname' => DB_SERVER,
 		'user' => DB_USERNAME,
 		'database' => DB_DATABASE,
+		'variables' => database::query(
+			"SHOW VARIABLES
+			WHERE Variable_name IN (
+				'character_set_system',
+				'character_set_client',
+				'character_set_connection',
+				'character_set_results',
+				'collation_connection',
+				'global.time_zone',
+				'session.time_zone',
+				'max_connections',
+				'max_user_connections',
+				'wait_timeout',
+				'interactive_timeout',
+				'sql_mode',
+				'innodb_buffer_pool_size'
+			);"
+		)->fetch_all('Value', 'Variable_name'),
 	];
 
 	// Errors
@@ -450,6 +468,10 @@
 					<tr>
 						<th>Database</th>
 						<td><?php echo $database['database']; ?></td>
+					</tr>
+					<tr>
+						<th>Variables</th>
+						<td><pre><?php echo f::format_json($database['variables']); ?></pre></td>
 					</tr>
 				</tbody>
 			</table>
