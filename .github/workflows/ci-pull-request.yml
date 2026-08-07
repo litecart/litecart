@@ -1,0 +1,48 @@
+name: Pull Request Checks
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  editorconfig:
+    name: EditorConfig Checker
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 'latest'
+
+      - name: Run EditorConfig Checker
+        run: bunx -y editorconfig-checker -exclude .git -exclude node_modules -exclude public_html/assets -exclude public_html/vendor
+
+  lint:
+    name: Syntax Linting
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 'latest'
+          coverage: none
+
+      - name: PHP Lint
+        run: bash scripts/scan-php-syntax.sh
+
+      - name: JSON Lint
+        run: bash scripts/scan-json-syntax.sh
+
+      - name: SQL Lint
+        run: bash scripts/scan-sql-syntax.sh
+
+      - name: SCSS Lint
+        run: bash scripts/scan-scss-syntax.sh
