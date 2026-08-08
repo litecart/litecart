@@ -281,35 +281,12 @@
         return self::$_cache['translations'][$language_code][$code] = $translation['text_'.$language_code];
       }
 
-    // If we have an english translation
+    // Fallback to english translation if available
       if (!empty($translation['text_en'])) {
-
-      // Find same english translation by different key
-        $secondary_translation_query = database::query(
-          "select id, text_en, `text_". $language_code ."` from ". DB_TABLE_PREFIX ."translations
-          where text_en = '". database::input($translation['text_en']) ."'
-          and text_en != ''
-          and text_". self::$selected['code'] ." != ''
-          limit 1;"
-        );
-
-        if ($secondary_translation = database::fetch($secondary_translation_query)) {
-          database::query(
-            "update ". DB_TABLE_PREFIX ."translations
-            set `text_". $language_code ."` = '". database::input($translation['text_'.$language_code], true) ."',
-            date_updated = '". date('Y-m-d H:i:s') ."'
-            where text_en = '". database::input($translation['text_en']) ."'
-            and text_". self::$selected['code'] ." = '';"
-          );
-
-          return self::$_cache['translations'][$language_code][$code] = $secondary_translation['text_'.$language_code];
-        }
-
-      // Return english translation
         return self::$_cache['translations'][$language_code][$code] = $translation['text_en'];
       }
 
-    // Return default translation
+    // Otherwise return injected default translation
       return self::$_cache['translations'][$language_code][$code] = $default;
     }
 
