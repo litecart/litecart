@@ -794,7 +794,12 @@ INSERT INTO `lc_settings` (`group_key`, `title`, `description`, `key`, `value`, 
 ('social_media', 'LinkedIn Link', 'The link to your LinkedIn page.', 'linkedin_link', '', 'url()', 0, 30, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ('social_media', 'Pinterest Link', 'The link to your Pinterest page.', 'pinterest_link', '', 'url()', 0, 40, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ('social_media', 'X Link', 'The link to your X page.', 'x_link', '', 'url()', 0, 50, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('social_media', 'YouTube Link', 'The link to your YouTube channel.', 'youtube_link', '', 'url()', 0, 60, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+('social_media', 'YouTube Link', 'The link to your YouTube channel.', 'youtube_link', '', 'url()', 0, 60, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('email', 'IMAP Enabled', 'Whether or not to use an IMAP server for receiving email.', 'imap_status', '0', 'toggle("e/d")', 0, 20, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('email', 'IMAP Host', 'IMAP hostname, e.g. imap.myprovider.tld.', 'imap_host', 'localhost', 'text()', 0, 21, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('email', 'IMAP Port', 'IMAP port, e.g. 143, 993 (SSL/TLS).', 'imap_port', '143', 'number()', 0, 22, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('email', 'IMAP Username', 'Username for IMAP authentication.', 'imap_username', '', 'text()', 0, 23, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('email', 'IMAP Password', 'Password for IMAP authentication.', 'imap_password', '', 'password()', 0, 24, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 -- -----
 UPDATE `lc_attribute_groups`
 SET name = '{}';

@@ -32,6 +32,11 @@ email,"{""en"":""SMTP Host""}","{""en"":""SMTP hostname, e.g. smtp.myprovider.co
 email,"{""en"":""SMTP Port""}","{""en"":""SMTP port, e.g. 25,465 (SSL/TLS), or 587 (STARTTLS).""}",smtp_port,25,number,number(),0,12,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 email,"{""en"":""SMTP Username""}","{""en"":""Username for SMTP authentication.""}",smtp_username,,string,text(),0,13,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 email,"{""en"":""SMTP Password""}","{""en"":""Password for SMTP authentication.""}",smtp_password,,string,password(),0,14,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+email,"{""en"":""IMAP Enabled""}","{""en"":""Whether or not to use an IMAP server for receiving email.""}",imap_status,0,bool,"toggle(""e/d"")",0,20,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+email,"{""en"":""IMAP Host""}","{""en"":""IMAP hostname, e.g. imap.myprovider.tld.""}",imap_host,localhost,string,text(),0,21,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+email,"{""en"":""IMAP Port""}","{""en"":""IMAP port, e.g. 143, 993 (SSL/TLS).""}",imap_port,143,number,number(),0,22,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+email,"{""en"":""IMAP Username""}","{""en"":""Username for IMAP authentication.""}",imap_username,,string,text(),0,23,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+email,"{""en"":""IMAP Password""}","{""en"":""Password for IMAP authentication.""}",imap_password,,string,password(),0,24,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 customer_details,"{""en"":""Regional Settings Screen""}","{""en"":""Enables the regional settings screen upon first visit.""}",regional_settings_screen,0,bool,"toggle(""e/d"")",0,10,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 customer_details,"{""en"":""Enable Customer Accounts""}","{""en"":""Allow customers to create an account and sign in.""}",accounts_enabled,1,bool,"toggle(""e/d"")",0,11,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 customer_details,"{""en"":""Account Verification""}","{""en"":""Verify customer accounts upon registration.""}",account_verification,1,string,"select(""manual"",""automatic"",""email"")",0,12,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
