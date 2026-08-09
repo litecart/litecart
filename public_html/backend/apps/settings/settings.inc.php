@@ -31,29 +31,38 @@
 				switch ($setting['datatype']) {
 
 					case 'boolean':
-						$value = (int)$_POST['settings'][$key];
+					case 'bool':
+						$value = !empty($_POST['settings'][$key]) ? '1' : '0';
 						break;
 
 					case 'csv':
 						$value = implode(',', array_map(function($value){
 							return preg_match('#", \R#', $value) ? '"' . str_replace('"', '""', $value) . '"' : $value;
-						}, $_POST['settings'][$key]));
+						}, (array)($_POST['settings'][$key] ?? [])));
 						break;
 
 					case 'array':
-						$value = json_encode($_POST['settings'][$key], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+						$value = json_encode((array)($_POST['settings'][$key] ?? []), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 						break;
 
 					case 'json':
-						$value = (string)$_POST['settings'][$key];
+						$value = (string)($_POST['settings'][$key] ?? '');
 						break;
 
 					case 'number':
-						$value = (int)$_POST['settings'][$key];
+					case 'integer':
+						$value = (int)($_POST['settings'][$key] ?? 0);
 						break;
 
 					case 'decimal':
-						$value = (float)$_POST['settings'][$key];
+					case 'float':
+					case 'double':
+						$value = (float)($_POST['settings'][$key] ?? 0);
+						break;
+
+					case 'string':
+					default:
+						$value = (string)($_POST['settings'][$key] ?? '');
 						break;
 				}
 
@@ -173,6 +182,7 @@
 				break;
 
 			case 'boolean':
+			case 'bool':
 				$_POST['settings'][$setting['key']] = !empty($setting['value']) ? '1' : '0';
 				break;
 
@@ -181,6 +191,8 @@
 				break;
 
 			case 'decimal':
+			case 'float':
+			case 'double':
 				$_POST['settings'][$setting['key']] = (float)$setting['value'];
 				break;
 
@@ -189,6 +201,7 @@
 				break;
 
 			case 'number':
+			case 'integer':
 				$_POST['settings'][$setting['key']] = (int)$setting['value'];
 				break;
 

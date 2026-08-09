@@ -12,20 +12,15 @@
       }
     }
 
-    $platform_database_version = database::query(
-      "select `value` from ". DB_TABLE_PREFIX ."settings
-      where `key` = 'platform_database_version'
-      limit 1;"
-    )->fetch('value');
 
-    $backup_file = FS_DIR_STORAGE . 'backups/'. PLATFORM_NAME .'-'. date('Ymd-Hi') .'-database-'. $platform_database_version .'.sql';
+    $backup_file = FS_DIR_STORAGE . 'backups/'. PLATFORM_NAME . '-' . PLATFORM_DATABASE_VERSION . '-Database-'. date('Ymd-Hi') .'.sql';
 
     if (!$backup_handle = fopen($backup_file, 'wb')) {
       throw new Exception("Cannot open backup file for writing ($backup_file)");
     }
 
     if (!flock($backup_handle, LOCK_EX)) {
-      throw new Exception("Could not aquire an exlusive lock for writing to file ($backup_file)");
+      throw new Exception("Could not acquire an exclusive lock for writing to file ($backup_file)");
     }
 
     $separator = '-- -----';
@@ -38,10 +33,10 @@
         return;
       }
 
-      if (!empty($use_initial_separator)) {
+      if (!empty($use_separator)) {
         $output .= $separator . PHP_EOL;
-        $use_initial_separator = true;
       }
+      $use_separator = true;
 
       // Drop Table
       $output = "DROP TABLE IF EXISTS `" . $table . "`;" . PHP_EOL;

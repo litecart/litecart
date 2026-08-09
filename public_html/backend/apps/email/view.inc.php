@@ -66,19 +66,19 @@
 				</div>
 
 				<div class="to">
-				<strong><?php echo t('title_to', 'To'); ?>:</strong> <?php echo f::escape_html(implode(', ', $email['recipients'])); ?>
+					<strong><?php echo t('title_to', 'To'); ?>:</strong> <?php echo f::escape_html(implode(', ', $email['recipients'])); ?>
 				</div>
 
 				<div class="ccs">
-				<strong><?php echo t('title_cc', 'CC'); ?>:</strong> <?php echo f::escape_html(implode(', ', $email['ccs'])); ?>
+					<strong><?php echo t('title_cc', 'CC'); ?>:</strong> <?php echo f::escape_html(implode(', ', $email['ccs'])); ?>
 				</div>
 
 				<div class="bccs">
-				<strong><?php echo t('title_bcc', 'BCC'); ?>:</strong> <?php echo f::escape_html(implode(', ', $email['bccs'])); ?>
+					<strong><?php echo t('title_bcc', 'BCC'); ?>:</strong> <?php echo f::escape_html(implode(', ', $email['bccs'])); ?>
 				</div>
 
 				<div class="subject">
-				<strong><?php echo t('title_subject', 'Subject'); ?>:</strong> <?php echo f::escape_html($email['subject']); ?>
+					<strong><?php echo t('title_subject', 'Subject'); ?>:</strong> <?php echo f::escape_html($email['subject']); ?>
 				</div>
 			</div>
 

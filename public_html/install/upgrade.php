@@ -128,7 +128,14 @@
 		limit 1;"
 	)->fetch('value');
 
-	define('PLATFORM_DATABASE_VERSION', $platform_database_version);
+	if (!empty($platform_database_version)) {
+		$version_detected = true;
+		define('PLATFORM_DATABASE_VERSION', $platform_database_version);
+	} else if (!empty($_REQUEST['from_version'])) {
+		define('PLATFORM_DATABASE_VERSION', $_REQUEST['from_version']);
+	} else {
+		throw new Exception('Could not detect the current platform database version. Please provide the version you are upgrading from.');
+	}
 
 	// List supported upgrades
 	$supported_versions = ['1.0' => '1.0'];
@@ -198,7 +205,7 @@
 		} catch (Throwable $t) {
 
 			// Rollback if we are in a transaction
-			if (defined('PLATFORM_DATABASE_VERSION') && version_compare(PLATFORM_DATABASE_VERSION, '3.0.0', '>=')) {
+			if (version_compare(PLATFORM_DATABASE_VERSION, '3.0.0', '>=')) {
 				database::rollback();
 			}
 
@@ -294,7 +301,7 @@ input[name="development_type"]:checked + div {
 	</div>
 
 	<div class="grid">
-		<?php if (defined('PLATFORM_DATABASE_VERSION')) { ?>
+		<?php if ($version_detected) { ?>
 		<div class="col-md-3">
 			<label class="form-group">
 				<div class="form-label">Current Version</div>
@@ -307,7 +314,9 @@ input[name="development_type"]:checked + div {
 				<div class="form-label">Select the <?php echo PLATFORM_NAME; ?> version you are upgrading from:</div>
 				<select class="form-input" name="from_version">
 					<option value="">-- Select Version --</option>
-					<?php foreach ($supported_versions as $version) echo '<option value="'. $version .'"'. ((isset($_REQUEST['from_version']) && $_REQUEST['from_version'] == $version) ? 'selected' : '') .'>'. PLATFORM_NAME .' '. $version .'</option>' . PHP_EOL; ?>
+					<?php foreach ($supported_versions as $version) { ?>
+					<option value="<?php echo $version; ?>"<?php echo (isset($_REQUEST['from_version']) && $_REQUEST['from_version'] == $version) ? ' selected' : ''; ?>><?php echo PLATFORM_NAME .' '. $version; ?></option>
+					<?php } ?>
 				</select>
 			</label>
 		</div>
