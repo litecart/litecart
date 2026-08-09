@@ -31,6 +31,13 @@
 					'  ' . f::draw_fonticon('icon-check') . ' ' . $notice,
 					'</div>',
 				]),
+
+				default => implode(PHP_EOL, [
+					'<div class="notice notice-default">',
+					'  <a href="#" class="close" data-dismiss="notice">&times;</a>',
+					'  ' . f::draw_fonticon('icon-info') . ' ' . $notice,
+					'</div>',
+				]),
 			};
 		}
 	}

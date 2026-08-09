@@ -39,12 +39,12 @@
 	if (!empty($product->replaced_by)) {
 		$replaced_product = reference::product($product->replaced_by);
 		if (!empty($replaced_product->id)) {
-			notices::add('info', strtr(t('text_product_replaced_by', 'This product has been replaced by <a href="{link}">{name}</a>.'), [
+			notices::add('notices', strtr(t('text_product_replaced_by', 'This product has been replaced by <a href="{link}">{name}</a>.'), [
 				'{link}' => document::ilink('product', ['product_id' => $replaced_product->id], true),
 				'{name}' => $replaced_product->name,
 			]));
 		} else {
-			notices::add('info', strtr(t('text_product_replaced_by_id', 'This product has been replaced by product {id}.'), [
+			notices::add('notices', strtr(t('text_product_replaced_by_id', 'This product has been replaced by product {id}.'), [
 				'{id}' => f::escape_html($product->replaced_by, ENT_QUOTES, 'UTF-8'),
 			]));
 		}

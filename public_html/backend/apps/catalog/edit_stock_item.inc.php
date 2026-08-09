@@ -157,7 +157,7 @@
 
 				notices::add('success', t('success_stock_repaired', 'Stock repaired'));
 			} else {
-				notices::add('info', t('info_no_repair_needed', 'No repair needed'));
+				notices::add('notices', t('info_no_repair_needed', 'No repair needed'));
 			}
 
 			reload();
