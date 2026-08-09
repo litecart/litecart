@@ -287,37 +287,12 @@
 				return self::$_cache['translations'][$language_code][$code] = $translation['text_'.$language_code];
 			}
 
-			// If we have an english translation
+			// Fall back to english translation
 			if (!empty($translation['text_en'])) {
-
-				// Find same english translation by different key
-				$selected_code_path = '$.'. database::input(self::$selected['code']);
-				$secondary_translation = database::query(
-					"select id, json_value(`text`, '$.en') as text_en, json_value(`text`, '$.". database::input($language_code) ."') as text_". $language_code ."
-					from ". DB_TABLE_PREFIX ."translations
-					where json_value(`text`, '$.en') = '". database::input($translation['text_en']) ."'
-					and (json_value(`text`, '$.en') is not null and json_value(`text`, '$.en') != '')
-					and (json_value(`text`, '$selected_code_path') is not null and json_value(`text`, '$selected_code_path') != '')
-					limit 1;"
-				)->fetch();
-
-				if ($secondary_translation) {
-					database::query(
-						"update ". DB_TABLE_PREFIX ."translations
-						set `text` = json_set(`text`, '$.". database::input($language_code) ."', '". database::input($secondary_translation['text_'.$language_code] ?? '', true) ."'),
-						updated_at = '". date('Y-m-d H:i:s') ."'
-						where json_value(`text`, '$.en') = '". database::input($translation['text_en']) ."'
-						and coalesce(json_value(`text`, '$.". database::input(self::$selected['code']) ."'), '') = '';"
-					);
-
-					return self::$_cache['translations'][$language_code][$code] = $secondary_translation['text_'.$language_code];
-				}
-
-				// Return english translation
 				return self::$_cache['translations'][$language_code][$code] = $translation['text_en'];
 			}
 
-			// Return default translation
+			// Otherwise return default translation
 			return self::$_cache['translations'][$language_code][$code] = $default;
 		}
 
