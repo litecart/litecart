@@ -24,8 +24,9 @@
     }
 
     $separator = '-- -----';
+    $use_separator = false;
 
-    database::query('SHOW TABLES')->each(function($table) use ($backup_handle, $separator) {
+    database::query('SHOW TABLES')->each(function($table) use ($backup_handle, $separator, &$use_separator) {
 
       $table = array_shift($table);
 
@@ -33,13 +34,11 @@
         return;
       }
 
-      if (!empty($use_separator)) {
-        $output .= $separator . PHP_EOL;
-      }
-      $use_separator = true;
-
       // Drop Table
-      $output = "DROP TABLE IF EXISTS `" . $table . "`;" . PHP_EOL;
+      $output = (!empty($use_separator) ? $separator . PHP_EOL : '')
+              . "DROP TABLE IF EXISTS `" . $table . "`;" . PHP_EOL;
+
+      $use_separator = true;
 
       // Create Table
       $query = database::query("SHOW CREATE TABLE `" . $table . "`;");

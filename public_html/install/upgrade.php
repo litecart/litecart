@@ -134,7 +134,7 @@
 	} else if (!empty($_REQUEST['from_version'])) {
 		define('PLATFORM_DATABASE_VERSION', $_REQUEST['from_version']);
 	} else {
-		throw new Exception('Could not detect the current platform database version. Please provide the version you are upgrading from.');
+		define('PLATFORM_DATABASE_VERSION', false);
 	}
 
 	// List supported upgrades
