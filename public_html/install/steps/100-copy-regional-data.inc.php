@@ -4,7 +4,7 @@
 
 	if (!empty($_REQUEST['country_code'])) {
 
-		$directories = f::file_search(__DIR__.'/../../data/*'. $_REQUEST['country_code'] .'*/', GLOB_BRACE);
+		$directories = f::file_search(__DIR__.'/../data/*'. $_REQUEST['country_code'] .'*/', GLOB_BRACE);
 
 		if (!empty($directories)) {
 
@@ -18,7 +18,7 @@
 
 				## Import CSV Files
 
-				if ($data_files = f::file_search(__DIR__.'/../../data/'. $dir .'/*.csv')) {
+				if ($data_files = f::file_search(__DIR__.'/../data/'. $dir .'/*.csv')) {
 
 					echo '<p>Writing database table data from CSV files... ' . PHP_EOL;
 
@@ -58,7 +58,7 @@
 
 				## Import SQL Files
 
-				if ($data_files = f::file_search(__DIR__.'/../../data/'. $dir .'/*.sql')) {
+				if ($data_files = f::file_search(__DIR__.'/../data/'. $dir .'/*.sql')) {
 
 					echo '<p>Writing database table data from SQL files... ' . PHP_EOL;
 
@@ -80,8 +80,8 @@
 				## Copy Files
 
 				perform_action('copy', [
-					__DIR__.'/../../data/'. $dir .'/public_html/' => FS_DIR_APP,
-					__DIR__.'/../../data/'. $dir .'/storage/' => FS_DIR_STORAGE,
+					__DIR__.'/../data/'. $dir .'/public_html/' => FS_DIR_APP,
+					__DIR__.'/../data/'. $dir .'/storage/' => FS_DIR_STORAGE,
 				]);
 			}
 		}

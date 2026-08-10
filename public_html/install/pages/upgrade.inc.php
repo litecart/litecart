@@ -5,7 +5,7 @@
 		upgrade.php?upgrade=true&redirect={url}
 
 		CLI Usage:
-		php upgrade.php --from_version=2.3.0 --development_type=standard
+		php index.php upgrade --from_version=2.3.0 --development_type=standard
 	*/
 
 	ini_set('memory_limit', -1);
@@ -13,24 +13,31 @@
 	mb_http_output('UTF-8');
 	@set_time_limit(900);
 
-	// CLI options used by the shared bootstrap when getopt() runs.
+	// CLI options. Kept as documentation of the accepted options; the
+	// values are parsed by init.inc.php.
 	$INSTALL_CLI_OPTIONS = [
 		'from_version::', 'development_type::', 'backup::', 'cleanup::',
 	];
 
-	if (is_file(__DIR__ . '/../storage/config.inc.php')) {
+	// Load an existing site config. The front controller (install/index.php)
+	// already bootstrapped init.inc.php, so constants it defined (FS_DIR_APP,
+	// FS_DIR_STORAGE, WS_DIR_APP, WS_DIR_STORAGE, DOCUMENT_ROOT) are redefined
+	// here with identical values — suppress the E_WARNING noise with @.
+	if (is_file(__DIR__ . '/../../storage/config.inc.php')) {
 		$installation_detected = true;
-		include(__DIR__ . '/../storage/config.inc.php'); // 3.0.0+
+		@include(__DIR__ . '/../../storage/config.inc.php'); // 3.0.0+
 
-	} else if (is_file(__DIR__ . '/../includes/config.inc.php')) { // Prior to 3.x
+	} else if (is_file(__DIR__ . '/../../includes/config.inc.php')) { // Prior to 3.x
 		$installation_detected = true;
-		include(__DIR__ . '/../includes/config.inc.php');
+		@include(__DIR__ . '/../../includes/config.inc.php');
 
 	} else {
 		$installation_detected = false;
 	}
 
-	require_once __DIR__ . '/includes/init.inc.php';
+	require_once __DIR__ . '/../init.inc.php';
+
+	csp_send_headers();
 
 	if (is_cli()) {
 
@@ -40,7 +47,7 @@
 				'LiteCart® 3.0.0',
 				'Copyright (c) '. date('Y') .' LiteCart AB',
 				'https://www.litecart.net/',
-				'Usage: php '. basename(__FILE__) .' [options]',
+				'Usage: php index.php upgrade [options]',
 				'',
 				'Options:',
 				'  --from_version       Manually set version migrating from. Omit for auto detection',
@@ -52,7 +59,7 @@
 			exit;
 		}
 
-		// $_REQUEST already populated by init.inc.php's getopt call.
+		// Options already collected into $_REQUEST by init.inc.php.
 		$_REQUEST['upgrade'] = true;
 
 		if (isset($_REQUEST['cleanup'])) {
@@ -63,15 +70,18 @@
 	// Include config
 	if (!$installation_detected) {
 
-		require_once __DIR__ . '/includes/header.inc.php';
-
-		echo implode(PHP_EOL, [
+		$content = implode(PHP_EOL, [
 			'<h2>No Installation Detected</h2>',
 			'<p>Warning: No configuration file was found.</p>',
 			'<p><a class="btn btn-default" href="index.php">Click here to install instead</a></p>',
 		]);
 
-		require_once 'includes/footer.inc.php';
+		if (is_cli()) {
+			echo install_cli_format($content) . PHP_EOL;
+			exit;
+		}
+
+		echo $content;
 		return;
 	}
 
@@ -83,10 +93,9 @@
 
 	if (!is_cli()) {
 		ini_set('display_errors', 'Off');
-		require_once __DIR__ . '/includes/header.inc.php';
 	}
 
-	require_once __DIR__ . '/includes/functions.inc.php';
+	require_once __DIR__ . '/../functions.inc.php';
 
 	if (!defined('FS_DIR_APP')) {
 		define('FS_DIR_APP', FS_DIR_HTTP_ROOT . WS_DIR_HTTP_HOME); // Prior to 2.2.x
@@ -107,14 +116,14 @@
 	require_once FS_DIR_APP . 'includes/nodes/nod_functions.inc.php';
 	require FS_DIR_APP . 'includes/nodes/nod_stats.inc.php';
 
-	$requirements = json_decode(file_get_contents(__DIR__ . '/requirements.json'), true);
+	$requirements = json_decode(file_get_contents(__DIR__ . '/../requirements.json'), true);
 
 	// Set platform name
-	preg_match('#define\(\'PLATFORM_NAME\', \'([^\']+)\'\);#', file_get_contents(__DIR__.'/../includes/app_header.inc.php'), $matches);
+	preg_match('#define\(\'PLATFORM_NAME\', \'([^\']+)\'\);#', file_get_contents(__DIR__.'/../../includes/app_header.inc.php'), $matches);
 	define('PLATFORM_NAME', isset($matches[1]) ? $matches[1] : false);
 
 	// Set platform version
-	preg_match('#define\(\'PLATFORM_VERSION\', \'([^\']+)\'\);#', file_get_contents(__DIR__.'/../includes/app_header.inc.php'), $matches);
+	preg_match('#define\(\'PLATFORM_VERSION\', \'([^\']+)\'\);#', file_get_contents(__DIR__.'/../../includes/app_header.inc.php'), $matches);
 	define('PLATFORM_VERSION', isset($matches[1]) ? $matches[1] : false);
 
 	if (!PLATFORM_VERSION) {
@@ -139,7 +148,7 @@
 
 	// List supported upgrades
 	$supported_versions = ['1.0' => '1.0'];
-	foreach (glob(__DIR__ . '/migrations/*') as $file) {
+	foreach (glob(__DIR__ . '/../migrations/*') as $file) {
 		if (preg_match('#/([^/]+).(?:inc.php|sql)$#', $file, $matches)) {
 			$supported_versions[$matches[1]] = $matches[1];
 		}
@@ -157,14 +166,7 @@
 
 	if (!empty($_REQUEST['upgrade'])) {
 
-		ob_start(function($buffer) {
-
-			if (is_cli()) {
-				$buffer = install_cli_format($buffer);
-			}
-
-			return $buffer;
-		});
+		ob_start();
 
 		try {
 
@@ -174,17 +176,12 @@
 
 			## Perform installation ################################################
 
-			register_shutdown_function(function(){
-				$buffer = ob_get_clean();
-				echo is_cli() ? install_cli_format($buffer) : $buffer;
-			});
-
 			echo '<h1>LiteCart Installer</h1>' . PHP_EOL . PHP_EOL;
 
 			// Execute sub-steps in order
-			foreach (scandir(__DIR__ . '/includes/steps/upgrade/') as $file) {
+			foreach (scandir(__DIR__ . '/../steps/upgrade/') as $file) {
 				if (preg_match('#^[0-9]+-.*\.inc\.php$#', $file)) {
-					require __DIR__ . '/includes/steps/upgrade/' . $file;
+					require __DIR__ . '/../steps/upgrade/' . $file;
 				}
 			}
 
@@ -217,13 +214,14 @@
 				'<p>Error: '. htmlspecialchars($t->getMessage()) .'</p>',
 				'',
 			]);
+
+			if (is_cli()) exit(1);
 		}
 
-		echo ob_get_clean();
-
-		if (is_cli()) exit;
-
-		require('includes/footer.inc.php');
+		// Emit the buffered output. CLI gets formatted plain text; web output
+		// is captured by the front controller and wrapped in the shared layout.
+		$content = ob_get_clean();
+		echo is_cli() ? install_cli_format($content) : $content;
 		exit;
 	}
 
@@ -370,5 +368,3 @@ input[name="development_type"]:checked + div {
 
 	<button class="btn btn-success btn-block" type="submit" name="upgrade" value="true" onclick="if(!confirm('Warning! The procedure cannot be undone.')) return false;" style="font-size: 1.5em; padding: 0.5em;">Upgrade To <?php echo PLATFORM_NAME; ?> <?php echo PLATFORM_VERSION; ?></button>
 </form>
-
-<?php	require 'includes/footer.inc.php'; ?>

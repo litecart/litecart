@@ -1,12 +1,12 @@
 <?php
 
 	if (!function_exists('file_copy')) {
-		include_once __DIR__.'/../../includes/functions/func_file.inc.php';
+		include_once __DIR__.'/../includes/functions/func_file.inc.php';
 	}
 
 	/*
-		Backwards-compatible alias for the previous standalone helper. Both
-		install.php and upgrade.php still call this name; future call sites
+		Backwards-compatible alias for the previous standalone helper. The
+		install and upgrade pages still call this name; future call sites
 		may use csp_send_headers() directly.
 	*/
 	function install_send_security_headers() {

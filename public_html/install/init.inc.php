@@ -5,20 +5,33 @@
 	mb_internal_encoding('UTF-8');
 	mb_http_output('UTF-8');
 
-	// BACKEND_ALIAS / DB_TABLE_PREFIX are NOT defined here — install.php
-	// defines them from user-supplied parameters (line ~181), and upgrade.php
+	// BACKEND_ALIAS / DB_TABLE_PREFIX are NOT defined here — the install
+	// page defines them from user-supplied parameters, and the upgrade page
 	// picks them up from the existing storage/config.inc.php.
 
-	// CLI polyfill: normalise $_SERVER and collect getopt into $_REQUEST.
+	// CLI polyfill: normalise $_SERVER and collect options into $_REQUEST.
 	// Entry points may pass their own long-options list via $INSTALL_CLI_OPTIONS
-	// before including this file; fall back to an empty list.
+	// before including this file; it documents the accepted options.
+	//
+	// Note: getopt() cannot be used here. It reads the real process argv (not
+	// $_SERVER['argv'], which the router shifts) and stops at the first
+	// positional argument — the "install"/"upgrade" command word would swallow
+	// every option that follows it.
 	if (!isset($_SERVER['REQUEST_METHOD'])) {
 		$_SERVER['SERVER_SOFTWARE'] = 'CLI';
 		$_SERVER['REQUEST_METHOD'] = 'GET';
 		$_SERVER['REMOTE_ADDR'] = '127.0.0.1';
 
-		if (!empty($INSTALL_CLI_OPTIONS) && is_array($INSTALL_CLI_OPTIONS)) {
-			$_REQUEST = getopt('', $INSTALL_CLI_OPTIONS);
+		// Parse "--name=value" / "--name" long options. argv[0] holds the
+		// script name (or the command after the router has shifted it) and
+		// positional arguments are ignored. Mirrors getopt()'s optional-value
+		// semantics: a bare flag yields false, "--name=value" yields the value.
+		$_REQUEST = [];
+		foreach ($_SERVER['argv'] as $key => $arg) {
+			if ($key == 0) continue;
+			if (preg_match('#^--([a-z_][a-z0-9_]*)(?:=(.*))?$#', $arg, $matches)) {
+				$_REQUEST[$matches[1]] = isset($matches[2]) ? $matches[2] : false;
+			}
 		}
 	}
 
@@ -29,11 +42,11 @@
 		} else if (!empty($_REQUEST['document_root'])) {
 			define('DOCUMENT_ROOT', rtrim(str_replace('\\', '/', realpath($_REQUEST['document_root'])), '/'));
 		}
-		// else: entry point (install.php / upgrade.php) must define it before use
+		// else: entry point (install page / upgrade page) must define it before use
 	}
 
 	if (!defined('FS_DIR_APP')) {
-		define('FS_DIR_APP', rtrim(str_replace('\\', '/', realpath(__DIR__ . '/../..')), '/') . '/');
+		define('FS_DIR_APP', rtrim(str_replace('\\', '/', realpath(__DIR__ . '/..')), '/') . '/');
 	}
 
 	if (!defined('FS_DIR_STORAGE')) {
@@ -56,23 +69,23 @@
 	}
 
 	// Polyfills
-	require_once __DIR__ . '/../../includes/compatibility.inc.php';
+	require_once __DIR__ . '/../includes/compatibility.inc.php';
 
 	// Load virtual file system but leave vMod disabled
 	if (!defined('VMOD_DISABLED')) {
 		define('VMOD_DISABLED', 'true');
 	}
 
-	require_once __DIR__ . '/../../includes/streams/stream_app.inc.php';
+	require_once __DIR__ . '/../includes/streams/stream_app.inc.php';
 	stream_wrapper_register('app', 'stream_app');
 
-	require_once __DIR__ . '/../../includes/streams/stream_storage.inc.php';
+	require_once __DIR__ . '/../includes/streams/stream_storage.inc.php';
 	stream_wrapper_register('storage', 'stream_storage');
 
 	// Load other additional dependencies
-	require_once __DIR__ . '/../../includes/nodes/nod_vmod.inc.php';
-	require_once __DIR__ . '/../../includes/autoloader.inc.php';
-	require_once __DIR__ . '/../../includes/error_handler.inc.php';
-	require_once __DIR__ . '/../../includes/shorthand.inc.php';
+	require_once __DIR__ . '/../includes/nodes/nod_vmod.inc.php';
+	require_once __DIR__ . '/../includes/autoloader.inc.php';
+	require_once __DIR__ . '/../includes/error_handler.inc.php';
+	require_once __DIR__ . '/../includes/shorthand.inc.php';
 
 	require_once __DIR__ . '/functions.inc.php';

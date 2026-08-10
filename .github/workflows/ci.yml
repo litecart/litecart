@@ -9,7 +9,7 @@ on:
 
 env:
   INSTALLER_CMD: |
-    php public_html/install/install.php \
+    php public_html/install/index.php install \
       --db_server=127.0.0.1 \
       --db_username=litecart \
       --db_password=litecart \

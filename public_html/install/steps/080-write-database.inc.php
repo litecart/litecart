@@ -3,7 +3,7 @@
 	### Database > Load Structure #######################################
 
 	// Fetch MySQL table structures from structure.json
-	$structure_file = __DIR__ . '/../../structure.json';
+	$structure_file = __DIR__ . '/../structure.json';
 
 	if (!is_file($structure_file)) {
 		throw new Exception('Could not find structure.json');
@@ -173,7 +173,7 @@
 
 	### Database > Tables > Data ##################################
 
-	if ($data_files = glob(__DIR__.'/../../data/default/*.csv')) {
+	if ($data_files = glob(__DIR__.'/../data/default/*.csv')) {
 
 		echo '<p>Writing database table data from CSV files... ' . PHP_EOL;
 
@@ -197,7 +197,7 @@
 			$query = "INSERT INTO `". database::input($table) ."` (`". implode('`, `', database::input(array_keys($rows[0]))) ."`) VALUES ";
 
 			foreach ($rows as $columns) {
-				$query .= "('". implode("', '", database::input($columns), true) ."'),";
+				$query .= "('". implode("', '", database::input($columns, true)) ."'),";
 			}
 
 			$query = rtrim($query, ',') . ";";
@@ -211,11 +211,11 @@
 		echo PHP_EOL;
 	}
 
-	if (file_exists(__DIR__.'/../../data/default/data.sql')) {
+	if (file_exists(__DIR__.'/../data/default/data.sql')) {
 
 		echo '<p>Writing database table data from SQL file... ';
 
-		$sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, file_get_contents(__DIR__.'/../../data/default/data.sql'));
+		$sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, file_get_contents(__DIR__.'/../data/default/data.sql'));
 
 		foreach ([
 			'{STORE_NAME}' => isset($_REQUEST['store_name']) ? $_REQUEST['store_name'] : '',

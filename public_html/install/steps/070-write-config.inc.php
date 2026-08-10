@@ -11,7 +11,7 @@
 	];
 
 	// Get config template
-	if (!($config_template_path = dirname(__DIR__, 2) . '/config')) {
+	if (!($config_template_path = dirname(__DIR__, 1) . '/config')) {
 		throw new Exception('Could not determine config template path');
 	}
 

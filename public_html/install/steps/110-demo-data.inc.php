@@ -7,7 +7,7 @@
 
 		## Import CSV Files
 
-		if ($data_files = glob(__DIR__.'/../../data/demo/*.csv')) {
+		if ($data_files = glob(__DIR__.'/../data/demo/*.csv')) {
 
 			foreach ($data_files as $file) {
 
@@ -44,7 +44,7 @@
 
 		## Import SQL Files
 
-		$sql = file_get_contents(__DIR__.'/../../data/demo/data.sql');
+		$sql = file_get_contents(__DIR__.'/../data/demo/data.sql');
 
 		if (!empty($sql)) {
 			$sql = preg_replace('#\r\n?#', "\n", $sql);
@@ -65,7 +65,7 @@
 		echo '<p>Copying demo files...</p>' . PHP_EOL;
 
 		perform_action('copy', [
-			__DIR__.'/../../data/demo/storage/' => FS_DIR_STORAGE
+			__DIR__.'/../data/demo/storage/' => FS_DIR_STORAGE
 		]);
 
 		echo PHP_EOL;

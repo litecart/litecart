@@ -17,7 +17,7 @@
 	)->fetch('DEFAULT_COLLATION_NAME');
 
 	// Fetch MySQL table structures from structure.json
-	$structure_file = __DIR__ . '/../../../structure.json';
+	$structure_file = __DIR__ . '/../../structure.json';
 
 	if (!is_file($structure_file)) {
 		throw new Exception('Could not find structure.json');
