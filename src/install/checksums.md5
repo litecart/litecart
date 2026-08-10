@@ -8,9 +8,9 @@ f8fd4ec74443d3e0c95c4de7826e85bc	assets/litecore/LICENSE.txt
 d54326a762ffb7520bb362b0e51c22ef	assets/litecore/css/email.css
 747d1fb0ae79be3741c2a3f072f6e5fc	assets/litecore/css/email.min.css
 704ac1479eba88143f46dc0f197bbf9b	assets/litecore/css/email.min.css.map
-cea9d6f5ccd57d514f5dee766a66011c	assets/litecore/css/framework.css
-dd4bff2fe3da23a2dfd448e8106d1448	assets/litecore/css/framework.min.css
-c3ae926ef8c26f92ae3381f77a171e36	assets/litecore/css/framework.min.css.map
+62e3acff6556a94964588baf4f78cf35	assets/litecore/css/framework.css
+c401d7eda44196e9cd358d6792387080	assets/litecore/css/framework.min.css
+0e36d8b7e047c2e672cad0a94c2ab39a	assets/litecore/css/framework.min.css.map
 cf6d6b53a5de7c92e4888533e6c9c4e3	assets/litecore/css/printable.css
 6ead1a3366403c2313ed5d691ca3d2ff	assets/litecore/css/printable.min.css
 9cb7597e8527b4351d5dadac61ab77bd	assets/litecore/css/printable.min.css.map
@@ -73,7 +73,7 @@ a64117ee2ad62b55c7eb9a82658b0243	assets/litecore/scss/framework/_tables.scss
 e75bc4a938ecf9234596b8b502f80def	assets/litecore/scss/framework/_tabs.scss
 0b7d350e4cec47f946ffa7554931dcc5	assets/litecore/scss/framework/_typography.scss
 d41d8cd98f00b204e9800998ecf8427e	assets/litecore/scss/framework/index.html
-c2dbb041d218c27143b1db43cb693562	assets/litecore/scss/framework/main.scss
+bb33fa2f5100c02f58f25ceeaa4be077	assets/litecore/scss/framework/main.scss
 d41d8cd98f00b204e9800998ecf8427e	assets/litecore/scss/index.html
 d9d2a3ccb5075569aeeac7ce42cb0b50	assets/litecore/scss/printable.scss
 ad8606c8267f88d7cdabc0b203002ba9	assets/trumbowyg/LICENSE

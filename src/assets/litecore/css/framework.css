@@ -1065,26 +1065,6 @@ html[dir=rtl] .dropdown label:has([data-toggle=dropdown]) {
 	background-position: left 1em center;
 }
 
-.empty {
-	padding: 4em 2em;
-	border-radius: var(--border-radius);
-	background: #f7f8f9;
-	color: #66758c;
-}
-.empty .empty-icon {
-	font-size: 2.5em;
-}
-.empty .empty-title {
-	font-size: 1.25em;
-	margin: 0.5em auto;
-}
-.empty .empty-description {
-	margin: 0.5em auto;
-}
-.empty .empty-action {
-	margin: 0.5em auto;
-}
-
 /* Flexbox */
 .flex-rows {
 	display: flex;
@@ -3527,44 +3507,6 @@ body.litebox-open {
 	flex: 1;
 	border-top: 1px solid #d3dce2;
 	content: "";
-}
-
-[data-toggle=momentum-scroll] {
-	position: relative;
-}
-[data-toggle=momentum-scroll] .scroll-content {
-	padding: var(--gutter-x) var(--gutter-x);
-	overflow: hidden;
-	user-select: none;
-	touch-action: pan-x;
-	cursor: grab;
-}
-[data-toggle=momentum-scroll] .scroll-content::-webkit-scrollbar {
-	height: 0.5em;
-}
-[data-toggle=momentum-scroll] .scroll-content::-webkit-scrollbar * {
-	background: transparent;
-}
-[data-toggle=momentum-scroll] .scroll-content::-webkit-scrollbar-thumb {
-	background: rgba(0, 0, 0, 0.25) !important;
-	border-radius: 6px;
-}
-[data-toggle=momentum-scroll] button[name=left],
-[data-toggle=momentum-scroll] button[name=right] {
-	position: absolute;
-	top: 40%;
-	width: 3em;
-	height: 3em;
-	border-radius: var(--border-radius);
-	padding: 0;
-}
-[data-toggle=momentum-scroll] button[name=left][name=left],
-[data-toggle=momentum-scroll] button[name=right][name=left] {
-	inset-inline-start: 1em;
-}
-[data-toggle=momentum-scroll] button[name=left][name=right],
-[data-toggle=momentum-scroll] button[name=right][name=right] {
-	inset-inline-end: 1em;
 }
 
 /* Navigation */
