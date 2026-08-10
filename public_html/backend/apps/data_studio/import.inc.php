@@ -7,7 +7,7 @@
 
 	session::$data['csv_batch'] = [];
 
-	$collections = include 'app://includes/collections.inc.php';
+	$collections = include 'app://shared/collections.inc.php';
 	$collections = array_filter($collections, function ($collection) {
 		return !empty($collection['entity']);
 	});

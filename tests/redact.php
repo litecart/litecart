@@ -6,7 +6,7 @@
 	// (error_handler may run very early).
 
 	if (!function_exists('redact_query_string')) {
-		require_once __DIR__ . '/../public_html/includes/functions/func_redact.inc.php';
+		require_once __DIR__ . '/../public_html/shared/functions/func_redact.inc.php';
 	}
 
 	try {
@@ -50,12 +50,12 @@
 
 		$argv_cases = [
 			[
-				['install.php', '--db_password=s3cret', '--timezone=UTC', '--password', 'hunter2', '--cleanup'],
-				['install.php', '--db_password=[REDACTED]', '--timezone=UTC', '--password', '[REDACTED]', '--cleanup'],
+				['index.php', 'install', '--db_password=s3cret', '--timezone=UTC', '--password', 'hunter2', '--cleanup'],
+				['index.php', 'install', '--db_password=[REDACTED]', '--timezone=UTC', '--password', '[REDACTED]', '--cleanup'],
 			],
 			[
-				['upgrade.php', '--from_version=3.0.0', '--backup=1'],
-				['upgrade.php', '--from_version=3.0.0', '--backup=1'],
+				['index.php', 'upgrade', '--from_version=3.0.0', '--backup=1'],
+				['index.php', 'upgrade', '--from_version=3.0.0', '--backup=1'],
 			],
 			[
 				['tool.php', '--api_key', 'secret_abc', '--endpoint', 'https://x'],
@@ -187,7 +187,7 @@
 
 		echo 'Cross-checking smtp_client.inc.php matches simulated state-machine...';
 
-		$smtp_src = file_get_contents(__DIR__ . '/../public_html/includes/clients/smtp_client.inc.php');
+		$smtp_src = file_get_contents(__DIR__ . '/../public_html/shared/clients/smtp_client.inc.php');
 
 		foreach (['_pending_credential_writes', 'AUTH LOGIN', 'AUTH PLAIN', 'AUTH CRAM-MD5', '[REDACTED]'] as $needle) {
 			if (strpos($smtp_src, $needle) === false) {

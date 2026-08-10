@@ -109,21 +109,21 @@
 		define('WS_DIR_STORAGE', WS_DIR_APP. 'storage/'); // Prior to 2.5.x
 	}
 
-	require_once FS_DIR_APP . 'includes/error_handler.inc.php';
-	require_once FS_DIR_APP . 'includes/functions/func_file.inc.php';
-	require_once FS_DIR_APP . 'includes/nodes/nod_database.inc.php';
-	require_once FS_DIR_APP . 'includes/nodes/nod_event.inc.php';
-	require_once FS_DIR_APP . 'includes/nodes/nod_functions.inc.php';
-	require FS_DIR_APP . 'includes/nodes/nod_stats.inc.php';
+	require_once FS_DIR_APP . 'shared/error_handler.inc.php';
+	require_once FS_DIR_APP . 'shared/functions/func_file.inc.php';
+	require_once FS_DIR_APP . 'shared/nodes/nod_database.inc.php';
+	require_once FS_DIR_APP . 'shared/nodes/nod_event.inc.php';
+	require_once FS_DIR_APP . 'shared/nodes/nod_functions.inc.php';
+	require FS_DIR_APP . 'shared/nodes/nod_stats.inc.php';
 
 	$requirements = json_decode(file_get_contents(__DIR__ . '/../requirements.json'), true);
 
 	// Set platform name
-	preg_match('#define\(\'PLATFORM_NAME\', \'([^\']+)\'\);#', file_get_contents(__DIR__.'/../../includes/app_header.inc.php'), $matches);
+	preg_match('#define\(\'PLATFORM_NAME\', \'([^\']+)\'\);#', file_get_contents(__DIR__.'/../../shared/app_header.inc.php'), $matches);
 	define('PLATFORM_NAME', isset($matches[1]) ? $matches[1] : false);
 
 	// Set platform version
-	preg_match('#define\(\'PLATFORM_VERSION\', \'([^\']+)\'\);#', file_get_contents(__DIR__.'/../../includes/app_header.inc.php'), $matches);
+	preg_match('#define\(\'PLATFORM_VERSION\', \'([^\']+)\'\);#', file_get_contents(__DIR__.'/../../shared/app_header.inc.php'), $matches);
 	define('PLATFORM_VERSION', isset($matches[1]) ? $matches[1] : false);
 
 	if (!PLATFORM_VERSION) {

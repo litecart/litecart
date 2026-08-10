@@ -125,8 +125,8 @@
 		through untouched. Flags without values (e.g. "--cleanup") pass
 		through untouched.
 
-		Input:  ['install.php', '--db_password=s3cret', '--timezone=UTC', '--password', 'x']
-		Output: ['install.php', '--db_password=[REDACTED]', '--timezone=UTC', '--password', '[REDACTED]']
+		Input:  ['index.php', 'install', '--db_password=s3cret', '--timezone=UTC', '--password', 'x']
+		Output: ['index.php', 'install', '--db_password=[REDACTED]', '--timezone=UTC', '--password', '[REDACTED]']
 	*/
 	function redact_argv(array $argv): array {
 		$out = [];

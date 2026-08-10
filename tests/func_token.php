@@ -1,6 +1,6 @@
 <?php
 
-	include_once __DIR__.'/../public_html/includes/app_header.inc.php';
+	include_once __DIR__.'/../public_html/shared/app_header.inc.php';
 
 	try {
 

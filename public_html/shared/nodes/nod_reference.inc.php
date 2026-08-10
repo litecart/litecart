@@ -27,7 +27,7 @@
 			switch(true) {
 
 				case ($component == 'ref'):
-				case (!$component && is_file('app://includes/references/ref_'.basename($resource).'.inc.php')):
+				case (!$component && is_file('app://shared/references/ref_'.basename($resource).'.inc.php')):
 
 					$class_name = 'ref_'.$resource;
 
@@ -40,7 +40,7 @@
 					return self::$_cache[$resource][$checksum];
 
 				case ($component == 'ent'):
-				case (!$component && is_file('app://includes/entities/ent_'.basename($resource).'.inc.php')):
+				case (!$component && is_file('app://shared/entities/ent_'.basename($resource).'.inc.php')):
 
 					$class_name = 'ent_'.$resource;
 					$object = new $class_name(...$arguments); // As of PHP 5.6

@@ -69,23 +69,23 @@
 	}
 
 	// Polyfills
-	require_once __DIR__ . '/../includes/compatibility.inc.php';
+	require_once __DIR__ . '/../shared/compatibility.inc.php';
 
 	// Load virtual file system but leave vMod disabled
 	if (!defined('VMOD_DISABLED')) {
 		define('VMOD_DISABLED', 'true');
 	}
 
-	require_once __DIR__ . '/../includes/streams/stream_app.inc.php';
+	require_once __DIR__ . '/../shared/streams/stream_app.inc.php';
 	stream_wrapper_register('app', 'stream_app');
 
-	require_once __DIR__ . '/../includes/streams/stream_storage.inc.php';
+	require_once __DIR__ . '/../shared/streams/stream_storage.inc.php';
 	stream_wrapper_register('storage', 'stream_storage');
 
 	// Load other additional dependencies
-	require_once __DIR__ . '/../includes/nodes/nod_vmod.inc.php';
-	require_once __DIR__ . '/../includes/autoloader.inc.php';
-	require_once __DIR__ . '/../includes/error_handler.inc.php';
-	require_once __DIR__ . '/../includes/shorthand.inc.php';
+	require_once __DIR__ . '/../shared/nodes/nod_vmod.inc.php';
+	require_once __DIR__ . '/../shared/autoloader.inc.php';
+	require_once __DIR__ . '/../shared/error_handler.inc.php';
+	require_once __DIR__ . '/../shared/shorthand.inc.php';
 
 	require_once __DIR__ . '/functions.inc.php';

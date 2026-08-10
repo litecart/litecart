@@ -1,7 +1,7 @@
 <?php
 
 	if (!function_exists('file_copy')) {
-		include_once __DIR__.'/../includes/functions/func_file.inc.php';
+		include_once __DIR__.'/../shared/functions/func_file.inc.php';
 	}
 
 	/*

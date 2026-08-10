@@ -110,7 +110,7 @@
 							http_response_code(403);
 							notices::add('errors', t('error_csrf_token_mismatch', 'CSRF token mismatch. Please go back and try again.'));
 							include 'app://frontend/pages/error_document.inc.php';
-							include 'app://includes/app_footer.inc.php';
+							include 'app://shared/app_footer.inc.php';
 							exit;
 						}
 					}

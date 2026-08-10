@@ -6,7 +6,7 @@
 	// bootstrapping the whole app.
 
 	if (!class_exists('database', false)) {
-		require_once __DIR__ . '/../public_html/includes/nodes/nod_database.inc.php';
+		require_once __DIR__ . '/../public_html/shared/nodes/nod_database.inc.php';
 	}
 
 	try {
@@ -137,7 +137,7 @@
 					'`text_". database::input($language->data[\'code\']) ."`',
 				],
 			],
-			'public_html/includes/entities/ent_language.inc.php' => [
+			'public_html/shared/entities/ent_language.inc.php' => [
 				'required' => [
 					'database::identifier($this->previous[\'code\'])',
 					'database::identifier($this->data[\'code\'])',

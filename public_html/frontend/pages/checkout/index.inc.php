@@ -261,7 +261,7 @@
 
               case 'HTML':
                 echo $gateway['content'];
-                require_once vmod::check(FS_DIR_APP . 'includes/app_footer.inc.php');
+                require_once vmod::check(FS_DIR_APP . 'shared/app_footer.inc.php');
                 exit;
 
               case 'GET':

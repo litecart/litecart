@@ -1,6 +1,6 @@
 <?php
 
-	include_once __DIR__.'/../public_html/includes/app_header.inc.php';
+	include_once __DIR__.'/../public_html/shared/app_header.inc.php';
 
 	// Platform test for PROJ-20: Installer & Upgrade Access-Control.
 	// Covers the unit-level invariants of the new helpers. Full request-
@@ -20,7 +20,7 @@
 		define('NONCE', bin2hex(random_bytes(16)));
 	}
 
-	require_once FS_DIR_APP . 'install/includes/functions.inc.php';
+	require_once FS_DIR_APP . 'install/functions.inc.php';
 
 	try {
 

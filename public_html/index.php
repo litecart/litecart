@@ -12,7 +12,7 @@
 		LiteCart is a registered trademark, property of T. Almroth, LiteCart AB.
 	*/
 
-	require_once __DIR__ . '/includes/app_header.inc.php';
+	require_once __DIR__ . '/shared/app_header.inc.php';
 
 	// Process a CLI request
 	if (is_cli()) {
@@ -103,4 +103,4 @@
 	route::process();
 
 	// Run operations after processing the route
-	require_once 'app://includes/app_footer.inc.php';
+	require_once 'app://shared/app_footer.inc.php';

@@ -129,7 +129,7 @@
 
 				// Show maintenance mode page
 				include 'app://frontend/pages/maintenance_mode.inc.php';
-				require_once 'app://includes/app_footer.inc.php';
+				require_once 'app://shared/app_footer.inc.php';
 				exit;
 			}
 		}

@@ -49,12 +49,12 @@
 				'#^admin/(.*?)\.widget/#' => 'backend/widgets/$1/', // <3.0.0
 				'#^pages/#' => 'frontend/pages/', // <3.0.0
 				'#^includes/partials/#' => 'frontend/partials/', // <3.0.0
-				'#^includes/controllers/ctrl_#' => 'includes/entities/ent_', // <2.2.0
-				'#^includes/library/lib_#' => 'includes/nodes/nod_', // <3.0.0
+				'#^includes/controllers/ctrl_#' => 'shared/entities/ent_', // <2.2.0
+				'#^includes/library/lib_#' => 'shared/nodes/nod_', // <3.0.0
 				'#^includes/routes/#' => 'frontend/routes/', // <3.0.0
 				'#^includes/templates/(.*?)\.admin/#' => 'backend/template/', // <3.0.0
 				'#^includes/templates/(.*?)\.catalog/#' => 'frontend/templates/$1/', // <3.0.0
-				'#^includes/wrappers/wrap_(http|smtp)#' => 'includes/clients/$1_client', // <3.0.0
+				'#^includes/wrappers/wrap_(http|smtp)#' => 'shared/clients/$1_client', // <3.0.0
 			] as $pattern => $replace) {
 				self::$aliases[$pattern] = $replace;
 			}
@@ -411,8 +411,8 @@
 								return version_compare($a['version'], $b['version']);
 							});
 
-							require_once vmod::check(FS_DIR_APP . 'includes/compatibility.inc.php');
-							require_once vmod::check(FS_DIR_APP . 'includes/autoloader.inc.php');
+							require_once vmod::check(FS_DIR_APP . 'shared/compatibility.inc.php');
+							require_once vmod::check(FS_DIR_APP . 'shared/autoloader.inc.php');
 
 							// Execute upgrade scripts
 							foreach ($upgrades as $upgrade) {
@@ -456,9 +456,9 @@
 					// Exceute install script
 					if ($dom->getElementsByTagName('install')->length) {
 
-						require_once vmod::check(FS_DIR_APP . 'includes/shorthand.inc.php');
-						require_once vmod::check(FS_DIR_APP . 'includes/compatibility.inc.php');
-						require_once vmod::check(FS_DIR_APP . 'includes/autoloader.inc.php');
+						require_once vmod::check(FS_DIR_APP . 'shared/shorthand.inc.php');
+						require_once vmod::check(FS_DIR_APP . 'shared/compatibility.inc.php');
+						require_once vmod::check(FS_DIR_APP . 'shared/autoloader.inc.php');
 
 						$tmp_file = stream_get_meta_data(tmpfile())['uri'];
 						file_put_contents($tmp_file, "<?php\r\n" . $dom->getElementsByTagName('install')->item(0)->textContent);

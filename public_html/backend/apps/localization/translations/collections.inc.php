@@ -2,7 +2,7 @@
 
 	// Define translatable collections
 
-	$collections = include 'app://includes/collections.inc.php';
+	$collections = include 'app://shared/collections.inc.php';
 
 	$collections = array_combine(array_column($collections, 'id'), $collections);
 

@@ -139,7 +139,7 @@
 
 				// Rename language code in entity collections
 
-				$collections = include 'app://includes/collections.inc.php';
+				$collections = include 'app://shared/collections.inc.php';
 
 				foreach ($collections as $collection) {
 					if (empty($collection['translatable'])) continue;
@@ -165,7 +165,7 @@
 
 				// Add new language to entity collections
 
-				$collections = include 'app://includes/collections.inc.php';
+				$collections = include 'app://shared/collections.inc.php';
 
 				foreach ($collections as $collection) {
 					if (empty($collection['translatable'])) continue;
@@ -214,7 +214,7 @@
 				set `text` = json_remove(`text`, '$.". database::input($language_code) ."');"
 			);
 
-			$collections = include 'app://includes/collections.inc.php';
+			$collections = include 'app://shared/collections.inc.php';
 
 			foreach ($collections as $collection) {
 				if (empty($collection['translatable'])) continue;

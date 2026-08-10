@@ -28,7 +28,7 @@
 			)->each(function($module) use ($type) {
 
 				// Remove traces if module no longer exists
-				if (!is_file('app://includes/modules/'.$type.'/'.$module['module_id'].'.inc.php')) {
+				if (!is_file('app://shared/modules/'.$type.'/'.$module['module_id'].'.inc.php')) {
 
 					// Remove deleted modules
 					database::query(

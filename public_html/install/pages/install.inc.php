@@ -34,20 +34,20 @@
 	}
 
 	// Set platform name
-	if (preg_match('#define\(\'PLATFORM_NAME\', \'([^\']+)\'\);#', file_get_contents(FS_DIR_APP . 'includes/app_header.inc.php'), $matches)) {
+	if (preg_match('#define\(\'PLATFORM_NAME\', \'([^\']+)\'\);#', file_get_contents(FS_DIR_APP . 'shared/app_header.inc.php'), $matches)) {
 		define('PLATFORM_NAME', isset($matches[1]) ? $matches[1] : false);
 	} else {
 		throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . 'Could not get platform name</p>' . PHP_EOL  . PHP_EOL);
 	}
 
 	// Set platform version
-	if (preg_match('#define\(\'PLATFORM_VERSION\', \'([^\']+)\'\);#', file_get_contents(FS_DIR_APP . 'includes/app_header.inc.php'), $matches)) {
+	if (preg_match('#define\(\'PLATFORM_VERSION\', \'([^\']+)\'\);#', file_get_contents(FS_DIR_APP . 'shared/app_header.inc.php'), $matches)) {
 		define('PLATFORM_VERSION', isset($matches[1]) ? $matches[1] : false);
 	} else {
 		throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . 'Could not get platform version</p>' . PHP_EOL  . PHP_EOL);
 	}
 
-	require_once FS_DIR_APP . 'includes/compatibility.inc.php';
+	require_once FS_DIR_APP . 'shared/compatibility.inc.php';
 
 	if (is_cli()) {
 
@@ -114,14 +114,14 @@
 		define('VMOD_DISABLED', 'true');
 	}
 
-	require_once FS_DIR_APP . 'includes/shorthand.inc.php';
+	require_once FS_DIR_APP . 'shared/shorthand.inc.php';
 
-	require_once FS_DIR_APP . 'includes/nodes/nod_database.inc.php';
-	require_once FS_DIR_APP . 'includes/nodes/nod_functions.inc.php';
-	require_once FS_DIR_APP . 'includes/clients/http_client.inc.php';
-	require_once FS_DIR_APP . 'includes/functions/func_file.inc.php';
-	require_once FS_DIR_APP . 'includes/functions/func_csv.inc.php';
-	require_once FS_DIR_APP . 'includes/error_handler.inc.php';
+	require_once FS_DIR_APP . 'shared/nodes/nod_database.inc.php';
+	require_once FS_DIR_APP . 'shared/nodes/nod_functions.inc.php';
+	require_once FS_DIR_APP . 'shared/clients/http_client.inc.php';
+	require_once FS_DIR_APP . 'shared/functions/func_file.inc.php';
+	require_once FS_DIR_APP . 'shared/functions/func_csv.inc.php';
+	require_once FS_DIR_APP . 'shared/error_handler.inc.php';
 
 	require_once __DIR__ . '/../functions.inc.php';
 

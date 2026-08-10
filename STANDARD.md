@@ -693,7 +693,7 @@ Use vMod FS stream wrappers for file paths within the application:
 
 Incorrect:
 
-	include FS_DIR_APP . 'includes/templates/default/layouts/default.inc.php';
+	include FS_DIR_APP . 'shared/templates/default/layouts/default.inc.php';
 
 Correct:
 

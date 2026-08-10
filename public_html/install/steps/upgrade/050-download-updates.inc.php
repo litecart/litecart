@@ -6,7 +6,7 @@
 
 		echo '<p>Checking for updates... ';
 
-		require_once FS_DIR_APP . 'includes/clients/http_client.inc.php';
+		require_once FS_DIR_APP . 'shared/clients/http_client.inc.php';
 		$client = new http_client();
 
 		$update_file = function($file) use ($client) {

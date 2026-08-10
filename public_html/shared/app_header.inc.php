@@ -22,21 +22,21 @@
 	ob_start(null, 0, PHP_OUTPUT_HANDLER_CLEANABLE | PHP_OUTPUT_HANDLER_REMOVABLE);
 
 	// Virtual File System
-	require_once FS_DIR_APP .'includes/streams/stream_app.inc.php';
+	require_once FS_DIR_APP .'shared/streams/stream_app.inc.php';
 	stream_wrapper_register('app', 'stream_app');
 
-	require_once FS_DIR_APP .'includes/streams/stream_storage.inc.php';
+	require_once FS_DIR_APP .'shared/streams/stream_storage.inc.php';
 	stream_wrapper_register('storage', 'stream_storage');
 
 	// Virtual Modification System
-	require_once FS_DIR_APP .'includes/nodes/nod_vmod.inc.php';
+	require_once FS_DIR_APP .'shared/nodes/nod_vmod.inc.php';
 	vmod::init();
 
 	// Compatibility and Polyfills
-	require_once 'app://includes/compatibility.inc.php';
+	require_once 'app://shared/compatibility.inc.php';
 
 	// Load shorthand functions
-	require_once 'app://includes/shorthand.inc.php';
+	require_once 'app://shared/shorthand.inc.php';
 
 	// 3rd party autoloader (If present)
 	if (is_file(FS_DIR_APP . 'vendor/autoload.php')) {
@@ -44,10 +44,10 @@
 	}
 
 	// Autoloader
-	require_once 'app://includes/autoloader.inc.php';
+	require_once 'app://shared/autoloader.inc.php';
 
 	// Set error handler
-	require_once 'app://includes/error_handler.inc.php';
+	require_once 'app://shared/error_handler.inc.php';
 
 	// Jump-start some critical nodes
 	foreach ([

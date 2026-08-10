@@ -317,7 +317,7 @@
 			if (preg_match('#\.[a-z]{2,4}$#', $request->path) && !preg_match('#\.(html?|php)$#', $request->path)) exit;
 
 			include 'app://frontend/pages/error_document.inc.php';
-			include 'app://includes/app_footer.inc.php';
+			include 'app://shared/app_footer.inc.php';
 			exit;
 		}
 

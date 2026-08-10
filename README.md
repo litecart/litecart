@@ -76,7 +76,7 @@ public_html/
 │           ├── layouts/        - Visuals for content surroundings
 │           ├── pages/          - Visuals for pages
 │           └── partials/       - Visuals for partials
-├── includes/                   - Core application logic
+├── shared/                     - Core application logic
 │   ├── abstracts/              - Base classes (abs_module, abs_modules, abs_reference_entity)
 │   ├── clients/                - Service clients (HTTP, SMTP)
 │   ├── entities/               - Data entities (product, order, customer, etc.)
