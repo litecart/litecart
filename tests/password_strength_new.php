@@ -1,6 +1,6 @@
 <?php
 
-	include_once __DIR__.'/../public_html/shared/app_header.inc.php';
+	include_once __DIR__.'/../src/shared/app_header.inc.php';
 
 	try {
 
@@ -9,7 +9,7 @@
 		## never on the current-password field.
 		########################################################################
 
-		$path = f::file_resolve_path(__DIR__.'/../public_html/frontend/pages/account/edit.inc.php');
+		$path = f::file_resolve_path(__DIR__.'/../src/frontend/pages/account/edit.inc.php');
 		$content = file_get_contents($path);
 
 		if ($content === false) {

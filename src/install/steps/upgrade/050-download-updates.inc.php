@@ -11,7 +11,7 @@
 
 		$update_file = function($file) use ($client) {
 
-			$response = $client->call('GET', 'https://raw.githubusercontent.com/litecart/litecart/'. PLATFORM_VERSION .'/public_html/'. $file);
+			$response = $client->call('GET', 'https://raw.githubusercontent.com/litecart/litecart/'. PLATFORM_VERSION .'/src/'. $file);
 
 			if ($client->last_response['status_code'] != 200) return false;
 

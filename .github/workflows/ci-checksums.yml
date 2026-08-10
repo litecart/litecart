@@ -1,6 +1,6 @@
 name: Update Checksums
 
-# Regenerates public_html/install/checksums.md5 from the tracked files on the
+# Regenerates src/install/checksums.md5 from the tracked files on the
 # canonical distribution branch (master) and commits any changes back to the
 # branch. Mirrors the local pre-commit hook so contributors who skip the hook
 # still get the manifest refreshed before a release.
@@ -40,7 +40,7 @@ jobs:
 
       - name: Run checksum pre-commit hook
         # The hook reads `git ls-files` and the staged/indexed blobs, then
-        # rewrites public_html/install/checksums.md5 in place. Because we
+        # rewrites src/install/checksums.md5 in place. Because we
         # checkout the whole tree without a working-tree diff to drive it,
         # the hook falls back to scanning every tracked file (see the
         # "No committed files detected" branch in the script).
@@ -48,11 +48,11 @@ jobs:
 
       - name: Commit updated checksums
         run: |
-          if git diff --quiet -- public_html/install/checksums.md5; then
+          if git diff --quiet -- src/install/checksums.md5; then
             echo "checksums.md5 is up to date — nothing to commit."
             exit 0
           fi
 
-          git add public_html/install/checksums.md5
+          git add src/install/checksums.md5
           git commit -m "* Auto-update checksums.md5 from CI"
           git push origin HEAD:master

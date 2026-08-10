@@ -1,5 +1,5 @@
 export default {
-	ignoreFiles: ['public_html/**/*.css'],
+	ignoreFiles: ['src/**/*.css'],
 	extends: ['stylelint-config-standard-scss'],
 	overrides: [
 		{

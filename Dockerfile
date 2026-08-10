@@ -37,8 +37,8 @@ RUN { \
 	echo 'expose_php = Off'; \
 } > /usr/local/etc/php/conf.d/litecart.ini
 
-# Set Apache document root to public_html
-ENV APACHE_DOCUMENT_ROOT=/var/www/html/public_html
+# Set Apache document root to src
+ENV APACHE_DOCUMENT_ROOT=/var/www/html/src
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf \
 	&& sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
@@ -46,34 +46,34 @@ RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-av
 RUN sed -ri -e 's/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.conf
 
 # Copy application files
-COPY public_html/ /var/www/html/public_html/
+COPY src/ /var/www/html/src/
 
 # Set up storage directories
-RUN mkdir -p /var/www/html/public_html/storage/cache \
-		/var/www/html/public_html/storage/data \
-		/var/www/html/public_html/storage/files \
-		/var/www/html/public_html/storage/images \
-		/var/www/html/public_html/storage/backups \
-		/var/www/html/public_html/storage/logs \
-		/var/www/html/public_html/storage/vmods/.cache \
-	&& touch /var/www/html/public_html/storage/config.inc.php \
-		/var/www/html/public_html/storage/.htaccess \
-		/var/www/html/public_html/storage/robots.txt \
-		/var/www/html/public_html/storage/vmods/.installed \
-		/var/www/html/public_html/storage/vmods/.settings \
-		/var/www/html/public_html/storage/vmods/.htaccess \
-		/var/www/html/public_html/storage/vmods/.cache/.checked \
-		/var/www/html/public_html/storage/vmods/.cache/.modifications
+RUN mkdir -p /var/www/html/src/storage/cache \
+		/var/www/html/src/storage/data \
+		/var/www/html/src/storage/files \
+		/var/www/html/src/storage/images \
+		/var/www/html/src/storage/backups \
+		/var/www/html/src/storage/logs \
+		/var/www/html/src/storage/vmods/.cache \
+	&& touch /var/www/html/src/storage/config.inc.php \
+		/var/www/html/src/storage/.htaccess \
+		/var/www/html/src/storage/robots.txt \
+		/var/www/html/src/storage/vmods/.installed \
+		/var/www/html/src/storage/vmods/.settings \
+		/var/www/html/src/storage/vmods/.htaccess \
+		/var/www/html/src/storage/vmods/.cache/.checked \
+		/var/www/html/src/storage/vmods/.cache/.modifications
 
 # Copy default storage data if available
-RUN if [ -d /var/www/html/public_html/install/data/default/storage ]; then \
-		cp -rn /var/www/html/public_html/install/data/default/storage/* /var/www/html/public_html/storage/; \
+RUN if [ -d /var/www/html/src/install/data/default/storage ]; then \
+		cp -rn /var/www/html/src/install/data/default/storage/* /var/www/html/src/storage/; \
 	fi
 
 # Set correct permissions
-RUN chown -R www-data:www-data /var/www/html/public_html \
-	&& chmod -R 755 /var/www/html/public_html \
-	&& chmod -R 775 /var/www/html/public_html/storage
+RUN chown -R www-data:www-data /var/www/html/src \
+	&& chmod -R 755 /var/www/html/src \
+	&& chmod -R 775 /var/www/html/src/storage
 
 EXPOSE 80
 

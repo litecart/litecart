@@ -5,7 +5,7 @@ node_modules
 audits
 docs
 *.md
-!public_html/**/*.md
+!src/**/*.md
 gruntfile.js
 gulpfile.js
 package.json

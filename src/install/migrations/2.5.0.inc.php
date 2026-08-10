@@ -85,5 +85,5 @@
 
 	// Copy some files
 	perform_action('copy', [
-		FS_DIR_APP . 'install/data/default/public_html/images/favicons/' => FS_DIR_STORAGE . 'images/favicons/',
+		FS_DIR_APP . 'install/data/default/src/images/favicons/' => FS_DIR_STORAGE . 'images/favicons/',
 	]);

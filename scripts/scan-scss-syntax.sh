@@ -16,7 +16,7 @@ if [ ! -x "$STYLELINT_BIN" ]; then
   exit 0
 fi
 
-if ! "$STYLELINT_BIN" "public_html/**/*.scss" --custom-syntax postcss-scss --max-warnings=0; then
+if ! "$STYLELINT_BIN" "src/**/*.scss" --custom-syntax postcss-scss --max-warnings=0; then
   echo "::error::SCSS lint/syntax error (stylelint)"
   errors=$((errors + 1))
 fi

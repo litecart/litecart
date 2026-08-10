@@ -80,7 +80,7 @@
 				## Copy Files
 
 				perform_action('copy', [
-					__DIR__.'/../data/'. $dir .'/public_html/' => FS_DIR_APP,
+					__DIR__.'/../data/'. $dir .'/src/' => FS_DIR_APP,
 					__DIR__.'/../data/'. $dir .'/storage/' => FS_DIR_STORAGE,
 				]);
 			}

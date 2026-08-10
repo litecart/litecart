@@ -9,13 +9,13 @@ on:
 
 env:
   INSTALLER_CMD: |
-    php public_html/install/index.php install \
+    php src/install/index.php install \
       --db_server=127.0.0.1 \
       --db_username=litecart \
       --db_password=litecart \
       --db_database=litecart \
       --db_table_prefix=lc_ \
-      --document_root=public_html \
+      --document_root=src \
       --store_name='LiteCart' \
       --store_email='ci@litecart.net' \
       --store_country_code=US \
@@ -89,7 +89,7 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: built-assets
-          path: public_html/assets
+          path: src/assets
           retention-days: 1
 
   install:
@@ -141,15 +141,15 @@ jobs:
         uses: actions/download-artifact@v8
         with:
           name: built-assets
-          path: public_html/assets
+          path: src/assets
 
       - name: Run installer via CLI
         run: ${{ env.INSTALLER_CMD }}
 
       - name: Verify installation
         run: |
-          test -f public_html/storage/config.inc.php && echo "config.inc.php exists"
-          ! grep -q '{STORAGE_FOLDER}' public_html/storage/config.inc.php
+          test -f src/storage/config.inc.php && echo "config.inc.php exists"
+          ! grep -q '{STORAGE_FOLDER}' src/storage/config.inc.php
           mysql -h 127.0.0.1 -u litecart -plitecart litecart \
             -e "SELECT COUNT(*) as tables FROM information_schema.tables WHERE table_schema='litecart' AND table_name LIKE 'lc_%';"
           mysql -h 127.0.0.1 -u litecart -plitecart litecart \
@@ -193,14 +193,14 @@ jobs:
         uses: actions/download-artifact@v8
         with:
           name: built-assets
-          path: public_html/assets
+          path: src/assets
 
       - name: Run installer via CLI
         run: ${{ env.INSTALLER_CMD }}
 
       - name: Verify installation
         run: |
-          test -f public_html/storage/config.inc.php && echo "config.inc.php exists"
+          test -f src/storage/config.inc.php && echo "config.inc.php exists"
           mysql -h 127.0.0.1 -u litecart -plitecart litecart \
             -e "SELECT COUNT(*) as tables FROM information_schema.tables WHERE table_schema='litecart' AND table_name LIKE 'lc_%';"
 
@@ -265,7 +265,7 @@ jobs:
         uses: actions/download-artifact@v8
         with:
           name: built-assets
-          path: public_html/assets
+          path: src/assets
 
       - name: Run installer via CLI
         run: ${{ env.INSTALLER_CMD }}

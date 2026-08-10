@@ -5,7 +5,7 @@
 	echo '<p>Copying default files...</p>' . PHP_EOL;
 
 	perform_action('copy', [
-		__DIR__.'/../data/default/public_html/' => FS_DIR_APP,
+		__DIR__.'/../data/default/src/' => FS_DIR_APP,
 		__DIR__.'/../data/default/storage/' => FS_DIR_STORAGE,
 	]);
 

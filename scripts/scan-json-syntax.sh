@@ -9,7 +9,7 @@ while IFS= read -r file; do
     echo "::error file=$file::Invalid JSON"
     errors=$((errors + 1))
   fi
-done < <(find public_html -name '*.json' -type f ! -path '*/node_modules/*')
+done < <(find src -name '*.json' -type f ! -path '*/node_modules/*')
 
 if [ $errors -gt 0 ]; then
   echo "::error::$errors file(s) with JSON errors"

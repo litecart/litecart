@@ -1,6 +1,6 @@
 <?php
 
-	include_once __DIR__.'/../public_html/shared/app_header.inc.php';
+	include_once __DIR__.'/../src/shared/app_header.inc.php';
 
 	// Minimal server context required by the scheme/host default-fill logic
 	$_SERVER['HTTP_HOST']   = 'localhost';

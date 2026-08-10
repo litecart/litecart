@@ -9,7 +9,7 @@ while IFS= read -r file; do
     php -l "$file"
     errors=$((errors + 1))
   fi
-done < <(find public_html -name '*.php' -type f)
+done < <(find src -name '*.php' -type f)
 
 if [ $errors -gt 0 ]; then
   echo "::error::$errors file(s) with PHP syntax errors"

@@ -6,7 +6,7 @@
 	// bootstrapping the whole app.
 
 	if (!class_exists('database', false)) {
-		require_once __DIR__ . '/../public_html/shared/nodes/nod_database.inc.php';
+		require_once __DIR__ . '/../src/shared/nodes/nod_database.inc.php';
 	}
 
 	try {
@@ -109,7 +109,7 @@
 		echo 'Cross-checking call sites use database::identifier()...';
 
 		$expectations = [
-			'public_html/backend/apps/localization/translations/translations.inc.php' => [
+			'src/backend/apps/localization/translations/translations.inc.php' => [
 				'required' => [
 					'database::identifier($_lang_code, $allowed_language_codes)', // early validate
 					'database::identifier($language_code)',                       // identifier context
@@ -119,7 +119,7 @@
 					'`text_". database::input($language_code) ."`', // old escape-only pattern
 				],
 			],
-			'public_html/backend/apps/localization/translations/csv.inc.php' => [
+			'src/backend/apps/localization/translations/csv.inc.php' => [
 				'required' => [
 					'database::identifier($_lang_code, $allowed_language_codes)',
 					'database::identifier($language_code)',
@@ -128,7 +128,7 @@
 					'`text_". database::input($language_code) ."`',
 				],
 			],
-			'public_html/backend/apps/localization/languages/edit_language.inc.php' => [
+			'src/backend/apps/localization/languages/edit_language.inc.php' => [
 				'required' => [
 					"preg_match('#^[a-z]{2,5}",
 					'database::identifier($language->data[\'code\'])',
@@ -137,7 +137,7 @@
 					'`text_". database::input($language->data[\'code\']) ."`',
 				],
 			],
-			'public_html/shared/entities/ent_language.inc.php' => [
+			'src/shared/entities/ent_language.inc.php' => [
 				'required' => [
 					'database::identifier($this->previous[\'code\'])',
 					'database::identifier($this->data[\'code\'])',

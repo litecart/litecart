@@ -25,7 +25,7 @@ while IFS= read -r file; do
       errors=$((errors + 1))
     done <<< "$matches"
   fi
-done < <(find public_html -name '*.php' -type f ! -path '*/install/*' ! -path '*/tests/*')
+done < <(find src -name '*.php' -type f ! -path '*/install/*' ! -path '*/tests/*')
 
 if [ $errors -gt 0 ]; then
   echo "::error::$errors debug statement(s) found in production code"

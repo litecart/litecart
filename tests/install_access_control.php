@@ -1,6 +1,6 @@
 <?php
 
-	include_once __DIR__.'/../public_html/shared/app_header.inc.php';
+	include_once __DIR__.'/../src/shared/app_header.inc.php';
 
 	// Platform test for PROJ-20: Installer & Upgrade Access-Control.
 	// Covers the unit-level invariants of the new helpers. Full request-
@@ -9,7 +9,7 @@
 	// because the test harness does not simulate full web requests.
 
 	if (!defined('FS_DIR_APP')) {
-		define('FS_DIR_APP', realpath(__DIR__ . '/../public_html') . '/');
+		define('FS_DIR_APP', realpath(__DIR__ . '/../src') . '/');
 	}
 
 	if (!defined('FS_DIR_STORAGE')) {

@@ -42,7 +42,7 @@ export default defineConfig({
   ],
 
   webServer: {
-    command: `php -S localhost:${PORT} -t public_html`,
+    command: `php -S localhost:${PORT} -t src`,
     url: BASE_URL,
     timeout: 10_000,
     reuseExistingServer: !process.env.CI,

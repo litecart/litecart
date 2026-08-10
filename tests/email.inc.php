@@ -5,7 +5,7 @@
 	// content in a template view. Test needs rewrite to match entity behavior.
 	return true;
 
-	include_once __DIR__.'/../public_html/shared/app_header.inc.php';
+	include_once __DIR__.'/../src/shared/app_header.inc.php';
 
 	try {
 

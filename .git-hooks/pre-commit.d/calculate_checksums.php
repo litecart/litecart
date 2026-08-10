@@ -3,16 +3,16 @@
 
 	declare(strict_types=1);
 
-	$checksums_file = 'public_html/install/checksums.md5';
+	$checksums_file = 'src/install/checksums.md5';
 	$tracked_files = preg_split('#(\r\n?|\n)#', shell_exec('git ls-files'), -1, PREG_SPLIT_NO_EMPTY);
 	$committed_files = preg_split('#(\r\n?|\n)#', shell_exec('git diff --cached --name-only 2>&1') ?: '', -1, PREG_SPLIT_NO_EMPTY);
 
 	// Create list of files for checksums
 	$checksums = [];
 	foreach ($tracked_files as $file) {
-		if (!str_starts_with($file, 'public_html/')) continue;
+		if (!str_starts_with($file, 'src/')) continue;
 		if ($file == $checksums_file) continue;
-		$checksums[preg_replace('#^public_html/#', '', $file)] = str_repeat('0', 32);
+		$checksums[preg_replace('#^src/#', '', $file)] = str_repeat('0', 32);
 	}
 
 	// Reinsert previous checksums
@@ -36,7 +36,7 @@
 
 	// Update checksums for committed and tracked files
 	foreach ($committed_files as $file) {
-		$short_file = str_starts_with($file, 'public_html/') ? substr($file, strlen('public_html/')) : $file;
+		$short_file = str_starts_with($file, 'src/') ? substr($file, strlen('src/')) : $file;
 
 		if (isset($checksums[$short_file])) {
 

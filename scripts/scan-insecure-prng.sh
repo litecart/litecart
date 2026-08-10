@@ -14,7 +14,7 @@ while IFS= read -r file; do
       errors=$((errors + 1))
     done <<< "$matches"
   fi
-done < <(find public_html -name '*.php' -type f ! -path '*/install/*' ! -path '*/tests/*')
+done < <(find src -name '*.php' -type f ! -path '*/install/*' ! -path '*/tests/*')
 
 if [ $errors -gt 0 ]; then
   echo "::warning::$errors insecure PRNG call(s) found — consider using random_int() / random_bytes()"

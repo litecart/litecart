@@ -6,7 +6,7 @@
 	// (error_handler may run very early).
 
 	if (!function_exists('redact_query_string')) {
-		require_once __DIR__ . '/../public_html/shared/functions/func_redact.inc.php';
+		require_once __DIR__ . '/../src/shared/functions/func_redact.inc.php';
 	}
 
 	try {
@@ -187,7 +187,7 @@
 
 		echo 'Cross-checking smtp_client.inc.php matches simulated state-machine...';
 
-		$smtp_src = file_get_contents(__DIR__ . '/../public_html/shared/clients/smtp_client.inc.php');
+		$smtp_src = file_get_contents(__DIR__ . '/../src/shared/clients/smtp_client.inc.php');
 
 		foreach (['_pending_credential_writes', 'AUTH LOGIN', 'AUTH PLAIN', 'AUTH CRAM-MD5', '[REDACTED]'] as $needle) {
 			if (strpos($smtp_src, $needle) === false) {

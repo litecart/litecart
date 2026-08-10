@@ -1,6 +1,6 @@
 <?php
 
-	include_once __DIR__.'/../public_html/shared/app_header.inc.php';
+	include_once __DIR__.'/../src/shared/app_header.inc.php';
 
 	try {
 
@@ -10,7 +10,7 @@
 		## where a future PR re-introduces an unescaped echo of customer data.
 		########################################################################
 
-		$base = realpath(__DIR__.'/../public_html');
+		$base = realpath(__DIR__.'/../src');
 
 		// Map of file => list of regex patterns that MUST NOT appear in the file.
 		// Each pattern represents an unescaped customer-data render that PROJ-26 closes.

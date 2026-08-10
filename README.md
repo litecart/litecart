@@ -17,13 +17,13 @@ Please note running your own website requires some common sense of web knowledge
 
 1. Connect to your web host via FTP using your favourite FTP software.
 
-2. Transfer the contents of the folder public_html/ in this archive (yes the contents inside the folder - not the folder itself). Transfer it to your website root directory. Using subdirectories is supported but not recommended.
+2. Transfer the contents of the folder src/ in this archive (yes the contents inside the folder - not the folder itself). Transfer it to your website root directory. Using subdirectories is supported but not recommended.
 
 ```text
 Examples:
 
 * /var/www/
-* /home/username/public_html/
+* /home/username/src/
 * C:\xampp\htdocs\
 ```
 
@@ -43,10 +43,10 @@ To get your store up and running, see our [step list](https://www.litecart.net/e
 
 ## Folder Structure
 
-All paths below are relative to `public_html/` (the document root).
+All paths below are relative to `src/` (the document root).
 
 ```text
-public_html/
+src/
 ├── assets/                     - Client-side third party libraries (javascripts, stylesheets, fonts)
 │   ├── litecore/               - LiteCore JavaScript and stylesheet framework
 │   ├── jquery/                 - jQuery 4+ JavaScript DOM library

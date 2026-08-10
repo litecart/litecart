@@ -1,6 +1,6 @@
 <?php
 
-	include_once __DIR__.'/../public_html/shared/app_header.inc.php';
+	include_once __DIR__.'/../src/shared/app_header.inc.php';
 
 	// Skip if ent_database_table_row has pre-existing bug (database::$selected undeclared)
 	if (!property_exists('database', 'selected')) {

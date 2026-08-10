@@ -19,7 +19,7 @@ jobs:
           bun-version: 'latest'
 
       - name: Run EditorConfig Checker
-        run: bunx -y editorconfig-checker -exclude .git -exclude node_modules -exclude public_html/assets -exclude public_html/vendor
+        run: bunx -y editorconfig-checker -exclude .git -exclude node_modules -exclude src/assets -exclude src/vendor
 
   lint:
     name: Syntax Linting

@@ -15,7 +15,7 @@ while IFS= read -r file; do
     echo "::error file=$file::SQL file contains invalid characters"
     errors=$((errors + 1))
   fi
-done < <(find public_html -name '*.sql' -type f)
+done < <(find src -name '*.sql' -type f)
 
 if [ $errors -gt 0 ]; then
   echo "::error::$errors SQL file(s) with issues"
