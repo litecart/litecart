@@ -289,101 +289,35 @@
 		return f::draw_element('input', ['class' => 'form-input', 'type' => 'color', 'name' => $name, 'value' => $input, ...$attributes]);
 	}
 
-	function form_input_csv(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
+	function form_input_csv(string $name, bool|string $input=true, array|string $attributes=[], array $config=[]): string {
 
 		if ($input === true) {
 			$input = form_reinsert_value($name);
 		}
 
-		if ($input && $csv = f::csv_decode($input)) {
-			$columns = array_keys($csv[0]);
-		} else {
-			$csv = [];
-			$columns = [];
-		}
+		$attributes = is_array($attributes) ? $attributes : form_attributes($attributes);
+		$attributes['data-toggle'] = 'input-csv';
+		$attributes['style'] = 'min-height: 150px;';
 
-		$html = implode(PHP_EOL, [
-			'<table class="table data-table" data-toggle="csv">',
-			'  <thead>',
-			'    <tr>',
+		document::add_script(implode(PHP_EOL, [
+			'$(\'textarea[data-toggle="input-csv"][name="'. f::escape_js($name) .'"]\').inputCSV('. f::format_json([
+				'text' => [
+					'table' => t('title_table', 'Table'),
+					'raw' => t('title_raw', 'Raw'),
+					'add_row' => t('title_add_row', 'Add Row'),
+					'add_column' => t('title_add_column', 'Add Column'),
+					'column_title' => t('title_column_title', 'Column Title'),
+				],
+				'delimiter' => 'auto',
+				...$config,
+			]) .');',
+		]), 'input-csv-'. $name);
 
-			implode(PHP_EOL, f::array_each($columns, fn($column) =>
-				'      <th>'. $column .'<button name="remove_column" class="btn btn default btn-sm">'. f::draw_fonticon('remove') .'</button></th>'
-			)),
-
-			'      <th><button class="btn btn-default btn-sm" name="add_column" type="button">'. f::draw_fonticon('add') .' '.  t('title_add_column', 'Add Column') .'</button></th>',
-			'    </tr>',
-			'  </thead>',
-			'  <tbody>',
+		return implode(PHP_EOL, [
+			'<div class="form-input form-input-csv">',
+			'  ' . form_textarea($name, $input, $attributes),
+			'</div>',
 		]);
-
-		foreach ($csv as $row) {
-			$html .= '    <tr>' . PHP_EOL;
-			foreach ($columns as $column) {
-				$html .= '      <td contenteditable>'. $row[$column] .'</td>' . PHP_EOL;
-			}
-			$html .= '      <td><button name="remove_row" class="btn btn default btn-sm">'. f::draw_fonticon('remove') .'</button></td>' . PHP_EOL;
-			$html .= '    </tr>' . PHP_EOL;
-		}
-
-		$html .= implode(PHP_EOL, [
-			'  <tfoot>',
-			'    <tr>',
-			'      <td colspan="99">',
-			'        <button class="btn btn-default btn-sm" name="add_row" type="button">',
-			'          '. f::draw_fonticon('add') .' '.  t('title_add_row', 'Add Row'),
-			'        </button>',
-			'      </td>',
-			'    </tr>',
-			'  </tfoot>',
-			'</table>',
-			form_textarea($name, $input, 'style="display: none;"'),
-		]);
-
-		document::$javascript['table2csv'] = implode(PHP_EOL, [
-			'$(\'table[data-toggle="csv"]\').on(\'click\', \'button[name="remove_row"]\', function(e) {',
-			'  e.preventDefault()',
-			'  var $parent = $(this).closest(\'tbody\')',
-			'  $(this).closest(\'tr\').remove()',
-			'  $parent.trigger(\'input\')',
-			'})',
-			'',
-			'$(\'table[data-toggle="csv"] button[name="add_row"]\').on(\'click\', function(e) {',
-			'  e.preventDefault();',
-			'  var n = $(this).closest(\'table\').find(\'thead th:not(:last-child)\').length',
-			'  $(this).closest(\'table\').find(\'tbody\').append(',
-			'    \'<tr>\' + (\'<td contenteditable></td>\'.repeat(n)) + \'<td><button name="remove_row" class="btn btn default btn-sm">'. f::draw_fonticon('remove') .'</button></td>\' +\'</tr>\'',
-			'  ).trigger(\'input\')',
-			'})',
-			'',
-			'$(\'table[data-toggle="csv"] button[name="add_column"]\').on(\'click\', function(e) {',
-			'  e.preventDefault()',
-			'  var $table = $(this).closest(\'table\')',
-			'  var title = prompt("'. f::escape_js(t('title_column_title', 'Column Title')) .'")',
-			'  if (!title) return',
-			'  $(\'thead tr th:last-child:last-child\', $table).before(\'<th>\'+ title +\'<button name="remove_column" class="btn btn default btn-sm">'. f::draw_fonticon('remove') .'</button></th>\')',
-			'  $(\'tbody tr td:last-child:last-child\', $table).before(\'<td contenteditable></td>\')',
-			'  $(\'tfoot tr td\', $table).attr(\'colspan\', $table.find(\'tfoot tr td\').attr(\'colspan\') + 1)',
-			'  $(this).trigger(\'input\')',
-			'});',
-			'',
-			'$(\'table[data-toggle="csv"]\').on(\'input\', function(e) {',
-			'   var csv = $(\'thead tr, tbody tr\', this).map(function (i, $row) {',
-			'      return $(\'th:not(:last-child, $row),td:not(:last-child)\').map(function (j, $col) {',
-			'        var $col = $(this)',
-			'        var text = $col.text()',
-			'        if (/(\'|,)/.test(text)) {',
-			'          return "\\"\'"+ text.replace(/"/g, "\\"\"") +"\\""',
-			'        } else {',
-			'          return text',
-			'        }',
-			'      }).get().join(\',\')',
-			'    }).get().join(\'\\r\\n\')',
-			'  $(this).next(\'textarea\').val(csv)',
-			'});',
-		]);
-
-		return $html;
 	}
 
 	function form_input_date(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
@@ -1180,7 +1114,7 @@
 				return form_select_country($name, $input, $attributes);
 
 			case 'csv':
-				return form_textarea($name, $input, true, $attributes);
+				return form_input_csv($name, true, $attributes);
 
 			case 'date':
 				return form_input_date($name, $input, $attributes);

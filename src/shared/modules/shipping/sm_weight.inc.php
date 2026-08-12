@@ -135,7 +135,7 @@
 					]),
 					'title' => t(__CLASS__.':title_zone_mapping', 'Zone Mapping'),
 					'description' => t(__CLASS__.':description_zone_mapping', 'Mapping geo zones or countries to rate tables. Zones are identified by geo zone ID e.g. 123, a country code e.g. US, or a country code and zone/state code e.g. US:TX. Multiple zones can be separated by commas. Leave zone blank to match all zones.'),
-					'function' => 'bigtext()',
+					'function' => 'csv()',
 				],
 				[
 					'key' => 'rate_tables',
@@ -145,7 +145,7 @@
 					]),
 					'title' => t(__CLASS__.':title_rate_tables', 'Rate Tables'),
 					'description' => t(__CLASS__.':description_rate_tables', 'Rate tables separated by line breaks. Each table should start with a table name followed by weight:cost pairs.'),
-					'function' => 'bigtext()',
+					'function' => 'csv()',
 				],
 				[
 					'key' => 'tax_class_id',

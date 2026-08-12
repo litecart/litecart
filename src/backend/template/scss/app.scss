@@ -528,3 +528,17 @@ html.condensed {
 	//animation-iteration-count: infinite;
 	//animation-timing-function: linear;
 }
+
+.form-input table.csv-table {
+	td, th {
+		padding: .5em !important;
+	}
+	thead, tbody {
+		background: transparent !important;
+		border-color: var(--default-text-color) !important;
+	}
+	tr {
+		background: transparent !important;
+		border-color: var(--default-text-color) !important;
+	}
+}
