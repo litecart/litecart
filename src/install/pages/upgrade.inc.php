@@ -27,9 +27,9 @@
 		$installation_detected = true;
 		@include(__DIR__ . '/../../storage/config.inc.php'); // 3.0.0+
 
-	} else if (is_file(__DIR__ . '/../../includes/config.inc.php')) { // Prior to 3.x
+	} else if (is_file(__DIR__ . '/../../shared/config.inc.php')) { // Prior to 3.x
 		$installation_detected = true;
-		@include(__DIR__ . '/../../includes/config.inc.php');
+		@include(__DIR__ . '/../../shared/config.inc.php');
 
 	} else {
 		$installation_detected = false;

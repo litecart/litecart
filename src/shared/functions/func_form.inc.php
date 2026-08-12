@@ -320,7 +320,7 @@
 		]);
 	}
 
-	function form_input_date(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
+	function form_input_date(string $name, bool|string $input=true, array|string $attributes=[]): string {
 
 		if ($input === true) {
 			$input = form_reinsert_value($name);
@@ -337,7 +337,7 @@
 		return f::draw_element('input', ['class' => 'form-input', 'type' => 'date', 'name' => $name, 'value' => $input, 'placeholder' => 'YYYY-MM-DD', ...$attributes]);
 	}
 
-	function form_input_datetime(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
+	function form_input_datetime(string $name, bool|string $input=true, array|string $attributes=[]): string {
 
 		if ($input === true) {
 			$input = form_reinsert_value($name);
@@ -354,7 +354,7 @@
 		return f::draw_element('input', ['class' => 'form-input', 'type' => 'datetime-local', 'name' => $name, 'value' => $input, 'placeholder' => 'YYYY-MM-DD [hh:nn]', ...$attributes]);
 	}
 
-	function form_input_decimal(string $name, bool|array|string $input=true, ?int $decimals=null, array|string $attributes=[]): string {
+	function form_input_decimal(string $name, bool|string $input=true, ?int $decimals=null, array|string $attributes=[]): string {
 
 		if (count($args = func_get_args()) > 4) {
 			trigger_error('Passing min and max as 3rd and 4th parameter in form_input_decimal() is deprecated. Instead define min="0" and max="999" in 3rd parameter $attributes', E_USER_DEPRECATED);
@@ -389,7 +389,7 @@
 		return f::draw_element('input', ['class' => 'form-input', 'type' => 'number', 'name' => $name, 'value' => $input, 'step' => 'any', 'data-decimals' => (int)$decimals, ...$attributes]);
 	}
 
-	function form_input_decimal_toggle(string $name, bool|array|string $input=true, ?int $decimals=null, array|string $attributes=[]): string {
+	function form_input_decimal_toggle(string $name, bool|string $input=true, ?int $decimals=null, array|string $attributes=[]): string {
 
 		return implode(PHP_EOL, [
 			'<div class="input-group">',
@@ -400,7 +400,7 @@
 		]);
 	}
 
-	function form_input_email(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
+	function form_input_email(string $name, bool|string $input=true, array|string $attributes=[]): string {
 
 		if ($input === true) {
 			$input = form_reinsert_value($name);
@@ -423,7 +423,7 @@
 		return f::draw_element('input', ['class' => 'form-input', 'type' => 'file', 'name' => $name, ...$attributes]);
 	}
 
-	function form_input_hidden(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
+	function form_input_hidden(string $name, bool|string $input=true, array|string $attributes=[]): string {
 
 		if ($input === true) {
 			$input = form_reinsert_value($name);
@@ -434,7 +434,7 @@
 		return f::draw_element('input', ['type' => 'hidden', 'name' => $name, 'value' => $input, ...$attributes]);
 	}
 
-	function form_input_month(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
+	function form_input_month(string $name, bool|string $input=true, array|string $attributes=[]): string {
 
 		if ($input === true) {
 			$input = form_reinsert_value($name);
@@ -451,7 +451,7 @@
 		return f::draw_element('input', ['class' => 'form-input', 'type' => 'month', 'name' => $name, 'value' => $input, 'maxlength' => 7, 'pattern' => '\d{4}-\d{2}', 'placeholder' => 'YYYY-MM', ...$attributes]);
 	}
 
-	function form_input_money(string $name, ?string $currency_code=null, bool|array|string $input=true, array|string $attributes=[]): string {
+	function form_input_money(string $name, ?string $currency_code=null, bool|string $input=true, array|string $attributes=[]): string {
 
 		if ($input instanceof type_money) {
 			$currency_code = $currency_code ?: $input->currency_code;
@@ -486,7 +486,7 @@
 		]);
 	}
 
-	function form_input_number(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
+	function form_input_number(string $name, bool|string $input=true, array|string $attributes=[]): string {
 
 		if ($input === true) {
 			$input = form_reinsert_value($name);
@@ -501,7 +501,7 @@
 		return f::draw_element('input', ['class' => 'form-input', 'type' => 'number', 'name' => $name, 'value' => $input, 'step' => 1, ...$attributes]);
 	}
 
-	function form_input_number_toggle(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
+	function form_input_number_toggle(string $name, bool|string $input=true, array|string $attributes=[]): string {
 
 		if ($input === true) {
 			$input = form_reinsert_value($name);
@@ -520,7 +520,7 @@
 		]);
 	}
 
-	function form_input_password(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
+	function form_input_password(string $name, bool|string $input=true, array|string $attributes=[]): string {
 
 		if ($input === true) {
 			$input = form_reinsert_value($name);
@@ -536,7 +536,7 @@
 		]);
 	}
 
-	function form_input_password_unmaskable(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
+	function form_input_password_unmaskable(string $name, bool|string $input=true, array|string $attributes=[]): string {
 
 		if ($input === true) {
 			$input = form_reinsert_value($name);
@@ -553,7 +553,7 @@
 		]);
 	}
 
-	function form_input_percent(string $name, bool|array|string $input=true, int $decimals=2, array|string $attributes=[]): string {
+	function form_input_percent(string $name, bool|string $input=true, int $decimals=2, array|string $attributes=[]): string {
 
 		return implode(PHP_EOL, [
 			'<div class="input-group">',
@@ -563,7 +563,7 @@
 		]);
 	}
 
-	function form_input_phone(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
+	function form_input_phone(string $name, bool|string $input=true, array|string $attributes=[]): string {
 
 		if ($input === true) {
 			$input = form_reinsert_value($name);
@@ -599,7 +599,7 @@
 		return f::draw_element('input', ['class' => 'form-radio', 'type' => 'radio', 'name' => $name, 'value' => $value, ...$attributes] + (!strcmp($input, $value) ? ['checked' => ''] : []));
 	}
 
-	function form_input_range(string $name, bool|array|string $input=true, string|int|float $min='', string|int|float $max='', string|int|float $step='', array|string $attributes=[]): string {
+	function form_input_range(string $name, bool|string $input=true, string|int|float $min='', string|int|float $max='', string|int|float $step='', array|string $attributes=[]): string {
 
 		if ($input === true) {
 			$input = form_reinsert_value($name);
@@ -610,7 +610,7 @@
 		return f::draw_element('input', ['class' => 'form-range', 'type' => 'range', 'name' => $name, 'value' => $input, 'min' => (float)$min, 'max' => (float)$max, 'step' => (float)$step, ...$attributes]);
 	}
 
-	function form_input_search(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
+	function form_input_search(string $name, bool|string $input=true, array|string $attributes=[]): string {
 
 		if ($input === true) {
 			$input = form_reinsert_value($name);
@@ -637,7 +637,7 @@
 		return f::draw_element('input', ['class' => 'form-input', 'type' => 'text', 'data-toggle' => 'tags', 'name' => $name, 'value' => implode(', ', (array)$input), ...$attributes]);
 	}
 
-	function form_input_text(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
+	function form_input_text(string $name, bool|string $input=true, array|string $attributes=[]): string {
 
 		if ($input === true) {
 			$input = form_reinsert_value($name);
@@ -648,7 +648,7 @@
 		return f::draw_element('input', ['class' => 'form-input', 'type' => 'text', 'name' => $name, 'value' => $input, ...$attributes]);
 	}
 
-	function form_input_time(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
+	function form_input_time(string $name, bool|string $input=true, array|string $attributes=[]): string {
 
 		if ($input === true) {
 			$input = form_reinsert_value($name);
@@ -659,7 +659,7 @@
 		return f::draw_element('input', ['class' => 'form-input', 'type' => 'time', 'name' => $name, 'value' => $input, ...$attributes]);
 	}
 
-	function form_input_url(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
+	function form_input_url(string $name, bool|string $input=true, array|string $attributes=[]): string {
 
 		if ($input === true) {
 			$input = form_reinsert_value($name);
@@ -670,7 +670,7 @@
 		return f::draw_element('input', ['class' => 'form-input', 'type' => 'url', 'name' => $name, 'value' => $input, ...$attributes]);
 	}
 
-	function form_input_username(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
+	function form_input_username(string $name, bool|string $input=true, array|string $attributes=[]): string {
 
 		if ($input === true) {
 			$input = form_reinsert_value($name);
@@ -686,7 +686,7 @@
 		]);
 	}
 
-	function form_input_week(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
+	function form_input_week(string $name, bool|string $input=true, array|string $attributes=[]): string {
 
 		if ($input === true) {
 			$input = form_reinsert_value($name);
@@ -703,7 +703,7 @@
 		return f::draw_element('input', ['class' => 'form-input', 'type' => 'week', 'name' => $name, 'value' => $input, 'maxlength' => 7, 'pattern' => '\d{4}-W\d{2}', 'placeholder' => 'YYYY-WW', ...$attributes]);
 	}
 
-	function form_input_wysiwyg(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
+	function form_input_wysiwyg(string $name, bool|string $input=true, array|string $attributes=[]): string {
 
 		if ($input === true) {
 			$input = form_reinsert_value($name);
@@ -946,7 +946,7 @@
 		return f::draw_element('select', ['class' => 'form-select', 'name' => $name, ...$attributes], implode(PHP_EOL, $content));
 	}
 
-	function form_switch(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
+	function form_switch(string $name, bool|string $input=true, array|string $attributes=[]): string {
 
 		if ($input === true) {
 			$input = form_reinsert_value($name);
@@ -957,7 +957,7 @@
 		return f::draw_element('div', ['class' => 'form-switch', ...$attributes], f::draw_element('label', [], f::draw_element('input', ['type' => 'checkbox', 'name' => $name, 'value' => 1, 'hidden' => '', ...($input ? ['checked' => ''] : [])])));
 	}
 
-	function form_textarea(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
+	function form_textarea(string $name, bool|string $input=true, array|string $attributes=[]): string {
 
 		if ($input === true) {
 			$input = form_reinsert_value($name);
@@ -968,7 +968,7 @@
 		return f::draw_element('textarea', ['class' => 'form-input', 'name' => $name, ...$attributes], f::escape_html($input));
 	}
 
-	function form_toggle(string $name, string|array $options='t/f', bool|array|string $input=true, array|string $attributes=[]): string {
+	function form_toggle(string $name, string|array $options='t/f', bool|string $input=true, array|string $attributes=[]): string {
 
 		if (str_contains($input, '/')) {
 			trigger_error('Passing type as 3rd parameter in form_toggle() is deprecated. Use instead form_toggle($name, $type, $input, $attributes)', E_USER_DEPRECATED);

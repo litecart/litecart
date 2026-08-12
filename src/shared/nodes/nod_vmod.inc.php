@@ -2,7 +2,7 @@
 
 	class vmod {
 
-		public static  $enabled = true;                 // Bool whether or not to enable this feature
+		public static  $enabled = true;                // Bool whether or not to enable this feature
 		private static $aliases = [];                  // Array of path aliases ['pattern' => 'replace']
 		private static $_checked = [];                 // Array of files that have already passed check() and
 		private static $_checksums = [];               // Array of checksums for time comparison
@@ -44,17 +44,20 @@
 
 			// Backwards Compatibility
 			foreach ([
-				'#^admin/#' => 'backend/', // <3.0.0
-				'#^admin/(.*?)\.app/#' => 'backend/apps/$1/', // <3.0.0
-				'#^admin/(.*?)\.widget/#' => 'backend/widgets/$1/', // <3.0.0
-				'#^pages/#' => 'frontend/pages/', // <3.0.0
-				'#^includes/partials/#' => 'frontend/partials/', // <3.0.0
-				'#^includes/controllers/ctrl_#' => 'shared/entities/ent_', // <2.2.0
-				'#^includes/library/lib_#' => 'shared/nodes/nod_', // <3.0.0
-				'#^includes/routes/#' => 'frontend/routes/', // <3.0.0
-				'#^includes/templates/(.*?)\.admin/#' => 'backend/template/', // <3.0.0
-				'#^includes/templates/(.*?)\.catalog/#' => 'frontend/templates/$1/', // <3.0.0
-				'#^includes/wrappers/wrap_(http|smtp)#' => 'shared/clients/$1_client', // <3.0.0
+				'#^admin/#' => 'backend/', // 3.0.0+
+				'#^admin/(.*?)\.app/#' => 'backend/apps/$1/', // 3.0.0+
+				'#^admin/(.*?)\.widget/#' => 'backend/widgets/$1/', // 3.0.0+
+				'#^backend/template/views#' => 'backend/template/partials', // 3.0.0+
+				'#^frontend/templates/(.*?)/views#' => 'frontend/templates/$1/partials', // 3.0.0+
+				'#^includes/#' => 'shared/', // 3.0.0+
+				'#^pages/#' => 'frontend/pages/', // 3.0.0+
+				'#^shared/boxes/#' => 'frontend/partials/', // 3.0.0+
+				'#^shared/controllers/ctrl_#' => 'shared/entities/ent_', // 2.2.0+
+				'#^shared/library/lib_#' => 'shared/nodes/nod_', // 3.0.0+
+				'#^shared/routes/#' => 'frontend/routes/', // 3.0.0+
+				'#^shared/templates/(.*?)\.admin/#' => 'backend/template/', // 3.0.0+
+				'#^shared/templates/(.*?)\.catalog/#' => 'frontend/templates/$1/', // 3.0.0+
+				'#^shared/wrappers/wrap_(http|smtp)#' => 'shared/clients/$1_client', // 3.0.0+
 			] as $pattern => $replace) {
 				self::$aliases[$pattern] = $replace;
 			}
@@ -374,7 +377,13 @@
 
 						// Apply path aliases
 						if (!empty(self::$aliases)) {
-							$glob_pattern = preg_replace(array_keys(self::$aliases), array_values(self::$aliases), $glob_pattern);
+							foreach (self::$aliases as $pattern => $replace) {
+								$glob_pattern = preg_replace($pattern, $replace, $glob_pattern, -1, $count);
+								if ($count) {
+									// Restart the loop to apply aliases again if a replacement was made
+									reset(self::$aliases);
+								}
+							}
 						}
 
 						foreach (glob(FS_DIR_APP . $glob_pattern, GLOB_BRACE) as $file_to_modify) {
