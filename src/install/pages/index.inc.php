@@ -20,15 +20,6 @@
 
 	$requirements = json_decode(file_get_contents(__DIR__ . '/../requirements.json'), true);
 
-	$writables = [
-		FS_DIR_STORAGE . 'cache/',
-		FS_DIR_STORAGE . 'data/',
-		FS_DIR_STORAGE . 'images/',
-		FS_DIR_STORAGE . 'config.inc.php',
-		FS_DIR_STORAGE . 'vmods/',
-		FS_DIR_STORAGE . '.htaccess',
-	];
-
 	$timezones = [];
 	foreach (timezone_identifiers_list() as $timezone) {
 		$timezone = explode('/', $timezone);
@@ -156,20 +147,6 @@ input[name="development_type"]:checked + div {
 			<?php echo $database['name']; ?> <?php echo $database['minimumVersion']; ?>+ (Recommended: <?php echo $database['recommendedVersion']; ?>+)
 		</li>
 		<?php } ?>
-	</ul>
-
-	<h2>Writables</h2>
-
-	<ul>
-<?php
-	foreach ($writables as $path) {
-		if ((file_exists($path) && is_writable($path)) || is_writable(dirname($path))) {
-			echo '    <li>~/'. preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $path) .' <span class="ok">[OK]</span></li>' . PHP_EOL;
-		} else {
-			echo '    <li>~/'. preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $path) .' <span class="error">[Not writable]</span></li>' . PHP_EOL;
-		}
-	}
-?>
 	</ul>
 </div>
 
