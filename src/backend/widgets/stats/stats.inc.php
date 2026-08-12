@@ -79,13 +79,6 @@
 	}
 
 ?>
-<style>
-.text-xxl {
-	font-size: 2rem;
-	font-weight: bold;
-}
-</style>
-
 <div id="stats" class="widget">
 
 	<div class="card">

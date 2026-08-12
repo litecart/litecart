@@ -76,9 +76,9 @@
 
 ?>
 <style>
-.text-xxl {
-	font-size: 2rem;
-	font-weight: bold;
+#stats .text-xxl {
+	font-size: 1.5rem;
+	font-weight: 500;
 }
 </style>
 
