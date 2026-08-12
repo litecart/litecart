@@ -1065,6 +1065,26 @@ html[dir=rtl] .dropdown label:has([data-toggle=dropdown]) {
 	background-position: left 1em center;
 }
 
+.empty {
+	padding: 4em 2em;
+	border-radius: var(--border-radius);
+	background: #f7f8f9;
+	color: #66758c;
+}
+.empty .empty-icon {
+	font-size: 2.5em;
+}
+.empty .empty-title {
+	font-size: 1.25em;
+	margin: 0.5em auto;
+}
+.empty .empty-description {
+	margin: 0.5em auto;
+}
+.empty .empty-action {
+	margin: 0.5em auto;
+}
+
 /* Flexbox */
 .flex-rows {
 	display: flex;

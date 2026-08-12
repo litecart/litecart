@@ -85,14 +85,14 @@ gulp.task('scss-framework', function() {
 // Build and uglify JS files
 gulp.task('js-framework', function() {
 	return gulp
-		.src('src/assets/litecore/js/components/*.js')
+		.src('src/assets/litecore/js/framework/*.js')
 		.pipe(concat('framework.js', {'newLine': '\r\n\r\n'}))
 		.pipe(header(banner, { pkg: packageData }))
 		.pipe(gulp.dest('src/assets/litecore/js/', { overwrite: true }))
 		.pipe(sourcemaps.init())
 		.pipe(uglify())
 		.pipe(rename({ extname: '.min.js' }))
-		//.pipe(sourcemaps.write('.', { includeContent: false }))
+		.pipe(sourcemaps.write('.', { includeContent: false }))
 		.pipe(gulp.dest('src/assets/litecore/js/', { overwrite: true }));
 });
 
@@ -240,7 +240,7 @@ gulp.task('iconly', function() {
 gulp.task('watch', function() {
 	gulp.watch('src/assets/chartist/chartist.scss', gulp.series('scss-chartist'))
 	gulp.watch('src/assets/litecore/scss/**/*.scss', gulp.series('scss-framework'))
-	gulp.watch('src/assets/litecore/js/components/*.js', gulp.series('js-framework'))
+	gulp.watch('src/assets/litecore/ts/framework/*.ts', gulp.series('js-framework'))
 	gulp.watch('src/assets/trumbowyg/trumbowyg.js', gulp.series('js-trumbowyg'))
 	gulp.watch('src/assets/trumbowyg/**/*.scss', gulp.series('scss-trumbowyg'))
 	gulp.watch('src/backend/template/scss/**/*.scss', gulp.series('scss-backend'))

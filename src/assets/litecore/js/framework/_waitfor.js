@@ -1,7 +1,7 @@
 /* Minimal waitFor() implementation
- * Calls callback when objectName is defined in the global scope
- * waitTime is the time between retries, in milliseconds (default 50ms)
- * retries is the number of times to retry before giving up (default 100)
+	Calls callback when objectName is defined in the global scope
+	waitTime is the time between retries, in milliseconds (default 50ms)
+	retries is the number of times to retry before giving up (default 100)
  */
 window.waitFor = (objectName, callback, waitTime=50, retries=100) => {
 

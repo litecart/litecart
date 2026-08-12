@@ -1,0 +1,11 @@
+.empty {
+    padding: 4em 2em;
+    border-radius: var(--border-radius);
+    background: #f7f8f9;
+    color: #66758c;
+
+    .empty-icon { font-size: 2.5em; }
+    .empty-title { font-size: 1.25em; margin: .5em auto; }
+    .empty-description { margin: .5em auto; }
+    .empty-action { margin: .5em auto; }
+}

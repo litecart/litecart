@@ -302,8 +302,6 @@ waitFor('jQuery', ($) => {
 
 });
 
-
-
 waitFor('jQuery', ($) => {
 	"use strict";
 
@@ -442,52 +440,6 @@ waitFor('jQuery', ($) => {
 	});
 
 });
-
-waitFor('jQuery', $ => {
-	$('.blob').on('mousemove', function (e) {
-		$(this).css('transform', `translate3d(calc(${e.clientX}px - 50%), calc(${e.clientY}px - 50%), 0)`);
-	});
-});
-
-
-waitFor('jQuery', $ => {
-	$('form[data-track-changes]').each(function () {
-		$(this).data('originalData', $(this).serialize());
-	});
-
-	$(window).on('beforeunload', function () {
-		let hasChanges = false;
-
-		$('form[data-track-changes]').each(function () {
-			if ($(this).serialize() != $(this).data('originalData')) {
-				hasChanges = true;
-				return false; // Break out of the each loop
-			}
-		});
-
-		if (hasChanges) {
-			return true; // Show the confirmation dialog
-		}
-	});
-
-	// Initialize input groups for number and float inputs
-	$('.input-group').on('click', 'button[name="decrease"], button[name="increase"]', function () {
-		const $input = $(this).siblings('input[type="number"]'),
-			minValue = parseInt($input.attr('min')) || 0,
-			maxValue = parseInt($input.attr('max')) || Infinity;
-		if ($(this).attr('name') === 'decrease') {
-			$input.val(Math.max(minValue, parseInt($input.val()) - 1)).trigger('input');
-		} else {
-			$input.val(Math.min(maxValue, parseInt($input.val()) + 1)).trigger('input');
-		}
-	});
-
-	$('.input-group').on('click', '', function () {
-		const $input = $(this).siblings('input[type="number"]');
-		$input.val(parseInt($input.val()) - 1).trigger('input');
-	});
-});
-
 
 waitFor('jQuery', ($) => {
 
@@ -1431,9 +1383,9 @@ waitFor('jQuery', ($) => {
 });
 
 /* Minimal waitFor() implementation
- * Calls callback when objectName is defined in the global scope
- * waitTime is the time between retries, in milliseconds (default 50ms)
- * retries is the number of times to retry before giving up (default 100)
+	Calls callback when objectName is defined in the global scope
+	waitTime is the time between retries, in milliseconds (default 50ms)
+	retries is the number of times to retry before giving up (default 100)
  */
 window.waitFor = (objectName, callback, waitTime=50, retries=100) => {
 
