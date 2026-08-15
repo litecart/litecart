@@ -17,62 +17,50 @@
 			[
 				'title' => t('title_category_tree', 'Category Tree'),
 				'doc' => 'category_tree',
-				'params' => [],
 			],
 			[
 				'title' => t('title_products', 'Products'),
 				'doc' => 'products',
-				'params' => [],
 			],
 			[
 				'title' => t('title_brands', 'Brands'),
 				'doc' => 'brands',
-				'params' => [],
 			],
 			[
 				'title' => t('title_suppliers', 'Suppliers'),
 				'doc' => 'suppliers',
-				'params' => [],
 			],
 			[
 				'title' => t('title_attributes', 'Attributes'),
 				'doc' => 'attribute_groups',
-				'params' => [],
 			],
 			[
 				'title' => t('title_campaigns', 'Campaigns'),
 				'doc' => 'campaigns',
-				'params' => [],
 			],
 			[
 				'title' => t('title_stock_items', 'Stock Items'),
 				'doc' => 'stock_items',
-				'params' => [],
 			],
 			[
 				'title' => t('title_stock_transactions', 'Stock Transactions'),
 				'doc' => 'stock_transactions',
-				'params' => [],
 			],
 			[
 				'title' => t('title_delivery_statuses', 'Delivery Statuses'),
 				'doc' => 'delivery_statuses',
-				'params' => [],
 			],
 			[
 				'title' => t('title_sold_out_statuses', 'Sold Out Statuses'),
 				'doc' => 'sold_out_statuses',
-				'params' => [],
 			],
 			[
 				'title' => t('title_quantity_units', 'Quantity Units'),
 				'doc' => 'quantity_units',
-				'params' => [],
 			],
 			[
 				'title' => t('title_csv_import_export', 'CSV Import/Export'),
 				'doc' => 'csv',
-				'params' => [],
 			],
 		],
 

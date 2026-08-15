@@ -176,7 +176,7 @@
 			return $this;
 		}
 
-		###################################################################
+		## #####
 
 		public function send($sender, $recipients, $data='') {
 

@@ -15,17 +15,14 @@
 			[
 				'title' => t('title_marketplace', 'Marketplace'),
 				'doc' => 'marketplace',
-				'params' => [],
 			],
 			[
 				'title' => t('title_installed', 'Installed'),
 				'doc' => 'installed',
-				'params' => [],
 			],
 			[
 				'title' => t('title_licenses', 'Licenses'),
 				'doc' => 'licenses',
-				'params' => [],
 			],
 		],
 

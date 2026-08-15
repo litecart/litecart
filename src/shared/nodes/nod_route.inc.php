@@ -221,7 +221,7 @@
 						}
 
 						if (isset($_SERVER['HTTP_IF_NONE_MATCH'])) {
-							foreach (preg_split('#\s*,\s*#', $_SERVER['HTTP_IF_NONE_MATCH'], -1, PREG_SPLIT_NO_EMPTY) as $potential_match) {
+							foreach (f::string_split('#\s*,\s*#', $_SERVER['HTTP_IF_NONE_MATCH']) as $potential_match) {
 								if (trim($potential_match, '"') == md5_file('app://'.$static_path)) {
 									header('HTTP/1.1 304 Not Modified');
 									exit;
@@ -449,6 +449,7 @@
 			// Rewrite link
 			foreach (self::$_routes as $route) {
 
+				// Convert operators for preg_match() as fnmatch() does not support GLOB_BRACE
 				$operators = [
 					'\\*' => '.+',
 					'\\?' => '.',
@@ -456,11 +457,13 @@
 					',' => '|'
 				];
 
-				if (preg_match('#^'. strtr(preg_quote($route['resource'], '#'), $operators) .'$#i', $ilink)) { // Use preg_match() as fnmatch() does not support GLOB_BRACE
-					if (isset($route['rewrite']) && is_callable($route['rewrite'])) {
-						if ($rewritten_link = call_user_func_array($route['rewrite'], [$link, $language_code])) {
-							$link = $rewritten_link;
-						}
+				if (!preg_match('#^'. strtr(preg_quote($route['resource'], '#'), $operators) .'$#i', $ilink)) {
+					continue;
+				}
+
+				if (isset($route['rewrite']) && is_callable($route['rewrite'])) {
+					if ($rewritten_link = call_user_func_array($route['rewrite'], [$link, $language_code])) {
+						$link = $rewritten_link;
 					}
 				}
 			}

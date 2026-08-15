@@ -289,7 +289,6 @@
 		}
 	}
 
-
 	/*
 		Returns true when the installation is marked complete.
 		A present storage/install.lock file is authoritative; file size and

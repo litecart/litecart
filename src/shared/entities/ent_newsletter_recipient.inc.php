@@ -24,7 +24,7 @@
 			});
 
 			$this->data['ip_address'] = $_SERVER['REMOTE_ADDR'] ?? '';
-			$this->data['hostname'] = gethostbyaddr($_SERVER['REMOTE_ADDR'] ?? '');
+			$this->data['hostname'] = $this->data['ip_address'] ? gethostbyaddr($this->data['ip_address'] : '');
 			$this->data['user_agent'] = $_SERVER['HTTP_USER_AGENT'] ?? '';
 
 			$this->previous = $this->data;

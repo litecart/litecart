@@ -4,7 +4,7 @@
 		public $data;
 		public $previous;
 
-		public function __construct(int|null $id = null) {
+		public function __construct(int|null $id=null) {
 
 			if ($id) {
 				$this->load($id);
@@ -143,7 +143,7 @@
 			return $this;
 		}
 
-		public function add_body(string $content, bool $html = false): self {
+		public function add_body(string $content, bool $html=false): self {
 
 			$content = trim($content);
 

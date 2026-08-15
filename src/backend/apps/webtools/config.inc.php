@@ -15,27 +15,22 @@
 			[
 				'title' => t('title_not_found', 'Not Found'),
 				'doc' => 'not_found',
-				'params' => [],
 			],
 			[
 				'title' => t('title_redirects', 'Redirects'),
 				'doc' => 'redirects',
-				'params' => [],
 			],
 			[
 				'title' => t('title_site_tags', 'Site Tags'),
 				'doc' => 'site_tags',
-				'params' => [],
 			],
 			[
 				'title' => t('title_third_parties', 'Third Parties'),
 				'doc' => 'third_parties',
-				'params' => [],
 			],
 			[
 				'title' => 'robots.txt',
 				'doc' => 'robots_txt',
-				'params' => [],
 			],
 		],
 

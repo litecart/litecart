@@ -15,22 +15,18 @@
 			[
 				'title' => t('title_drafts', 'Drafts'),
 				'doc' => 'drafts',
-				'params' => [],
 			],
 			[
 				'title' => t('title_scheduled', 'Scheduled'),
 				'doc' => 'scheduled',
-				'params' => [],
 			],
 			[
 				'title' => t('title_sent', 'Sent'),
 				'doc' => 'sent',
-				'params' => [],
 			],
 			[
 				'title' => t('title_failed', 'Failed'),
 				'doc' => 'failed',
-				'params' => [],
 			],
 		],
 

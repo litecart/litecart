@@ -15,27 +15,22 @@
 			[
 				'title' => t('title_customers', 'Customers'),
 				'doc' => 'customers',
-				'params' => [],
 			],
 			[
 				'title' => t('title_customer_groups', 'Customer Groups'),
 				'doc' => 'customer_groups',
-				'params' => [],
 			],
 			[
 				'title' => t('title_event_logs', 'Event Logs'),
 				'doc' => 'event_logs',
-				'params' => [],
 			],
 			[
 				'title' => t('title_newsletter_recipients', 'Newsletter Recipients'),
 				'doc' => 'newsletter_recipients',
-				'params' => [],
 			],
 			[
 				'title' => t('title_csv_import_export', 'CSV Import/Export'),
 				'doc' => 'csv',
-				'params' => [],
 			],
 		],
 

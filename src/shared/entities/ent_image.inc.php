@@ -36,7 +36,7 @@
 		private $_image = null;
 		private $_whitespace = [255, 255, 255];
 
-		public function __construct(string|null $file = null, string|null $library = null) {
+		public function __construct(string|null $file=null, string|null $library=null) {
 
 			if ($file) {
 				$this->set($file);
@@ -47,7 +47,7 @@
 			}
 
 			if (settings::get('image_whitespace_color')) {
-				$this->_whitespace = preg_split('#\s*,\s*#', settings::get('image_whitespace_color'), -1, PREG_SPLIT_NO_EMPTY);
+				$this->_whitespace = f::string_split(settings::get('image_whitespace_color'));
 			}
 		}
 
@@ -83,7 +83,7 @@
 							$image_type = exif_imagetype($this->_file);
 						} else {
 							$params = getimagesize($this->_file);
-							$image_type = !empty($params[2]) ? $params[2] : null;
+							$image_type = $params[2] ?? null;
 						}
 
 						switch ($image_type) {
@@ -324,9 +324,7 @@
 		}
 
 		public function load_from_string(string $binary): ?bool {
-
 			$tmp_file = f::file_create_tempfile($binary);
-
 			return $this->load($tmp_file);
 		}
 

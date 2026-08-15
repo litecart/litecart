@@ -38,6 +38,7 @@
 			header('Access-Control-Allow-Origin: '. self::ilink('')); // Only allow HTTP POST data from own domain
 			header('Referrer-Policy: strict-origin-when-cross-origin'); // Referrer Policy
 			header('X-Content-Type-Options: nosniff'); // Prevent MIME type sniffing
+			header('Access-Control-Allow-Origin: '. self::ilink('')); // Only allow HTTP POST data from own domain
 
 			// Content-Security-Policy headers are generated after capture to allow dynamic additions
 			self::add_csp('default-src', ["'self'", "'unsafe-eval'", "data:"]);

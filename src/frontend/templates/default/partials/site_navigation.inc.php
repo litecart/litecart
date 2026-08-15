@@ -200,10 +200,6 @@
 </div>
 
 <script>
-	$('.navbar .navbar-toggle').on('click', function() {
-		$(this).closest('.navbar').toggleClass('expanded');
-	});
-
 	$('#site-navigation .search').on('click', function() {
 		$('input[name="query"]', $(this)).trigger('focus');
 	});

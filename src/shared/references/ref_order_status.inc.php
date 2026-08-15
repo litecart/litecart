@@ -54,7 +54,7 @@
 							"show fields from ". DB_TABLE_PREFIX ."order_statuses;"
 						)->each(function($field) use ($order_status) {
 							$order_status[$field['Field']] = database::create_variable($field);
-						})->fetch();
+						});
 					}
 
 					foreach ($order_status as $key => $value) {

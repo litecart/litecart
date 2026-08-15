@@ -190,11 +190,8 @@
 			'true'        => draw_fonticon('icon-check', 'style="color: #8c4;"'),
 			'user'        => draw_fonticon('icon-user', 'style="color: #888;"'),
 			'warning'     => draw_fonticon('icon-exclamation-triangle', 'style="color: #c00;"'),
+			default =>    trigger_error('Unknown font icon ('. $icon .')', E_USER_WARNING) ? '' : '',
 		};
-
-		trigger_error('Unknown font icon ('. $icon .')', E_USER_WARNING);
-
-		return '';
 	}
 
 	function draw_image(string $image, int|null $width=null, int|null $height=null, string $clipping='fit', array|string $attributes=[]): string {

@@ -339,8 +339,8 @@
 ?>
 <style>
 .icon-lg {
-	font-size: 1.25em;
-	margin-right: .5em;
+	font-size: 1.5em;
+	margin-right: .25em;
 }
 
 .dropzone.in {

@@ -14,12 +14,10 @@
 			[
 				'title' => t('title_orders', 'Orders'),
 				'doc' => 'orders',
-				'params' => [],
 			],
 			[
 				'title' => t('title_order_statuses', 'Order Statuses'),
 				'doc' => 'order_statuses',
-				'params' => [],
 			],
 		],
 

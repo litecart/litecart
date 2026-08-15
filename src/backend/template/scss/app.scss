@@ -21,6 +21,8 @@ h4 { font-size: 1.10em; }
 	box-shadow: 0 1px 1rem rgb(0 0 0 / 5%);
 	padding: 1em;
 	min-height: 100vh;
+	margin: 1em 0;
+	border-radius: 0 var(--border-radius) var(--border-radius) 0;
 
 	.logotype {
 		display: block;
@@ -65,11 +67,6 @@ h4 { font-size: 1.10em; }
 	}
 }
 
-#main {
-	flex: 1 1 auto;
-	margin: 1em var(--gutter-x);
-}
-
 #sidebar-compact:checked {
 	padding: var(--gutter-y) var(--gutter-x);
 
@@ -106,6 +103,12 @@ h4 { font-size: 1.10em; }
 		}
 	}
 }
+
+#main {
+	flex: 1 1 auto;
+	margin: 1em var(--gutter-x);
+}
+
 
 #toolbar {
 	display: flex;
@@ -260,7 +263,7 @@ h4 { font-size: 1.10em; }
 
 		&:hover:not(.active) {
 			background: var(--sidebar-app-background--hover);
-			border: var(--sidebar-app-border-size) solid var(--default-border-color);
+			border: var(--sidebar-app-border-size) solid var(--app-color);
 		}
 
 		> a {
@@ -380,7 +383,7 @@ h4 { font-size: 1.10em; }
 	aspect-ratio: 1;
 
 	+ .name {
-		margin-inline-start: .5em;
+		margin-inline-start: .15em;
 	}
 
 	@media print {

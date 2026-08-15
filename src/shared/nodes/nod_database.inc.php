@@ -53,7 +53,7 @@
 			}
 
 			$sql_modes = self::query("select @@SESSION.sql_mode as sql_mode;", $link)->fetch(function($row){
-				return preg_split('#\s*,\s*#', $row['sql_mode'], -1, PREG_SPLIT_NO_EMPTY);
+				return f::string_split($row['sql_mode']);
 			});
 
 			// Remove some undesired SQL modes
@@ -72,9 +72,6 @@
 
 			// Set connection charset
 			self::query("SET names '". database::input($charset) ."';", $link);
-
-			// Set default storage engine
-			self::query("SET SESSION default_storage_engine = InnoDB;", $link);
 
 			// Set time zone for current session
 			if ($timezone = ini_get('date.timezone')) {

@@ -363,8 +363,8 @@
 	max-width: unset;
 }
 
-.icon-folder,
-.icon-folder-open,
+table .icon-folder,
+table .icon-folder-open,
 td .thumbnail {
 	margin-inline-end: 16px;
 }

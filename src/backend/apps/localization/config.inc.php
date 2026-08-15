@@ -15,57 +15,46 @@
 			[
 				'title' => t('title_countries', 'Countries'),
 				'doc' => 'countries/countries',
-				'params' => [],
 			],
 			[
 				'title' => t('title_currencies', 'Currencies'),
 				'doc' => 'currencies/currencies',
-				'params' => [],
 			],
 			[
 				'title' => t('title_geo_zones', 'Geo Zones'),
 				'doc' => 'geo_zones/geo_zones',
-				'params' => [],
 			],
 			[
 				'title' => t('title_languages', 'Languages'),
 				'doc' => 'languages/languages',
-				'params' => [],
 			],
 			[
 				'title' => t('title_storage_encoding', 'Storage Encoding'),
 				'doc' => 'languages/storage_encoding',
-				'params' => [],
 			],
 			[
 				'title' => t('title_translations', 'Translations'),
 				'doc' => 'translations/translations',
-				'params' => [],
 			],
 			[
 				'title' => t('title_auto_translate', 'Auto Translate'),
 				'doc' => 'translations/auto_translate',
-				'params' => [],
 			],
 			[
 				'title' => t('title_scan_for_translations', 'Scan For Translations'),
 				'doc' => 'translations/scan',
-				'params' => [],
 			],
 			[
 				'title' => t('title_csv_import_export_translations', 'CSV Import/Export Translations'),
 				'doc' => 'translations/csv',
-				'params' => [],
 			],
 			[
 				'title' => t('title_tax_rates', 'Tax Rates'),
 				'doc' => 'tax/tax_rates',
-				'params' => [],
 			],
 			[
 				'title' => t('title_tax_classes', 'Tax Classes'),
 				'doc' => 'tax/tax_classes',
-				'params' => [],
 			],
 		],
 
