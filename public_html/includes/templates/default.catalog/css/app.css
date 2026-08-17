@@ -633,8 +633,8 @@ body.scrolling-down #site-menu {
 }
 .listing.rows .product .link {
   display: flex;
-  gap: var(--gutter-x);
-  padding: var(--gutter-y) var(--gutter-x);
+  gap: 1em;
+  padding: 1em;
 }
 .listing.rows .product .info {
   flex: 1 1 auto;
