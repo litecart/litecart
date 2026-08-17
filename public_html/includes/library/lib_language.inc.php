@@ -44,9 +44,11 @@
       if (!self::$_cache['translations'] = cache::get(self::$_cache_token)) {
         self::$_cache['translations'] = [];
 
+        $is_backend = preg_match('#^'. preg_quote(ltrim(WS_DIR_ADMIN, '/'), '#') .'.*#', route::$request) ? true : false;
+
         $translations_query = database::query(
           "select id, code, if(text_". self::$selected['code'] ." != '', text_". self::$selected['code'] .", text_en) as text from ". DB_TABLE_PREFIX ."translations
-          where ". (preg_match('#^'. preg_quote(ltrim(WS_DIR_ADMIN, '/'), '#') .'.*#', route::$request) ? "backend = 1" : "frontend = 1") ."
+          where ". ($is_backend ? "backend = 1" : "frontend = 1") ."
           having text != '';"
         );
 
