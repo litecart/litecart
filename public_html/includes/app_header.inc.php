@@ -41,8 +41,8 @@
 // CSRF protection for state-changing requests
   if (!in_array($_SERVER['REQUEST_METHOD'], ['GET', 'HEAD', 'OPTIONS']) && session_status() === PHP_SESSION_ACTIVE) {
 
-  // Excluded paths (payment gateway callbacks)
-    $csrf_excluded_paths = ['order_process'];
+    // Excluded paths (payment gateway callbacks, MCP JSON-RPC API)
+    $csrf_excluded_paths = ['order_process', 'mcp'];
     $csrf_skip = false;
     $request_path = strtok($_SERVER['REQUEST_URI'], '?'); // Don't rely on parse_url()
     foreach ($csrf_excluded_paths as $path) {
