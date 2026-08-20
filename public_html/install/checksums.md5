@@ -208,7 +208,7 @@ d41d8cd98f00b204e9800998ecf8427e	images/slides/index.html
 17fd4de7d9e88047254c3fdd7371afa3	includes/abstracts/abs_module.inc.php
 d41d8cd98f00b204e9800998ecf8427e	includes/abstracts/index.html
 ac174e17a6b2cd728f87d25164f708b6	includes/app_footer.inc.php
-66830afda8d3e9550b40bf3aa0913cf0	includes/app_header.inc.php
+d54cd5b4278f4b05847e5bf7b423024a	includes/app_header.inc.php
 3890d7e516018476f92a12ec88ff8b5f	includes/autoloader.inc.php
 3762e4cb2077d20baa72f956c45735b6	includes/boxes/box_account_links.inc.php
 1261bb2e9890d2b077b7943070c7981a	includes/boxes/box_also_purchased_products.inc.php
@@ -232,7 +232,7 @@ db6c91407d60287938abb32d59ca048a	includes/boxes/box_site_footer.inc.php
 b4806f71b682a0a0754ade967716ed0b	includes/boxes/box_site_menu.inc.php
 02426a41d7e9ae11739c7f6b17165126	includes/boxes/box_slides.inc.php
 d41d8cd98f00b204e9800998ecf8427e	includes/boxes/index.html
-ccd75a500bd4e5b8b483bda55fe4e07b	includes/compatibility.inc.php
+6e1cd98a6b38d1b7660f2b34b7958a20	includes/compatibility.inc.php
 6a226853bc2fcdb38978ee0c2184d339	includes/entities/ent_attribute_group.inc.php
 4c414da3bbc933f90f2ab0add9a5bfa9	includes/entities/ent_category.inc.php
 662622331ecfe2ed88856fae16c5b6e4	includes/entities/ent_country.inc.php
@@ -301,6 +301,7 @@ c39f639aa3de7690d76b00b61d35e10b	includes/library/lib_user.inc.php
 d00ccc1b880da2fc01cc6130e5a2f586	includes/library/lib_vmod.inc.php
 bffdd3b21cdd54aace806009aba04a0e	includes/library/lib_volume.inc.php
 2533af53b5a32c7efae81971f1bf143e	includes/library/lib_weight.inc.php
+b9e2e809bf272136adc1789aeb388fa0	includes/mcp/mcp_ping.inc.php
 d41d8cd98f00b204e9800998ecf8427e	includes/modules/customer/index.html
 d41d8cd98f00b204e9800998ecf8427e	includes/modules/index.html
 d41d8cd98f00b204e9800998ecf8427e	includes/modules/jobs/index.html
@@ -337,6 +338,7 @@ d41d8cd98f00b204e9800998ecf8427e	includes/routes/index.html
 66474e6f00cf107eade030a7dc205e0d	includes/routes/url_index.inc.php
 2a774c221ba3ec5bebc48367c2e94172	includes/routes/url_information.inc.php
 92bd7cbdd4d4faa9d7590bc3972a333d	includes/routes/url_manufacturer.inc.php
+862dd98f4bb2f20f25c11f12bbfe7b95	includes/routes/url_mcp.inc.php
 db390b3ff0e45b37533913f7c5b345f5	includes/routes/url_order_process.inc.php
 1da66adf4946a8025810817107593ca3	includes/routes/url_product.inc.php
 d4d01a85f22fa99cee958c04b3fb645c	includes/routes/url_push_jobs.inc.php
@@ -727,6 +729,7 @@ abd9f78dc5888bbb68927beb5b8cdd06	pages/information.inc.php
 a84dd6bf3a3c2d3ec007452f6f08fa99	pages/manifest.json.inc.php
 92b1b340832ced0b67b131da205f4799	pages/manufacturer.inc.php
 fbe136a97b9eb800569b9b303424c535	pages/manufacturers.inc.php
+7ef5cd7ad9cde8e5bc27972c8b546f44	pages/mcp.inc.php
 5562c96cd2c2a4446a6bb6a22261fada	pages/newsletter.inc.php
 1ed81235cd6f4b7195d59783f2c258e2	pages/order.inc.php
 c6d296afede4a57f2552a3fbe9845d52	pages/order_history.inc.php
