@@ -48,6 +48,15 @@
     require __DIR__ . '/includes/header.inc.php';
   }
 
+  // Refuse to re-run the installer if a config file already exists.
+  if ($_SERVER['SERVER_SOFTWARE'] != 'CLI' && is_file(__DIR__ . '/../includes/config.inc.php')) {
+    http_response_code(403);
+    echo '<h1>Installation Locked</h1>' . PHP_EOL
+       . '<p>An existing installation has been detected. To run the installer again, remove <code>includes/config.inc.php</code>.</p>' . PHP_EOL;
+    require __DIR__ . '/includes/footer.inc.php';
+    exit;
+  }
+
   ob_start();
 
   try {
@@ -360,7 +369,7 @@
       '{DB_DATABASE}' => $_REQUEST['db_database'],
       '{DB_TABLE_PREFIX}' => $_REQUEST['db_table_prefix'],
       '{DB_DATABASE_CHARSET}' => strtok($_REQUEST['db_collation'], '_'),
-      '{CLIENT_IP}' => $_REQUEST['client_ip'],
+      '{CLIENT_IP}' => filter_var($_REQUEST['client_ip'], FILTER_VALIDATE_IP) ? $_REQUEST['client_ip'] : (!empty($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1'),
       '{HMAC_KEY_REMEMBER_ME}' => bin2hex(random_bytes(32)),
     ];
 

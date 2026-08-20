@@ -67,9 +67,7 @@
       $url = document::ilink('push_jobs');
       $disabled_functions = preg_split('#\s*,\s*#', ini_get('disable_functions'), -1, PREG_SPLIT_NO_EMPTY);
 
-      if (!in_array('exec', $disabled_functions)) {
-        exec('wget -q -O - '. $url .' > /dev/null 2>&1 &');
-      } else if (!in_array('fsockopen', $disabled_functions)) {
+      if (!in_array('fsockopen', $disabled_functions)) {
         $parts = parse_url($url);
         $fp = fsockopen($parts['host'], isset($parts['port']) ? $parts['port'] : 80, $errno, $errstr, 30);
         $out = "GET ". $parts['path'] ." HTTP/1.1\r\n"
@@ -77,6 +75,9 @@
              . "Connection: Close\r\n\r\n";
         fwrite($fp, $out);
         fclose($fp);
+
+      } else if (!in_array('exec', $disabled_functions)) {
+        exec('wget -q -O - '. escapeshellarg($url) .' > /dev/null 2>&1 &');
       }
     }
   }

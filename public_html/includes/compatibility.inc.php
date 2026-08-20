@@ -258,6 +258,11 @@
     $_SERVER['HTTPS'] = 'off';
   }
 
+  // Unset a bogus Host header
+  if (!filter_var(trim($_SERVER['HTTP_HOST'], '[]'), FILTER_VALIDATE_IP) && !filter_var($_SERVER['HTTP_HOST'], FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME)) {
+    unset($_SERVER['HTTP_HOST']);
+  }
+
   if (empty($_SERVER['HTTP_HOST'])) {
     $_SERVER['HTTP_HOST'] = $_SERVER['SERVER_NAME'];
   }

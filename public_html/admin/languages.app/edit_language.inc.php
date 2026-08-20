@@ -371,10 +371,10 @@ $('input[name="url_type"]').change(function(){
 
   switch ($(this).val()) {
     case 'none': example_url = '-'; break;
-    case 'root': example_url = `https://<?php echo functions::escape_js($_SERVER['HTTP_HOST']); ?>`; break;
-    case 'path': example_url = `https://<?php echo functions::escape_js($_SERVER['HTTP_HOST']); ?>/${code}/`; break;
-    case 'domain': example_url = `https://${domain}/`; break;
-    case 'domainpath': example_url = `https://${domain}/${code}/`; break;
+    case 'root': example_url = 'https://<?php echo functions::escape_js($_SERVER['HTTP_HOST']); ?>'; break;
+    case 'path': example_url = 'https://<?php echo functions::escape_js($_SERVER['HTTP_HOST']); ?>/${code}/'; break;
+    case 'domain': example_url = 'https://${domain}/'; break;
+    case 'domainpath': example_url = 'https://${domain}/${code}/'; break;
   }
 
   $('#url-example').text(example_url);
