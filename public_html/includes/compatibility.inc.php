@@ -270,3 +270,14 @@
   if (!isset($_SERVER['HTTP_USER_AGENT'])) {
     $_SERVER['HTTP_USER_AGENT'] = '';
   }
+
+// Polyfill PHP_AUTH_USER/PHP_AUTH_PW from HTTP_AUTHORIZATION when running under CGI/FastCGI
+  if ((empty($_SERVER['PHP_AUTH_USER']) || empty($_SERVER['PHP_AUTH_PW'])) && !empty($_SERVER['HTTP_AUTHORIZATION'])) {
+    $authorization_header = $_SERVER['HTTP_AUTHORIZATION'];
+    if (stripos($authorization_header, 'Basic ') === 0) {
+      $decoded = base64_decode(substr($authorization_header, 6), true);
+      if (is_string($decoded) && strpos($decoded, ':') !== false) {
+        list($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']) = explode(':', $decoded, 2);
+      }
+    }
+  }
