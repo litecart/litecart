@@ -18,24 +18,16 @@
 
 	try {
 
-		if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-			throw new McpException('MCP server expects HTTP POST JSON-RPC requests', 405, -32600);
+		$method = $_SERVER['REQUEST_METHOD'];
+
+		// DELETE - terminate session (Streamable HTTP transport)
+		if ($method === 'DELETE') {
+			http_response_code(200);
+			exit;
 		}
-
-		$raw = file_get_contents('php://input');
-
-		$rpc = json_decode($raw, true);
-
-		if (!is_array($rpc) || empty($rpc['jsonrpc']) || $rpc['jsonrpc'] !== '2.0' || empty($rpc['method'])) {
-			throw new McpException('Invalid Request', 400, -32600);
-		}
-
-		$rpc_id = $rpc['id'] ?? null;
-		$params = isset($rpc['params']) && is_array($rpc['params']) ? $rpc['params'] : [];
 
 		if (!empty($_SERVER['PHP_AUTH_USER']) && !empty($_SERVER['PHP_AUTH_PW'])) {
 
-			// Try LiteCart user authentication
 			$user = database::query(
 				"select * from ". DB_TABLE_PREFIX ."users
 				where status
@@ -93,6 +85,38 @@
 			throw new McpException('You need to authenticate to use this API', 401, -32000);
 		}
 
+		// GET - SSE stream endpoint. We run stateless (no session, no pushed notifications),
+		// so acknowledge the endpoint with proper SSE headers and close immediately.
+		if ($method === 'GET') {
+			header('Content-Type: text/event-stream; charset=UTF-8');
+			header('Cache-Control: no-cache');
+			echo ": connected\n\n";
+			exit;
+		}
+
+		if ($method !== 'POST') {
+			throw new McpException('MCP server expects GET, POST or DELETE requests', 405, -32600);
+		}
+
+		// Validate Accept header per MCP Streamable HTTP transport
+		if (!empty($_SERVER['HTTP_ACCEPT']) && $_SERVER['HTTP_ACCEPT'] !== '*/*') {
+			$accept = $_SERVER['HTTP_ACCEPT'];
+			if (strpos($accept, 'application/json') === false && strpos($accept, 'text/event-stream') === false) {
+				throw new McpException('Client must accept application/json or text/event-stream', 406, -32600);
+			}
+		}
+
+		$raw = file_get_contents('php://input');
+
+		$rpc = json_decode($raw, true);
+
+		if (!is_array($rpc) || empty($rpc['jsonrpc']) || $rpc['jsonrpc'] !== '2.0' || empty($rpc['method'])) {
+			throw new McpException('Invalid Request', 400, -32600);
+		}
+
+		$rpc_id = $rpc['id'] ?? null;
+		$params = isset($rpc['params']) && is_array($rpc['params']) ? $rpc['params'] : [];
+
 		switch ($rpc['method']) {
 			case 'initialize':
 
@@ -103,7 +127,7 @@
 						'version' => PLATFORM_VERSION,
 					],
 					'capabilities' => [
-						'tools' => true,
+						'tools' => new stdClass(),
 					],
 				];
 
@@ -202,7 +226,7 @@
 						'text' => json_encode($tool_result, JSON_UNESCAPED_SLASHES),
 					]
 				],
-				'structuredContent' => $tool_result,
+				'structuredContent' => is_array($tool_result) ? (object)$tool_result : $tool_result,
 				'isError' => false,
 			];
 
