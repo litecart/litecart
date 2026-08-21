@@ -36,7 +36,7 @@
         '%link' => document::href_ilink('maintenance_mode'),
       ]), 'maintenance_mode');
     } else {
-      if (!in_array(strtok($_SERVER['REQUEST_URI'], '?'), [WS_DIR_APP . 'manifest.json'])) {
+      if (!in_array(strtok($_SERVER['REQUEST_URI'], '?'), [WS_DIR_APP . 'manifest.json', WS_DIR_APP . 'mcp'])) {
         http_response_code(503);
         include vmod::check(FS_DIR_APP . 'pages/maintenance_mode.inc.php');
         require_once vmod::check(FS_DIR_APP . 'includes/app_footer.inc.php');
