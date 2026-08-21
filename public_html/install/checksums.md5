@@ -533,7 +533,7 @@ d41d8cd98f00b204e9800998ecf8427e	includes/templates/index.html
 d41d8cd98f00b204e9800998ecf8427e	includes/wrappers/index.html
 f4c4574be46f27067a197e01813b44a7	includes/wrappers/wrap_http.inc.php
 bf0d8e47aea2a4c0f344a623e490699d	includes/wrappers/wrap_smtp.inc.php
-adbbdadab772ff794c8b128b0eb8be07	index.php
+85d8ba39d17cdc77fde6ddd80e649ee8	index.php
 db7b7a833baf1b6f47160530e9a9bc9f	install/clean.sql
 71febae4e5008ddfbd252f1cb231e8c9	install/config
 317cc2ca0b0f8caeee367150c0ff3e69	install/data.sql
@@ -729,7 +729,7 @@ abd9f78dc5888bbb68927beb5b8cdd06	pages/information.inc.php
 a84dd6bf3a3c2d3ec007452f6f08fa99	pages/manifest.json.inc.php
 92b1b340832ced0b67b131da205f4799	pages/manufacturer.inc.php
 fbe136a97b9eb800569b9b303424c535	pages/manufacturers.inc.php
-7ef5cd7ad9cde8e5bc27972c8b546f44	pages/mcp.inc.php
+fba347af9b15cdf8ce03bf7c9a306bef	pages/mcp.inc.php
 5562c96cd2c2a4446a6bb6a22261fada	pages/newsletter.inc.php
 1ed81235cd6f4b7195d59783f2c258e2	pages/order.inc.php
 c6d296afede4a57f2552a3fbe9845d52	pages/order_history.inc.php
