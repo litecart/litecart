@@ -11,41 +11,43 @@
   )->fetch_all('code');
 
 // Backfill regular prices
-  $regular_select = [];
-  foreach ($currency_codes as $currency_code) {
-    $regular_select[] = "'". database::input($currency_code) ."'";
-  }
-  $regular_select = implode(', ', $regular_select);
+  if (!empty($currency_codes)) {
+    $regular_query = database::query(
+      "select product_id, `". implode('`, `', array_map('database::input', $currency_codes)) ."`
+      from ". DB_TABLE_PREFIX ."products_prices;"
+    );
 
-  $regular_values = [];
-  foreach ($currency_codes as $currency_code) {
-    $regular_values[] = "ifnull(`". database::input($currency_code) ."`, 0)";
-  }
-  $regular_values = implode(', ', $regular_values);
+    while ($row = database::fetch($regular_query)) {
+      $price = [];
+      foreach ($currency_codes as $currency_code) {
+        $price[$currency_code] = isset($row[$currency_code]) ? (float)$row[$currency_code] : 0;
+      }
 
-  database::query(
-    "insert into ". DB_TABLE_PREFIX ."products_prices_history
-    (product_id, campaign_id, price, valid_from, valid_to)
-    select product_id, 0, json_object($regular_select, $regular_values), now(), null
-    from ". DB_TABLE_PREFIX ."products_prices;"
-  );
+      database::query(
+        "insert into ". DB_TABLE_PREFIX ."products_prices_history
+        (product_id, campaign_id, price, valid_from, valid_to)
+        values (". (int)$row['product_id'] .", 0, '". database::input(json_encode($price, JSON_UNESCAPED_UNICODE)) ."', '". date('Y-m-d H:i:s') ."', NULL);"
+      );
+    }
+  }
 
 // Backfill campaign prices
-  $campaign_select = [];
-  foreach ($currency_codes as $currency_code) {
-    $campaign_select[] = "'". database::input($currency_code) ."'";
-  }
-  $campaign_select = implode(', ', $campaign_select);
+  if (!empty($currency_codes)) {
+    $campaign_query = database::query(
+      "select id, product_id, `". implode('`, `', array_map('database::input', $currency_codes)) ."`
+      from ". DB_TABLE_PREFIX ."products_campaigns;"
+    );
 
-  $campaign_values = [];
-  foreach ($currency_codes as $currency_code) {
-    $campaign_values[] = "ifnull(`". database::input($currency_code) ."`, 0)";
-  }
-  $campaign_values = implode(', ', $campaign_values);
+    while ($row = database::fetch($campaign_query)) {
+      $price = [];
+      foreach ($currency_codes as $currency_code) {
+        $price[$currency_code] = isset($row[$currency_code]) ? (float)$row[$currency_code] : 0;
+      }
 
-  database::query(
-    "insert into ". DB_TABLE_PREFIX ."products_prices_history
-    (product_id, campaign_id, price, valid_from, valid_to)
-    select product_id, id, json_object($campaign_select, $campaign_values), now(), null
-    from ". DB_TABLE_PREFIX ."products_campaigns;"
-  );
+      database::query(
+        "insert into ". DB_TABLE_PREFIX ."products_prices_history
+        (product_id, campaign_id, price, valid_from, valid_to)
+        values (". (int)$row['product_id'] .", ". (int)$row['id'] .", '". database::input(json_encode($price, JSON_UNESCAPED_UNICODE)) ."', '". date('Y-m-d H:i:s') ."', NULL);"
+      );
+    }
+  }
