@@ -80,6 +80,8 @@ DROP TABLE IF EXISTS `lc_products_options_stock`;
 -- -----
 DROP TABLE IF EXISTS `lc_products_prices`;
 -- -----
+DROP TABLE IF EXISTS `lc_products_prices_history`;
+-- -----
 DROP TABLE IF EXISTS `lc_quantity_units`;
 -- -----
 DROP TABLE IF EXISTS `lc_quantity_units_info`;

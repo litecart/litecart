@@ -667,6 +667,21 @@ CREATE TABLE `lc_products_prices` (
   UNIQUE KEY `uniq_product_id` (`product_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
 -- -----
+CREATE TABLE `lc_products_prices_history` (
+  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+  `campaign_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+  `price` JSON NOT NULL,
+  `valid_from` TIMESTAMP NULL DEFAULT NULL,
+  `valid_to` TIMESTAMP NULL DEFAULT NULL,
+  `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `product_id` (`product_id`),
+  KEY `valid_from` (`valid_from`),
+  KEY `valid_to` (`valid_to`),
+  KEY `product_valid` (`product_id`, `valid_from`, `valid_to`)
+) ENGINE=MyISAM DEFAULT CHARSET={DB_DATABASE_CHARSET} COLLATE {DB_DATABASE_COLLATION};
+-- -----
 CREATE TABLE `lc_products_to_categories` (
   `product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
   `category_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',

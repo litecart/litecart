@@ -138,6 +138,7 @@
     'campaign_price' => (isset($product->campaign['price']) && $product->campaign['price'] > 0) ? tax::get_price($product->campaign['price'], $product->tax_class_id) : null,
     'campaign_price_end_date' => !empty($product->campaign['end_date']) ? $product->campaign['end_date'] : null,
     'final_price' => tax::get_price($product->final_price, $product->tax_class_id),
+    'lowest_price_30_days' => null,
     'tax_class_id' => $product->tax_class_id,
     'including_tax' => !empty(customer::$data['display_prices_including_tax']) ? true : false,
     'total_tax' => $product->tax,
@@ -185,6 +186,30 @@
     $_page->snippets['sticker'] = '<div class="sticker sale" title="'. language::translate('title_on_sale', 'On Sale') .'">'. language::translate('sticker_sale', 'Sale') .'<br>-'. $percentage .'%</div>';
   } else if ($product->date_created > date('Y-m-d', strtotime('-'.settings::get('new_products_max_age')))) {
     $_page->snippets['sticker'] = '<div class="sticker new" title="'. language::translate('title_new', 'New') .'">'. language::translate('sticker_new', 'New') .'</div>';
+  }
+
+// Lowest price last 30 days (EU Omnibus Directive)
+  if (settings::get('display_lowest_price_30_days')) {
+    $currency_code = currency::$selected['code'];
+    $cutoff = date('Y-m-d H:i:s', strtotime('-30 days'));
+
+    $lowest_price = database::query(
+      "select min(json_value(price, '$.". database::input($currency_code) ."')) as lowest_price
+      from ". DB_TABLE_PREFIX ."products_prices_history
+      where product_id = ". (int)$product->id ."
+      and json_value(price, '$.". database::input($currency_code) ."') > 0
+      and valid_from >= '". $cutoff ."'
+      and (valid_to IS NULL or valid_to >= '". $cutoff ."');"
+    )->fetch('lowest_price');
+
+    if (!$lowest_price) {
+      $lowest_price = (float)$product->price;
+    }
+
+    if ($lowest_price > 0) {
+      $lowest_price_with_tax = tax::get_price($lowest_price, $product->tax_class_id);
+      $_page->snippets['lowest_price_30_days'] = $lowest_price_with_tax;
+    }
   }
 
 // Category

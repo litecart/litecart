@@ -394,47 +394,125 @@
       }
 
     // Prices
-      foreach (array_keys(currency::$currencies) as $currency_code) {
+      $previous_prices = [];
 
-        $products_prices_query = database::query(
-          "select * from ". DB_TABLE_PREFIX ."products_prices
+      $products_prices_query = database::query(
+        "select * from ". DB_TABLE_PREFIX ."products_prices
+        where product_id = ". (int)$this->data['id'] ."
+        limit 1;"
+      );
+
+      $product_price = database::fetch($products_prices_query);
+
+      if (!$product_price) {
+        database::query(
+          "insert into ". DB_TABLE_PREFIX ."products_prices
+          (product_id)
+          values (". (int)$this->data['id'] .");"
+        );
+        $product_price = ['product_id' => (int)$this->data['id']];
+      }
+
+      foreach (array_keys(currency::$currencies) as $currency_code) {
+        $previous_prices[$currency_code] = isset($product_price[$currency_code]) ? (float)$product_price[$currency_code] : 0;
+      }
+
+      $sql_currency_prices = "";
+      foreach (array_keys(currency::$currencies) as $currency_code) {
+        $sql_currency_prices .= $currency_code ." = '". (!empty($this->data['prices'][$currency_code]) ? (float)$this->data['prices'][$currency_code] : 0) ."', ";
+      }
+      $sql_currency_prices = rtrim($sql_currency_prices, ', ');
+
+      database::query(
+        "update ". DB_TABLE_PREFIX ."products_prices set
+        $sql_currency_prices
+        where product_id = ". (int)$this->data['id'] ."
+        limit 1;"
+      );
+
+    // Record price history (only on change)
+      $prices_changed = false;
+      foreach (array_keys(currency::$currencies) as $currency_code) {
+        $new_price = !empty($this->data['prices'][$currency_code]) ? (float)$this->data['prices'][$currency_code] : 0;
+        if ($new_price != $previous_prices[$currency_code]) {
+          $prices_changed = true;
+          break;
+        }
+      }
+
+      if ($prices_changed) {
+
+      // Close currently-open regular-price history row (if any)
+        database::query(
+          "update ". DB_TABLE_PREFIX ."products_prices_history
+          set valid_to = NOW()
           where product_id = ". (int)$this->data['id'] ."
-          limit 1;"
+          and campaign_id = 0
+          and valid_to IS NULL;"
         );
 
-        if (!$product_price = database::fetch($products_prices_query)) {
-          database::query(
-            "insert into ". DB_TABLE_PREFIX ."products_prices
-            (product_id)
-            values (". (int)$this->data['id'] .");"
-          );
-        }
-
-        $sql_currency_prices = "";
+      // Insert new open regular-price row
+        $price_object = [];
         foreach (array_keys(currency::$currencies) as $currency_code) {
-          $sql_currency_prices .= $currency_code ." = '". (!empty($this->data['prices'][$currency_code]) ? (float)$this->data['prices'][$currency_code] : 0) ."', ";
+          $price_object[$currency_code] = !empty($this->data['prices'][$currency_code]) ? (float)$this->data['prices'][$currency_code] : 0;
         }
-        $sql_currency_prices = rtrim($sql_currency_prices, ', ');
 
         database::query(
-          "update ". DB_TABLE_PREFIX ."products_prices set
-          $sql_currency_prices
-          where product_id = ". (int)$this->data['id'] ."
-          limit 1;"
+          "insert into ". DB_TABLE_PREFIX ."products_prices_history
+          (product_id, campaign_id, price, valid_from, valid_to)
+          values (". (int)$this->data['id'] .", 0, '". database::input(json_encode($price_object, JSON_UNESCAPED_UNICODE)) ."', NOW(), NULL);"
         );
       }
 
     // Delete campaigns
+      $deleted_campaign_ids = [];
+      $existing_campaigns_query = database::query(
+        "select id from ". DB_TABLE_PREFIX ."products_campaigns
+        where product_id = ". (int)$this->data['id'] ."
+        and id not in ('". implode("', '", array_column($this->data['campaigns'], 'id')) ."');"
+      );
+      while ($dc = database::fetch($existing_campaigns_query)) {
+        $deleted_campaign_ids[] = (int)$dc['id'];
+      }
+
       database::query(
         "delete from ". DB_TABLE_PREFIX ."products_campaigns
         where product_id = ". (int)$this->data['id'] ."
         and id not in ('". implode("', '", array_column($this->data['campaigns'], 'id')) ."');"
       );
 
+    // Close history rows for deleted campaigns
+      if (!empty($deleted_campaign_ids)) {
+        database::query(
+          "update ". DB_TABLE_PREFIX ."products_prices_history
+          set valid_to = ". date('Y-m-d H:i:s') ."
+          where product_id = ". (int)$this->data['id'] ."
+          and campaign_id in ('". implode("', '", $deleted_campaign_ids) ."')
+          and valid_to IS NULL;"
+        );
+      }
+
     // Update campaigns
       if (!empty($this->data['campaigns'])) {
         foreach (array_keys($this->data['campaigns']) as $key) {
-          if (empty($this->data['campaigns'][$key]['id'])) {
+
+          $previous_campaign_prices = [];
+          $is_new_campaign = empty($this->data['campaigns'][$key]['id']);
+
+          if (!$is_new_campaign) {
+            $previous_campaign_query = database::query(
+              "select * from ". DB_TABLE_PREFIX ."products_campaigns
+              where id = ". (int)$this->data['campaigns'][$key]['id'] ."
+              limit 1;"
+            );
+            if ($previous_campaign = database::fetch($previous_campaign_query)) {
+              foreach (array_keys(currency::$currencies) as $currency_code) {
+                $previous_campaign_prices[$currency_code] = isset($previous_campaign[$currency_code]) ? (float)$previous_campaign[$currency_code] : 0;
+              }
+            }
+          }
+
+          if ($is_new_campaign) {
             database::query(
               "insert into ". DB_TABLE_PREFIX ."products_campaigns
               (product_id)
@@ -449,15 +527,60 @@
           }
           $sql_currency_campaigns = rtrim($sql_currency_campaigns, ', ');
 
+          $start_date = !empty($this->data['campaigns'][$key]['start_date']) ? date('Y-m-d H:i:s', strtotime($this->data['campaigns'][$key]['start_date'])) : null;
+          $end_date = !empty($this->data['campaigns'][$key]['end_date']) ? date('Y-m-d H:i:s', strtotime($this->data['campaigns'][$key]['end_date'])) : null;
+
           database::query(
             "update ". DB_TABLE_PREFIX ."products_campaigns set
-            start_date = ". (empty($this->data['campaigns'][$key]['start_date']) ? "null" : "'". date('Y-m-d H:i:s', strtotime($this->data['campaigns'][$key]['start_date'])) ."'") .",
-            end_date = ". (empty($this->data['campaigns'][$key]['end_date']) ? "null" : "'". date('Y-m-d H:i:s', strtotime($this->data['campaigns'][$key]['end_date'])) ."'") .",
+            start_date = ". ($start_date ? "'". $start_date ."'" : "null") .",
+            end_date = ". ($end_date ? "'". $end_date ."'" : "null") .",
             $sql_currency_campaigns
             where product_id = ". (int)$this->data['id'] ."
             and id = ". (int)$this->data['campaigns'][$key]['id'] ."
             limit 1;"
           );
+
+        // Record campaign price history (only on change)
+          $campaign_prices_changed = $is_new_campaign;
+          if (!$is_new_campaign) {
+            foreach (array_keys(currency::$currencies) as $currency_code) {
+              $new_campaign_price = isset($this->data['campaigns'][$key][$currency_code]) ? (float)$this->data['campaigns'][$key][$currency_code] : 0;
+              $old_campaign_price = isset($previous_campaign_prices[$currency_code]) ? $previous_campaign_prices[$currency_code] : null;
+              if ($new_campaign_price != $old_campaign_price) {
+                $campaign_prices_changed = true;
+                break;
+              }
+            }
+          }
+
+          if ($campaign_prices_changed) {
+
+          // Close currently-open history row for this campaign (if any)
+            database::query(
+              "update ". DB_TABLE_PREFIX ."products_prices_history
+              set valid_to = NOW()
+              where product_id = ". (int)$this->data['id'] ."
+              and campaign_id = ". (int)$this->data['campaigns'][$key]['id'] ."
+              and valid_to IS NULL;"
+            );
+
+          // Insert new open row with the campaign start/end dates as validity window
+            $campaign_price_object = [];
+            $has_campaign_price = false;
+            foreach (array_keys(currency::$currencies) as $currency_code) {
+              $cp = isset($this->data['campaigns'][$key][$currency_code]) ? (float)$this->data['campaigns'][$key][$currency_code] : 0;
+              if ($cp > 0) $has_campaign_price = true;
+              $campaign_price_object[$currency_code] = $cp;
+            }
+
+            if ($has_campaign_price) {
+              database::query(
+                "insert into ". DB_TABLE_PREFIX ."products_prices_history
+                (product_id, campaign_id, price, valid_from, valid_to)
+                values (". (int)$this->data['id'] .", ". (int)$this->data['campaigns'][$key]['id'] .", '". database::input(json_encode($campaign_price_object, JSON_UNESCAPED_UNICODE)) ."', ". ($start_date ? "'". $start_date ."'" : "NOW()") .", ". ($end_date ? "'". $end_date ."'" : "NULL") .");"
+              );
+            }
+          }
         }
       }
 
