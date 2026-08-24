@@ -26,11 +26,5 @@ CREATE TABLE IF NOT EXISTS `lc_products_prices_history` (
   KEY `product_valid` (`product_id`, `valid_from`, `valid_to`)
 );
 -- -----
-INSERT INTO `lc_products_prices_history` (`product_id`, `campaign_id`, `price`, `valid_from`, `valid_to`)
-SELECT pp.product_id, 0, JSON_OBJECT('USD', pp.USD, 'EUR', pp.EUR), NOW(), NULL FROM `lc_products_prices` pp;
--- -----
-INSERT INTO `lc_products_prices_history` (`product_id`, `campaign_id`, `price`, `valid_from`, `valid_to`)
-SELECT pc.product_id, pc.id, JSON_OBJECT('USD', pc.USD, 'EUR', pc.EUR), NOW(), NULL FROM `lc_products_campaigns` pc;
--- -----
 INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, `key`, `value`, `function`, `priority`, `date_updated`, `date_created`) VALUES
 ('listings', 'local', 'Display Lowest Price Last 30 Days', 'Display the lowest price of a product in the last 30 days as required by EU Omnibus Directive.', 'display_lowest_price_30_days', '1', 'toggle("e/d")', 50, NOW(), NOW());
