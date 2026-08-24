@@ -297,7 +297,7 @@
             <div class="col-sm-3">
               <div class="form-group">
                 <label><?php echo language::translate('title_captcha', 'CAPTCHA'); ?></label>
-                <?php echo functions::form_draw_captcha_field('captcha', 'upload_vmod', 'required'); ?>
+                <?php echo functions::form_draw_captcha_field('captcha', 'upload_vmod', 'required disabled'); ?>
               </div>
             </div>
 
@@ -315,5 +315,9 @@
 <script>
   $('.data-table :checkbox').change(function() {
     $('#actions').prop('disabled', !$('.data-table :checked').length);
+  }).first().trigger('change');
+
+  $('input[name="vmod"]').change(function() {
+    $('input[name="captcha"]').prop('disabled', !$(this).val());
   }).first().trigger('change');
 </script>
