@@ -28,11 +28,18 @@
     if ($_GET['page'] > 1) database::seek($orders_query, settings::get('data_table_rows_per_page') * ($_GET['page'] - 1));
     $page_items = 0;
 
+    $withdrawal_window_days = settings::get('withdrawal_window_days') ? (int)settings::get('withdrawal_window_days') : 14;
+
     while ($order = database::fetch($orders_query)) {
+      $within_withdrawal_period = (strtotime($order['date_created']) !== false)
+        && (strtotime($order['date_created']) >= strtotime('-'. $withdrawal_window_days .' days'));
+
       $_page->snippets['orders'][] = [
         'id' => $order['id'],
         'link' => document::ilink('order', ['order_id' => $order['id'], 'public_key' => $order['public_key']]),
         'printable_link' => document::ilink('printable_order_copy', ['order_id' => $order['id'], 'public_key' => $order['public_key']]),
+        'withdrawal_link' => document::ilink('withdrawal_request', ['order_id' => $order['id'], 'public_key' => $order['public_key']]),
+        'within_withdrawal_period' => $within_withdrawal_period,
         'order_status' => $order['order_status_name'],
         'date_created' => language::strftime(language::$selected['format_datetime'], strtotime($order['date_created'])),
         'payment_due' => currency::format($order['payment_due'], false, $order['currency_code'], $order['currency_value']),

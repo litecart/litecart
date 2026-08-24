@@ -232,6 +232,13 @@ h1 {
         <?php echo functions::draw_fonticon('fa-print'); ?> <?php echo language::translate('title_print', 'Print'); ?>
       </button>
     </li>
+    <?php if (!empty($within_withdrawal_period)) { ?>
+    <li style="margin-bottom: 8px;">
+      <a class="btn btn-default btn-lg" href="<?php echo functions::escape_html($withdrawal_link); ?>" target="_top">
+        <?php echo functions::draw_fonticon('fa-undo'); ?> <?php echo language::translate('title_withdraw', 'Withdraw'); ?>
+      </a>
+    </li>
+    <?php } ?>
   </ul>
 </div>
 

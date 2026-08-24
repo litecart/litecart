@@ -29,11 +29,16 @@
   $session_language = language::$selected['code'];
   language::set($order->data['language_code']);
 
+  $within_withdrawal_period = !empty($order->data['date_created'])
+    && (strtotime($order->data['date_created']) !== false)
+    && (strtotime($order->data['date_created']) >= strtotime('-14 days'));
   $_page = new ent_view();
   $_page->snippets = [
     'paper_size' => settings::get('default_print_paper_size'),
     'text_direction' => !empty(language::$languages[$order->data['language_code']]['direction']) ? language::$languages[$order->data['language_code']]['direction'] : 'ltr',
     'order' => $order->data,
+    'within_withdrawal_period' => $within_withdrawal_period,
+    'withdrawal_link' => document::ilink('withdrawal_request', ['order_id' => $order->data['id'], 'public_key' => $order->data['public_key']]),
     'comments' => [],
   ];
 
