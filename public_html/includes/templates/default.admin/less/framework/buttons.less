@@ -57,8 +57,13 @@
     }
   }
 
-  &.btn-sm { font-size: ~"calc(var(--default-text-size) * .75)"; padding: ~"calc(var(--input-padding-y) * .75)" ~"calc(var(--input-padding-x) * .75)"; }
-  &.btn-lg { font-size: 1.2em; }
+  &.btn-sm {
+    font-size: ~"calc(var(--default-text-size) * .75)";
+    padding: ~"calc(var(--input-padding-y) * .75)" ~"calc(var(--input-padding-x) * .75)";
+  }
+  &.btn-lg {
+    font-size: 1.2em;
+  }
 
   &.active, &:active { box-shadow: inset 1px 1px 0px 0 rgba(0, 0, 0, .15); }
   &.disabled, &[disabled] { opacity: 0.5; cursor: not-allowed; }
