@@ -190,16 +190,25 @@
 
 // Lowest price last 30 days (EU Omnibus Directive)
   if (settings::get('display_lowest_price_30_days')) {
-    $currency_code = currency::$selected['code'];
     $cutoff = date('Y-m-d H:i:s', strtotime('-30 days'));
+    $currency_codes = array_unique(
+      array_merge(
+        [currency::$selected['code'], settings::get('store_currency_code')],
+        array_column(currency::$currencies, 'code')
+      )
+    );
+
+		$sql_column_price = "coalesce(". implode(", ", array_map(function($currency_code) {
+			return "if(json_value(price, '$.". database::input($currency_code) ."') != 0, json_value(price, '$.". database::input($currency_code) ."') * ". currency::$currencies[$currency_code]['value'] .", null)";
+		}, $currency_codes)) .")";
 
     $lowest_price = database::query(
-      "select min(json_value(price, '$.". database::input($currency_code) ."')) as lowest_price
+      "select min(". $sql_column_price .") as lowest_price
       from ". DB_TABLE_PREFIX ."products_prices_history
       where product_id = ". (int)$product->id ."
-      and json_value(price, '$.". database::input($currency_code) ."') > 0
       and valid_from >= '". $cutoff ."'
-      and (valid_to IS NULL or valid_to >= '". $cutoff ."');"
+      and (valid_to IS NULL or valid_to >= '". $cutoff ."')
+      having lowest_price > 0;"
     )->fetch('lowest_price');
 
     if (!$lowest_price) {
@@ -207,8 +216,7 @@
     }
 
     if ($lowest_price > 0) {
-      $lowest_price_with_tax = tax::get_price($lowest_price, $product->tax_class_id);
-      $_page->snippets['lowest_price_30_days'] = $lowest_price_with_tax;
+      $_page->snippets['lowest_price_30_days'] = tax::get_price($lowest_price, $product->tax_class_id);
     }
   }
 
