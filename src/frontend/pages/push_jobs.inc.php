@@ -6,7 +6,7 @@
 	header('X-Robots-Tag: noindex');
 	header('Content-type: text/plain; charset='. mb_http_output());
 
-	if ($_SERVER['SERVER_SOFTWARE'] != 'CLI') {
+	if (!is_cli()) {
 		if ($last_push = settings::get('jobs_last_push')) {
 			$last_push = strtotime($last_push);
 			if (date('Ymdh', $last_push) == date('Ymdh') && floor(date('i', $last_push)/5) == floor(date('i')/5)) {

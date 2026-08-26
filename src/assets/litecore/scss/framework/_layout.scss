@@ -10,7 +10,7 @@
 }
 
 .container {
-	box-sizing: content-box;
+	box-sizing: border-box;
 	max-width: $media-breakpoint-xxl;
 	margin: 0 auto;
 	width: 100%;

@@ -17,7 +17,7 @@
 			event::register('shutdown', [__CLASS__, 'disconnect']);
 		}
 
-		public static function connect(string $link='default', string $server=DB_SERVER, string $username=DB_USERNAME, string $password=DB_PASSWORD, string $database=DB_DATABASE, string $charset='utf8mb4'): mysqli {
+		public static function connect(string $link='default', string $server=DB_SERVER, string $username=DB_USERNAME, string $password=DB_PASSWORD, string $database=DB_DATABASE, string $collation=DB_COLLATION): mysqli {
 
 			if (!isset(self::$links[$link])) {
 
@@ -48,10 +48,6 @@
 				throw new Error('Invalid database link');
 			}
 
-			if (!empty($charset)) {
-				self::set_charset($charset, $link);
-			}
-
 			$sql_modes = self::query("select @@SESSION.sql_mode as sql_mode;", $link)->fetch(function($row){
 				return f::string_split($row['sql_mode']);
 			});
@@ -68,15 +64,16 @@
 				}
 			}
 
-			self::query("SET SESSION sql_mode = '". database::input(implode(',', $sql_modes)) ."';", $link);
+			self::query("SET SESSION sql_mode = '". self::input(implode(',', $sql_modes)) ."';", $link);
 
-			// Set connection charset
-			self::query("SET names '". database::input($charset) ."';", $link);
+			// Set connection charset and collation
+			if (!$collation) $collation = 'utf8mb4_general_ci';
+			self::query("SET NAMES ". self::input(strtok($collation, '_')) ." COLLATE ". self::input($collation) .";", $link);
 
 			// Set time zone for current session
 			if ($timezone = ini_get('date.timezone')) {
 				$datetime = new \DateTime('now', new \DateTimezone($timezone));
-				self::query("SET time_zone = '". database::input($datetime->format('P')) ."';", $link);
+				self::query("SET time_zone = '". self::input($datetime->format('P')) ."';", $link);
 			}
 
 			return self::$links[$link];
@@ -90,15 +87,6 @@
 			}
 
 			return $result;
-		}
-
-		public static function set_charset(string $charset, string $link='default'): bool {
-
-			if (!$result = mysqli_set_charset(self::$links[$link], $charset)) {
-				trigger_error('Could not set charset for MySQL connection: '. mysqli_errno(self::$links[$link]) .' - '. mysqli_error(self::$links[$link]), E_USER_WARNING);
-			}
-
-			return true;
 		}
 
 		public static function set_option(int $option, $value, string $link='default'): bool {

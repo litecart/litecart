@@ -3,7 +3,10 @@
 	// Shorthand f:: for functions:: (class_alias() doesn't work here)
 	class f {
 		public static function __callstatic($function, $arguments) {
-			return forward_static_call_array(['functions', $function], $arguments);
+			if (!class_exists('functions', true)) {
+				require __DIR__.'/nodes/nod_functions.inc.php';
+			}
+			return forward_static_call('functions::'.$function, ...$arguments);
 		}
 	}
 

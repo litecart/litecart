@@ -91,7 +91,7 @@
 		display: flex;
 		flex-direction: column;
 		margin: 0;
-		padding: 0;
+		padding: 0 1em;
 		gap: 0;
 		align-content: center;
 
@@ -171,7 +171,9 @@
 			padding: .75em;
 		}
 
-		.navbar-toggler-bar {
+		.navbar-toggler-bar,
+		.icon-bar,
+		.navbar-toggle-btn .icon-bar {
 			position: relative;
 			background-color: var(--navbar-text-color);
 			display: block;
@@ -179,7 +181,8 @@
 			height: 2px;
 			transition: all 250ms ease-in-out;
 
-			+ .navbar-toggler-bar {
+			+ .navbar-toggler-bar,
+			+ .icon-bar {
 				margin-top: 4px;
 			}
 
@@ -193,21 +196,48 @@
 		}
 	}
 
+	.navbar .navbar-toggle-btn .icon-bar {
+		position: relative;
+		background-color: var(--navbar-text-color);
+		display: block;
+		width: 22px;
+		height: 2px;
+		transition: all 250ms ease-in-out;
+	}
+	.navbar .navbar-toggle-btn .icon-bar + .icon-bar {
+		margin-top: 4px;
+	}
+
 	&.expanded {
 		.navbar-toggle {
-			.navbar-toggler-bar:nth-of-type(1) {
-				top: 6px;
-				transform: rotate(45deg);
+			.navbar-toggler-bar:nth-of-type(1),
+			.icon-bar:nth-of-type(1),
+			.navbar-toggle-btn .icon-bar:nth-of-type(1) {
+				transform: translateY(10px) rotate(45deg);
 			}
 
-			.navbar-toggler-bar:nth-of-type(2) {
+			.navbar-toggler-bar:nth-of-type(2),
+			.icon-bar:nth-of-type(2),
+			.navbar-toggle-btn .icon-bar:nth-of-type(2) {
 				background-color: transparent;
 			}
 
-			.navbar-toggler-bar:nth-of-type(3) {
-				top: -6px;
-				transform: rotate(-45deg);
+			.navbar-toggler-bar:nth-of-type(3),
+			.icon-bar:nth-of-type(3),
+			.navbar-toggle-btn .icon-bar:nth-of-type(3) {
+				transform: translateY(-10px) rotate(-45deg);
 			}
+		}
+
+		/* X animation when the menu is opened (CSS-only via :has() on the checkbox) */
+		.navbar-toggle-btn .icon-bar:nth-of-type(1) {
+			transform: translateY(10px) rotate(45deg);
+		}
+		.navbar-toggle-btn .icon-bar:nth-of-type(2) {
+			background-color: transparent;
+		}
+		.navbar-toggle-btn .icon-bar:nth-of-type(3) {
+			transform: translateY(-10px) rotate(-45deg);
 		}
 
 		@media (max-width: ($media-breakpoint-md - 1px)) {
@@ -300,4 +330,148 @@
 
 body.navbar-expanded {
 	overflow: hidden;
+}
+.navbar-toggle-btn {
+	display: inline-flex;
+	flex-direction: column;
+	justify-content: space-between;
+	gap: 4px;
+	padding: 0.5em;
+	cursor: pointer;
+}
+
+@media (min-width: $media-breakpoint-md) {
+	.navbar-toggle-btn,
+	.navbar-toggle {
+		display: none !important;
+	}
+}
+
+@media (max-width: ($media-breakpoint-md - 1px)) {
+	.navbar-toggle {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		white-space: nowrap;
+		border: 0;
+		opacity: 0;
+		pointer-events: none;
+	}
+
+	/* Push the hamburger toggle to the right edge of the navbar header */
+	.navbar-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		width: 100%;
+	}
+	.navbar-brand {
+		flex: 0 0 auto;
+	}
+
+	/* Slide-in menu from the left edge of the viewport.
+	   CSS-only implementation via :has() since the framework's JS binding
+	   (offcanvas.js) targets [data-toggle="offcanvas"] which this navbar
+	   doesn't use. */
+	.navbar .navbar-menu {
+		left: 0;
+		margin-left: -100%;
+		overflow-y: auto;
+	}
+	.navbar:has(.navbar-toggle:checked) .navbar-menu {
+		margin-left: 0;
+		opacity: 1;
+		z-index: 1000;
+	}
+	body:has(.navbar .navbar-toggle:checked) {
+		overflow: hidden;
+	}
+
+	/* Themed scrollbar (light mode) */
+	.navbar .navbar-menu {
+		scrollbar-width: thin;
+		scrollbar-color: rgba(0, 0, 0, 0.25) transparent;
+	}
+	.navbar .navbar-menu::-webkit-scrollbar {
+		width: 6px;
+	}
+	.navbar .navbar-menu::-webkit-scrollbar-track {
+		background: transparent;
+	}
+	.navbar .navbar-menu::-webkit-scrollbar-thumb {
+		background: rgba(0, 0, 0, 0.25);
+		border-radius: 3px;
+	}
+	.navbar .navbar-menu::-webkit-scrollbar-thumb:hover {
+		background: rgba(0, 0, 0, 0.4);
+	}
+
+	/* Themed scrollbar (dark mode) */
+	html[data-theme=dark] .navbar .navbar-menu {
+		scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+	}
+	html[data-theme=dark] .navbar .navbar-menu::-webkit-scrollbar-thumb {
+		background: rgba(255, 255, 255, 0.3);
+	}
+	html[data-theme=dark] .navbar .navbar-menu::-webkit-scrollbar-thumb:hover {
+		background: rgba(255, 255, 255, 0.5);
+	}
+	@media (prefers-color-scheme: dark) {
+		html:not([data-theme=light]) .navbar .navbar-menu {
+			scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+		}
+		html:not([data-theme=light]) .navbar .navbar-menu::-webkit-scrollbar-thumb {
+			background: rgba(255, 255, 255, 0.3);
+		}
+		html:not([data-theme=light]) .navbar .navbar-menu::-webkit-scrollbar-thumb:hover {
+			background: rgba(255, 255, 255, 0.5);
+		}
+	}
+
+	/* Dark mode background for the offcanvas menu */
+	html[data-theme=dark] .navbar .navbar-menu {
+		background: var(--card-background);
+		color: var(--default-text-color);
+	}
+	@media (prefers-color-scheme: dark) {
+		html:not([data-theme=light]) .navbar .navbar-menu {
+			background: var(--card-background);
+			color: var(--default-text-color);
+		}
+	}
+
+	.navbar .navbar-menu .dropdown > .dropdown-menu,
+	.navbar .navbar-menu .dropdown-start > .dropdown-menu,
+	.navbar .navbar-menu .dropdown-end > .dropdown-menu {
+		visibility: hidden;
+		opacity: 0;
+		display: none;
+	}
+	.navbar .navbar-menu .dropdown.open > .dropdown-menu,
+	.navbar .navbar-menu .dropdown-start.open > .dropdown-menu,
+	.navbar .navbar-menu .dropdown-end.open > .dropdown-menu {
+		visibility: visible;
+		opacity: 1;
+		display: block;
+	}
+
+	/* app.css has #site-navigation [data-id=languages] .dropdown-menu {
+	   display: block; } which forces the 1000+px tall languages list to
+	   always render. On mobile it should behave like other collapsed dropdowns. */
+	#site-navigation [data-id="languages"] .dropdown-menu,
+	.navbar .navbar-menu [data-id="languages"] .dropdown-menu {
+		visibility: hidden;
+		opacity: 0;
+		display: none !important;
+	}
+	#site-navigation [data-id="languages"].open .dropdown-menu,
+	.navbar .navbar-menu [data-id="languages"].open .dropdown-menu {
+		visibility: visible;
+		opacity: 1;
+		display: block !important;
+	}
 }

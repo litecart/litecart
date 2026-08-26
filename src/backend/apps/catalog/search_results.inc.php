@@ -12,9 +12,9 @@
 			if(p.id = '". database::input($query) ."', 10, 0)
 			+ if(p.code regexp '". database::input($code_regex) ."', 5, 0)
 
-			+ if (json_value(p.name, '$.". database::input(language::$selected['code']) ."') collate utf8mb4_unicode_ci like '%". database::input($query) ."%', 5, 0)
-			+ if (json_value(p.short_description, '$.". database::input(language::$selected['code']) ."') collate utf8mb4_unicode_ci like '%". database::input($query) ."%', 3, 0)
-			+ if (json_value(p.description, '$.". database::input(language::$selected['code']) ."') collate utf8mb4_unicode_ci like '%". database::input($query) ."%', 2, 0)
+			+ if (json_value(p.name, '$.". database::input(language::$selected['code']) ."') like '%". database::input($query) ."%', 5, 0)
+			+ if (json_value(p.short_description, '$.". database::input(language::$selected['code']) ."') like '%". database::input($query) ."%', 3, 0)
+			+ if (json_value(p.description, '$.". database::input(language::$selected['code']) ."') like '%". database::input($query) ."%', 2, 0)
 
 			+ if (p.id in (
 				select product_id from ". DB_TABLE_PREFIX ."products_stock_options

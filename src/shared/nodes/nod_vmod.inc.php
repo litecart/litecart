@@ -12,7 +12,7 @@
 		private static $_settings = [];                // Array of modification settings
 		public static  $time_elapsed = 0;              // Integer of time elapsed during operations
 
-		public static function init() {
+		public static function init(): void {
 
 			// Check if enabled
 			if (defined('VMOD_DISABLED') && filter_var(VMOD_DISABLED, FILTER_VALIDATE_BOOL)) {
@@ -166,7 +166,7 @@
 		## Node specific methods
 
 		// Return a modified file
-		public static function check($file) {
+		public static function check(string $file): string {
 
 			// Halt if there is nothing to modify
 			if (!self::$enabled || !$file || !self::$_files_to_modifications) {
@@ -267,7 +267,7 @@
 						switch ($operation['onerror']) {
 
 							case 'abort':
-								trigger_error("Modification \"$vmod[name]\" failed during operation #$i in $original_file: Search not found [ABORTED]", E_USER_WARNING);
+								trigger_error("vMod modification \"$vmod[name]\" (ID: $vmod[id]) failed during operation #$i in $original_file: Search not found [ABORTED]", E_USER_WARNING);
 								continue 3;
 
 							case 'ignore':
@@ -275,7 +275,7 @@
 
 							case 'warning':
 							default:
-								trigger_error("Modification \"$vmod[name]\" failed during operation #$i in $original_file: Search not found", E_USER_WARNING);
+								trigger_error("vMod modification \"$vmod[name]\" (ID: $vmod[id]) failed during operation #$i in $original_file: Search not found", E_USER_WARNING);
 								continue 2;
 						}
 					}
@@ -343,7 +343,7 @@
 			return FS_DIR_STORAGE . $modified_file;
 		}
 
-		public static function load($file) {
+		public static function load(string $file): void {
 
 			try {
 
@@ -465,8 +465,8 @@
 					// Exceute install script
 					if ($dom->getElementsByTagName('install')->length) {
 
-						require_once vmod::check(FS_DIR_APP . 'shared/shorthand.inc.php');
 						require_once vmod::check(FS_DIR_APP . 'shared/compatibility.inc.php');
+						require_once vmod::check(FS_DIR_APP . 'shared/shorthand.inc.php');
 						require_once vmod::check(FS_DIR_APP . 'shared/autoloader.inc.php');
 
 						$tmp_file = stream_get_meta_data(tmpfile())['uri'];
@@ -476,7 +476,7 @@
 							include func_get_arg(0);
 						})($tmp_file);
 
-						header('Location: '. $_SERVER['REQUEST_URI'], true, 302);
+						reload();
 						exit;
 					}
 
@@ -488,7 +488,7 @@
 			}
 		}
 
-		public static function parse_xml($dom, $file) {
+		public static function parse_xml(DoMDocument|null $dom, string $file): array {
 
 			if (!$dom) {
 
@@ -496,11 +496,7 @@
 					throw new \Exception('Could not read file');
 				}
 
-				if (!$dom = new \DOMDocument()) {
-					throw new \Exception('Could not parse file as XML');
-				}
-
-				if (!$dom->loadXML($xml)) {
+				if (!$dom = new \DOMDocument() || !$dom->loadXML($xml)) {
 					throw new \Exception('Could not parse file as XML');
 				}
 			}

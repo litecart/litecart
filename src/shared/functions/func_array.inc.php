@@ -7,6 +7,30 @@
 		});
 	}
 
+	// Return the closest match to a given number or string
+	function array_closest(string|int|float $case, array $matchables): int|float|string {
+		$closest = $matchables[0];
+
+		if (is_numeric($case)) {
+			foreach ($matchables as $current)
+				if (abs($case - $current) < abs($case - $closest))
+					$closest = $current;
+		} else {
+			$distance = levenshtein((string)$case, (string)$closest);
+
+			foreach ($matchables as $current) {
+				$current_distance = levenshtein((string)$case, (string)$current);
+
+				if ($current_distance < $distance) {
+					$closest = $current;
+					$distance = $current_distance;
+				}
+			}
+		}
+
+		return $closest;
+	}
+
 	// Retain the original array keys when extracting an array column by passing $index_key = true
 	function array_column_intact(array $array, int|string|null $column_key, bool|int|string|null $index_key = null): array {
 		if ($index_key === true) {

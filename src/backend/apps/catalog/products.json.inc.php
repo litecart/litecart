@@ -20,7 +20,7 @@
 		$sql_find = [
 			"p.id = '". database::input($_REQUEST['query']) ."'",
 			"p.code like '". addcslashes(database::input($_REQUEST['query']), '%_') ."%'",
-			"json_value(p.name, '$.". database::input($_GET['language_code']) ."') collate utf8mb4_unicode_ci like '%". addcslashes(database::input($_REQUEST['query']), '%_') ."%'",
+			"json_value(p.name, '$.". database::input($_GET['language_code']) ."') like '%". addcslashes(database::input($_REQUEST['query']), '%_') ."%'",
 			"find_in_set(p.keywords, '". database::input($_REQUEST['query']) ."')",
 		];
 	}

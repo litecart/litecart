@@ -19,7 +19,7 @@
 			select transaction_id from ". DB_TABLE_PREFIX ."stock_transactions_contents
 			where stock_item_id in (
 				select id from ". DB_TABLE_PREFIX ."stock_items si
-				where json_value(si.name, '$.". database::input(language::$selected['code']) ."') collate utf8mb4_unicode_ci like '%". database::input($_GET['query']) ."%'
+				where json_value(si.name, '$.". database::input(language::$selected['code']) ."') like '%". database::input($_GET['query']) ."%'
 				or si.sku like '%". database::input($_GET['query']) ."%'
 				or si.mpn like '%". database::input($_GET['query']) ."%'
 				or si.gtin like '%". database::input($_GET['query']) ."%'

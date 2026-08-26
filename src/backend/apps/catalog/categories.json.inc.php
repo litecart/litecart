@@ -13,7 +13,7 @@
 		if (!empty($_GET['query'])) {
 			$sql_find = [
 				"c.id = '". database::input($_GET['query']) ."'",
-				"json_value(c.name, '$.". database::input(language::$selected['code']) ."') collate utf8mb4_unicode_ci like '%". database::input($_GET['query']) ."%'",
+				"json_value(c.name, '$.". database::input(language::$selected['code']) ."') like '%". database::input($_GET['query']) ."%'",
 			];
 		}
 

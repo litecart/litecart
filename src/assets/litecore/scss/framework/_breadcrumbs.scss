@@ -18,10 +18,13 @@
 		background: var(--breadcrumb-item-background);
 		color: var(--breadcrumb-item-text-color);
 
-		&::before {
+		&:not(:last-child)::after {
 			content: "/\00a0";
-			padding: 0 5px;
+			margin: 0 0.5rem;
+			//color: var(--default-text-color-subtle);
 			color: var(--breadcrumb-item-text-color);
+			opacity: 0.6;
+			font-weight: 400;
 		}
 
 		a {

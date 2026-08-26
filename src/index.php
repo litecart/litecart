@@ -27,8 +27,8 @@
 				'',
 				'Command:',
 				'  push_jobs          Run the background jobs',
-				'  navigate {uri}     Navigate to a specific URI',
 				'  mcp_server         Start the MCP server (Listens to JSON-RPC 2.0 request from stdin)',
+				'  navigate {uri}     Navigate to a specific URI',
 				'',
 				'Environment Variables:',
 				'  PHP_AUTH_USER      Administrator username (Required for mcp_server command)',
@@ -68,6 +68,8 @@
 				}
 
 				$_SERVER['REQUEST_URI'] = $argv[2];
+
+				customer::load(1);
 
 				break;
 

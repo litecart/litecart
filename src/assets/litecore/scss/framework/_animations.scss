@@ -14,3 +14,8 @@
 	from { transform: rotate(0deg); }
 	to { transform: rotate(360deg); }
 }
+
+@keyframes pulse {
+	0%, 100% { transform: scale(0.85); opacity: 0.9; }
+	50% { transform: scale(1.1); opacity: 1; }
+}

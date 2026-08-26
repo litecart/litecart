@@ -10,7 +10,7 @@
 	class McpException extends Exception {
 		public $rpc_id;
 		public $rpc_code;
-		public function __construct($message, $code = 400, $rpc_code = -32000, $rpc_id = null) {
+		public function __construct($message, $code=400, $rpc_code=-32000, $rpc_id=null) {
 			parent::__construct($message, $code);
 			$this->rpc_id = $rpc_id;
 			$this->rpc_code = $rpc_code;
@@ -22,7 +22,7 @@
 	// Only allow POST requests (HTTP only — CLI uses stdio)
 	if (!is_cli() && $_SERVER['REQUEST_METHOD'] !== 'POST') {
 
-		$out = f::format_json([
+		$output = f::format_json([
 			'jsonrpc' => '2.0',
 			'id' => null,
 			'error' => [
@@ -35,8 +35,8 @@
 		http_response_code(405);
 		header('Date: '. date('r'));
 		header('Content-Type: application/json; charset=UTF-8');
-		header('Content-Length: '. strlen($out));
-		echo $out;
+		header('Content-Length: '. strlen($output));
+		echo $output;
 		exit;
 	}
 
@@ -106,22 +106,22 @@
 
 	} catch (McpException $e) {
 
-		$out = f::format_json([
+		$output = f::format_json([
 			'jsonrpc' => '2.0',
 			'id'      => $e->rpc_id,
 			'error'   => ['code' => $e->rpc_code, 'message' => $e->getMessage()],
 		], $indent);
 
 		if (is_cli()) {
-			fwrite(STDOUT, $out . "\n");
+			fwrite(STDOUT, $output . "\n");
 		} else {
 			http_response_code($e->getCode() ?: 500);
 			if ($e->getCode() == 401) header('WWW-Authenticate: Basic realm="'. PLATFORM_NAME .' MCP Server"');
 			ob_clean();
 			header('Date: '. date('r'));
 			header('Content-Type: application/json; charset=UTF-8');
-			header('Content-Length: '. strlen($out));
-			echo $out;
+			header('Content-Length: '. strlen($output));
+			echo $output;
 		}
 
 		exit;
@@ -268,7 +268,11 @@
 					throw new McpException('Method not found', 404, -32601);
 			}
 
-			$output = f::format_json(['jsonrpc' => '2.0', 'id' => $rpc_id, 'result' => $result], $indent);
+			$output = f::format_json([
+				'jsonrpc' => '2.0',
+				'id' => $rpc_id,
+				'result' => $result
+			], $indent);
 
 			if ($output === false) {
 				throw new McpException('Encoding error', 500, -32603);
@@ -303,11 +307,11 @@
 			$line = trim($line);
 			if ($line === '') continue;
 
-			$out = $dispatch($line);
+			$output = $dispatch($line);
 
-			if ($out !== null) {
+			if ($output !== null) {
 				ob_clean(); // Discard any buffered output from tool execution
-				fwrite(STDOUT, $out . "\n");
+				fwrite(STDOUT, $output . "\n");
 				fflush(STDOUT);
 			}
 		}
@@ -317,9 +321,9 @@
 	}
 
 	// HTTP: single request → response
-	$out = $dispatch(file_get_contents('php://input', false, null, 0, 65536));
+	$output = $dispatch(file_get_contents('php://input', false, null, 0, 65536));
 
-	if ($out === null) {
+	if ($output === null) {
 		ob_clean();
 		http_response_code(204);
 		exit;
@@ -328,6 +332,6 @@
 	ob_clean();
 	header('Date: '. date('r'));
 	header('Content-Type: application/json; charset=UTF-8');
-	header('Content-Length: '. strlen($out));
-	echo $out;
+	header('Content-Length: '. strlen($output));
+	echo $output;
 	exit;

@@ -48,8 +48,8 @@ Done!
 
 You can now execute any of the following commands:
 
-		npm run build         (Compile LESS/SCSS to CSS, minify JS — includes watch)
-		npm run watch         (Watch for changes in LESS/JS/SCSS and recompile)
+		npm run build         (Compile SCSS to CSS, minify JS — includes watch)
+		npm run watch         (Watch for changes in JS and SCSS then recompile)
 		npm run phplint       (Check PHP scripts for syntax errors via Gulp)
 		npm test              (Run platform tests — requires a running database)
 		npm run hash          (Update checksums.md5 for all tracked files)
@@ -91,15 +91,15 @@ When editing JSON files, make targeted changes and preserve the surrounding form
 
 # CSS and Frontend Assets
 
-Storefront styles are compiled from LESS source files:
+Storefront styles are compiled from SCSS source files:
 
-		frontend/templates/default/less/variables.less   (CSS custom properties — theme tokens)
-		frontend/templates/default/less/app.less          (main storefront styles)
-		frontend/templates/default/less/checkout.less     (checkout-specific styles)
+		frontend/templates/default/scss/variables.scss   (CSS custom properties — theme tokens)
+		frontend/templates/default/scss/app.scss          (main storefront styles)
+		frontend/templates/default/scss/checkout.scss     (checkout-specific styles)
 
-All color values must use CSS custom properties defined in `variables.less`. Do not hardcode hex/rgb values in component LESS files.
+All color values must use CSS custom properties defined in `variables.scss`. Do not hardcode hex/rgb values in component SCSS files.
 
-**Important:** Compiled CSS files must be committed alongside LESS source changes. Run `npm run build` before committing.
+**Important:** Compiled CSS files must be committed alongside SCSS source changes. Run `npm run build` before committing.
 
 
 # How To Make a Git Pull Request

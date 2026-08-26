@@ -1,35 +1,9 @@
 /*!
-	LiteCart v3.0.0 - Superfast, lightweight e-commerce platform built built with for simplicity.
-	Link: https://www.litecart.net/
-	License: CC-BY-ND-4.0
-	Author: T. Almroth, LiteCart AB
-*/
-
-/* Minimal waitFor() implementation
-	Calls callback when objectName is defined in the global scope
-	waitTime is the time between retries, in milliseconds (default 50ms)
-	retries is the number of times to retry before giving up (default 100)
+ * LiteCart.net v3.0.0 - Official website
+ * @link https://www.litecart.net/
+ * @license UNLICENSED
+ * @author T. Almroth
  */
-window.waitFor = (objectName, callback, waitTime=50, retries=100) => {
-
-	if (typeof(objectName) !== 'string') {
-		throw new TypeError('First argument to waitFor() must be a string');
-	}
-
-	if (typeof(window[objectName]) !== 'undefined') {
-		callback(window[objectName]);
-
-	} else if (retries > 0) {
-
-		setTimeout(() => {
-			waitFor(objectName, callback, waitTime, --retries);
-		}, waitTime);
-
-	} else {
-		console.warn(`waitFor(${objectName}) timed out`);
-	}
-};
-
 
 /* Minimal waitFor() implementation
  * Calls callback when objectName is defined in the global scope
@@ -1118,13 +1092,17 @@ waitFor('jQuery', ($) => {
 
 });
 
-// Off-Canvas Sidebar (data-toggle="offcanvas-collapse")
+// Off-Canvas Sidebar (data-toggle="offcanvas")
 waitFor('jQuery', ($) => {
 
 	$('[data-toggle="offcanvas"]').on('click', function() {
-		$(this).closest('.navbar').toggleClass('expanded');
-		$('body').toggleClass('offcanvas-open', $(this).closest('.navbar').hasClass('expanded'));
-		$('body').css('overflow', $(this).closest('.navbar').hasClass('expanded') ? 'hidden' : '');
+		const $navbar = $(this).closest('.navbar');
+		const $button = $(this);
+		$navbar.toggleClass('expanded');
+		const isExpanded = $navbar.hasClass('expanded');
+		$('body').toggleClass('offcanvas-open', isExpanded);
+		$('body').css('overflow', isExpanded ? 'hidden' : '');
+		$button.attr('aria-expanded', isExpanded);
 	});
 
 });
@@ -1407,3 +1385,28 @@ waitFor('jQuery', ($) => {
 	});
 
 });
+
+/* Minimal waitFor() implementation
+	Calls callback when objectName is defined in the global scope
+	waitTime is the time between retries, in milliseconds (default 50ms)
+	retries is the number of times to retry before giving up (default 100)
+ */
+window.waitFor = (objectName, callback, waitTime=50, retries=100) => {
+
+	if (typeof(objectName) !== 'string') {
+		throw new TypeError('First argument to waitFor() must be a string');
+	}
+
+	if (typeof(window[objectName]) !== 'undefined') {
+		callback(window[objectName]);
+
+	} else if (retries > 0) {
+
+		setTimeout(() => {
+			waitFor(objectName, callback, waitTime, --retries);
+		}, waitTime);
+
+	} else {
+		console.warn(`waitFor(${objectName}) timed out`);
+	}
+};

@@ -464,7 +464,7 @@
 			self::$foot_tags[$key] = $tags;
 		}
 
-		public static function load_style(string|array $resources, ?string $key=null): void {
+		public static function load_style(string|array $resources, ?string $key=''): void {
 
 			if (!is_array($resources)) {
 				$resources = [$resources];
@@ -473,8 +473,12 @@
 			$styles = [];
 
 			foreach ($resources as $resource) {
-				if (preg_match('#^(app://|storage://|'. preg_quote(DOCUMENT_ROOT, '#') .')#', $resource) && is_file($resource)) {
-					$styles[] = '<link rel="stylesheet" integrity="sha256-'. base64_encode(hash_file('sha256', $resource, true)) .'" crossorigin="anonymous" href="'. self::href_rlink($resource) .'">';
+				if (preg_match('#^(app://|storage://|'. preg_quote(DOCUMENT_ROOT, '#') .')#', $resource)) {
+					if (is_file($resource)) {
+						$styles[] = '<link rel="stylesheet" integrity="sha256-'. base64_encode(hash_file('sha256', $resource, true)) .'" crossorigin="anonymous" href="'. self::href_rlink($resource) .'">';
+					} else {
+						trigger_error('Stylesheet not found: '. $resource, E_USER_WARNING);
+					}
 				} else {
 					$styles[] = '<link rel="stylesheet" href="'. self::href_link($resource) .'">';
 				}
@@ -483,7 +487,7 @@
 			self::$head_tags[$key] = implode(PHP_EOL, $styles);
 		}
 
-		public static function load_script(string|array $resources, ?string $key=null): void {
+		public static function load_script(string|array $resources, ?string $key=''): void {
 
 			if (!is_array($resources)) {
 				$resources = [$resources];
@@ -492,8 +496,12 @@
 			$scripts = [];
 
 			foreach ($resources as $resource) {
-				if (preg_match('#^(app://|storage://|'. preg_quote(DOCUMENT_ROOT, '#') .')#', $resource) && is_file($resource)) {
-					$scripts[] = '<script defer nonce="'. security::$data['nonce'] .'" integrity="sha256-'. base64_encode(hash_file('sha256', $resource, true)) .'" crossorigin="anonymous" src="'. self::href_rlink($resource) .'"></script>';
+				if (preg_match('#^(app://|storage://|'. preg_quote(DOCUMENT_ROOT, '#') .')#', $resource)) {
+					if (is_file($resource)) {
+						$scripts[] = '<script defer nonce="'. security::$data['nonce'] .'" integrity="sha256-'. base64_encode(hash_file('sha256', $resource, true)) .'" crossorigin="anonymous" src="'. self::href_rlink($resource) .'"></script>';
+					} else {
+						trigger_error('Script not found: '. $resource, E_USER_WARNING);
+					}
 				} else {
 					$scripts[] = '<script nonce="'. security::$data['nonce'] .'" src="'. self::href_link($resource) .'"></script>';
 				}

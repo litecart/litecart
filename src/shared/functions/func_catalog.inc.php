@@ -230,7 +230,7 @@
 		}
 
 		if (!empty($filter['product_name'])) {
-			$sql_inner_where['product_name'] = "json_value(p.name, '$.". database::input(language::$selected['code']) ."') collate utf8mb4_unicode_ci like '%". addcslashes(database::input($filter['product_name']), '%_') ."%'";
+			$sql_inner_where['product_name'] = "json_value(p.name, '$.". database::input(language::$selected['code']) ."') like '%". addcslashes(database::input($filter['product_name']), '%_') ."%'";
 		}
 
 		if (!empty($filter['brands'])) {
@@ -443,21 +443,21 @@
 			);
 
 			$sql_select_relevance[] = (
-				"if(json_value(p.name, '$.". database::input(language::$selected['code']) ."') collate utf8mb4_unicode_ci like '%". addcslashes(database::input($filter['query']), '%_') ."%', 3, 0)"
+				"if(json_value(p.name, '$.". database::input(language::$selected['code']) ."') like '%". addcslashes(database::input($filter['query']), '%_') ."%', 3, 0)"
 			);
 
 			$sql_select_relevance[] = (
-				"if(json_value(p.short_description, '$.". database::input(language::$selected['code']) ."') collate utf8mb4_unicode_ci like '%". addcslashes(database::input($filter['query']), '%_') ."%', 2, 0)"
+				"if(json_value(p.short_description, '$.". database::input(language::$selected['code']) ."') like '%". addcslashes(database::input($filter['query']), '%_') ."%', 2, 0)"
 			);
 
 			$sql_select_relevance[] = (
-				"if(json_value(p.description, '$.". database::input(language::$selected['code']) ."') collate utf8mb4_unicode_ci like '%". addcslashes(database::input($filter['query']), '%_') ."%', 1, 0)"
+				"if(json_value(p.description, '$.". database::input(language::$selected['code']) ."') like '%". addcslashes(database::input($filter['query']), '%_') ."%', 1, 0)"
 			);
 		}
 
 		if (!empty($filter['product_name'])) {
 			$sql_select_relevance['product_name'] = (
-				"if(json_value(p.name, '$.". database::input(language::$selected['code']) ."') collate utf8mb4_unicode_ci like '%". addcslashes(database::input($filter['product_name']), '%_') ."%', 1, 0)"
+				"if(json_value(p.name, '$.". database::input(language::$selected['code']) ."') like '%". addcslashes(database::input($filter['product_name']), '%_') ."%', 1, 0)"
 			);
 		}
 

@@ -58,7 +58,7 @@ src/
 │   ├── pages/                  - Backend page controllers (login, about, search)
 │   ├── partials/               - Backend UI components
 │   ├── routes/                 - Backend URL routing
-│   ├── template/               - Backend HTML/CSS/JS/LESS template
+│   ├── template/               - Backend HTML/CSS/JS/SCSS template
 │   └── widgets/                - Dashboard widgets (orders, stats, graphs, addons, discussions)
 ├── frontend/                   - Storefront
 │   ├── mcp/                    - Frontend MCP tools (JSON-RPC server)
@@ -71,10 +71,10 @@ src/
 │           ├── fonts/          - Fonts
 │           ├── images/         - Theme images
 │           ├── js/             - JavaScripts
-│           ├── less/           - Leaner Style Sheets (LESS) source files
 │           ├── emails/         - Transactional email templates
 │           ├── layouts/        - Visuals for content surroundings
 │           ├── pages/          - Visuals for pages
+│           ├── scss/           - Syntactically Awesome Style Sheets (SCSS) source files
 │           └── partials/       - Visuals for partials
 ├── shared/                     - Core application logic
 │   ├── abstracts/              - Base classes (abs_module, abs_modules, abs_reference_entity)
@@ -173,7 +173,7 @@ Make sure you have a good understanding of LiteCart's platform model.
 
 ## How To Change The Look Of Your Store
 
-Navigate to the folder ~/frontend/templates/ and you will find all HTML content and CSS files to edit. If you chose LESS instead of CSS during install you will need edit the .less files instead of .css and use a LESS compiler to build new CSS versions. We recommend downloading our [Developer Kit](https://www.litecart.net/addons/163/developer-kit) that has a preconfigured LESS compiler and JavaScript minifier.
+Navigate to the folder ~/frontend/templates/ and you will find all HTML content and CSS files to edit. If you chose SCSS instead of CSS during install you will need edit the .scss files instead of .css and use an SCSS compiler to build new CSS versions. We recommend downloading our [Developer Kit](https://www.litecart.net/addons/163/developer-kit) that has a preconfigured SCSS compiler and JavaScript minifier.
 
 See our wiki article [How To Create a Template](https://www.litecart.net/en/wiki/how_to_create_a_template).
 

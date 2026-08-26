@@ -7,8 +7,9 @@
 		file_get_contents('storage://robots.txt'),
 		'',
 		'User-agent: *',
-		'Disallow: /cache/*',
-		'Disallow: /storage/cache/*',
+		'Disallow: '. WS_DIR_STORAGE . 'cache/*',
+		'Disallow: '. WS_DIR_STORAGE . '*/search',
+		'Disallow: '. WS_DIR_STORAGE . 'search',
 	];
 
 	// Sitemap

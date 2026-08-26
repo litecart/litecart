@@ -4,7 +4,7 @@
 
 - PHP code must comply with modern PHP standards no earlier than 8.0+ (recommended 8.3+).
 - HTML code must comply with HTML 5. Self-closing tags required (`<br />`, `<img ... />`).
-- Style definitions must be compliant with CSS 3. All color values must use CSS custom properties defined in `variables.less`.
+- Style definitions must be compliant with CSS 3. All color values must use CSS custom properties defined in `variables.scss`.
 - Any use of JavaScript should honour the jQuery framework.
 
 
@@ -718,7 +718,7 @@ Example:
 
 ## CSS Custom Properties
 
-All coloring in CSS/LESS/SCSS files should use CSS variables defined in `variables.scss`.
+All coloring in CSS/SCSS files should use CSS variables defined in `variables.scss`.
 
 Incorrect:
 
@@ -733,7 +733,7 @@ Correct:
 
 ```css
 .element {
-	color: var(--sale-price-tex-color);
+	color: var(--sale-price-text-color);
 	background: var(--overlay-dark);
 }
 ```

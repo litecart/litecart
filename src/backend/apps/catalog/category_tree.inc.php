@@ -285,9 +285,9 @@
 			or find_in_set('". database::input($_GET['query']) ."', keywords)
 			or code regexp '". database::input($code_regex) ."'
 			or (
-				json_value(name, '$.". database::input(language::$selected['code']) ."') collate utf8mb4_unicode_ci like '%". database::input($_GET['query']) ."%'
-				or json_value(short_description, '$.". database::input(language::$selected['code']) ."') collate utf8mb4_unicode_ci like '%". database::input($_GET['query']) ."%'
-				or json_value(description, '$.". database::input(language::$selected['code']) ."') collate utf8mb4_unicode_ci like '%". database::input($_GET['query']) ."%'
+				json_value(name, '$.". database::input(language::$selected['code']) ."') like '%". database::input($_GET['query']) ."%'
+				or json_value(short_description, '$.". database::input(language::$selected['code']) ."') like '%". database::input($_GET['query']) ."%'
+				or json_value(description, '$.". database::input(language::$selected['code']) ."') like '%". database::input($_GET['query']) ."%'
 				or find_in_set('". database::input($_GET['query']) ."', json_value(synonyms, '$.". database::input(language::$selected['code']) ."'))
 			)
 			or (
@@ -318,8 +318,8 @@
 			where id = '". database::input($_GET['query']) ."'
 			or find_in_set('". database::input($_GET['query']) ."', keywords)
 			or (
-				json_value(name, '$.". database::input(language::$selected['code']) ."') collate utf8mb4_unicode_ci like '%". database::input($_GET['query']) ."%'
-				or json_value(short_description, '$.". database::input(language::$selected['code']) ."') collate utf8mb4_unicode_ci like '%". database::input($_GET['query']) ."%'
+				json_value(name, '$.". database::input(language::$selected['code']) ."') like '%". database::input($_GET['query']) ."%'
+				or json_value(short_description, '$.". database::input(language::$selected['code']) ."') like '%". database::input($_GET['query']) ."%'
 			)
 			or (
 				match(json_value(name, '$.". database::input(language::$selected['code']) ."') against ('*". database::input_fulltext($_GET['query']) ."*')
