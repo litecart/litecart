@@ -1339,6 +1339,38 @@
 				"chk_price": "JSON_VALID(price)"
 			}
 		},
+		"products_prices_history": {
+			"columns": {
+				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
+				"product_id": { "type": "INT", "length": 10, "unsigned": true, "default": 0 },
+				"campaign_id": { "type": "INT", "length": 10, "unsigned": true, "default": 0 },
+				"price": { "type": "JSON", "default": "'{}'", "comment": "TYPE:JSON" },
+				"valid_from": { "type": "TIMESTAMP", "nullable": true },
+				"valid_to": { "type": "TIMESTAMP", "nullable": true },
+				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
+			},
+			"primary_key": ["id"],
+			"keys": {
+				"product_id": ["product_id"],
+				"valid_from": ["valid_from"],
+				"valid_to": ["valid_to"],
+				"product_valid": ["product_id", "valid_from", "valid_to"]
+			},
+			"foreign_keys": {
+				"product_price_history_to_product": {
+					"columns": ["product_id"],
+					"references": {
+						"table": "products",
+						"columns": ["id"],
+						"on_update": "CASCADE",
+						"on_delete": "CASCADE"
+					}
+				}
+			},
+			"check_constraints": {
+				"chk_price": "JSON_VALID(price)"
+			}
+		},
 		"products_stock_options": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },

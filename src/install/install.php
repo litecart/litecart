@@ -9,7 +9,7 @@
 		'store_name::', 'store_email::', 'country_code::', 'store_country_code::', 'store_language_code::', 'store_time_zone::',
 	];
 
-	require_once __DIR__ . '/../init.inc.php';
+	require_once __DIR__ . '/includes/init.inc.php';
 
 	csp_send_headers();
 

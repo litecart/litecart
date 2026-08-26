@@ -23,19 +23,19 @@
 	// already bootstrapped init.inc.php, so constants it defined (FS_DIR_APP,
 	// FS_DIR_STORAGE, WS_DIR_APP, WS_DIR_STORAGE, DOCUMENT_ROOT) are redefined
 	// here with identical values — suppress the E_WARNING noise with @.
-	if (is_file(__DIR__ . '/../../storage/config.inc.php')) {
+	if (is_file(__DIR__ . '/../storage/config.inc.php')) {
 		$installation_detected = true;
-		@include(__DIR__ . '/../../storage/config.inc.php'); // 3.0.0+
+		@include(__DIR__ . '/../storage/config.inc.php'); // 3.0.0+
 
-	} else if (is_file(__DIR__ . '/../../shared/config.inc.php')) { // Prior to 3.x
+	} else if (is_file(__DIR__ . '/../shared/config.inc.php')) { // Prior to 3.x
 		$installation_detected = true;
-		@include(__DIR__ . '/../../shared/config.inc.php');
+		@include(__DIR__ . '/../shared/config.inc.php');
 
 	} else {
 		$installation_detected = false;
 	}
 
-	require_once __DIR__ . '/../init.inc.php';
+	require_once __DIR__ . '/includes/init.inc.php';
 
 	csp_send_headers();
 
@@ -119,11 +119,11 @@
 	$requirements = json_decode(file_get_contents(__DIR__ . '/../requirements.json'), true);
 
 	// Set platform name
-	preg_match('#define\(\'PLATFORM_NAME\', \'([^\']+)\'\);#', file_get_contents(__DIR__.'/../../shared/app_header.inc.php'), $matches);
+	preg_match('#define\(\'PLATFORM_NAME\', \'([^\']+)\'\);#', file_get_contents(__DIR__.'/../shared/app_header.inc.php'), $matches);
 	define('PLATFORM_NAME', isset($matches[1]) ? $matches[1] : false);
 
 	// Set platform version
-	preg_match('#define\(\'PLATFORM_VERSION\', \'([^\']+)\'\);#', file_get_contents(__DIR__.'/../../shared/app_header.inc.php'), $matches);
+	preg_match('#define\(\'PLATFORM_VERSION\', \'([^\']+)\'\);#', file_get_contents(__DIR__.'/../shared/app_header.inc.php'), $matches);
 	define('PLATFORM_VERSION', isset($matches[1]) ? $matches[1] : false);
 
 	if (!PLATFORM_VERSION) {

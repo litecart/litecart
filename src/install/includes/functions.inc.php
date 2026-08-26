@@ -1,9 +1,5 @@
 <?php
 
-	if (!function_exists('file_copy')) {
-		include_once __DIR__.'/../shared/functions/func_file.inc.php';
-	}
-
 	/*
 		Backwards-compatible alias for the previous standalone helper. The
 		install and upgrade pages still call this name; future call sites

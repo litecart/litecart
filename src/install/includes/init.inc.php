@@ -46,7 +46,7 @@
 	}
 
 	if (!defined('FS_DIR_APP')) {
-		define('FS_DIR_APP', rtrim(str_replace('\\', '/', realpath(__DIR__ . '/..')), '/') . '/');
+		define('FS_DIR_APP', rtrim(str_replace('\\', '/', realpath(__DIR__ . '/../../')), '/') . '/');
 	}
 
 	if (!defined('FS_DIR_STORAGE')) {
@@ -69,23 +69,43 @@
 	}
 
 	// Polyfills
-	require_once __DIR__ . '/../shared/compatibility.inc.php';
+	require_once FS_DIR_APP . 'shared/compatibility.inc.php';
 
 	// Load virtual file system but leave vMod disabled
 	if (!defined('VMOD_DISABLED')) {
 		define('VMOD_DISABLED', 'true');
 	}
 
-	require_once __DIR__ . '/../shared/streams/stream_app.inc.php';
+	require_once FS_DIR_APP . 'shared/streams/stream_app.inc.php';
 	stream_wrapper_register('app', 'stream_app');
 
-	require_once __DIR__ . '/../shared/streams/stream_storage.inc.php';
+	require_once FS_DIR_APP . 'shared/streams/stream_storage.inc.php';
 	stream_wrapper_register('storage', 'stream_storage');
 
 	// Load other additional dependencies
-	require_once __DIR__ . '/../shared/nodes/nod_vmod.inc.php';
-	require_once __DIR__ . '/../shared/autoloader.inc.php';
-	require_once __DIR__ . '/../shared/error_handler.inc.php';
-	require_once __DIR__ . '/../shared/shorthand.inc.php';
+	require_once FS_DIR_APP . 'shared/nodes/nod_vmod.inc.php';
+	require_once FS_DIR_APP . 'shared/autoloader.inc.php';
+	require_once FS_DIR_APP . 'shared/error_handler.inc.php';
+	require_once FS_DIR_APP . 'shared/shorthand.inc.php';
 
 	require_once __DIR__ . '/functions.inc.php';
+
+	ob_start(function($buffer){
+
+		// Layout wrapping must happen here (inside the output buffer), but
+		// ent_view::render() cannot be called from inside an ob_start handler
+		// — it nests its own ob_start(), which PHP forbids. Render the layout
+		// inline by performing snippet substitution directly on the template.
+
+		$snippets = [
+			'{{charset}}' => mb_http_output(),
+			'{{nonce}}' => htmlspecialchars(NONCE, ENT_QUOTES),
+			'{$framework}' => is_file(__DIR__ . '/../../../assets/litecore/css/framework.min.css') ? '.min.css' : '.css',
+			'{{year}}' => date('Y'),
+			'{{ws_dir_app}}' => WS_DIR_APP,
+			'{{content}}' => $buffer,
+		];
+
+		$layout = file_get_contents(FS_DIR_APP . 'install/template/layouts/default.inc.php');
+		return strtr($layout, $snippets);
+	});

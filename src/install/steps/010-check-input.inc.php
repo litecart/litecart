@@ -45,6 +45,10 @@
 		throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . 'Invalid backend folder name</p>' . PHP_EOL  . PHP_EOL);
 	}
 
+	if (empty($_REQUEST['client_ip']) || !filter_var($_REQUEST['client_ip'], FILTER_VALIDATE_IP)) {
+		throw new Exception('Missing or invalid client IP address provided');
+	}
+
 	define('BACKEND_ALIAS', $_REQUEST['backend_alias']);
 	define('DB_SERVER', $_REQUEST['db_server']);
 	define('DB_USERNAME', $_REQUEST['db_username']);
