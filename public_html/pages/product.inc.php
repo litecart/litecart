@@ -188,8 +188,9 @@
     $_page->snippets['sticker'] = '<div class="sticker new" title="'. language::translate('title_new', 'New') .'">'. language::translate('sticker_new', 'New') .'</div>';
   }
 
-// Lowest price last 30 days (EU Omnibus Directive)
-  if (settings::get('display_lowest_price_30_days')) {
+// Lowest price last 30 days (EU Omnibus Directive) -Campaigns only-
+  if (settings::get('display_lowest_price_30_days') && !empty($product->campaign['price']) && $product->campaign['price'] < $product->price) {
+
     $cutoff = date('Y-m-d H:i:s', strtotime('-30 days'));
     $currency_codes = array_unique(
       array_merge(
