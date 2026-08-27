@@ -532,7 +532,7 @@ d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/views/index.
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/index.html
 d41d8cd98f00b204e9800998ecf8427e	includes/wrappers/index.html
 f4c4574be46f27067a197e01813b44a7	includes/wrappers/wrap_http.inc.php
-bf0d8e47aea2a4c0f344a623e490699d	includes/wrappers/wrap_smtp.inc.php
+c98f227b459c1abc1b8c2ad6d665df2e	includes/wrappers/wrap_smtp.inc.php
 a3702989c81c2fb5d7319d58e0549ad0	index.php
 d334f3fe57b30944147ddfaf47481742	install/clean.sql
 71febae4e5008ddfbd252f1cb231e8c9	install/config
