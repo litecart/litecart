@@ -531,10 +531,10 @@
           $end_date = !empty($this->data['campaigns'][$key]['end_date']) ? date('Y-m-d H:i:s', strtotime($this->data['campaigns'][$key]['end_date'])) : null;
 
           database::query(
-            "update ". DB_TABLE_PREFIX ."products_campaigns set
-            start_date = ". ($start_date ? "'". $start_date ."'" : "null") .",
-            end_date = ". ($end_date ? "'". $end_date ."'" : "null") .",
-            $sql_currency_campaigns
+            "update ". DB_TABLE_PREFIX ."products_campaigns
+            set start_date = ". ($start_date ? "'". $start_date ."'" : "null") .",
+              end_date = ". ($end_date ? "'". $end_date ."'" : "null") .",
+              $sql_currency_campaigns
             where product_id = ". (int)$this->data['id'] ."
             and id = ". (int)$this->data['campaigns'][$key]['id'] ."
             limit 1;"
@@ -558,10 +558,10 @@
           // Close currently-open history row for this campaign (if any)
             database::query(
               "update ". DB_TABLE_PREFIX ."products_prices_history
-              set valid_to = NOW()
+              set valid_to = ". date("Y-m-d H:i:s") ."
               where product_id = ". (int)$this->data['id'] ."
               and campaign_id = ". (int)$this->data['campaigns'][$key]['id'] ."
-              and valid_to IS NULL;"
+              and valid_to is null;"
             );
 
           // Insert new open row with the campaign start/end dates as validity window

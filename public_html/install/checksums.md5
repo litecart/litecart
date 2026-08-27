@@ -209,7 +209,7 @@ d41d8cd98f00b204e9800998ecf8427e	images/slides/index.html
 d41d8cd98f00b204e9800998ecf8427e	includes/abstracts/index.html
 ac174e17a6b2cd728f87d25164f708b6	includes/app_footer.inc.php
 3a82a9e3aaad8f9a29d5aa0516a09871	includes/app_header.inc.php
-3890d7e516018476f92a12ec88ff8b5f	includes/autoloader.inc.php
+b993799879c0d8ae32ab6c51ca3e7d4b	includes/autoloader.inc.php
 3762e4cb2077d20baa72f956c45735b6	includes/boxes/box_account_links.inc.php
 1261bb2e9890d2b077b7943070c7981a	includes/boxes/box_also_purchased_products.inc.php
 c0796ae3a1f04a7e266a05992b0c82f6	includes/boxes/box_campaign_products.inc.php
@@ -241,7 +241,7 @@ e4e9a80e4ca667f1841e1683968f8290	includes/entities/ent_currency.inc.php
 b5771c7eff986dd9acd60aba2b7cdab0	includes/entities/ent_delivery_status.inc.php
 65ff5b4d46fe5d5903fca11e73c33d91	includes/entities/ent_email.inc.php
 969b581645fe1da64dea674feecbab77	includes/entities/ent_geo_zone.inc.php
-f605af91ae731bf083224752674dc8e1	includes/entities/ent_image.inc.php
+5a313bc7bff5b0c1b07de8e49c084121	includes/entities/ent_image.inc.php
 9bb8ed44705f055da33628dee6e5f190	includes/entities/ent_language.inc.php
 197f5cd84c0f915da7109f091b42db36	includes/entities/ent_link.inc.php
 07c9eba067bccda3b28cf602d3e833bd	includes/entities/ent_manufacturer.inc.php
@@ -249,7 +249,7 @@ f605af91ae731bf083224752674dc8e1	includes/entities/ent_image.inc.php
 56e433666b0d4ac5bd5569ea6f9788e7	includes/entities/ent_order.inc.php
 8fecf25d0a1c5ec72b93d6c4a5bfa56b	includes/entities/ent_order_status.inc.php
 1e5b8f0574a83afbcaa7478051a5d93f	includes/entities/ent_page.inc.php
-fd96784caee0ae6e948b20d68af42036	includes/entities/ent_product.inc.php
+9caacac3f215f335add88dd97bd2eb8a	includes/entities/ent_product.inc.php
 aa87afeecada037373f0974772ec0f83	includes/entities/ent_quantity_unit.inc.php
 f43cca7c9ec857d675ff15e13fd31751	includes/entities/ent_slide.inc.php
 6db60ead9d530edd0069129b8875c75e	includes/entities/ent_sold_out_status.inc.php
@@ -262,7 +262,7 @@ f544238e0e4478eca32c9cd6db82f0bf	includes/entities/ent_user.inc.php
 d41d8cd98f00b204e9800998ecf8427e	includes/entities/index.html
 0a0444f9cfb4f14ca1c44cb3fa6744bd	includes/error_handler.inc.php
 988f26d135e78b5006307b43dac28557	includes/functions/func_admin.inc.php
-882dc1dc1c0c95a25701f9b7559e5d56	includes/functions/func_captcha.inc.php
+544c3df6a1845d6dd6a63fbe99ed9b40	includes/functions/func_captcha.inc.php
 82f4989adeaaf6920ca5288d39226754	includes/functions/func_catalog.inc.php
 b71dd84509c274b1c4c9cea73fc060b7	includes/functions/func_csv.inc.php
 dfa01df2c396f2d0338aaac54fce11c0	includes/functions/func_draw.inc.php
@@ -579,10 +579,10 @@ faab49ec26407cd72a7a6984fa943ad7	install/htaccess
 5ce62c13340c52070b1f99ff16a9a850	install/includes/footer.inc.php
 c0a24aa900902b46c62b360f650d12fe	install/includes/functions.inc.php
 a37bf7b37ad3919a13f46de67748afed	install/includes/header.inc.php
-97cd3a7f564e9d0b42533b54c94baf5f	install/index.php
-caf720eb18185056d9b6addc5e69156c	install/install.php
+3b1dc22b93033193888fed8177457caf	install/index.php
+cb07188ef561c70ff46311edd4567f95	install/install.php
 15d872789a21a52beae8f0df87be8525	install/structure.sql
-6d4361e31374aea002ebeac7daac37fd	install/upgrade.php
+39f64f27018ba2aa1db853eadcd81014	install/upgrade.php
 a2dbda6a4f7ebf41735a468682ed243c	install/upgrade_patches/1.0.1.3.inc.php
 e40d16965a907467b8a8249a35927faf	install/upgrade_patches/1.0.1.4.inc.php
 9560e70752a13b7a22ec65231e1b61e0	install/upgrade_patches/1.0.1.5.inc.php
