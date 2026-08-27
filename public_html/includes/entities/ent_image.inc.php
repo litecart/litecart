@@ -22,7 +22,9 @@
       ImageFill($imgCropped, 0, 0, ImageColorAllocateAlpha($imgCropped, $whiteSpace[0], $whiteSpace[1], $whiteSpace[2], 127));
       ImageCopy($imgCropped, $src_im, 0, 0, $srcX, $srcY, $iSrcWidth-$srcX, $iSrcHeight-$srcY);
       $result = ImageCopyResampled($dst_im, $imgCropped, 0, 0, 0, 0, $dstW, $dstH, $srcW, $srcH);
-      ImageDestroy($imgCropped);
+      if (PHP_VERSION_ID < 80000) {
+        ImageDestroy($imgCropped);
+      }
       return $result;
     }
   }
@@ -432,7 +434,10 @@
           $this->_width = $destination_width;
           $this->_height = $destination_height;
 
-          ImageDestroy($this->_image);
+          if (PHP_VERSION_ID < 80000) {
+            ImageDestroy($this->_image);
+          }
+
           $this->_image = $_resized;
 
           return true;
@@ -644,7 +649,9 @@
           $result = ImageCopy($_image, $this->_image, $padding, $padding, $left, $top, $width, $height);
 
           if ($result) {
-            ImageDestroy($this->_image);
+            if (PHP_VERSION_ID < 80000) {
+              ImageDestroy($this->_image);
+            }
             $this->_image = $_image;
             $this->_width = $width + $padding * 2;
             $this->_height = $height + $padding * 2;
@@ -760,7 +767,9 @@
           $result = ImageCopy($this->_image, $_watermark->_image, $offset_x, $offset_y, 0, 0, $_watermark->width(), $_watermark->height());
 
         // Free some RAM memory
-          ImageDestroy($_watermark->_image);
+          if (PHP_VERSION_ID < 80000) {
+            ImageDestroy($_watermark->_image);
+          }
 
           return $result;
       }
@@ -800,6 +809,28 @@
             $this->_image->setImageDepth(16);
           }
 
+        // Get the EXIF orientation of the image
+          $orientation = $this->_image->getImageOrientation();
+
+        // Determine the rotation angle based on orientation
+          switch ($orientation) {
+
+            case Imagick::ORIENTATION_TOPRIGHT:
+              $this->_image->rotateImage('none', 90);
+              break;
+
+            case Imagick::ORIENTATION_BOTTOMRIGHT:
+              $this->_image->rotateImage('none', 180);
+              break;
+
+            case Imagick::ORIENTATION_BOTTOMLEFT:
+              $this->_image->rotateImage('none', -90);
+              break;
+          }
+
+        // Fix the orientation so that the image displays correctly
+          $this->_image->setImageOrientation(Imagick::ORIENTATION_TOPLEFT);
+
           switch(strtolower($type)) {
 
             case 'jpeg':
@@ -835,6 +866,33 @@
 
           if ($interlaced) ImageInterlace($this->_image, true);
 
+          if (function_exists('exif_read_data')) {
+
+          // Get the EXIF data of the image
+            $exif = exif_read_data($filename);
+
+          // Check if orientation data exists
+            if (isset($exif['Orientation'])) {
+              $orientation = $exif['Orientation'];
+
+            // Determine the rotation angle based on orientation
+              switch ($orientation) {
+
+                case 3:
+                  $this->_image = ImageRotate($this->_image, 180, 0);
+                  break;
+
+                case 6:
+                  $this->_image = ImageRotate($this->_image, -90, 0);
+                  break;
+
+                case 8:
+                  $this->_image = ImageRotate($this->_image, 90, 0);
+                  break;
+              }
+            }
+          }
+
           switch(strtolower($type)) {
 
             case 'avif':
@@ -843,7 +901,9 @@
               }
               ImageSaveAlpha($this->_image, true);
               $result = ImageAVIF($this->_image, $destination, $quality);
-              ImageDestroy($this->_image);
+              if (PHP_VERSION_ID < 80000) {
+                ImageDestroy($this->_image);
+              }
               return $result;
 
             case 'gif':
@@ -854,8 +914,10 @@
               ImageAlphaBlending($_background, false);
               imagetruecolortopalette($_background, false, 255);
               $result = ImageGIF($_background, $destination);
-              ImageDestroy($this->_image);
-              ImageDestroy($_background);
+              if (PHP_VERSION_ID < 80000) {
+                ImageDestroy($this->_image);
+                ImageDestroy($_background);
+              }
               return $result;
 
             case 'jpeg':
@@ -866,14 +928,18 @@
               ImageCopy($_background, $this->_image, 0, 0, 0, 0, imagesx($this->_image), imagesy($this->_image));
               ImageAlphaBlending($_background, false);
               $result = ImageJPEG($_background, $destination, (int)$quality);
-              ImageDestroy($this->_image);
-              ImageDestroy($_background);
+              if (PHP_VERSION_ID < 80000) {
+                ImageDestroy($this->_image);
+                ImageDestroy($_background);
+              }
               return $result;
 
             case 'png':
               ImageSaveAlpha($this->_image, true);
               $result = ImagePNG($this->_image, $destination);
-              ImageDestroy($this->_image);
+              if (PHP_VERSION_ID < 80000) {
+                ImageDestroy($this->_image);
+              }
               return $result;
 
             case 'webp':
@@ -882,11 +948,15 @@
               }
               ImageSaveAlpha($this->_image, true);
               $result = ImageWebP($this->_image, $destination, (int)$quality);
-              ImageDestroy($this->_image);
+              if (PHP_VERSION_ID < 80000) {
+                ImageDestroy($this->_image);
+              }
               return $result;
 
             default:
-              ImageDestroy($this->_image);
+              if (PHP_VERSION_ID < 80000) {
+                ImageDestroy($this->_image);
+              }
               throw new Exception("Unknown image output format ($type)");
           }
       }
@@ -924,7 +994,10 @@
               }
               ImageSaveAlpha($this->_image, true);
               $result = ImageAVIF($this->_image, false, $quality);
-              ImageDestroy($this->_image);
+              if (PHP_VERSION_ID < 80000) {
+                ImageDestroy($this->_image);
+              }
+
               return $result;
 
             case 'gif':
@@ -935,8 +1008,10 @@
               ImageAlphaBlending($_background, false);
               imagetruecolortopalette($_background, false, 255);
               $result = ImageGIF($_background, false);
-              ImageDestroy($this->_image);
-              ImageDestroy($_background);
+              if (PHP_VERSION_ID < 80000) {
+                ImageDestroy($this->_image);
+                ImageDestroy($_background);
+              }
               return $result;
 
             case 'jpeg':
@@ -947,14 +1022,18 @@
               ImageCopy($_background, $this->_image, 0, 0, 0, 0, imagesx($this->_image), imagesy($this->_image));
               ImageAlphaBlending($_background, false);
               $result = ImageJPEG($_background, false, (int)$quality);
-              ImageDestroy($this->_image);
-              ImageDestroy($_background);
+              if (PHP_VERSION_ID < 80000) {
+                ImageDestroy($this->_image);
+                ImageDestroy($_background);
+              }
               return $result;
 
             case 'png':
               ImageSaveAlpha($this->_image, true);
               $result = ImagePNG($this->_image, false);
-              ImageDestroy($this->_image);
+              if (PHP_VERSION_ID < 80000) {
+                ImageDestroy($this->_image);
+              }
               return $result;
 
             case 'webp':
@@ -963,11 +1042,15 @@
               }
               ImageSaveAlpha($this->_image, true);
               $result = ImageWebP($this->_image, false, (int)$quality);
-              ImageDestroy($this->_image);
+              if (PHP_VERSION_ID < 80000) {
+                ImageDestroy($this->_image);
+              }
               return $result;
 
             default:
-              ImageDestroy($this->_image);
+              if (PHP_VERSION_ID < 80000) {
+                ImageDestroy($this->_image);
+              }
               throw new Exception('Unknown output format');
           }
       }

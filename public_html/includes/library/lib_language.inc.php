@@ -44,9 +44,11 @@
       if (!self::$_cache['translations'] = cache::get(self::$_cache_token)) {
         self::$_cache['translations'] = [];
 
+        $is_backend = preg_match('#^'. preg_quote(ltrim(WS_DIR_ADMIN, '/'), '#') .'.*#', route::$request) ? true : false;
+
         $translations_query = database::query(
           "select id, code, if(text_". self::$selected['code'] ." != '', text_". self::$selected['code'] .", text_en) as text from ". DB_TABLE_PREFIX ."translations
-          where ". (preg_match('#^'. preg_quote(ltrim(WS_DIR_ADMIN, '/'), '#') .'.*#', route::$request) ? "backend = 1" : "frontend = 1") ."
+          where ". ($is_backend ? "backend = 1" : "frontend = 1") ."
           having text != '';"
         );
 
@@ -159,15 +161,6 @@
         }
       }
 
-    // Return language by regional domain
-      foreach ($enabled_languages as $language_code) {
-        if (self::$languages[$language_code]['url_type'] == 'domain') {
-          if (!empty(self::$languages[$language_code]['domain_name']) && preg_match('#^'. preg_quote(self::$languages[$language_code]['domain_name'], '#') .'$#', $_SERVER['HTTP_HOST'])) {
-            return $language_code;
-          }
-        }
-      }
-
     // Return language from URI query
       if (!empty($_GET['language'])) {
         if (in_array($_GET['language'], $all_languages)) return $_GET['language'];
@@ -177,9 +170,30 @@
       $code = current(explode('/', substr($_SERVER['REQUEST_URI'], strlen(WS_DIR_APP))));
       if (in_array($code, $all_languages)) return $code;
 
+    // Return language from domain path
+      foreach ($enabled_languages as $language_code) {
+        if (self::$languages[$language_code]['url_type'] == 'domainpath') {
+          if (!empty(self::$languages[$language_code]['domain_name']) && preg_match('#^'. preg_quote(self::$languages[$language_code]['domain_name'], '#') .'$#', $_SERVER['HTTP_HOST'])) {
+            $webpath = strtok($_SERVER['REQUEST_URI'], '?');
+            if (preg_match('#^/'. preg_quote($language_code, '#') .'(/|$)#', $webpath)) {
+              return $language_code;
+            }
+          }
+        }
+      }
+
+    // Return language from domain
+      foreach ($enabled_languages as $language_code) {
+        if (self::$languages[$language_code]['url_type'] == 'domain') {
+          if (!empty(self::$languages[$language_code]['domain_name']) && preg_match('#^'. preg_quote(self::$languages[$language_code]['domain_name'], '#') .'$#', $_SERVER['HTTP_HOST'])) {
+            return $language_code;
+          }
+        }
+      }
+
     // Return language from root path
       foreach ($enabled_languages as $language_code) {
-        if (self::$languages[$language_code]['url_type'] == 'none') {
+        if (self::$languages[$language_code]['url_type'] == 'root') {
           $webpath = strtok($_SERVER['REQUEST_URI'], '?');
           if (!$webpath || !preg_match('#^'. preg_quote(WS_DIR_APP, '#') .'[a-z]{2}(/|$)#', $webpath)) {
             return $language_code;
@@ -269,35 +283,12 @@
         return self::$_cache['translations'][$language_code][$code] = $translation['text_'.$language_code];
       }
 
-    // If we have an english translation
+    // Fallback to english translation if available
       if (!empty($translation['text_en'])) {
-
-      // Find same english translation by different key
-        $secondary_translation_query = database::query(
-          "select id, text_en, `text_". $language_code ."` from ". DB_TABLE_PREFIX ."translations
-          where text_en = '". database::input($translation['text_en']) ."'
-          and text_en != ''
-          and text_". self::$selected['code'] ." != ''
-          limit 1;"
-        );
-
-        if ($secondary_translation = database::fetch($secondary_translation_query)) {
-          database::query(
-            "update ". DB_TABLE_PREFIX ."translations
-            set `text_". $language_code ."` = '". database::input($translation['text_'.$language_code], true) ."',
-            date_updated = '". date('Y-m-d H:i:s') ."'
-            where text_en = '". database::input($translation['text_en']) ."'
-            and text_". self::$selected['code'] ." = '';"
-          );
-
-          return self::$_cache['translations'][$language_code][$code] = $secondary_translation['text_'.$language_code];
-        }
-
-      // Return english translation
         return self::$_cache['translations'][$language_code][$code] = $translation['text_en'];
       }
 
-    // Return default translation
+    // Otherwise return injected default translation
       return self::$_cache['translations'][$language_code][$code] = $default;
     }
 
@@ -474,8 +465,18 @@
 
       if ($from_charset == $to_charset) return $variable;
 
+      if (!in_array(strtoupper($from_charset), mb_list_encodings())) {
+        trigger_error('Unknown charset: '. functions::escape_html($from_charset), E_USER_WARNING);
+        return false;
+      }
+
+      if (!in_array(strtoupper($to_charset), mb_list_encodings())) {
+        trigger_error('Unknown charset: '. functions::escape_html($to_charset), E_USER_WARNING);
+        return false;
+      }
+
       if (!mb_convert_variables($to_charset, $from_charset, $variable)) {
-        trigger_error('Could not encode variable from '. $from_charset .' to '. $to_charset, E_USER_WARNING);
+        trigger_error('Could not encode variable from '. functions::escape_html($from_charset) .' to '. functions::escape_html($to_charset), E_USER_WARNING);
         return false;
       }
 

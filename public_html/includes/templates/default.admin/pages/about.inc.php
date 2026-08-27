@@ -167,6 +167,10 @@
               <td><?php echo $php['version']; ?></td>
             </tr>
             <tr>
+              <th>Configuration File</th>
+              <td><?php echo !empty($php['config_file']) ? $php['config_file'] : '<em>Unknown</em>'; ?></td>
+            </tr>
+            <tr>
               <th>Whoami</th>
               <td><?php echo !empty($php['whoami']) ? $php['whoami'] : '<em>Unknown</em>'; ?></td>
             </tr>

@@ -32,7 +32,7 @@
       case (preg_match('#^(cm|job|om|ot|pm|sm)_#', $class)):
 
       // Patch modules for PHP 8.2 Compatibility
-        if (version_compare(PHP_VERSION, 8.2, '>=')) {
+        if (PHP_VERSION_ID >= 80200) {
 
           $search_replace = [
             '#^(cm_.*)#' => FS_DIR_APP . 'includes/modules/customer/$1.inc.php',

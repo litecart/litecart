@@ -13,9 +13,12 @@
     exit;
   }
 
-  if (!empty($_GET['attributes'])) {
+  if (!empty($_GET['attributes']) && is_array($_GET['attributes'])) {
+    $_GET['attributes'] = array_filter($_GET['attributes'], 'is_array');
     $_GET['attributes'] = array_map('array_filter', $_GET['attributes']);
     $_GET['attributes'] = array_filter($_GET['attributes']);
+  } else {
+    unset($_GET['attributes']);
   }
 
   $category = reference::category($_GET['category_id']);

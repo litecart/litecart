@@ -11,7 +11,6 @@
 }
 
 .btn {
-  --input-padding-x: 2em;
   display: inline-block;
   padding: var(--input-padding-y) var(--input-padding-x);
   text-decoration:  none;
@@ -30,8 +29,13 @@
   &.btn-success { .btn("success"); }
   &.btn-danger { .btn("danger"); }
 
-  &.btn-sm { font-size: 0.8em; }
-  &.btn-lg { font-size: 1.25em; }
+  &.btn-sm {
+    font-size: ~"calc(var(--default-text-size) * .75)";
+    padding: ~"calc(var(--input-padding-y) * .75)" ~"calc(var(--input-padding-x) * .75)";
+  }
+  &.btn-lg {
+    font-size: 1.25em;
+  }
 
   &.active, &:active { box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.25) !important; }
   &.disabled, &[disabled] { opacity: 0.5; cursor: not-allowed; }

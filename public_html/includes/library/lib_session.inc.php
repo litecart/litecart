@@ -15,6 +15,7 @@
       ini_set('session.cookie_lifetime', 0);
       ini_set('session.cookie_path', WS_DIR_APP);
       ini_set('session.cookie_samesite', 'Lax');
+      ini_set('session.cookie_secure', isset($_SERVER['HTTPS']) && preg_match('#^on|1|true#i', $_SERVER['HTTPS']));
       ini_set('session.gc_maxlifetime', 1440);
 
       register_shutdown_function(['session', 'close']);
@@ -42,7 +43,26 @@
     ######################################################################
 
     public static function start() {
-      return session_start();
+
+      $session_name = session_name();
+
+      // Validate session ID from cookie to prevent session fixation attacks throwing warnings
+      if (!empty($_COOKIE[$session_name])) {
+        $sid = $_COOKIE[$session_name];
+        if (!preg_match('#^[-,a-zA-Z0-9]+$#', $sid)) {
+          setcookie($session_name, '', time() - 3600, '/');
+          session_id('');  // Force new ID
+        }
+      }
+
+      $result = session_start();
+
+      // Ensure session cookie is set for the current session (to prevent waiting for page reload)
+      if (empty($_COOKIE[$session_name]) && !headers_sent()) {
+        $_COOKIE[$session_name] = session_id();
+      }
+
+      return $result;
     }
 
     public static function close() {
@@ -62,7 +82,23 @@
       return session_id();
     }
 
+    public static function get_name() {
+      return session_name();
+    }
+
     public static function regenerate_id() {
       return session_regenerate_id(true);
+    }
+
+    public static function csrf_token() {
+      if (empty($_SESSION['csrf_token'])) {
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+      }
+      return $_SESSION['csrf_token'];
+    }
+
+    public static function rotate_csrf_token() {
+      $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+      return $_SESSION['csrf_token'];
     }
   }

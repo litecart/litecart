@@ -37,10 +37,15 @@
 
     public static function before_capture() {
 
-      header('X-Frame-Options: SAMEORIGIN'); // Clickjacking Protection
-      header('Content-Security-Policy: frame-ancestors \'self\';'); // Clickjacking Protection
-      header('Access-Control-Allow-Origin: '. self::ilink('')); // Only allow HTTP POST data from own domain
-      header('X-Powered-By: '. PLATFORM_NAME);
+      header('X-Frame-Options: SAMEORIGIN');
+      header('Content-Security-Policy: frame-ancestors \'self\';');
+      header('Access-Control-Allow-Origin: '. self::ilink(''));
+      header('X-Content-Type-Options: nosniff');
+      header('Referrer-Policy: strict-origin-when-cross-origin');
+      header_remove('X-Powered-By');
+      if (!empty($_SERVER['HTTPS'])) {
+        header('Strict-Transport-Security: max-age=31536000; includeSubDomains');
+      }
 
     // Set template
       if (!empty($_SERVER['REQUEST_URI']) && preg_match('#^('. preg_quote(WS_DIR_ADMIN, '#') .')#', $_SERVER['REQUEST_URI'])) {
@@ -114,7 +119,6 @@
       ];
 
       self::$jsenv['session'] = [
-        'id' => session::get_id(),
         'language_code' => language::$selected['code'],
         'country_code' => customer::$data['country_code'],
         'currency_code' => currency::$selected['code'],
@@ -130,6 +134,8 @@
         'name' => !empty(customer::$data['firstname']) ? customer::$data['firstname'] .' '. customer::$data['lastname'] : null,
         'email' => !empty(customer::$data['email']) ? customer::$data['email'] : null,
       ];
+
+      self::$jsenv['csrf_token'] = session::csrf_token();
 
       self::$snippets['head_tags'][] = "<script>var _env = ". json_encode(self::$jsenv, JSON_UNESCAPED_SLASHES) .", config = _env;</script>";
 
@@ -299,7 +305,7 @@
       return functions::escape_html(self::link($path, $new_params, $inherit_params, $skip_params, $language_code));
     }
 
-    public static function rlink($resource) {
+    public static function rlink($resource, $new_params=[], $inherit_params=null, $skip_params=[]) {
 
       if (!preg_match('#^([a-z]:)?[/\\\\]#i', $resource)) {
         $resource = FS_DIR_APP . $resource;
@@ -307,14 +313,16 @@
 
       if (!is_file($resource)) {
         trigger_error('Could not create link for missing resource ('. $resource.')', E_USER_WARNING);
-        return self::link(preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '', $resource));
+        return self::link(preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '', $resource), $new_params, $inherit_params, $skip_params);
       }
 
       $resource = str_replace('\\', '/', realpath($resource));
-      return self::link(preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '', $resource), ['_' => filemtime($resource)]);
+      $new_params = array_merge(['_' => filemtime($resource)], $new_params);
+
+      return self::link(preg_replace('#^'. preg_quote(DOCUMENT_ROOT, '#') .'#', '', $resource), $new_params, $inherit_params, $skip_params);
     }
 
-    public static function href_rlink($resource) {
-      return functions::escape_html(self::rlink($resource));
+    public static function href_rlink($resource, $new_params=[], $inherit_params=null, $skip_params=[]) {
+      return functions::escape_html(self::rlink($resource, $new_params, $inherit_params, $skip_params));
     }
   }

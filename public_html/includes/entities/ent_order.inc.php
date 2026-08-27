@@ -567,6 +567,15 @@
 
     // Validate customer details
       try {
+
+      // Custom validations
+        $mod_customer = new mod_customer();
+        $result = $mod_customer->validate($this->data['customer']);
+
+        if (!empty($result['error'])) {
+          throw new Exception($result['error']);
+        }
+
         if (empty($this->data['customer']['firstname'])) throw new Exception(language::translate('error_missing_firstname', 'You must enter a first name.'));
         if (empty($this->data['customer']['lastname'])) throw new Exception(language::translate('error_missing_lastname', 'You must enter a last name.'));
         if (empty($this->data['customer']['address1'])) throw new Exception(language::translate('error_missing_address1', 'You must enter an address.'));
@@ -641,14 +650,6 @@
 
       } catch (Exception $e) {
         return language::translate('title_shipping_address', 'Shipping Address') .': '. $e->getMessage();
-      }
-
-    // Additional customer validation
-      $mod_customer = new mod_customer();
-      $result = $mod_customer->validate($this->data['customer']);
-
-      if (!empty($result['error'])) {
-        return $result['error'];
       }
 
     // Validate shipping option

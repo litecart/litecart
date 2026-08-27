@@ -268,7 +268,6 @@ ul.breadcrumb li a {
 }
 /* Buttons & Button Groups - Bootstrap Compatible */
 .btn {
-  --input-padding-x: 2em;
   display: inline-block;
   padding: var(--input-padding-y) var(--input-padding-x);
   text-decoration: none;
@@ -318,7 +317,8 @@ ul.breadcrumb li a {
   background-color: var(--danger-button-background-color-hover);
 }
 .btn.btn-sm {
-  font-size: 0.8em;
+  font-size: calc(var(--default-text-size) * .75);
+  padding: calc(var(--input-padding-y) * .75) calc(var(--input-padding-x) * .75);
 }
 .btn.btn-lg {
   font-size: 1.25em;

@@ -87,7 +87,7 @@
     '@type' => 'Product',
     'productID' => $product->id,
     'sku' => $product->sku,
-    'gtin14' => $product->gtin,
+    'gtin' => $product->gtin,
     'mpn' => $product->mpn,
     'name' => $product->name,
     'image' => document::link(!empty($product->image) ? 'images/' . $product->image : 'images/no_image.png'),
@@ -99,7 +99,7 @@
       'priceValidUntil' => (!empty($product->campaign['end_date']) && strtotime($product->campaign['end_date']) > time()) ? $product->campaign['end_date'] : null,
       'itemCondition' => 'https://schema.org/NewCondition', // Or RefurbishedCondition, DamagedCondition, UsedCondition
       'availability' => ($product->quantity > 0) ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
-      'url' => document::link(),
+      'url' => document::ilink('product', ['product_id' => $product->id]),
     ],
   ];
 
@@ -138,6 +138,7 @@
     'campaign_price' => (isset($product->campaign['price']) && $product->campaign['price'] > 0) ? tax::get_price($product->campaign['price'], $product->tax_class_id) : null,
     'campaign_price_end_date' => !empty($product->campaign['end_date']) ? $product->campaign['end_date'] : null,
     'final_price' => tax::get_price($product->final_price, $product->tax_class_id),
+    'lowest_price_30_days' => null,
     'tax_class_id' => $product->tax_class_id,
     'including_tax' => !empty(customer::$data['display_prices_including_tax']) ? true : false,
     'total_tax' => $product->tax,
@@ -185,6 +186,39 @@
     $_page->snippets['sticker'] = '<div class="sticker sale" title="'. language::translate('title_on_sale', 'On Sale') .'">'. language::translate('sticker_sale', 'Sale') .'<br>-'. $percentage .'%</div>';
   } else if ($product->date_created > date('Y-m-d', strtotime('-'.settings::get('new_products_max_age')))) {
     $_page->snippets['sticker'] = '<div class="sticker new" title="'. language::translate('title_new', 'New') .'">'. language::translate('sticker_new', 'New') .'</div>';
+  }
+
+// Lowest price last 30 days (EU Omnibus Directive) -Campaigns only-
+  if (settings::get('display_lowest_price_30_days') && !empty($product->campaign['price']) && $product->campaign['price'] < $product->price) {
+
+    $cutoff = date('Y-m-d H:i:s', strtotime('-30 days'));
+    $currency_codes = array_unique(
+      array_merge(
+        [currency::$selected['code'], settings::get('store_currency_code')],
+        array_column(currency::$currencies, 'code')
+      )
+    );
+
+		$sql_column_price = "coalesce(". implode(", ", array_map(function($currency_code) {
+			return "if(json_value(price, '$.". database::input($currency_code) ."') != 0, json_value(price, '$.". database::input($currency_code) ."') * ". currency::$currencies[$currency_code]['value'] .", null)";
+		}, $currency_codes)) .")";
+
+    $lowest_price = database::query(
+      "select min(". $sql_column_price .") as lowest_price
+      from ". DB_TABLE_PREFIX ."products_prices_history
+      where product_id = ". (int)$product->id ."
+      and valid_from >= '". $cutoff ."'
+      and (valid_to IS NULL or valid_to >= '". $cutoff ."')
+      having lowest_price > 0;"
+    )->fetch('lowest_price');
+
+    if (!$lowest_price) {
+      $lowest_price = (float)$product->price;
+    }
+
+    if ($lowest_price > 0) {
+      $_page->snippets['lowest_price_30_days'] = tax::get_price($lowest_price, $product->tax_class_id);
+    }
   }
 
 // Category

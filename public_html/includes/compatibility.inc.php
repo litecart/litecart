@@ -258,10 +258,26 @@
     $_SERVER['HTTPS'] = 'off';
   }
 
+  // Unset a bogus Host header
+  if (!filter_var(trim($_SERVER['HTTP_HOST'], '[]'), FILTER_VALIDATE_IP) && !filter_var($_SERVER['HTTP_HOST'], FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME)) {
+    unset($_SERVER['HTTP_HOST']);
+  }
+
   if (empty($_SERVER['HTTP_HOST'])) {
     $_SERVER['HTTP_HOST'] = $_SERVER['SERVER_NAME'];
   }
 
   if (!isset($_SERVER['HTTP_USER_AGENT'])) {
     $_SERVER['HTTP_USER_AGENT'] = '';
+  }
+
+// Polyfill PHP_AUTH_USER/PHP_AUTH_PW from HTTP_AUTHORIZATION when running under CGI/FastCGI
+  if ((empty($_SERVER['PHP_AUTH_USER']) || empty($_SERVER['PHP_AUTH_PW'])) && !empty($_SERVER['HTTP_AUTHORIZATION'])) {
+    $authorization_header = $_SERVER['HTTP_AUTHORIZATION'];
+    if (stripos($authorization_header, 'Basic ') === 0) {
+      $decoded = base64_decode(substr($authorization_header, 6), true);
+      if (is_string($decoded) && strpos($decoded, ':') !== false) {
+        list($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']) = explode(':', $decoded, 2);
+      }
+    }
   }

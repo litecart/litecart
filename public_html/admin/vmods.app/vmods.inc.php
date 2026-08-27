@@ -64,12 +64,18 @@
 
       $xml = file_get_contents($_FILES['vmod']['tmp_name']); // DOMDocument::load() does not support Windows paths so we use DOMDocument::loadXML()
 
-      if (!@$dom->loadXML($xml)) {
+      if (!$xml ||!@$dom->loadXML($xml)) {
         throw new Exception(language::translate('error_invalid_xml_file', 'Invalid XML file'));
       }
 
-      if (!$dom->getElementsByTagName('modification')) {
+      if (!$dom->documentElement || !in_array(strtolower($dom->documentElement->tagName), ['vmod', 'modification'], true)) {
         throw new Exception(language::translate('error_xml_file_is_not_valid_vmod', 'XML file is not a valid vMod file'));
+      }
+
+      // Ensure uploaded by a human
+      $captcha = functions::captcha_get('upload_vmod');
+      if (!$captcha || empty($_POST['captcha']) || $captcha != $_POST['captcha']) {
+        throw new Exception(language::translate('error_invalid_captcha', 'Invalid CAPTCHA given'));
       }
 
       $filename = FS_DIR_STORAGE . 'vmods/' . pathinfo($_FILES['vmod']['name'], PATHINFO_FILENAME) .'.xml';
@@ -185,6 +191,8 @@
 
 // Number of Rows
   $num_rows = count($vmods);
+
+  functions::draw_lightbox();
 ?>
 
 <div class="card card-app">
@@ -254,7 +262,7 @@
 
     <div class="card-body">
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-4">
           <fieldset id="actions" disabled>
             <legend><?php echo language::translate('text_with_selected', 'With selected'); ?>:</legend>
 
@@ -272,13 +280,30 @@
           </fieldset>
       </div>
 
-      <div class="col-md-6">
+      <div class="col-md-8">
         <fieldset>
           <legend><?php echo language::translate('title_upload_new_vmod', 'Upload a New vMod'); ?>:</legend>
 
-          <div class="input-group">
-            <?php echo functions::form_draw_file_field('vmod', 'accept="application/xml"'); ?>
-            <?php echo functions::form_draw_button('upload', language::translate('title_upload', 'Upload'), 'submit'); ?>
+          <div class="row">
+            <div class="col-sm-7">
+              <div class="form-group">
+                <label><?php echo language::translate('title_captcha', 'CAPTCHA'); ?></label>
+                <div class="input-group">
+                  <?php echo functions::form_draw_file_field('vmod', 'accept="application/xml"'); ?>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-3">
+              <div class="form-group">
+                <label><?php echo language::translate('title_captcha', 'CAPTCHA'); ?></label>
+                <?php echo functions::form_draw_captcha_field('captcha', 'upload_vmod', 'required disabled'); ?>
+              </div>
+            </div>
+
+            <div class="col-sm-2" style="padding-top: 25px;">
+              <?php echo functions::form_draw_button('upload', language::translate('title_upload', 'Upload'), 'submit', 'class="btn btn-default btn-block"'); ?>
+            </div>
           </div>
         </fieldset>
       </div>
@@ -290,5 +315,9 @@
 <script>
   $('.data-table :checkbox').change(function() {
     $('#actions').prop('disabled', !$('.data-table :checked').length);
+  }).first().trigger('change');
+
+  $('input[name="vmod"]').change(function() {
+    $('input[name="captcha"]').prop('disabled', !$(this).val());
   }).first().trigger('change');
 </script>

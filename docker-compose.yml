@@ -1,0 +1,40 @@
+services:
+  litecart:
+    build: .
+    ports:
+      - "9080:80"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      DB_SERVER: mysql
+      DB_USERNAME: litecart
+      DB_PASSWORD: litecart
+      DB_DATABASE: litecart
+      DB_COLLATION: utf8mb4_general_ci
+      ADMIN_USERNAME: admin
+      ADMIN_PASSWORD: admin
+      TZ: UTC
+    restart: unless-stopped
+
+  mysql:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
+    environment:
+      MYSQL_ROOT_PASSWORD: litecart_root
+      MYSQL_DATABASE: litecart
+      MYSQL_USER: litecart
+      MYSQL_PASSWORD: litecart
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+volumes:
+  mysql_data:

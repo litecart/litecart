@@ -97,7 +97,7 @@
         'icon' => !(empty($app['theme']['icon'])) ? $app['theme']['icon'] : 'fa-plus',
         'color' => !(empty($app['theme']['color'])) ? $app['theme']['color'] : '#97a3b5',
       ],
-      'active' => (isset($_GET['app']) && $_GET['app'] == $app['code']) ? true : false,
+      'active' => isset($_GET['app']) && $_GET['app'] == $app['code'],
       'menu' => [],
     ];
 
@@ -280,6 +280,7 @@
       'loaded_modules' => function_exists('apache_get_modules') ? apache_get_modules() : [],
     ],
     'php' => [
+      'config_file' => php_ini_loaded_file(),
       'version' => PHP_VERSION .' ('. ((PHP_INT_SIZE === 8) ? '64-bit' : '32-bit') .')',
       'whoami' => (function_exists('exec') && !in_array('exec', preg_split('#\s*,\s*#', ini_get('disabled_functions')))) ? exec('whoami') : '',
       'loaded_extensions' => (function_exists('get_loaded_extensions') && !in_array('get_loaded_extensions', preg_split('#\s*,\s*#', ini_get('disabled_functions')))) ? get_loaded_extensions() : [],

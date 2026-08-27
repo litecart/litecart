@@ -13,7 +13,7 @@
 
   if (!empty(user::$data['id'])) notices::add('notices', language::translate('text_already_logged_in', 'You are already logged in'));
 
-  if (empty($_COOKIE[session_name()])) {
+  if (empty($_COOKIE[session::get_name()])) {
     notices::add('notices', language::translate('error_missing_session_cookie', 'We failed to identify your browser session. Make sure your browser has cookies enabled or try another browser.'));
   }
 
@@ -171,10 +171,12 @@
       );
 
       user::load($user['id']);
+      session::rotate_csrf_token();
 
-      if (!empty($_POST['remember_me'])) {
-        $checksum = sha1($user['username'] . $user['password_hash'] . $_SERVER['REMOTE_ADDR'] . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
-        header('Set-Cookie: remember_me='. $user['username'] .':'. $checksum .'; Path='. WS_DIR_APP .'; Expires='. gmdate('r', strtotime('+3 months')) .'; HttpOnly; SameSite=Lax', false);
+      if (!empty($_POST['remember_me']) && defined('HMAC_KEY_REMEMBER_ME')) {
+        $expiry_days = (int)(settings::get('remember_me_days') ?: 30);
+        $token = functions::token_create_remember($user['id'], $user['password_hash'], $expiry_days);
+        header('Set-Cookie: remember_me='. $token .'; Path='. WS_DIR_APP .'; Expires='. gmdate('r', strtotime('+'. $expiry_days .' days')) .'; HttpOnly; SameSite=Lax' . (!empty($_SERVER['HTTPS']) ? '; Secure' : ''), false);
       } else if (!empty($_COOKIE['remember_me'])) {
         header('Set-Cookie: remember_me=; Path='. WS_DIR_APP .'; Max-Age=-1; HttpOnly; SameSite=Lax', false);
       }

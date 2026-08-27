@@ -31,13 +31,13 @@
       echo 'Optimizing MySQL Tables...' . PHP_EOL . PHP_EOL;
 
       database::query(
-        "select table_name from `information_schema`.`tables`
-        where table_schema = '". DB_DATABASE ."'
-        and table_name like '". DB_TABLE_PREFIX ."%'
-        order by table_name;"
+        "select TABLE_NAME from `information_schema`.`TABLES`
+        where TABLE_SCHEMA = '". DB_DATABASE ."'
+        and TABLE_NAME like '". DB_TABLE_PREFIX ."%'
+        order by TABLE_NAME;"
       )->each(function($row){
-        echo '  ' . $row['table_name'] . PHP_EOL;
-        database::query("optimize table ". $row['table_name'] .";");
+        echo '  ' . $row['TABLE_NAME'] . PHP_EOL;
+        database::query("optimize table ". $row['TABLE_NAME'] .";");
       });
 
       echo PHP_EOL . 'Done!';

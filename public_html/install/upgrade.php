@@ -11,7 +11,7 @@
   if ($_SERVER['SERVER_SOFTWARE'] == 'CLI') {
 
     if (!isset($argv[1]) || $argv[1] == 'help' || $argv[1] == '-h' || $argv[1] == '--help' || $argv[1] == '/?') {
-      echo "\nLiteCart® 2.6.3\n"
+      echo "\nLiteCart® 2.7.0\n"
       . "Copyright (c) ". date('Y') ." LiteCart AB\n"
       . "https://www.litecart.net/\n"
       . "Usage: php ". basename(__FILE__) ." [options]\n\n"
@@ -138,9 +138,9 @@
 
       echo '<p>Checking PHP version... ';
 
-      if (version_compare(PHP_VERSION, '5.4', '<')) {
+      if (PHP_VERSION_ID < 50400) {
         throw new Exception(PHP_VERSION .' <span class="error">[Error] PHP 5.4+ minimum requirement</span></p>' . PHP_EOL . PHP_EOL);
-      } else if (version_compare(PHP_VERSION, '7.2', '<=')) {
+      } else if (PHP_VERSION_ID <= 70200) {
         echo PHP_VERSION .' <span class="warning">[Warning] PHP '. PHP_VERSION .' has reached <a href="https://www.php.net/supported-versions.php" target="_blank">end of life</a>.</span></p>' . PHP_EOL . PHP_EOL;
       } else {
         echo PHP_VERSION .' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
@@ -226,7 +226,7 @@
           $sql = file_get_contents(__DIR__ . '/upgrade_patches/'. $version .'.sql');
           $sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, $sql);
 
-          foreach (preg_split('#^-- -----+\s*$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {
+          foreach (preg_split('#^-- -----*\s*$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {
             $query = preg_replace('#^-- .*?\R+#m', '', $query);
             if (!empty($query)) {
               database::query($query);

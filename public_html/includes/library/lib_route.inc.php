@@ -276,6 +276,11 @@
     // Set language to URL
       switch (language::$languages[$language_code]['url_type']) {
 
+        case 'root':
+          if (isset($link->query['language'])) $link->unset_query('language');
+          $link->path = ltrim($link->path, '/');
+          break;
+
         case 'path':
           if (isset($link->query['language'])) $link->unset_query('language');
           $link->path = $language_code .'/'. ltrim($link->path, '/');
@@ -284,6 +289,12 @@
         case 'domain':
           if (isset($link->query['language'])) $link->unset_query('language');
           $link->host = language::$languages[$language_code]['domain_name'];
+          break;
+
+        case 'domainpath':
+          if (isset($link->query['language'])) $link->unset_query('language');
+          $link->host = language::$languages[$language_code]['domain_name'];
+          $link->path = $language_code .'/'. ltrim($link->path, '/');
           break;
       }
 

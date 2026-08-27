@@ -1,0 +1,11 @@
+.git
+.git-hooks
+.github
+node_modules
+art
+*.md
+gruntfile.js
+package.json
+package-lock.json
+.editorconfig
+.gitignore

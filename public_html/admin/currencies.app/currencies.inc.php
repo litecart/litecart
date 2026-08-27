@@ -72,8 +72,9 @@
           <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
           <th></th>
           <th><?php echo language::translate('title_id', 'ID'); ?></th>
-          <th><?php echo language::translate('title_code', 'Code'); ?></th>
           <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
+          <th>ISO 4217</th>
+          <th><?php echo language::translate('title_number', 'Number'); ?></th>
           <th><?php echo language::translate('title_value', 'Value'); ?></th>
           <th><?php echo language::translate('title_decimals', 'Decimals'); ?></th>
           <th><?php echo language::translate('title_prefix', 'Prefix'); ?></th>
@@ -90,9 +91,10 @@
         <tr class="<?php echo empty($currency['status']) ? 'semi-transparent' : ''; ?>">
           <td><?php echo functions::form_draw_checkbox('currencies[]', $currency['id']); ?></td>
           <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. $currency['status_color'] .';"'); ?></td>
-          <td><?php echo $currency['id']; ?></td>
-          <td><?php echo $currency['code']; ?></td>
+          <td class="text-center"><?php echo $currency['id']; ?></td>
           <td><a class="link" href="<?php echo document::href_link('', ['doc' => 'edit_currency', 'currency_code' => $currency['code']], true); ?>"><?php echo $currency['name']; ?></a></td>
+          <td class="text-center"><?php echo $currency['code']; ?></td>
+          <td class="text-center"><?php echo $currency['number']; ?></td>
           <td class="text-end"><?php echo language::number_format($currency['value'], 4); ?></td>
           <td class="text-center"><?php echo $currency['decimals']; ?></td>
           <td class="text-center"><?php echo $currency['prefix']; ?></td>
@@ -107,7 +109,7 @@
 
       <tfoot>
         <tr>
-          <td colspan="13"><?php echo language::translate('title_currencies', 'Currencies'); ?>: <?php echo $num_rows; ?></td>
+          <td colspan="14"><?php echo language::translate('title_currencies', 'Currencies'); ?>: <?php echo $num_rows; ?></td>
         </tr>
       </tfoot>
     </table>

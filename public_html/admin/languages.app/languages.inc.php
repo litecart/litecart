@@ -55,6 +55,14 @@
 
 // Pagination
   $num_pages = ceil($num_rows/settings::get('data_table_rows_per_page'));
+
+  $url_types = [
+    'domainpath' => language::translate('text_url_type_domainpath', 'Domain + Path'),
+    'domain' => language::translate('text_url_type_domain', 'Domain'),
+    'path' => language::translate('text_url_type_path', 'Path'),
+    'root' => language::translate('text_url_type_root', 'Root'),
+    'none' => language::translate('text_url_type_none', 'None'),
+  ];
 ?>
 <div class="card card-app">
   <div class="card-header">
@@ -77,8 +85,9 @@
           <th><?php echo functions::draw_fonticon('fa-check-square-o fa-fw', 'data-toggle="checkbox-toggle"'); ?></th>
           <th></th>
           <th><?php echo language::translate('title_id', 'ID'); ?></th>
-          <th><?php echo language::translate('title_code', 'Code'); ?></th>
           <th class="main"><?php echo language::translate('title_name', 'Name'); ?></th>
+          <th>ISO 639-1</th>
+          <th>ISO 639-2</th>
           <th><?php echo language::translate('title_default_language', 'Default Language'); ?></th>
           <th><?php echo language::translate('title_store_language', 'Store Language'); ?></th>
           <th><?php echo language::translate('title_url_type', 'URL Type'); ?></th>
@@ -93,11 +102,12 @@
           <td><?php echo functions::form_draw_checkbox('languages[]', $language['id']); ?></td>
           <td><?php echo functions::draw_fonticon('fa-circle', 'style="color: '. $language['status_color'] .';"'); ?></td>
           <td><?php echo $language['id']; ?></td>
-          <td><?php echo $language['code']; ?></td>
           <td><a class="link" href="<?php echo document::href_link('', ['doc' => 'edit_language', 'language_code' => $language['code'], 'page' => $_GET['page']], true); ?>"><?php echo $language['name']; ?></a></td>
+          <td class="text-center"><?php echo $language['code']; ?></td>
+          <td class="text-center"><?php echo $language['code2']; ?></td>
           <td class="text-center"><?php echo ($language['code'] == settings::get('default_language_code')) ? functions::draw_fonticon('fa-check') : ''; ?></td>
           <td class="text-center"><?php echo ($language['code'] == settings::get('store_language_code')) ? functions::draw_fonticon('fa-check') : ''; ?></td>
-          <td><?php echo strtr($language['url_type'], ['none' => language::translate('title_none', 'None'), 'path' => language::translate('title_path_prefix', 'Path Prefix'), 'domain' => language::translate('title_domain', 'Domain')]); ?></td>
+          <td><?php echo strtr($language['url_type'], $url_types); ?></td>
           <td class="text-center"><?php echo $language['priority']; ?></td>
           <td><a class="btn btn-default btn-sm" href="<?php echo document::href_link('', ['doc' => 'edit_language', 'language_code' => $language['code'], 'page' => $_GET['page']], true); ?>" title="<?php echo functions::escape_html(language::translate('title_edit', 'Edit')); ?>"><?php echo functions::draw_fonticon('fa-pencil'); ?></a></td>
         </tr>
@@ -106,7 +116,7 @@
 
       <tfoot>
         <tr>
-          <td colspan="10"><?php echo language::translate('title_languages', 'Languages'); ?>: <?php echo $num_rows; ?></td>
+          <td colspan="11"><?php echo language::translate('title_languages', 'Languages'); ?>: <?php echo $num_rows; ?></td>
         </tr>
       </tfoot>
     </table>

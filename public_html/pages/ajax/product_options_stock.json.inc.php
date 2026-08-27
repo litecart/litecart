@@ -25,14 +25,18 @@
 
             case 'checkbox':
               $valid_values = [];
+              $checkbox_values = $_POST['options'][$product->options[$key]['name']];
+              if (!is_array($checkbox_values)) {
+                $checkbox_values = explode(', ', $checkbox_values);
+              }
               foreach ($product->options[$key]['values'] as $value) {
                 $valid_values[] = $value['name'];
-                if (in_array($value['name'], explode(', ', $_POST['options'][$product->options[$key]['name']]))) {
+                if (in_array($value['name'], $checkbox_values)) {
                   $selected_options[] = $product->options[$key]['group_id'].'-'.$value['value_id'];
                 }
               }
 
-              foreach (explode(', ', $_POST['options'][$product->options[$key]['name']]) as $current_value) {
+              foreach ($checkbox_values as $current_value) {
                 if (!in_array($current_value, $valid_values)) {
                   throw new Exception('Not a valid option');
                 }

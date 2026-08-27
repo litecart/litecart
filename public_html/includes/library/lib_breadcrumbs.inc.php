@@ -21,20 +21,26 @@
         '@context' => 'https://schema.org/',
         '@type' => 'BreadcrumbList',
         'numberOfItems' => count(self::$data),
-        'itemListElement' => array_map(function($breadcrumb, $position){
-          return [
-            '@type' => 'ListItem',
-            'position' => $position,
-            'name' => $breadcrumb['title'],
-            'url' => $breadcrumb['link'],
-          ];
-        }, self::$data, range(0, count(self::$data)-1))
+        'itemListElement' => [],
       ];
+
+      $i = 1;
+      foreach (self::$data as $breadcrumb) {
+        if (empty($breadcrumb['link'])) continue;
+        document::$schema['breadcrumbs']['itemListElement'][] = [
+          '@type' => 'ListItem',
+          'position' => $i++,
+          'name' => $breadcrumb['title'],
+          'url' => $breadcrumb['link'],
+        ];
+      }
 
       $breadcrumbs = new ent_view();
 
       $breadcrumbs->snippets['breadcrumbs'] = [];
+
       foreach (self::$data as $breadcrumb) {
+        if (empty($breadcrumb['link'])) continue;
         $breadcrumbs->snippets['breadcrumbs'][] = [
           'title' => $breadcrumb['title'],
           'link' => $breadcrumb['link'],

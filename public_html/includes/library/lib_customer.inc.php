@@ -12,26 +12,33 @@
     // Bind customer to session
       self::$data = &session::$data['customer'];
 
-    // Login remembered customer automatically
-      if (empty(self::$data['id']) && !empty($_COOKIE['customer_remember_me']) && empty($_POST)) {
+    // Login remembered customer automatically (HMAC-based token)
+      if (empty(self::$data['id']) && !empty($_COOKIE['customer_remember_me']) && empty($_POST) && defined('HMAC_KEY_REMEMBER_ME')) {
 
         try {
 
-          list($email, $key) = explode(':', $_COOKIE['customer_remember_me']);
+        // Decode token to get customer ID (verify signature after DB lookup)
+          $decoded = base64_decode($_COOKIE['customer_remember_me'], true);
+          $token = $decoded ? json_decode($decoded, true) : null;
+          if (!is_array($token) || empty($token['id'])) {
+            throw new Exception('Invalid or legacy cookie format');
+          }
 
           $customer_query = database::query(
             "select * from ". DB_TABLE_PREFIX ."customers
-            where email = '". database::input($email) ."'
+            where id = ". (int)$token['id'] ."
+            and status
+            and (date_blocked_until is null or date_blocked_until < '". date('Y-m-d H:i:s') ."')
             limit 1;"
           );
 
           if (!$customer = database::fetch($customer_query)) {
-            throw new Exception('Invalid email or the account has been removed');
+            throw new Exception('Invalid customer or account removed');
           }
 
-          $checksum = sha1($customer['email'] . $customer['password_hash'] . $_SERVER['REMOTE_ADDR'] . ($_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : ''));
-
-          if ($checksum != $key) {
+        // Verify HMAC with actual password hash
+          $verified_id = functions::token_verify_remember($_COOKIE['customer_remember_me'], $customer['password_hash']);
+          if ($verified_id === false) {
             if (++$customer['login_attempts'] < 3) {
               database::query(
                 "update ". DB_TABLE_PREFIX ."customers
@@ -49,7 +56,7 @@
               );
             }
 
-            throw new Exception('Invalid checksum for cookie');
+            throw new Exception('Invalid token signature');
           }
 
           self::load($customer['id']);
@@ -113,7 +120,9 @@
       if (!preg_match('#^('. preg_quote(WS_DIR_ADMIN, '#') .')#', strtok($_SERVER['REQUEST_URI'], '?'))) {
         if (settings::get('regional_settings_screen')) {
           if (empty(customer::$data['id']) && empty(session::$data['skip_regional_settings_screen']) && empty($_COOKIE['skip_regional_settings_screen'])) {
-            functions::draw_lightbox(document::ilink('regional_settings'), ['seamless' => true]);
+            if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) != 'xmlhttprequest') {
+              functions::draw_lightbox(document::ilink('regional_settings'), ['seamless' => true]);
+            }
           }
         }
       }
