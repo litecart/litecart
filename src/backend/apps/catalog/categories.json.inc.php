@@ -2,10 +2,6 @@
 
 	try {
 
-		if (empty($_GET['parent_id'])) {
-			$_GET['parent_id'] = 0;
-		}
-
 		if (empty($_GET['language_code'])) {
 			$_GET['language_code'] = language::$selected['code'];
 		}
@@ -17,14 +13,14 @@
 			];
 		}
 
-		$category = reference::category($_GET['parent_id']);
+		$category = reference::category($_GET['parent_id'] ?? 0);
 
 		$json = [
 			'status' => 'ok',
 			'id' => $_GET['parent_id'] ?? null,
 			'name' => !empty($_GET['parent_id']) ? $category->name : '['. t('title_root', 'Root') .']',
 			'parent' => [
-				'id' => $category->parent ? $category->parent->id : 0,
+				'id' => $category->parent ? $category->parent->id : null,
 				'name' => $category->parent ? $category->parent->name : '['. t('title_root', 'Root') .']',
 			],
 			'subcategories' => [],

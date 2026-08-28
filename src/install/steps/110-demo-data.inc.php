@@ -14,21 +14,21 @@
 				$table = DB_TABLE_PREFIX . basename($file, '.csv');
 
 				$contents = file_get_contents($file);
-
-				foreach ([
+				$contents = strtr( $contents, [
 					'{STORE_NAME}' => isset($_REQUEST['store_name']) ? $_REQUEST['store_name'] : '',
 					'{STORE_EMAIL}' => isset($_REQUEST['store_email']) ? $_REQUEST['store_email'] : '',
 					'{STORE_COUNTRY_CODE}' => isset($_REQUEST['country_code']) ? $_REQUEST['country_code'] : '',
-				] as $search => $replace) {
-					$contents = str_replace($search, database::input($replace), $contents);
-				}
+					'CURRENT_TIMESTAMP' => date('Y-m-d H:i:s'),
+				]);
 
 				$rows = f::csv_decode($contents);
 
 				$query = "INSERT INTO `". database::input($table) ."` (`". implode('`, `', database::input(array_keys($rows[0]))) ."`) VALUES ";
 
 				foreach ($rows as $columns) {
-					$query .= "('". implode("', '", database::input($columns, true)) ."'),";
+					$query .= "(". implode(", ", array_map(function($value) {
+						return $value == '' ? "null" : "'". database::input($value) ."'";
+					}, $columns), true) ."'),";
 				}
 
 				$query = rtrim($query, ',') . ";";

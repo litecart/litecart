@@ -3,6 +3,7 @@
 	return [
 		'name' => t('title_webhooks', 'Webhooks'),
 		'default' => 'webhooks',
+		'group' => 'system',
 		'theme' => [
 			'icon' => 'icon-webhooks',
 			'color' => '#565a52',

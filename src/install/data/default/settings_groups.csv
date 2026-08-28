@@ -1,12 +1,12 @@
 key,name,description,priority
-store_info,Store Info,{""en"": ""Store information""},10
-defaults,Defaults,{""en"": ""Default settings""},20
-social_media,Social Media,{""en"": ""Settings related to social media.""},30
-email,Email,{""en"": ""Email and SMTP""},40
-listings,Listings,{""en"": ""Settings for the catalog listing""},50
-customer_details,Customer Details,{""en"": ""Settings for customer details""},60
-legal,Legal,{""en"": ""Legal settings and information""},70
-images,Images,{""en"": ""Settings for graphical elements""},80
-checkout,Checkout,{""en"": ""Checkout settings""},90
-advanced,Advanced,{""en"": ""Advanced settings""},100
-security,Security,{""en"": ""Store security and protection against threats""},110
+store_info,{""en"": ""Store Info""},{""en"": ""Store information""},10
+defaults,{""en"": ""Defaults""},{""en"": ""Default settings""},20
+social_media,{""en"": ""Social Media""},{""en"": ""Settings related to social media.""},30
+email,{""en"": ""Email""},{""en"": ""Email and SMTP""},40
+listings,{""en"": ""Listings""},{""en"": ""Settings for the catalog listing""},50
+customer_details,{""en"": ""Customer Details""},{""en"": ""Settings for customer details""},60
+legal,{""en"": ""Legal""},{""en"": ""Legal settings and information""},70
+images,{""en"": ""Images""},{""en"": ""Settings for graphical elements""},80
+checkout,{""en"": ""Checkout""},{""en"": ""Checkout settings""},90
+advanced,{""en"": ""Advanced""},{""en"": ""Advanced settings""},100
+security,{""en"": ""Security""},{""en"": ""Store security and protection against threats""},110

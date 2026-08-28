@@ -7,7 +7,7 @@
 	if (!extension_loaded('mysqli')) {
 		throw new Exception(' <span class="error">[Error]</span> MySQLi is not installed or configured for PHP</p>' . PHP_EOL  . PHP_EOL);
 
-	} else if (!database::connect('default', DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_DATABASE, 'utf8')) {
+	} else if (!database::connect('default', DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_DATABASE, DB_COLLATION)) {
 		throw new Exception(' <span class="error">[Error]</span> Unable to connect</p>' . PHP_EOL  . PHP_EOL);
 
 	} else {

@@ -99,10 +99,12 @@
 						header('Set-Cookie: remember_me=; Path='. WS_DIR_APP .'; Max-Age=-1; HttpOnly; SameSite=Lax');
 					}
 					self::reset();
-					die('Your account is disabled');
+					notices::add('errors', t('error_account_disabled', 'Your account is disabled'));
+					redirect(document::ilink('b:login'));
+					exit;
 				}
 
-				if ($admininstrator['display_errors']) {
+				if ($administrator['display_errors']) {
 					ini_set('display_errors', 'On');
 				}
 

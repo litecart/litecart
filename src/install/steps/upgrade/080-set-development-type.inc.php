@@ -1,6 +1,6 @@
 <?php
 
-	if (is_dir(__DIR__.'/../../../.git')) return;
+	if (is_dir(__DIR__.'/../../../../.git')) return;
 
 	### Installer > Set Development Type ########################################
 

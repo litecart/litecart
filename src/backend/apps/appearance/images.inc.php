@@ -107,6 +107,7 @@
 
 .image-container {
 	position: relative;
+	background: var(--whitespace-color);
 	border: 1px solid var(--default-border-color);
 	aspect-ratio: 1 / 1;
 	align-content: center;

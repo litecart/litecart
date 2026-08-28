@@ -102,6 +102,21 @@
 			// Load jQuery
 			self::load_script('app://assets/jquery/jquery-4.0.0.min.js', 'jquery');
 
+			// CSRF token for AJAX requests
+			self::$snippets['javascript']['csrf'] = implode(PHP_EOL, [
+				'window.fetch = function(input, init={}) {',
+				'	init.headers = new Headers(init.headers);',
+				'	init.headers.set("X-CSRF-Token", "'. security::csrf_token() .'");',
+				'	return _fetch.call(this, input, init);',
+				'};',
+				'',
+				'$.ajaxPrefilter(function(options, originalOptions, jqXHR) {',
+				'  if (!/^(GET|HEAD|OPTIONS)$/i.test(options.type)) {',
+				'    jqXHR.setRequestHeader("X-CSRF-Token", "'. security::csrf_token() .'");',
+				'  }',
+				'});',
+			]);
+
 			// Get template settings
 			$template_config_file = match(route::$selected['endpoint'] ?? null) {
 				'backend' => 'app://backend/template/config.inc.php',

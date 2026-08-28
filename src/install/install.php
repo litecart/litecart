@@ -123,9 +123,9 @@
 	require_once FS_DIR_APP . 'shared/functions/func_csv.inc.php';
 	require_once FS_DIR_APP . 'shared/error_handler.inc.php';
 
-	require_once __DIR__ . '/../functions.inc.php';
+	require_once __DIR__ . '/includes/functions.inc.php';
 
-	$requirements = json_decode(file_get_contents(__DIR__ . '/../requirements.json'), true);
+	$requirements = json_decode(file_get_contents(__DIR__ . '/requirements.json'), true);
 
 	try {
 
@@ -134,9 +134,9 @@
 		echo '<h1>LiteCart Installer</h1>' . PHP_EOL . PHP_EOL;
 
 		// Execute sub-steps in order
-		foreach (scandir(__DIR__ . '/../steps/') as $file) {
+		foreach (scandir(__DIR__ . '/steps/') as $file) {
 			if (preg_match('#^[0-9]+-.*\.inc\.php$#', $file)) {
-				require __DIR__ . '/../steps/' . $file;
+				require __DIR__ . '/steps/' . $file;
 			}
 		}
 

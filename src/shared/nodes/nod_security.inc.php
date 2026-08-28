@@ -87,13 +87,18 @@
 			// CSRF protection for state-changing requests
 			if ($_SERVER['SERVER_SOFTWARE'] != 'CLI' && !in_array($_SERVER['REQUEST_METHOD'], ['GET', 'HEAD', 'OPTIONS'])) {
 
+				$skip_csrf = false;
+
 				// Excluded paths (payment gateway callbacks, MCP endpoints)
-				$csrf_excluded_paths = ['checkout/verify', 'mcp'];
-				$csrf_skip = false;
-				$request_path = strtok($_SERVER['REQUEST_URI'], '?');
-				foreach ($csrf_excluded_paths as $path) {
-					if (preg_match('#/' . preg_quote($path, '#') . '(?:/|$)#', $request_path)) {
-						$csrf_skip = true;
+				foreach ([
+					'#^/ext/#', // 3rd party stuff
+					'#^/ajax/event(\?|$)#', // As beacons don't support X-CSRF-Token
+					'#/mcp(\?|$)#',
+					'#^/order_process(\?|$)#',
+					'#(webhook|callback)#i',
+				] as $pattern) {
+					if (preg_match($pattern, route::$request)) {
+						$skip_csrf = true;
 						break;
 					}
 				}

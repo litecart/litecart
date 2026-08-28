@@ -54,6 +54,7 @@
 	define('DB_USERNAME', $_REQUEST['db_username']);
 	define('DB_PASSWORD', $_REQUEST['db_password']);
 	define('DB_DATABASE', $_REQUEST['db_database']);
+	define('DB_COLLATION', $_REQUEST['db_collation']);
 	define('DB_TABLE_PREFIX', $_REQUEST['db_table_prefix']);
 
 	echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;

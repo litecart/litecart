@@ -1,6 +1,6 @@
 id,product_id,filename,priority
-1,1,products/1-yellow-duck-1.webp,1
-2,2,products/2-green-duck-1.webp,1
-3,3,products/3-red-duck-1.webp,1
-4,4,products/4-blue-duck-1.webp,1
-5,5,products/5-purple-duck-1.webp,1
+1,1,products/1-yellow-duck-1.webp,0
+2,2,products/2-green-duck-1.webp,0
+3,3,products/3-red-duck-1.webp,0
+4,4,products/4-blue-duck-1.webp,0
+5,5,products/5-purple-duck-1.webp,0

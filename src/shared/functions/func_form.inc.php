@@ -127,7 +127,20 @@
 
 		$attributes = is_array($attributes) ? $attributes : form_attributes($attributes);
 
-		return f::draw_element('button', ['class' => 'btn btn-default', 'type' => $type, 'name' => $name, 'value' => $value[0], ...$attributes], ($fonticon ? f::draw_fonticon($fonticon) . ' ' : '') . ($value[1] ?? $value[0]));
+		// Button events are blocked by nonce, so let's extract them into <script>
+		foreach ($attributes as $k => $v) {
+			$attributes[$k] = str_replace('__value__', $v[0], $v);
+			if (in_array($k, ['onclick', 'onchange', 'oninput', 'onblur', 'onfocus'])) {
+				document::add_script(implode(PHP_EOL, [
+					'$(\'button[name="'. f::escape_js($name) .'"]\').on("'. substr($k, 2) .'", function() {',
+					'  ' . $v,
+					'});',
+				]));
+				unset($attributes[$k]);
+			}
+		}
+
+		return f::draw_element('button', ['class' => 'btn btn-default', 'type' => $type, 'name' => $name, 'value' => $value[0], ...$attributes], ($fonticon ? f::draw_fonticon($fonticon) : '') . ($value[1] ?? $value[0]));
 	}
 
 	function form_button_predefined(string $name, array|string $attributes=[]): string {

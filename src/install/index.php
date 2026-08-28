@@ -320,7 +320,7 @@ input[name="development_type"]:checked + div {
 			<label class="form-group">
 				<div class="form-label">Demo Data</div>
 				<label class="form-check">
-					<input name="demo_data" type="checkbox" value="true" <?php if (!file_exists(__DIR__.'/../data/demo/data.sql')) echo 'disabled'; ?>> Install demo data
+					<input name="demo_data" type="checkbox" value="true"> Install demo data
 				</label>
 			</label>
 		</div>
