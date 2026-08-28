@@ -186,8 +186,8 @@
 
 		public function stream_open(string $path, string $mode, int $options, ?string &$opened_path): bool {
 
-			$path = $this->_resolve_path($path);
-			
+			$path = $this->_resolve_file($path);
+
 			if (!getenv('SUPER_MODE')) {
 				$mode = 'r'; // Force read-only
 			}

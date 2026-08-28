@@ -69,11 +69,8 @@
 				$last_modified = $self_last_modified;
 			}
 
+			// Addons
 			if (($folder_last_modified = filemtime(FS_DIR_STORAGE .'addons/')) > $last_modified) {
-				$last_modified = $folder_last_modified;
-			}
-
-			if (($folder_last_modified = filemtime(FS_DIR_STORAGE .'vmods/')) > $last_modified) {
 				$last_modified = $folder_last_modified;
 			}
 
@@ -89,6 +86,11 @@
 				}
 			}
 
+			// vMods
+			if (($folder_last_modified = filemtime(FS_DIR_STORAGE .'vmods/')) > $last_modified) {
+				$last_modified = $folder_last_modified;
+			}
+		
 			foreach (glob(FS_DIR_STORAGE .'vmods/*.xml') as $file) {
 				if (($modification_last_modified = filemtime($file)) > $last_modified) {
 					$last_modified = $modification_last_modified;
