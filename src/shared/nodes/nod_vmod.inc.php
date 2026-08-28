@@ -493,7 +493,8 @@
 					throw new \Exception('Could not read file');
 				}
 
-				if (!$dom = new \DOMDocument() || !$dom->loadXML($xml)) {
+				$dom = new \DOMDocument();
+				if (!$dom->loadXML($xml)) {
 					throw new \Exception('Could not parse file as XML');
 				}
 			}
