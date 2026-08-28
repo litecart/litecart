@@ -11,7 +11,7 @@ ADD UNIQUE INDEX `product_id_filename` (`product_id`, `filename`);
 INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, `key`, `value`, `function`, `priority`, `date_updated`, `date_created`) VALUES
 ('checkout', 'local', 'Withdrawal Window Days', 'The number of days a customer has to request a withdrawal after placing an order.', 'withdrawal_window_days', '14', 'number()', 14, NOW(), NOW());
 -- -----
-CREATE TABLE IF NOT EXISTS `lc_products_prices_history` (
+CREATE TABLE `lc_products_prices_history` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `product_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
   `campaign_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',

@@ -78,6 +78,15 @@
       self::$snippets['head_tags']['fontawesome'] = '<link rel="stylesheet" href="'. self::href_rlink(FS_DIR_APP .'ext/fontawesome/font-awesome.min.css') .'">';
       self::$snippets['foot_tags']['jquery'] = '<script src="'. self::href_rlink(FS_DIR_APP .'ext/jquery/jquery-3.7.1.min.js') .'"></script>';
 
+    // CSRF token for AJAX requests
+      self::$snippets['javascript']['csrf'] = implode(PHP_EOL, [
+        '$.ajaxPrefilter(function(options, originalOptions, jqXHR) {',
+        '  if (!/^(GET|HEAD|OPTIONS)$/i.test(options.type)) {',
+        '    jqXHR.setRequestHeader("X-CSRF-Token", "'. session::csrf_token() .'");',
+        '  }',
+        '});',
+      ]);
+
     // Hreflang
       if (!empty(route::$route['page'])) {
         self::$snippets['head_tags']['hreflang'] = '';
