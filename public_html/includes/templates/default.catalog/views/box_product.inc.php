@@ -137,15 +137,15 @@
               <?php } ?>
             </div>
 
-            <?php if (!empty($lowest_price_30_days)) { ?>
-            <div class="lowest-price-30-days" style="margin-bottom: 1em; font-size: smaller; color: #666;">
-              <?php echo strtr(language::translate('text_lowest_price_30_days', 'Lowest price of the last 30 days: <strong>%price</strong>'), ['%price' => currency::format($lowest_price_30_days)]); ?>
-            </div>
-            <?php } ?>
-
             <?php if ($tax_rates) { ?>
             <div class="tax" style="margin-bottom: 1em;">
               <?php echo $including_tax ? language::translate('title_including_tax', 'Including Tax') : language::translate('title_excluding_tax', 'Excluding Tax'); ?>: <span class="total-tax"><?php echo currency::format($total_tax); ?></span>
+            </div>
+            <?php } ?>
+
+            <?php if (!empty($lowest_price_30_days)) { ?>
+            <div class="lowest-price-30-days" style="margin-bottom: 1em; font-size: smaller; color: #666;">
+              <?php echo strtr(language::translate('text_lowest_price_30_days', 'Lowest price of the last 30 days: <strong>%price</strong>'), ['%price' => currency::format($lowest_price_30_days)]); ?>
             </div>
             <?php } ?>
 
