@@ -42,17 +42,20 @@
   if (!in_array($_SERVER['REQUEST_METHOD'], ['GET', 'HEAD', 'OPTIONS']) && session_status() === PHP_SESSION_ACTIVE) {
 
     // Excluded paths (payment gateway callbacks, MCP JSON-RPC API)
-    $csrf_excluded_paths = ['order_process', 'mcp'];
-    $csrf_skip = false;
-    $request_path = strtok($_SERVER['REQUEST_URI'], '?'); // Don't rely on parse_url()
-    foreach ($csrf_excluded_paths as $path) {
-      if (preg_match('#/' . preg_quote($path, '#') . '(?:/|$)#', $request_path)) {
-        $csrf_skip = true;
+    $skip_csrf = false;
+    foreach ([
+      '#/ext/#',
+      '#/mcp(\?|$)#',
+      '#/order_process(\?|$)#',
+      '#(webhook|callback)#i',
+    ] as $pattern) {
+      if (preg_match($pattern, route::$request)) {
+        $skip_csrf = true;
         break;
       }
     }
 
-    if (!$csrf_skip) {
+    if (!$skip_csrf) {
       $submitted_token = $_POST['csrf_token'] ?? $_SERVER['HTTP_X_CSRF_TOKEN'] ?? '';
       if (!hash_equals(session::csrf_token(), $submitted_token)) {
         http_response_code(403);
