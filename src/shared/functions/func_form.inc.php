@@ -129,7 +129,7 @@
 
 		// Button events are blocked by nonce, so let's extract them into <script>
 		foreach ($attributes as $k => $v) {
-			$attributes[$k] = str_replace('__value__', $v[0], $v);
+			$attributes[$k] = str_replace('__value__', $value[0], $v);
 			if (in_array($k, ['onclick', 'onchange', 'oninput', 'onblur', 'onfocus'])) {
 				document::add_script(implode(PHP_EOL, [
 					'$(\'button[name="'. f::escape_js($name) .'"]\').on("'. substr($k, 2) .'", function() {',
@@ -147,7 +147,7 @@
 
 		$button = match($name) {
 			'cancel' => f::form_button('cancel', t('title_cancel', 'Cancel'), 'button', ['onclick' => 'history.go(-1);'] + $attributes, 'cancel'),
-			'delete' => f::form_button('delete', t('title_delete', 'Delete'), 'submit', ['formnovalidate' => true, 'class' => 'btn btn-danger', 'onclick' => 'if (!confirm(&quot;'. t('text_are_you_sure', 'Are you sure?') .'&quot;)) return false;'] + $attributes, 'delete'),
+			'delete' => f::form_button('delete', t('title_delete', 'Delete'), 'submit', ['formnovalidate' => true, 'class' => 'btn btn-danger', 'onclick' => 'if (!confirm("'. t('text_are_you_sure', 'Are you sure?') .'")) return false;'] + $attributes, 'delete'),
 			'enable' => f::form_button('enable', t('title_enable', 'Enable'), 'submit', $attributes, 'on'),
 			'disable' => f::form_button('disable', t('title_disable', 'Disable'), 'submit', $attributes, 'off'),
 			'move-up' => f::form_button('move_up', t('title_move_up', 'Move Up'), 'button', ['class' => 'btn btn-default'] + $attributes, 'move-up'),

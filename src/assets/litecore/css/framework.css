@@ -355,7 +355,10 @@ summary {
 
 /* Buttons */
 .btn {
-	display: inline-block;
+	display: inline-flex;
+	flex-direction: row;
+	gap: 0.75em;
+	/*align-self: anchor-center;*/
 	padding: var(--button-padding-y) var(--button-padding-x);
 	border-radius: var(--border-radius);
 	box-shadow: var(--button-shadow);
@@ -443,7 +446,7 @@ summary {
 	background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(101deg, #78e4ff, #ff48fa);
 }
 .btn.btn-sm {
-	padding: 0.65em;
+	padding: 0.4em 0.65em;
 	font-size: 0.8em;
 }
 .btn.btn-lg {
@@ -463,9 +466,6 @@ summary {
 }
 .btn + .btn, .btn + .btn-group {
 	margin-inline-start: 0.5em;
-}
-.btn > [class^=icon-] {
-	margin-inline-end: 0.5em;
 }
 
 .btn-pill {
@@ -1272,7 +1272,7 @@ html[dir=rtl] .dropdown label:has([data-toggle=dropdown]) {
 	font-family: "LiteCore";
 	font-style: normal;
 	font-weight: 400;
-	src: url("../fonts/fonticons.woff2?1787884709") format("woff2");
+	src: url("../fonts/fonticons.woff2?1787947008") format("woff2");
 }
 [class^=icon-], [class*=" icon-"] {
 	display: inline-block;
@@ -1283,7 +1283,6 @@ html[dir=rtl] .dropdown label:has([data-toggle=dropdown]) {
 	text-rendering: auto;
 	text-align: center;
 	vertical-align: middle;
-	line-height: 1;
 	width: 1em;
 	height: 1em;
 	-moz-osx-font-smoothing: grayscale;

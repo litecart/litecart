@@ -103,7 +103,7 @@
 					}
 				}
 
-				if (!$csrf_skip) {
+				if (!$skip_csrf) {
 					$submitted_token = $_POST['csrf_token'] ?? $_SERVER['HTTP_X_CSRF_TOKEN'] ?? '';
 					if (!hash_equals(security::csrf_token(), $submitted_token)) {
 						http_response_code(403);

@@ -19,7 +19,10 @@
 }
 
 .btn {
-	display: inline-block;
+	display: inline-flex;
+	flex-direction: row;
+	gap: .75em;
+	/*align-self: anchor-center;*/
 	padding: var(--button-padding-y) var(--button-padding-x);
 	border-radius: var(--border-radius);
 	box-shadow: var(--button-shadow);
@@ -45,7 +48,7 @@
 	}
 
 	&.btn-sm {
-		padding: .65em;
+		padding: .4em .65em;
 		font-size: .8em;
 	}
 	&.btn-lg {
@@ -69,10 +72,6 @@
 
 	+ .btn, + .btn-group {
 		margin-inline-start: .5em;
-	}
-
-	> [class^="icon-"] {
-		margin-inline-end: .5em;
 	}
 }
 

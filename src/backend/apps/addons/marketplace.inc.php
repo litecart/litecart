@@ -69,12 +69,12 @@ html[dir="rtl"] .whoami .avatar {
 }
 
 .addons {
-	columns: 3;
+	columns: auto 250px;
 }
 
 .addon {
 	display: flex;
-	flex-direction: row;
+	flex-direction: column;
 	gap: 1em;
 	border: 1px solid var(--default-border-color);
 	border-radius: var(--border-radius);
@@ -91,7 +91,7 @@ html[dir="rtl"] .whoami .avatar {
 }
 
 .addon img {
-	width: 96px;
+	width: 100%;
 	margin-inline-end: 1em;
 	aspect-ratio: 1/1;
 	border: 1px solid var(--default-border-color);
@@ -107,6 +107,10 @@ html[dir="rtl"] .whoami .avatar {
 
 .addon .name {
 	font-weight: 500;
+}
+
+.addon .description {
+	height: 4em;
 }
 
 .addon .price {

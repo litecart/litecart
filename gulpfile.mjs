@@ -223,7 +223,6 @@ gulp.task('iconly', function() {
 			'	text-rendering: auto;',
 			'	text-align: center;',
 			'	vertical-align: middle;',
-			'	line-height: 1;',
 			'	width: 1em;',
 			'	height: 1em;',
 			'	-moz-osx-font-smoothing: grayscale;',

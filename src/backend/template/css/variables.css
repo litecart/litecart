@@ -116,7 +116,7 @@
 	--breadcrumb-item-text-color: #3c3c3c;
 	/* Buttons */
 	--button-padding-x: 1.25em;
-	--button-padding-y: .55em;
+	--button-padding-y: .625em;
 	--button-border-width: 1px;
 	--button-shadow: 0 1px 2px 0 rgb(37 44 97 / 15%), 0 1px 2px 0 rgb(93 100 148 / 20%);
 	--button-shadow--active: 0 1px 0px 0 rgb(37 44 97 / 15%), 0 0px 2px 0 rgb(93 100 148 / 20%);

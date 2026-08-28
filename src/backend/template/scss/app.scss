@@ -326,8 +326,12 @@ h4 { font-size: 1.10em; }
 
 				a {
 					padding: .15em 1em;
+					&:before {
+						content: '■ ';
+						color: var(--app-color);
+						padding: 0 .25em;
+					}
 					.name {
-						border-left: 2px solid var(--app-color);
   					padding-left: .5em;
 					}
 				}

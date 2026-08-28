@@ -9,7 +9,7 @@
 
 			foreach (scandir('app://backend/apps/') as $folder_name) {
 
-				if (preg_match('#\.disabled$#', $folder_name)) continue;
+				if (preg_match('#\.disabled/$#', $folder_name)) continue;
 
 				$id = basename($folder_name);
 				$directory = 'app://backend/apps/'. $folder_name .'/';
@@ -75,7 +75,7 @@
 
 			foreach (scandir('app://backend/widgets/') as $folder_name) {
 
-				if (preg_match('#\.disabled$#', $folder_name)) continue;
+				if (preg_match('#\.disabled/$#', $folder_name)) continue;
 
 				$id = basename($folder_name);
 				$directory = 'app://backend/widgets/'. $folder_name .'/';
