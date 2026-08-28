@@ -285,7 +285,7 @@ d41d8cd98f00b204e9800998ecf8427e	includes/library/index.html
 0f14dd8a55acb482677c6ec16535d7b3	includes/library/lib_currency.inc.php
 6a53e50fa9cde007438af181ee96a25c	includes/library/lib_customer.inc.php
 11d14aac6c59cde35ec0ae9c6d47bd8a	includes/library/lib_database.inc.php
-86604eb6b6df305ecc361e2be7994e84	includes/library/lib_document.inc.php
+4cdf951c4d6af3c21a18cd15d4f92d4d	includes/library/lib_document.inc.php
 b4401ef3e46e288212dfc2fd3eb1d165	includes/library/lib_event.inc.php
 ea8d7ddb2524ec3236c7099e10854816	includes/library/lib_functions.inc.php
 040a7b80d8759f4c1cdb9d7ede6e0601	includes/library/lib_language.inc.php
@@ -423,9 +423,9 @@ d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/fonts/index.
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/images/index.html
 e6e2336e113f1248d03214ca228984d5	includes/templates/default.catalog/images/loader.svg
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/index.html
-cf6ae286fb66cae2879d643067854c8e	includes/templates/default.catalog/js/app.js
-b4b6f127e1a13cca421890b25b12c5f2	includes/templates/default.catalog/js/app.min.js
-7a3895d7621265e9eb9b4db740964f27	includes/templates/default.catalog/js/app.min.js.map
+be31f4a1bb9f28c87386cbfcea8dd861	includes/templates/default.catalog/js/app.js
+8421cd62c07b37878e359d45ca697b53	includes/templates/default.catalog/js/app.min.js
+15419e7e1c6bcdc8829fa14d71746c18	includes/templates/default.catalog/js/app.min.js.map
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/js/index.html
 06037af6e6e1dc266fee3de3495281a3	includes/templates/default.catalog/layouts/ajax.inc.php
 9f1c0d9a701dcdd5bef54d9a2878fd2d	includes/templates/default.catalog/layouts/blank.inc.php
@@ -517,7 +517,7 @@ d545ed5026e367e906d43f4a2f7827db	includes/templates/default.catalog/views/box_ma
 519545d77846dd5192bb44685c9727b8	includes/templates/default.catalog/views/box_manufacturer_logotypes.inc.php
 390dbfe7b718ea2652a09e69a1c5904a	includes/templates/default.catalog/views/box_newsletter_subscribe.inc.php
 223775640ffb24c1de06ff04faf41d28	includes/templates/default.catalog/views/box_popular_products.inc.php
-6db15a9ae3b9fff97986bc893f9ba764	includes/templates/default.catalog/views/box_product.inc.php
+76c76389f9b038767e71c27c81c77b2d	includes/templates/default.catalog/views/box_product.inc.php
 31d122331d0df63dc9d034fd3d63f48a	includes/templates/default.catalog/views/box_recently_viewed_products.inc.php
 fe29aeb6027be17f14ecf4ecbe4e1d08	includes/templates/default.catalog/views/box_similar_products.inc.php
 95e8cf87d0382bc9f1d16d8d48b3acd7	includes/templates/default.catalog/views/box_site_footer.inc.php
@@ -698,7 +698,7 @@ cd37a7f25119ad9ac30f171d57ef6db2	install/upgrade_patches/2.6.1.sql
 30c3e5bcc89bac50022777666f8fd35e	install/upgrade_patches/2.6.3.inc.php
 f90a56242d3956dc3dcf217afc5cb09e	install/upgrade_patches/2.6.3.sql
 9e66e230844702fb295dad1971c7a1a5	install/upgrade_patches/2.7.0.inc.php
-87ba077f1a241b6cbc4889b36d997705	install/upgrade_patches/2.7.0.sql
+427b3d21803a9828d5bbd24d9721eb7a	install/upgrade_patches/2.7.0.sql
 62bac9360222fee7de79173307177c9e	logs/.htaccess
 d41d8cd98f00b204e9800998ecf8427e	logs/index.html
 70df41f74e6b15be767a8052f14b4036	pages/ajax/cart.json.inc.php
