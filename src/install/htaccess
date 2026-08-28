@@ -6,16 +6,11 @@ ErrorDocument 410 {WS_DIR_APP}error_document?code=410
 ErrorDocument 500 "Internal Server Error"
 
 # Deny showing indexes for directory content - Uncomment if supported by you web host
-#Options -Indexes
+Options -Indexes
 
 # URL-rewriting
 <IfModule mod_rewrite.c>
 	RewriteEngine on
-
-	# Tell PHP that the mod_rewrite module is enabled
-	<IfModule mod_env.c>
-		SetEnv MOD_REWRITE On
-	</IfModule>
 
 	# Force HTTPS (Standard SSL)
 	#RewriteCond %{HTTPS} off

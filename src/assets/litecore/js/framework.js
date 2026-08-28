@@ -1,9 +1,9 @@
 /*!
- * LiteCart.net v3.0.0 - Official website
- * @link https://www.litecart.net/
- * @license UNLICENSED
- * @author T. Almroth
- */
+	LiteCart v3.0.0 - Superfast, lightweight e-commerce platform built built with for simplicity.
+	Link: https://www.litecart.net/
+	License: CC-BY-ND-4.0
+	Author: T. Almroth, LiteCart AB
+*/
 
 /* Minimal waitFor() implementation
  * Calls callback when objectName is defined in the global scope

@@ -47,6 +47,7 @@
 	--sidebar-text-color: #444;
 	--sidebar-width: 16rem;
 	--sidebar-app-border-size: 1px;
+	--sidebar-app-border-color: transparent;
 	--app-icon-background: #edf0f9;
 	/* Toolbar */
 	--toolbar-background: #fff;

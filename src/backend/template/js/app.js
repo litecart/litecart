@@ -5,6 +5,192 @@
 	Author: T. Almroth, LiteCart AB
 */
 
+// LiteCart Ask AI - chat workspace client
+// Dependency-free; uses the global $ (jQuery) loaded by the backend shell.
+
+waitFor('jQuery', ($) => {
+
+	const app = $('.ai-chat-app');
+	if (!app.length) return;
+
+	const state = {
+		conversationId: parseInt(app.attr('data-conversation-id') || $('#ai-conversation-id').val() || '0', 10),
+		isSending: false,
+		endpoint: document.querySelector('meta[name="admin-url"]')?.content || '',
+	};
+
+	// ---------- Helpers ----------
+
+	function post(action, data = {}) {
+		return $.ajax({
+			url: window.location.pathname,
+			method: 'POST',
+			data: $.extend({ action }, data),
+			dataType: 'json',
+		});
+	}
+
+	function escapeHtml(str) {
+		return String(str || '')
+			.replace(/&/g, '&amp;')
+			.replace(/</g, '&lt;')
+			.replace(/>/g, '&gt;')
+			.replace(/"/g, '&quot;')
+			.replace(/'/g, '&#039;');
+	}
+
+	function renderMessage(role, content) {
+		let inner;
+		if (role === 'tool_use') {
+			const parts = (content || '').split(' ');
+			const tool = parts[0] || '';
+			const args = parts.slice(1).join(' ') || '{}';
+			inner = `<details class="ai-chat-tool"><summary>${escapeHtml(tool)}</summary><pre>${escapeHtml(args)}</pre></details>`;
+		} else if (role === 'tool_result') {
+			inner = `<details class="ai-chat-tool"><summary>Tool result</summary><pre>${escapeHtml(content)}</pre></details>`;
+		} else {
+			inner = `<pre class="ai-chat-text">${escapeHtml(content)}</pre>`;
+		}
+		return `<div class="ai-chat-message ai-chat-message-${escapeHtml(role)}"><div class="ai-chat-message-content">${inner}</div></div>`;
+	}
+
+	function appendMessage(role, content) {
+		const $messages = $('#ai-chat-messages');
+		const $empty = $('.ai-chat-empty', $messages);
+		if ($empty.length) $empty.remove();
+		$messages.append(renderMessage(role, content));
+		$messages.scrollTop($messages[0].scrollHeight);
+	}
+
+	// ---------- New chat ----------
+
+	$('#ai-new-chat').on('click', function () {
+		post('create_conversation').done((res) => {
+			if (res.ok && res.conversation_id) {
+				window.location.href = window.location.pathname + '?doc=agent&app=ai&conversation_id=' + res.conversation_id;
+			}
+		}).fail((xhr) => {
+			alert(xhr.responseJSON?.error || 'Failed to create conversation');
+		});
+	});
+
+	// ---------- Composer ----------
+
+	const $input = $('#ai-chat-input');
+	const $send  = $('#ai-chat-send');
+
+	$input.on('input', function () {
+		this.style.height = 'auto';
+		this.style.height = Math.min(this.scrollHeight, 200) + 'px';
+		this.value = this.value; // keep caret
+		$send.prop('disabled', !this.value.trim() || state.isSending);
+	});
+
+	$input.on('keydown', function (e) {
+		if (e.key === 'Enter' && !e.shiftKey) {
+			e.preventDefault();
+			$('#ai-chat-composer').trigger('submit');
+		}
+	});
+
+	$('#ai-chat-composer').on('submit', function (e) {
+		e.preventDefault();
+		if (state.isSending) return;
+		const text = $input.val().trim();
+		if (!text || !state.conversationId) return;
+
+		state.isSending = true;
+		$send.prop('disabled', true);
+		appendMessage('user', text);
+		$input.val('').trigger('input');
+
+		// Append a placeholder for the assistant reply
+		const $placeholder = $('<div class="ai-chat-message ai-chat-message-assistant ai-chat-thinking"><div class="ai-chat-message-content"><span class="ai-chat-typing"></span><span class="ai-chat-typing"></span><span class="ai-chat-typing"></span></div></div>');
+		$('#ai-chat-messages').append($placeholder);
+		$('#ai-chat-messages').scrollTop($('#ai-chat-messages')[0].scrollHeight);
+
+		post('send', {
+			conversation_id: state.conversationId,
+			message: text,
+		}).done((res) => {
+			$placeholder.remove();
+			if (!res.ok) {
+				appendMessage('assistant', '⚠️ ' + (res.error || 'Unknown error'));
+				return;
+			}
+			appendMessage('assistant', res.text || '(empty reply)');
+
+			// Update sidebar title after first exchange
+			if (res.title) {
+				const $link = $(`.ai-chat-conversation[data-conversation-id="${state.conversationId}"] .ai-chat-conversation-title`);
+				$link.text(res.title);
+				$('.ai-chat-title').first().text(res.title);
+			}
+		}).fail((xhr) => {
+			$placeholder.remove();
+			appendMessage('assistant', '⚠️ ' + (xhr.responseJSON?.error || 'Network error'));
+		}).always(() => {
+			state.isSending = false;
+			$send.prop('disabled', !$input.val().trim());
+			$input.focus();
+		});
+	});
+
+	// ---------- Rename / Delete ----------
+
+	$('#ai-conversation-list').on('click', '.ai-chat-rename', function (e) {
+		e.preventDefault();
+		e.stopPropagation();
+		const $link = $(this).closest('.ai-chat-conversation');
+		const id = $link.data('conversation-id');
+		const current = $link.find('.ai-chat-conversation-title').text();
+		const next = prompt('Rename conversation', current);
+		if (next === null || next.trim() === '') return;
+		post('rename_conversation', { conversation_id: id, title: next.trim() }).done(() => {
+			$link.find('.ai-chat-conversation-title').text(next.trim());
+			if (state.conversationId === id) {
+				$('.ai-chat-title').first().text(next.trim());
+			}
+		});
+	});
+
+	$('#ai-conversation-list').on('click', '.ai-chat-delete', function (e) {
+		e.preventDefault();
+		e.stopPropagation();
+		const $link = $(this).closest('.ai-chat-conversation');
+		const id = $link.data('conversation-id');
+		if (!confirm('Delete this conversation and all its messages?')) return;
+		post('delete_conversation', { conversation_id: id }).done(() => {
+			$link.remove();
+			if (state.conversationId === id) {
+				window.location.href = window.location.pathname + '?doc=agent&app=ai';
+			}
+		});
+	});
+
+	// ---------- Starter buttons ----------
+
+	$('.ai-chat-starter').on('click', function () {
+		const text = $(this).text();
+		$input.val(text).trigger('input').focus();
+		if (state.conversationId) {
+			$('#ai-chat-composer').trigger('submit');
+		} else {
+			post('create_conversation').done((res) => {
+				if (res.ok && res.conversation_id) {
+					window.location.href = window.location.pathname + '?doc=agent&app=ai&conversation_id=' + res.conversation_id;
+				}
+			});
+		}
+	});
+
+	// Focus composer on load (only if a conversation is active)
+	if (state.conversationId) {
+		$input.focus();
+	}
+
+});
+
 waitFor('jQuery', ($) => {
 
 	// CSRF token for AJAX requests
@@ -516,6 +702,836 @@ waitFor('jQuery', $ => {
 
 });
 
+
+// LiteCart POS (Point of Sale) client
+// Loaded by src/backend/apps/pos/pos.inc.php after a small PHP bootstrap that
+// injects window.__posConfig with all server-side strings and URLs.
+
+waitFor('jQuery', ($) => {
+
+	if (!$('#point-of-sales').length) return;
+
+	const cfg = window.__posConfig || {};
+	const POS_CURRENCY = cfg.currency || 'USD';
+	const POS_CUSTOMER_DISPLAY_URL = cfg.customerDisplayUrl || '';
+	const POS_BASE_URL = cfg.baseUrl || '';
+	const POS_T = cfg.translations || {};
+	const POS_ICONS = cfg.icons || {};
+	let activeSlot = parseInt(cfg.activeSlot, 10) || 1;
+
+	// -------------------------------------------------------------------------
+	// Helpers
+	// -------------------------------------------------------------------------
+
+	function escapeHtml(value) {
+		return $('<div>').text(value == null ? '' : value).html();
+	}
+
+	function formatMoney(value, currency) {
+		try {
+			return new Intl.NumberFormat(undefined, { style: 'currency', currency: currency }).format(value);
+		} catch (e) {
+			return currency + ' ' + Number(value).toFixed(2);
+		}
+	}
+
+	function formatPriceTag(regular, final) {
+
+		const r = Number(regular) || 0;
+		const f = Number(final) || 0;
+
+		if (r && f && r !== f) {
+			return '<del>' + formatMoney(r, POS_CURRENCY) + '</del> <strong>' + formatMoney(f, POS_CURRENCY) + '</strong>';
+		}
+		return formatMoney(r || f, POS_CURRENCY);
+	}
+
+	function formatTimestamp(date) {
+		const pad = n => String(n).padStart(2, '0');
+		return date.getFullYear() + '-' + pad(date.getMonth() + 1) + '-' + pad(date.getDate())
+			+ ' ' + pad(date.getHours()) + ':' + pad(date.getMinutes()) + ':' + pad(date.getSeconds());
+	}
+
+	// -------------------------------------------------------------------------
+	// Customer display iframe sizing
+	// -------------------------------------------------------------------------
+
+	$(window).on('resize', function() {
+		$('#customer-display').css({
+			'aspect-ratio': screen.width + '/' + screen.height,
+			'zoom': $('#customer-display').width() / screen.width
+		});
+	}).trigger('resize');
+
+	$customerDisplay = $('#customer-display')[0].contentWindow;
+
+	$('button[name="open_customer_display"]').on('click', function() {
+		window.open(POS_CUSTOMER_DISPLAY_URL, 'customer_display', 'width=640,height=480,location=no');
+	});
+
+	// -------------------------------------------------------------------------
+	// Barcode scanner toggle persistence
+	// -------------------------------------------------------------------------
+
+	if (localStorage.getItem('pos_barcode_scanner_enabled') === 'false') {
+		$('#barcode-scanner-toggle').prop('checked', false);
+	}
+
+	$('#barcode-scanner-toggle').on('change', function() {
+		localStorage.setItem('pos_barcode_scanner_enabled', $(this).is(':checked'));
+	});
+
+	// -------------------------------------------------------------------------
+	// AJAX product search
+	// -------------------------------------------------------------------------
+
+	let xhrSearch;
+	$('input[name="query"]').on('input', function() {
+
+		const query = $(this).val().trim();
+
+		if (xhrSearch) {
+			xhrSearch.abort();
+		}
+
+		if (!query) {
+			// Restore the initial server-rendered list of products
+			$('#results-list').html(window.__posInitialResults || '');
+			return;
+		}
+
+		xhrSearch = $.ajax({
+			url: window.location.href.split('?')[0],
+			type: 'get',
+			data: { query: query },
+			dataType: 'json',
+			success: function(data) {
+				if (data && data.error) {
+					console.error('Search error:', data.error);
+					return;
+				}
+				renderResults(data || []);
+			},
+			complete: function() {
+				xhrSearch = null;
+			}
+		});
+	});
+
+	// Cache the initial server-rendered #results-list so clearing the search restores it
+	window.__posInitialResults = $('#results-list').html();
+
+	function renderResults(products) {
+
+		const $list = $('#results-list');
+		$list.empty();
+
+		if (!products.length) {
+			$list.append(
+				$('<div class="no-results">').text(POS_T.noProductsFound || 'No products found')
+			);
+			return;
+		}
+
+		const pinnedIds = $('#pinned-products .product').map(function() {
+			return String($(this).data('product-id'));
+		}).get();
+
+		for (const product of products) {
+
+			const id = product.id;
+			const isPinned = pinnedIds.indexOf(String(id)) !== -1;
+
+			const $card = $('<div class="product">')
+				.attr('data-product-id', id)
+				.attr('data-regular-price', product.regular_price || 0)
+				.attr('data-final-price', product.final_price || 0)
+				.append(
+					$('<img>').attr('src', product.thumbnail_url || (product.image ? 'storage/images/' + product.image : 'images/no_image.png')).attr('alt', '')
+				)
+				.append(
+					$('<div>').css('flex-grow', 1)
+						.append($('<div class="name">').text(product.name || ''))
+						.append($('<div class="code">').text(product.code || ''))
+						.append($('<div class="price">').html(formatPriceTag(product.regular_price, product.final_price)))
+						.append(
+							$('<div class="actions">')
+								.append(
+									$('<label class="pin-toggle">').attr('title', POS_T.pin || 'Pin')
+										.append(
+											$('<input type="checkbox">')
+												.attr('name', 'pinned[]')
+												.attr('value', id)
+												.attr('data-product-id', id)
+												.prop('checked', !!isPinned)
+										)
+										.append($('<span class="pin-toggle-icon">').html(POS_ICONS.thumbtack || ''))
+								)
+								.append(
+									$('<button class="btn btn-default">')
+										.attr('data-action', 'add-to-cart')
+										.attr('data-product-id', id)
+										.html(POS_ICONS.cart || '')
+								)
+						)
+				);
+
+			$list.append($card);
+		}
+	}
+
+	// -------------------------------------------------------------------------
+	// Pin / unpin
+	// -------------------------------------------------------------------------
+
+	$(document).on('change', '#point-of-sales .pin-toggle input[type="checkbox"]', function() {
+
+		const $checkbox = $(this);
+		const productId = $checkbox.data('product-id');
+		const pinned = $checkbox.is(':checked');
+
+		if (!productId) return;
+
+		const $icon = $checkbox.siblings('.pin-toggle-icon');
+		$icon.addClass('is-thumping');
+		setTimeout(() => $icon.removeClass('is-thumping'), 350);
+
+		$.ajax({
+			url: POS_BASE_URL.replace(/\/$/, '') + '/admin/pos/pos',
+			type: 'post',
+			data: {
+				product_id: productId,
+				pinned: pinned ? 1 : 0,
+			},
+			dataType: 'json',
+		}).done(function(response) {
+
+			if (!response || response.error) {
+				$checkbox.prop('checked', !pinned);
+				console.error('Pin update failed:', response && response.error);
+				return;
+			}
+
+			if (pinned) {
+				pinProduct($checkbox, productId);
+			} else {
+				unpinProduct(productId);
+			}
+
+		}).fail(function() {
+			$checkbox.prop('checked', !pinned);
+			console.error('Pin update request failed');
+		});
+	});
+
+	function pinProduct($sourceCheckbox, productId) {
+
+		const $sourceCard = $sourceCheckbox.closest('.product');
+
+		if ($('#pinned-products .product[data-product-id="' + productId + '"]').length) {
+			return;
+		}
+
+		const $newCard = $('<div class="product is-pinning">')
+			.attr('data-product-id', productId)
+			.html($sourceCard.html());
+
+		$newCard.find('input[type="checkbox"]').prop('checked', true);
+		$newCard.find('.pin-toggle').attr('title', POS_T.unpin || 'Unpin');
+
+		$('#pinned-products').append($newCard);
+
+		$newCard.one('animationend', function() {
+			$(this).removeClass('is-pinning');
+		});
+	}
+
+	function unpinProduct(productId) {
+
+		const $card = $('#pinned-products .product[data-product-id="' + productId + '"]');
+		if (!$card.length) return;
+
+		$card.addClass('is-unpinning');
+
+		$('#results-list input[type="checkbox"][data-product-id="' + productId + '"]').prop('checked', false);
+
+		$card.one('animationend', function() {
+			$(this).remove();
+		});
+	}
+
+	// -------------------------------------------------------------------------
+	// Cart: in-memory store, rendering, animations, qty & price editing.
+	// -------------------------------------------------------------------------
+
+	const TAX_RATE = 0.25;
+	const cart = { items: [] };
+
+	function findCartItem(productId) {
+		return cart.items.find(it => String(it.id) === String(productId));
+	}
+
+	function addToCart(product) {
+
+		const existing = findCartItem(product.id);
+		if (existing) {
+			existing.qty += 1;
+		} else {
+			cart.items.push({
+				id: product.id,
+				name: product.name || '',
+				code: product.code || '',
+				image: product.image || 'images/no_image.png',
+				qty: 1,
+				unitPrice: Number(product.final_price || product.regular_price) || 0,
+				regularPrice: Number(product.regular_price) || 0,
+			});
+		}
+
+		renderCart({ flashNew: !existing ? product.id : null });
+		syncCartToServer();
+	}
+
+	function changeQty(productId, delta) {
+
+		const item = findCartItem(productId);
+		if (!item) return;
+
+		item.qty = Math.max(0, item.qty + delta);
+
+		if (item.qty === 0) {
+			cart.items = cart.items.filter(it => String(it.id) !== String(productId));
+		}
+
+		renderCart({ flashUpdated: productId });
+		syncCartToServer();
+	}
+
+	function setUnitPrice(productId, value) {
+
+		const item = findCartItem(productId);
+		if (!item) return;
+
+		const parsed = parseFloat(value);
+		item.unitPrice = isNaN(parsed) || parsed < 0 ? 0 : parsed;
+
+		renderCart({ flashUpdated: productId });
+		syncCartToServer();
+	}
+
+	function removeFromCart(productId) {
+		cart.items = cart.items.filter(it => String(it.id) !== String(productId));
+		renderCart();
+		syncCartToServer();
+	}
+
+	// Fire-and-forget: persists the current cart to session::$data['pos'][active_slot]['cart'].
+	function syncCartToServer() {
+
+		$.ajax({
+			url: window.location.href.split('?')[0],
+			type: 'post',
+			data: {
+				cart_sync: 1,
+				slot: activeSlot,
+				items: serializeCartForServer(),
+			},
+			dataType: 'json',
+		}).done(function(response) {
+			if (!response || response.error) {
+				console.error('Cart sync failed:', response && response.error);
+			}
+		});
+	}
+
+	function getCartTotals() {
+		let subtotal = 0;
+		for (const it of cart.items) {
+			subtotal += it.qty * it.unitPrice;
+		}
+		const tax = subtotal * TAX_RATE;
+		const total = subtotal + tax;
+		return { subtotal, tax, total };
+	}
+
+	function renderCart(opts = {}) {
+
+		const $list = $('#cart-lines');
+		const $empty = $('#cart-empty');
+		const $cart = $('#cart');
+
+		$list.empty();
+
+		if (!cart.items.length) {
+			$empty.show();
+		} else {
+			$empty.hide();
+		}
+
+		for (const it of cart.items) {
+
+			const lineTotal = it.qty * it.unitPrice;
+
+			const $row = $('<div class="line-item">')
+				.attr('data-product-id', it.id)
+				.append($('<img>').attr('src', it.image).attr('alt', ''))
+				.append(
+					$('<div class="line-info">')
+						.append($('<span class="line-name">').text(it.name))
+						.append(
+							$('<span class="line-meta">')
+								.append(
+									$('<span class="line-qty">')
+										.append($('<button type="button" data-action="dec">').html('-'))
+										.append($('<span class="qty-value">').text(it.qty))
+										.append($('<button type="button" data-action="inc">').html('+'))
+								)
+								.append(
+									$('<span>')
+										.append(' × ')
+										.append(
+											$('<input type="number" class="line-price-input">')
+												.attr('step', '0.01')
+												.attr('min', '0')
+												.val(it.unitPrice.toFixed(2))
+												.attr('aria-label', 'Unit price')
+										)
+								)
+						)
+				)
+				.append(
+					$('<div class="line-total">')
+						.append($('<span class="line-total-amount">').text(formatMoney(lineTotal, POS_CURRENCY)))
+						.append(
+							$('<span class="line-remove" title="Remove">').html(POS_ICONS.times || '')
+						)
+				);
+
+			if (opts.flashNew && String(opts.flashNew) === String(it.id)) {
+				$row.addClass('is-cart-popping');
+				$row.one('animationend', function() {
+					$(this).removeClass('is-cart-popping');
+				});
+			}
+
+			$list.append($row);
+		}
+
+		const totals = getCartTotals();
+		$('#cart-subtotal').html(formatMoney(totals.subtotal, POS_CURRENCY));
+		$('#cart-tax').html(formatMoney(totals.tax, POS_CURRENCY));
+		$('#cart-total').html('<strong>' + formatMoney(totals.total, POS_CURRENCY) + '</strong>');
+		$('#cart-timestamp').text(formatTimestamp(new Date()));
+
+		renderReceipt();
+
+		if (opts.flashNew) {
+			$cart.addClass('is-flashing');
+			setTimeout(() => $cart.removeClass('is-flashing'), 600);
+		}
+
+		if (opts.flashUpdated) {
+			const $row = $list.find('.line-item[data-product-id="' + opts.flashUpdated + '"]');
+			if ($row.length) {
+				$row.attr('id', 'line-item-updated');
+				setTimeout(() => $row.removeAttr('id'), 600);
+			}
+		}
+	}
+
+	// -------------------------------------------------------------------------
+	// Receipt rendering (mirrors the cart)
+	// -------------------------------------------------------------------------
+
+	function renderReceipt() {
+
+		const $lines = $('#receipt-lines');
+		if (!$lines.length) return;
+
+		$lines.empty();
+
+		if (!cart.items.length) {
+			return;
+		}
+
+		for (const it of cart.items) {
+			$lines.append($('<dt>').text(it.qty + ' × ' + it.name));
+			$lines.append($('<dd>').text(formatMoney(it.qty * it.unitPrice, POS_CURRENCY)));
+		}
+
+		const totals = getCartTotals();
+		const taxPercent = Math.round(TAX_RATE * 100);
+
+		$lines.append($('<dt>').html('<strong>' + escapeHtml(POS_T.total || 'Total') + '</strong>'));
+		$lines.append($('<dd>').html('<strong>' + formatMoney(totals.total, POS_CURRENCY) + '</strong>'));
+
+		$lines.append($('<dt>').text('Tax (' + taxPercent + '%)'));
+		$lines.append($('<dd>').text(formatMoney(totals.tax, POS_CURRENCY)));
+
+		$('#receipt-timestamp').text(formatTimestamp(new Date()));
+	}
+
+	// -------------------------------------------------------------------------
+	// Add-to-cart interaction
+	// -------------------------------------------------------------------------
+
+	$(document).on('click', '#point-of-sales [data-action="add-to-cart"]', function(e) {
+		e.preventDefault();
+
+		const $btn = $(this);
+		const productId = $btn.data('product-id');
+		const $card = $btn.closest('.product');
+
+		const product = readProductFromCard($card, productId);
+		if (!product) return;
+
+		const $fly = $card.clone();
+		$fly.removeClass('is-pinning is-unpinning is-cart-popping');
+		$fly.addClass('is-flying-to-cart');
+		const offset = $card.offset();
+		$fly.css({
+			position: 'absolute',
+			top: offset.top,
+			left: offset.left,
+			width: $card.outerWidth(),
+			height: $card.outerHeight(),
+			margin: 0,
+			zIndex: 9999,
+			pointerEvents: 'none',
+		});
+		$('body').append($fly);
+		$fly.one('animationend', function() {
+			$(this).remove();
+		});
+
+		addToCart(product);
+	});
+
+	function readProductFromCard($card, productId) {
+
+		if (!$card.length) return null;
+
+		return {
+			id: productId,
+			name: $card.find('.name').first().text().trim(),
+			code: $card.find('.code').first().text().trim(),
+			image: $card.find('img').first().attr('src') || 'images/no_image.png',
+			regular_price: parseFloat($card.data('regular-price')) || 0,
+			final_price: parseFloat($card.data('final-price')) || 0,
+		};
+	}
+
+	// -------------------------------------------------------------------------
+	// Cart row interactions
+	// -------------------------------------------------------------------------
+
+	$(document).on('click', '#cart-lines [data-action="inc"], #cart-lines [data-action="dec"]', function(e) {
+		e.preventDefault();
+		const $btn = $(this);
+		const productId = $btn.closest('.line-item').data('product-id');
+		const delta = $btn.data('action') === 'inc' ? 1 : -1;
+		changeQty(productId, delta);
+	});
+
+	$(document).on('click', '#cart-lines .line-remove', function(e) {
+		e.preventDefault();
+		const productId = $(this).closest('.line-item').data('product-id');
+		removeFromCart(productId);
+	});
+
+	$(document).on('change input', '#cart-lines .line-price-input', function() {
+		const $input = $(this);
+		const productId = $input.closest('.line-item').data('product-id');
+		setUnitPrice(productId, $input.val());
+	});
+
+	// -------------------------------------------------------------------------
+	// Session slots: park/recall the cart in one of 4 memory slots
+	// - Short click on a slot   → save current cart there AND load that slot
+	// - Right-click (or Shift+click) → clear the slot
+	// -------------------------------------------------------------------------
+
+	function serializeCartForServer() {
+		return cart.items.map(it => ({
+			id: it.id,
+			name: it.name,
+			code: it.code,
+			image: it.image,
+			qty: it.qty,
+			unitPrice: it.unitPrice,
+			regularPrice: it.regularPrice,
+		}));
+	}
+
+	function loadCartFromItems(items) {
+		cart.items = (items || []).map(it => ({
+			id: it.id,
+			name: it.name || '',
+			code: it.code || '',
+			image: it.image || 'images/no_image.png',
+			qty: Number(it.qty) || 0,
+			unitPrice: Number(it.unitPrice) || 0,
+			regularPrice: Number(it.regularPrice) || 0,
+		}));
+		renderCart();
+	}
+
+	function updateSlotBadges() {
+		$.ajax({
+			url: window.location.href.split('?')[0],
+			type: 'get',
+			data: { session_list: 1 },
+			dataType: 'json',
+		}).done(function(response) {
+			if (!response || !response.slots) return;
+			if (response.active_slot) {
+				activeSlot = parseInt(response.active_slot, 10) || activeSlot;
+			}
+			for (let slot = 1; slot <= 4; slot++) {
+				const count = response.slots[slot]?.count || 0;
+				const $btn = $('.session-slot[data-session-slot="' + slot + '"]');
+				if (!$btn.length) continue;
+				$btn.toggleClass('has-data', count > 0);
+				$btn.toggleClass('is-active', slot === activeSlot);
+				let $badge = $btn.find('.tile-badge');
+				if (count > 0) {
+					if (!$badge.length) {
+						$badge = $('<span class="tile-badge">').text(count);
+						$btn.append($badge);
+					} else {
+						$badge.text(count);
+					}
+				} else {
+					$badge.remove();
+				}
+			}
+		});
+	}
+
+	function setActiveSlot(slot) {
+
+		activeSlot = slot;
+
+		// Visual: clear is-active on all, set on target
+		$('.session-slot').removeClass('is-active');
+		$('.session-slot[data-session-slot="' + slot + '"]').addClass('is-active');
+
+		// Persist
+		$.ajax({
+			url: window.location.href.split('?')[0],
+			type: 'post',
+			data: { session_set_active: 1, slot: slot },
+			dataType: 'json',
+		});
+
+		// Fetch the new slot's stored cart and load it
+		$.ajax({
+			url: window.location.href.split('?')[0],
+			type: 'get',
+			data: { cart_get: 1 },
+			dataType: 'json',
+		}).done(function(response) {
+			if (response && response.success) {
+				loadCartFromItems(response.items || []);
+			}
+		});
+	}
+
+	function saveToSlot(slot, $btn) {
+
+		$.ajax({
+			url: window.location.href.split('?')[0],
+			type: 'post',
+			data: {
+				session_save: 1,
+				slot: slot,
+				items: serializeCartForServer(),
+			},
+			dataType: 'json',
+		}).done(function(response) {
+			if (!response || response.error) {
+				console.error('Session save failed:', response && response.error);
+				return;
+			}
+			if ($btn) {
+				$btn.addClass('is-saving');
+				setTimeout(() => $btn.removeClass('is-saving'), 450);
+			}
+			updateSlotBadges();
+		});
+	}
+
+	function loadFromSlot(slot, $btn) {
+
+		$.ajax({
+			url: window.location.href.split('?')[0],
+			type: 'post',
+			data: {
+				session_load: 1,
+				slot: slot,
+			},
+			dataType: 'json',
+		}).done(function(response) {
+			if (!response || response.error) {
+				console.error('Session load failed:', response && response.error);
+				return;
+			}
+			loadCartFromItems(response.items || []);
+			if ($btn) {
+				$btn.addClass('is-loading');
+				setTimeout(() => $btn.removeClass('is-loading'), 550);
+			}
+		});
+	}
+
+	function clearSlot(slot, $btn) {
+
+		$.ajax({
+			url: window.location.href.split('?')[0],
+			type: 'post',
+			data: {
+				session_clear: 1,
+				slot: slot,
+			},
+			dataType: 'json',
+		}).done(function(response) {
+			if (!response || response.error) {
+				console.error('Session clear failed:', response && response.error);
+				return;
+			}
+			updateSlotBadges();
+		});
+	}
+
+	$(document).on('click', '.session-slot', function(e) {
+
+		e.preventDefault();
+		const $btn = $(this);
+		const slot = parseInt($btn.data('session-slot'), 10);
+		if (!slot || slot < 1 || slot > 4) return;
+
+		// Shift-click → clear the slot only (don't change active slot)
+		if (e.shiftKey) {
+			clearSlot(slot, $btn);
+			return;
+		}
+
+		// Clicking a slot makes it the active slot and loads its cart
+		// into the current cart (replacing whatever was there).
+		// The "cart" itself is autosaved to session::$data['pos'][active_slot]['cart']
+		// on every change, so no manual save step is required.
+		setActiveSlot(slot);
+	});
+
+	$(document).on('contextmenu', '.session-slot', function(e) {
+		e.preventDefault();
+		const $btn = $(this);
+		const slot = parseInt($btn.data('session-slot'), 10);
+		if (!slot) return;
+		clearSlot(slot, $btn);
+	});
+
+	// Hydrate the cart from the active slot on page load so the UI
+	// reflects whatever was persisted server-side.
+	$.ajax({
+		url: window.location.href.split('?')[0],
+		type: 'get',
+		data: { cart_get: 1 },
+		dataType: 'json',
+	}).done(function(response) {
+		if (response && response.success) {
+			loadCartFromItems(response.items || []);
+		}
+	});
+
+	// Refresh slot badges so the active marker + counts match the server.
+	updateSlotBadges();
+
+	// -------------------------------------------------------------------------
+	// Barcode scanner
+	// Only intercepts keystrokes when no input/textarea/select is focused,
+	// so the search field always receives normal typing.
+	// -------------------------------------------------------------------------
+
+	let barcodeBuffer = '';
+	let barcodeTimeout = null;
+	const BARCODE_TIMEOUT = 100;
+
+	$(document).on('keydown', function(e) {
+
+		if (!$('#barcode-scanner-toggle').is(':checked')) {
+			return;
+		}
+
+		if ($(e.target).is('input, textarea, select, [contenteditable]')) {
+			return;
+		}
+
+		if (barcodeTimeout) {
+			clearTimeout(barcodeTimeout);
+		}
+
+		if (
+			(e.keyCode >= 48 && e.keyCode <= 57) ||
+			(e.keyCode >= 65 && e.keyCode <= 90) ||
+			(e.keyCode >= 96 && e.keyCode <= 105) ||
+			e.keyCode === 189 || e.keyCode === 109 ||
+			e.keyCode === 190 || e.keyCode === 110 ||
+			e.keyCode === 171 ||
+			e.keyCode === 32
+		) {
+			e.preventDefault();
+
+			let char = '';
+			if (e.keyCode >= 48 && e.keyCode <= 57) {
+				char = String.fromCharCode(e.keyCode);
+			} else if (e.keyCode >= 65 && e.keyCode <= 90) {
+				char = String.fromCharCode(e.keyCode);
+			} else if (e.keyCode >= 96 && e.keyCode <= 105) {
+				char = String.fromCharCode(e.keyCode - 48);
+			} else if (e.keyCode === 189 || e.keyCode === 109) {
+				char = '-';
+			} else if (e.keyCode === 171) {
+				char = '+';
+			} else if (e.keyCode === 190 || e.keyCode === 110) {
+				char = '.';
+			} else if (e.keyCode === 32) {
+				char = ' ';
+			}
+
+			barcodeBuffer += char;
+
+			barcodeTimeout = setTimeout(function() {
+				barcodeBuffer = '';
+			}, BARCODE_TIMEOUT);
+
+		} else if (e.keyCode === 13 && barcodeBuffer.length > 0) {
+			e.preventDefault();
+			processBarcodeSearch(barcodeBuffer);
+			barcodeBuffer = '';
+			if (barcodeTimeout) {
+				clearTimeout(barcodeTimeout);
+				barcodeTimeout = null;
+			}
+		} else if (e.keyCode === 27) {
+			barcodeBuffer = '';
+			if (barcodeTimeout) {
+				clearTimeout(barcodeTimeout);
+				barcodeTimeout = null;
+			}
+		}
+	});
+
+	function processBarcodeSearch(barcode) {
+		const $search = $('#point-of-sales input[name="query"]');
+		$search.val(barcode).trigger('input');
+		$search.addClass('barcode-scanned');
+		setTimeout(function() {
+			$search.removeClass('barcode-scanned');
+		}, 1000);
+	}
+
+});
 
 waitFor('jQuery', ($) => {
 
