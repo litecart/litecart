@@ -1,5 +1,22 @@
 <?php
 
+	function datetime_convert($time, $to_timezone=null, $from_timezone=null) {
+
+		if ($from_timezone === null) {
+			$from_timezone = date_default_timezone_get();
+		}
+
+		if ($to_timezone === null) {
+			$to_timezone = !empty(customer::$data['timezone']) ? customer::$data['timezone'] : date_default_timezone_get();
+		}
+
+		$timestamp = new \DateTime($time, new \DateTimeZone($from_timezone));
+
+		$timestamp->setTimezone(new \DateTimeZone($to_timezone));
+
+		return $timestamp->getTimestamp();
+	}
+
 	// Returns a stfrftime-style formatted date-time string
 	function datetime_format(string $format, int|string|\DateTimeInterface|null $timestamp=null): string {
 
