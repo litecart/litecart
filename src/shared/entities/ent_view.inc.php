@@ -46,7 +46,7 @@
 				}
 
 				$output = $this->snippets[$matches[1]];
-				$modifiers = !empty($matches[2]) ? preg_split('#\|#', $matches[2], -1, PREG_SPLIT_NO_EMPTY) : [];
+				$modifiers = !empty($matches[2]) ? f::string_split($matches[2], '|') : [];
 
 				// Title Casing
 				if (in_array('title', $modifiers)) {
@@ -92,12 +92,12 @@
 		}
 
 		// Render and make it stick
-		public function stitch(string|null $view = null, bool|null $cleanup = null): string {
+		public function stitch(string|null $view=null, bool|null $cleanup=null): string {
 			return $this->html = $this->render($view, $cleanup);
 		}
 
 		// Render but don't make it stick
-		public function render(string|null $view = null, bool|null $cleanup = null): string {
+		public function render(string|null $view=null, bool|null $cleanup=null): string {
 
 			if ($view) {
 

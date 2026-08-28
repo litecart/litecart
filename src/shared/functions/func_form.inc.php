@@ -218,7 +218,7 @@
 		if (preg_match('#\[\]$#', $name)) {
 			return f::draw_element('input', ['class' => 'form-check', 'type' => 'checkbox', 'name' => $name, 'value' => $value, ...$attributes] + ((is_array($input) && in_array($value, $input)) ? ['checked' => ''] : []));
 		} else {
-			return f::draw_element('input', ['class' => 'form-check', 'type' => 'checkbox', 'name' => $name, 'value' => $value, ...$attributes] + (!strcmp($input, $value) ? ['checked' => ''] : []));
+			return f::draw_element('input', ['class' => 'form-check', 'type' => 'checkbox', 'name' => $name, 'value' => $value, ...$attributes] + (($input ?? '') === ($value ?? '') ? ['checked' => ''] : []));
 		}
 	}
 
@@ -596,7 +596,7 @@
 
 		$attributes = is_array($attributes) ? $attributes : form_attributes($attributes);
 
-		return f::draw_element('input', ['class' => 'form-radio', 'type' => 'radio', 'name' => $name, 'value' => $value, ...$attributes] + (!strcmp($input, $value) ? ['checked' => ''] : []));
+		return f::draw_element('input', ['class' => 'form-radio', 'type' => 'radio', 'name' => $name, 'value' => $value, ...$attributes] + (($input ?? '') === ($value ?? '') ? ['checked' => ''] : []));
 	}
 
 	function form_input_range(string $name, bool|string $input=true, string|int|float $min='', string|int|float $max='', string|int|float $step='', array|string $attributes=[]): string {
@@ -865,7 +865,7 @@
 				}
 			}
 
-			if (!strcmp($option[0], $input)) {
+			if (($option[0] ?? '') === ($input ?? '')) {
 				$content[] = f::draw_element('option', ['value' => $option[0], 'selected' => ''], $option[1] ?? $option[0]);
 			}	else {
 				$content[] = f::draw_element('option', ['value' => $option[0]], $option[1] ?? $option[0]);
@@ -936,7 +936,7 @@
 				if (preg_match('#\[\]$#', $name)) {
 					$content[] = '  <option value="'. f::escape_attr($option[0]) .'"'. (in_array($option[0], $input) ? ' selected' : '') . (!empty($option[2]) ? ' ' . $option[2] : '') . '>'. ($option[1] ?? $option[0]) .'</option>' . PHP_EOL;
 				} else {
-					$content[] = '  <option value="'. f::escape_attr($option[0]) .'"'. (!strcmp($option[0], $input) ? ' selected' : '') . (!empty($option[2]) ? ' ' . $option[2] : '') . '>'. ($option[1] ?? $option[0]) .'</option>' . PHP_EOL;
+					$content[] = '  <option value="'. f::escape_attr($option[0]) .'"'. (($option[0] ?? '') === ($input ?? '') ? ' selected' : '') . (!empty($option[2]) ? ' ' . $option[2] : '') . '>'. ($option[1] ?? $option[0]) .'</option>' . PHP_EOL;
 				}
 			}
 

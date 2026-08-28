@@ -1,2 +1,2 @@
-status,code,code2,name,locale,locale_intl,raw_date,raw_time,raw_datetime,format_date,format_time,format_datetime,decimal_point,thousands_sep,priority,updated_at,created_at
+status,code,code2,name,locale,intl_locale,raw_date,raw_time,raw_datetime,format_date,format_time,format_datetime,decimal_point,thousands_sep,priority,updated_at,created_at
 1,el,ell,Ελληνικά,"el_CY.utf8,el_CY.UTF-8,greek",el_CY,Y-m-d,H:i,Y-m-d H:i,%b %e %Y,%H:%M,%b %e %Y %H:%M,",", ,0,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP

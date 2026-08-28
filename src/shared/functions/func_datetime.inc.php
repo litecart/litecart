@@ -28,16 +28,61 @@
 
 		if (!extension_loaded('intl')) {
 
-			if (version_compare(PHP_VERSION, '8.1.0', '<')) {
-				return strftime($format, $timestamp->getTimestamp(), $timestamp->getTimezone()->getName());
+			if (PHP_VERSION_ID < 80100) {
+				return strftime($format, $timestamp->getTimestamp());
 
-			} else if (version_compare(PHP_VERSION, '9.0.0', '<')) {
-				return @strftime($format, $timestamp->getTimestamp(), $timestamp->getTimezone()->getName());
-
-			} else {
-				trigger_error('You need the PHP Intl extension enabled to format dates', E_USER_WARNING);
-				return date('Y-m-d H:i:s', $timestamp);
+			} else if (PHP_VERSION_ID < 90000) {
+				return @strftime($format, $timestamp->getTimestamp());
 			}
+
+			trigger_error('You need the PHP Intl extension enabled to format dates', E_USER_WARNING);
+
+			// PHP 8.1.0+ deprecates strftime(). Convert the strftime-style format
+			// to a date() format and use DateTime::format(). Locale-dependent
+			// tokens (%a, %A, %b, %B, %h, %c, %x, %X) fall back to English.
+			$strftime_to_date = [
+				// Day
+				'%a' => 'D',  '%A' => 'l',
+				'%d' => 'd',  '%e' => 'j',
+				'%j' => 'z',  '%u' => 'N',  '%w' => 'w',
+				// Week
+				'%U' => 'W',  '%W' => 'W',  '%V' => 'W',
+				// Month
+				'%b' => 'M',  '%B' => 'F',  '%h' => 'M',  '%m' => 'm',
+				// Year
+				'%g' => 'y',  '%G' => 'Y',  '%y' => 'y',  '%Y' => 'Y',
+				// Time
+				'%H' => 'H',  '%k' => 'G',
+				'%I' => 'h',  '%l' => 'g',
+				'%M' => 'i',  '%S' => 's',
+				'%p' => 'A',  '%P' => 'a',
+				'%r' => 'h:i:s A',  '%R' => 'H:i',
+				// Timezone
+				'%z' => 'O',  '%Z' => 'T',
+				// Stamps
+				'%D' => 'm/d/Y',  '%F' => 'Y-m-d',
+				'%s' => 'U',
+			];
+
+			$date_format = preg_replace_callback('/(?<!%)(%[a-zA-Z])/', function ($match) use ($strftime_to_date, $timestamp) {
+				$token = $match[1];
+
+				if ($token === '%n') return "\n";
+				if ($token === '%t') return "\t";
+				if ($token === '%C') return (string) intdiv((int) $timestamp->format('Y'), 100);
+				// Locale-dependent tokens — fall back to English/standard
+				if ($token === '%c') return $timestamp->format('D M j H:i:s Y');
+				if ($token === '%x') return $timestamp->format('m/d/Y');
+				if ($token === '%X') return $timestamp->format('H:i:s');
+
+				if (!isset($strftime_to_date[$token])) {
+					throw new \InvalidArgumentException(sprintf('Format "%s" is unknown in time format', $token));
+				}
+
+				return $timestamp->format($strftime_to_date[$token]);
+			}, $format);
+
+			return str_replace('%%', '%', $date_format);
 		}
 
 		$intl_formats = [

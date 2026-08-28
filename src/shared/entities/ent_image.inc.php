@@ -23,7 +23,7 @@
 			ImageFill($imgCropped, 0, 0, ImageColorAllocateAlpha($imgCropped, $whiteSpace[0], $whiteSpace[1], $whiteSpace[2], 127));
 			ImageCopy($imgCropped, $src_im, 0, 0, $srcX, $srcY, $iSrcWidth-$srcX, $iSrcHeight-$srcY);
 			$result = ImageCopyResampled($dst_im, $imgCropped, 0, 0, 0, 0, $dstW, $dstH, $srcW, $srcH);
-			if (PHP_VERSION < '8.0.0') {
+			if (PHP_VERSION_ID < 80000) {
 				ImageDestroy($imgCropped);
 			}
 			return $result;
@@ -32,6 +32,7 @@
 
 	class ent_image {
 		private $_data = [];
+		private $_library = null;
 		private $_file = null;
 		private $_image = null;
 		private $_whitespace = [255, 255, 255];
@@ -42,8 +43,17 @@
 				$this->set($file);
 			}
 
-			if ($library) {
-				$this->_data['library'] = $library;
+			if ($library && in_array($library, ['imagick', 'gd'])) {
+				$this->_library = $library;
+
+			} else if (extension_loaded('imagick')) {
+				$this->_library = 'imagick';
+
+			} else if (extension_loaded('gd')) {
+				$this->_library = 'gd';
+
+			} else {
+				throw new Exception('No image processing library available. Please enable either GD or Imagick for PHP.');
 			}
 
 			if (settings::get('image_whitespace_color')) {
@@ -59,21 +69,11 @@
 
 			$this->_data[$name] = null;
 
+			if (!$this->_file && $name !== 'library') {
+				return $this->_data[$name];
+			}
+
 			switch ($name) {
-
-				case 'library':
-
-					if (extension_loaded('imagick')) {
-						$this->_data['library'] = 'imagick';
-
-					} else if (extension_loaded('gd')) {
-						$this->_data['library'] = 'gd';
-
-					} else {
-						throw new Exception('No image processing library available. Please enable either GD or Imagick for PHP.');
-					}
-
-					break;
 
 				case 'type':
 
@@ -110,7 +110,7 @@
 						$this->load();
 					}
 
-					switch ($this->library) {
+					switch ($this->_library) {
 						case 'imagick':
 							$this->_data['type'] = strtr(strtolower($this->_image->getImageFormat()), [
 								'jpeg' => 'jpg'
@@ -126,7 +126,7 @@
 				case 'width':
 				case 'height':
 
-					switch ($this->library) {
+					switch ($this->_library) {
 
 						case 'imagick':
 
@@ -250,7 +250,7 @@
 				throw new Exception('Could not load image from empty source location');
 			}
 
-			switch ($this->library) {
+			switch ($this->_library) {
 
 				case 'imagick':
 
@@ -363,7 +363,7 @@
 				$this->load();
 			}
 
-			switch ($this->library) {
+			switch ($this->_library) {
 
 				case 'imagick':
 
@@ -552,7 +552,7 @@
 					$this->_data['height'] = $new_height;
 					unset($this->_data['aspect_ratio']);
 
-					if (PHP_VERSION < '8.0.0') {
+					if (PHP_VERSION_ID < 80000) {
 						ImageDestroy($this->_image);
 					}
 
@@ -568,7 +568,7 @@
 				$this->load();
 			}
 
-			switch ($this->library) {
+			switch ($this->_library) {
 
 				case 'imagick':
 
@@ -623,7 +623,7 @@
 				$this->load();
 			}
 
-			switch ($this->library) {
+			switch ($this->_library) {
 
 				case 'imagick':
 
@@ -683,7 +683,7 @@
 						return false;
 					}
 
-					$_watermark = new ent_image($watermark, $this->library);
+					$_watermark = new ent_image($watermark, $this->_library);
 
 					// Return false on no image
 					if (!$_watermark->type) {
@@ -739,7 +739,7 @@
 					$result = ImageCopy($this->_image, $_watermark->_image, $offset_x, $offset_y, 0, 0, $_watermark->width, $_watermark->height);
 
 					// Free memory
-					if (PHP_VERSION < '8.0.0') {
+					if (PHP_VERSION_ID < 80000) {
 						ImageDestroy($_watermark->_image);
 					}
 
@@ -794,7 +794,7 @@
 				$this->load();
 			}
 
-			switch ($this->library) {
+			switch ($this->_library) {
 
 				case 'imagick':
 
@@ -946,7 +946,7 @@
 							throw new Exception('Unknown output format');
 					}
 
-					if (PHP_VERSION < '8.0.0') {
+					if (PHP_VERSION_ID < 80000) {
 						ImageDestroy($new_image);
 					}
 

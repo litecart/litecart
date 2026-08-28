@@ -368,7 +368,7 @@
 		return $listing_product->render();
 	}
 
-	function draw_lightbox(string $selector='', array $parameters=[]): void {
+	function draw_lightbox(string $selector='', array $attributes=[]): void {
 
 		if (!$selector && !$attributes) return;
 
@@ -382,8 +382,8 @@
 			$js = ['$.litebox({'];
 		}
 
-		foreach ($parameters as $key => $value) {
-			switch (gettype($parameters[$key])) {
+		foreach ($attributes as $key => $value) {
+			switch (gettype($attributes[$key])) {
 
 				case 'NULL':
 					$js[] = '  '. $key .': null,';
@@ -438,7 +438,9 @@
 			document::$head_tags['prerender'] = '<link rel="prerender" href="'. document::href_link($_SERVER['REQUEST_URI'], ['page' => $_GET['page']+1]) .'">';
 		}
 
-		$pagination = new ent_view('app://frontend/templates/'. settings::get('template') .'/partials/pagination.inc.php');
+		$pagination = new ent_view('app://frontend/templates/'. settings::get('template') .'/partials/pagination.inc.php', [
+			'items' => [],
+		]);
 
 		$pagination->snippets['items'][] = [
 			'page' => $_GET['page']-1,

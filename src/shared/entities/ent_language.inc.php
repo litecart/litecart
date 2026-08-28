@@ -23,9 +23,6 @@
 				$this->data[$field['Field']] = database::create_variable($field);
 			});
 
-			$this->data['direction'] = 'ltr';
-			$this->data['url_type'] = 'path';
-
 			$this->previous = $this->data;
 		}
 
@@ -82,7 +79,7 @@
 
 			if (!$this->data['id']) {
 
-			database::query(
+				database::query(
 					"insert into ". DB_TABLE_PREFIX ."languages
 					(code, code2, created_at)
 					values ('". database::input($this->data['code']) ."', '". database::input($this->data['code2']) ."', '". ($this->data['created_at'] = date('Y-m-d H:i:s')) ."');"
@@ -99,7 +96,7 @@
 					name = '". database::input($this->data['name']) ."',
 					direction = '". database::input($this->data['direction']) ."',
 					locale = '". database::input($this->data['locale']) ."',
-					locale_intl = '". database::input($this->data['locale_intl']) ."',
+					intl_locale = '". database::input($this->data['intl_locale']) ."',
 					mysql_collation = '". database::input($this->data['mysql_collation']) ."',
 					url_type = '". database::input($this->data['url_type']) ."',
 					domain_name = '". database::input($this->data['domain_name']) ."',

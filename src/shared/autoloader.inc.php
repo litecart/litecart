@@ -50,7 +50,7 @@
 				};
 
 				// Patch modules for PHP 8.2 Compatibility
-				if (version_compare(PHP_VERSION, 8.2, '>=') && is_file($file)) {
+				if (PHP_VERSION_ID >= 80200 && is_file($file)) {
 					$source = file_get_contents($file);
 					if (!preg_match('#\#\[AllowDynamicProperties\]#', $source)) {
 						$source = preg_replace('#([ \t]*)class [a-zA-Z0-9_-]+\s*?\{(\n|\r\n?)#', '$1#[AllowDynamicProperties]$2$0', $source);

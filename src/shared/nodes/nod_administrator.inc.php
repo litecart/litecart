@@ -27,7 +27,7 @@
 
 					$administrator = database::query(
 						"select * from ". DB_TABLE_PREFIX ."administrators
-						where id = ". (int)$token['id'] ."
+						where username = '". database::input($token['id']) ."'
 						and status
 						and (valid_from is null or valid_from < '". date('Y-m-d H:i:s') ."')
 						and (valid_to is null or valid_to > '". date('Y-m-d H:i:s') ."')
@@ -100,6 +100,10 @@
 					}
 					self::reset();
 					die('Your account is disabled');
+				}
+
+				if ($admininstrator['display_errors']) {
+					ini_set('display_errors', 'On');
 				}
 
 				database::query(

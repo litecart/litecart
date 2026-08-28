@@ -159,13 +159,11 @@
 			// Convert all line endings to RFC standard \r\n
 			$content = preg_replace('#\r\n?|\n#', "\r\n", $content);
 
-			$view = new ent_view('app://frontend/templates/'.settings::get('template').'/layouts/email.inc.php');
-
-			$view->snippets = [
+			$view = new ent_view('app://frontend/templates/'.settings::get('template').'/layouts/email.inc.php', [
 				'content' => $content,
 				'language_code' => $this->data['language_code'],
 				'text_direction' => language::$languages[$this->data['language_code']]['direction'] ?? 'ltr',
-			];
+			]);
 
 			$this->data['multiparts'][] = [
 				'headers' => [
@@ -179,7 +177,7 @@
 			return $this;
 		}
 
-		public function add_attachment(string $file, string|null $filename = null, bool $parse_as_string = false): self {
+		public function add_attachment($file, $filename=null, $parse_as_string=false) {
 
 			if (!$filename) {
 				$filename = pathinfo($file, PATHINFO_BASENAME);
@@ -279,14 +277,15 @@
 			return mb_encode_mimeheader($contact['name']) .' <'. $contact['email'] .'>';
 		}
 
-		public function queue(string $scheduled, string|null $code = null): void {
+		public function schedule(string $scheduled_at, string|null $code=null): void {
 
 			$this->data['status'] = 'scheduled';
-			$this->data['scheduled_at'] = date('Y-m-d H:i:s', strtotime($scheduled));
+			$this->data['scheduled_at'] = date('Y-m-d H:i:s', strtotime($scheduled_at));
 			$this->data['code'] = $code;
+
 			$this->save();
 
-			if (strtotime($scheduled) < time()) {
+			if (strtotime($scheduled_at) < time()) {
 				$this->send();
 			}
 		}

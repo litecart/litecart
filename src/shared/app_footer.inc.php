@@ -30,19 +30,19 @@
 
 		// To avoid using this push method, set up a cron job to call every 5 minutes for the following command:
 		// Example: */5 * * * * php /path/to/your/catalog/index.php push_jobs &>/dev/null
+		database::query(
+			"update ". DB_TABLE_PREFIX ."settings
+			set `value` = '". date('Y-m-d H:i:s') ."'
+			where `key` = 'jobs_last_push'
+			limit 1;"
+		);
 
 		$url = document::ilink('f:push_jobs');
 		$disabled_functions = f::string_split(ini_get('disable_functions'));
 
 		if (!in_array('exec', $disabled_functions)) {
 
-			exec(implode('', [
-				'(',
-				' command -v wget >/dev/null',
-				' && wget -q -O - "'. escapeshellarg($url) .'"',
-				' || curl -s "'. escapeshellarg($url).'"',
-				') > /dev/null 2>&1 &',
-			]));
+			exec('php -d register_argc_argv=on "'. FS_DIR_APP .'index.php" push_jobs &>/dev/null &');
 
 		} else if (!in_array('fsockopen', $disabled_functions)) {
 

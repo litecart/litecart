@@ -4,7 +4,7 @@
 
 	echo '<p>Checking PHP version... ';
 
-	if (version_compare(PHP_VERSION, '8.0.0', '<')) {
+	if (PHP_VERSION_ID < 80000) {
 		throw new Exception(PHP_VERSION .' <span class="error">[Error] PHP 8.0+ minimum requirement</span></p>' . PHP_EOL . PHP_EOL);
 
 	} else {

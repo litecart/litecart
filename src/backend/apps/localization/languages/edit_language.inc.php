@@ -24,12 +24,6 @@
 				throw new Exception(t('error_must_provide_code', 'You must provide a code'));
 			}
 
-			// AC-7: server-side validation of the language code. The HTML
-			// input has a pattern attribute, but that is client-side only —
-			// an attacker can POST any value. The code is persisted and
-			// later spliced into JSON paths inside the `text` column on
-			// lc_translations, so it must be a safe identifier.
-			// must match a strict locale pattern before we accept it.
 			if (!preg_match('#^[a-z]{2,5}(-[a-z0-9]{2,8})?$#i', $_POST['code'])) {
 				throw new Exception(t('error_invalid_language_code', 'Language code must be a BCP-47 style locale (e.g. "en", "de", "zh-cn")'));
 			}
@@ -84,15 +78,15 @@
 			}
 
 			if (!empty($_POST['locale']) && !setlocale(LC_ALL, preg_split('#\s*,\s*#', $_POST['locale'], -1, PREG_SPLIT_NO_EMPTY))) {
-				throw new Exception(strtr(t('error_not_a_valid_system_locale', '%locale is not a valid system locale on this machine'), [
-					'%locale' => $_POST['locale'] ?? 'NULL'
+				throw new Exception(strtr(t('error_not_a_valid_system_locale', '{locale} is not a valid system locale on this machine'), [
+					'{locale}' => $_POST['locale'] ?? 'NULL'
 				]));
 			}
 
 			setlocale(LC_ALL, preg_split('#\s*,\s*#', language::$selected['locale'], -1, PREG_SPLIT_NO_EMPTY)); // Restore
 
-			if (!empty($_POST['locale_intl']) && !in_array($_POST['locale_intl'], ResourceBundle::getLocales(''))) {
-				throw new Exception(t('error_not_a_valid_intl_locale', '%locale is not a valid PHP Intl locale'));
+			if (!empty($_POST['intl_locale']) && !in_array($_POST['intl_locale'], ResourceBundle::getLocales(''))) {
+				throw new Exception(t('error_not_a_valid_intl_locale', '{locale} is not a valid PHP Intl locale'));
 			}
 
 			##########
@@ -102,6 +96,7 @@
 			if (empty($_POST['domain_name'])) {
 				$_POST['domain_name'] = '';
 			}
+
 			if (empty($_POST['auto_translate'])) {
 				$_POST['auto_translate'] = '0';
 			}
@@ -117,7 +112,7 @@
 				'name',
 				'direction',
 				'locale',
-				'locale_intl',
+				'intl_locale',
 				'mysql_collation',
 				'url_type',
 				'domain_name',
@@ -418,7 +413,7 @@
 				<div class="col-md-4">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_php_int_locale', 'PHP Intl Locale'); ?></div>
-						<?php echo f::form_select_intl_locale('locale_intl', true); ?>
+						<?php echo f::form_select_intl_locale('intl_locale', true); ?>
 					</label>
 				</div>
 			</div>

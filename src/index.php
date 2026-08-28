@@ -31,8 +31,8 @@
 				'  navigate {uri}     Navigate to a specific URI',
 				'',
 				'Environment Variables:',
-				'  PHP_AUTH_USER      Administrator username (Required for mcp_server command)',
-				'  PHP_AUTH_PW        Administrator password (Required for mcp_server command)',
+				'  AUTH_USER      Administrator username (Required for mcp_server command)',
+				'  AUTH_PW        Administrator password (Required for mcp_server command)',
 				'',
 				'Example:',
 				'  echo \'{"jsonrpc":"2.0","method":"initialize","id":1}\' | PHP_AUTH_USER=admin PHP_AUTH_PW=secret php '. basename(__FILE__) .' mcp_server',
@@ -52,8 +52,8 @@
 			case 'mcp_server':
 
 				// Provide credentials via environment variables (not CLI args — env vars are not visible in process listings)
-				$_SERVER['PHP_AUTH_USER'] = (string)getenv('PHP_AUTH_USER');
-				$_SERVER['PHP_AUTH_PW']   = (string)getenv('PHP_AUTH_PW');
+				$_SERVER['PHP_AUTH_USER'] = (string)getenv('AUTH_USER');
+				$_SERVER['PHP_AUTH_PW']   = (string)getenv('AUTH_PW');
 				$_SERVER['REQUEST_METHOD'] = 'POST';
 
 				require_once 'app://backend/pages/mcp.inc.php';

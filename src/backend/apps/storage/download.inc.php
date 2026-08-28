@@ -25,7 +25,7 @@
 
 			$zip_file = f::file_create_tempfile();
 
-			if (version_compare(PHP_VERSION, '8.3.0', '>=')) {
+			if (PHP_VERSION_ID >= 80300) {
 				unlink($zip_file); // Fix PHP Deprecation notice: Using empty file as ZipArchive is deprecated
 			}
 

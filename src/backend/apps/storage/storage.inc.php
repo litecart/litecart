@@ -186,7 +186,7 @@
 
 				$zip_file = tempnam(sys_get_temp_dir(), 'zip');
 
-				if (version_compare(PHP_VERSION, '8.3.0', '>=')) {
+				if (PHP_VERSION_ID >= 80300) {
 					unlink($zip_file); // Fix PHP Deprecation notice: Using empty file as ZipArchive is deprecated
 				}
 

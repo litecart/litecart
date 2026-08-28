@@ -7,7 +7,7 @@
   if (version_compare(PHP_VERSION, $requirements['scripting']['php']['minimumVersion'], '<')) {
     throw new Exception(PHP_VERSION .' <span class="error">[Error] PHP '. $requirements['scripting']['php']['minimumVersion'].'+ minimum requirement</span></p>' . PHP_EOL . PHP_EOL);
 
-  } else if (version_compare(PHP_VERSION, '7.2', '<=')) {
+  } else if (PHP_VERSION_ID <= 70200) {
     echo PHP_VERSION .' <span class="warning">[Warning] PHP '. PHP_VERSION .' has reached <a href="https://www.php.net/supported-versions.php" target="_blank">end of life</a>.</span></p>' . PHP_EOL . PHP_EOL;
 
   } else if (version_compare(PHP_VERSION, $requirements['scripting']['php']['recommendedVersion'], '<=')) {

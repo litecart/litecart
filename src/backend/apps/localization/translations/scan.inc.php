@@ -59,7 +59,8 @@
 				$found++;
 
 				$row = database::query(
-					"select json_value(`text`, '$.en') as text_en from ". DB_TABLE_PREFIX ."translations
+					"select json_value(`text`, '$.en') as text_en
+					from ". DB_TABLE_PREFIX ."translations
 					where code = '". database::input($code) ."'
 					limit 1;"
 				)->fetch();

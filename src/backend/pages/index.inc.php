@@ -1,7 +1,5 @@
 <?php
 
-	breadcrumbs::add(t('title_dashboard', 'Dashboard'), document::ilink(''));
-
 	// Display app content
 	if (defined('__APP__')) {
 
@@ -14,8 +12,8 @@
 		}
 
 		$app_config['theme'] = [
-			'icon' => $app_config['theme']['icon'] ?? 'icon-plus',
-			'color' => $app_config['theme']['color'] ?? '#97a3b5',
+			'icon' => ($app_config['theme']['icon'] ?? '') ?: 'icon-plus',
+			'color' => ($app_config['theme']['color'] ?? '') ?: '#97a3b5',
 		];
 
 		// Check if administrator is permitted to access document.

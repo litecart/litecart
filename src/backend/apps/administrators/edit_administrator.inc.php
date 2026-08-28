@@ -115,6 +115,7 @@
 				'password',
 				'permissions',
 				'two_factor_auth',
+				'display_errors',
 				'valid_from',
 				'valid_to',
 			] as $field) {
@@ -216,6 +217,15 @@
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_two_factor_authentication', 'Two-Factor Authentication'); ?></div>
 								<?php echo f::form_toggle('two_factor_auth', 'e/d', true); ?>
+							</label>
+						</div>
+					</div>
+
+					<div class="grid">
+						<div class="col-sm-6">
+							<label class="form-group">
+								<div class="form-label"><?php echo t('title_display_errors', 'Display Errors'); ?></div>
+								<?php echo f::form_toggle('display_errors', 'e/d', true); ?>
 							</label>
 						</div>
 					</div>
@@ -351,8 +361,9 @@
 							<?php echo implode(', ', $administrator->data['known_fingerprints']); ?>
 						</div>
 					</label>
-					<?php } ?>
+
 				</div>
+				<?php } ?>
 
 				<div class="col-md-4">
 					<div id="app-permissions" class="form-group">
@@ -393,6 +404,7 @@
 							</ul>
 						</div>
 					</div>
+
 					<div id="mcp-permissions" class="form-group">
 						<?php echo f::form_checkbox('mcp_toggle', ['1', t('title_mcp_tools', 'MCP Tools')]); ?>
 						<div class="form-input" style="height: 150px; overflow-y: scroll;">

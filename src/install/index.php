@@ -156,7 +156,7 @@ input[name="development_type"]:checked + div {
 	<h3>PHP</h3>
 
 	<ul>
-		<li>PHP <?php echo $requirements['scripting']['php']['minimumVersion']; ?>+ (Recommended: <?php echo $requirements['scripting']['php']['recommendedVersion']; ?>+) <?php echo (version_compare(PHP_VERSION, '8.0', '>='))? '<span class="ok">['. PHP_VERSION .']</span>' : '<span class="error">['. PHP_VERSION .']</span>'; ?></li>
+		<li>PHP <?php echo $requirements['scripting']['php']['minimumVersion']; ?>+ (Recommended: <?php echo $requirements['scripting']['php']['recommendedVersion']; ?>+) <?php echo (PHP_VERSION_ID >= 80000)? '<span class="ok">['. PHP_VERSION .']</span>' : '<span class="error">['. PHP_VERSION .']</span>'; ?></li>
 		<li>register_globals = <?php echo ini_get('register_globals') ?: 'off'; ?> <?php echo in_array(strtolower(ini_get('register_globals')), ['off', 'false', '', '0']) ? '<span class="ok">[OK]</span>' : '<span class="error">[Alert! Must be disabled]</span>'; ?></li>
 		<li>arg_separator.output = <?php echo htmlspecialchars(ini_get('arg_separator.output')); ?> <?php echo (ini_get('arg_separator.output') == '&') ? '<span class="ok">[OK]</span>' : '<span class="error">[Not recommended]</span>'; ?></li>
 		<li>memory_limit = <?php echo ini_get('memory_limit'); ?> <?php echo (return_bytes(ini_get('memory_limit')) >= 64*1024*1024) ? '<span class="ok">[OK]</span>' : '<span class="warning">[&rgt;64M recommended]</span>'; ?></li>

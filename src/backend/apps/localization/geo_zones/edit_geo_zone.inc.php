@@ -24,7 +24,7 @@
 				$_POST['zones'] = [];
 			}
 
-		// Fold a pending row that was filled but not added via the Add button
+			// Fold a pending row that was filled but not added via the Add button
 			if (!empty($_POST['new_zone']['country_code'])) {
 				$_POST['zones']['new_pending'] = $_POST['new_zone'];
 			}

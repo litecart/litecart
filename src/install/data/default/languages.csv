@@ -1,2 +1,2 @@
-status,code,code2,name,locale,locale_intl,url_type,raw_date,raw_time,raw_datetime,format_date,format_time,format_datetime,decimal_point,thousands_sep,priority,updated_at,created_at
+status,code,code2,name,locale,intl_locale,url_type,raw_date,raw_time,raw_datetime,format_date,format_time,format_datetime,decimal_point,thousands_sep,priority,updated_at,created_at
 1,en,eng,English,"en_US.utf8,en_US.UTF-8,english,en-US",en_US,none,m/d/y,h:i:s A,m/d/y h:i:s A,{b} {e} {Y},{I}:{M} {p},{b} {e} {Y} {I}:{M} {p},.,",",0,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP

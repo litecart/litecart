@@ -1445,7 +1445,6 @@
 		);
 	});
 
-
 	// Migrate setting group translations to setting groups table
 	database::query(
 		"update ". DB_TABLE_PREFIX ."settings_groups
@@ -1546,6 +1545,40 @@
 		// Drop info table
 		database::query(
 			"drop table `". DB_TABLE_PREFIX . $collection['plural'] ."_info`;"
+		);
+	}
+
+	// Add the new `text` JSON column for translations
+	database::query(
+		"ALTER TABLE `". DB_TABLE_PREFIX ."translations`
+		ADD COLUMN IF NOT EXISTS `text` JSON NOT NULL DEFAULT (JSON_OBJECT()) COMMENT 'TYPE:JSON_TRANSLATIONS' AFTER `code`;"
+	);
+
+	// Find existing `text_<code>` columns
+	$language_columns = database::query(
+		"SELECT COLUMN_NAME
+		FROM information_schema.COLUMNS
+		WHERE TABLE_SCHEMA = '". database::input(DB_DATABASE) ."'
+		AND TABLE_NAME = '". DB_TABLE_PREFIX ."translations'
+		AND COLUMN_NAME LIKE 'text\\_%' ESCAPE '\\\\';"
+	)->fetch_all('COLUMN_NAME');
+
+	if ($language_columns) {
+
+    // Build new JSON object: { "en": "...", "sv": "...", ... }
+		database::query(
+			"UPDATE `". DB_TABLE_PREFIX ."translations`
+			SET `text` = COALESCE(". implode(",\n", array_map(function($column) {
+        return "IFNULL(JSON_OBJECT('". database::input(strtok($column, '_')) ."', `". database::input($column) ."`), JSON_OBJECT())";
+      }, $language_columns)) .", JSON_OBJECT());"
+		);
+
+    // Drop old columns
+		database::query(
+			"ALTER TABLE `". DB_TABLE_PREFIX ."translations`
+      ". implode(",\n", array_map(function($drop) {
+        return "DROP COLUMN `". database::input($column) ."`";
+      }, $language_columns)) .";"
 		);
 	}
 

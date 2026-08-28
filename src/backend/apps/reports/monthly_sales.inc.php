@@ -20,7 +20,7 @@
 		$_GET['date_to'] = date('Y-m-d');
 	}
 
-		// Table Rows
+	// Table Rows
 	$rows = database::query(
 		"select
 			group_concat(o.id) as order_ids,

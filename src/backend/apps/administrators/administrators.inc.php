@@ -112,9 +112,9 @@
 					<td><?php echo $administrator['name']; ?></td>
 					<td><?php echo $administrator['email']; ?></td>
 					<td><?php echo $administrator['permissions'] ? t('title_restricted', 'Restricted') : '-'; ?></td>
-					<td class="text-end"><?php echo $administrator['valid_from'] ? f::datetime_format($administrator['valid_from']) : '-'; ?></td>
-					<td class="text-end"><?php echo $administrator['valid_to'] ? f::datetime_format($administrator['valid_to']) : '-'; ?></td>
-					<td class="text-end"><?php echo $administrator['last_login'] ? f::datetime_when($administrator['last_login']) : '-'; ?></td>
+					<td class="text-end"><?php echo $administrator['valid_from'] ? f::datetime_format('datetime', $administrator['valid_from']) : '-'; ?></td>
+					<td class="text-end"><?php echo $administrator['valid_to'] ? f::datetime_format('datetime', $administrator['valid_to']) : '-'; ?></td>
+					<td class="text-end"><?php echo $administrator['last_login'] ? f::datetime_format('datetime', $administrator['last_login']) : '-'; ?></td>
 					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_administrator', ['administrator_id' => $administrator['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo f::draw_fonticon('edit'); ?></a></td>
 				</tr>
 				<?php } ?>

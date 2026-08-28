@@ -103,11 +103,6 @@
 				$last_modified = $settings_last_modified;
 			}
 
-			// If no cache is requested by browser
-			//if (isset($_SERVER['HTTP_CACHE_CONTROL']) && preg_match('#no-cache#i', $_SERVER['HTTP_CACHE_CONTROL'])) {
-			//  $last_modified = time();
-			//}
-
 			// Load installed
 			foreach (file($installed_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $installed) {
 				list($id, $version) = preg_split('#;#', $installed, 2);

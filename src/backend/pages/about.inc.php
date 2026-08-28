@@ -1,6 +1,5 @@
 <?php
 
-	breadcrumbs::add(t('title_dashboard', 'Dashboard'), document::ilink(''));
 	breadcrumbs::add(t('title_about', 'About'), document::link());
 
 	if (!isset($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {

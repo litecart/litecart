@@ -22,6 +22,7 @@
 			)->each(function($field){
 				$this->data[$field['Field']] = database::create_variable($field);
 			});
+
 			$this->data['permissions'] = [];
 			$this->data['known_ips'] = [];
 			$this->data['known_fingerprints'] = [];
@@ -94,6 +95,7 @@
 					email = '". database::input(strtolower($this->data['email'])) ."',
 					permissions = '". database::input(f::format_json($this->data['permissions'] ?: [])) ."',
 					two_factor_auth = ". (!empty($this->data['two_factor_auth']) ? 1 : 0) .",
+					display_errors = ". (!empty($this->data['display_errors']) ? 1 : 0) .",
 					valid_from = ". (empty($this->data['valid_from']) ? "null" : "'". date('Y-m-d H:i:s', strtotime($this->data['valid_from'])) ."'") .",
 					valid_to = ". (empty($this->data['valid_to']) ? "null" : "'". date('Y-m-d H:i:s', strtotime($this->data['valid_to'])) ."'") .",
 					updated_at = '". ($this->data['updated_at'] = date('Y-m-d H:i:s')) ."'

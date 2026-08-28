@@ -64,7 +64,7 @@
 
 			if (!empty($_POST['send'])) {
 				if (empty($_POST['scheduled_at']) || strtotime($_POST['scheduled_at']) <= time()) {
-					$email->queue($_POST['scheduled_at']);
+					$email->schedule($_POST['scheduled_at']);
 				} else {
 					$email->save();
 				}

@@ -4,7 +4,7 @@
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"status": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
-				"username": { "type": "VARCHAR", "length": 32, "default": "''" },
+				"username": { "type": "VARCHAR", "length": 24 },
 				"firstname": { "type": "VARCHAR", "length": 32, "default": "''" },
 				"lastname": { "type": "VARCHAR", "length": 32, "default": "''" },
 				"email": { "type": "VARCHAR", "length": 128, "default": "''" },
@@ -580,7 +580,7 @@
 				"name": { "type": "VARCHAR", "length": 32, "default": "''" },
 				"direction": { "type": "ENUM('ltr','rtl')", "default": "'ltr'" },
 				"locale": { "type": "VARCHAR", "length": 64, "default": "''" },
-				"locale_intl": { "type": "VARCHAR", "length": 16, "default": "''" },
+				"intl_locale": { "type": "VARCHAR", "length": 16, "default": "''" },
 				"mysql_collation": { "type": "VARCHAR", "length": 32, "default": "''" },
 				"url_type": { "type": "ENUM('','none','root','path','domain')", "default": "''" },
 				"domain_name": { "type": "VARCHAR", "length": 64, "default": "''" },
