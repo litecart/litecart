@@ -1,5 +1,5 @@
 import { test as setup, expect } from '@playwright/test';
-import { backendConfig } from './backend.config.mjs';
+import { backendConfig } from './backend.config.js';
 
 const authFile = 'playwright/.auth/admin.json';
 

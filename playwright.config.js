@@ -1,7 +1,12 @@
 import { defineConfig, devices } from '@playwright/test';
+import { backendConfig } from './tests/e2e/backend.config.js';
 
 const PORT = process.env.E2E_PORT || 8080;
 const BASE_URL = `http://localhost:${PORT}`;
+
+// When targeting a remote backend (e.g. litecart-major.local) we must NOT
+// start the PHP built-in server — assume the remote URL is already live.
+const usingRemoteBackend = !!process.env.E2E_BACKEND_URL;
 
 export default defineConfig({
   testDir: './tests/e2e',
@@ -21,13 +26,17 @@ export default defineConfig({
   projects: [
     {
       name: 'auth',
-      testMatch: /auth\.setup\.mjs/,
+      testMatch: /auth\.setup\.js/,
+      use: {
+        baseURL: backendConfig.baseURL,
+      },
     },
     {
       name: 'backend',
       testDir: './tests/e2e/backend',
       use: {
         ...devices['Desktop Chrome'],
+        baseURL: backendConfig.baseURL,
         storageState: 'playwright/.auth/admin.json',
       },
       dependencies: ['auth'],
@@ -41,12 +50,14 @@ export default defineConfig({
     },
   ],
 
-  webServer: {
-    command: `php -S localhost:${PORT} -t src`,
-    url: BASE_URL,
-    timeout: 10_000,
-    reuseExistingServer: !process.env.CI,
-    stdout: 'ignore',
-    stderr: 'pipe',
-  },
+  webServer: usingRemoteBackend
+    ? undefined
+    : {
+        command: `php -S localhost:${PORT} -t src`,
+        url: BASE_URL,
+        timeout: 10_000,
+        reuseExistingServer: !process.env.CI,
+        stdout: 'ignore',
+        stderr: 'pipe',
+      },
 });
