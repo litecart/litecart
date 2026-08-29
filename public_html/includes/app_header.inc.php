@@ -40,13 +40,13 @@
 
 // CSRF protection for state-changing requests
   if (!in_array($_SERVER['REQUEST_METHOD'], ['GET', 'HEAD', 'OPTIONS']) && session_status() === PHP_SESSION_ACTIVE) {
+    $skip_csrf = false;
 
     // Excluded paths (payment gateway callbacks, MCP JSON-RPC API)
-    $skip_csrf = false;
     foreach ([
-      '#/ext/#',
-      '#/mcp(\?|$)#',
-      '#/order_process(\?|$)#',
+      '#^ext/#',
+      '#^mcp(\?|$)#',
+      '#^order_process(\?|$)#',
       '#(webhook|callback)#i',
     ] as $pattern) {
       if (preg_match($pattern, route::$request)) {
