@@ -7,24 +7,24 @@
 
 @font-face {
 	font-display: swap;
-	font-family: Anuphan;
+	font-family: "IBM Plex Sans";
 	font-style: normal;
 	font-weight: 400;
-	src: url("../fonts/anuphan-v6-latin-regular.woff2") format("woff2");
+	src: url("../fonts/ibm-plex-sans-v23-latin-regular.woff2") format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
 @font-face {
 	font-display: swap;
-	font-family: Anuphan;
+	font-family: "IBM Plex Sans";
 	font-style: normal;
 	font-weight: 500;
-	src: url("../fonts/anuphan-v6-latin-500.woff2") format("woff2");
+	src: url("../fonts/ibm-plex-sans-v23-latin-500.woff2") format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
 @font-face {
 	font-display: swap;
-	font-family: Anuphan;
+	font-family: "IBM Plex Sans";
 	font-style: normal;
 	font-weight: 700;
-	src: url("../fonts/anuphan-v6-latin-700.woff2") format("woff2");
+	src: url("../fonts/ibm-plex-sans-v23-latin-700.woff2") format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
 /******************** Light Theme ********************/
 :root {
@@ -61,7 +61,7 @@
 	--border-radius: 10px;
 	--whitespace-color: #fff;
 	/* Defaults */
-	--default-text-font: Anuphan, Arial, 'Helvetica Neue', Helvetica, Sans-Serif;
+	--default-text-font: 'IBM Plex Sans', Arial, 'Helvetica Neue', Helvetica, Sans-Serif;
 	--default-text-color: #333;
 	--default-text-size: 15px;
 	--default-line-height: 1.5;

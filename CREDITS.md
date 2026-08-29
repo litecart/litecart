@@ -10,7 +10,7 @@
 
 ## Fonts
 
-* Anuphan - Google Fonts - Free for commercial use - https://www.googlefonts.com/
+* IBM Plex Sans - Google Fonts - Free for commercial use - https://www.googlefonts.com/
 * Inter - Google Fonts - Free for commercial use - https://www.googlefonts.com/
 * Reprobate (captcha) - Handwriting of Mike Sedillo - Free for commercial use - https://www.apostrophiclab.com/
 
