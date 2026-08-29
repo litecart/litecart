@@ -222,13 +222,15 @@ gulp.task('iconly', function() {
 			'	font-variant: normal;',
 			'	text-rendering: auto;',
 			'	text-align: center;',
-			'	vertical-align: middle;',
 			'	width: 1em;',
 			'	height: 1em;',
 			'	-moz-osx-font-smoothing: grayscale;',
 			'	-webkit-font-smoothing: antialiased;',
 			'}',
 			'',
+			'.icon-lg {',
+			'	font-size: 1.2em;',
+			'}',
 		].join('\n')))
 		.pipe(replace(/(\.icon-[^:]+:before)\s*\{\s*([^}]+?)\s*\}\s*/g, '$1 { $2 }\n'))
 		.pipe(tabify()) // Use tab indentation

@@ -89,12 +89,11 @@
 
 				$skip_csrf = false;
 
-				// Excluded paths (payment gateway callbacks, MCP endpoints)
 				foreach ([
-					'#^/ext/#', // 3rd party stuff
-					'#^/ajax/event(\?|$)#', // As beacons don't support X-CSRF-Token
+					'#^ext/#', // 3rd party stuff
+					'#^ajax/event(\?|$)#', // As beacons don't support X-CSRF-Token
 					'#/mcp(\?|$)#',
-					'#^/order_process(\?|$)#',
+					'#^order_process(\?|$)#',
 					'#(webhook|callback)#i',
 				] as $pattern) {
 					if (preg_match($pattern, route::$request)) {

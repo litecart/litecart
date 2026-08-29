@@ -159,7 +159,7 @@
 	.navbar-toggle {
 		position: relative;
 		flex: 0 1 auto;
-		padding: 0;
+		padding: 0 .5em;
 		border: none;
 		border-radius: var(--border-radius);
 
@@ -174,26 +174,23 @@
 		.navbar-toggler-bar,
 		.icon-bar,
 		.navbar-toggle-btn .icon-bar {
-			position: relative;
-			background-color: var(--navbar-text-color);
 			display: block;
 			width: 22px;
 			height: 2px;
+			background-color: var(--navbar-text-color);
 			transition: all 250ms ease-in-out;
-
-			+ .navbar-toggler-bar,
-			+ .icon-bar {
-				margin-top: 4px;
-			}
-
-			&:nth-of-type(2) {
-				top: 1px;
-			}
-
-			&:nth-of-type(3) {
-				top: 2px;
-			}
 		}
+	}
+
+	// Stack the hamburger bars vertically.
+	// The .btn base style sets flex-direction: row + gap: 0.75em which would
+	// lay the bars out horizontally. Override it for the navbar-toggler
+	// button and the alternative .navbar-toggle-btn container.
+	.navbar-toggler,
+	.navbar-toggle-btn {
+		flex-direction: column;
+		gap: 4px;
+		align-items: center;
 	}
 
 	.navbar .navbar-toggle-btn .icon-bar {
@@ -213,7 +210,7 @@
 			.navbar-toggler-bar:nth-of-type(1),
 			.icon-bar:nth-of-type(1),
 			.navbar-toggle-btn .icon-bar:nth-of-type(1) {
-				transform: translateY(10px) rotate(45deg);
+				transform: translateY(6px) rotate(45deg);
 			}
 
 			.navbar-toggler-bar:nth-of-type(2),
@@ -225,19 +222,19 @@
 			.navbar-toggler-bar:nth-of-type(3),
 			.icon-bar:nth-of-type(3),
 			.navbar-toggle-btn .icon-bar:nth-of-type(3) {
-				transform: translateY(-10px) rotate(-45deg);
+				transform: translateY(-6px) rotate(-45deg);
 			}
 		}
 
 		/* X animation when the menu is opened (CSS-only via :has() on the checkbox) */
 		.navbar-toggle-btn .icon-bar:nth-of-type(1) {
-			transform: translateY(10px) rotate(45deg);
+			transform: translateY(6px) rotate(45deg);
 		}
 		.navbar-toggle-btn .icon-bar:nth-of-type(2) {
 			background-color: transparent;
 		}
 		.navbar-toggle-btn .icon-bar:nth-of-type(3) {
-			transform: translateY(-10px) rotate(-45deg);
+			transform: translateY(-6px) rotate(-45deg);
 		}
 
 		@media (max-width: ($media-breakpoint-md - 1px)) {
@@ -348,21 +345,6 @@ body.navbar-expanded {
 }
 
 @media (max-width: ($media-breakpoint-md - 1px)) {
-	.navbar-toggle {
-		position: absolute;
-		width: 1px;
-		height: 1px;
-		padding: 0;
-		margin: -1px;
-		overflow: hidden;
-		clip: rect(0, 0, 0, 0);
-		white-space: nowrap;
-		border: 0;
-		opacity: 0;
-		pointer-events: none;
-	}
-
-	/* Push the hamburger toggle to the right edge of the navbar header */
 	.navbar-header {
 		display: flex;
 		align-items: center;
@@ -372,11 +354,6 @@ body.navbar-expanded {
 	.navbar-brand {
 		flex: 0 0 auto;
 	}
-
-	/* Slide-in menu from the left edge of the viewport.
-	   CSS-only implementation via :has() since the framework's JS binding
-	   (offcanvas.js) targets [data-toggle="offcanvas"] which this navbar
-	   doesn't use. */
 	.navbar .navbar-menu {
 		left: 0;
 		margin-left: -100%;

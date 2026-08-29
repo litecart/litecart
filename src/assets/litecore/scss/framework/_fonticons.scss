@@ -4,7 +4,7 @@
 	font-family: "LiteCore";
 	font-style: normal;
 	font-weight: 400;
-	src: url("../fonts/fonticons.woff2?1787953944") format("woff2");
+	src: url("../fonts/fonticons.woff2?1787955612") format("woff2");
 }
 
 [class^="icon-"], [class*=" icon-"] {
@@ -21,6 +21,9 @@
 	-webkit-font-smoothing: antialiased;
 }
 
+.icon-lg {
+	font-size: 1.2em;
+}
 .icon-zoom-out:before { content: "\e000"; }
 .icon-zoom-in:before { content: "\e001"; }
 .icon-wallet:before { content: "\e002"; }

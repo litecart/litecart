@@ -5,6 +5,18 @@
 	Author: T. Almroth, LiteCart AB
 */
 
+waitFor('jQuery', ($) => {
+
+	// CSRF token for AJAX requests
+	$.ajaxPrefilter(function(options, originalOptions, jqXHR) {
+		if (!/^(GET|HEAD|OPTIONS)$/i.test(options.type) && window._env && window._env.csrf_token) {
+			jqXHR.setRequestHeader('X-CSRF-Token', window._env.csrf_token);
+		}
+	});
+
+});
+
+
 // Banner Click Tracking
 
 waitFor('jQuery', ($) => {
@@ -18,12 +30,24 @@ waitFor('jQuery', ($) => {
 	});
 
 	$('.banner[data-id]').on('click', function() {
-		$.post(_env.platform.path + 'ajax/bct', 'banner_id=' + $(this).data('id'));
+		$.post(_env.platform.path + 'ajax/event', {
+			type: 'banner_click',
+			description: 'User clicked a banner',
+			data: {
+				banner_id: $(this).data('id')
+			}
+		}, {dataType: 'json'});
 	});
 
 	$(window).on('blur', function() {
-		if (mouseOverAd){
-			$.post(_env.platform.path + 'ajax/bct', 'banner_id=' + mouseOverAd);
+		if (mouseOverAd) {
+			$.post(_env.platform.path + 'ajax/event', {
+				type: 'banner_click',
+				description: 'User clicked a banner',
+				data: {
+					banner_id: mouseOverAd
+				}
+			}, {dataType: 'json'});
 		}
 	});
 

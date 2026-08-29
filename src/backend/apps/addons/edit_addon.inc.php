@@ -247,7 +247,7 @@
 			if (is_dir($directory.$file)) {
 				$output[] = '<li>'. f::draw_fonticon('icon-folder icon-lg', 'style="color: #7ccdff;"') .' <span class="item" data-path="'. $relative_path .'">'. $file .'/</span>'. $draw_folder_contents($directory.$file.'/') .'</li>';
 			} else {
-				$output[] = '<li>'. f::draw_fonticon('icon-file-o') .' <span class="item" data-path="'. $relative_path .'">'. $file .'</span><li>';
+				$output[] = '<li>'. f::draw_fonticon('icon-file icon-lg') .' <span class="item" data-path="'. $relative_path .'">'. $file .'</span><li>';
 			}
 		}
 
@@ -1465,9 +1465,9 @@ textarea.warning {
 			'		</div>',
 			'',
 			'		<div class="col-md-2" style="align-self: center;">',
-			'		 <?php echo f::form_button('aliases[__index__][move_up]', f::draw_fonticon('move-up'), 'button', ['class' => 'btn btn-default btn-sm', 'title' => f::escape_attr(t('title_move_up', 'Move Up'))]); ?>',
-			'		 <?php echo f::form_button('aliases[__index__][move_down]', f::draw_fonticon('move-down'), 'button', ['class' => 'btn btn-default btn-sm', 'title' => f::escape_attr(t('title_move_down', 'Move Down'))]); ?>',
-			'		 <?php echo f::form_button('aliases[__index__][remove]', f::draw_fonticon('remove'), 'button', ['class' => 'btn btn-default btn-sm', 'title' => f::escape_attr(t('title_remove', 'Remove'))]); ?>',
+			'		 <?php echo f::escape_js(f::form_button('aliases[__index__][move_up]', f::draw_fonticon('move-up'), 'button', ['class' => 'btn btn-default btn-sm', 'title' => f::escape_attr(t('title_move_up', 'Move Up'))])); ?>',
+			'		 <?php echo f::escape_js(f::form_button('aliases[__index__][move_down]', f::draw_fonticon('move-down'), 'button', ['class' => 'btn btn-default btn-sm', 'title' => f::escape_attr(t('title_move_down', 'Move Down'))])); ?>',
+			'		 <?php echo f::escape_js(f::form_button('aliases[__index__][remove]', f::draw_fonticon('remove'), 'button', ['class' => 'btn btn-default btn-sm', 'title' => f::escape_attr(t('title_remove', 'Remove'))])); ?>',
 			'		</div>',
 			'	</div>',
 			'</fieldset>'
@@ -1526,9 +1526,9 @@ textarea.warning {
 			'		</div>',
 			'',
 			'		<div class="col-md-2 text-center" style="align-self: center;">',
-			'			<?php echo f::form_button('settings[__index__][move_up]', f::draw_fonticon('move-up'), 'button', ['class' => 'btn btn-default btn-sm', 'title' => f::escape_attr(t('title_move_up', 'Move Up'))]); ?>',
-			'			<?php echo f::form_button('settings[__index__][move_down]', f::draw_fonticon('move-down'), 'button', ['class' => 'btn btn-default btn-sm', 'title' => f::escape_attr(t('title_move_down', 'Move Down'))]); ?>',
-			'			<?php echo f::form_button('settings[__index__][remove]', f::draw_fonticon('remove'), 'button', ['class' => 'btn btn-default btn-sm', 'title' => f::escape_attr(t('title_remove', 'Remove'))]); ?>',
+			'			<?php echo f::escape_js(f::form_button('settings[__index__][move_up]', f::draw_fonticon('move-up'), 'button', ['class' => 'btn btn-default btn-sm', 'title' => f::escape_attr(t('title_move_up', 'Move Up'))])); ?>',
+			'			<?php echo f::escape_js(f::form_button('settings[__index__][move_down]', f::draw_fonticon('move-down'), 'button', ['class' => 'btn btn-default btn-sm', 'title' => f::escape_attr(t('title_move_down', 'Move Down'))])); ?>',
+			'			<?php echo f::escape_js(f::form_button('settings[__index__][remove]', f::draw_fonticon('remove'), 'button', ['class' => 'btn btn-default btn-sm', 'title' => f::escape_attr(t('title_remove', 'Remove'))])); ?>',
 			'		</div>',
 			'	</div>',
 			'',

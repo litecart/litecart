@@ -189,8 +189,8 @@
 				$f++;
 			}
 
-			$installed_addons = f::string_split(file_get_contents('storage://addons/.installed'), "\r\n");
-			$this->data['installed'] = in_array($this->data['id'], $installed_addons);
+			$installed = f::string_split(file_get_contents('storage://vmods/.installed'), "\r\n");
+			$this->data['installed'] = in_array($this->data['id'], $installed);
 
 			$this->previous = $this->data;
 		}

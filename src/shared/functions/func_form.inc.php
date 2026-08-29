@@ -160,7 +160,7 @@
 			'quicksave' => implode(PHP_EOL, [
 				'<div class="btn-group">',
 				'	'. f::form_button('quicksave', ['true', ''], 'submit', ['class' => 'btn btn-success btn-icon', 'title' => t('title_quicksave', 'Quicksave'), 'style' => 'padding-left: .75em; padding-right: .75em;'] + $attributes, 'save'),
-				'	'. f::form_button('save', t('title_save', 'Save'), 'submit', ['class' => 'btn btn-success', 'style' => 'padding-left: .75em;'] + $attributes, 'save'),
+				'	'. f::form_button('save', t('title_save', 'Save'), 'submit', ['class' => 'btn btn-success', 'style' => 'padding-left: .75em;'] + $attributes),
 				'</div>',
 			]),
 			'send' => f::form_button('send', t('title_send', 'Send'), 'submit', ['class' => 'btn btn-success'] + $attributes, 'send'),

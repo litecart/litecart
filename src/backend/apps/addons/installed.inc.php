@@ -128,8 +128,8 @@
 		$licenses = [];
 	}
 
-	// Installed add-ons
-	$installed_addons = preg_split('#[\r\n]+#', file_get_contents('storage://addons/.installed'), -1, PREG_SPLIT_NO_EMPTY);
+	// Installed vMods and add-ons
+	$installed_addons = preg_split('#[\r\n]+#', file_get_contents('storage://vmods/.installed'), -1, PREG_SPLIT_NO_EMPTY);
 
 	// Table Rows
 	$addons = [];

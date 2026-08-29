@@ -23,6 +23,8 @@
 	flex-direction: row;
 	gap: .75em;
 	/*align-self: anchor-center;*/
+	align-items: center;
+	justify-content: center;
 	padding: var(--button-padding-y) var(--button-padding-x);
 	border-radius: var(--border-radius);
 	box-shadow: var(--button-shadow);
@@ -77,8 +79,6 @@
 
 .btn-pill {
 	display: inline-flex;
-	align-items: center;
-	justify-content: center;
 	gap: var(--space-2);
 	padding: 0.75rem 1.5rem;
 	border-radius: var(--radius-pill);

@@ -359,6 +359,8 @@ summary {
 	flex-direction: row;
 	gap: 0.75em;
 	/*align-self: anchor-center;*/
+	align-items: center;
+	justify-content: center;
 	padding: var(--button-padding-y) var(--button-padding-x);
 	border-radius: var(--border-radius);
 	box-shadow: var(--button-shadow);
@@ -470,8 +472,6 @@ summary {
 
 .btn-pill {
 	display: inline-flex;
-	align-items: center;
-	justify-content: center;
 	gap: var(--space-2);
 	padding: 0.75rem 1.5rem;
 	border-radius: var(--radius-pill);
@@ -1272,7 +1272,7 @@ html[dir=rtl] .dropdown label:has([data-toggle=dropdown]) {
 	font-family: "LiteCore";
 	font-style: normal;
 	font-weight: 400;
-	src: url("../fonts/fonticons.woff2?1787947008") format("woff2");
+	src: url("../fonts/fonticons.woff2?1787955612") format("woff2");
 }
 [class^=icon-], [class*=" icon-"] {
 	display: inline-block;
@@ -1282,11 +1282,14 @@ html[dir=rtl] .dropdown label:has([data-toggle=dropdown]) {
 	font-variant: normal;
 	text-rendering: auto;
 	text-align: center;
-	vertical-align: middle;
 	width: 1em;
 	height: 1em;
 	-moz-osx-font-smoothing: grayscale;
 	-webkit-font-smoothing: antialiased;
+}
+
+.icon-lg {
+	font-size: 1.2em;
 }
 
 .icon-zoom-out:before {
@@ -3831,7 +3834,7 @@ body.litebox-open {
 .navbar .navbar-toggle {
 	position: relative;
 	flex: 0 1 auto;
-	padding: 0;
+	padding: 0 0.5em;
 	border: none;
 	border-radius: var(--border-radius);
 }
@@ -3844,30 +3847,17 @@ body.litebox-open {
 .navbar .navbar-toggle .navbar-toggler-bar,
 .navbar .navbar-toggle .icon-bar,
 .navbar .navbar-toggle .navbar-toggle-btn .icon-bar {
-	position: relative;
-	background-color: var(--navbar-text-color);
 	display: block;
 	width: 22px;
 	height: 2px;
+	background-color: var(--navbar-text-color);
 	transition: all 250ms ease-in-out;
 }
-.navbar .navbar-toggle .navbar-toggler-bar + .navbar-toggler-bar,
-.navbar .navbar-toggle .navbar-toggler-bar + .icon-bar,
-.navbar .navbar-toggle .icon-bar + .navbar-toggler-bar,
-.navbar .navbar-toggle .icon-bar + .icon-bar,
-.navbar .navbar-toggle .navbar-toggle-btn .icon-bar + .navbar-toggler-bar,
-.navbar .navbar-toggle .navbar-toggle-btn .icon-bar + .icon-bar {
-	margin-top: 4px;
-}
-.navbar .navbar-toggle .navbar-toggler-bar:nth-of-type(2),
-.navbar .navbar-toggle .icon-bar:nth-of-type(2),
-.navbar .navbar-toggle .navbar-toggle-btn .icon-bar:nth-of-type(2) {
-	top: 1px;
-}
-.navbar .navbar-toggle .navbar-toggler-bar:nth-of-type(3),
-.navbar .navbar-toggle .icon-bar:nth-of-type(3),
-.navbar .navbar-toggle .navbar-toggle-btn .icon-bar:nth-of-type(3) {
-	top: 2px;
+.navbar .navbar-toggler,
+.navbar .navbar-toggle-btn {
+	flex-direction: column;
+	gap: 4px;
+	align-items: center;
 }
 .navbar .navbar .navbar-toggle-btn .icon-bar {
 	position: relative;
@@ -3883,7 +3873,7 @@ body.litebox-open {
 .navbar.expanded .navbar-toggle .navbar-toggler-bar:nth-of-type(1),
 .navbar.expanded .navbar-toggle .icon-bar:nth-of-type(1),
 .navbar.expanded .navbar-toggle .navbar-toggle-btn .icon-bar:nth-of-type(1) {
-	transform: translateY(10px) rotate(45deg);
+	transform: translateY(6px) rotate(45deg);
 }
 .navbar.expanded .navbar-toggle .navbar-toggler-bar:nth-of-type(2),
 .navbar.expanded .navbar-toggle .icon-bar:nth-of-type(2),
@@ -3893,19 +3883,19 @@ body.litebox-open {
 .navbar.expanded .navbar-toggle .navbar-toggler-bar:nth-of-type(3),
 .navbar.expanded .navbar-toggle .icon-bar:nth-of-type(3),
 .navbar.expanded .navbar-toggle .navbar-toggle-btn .icon-bar:nth-of-type(3) {
-	transform: translateY(-10px) rotate(-45deg);
+	transform: translateY(-6px) rotate(-45deg);
 }
 .navbar.expanded {
 	/* X animation when the menu is opened (CSS-only via :has() on the checkbox) */
 }
 .navbar.expanded .navbar-toggle-btn .icon-bar:nth-of-type(1) {
-	transform: translateY(10px) rotate(45deg);
+	transform: translateY(6px) rotate(45deg);
 }
 .navbar.expanded .navbar-toggle-btn .icon-bar:nth-of-type(2) {
 	background-color: transparent;
 }
 .navbar.expanded .navbar-toggle-btn .icon-bar:nth-of-type(3) {
-	transform: translateY(-10px) rotate(-45deg);
+	transform: translateY(-6px) rotate(-45deg);
 }
 @media (max-width: 767px) {
 	.navbar.expanded .navbar-menu {
@@ -3998,20 +3988,6 @@ body.navbar-expanded {
 	}
 }
 @media (max-width: 767px) {
-	.navbar-toggle {
-		position: absolute;
-		width: 1px;
-		height: 1px;
-		padding: 0;
-		margin: -1px;
-		overflow: hidden;
-		clip: rect(0, 0, 0, 0);
-		white-space: nowrap;
-		border: 0;
-		opacity: 0;
-		pointer-events: none;
-	}
-	/* Push the hamburger toggle to the right edge of the navbar header */
 	.navbar-header {
 		display: flex;
 		align-items: center;
@@ -4021,10 +3997,6 @@ body.navbar-expanded {
 	.navbar-brand {
 		flex: 0 0 auto;
 	}
-	/* Slide-in menu from the left edge of the viewport.
-		 CSS-only implementation via :has() since the framework's JS binding
-		 (offcanvas.js) targets [data-toggle="offcanvas"] which this navbar
-		 doesn't use. */
 	.navbar .navbar-menu {
 		left: 0;
 		margin-left: -100%;

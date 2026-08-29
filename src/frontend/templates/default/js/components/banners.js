@@ -11,12 +11,24 @@ waitFor('jQuery', ($) => {
 	});
 
 	$('.banner[data-id]').on('click', function() {
-		$.post(_env.platform.path + 'ajax/bct', 'banner_id=' + $(this).data('id'));
+		$.post(_env.platform.path + 'ajax/event', {
+			type: 'banner_click',
+			description: 'User clicked a banner',
+			data: {
+				banner_id: $(this).data('id')
+			}
+		}, {dataType: 'json'});
 	});
 
 	$(window).on('blur', function() {
-		if (mouseOverAd){
-			$.post(_env.platform.path + 'ajax/bct', 'banner_id=' + mouseOverAd);
+		if (mouseOverAd) {
+			$.post(_env.platform.path + 'ajax/event', {
+				type: 'banner_click',
+				description: 'User clicked a banner',
+				data: {
+					banner_id: mouseOverAd
+				}
+			}, {dataType: 'json'});
 		}
 	});
 

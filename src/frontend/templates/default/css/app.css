@@ -521,6 +521,10 @@ body {
 	color: var(--link-text-color);
 }
 
+[data-toggle=momentum-scroll] .listing {
+	margin: 1em 2em;
+}
+
 .listing {
 	display: grid;
 	gap: 0.5em;
@@ -840,6 +844,12 @@ body {
 		flex-direction: row;
 		gap: 0.5em;
 	}
+}
+.listing.mini-columns .image-wrapper .sticker {
+	top: 0;
+	left: auto;
+	right: 1em;
+	border-radius: 0 0 var(--border-radius) var(--border-radius);
 }
 
 [data-toggle=momentum-scroll] {

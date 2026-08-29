@@ -175,7 +175,7 @@ table tbody .toggle {
 					<td><?php echo f::form_checkbox('pages[]', $page['id']); ?></td>
 					<td><?php echo f::draw_fonticon($page['status'] ? 'on' : 'off'); ?></td>
 					<td><?php echo $page['id']; ?></td>
-					<td><?php echo f::draw_fonticon('icon-file-o'); ?> <a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_page', ['page_id' => $page['id']]); ?>"><?php echo $page['title']; ?></a></td>
+					<td><?php echo f::draw_fonticon('icon-file'); ?> <a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_page', ['page_id' => $page['id']]); ?>"><?php echo $page['title']; ?></a></td>
 					<td class="text-center"><?php if (in_array('menu', $page['dock'])) echo f::draw_fonticon('icon-check'); ?></td>
 					<td class="text-center"><?php if (in_array('information', $page['dock'])) echo f::draw_fonticon('icon-check'); ?></td>
 					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_page', ['page_id' => $page['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo f::draw_fonticon('edit'); ?></a></td>

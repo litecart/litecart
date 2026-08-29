@@ -629,6 +629,11 @@ body {
 	}
 }
 
+
+[data-toggle="momentum-scroll"] .listing {
+	margin: 1em 2em;
+}
+
 .listing {
 	display: grid;
 	gap: 0.5em;
@@ -998,6 +1003,13 @@ body {
 				flex-direction: row;
 				gap: 0.5em;
 			}
+		}
+
+		.image-wrapper .sticker {
+			top: 0;
+			left: auto;
+			right: 1em;
+			border-radius: 0 0 var(--border-radius) var(--border-radius);
 		}
 	}
 }

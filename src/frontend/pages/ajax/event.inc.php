@@ -5,7 +5,7 @@
 	try {
 
 		if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-			throw new Exception('Invalid request method', 405);
+			throw new Exception('Invalid request method ('. $_SERVER['REQUEST_METHOD'] .')', 405);
 		}
 
 		if (!($payload = json_decode(file_get_contents('php://input'), true))) {
@@ -34,13 +34,44 @@
 			}
 		}
 
-		$event = [
-			'type' => $payload['type'],
-			'description' => $payload['description'],
-			'data' => $payload['data'] ?: [],
-			'expires_at' => strtotime('+12 months'),
-			'url' => $payload['url'] ?? ($_SERVER['HTTP_REFERER'] ?? null),
-		];
+		switch ($payload['type']) {
+
+			case 'banner_click':
+
+				if (empty($payload['data']['banner_id'])) {
+					throw new Exception('You must provide banner ID');
+				}
+
+				database::query(
+					"update ". DB_TABLE_PREFIX ."banners
+					set total_clicks = total_clicks + 1
+					where status
+					and id = ". (int)$payload['data']['banner_id'] ."
+					limit 1;"
+				);
+
+				$event = [
+					'type' => $payload['type'],
+					'description' => $payload['description'] ?? 'User clicked a banner',
+					'data' => $payload['data'] ?: [],
+					'expires_at' => strtotime('+3 months'),
+					'url' => $payload['url'] ?? ($_SERVER['HTTP_REFERER'] ?? null),
+				];
+
+				break;
+
+			default:
+
+				$event = [
+					'type' => $payload['type'],
+					'description' => $payload['description'],
+					'data' => $payload['data'] ?: [],
+					'expires_at' => strtotime('+3 months'),
+					'url' => $payload['url'] ?? ($_SERVER['HTTP_REFERER'] ?? null),
+				];
+
+				break;
+		}
 
 		if (!empty($payload['fingerprint'])) {
 			$event['fingerprint'] = $payload['fingerprint'];
