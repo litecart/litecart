@@ -117,27 +117,6 @@
 				throw new Exception($result['error']);
 			}
 
-			$address = new ent_customer_address();
-
-			foreach ([
-				'company',
-				'firstname',
-				'lastname',
-				'address1',
-				'address2',
-				'postcode',
-				'city',
-				'country_code',
-				'zone_code',
-				'phone',
-			] as $field) {
-				if (isset($_POST[$field])) {
-					$address->data[$field] = $_POST[$field];
-				}
-			}
-
-			$address->save();
-
 			$customer = new ent_customer();
 
 			$customer->data['status'] = 1;
