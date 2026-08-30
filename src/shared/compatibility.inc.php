@@ -87,7 +87,7 @@
 	}
 
   // Unset a bogus Host header
-  if (!filter_var(trim($_SERVER['HTTP_HOST'], '[]'), FILTER_VALIDATE_IP) && !filter_var($_SERVER['HTTP_HOST'], FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME)) {
+  if (isset($_SERVER['HTTP_HOST']) && !filter_var(trim($_SERVER['HTTP_HOST'], '[]'), FILTER_VALIDATE_IP) && !filter_var($_SERVER['HTTP_HOST'], FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME)) {
     unset($_SERVER['HTTP_HOST']);
   }
 
