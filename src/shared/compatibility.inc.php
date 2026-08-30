@@ -23,8 +23,37 @@
 		}
 	}
 
-	// Polyfill for some $_SERVER variables in CLI
 	if (!isset($_SERVER['REQUEST_METHOD'])) { // Don't rely on php_sapi_name()
+
+
+		// Polyfill $argv / $argc when register_argc_argv is disabled
+		if (filter_var(ini_get('register_argc_argv'), FILTER_VALIDATE_BOOLEAN) && !isset($GLOBALS['argv'])) {
+
+			$argv = null;
+
+			// Windows: PHP populates $_SERVER['argv'] even when register_argc_argv is off.
+			if (!empty($_SERVER['argv']) && is_array($_SERVER['argv'])) {
+				$argv = array_values($_SERVER['argv']);
+			}
+
+			// Linux: parse /proc/<pid>/cmdline (which is NUL-separated)
+			if ($argv === null && is_readable('/proc/' . getmypid() . '/cmdline')) {
+				$cmdline = file_get_contents('/proc/' . getmypid() . '/cmdline');
+				if ($cmdline !== false && $cmdline !== '') {
+					$argv = $cmdline !== '' ? explode("\0", trim($cmdline, "\0")) : [];
+				}
+			}
+
+			// Last resort: synthesize a minimal $argv from $argv[0] only.
+			if ($argv === null) {
+				$argv = [isset($_SERVER['SCRIPT_FILENAME']) ? $_SERVER['SCRIPT_FILENAME'] : 'cli.php'];
+			}
+
+			$GLOBALS['argv'] = $argv;
+			$GLOBALS['argc'] = count($argv);
+		}
+
+		// Polyfill for some $_SERVER variables in CLI
 		$_SERVER['DOCUMENT_ROOT'] = realpath(__DIR__.'/..');
 		$_SERVER['REMOTE_ADDR'] = '127.0.0.1';
 		$_SERVER['SERVER_NAME'] = 'localhost';
