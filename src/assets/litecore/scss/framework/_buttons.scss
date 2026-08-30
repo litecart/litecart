@@ -21,7 +21,7 @@
 .btn {
 	display: inline-flex;
 	flex-direction: row;
-	gap: .75em;
+	gap: .5em;
 	/*align-self: anchor-center;*/
 	align-items: center;
 	justify-content: center;
@@ -54,7 +54,6 @@
 		font-size: .8em;
 	}
 	&.btn-lg {
-		padding: 1rem 2rem;
 		font-size: 1.25rem;
 	}
 
