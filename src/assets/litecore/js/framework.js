@@ -1,9 +1,9 @@
 /*!
-	LiteCart v3.0.0 - Superfast, lightweight e-commerce platform built built with for simplicity.
-	Link: https://www.litecart.net/
-	License: CC-BY-ND-4.0
-	Author: T. Almroth, LiteCart AB
-*/
+ * LiteCart.net v3.0.0 - Official website
+ * @link https://www.litecart.net/
+ * @license UNLICENSED
+ * @author T. Almroth
+ */
 
 /* Minimal waitFor() implementation
  * Calls callback when objectName is defined in the global scope
@@ -419,6 +419,8 @@ waitFor('jQuery', ($) => {
 	$(document).on('change', '.dropdown :input', function(e) {
 
 		let $dropdown = $(this).closest('.dropdown');
+		let $toggle = $dropdown.find('.dropdown-toggle').filter('.form-select').first();
+		if (!$toggle.length) return;
 
 		let values = [];
 		$dropdown.find(':input:checked').each(function() {
@@ -426,9 +428,9 @@ waitFor('jQuery', ($) => {
 		});
 
 		if (!values.length) {
-			values = [ $dropdown.find('.dropdown-toggle').data('placeholder') ];
+			values = [ $toggle.data('placeholder') ];
 		}
-		$dropdown.find('.dropdown-toggle').text(values.join(', '));
+		$toggle.text(values.join(', '));
 	});
 
 	// Listen for clicks outside the dropdown to uncheck the input

@@ -12,6 +12,8 @@ waitFor('jQuery', ($) => {
 	$(document).on('change', '.dropdown :input', function(e) {
 
 		let $dropdown = $(this).closest('.dropdown');
+		let $toggle = $dropdown.find('.dropdown-toggle').filter('.form-select').first();
+		if (!$toggle.length) return;
 
 		let values = [];
 		$dropdown.find(':input:checked').each(function() {
@@ -19,9 +21,9 @@ waitFor('jQuery', ($) => {
 		});
 
 		if (!values.length) {
-			values = [ $dropdown.find('.dropdown-toggle').data('placeholder') ];
+			values = [ $toggle.data('placeholder') ];
 		}
-		$dropdown.find('.dropdown-toggle').text(values.join(', '));
+		$toggle.text(values.join(', '));
 	});
 
 	// Listen for clicks outside the dropdown to uncheck the input
