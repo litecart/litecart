@@ -1,5 +1,6 @@
 import { defineConfig, devices } from '@playwright/test';
 import { backendConfig } from './tests/e2e/backend.config.js';
+import { frontendConfig } from './tests/e2e/frontend.config.js';
 
 const PORT = process.env.E2E_PORT || 8080;
 const BASE_URL = `http://localhost:${PORT}`;
@@ -46,6 +47,7 @@ export default defineConfig({
       testDir: './tests/e2e/frontend',
       use: {
         ...devices['Desktop Chrome'],
+        baseURL: frontendConfig.baseURL,
       },
     },
   ],
