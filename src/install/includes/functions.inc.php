@@ -79,11 +79,14 @@
 
 				foreach ($payload as $source => $target) {
 
+					$source = file_realpath($source);
+					$target = file_realpath($target);
+
 					if (defined('DISABLE_FILE_MIGRATIONS') && filter_var(DISABLE_FILE_MIGRATIONS, FILTER_VALIDATE_BOOLEAN)) {
 						if (!preg_match('#^'. preg_quote(FS_DIR_STORAGE, '#') .'#', $target)) continue;
 					}
 
-					br('Copying files from '. preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $source) .' to '. preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $target) . '...');
+					br('Copying files from '. preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $source) .' to '. preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $target) . '...' . PHP_EOL);
 
 					$results = [];
 
@@ -91,16 +94,15 @@
 
 						foreach ($results as $file => $result) {
 
-							if (!$result) {
+							echo preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $file);
 
-								echo '  - '. preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $file);
+							if ($result) br('<span class="ok">[OK]</span>');
 
-								if ($on_error == 'skip') {
-									br(' <span class="warning">[Skipped]</span>');
-								} else {
-									br(' <span class="error">[Failed]</span>');
-									exit;
-								}
+							if ($on_error == 'skip') {
+								br(' <span class="warning">[Skipped]</span>');
+							} else {
+								br(' <span class="error">[Failed]</span>');
+								exit;
 							}
 						}
 					}
@@ -291,7 +293,7 @@
 		contents are irrelevant — only existence counts.
 	*/
 	function install_is_locked() {
-		return is_file(FS_DIR_STORAGE . 'install.lock');
+		return is_file(FS_DIR_STORAGE . 'config.inc.php');
 	}
 
 	/*
@@ -304,7 +306,7 @@
 			http_response_code(403);
 			header('Content-Type: text/plain; charset=UTF-8');
 		}
-		echo 'Installation already completed. Remove storage/install.lock to reinstall.' . PHP_EOL;
+		echo 'Existing installation detected. Go to upgrade.php instead or remove storage/config.inc.php to reinstall.' . PHP_EOL;
 		exit;
 	}
 

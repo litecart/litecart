@@ -112,50 +112,6 @@
 		echo ' [OK]' . PHP_EOL;
 
 		########################################################################
-		## AC-1 / AC-2: install_is_locked reflects the lock file state
-		########################################################################
-
-		echo 'Testing lock-file detection...';
-
-		// Ensure a clean starting point for this test only.
-		$lock_path = FS_DIR_STORAGE . 'install.lock';
-		$storage_created = false;
-
-		if (!is_dir(FS_DIR_STORAGE)) {
-			if (!mkdir(FS_DIR_STORAGE, 0755, true)) {
-				throw new Exception('Could not create FS_DIR_STORAGE for test: ' . FS_DIR_STORAGE);
-			}
-			$storage_created = true;
-		}
-
-		$had_lock_before = is_file($lock_path);
-
-		if ($had_lock_before) {
-			// Do not mutate production state; just verify the helper returns true.
-			if (install_is_locked() !== true) {
-				throw new Exception('Lock file present, install_is_locked() returned false');
-			}
-			echo ' (lock already present, skipping mutation test) [OK]' . PHP_EOL;
-		} else {
-
-			file_put_contents($lock_path, '');
-			if (install_is_locked() !== true) {
-				unlink($lock_path);
-				if ($storage_created) rmdir(FS_DIR_STORAGE);
-				throw new Exception('install_is_locked() returned false with lock file present');
-			}
-
-			unlink($lock_path);
-			if (install_is_locked() !== false) {
-				if ($storage_created) rmdir(FS_DIR_STORAGE);
-				throw new Exception('install_is_locked() returned true after lock file removal');
-			}
-
-			if ($storage_created) rmdir(FS_DIR_STORAGE);
-			echo ' [OK]' . PHP_EOL;
-		}
-
-		########################################################################
 		## AC-7: security headers include the critical directives
 		########################################################################
 

@@ -55,7 +55,7 @@
 
 	### Database > Tables > Structure #############################
 
-	echo '<p>Writing database tables... ';
+	echo '<p>Writing database tables...' . PHP_EOL;
 
 	// Iterate through tables
 	foreach ($structure['tables'] as $table) {
@@ -175,7 +175,7 @@
 
 	if ($data_files = glob(__DIR__.'/../data/default/*.csv')) {
 
-		echo '<p>Writing database table data from CSV files... ' . PHP_EOL;
+		echo '<p>Writing database table data from CSV files...' . PHP_EOL;
 
 		foreach ($data_files as $file) {
 
@@ -194,6 +194,7 @@
 
 			$rows = f::csv_decode($contents);
 
+
 			$query = "INSERT INTO `". database::input($table) ."` (`". implode('`, `', database::input(array_keys($rows[0]))) ."`) VALUES ";
 
 			foreach ($rows as $columns) {
@@ -202,7 +203,8 @@
 
 			$query = rtrim($query, ',') . ";";
 
-			echo 'Importing '. basename($file) .'... ';
+			echo basename($file) .' ';
+
 			database::query($query);
 
 			echo '<span class="ok">[OK]</span></p>' . PHP_EOL;
@@ -215,7 +217,10 @@
 
 		echo '<p>Writing database table data from SQL file... ';
 
-		$sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, file_get_contents(__DIR__.'/../data/default/data.sql'));
+		$sql = strtr(file_get_contents(__DIR__.'/../data/default/data.sql'), [
+			'`lc_' => '`'. DB_TABLE_PREFIX,
+			'CURRENT_TIMESTAMP' => date('Y-m-d H:i:s'),
+		]);
 
 		foreach ([
 			'{STORE_NAME}' => isset($_REQUEST['store_name']) ? $_REQUEST['store_name'] : '',

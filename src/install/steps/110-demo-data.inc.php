@@ -13,8 +13,7 @@
 
 				$table = DB_TABLE_PREFIX . basename($file, '.csv');
 
-				$contents = file_get_contents($file);
-				$contents = strtr( $contents, [
+				$contents = strtr(file_get_contents($file), [
 					'{STORE_NAME}' => isset($_REQUEST['store_name']) ? $_REQUEST['store_name'] : '',
 					'{STORE_EMAIL}' => isset($_REQUEST['store_email']) ? $_REQUEST['store_email'] : '',
 					'{STORE_COUNTRY_CODE}' => isset($_REQUEST['country_code']) ? $_REQUEST['country_code'] : '',
@@ -28,18 +27,17 @@
 				foreach ($rows as $columns) {
 					$query .= "(". implode(", ", array_map(function($value) {
 						return $value == '' ? "null" : "'". database::input($value) ."'";
-					}, $columns), true) ."'),";
+					}, $columns)) ."'),";
 				}
 
 				$query = rtrim($query, ',') . ";";
 
-				echo 'Importing '. basename($file) .'... ';
+				echo basename($file) .'... ';
 				database::query($query);
 
-				echo '<span class="ok">[OK]</span></p>' . PHP_EOL;
 			}
-
-			echo PHP_EOL;
+			
+			echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 		}
 
 		## Import SQL Files

@@ -50,7 +50,7 @@
 	}
 
 	define('BACKEND_ALIAS', $_REQUEST['backend_alias']);
-	define('DB_SERVER', $_REQUEST['db_server']);
+	define('DB_SERVER', ($_REQUEST['db_server'] ?? '') ?: '127.0.0.1');
 	define('DB_USERNAME', $_REQUEST['db_username']);
 	define('DB_PASSWORD', $_REQUEST['db_password']);
 	define('DB_DATABASE', $_REQUEST['db_database']);

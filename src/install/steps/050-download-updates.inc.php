@@ -1,5 +1,7 @@
 <?php
 
+	if (file_exists(__DIR__.'/../../../.git/')) return;
+
 	### Installer > Update ########################################
 
 	echo '<p>Checking for updates... ';
@@ -34,7 +36,10 @@
 
 		if (!empty($files_updated)) {
 			echo 'Updated '. $files_updated .' file(s) <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+		} else {
+			echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 		}
+
 	} else {
 		echo ' <span class="warning">[Skipped]</span></p>' . PHP_EOL . PHP_EOL;
 	}

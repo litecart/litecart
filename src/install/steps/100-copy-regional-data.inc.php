@@ -14,7 +14,7 @@
 				if ($dir == 'demo') continue;
 				if ($dir == 'default') continue;
 
-				echo '<p>Patching installation with regional data from directory ' . $dir . '/...' . PHP_EOL;
+				echo '<p>Patching installation with data from regional directory ' . $dir . '/...' . PHP_EOL;
 
 				## Import CSV Files
 
@@ -47,7 +47,7 @@
 
 						$query = rtrim($query, ',') . ";";
 
-						echo 'Importing '. basename($file) .'... ';
+						echo basename($file) .' ';
 						database::query($query);
 
 						echo '<span class="ok">[OK]</span></p>' . PHP_EOL;
@@ -72,8 +72,11 @@
 
 						foreach (preg_split('#^-- -----*$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {
 							$query = preg_replace('#^-- .*?\R+#m', '', $query);
+
+							echo basename($file) .' ';
 							database::query($query);
 						}
+						echo '<span class="ok">[OK]</span></p>' . PHP_EOL;
 					}
 				}
 
