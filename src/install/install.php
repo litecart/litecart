@@ -142,9 +142,6 @@
 
 		### ################################################################
 
-		// Write lock file to prevent re-installation
-		file_put_contents(FS_DIR_STORAGE . 'install.lock', date('Y-m-d H:i:s'));
-
 		echo implode(PHP_EOL, [
 			'<h2>Complete</h2>',
 			'<p>Installation complete!</p>',

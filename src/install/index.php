@@ -449,8 +449,8 @@ input[name="development_type"]:checked + div {
 <?php if (!empty($installation_detected)) { ?>
 <div id="modal-warning-existing-installation" style="display: none; width: 320px;">
 	<h2>Existing Installation Detected</h2>
-	<p>Warning: An existing installation has been detected. It <u>will be deleted</u> if you continue!</p>
-	<p><a class="btn btn-default" href="upgrade.php">Click here to upgrade instead <i class="icon-arrow-right"></i></a></p>
+	<p>Warning: An existing installation has been detected. Remove storage/config.inc.php if you want to reinstall.</p>
+	<p><a class="btn btn-default" href="upgrade.php">Click here to upgrade <i class="icon-arrow-right"></i></a></p>
 </div>
 <?php } ?>
 
@@ -459,7 +459,7 @@ waitFor('jQuery', function($){
 
 	<?php if (!empty($installation_detected)) { ?>
 	// Warn about existing installation
-	$.litebox('#modal-warning-existing-installation');
+	$.litebox('#modal-warning-existing-installation', {'closeOnClick': false});
 	<?php } ?>
 
 	// Attempt to determine country from browser

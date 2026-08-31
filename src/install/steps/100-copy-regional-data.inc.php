@@ -39,10 +39,33 @@
 
 						$rows = f::csv_decode($contents);
 
-						$query = "INSERT INTO `". database::input($table) ."` (`". implode('`, `', database::input(array_keys($rows[0]))) ."`) VALUES ";
+						$column_names = array_keys($rows[0]);
+
+						// Look up each column's nullability
+						$column_nullable = [];
+						foreach (database::query("show fields from ". $table)->fetch_all() as $field) {
+							$column_nullable[$field['Field']] = ($field['Null'] === 'YES');
+						}
+
+						$query = "INSERT INTO `". database::input($table) ."` (`". implode('`, `', database::input($column_names)) ."`) VALUES ";
 
 						foreach ($rows as $columns) {
-							$query .= "('". implode("', '", database::input($columns)) ."'),";
+
+							$values = [];
+
+							foreach ($column_names as $index => $name) {
+
+								$value = $columns[$index] ?? '';
+
+								if ($value !== '') {
+									$values[] = "'" . database::input($value) . "'";
+									continue;
+								}
+
+								$values[] = !empty($column_nullable[$name]) ? 'NULL' : "''";
+							}
+
+							$query .= "(" . implode(', ', $values) . "),";
 						}
 
 						$query = rtrim($query, ',') . ";";
