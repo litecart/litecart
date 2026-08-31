@@ -528,6 +528,7 @@
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
 				"customer_id": { "type": "INT", "length": 10, "unsigned": true },
+				"cart_uid": { "type": "VARCHAR", "length": 13, "default": "''" },
 				"product_id": { "type": "INT", "length": 10, "unsigned": true },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
 				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
@@ -541,7 +542,7 @@
 				"product_id": ["product_id"]
 			},
 			"foreign_keys": {
-				"favourite_to_customer": {
+				"favorite_to_customer": {
 					"columns": ["customer_id"],
 					"references": {
 						"table": "customers",
@@ -550,7 +551,7 @@
 						"on_delete": "CASCADE"
 					}
 				},
-				"favourite_to_product": {
+				"favorite_to_product": {
 					"columns": ["product_id"],
 					"references": {
 						"table": "products",
