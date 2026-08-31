@@ -13,10 +13,10 @@
 
 		echo PHP_EOL;
 
-	} catch (Exception $e) {
+	} catch (Throwable $t) {
 		echo implode(PHP_EOL, [
 			'<span class="error">[Error]</span></p>',
-			'<div class="error-message">'. $e->getMessage() .'</div>',
+			'<div class="error-message">'. $t->getMessage() .'</div>',
 			'',
 			'',
 		]);
@@ -41,10 +41,10 @@
 
 		echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 
-	} catch (Exception $e) {
+	} catch (Throwable $t) {
 		echo implode(PHP_EOL, [
-			'<span class="error">[Error]</span>',
-			'<div class="error-message">'. $e->getMessage() .'</div></p>',
+			'<span class="error">[Error]</span></p>',
+			'<div class="error-message">'. $t->getMessage() .'</div>',
 			'',
 			'',
 		]);

@@ -39,9 +39,9 @@
 
 						$values = [];
 
-						foreach ($column_names as $index => $name) {
+						foreach ($column_names as $name) {
 
-							$value = $columns[$index] ?? '';
+							$value = $columns[$name] ?? '';
 
 							if ($value !== '') {
 								$values[] = "'" . database::input($value) . "'";
@@ -80,10 +80,10 @@
 
 			echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 
-		} catch (Exception $e) {
+		} catch (Throwable $t) {
 			echo implode(PHP_EOL, [
 				'<span class="error">[Error]</span>',
-				'<div class="error-message">'. $e->getMessage() .'</div></p>',
+				'<div class="error-message">'. $t->getMessage() .'</div></p>',
 				'',
 				'',
 			 ]);
@@ -104,10 +104,10 @@
 
 			echo PHP_EOL;
 
-		} catch (Exception $e) {
+		} catch (Throwable $t) {
 			echo implode(PHP_EOL, [
 				'<p>Copy demo files... <span class="error">[Error]</span></p>',
-				'<div class="error-message">'. $e->getMessage() .'</div>',
+				'<div class="error-message">'. $t->getMessage() .'</div>',
 				'',
 				'',
 			]);

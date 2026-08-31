@@ -12,9 +12,9 @@
 
 		echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 
-	} catch (Exception $e) {
+	} catch (Throwable $t) {
 		echo '<span class="error">[Error]</span>' . PHP_EOL
-		.  '<div class="error-message">'. $e->getMessage() .'</div></p>' . PHP_EOL . PHP_EOL;	}
+		.  '<div class="error-message">'. $t->getMessage() .'</div></p>' . PHP_EOL . PHP_EOL;	}
 
 	### Logs ###################################################
 
@@ -31,10 +31,10 @@
 
 		echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 
-	} catch (Exception $e) {
+	} catch (Throwable $t) {
 		echo implode(PHP_EOL, [
 			'<span class="error">[Error]</span>',
-			'<div class="error-message">'. $e->getMessage() .'</div></p>',
+			'<div class="error-message">'. $t->getMessage() .'</div></p>',
 			'',
 			''
 		]);

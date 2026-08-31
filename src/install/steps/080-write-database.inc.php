@@ -55,10 +55,10 @@
 
 		echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 
-	} catch (Exception $e) {
+	} catch (Throwable $t) {
 		echo implode(PHP_EOL, [
 			'<span class="error">[Error]</span></p>',
-			'<div class="error-message">'. $e->getMessage() .'</div>',
+			'<div class="error-message">'. $t->getMessage() .'</div>',
 			'',
 			'',
 		]);
@@ -184,10 +184,10 @@
 
 		echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 
-	} catch (Exception $e) {
+	} catch (Throwable $t) {
 		echo implode(PHP_EOL, [
 			'<span class="error">[Error]</span></p>',
-			'<div class="error-message">'. $e->getMessage() .'</div>',
+			'<div class="error-message">'. $t->getMessage() .'</div>',
 			'',
 			'',
 		]);
@@ -234,9 +234,9 @@
 
 					$values = [];
 
-					foreach ($column_names as $index => $name) {
+					foreach ($column_names as $name) {
 
-						$value = $columns[$index] ?? '';
+						$value = $columns[$name] ?? '';
 
 						if ($value !== '') {
 							$values[] = "'" . database::input($value, true) . "'";
@@ -253,9 +253,9 @@
 
 				database::query($query);
 
-				echo '<span class="ok">✔</span>' . PHP_EOL;
+				echo '<span class="ok">[OK]</span></p>' . PHP_EOL;
 
-			} catch (Exception $e) {
+			} catch (Throwable $t) {
 				echo '<span class="error">𐄂</span>';
 			}
 		}
@@ -287,10 +287,12 @@
 
 			echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 
-		} catch (Exception $e) {
+		} catch (Throwable $t) {
 			echo implode(PHP_EOL, [
 				'<span class="error">[Error]</span>',
-				'<div class="error-message">'. $e->getMessage() .'</div></p>',
+				'<div class="error-message">'. $t->getMessage() .'</div></p>',
+				'',
+				'',
 			]);
 		}
 	}
@@ -305,16 +307,17 @@
 			values ('1', '1', '". database::input($_REQUEST['username']) ."', '". database::input(password_hash($_REQUEST['password'], PASSWORD_DEFAULT)) ."', '". database::input($_SERVER['REMOTE_ADDR']) ."', '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
 		);
 
-	} catch (Exception $e) {
+	} catch (Throwable $t) {
 		echo '<p>Insert administrator account... <span class="error">[Error]</span></p>' . PHP_EOL
-		. '<div class="error-message">'. $e->getMessage() .'</div>' . PHP_EOL . PHP_EOL;	}
+		. '<div class="error-message">'. $t->getMessage() .'</div>' . PHP_EOL . PHP_EOL;
+	}
 
 	### Set platform database version #############################
 
 
 	try {
 
-		echo '<p>Set platform database version...';
+		echo '<p>Set platform database version... ';
 
 		if (!defined('PLATFORM_VERSION')) {
 			throw new Exception('Not defined');
@@ -329,10 +332,10 @@
 
 		echo ' <strong>'. PLATFORM_VERSION .'</strong> <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 
-	} catch (Exception $e) {
+	} catch (Throwable $t) {
 		echo implode(PHP_EOL, [
 			'<span class="error">[Error]</span></p>',
-			'<div class="error-message">'. $e->getMessage() .'</div>',
+			'<div class="error-message">'. $t->getMessage() .'</div>',
 			'',
 			'',
 		]);

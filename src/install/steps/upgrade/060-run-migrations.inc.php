@@ -52,7 +52,7 @@
 
 			echo '<strong>'. $version .'</strong></p>' . PHP_EOL . PHP_EOL;
 
-		} catch (Exception $e) {
+		} catch (Throwable $t) {
 
 			if (version_compare($current_version, '3.0.0', '>=')) {
 				database::query('rollback;');
@@ -60,7 +60,7 @@
 
 			echo implode(PHP_EOL, [
 				'<span class="error">[Error]</span>',
-				'<div class="error-message">'. $e->getMessage() .'</div></p>',
+				'<div class="error-message">'. $t->getMessage() .'</div></p>',
 				'',
 				'',
 			]);

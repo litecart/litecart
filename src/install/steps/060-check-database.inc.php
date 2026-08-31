@@ -16,9 +16,9 @@
 
 		echo 'Connected! <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 
-	} catch (Exception $e) {
+	} catch (Throwable $t) {
 		echo '<span class="error">[Error]</span>' . PHP_EOL
-		.  '<div class="error-message">'. $e->getMessage() .'</div></p>' . PHP_EOL . PHP_EOL;	}
+		.  '<div class="error-message">'. $t->getMessage() .'</div></p>' . PHP_EOL . PHP_EOL;	}
 
 	### Database > Check Version ##################################
 
@@ -59,9 +59,9 @@
 			echo $database_software['name'] .' '. $database_software['version'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 		}
 
-	} catch (Exception $e) {
+	} catch (Throwable $t) {
 		echo '<span class="error">[Error]</span>' . PHP_EOL
-		.  '<div class="error-message">'. $e->getMessage() .'</div></p>' . PHP_EOL . PHP_EOL;	}
+		.  '<div class="error-message">'. $t->getMessage() .'</div></p>' . PHP_EOL . PHP_EOL;	}
 
 	### Database > Check Charset ##################################
 
@@ -98,9 +98,9 @@
 			echo $charset['DEFAULT_CHARACTER_SET_NAME'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 		}
 
-	} catch (Exception $e) {
+	} catch (Throwable $t) {
 		echo '<span class="error">[Error]</span>' . PHP_EOL
-		.  '<div class="error-message">'. $e->getMessage() .'</div></p>' . PHP_EOL . PHP_EOL;	}
+		.  '<div class="error-message">'. $t->getMessage() .'</div></p>' . PHP_EOL . PHP_EOL;	}
 
 	try {
 
@@ -125,10 +125,10 @@
 			echo $charset['DEFAULT_COLLATION_NAME'] . ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 		}
 
-	} catch (Exception $e) {
+	} catch (Throwable $t) {
 		echo implode(PHP_EOL, [
 			'<span class="error">[Error]</span>',
-			'<div class="error-message">'. $e->getMessage() .'</div></p>',
+			'<div class="error-message">'. $t->getMessage() .'</div></p>',
 			'',
 			'',
 		]);

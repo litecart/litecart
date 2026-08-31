@@ -57,9 +57,9 @@
 
 								$values = [];
 
-								foreach ($column_names as $index => $name) {
+								foreach ($column_names as $name) {
 
-									$value = $columns[$index] ?? '';
+									$value = $columns[$name] ?? '';
 
 									if ($value !== '') {
 										$values[] = "'" . database::input($value) . "'";
@@ -76,19 +76,14 @@
 
 							database::query($query);
 
-							echo '<span class="ok">[OK]</span></p>' . PHP_EOL;
+							echo '<span class="ok">✔</span>' . PHP_EOL;
 
-						} catch (Exception $e) {
-							echo implode(PHP_EOL, [
-								'<span class="error">[Error]</span></p>',
-								'<div class="error-message">'. $e->getMessage() .'</div>',
-								'',
-								'',
-							]);
+						} catch (Throwable $t) {
+							echo '<span class="error">𐄂</span>';
 						}
 					}
 
-					echo PHP_EOL;
+					echo '</p>' . PHP_EOL;
 				}
 
 				## Import SQL Files
@@ -103,7 +98,7 @@
 
 						try {
 
-							echo '<p>' . basename($file) .' ';
+							echo ' '. basename($file) .' ';
 
 							$sql = file_get_contents($file);
 
@@ -115,16 +110,14 @@
 								database::query($query);
 							}
 
-							echo '<span class="ok">[OK]</span></p>' . PHP_EOL;
+							echo '<span class="ok">✔</span>';
 
-						} catch (Exception $e) {
-							echo implode(PHP_EOL, [
-								'<span class="error">[Error]</span>',
-								'<div class="error-message">'. $e->getMessage() .'</div></p>',
-								'',
-							]);
+						} catch (Throwable $t) {
+							echo '<span class="error">[𐄂]</span>';
 						}
 					}
+
+					echo '</p>' . PHP_EOL;
 				}
 
 				## Copy Files
@@ -136,10 +129,10 @@
 						__DIR__.'/../data/'. $dir .'/storage/' => FS_DIR_STORAGE,
 					]);
 
-				} catch (Exception $e) {
+				} catch (Throwable $t) {
 					echo implode(PHP_EOL, [
 						'<p>Copy regional files ('. $dir .')... <span class="error">[Error]</span></p>',
-						'<div class="error-message">'. $e->getMessage() .'</div>',
+						'<div class="error-message">'. $t->getMessage() .'</div>',
 						'',
 						'',
 					]);

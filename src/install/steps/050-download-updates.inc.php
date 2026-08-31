@@ -46,10 +46,10 @@
 			echo ' <span class="warning">[Skipped]</span></p>' . PHP_EOL . PHP_EOL;
 		}
 
-	} catch (Exception $e) {
+	} catch (Throwable $t) {
 		echo implode(PHP_EOL, [
 			'<span class="error">[Error]</span>',
-			'<div class="error-message">'. $e->getMessage() .'</div></p>',
+			'<div class="error-message">'. $t->getMessage() .'</div></p>',
 			'',
 			'',
 		]);

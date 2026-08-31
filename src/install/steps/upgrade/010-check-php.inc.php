@@ -22,7 +22,7 @@
   } catch (Exception $e) {
     echo PHP_VERSION .' '. implode(PHP_EOL, [
       '<span class="error">[Error]</span>',
-      '<div class="error-message">'. $e->getMessage() .'</div></p>',
+      '<div class="error-message">'. $t->getMessage() .'</div></p>',
       '',
       '',
     ]);
@@ -57,7 +57,7 @@
   } catch (Exception $e) {
     echo implode(PHP_EOL, [
       '<span class="error">[Error]</span>',
-      '<div class="error-message">'. $e->getMessage() .'</div></p>',
+      '<div class="error-message">'. $t->getMessage() .'</div></p>',
       '',
       '',
     ]);

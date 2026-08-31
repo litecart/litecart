@@ -18,10 +18,10 @@
 			}
 		}
 
-	} catch (Exception $e) {
+	} catch (Throwable $t) {
 		echo PHP_VERSION .' '. implode(PHP_EOL, [
 			'<span class="error">[Error]</span>',
-			'<div class="error-message">'. $e->getMessage() .'</div></p>',
+			'<div class="error-message">'. $t->getMessage() .'</div></p>',
 			'',
 			'',
 		]);
@@ -54,10 +54,10 @@
 			echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 		}
 
-	} catch (Exception $e) {
+	} catch (Throwable $t) {
 		echo implode(PHP_EOL, [
 			'<span class="error">[Error]</span>',
-			'<div class="error-message">'. $e->getMessage() .'</div></p>',
+			'<div class="error-message">'. $t->getMessage() .'</div></p>',
 			'',
 			'',
 		]);
@@ -82,10 +82,10 @@
 			echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 		}
 
-	} catch (Exception $e) {
+	} catch (Throwable $t) {
 		echo implode(PHP_EOL, [
 			'<span class="error">[Error]</span>',
-			'<div class="error-message">'. $e->getMessage() .'</div></p>',
+			'<div class="error-message">'. $t->getMessage() .'</div></p>',
 			'',
 			'',
 		]);
@@ -104,10 +104,10 @@
 			echo ini_get('display_errors') . ' <span class="warning">[Warning] Missing permissions to display errors?</span></p>' . PHP_EOL . PHP_EOL;
 		}
 
-	} catch (Exception $e) {
+	} catch (Throwable $t) {
 		echo implode(PHP_EOL, [
 			'<span class="error">[Error]</span>',
-			'<div class="error-message">'. $e->getMessage() .'</div></p>',
+			'<div class="error-message">'. $t->getMessage() .'</div></p>',
 			'',
 			'',
 		]);
@@ -128,10 +128,10 @@
 				echo $_SERVER['DOCUMENT_ROOT'] . ' <span class="warning">[Warning]</span> There is a problem with your web server configuration causing $_SERVER["DOCUMENT_ROOT"] and __DIR__ to return conflicting paths. Contact your web host and have them correcting this.</p>' . PHP_EOL  . PHP_EOL;
 			}
 
-		} catch (Exception $e) {
+		} catch (Throwable $t) {
 			echo implode(PHP_EOL, [
 				'<span class="error">[Error]</span>',
-				'<div class="error-message">'. $e->getMessage() .'</div></p>',
+				'<div class="error-message">'. $t->getMessage() .'</div></p>',
 				'',
 				'',
 			]);

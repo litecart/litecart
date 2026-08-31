@@ -62,10 +62,10 @@
 
 		echo PHP_EOL;
 
-	} catch (Exception $e) {
+	} catch (Throwable $t) {
 		echo implode(PHP_EOL, [
 			'<p>Preparing CSS files... <span class="error">[Error]</span></p>',
-			'<div class="error-message">'. $e->getMessage() .'</div>',
+			'<div class="error-message">'. $t->getMessage() .'</div>',
 			'',
 			'',
 		]);
