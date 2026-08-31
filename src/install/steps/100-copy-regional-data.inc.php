@@ -61,12 +61,13 @@
 
 									$value = $columns[$name] ?? '';
 
-									if ($value !== '') {
-										$values[] = "'" . database::input($value) . "'";
-										continue;
+									if ($value) {
+										$values[] = "'" . strtr(database::input($value, true), ['\\\\n' => '\\n']) . "'";
+									} else if ($column_nullable[$name]) {
+										$values[] = 'NULL';
+									} else {
+										$values[] = "''";
 									}
-
-									$values[] = !empty($column_nullable[$name]) ? 'NULL' : "''";
 								}
 
 								$query .= "(" . implode(', ', $values) . "),";
