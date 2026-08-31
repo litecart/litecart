@@ -50,7 +50,7 @@
 				"code": ["code"]
 			},
 			"check_constraints": {
-				"chk_name": "JSON_VALID(name)"
+				"attribute_groups_chk_name": "JSON_VALID(name)"
 			}
 		},
 		"attribute_values": {
@@ -67,7 +67,7 @@
 				"group_id": ["group_id"]
 			},
 			"check_constraints": {
-				"chk_name": "JSON_VALID(name)"
+				"attribute_values_chk_name": "JSON_VALID(name)"
 			}
 		},
 		"banners": {
@@ -115,12 +115,12 @@
 				"name": ["name"]
 			},
 			"check_constraints": {
-				"chk_short_description": "JSON_VALID(short_description)",
-				"chk_description": "JSON_VALID(description)",
-				"chk_h1_title": "JSON_VALID(h1_title)",
-				"chk_head_title": "JSON_VALID(head_title)",
-				"chk_meta_description": "JSON_VALID(meta_description)",
-				"chk_link": "JSON_VALID(link)"
+				"brands_chk_short_description": "JSON_VALID(short_description)",
+				"brands_chk_description": "JSON_VALID(description)",
+				"brands_chk_h1_title": "JSON_VALID(h1_title)",
+				"brands_chk_head_title": "JSON_VALID(head_title)",
+				"brands_chk_meta_description": "JSON_VALID(meta_description)",
+				"brands_chk_link": "JSON_VALID(link)"
 			}
 		},
 		"campaigns": {
@@ -185,7 +185,8 @@
 			"primary_key": ["id"],
 			"keys": {
 				"customer_id": ["customer_id"],
-				"cart_uid": ["cart_uid"]
+				"cart_uid": ["cart_uid"],
+				"created_at": ["created_at"]
 			},
 			"foreign_keys": {
 				"cart_item_to_customer": {
@@ -261,12 +262,12 @@
 				}
 			},
 			"check_constraints": {
-				"chk_name": "JSON_VALID(name)",
-				"chk_short_description": "JSON_VALID(short_description)",
-				"chk_description": "JSON_VALID(description)",
-				"chk_h1_title": "JSON_VALID(h1_title)",
-				"chk_head_title": "JSON_VALID(head_title)",
-				"chk_meta_description": "JSON_VALID(meta_description)"
+				"categories_chk_name": "JSON_VALID(name)",
+				"categories_chk_short_description": "JSON_VALID(short_description)",
+				"categories_chk_description": "JSON_VALID(description)",
+				"categories_chk_h1_title": "JSON_VALID(h1_title)",
+				"categories_chk_head_title": "JSON_VALID(head_title)",
+				"categories_chk_meta_description": "JSON_VALID(meta_description)"
 			}
 		},
 		"categories_filters": {
@@ -443,8 +444,8 @@
 			},
 			"primary_key": ["id"],
 			"check_constraints": {
-				"chk_name": "JSON_VALID(name)",
-				"chk_description": "JSON_VALID(description)"
+				"delivery_statuses_chk_name": "JSON_VALID(name)",
+				"delivery_statuses_chk_description": "JSON_VALID(description)"
 			}
 		},
 		"emails": {
@@ -520,8 +521,8 @@
 				}
 			},
 			"check_constraints": {
-				"chk_data": "JSON_VALID(data)",
-				"chk_conversions": "JSON_VALID(conversions)"
+				"event_logs_chk_data": "JSON_VALID(data)",
+				"event_logs_chk_conversions": "JSON_VALID(conversions)"
 			}
 		},
 		"favorites": {
@@ -799,7 +800,7 @@
 				}
 			},
 			"check_constraints": {
-				"chk_conversions": "JSON_VALID(conversions)"
+				"orders_chk_conversions": "JSON_VALID(conversions)"
 			}
 		},
 		"orders_comments": {
@@ -886,7 +887,7 @@
 				}
 			},
 			"check_constraints": {
-				"chk_userdata": "JSON_VALID(userdata)"
+				"orders_items_chk_userdata": "JSON_VALID(userdata)"
 			}
 		},
 		"orders_stock_items": {
@@ -972,10 +973,10 @@
 				"is_trackable": ["is_trackable"]
 			},
 			"check_constraints": {
-				"chk_name": "JSON_VALID(name)",
-				"chk_description": "JSON_VALID(description)",
-				"chk_email_subject": "JSON_VALID(email_subject)",
-				"chk_email_message": "JSON_VALID(email_message)"
+				"order_statuses_chk_name": "JSON_VALID(name)",
+				"order_statuses_chk_description": "JSON_VALID(description)",
+				"order_statuses_chk_email_subject": "JSON_VALID(email_subject)",
+				"order_statuses_chk_email_message": "JSON_VALID(email_message)"
 			}
 		},
 		"pages": {
@@ -1072,13 +1073,13 @@
 				"description": ["description"]
 			},
 			"check_constraints": {
-				"chk_name": "JSON_VALID(name)",
-				"chk_short_description": "JSON_VALID(short_description)",
-				"chk_description": "JSON_VALID(description)",
-				"chk_technical_data": "JSON_VALID(technical_data)",
-				"chk_head_title": "JSON_VALID(head_title)",
-				"chk_meta_description": "JSON_VALID(meta_description)",
-				"chk_synonyms": "JSON_VALID(synonyms)"
+				"products_chk_name": "JSON_VALID(name)",
+				"products_chk_short_description": "JSON_VALID(short_description)",
+				"products_chk_description": "JSON_VALID(description)",
+				"products_chk_technical_data": "JSON_VALID(technical_data)",
+				"products_chk_head_title": "JSON_VALID(head_title)",
+				"products_chk_meta_description": "JSON_VALID(meta_description)",
+				"products_chk_synonyms": "JSON_VALID(synonyms)"
 			}
 		},
 		"products_attributes": {
@@ -1337,8 +1338,8 @@
 				}
 			},
 			"check_constraints": {
-				"chk_min_quantity": "min_quantity > 0",
-				"chk_price": "JSON_VALID(price)"
+				"products_prices_chk_min_quantity": "min_quantity > 0",
+				"products_prices_chk_price": "JSON_VALID(price)"
 			}
 		},
 		"products_prices_history": {
@@ -1370,7 +1371,7 @@
 				}
 			},
 			"check_constraints": {
-				"chk_price": "JSON_VALID(price)"
+				"products_prices_history_chk_price": "JSON_VALID(price)"
 			}
 		},
 		"products_stock_options": {
@@ -1450,8 +1451,8 @@
 			},
 			"primary_key": ["id"],
 			"check_constraints": {
-				"chk_name": "JSON_VALID(name)",
-				"chk_description": "JSON_VALID(description)"
+				"quantity_units_chk_name": "JSON_VALID(name)",
+				"quantity_units_chk_description": "JSON_VALID(description)"
 			}
 		},
 		"redirects": {
@@ -1523,9 +1524,9 @@
 				}
 			},
 			"check_constraints": {
-				"chk_title": "JSON_VALID(title)",
-				"chk_description": "JSON_VALID(description)",
-				"chk_attachments": "JSON_VALID(attachments)"
+				"reviews_chk_title": "JSON_VALID(title)",
+				"reviews_chk_description": "JSON_VALID(description)",
+				"reviews_chk_attachments": "JSON_VALID(attachments)"
 			}
 		},
 		"sessions": {
@@ -1660,8 +1661,8 @@
 				"orderable": ["orderable"]
 			},
 			"check_constraints": {
-				"chk_name": "JSON_VALID(name)",
-				"chk_description": "JSON_VALID(description)"
+				"sold_out_statuses_chk_name": "JSON_VALID(name)",
+				"sold_out_statuses_chk_description": "JSON_VALID(description)"
 			}
 		},
 		"statistics": {
@@ -1730,7 +1731,7 @@
 				"name": ["name"]
 			},
 			"check_constraints": {
-				"chk_name": "JSON_VALID(name)"
+				"stock_items_chk_name": "JSON_VALID(name)"
 			}
 		},
 		"stock_items_references": {
@@ -1927,9 +1928,9 @@
 				}
 			},
 			"check_constraints": {
-				"chk_description": "JSON_VALID(description)",
-				"chk_collected_data": "JSON_VALID(collected_data)",
-				"chk_purposes": "JSON_VALID(purposes)"
+				"third_parties_chk_description": "JSON_VALID(description)",
+				"third_parties_chk_collected_data": "JSON_VALID(collected_data)",
+				"third_parties_chk_purposes": "JSON_VALID(purposes)"
 			}
 		},
 		"translations": {
@@ -1945,7 +1946,7 @@
 				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
 			},
 			"check_constraints": {
-				"chk_text": "JSON_VALID(text)"
+				"translations_chk_text": "JSON_VALID(text)"
 			},
 			"primary_key": ["id"],
 			"unique_keys": {
