@@ -23,7 +23,7 @@
 		if (!empty($_GET['order_id'])) {
 
 			$order = database::query(
-				"select id from ". DB_TABLE_PREFIX ."orders
+				"select id from ". DB_PREFIX ."orders
 				where id = ". (int)$_GET['order_id'] ."
 				limit 1;"
 			)->fetch();
@@ -35,7 +35,7 @@
 		} else if (!empty($_GET['order_no'])) {
 
 			$order = database::query(
-				"select id from ". DB_TABLE_PREFIX ."orders
+				"select id from ". DB_PREFIX ."orders
 				where no = '". database::input($_GET['order_no']) ."'
 				limit 1;"
 			)->fetch();

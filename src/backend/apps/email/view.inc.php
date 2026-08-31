@@ -5,7 +5,7 @@
 	}
 
 	$email = database::query(
-		"select * from ". DB_TABLE_PREFIX ."emails
+		"select * from ". DB_PREFIX ."emails
 		where id = ". (int)$_GET['email_id'] ."
 		limit 1;"
 	)->fetch(function (&$email) {

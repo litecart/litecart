@@ -19,7 +19,7 @@
 					if (!$this->group_id) break;
 
 					$this->_data['group'] = database::query(
-						"select * from ". DB_TABLE_PREFIX ."customer_groups
+						"select * from ". DB_PREFIX ."customer_groups
 						where id = ". (int)$this->group_id .";"
 					)->fetch();
 
@@ -28,7 +28,7 @@
 				default:
 
 					$customer = database::query(
-						"select * from ". DB_TABLE_PREFIX ."customers
+						"select * from ". DB_PREFIX ."customers
 						where id = ". (int)$this->_data['id'] ."
 						limit 1;"
 					)->fetch();

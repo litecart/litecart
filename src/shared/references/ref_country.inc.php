@@ -21,7 +21,7 @@
 				case 'zones':
 
 					$this->_data['zones'] = database::query(
-						"select * from ". DB_TABLE_PREFIX ."zones
+						"select * from ". DB_PREFIX ."zones
 						where country_code = '". database::input($this->_country_code) ."'
 						order by name;"
 					)->fetch_all();
@@ -31,7 +31,7 @@
 				default:
 
 					$row = database::query(
-						"select * from ". DB_TABLE_PREFIX ."countries
+						"select * from ". DB_PREFIX ."countries
 						where iso_code_2 = '". database::input($this->_country_code) ."'
 						limit 1;"
 					)->fetch();
@@ -74,7 +74,7 @@
 			}
 
 			if (database::query(
-				"select id from ". DB_TABLE_PREFIX ."zones_to_geo_zones
+				"select id from ". DB_PREFIX ."zones_to_geo_zones
 				where geo_zone_id in ('". implode("', '", database::input($geo_zones)) ."')
 				". (!empty($address['country_code']) ? "and (country_code = '' or country_code = '". database::input($address['country_code']) ."')" : "and (country_code = '' or country_code = '". database::input($this->_country_code) ."')") ."
 				". (!empty($address['zone_code']) ? "and (zone_code = '' or zone_code = '". database::input($address['zone_code']) ."')" : "and zone_code = ''") ."

@@ -68,8 +68,8 @@
 						case 'attributes':
 
 							database::multi_query(implode(PHP_EOL, [
-								"truncate ". DB_TABLE_PREFIX ."attribute_groups;",
-								"truncate ". DB_TABLE_PREFIX ."attribute_values;",
+								"truncate ". DB_PREFIX ."attribute_groups;",
+								"truncate ". DB_PREFIX ."attribute_values;",
 							]));
 
 							break;
@@ -77,7 +77,7 @@
 						case 'campaigns':
 
 							database::multi_query(implode(PHP_EOL, [
-								"truncate ". DB_TABLE_PREFIX ."campaigns;",
+								"truncate ". DB_PREFIX ."campaigns;",
 							]));
 
 							break;
@@ -85,9 +85,9 @@
 						case 'categories':
 
 							database::multi_query(implode(PHP_EOL, [
-								"truncate ". DB_TABLE_PREFIX ."categories;",
-								"truncate ". DB_TABLE_PREFIX ."categories_filters;",
-								"truncate ". DB_TABLE_PREFIX ."products_to_categories;",
+								"truncate ". DB_PREFIX ."categories;",
+								"truncate ". DB_PREFIX ."categories_filters;",
+								"truncate ". DB_PREFIX ."products_to_categories;",
 							]));
 
 							foreach (f::file_search('storage://images/categories/*') as $file) {
@@ -100,7 +100,7 @@
 						case 'brands':
 
 							database::multi_query(implode(PHP_EOL, [
-								"truncate ". DB_TABLE_PREFIX ."brands`;",
+								"truncate ". DB_PREFIX ."brands`;",
 							]));
 
 							foreach (f::file_search('storage://images/brands/*') as $file) {
@@ -113,15 +113,15 @@
 						case 'products':
 
 							database::multi_query(implode(PHP_EOL, [
-								"truncate ". DB_TABLE_PREFIX ."cart_items;",
-								"truncate ". DB_TABLE_PREFIX ."products;",
-								"truncate ". DB_TABLE_PREFIX ."products_attributes;",
-								"truncate ". DB_TABLE_PREFIX ."products_images;",
-								"truncate ". DB_TABLE_PREFIX ."products_prices;",
-								"truncate ". DB_TABLE_PREFIX ."products_to_categories;",
-								"truncate ". DB_TABLE_PREFIX ."products_references;",
-								"truncate ". DB_TABLE_PREFIX ."products_stock_options;",
-								"update ". DB_TABLE_PREFIX ."orders_items set product_id = 0;",
+								"truncate ". DB_PREFIX ."cart_items;",
+								"truncate ". DB_PREFIX ."products;",
+								"truncate ". DB_PREFIX ."products_attributes;",
+								"truncate ". DB_PREFIX ."products_images;",
+								"truncate ". DB_PREFIX ."products_prices;",
+								"truncate ". DB_PREFIX ."products_to_categories;",
+								"truncate ". DB_PREFIX ."products_references;",
+								"truncate ". DB_PREFIX ."products_stock_options;",
+								"update ". DB_PREFIX ."orders_items set product_id = 0;",
 							]));
 
 							foreach (f::file_search('storage://images/products/*') as $file) {
@@ -134,7 +134,7 @@
 						case 'product_prices':
 
 							database::multi_query(implode(PHP_EOL, [
-								"truncate ". DB_TABLE_PREFIX ."products_prices;",
+								"truncate ". DB_PREFIX ."products_prices;",
 							]));
 
 							break;
@@ -142,7 +142,7 @@
 						case 'product_stock_options':
 
 							database::multi_query(implode(PHP_EOL, [
-								"truncate ". DB_TABLE_PREFIX ."product_stock_options;",
+								"truncate ". DB_PREFIX ."product_stock_options;",
 							]));
 
 							break;
@@ -150,7 +150,7 @@
 						case 'suppliers':
 
 							database::multi_query(implode(PHP_EOL, [
-								"truncate ". DB_TABLE_PREFIX ."suppliers;",
+								"truncate ". DB_PREFIX ."suppliers;",
 							]));
 
 							break;
@@ -158,8 +158,8 @@
 						case 'stock_items':
 
 							database::multi_query(implode(PHP_EOL, [
-								"truncate ". DB_TABLE_PREFIX ."products_stock_options;",
-								"truncate ". DB_TABLE_PREFIX ."stock_items;",
+								"truncate ". DB_PREFIX ."products_stock_options;",
+								"truncate ". DB_PREFIX ."stock_items;",
 							]));
 
 							break;
@@ -212,14 +212,14 @@
 
 						// Find attribute group
 						if (!empty($row['group_id']) && $attribute_group = database::query(
-							"select id from ". DB_TABLE_PREFIX ."attribute_groups
+							"select id from ". DB_PREFIX ."attribute_groups
 							where id = ". (int)$row['group_id'] ."
 							limit 1;"
 						)->fetch()) {
 							$attribute_group = new ent_attribute_group($attribute_group['id']);
 
 						} else if (!empty($row['code']) && $attribute_group = database::query(
-							"select id from ". DB_TABLE_PREFIX ."attribute_groups
+							"select id from ". DB_PREFIX ."attribute_groups
 							where code = '". database::input($row['code']) ."'
 							limit 1;"
 						)->fetch()) {
@@ -227,7 +227,7 @@
 
 						} else if (!empty($row['group_name']) && $attribute_group = database::query(
 							"select group_id as id
-							from ". DB_TABLE_PREFIX ."attribute_groups
+							from ". DB_PREFIX ."attribute_groups
 							where json_value(name, '$.". database::input($row['language_code']) ."') = '". database::input($row['group_name']) ."'
 							limit 1;"
 						)->fetch()) {
@@ -256,7 +256,7 @@
 
 							if (!empty($row['group_id'])) {
 								database::query(
-									"insert into ". DB_TABLE_PREFIX ."attribute_groups
+									"insert into ". DB_PREFIX ."attribute_groups
 									(id)
 									values (". (int)$row['group_id'] .");"
 								);
@@ -322,7 +322,7 @@
 						// Find campaign
 						if (!empty($row['id'])) {
 							$campaign = database::query(
-								"select id from ". DB_TABLE_PREFIX ."campaigns
+								"select id from ". DB_PREFIX ."campaigns
 								where id = ". (int)$row['id'] ."
 								limit 1;"
 							)->fetch();
@@ -350,7 +350,7 @@
 
 							if (!empty($row['id'])) {
 								database::query(
-									"insert into ". DB_TABLE_PREFIX ."campaigns
+									"insert into ". DB_PREFIX ."campaigns
 									(id, product_id)
 									values (". (int)$row['id'] .", '". $row['product_id'] ."');"
 								);
@@ -358,7 +358,7 @@
 						}
 
 						database::query(
-							"insert into ". DB_TABLE_PREFIX ."products_prices
+							"insert into ". DB_PREFIX ."products_prices
 							(product_id, campaign_id, price)
 							values (". (int)$row['product_id'] .", ". (int)$row['campaign_id'] .", '". database::input($row['price']) ."');"
 						);
@@ -369,14 +369,14 @@
 
 						// Find category
 						if (!empty($row['id']) && $category = database::query(
-							"select id from ". DB_TABLE_PREFIX ."categories
+							"select id from ". DB_PREFIX ."categories
 							where id = ". (int)$row['id'] ."
 							limit 1;"
 						)->fetch()) {
 							$category = new ent_category($category['id']);
 
 						} elseif (!empty($row['code']) && $category = database::query(
-							"select id from ". DB_TABLE_PREFIX ."categories
+							"select id from ". DB_PREFIX ."categories
 							where code = '". database::input($row['code']) ."'
 							limit 1;"
 						)->fetch()) {
@@ -406,7 +406,7 @@
 
 							if (!empty($row['id'])) {
 								database::query(
-									"insert into ". DB_TABLE_PREFIX ."categories (id, created_at)
+									"insert into ". DB_PREFIX ."categories (id, created_at)
 									values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');"
 								);
 								$category = new ent_category($row['id']);
@@ -417,7 +417,7 @@
 
 						if (empty($row['parent_id']) && !empty($row['parent_code'])) {
 							$row['parent_id'] = database::query(
-								"select id from ". DB_TABLE_PREFIX ."categories
+								"select id from ". DB_PREFIX ."categories
 								where code = '". database::input($row['parent_code']) ."'
 								limit 1;"
 							)->fetch('id');
@@ -463,7 +463,7 @@
 
 						if (!empty($row['created_at'])) {
 							database::query(
-								"update ". DB_TABLE_PREFIX ."categories
+								"update ". DB_PREFIX ."categories
 								set created_at = '". date('Y-m-d H:i:s', strtotime($row['created_at'])) ."'
 								where id = ". (int)$category->data['id'] ."
 								limit 1;"
@@ -476,21 +476,21 @@
 
 						// Find brand
 						if (!empty($row['id']) && $brand = database::query(
-							"select id from ". DB_TABLE_PREFIX ."brands
+							"select id from ". DB_PREFIX ."brands
 							where id = ". (int)$row['id'] ."
 							limit 1;"
 						)->fetch()) {
 							$brand = new ent_brand($brand['id']);
 
 						} else if (!empty($row['code']) && $brand = database::query(
-							"select id from ". DB_TABLE_PREFIX ."brands
+							"select id from ". DB_PREFIX ."brands
 							where code = '". database::input($row['code']) ."'
 							limit 1;"
 						)->fetch()) {
 							$brand = new ent_brand($brand['id']);
 
 						} else if (!empty($row['name']) && !empty($row['language_code']) && $brand = database::query(
-							"select id from ". DB_TABLE_PREFIX ."brands
+							"select id from ". DB_PREFIX ."brands
 							where name = '". database::input($row['name']) ."'
 							limit 1;"
 						)->fetch()) {
@@ -519,7 +519,7 @@
 
 							if (!empty($row['id'])) {
 								database::query(
-									"insert into ". DB_TABLE_PREFIX ."brands (id, created_at)
+									"insert into ". DB_PREFIX ."brands (id, created_at)
 									values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');"
 								);
 								$brand = new ent_brand($row['id']);
@@ -566,7 +566,7 @@
 
 						if (!empty($row['created_at'])) {
 							database::query(
-								"update ". DB_TABLE_PREFIX ."brands
+								"update ". DB_PREFIX ."brands
 								set created_at = '". date('Y-m-d H:i:s', strtotime($row['created_at'])) ."'
 								where id = ". (int)$brand->data['id'] ."
 								limit 1;"
@@ -579,35 +579,35 @@
 
 						// Find product
 						if (!empty($row['id']) && $product = database::query(
-							"select id from ". DB_TABLE_PREFIX ."products
+							"select id from ". DB_PREFIX ."products
 							where id = ". (int)$row['id'] ."
 							limit 1;"
 						)->fetch()) {
 							$product = new ent_product($product['id']);
 
 						} elseif (!empty($row['code']) && $product = database::query(
-							"select id from ". DB_TABLE_PREFIX ."products
+							"select id from ". DB_PREFIX ."products
 							where code = '". database::input($row['code']) ."'
 							limit 1;"
 						)->fetch()) {
 							$product = new ent_product($product['id']);
 
 						} elseif (!empty($row['sku']) && $product = database::query(
-							"select id from ". DB_TABLE_PREFIX ."products
+							"select id from ". DB_PREFIX ."products
 							where sku = '". database::input($row['sku']) ."'
 							limit 1;"
 						)->fetch()) {
 							$product = new ent_product($product['id']);
 
 						} elseif (!empty($row['mpn']) && $product = database::query(
-							"select id from ". DB_TABLE_PREFIX ."products
+							"select id from ". DB_PREFIX ."products
 							where mpn = '". database::input($row['mpn']) ."'
 							limit 1;"
 						)->fetch()) {
 							$product = new ent_product($product['id']);
 
 						} elseif (!empty($row['gtin']) && $product = database::query(
-							"select id from ". DB_TABLE_PREFIX ."products
+							"select id from ". DB_PREFIX ."products
 							where gtin = '". database::input($row['gtin']) ."'
 							limit 1;"
 						)->fetch()) {
@@ -636,7 +636,7 @@
 
 							if (!empty($row['id'])) {
 								database::query(
-									"insert into ". DB_TABLE_PREFIX ."products (id, created_at)
+									"insert into ". DB_PREFIX ."products (id, created_at)
 									values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');"
 								);
 								$product = new ent_product($row['id']);
@@ -648,7 +648,7 @@
 						if (empty($row['brand_id']) && !empty($row['brand_name'])) {
 
 							$brand = database::query(
-								"select * from ". DB_TABLE_PREFIX ."brands
+								"select * from ". DB_PREFIX ."brands
 								where name = '". database::input($row['brand_name']) ."'
 								limit 1;"
 							)->fetch();
@@ -666,7 +666,7 @@
 						if (empty($row['supplier_id']) && !empty($row['supplier_id'])) {
 
 							$supplier = database::query(
-								"select * from ". DB_TABLE_PREFIX ."suppliers
+								"select * from ". DB_PREFIX ."suppliers
 								where name = '". database::input($row['supplier_name']) ."'
 								limit 1;"
 							)->fetch();
@@ -751,7 +751,7 @@
 									$checksum = md5(FS_DIR_STORAGE . 'images/' . $filename);
 
 									database::query(
-										"insert into ". DB_TABLE_PREFIX ."products_images
+										"insert into ". DB_PREFIX ."products_images
 										(product_id, filename, checksum)
 										values (". (int)$product->data['id'] .", '". database::input($filename) ."', '". database::input($checksum) ."');"
 									);
@@ -814,7 +814,7 @@
 
 						if (!empty($row['created_at'])) {
 							database::query(
-								"update ". DB_TABLE_PREFIX ."products
+								"update ". DB_PREFIX ."products
 								set created_at = '". date('Y-m-d H:i:s', strtotime($row['created_at'])) ."'
 								where id = ". (int)$product->data['id'] ."
 								limit 1;"
@@ -886,14 +886,14 @@
 /*
 						// Find stock option
 						if (!empty($row['id']) && $stock_option = database::query(
-							"select id from ". DB_TABLE_PREFIX ."products_stock_options
+							"select id from ". DB_PREFIX ."products_stock_options
 							where id = ". (int)$row['sku'] ."
 							limit 1;"
 						)->fetch()) {
 
 						} else if (!empty($row['sku']) && $stock_item = database::query(
-							"select pso.id from ". DB_TABLE_PREFIX ."products_stock_options pso
-							left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
+							"select pso.id from ". DB_PREFIX ."products_stock_options pso
+							left join ". DB_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
 							where pso.product_id = ". (int)$row['product_id'] ."
 							and si.sku = '". database::input($row['sku']) ."'
 							limit 1;"
@@ -901,8 +901,8 @@
 							$stock_option = $stock_item;
 
 						} elseif (!empty($row['mpn']) && $product = database::query(
-							"select pso.id from ". DB_TABLE_PREFIX ."products_stock_options pso
-							left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
+							"select pso.id from ". DB_PREFIX ."products_stock_options pso
+							left join ". DB_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
 							where pso.product_id = ". (int)$row['product_id'] ."
 							and si.mpn = '". database::input($row['mpn']) ."'
 							limit 1;"
@@ -910,8 +910,8 @@
 							$stock_option = $stock_item;
 
 						} elseif (!empty($row['gtin']) && $product = database::query(
-							"select pso.id from ". DB_TABLE_PREFIX ."products_stock_options pso
-							left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
+							"select pso.id from ". DB_PREFIX ."products_stock_options pso
+							left join ". DB_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
 							where pso.product_id = ". (int)$row['product_id'] ."
 							and si.gtin = '". database::input($row['gtin']) ."'
 							limit 1;"
@@ -964,28 +964,28 @@
 
 						// Find stock_item
 						if (!empty($row['id']) && $stock_item = database::query(
-							"select id from ". DB_TABLE_PREFIX ."stock_items
+							"select id from ". DB_PREFIX ."stock_items
 							where id = ". (int)$row['id'] ."
 							limit 1;"
 						)->fetch()) {
 							$stock_item = new ent_stock_item($stock_item['id']);
 
 						} elseif (!empty($row['sku']) && $product = database::query(
-							"select id from ". DB_TABLE_PREFIX ."stock_items
+							"select id from ". DB_PREFIX ."stock_items
 							where sku = '". database::input($row['sku']) ."'
 							limit 1;"
 						)->fetch()) {
 							$product = new ent_product($product['id']);
 
 						} elseif (!empty($row['mpn']) && $product = database::query(
-							"select id from ". DB_TABLE_PREFIX ."stock_items
+							"select id from ". DB_PREFIX ."stock_items
 							where mpn = '". database::input($row['mpn']) ."'
 							limit 1;"
 						)->fetch()) {
 							$product = new ent_product($product['id']);
 
 						} elseif (!empty($row['gtin']) && $product = database::query(
-							"select id from ". DB_TABLE_PREFIX ."stock_items
+							"select id from ". DB_PREFIX ."stock_items
 							where gtin = '". database::input($row['gtin']) ."'
 							limit 1;"
 						)->fetch()) {
@@ -1014,7 +1014,7 @@
 
 							if (!empty($row['id'])) {
 								database::query(
-									"insert into ". DB_TABLE_PREFIX ."stock_items (id, created_at)
+									"insert into ". DB_PREFIX ."stock_items (id, created_at)
 									values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');"
 								);
 								$stock_item = new ent_stock_item($row['id']);
@@ -1026,7 +1026,7 @@
 						if (empty($row['brand_id']) && !empty($row['brand_name'])) {
 
 							$brand = database::query(
-								"select * from ". DB_TABLE_PREFIX ."brands
+								"select * from ". DB_PREFIX ."brands
 								where name = '". database::input($row['brand_name']) ."'
 								limit 1;"
 							)->fetch();
@@ -1082,7 +1082,7 @@
 
 						if (!empty($row['created_at'])) {
 							database::query(
-								"update ". DB_TABLE_PREFIX ."stock_items
+								"update ". DB_PREFIX ."stock_items
 								set created_at = '". date('Y-m-d H:i:s', strtotime($row['created_at'])) ."'
 								where id = ". (int)$stock_item->data['id'] ."
 								limit 1;"
@@ -1095,14 +1095,14 @@
 
 						// Find supplier
 						if (!empty($row['id']) && $supplier = database::query(
-							"select id from ". DB_TABLE_PREFIX ."suppliers
+							"select id from ". DB_PREFIX ."suppliers
 							where id = ". (int)$row['id'] ."
 							limit 1;"
 						)->fetch()) {
 							$supplier = new ent_supplier($supplier['id']);
 
 						} else if (!empty($row['code']) && $supplier = database::query(
-							"select id from ". DB_TABLE_PREFIX ."suppliers
+							"select id from ". DB_PREFIX ."suppliers
 							where code = '". database::input($row['code']) ."'
 							limit 1;"
 						)->fetch()) {
@@ -1131,7 +1131,7 @@
 
 							if (!empty($row['id'])) {
 								database::query(
-									"insert into ". DB_TABLE_PREFIX ."suppliers (id, created_at)
+									"insert into ". DB_PREFIX ."suppliers (id, created_at)
 									values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');"
 								);
 								$supplier = new ent_supplier($row['id']);
@@ -1159,7 +1159,7 @@
 
 						if (!empty($row['created_at'])) {
 							database::query(
-								"update ". DB_TABLE_PREFIX ."suppliers
+								"update ". DB_PREFIX ."suppliers
 								set created_at = '". date('Y-m-d H:i:s', strtotime($row['created_at'])) ."'
 								where id = ". (int)$supplier->data['id'] ."
 								limit 1;"
@@ -1216,8 +1216,8 @@
 							json_value(ag.name, '$.". database::input($_POST['language_code']) ."') as group_name,
 							json_value(av.name, '$.". database::input($_POST['language_code']) ."') as value_name,
 							'". database::input($_POST['language_code']) ."' as language_code
-						from ". DB_TABLE_PREFIX ."attribute_values av
-						left join ". DB_TABLE_PREFIX ."attribute_groups ag on (ag.id = av.group_id)
+						from ". DB_PREFIX ."attribute_values av
+						left join ". DB_PREFIX ."attribute_groups ag on (ag.id = av.group_id)
 						order by name, av.priority;"
 					)->export($result)->fetch_all();
 
@@ -1242,7 +1242,7 @@
 							json_value(bi.head_title, '". database::input($_POST['language_code']) ."') as head_title,
 							json_value(bi.h1_title, '". database::input($_POST['language_code']) ."') as h1_title,
 							'". database::input($_POST['language_code']) ."' as language_code
-						from ". DB_TABLE_PREFIX ."brands b
+						from ". DB_PREFIX ."brands b
 						order by b.priority;"
 					)->export($result)->fetch_all();
 
@@ -1255,8 +1255,8 @@
 			case 'campaigns':
 
 				$csv = database::query(
-					"select pp.* from ". DB_TABLE_PREFIX ."products_prices pp
-					left join ". DB_TABLE_PREFIX ."campaigns c on (c.id = pp.campaign_id)
+					"select pp.* from ". DB_PREFIX ."products_prices pp
+					left join ". DB_PREFIX ."campaigns c on (c.id = pp.campaign_id)
 					where pp.campaign_id is not null
 					order by c.valid_from, c.valid_to, pp.product_id;"
 				)->export($result)->fetch_all();
@@ -1282,8 +1282,8 @@
 							json_value(c.head_title, '". database::input($_POST['language_code']) ."') as head_title,
 							json_value(c.h1_title, '". database::input($_POST['language_code']) ."') as h1_title,
 							'' as new_image, '". database::input($_POST['language_code']) ."' as language_code
-						from ". DB_TABLE_PREFIX ."categories c
-						left join ". DB_TABLE_PREFIX ."categories c2 on (c2.id = c.parent_id)
+						from ". DB_PREFIX ."categories c
+						left join ". DB_PREFIX ."categories c2 on (c2.id = c.parent_id)
 						order by c.priority;"
 					)->export($result)->fetch_all();
 
@@ -1314,24 +1314,24 @@
 							'". database::input($_POST['language_code']) ."' as language_code,
 							ptc.categories, pim.images, '' as new_image, pa.attributes
 
-						from ". DB_TABLE_PREFIX ."products p
+						from ". DB_PREFIX ."products p
 
 						left join (
 							select product_id, group_concat(category_id separator ',') as categories
-							from ". DB_TABLE_PREFIX ."products_to_categories
+							from ". DB_PREFIX ."products_to_categories
 							group by product_id
 							order by category_id
 						) ptc on (ptc.product_id = p.id)
 
 						left join (
 							select product_id, group_concat(concat(group_id, ':', if(custom_value != '', concat('\"', custom_value, '\"'), value_id)) separator '\r\n') as attributes
-							from ". DB_TABLE_PREFIX ."products_attributes
+							from ". DB_PREFIX ."products_attributes
 							group by product_id
 						) pa on (p.id = pa.product_id)
 
 						left join (
 							select product_id, group_concat(filename separator ';') as images
-							from ". DB_TABLE_PREFIX ."products_images
+							from ". DB_PREFIX ."products_images
 							group by product_id
 							order by priority
 						) pim on (pim.product_id = p.id)
@@ -1348,7 +1348,7 @@
 				case 'product_stock_options':
 
 					$csv = database::query(
-						"select * from ". DB_TABLE_PREFIX ."products_stock_options
+						"select * from ". DB_PREFIX ."products_stock_options
 						order by id;"
 					)->export($result)->fetch_all();
 
@@ -1361,7 +1361,7 @@
 				case 'suppliers':
 
 					$csv = database::query(
-						"select * from ". DB_TABLE_PREFIX ."suppliers
+						"select * from ". DB_PREFIX ."suppliers
 						order by id;"
 					)->export($result)->fetch_all();
 
@@ -1377,7 +1377,7 @@
 						"select si.*,
 							json_value(si.name, '". database::input($_POST['language_code']) ."') as name,
 							'". database::input($_POST['language_code']) ."' as language_code
-						from ". DB_TABLE_PREFIX ."stock_items si
+						from ". DB_PREFIX ."stock_items si
 						order by si.id;"
 					)->export($result)->fetch_all();
 

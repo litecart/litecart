@@ -18,7 +18,7 @@
 			$this->data = [];
 
 			database::query(
-				"show fields from ". DB_TABLE_PREFIX ."pages;"
+				"show fields from ". DB_PREFIX ."pages;"
 			)->each(function($field){
 				$this->data[$field['Field']] = database::create_variable($field);
 			});
@@ -44,7 +44,7 @@
 			$this->reset();
 
 			$page = database::query(
-				"select * from ". DB_TABLE_PREFIX ."pages
+				"select * from ". DB_PREFIX ."pages
 				where id = ". (int)$id ."
 				limit 1;"
 			)->fetch();
@@ -80,7 +80,7 @@
 
 			if (!$this->data['id']) {
 				database::query(
-					"insert into ". DB_TABLE_PREFIX ."pages
+					"insert into ". DB_PREFIX ."pages
 					(created_at)
 					values ('". ($this->data['created_at'] = date('Y-m-d H:i:s')) ."');"
 				);
@@ -89,7 +89,7 @@
 			}
 
 			database::query(
-				"update ". DB_TABLE_PREFIX ."pages
+				"update ". DB_PREFIX ."pages
 				set status = ". (int)$this->data['status'] .",
 					parent_id = ". ($this->data['parent_id'] ? (int)$this->data['parent_id'] : "null") .",
 					dock = '". database::input($this->data['dock']) ."',
@@ -112,12 +112,12 @@
 
 			database::query(
 				"delete p
-				from ". DB_TABLE_PREFIX ."pages p
+				from ". DB_PREFIX ."pages p
 				where p.id = ". (int)$this->data['id'] .";"
 			);
 
 			database::query(
-				"update ". DB_TABLE_PREFIX ."pages
+				"update ". DB_PREFIX ."pages
 				set parent_id = ". (int)$this->data['parent_id'] ."
 				where parent_id = ". (int)$this->data['id'] .";"
 			);

@@ -5,7 +5,7 @@
 		try {
 
 			database::query(
-				"select * from ". DB_TABLE_PREFIX ."webhooks
+				"select * from ". DB_PREFIX ."webhooks
 				where status
 				and event = '". database::input($event) ."';"
 			)->each(function($webhook) use ($event, $data) {
@@ -19,7 +19,7 @@
 				$client->call('POST', $webhook['url'], f::format_json($data), $headers);
 
 				database::query(
-					"insert into ". DB_TABLE_PREFIX ."webhook_requests
+					"insert into ". DB_PREFIX ."webhook_requests
 					(`type`, status, webhook_id, url, request, response, updated_at, created_at)
 					values (
 						'outgoing',
@@ -35,7 +35,7 @@
 				);
 
 				database::query(
-					"update ". DB_TABLE_PREFIX ."webhooks
+					"update ". DB_PREFIX ."webhooks
 					set last_sent = '". database::input(date('Y-m-d H:i:s')) ."'
 					where id = ". (int)$webhook['id'] ."
 					limit 1;"

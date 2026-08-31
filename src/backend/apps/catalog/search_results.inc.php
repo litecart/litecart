@@ -17,9 +17,9 @@
 			+ if (json_value(p.description, '$.". database::input(language::$selected['code']) ."') like '%". database::input($query) ."%', 2, 0)
 
 			+ if (p.id in (
-				select product_id from ". DB_TABLE_PREFIX ."products_stock_options
+				select product_id from ". DB_PREFIX ."products_stock_options
 					where stock_item_id in (
-						select id from ". DB_TABLE_PREFIX ."stock_items
+						select id from ". DB_PREFIX ."stock_items
 						where sku regexp '". database::input($code_regex) ."'
 						or gtin regexp '". database::input($code_regex) ."'
 						or mpn regexp '". database::input($code_regex) ."'
@@ -27,7 +27,7 @@
 			), 5, 0)
 		) as relevance
 
-		from ". DB_TABLE_PREFIX ."products p
+		from ". DB_PREFIX ."products p
 
 		having relevance > 0
 		order by relevance desc, id asc
@@ -72,15 +72,15 @@
 			+ if(si.mpn regexp '". database::input($code_regex) ."', 5, 0)
 			+ if(si.gtin regexp '". database::input($code_regex) ."', 5, 0)
 			+ if (si.id in (
-				select stock_item_id from ". DB_TABLE_PREFIX ."stock_items_references
+				select stock_item_id from ". DB_PREFIX ."stock_items_references
 				where stock_item_id in (
-					select id from ". DB_TABLE_PREFIX ."stock_items_references
+					select id from ". DB_PREFIX ."stock_items_references
 					where code regexp '". database::input($code_regex) ."'
 				)
 			), 5, 0)
 		) as relevance
 
-		from ". DB_TABLE_PREFIX ."stock_items si
+		from ". DB_PREFIX ."stock_items si
 
 		having relevance > 0
 		order by relevance desc, id asc

@@ -68,7 +68,7 @@
 
 	$available_stock_items = database::query(
 		"select si.id, si.sku, si.quantity, si.backordered, json_value(si.name, '$.".database::input(language::$selected['code'])."') as name
-		from ". DB_TABLE_PREFIX ."stock_items si
+		from ". DB_PREFIX ."stock_items si
 		order by si.sku, si.name;"
 	)->fetch_all();
 

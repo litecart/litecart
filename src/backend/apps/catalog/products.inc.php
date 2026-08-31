@@ -13,7 +13,7 @@
 		try {
 
 			database::query(
-				"update ". DB_TABLE_PREFIX ."products
+				"update ". DB_PREFIX ."products
 				set featured = ". (isset($_POST['star']) ? 1 : 0) ."
 				where id = ". (int)$_POST['product_id'] ."
 				limit 1;"
@@ -159,9 +159,9 @@
 				+ if(json_value(p.description, '$.". database::input(language::$selected['code']) ."') like '%". database::input($_GET['query']) ."%', 1, 0)
 
 				+ if (p.id in (
-					select product_id from ". DB_TABLE_PREFIX ."products_stock_options
+					select product_id from ". DB_PREFIX ."products_stock_options
 					where stock_item_id in (
-						select id from ". DB_TABLE_PREFIX ."stock_items
+						select id from ". DB_PREFIX ."stock_items
 						where sku regexp '". database::input($code_regex) ."'
 						or gtin regexp '". database::input($code_regex) ."'
 					)
@@ -186,18 +186,18 @@
 			pp.regular_price, pp.final_price, pso.num_stock_options, pso.quantity, quantity_reserved, pso.quantity - ol.quantity_reserved as quantity_available
 			". (!empty($sql_select_relevance) ? ", " . $sql_select_relevance : "") ."
 
-		from ". DB_TABLE_PREFIX ."products p
+		from ". DB_PREFIX ."products p
 
-		left join ". DB_TABLE_PREFIX ."brands b on (b.id = p.brand_id)
+		left join ". DB_PREFIX ."brands b on (b.id = p.brand_id)
 
-		left join ". DB_TABLE_PREFIX ."suppliers s on (s.id = p.supplier_id)
+		left join ". DB_PREFIX ."suppliers s on (s.id = p.supplier_id)
 
 		left join (
 			select product_id, max($sql_column_price) as regular_price, min($sql_column_price) as final_price
-			from ". DB_TABLE_PREFIX ."products_prices
+			from ". DB_PREFIX ."products_prices
 
 			where (campaign_id is null or campaign_id in (
-				select id from ". DB_TABLE_PREFIX ."campaigns
+				select id from ". DB_PREFIX ."campaigns
 				where status
 				and (valid_from is not null and valid_from > '". date('Y-m-d H:i:s') ."')
 				and (valid_to is not null and valid_to < '". date('Y-m-d H:i:s') ."')
@@ -209,17 +209,17 @@
 
 		left join (
 			select pso.id, pso.product_id, pso.stock_item_id, count(pso.stock_item_id) as num_stock_options, sum(si.quantity) as quantity
-			from ". DB_TABLE_PREFIX ."products_stock_options pso
-			left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
+			from ". DB_PREFIX ."products_stock_options pso
+			left join ". DB_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
 			group by pso.product_id
 		) pso on (pso.product_id = p.id)
 
 		left join (
 			select ol.product_id, sum(ol.quantity) as quantity_reserved
-			from ". DB_TABLE_PREFIX ."orders_items ol
-			left join ". DB_TABLE_PREFIX ."orders o on (o.id = ol.order_id)
+			from ". DB_PREFIX ."orders_items ol
+			left join ". DB_PREFIX ."orders o on (o.id = ol.order_id)
 			where o.order_status_id in (
-				select id from ". DB_TABLE_PREFIX ."order_statuses
+				select id from ". DB_PREFIX ."order_statuses
 				where stock_action = 'reserve'
 			)
 			group by ol.product_id
@@ -227,7 +227,7 @@
 
 		where true
 		". (!empty($_GET['category_id']) ? "and p.id in (
-			select product_id from ". DB_TABLE_PREFIX ."products_to_categories ptc
+			select product_id from ". DB_PREFIX ."products_to_categories ptc
 			where category_id = ". (int)$_GET['category_id'] ."
 		)" : "") ."
 

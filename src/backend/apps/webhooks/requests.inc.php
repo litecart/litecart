@@ -5,7 +5,7 @@
 		try {
 
 			$request = database::query(
-				"select * from ". DB_TABLE_PREFIX ."webhook_requests
+				"select * from ". DB_PREFIX ."webhook_requests
 				where id = ". (int)$_GET['request_id'] ."
 				limit 1;"
 			)->fetch(function($row) {
@@ -35,7 +35,7 @@
 	}
 
 	$requests = database::query(
-		"select * from ". DB_TABLE_PREFIX ."webhook_requests
+		"select * from ". DB_PREFIX ."webhook_requests
 		where true
 		". ((!empty($_GET['query'])) ? "and url like '%". database::input($_GET['query']) ."%'" : "") ."
 		". ((!empty($_GET['query'])) ? "and last_log like '%". database::input($_GET['query']) ."%'" : "") ."

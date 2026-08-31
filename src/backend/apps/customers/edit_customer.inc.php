@@ -47,7 +47,7 @@
 		try {
 
 			if (database::query(
-				"select id from ". DB_TABLE_PREFIX ."customers
+				"select id from ". DB_PREFIX ."customers
 				where id != ". (int)$customer->data['id'] ."
 				and email like '". database::input($_POST['email']) ."'
 				limit 1;"
@@ -155,27 +155,27 @@
 
 		$orders = database::query(
 			"select count(o.id) as total_count, sum(oi.total_sales) as total_sales
-			from ". DB_TABLE_PREFIX ."orders o
+			from ". DB_PREFIX ."orders o
 			left join (
 				select order_id, sum(final_price * quantity) as total_sales
-				from ". DB_TABLE_PREFIX ."orders_items
+				from ". DB_PREFIX ."orders_items
 				group by order_id
 			) oi on (oi.order_id = o.id)
 			where o.order_status_id in (
-				select id from ". DB_TABLE_PREFIX ."order_statuses
+				select id from ". DB_PREFIX ."order_statuses
 				where is_sale
 			)
 			and (o.customer_id = ". (int)$customer->data['id'] ." or o.customer_email = '". database::input($customer->data['email']) ."');"
 		)->fetch();
 
 		$ip_addresses = database::query(
-			"select ip_address from ". DB_TABLE_PREFIX ."event_logs
+			"select ip_address from ". DB_PREFIX ."event_logs
 			where customer_id = ". (int)$customer->data['id'] ."
 			and (ip_address is not null and ip_address != '');"
 		)->fetch_all('ip_address');
 
 		$fingerprints = database::query(
-			"select fingerprint from ". DB_TABLE_PREFIX ."event_logs
+			"select fingerprint from ". DB_PREFIX ."event_logs
 			where (
 				customer_id = ". (int)$customer->data['id'] ."
 				or ip_address in ('". implode("', '", database::input($ip_addresses)) ."')
@@ -184,7 +184,7 @@
 		)->fetch_all('fingerprint');
 
 		$session_ids = database::query(
-			"select session_id from ". DB_TABLE_PREFIX ."event_logs
+			"select session_id from ". DB_PREFIX ."event_logs
 			where (
 				customer_id = ". (int)$customer->data['id'] ."
 				or ip_address in ('". implode("', '", database::input($ip_addresses)) ."')
@@ -194,7 +194,7 @@
 		)->fetch_all('session_id');
 
 		$activity = database::query(
-			"select * from ". DB_TABLE_PREFIX ."event_logs
+			"select * from ". DB_PREFIX ."event_logs
 			where (
 				customer_id = ". (int)$customer->data['id'] ."
 				". (!empty($ip_addresses) ? "or ip_address in ('". implode("', '", database::input($ip_addresses)) ."')" : '') ."

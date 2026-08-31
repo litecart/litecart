@@ -34,13 +34,13 @@
 			json_value(p.name, '$.". database::input($_GET['language_code']) ."') as name,
 			pso.total_quantity as quantity,
 			oi.quantity_reserved as reserved
-		from ". DB_TABLE_PREFIX ."products p
+		from ". DB_PREFIX ."products p
 
 		left join (
 			select product_id, max($sql_column_price) as regular_price, min($sql_column_price) as final_price
-			from ". DB_TABLE_PREFIX ."products_prices
+			from ". DB_PREFIX ."products_prices
 			where (campaign_id is null or campaign_id in (
-				select id from ". DB_TABLE_PREFIX ."campaigns
+				select id from ". DB_PREFIX ."campaigns
 				where status
 				and (valid_from is not null and valid_from > '". date('Y-m-d H:i:s') ."')
 				and (valid_to is not null and valid_to < '". date('Y-m-d H:i:s') ."')
@@ -50,17 +50,17 @@
 
 		left join (
 			select pso.product_id, sum(si.quantity) as total_quantity, count(*) as num_stock_options
-			from ". DB_TABLE_PREFIX ."products_stock_options pso
-			left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
+			from ". DB_PREFIX ."products_stock_options pso
+			left join ". DB_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
 			group by pso.product_id
 		) pso on (pso.product_id = p.id)
 
 		left join (
 			select ol.product_id, sum(ol.quantity) as quantity_reserved
-			from ". DB_TABLE_PREFIX ."orders_items ol
-			left join ". DB_TABLE_PREFIX ."orders o on (o.id = ol.order_id)
+			from ". DB_PREFIX ."orders_items ol
+			left join ". DB_PREFIX ."orders o on (o.id = ol.order_id)
 			where o.order_status_id in (
-				select id from ". DB_TABLE_PREFIX ."order_statuses
+				select id from ". DB_PREFIX ."order_statuses
 				where stock_action = 'reserve'
 			)
 			group by ol.product_id

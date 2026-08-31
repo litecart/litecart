@@ -26,7 +26,7 @@
 	define('DB_PASSWORD', '{DB_PASSWORD}');
 	define('DB_DATABASE', '{DB_DATABASE}');
 	define('DB_COLLATION', '{DB_COLLATION}');
-	define('DB_TABLE_PREFIX', '{DB_TABLE_PREFIX}');
+	define('DB_PREFIX', '{DB_PREFIX}');
 
 	######################################################################
 	## Security ##########################################################

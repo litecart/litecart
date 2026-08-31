@@ -10,14 +10,14 @@
 	function format_address(array $address): string {
 
 		$country = database::query(
-			"select * from ". DB_TABLE_PREFIX ."countries
+			"select * from ". DB_PREFIX ."countries
 			where iso_code_2 = '". database::input($address['country_code']) ."'
 			limit 1;"
 		)->fetch();
 
 		if (!empty($address['zone_code'])) {
 			$zone = database::query(
-				"select * from ". DB_TABLE_PREFIX ."zones
+				"select * from ". DB_PREFIX ."zones
 				where country_code = '". database::input($address['country_code']) ."'
 				and code = '". database::input($address['zone_code']) ."'
 				limit 1;"

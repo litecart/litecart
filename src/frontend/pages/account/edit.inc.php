@@ -41,7 +41,7 @@
 			}
 
 			if (database::query(
-				"select id from ". DB_TABLE_PREFIX ."customers
+				"select id from ". DB_PREFIX ."customers
 				where email = '". database::input($_POST['email']) ."'
 				and id != ". (int)$customer->data['id'] ."
 				limit 1;"

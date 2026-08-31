@@ -48,7 +48,7 @@
 
 			if (!empty($order->data['id'])) {
 				if (!database::query(
-					"select * from ". DB_TABLE_PREFIX ."orders
+					"select * from ". DB_PREFIX ."orders
 						where id = ". (int)$order->data['id'] ."
 					and order_status_id is null
 					and created_at > '". date('Y-m-d H:i:s', strtotime('-15 minutes')) ."'
@@ -261,13 +261,13 @@
 
 		$product_ids = database::query(
 			"select oi.product_id, sum(oi.quantity) as num_purchases
-			from ". DB_TABLE_PREFIX ."orders_items oi
-			left join ". DB_TABLE_PREFIX ."products p on (p.id = oi.product_id)
+			from ". DB_PREFIX ."orders_items oi
+			left join ". DB_PREFIX ."products p on (p.id = oi.product_id)
 			where p.status
 			and (oi.product_id != 0 and oi.product_id not in ('". implode("', '", database::input(array_column(cart::$items, 'product_id'))) ."'))
 			and order_id in (
 				select order_id as id
-				from ". DB_TABLE_PREFIX ."orders_items
+				from ". DB_PREFIX ."orders_items
 				where product_id in ('". implode("', '", database::input(array_column(cart::$items, 'product_id'))) ."')
 			)
 			group by oi.product_id

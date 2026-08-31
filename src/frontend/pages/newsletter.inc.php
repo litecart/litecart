@@ -21,7 +21,7 @@
 			$_POST['email'] = strtolower($_POST['email']);
 
 			if (database::query(
-				"select * from ". DB_TABLE_PREFIX ."newsletter_recipients
+				"select * from ". DB_PREFIX ."newsletter_recipients
 				where email = '". database::input($_POST['email']) ."'
 				limit 1;"
 			)->num_rows) {
@@ -94,7 +94,7 @@
 			$_POST['email'] = strtolower($_POST['email']);
 
 			if (!database::query(
-				"select id from ". DB_TABLE_PREFIX ."newsletter_recipients
+				"select id from ". DB_PREFIX ."newsletter_recipients
 				where email = '". database::input($_POST['email']) ."'
 				and subscribed = 1
 				limit 1;"

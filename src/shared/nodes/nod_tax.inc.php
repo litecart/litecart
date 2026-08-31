@@ -118,13 +118,13 @@
 			}
 
 			$tax_rates = database::query(
-				"select * from ". DB_TABLE_PREFIX ."tax_rates
+				"select * from ". DB_PREFIX ."tax_rates
 				where tax_class_id = ". (int)$tax_class_id ."
 				and (
 					(
 						address_type = 'payment'
 						and geo_zone_id in (
-							select geo_zone_id from ". DB_TABLE_PREFIX ."zones_to_geo_zones
+							select geo_zone_id from ". DB_PREFIX ."zones_to_geo_zones
 							where country_code = '". database::input($customer['country_code']) ."'
 							and (zone_code = '' or zone_code = '". database::input($customer['zone_code']) ."')
 							and (city = '' or city like '". (!empty($customer['city']) ? database::input_like($customer['city']) : '') ."')
@@ -136,7 +136,7 @@
 					) or (
 						address_type = 'shipping'
 						and geo_zone_id in (
-							select geo_zone_id from ". DB_TABLE_PREFIX ."zones_to_geo_zones
+							select geo_zone_id from ". DB_PREFIX ."zones_to_geo_zones
 							where country_code = '". database::input($customer['shipping_address']['country_code']) ."'
 							and (zone_code = '' or zone_code = '". database::input($customer['shipping_address']['zone_code']) ."')
 							and (city = '' or city like '". addcslashes(database::input($customer['shipping_address']['city']), '%_') ."')

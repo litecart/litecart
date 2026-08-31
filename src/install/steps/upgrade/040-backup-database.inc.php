@@ -32,7 +32,7 @@
 
         $table = array_shift($table);
 
-        if (!preg_match('#^'. preg_quote(DB_TABLE_PREFIX, '#') .'#', $table)) {
+        if (!preg_match('#^'. preg_quote(DB_PREFIX, '#') .'#', $table)) {
           return;
         }
 

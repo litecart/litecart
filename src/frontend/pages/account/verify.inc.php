@@ -45,7 +45,7 @@
 				$known_ips = array_slice(array_unique($known_ips), 0, 10);
 
 				database::query(
-					"update ". DB_TABLE_PREFIX ."customers
+					"update ". DB_PREFIX ."customers
 					set known_ips = '". database::input(implode(',', $known_ips)) ."'
 					where id = ". (int)customer::$data['id'] ."
 					limit 1;"

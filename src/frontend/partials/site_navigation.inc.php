@@ -34,7 +34,7 @@
 		// Brands
 
 		$site_navigation->snippets['brands'] = database::query(
-			"select id, name from ". DB_TABLE_PREFIX ."brands
+			"select id, name from ". DB_PREFIX ."brands
 			where status
 			and featured
 			order by name;"
@@ -52,7 +52,7 @@
 
 		$site_navigation->snippets['pages'] = database::query(
 			"select p.id, p.priority, json_value(p.title, '$.". database::input(language::$selected['code']) ."') as title
-			from ". DB_TABLE_PREFIX ."pages p
+			from ". DB_PREFIX ."pages p
 			where status
 			and parent_id = 0
 			and find_in_set('menu', dock)
@@ -66,7 +66,7 @@
 				'priority' => $page['priority'],
 				'subitems' => database::query(
 					"select p.id, p.priority, json_value(p.title, '$.". database::input(language::$selected['code']) ."') as title
-					from ". DB_TABLE_PREFIX ."pages p
+					from ". DB_PREFIX ."pages p
 					where status
 					and parent_id = ". (int)$page['id'] ."
 					order by p.priority, title;"
@@ -93,7 +93,7 @@
 
 		$site_navigation->snippets['information'] = database::query(
 			"select p.id, p.priority, json_value(p.title, '$.". database::input(language::$selected['code']) ."') as title
-			from ". DB_TABLE_PREFIX ."pages p
+			from ". DB_PREFIX ."pages p
 			where status
 			and find_in_set('information', dock)
 			order by p.priority,title;"
@@ -112,7 +112,7 @@
 
 	// Favorites
 	$num_favorites = database::query(
-		"select count(*) as num_items from ". DB_TABLE_PREFIX ."favorites
+		"select count(*) as num_items from ". DB_PREFIX ."favorites
 		where customer_id = ". (int)customer::$data['id'] .";"
 	)->fetch('num_items');
 
@@ -125,8 +125,8 @@
 
 	$site_navigation->snippets['favorites']['items'] = database::query(
 		"select p.id, json_value(p.name, '$.". database::input(language::$selected['code']) ."') as name, p.default_image as image
-		from ". DB_TABLE_PREFIX ."favorites f
-		left join ". DB_TABLE_PREFIX ."products p on (p.id = f.product_id)
+		from ". DB_PREFIX ."favorites f
+		left join ". DB_PREFIX ."products p on (p.id = f.product_id)
 		where f.customer_id = ". (int)customer::$data['id'] .";"
 	)->fetch_all(function(&$item) {
 		$item['image'] = $item['image'] ? 'storage://images/products/' . $item['image'] : null;

@@ -14,7 +14,7 @@ env:
       --db_username=litecart \
       --db_password=litecart \
       --db_database=litecart \
-      --db_table_prefix=lc_ \
+      --db_prefix=lc_ \
       --document_root=src \
       --store_name='LiteCart' \
       --store_email='ci@litecart.net' \

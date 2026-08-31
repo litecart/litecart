@@ -24,7 +24,7 @@
 
 			// Process an Immediate Redirect Rule (if any)
 			$redirect = database::query(
-				"select * from ". DB_TABLE_PREFIX ."redirects
+				"select * from ". DB_PREFIX ."redirects
 				where status
 				and immediate = 1
 				and '". database::input($requested_url) ."' regexp pattern
@@ -36,7 +36,7 @@
 			if ($redirect) {
 
 				database::query(
-					"update ". DB_TABLE_PREFIX ."redirects
+					"update ". DB_PREFIX ."redirects
 					set total_redirects = total_redirects + 1,
 						last_redirected = '". database::input(date('Y-m-d H:i:s')) ."'
 					where id = ". (int)$redirect['id'] ."
@@ -261,7 +261,7 @@
 
 			// Redirect (Last Destination)
 			$redirect = database::query(
-				"select * from ". DB_TABLE_PREFIX ."redirects
+				"select * from ". DB_PREFIX ."redirects
 				where status
 				and immediate = 0
 				and '". database::input($requested_url) ."' regexp pattern
@@ -273,7 +273,7 @@
 			if ($redirect) {
 
 				database::query(
-					"update ". DB_TABLE_PREFIX ."redirects
+					"update ". DB_PREFIX ."redirects
 					set redirects = redirects + 1,
 						last_redirected = '". database::input(date('Y-m-d H:i:s')) ."'
 					where id = ". (int)$redirect['id'] ."
@@ -290,7 +290,7 @@
 
 			// Log not found URL
 			database::query(
-				"insert into ". DB_TABLE_PREFIX ."not_found
+				"insert into ". DB_PREFIX ."not_found
 				(url, hits, last_requested, last_referrer, last_ip_address, last_hostname)
 				values (
 					'". database::input(strtok($requested_url, '?')) ."',

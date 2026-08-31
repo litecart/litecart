@@ -18,7 +18,7 @@
 			$this->data = [];
 
 			database::query(
-				"show fields from ". DB_TABLE_PREFIX ."attribute_groups;"
+				"show fields from ". DB_PREFIX ."attribute_groups;"
 			)->each(function($field){
 				$this->data[$field['Field']] = database::create_variable($field);
 			});
@@ -43,7 +43,7 @@
 			$this->reset();
 
 			$group = database::query(
-				"select * from ". DB_TABLE_PREFIX ."attribute_groups
+				"select * from ". DB_PREFIX ."attribute_groups
 				where id = ". (int)$id ."
 				limit 1;"
 			)->fetch();
@@ -62,7 +62,7 @@
 			}
 
 			$this->data['values'] = database::query(
-				"select * from ". DB_TABLE_PREFIX ."attribute_values
+				"select * from ". DB_PREFIX ."attribute_values
 				where group_id = ". (int)$id ."
 				order by priority;"
 			)->fetch_all(function($value) {
@@ -75,10 +75,10 @@
 				}
 
 				$value['in_use'] = database::query(
-					"select id from ". DB_TABLE_PREFIX ."products_attributes
+					"select id from ". DB_PREFIX ."products_attributes
 					where value_id = ". (int)$value['id'] ."
 					union
-					select id from ". DB_TABLE_PREFIX ."products_customizations_values
+					select id from ". DB_PREFIX ."products_customizations_values
 					where value_id = ". (int)$value['id'] ."
 					limit 1;"
 				)->num_rows ? true : false;
@@ -95,7 +95,7 @@
 			if (!$this->data['id']) {
 
 				database::query(
-					"insert into ". DB_TABLE_PREFIX ."attribute_groups
+					"insert into ". DB_PREFIX ."attribute_groups
 					(created_at)
 					values ('". ($this->data['created_at'] = date('Y-m-d H:i:s')) ."');"
 				);
@@ -104,7 +104,7 @@
 			}
 
 			database::query(
-				"update ". DB_TABLE_PREFIX ."attribute_groups
+				"update ". DB_PREFIX ."attribute_groups
 				set code = '". database::input($this->data['code']) ."',
 					name = '". database::input(f::format_json($this->data['name'])) ."',
 					sort = '". database::input($this->data['sort']) ."',
@@ -115,13 +115,13 @@
 
 			// Delete values
 			database::query(
-				"select id from ". DB_TABLE_PREFIX ."attribute_values
+				"select id from ". DB_PREFIX ."attribute_values
 				where group_id = ". (int)$this->data['id'] ."
 				and id not in ('". implode("', '", array_column($this->data['values'], 'id')) ."');"
 			)->each(function($value) {
 
 				if (database::query(
-					"select id from ". DB_TABLE_PREFIX ."products_attributes
+					"select id from ". DB_PREFIX ."products_attributes
 					where value_id = ". (int)$value['id'] ."
 					limit 1;"
 				)->num_rows) {
@@ -129,7 +129,7 @@
 				}
 
 				if (database::query(
-					"select id from ". DB_TABLE_PREFIX ."products_customizations_values
+					"select id from ". DB_PREFIX ."products_customizations_values
 					where value_id = ". (int)$value['id'] ."
 					limit 1;"
 				)->num_rows) {
@@ -137,7 +137,7 @@
 				}
 
 				database::query(
-					"delete from ". DB_TABLE_PREFIX ."attribute_values
+					"delete from ". DB_PREFIX ."attribute_values
 					where group_id = ". (int)$this->data['id'] ."
 					and id = ". (int)$value['id'] ."
 					limit 1;"
@@ -151,7 +151,7 @@
 				if (empty($value['id'])) {
 
 					database::query(
-						"insert into ". DB_TABLE_PREFIX ."attribute_values
+						"insert into ". DB_PREFIX ."attribute_values
 						(group_id, created_at)
 						values (". (int)$this->data['id'] .", '". ($this->data['values'][$key]['created_at'] = date('Y-m-d H:i:s')) ."');"
 					);
@@ -160,7 +160,7 @@
 				}
 
 				database::query(
-					"update ". DB_TABLE_PREFIX ."attribute_values
+					"update ". DB_PREFIX ."attribute_values
 					set name = '". database::input(f::format_json($value['name'])) ."',
 						priority = ". (int)$i++ .",
 						updated_at = '". ($this->data['values'][$key]['updated_at'] = date('Y-m-d H:i:s')) ."'
@@ -180,7 +180,7 @@
 
 			// Check category filters for attribute
 			if (database::query(
-				"select id from ". DB_TABLE_PREFIX ."categories_filters
+				"select id from ". DB_PREFIX ."categories_filters
 				where attribute_group_id = ". (int)$this->data['id'] .";"
 			)->num_rows) {
 				throw new Exception('Cannot delete group linked to category filters');
@@ -188,9 +188,9 @@
 
 			// Check products for attribute
 			if (database::query(
-				"select id from ". DB_TABLE_PREFIX ."products_attributes
+				"select id from ". DB_PREFIX ."products_attributes
 				where group_id = ". (int)$this->data['id'] ."
-				union select id from ". DB_TABLE_PREFIX ."products_customizations
+				union select id from ". DB_PREFIX ."products_customizations
 				where group_id = ". (int)$this->data['id'] .";"
 			)->num_rows) {
 				throw new Exception('Cannot delete group linked to products');
@@ -202,8 +202,8 @@
 			// Delete attribute
 			database::query(
 				"delete ag, av
-				from ". DB_TABLE_PREFIX ."attribute_groups ag
-				left join ". DB_TABLE_PREFIX ."attribute_values av on (av.group_id = ag.id)
+				from ". DB_PREFIX ."attribute_groups ag
+				left join ". DB_PREFIX ."attribute_values av on (av.group_id = ag.id)
 				where ag.id = ". (int)$this->data['id'] .";"
 			);
 

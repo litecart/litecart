@@ -18,7 +18,7 @@
 			$this->data = [];
 
 			database::query(
-				"show fields from ". DB_TABLE_PREFIX ."customer_groups;"
+				"show fields from ". DB_PREFIX ."customer_groups;"
 			)->each(function($field){
 				$this->data[$field['Field']] = database::create_variable($field);
 			});
@@ -34,7 +34,7 @@
 			$this->reset();
 
 			$customer_group = database::query(
-				"select * from ". DB_TABLE_PREFIX ."customer_groups
+				"select * from ". DB_PREFIX ."customer_groups
 				where id = '". database::input($id) ."'
 				limit 1;"
 			)->fetch();
@@ -53,7 +53,7 @@
 			if (!$this->data['id']) {
 
 				database::query(
-					"insert into ". DB_TABLE_PREFIX ."customer_groups
+					"insert into ". DB_PREFIX ."customer_groups
 					(created_at)
 					values ('". database::input(date('Y-m-d H:i:s')) ."');"
 				);
@@ -62,7 +62,7 @@
 			}
 
 			database::query(
-				"update ". DB_TABLE_PREFIX ."customer_groups
+				"update ". DB_PREFIX ."customer_groups
 				set type = '". database::input($this->data['type']) ."',
 					name = '". database::input($this->data['name']) ."',
 					description = '". database::input($this->data['description']) ."',
@@ -79,7 +79,7 @@
 		public function delete(): void {
 
 			if (database::query(
-				"select id from ". DB_TABLE_PREFIX ."customers
+				"select id from ". DB_PREFIX ."customers
 				where group_id = ". (int)$this->data['id'] ."
 				limit 1;"
 			)->num_rows) {
@@ -87,7 +87,7 @@
 			}
 
 			database::query(
-				"delete from ". DB_TABLE_PREFIX ."customer_groups
+				"delete from ". DB_PREFIX ."customer_groups
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"
 			);

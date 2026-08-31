@@ -6,15 +6,15 @@
 
 		// Get auto increment IDs for rollback
 		$orders_auto_id = database::query(
-			"SHOW TABLE STATUS LIKE '". DB_TABLE_PREFIX ."orders';"
+			"SHOW TABLE STATUS LIKE '". DB_PREFIX ."orders';"
 		)->fetch('Auto_increment');
 
 		$products_auto_id = database::query(
-			"SHOW TABLE STATUS LIKE '". DB_TABLE_PREFIX ."products';"
+			"SHOW TABLE STATUS LIKE '". DB_PREFIX ."products';"
 		)->fetch('Auto_increment');
 
 		$stock_items_auto_id = database::query(
-			"SHOW TABLE STATUS LIKE '". DB_TABLE_PREFIX ."stock_items';"
+			"SHOW TABLE STATUS LIKE '". DB_PREFIX ."stock_items';"
 		)->fetch('Auto_increment');
 
 		database::begin_transaction();
@@ -155,7 +155,7 @@
 
 		// Verify order lines are stored in DB
 		$line_count = database::query(
-			"select count(*) as cnt from ". DB_TABLE_PREFIX ."orders_items
+			"select count(*) as cnt from ". DB_PREFIX ."orders_items
 			where order_id = ". (int)$variant_order_id .";"
 		)->fetch('cnt');
 
@@ -228,7 +228,7 @@
 
 		// Verify order is deleted
 		$found = database::query(
-			"select id from ". DB_TABLE_PREFIX ."orders
+			"select id from ". DB_PREFIX ."orders
 			where id = ". (int)$variant_order_id ."
 			limit 1;"
 		)->num_rows;
@@ -239,7 +239,7 @@
 
 		// Verify order lines are cleaned up
 		$remaining_lines = database::query(
-			"select id from ". DB_TABLE_PREFIX ."orders_items
+			"select id from ". DB_PREFIX ."orders_items
 			where order_id = ". (int)$variant_order_id ."
 			limit 1;"
 		)->num_rows;
@@ -259,7 +259,7 @@
 
 		database::rollback();
 
-		database::query("ALTER TABLE ". DB_TABLE_PREFIX ."orders AUTO_INCREMENT = ". (int)$orders_auto_id .";");
-		database::query("ALTER TABLE ". DB_TABLE_PREFIX ."products AUTO_INCREMENT = ". (int)$products_auto_id .";");
-		database::query("ALTER TABLE ". DB_TABLE_PREFIX ."stock_items AUTO_INCREMENT = ". (int)$stock_items_auto_id .";");
+		database::query("ALTER TABLE ". DB_PREFIX ."orders AUTO_INCREMENT = ". (int)$orders_auto_id .";");
+		database::query("ALTER TABLE ". DB_PREFIX ."products AUTO_INCREMENT = ". (int)$products_auto_id .";");
+		database::query("ALTER TABLE ". DB_PREFIX ."stock_items AUTO_INCREMENT = ". (int)$stock_items_auto_id .";");
 	}

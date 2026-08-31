@@ -29,7 +29,7 @@
 		$structure = file_get_contents($structure_file);
 
 		// Set table prefixes
-		$structure = str_replace('"table": "', '"table": "'. DB_TABLE_PREFIX, $structure);
+		$structure = str_replace('"table": "', '"table": "'. DB_PREFIX, $structure);
 
 		// Decode database structure
 		$structure = json_decode($structure, true);
@@ -46,12 +46,12 @@
 
 		// Assign table name with table prefix
 		foreach ($structure['tables'] as $key => $table) {
-			$structure['tables'][$key]['name'] = DB_TABLE_PREFIX . $key;
+			$structure['tables'][$key]['name'] = DB_PREFIX . $key;
 
 			// Assign table prefix to foreign key references
 			if (!empty($table['foreign_keys'])) {
 				foreach ($table['foreign_keys'] as $fk_key => $fk) {
-					$structure['tables'][$key]['foreign_keys'][$fk_key]['references']['table'] = DB_TABLE_PREFIX . $fk['references']['table'];
+					$structure['tables'][$key]['foreign_keys'][$fk_key]['references']['table'] = DB_PREFIX . $fk['references']['table'];
 				}
 			}
 		}

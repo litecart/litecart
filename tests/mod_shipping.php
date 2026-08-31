@@ -6,28 +6,28 @@
 
 		// Save auto increment IDs
 		$geo_zones_auto_id = database::query(
-			"SHOW TABLE STATUS LIKE '". DB_TABLE_PREFIX ."geo_zones';"
+			"SHOW TABLE STATUS LIKE '". DB_PREFIX ."geo_zones';"
 		)->fetch('Auto_increment');
 
 		$zones_to_geo_zones_auto_id = database::query(
-			"SHOW TABLE STATUS LIKE '". DB_TABLE_PREFIX ."zones_to_geo_zones';"
+			"SHOW TABLE STATUS LIKE '". DB_PREFIX ."zones_to_geo_zones';"
 		)->fetch('Auto_increment');
 
 		$modules_auto_id = database::query(
-			"SHOW TABLE STATUS LIKE '". DB_TABLE_PREFIX ."modules';"
+			"SHOW TABLE STATUS LIKE '". DB_PREFIX ."modules';"
 		)->fetch('Auto_increment');
 
 		database::begin_transaction();
 
 		// Create test geo zone for DE
 		database::query(
-			"insert into ". DB_TABLE_PREFIX ."geo_zones
+			"insert into ". DB_PREFIX ."geo_zones
 			(code, name) values ('TEST_SHIP', 'Test Shipping Zone');"
 		);
 		$geo_zone_id = database::insert_id();
 
 		database::query(
-			"insert into ". DB_TABLE_PREFIX ."zones_to_geo_zones
+			"insert into ". DB_PREFIX ."zones_to_geo_zones
 			(geo_zone_id, country_code, zone_code, city)
 			values (". (int)$geo_zone_id .", 'DE', '', '');"
 		);
@@ -217,7 +217,7 @@
 
 		database::rollback();
 
-		database::query("ALTER TABLE ". DB_TABLE_PREFIX ."geo_zones AUTO_INCREMENT = ". (int)$geo_zones_auto_id .";");
-		database::query("ALTER TABLE ". DB_TABLE_PREFIX ."zones_to_geo_zones AUTO_INCREMENT = ". (int)$zones_to_geo_zones_auto_id .";");
-		database::query("ALTER TABLE ". DB_TABLE_PREFIX ."modules AUTO_INCREMENT = ". (int)$modules_auto_id .";");
+		database::query("ALTER TABLE ". DB_PREFIX ."geo_zones AUTO_INCREMENT = ". (int)$geo_zones_auto_id .";");
+		database::query("ALTER TABLE ". DB_PREFIX ."zones_to_geo_zones AUTO_INCREMENT = ". (int)$zones_to_geo_zones_auto_id .";");
+		database::query("ALTER TABLE ". DB_PREFIX ."modules AUTO_INCREMENT = ". (int)$modules_auto_id .";");
 	}

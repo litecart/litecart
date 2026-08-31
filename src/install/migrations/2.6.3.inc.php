@@ -22,22 +22,22 @@
 		}
 
 		database::query(
-			"select * from ". DB_TABLE_PREFIX ."products
+			"select * from ". DB_PREFIX ."products
 			where image like '%$char%';"
 		)->each(function($product) use ($char, $replacement) {
 			database::query(
-				"update ". DB_TABLE_PREFIX ."products
+				"update ". DB_PREFIX ."products
 				set image = '". database::input(preg_replace('#'.preg_quote($char,'#').'+#u', $replacement, $product['image'])) ."'
 				where id = '". (int)$product['id'] ."';"
 			);
 		});
 
 		database::query(
-			"select * ". DB_TABLE_PREFIX ."products_images
+			"select * ". DB_PREFIX ."products_images
 			where filename like '%$char%';"
 		)->each(function($image) use ($char, $replacement) {
 			database::query(
-				"update ". DB_TABLE_PREFIX ."products_images
+				"update ". DB_PREFIX ."products_images
 				set filename = '". database::input(preg_replace('#'.preg_quote($char,'#').'+#u', $replacement, $image['filename'])) ."'
 				where id = '". (int)$image['id'] ."';"
 			);

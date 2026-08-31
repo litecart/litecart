@@ -34,7 +34,7 @@
 					}
 
 					$customer = database::query(
-						"select * from ". DB_TABLE_PREFIX ."customers
+						"select * from ". DB_PREFIX ."customers
 						where id = ". (int)$token['id'] ."
 						and status
 						and (blocked_until is null or blocked_until < '". date('Y-m-d H:i:s') ."')
@@ -50,14 +50,14 @@
 					if ($verified_id === false) {
 						if (++$customer['login_attempts'] < 3) {
 							database::query(
-								"update ". DB_TABLE_PREFIX ."customers
+								"update ". DB_PREFIX ."customers
 								set login_attempts = login_attempts + 1
 								where id = ". (int)$customer['id'] ."
 								limit 1;"
 							);
 						} else {
 							database::query(
-								"update ". DB_TABLE_PREFIX ."customers
+								"update ". DB_PREFIX ."customers
 								set login_attempts = 0,
 								blocked_until = '". date('Y-m-d H:i:00', strtotime('+15 minutes')) ."'
 								where id = ". (int)$customer['id'] ."
@@ -72,7 +72,7 @@
 					security::$data['timestamp'] = time();
 
 					database::query(
-						"update ". DB_TABLE_PREFIX ."customers
+						"update ". DB_PREFIX ."customers
 						set last_ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."',
 							last_hostname = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
 							last_user_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."',
@@ -93,7 +93,7 @@
 				try {
 
 					$customer = database::query(
-						"select * from ". DB_TABLE_PREFIX ."customers
+						"select * from ". DB_PREFIX ."customers
 						where id = ". (int)self::$data['id'] ."
 						limit 1;"
 					)->fetch();
@@ -195,7 +195,7 @@
 
 			// Build list of supported countries
 			$countries = database::query(
-				"select iso_code_2 from ". DB_TABLE_PREFIX ."countries
+				"select iso_code_2 from ". DB_PREFIX ."countries
 				where status;"
 			)->fetch_all('iso_code_2');
 
@@ -235,7 +235,7 @@
 					]);
 
 					$country = database::query(
-						"select * from ". DB_TABLE_PREFIX ."countries
+						"select * from ". DB_PREFIX ."countries
 						where status
 						and iso_code_2 = '". database::input(strtoupper($matches[1])) ."'
 						limit 1;"
@@ -327,7 +327,7 @@
 			$customer = [];
 
 			database::query(
-				"show fields from ". DB_TABLE_PREFIX ."customers;"
+				"show fields from ". DB_PREFIX ."customers;"
 			)->each(function($field) use (&$customer) {
 				$customer[$field['Field']] = database::create_variable($field);
 			});
@@ -342,7 +342,7 @@
 			self::reset();
 
 			$customer = database::query(
-				"select * from ". DB_TABLE_PREFIX ."customers
+				"select * from ". DB_PREFIX ."customers
 				where id = ". (int)$id ."
 				limit 1;"
 			)->fetch();
@@ -425,7 +425,7 @@
 			}
 
 			database::query(
-				"insert into ". DB_TABLE_PREFIX ."event_logs
+				"insert into ". DB_PREFIX ."event_logs
 				(`". implode("`, `", database::input(array_keys($event))) ."`)
 				values ('". implode("', '", database::input($event)) ."');"
 			);

@@ -96,7 +96,7 @@
 
 		// Get all existing countries
 		$existing_countries = database::query(
-			"select iso_code_2 from ". DB_TABLE_PREFIX ."countries;"
+			"select iso_code_2 from ". DB_PREFIX ."countries;"
 		)->fetch_all('iso_code_2');
 
 		// Get countries from i18n repository

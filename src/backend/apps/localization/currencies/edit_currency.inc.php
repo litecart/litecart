@@ -74,7 +74,7 @@
 
 			if (!empty($_POST['set_default'])) {
 				database::query(
-					"update ". DB_TABLE_PREFIX ."settings
+					"update ". DB_PREFIX ."settings
 					set `value` = '". database::input($_POST['code']) ."'
 					where `key` = 'default_currency_code'
 					limit 1;"
@@ -83,7 +83,7 @@
 
 			if (!empty($_POST['set_store'])) {
 				database::query(
-					"update ". DB_TABLE_PREFIX ."settings
+					"update ". DB_PREFIX ."settings
 					set `value` = '". database::input($_POST['code']) ."'
 					where `key` = 'store_currency_code'
 					limit 1;"
@@ -131,7 +131,7 @@
 
 		// Get all existing currencies
 		$existing_currencies = database::query(
-			"select code from ". DB_TABLE_PREFIX ."currencies;"
+			"select code from ". DB_PREFIX ."currencies;"
 		)->fetch_all('code');
 
 		// Get currencies from i18n repository

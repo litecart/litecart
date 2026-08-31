@@ -13,9 +13,9 @@
 		ORDER BY TABLE_NAME;"
 	)->fetch_all();
 
-	// Filter out platform tables defined with DB_TABLE_PREFIX
+	// Filter out platform tables defined with DB_PREFIX
 	$platform_tables = array_filter(array_column($tables, 'TABLE_NAME'), function($table){
-		return preg_match('#^'.preg_quote(DB_TABLE_PREFIX, '#').'#', $table);
+		return preg_match('#^'.preg_quote(DB_PREFIX, '#').'#', $table);
 	});
 
 	if (!$_POST) {

@@ -13,7 +13,7 @@
 	$structure = file_get_contents($structure_file);
 
 	// Set table prefixes
-	$structure = str_replace('"table": "', '"table": "'. DB_TABLE_PREFIX, $structure);
+	$structure = str_replace('"table": "', '"table": "'. DB_PREFIX, $structure);
 
 	// Decode database structure
 	$structure = json_decode($structure, true);
@@ -30,12 +30,12 @@
 
 	// Assign table name with table prefix
 	foreach ($structure['tables'] as $key => $table) {
-		$structure['tables'][$key]['name'] = DB_TABLE_PREFIX . $key;
+		$structure['tables'][$key]['name'] = DB_PREFIX . $key;
 
 		// Assign table prefix to foreign key references
 		if (!empty($table['foreign_keys'])) {
 			foreach ($table['foreign_keys'] as $fk_key => $fk) {
-				$structure['tables'][$key]['foreign_keys'][$fk_key]['references']['table'] = DB_TABLE_PREFIX . $fk['references']['table'];
+				$structure['tables'][$key]['foreign_keys'][$fk_key]['references']['table'] = DB_PREFIX . $fk['references']['table'];
 			}
 		}
 	}
@@ -205,7 +205,7 @@
 
 				echo ' ' . basename($file) .' ';
 
-				$table = DB_TABLE_PREFIX . basename($file, '.csv');
+				$table = DB_PREFIX . basename($file, '.csv');
 
 				$contents = file_get_contents($file);
 
@@ -271,7 +271,7 @@
 			echo '<p>Writing database table data from SQL file... ';
 
 			$sql = strtr(file_get_contents(__DIR__.'/../data/default/data.sql'), [
-				'`lc_' => '`'. DB_TABLE_PREFIX,
+				'`lc_' => '`'. DB_PREFIX,
 				'CURRENT_TIMESTAMP' => date('Y-m-d H:i:s'),
 			]);
 
@@ -305,7 +305,7 @@
 	try {
 
 		database::query(
-			"insert into `". DB_TABLE_PREFIX ."administrators`
+			"insert into `". DB_PREFIX ."administrators`
 			(`id`, `status`, `username`, `password_hash`, `known_ips`, `updated_at`, `created_at`)
 			values ('1', '1', '". database::input($_REQUEST['username']) ."', '". database::input(password_hash($_REQUEST['password'], PASSWORD_DEFAULT)) ."', '". database::input($_SERVER['REMOTE_ADDR']) ."', '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
 		);
@@ -327,7 +327,7 @@
 		}
 
 		database::query(
-			"update `". DB_TABLE_PREFIX ."settings`
+			"update `". DB_PREFIX ."settings`
 			set `value` = '". database::input(PLATFORM_VERSION) ."'
 			where `key` = 'platform_database_version'
 			limit 1;"

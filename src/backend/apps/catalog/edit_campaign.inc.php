@@ -95,13 +95,13 @@
 
 	$categories = database::query(
 		"select c.id, json_value(c.name, '$.". database::input(language::$selected['code']) ."') as name
-		from ". DB_TABLE_PREFIX ."categories c
+		from ". DB_PREFIX ."categories c
 		where c.status
 		order by name;"
 	)->fetch_all();
 
 	$brands = database::query(
-		"select id, name from ". DB_TABLE_PREFIX ."brands
+		"select id, name from ". DB_PREFIX ."brands
 		where status
 		order by name;"
 	)->fetch_all();

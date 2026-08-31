@@ -15,7 +15,7 @@
 				}
 
 				database::query(
-					"update ". DB_TABLE_PREFIX ."reviews
+					"update ". DB_PREFIX ."reviews
 					set status = '". (!empty($_POST['enable']) ? 1 : 0) ."'
 					where id in ('". implode("', '", $_POST['reviews']) ."');"
 				);
@@ -42,8 +42,8 @@
 
 	$reviews = database::query(
 		"select pr.*, pi.name as product_name
-		from ". DB_TABLE_PREFIX ."reviews pr
-		left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = pr.product_id and pi.language_code = '". database::input(language::$selected['code']) ."')
+		from ". DB_PREFIX ."reviews pr
+		left join ". DB_PREFIX ."products_info pi on (pi.product_id = pr.product_id and pi.language_code = '". database::input(language::$selected['code']) ."')
 		". (!empty($sql_find) ? "where (". implode(" or ", $sql_find) .")" : "") ."
 		order by updated_at desc;"
 	)->fetch_page(function(&$review){

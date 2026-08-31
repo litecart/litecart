@@ -43,7 +43,7 @@
 				$known_ips = array_slice(array_unique($known_ips), 0, 10);
 
 				database::query(
-					"update ". DB_TABLE_PREFIX ."administrators
+					"update ". DB_PREFIX ."administrators
 					set known_ips = '". database::input(implode(',', $known_ips)) ."'
 					where id = ". (int)administrator::$data['id'] ."
 					limit 1;"

@@ -103,19 +103,19 @@
 
 	// Delete Deprecated Modules
 	database::query(
-		"select * from ". DB_TABLE_PREFIX ."settings
+		"select * from ". DB_PREFIX ."settings
 		where `key` in ('order_action_modules', 'order_success_modules');"
 	)->each(function($module_type){
 
 		foreach (explode(';', $module_type['value']) as $module) {
 			database::query(
-				"delete from ". DB_TABLE_PREFIX ."settings
+				"delete from ". DB_PREFIX ."settings
 				where `key` = '". database::input($module) ."';"
 			);
 		}
 
 		database::query(
-			"delete from ". DB_TABLE_PREFIX ."settings
+			"delete from ". DB_PREFIX ."settings
 			where `key` = '". database::input($module_type['key']) ."'
 			limit 1;"
 		);
@@ -123,20 +123,20 @@
 
 	// Migrate Modules
 	database::query(
-		"update ". DB_TABLE_PREFIX ."settings
+		"update ". DB_PREFIX ."settings
 		set `key` = 'job_modules'
 		where `key` = 'jobs_modules';"
 	);
 
 	database::query(
-		"select * from ". DB_TABLE_PREFIX ."settings
+		"select * from ". DB_PREFIX ."settings
 		where `key` in ('job_modules', 'customer_modules', 'order_modules', 'order_total_modules', 'shipping_modules', 'payment_modules');"
 	)->each(function(){
 
 		foreach (explode(';', $installed_modules['value']) as $module) {
 
 			$module = database::query(
-				"select * from ". DB_TABLE_PREFIX ."settings
+				"select * from ". DB_PREFIX ."settings
 				where `key` = '". database::input($module) ."'
 				limit 1;"
 			)->fetch();
@@ -163,13 +163,13 @@
 			mb_convert_variables('UTF-8', '', $module['settings']);
 
 			database::query(
-				"insert into `". DB_DATABASE ."`.`". DB_TABLE_PREFIX . "modules`
+				"insert into `". DB_DATABASE ."`.`". DB_PREFIX . "modules`
 				(module_id, type, status, settings, priority, date_updated, date_created)
 				values ('". database::input($module['key']) ."', '". database::input($type) ."', ". (int)$status .", '". database::input(json_encode($module['settings'])) ."', ". (int)$priority .", '". $module['date_updated'] ."', '". $module['date_created'] ."');"
 			);
 
 			database::query(
-				"delete from ". DB_TABLE_PREFIX ."settings
+				"delete from ". DB_PREFIX ."settings
 				where `key` = '". database::input($module['key']) ."'
 				limit 1;"
 			);
@@ -178,14 +178,14 @@
 
 	// Collect all languages
 	$all_languages = database::query(
-		"select code from ". DB_TABLE_PREFIX ."languages
+		"select code from ". DB_PREFIX ."languages
 		where status
 		order by priority, name;"
 	)->fetch_all('code');
 
 	// Update slides
 	database::query(
-		"select * from ". DB_TABLE_PREFIX ."slides;"
+		"select * from ". DB_PREFIX ."slides;"
 	)->each(function($slide) {
 
 		if (!empty($slide['language_code'])) {
@@ -196,7 +196,7 @@
 
 		foreach ($languages as $language_code) {
 			database::query(
-				"insert into `". DB_DATABASE ."`.`". DB_TABLE_PREFIX . "slides_info`
+				"insert into `". DB_DATABASE ."`.`". DB_PREFIX . "slides_info`
 				(slide_id, language_code, caption, link)
 				values (". (int)$slide['id'] .", '". database::input($language_code) ."', '". database::input($slide['caption']) ."', '". database::input($slide['link']) ."');"
 			);
@@ -204,7 +204,7 @@
 	});
 
 	database::query(
-		"alter table ". DB_TABLE_PREFIX ."slides
+		"alter table ". DB_PREFIX ."slides
 		change column `language_code` `languages` varchar(32) not null,
 		drop column `caption`,
 		drop column `link`;"

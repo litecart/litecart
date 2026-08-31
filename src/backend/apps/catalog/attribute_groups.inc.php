@@ -12,10 +12,10 @@
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$attribute_groups = database::query(
 		"select ag.id, ag.code, json_value(ag.name, '$.". database::input(language::$selected['code']) ."') as name, av.num_values
-		from ". DB_TABLE_PREFIX ."attribute_groups ag
+		from ". DB_PREFIX ."attribute_groups ag
 		left join (
 			select group_id, count(id) as num_values
-			from ". DB_TABLE_PREFIX ."attribute_values
+			from ". DB_PREFIX ."attribute_values
 			group by group_id
 		) av on av.group_id = ag.id
 		order by name asc;"

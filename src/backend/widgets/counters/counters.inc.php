@@ -6,13 +6,13 @@
 		$stats = [];
 
 		$order_statuses = database::query(
-			"select id from ". DB_TABLE_PREFIX ."order_statuses where is_sale;"
+			"select id from ". DB_PREFIX ."order_statuses where is_sale;"
 		)->fetch_all('id');
 
 		// Sales Today
 		$stats['sales_today'] = database::query(
 			"select sum(total - total_tax) as sales_today
-			from ". DB_TABLE_PREFIX ."orders
+			from ". DB_PREFIX ."orders
 			where order_status_id in ('". implode("', '", $order_statuses) ."')
 			and created_at >= '". date('Y-m-d H:i:s', strtotime('today')) ."';"
 		)->fetch('sales_today');
@@ -20,7 +20,7 @@
 		// Num Orders Today
 		$stats['num_orders_today'] = database::query(
 			"select count(id) as num_orders_today
-			from ". DB_TABLE_PREFIX ."orders
+			from ". DB_PREFIX ."orders
 			where order_status_id in ('". implode("', '", $order_statuses) ."')
 			and created_at >= '". date('Y-m-d H:i:s', strtotime('today')) ."';"
 		)->fetch('num_orders_today');
@@ -28,21 +28,21 @@
 		// Users Online
 		$stats['users_online'] = database::query(
 			"select count(id) as num_users_online
-			from ". DB_TABLE_PREFIX ."visitors
+			from ". DB_PREFIX ."visitors
 			where updated_at >= '". date('Y-m-d H:i:s', strtotime('-15 minutes')) ."';"
 		)->fetch('num_users_online');
 
 		// 30 days of sales for sparkline
 		$stats['sales_30_days_this_year'] = database::query(
 			"select sum(o.total - o.total_tax) as total_sales
-			from ". DB_TABLE_PREFIX ."orders o
+			from ". DB_PREFIX ."orders o
 			where o.order_status_id in ('". implode("', '", $order_statuses) ."')
 			and o.created_at >= '". date('Y-m-d H:i:s', strtotime('-30 days')) ."';"
 		)->fetch_all('total_sales');
 
 		$stats['sales_30_days_last_year'] = database::query(
 			"select sum(o.total - o.total_tax) as total_sales
-			from ". DB_TABLE_PREFIX ."orders o
+			from ". DB_PREFIX ."orders o
 			where o.order_status_id in ('". implode("', '", $order_statuses) ."')
 			and o.created_at between '". date('Y-m-d H:i:s', strtotime('-30 days', strtotime('-1 year'))) ."' and '". date('Y-m-d H:i:s', strtotime('-1 year')) ."';"
 		)->fetch_all('total_sales');
@@ -52,14 +52,14 @@
 		// Trend
 		$stats['sales_14_days_average'] = database::query(
 			"select avg(o.total - o.total_tax) as avg_sales
-			from ". DB_TABLE_PREFIX ."orders o
+			from ". DB_PREFIX ."orders o
 			where o.order_status_id in ('". implode("', '", $order_statuses) ."')
 			and o.created_at >= '". date('Y-m-d H:i:s', strtotime('-14 days')) ."';"
 		)->fetch_all('avg_sales');
 
 		$stats['sales_21_days_average'] = database::query(
 			"select avg(o.total - o.total_tax) as avg_sales
-			from ". DB_TABLE_PREFIX ."orders o
+			from ". DB_PREFIX ."orders o
 			where o.order_status_id in ('". implode("', '", $order_statuses) ."')
 			and o.created_at >= '". date('Y-m-d H:i:s', strtotime('-21 days')) ."';"
 		)->fetch_all('avg_sales');

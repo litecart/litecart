@@ -28,7 +28,7 @@ if [ ! -f "$CONFIG_FILE" ]; then
     --db_password="${DB_PASSWORD:-litecart}" \
     --db_database="${DB_DATABASE:-litecart}" \
     --db_collation="${DB_COLLATION:-utf8mb4_general_ci}" \
-    --db_table_prefix="${DB_TABLE_PREFIX:-lc_}" \
+    --db_prefix="${DB_PREFIX:-lc_}" \
     --timezone="${TZ:-UTC}" \
     --username="${ADMIN_USERNAME:-admin}" \
     --password="${ADMIN_PASSWORD:-admin}"

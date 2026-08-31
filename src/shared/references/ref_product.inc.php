@@ -43,12 +43,12 @@
 				case 'also_purchased_products':
 
 					$this->_data['also_purchased_products'] = database::query(
-						"select oi.product_id, sum(oi.quantity) as num_purchases from ". DB_TABLE_PREFIX ."orders_items oi
-						left join ". DB_TABLE_PREFIX ."products p on (p.id = oi.product_id)
+						"select oi.product_id, sum(oi.quantity) as num_purchases from ". DB_PREFIX ."orders_items oi
+						left join ". DB_PREFIX ."products p on (p.id = oi.product_id)
 						where p.status
 						and (oi.product_id != 0 and oi.product_id != ". (int)$this->_data['id'] .")
 						and order_id in (
-							select order_id from ". DB_TABLE_PREFIX ."orders_items
+							select order_id from ". DB_PREFIX ."orders_items
 							where product_id = ". (int)$this->_data['id'] ."
 						)
 						group by oi.product_id
@@ -63,9 +63,9 @@
 
 					$this->_data['attributes'] = database::query(
 						"select pa.id, ag.code, pa.group_id, pa.value_id, pa.custom_value, ag.name as group_name, av.name as value_name, pa.custom_value
-						from ". DB_TABLE_PREFIX ."products_attributes pa
-						left join ". DB_TABLE_PREFIX ."attribute_groups ag on (ag.id = pa.group_id)
-						left join ". DB_TABLE_PREFIX ."attribute_values av on (av.id = pa.value_id)
+						from ". DB_PREFIX ."products_attributes pa
+						left join ". DB_PREFIX ."attribute_groups ag on (ag.id = pa.group_id)
+						left join ". DB_PREFIX ."attribute_values av on (av.id = pa.value_id)
 						where product_id = ". (int)$this->_data['id'] ."
 						order by pa.priority, group_name, value_name, custom_value;"
 					)->fetch_all(function($attribute){
@@ -115,10 +115,10 @@
 							)) ."
 						)
 					) as price
-					from ". DB_TABLE_PREFIX ."products_prices
+					from ". DB_PREFIX ."products_prices
 					where product_id = ". (int)$this->_data['id'] ."
 					and campaign_id in (
-						select id from ". DB_TABLE_PREFIX ."campaigns
+						select id from ". DB_PREFIX ."campaigns
 						where status
 						and discount_mode = 'fixed'
 						and (valid_from is null or valid_from <= '". date('Y-m-d H:i:s') ."')
@@ -126,7 +126,7 @@
 					)
 					". (!empty($this->_customer_group_id) ? "and (customer_group_id is null or customer_group_id = ". (int)$this->_customer_group_id .")" : "") ."
 					". (!empty(customer::$data['country_code']) ? "and (geo_zone_id is null or geo_zone_id in (
-						select geo_zone_id from ". DB_TABLE_PREFIX ."zones_to_geo_zones
+						select geo_zone_id from ". DB_PREFIX ."zones_to_geo_zones
 						where country_code = '". database::input(customer::$data['country_code']) ."'
 						and (zone_code = '' or zone_code is null or zone_code = '". database::input(customer::$data['zone_code']) ."')
 					))" : "") ."
@@ -138,8 +138,8 @@
 				// Scope campaign percentage (category/brand)
 				$scope_discount = database::query(
 					"select max(c.discount_percent) as discount_percent
-					from ". DB_TABLE_PREFIX ."campaigns c
-					join ". DB_TABLE_PREFIX ."campaigns_scopes cs on (cs.campaign_id = c.id)
+					from ". DB_PREFIX ."campaigns c
+					join ". DB_PREFIX ."campaigns_scopes cs on (cs.campaign_id = c.id)
 					where c.status
 					and c.discount_mode = 'percentage'
 					and c.discount_percent > 0
@@ -147,7 +147,7 @@
 					and (c.valid_to is null or c.valid_to >= '". date('Y-m-d H:i:s') ."')
 					and (
 						(cs.scope_type = 'category' and cs.scope_id in (
-							select category_id from ". DB_TABLE_PREFIX ."products_to_categories
+							select category_id from ". DB_PREFIX ."products_to_categories
 							where product_id = ". (int)$this->_data['id'] ."
 						))
 						or (cs.scope_type = 'brand' and cs.scope_id = ". (int)$this->_data['brand_id'] .")
@@ -167,9 +167,9 @@
 
 					database::query(
 						"select id, name
-						from ". DB_TABLE_PREFIX ."categories
+						from ". DB_PREFIX ."categories
 						where id in (
-							select category_id from ". DB_TABLE_PREFIX ."products_to_categories
+							select category_id from ". DB_PREFIX ."products_to_categories
 							where product_id = ". (int)$this->_data['id'] ."
 						);"
 					)->each(function($category) {
@@ -201,7 +201,7 @@
 				case 'delivery_status':
 
 					$this->_data['delivery_status'] = database::query(
-						"select * from ". DB_TABLE_PREFIX ."delivery_statuses
+						"select * from ". DB_PREFIX ."delivery_statuses
 						where id = ". (int)$this->_data['delivery_status_id'] ."
 						limit 1;"
 					)->fetch(function($status){
@@ -235,16 +235,16 @@
 						"select
 							min($sql_column_price) / min_quantity as final_price,
 							max($sql_column_price) / min_quantity as regular_price
-							from ". DB_TABLE_PREFIX ."products_prices
+							from ". DB_PREFIX ."products_prices
 						where product_id = '". database::input($this->_data['id']) ."'
 						". (!empty($this->_customer['group_id']) ? "and (customer_group_id is null or customer_group_id = ". (int)$this->_customer['group_id'] .")" : "") ."
 						". (!empty($this->_customer['country_code']) ? "and (geo_zone_id is null or geo_zone_id in (
-							select geo_zone_id from ". DB_TABLE_PREFIX ."zones_to_geo_zones
+							select geo_zone_id from ". DB_PREFIX ."zones_to_geo_zones
 							where country_code = '". database::input($this->_customer['country_code']) ."'
 							and (zone_code = '' or zone_code is null or zone_code = '". database::input($this->_customer['zone_code']) ."')
 						))" : "") ."
 						and (campaign_id is null or campaign_id in (
-							select id from ". DB_TABLE_PREFIX ."campaigns
+							select id from ". DB_PREFIX ."campaigns
 							where valid_from <= '". date('Y-m-d H:i:s') ."'
 							and valid_to >= '". date('Y-m-d H:i:s') ."'
 						))
@@ -272,7 +272,7 @@
 				case 'images':
 
 					$this->_data['images'] = database::query(
-						"select * from ". DB_TABLE_PREFIX ."products_images
+						"select * from ". DB_PREFIX ."products_images
 						where product_id = ". (int)$this->_data['id'] ."
 						order by priority asc, id asc;"
 					)->fetch_all('filename');
@@ -285,8 +285,8 @@
 
 					database::query(
 						"select pc.*, ag.name
-						from ". DB_TABLE_PREFIX ."products_customizations pc
-						left join ". DB_TABLE_PREFIX ."attribute_groups ag on (ag.id = pc.group_id)
+						from ". DB_PREFIX ."products_customizations pc
+						left join ". DB_PREFIX ."attribute_groups ag on (ag.id = pc.group_id)
 						where product_id = ". (int)$this->_data['id'] ."
 						order by priority;"
 					)->fetch(function($customization){
@@ -305,8 +305,8 @@
 
 						database::query(
 							"select pcv.*, av.name
-							from ". DB_TABLE_PREFIX ."products_customizations_values pcv
-							left join ". DB_TABLE_PREFIX ."attribute_values av on (av.value_id = pcv.value_id)
+							from ". DB_PREFIX ."products_customizations_values pcv
+							left join ". DB_PREFIX ."attribute_values av on (av.value_id = pcv.value_id)
 							where pcv.product_id = ". (int)$this->_data['id'] ."
 							and pcv.group_id = ". (int)$customization['group_id'] ."
 							order by pcv.priority;"
@@ -390,7 +390,7 @@
 				case 'parents':
 
 					$this->_data['parents'] = database::query(
-						"select category_id from ". DB_TABLE_PREFIX ."products_to_categories
+						"select category_id from ". DB_PREFIX ."products_to_categories
 						where product_id = ". (int)$this->_data['id'] .";"
 					)->fetch_all(function($row) {
 						return reference::category($row['category_id'], $this->_language_codes[0]);
@@ -407,8 +407,8 @@
 
 					$stock_options = database::query(
 						"select count(pso.id) as num_stock_options, sum(si.quantity) as total_quantity
-						from ". DB_TABLE_PREFIX ."products_stock_options pso
-						left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
+						from ". DB_PREFIX ."products_stock_options pso
+						left join ". DB_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
 						where pso.product_id = ". (int)$this->_data['id'] ."
 						group by pso.product_id;"
 					)->fetch();
@@ -460,17 +460,17 @@
 									"if(json_value(price, '$.". database::input($currency_code) ."') != 0, json_value(price, '$.". database::input($currency_code) ."') * ". currency::$currencies[$currency_code]['value'] .", null)"
 								)) ."
 							)) as final_price
-						from ". DB_TABLE_PREFIX ."products_prices
+						from ". DB_PREFIX ."products_prices
 						where product_id = ". (int)$this->_data['id'] ."
 						and min_quantity > 1
 						and (customer_group_id is null or customer_group_id = ". (int)$this->_customer['group_id'] .")
 						and (geo_zone_id is null or geo_zone_id in (
-							select geo_zone_id from ". DB_TABLE_PREFIX ."zones_to_geo_zones
+							select geo_zone_id from ". DB_PREFIX ."zones_to_geo_zones
 							where country_code = '". database::input($this->_customer['country_code']) ."'
 							and (zone_code = '' or zone_code is null or zone_code = '". database::input($this->_customer['zone_code']) ."')
 						))
 						and (campaign_id is null or campaign_id in (
-							select id from ". DB_TABLE_PREFIX ."campaigns
+							select id from ". DB_PREFIX ."campaigns
 							where (valid_from is null or valid_from <= '". date('Y-m-d H:i:s') ."')
 							and (valid_to is null or valid_to >= '". date('Y-m-d H:i:s') ."')
 						))
@@ -500,7 +500,7 @@
 						"select id, decimals, separate,
 							json_value(name, '$.".database::input(language::$selected['code'])."') as name,
 							json_value(description, '$.".database::input(language::$selected['code'])."') as description
-						from ". DB_TABLE_PREFIX ."quantity_units
+						from ". DB_PREFIX ."quantity_units
 						where id = ". (int)$this->quantity_unit_id ."
 						limit 1;"
 					)->fetch();
@@ -517,16 +517,16 @@
 
 					$this->_data['stock_items'] = database::query(
 						"select si.*, ifnull(oi.quantity_reserved, 0) as quantity_reserved, si.quantity - ifnull(oi.quantity_reserved, 0) as quantity_available
-						from ". DB_TABLE_PREFIX ."stock_items si
+						from ". DB_PREFIX ."stock_items si
 
 						left join (
 							select product_id, stock_item_id, sum(oi.quantity * osi.quantity) as quantity_reserved
-							from ". DB_TABLE_PREFIX ."orders_stock_items osi
-							left join ". DB_TABLE_PREFIX ."orders_items oi on (oi.id = osi.item_id and osi.order_id = oi.order_id)
+							from ". DB_PREFIX ."orders_stock_items osi
+							left join ". DB_PREFIX ."orders_items oi on (oi.id = osi.item_id and osi.order_id = oi.order_id)
 							where oi.order_id in (
-								select id from ". DB_TABLE_PREFIX ."orders
+								select id from ". DB_PREFIX ."orders
 								where order_status_id in (
-									select id from ". DB_TABLE_PREFIX ."order_statuses
+									select id from ". DB_PREFIX ."order_statuses
 									where stock_action = 'reserve'
 								)
 							)
@@ -534,7 +534,7 @@
 						) oi on (oi.product_id = ". (int)$this->_data['id'] ." and oi.stock_item_id = si.id)
 
 						where si.id in (
-							select pso.stock_item_id from ". DB_TABLE_PREFIX ."products_stock_options pso
+							select pso.stock_item_id from ". DB_PREFIX ."products_stock_options pso
 							where pso.product_id = ". (int)$this->_data['id'] ."
 						)
 						order by si.name;"
@@ -556,18 +556,18 @@
 							ifnull(ol.quantity_reserved, 0) as quantity_reserved,
 							si.quantity - ifnull(ol.quantity_reserved, 0) as quantity_available
 
-						from ". DB_TABLE_PREFIX ."products_stock_options pso
+						from ". DB_PREFIX ."products_stock_options pso
 
-						left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
+						left join ". DB_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
 
 						left join (
 							select product_id, stock_option_id, sum(oi.quantity * osi.quantity) as quantity_reserved
-							from ". DB_TABLE_PREFIX ."orders_stock_items osi
-							left join ". DB_TABLE_PREFIX ."orders_items oi on (oi.id = osi.item_id and osi.order_id = oi.order_id)
+							from ". DB_PREFIX ."orders_stock_items osi
+							left join ". DB_PREFIX ."orders_items oi on (oi.id = osi.item_id and osi.order_id = oi.order_id)
 							where osi.order_id in (
-								select id from ". DB_TABLE_PREFIX ."orders
+								select id from ". DB_PREFIX ."orders
 								where order_status_id in (
-									select id from ". DB_TABLE_PREFIX ."order_statuses
+									select id from ". DB_PREFIX ."order_statuses
 									where stock_action = 'reserve'
 								)
 							)
@@ -596,7 +596,7 @@
 						"select id, orderable,
 							json_value(name, '$.".database::input(language::$selected['code'])."') as name,
 							json_value(description, '$.".database::input(language::$selected['code'])."') as description
-						from ". DB_TABLE_PREFIX ."sold_out_statuses
+						from ". DB_PREFIX ."sold_out_statuses
 						where id = ". (int)$this->sold_out_status_id ."
 						limit 1;"
 					)->fetch();
@@ -612,7 +612,7 @@
 				default:
 
 					$product = database::query(
-						"select * from ". DB_TABLE_PREFIX ."products
+						"select * from ". DB_PREFIX ."products
 						where id = ". (int)$this->_data['id'] ."
 						limit 1;"
 					)->fetch(function($product){
@@ -659,7 +659,7 @@
 
 					if (!$product) {
 						$product = database::query(
-							"show fields from ". DB_TABLE_PREFIX ."products;"
+							"show fields from ". DB_PREFIX ."products;"
 						)->fetch(function($field){
 							return database::create_variable($field);
 						});

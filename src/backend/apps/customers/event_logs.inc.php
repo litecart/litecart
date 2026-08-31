@@ -23,7 +23,7 @@
 
 			foreach ($_POST['events'] as $event_id) {
 				database::query(
-					"delete from ". DB_TABLE_PREFIX ."event_logs
+					"delete from ". DB_PREFIX ."event_logs
 					where id = ". (int)$event_id ."
 					limit 1;"
 				);
@@ -68,8 +68,8 @@
 	};
 
 	$events = database::query(
-		"select el.*, c.email, c.firstname, c.lastname from ". DB_TABLE_PREFIX ."event_logs el
-		left join ". DB_TABLE_PREFIX ."customers c on (el.customer_id = c.id)
+		"select el.*, c.email, c.firstname, c.lastname from ". DB_PREFIX ."event_logs el
+		left join ". DB_PREFIX ."customers c on (el.customer_id = c.id)
 		where el.id
 		". ((!empty($_GET['type'])) ? "and `type` = '". database::input($_GET['type']) ."'" : "") ."
 		". (!empty($sql_find) ? "and (". implode(" or ", $sql_find) .")" : "") ."
@@ -79,7 +79,7 @@
 	)->fetch_page(null, null, $_GET['page'], settings::get('data_table_rows_per_page'), $num_rows, $num_pages);
 
 	$type_options = database::query(
-		"select distinct type from ". DB_TABLE_PREFIX ."event_logs
+		"select distinct type from ". DB_PREFIX ."event_logs
 		order by type;"
 	)->fetch_all(function($row) {
 		return [$row['type'], $row['type']];

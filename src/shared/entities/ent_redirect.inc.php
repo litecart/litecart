@@ -19,7 +19,7 @@
 			$this->data = [];
 
 			database::query(
-				"show fields from ". DB_TABLE_PREFIX ."redirects;"
+				"show fields from ". DB_PREFIX ."redirects;"
 			)->each(function($field) {
 				$this->data[$field['Field']] = database::create_variable($field['Type']);
 			});
@@ -36,7 +36,7 @@
 			$this->reset();
 
 			$redirect = database::query(
-				"select * from ". DB_TABLE_PREFIX ."redirects
+				"select * from ". DB_PREFIX ."redirects
 				where id = ". (int)$redirect_id ."
 				limit 1;"
 			)->fetch();
@@ -55,7 +55,7 @@
 			if (empty($this->data['id'])) {
 
 				database::query(
-					"insert into ". DB_TABLE_PREFIX ."redirects
+					"insert into ". DB_PREFIX ."redirects
 					(created_at)
 					values ('". ($this->data['created_at'] = date('Y-m-d H:i:s')) ."');"
 				);
@@ -64,7 +64,7 @@
 			}
 
 			database::query(
-				"update ". DB_TABLE_PREFIX ."redirects
+				"update ". DB_PREFIX ."redirects
 				set status = ". (int)$this->data['status'] .",
 					immediate = ". (int)$this->data['immediate'] .",
 					pattern = '". database::input($this->data['pattern']) ."',
@@ -79,7 +79,7 @@
 
 			if (!empty($this->data['pattern'])) {
 				database::query(
-					"delete from ". DB_TABLE_PREFIX ."not_found
+					"delete from ". DB_PREFIX ."not_found
 					where url regexp '". database::input($this->data['pattern']) ."';"
 				);
 			}
@@ -92,7 +92,7 @@
 		public function delete(): void {
 
 			database::query(
-				"delete from ". DB_TABLE_PREFIX ."redirects
+				"delete from ". DB_PREFIX ."redirects
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"
 			);

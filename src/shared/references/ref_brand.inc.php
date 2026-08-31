@@ -25,11 +25,11 @@
 				case 'products':
 
 					$this->_data['products'] = database::query(
-						"select id from ". DB_TABLE_PREFIX ."products
+						"select id from ". DB_PREFIX ."products
 						where status
 						and brand_id = ". (int)$this->_data['id'] ."
 						and (quantity > 0 or sold_out_status_id in (
-							select id from ". DB_TABLE_PREFIX ."sold_out_statuses
+							select id from ". DB_PREFIX ."sold_out_statuses
 							where (hidden is null or hidden = 0)
 						))
 						and (valid_from is null or valid_from <= '". date('Y-m-d H:i:s') ."')
@@ -48,11 +48,11 @@
 					}
 
 					$this->_data['num_products'] = (int)database::query(
-						"select count(id) as num_products from ". DB_TABLE_PREFIX ."products
+						"select count(id) as num_products from ". DB_PREFIX ."products
 						where status
 						and brand_id = ". (int)$this->_data['id'] ."
 						and (quantity > 0 or sold_out_status_id in (
-							select id from ". DB_TABLE_PREFIX ."sold_out_statuses
+							select id from ". DB_PREFIX ."sold_out_statuses
 							where (hidden is null or hidden = 0)
 						))
 						and (valid_from is null or valid_from <= '". date('Y-m-d H:i:s') ."')
@@ -64,7 +64,7 @@
 				default:
 
 					$brand = database::query(
-						"select * from ". DB_TABLE_PREFIX ."brands
+						"select * from ". DB_PREFIX ."brands
 						where id = ". (int)$this->_data['id'] ."
 						limit 1;"
 					)->fetch(function($brand) {
@@ -97,7 +97,7 @@
 
 					if (!$brand) {
 						$brand = database::query(
-							"show fields from ". DB_TABLE_PREFIX ."brands;"
+							"show fields from ". DB_PREFIX ."brands;"
 						)->fetch(function($field) {
 							return database::create_variable($field);
 						});

@@ -48,7 +48,7 @@
 	// Mark as read
 	if (!empty($order->data['id']) && $order->data['unread']) {
 		database::query(
-			"update ". DB_TABLE_PREFIX ."orders
+			"update ". DB_PREFIX ."orders
 			set unread = 0
 			where id = ".  (int)$order->data['id'] ."
 			limit 1;"
@@ -188,7 +188,7 @@
 					$customer = new ent_customer($_POST['customer']['id']);
 
 				} else if ($customer = database::query(
-					"select id from ". DB_TABLE_PREFIX ."customers
+					"select id from ". DB_PREFIX ."customers
 					where email = '". database::input($_POST['customer']['email']) ."'
 					limit 1;"
 				)->fetch()) {
@@ -362,14 +362,14 @@
 
 	if ($order->data['id']) {
 		$previous_order_id = database::query(
-			"select id from ". DB_TABLE_PREFIX ."orders
+			"select id from ". DB_PREFIX ."orders
 			where id < ". (int)$order->data['id'] ."
 			order by id desc
 			limit 1;"
 		)->fetch('id');
 
 		$next_order_id = database::query(
-			"select id from ". DB_TABLE_PREFIX ."orders
+			"select id from ". DB_PREFIX ."orders
 			where id > ". (int)$order->data['id'] ."
 			order by id asc
 			limit 1;"

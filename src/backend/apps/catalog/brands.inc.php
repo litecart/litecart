@@ -43,10 +43,10 @@
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$brands = database::query(
 		"select b.*, p.num_products
-		from ". DB_TABLE_PREFIX ."brands b
+		from ". DB_PREFIX ."brands b
 		left join (
 			select brand_id, count(id) as num_products
-			from ". DB_TABLE_PREFIX ."products
+			from ". DB_PREFIX ."products
 			group by brand_id
 		) p on (p.brand_id = b.id)
 		where b.id

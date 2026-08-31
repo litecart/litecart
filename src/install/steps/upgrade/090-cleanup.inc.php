@@ -28,7 +28,7 @@
 		echo '<p>Clear cache... ';
 
 		database::query(
-			"update ". DB_TABLE_PREFIX ."settings
+			"update ". DB_PREFIX ."settings
 			set value = '1'
 			where `key` = 'cache_clear'
 			limit 1;"

@@ -12,7 +12,7 @@
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$sold_out_statuses = database::prepare(
 		"select sos.id, sos.orderable, json_value(sos.name, '$.". database::input(language::$selected['code']) ."') as name
-		from ". DB_TABLE_PREFIX ."sold_out_statuses sos
+		from ". DB_PREFIX ."sold_out_statuses sos
 		order by name asc;"
 	)->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
 

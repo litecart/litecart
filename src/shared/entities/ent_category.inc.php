@@ -18,7 +18,7 @@
 			$this->data = [];
 
 			database::query(
-				"show fields from ". DB_TABLE_PREFIX ."categories;"
+				"show fields from ". DB_PREFIX ."categories;"
 			)->each(function($field){
 				$this->data[$field['Field']] = database::create_variable($field);
 			});
@@ -50,7 +50,7 @@
 			$this->reset();
 
 			$category = database::query(
-				"select * from ". DB_TABLE_PREFIX ."categories
+				"select * from ". DB_PREFIX ."categories
 				where id = ". (int)$id ."
 				limit 1;"
 			)->fetch();
@@ -77,15 +77,15 @@
 			// Filters
 			$this->data['filters'] = database::query(
 				"select cf.*, json_value(ag.name, '$.". database::input(language::$selected['code']) ."') as attribute_group_name
-				from ". DB_TABLE_PREFIX ."categories_filters cf
-				left join ". DB_TABLE_PREFIX ."attribute_groups ag on (ag.id = cf.attribute_group_id)
+				from ". DB_PREFIX ."categories_filters cf
+				left join ". DB_PREFIX ."attribute_groups ag on (ag.id = cf.attribute_group_id)
 				where cf.category_id = ". (int)$this->data['id'] ."
 				order by cf.priority;"
 			)->fetch_all();
 
 			// Products
 			$this->data['products'] = database::query(
-				"select product_id from ". DB_TABLE_PREFIX ."products_to_categories
+				"select product_id from ". DB_PREFIX ."products_to_categories
 				where category_id = ". (int)$this->data['id'] ."
 				order by product_id;"
 			)->fetch_all('product_id');
@@ -106,7 +106,7 @@
 			if (!$this->data['id']) {
 
 				database::query(
-					"insert into ". DB_TABLE_PREFIX ."categories
+					"insert into ". DB_PREFIX ."categories
 					(parent_id, code, created_at)
 					values (". (!empty($this->data['parent_id']) ? (int)$this->data['parent_id'] : "null") .", '". database::input($this->data['code']) ."', '". ($this->data['created_at'] = date('Y-m-d H:i:s')) ."');"
 				);
@@ -124,7 +124,7 @@
 			$this->data['keywords'] = implode(',', $this->data['keywords']);
 
 			database::query(
-				"update ". DB_TABLE_PREFIX ."categories
+				"update ". DB_PREFIX ."categories
 				set parent_id = ". (!empty($this->data['parent_id']) ? (int)$this->data['parent_id'] : "null") .",
 					status = ". (int)$this->data['status'] .",
 					code = '". database::input($this->data['code']) ."',
@@ -145,7 +145,7 @@
 
 			// Delete filters
 			database::query(
-				"delete from ". DB_TABLE_PREFIX ."categories_filters
+				"delete from ". DB_PREFIX ."categories_filters
 				where category_id = ". (int)$this->data['id'] ."
 				and id not in ('". implode("', '", array_column($this->data['filters'], 'id')) ."');"
 			);
@@ -161,7 +161,7 @@
 				if (empty($filter['id'])) {
 
 					database::query(
-						"insert into ". DB_TABLE_PREFIX ."categories_filters
+						"insert into ". DB_PREFIX ."categories_filters
 						(category_id, attribute_group_id)
 						values (". (int)$this->data['id'] .", ". (int)$filter['attribute_group_id'] .");"
 					);
@@ -170,7 +170,7 @@
 				}
 
 				database::query(
-					"update ". DB_TABLE_PREFIX ."categories_filters
+					"update ". DB_PREFIX ."categories_filters
 					set attribute_group_id = '". database::input($filter['attribute_group_id']) ."',
 						select_multiple = ". (!empty($filter['select_multiple']) ? 1 : 0) .",
 						priority = ". (int)$priority++ ."
@@ -182,7 +182,7 @@
 
 			// Delete product mountpoints
 			database::query(
-				"delete from ". DB_TABLE_PREFIX ."products_to_categories
+				"delete from ". DB_PREFIX ."products_to_categories
 				where category_id = ". (int)$this->data['id'] ."
 				and product_id not in ('". implode("', '", $this->data['products']) ."');"
 			);
@@ -192,7 +192,7 @@
 
 				if (empty($filter['id'])) {
 					database::query(
-						"insert ignore into ". DB_TABLE_PREFIX ."products_to_categories
+						"insert ignore into ". DB_PREFIX ."products_to_categories
 						(category_id, product_id)
 						values (". (int)$this->data['id'] .", ". (int)$product_id .");"
 					);
@@ -243,7 +243,7 @@
 			f::image_delete_cache('storage://images/' . $filename);
 
 			database::query(
-				"update ". DB_TABLE_PREFIX ."categories
+				"update ". DB_PREFIX ."categories
 				set image = '". database::input($filename) ."'
 				where id = ". (int)$this->data['id'] .";"
 			);
@@ -262,7 +262,7 @@
 			f::image_delete_cache('storage://images/' . $this->data['image']);
 
 			database::query(
-				"update ". DB_TABLE_PREFIX ."categories
+				"update ". DB_PREFIX ."categories
 				set image = ''
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"
@@ -277,7 +277,7 @@
 
 			// Delete subcategories
 			database::query(
-				"select id from ". DB_TABLE_PREFIX ."categories
+				"select id from ". DB_PREFIX ."categories
 				where parent_id = ". (int)$this->data['id'] .";"
 			)->each(function($subcategory) {
 				$subcategory = new ent_category($subcategory['id']);
@@ -301,9 +301,9 @@
 
 			database::query(
 				"delete c, cf, ptc
-				from ". DB_TABLE_PREFIX ."categories c
-				left join ". DB_TABLE_PREFIX ."categories_filters cf on (cf.category_id = c.id)
-				left join ". DB_TABLE_PREFIX ."products_to_categories ptc on (ptc.category_id = c.id)
+				from ". DB_PREFIX ."categories c
+				left join ". DB_PREFIX ."categories_filters cf on (cf.category_id = c.id)
+				left join ". DB_PREFIX ."products_to_categories ptc on (ptc.category_id = c.id)
 				where c.id = ". (int)$this->data['id'] .";"
 			);
 

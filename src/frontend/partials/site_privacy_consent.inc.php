@@ -52,7 +52,7 @@
 
 	$third_parties = database::query(
 		"select tp.*, json_value(tp.name, '$.". database::input(language::$selected['code']) ."') as name
-		from ". DB_TABLE_PREFIX ."third_parties tp
+		from ". DB_PREFIX ."third_parties tp
 		where tp.status
 		order by name asc;"
 	)->fetch_all();

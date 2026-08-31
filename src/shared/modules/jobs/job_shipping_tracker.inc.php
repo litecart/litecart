@@ -20,10 +20,10 @@
 
 			$orders = database::query(
 				"select id, shipping_option_id, shipping_tracking_id
-				from ". DB_TABLE_PREFIX ."orders
+				from ". DB_PREFIX ."orders
 				where shipping_tracking_id != ''
 				and order_status_id in (
-					select id from ". DB_TABLE_PREFIX ."order_statuses
+					select id from ". DB_PREFIX ."order_statuses
 					where is_trackable
 				)
 				and created_at > '". date('Y-m-d H:i:s', strtotime('-30 days')) ."'

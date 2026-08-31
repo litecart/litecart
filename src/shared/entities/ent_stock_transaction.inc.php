@@ -18,7 +18,7 @@
 			$this->data = [];
 
 			database::query(
-				"show fields from ". DB_TABLE_PREFIX ."stock_transactions;"
+				"show fields from ". DB_PREFIX ."stock_transactions;"
 			)->each(function($field){
 				$this->data[$field['Field']] = database::create_variable($field);
 			});
@@ -39,7 +39,7 @@
 			if ($id == 'system') {
 
 				$transaction = database::query(
-					"select * from ". DB_TABLE_PREFIX ."stock_transactions
+					"select * from ". DB_PREFIX ."stock_transactions
 					where name like 'System Generated%'
 					and date(created_at) = '". date('Y-m-d') ."'
 					limit 1;"
@@ -55,7 +55,7 @@
 			}
 
 			$transaction = database::query(
-				"select * from ". DB_TABLE_PREFIX ."stock_transactions
+				"select * from ". DB_PREFIX ."stock_transactions
 				where id = ". (int)$id ."
 				limit 1;"
 			)->fetch();
@@ -68,8 +68,8 @@
 
 			$this->data['contents'] = database::query(
 				"select stc.*, si.sku, si.quantity, si.backordered, json_value(si.name, '$.". database::input(language::$selected['code']) ."') as name
-				from ". DB_TABLE_PREFIX ."stock_transactions_contents stc
-				left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = stc.stock_item_id)
+				from ". DB_PREFIX ."stock_transactions_contents stc
+				left join ". DB_PREFIX ."stock_items si on (si.id = stc.stock_item_id)
 				where stc.transaction_id = ". (int)$this->data['id'] .";"
 			)->fetch_all();
 
@@ -82,7 +82,7 @@
 			if (!$this->data['id']) {
 
 				database::query(
-					"insert into ". DB_TABLE_PREFIX ."stock_transactions
+					"insert into ". DB_PREFIX ."stock_transactions
 					(name, created_at)
 					values ('". database::input($this->data['name']) ."', '". ($this->data['created_at'] = date('Y-m-d H:i:s')) ."');"
 				);
@@ -91,7 +91,7 @@
 			}
 
 			database::query(
-				"update ". DB_TABLE_PREFIX ."stock_transactions
+				"update ". DB_PREFIX ."stock_transactions
 				set name = '". database::input($this->data['name']) ."',
 					description = '". database::input($this->data['description']) ."',
 					updated_at = '". ($this->data['updated_at'] = date('Y-m-d H:i:s')) ."'
@@ -102,7 +102,7 @@
 			// Revert stock changes
 			foreach ($this->previous['contents'] as $previous_content) {
 				database::query(
-					"update ". DB_TABLE_PREFIX ."stock_items
+					"update ". DB_PREFIX ."stock_items
 					set quantity = quantity - ". (float)$previous_content['quantity_adjustment'] .",
 						backordered = backordered - ". (!empty($previous_content['backordered']) ? (float)$previous_content['backordered'] : 0) ."
 					where id = ". (int)$previous_content['stock_item_id'] ."
@@ -112,7 +112,7 @@
 
 			// Delete transaction contents
 			database::query(
-				"delete from ". DB_TABLE_PREFIX ."stock_transactions_contents
+				"delete from ". DB_PREFIX ."stock_transactions_contents
 				where transaction_id = ". (int)$this->data['id'] ."
 				and id not in ('". implode("', '", database::input(array_column($this->data['contents'], 'id'))) ."');"
 			);
@@ -123,7 +123,7 @@
 				if (empty($content['id'])) {
 
 					database::query(
-						"insert into ". DB_TABLE_PREFIX ."stock_transactions_contents
+						"insert into ". DB_PREFIX ."stock_transactions_contents
 						(transaction_id, stock_item_id)
 						values (". (int)$this->data['id'] .", ". (int)$content['stock_item_id'] .");"
 					);
@@ -132,7 +132,7 @@
 				}
 
 				database::query(
-					"update ". DB_TABLE_PREFIX ."stock_transactions_contents
+					"update ". DB_PREFIX ."stock_transactions_contents
 					set stock_item_id = ". (int)$content['stock_item_id'] .",
 						quantity_adjustment = ". (float)$content['quantity_adjustment'] ."
 					where id = ". (int)$content['id'] ."
@@ -143,7 +143,7 @@
 				// Commit stock changes
 				if (!empty($content['stock_item_id'])) {
 					database::query(
-						"update ". DB_TABLE_PREFIX ."stock_items
+						"update ". DB_PREFIX ."stock_items
 						set quantity = quantity + ". (float)$content['quantity_adjustment'] .",
 							backordered = backordered + ". (!empty($content['backordered']) ? (float)$content['backordered'] : 0) ."
 						where id = ". (int)$content['stock_item_id'] ."
@@ -182,8 +182,8 @@
 
 			database::query(
 				"delete st, stc
-				from ". DB_TABLE_PREFIX ."stock_transactions st
-				left join ". DB_TABLE_PREFIX ."stock_transactions_contents stc on (stc.transaction_id = st.id)
+				from ". DB_PREFIX ."stock_transactions st
+				left join ". DB_PREFIX ."stock_transactions_contents stc on (stc.transaction_id = st.id)
 				where st.id = ". (int)$this->data['id'] .";"
 			);
 

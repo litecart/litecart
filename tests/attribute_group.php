@@ -6,7 +6,7 @@
 
 		// Get the current auto increment ID - this will be used to revert the ID after the test
 		$auto_increment_id = database::query(
-			"SHOW TABLE STATUS LIKE '". DB_TABLE_PREFIX ."attribute_groups';"
+			"SHOW TABLE STATUS LIKE '". DB_PREFIX ."attribute_groups';"
 		)->fetch('Auto_increment');
 
 		// Start a MySQL transaction - so we can rollback the changes
@@ -76,7 +76,7 @@
 		$attribute_group->delete();
 
 		if (database::query(
-			"select id from ". DB_TABLE_PREFIX ."attribute_groups
+			"select id from ". DB_PREFIX ."attribute_groups
 			where id = ". (int)$attribute_group_id ."
 			limit 1;"
 		)->num_rows()) {
@@ -97,6 +97,6 @@
 
 		// Revert the auto increment ID
 		database::query(
-			"ALTER TABLE ". DB_TABLE_PREFIX ."attribute_groups AUTO_INCREMENT = ". (int)$auto_increment_id .";"
+			"ALTER TABLE ". DB_PREFIX ."attribute_groups AUTO_INCREMENT = ". (int)$auto_increment_id .";"
 		);
 	}

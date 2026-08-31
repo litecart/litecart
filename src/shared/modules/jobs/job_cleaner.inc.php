@@ -22,7 +22,7 @@
 			echo "Cleaning up old and expired event logs..." . PHP_EOL;
 
 			database::query(
-				"delete from ". DB_TABLE_PREFIX ."event_logs
+				"delete from ". DB_PREFIX ."event_logs
 				where (expires_at is not null and expires_at < '". date('Y-m-d H:i:s') ."')
 				or (expires_at is null and created_at < '". date('Y-m-d H:i:s', strtotime('-3 months')) ."');"
 			);
@@ -34,7 +34,7 @@
 			echo "Cleaning up expired sessions..." . PHP_EOL;
 
 			database::query(
-				"delete from ". DB_TABLE_PREFIX ."sessions
+				"delete from ". DB_PREFIX ."sessions
 				where expires_at < '". date('Y-m-d H:i:s') ."';"
 			);
 
@@ -45,7 +45,7 @@
 			echo "Cleaning up old email history..." . PHP_EOL;
 
 			database::query(
-				"delete from ". DB_TABLE_PREFIX ."emails
+				"delete from ". DB_PREFIX ."emails
 				where status in ('sent', 'error')
 				and updated_at < '". date('Y-m-d 00:00:00', strtotime('-1 month')) ."';"
 			);
@@ -57,7 +57,7 @@
 			echo "Cleaning up old not found logs..." . PHP_EOL;
 
 			database::query(
-				"delete from ". DB_TABLE_PREFIX ."not_found
+				"delete from ". DB_PREFIX ."not_found
 				where last_requested < '". date('Y-m-d 00:00:00', strtotime('-90 days')) ."';"
 			);
 
@@ -68,7 +68,7 @@
 			echo "Cleaning up old visitor statistics..." . PHP_EOL;
 
 			database::query(
-				"delete from ". DB_TABLE_PREFIX ."visitors
+				"delete from ". DB_PREFIX ."visitors
 				where created_at < '". date('Y-m-d 00:00:00', strtotime('-1 month')) ."';"
 			);
 
@@ -79,7 +79,7 @@
 			echo "Cleaning up old webhook requests..." . PHP_EOL;
 
 			database::query(
-				"delete from ". DB_TABLE_PREFIX ."webhook_requests
+				"delete from ". DB_PREFIX ."webhook_requests
 				where created_at < '". database::input(date('Y-m-d H:i:s', strtotime('-30 days'))) ."';"
 			);
 

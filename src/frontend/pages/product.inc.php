@@ -63,7 +63,7 @@
 			}
 
 			database::query(
-				"replace into ". DB_TABLE_PREFIX ."product_notification_recipients
+				"replace into ". DB_PREFIX ."product_notification_recipients
 				(product_id, email, language_code, created_at)
 				values (". (int)$_GET['product_id'] .", '". database::input($_POST['email']) ."', '". database::input(language::$selected['code']) ."', '". date('Y-m-d H:i:s') ."')"
 			);
@@ -100,7 +100,7 @@
 			}
 
 			$reviews = database::query(
-				"select * from ". DB_TABLE_PREFIX ."reviews
+				"select * from ". DB_PREFIX ."reviews
 				where product_id = ". (int)$product->id ."
 				and customer_id = ". (int)customer::$data['id'] ."
 				limit 1;"
@@ -175,9 +175,9 @@
 				"select pr.*,
 					json_value(p.name, '$.\"". database::input(language::$selected['code']) ."\"') as product_name,
 					concat(c.firstname, ' ', c.lastname) as customer_name
-				from ". DB_TABLE_PREFIX ."reviews pr
-				left join ". DB_TABLE_PREFIX ."products p on (pr.product_id = p.product_id)
-				left join ". DB_TABLE_PREFIX ."customers c on (pr.customer_id = c.id)
+				from ". DB_PREFIX ."reviews pr
+				left join ". DB_PREFIX ."products p on (pr.product_id = p.product_id)
+				left join ". DB_PREFIX ."customers c on (pr.customer_id = c.id)
 				where pr.status
 				and pr.id = ". (int)$_GET['review_id'] ."
 				limit 1;"
@@ -211,7 +211,7 @@
 					session::$data['voted_reviews'][] = $review['id'];
 
 					database::query(
-						"update ". DB_TABLE_PREFIX ."reviews
+						"update ". DB_PREFIX ."reviews
 						set upvotes = upvotes + 1
 						where id = ". (int)$_GET['review_id'] ."
 						limit 1;"
@@ -225,7 +225,7 @@
 					session::$data['voted_reviews'][] = $review['id'];
 
 					database::query(
-						"update ". DB_TABLE_PREFIX ."reviews
+						"update ". DB_PREFIX ."reviews
 						set downvotes = downvotes + 1
 						where id = ". (int)$_GET['review_id'] ."
 						limit 1;"
@@ -240,12 +240,12 @@
 				'success' => true,
 				'message' => t('success_review_voted', 'Thank you for voting the review'),
 				'upvotes' => database::query(
-					"select upvotes from ". DB_TABLE_PREFIX ."reviews
+					"select upvotes from ". DB_PREFIX ."reviews
 					where id = ". (int)$_GET['review_id'] ."
 					limit 1;"
 				)->fetch('upvotes'),
 				'downvotes' => database::query(
-					"select downvotes from ". DB_TABLE_PREFIX ."reviews
+					"select downvotes from ". DB_PREFIX ."reviews
 					where id = ". (int)$_GET['review_id'] ."
 					limit 1;"
 				)->fetch('downvotes'),
@@ -266,7 +266,7 @@
 
 	if (empty(self::$data['is_bot'])) { // Needs an addon to detect bots
 		database::query(
-			"insert into ". DB_TABLE_PREFIX ."statistics
+			"insert into ". DB_PREFIX ."statistics
 			(type, entity_type, entity_id, measure_group_type, measure_group_value, `count`)
 			values ('product_views', 'product', ". (int)$product->id .", 'week', '". database::input(date('Y-W')) ."', 1)
 			on duplicate key update
@@ -619,7 +619,7 @@
 	// Ratings
 
 	$ratings = database::query(
-		"select count(*) as num_ratings, round(avg(rating), 1) as average_rating from ". DB_TABLE_PREFIX ."reviews
+		"select count(*) as num_ratings, round(avg(rating), 1) as average_rating from ". DB_PREFIX ."reviews
 		where status
 		and product_id = ". (int)$product->id
 	)->fetch();
@@ -638,7 +638,7 @@
 		"select *,
 			json_value(title, '$.". database::input(language::$selected['code']) ."') as title,
 			json_value(description, '$.". database::input(language::$selected['code']) ."') as description
-		from ". DB_TABLE_PREFIX ."reviews
+		from ". DB_PREFIX ."reviews
 		where status
 		and product_id = ". (int)$product->id ."
 		order by created_at desc;"
@@ -677,8 +677,8 @@
 	// Customer's Review
 	$_page->snippets['customer_review'] = database::query(
 		"select pr.*, c.firstname as name
-		from ". DB_TABLE_PREFIX ."reviews pr
-		left join ". DB_TABLE_PREFIX ."customers c on (pr.customer_id = c.id)
+		from ". DB_PREFIX ."reviews pr
+		left join ". DB_PREFIX ."customers c on (pr.customer_id = c.id)
 		where pr.product_id = ". (int)$product->id ."
 		and customer_id = ". (int)customer::$data['id'] ."
 		limit 1;"

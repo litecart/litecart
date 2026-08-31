@@ -11,7 +11,7 @@
 			'db_server' => $_REQUEST['db_server'] ?? '127.0.0.1',
 			'db_password' => $_REQUEST['db_password'] ?? '',
 			'db_collation' => $_REQUEST['db_collation'] ?? 'utf8mb4_swedish_ci',
-			'db_table_prefix' => $_REQUEST['db_table_prefix'] ?? 'lc_',
+			'db_prefix' => $_REQUEST['db_prefix'] ?? 'lc_',
 			'username' => $_REQUEST['username'] ?? 'admin',
 			'password' => $_REQUEST['password'] ?? '',
 			'client_ip' => $_REQUEST['client_ip'] ?? $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1',
@@ -57,7 +57,7 @@
 		define('DB_PASSWORD', $_REQUEST['db_password']);
 		define('DB_DATABASE', $_REQUEST['db_database']);
 		define('DB_COLLATION', $_REQUEST['db_collation']);
-		define('DB_TABLE_PREFIX', $_REQUEST['db_table_prefix']);
+		define('DB_PREFIX', $_REQUEST['db_prefix']);
 
 		echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 

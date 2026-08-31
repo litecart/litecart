@@ -9,7 +9,7 @@
 
 		// Fetch the current auto increment ID
 		$auto_increment_id = database::query(
-			"SHOW TABLE STATUS LIKE '". DB_TABLE_PREFIX ."site_tags';"
+			"SHOW TABLE STATUS LIKE '". DB_PREFIX ."site_tags';"
 		)->fetch('Auto_increment');
 
 		// Prepare some example data
@@ -79,7 +79,7 @@
 
 		// Check if the entity was deleted
 		if (database::query(
-			"select id from ". DB_TABLE_PREFIX ."site_tags
+			"select id from ". DB_PREFIX ."site_tags
 			where id = ". (int)$site_tag_id ."
 			limit 1;"
 		)->num_rows) {
@@ -100,7 +100,7 @@
 
 		// Revert the auto increment ID
 		database::query(
-			"ALTER TABLE ". DB_TABLE_PREFIX ."site_tags
+			"ALTER TABLE ". DB_PREFIX ."site_tags
 			AUTO_INCREMENT = ". (int)$auto_increment_id .";"
 		);
 	}

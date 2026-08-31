@@ -18,7 +18,7 @@
 		];
 
 		$result = database::query(
-			"select * from ". DB_TABLE_PREFIX ."tax_classes
+			"select * from ". DB_PREFIX ."tax_classes
 			order by code, name;"
 		)->fetch_all(function($tax_class) use ($customer) {
 			return tax::get_rates($tax_class['id'], $customer);

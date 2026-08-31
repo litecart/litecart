@@ -6,7 +6,7 @@
 
 		// Get the current auto increment ID - this will be used to revert the ID after the test
 		$auto_increment_id = database::query(
-			"SHOW TABLE STATUS LIKE '". DB_TABLE_PREFIX ."campaigns';"
+			"SHOW TABLE STATUS LIKE '". DB_PREFIX ."campaigns';"
 		)->fetch('Auto_increment');
 
 		// Start a MySQL transaction - so we can rollback the changes
@@ -70,7 +70,7 @@
 
 		// Find a product to associate with the campaign
 		$product = database::query(
-			"select id from ". DB_TABLE_PREFIX ."products
+			"select id from ". DB_PREFIX ."products
 			limit 1;"
 		)->fetch();
 
@@ -90,7 +90,7 @@
 
 			// Verify the campaign price was stored
 			$price = database::query(
-				"select * from ". DB_TABLE_PREFIX ."products_prices
+				"select * from ". DB_PREFIX ."products_prices
 				where campaign_id = ". (int)$campaign_id ."
 				limit 1;"
 			)->fetch();
@@ -104,7 +104,7 @@
 			$campaign->save();
 
 			$price = database::query(
-				"select price from ". DB_TABLE_PREFIX ."products_prices
+				"select price from ". DB_PREFIX ."products_prices
 				where campaign_id = ". (int)$campaign_id ."
 				limit 1;"
 			)->fetch('price');
@@ -120,7 +120,7 @@
 			$campaign->save();
 
 			$remaining = database::query(
-				"select count(*) as cnt from ". DB_TABLE_PREFIX ."products_prices
+				"select count(*) as cnt from ". DB_PREFIX ."products_prices
 				where campaign_id = ". (int)$campaign_id .";"
 			)->fetch('cnt');
 
@@ -136,7 +136,7 @@
 		$campaign->delete();
 
 		if (database::query(
-			"select * from ". DB_TABLE_PREFIX ."campaigns
+			"select * from ". DB_PREFIX ."campaigns
 			where id = ". (int)$campaign_id ."
 			limit 1;"
 		)->num_rows) {
@@ -157,6 +157,6 @@
 
 		// Revert the auto increment ID
 		database::query(
-			"ALTER TABLE ". DB_TABLE_PREFIX ."campaigns AUTO_INCREMENT = ". (int)$auto_increment_id .";"
+			"ALTER TABLE ". DB_PREFIX ."campaigns AUTO_INCREMENT = ". (int)$auto_increment_id .";"
 		);
 	}

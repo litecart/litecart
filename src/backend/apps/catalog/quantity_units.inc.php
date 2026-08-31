@@ -13,7 +13,7 @@
 	$quantity_units = database::prepare(
 		"select qu.id, json_value(qu.name, '$.". database::input(language::$selected['code']) ."') as name,
 			json_value(qu.description, '$.". database::input(language::$selected['code']) ."') as description
-		from ". DB_TABLE_PREFIX ."quantity_units qu
+		from ". DB_PREFIX ."quantity_units qu
 		order by qu.priority, name asc;"
 	)->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
 

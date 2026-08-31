@@ -7,7 +7,7 @@
 		echo '<p>Set cache breakpoint... ';
 
 		database::query(
-			"update ". str_replace('`lc_', '`'.DB_TABLE_PREFIX, '`lc_settings`') ."
+			"update ". str_replace('`lc_', '`'.DB_PREFIX, '`lc_settings`') ."
 			set value = '". date('Y-m-d H:i:s') ."'
 			where `key` = 'cache_system_breakpoint'
 			limit 1;"

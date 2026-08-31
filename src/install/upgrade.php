@@ -132,7 +132,7 @@
 
 	// Get current platform database version
 	$platform_database_version = database::query(
-		"select `value` from ". DB_TABLE_PREFIX ."settings
+		"select `value` from ". DB_PREFIX ."settings
 		where `key` = 'platform_database_version'
 		limit 1;"
 	)->fetch('value');

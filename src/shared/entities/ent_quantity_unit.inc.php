@@ -18,7 +18,7 @@
 			$this->data = [];
 
 			database::query(
-				"show fields from ". DB_TABLE_PREFIX ."quantity_units;"
+				"show fields from ". DB_PREFIX ."quantity_units;"
 			)->each(function($field){
 				$this->data[$field['Field']] = database::create_variable($field);
 			});
@@ -35,7 +35,7 @@
 			$this->reset();
 
 			$quantity_unit = database::query(
-				"select * from ". DB_TABLE_PREFIX ."quantity_units
+				"select * from ". DB_PREFIX ."quantity_units
 				where id = ". (int)$id ."
 				limit 1;"
 			)->fetch();
@@ -61,7 +61,7 @@
 
 			if (!$this->data['id']) {
 				database::query(
-					"insert into ". DB_TABLE_PREFIX ."quantity_units
+					"insert into ". DB_PREFIX ."quantity_units
 					(created_at)
 					values ('". ($this->data['created_at'] = date('Y-m-d H:i:s')) ."');"
 				);
@@ -69,7 +69,7 @@
 			}
 
 			database::query(
-				"update ". DB_TABLE_PREFIX ."quantity_units
+				"update ". DB_PREFIX ."quantity_units
 				set name = '". database::input(f::format_json($this->data['name'])) ."',
 					description = '". database::input(f::format_json($this->data['description'])) ."',
 					decimals = ". (int)$this->data['decimals'] .",
@@ -88,7 +88,7 @@
 		public function delete(): void {
 
 			if (database::query(
-				"select id from ". DB_TABLE_PREFIX ."products
+				"select id from ". DB_PREFIX ."products
 				where quantity_unit_id = ". (int)$this->data['id'] ."
 				limit 1;"
 			)->num_rows) {
@@ -97,7 +97,7 @@
 
 			database::query(
 				"delete qu
-				from ". DB_TABLE_PREFIX ."quantity_units qu
+				from ". DB_PREFIX ."quantity_units qu
 				where qu.id = ". (int)$this->data['id'] .";"
 			);
 

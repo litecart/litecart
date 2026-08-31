@@ -20,7 +20,7 @@
 			)) .",
 			'(". database::input(t('title_untitled', 'Untitled')) .")'
 		) as name
-		from ". DB_TABLE_PREFIX ."categories c
+		from ". DB_PREFIX ."categories c
 		where ". (!empty($_GET['parent_id']) ? "c.parent_id = ". (int)$_GET['parent_id'] : "c.parent_id is null") ."
 		order by c.priority, name;"
 	)->fetch_all();

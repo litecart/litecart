@@ -38,7 +38,7 @@
 			}
 
 			$customer = database::query(
-				"select * from ". DB_TABLE_PREFIX ."customers
+				"select * from ". DB_PREFIX ."customers
 				where email = '". database::input(strtolower($_POST['email'])) ."'
 				limit 1;"
 			)->fetch();
@@ -64,7 +64,7 @@
 				if (++$customer['login_attempts'] < 3) {
 
 					database::query(
-						"update ". DB_TABLE_PREFIX ."customers
+						"update ". DB_PREFIX ."customers
 						set login_attempts = login_attempts + 1
 						where id = ". (int)$customer['id'] ."
 						limit 1;"
@@ -75,7 +75,7 @@
 				} else {
 
 					database::query(
-						"update ". DB_TABLE_PREFIX ."customers
+						"update ". DB_PREFIX ."customers
 						set login_attempts = 0,
 						blocked_until = '". date('Y-m-d H:i:00', strtotime('+15 minutes')) ."'
 						where id = ". (int)$customer['id'] ."
@@ -90,7 +90,7 @@
 
 			if (password_needs_rehash($customer['password_hash'], PASSWORD_DEFAULT)) {
 				database::query(
-					"update ". DB_TABLE_PREFIX ."customers
+					"update ". DB_PREFIX ."customers
 					set password_hash = '". database::input(password_hash($_POST['password'], PASSWORD_DEFAULT)) ."'
 					where id = ". (int)$customer['id'] ."
 					limit 1;"
@@ -109,7 +109,7 @@
 			}
 
 			database::query(
-				"update ". DB_TABLE_PREFIX ."customers
+				"update ". DB_PREFIX ."customers
 				set known_ips = '". database::input(implode(',', $customer['known_ips'])) ."',
 					known_fingerprints = '". database::input(implode(',', $customer['known_fingerprints'])) ."',
 					last_ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."',

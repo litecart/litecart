@@ -4,7 +4,7 @@
 	database::query(
 		"select * from information_schema.COLUMNS
 		where TABLE_SCHEMA = '". DB_DATABASE ."'
-		and TABLE_NAME like '". DB_TABLE_PREFIX ."%';"
+		and TABLE_NAME like '". DB_PREFIX ."%';"
 	)->each(function($column){
 
 		switch ($column['COLUMN_NAME']) {
@@ -87,19 +87,19 @@
 
 	// Set language url type
 	$seo_links_language_prefix = database::query(
-		"select `value` from ". DB_TABLE_PREFIX ."settings
+		"select `value` from ". DB_PREFIX ."settings
 		where `key` = 'seo_links_language_prefix'
 		limit 1;"
 	)->fetch('value');
 
 	if ($seo_links_language_prefix) {
 		database::query(
-			"update ". DB_TABLE_PREFIX ."languages
+			"update ". DB_PREFIX ."languages
 			set url_type = 'path';"
 		);
 	} else {
 		database::query(
-			"update ". DB_TABLE_PREFIX ."languages
+			"update ". DB_PREFIX ."languages
 			set url_type = 'none';"
 		);
 	}

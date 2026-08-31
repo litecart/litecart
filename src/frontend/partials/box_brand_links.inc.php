@@ -13,7 +13,7 @@
 
 		$box_brand_links->snippets['brands'] = database::query(
 			"select b.id, b.created_at, b.name
-			from ". DB_TABLE_PREFIX ."brands b
+			from ". DB_PREFIX ."brands b
 			where b.status
 			order by b.name;"
 		)->fetch_all(function($brand) {

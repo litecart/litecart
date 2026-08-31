@@ -60,7 +60,7 @@
 
 				$row = database::query(
 					"select json_value(`text`, '$.en') as text_en
-					from ". DB_TABLE_PREFIX ."translations
+					from ". DB_PREFIX ."translations
 					where code = '". database::input($code) ."'
 					limit 1;"
 				)->fetch();
@@ -70,7 +70,7 @@
 					$new_translations++;
 
 					database::query(
-						"insert into ". DB_TABLE_PREFIX ."translations
+						"insert into ". DB_PREFIX ."translations
 						(code, `text`, html, created_at)
 						values ('". database::input($code) ."', '{\"en\":\"". database::input($translation, true) ."\"}', '". (($translation != strip_tags($translation)) ? 1 : 0) ."', '". date('Y-m-d H:i:s') ."');"
 					);
@@ -82,7 +82,7 @@
 					$updated++;
 
 					database::query(
-						"update ". DB_TABLE_PREFIX ."translations
+						"update ". DB_PREFIX ."translations
 						set `text` = json_set(coalesce(`text`, '{}'), '$.en', '". database::input($translation, true) ."')
 						where code = '". database::input($code) ."'
 						and (json_value(`text`, '$.en') is null or json_value(`text`, '$.en') = '')
@@ -95,14 +95,14 @@
 		}
 
 		database::query(
-			"select `key` from ". DB_TABLE_PREFIX ."settings_groups;"
+			"select `key` from ". DB_PREFIX ."settings_groups;"
 		)->each(function($group) use (&$translation_keys) {
 			$translation_keys[] = 'settings_group:title_'.$group['key'];
 			$translation_keys[] = 'settings_group:description_'.$group['key'];
 		});
 
 		database::query(
-			"select `key` from ". DB_TABLE_PREFIX ."settings
+			"select `key` from ". DB_PREFIX ."settings
 			where (group_key is not null and group_key != '');"
 		)->each(function($setting) use (&$translation_keys) {
 			$translation_keys[] = 'settings_key:title_'.$setting['key'];
@@ -110,7 +110,7 @@
 		});
 
 		database::query(
-			"select * from ". DB_TABLE_PREFIX ."translations
+			"select * from ". DB_PREFIX ."translations
 			where code not in ('". implode("', '", database::input($translation_keys)) ."')
 			order by last_accessed desc;"
 		)->each(function($translation) use (&$orphan) {
@@ -154,7 +154,7 @@
 
 			foreach ($_POST['translations'] as $code) {
 				database::query(
-					"delete from ". DB_TABLE_PREFIX ."translations
+					"delete from ". DB_PREFIX ."translations
 					where code = '". database::input($code) ."'
 					limit 1;"
 				);

@@ -26,7 +26,7 @@
 
 			if (!empty($_POST['code'])) {
 				if (database::query(
-					"select id from ". DB_TABLE_PREFIX ."brands
+					"select id from ". DB_PREFIX ."brands
 					where id != '". (isset($_GET['brand_id']) ? (int)$_GET['brand_id'] : 0) ."'
 					and code = '". database::input($_POST['code']) ."' limit 1;"
 				)->num_rows) {

@@ -26,7 +26,7 @@
 					}
 
 					$administrator = database::query(
-						"select * from ". DB_TABLE_PREFIX ."administrators
+						"select * from ". DB_PREFIX ."administrators
 						where username = '". database::input($token['id']) ."'
 						and status
 						and (valid_from is null or valid_from < '". date('Y-m-d H:i:s') ."')
@@ -44,14 +44,14 @@
 
 						if (++$administrator['login_attempts'] < 3) {
 							database::query(
-								"update ". DB_TABLE_PREFIX ."administrators
+								"update ". DB_PREFIX ."administrators
 								set login_attempts = login_attempts + 1
 								where id = ". (int)$administrator['id'] ."
 								limit 1;"
 							);
 						} else {
 							database::query(
-								"update ". DB_TABLE_PREFIX ."administrators
+								"update ". DB_PREFIX ."administrators
 								set login_attempts = 0,
 								valid_from = '". date('Y-m-d H:i:00', strtotime('+15 minutes')) ."'
 								where id = ". (int)$administrator['id'] ."
@@ -65,7 +65,7 @@
 					self::load($administrator['id']);
 
 					database::query(
-						"update ". DB_TABLE_PREFIX ."administrators
+						"update ". DB_PREFIX ."administrators
 						set last_ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."',
 							last_hostname = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
 							last_user_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."',
@@ -84,7 +84,7 @@
 			if (!empty(self::$data['id'])) {
 
 				$administrator = database::query(
-					"select * from ". DB_TABLE_PREFIX ."administrators
+					"select * from ". DB_PREFIX ."administrators
 					where id = ". (int)self::$data['id'] ."
 					limit 1;"
 				)->fetch();
@@ -109,7 +109,7 @@
 				}
 
 				database::query(
-					"update ". DB_TABLE_PREFIX ."administrators
+					"update ". DB_PREFIX ."administrators
 					set last_active = '". date('Y-m-d H:i:s') ."'
 					where id = ". (int)self::$data['id'] ."
 					limit 1;"
@@ -133,7 +133,7 @@
 			$administrator = [];
 
 			database::query(
-				"show fields from ". DB_TABLE_PREFIX ."administrators;"
+				"show fields from ". DB_PREFIX ."administrators;"
 			)->each(function($field) use (&$administrator) {
 				$administrator[$field['Field']] = database::create_variable($field);
 			});
@@ -148,7 +148,7 @@
 			self::reset();
 
 			$administrator = database::query(
-				"select * from ". DB_TABLE_PREFIX ."administrators
+				"select * from ". DB_PREFIX ."administrators
 				where id = ". (int)$administrator_id ."
 				limit 1;"
 			)->fetch();

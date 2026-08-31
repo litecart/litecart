@@ -12,7 +12,7 @@
 	database::query(
 		"SELECT * FROM `information_schema`.COLUMNS
 		WHERE TABLE_SCHEMA = '". DB_DATABASE ."'
-		AND TABLE_NAME like '". DB_TABLE_PREFIX ."%'
+		AND TABLE_NAME like '". DB_PREFIX ."%'
 		AND DATA_TYPE = 'decimal';"
 	)->each(function($column) {
 		database::query(

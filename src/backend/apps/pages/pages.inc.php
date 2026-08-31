@@ -155,10 +155,10 @@ table tbody .toggle {
 
 		$pages = database::query(
 			"select p.*, json_value(p.title, '$.". database::input(language::$selected['code']) ."') as title, p2.num_subpages
-			from ". DB_TABLE_PREFIX ."pages p
+			from ". DB_PREFIX ."pages p
 			left join (
 				select parent_id as id, count(id) as num_subpages
-				from ". DB_TABLE_PREFIX ."pages
+				from ". DB_PREFIX ."pages
 			) p2 on (p2.id = p.id)
 			where true
 			". (empty($_GET['query']) ? "and !parent_id" : "") ."
@@ -189,10 +189,10 @@ table tbody .toggle {
 
 			$pages_query = database::query(
 				"select p.*, json_value(p.title, '$.". database::input(language::$selected['code']) ."') as title, p2.num_subpages
-				from ". DB_TABLE_PREFIX ."pages p
+				from ". DB_PREFIX ."pages p
 				left join (
 					select parent_id as id, count(id) as num_subpages
-					from ". DB_TABLE_PREFIX ."pages
+					from ". DB_PREFIX ."pages
 				) p2 on (p2.id = p.id)
 				where ". ($parent_id ? "p.parent_id = ". (int)$parent_id : "p.parent_id is null") ."
 				". ((!empty($_GET['dock']) && empty($depth)) ? "and p.dock = '". database::input($_GET['dock']) ."'" : "") ."
@@ -245,8 +245,8 @@ table tbody .toggle {
 			}
 		};
 
-		$num_rows = database::query("select id from ". DB_TABLE_PREFIX ."pages;")->num_rows;
-		$num_root_rows = database::query("select id from ". DB_TABLE_PREFIX ."pages where parent_id is null;")->num_rows;
+		$num_rows = database::query("select id from ". DB_PREFIX ."pages;")->num_rows;
+		$num_root_rows = database::query("select id from ". DB_PREFIX ."pages where parent_id is null;")->num_rows;
 		$num_pages = $num_root_rows / settings::get('data_table_rows_per_page');
 		$iterator(0, 0);
 	}

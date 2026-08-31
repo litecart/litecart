@@ -3,7 +3,7 @@
 	// CLI option list. Kept as documentation of the accepted options; the
 	// values are parsed by init.inc.php.
 	$INSTALL_CLI_OPTIONS = [
-		'db_server::', 'db_username:', 'db_password::', 'db_database:', 'db_table_prefix::', 'db_collation::',
+		'db_server::', 'db_username:', 'db_password::', 'db_database:', 'db_prefix::', 'db_collation::',
 		'document_root:', 'timezone::', 'backend_alias::', 'username::', 'password::', 'development_type::', 'cleanup::',
 		'client_ip::',
 		'store_name::', 'store_email::', 'country_code::', 'store_country_code::', 'store_language_code::', 'store_time_zone::',
@@ -65,7 +65,7 @@
 				'  --db_password        Set database user password',
 				'',
 				'  --db_database        Set database name',
-				'  --db_table_prefix    Set database table prefix (Default: lc_).',
+				'  --db_prefix          Set database table prefix (Default: lc_).',
 				'  --db_collation       Set database collation (Default: utf8mb4_swedish_ci)',
 				'  --document_root      Set document root',
 				'',

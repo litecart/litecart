@@ -22,7 +22,7 @@
 			$this->id = get_called_class();
 
 			$module = database::query(
-				"select * from ". DB_TABLE_PREFIX ."modules
+				"select * from ". DB_PREFIX ."modules
 				where module_id = '". get_called_class() ."'
 				limit 1;"
 			)->fetch();

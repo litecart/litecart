@@ -26,10 +26,10 @@
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$orders = database::prepare(
 		"select o.*, os.name as order_status_name
-		from ". DB_TABLE_PREFIX ."orders o
+		from ". DB_PREFIX ."orders o
 		left join (
 			select os.id, os.hidden, json_value(os.name, '$.". database::input(language::$selected['code']) ."') as name
-			from ". DB_TABLE_PREFIX ."order_statuses os
+			from ". DB_PREFIX ."order_statuses os
 		) os on (os.id = o.order_status_id)
 		where order_status_id is not null
 		and o.customer_id = ". (int)customer::$data['id'] ."
@@ -41,8 +41,8 @@
 
 		$num_downloads = database::query(
 			"select oi.id
-			from ". DB_TABLE_PREFIX ."orders_items oi
-			left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = oi.stock_item_id)
+			from ". DB_PREFIX ."orders_items oi
+			left join ". DB_PREFIX ."stock_items si on (si.id = oi.stock_item_id)
 			where oi.order_id = ". (int)$order['id'] ."
 			and si.file;"
 		)->num_rows;

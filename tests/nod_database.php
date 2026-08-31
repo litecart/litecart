@@ -180,8 +180,8 @@
 		database::begin_transaction();
 
 		database::query(
-			"insert into ". DB_TABLE_PREFIX ."settings_groups
-			(". DB_TABLE_PREFIX ."settings_groups.`key`, name, description, priority)
+			"insert into ". DB_PREFIX ."settings_groups
+			(". DB_PREFIX ."settings_groups.`key`, name, description, priority)
 			values ('test_tx_". uniqid() ."', 'TX Test', '', 999);"
 		);
 
@@ -194,7 +194,7 @@
 		database::rollback();
 
 		$found = database::query(
-			"select id from ". DB_TABLE_PREFIX ."settings_groups
+			"select id from ". DB_PREFIX ."settings_groups
 			where id = ". (int)$inserted ."
 			limit 1;"
 		)->num_rows;

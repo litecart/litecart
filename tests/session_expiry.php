@@ -18,7 +18,7 @@
 		]);
 
 		database::query(
-			"insert into ". DB_TABLE_PREFIX ."sessions
+			"insert into ". DB_PREFIX ."sessions
 			(id, data, expires_at, updated_at, created_at)
 			values (
 				'". database::input($session_id) ."',
@@ -73,7 +73,7 @@
 		]);
 
 		database::query(
-			"insert into ". DB_TABLE_PREFIX ."sessions
+			"insert into ". DB_PREFIX ."sessions
 			(id, data, expires_at, updated_at, created_at)
 			values (
 				'". database::input($fresh_id) ."',
@@ -105,7 +105,7 @@
 		session::save();
 
 		$row = database::query(
-			"select expires_at from ". DB_TABLE_PREFIX ."sessions
+			"select expires_at from ". DB_PREFIX ."sessions
 			where id = '". database::input($save_id) ."'
 			limit 1;"
 		)->fetch();

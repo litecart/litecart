@@ -52,7 +52,7 @@
 					if (empty($this->parent_id)) return;
 
 					$query = database::query(
-						"select id from ". DB_TABLE_PREFIX ."pages
+						"select id from ". DB_PREFIX ."pages
 						where status
 						and parent_id = ". (int)$this->parent_id ."
 						and id != ". (int)$this->_data['id'] .";"
@@ -73,7 +73,7 @@
 						$descendants = [];
 
 						$pages_query = database::query(
-							"select id from ". DB_TABLE_PREFIX ."pages
+							"select id from ". DB_PREFIX ."pages
 							where parent_id = ". (int)$parent_id .";"
 						);
 
@@ -94,7 +94,7 @@
 					$this->_data['subpages'] = [];
 
 						database::query(
-							"select id, parent_id from ". DB_TABLE_PREFIX ."pages
+							"select id, parent_id from ". DB_PREFIX ."pages
 							where parent_id = ". (int)$this->_data['id'] .";"
 						)->each(function($page) {
 							$this->_data['subpages'][$page['id']] = reference::page($page['id'], $this->_language_codes[0]);
@@ -105,7 +105,7 @@
 				default:
 
 					$page = database::query(
-						"select * from ". DB_TABLE_PREFIX ."pages
+						"select * from ". DB_PREFIX ."pages
 						where id = ". (int)$this->_data['id'] ."
 						limit 1;"
 					)->fetch(function(&$page) {

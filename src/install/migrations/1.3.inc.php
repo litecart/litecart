@@ -77,7 +77,7 @@
 	], 'abort');
 
 	database::query(
-		"select id, categories from ". DB_TABLE_PREFIX ."products;"
+		"select id, categories from ". DB_PREFIX ."products;"
 	)->each(function($product){
 		$categories = explode( ',', $product['categories']);
 
@@ -85,14 +85,14 @@
 		foreach ($categories as $category_id) {
 			if ($is_first) {
 				database::query(
-					"update ". DB_TABLE_PREFIX ."products
+					"update ". DB_PREFIX ."products
 					set default_category_id = ". (int)$category_id . "
 					where id = ". (int)$product['id'] ."
 					limit 1;"
 				);
 			}
 			database::query(
-				"insert into `". DB_TABLE_PREFIX ."products_to_categories`
+				"insert into `". DB_PREFIX ."products_to_categories`
 				(product_id, category_id)
 				values (". (int)$product['id'] .", ". (int)$category_id .");"
 			);
@@ -101,5 +101,5 @@
 	});
 
 	database::query(
-		"alter table ". DB_TABLE_PREFIX ."products drop `categories`;"
+		"alter table ". DB_PREFIX ."products drop `categories`;"
 	);

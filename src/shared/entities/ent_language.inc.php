@@ -18,7 +18,7 @@
 			$this->data = [];
 
 			database::query(
-				"show fields from ". DB_TABLE_PREFIX ."languages;"
+				"show fields from ". DB_PREFIX ."languages;"
 			)->each(function($field){
 				$this->data[$field['Field']] = database::create_variable($field);
 			});
@@ -35,7 +35,7 @@
 			$this->reset();
 
 			$language = database::query(
-				"select * from ". DB_TABLE_PREFIX ."languages
+				"select * from ". DB_PREFIX ."languages
 				". (preg_match('#^\d+$#', $language_code) ? "where id = ". (int)$language_code : "") ."
 				". (preg_match('#^[a-z]{2}$#', $language_code) ? "where code = '". database::input($language_code) ."'" : "") ."
 				". (preg_match('#^[a-z]{3}$#', $language_code) ? "where code2 = '". database::input($language_code) ."'" : "") ."
@@ -63,7 +63,7 @@
 			}
 
 			if (database::query(
-				"select id from ". DB_TABLE_PREFIX ."languages
+				"select id from ". DB_PREFIX ."languages
 				where (
 					code = '". database::input($this->data['code']) ."'
 					". (!empty($this->data['code2']) ? "or code2 = '". database::input($this->data['code2']) ."'" : "") ."
@@ -80,7 +80,7 @@
 			if (!$this->data['id']) {
 
 				database::query(
-					"insert into ". DB_TABLE_PREFIX ."languages
+					"insert into ". DB_PREFIX ."languages
 					(code, code2, created_at)
 					values ('". database::input($this->data['code']) ."', '". database::input($this->data['code2']) ."', '". ($this->data['created_at'] = date('Y-m-d H:i:s')) ."');"
 				);
@@ -89,7 +89,7 @@
 			}
 
 			database::query(
-				"update ". DB_TABLE_PREFIX ."languages
+				"update ". DB_PREFIX ."languages
 				set status = ". (int)$this->data['status'] .",
 					code = '". database::input($this->data['code']) ."',
 					code2 = '". database::input($this->data['code2']) ."',
@@ -126,7 +126,7 @@
 
 				// Rename language code in translations table
 				database::query(
-					"update ". DB_TABLE_PREFIX ."translations
+					"update ". DB_PREFIX ."translations
 					set `text` = if(
 							json_contains_path(`text`, 'one', '$.". database::input($previous_code) ."'),
 							json_set(json_remove(`text`, '$.". database::input($previous_code) ."'),
@@ -141,7 +141,7 @@
 				foreach ($collections as $collection) {
 					if (empty($collection['translatable'])) continue;
 
-					$table = DB_TABLE_PREFIX . $collection['id'];
+					$table = DB_PREFIX . $collection['id'];
 
 					foreach ($collection['translatable'] as $column) {
 						database::query(
@@ -167,7 +167,7 @@
 				foreach ($collections as $collection) {
 					if (empty($collection['translatable'])) continue;
 
-					$table = DB_TABLE_PREFIX . $collection['id'];
+					$table = DB_PREFIX . $collection['id'];
 
 					foreach ($collection['translatable'] as $column) {
 						database::query(
@@ -198,7 +198,7 @@
 			}
 
 			database::query(
-				"delete from ". DB_TABLE_PREFIX ."languages
+				"delete from ". DB_PREFIX ."languages
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"
 			);
@@ -207,7 +207,7 @@
 			$language_code = database::identifier($this->data['code']);
 
 			database::query(
-				"update ". DB_TABLE_PREFIX ."translations
+				"update ". DB_PREFIX ."translations
 				set `text` = json_remove(`text`, '$.". database::input($language_code) ."');"
 			);
 
@@ -216,7 +216,7 @@
 			foreach ($collections as $collection) {
 				if (empty($collection['translatable'])) continue;
 
-				$table = DB_TABLE_PREFIX . $collection['id'];
+				$table = DB_PREFIX . $collection['id'];
 
 				foreach ($collection['translatable'] as $column) {
 					database::query(

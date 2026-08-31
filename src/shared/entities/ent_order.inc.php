@@ -21,7 +21,7 @@
 			$this->data = [];
 
 			database::query(
-				"show fields from ". DB_TABLE_PREFIX ."orders;"
+				"show fields from ". DB_PREFIX ."orders;"
 			)->each(function($field) {
 				switch (true) {
 
@@ -88,7 +88,7 @@
 			$this->reset();
 
 			$order = database::query(
-				"select * from ". DB_TABLE_PREFIX ."orders
+				"select * from ". DB_PREFIX ."orders
 				where id = ". (int)$id ."
 				limit 1;"
 			)->fetch();
@@ -124,7 +124,7 @@
 			$this->data['conversions'] = $this->data['conversions'] ? json_decode($this->data['conversions'], true) : [];
 
 			$this->data['items'] = database::query(
-				"select *	from ". DB_TABLE_PREFIX ."orders_items
+				"select *	from ". DB_PREFIX ."orders_items
 				where order_id = ". (int)$id ."
 				order by priority;"
 			)->fetch_all(function(&$item) {
@@ -136,16 +136,16 @@
 						coalesce(si.quantity, 0) as stock_quantity,
 						coalesce(o.quantity_reserved, 0) as quantity_reserved,
 						(coalesce(si.quantity, 0) - coalesce(o.quantity_reserved, 0)) as quantity_available
-					from ". DB_TABLE_PREFIX ."orders_stock_items osi
-					left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = osi.stock_item_id)
+					from ". DB_PREFIX ."orders_stock_items osi
+					left join ". DB_PREFIX ."stock_items si on (si.id = osi.stock_item_id)
 					left join (
 						select osi.stock_item_id, sum(osi.quantity * oi.quantity) as quantity_reserved
-						from ". DB_TABLE_PREFIX ."orders_stock_items osi
-						left join ". DB_TABLE_PREFIX ."orders_items oi on (oi.id = osi.item_id and oi.order_id = osi.order_id)
+						from ". DB_PREFIX ."orders_stock_items osi
+						left join ". DB_PREFIX ."orders_items oi on (oi.id = osi.item_id and oi.order_id = osi.order_id)
 						where osi.order_id in (
-							select id from ". DB_TABLE_PREFIX ."orders
+							select id from ". DB_PREFIX ."orders
 							where order_status_id in (
-								select id from ". DB_TABLE_PREFIX ."order_statuses
+								select id from ". DB_PREFIX ."order_statuses
 								where stock_action = 'reserve'
 							)
 						)
@@ -160,8 +160,8 @@
 			});
 
 			$this->data['comments'] = database::query(
-				"select oc.*, a.username as author_username from ". DB_TABLE_PREFIX ."orders_comments oc
-				left join ". DB_TABLE_PREFIX ."administrators a on (a.id = oc.author_id)
+				"select oc.*, a.username as author_username from ". DB_PREFIX ."orders_comments oc
+				left join ". DB_PREFIX ."administrators a on (a.id = oc.author_id)
 				where oc.order_id = ". (int)$id ."
 				order by oc.id;"
 			)->fetch_all();
@@ -200,7 +200,7 @@
 			if (!$this->data['customer']['id'] && $this->data['customer']['email']) {
 
 				$customer = database::query(
-					"select id from ". DB_TABLE_PREFIX ."customers
+					"select id from ". DB_PREFIX ."customers
 					where email = '". database::input($this->data['customer']['email']) ."'
 					limit 1;"
 				)->fetch();
@@ -226,7 +226,7 @@
 			if (!$this->data['id']) {
 
 				database::query(
-					"insert into ". DB_TABLE_PREFIX ."orders
+					"insert into ". DB_PREFIX ."orders
 					(public_key, created_at)
 					values ('". database::input($this->data['public_key']) ."', '". ($this->data['created_at'] = date('Y-m-d H:i:s')) ."');"
 				);
@@ -241,7 +241,7 @@
 
 			// Update order
 			database::query(
-				"update ". DB_TABLE_PREFIX ."orders
+				"update ". DB_PREFIX ."orders
 				set no = '". database::input($this->data['no']) ."',
 					starred = ". (int)$this->data['starred'] .",
 					unread = ". (int)$this->data['unread'] .",
@@ -324,7 +324,7 @@
 			// Delete order items not in current data
 			$item_ids = array_map('intval', array_filter(array_column($this->data['items'], 'id')));
 			database::query(
-				"delete from ". DB_TABLE_PREFIX ."orders_items
+				"delete from ". DB_PREFIX ."orders_items
 				where order_id = ". (int)$this->data['id'] ."
 				". ($item_ids ? "and id not in (". implode(", ", $item_ids) .")" : "") .";"
 			);
@@ -340,7 +340,7 @@
 				if (empty($item['id'])) {
 
 					database::query(
-						"insert into ". DB_TABLE_PREFIX ."orders_items
+						"insert into ". DB_PREFIX ."orders_items
 						(order_id)
 						values (". (int)$this->data['id'] .");"
 					);
@@ -349,7 +349,7 @@
 				}
 
 				database::query(
-					"update ". DB_TABLE_PREFIX ."orders_items
+					"update ". DB_PREFIX ."orders_items
 					set product_id = ". (int)$item['product_id'] .",
 						stock_option_id = ". (!empty($item['stock_option_id']) ? (int)$item['stock_option_id'] : "null") .",
 						code = '". database::input($item['code']) ."',
@@ -383,7 +383,7 @@
 					if (empty($stock_item['id'])) {
 
 						database::query(
-							"insert into ". DB_TABLE_PREFIX ."orders_stock_items
+							"insert into ". DB_PREFIX ."orders_stock_items
 							(order_id, item_id)
 							values (". (int)$this->data['id'] .", ". (int)$item['id'] .");"
 						);
@@ -394,7 +394,7 @@
 					// Withdraw stock
 					if ($this->data['order_status_id'] && !empty(reference::order_status($this->data['order_status_id'])->is_sale) && !empty($stock_item['stock_stock_item_id'])) {
 						database::query(
-							"update ". DB_TABLE_PREFIX ."stock_stock_items
+							"update ". DB_PREFIX ."stock_stock_items
 							set quantity = quantity + ". ($item['quantity'] * (float)$stock_item['quantity']) ."
 							where id = ". (int)$stock_item['stock_stock_item_id'] ."
 							limit 1;"
@@ -402,7 +402,7 @@
 					}
 
 					database::query(
-						"update ". DB_TABLE_PREFIX ."orders_stock_items
+						"update ". DB_PREFIX ."orders_stock_items
 						set item_id = ". (int)$item['id'] .",
 							stock_stock_item_id = ". (int)$stock_item['stock_stock_item_id'] .",
 							name = '". database::input($stock_item['name']) ."',
@@ -427,7 +427,7 @@
 					// Withdraw stock
 					if ($this->data['order_status_id'] && reference::order_status($this->data['order_status_id'])->stock_action == 'commit') {
 						database::query(
-							"update ". DB_TABLE_PREFIX ."stock_stock_items
+							"update ". DB_PREFIX ."stock_stock_items
 							set quantity = quantity - ". ($item['quantity'] * (float)$stock_item['quantity']) ."
 							where id = ". (int)$stock_item['stock_stock_item_id'] ."
 							limit 1;"
@@ -439,7 +439,7 @@
 			// Delete comments not in current data
 			$comment_ids = array_filter(array_column($this->data['comments'], 'id'));
 			database::query(
-				"delete from ". DB_TABLE_PREFIX ."orders_comments
+				"delete from ". DB_PREFIX ."orders_comments
 				where order_id = ". (int)$this->data['id'] ."
 				". ($comment_ids ? "and id not in (". implode(",", array_map('intval', $comment_ids)) .")" : "") .";"
 			);
@@ -466,7 +466,7 @@
 					if (empty($comment['id'])) {
 
 						database::query(
-							"insert into ". DB_TABLE_PREFIX ."orders_comments
+							"insert into ". DB_PREFIX ."orders_comments
 							(order_id, created_at)
 							values (". (int)$this->data['id'] .", '". ($this->data['comments'][$key]['created_at'] = date('Y-m-d H:i:s')) ."');"
 						);
@@ -479,7 +479,7 @@
 					}
 
 					database::query(
-						"update ". DB_TABLE_PREFIX ."orders_comments
+						"update ". DB_PREFIX ."orders_comments
 						set author = '". (!empty($comment['author']) ? database::input($comment['author']) : 'system') ."',
 							author_id = ". (int)$comment['author_id'] .",
 							text = '". database::input($comment['text']) ."',
@@ -763,7 +763,7 @@
 					if (empty($this->data['customer']['id'])) {
 
 						if (database::query(
-							"select id from ". DB_TABLE_PREFIX ."customers
+							"select id from ". DB_PREFIX ."customers
 							where email = '". database::input($this->data['customer']['email']) ."'
 							and status = 0
 							limit 1;"
@@ -1080,22 +1080,22 @@
 			try {
 
 				database::query(
-					"delete from ". DB_TABLE_PREFIX ."orders_stock_items
+					"delete from ". DB_PREFIX ."orders_stock_items
 					where order_id = ". (int)$this->data['id'] .";"
 				);
 
 				database::query(
-					"delete from ". DB_TABLE_PREFIX ."orders_comments
+					"delete from ". DB_PREFIX ."orders_comments
 					where order_id = ". (int)$this->data['id'] .";"
 				);
 
 				database::query(
-					"delete from ". DB_TABLE_PREFIX ."orders_items
+					"delete from ". DB_PREFIX ."orders_items
 					where order_id = ". (int)$this->data['id'] .";"
 				);
 
 				database::query(
-					"delete from ". DB_TABLE_PREFIX ."orders
+					"delete from ". DB_PREFIX ."orders
 					where id = ". (int)$this->data['id'] ."
 					limit 1;"
 				);

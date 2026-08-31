@@ -6,7 +6,7 @@
 
 		// Get the current auto increment ID - this will be used to revert the ID after the test
 		$auto_increment_id = database::query(
-			"SHOW TABLE STATUS LIKE '". DB_TABLE_PREFIX ."customers';"
+			"SHOW TABLE STATUS LIKE '". DB_PREFIX ."customers';"
 		)->fetch('Auto_increment');
 
 		// Start a MySQL transaction - so we can rollback the changes
@@ -86,7 +86,7 @@
 
 		// Check if the entity was deleted
 		if (database::query(
-			"select id from ". DB_TABLE_PREFIX ."customers
+			"select id from ". DB_PREFIX ."customers
 			where id = ". (int)$customer_id ."
 			limit 1;"
 		)->num_rows() > 0) {
@@ -107,6 +107,6 @@
 
 		// Reset the auto increment
 		database::query(
-			"ALTER TABLE ". DB_TABLE_PREFIX ."customers AUTO_INCREMENT = ". (int)$auto_increment_id .";"
+			"ALTER TABLE ". DB_PREFIX ."customers AUTO_INCREMENT = ". (int)$auto_increment_id .";"
 		);
 	}

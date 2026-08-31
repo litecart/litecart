@@ -28,7 +28,7 @@
 	}
 
 	$webhooks = database::prepare(
-		"select * from ". DB_TABLE_PREFIX ."webhooks
+		"select * from ". DB_PREFIX ."webhooks
 		order by status desc, url asc;"
 	)->fetch_page(null, null, $_GET['page'], settings::get('data_table_rows_per_page'), $num_rows, $num_pages);
 

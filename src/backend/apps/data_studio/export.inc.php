@@ -58,7 +58,7 @@
 					$entity_obj = new $class_name();
 
 					$data = database::query(
-						"SELECT * FROM `". DB_TABLE_PREFIX . $collection['id'] . "`
+						"SELECT * FROM `". DB_PREFIX . $collection['id'] . "`
 						ORDER BY `id` ASC;"
 					)->fetch_all();
 
@@ -76,7 +76,7 @@
 					}
 
 					$data = database::query(
-						"SELECT * FROM `". DB_TABLE_PREFIX . $table . "`
+						"SELECT * FROM `". DB_PREFIX . $table . "`
 						ORDER BY 1 ASC;"
 					)->fetch_all();
 

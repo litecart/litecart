@@ -8,7 +8,7 @@
 
 			database::query(
 				"select `key`, `value`, `function`
-				from ". DB_TABLE_PREFIX ."settings;"
+				from ". DB_PREFIX ."settings;"
 			)->each(function($setting){
 
 				switch (true) {
@@ -49,7 +49,7 @@
 
 			$setting = database::query(
 				"select `key`, `value`, `function`
-				from ". DB_TABLE_PREFIX ."settings
+				from ". DB_PREFIX ."settings
 				where `key` = '". database::input($key) ."'
 				limit 1;"
 			)->fetch();

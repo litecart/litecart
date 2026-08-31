@@ -18,7 +18,7 @@
 			$this->data = [];
 
 			database::query(
-				"show fields from ". DB_TABLE_PREFIX ."banners;"
+				"show fields from ". DB_PREFIX ."banners;"
 			)->each(function($field){
 				$this->data[$field['Field']] = database::create_variable($field);
 			});
@@ -37,7 +37,7 @@
 			$this->reset();
 
 			$banner = database::query(
-				"select * from ". DB_TABLE_PREFIX ."banners
+				"select * from ". DB_PREFIX ."banners
 				where id = ". (int)$id ."
 				limit 1;"
 			)->fetch();
@@ -63,7 +63,7 @@
 			if (!$this->data['id']) {
 
 				database::query(
-					"insert into ". DB_TABLE_PREFIX ."banners
+					"insert into ". DB_PREFIX ."banners
 					(created_at)
 					values ('". database::input(date('Y-m-d H:i:s')) ."');"
 				);
@@ -72,7 +72,7 @@
 			}
 
 			database::query(
-				"update ". DB_TABLE_PREFIX ."banners
+				"update ". DB_PREFIX ."banners
 				set status = ". (int)$this->data['status'] .",
 					name = '". database::input($this->data['name']) ."',
 					languages = '". implode(',', database::input($this->data['languages'])) ."',
@@ -126,7 +126,7 @@
 		public function delete(): void {
 
 			database::query(
-				"delete from ". DB_TABLE_PREFIX ."banners
+				"delete from ". DB_PREFIX ."banners
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"
 			);

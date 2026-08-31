@@ -45,7 +45,7 @@
 			}
 
 			if (database::query(
-				"select id from ". DB_TABLE_PREFIX ."customers
+				"select id from ". DB_PREFIX ."customers
 				where email = '". database::input($_POST['email']) ."'
 				limit 1;"
 			)->num_rows) {
@@ -140,7 +140,7 @@
 			$customer->save();
 
 			database::query(
-				"update ". DB_TABLE_PREFIX ."customers
+				"update ". DB_PREFIX ."customers
 				set last_ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."',
 					last_hostname = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
 					last_user_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."'

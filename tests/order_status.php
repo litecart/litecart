@@ -9,7 +9,7 @@
 
 		// Fetch the current auto increment ID
 		$auto_increment_id = database::query(
-			"SHOW TABLE STATUS LIKE '". DB_TABLE_PREFIX ."order_statuses';"
+			"SHOW TABLE STATUS LIKE '". DB_PREFIX ."order_statuses';"
 		)->fetch('Auto_increment');
 
 		// Prepare some example data
@@ -79,7 +79,7 @@
 
 		// Check if the entity was deleted
 		if (database::query(
-			"select id from ". DB_TABLE_PREFIX ."order_statuses
+			"select id from ". DB_PREFIX ."order_statuses
 			where id = ". (int)$order_status_id ."
 			limit 1;"
 		)->num_rows) {
@@ -100,7 +100,7 @@
 
 		// Revert the auto increment ID
 		database::query(
-			"ALTER TABLE ". DB_TABLE_PREFIX ."order_statuses
+			"ALTER TABLE ". DB_PREFIX ."order_statuses
 			AUTO_INCREMENT = ". (int)$auto_increment_id .";"
 		);
 	}

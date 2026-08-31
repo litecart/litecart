@@ -61,7 +61,7 @@
 			}
 
 			database::query(
-				"update ". DB_TABLE_PREFIX ."settings
+				"update ". DB_PREFIX ."settings
 				set `value` = '". database::input(f::format_json($new_settings)) ."',
 					updated_at = '". date('Y-m-d H:i:s') ."'
 				where `key` = 'template_settings'

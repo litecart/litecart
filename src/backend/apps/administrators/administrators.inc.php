@@ -35,7 +35,7 @@
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$administrators = database::query(
 		"select *, concat(firstname, ' ', lastname) as name
-		from ". DB_TABLE_PREFIX ."administrators
+		from ". DB_PREFIX ."administrators
 		order by username;"
 	)->fetch_page(function($administrator){
 

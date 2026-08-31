@@ -34,7 +34,7 @@
 
 			if (!empty($_POST['url_type']) && $_POST['url_type'] == 'root') {
 				if (database::query(
-					"select id from ". DB_TABLE_PREFIX ."languages
+					"select id from ". DB_PREFIX ."languages
 					where url_type = 'root'
 					and id != ". (int)$language->data['id'] ."
 					limit 1;"
@@ -51,7 +51,7 @@
 
 				if (!empty($language->data['id'])) {
 					if (database::query(
-						"select id from ". DB_TABLE_PREFIX ."languages
+						"select id from ". DB_PREFIX ."languages
 						where domain_name = '". database::input($_POST['domain_name']) ."'
 						and id != ". (int)$language->data['id'] ."
 						limit 1;"
@@ -136,7 +136,7 @@
 
 			if (!empty($_POST['set_default'])) {
 				database::query(
-					"update ". DB_TABLE_PREFIX ."settings
+					"update ". DB_PREFIX ."settings
 					set `value` = '". database::input($_POST['code']) ."'
 					where `key` = 'default_language_code'
 					limit 1;"
@@ -145,7 +145,7 @@
 
 			if (!empty($_POST['set_store'])) {
 				database::query(
-					"update ". DB_TABLE_PREFIX ."settings
+					"update ". DB_PREFIX ."settings
 					set `value` = '". database::input($_POST['code']) ."'
 					where `key` = 'store_language_code'
 					limit 1;"
@@ -173,7 +173,7 @@
 
 					foreach ($csv as $row) {
 						database::query(
-							"insert into ". DB_TABLE_PREFIX ."translations
+							"insert into ". DB_PREFIX ."translations
 							(`code`, `text`)
 							values ('". database::input($row['code']) ."', json_object('". database::input($language_code) ."', '". database::input($row['text_'.$language_code]) ."'))
 							on duplicate key update `text` = json_set(coalesce(`text`, '{}'), '$.". database::input($language_code) ."', '". database::input($row['text_'.$language_code]) ."');"
@@ -311,7 +311,7 @@
 
 		// Get all existing languages
 		$existing_languages = database::query(
-			"select code from ". DB_TABLE_PREFIX ."languages;"
+			"select code from ". DB_PREFIX ."languages;"
 		)->fetch_all('code');
 
 		// Get languages from i18n repository

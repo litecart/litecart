@@ -9,7 +9,7 @@
 
 		$stats = database::query(
 			"select count(id) as total_visits, sum(pageviews) as total_pageviews, created_at, date_format(created_at, '%Y-%m-%d') as date
-			from ". DB_TABLE_PREFIX ."visitors
+			from ". DB_PREFIX ."visitors
 			where created_at >= '". date('Y-m-d H:i:s', strtotime('-30 days')) ."'
 				group by date
 			order by created_at asc;"
@@ -40,7 +40,7 @@
 
 	// Online Visitors
 	$visitors = database::query(
-		"select * from ". DB_TABLE_PREFIX ."visitors
+		"select * from ". DB_PREFIX ."visitors
 		where updated_at > '". date('Y-m-d H:i:s', strtotime('-5 minutes')) ."'
 		order by updated_at desc;"
 	)->fetch_all(function(&$row){

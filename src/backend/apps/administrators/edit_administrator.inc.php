@@ -42,7 +42,7 @@
 				}
 
 				database::query(
-					"update ". DB_TABLE_PREFIX ."administrators
+					"update ". DB_PREFIX ."administrators
 					set totp_secret = '". database::input(session::$data['totp_pending_secret']) ."'
 					where id = ". (int)$administrator->data['id'] ."
 					limit 1;"
@@ -61,7 +61,7 @@
 				}
 
 				database::query(
-					"update ". DB_TABLE_PREFIX ."administrators
+					"update ". DB_PREFIX ."administrators
 					set totp_secret = null
 					where id = ". (int)$administrator->data['id'] ."
 					limit 1;"

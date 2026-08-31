@@ -22,7 +22,7 @@
 			}
 
 			database::query(
-				"select * from ". DB_TABLE_PREFIX ."modules
+				"select * from ". DB_PREFIX ."modules
 				where type = '". database::input(strtr($type, ['jobs' => 'job'])) ."'
 				". (!empty($filter) ? "and module_id in ('". implode("', '", database::input($filter)) ."')" : "") .";"
 			)->each(function($module) use ($type) {
@@ -32,7 +32,7 @@
 
 					// Remove deleted modules
 					database::query(
-						"delete from ". DB_TABLE_PREFIX ."modules
+						"delete from ". DB_PREFIX ."modules
 						where module_id = '". database::input($module['id']) ."'
 						limit 1;"
 					);

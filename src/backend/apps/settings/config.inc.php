@@ -16,7 +16,7 @@
 	];
 
 	database::query(
-		"select * from ". DB_TABLE_PREFIX ."settings_groups
+		"select * from ". DB_PREFIX ."settings_groups
 		order by priority, `key`;"
 	)->each(function($group) use (&$app_config) {
 

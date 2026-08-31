@@ -10,7 +10,7 @@
 
 			event::register('before_output', [__CLASS__, 'save']);
 			register_shutdown_function([__CLASS__, 'save']);
-			
+
 			$session_name = ini_get('session.name');
 
 			if (!empty($_COOKIE[$session_name]) && self::validate_id($_COOKIE[$session_name])) {
@@ -103,7 +103,7 @@
 				&& !is_ajax_request() // Not an AJAX request
 			) {
 				database::query(
-					"insert into ". DB_TABLE_PREFIX ."statistics
+					"insert into ". DB_PREFIX ."statistics
 					(type, entity_type, entity_id, measure_group_type, measure_group_value, `count`)
 					values ('page_views', 'domain', '". database::input($_SERVER['HTTP_HOST']) ."', 'day', '". database::input(date('Y-m-d')) ."', 1)
 					on duplicate key update
@@ -121,7 +121,7 @@
 
 				// Find known visitor by session id
 				$visitor = database::query(
-					"select id from ". DB_TABLE_PREFIX ."visitors
+					"select id from ". DB_PREFIX ."visitors
 					where session_id = '". database::input(self::$data['id']) ."'
 					and updated_at > '". date('Y-m-d 00:00:00') ."'
 					order by updated_at desc
@@ -131,7 +131,7 @@
 				// Fallback to find known visitor by ip address and user agent
 				if (!$visitor) {
 					$visitor = database::query(
-						"select id from ". DB_TABLE_PREFIX ."visitors
+						"select id from ". DB_PREFIX ."visitors
 						where ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."'
 						and user_agent = '". database::input($_SERVER['HTTP_USER_AGENT'])."'
 						and updated_at > '". date('Y-m-d 00:00:00') ."'
@@ -144,7 +144,7 @@
 				if (!$visitor) {
 
 					database::query(
-						"insert into ". DB_TABLE_PREFIX ."visitors
+						"insert into ". DB_PREFIX ."visitors
 						(session_id, ip_address, hostname, user_agent, referrer, updated_at, created_at)
 						values ('". database::input(self::$data['id']) ."', '". database::input($_SERVER['REMOTE_ADDR'])."', '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."', '". database::input($_SERVER['HTTP_USER_AGENT'])."', '". @database::input($_SERVER['HTTP_REFERER'])."', '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
 					);
@@ -154,7 +154,7 @@
 
 				// Update visitor record
 				database::query(
-					"update ". DB_TABLE_PREFIX ."visitors
+					"update ". DB_PREFIX ."visitors
 					set pageviews = pageviews + 1,
 						cart_uid = '". database::input(cart::$data['uid']) ."',
 						language = '". database::input(language::$selected['code']) ."',
@@ -201,7 +201,7 @@
 			self::reset();
 
 			$session = database::query(
-				"select * from ". DB_TABLE_PREFIX ."sessions
+				"select * from ". DB_PREFIX ."sessions
 				where id = '". database::input($session_id) ."'
 				and expires_at > '". database::input(date('Y-m-d H:i:s')) ."'
 				limit 1;"
@@ -229,7 +229,7 @@
 			$expires_at = date('Y-m-d H:i:s', strtotime('+1 hour'));
 
 			database::query(
-				"insert into ". DB_TABLE_PREFIX ."sessions
+				"insert into ". DB_PREFIX ."sessions
 				(id, data, expires_at, updated_at, created_at)
 				values (
 					'". database::input(self::$data['id']) ."',
@@ -267,7 +267,7 @@
 
 			if (!empty(self::$data['id'])) {
 				database::query(
-					"update ". DB_TABLE_PREFIX ."sessions
+					"update ". DB_PREFIX ."sessions
 					set expires_at = '". database::input(date('Y-m-d H:i:s')) ."'
 					where id = '". database::input(self::$data['id']) ."'
 					limit 1;"
@@ -284,7 +284,7 @@
 
 			// Only use SameSite=None when cookie is Secure (required by modern browsers)
 			$samesite = $is_secure ? 'None' : 'Lax';
-			
+
 			$session_name = ini_get('session.name');
 
 			header('Set-Cookie: '. $session_name .'='. rawurlencode(self::$data['id']) .';Path=/;'. ($is_secure ? 'Secure;' : '') .'HttpOnly;SameSite=' . $samesite);

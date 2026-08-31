@@ -26,7 +26,7 @@
 
 			if (!empty($_POST['sku'])) {
 				if (database::query(
-					"select id from ". DB_TABLE_PREFIX ."stock_items
+					"select id from ". DB_PREFIX ."stock_items
 					where id != ". (int)$stock_item->data['id'] ."
 					and sku = '". database::input($_POST['sku']) ."'
 					limit 1;"
@@ -37,7 +37,7 @@
 
 			if (!empty($_POST['mpn'])) {
 				if (database::query(
-					"select id from ". DB_TABLE_PREFIX ."stock_items
+					"select id from ". DB_PREFIX ."stock_items
 					where id != ". (int)$stock_item->data['id'] ."
 					and mpn = '". database::input($_POST['mpn']) ."'
 					limit 1;"
@@ -48,7 +48,7 @@
 
 			if (!empty($_POST['gtin'])) {
 				if (database::query(
-					"select id from ". DB_TABLE_PREFIX ."stock_items
+					"select id from ". DB_PREFIX ."stock_items
 					where id != ". (int)$stock_item->data['id'] ."
 					and gtin = '". database::input($_POST['gtin']) ."'
 					limit 1;"
@@ -149,7 +149,7 @@
 			if ($stock_item->data['quantity_expected'] != $stock_item->data['quantity']) {
 
 				database::query(
-					"update ". DB_TABLE_PREFIX ."stock_items
+					"update ". DB_PREFIX ."stock_items
 					set quantity = ". (int)$stock_item->data['quantity_expected'] ."
 					where id = ". (int)$stock_item->data['id'] ."
 					limit 1;"

@@ -9,7 +9,7 @@
 	$_box = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/box_favorites.inc.php');
 
 	$product_ids = database::query(
-		"select product_id from ". DB_TABLE_PREFIX ."favorites
+		"select product_id from ". DB_PREFIX ."favorites
 		where customer_id = ". (int)customer::$data['id'] ."
 		or cart_uid = '". database::input(cart::$data['uid']) ."';"
 	)->fetch_all('product_id');

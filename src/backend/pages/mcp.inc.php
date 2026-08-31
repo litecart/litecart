@@ -48,7 +48,7 @@
 		}
 
 		$administrator = database::query(
-			"select * from ". DB_TABLE_PREFIX ."administrators
+			"select * from ". DB_PREFIX ."administrators
 			where status
 			and lower(username) = lower('". database::input($_SERVER['PHP_AUTH_USER']) ."')
 			and (valid_from is null or valid_from < '". database::input(date('Y-m-d H:i:s')) ."')
@@ -66,7 +66,7 @@
 			if (++$administrator['login_attempts'] < 3) {
 
 				database::query(
-					"update ". DB_TABLE_PREFIX ."administrators
+					"update ". DB_PREFIX ."administrators
 					set login_attempts = login_attempts + 1
 					where id = ". (int)$administrator['id'] ."
 					limit 1;"
@@ -79,7 +79,7 @@
 			} else {
 
 				database::query(
-					"update ". DB_TABLE_PREFIX ."administrators
+					"update ". DB_PREFIX ."administrators
 					set login_attempts = 0,
 					blocked_until = '". date('Y-m-d H:i:00', strtotime('+15 minutes')) ."'
 					where id = ". (int)$administrator['id'] ."
@@ -94,7 +94,7 @@
 		// Reset login attempts after successful login
 		if (!empty($administrator['login_attempts'])) {
 			database::query(
-				"update ". DB_TABLE_PREFIX ."administrators
+				"update ". DB_PREFIX ."administrators
 				set login_attempts = 0
 				where id = ". (int)$administrator['id'] ."
 				limit 1;",

@@ -6,19 +6,19 @@
 
 		// Get auto increment IDs for rollback
 		$products_auto_id = database::query(
-			"SHOW TABLE STATUS LIKE '". DB_TABLE_PREFIX ."products';"
+			"SHOW TABLE STATUS LIKE '". DB_PREFIX ."products';"
 		)->fetch('Auto_increment');
 
 		$categories_auto_id = database::query(
-			"SHOW TABLE STATUS LIKE '". DB_TABLE_PREFIX ."categories';"
+			"SHOW TABLE STATUS LIKE '". DB_PREFIX ."categories';"
 		)->fetch('Auto_increment');
 
 		$tax_classes_auto_id = database::query(
-			"SHOW TABLE STATUS LIKE '". DB_TABLE_PREFIX ."tax_classes';"
+			"SHOW TABLE STATUS LIKE '". DB_PREFIX ."tax_classes';"
 		)->fetch('Auto_increment');
 
 		$tax_rates_auto_id = database::query(
-			"SHOW TABLE STATUS LIKE '". DB_TABLE_PREFIX ."tax_rates';"
+			"SHOW TABLE STATUS LIKE '". DB_PREFIX ."tax_rates';"
 		)->fetch('Auto_increment');
 
 		database::begin_transaction();
@@ -87,8 +87,8 @@
 
 		// Query products by category
 		$found = database::query(
-			"select p.id from ". DB_TABLE_PREFIX ."products p
-			inner join ". DB_TABLE_PREFIX ."products_to_categories pc on (pc.product_id = p.id)
+			"select p.id from ". DB_PREFIX ."products p
+			inner join ". DB_PREFIX ."products_to_categories pc on (pc.product_id = p.id)
 			where pc.category_id = ". (int)$category_id ."
 			and p.id = ". (int)$product_id ."
 			limit 1;"
@@ -104,7 +104,7 @@
 
 		// Create tax class
 		database::query(
-			"insert into ". DB_TABLE_PREFIX ."tax_classes
+			"insert into ". DB_PREFIX ."tax_classes
 			(name, description, created_at)
 			values ('Test Tax 19%', 'German VAT', '". date('Y-m-d H:i:s') ."');"
 		);
@@ -128,7 +128,7 @@
 
 		// Verify tax class exists in DB
 		$found = database::query(
-			"select id from ". DB_TABLE_PREFIX ."tax_classes
+			"select id from ". DB_PREFIX ."tax_classes
 			where id = ". (int)$tax_class_id ."
 			limit 1;"
 		)->num_rows;
@@ -156,7 +156,7 @@
 
 		// Query active products only
 		$found = database::query(
-			"select id from ". DB_TABLE_PREFIX ."products
+			"select id from ". DB_PREFIX ."products
 			where id = ". (int)$inactive_id ."
 			and status = 1
 			limit 1;"
@@ -168,7 +168,7 @@
 
 		// Verify it exists when not filtering by status
 		$found = database::query(
-			"select id from ". DB_TABLE_PREFIX ."products
+			"select id from ". DB_PREFIX ."products
 			where id = ". (int)$inactive_id ."
 			limit 1;"
 		)->num_rows;
@@ -188,8 +188,8 @@
 
 		database::rollback();
 
-		database::query("ALTER TABLE ". DB_TABLE_PREFIX ."products AUTO_INCREMENT = ". (int)$products_auto_id .";");
-		database::query("ALTER TABLE ". DB_TABLE_PREFIX ."categories AUTO_INCREMENT = ". (int)$categories_auto_id .";");
-		database::query("ALTER TABLE ". DB_TABLE_PREFIX ."tax_classes AUTO_INCREMENT = ". (int)$tax_classes_auto_id .";");
-		database::query("ALTER TABLE ". DB_TABLE_PREFIX ."tax_rates AUTO_INCREMENT = ". (int)$tax_rates_auto_id .";");
+		database::query("ALTER TABLE ". DB_PREFIX ."products AUTO_INCREMENT = ". (int)$products_auto_id .";");
+		database::query("ALTER TABLE ". DB_PREFIX ."categories AUTO_INCREMENT = ". (int)$categories_auto_id .";");
+		database::query("ALTER TABLE ". DB_PREFIX ."tax_classes AUTO_INCREMENT = ". (int)$tax_classes_auto_id .";");
+		database::query("ALTER TABLE ". DB_PREFIX ."tax_rates AUTO_INCREMENT = ". (int)$tax_rates_auto_id .";");
 	}

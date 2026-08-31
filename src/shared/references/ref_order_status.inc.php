@@ -25,7 +25,7 @@
 				default:
 
 					$order_status = database::query(
-						"select * from ". DB_TABLE_PREFIX ."order_statuses
+						"select * from ". DB_PREFIX ."order_statuses
 						where id = ". (int)$this->_data['id'] ."
 						limit 1;"
 					)->fetch(function($status) {
@@ -51,7 +51,7 @@
 
 					if (!$order_status) {
 						$order_status = database::query(
-							"show fields from ". DB_TABLE_PREFIX ."order_statuses;"
+							"show fields from ". DB_PREFIX ."order_statuses;"
 						)->each(function($field) use ($order_status) {
 							$order_status[$field['Field']] = database::create_variable($field);
 						});

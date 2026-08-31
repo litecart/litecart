@@ -15,7 +15,7 @@
 			if ($_POST['template'] != settings::get('template')) {
 
 				database::query(
-					"update ". DB_TABLE_PREFIX ."settings
+					"update ". DB_PREFIX ."settings
 					set `value` = '". database::input($_POST['template']) ."',
 						updated_at = '". date('Y-m-d H:i:s') ."'
 					where `key` = '". database::input('template') ."'
@@ -32,7 +32,7 @@
 				}
 
 				database::query(
-					"update ". DB_TABLE_PREFIX ."settings
+					"update ". DB_PREFIX ."settings
 					set `value` = '". database::input(f::format_json($settings)) ."',
 						updated_at = '". date('Y-m-d H:i:s') ."'
 					where `key` = '". database::input('template_settings') ."'

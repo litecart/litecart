@@ -21,8 +21,8 @@
 				echo '<p>Upgrading database to '. $version .'...</p>' . PHP_EOL . PHP_EOL;
 
 				$sql = file_get_contents(__DIR__ . '/../../migrations/'. $version .'.sql');
-				$sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, $sql);
-				$sql = str_replace("'lc_", "'".DB_TABLE_PREFIX, $sql);
+				$sql = str_replace('`lc_', '`'.DB_PREFIX, $sql);
+				$sql = str_replace("'lc_", "'".DB_PREFIX, $sql);
 
 				foreach (preg_split('#^-- -----*$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {
 					$query = preg_replace('#^-- .*?\R+#m', '', $query);
@@ -44,7 +44,7 @@
 			echo '<p>Set platform database version... ';
 
 			database::query(
-				"update ". DB_TABLE_PREFIX ."settings
+				"update ". DB_PREFIX ."settings
 				set `value` = '". database::input($version) ."'
 				where `key` = 'platform_database_version'
 				limit 1;"

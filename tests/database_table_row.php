@@ -11,7 +11,7 @@
 	try {
 
 		$auto_increment_id = database::query(
-			"SHOW TABLE STATUS LIKE '". DB_TABLE_PREFIX ."redirects';"
+			"SHOW TABLE STATUS LIKE '". DB_PREFIX ."redirects';"
 		)->fetch('Auto_increment');
 
 		database::begin_transaction();
@@ -20,7 +20,7 @@
 		## Create via ent_database_table_row
 		########################################################################
 
-		$row = new ent_database_table_row(DB_TABLE_PREFIX . 'redirects');
+		$row = new ent_database_table_row(DB_PREFIX . 'redirects');
 
 		$row->data['pattern'] = '/test-row-'. uniqid();
 		$row->data['destination'] = '/destination';
@@ -39,7 +39,7 @@
 		########################################################################
 
 		$check = database::query(
-			"select * from ". DB_TABLE_PREFIX ."redirects
+			"select * from ". DB_PREFIX ."redirects
 			where id = ". (int)$row_id ."
 			limit 1;"
 		)->fetch();
@@ -56,7 +56,7 @@
 		## Load via constructor
 		########################################################################
 
-		$loaded = new ent_database_table_row(DB_TABLE_PREFIX . 'redirects', $row_id);
+		$loaded = new ent_database_table_row(DB_PREFIX . 'redirects', $row_id);
 
 		if ($loaded->data['pattern'] !== $row->data['pattern']) {
 			throw new Exception('load: Pattern mismatch after loading by ID');
@@ -70,7 +70,7 @@
 		$loaded->save();
 
 		$updated = database::query(
-			"select destination from ". DB_TABLE_PREFIX ."redirects
+			"select destination from ". DB_PREFIX ."redirects
 			where id = ". (int)$row_id ."
 			limit 1;"
 		)->fetch('destination');
@@ -86,7 +86,7 @@
 		$loaded->delete();
 
 		$found = database::query(
-			"select id from ". DB_TABLE_PREFIX ."redirects
+			"select id from ". DB_PREFIX ."redirects
 			where id = ". (int)$row_id ."
 			limit 1;"
 		)->num_rows;
@@ -107,7 +107,7 @@
 		database::rollback();
 
 		database::query(
-			"ALTER TABLE ". DB_TABLE_PREFIX ."redirects
+			"ALTER TABLE ". DB_PREFIX ."redirects
 			AUTO_INCREMENT = ". (int)$auto_increment_id .";"
 		);
 	}

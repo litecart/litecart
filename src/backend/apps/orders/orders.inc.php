@@ -26,7 +26,7 @@
 
 	if (isset($_POST['star']) || isset($_POST['unstar'])) {
 		database::query(
-			"update ". DB_TABLE_PREFIX ."orders
+			"update ". DB_PREFIX ."orders
 			set starred = ". (isset($_POST['star']) ? 1 : 0) ."
 			where id = ". (int)$_POST['order_id'] ."
 			limit 1;"
@@ -187,11 +187,11 @@
 			"o.shipping_option_name like '%". database::input($_GET['query']) ."%'",
 			"o.shipping_tracking_id like '". database::input($_GET['query']) ."'",
 			"o.id in (
-				select order_id from ". DB_TABLE_PREFIX ."orders_items
+				select order_id from ". DB_PREFIX ."orders_items
 				where name like '%". database::input($_GET['query']) ."%'
 			)",
 			"o.id in (
-				select order_id from ". DB_TABLE_PREFIX ."orders_items
+				select order_id from ". DB_PREFIX ."orders_items
 				where name like '%". database::input($_GET['query']) ."%'
 			)",
 		];
@@ -220,8 +220,8 @@
 			os.icon as order_status_icon,
 			json_value(os.name, '$.". database::input(language::$selected['code']) ."') as order_status_name,
 			if (o.notes, 1, 0) as has_notes
-		from ". DB_TABLE_PREFIX ."orders o
-		left join ". DB_TABLE_PREFIX ."order_statuses os on (os.id = o.order_status_id)
+		from ". DB_PREFIX ."orders o
+		left join ". DB_PREFIX ."order_statuses os on (os.id = o.order_status_id)
 		where o.id
 		". (!empty($sql_where) ? "and (". implode(" or ", $sql_where) .")" : "") ."
 		". ($sql_where_order_status ?? '') ."
@@ -270,14 +270,14 @@
 
 		// Order Items
 		$order['items'] = database::query(
-			"select * from ". DB_TABLE_PREFIX ."orders_items oi
+			"select * from ". DB_PREFIX ."orders_items oi
 			where order_id = ". (int)$order['id'] .";"
 		)->fetch_all(function(&$item){
 
 			$item['stock_items'] = database::query(
 				"select osi.*, si.quantity as stock_quantity
-				from ". DB_TABLE_PREFIX ."orders_stock_items osi
-				left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = osi.stock_item_id)
+				from ". DB_PREFIX ."orders_stock_items osi
+				left join ". DB_PREFIX ."stock_items si on (si.id = osi.stock_item_id)
 				where osi.order_id = ". (int)$item['order_id'] ."
 				and osi.item_id = ". (int)$item['id'] .";"
 			)->fetch_all(function(&$item){
@@ -331,10 +331,10 @@
 	database::query(
 		"select os.*, o.num_orders,
 			json_value(os.name, '$.". database::input(language::$selected['code']) ."') as name
-		from ". DB_TABLE_PREFIX ."order_statuses os
+		from ". DB_PREFIX ."order_statuses os
 		left join (
 			select order_status_id, count(id) as num_orders
-			from ". DB_TABLE_PREFIX ."orders
+			from ". DB_PREFIX ."orders
 			group by order_status_id
 		) o on (o.order_status_id = os.id)
 		order by field(state, 'created', 'on_hold', 'ready', 'delayed', 'processing', 'dispatched', 'in_transit', 'delivered', 'returning', 'returned', 'cancelled', ''), name asc;"

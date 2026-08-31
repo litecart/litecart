@@ -14,7 +14,7 @@
 
 				foreach ($data_files as $file) {
 
-					$table = DB_TABLE_PREFIX . basename($file, '.csv');
+					$table = DB_PREFIX . basename($file, '.csv');
 
 					$contents = strtr(file_get_contents($file), [
 						'{STORE_NAME}' => isset($_REQUEST['store_name']) ? $_REQUEST['store_name'] : '',
@@ -74,7 +74,7 @@
 
 			if (!empty($sql)) {
 				$sql = preg_replace('#\r\n?#', "\n", $sql);
-				$sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, $sql);
+				$sql = str_replace('`lc_', '`'.DB_PREFIX, $sql);
 
 				foreach (preg_split('#^-- -----*$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {
 					$query = preg_replace('#^-- .*?\R+#m', '', $query);

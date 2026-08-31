@@ -17,7 +17,7 @@
 		if (!empty($_GET['order_id'])) {
 
 			$order = database::query(
-				"select id from ". DB_TABLE_PREFIX ."orders
+				"select id from ". DB_PREFIX ."orders
 				where id = ". (int)$_GET['order_id'] ."
 				limit 1;"
 			)->fetch();
@@ -29,7 +29,7 @@
 		} else if (!empty($_GET['order_no'])) {
 
 			$order = database::query(
-				"select id from ". DB_TABLE_PREFIX ."orders
+				"select id from ". DB_PREFIX ."orders
 				where no = '". database::input($_GET['order_no']) ."'
 				limit 1;"
 			)->fetch();
@@ -58,9 +58,9 @@
 		$_page->snippets['action_menu'] = true;
 		$_page->snippets['items'] = database::query(
 			"select osi.stock_item_id, osi.name, osi.sku, osi.gtin, osi.taric, sum(oi.quantity * osi.quantity) as total_quantity
-			from ". DB_TABLE_PREFIX ."orders_stock_items osi
-			left join ". DB_TABLE_PREFIX ."orders_items oi on (oi.id = osi.item_id)
-			left join ". DB_TABLE_PREFIX ."orders o on (o.id = osi.order_id)
+			from ". DB_PREFIX ."orders_stock_items osi
+			left join ". DB_PREFIX ."orders_items oi on (oi.id = osi.item_id)
+			left join ". DB_PREFIX ."orders o on (o.id = osi.order_id)
 			where osi.order_id = ". (int)$order->data['id'] .";"
 		)->fetch_all();
 

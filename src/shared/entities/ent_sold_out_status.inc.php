@@ -18,7 +18,7 @@
 			$this->data = [];
 
 			database::query(
-				"show fields from ". DB_TABLE_PREFIX ."sold_out_statuses;"
+				"show fields from ". DB_PREFIX ."sold_out_statuses;"
 			)->each(function($field){
 				$this->data[$field['Field']] = database::create_variable($field);
 			});
@@ -42,7 +42,7 @@
 			$this->reset();
 
 			$sold_out_status = database::query(
-				"select * from ". DB_TABLE_PREFIX ."sold_out_statuses
+				"select * from ". DB_PREFIX ."sold_out_statuses
 				where id = ". (int)$id ."
 				limit 1;"
 			)->fetch();
@@ -68,7 +68,7 @@
 
 			if (!$this->data['id']) {
 				database::query(
-					"insert into ". DB_TABLE_PREFIX ."sold_out_statuses
+					"insert into ". DB_PREFIX ."sold_out_statuses
 					(created_at)
 					values ('". ($this->data['created_at'] = date('Y-m-d H:i:s')) ."');"
 				);
@@ -76,7 +76,7 @@
 			}
 
 			database::query(
-				"update ". DB_TABLE_PREFIX ."sold_out_statuses
+				"update ". DB_PREFIX ."sold_out_statuses
 				set orderable = ". (int)$this->data['orderable'] .",
 					hidden = ". (int)$this->data['hidden'] .",
 					name = '". database::input(f::format_json($this->data['name'])) ."',
@@ -94,7 +94,7 @@
 		public function delete(): void {
 
 			if (database::query(
-				"select id from ". DB_TABLE_PREFIX ."products
+				"select id from ". DB_PREFIX ."products
 				where sold_out_status_id = ". (int)$this->data['id'] ."
 				limit 1;"
 			)->num_rows) {
@@ -103,7 +103,7 @@
 
 			database::query(
 				"delete ss
-				from ". DB_TABLE_PREFIX ."sold_out_statuses ss
+				from ". DB_PREFIX ."sold_out_statuses ss
 				where ss.id = ". (int)$this->data['id'] .";"
 			);
 

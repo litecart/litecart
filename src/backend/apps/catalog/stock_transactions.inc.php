@@ -12,13 +12,13 @@
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$transactions = database::prepare(
 		"select id, name, created_at
-		from ". DB_TABLE_PREFIX ."stock_transactions t
+		from ". DB_PREFIX ."stock_transactions t
 		where true
 		". (!empty($_GET['query']) ? "t.name like '%". database::input($_GET['query']) ."%' or t.notes like '%". database::input($_GET['query']) ."%'" : "") ."
 		". (!empty($_GET['query']) ? "and id in (
-			select transaction_id from ". DB_TABLE_PREFIX ."stock_transactions_contents
+			select transaction_id from ". DB_PREFIX ."stock_transactions_contents
 			where stock_item_id in (
-				select id from ". DB_TABLE_PREFIX ."stock_items si
+				select id from ". DB_PREFIX ."stock_items si
 				where json_value(si.name, '$.". database::input(language::$selected['code']) ."') like '%". database::input($_GET['query']) ."%'
 				or si.sku like '%". database::input($_GET['query']) ."%'
 				or si.mpn like '%". database::input($_GET['query']) ."%'

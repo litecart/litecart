@@ -20,7 +20,7 @@
 			$num_orders = 0;
 
 			database::query(
-				"select id from ". DB_TABLE_PREFIX ."orders
+				"select id from ". DB_PREFIX ."orders
 				where order_status_id = ". (int)$_POST['from_order_status_id'] .";"
 			)->each(function($order) use (&$num_orders) {
 				$order = new ent_order($order['id']);
@@ -45,10 +45,10 @@
 
 	$order_statuses = database::query(
 		"select os.*, json_value(os.name, '$.". database::input(language::$selected['code']) ."') as name, o.num_orders
-		from ". DB_TABLE_PREFIX ."order_statuses os
+		from ". DB_PREFIX ."order_statuses os
 		left join (
 			select order_status_id, count(id) as num_orders
-			from ". DB_TABLE_PREFIX ."orders
+			from ". DB_PREFIX ."orders
 			group by order_status_id
 		) o on (o.order_status_id = os.id)
 		order by field(state, 'created', 'on_hold', 'ready', 'delayed', 'processing', 'completed', 'dispatched', 'in_transit', 'delivered', 'returning', 'returned', 'cancelled', ''), os.priority, name asc;"

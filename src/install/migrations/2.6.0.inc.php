@@ -32,7 +32,7 @@
 
 // Get store timezone
 	if ($timezone = database::query(
-		"SELECT * FROM ". DB_TABLE_PREFIX ."settings
+		"SELECT * FROM ". DB_PREFIX ."settings
 		WHERE `key` = 'store_timezone'
 		LIMIT 1;"
 	)->fetch('value')) {
@@ -59,13 +59,13 @@
 
 		"SELECT * FROM information_schema.COLUMNS
 		WHERE TABLE_SCHEMA = '". database::input(DB_DATABASE) ."'
-		AND TABLE_NAME = '". database::input(DB_TABLE_PREFIX . 'users') ."'
+		AND TABLE_NAME = '". database::input(DB_PREFIX . 'users') ."'
 		AND COLUMN_NAME = 'date_expire_sessions'
 		LIMIT 1;"
 	)->num_rows) {
 
 		database::query(
-			"ALTER TABLE ". DB_TABLE_PREFIX ."users
+			"ALTER TABLE ". DB_PREFIX ."users
 			ADD COLUMN `date_expire_sessions` TIMESTAMP NULL AFTER `date_login`;"
 		);
 	}

@@ -41,7 +41,7 @@
 
 
 			$customer = database::query(
-				"select * from ". DB_TABLE_PREFIX ."customers
+				"select * from ". DB_PREFIX ."customers
 				where status
 				and lower(username) = lower('". database::input($_SERVER['PHP_AUTH_USER']) ."')
 				and (valid_from is null or valid_from < '". database::input(date('Y-m-d H:i:s')) ."')
@@ -59,7 +59,7 @@
 				if (++$customer['login_attempts'] < 3) {
 
 					database::query(
-							"update ". DB_TABLE_PREFIX ."customers
+							"update ". DB_PREFIX ."customers
 							set login_attempts = login_attempts + 1
 							where id = ". (int)$customer['id'] ."
 							limit 1;"
@@ -70,7 +70,7 @@
 				} else {
 
 					database::query(
-						"update ". DB_TABLE_PREFIX ."customers
+						"update ". DB_PREFIX ."customers
 						set login_attempts = 0,
 						blocked_until = '". date('Y-m-d H:i:00', strtotime('+15 minutes')) ."'
 						where id = ". (int)$customer['id'] ."
@@ -85,7 +85,7 @@
 			// Reset login attempts after successful login
 			if (!empty($customer['login_attempts'])) {
 				database::query(
-					"update ". DB_TABLE_PREFIX ."customers
+					"update ". DB_PREFIX ."customers
 					set login_attempts = 0
 					where id = ". (int)$customer['id'] ."
 					limit 1;",

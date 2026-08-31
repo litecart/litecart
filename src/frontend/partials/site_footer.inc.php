@@ -20,7 +20,7 @@
 		// Pages
 		$site_footer->snippets['pages'] = database::query(
 			"select p.id, json_value(p.title, '$.". database::input(language::$selected['code']) ."') as title
-			from ". DB_TABLE_PREFIX ."pages p
+			from ". DB_PREFIX ."pages p
 			where status
 			and find_in_set('information', dock)
 			order by p.priority, title;"
@@ -34,7 +34,7 @@
 
 		// Modules
 		database::query(
-			"select id, settings  from ". DB_TABLE_PREFIX ."modules
+			"select id, settings  from ". DB_PREFIX ."modules
 			where type in ('shipping', 'payment')
 			and status
 			order by type, id;"

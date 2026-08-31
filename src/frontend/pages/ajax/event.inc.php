@@ -43,7 +43,7 @@
 				}
 
 				database::query(
-					"update ". DB_TABLE_PREFIX ."banners
+					"update ". DB_PREFIX ."banners
 					set total_clicks = total_clicks + 1
 					where status
 					and id = ". (int)$payload['data']['banner_id'] ."

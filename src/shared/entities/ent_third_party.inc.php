@@ -18,7 +18,7 @@
 			$this->data = [];
 
 			database::query(
-				"show fields from ". DB_TABLE_PREFIX ."third_parties;"
+				"show fields from ". DB_PREFIX ."third_parties;"
 			)->each(function($field) {
 				$this->data[$field['Field']] = database::create_variable($field['Type']);
 			});
@@ -45,7 +45,7 @@
 			$this->reset();
 
 			$third_party = database::query(
-				"select * from ". DB_TABLE_PREFIX ."third_parties
+				"select * from ". DB_PREFIX ."third_parties
 				where id = ". (int)$third_party_id ."
 				limit 1;"
 			)->fetch();
@@ -75,7 +75,7 @@
 			if (!$this->data['id']) {
 
 				database::query(
-					"insert into ". DB_TABLE_PREFIX ."third_parties
+					"insert into ". DB_PREFIX ."third_parties
 					(name, created_at)
 					values ('". database::input($this->data['name']) ."', '". ($this->data['created_at'] = date('Y-m-d H:i:s')) ."');"
 				);
@@ -84,7 +84,7 @@
 			}
 
 			database::query(
-				"update ". DB_TABLE_PREFIX ."third_parties
+				"update ". DB_PREFIX ."third_parties
 				set status = ". (int)$this->data['status'] .",
 					privacy_classes = '". implode(',', database::input($this->data['privacy_classes'])) ."',
 					name = '". database::input($this->data['name']) ."',
@@ -111,7 +111,7 @@
 
 			database::query(
 				"delete tp
-				from ". DB_TABLE_PREFIX ."third_parties tp
+				from ". DB_PREFIX ."third_parties tp
 				where tp.id = ". (int)$this->data['id'] .";"
 			);
 

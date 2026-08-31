@@ -27,7 +27,7 @@
 
 			// Get currencies from database
 			self::$currencies = database::query(
-				"select * from ". DB_TABLE_PREFIX ."currencies
+				"select * from ". DB_PREFIX ."currencies
 				where status
 				order by priority;"
 			)->fetch_all(null, 'code');
@@ -94,7 +94,7 @@
 			if (!empty(customer::$data['country_code'])) {
 
 				$currency = database::query(
-					"select currency_code from ". DB_TABLE_PREFIX ."countries
+					"select currency_code from ". DB_PREFIX ."countries
 					where iso_code_2 = '". database::input(customer::$data['country_code']) ."'
 					limit 1;"
 				)->fetch('currency_code');
@@ -108,7 +108,7 @@
 			if (preg_match('#\.([a-z]{2})$#', $_SERVER['HTTP_HOST'], $matches)) {
 
 				$currency = database::query(
-					"select currency_code from ". DB_TABLE_PREFIX ."countries
+					"select currency_code from ". DB_PREFIX ."countries
 					where iso_code_2 = '". database::input(strtoupper($matches[1])) ."'
 					limit 1;"
 				)->fetch('currency_code');

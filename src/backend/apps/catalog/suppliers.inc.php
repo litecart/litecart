@@ -20,7 +20,7 @@
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$suppliers = database::prepare(
 		"select id, name
-		from ". DB_TABLE_PREFIX ."suppliers
+		from ". DB_PREFIX ."suppliers
 		where id
 		". (!empty($sql_find) ? "and (". implode(" or ", $sql_find) .")" : "") ."
 		order by name asc;"

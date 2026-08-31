@@ -32,11 +32,11 @@
 			sum(oi.quantity) as total_quantity,
 			sum(oi.final_price * oi.quantity * o.currency_value) as total_sales,
 			sum(oi.sum_tax * o.currency_value) as total_tax
-		from ". DB_TABLE_PREFIX ."orders_items oi
-		left join ". DB_TABLE_PREFIX ."orders o on (o.id = oi.order_id)
-		left join ". DB_TABLE_PREFIX ."products p on (p.id = oi.product_id)
+		from ". DB_PREFIX ."orders_items oi
+		left join ". DB_PREFIX ."orders o on (o.id = oi.order_id)
+		left join ". DB_PREFIX ."products p on (p.id = oi.product_id)
 		where o.order_status_id in (
-			select id from ". DB_TABLE_PREFIX ."order_statuses
+			select id from ". DB_PREFIX ."order_statuses
 			where is_sale
 		)
 		and o.created_at >= '". date('Y-m-d 00:00:00', strtotime($_GET['date_from'])) ."'

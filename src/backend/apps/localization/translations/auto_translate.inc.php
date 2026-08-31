@@ -33,7 +33,7 @@
 
 		return (
 			"select ". implode(', ', $selects) ."
-			from ". DB_TABLE_PREFIX ."translations t
+			from ". DB_PREFIX ."translations t
 			where ". $where_sql
 		);
 	};
@@ -52,16 +52,16 @@
 		}
 
 		$joins = [
-			"left join ". DB_TABLE_PREFIX . $collection['info_table'] ." `source` on (`source`.". database::input($collection['entity_column']) ." = e.id and `source`.language_code = '". database::input($source_code) ."')",
+			"left join ". DB_PREFIX . $collection['info_table'] ." `source` on (`source`.". database::input($collection['entity_column']) ." = e.id and `source`.language_code = '". database::input($source_code) ."')",
 		];
 
 		foreach ($target_codes as $target_language_code) {
-			$joins[] = "left join ". DB_TABLE_PREFIX . $collection['info_table'] ." `". database::input($target_language_code) ."` on (`". database::input($target_language_code) ."`.". database::input($collection['entity_column']) ." = e.id and `". database::input($target_language_code) ."`.language_code = '". database::input($target_language_code) ."')";
+			$joins[] = "left join ". DB_PREFIX . $collection['info_table'] ." `". database::input($target_language_code) ."` on (`". database::input($target_language_code) ."`.". database::input($collection['entity_column']) ." = e.id and `". database::input($target_language_code) ."`.language_code = '". database::input($target_language_code) ."')";
 		}
 
 		return (
 			"select ". implode(', ', $selects) ."
-			from ". DB_TABLE_PREFIX . $collection['entity_table'] ." e
+			from ". DB_PREFIX . $collection['entity_table'] ." e
 			". implode(PHP_EOL, $joins)
 		);
 	};
@@ -150,7 +150,7 @@
 
 		if ($row['entity'] == 'translation') {
 			database::query(
-				"update ". DB_TABLE_PREFIX ."translations
+				"update ". DB_PREFIX ."translations
 				set `text` = json_set(coalesce(`text`, '{}'), '$.". database::input($row['target_language_code']) ."', '". database::input($translated_text, true) ."')
 				where code = '". database::input($row['code']) ."'
 				limit 1;"
@@ -172,7 +172,7 @@
 		$collection = $collections_by_entity[$entity];
 
 		$translation_query = database::query(
-			"select id from ". DB_TABLE_PREFIX . $collection['id'] ."
+			"select id from ". DB_PREFIX . $collection['id'] ."
 			where `". database::input($collection['entity_column']) ."` = '". database::input($id) ."'
 			and language_code = '". database::input($row['target_language_code']) ."'
 			limit 1;"
@@ -180,7 +180,7 @@
 
 		if ($translation = database::fetch($translation_query)) {
 			database::query(
-				"update ". DB_TABLE_PREFIX . $collection['id'] ."
+				"update ". DB_PREFIX . $collection['id'] ."
 				set `". database::input($column) ."` = '". database::input($translated_text, true) ."'
 				where id = '". database::input($translation['id']) ."'
 				limit 1;"
@@ -188,7 +188,7 @@
 		}
 
 		database::query(
-			"insert into ". DB_TABLE_PREFIX . $collection['id'] ."
+			"insert into ". DB_PREFIX . $collection['id'] ."
 			(`". database::input($collection['entity_column']) ."`, language_code, `". database::input($column) ."`)
 			values ('". database::input($id) ."', '". database::input($row['target_language_code']) ."', '". database::input($translated_text, true) ."');"
 		);

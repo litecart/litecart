@@ -18,7 +18,7 @@
 			$this->data = [];
 
 			database::query(
-				"show fields from ". DB_TABLE_PREFIX ."suppliers;"
+				"show fields from ". DB_PREFIX ."suppliers;"
 			)->each(function($field){
 				$this->data[$field['Field']] = database::create_variable($field);
 			});
@@ -35,7 +35,7 @@
 			$this->reset();
 
 			$supplier = database::query(
-				"select * from ". DB_TABLE_PREFIX ."suppliers
+				"select * from ". DB_PREFIX ."suppliers
 				where id = ". (int)$id ."
 				limit 1;"
 			)->fetch();
@@ -53,7 +53,7 @@
 
 			if (!$this->data['id']) {
 				database::query(
-					"insert into ". DB_TABLE_PREFIX ."suppliers
+					"insert into ". DB_PREFIX ."suppliers
 					(created_at)
 					values ('". ($this->data['created_at'] = date('Y-m-d H:i:s')) ."');"
 				);
@@ -61,7 +61,7 @@
 			}
 
 			database::query(
-				"update ". DB_TABLE_PREFIX ."suppliers
+				"update ". DB_PREFIX ."suppliers
 				set code = '". database::input($this->data['code']) ."',
 					name = '". database::input($this->data['name']) ."',
 					description = '". database::input($this->data['description'], true) ."',
@@ -83,7 +83,7 @@
 			if (!$this->data['id']) return;
 
 			if (database::query(
-				"select id from ". DB_TABLE_PREFIX ."products
+				"select id from ". DB_PREFIX ."products
 				where supplier_id = ". (int)$this->data['id'] ."
 				limit 1;"
 			)->num_rows) {
@@ -91,7 +91,7 @@
 			}
 
 			database::query(
-				"delete from ". DB_TABLE_PREFIX ."suppliers
+				"delete from ". DB_PREFIX ."suppliers
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"
 			);

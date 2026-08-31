@@ -1285,7 +1285,7 @@
 		}
 
 		$options = database::query(
-			"select id, username from ". DB_TABLE_PREFIX ."administrators
+			"select id, username from ". DB_PREFIX ."administrators
 			order by username;"
 		)->fetch_all(function($administrator){
 			return [$administrator['id'], $administrator['username']];
@@ -1309,7 +1309,7 @@
 		$options = database::query(
 			"select ag.id,
 				json_value(ag.name, '$.". database::input(language::$selected['code']) ."') as name
-			from ". DB_TABLE_PREFIX ."attribute_groups ag
+			from ". DB_PREFIX ."attribute_groups ag
 			order by name;"
 		)->fetch_all(function($group){
 			return [$group['id'], $group['name']];
@@ -1337,7 +1337,7 @@
 
 		$options = database::query(
 			"select av.id, json_value(av.value, '$.". database::input(language::$selected['code']) ."') as name
-			from ". DB_TABLE_PREFIX ."attribute_values av
+			from ". DB_PREFIX ."attribute_values av
 			where group_id = ". (int)$group_id ."
 			order by name;"
 		)->fetch_all(function($value){
@@ -1360,7 +1360,7 @@
 		}
 
 		$options = database::query(
-			"select id, name from ". DB_TABLE_PREFIX ."brands
+			"select id, name from ". DB_PREFIX ."brands
 			order by name asc;"
 		)->fetch_all(function($brand){
 			return [$brand['id'], $brand['name']];
@@ -1378,7 +1378,7 @@
 
 		$options = database::query(
 			"select id, name, valid_from, valid_to
-			from ". DB_TABLE_PREFIX ."campaigns
+			from ". DB_PREFIX ."campaigns
 			order by status desc, name asc;"
 		)->fetch_all(function($campaign){
 			return [$campaign['id'], $campaign['name'], 'data-valid-from="'. ($campaign['valid_from'] ? f::datetime_when($campaign['valid_from']) : '') .'" data-valid-to="'. ($campaign['valid_to'] ? f::datetime_when($campaign['valid_to']) : '') .'"'];
@@ -1458,7 +1458,7 @@
 				)) .",
 				'(". database::input(t('title_untitled', 'Untitled')) .")'
 			) as name
-			from ". DB_TABLE_PREFIX ."categories c
+			from ". DB_PREFIX ."categories c
 			where c.id in ('". implode("', '", database::input($input)) ."');"
 		)->each(function($category) use (&$content, $name) {
 
@@ -1539,7 +1539,7 @@
 		};
 
 		$options = database::query(
-			"select * from ". DB_TABLE_PREFIX ."countries
+			"select * from ". DB_PREFIX ."countries
 			where status
 			order by name asc;"
 		)->fetch_all(function($country){
@@ -1596,7 +1596,7 @@
 
 		if ($input) {
 			$customer = database::query(
-				"select * from ". DB_TABLE_PREFIX ."customers
+				"select * from ". DB_PREFIX ."customers
 				where id = ". (int)$input ."
 				limit 1;"
 			)->fetch();
@@ -1734,7 +1734,7 @@
 
 		$options = database::query(
 			"select id, name
-			from ". DB_TABLE_PREFIX ."customer_groups
+			from ". DB_PREFIX ."customer_groups
 			order by name asc;"
 		)->fetch_all(function($group){
 			return [$group['id'], $group['name']];
@@ -1765,7 +1765,7 @@
 
 		$options = database::query(
 			"select id, email, company, firstname, lastname
-			from ". DB_TABLE_PREFIX ."customers
+			from ". DB_PREFIX ."customers
 			order by email;"
 		)->fetch_all(function($customer) {
 			return [$customer['id'], $customer['email'], 'data-name="'. f::escape_attr($customer['company'] ?: $customer['firstname'] .' '. $customer['lastname']) .'"'];
@@ -1798,7 +1798,7 @@
 			"select id,
 				json_value(name, '$.name') as name,
 				json_value(description, '$.description') as description
-			from ". DB_TABLE_PREFIX ."delivery_statuses
+			from ". DB_PREFIX ."delivery_statuses
 			order by name asc;"
 		)->fetch_all(function($row) {
 			return [$row['id'], $row['name'], 'title="'. f::escape_attr($row['description']) .'"'];
@@ -1965,7 +1965,7 @@
 		}
 
 		$options = database::query(
-			"select * from ". DB_TABLE_PREFIX ."geo_zones
+			"select * from ". DB_PREFIX ."geo_zones
 			order by name asc;"
 		)->fetch_all(function($geo_zone) {
 			return [$geo_zone['id'], $geo_zone['name']];
@@ -2122,7 +2122,7 @@
 
 		$options = database::query(
 			"select os.id, os.icon, os.color, json_value(os.name, '$.". database::input(language::$selected['code']) ."') as name
-			from ". DB_TABLE_PREFIX ."order_statuses os
+			from ". DB_PREFIX ."order_statuses os
 			order by field(os.state, 'created', 'on_hold', 'ready', 'delayed', 'processing', 'completed', 'dispatched', 'in_transit', 'delivered', 'returning', 'returned', 'cancelled', ''), os.priority, name asc;"
 		)->fetch_all(function($row) {
 			return [$row['id'], f::draw_fonticon($row['icon'], 'style="color: '. $row['color'] .';"') .' '. $row['name'], 'data-icon="'. f::escape_attr($row['icon']) .'" data-color="'. f::escape_attr($row['color']) .'"'];
@@ -2152,7 +2152,7 @@
 
 			database::query(
 				"select p.id, json_value(p.title, '$.". database::input(language::$selected['code']) ."') as title
-				from ". DB_TABLE_PREFIX ."pages p
+				from ". DB_PREFIX ."pages p
 				where ". (empty($parent_id) ? "p.parent_id is null" : "p.parent_id = ". (int)$parent_id) ."
 				order by p.priority asc, title asc;"
 			)->each(function($page) use(&$options, $iterator, $level) {
@@ -2160,7 +2160,7 @@
 				$options[] = [$page['id'], str_repeat('&nbsp;&nbsp;&nbsp;', $level) . $page['title']];
 
 				if (database::query(
-					"select id from ". DB_TABLE_PREFIX ."pages
+					"select id from ". DB_PREFIX ."pages
 					where parent_id = ". (int)$page['id'] ."
 					limit 1;"
 				)->num_rows) {
@@ -2195,7 +2195,7 @@
 
 			database::query(
 				"select p.id, json_value(p.title, '$.". database::input(language::$selected['code']) ."') as title
-				from ". DB_TABLE_PREFIX ."pages p
+				from ". DB_PREFIX ."pages p
 				where ". ($parent_id ? "p.parent_id = ". (int)$parent_id : "dock = '". database::input($dock) ."' and parent_id is null") ."
 				order by p.priority asc, title asc;"
 			)->each(function($page) use(&$options, $iterator, $dock, $level) {
@@ -2230,7 +2230,7 @@
 		}
 
 		$options = database::query(
-			"select * from ". DB_TABLE_PREFIX ."modules
+			"select * from ". DB_PREFIX ."modules
 			where type = 'payment'
 			and status;"
 		)->fetch_all(function($module) {
@@ -2287,12 +2287,12 @@
 
 			$product = database::query(
 				"select p.id, p.code, pp.regular_price, pp.final_price, json_value(p.name, '$.". database::input(language::$selected['code']) ."') as name
-				from ". DB_TABLE_PREFIX ."products p
+				from ". DB_PREFIX ."products p
 				left join (
 					select product_id, max($sql_column_price) as regular_price, min($sql_column_price) as final_price
-					from ". DB_TABLE_PREFIX ."products_prices
+					from ". DB_PREFIX ."products_prices
 					where (campaign_id is null or campaign_id in (
-						select id from ". DB_TABLE_PREFIX ."campaigns
+						select id from ". DB_PREFIX ."campaigns
 						where status
 						and (valid_from is not null and valid_from > '". date('Y-m-d H:i:s') ."')
 						and (valid_to is not null and valid_to < '". date('Y-m-d H:i:s') ."')
@@ -2329,7 +2329,7 @@
 
 		$options = database::query(
 			"select p.id, p.code, json_value(p.name, '$.". database::input(language::$selected['code']) ."') as name
-			from ". DB_TABLE_PREFIX ."products p
+			from ". DB_PREFIX ."products p
 			order by name"
 		)->fetch_all(function($product) {
 			return [$product['id'], $product['name'] .' &mdash; '. $product['code']];
@@ -2427,7 +2427,7 @@
 			"select qu.*,
 				json_value(qu.name, '$.". database::input(language::$selected['code']) ."') as name,
 				json_value(qu.description, '$.". database::input(language::$selected['code']) ."') as description
-			from ". DB_TABLE_PREFIX ."quantity_units qu
+			from ". DB_PREFIX ."quantity_units qu
 			order by qu.priority, name asc;"
 		)->fetch_all(function($quantity_unit) {
 			return [$quantity_unit['id'], $quantity_unit['name'], 'data-separate="'. (!empty($quantity_unit['separate']) ? 'true' : 'false') .'" data-decimals="'. (int)$quantity_unit['decimals'] .'" title="'. f::escape_attr($quantity_unit['description']) .'"'];
@@ -2449,7 +2449,7 @@
 		}
 
 		$options = database::query(
-			"select * from ". DB_TABLE_PREFIX ."modules
+			"select * from ". DB_PREFIX ."modules
 			where type = 'shipping'
 			and status;"
 		)->fetch_all(function($module) {
@@ -2484,7 +2484,7 @@
 			"select sos.id,
 				json_value(sos.name, '$.". database::input(language::$selected['code']) ."') as name,
 				json_value(sos.description, '$.". database::input(language::$selected['code']) ."') as description
-			from ". DB_TABLE_PREFIX ."sold_out_statuses sos
+			from ". DB_PREFIX ."sold_out_statuses sos
 			order by name asc;"
 		)->fetch_all(function($row) {
 			return [$row['id'], $row['name'], 'title="'. f::escape_attr($row['description']) .'"'];
@@ -2511,7 +2511,7 @@
 		if ($input) {
 			$item = database::query(
 				"select si.id, si.sku, json_value(si.name, '$.". database::input(language::$selected['code']) ."') as name
-				from ". DB_TABLE_PREFIX ."stock_items si
+				from ". DB_PREFIX ."stock_items si
 				where p.id = ". (int)$input ."
 				limit 1;"
 			)->fetch();
@@ -2547,7 +2547,7 @@
 
 		$items = database::query(
 			"select si.id, si.sku, si.quantity, json_value(si.name, '$.". database::input(language::$selected['code']) ."') as name
-			from ". DB_TABLE_PREFIX ."stock_items si
+			from ". DB_PREFIX ."stock_items si
 			where si.id in ('". implode("', '", database::input($input)) ."')
 			order by name"
 		)->fetch_all();
@@ -2586,7 +2586,7 @@
 		}
 
 		$options = database::query(
-			"select id, name, description from ". DB_TABLE_PREFIX ."suppliers
+			"select id, name, description from ". DB_PREFIX ."suppliers
 			order by name;"
 		)->fetch_all(function($supplier) {
 			return [$supplier['id'], $supplier['name'], 'title="'. f::escape_attr($supplier['description']) .'"'];
@@ -2615,7 +2615,7 @@
 		}
 
 		$options = database::query(
-			"select * from ". DB_TABLE_PREFIX ."tax_classes
+			"select * from ". DB_PREFIX ."tax_classes
 			order by name asc;"
 		)->fetch_all(function($tax_class) {
 			return [$tax_class['id'], $tax_class['name'], 'title="'. f::escape_attr($tax_class['description']) .'"'];
@@ -2739,7 +2739,7 @@
 		};
 
 		$options = database::query(
-			"select * from ". DB_TABLE_PREFIX ."zones
+			"select * from ". DB_PREFIX ."zones
 			where country_code = '". database::input($country_code) ."'
 			order by name asc;"
 		)->fetch_all(function($zone){

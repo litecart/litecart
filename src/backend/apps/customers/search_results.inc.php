@@ -13,7 +13,7 @@
 			+ if(tax_id like '%". database::input($query) ."%', 5, 0)
 			+ if(concat(company, ' ', firstname, ' ', lastname, ' ', address1, ' ', address2, ' ', postcode, ' ', city) like '%". database::input($query) ."%', 5, 0)
 		) as relevance
-		from ". DB_TABLE_PREFIX ."customers
+		from ". DB_PREFIX ."customers
 		having relevance > 0
 		order by relevance desc, id desc
 		limit 5;"

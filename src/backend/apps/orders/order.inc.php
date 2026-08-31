@@ -47,14 +47,14 @@
 	$actions = (new mod_order)->actions();
 
 	$previous_order_id = database::query(
-		"select id from ". DB_TABLE_PREFIX ."orders
+		"select id from ". DB_PREFIX ."orders
 		where id < ". (int)$order->data['id'] ."
 		order by id desc
 		limit 1;"
 	)->fetch('id');
 
 	$next_order_id = database::query(
-		"select id from ". DB_TABLE_PREFIX ."orders
+		"select id from ". DB_PREFIX ."orders
 		where id > ". (int)$order->data['id'] ."
 		order by id asc
 		limit 1;"

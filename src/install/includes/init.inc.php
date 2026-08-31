@@ -5,7 +5,7 @@
 	mb_internal_encoding('UTF-8');
 	mb_http_output('UTF-8');
 
-	// BACKEND_ALIAS / DB_TABLE_PREFIX are NOT defined here — the install
+	// BACKEND_ALIAS / DB_PREFIX are NOT defined here — the install
 	// page defines them from user-supplied parameters, and the upgrade page
 	// picks them up from the existing storage/config.inc.php.
 

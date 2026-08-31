@@ -4,7 +4,7 @@
 		try {
 
 			database::query(
-				"update ". DB_TABLE_PREFIX ."settings
+				"update ". DB_PREFIX ."settings
 				set `value` = ''
 				where `key` = 'marketplace_access_token'
 				limit 1;"

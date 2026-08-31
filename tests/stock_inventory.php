@@ -6,15 +6,15 @@
 
 		// Get auto increment IDs for rollback
 		$stock_items_auto_id = database::query(
-			"SHOW TABLE STATUS LIKE '". DB_TABLE_PREFIX ."stock_items';"
+			"SHOW TABLE STATUS LIKE '". DB_PREFIX ."stock_items';"
 		)->fetch('Auto_increment');
 
 		$products_auto_id = database::query(
-			"SHOW TABLE STATUS LIKE '". DB_TABLE_PREFIX ."products';"
+			"SHOW TABLE STATUS LIKE '". DB_PREFIX ."products';"
 		)->fetch('Auto_increment');
 
 		$stock_transactions_auto_id = database::query(
-			"SHOW TABLE STATUS LIKE '". DB_TABLE_PREFIX ."stock_transactions';"
+			"SHOW TABLE STATUS LIKE '". DB_PREFIX ."stock_transactions';"
 		)->fetch('Auto_increment');
 
 		database::begin_transaction();
@@ -168,7 +168,7 @@
 
 		// Verify stock options are removed from DB
 		$remaining = database::query(
-			"select id from ". DB_TABLE_PREFIX ."products_stock_options
+			"select id from ". DB_PREFIX ."products_stock_options
 			where product_id = ". (int)$product_id ."
 			limit 1;"
 		)->num_rows;
@@ -204,7 +204,7 @@
 
 		database::rollback();
 
-		database::query("ALTER TABLE ". DB_TABLE_PREFIX ."stock_items AUTO_INCREMENT = ". (int)$stock_items_auto_id .";");
-		database::query("ALTER TABLE ". DB_TABLE_PREFIX ."products AUTO_INCREMENT = ". (int)$products_auto_id .";");
-		database::query("ALTER TABLE ". DB_TABLE_PREFIX ."stock_transactions AUTO_INCREMENT = ". (int)$stock_transactions_auto_id .";");
+		database::query("ALTER TABLE ". DB_PREFIX ."stock_items AUTO_INCREMENT = ". (int)$stock_items_auto_id .";");
+		database::query("ALTER TABLE ". DB_PREFIX ."products AUTO_INCREMENT = ". (int)$products_auto_id .";");
+		database::query("ALTER TABLE ". DB_PREFIX ."stock_transactions AUTO_INCREMENT = ". (int)$stock_transactions_auto_id .";");
 	}

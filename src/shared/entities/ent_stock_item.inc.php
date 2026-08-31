@@ -18,7 +18,7 @@
 			$this->data = [];
 
 			database::query(
-				"show fields from ". DB_TABLE_PREFIX ."stock_items;"
+				"show fields from ". DB_PREFIX ."stock_items;"
 			)->each(function($field){
 				$this->data[$field['Field']] = database::create_variable($field);
 			});
@@ -41,7 +41,7 @@
 			if (preg_match('#^\d+$#', $id)) {
 
 				$stock_item = database::query(
-					"select * from ". DB_TABLE_PREFIX ."stock_items
+					"select * from ". DB_PREFIX ."stock_items
 					where id = ". (int)$id ."
 					limit 1;"
 				)->fetch();
@@ -55,7 +55,7 @@
 				] as $column) {
 
 					$stock_item = database::query(
-						"select * from ". DB_TABLE_PREFIX ."stock_items
+						"select * from ". DB_PREFIX ."stock_items
 						where nullif($column, '') = '". database::input(strtoupper($id)) ."'
 						limit 1;"
 					)->fetch();
@@ -81,11 +81,11 @@
 			// Reserved Quantity
 			$this->data['quantity_reserved'] = database::query(
 				"select sum(osi.quantity * oi.quantity) as quantity_reserved
-				from ". DB_TABLE_PREFIX ."orders_stock_items osi
-				left join ". DB_TABLE_PREFIX ."orders_items oi on (oi.id = osi.item_id)
-				left join ". DB_TABLE_PREFIX ."orders o on (o.id = oi.order_id)
+				from ". DB_PREFIX ."orders_stock_items osi
+				left join ". DB_PREFIX ."orders_items oi on (oi.id = osi.item_id)
+				left join ". DB_PREFIX ."orders o on (o.id = oi.order_id)
 				where o.order_status_id in (
-					select id from ". DB_TABLE_PREFIX ."order_statuses
+					select id from ". DB_PREFIX ."order_statuses
 					where stock_action = 'reserve'
 				);"
 			)->fetch('quantity_reserved');
@@ -93,7 +93,7 @@
 			// Deposited Quantity
 			$this->data['quantity_deposited'] = database::query(
 				"select stock_item_id, sum(quantity_adjustment) as quantity_deposited
-				from ". DB_TABLE_PREFIX ."stock_transactions_contents
+				from ". DB_PREFIX ."stock_transactions_contents
 				where stock_item_id = ". (int)$this->data['id'] ."
 				group by stock_item_id;"
 			)->fetch('quantity_deposited');
@@ -101,13 +101,13 @@
 			// Withdrawn Quantity
 			$this->data['quantity_withdrawn'] = database::query(
 				"select osi.stock_item_id, sum(osi.quantity * oi.quantity) as quantity_withdrawn
-				from ". DB_TABLE_PREFIX ."orders_stock_items osi
-				left join ". DB_TABLE_PREFIX ."orders_items oi on (oi.id = osi.item_id)
+				from ". DB_PREFIX ."orders_stock_items osi
+				left join ". DB_PREFIX ."orders_items oi on (oi.id = osi.item_id)
 				where osi.stock_item_id = ". (int)$this->data['id'] ."
 				and oi.order_id in (
-					select id from ". DB_TABLE_PREFIX ."orders o
+					select id from ". DB_PREFIX ."orders o
 					where order_status_id in (
-						select id from ". DB_TABLE_PREFIX ."order_statuses os
+						select id from ". DB_PREFIX ."order_statuses os
 						where stock_action = 'withdraw'
 					)
 				)
@@ -119,7 +119,7 @@
 
 			// References
 			$this->data['references'] = database::query(
-				"select * from ". DB_TABLE_PREFIX ."stock_items_references
+				"select * from ". DB_PREFIX ."stock_items_references
 				where stock_item_id = ". (int)$this->data['id'] ."
 				order by id;"
 			)->fetch_all();
@@ -132,7 +132,7 @@
 			if (!$this->data['id']) {
 
 				database::query(
-					"insert into ". DB_TABLE_PREFIX ."stock_items
+					"insert into ". DB_PREFIX ."stock_items
 					(sku, mpn, gtin, created_at)
 					values ('". database::input($this->data['sku']) ."', '". database::input($this->data['mpn']) ."', '". database::input($this->data['gtin']) ."', '". ($this->data['created_at'] = date('c')) ."');"
 				);
@@ -157,14 +157,14 @@
 				do {
 					$this->data['sku'] = implode('-', [$this->data['id'], $name, $i++]);
 				} while (database::query(
-					"select id from ". DB_TABLE_PREFIX ."stock_items
+					"select id from ". DB_PREFIX ."stock_items
 					where sku = '". database::input($this->data['sku']) ."'
 					limit 1;"
 				)->num_rows);
 			}
 
 			database::query(
-				"update ". DB_TABLE_PREFIX ."stock_items
+				"update ". DB_PREFIX ."stock_items
 				set name = '". database::input(f::format_json($this->data['name'])) ."',
 					sku = '". database::input(strtoupper($this->data['sku'])) ."',
 					mpn = '". database::input($this->data['mpn']) ."',
@@ -218,9 +218,9 @@
 				if ($this->previous['quantity'] <= 0 && $this->data['quantity'] > 0) {
 
 					$products_query = database::query(
-						"select id from ". DB_TABLE_PREFIX ."products
+						"select id from ". DB_PREFIX ."products
 						where id in (
-							select product_id from ". DB_TABLE_PREFIX ."products_stock_options
+							select product_id from ". DB_PREFIX ."products_stock_options
 							where stock_item_id = ". (int)$this->data['id'] ."
 						);"
 					);
@@ -228,7 +228,7 @@
 					while ($product_row = database::fetch($products_query)) {
 
 						$notification_recipients_query = database::query(
-							"select * from ". DB_TABLE_PREFIX ."product_notification_recipients
+							"select * from ". DB_PREFIX ."product_notification_recipients
 							where product_id = ". (int)$product_row['id'] .";"
 						);
 
@@ -254,7 +254,7 @@
 						}
 
 						database::query(
-							"delete from ". DB_TABLE_PREFIX ."product_notification_recipients
+							"delete from ". DB_PREFIX ."product_notification_recipients
 							where product_id = ". (int)$product_row['id'] .";"
 						);
 					}
@@ -264,7 +264,7 @@
 			// References
 
 			database::query(
-				"delete from ". DB_TABLE_PREFIX ."stock_items_references
+				"delete from ". DB_PREFIX ."stock_items_references
 				where stock_item_id = ". (int)$this->data['id'] ."
 				and id not in ('". implode("', '", array_column($this->data['references'], 'id')) ."');"
 			);
@@ -275,7 +275,7 @@
 					if (empty($reference['id'])) {
 
 						database::query(
-							"insert into ". DB_TABLE_PREFIX ."stock_items_references
+							"insert into ". DB_PREFIX ."stock_items_references
 							(stock_item_id, supplier_id)
 							values (". (int)$this->data['id'] .", ". (int)$reference['supplier_id'] .");"
 						);
@@ -284,7 +284,7 @@
 					}
 
 					database::query(
-						"update ". DB_TABLE_PREFIX ."stock_items_references
+						"update ". DB_PREFIX ."stock_items_references
 						set supplier_id = ". (int)$reference['supplier_id'] .",
 							code = '". database::input($reference['code']) ."'
 						where stock_item_id = ". (int)$this->data['id'] ."
@@ -332,7 +332,7 @@
 			$image->save('storage://images/' . $filename, 90);
 
 			database::query(
-				"update ". DB_TABLE_PREFIX ."stock_items
+				"update ". DB_PREFIX ."stock_items
 				set image = '". database::input($filename) ."'
 				where id = ". (int)$this->data['id'] .";"
 			);
@@ -351,7 +351,7 @@
 			f::image_delete_cache('storage://images/' . $this->data['image']);
 
 			database::query(
-				"update ". DB_TABLE_PREFIX ."brands
+				"update ". DB_PREFIX ."brands
 				set image = ''
 				where id = ". (int)$this->data['id'] .";"
 			);
@@ -383,7 +383,7 @@
 			$this->previous['mime_type'] = $this->data['mime_type'] = $mime_type;
 
 			database::query(
-				"update ". DB_TABLE_PREFIX ."stock_items
+				"update ". DB_PREFIX ."stock_items
 				set file = '". database::input($this->data['file']) ."',
 					filename = '". database::input($this->data['filename']) ."',
 					mime_type = '". database::input($this->data['mime_type']) ."'
@@ -400,7 +400,7 @@
 			}
 
 			database::query(
-				"update ". DB_TABLE_PREFIX ."stock_items
+				"update ". DB_PREFIX ."stock_items
 				set file = null
 				where id = ". (int)$this->data['id'] .";"
 			);
@@ -412,9 +412,9 @@
 
 			database::query(
 				"delete si, sir, pso
-				from ". DB_TABLE_PREFIX ."stock_items si
-				left join ". DB_TABLE_PREFIX ."stock_items_references sir on (sir.stock_item_id = si.id)
-				left join ". DB_TABLE_PREFIX ."products_stock_options pso on (pso.stock_item_id = si.id)
+				from ". DB_PREFIX ."stock_items si
+				left join ". DB_PREFIX ."stock_items_references sir on (sir.stock_item_id = si.id)
+				left join ". DB_PREFIX ."products_stock_options pso on (pso.stock_item_id = si.id)
 				where si.id = ". (int)$this->data['id'] .";"
 			);
 

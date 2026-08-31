@@ -18,7 +18,7 @@
 			$this->data = [];
 
 			database::query(
-				"show fields from ". DB_TABLE_PREFIX ."brands;"
+				"show fields from ". DB_PREFIX ."brands;"
 			)->each(function($field){
 				$this->data[$field['Field']] = database::create_variable($field);
 			});
@@ -46,7 +46,7 @@
 			$this->reset();
 
 			$brand = database::query(
-				"select * from ". DB_TABLE_PREFIX ."brands
+				"select * from ". DB_PREFIX ."brands
 				where id = ". (int)$id ."
 				limit 1;"
 			)->fetch();
@@ -77,7 +77,7 @@
 			if (!$this->data['id']) {
 
 				database::query(
-					"insert into ". DB_TABLE_PREFIX ."brands
+					"insert into ". DB_PREFIX ."brands
 					(created_at)
 					values ('". ($this->data['created_at'] = date('Y-m-d H:i:s')) ."');"
 				);
@@ -90,7 +90,7 @@
 			$this->data['keywords'] = implode(',', $this->data['keywords']);
 
 			database::query(
-				"update ". DB_TABLE_PREFIX ."brands
+				"update ". DB_PREFIX ."brands
 				set status = '". database::input($this->data['status']) ."',
 					featured = '". database::input($this->data['featured']) ."',
 					code = '". database::input($this->data['code']) ."',
@@ -145,7 +145,7 @@
 			$image->save('storage://images/' . $filename, 90);
 
 			database::query(
-				"update ". DB_TABLE_PREFIX ."brands
+				"update ". DB_PREFIX ."brands
 				set image = '". database::input($filename) ."'
 				where id = ". (int)$this->data['id'] .";"
 			);
@@ -164,7 +164,7 @@
 			f::image_delete_cache('storage://images/' . $this->data['image']);
 
 			database::query(
-				"update ". DB_TABLE_PREFIX ."brands
+				"update ". DB_PREFIX ."brands
 				set image = ''
 				where id = ". (int)$this->data['id'] .";"
 			);
@@ -177,7 +177,7 @@
 			if (!$this->data['id']) return;
 
 			if (database::query(
-				"select id from ". DB_TABLE_PREFIX ."products
+				"select id from ". DB_PREFIX ."products
 				where brand_id = ". (int)$this->data['id'] ."
 				limit 1;"
 			)->num_rows) {
@@ -192,7 +192,7 @@
 
 			database::query(
 				"delete b
-				from ". DB_TABLE_PREFIX ."brands b
+				from ". DB_PREFIX ."brands b
 				where b.id = ". (int)$this->data['id'] .";"
 			);
 

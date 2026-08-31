@@ -18,7 +18,7 @@
 			$this->data = [];
 
 			database::query(
-				"show fields from ". DB_TABLE_PREFIX ."webhooks;"
+				"show fields from ". DB_PREFIX ."webhooks;"
 			)->each(function($field) {
 				$this->data[$field['Field']] = database::create_variable($field['Type']);
 			});
@@ -35,7 +35,7 @@
 			$this->reset();
 
 			$webhook = database::query(
-				"select * from ". DB_TABLE_PREFIX ."webhooks
+				"select * from ". DB_PREFIX ."webhooks
 				where id = ". (int)$webhook_id ."
 				limit 1;"
 			)->fetch();
@@ -54,7 +54,7 @@
 			if (empty($this->data['id'])) {
 
 				database::query(
-					"insert into ". DB_TABLE_PREFIX ."webhooks
+					"insert into ". DB_PREFIX ."webhooks
 					(created_at)
 					values ('". date('Y-m-d H:i:s') ."');"
 				);
@@ -63,7 +63,7 @@
 			}
 
 			database::query(
-				"update ". DB_TABLE_PREFIX ."webhooks
+				"update ". DB_PREFIX ."webhooks
 				set status = ". (int)$this->data['status'] .",
 					event = '". database::input($this->data['event']) ."',
 					url = '". database::input($this->data['url']) ."',
@@ -80,7 +80,7 @@
 		public function delete(): void {
 
 			database::query(
-				"delete from ". DB_TABLE_PREFIX ."webhooks
+				"delete from ". DB_PREFIX ."webhooks
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"
 			);

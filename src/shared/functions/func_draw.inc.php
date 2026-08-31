@@ -11,7 +11,7 @@
 		)) .")";
 
 		$banners = database::query(
-			"select * from ". DB_TABLE_PREFIX ."banners
+			"select * from ". DB_PREFIX ."banners
 			where status
 			and (image != '' or html != '')
 			and $sql_where_keywords
@@ -22,7 +22,7 @@
 		if (!$banners) return null;
 
 		database::query(
-			"update ". DB_TABLE_PREFIX ."banners
+			"update ". DB_PREFIX ."banners
 			set total_views = total_views + 1
 			where id in ('". implode("', '", database::input(array_column($banners, 'id'))) ."');"
 		);
@@ -320,7 +320,7 @@
 		list($width, $height) = f::image_scale_by_width(320, settings::get('product_image_ratio'));
 
 		$is_favourite = database::query(
-			"select id from ". DB_TABLE_PREFIX ."favorites
+			"select id from ". DB_PREFIX ."favorites
 			where product_id = ". (int)$product['id'] ."
 			and customer_id = ". (int)customer::$data['id'] ."
 			limit 1;"

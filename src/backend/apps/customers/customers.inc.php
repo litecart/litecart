@@ -83,8 +83,8 @@
 
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$customers = database::query(
-		"select c.*, cg.name as group_name from ". DB_TABLE_PREFIX ."customers c
-		left join ". DB_TABLE_PREFIX ."customer_groups cg on (c.group_id = cg.id)
+		"select c.*, cg.name as group_name from ". DB_PREFIX ."customers c
+		left join ". DB_PREFIX ."customer_groups cg on (c.group_id = cg.id)
 		where c.id
 		". (!empty($sql_find) ? "and (". implode(" or ", $sql_find) .")" : "") ."
 		". (!empty($_GET['group_id']) ? "and c.group_id = ". (int)$_GET['group_id'] : "") ."

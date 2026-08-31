@@ -9,29 +9,29 @@
 		$statement = database::prepare(
 			"with recursive category_descendants as (
 				select id as root_id, id as descendant_id
-				from ". DB_TABLE_PREFIX ."categories
+				from ". DB_PREFIX ."categories
 				union all
 				select cd.root_id, c2.id
 				from category_descendants cd
-				left join ". DB_TABLE_PREFIX ."categories c2 on c2.parent_id = cd.descendant_id
+				left join ". DB_PREFIX ."categories c2 on c2.parent_id = cd.descendant_id
 			)
 
 			select c.id, c.parent_id, c.image, c.priority, c.updated_at, ctv.num_products, c2.num_subcategories,
 				json_value(c.name, '$.". database::input(language::$selected['code']) ."') as name,
 				json_value(c.short_description, '$.". database::input(language::$selected['code']) ."') as short_description
 
-			from ". DB_TABLE_PREFIX ."categories c
+			from ". DB_PREFIX ."categories c
 
 			left join (
 				select cd.root_id as category_id, count(distinct ptc.product_id) as num_products
 				from category_descendants cd
-				left join ". DB_TABLE_PREFIX ."products_to_categories ptc on (ptc.category_id = cd.descendant_id)
+				left join ". DB_PREFIX ."products_to_categories ptc on (ptc.category_id = cd.descendant_id)
 				group by cd.root_id
 			) ctv on (ctv.category_id = c.id)
 
 			left join (
 				select parent_id, count(id) as num_subcategories
-				from ". DB_TABLE_PREFIX ."categories
+				from ". DB_PREFIX ."categories
 				where status
 				group by parent_id
 			) c2 on (c2.parent_id = c.id)
@@ -94,17 +94,17 @@
 				json_value(c.short_description, '$.". database::input(language::$selected['code']) ."') as short_description,
 				(". implode(" + ", $sql_select_relevance) .") as relevance
 
-			from ". DB_TABLE_PREFIX ."categories c
+			from ". DB_PREFIX ."categories c
 
 			left join (
 				select category_id, count(product_id) as num_products
-				from ". DB_TABLE_PREFIX ."products_to_categories
+				from ". DB_PREFIX ."products_to_categories
 				group by category_id
 			) ptc on (ptc.category_id = c.id)
 
 			left join (
 				select parent_id, count(id) as num_subcategories
-				from ". DB_TABLE_PREFIX ."categories
+				from ". DB_PREFIX ."categories
 				where status
 				group by parent_id
 			) c2 on (c2.parent_id = c.id)
@@ -203,7 +203,7 @@
 		if (!empty($filter['categories'])) {
 			$sql_inner_where['categories'] = (
 				"p.id in (
-					select product_id from ". DB_TABLE_PREFIX ."products_to_categories
+					select product_id from ". DB_PREFIX ."products_to_categories
 					where category_id in ('". implode("', '", database::input($filter['categories'])) ."')
 				)"
 			);
@@ -216,7 +216,7 @@
 			foreach ($filter['attributes'] as $group_id => $values) {
 				$sql_where_attributes[] = (
 					"p.id in (
-						select product_id from ". DB_TABLE_PREFIX ."products_attributes
+						select product_id from ". DB_PREFIX ."products_attributes
 						where (group_id = ". (int)$group_id ." and (value_id in ('". implode("', '", database::input($values)) ."') or custom_value in ('". implode("', '", database::input($values)) ."')))
 					)"
 				);
@@ -244,7 +244,7 @@
 		}
 
 		if (!empty($filter['purchased'])) {
-			$sql_inner_where['purchased'] = "p.id in (select product_id from ". DB_TABLE_PREFIX ."orders_stock_items group by product_id)";
+			$sql_inner_where['purchased'] = "p.id in (select product_id from ". DB_PREFIX ."orders_stock_items group by product_id)";
 		}
 
 		if (!empty($filter['exclude_products'])) {
@@ -269,7 +269,7 @@
 					json_value(p.name, '$.". database::input(language::$selected['code']) ."') as name,
 					json_value(p.short_description, '$.". database::input(language::$selected['code']) ."') as short_description
 
-				from ". DB_TABLE_PREFIX ."products p
+				from ". DB_PREFIX ."products p
 
 				where ". implode(" and ", $sql_inner_where) ."
 				and (p.valid_from is null or p.valid_from <= '". date('Y-m-d H:i:s') ."')
@@ -286,16 +286,16 @@
 					count(pso.id) as num_stock_options,
 					sum(si.quantity) as total_quantity,
 					sum(si.quantity - oi.quantity_reserved) as quantity_available
-				from ". DB_TABLE_PREFIX ."products_stock_options pso
+				from ". DB_PREFIX ."products_stock_options pso
 
-				left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
+				left join ". DB_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
 
 				left join (
 					select oi.stock_option_id, sum(oi.quantity) as quantity_reserved
-					from ". DB_TABLE_PREFIX ."orders_items oi
-					left join ". DB_TABLE_PREFIX ."orders o on (o.id = oi.order_id)
+					from ". DB_PREFIX ."orders_items oi
+					left join ". DB_PREFIX ."orders o on (o.id = oi.order_id)
 					where o.order_status_id in (
-						select id from ". DB_TABLE_PREFIX ."order_statuses
+						select id from ". DB_PREFIX ."order_statuses
 						where stock_action = 'reserve'
 					)
 					group by oi.stock_option_id
@@ -306,7 +306,7 @@
 			". (($filter['sort'] === 'popularity') ?
 			"left join (
 				select entity_id as product_id, sum(count) as views
-				from ". DB_TABLE_PREFIX ."statistics
+				from ". DB_PREFIX ."statistics
 				where entity_type = 'product'
 				and measure_group_type = 'week'
 				and measure_group_value in ('". date('Y-W') ."', '". date('Y-W') ."')
@@ -316,15 +316,15 @@
 
 			left join (
 				select product_id, max($sql_column_price) as regular_price, min($sql_column_price) as final_price
-				from ". DB_TABLE_PREFIX ."products_prices
+				from ". DB_PREFIX ."products_prices
 				where (customer_group_id is null or customer_group_id = ". (int)customer::$data['group_id'] .")
 				and (geo_zone_id is null or geo_zone_id in (
-					select geo_zone_id from ". DB_TABLE_PREFIX ."zones_to_geo_zones
+					select geo_zone_id from ". DB_PREFIX ."zones_to_geo_zones
 					where country_code = '". database::input(customer::$data['country_code']) ."'
 					and (zone_code = '' or zone_code is null or zone_code = '". database::input(customer::$data['zone_code']) ."')
 				))
 				and (campaign_id is null or campaign_id in (
-					select id from ". DB_TABLE_PREFIX ."campaigns
+					select id from ". DB_PREFIX ."campaigns
 					where status
 					and (valid_from is not null and valid_from <= '". date('Y-m-d H:i:s') ."')
 					and (valid_to is not null and valid_to >= '". date('Y-m-d H:i:s') ."')
@@ -334,18 +334,18 @@
 
 			left join (
 				select product_id, group_concat(concat(group_id, '-', if(custom_value != '', custom_value, value_id)) separator ',') as attributes
-				from ". DB_TABLE_PREFIX ."products_attributes
+				from ". DB_PREFIX ."products_attributes
 				group by product_id
 				order by id
 			) pa on (p.id = pa.product_id)
 
-			left join ". DB_TABLE_PREFIX ."brands b on (b.id = p.brand_id)
+			left join ". DB_PREFIX ."brands b on (b.id = p.brand_id)
 
-			left join ". DB_TABLE_PREFIX ."sold_out_statuses ss on (p.sold_out_status_id = ss.id)
+			left join ". DB_PREFIX ."sold_out_statuses ss on (p.sold_out_status_id = ss.id)
 
 			left join (
 				select product_id, round(avg(rating), 1) as rating
-				from ". DB_TABLE_PREFIX ."reviews
+				from ". DB_PREFIX ."reviews
 				where status
 				group by product_id
 			) pr on (pr.product_id = p.id)
@@ -353,9 +353,9 @@
 			left join (
 				select product_id, max(scope_discount) as scope_discount from (
 					select ptc.product_id, c.discount_percent as scope_discount
-					from ". DB_TABLE_PREFIX ."campaigns c
-					join ". DB_TABLE_PREFIX ."campaigns_scopes cs on (cs.campaign_id = c.id and cs.scope_type = 'category')
-					join ". DB_TABLE_PREFIX ."products_to_categories ptc on (ptc.category_id = cs.scope_id)
+					from ". DB_PREFIX ."campaigns c
+					join ". DB_PREFIX ."campaigns_scopes cs on (cs.campaign_id = c.id and cs.scope_type = 'category')
+					join ". DB_PREFIX ."products_to_categories ptc on (ptc.category_id = cs.scope_id)
 					where c.status
 					and c.discount_mode = 'percentage'
 					and c.discount_percent > 0
@@ -363,9 +363,9 @@
 					and (c.valid_to is null or c.valid_to >= '". date('Y-m-d H:i:s') ."')
 					union all
 					select pr.id as product_id, c.discount_percent as scope_discount
-					from ". DB_TABLE_PREFIX ."campaigns c
-					join ". DB_TABLE_PREFIX ."campaigns_scopes cs on (cs.campaign_id = c.id and cs.scope_type = 'brand')
-					join ". DB_TABLE_PREFIX ."products pr on (pr.brand_id = cs.scope_id)
+					from ". DB_PREFIX ."campaigns c
+					join ". DB_PREFIX ."campaigns_scopes cs on (cs.campaign_id = c.id and cs.scope_type = 'brand')
+					join ". DB_PREFIX ."products pr on (pr.brand_id = cs.scope_id)
 					where c.status
 					and c.discount_mode = 'percentage'
 					and c.discount_percent > 0
@@ -432,9 +432,9 @@
 
 			$sql_select_relevance[] = (
 				"if(p.id in (
-					select product_id from ". DB_TABLE_PREFIX ."products_stock_options
+					select product_id from ". DB_PREFIX ."products_stock_options
 					where stock_item_id in (
-						select id from ". DB_TABLE_PREFIX ."stock_items
+						select id from ". DB_PREFIX ."stock_items
 						where sku regexp '". database::input($code_regex) ."'
 						or gtin regexp '". database::input($code_regex) ."'
 						or mpn regexp '". database::input($code_regex) ."'
@@ -470,7 +470,7 @@
 		if (!empty($filter['categories'])) {
 			$sql_select_relevance['categories'] = (
 				"if(p.id in (
-					select product_id from ". DB_TABLE_PREFIX ."products_to_categories
+					select product_id from ". DB_PREFIX ."products_to_categories
 					where category_id in ('". implode("', '", database::input($filter['categories'])) ."')
 				), 1, 0)"
 			);
@@ -485,7 +485,7 @@
 		if (!empty($filter['attributes']) && is_array($filter['attributes'])) {
 			$sql_where['attributes'] = (
 				"if(p.id in (
-					select product_id from ". DB_TABLE_PREFIX ."products_attributes
+					select product_id from ". DB_PREFIX ."products_attributes
 					where concat(group_id, '-', value_id) in ('". implode("', '", database::input($filter['attributes'])) ."')
 				), 1, 0)"
 			);
@@ -552,7 +552,7 @@
 					(
 						". implode(" + ", $sql_select_relevance) ."
 					) as relevance
-				from ". DB_TABLE_PREFIX ."products p
+				from ". DB_PREFIX ."products p
 				where ". implode(" and ", $sql_inner_where) ."
 				and (valid_from is null or valid_from <= '". date('Y-m-d H:i:s') ."')
 				and (valid_to is null or valid_to >= '". date('Y-m-d H:i:s') ."')
@@ -566,16 +566,16 @@
 					count(pso.id) as num_stock_options,
 					sum(si.quantity) as total_quantity,
 					sum(si.quantity - oi.quantity_reserved) as quantity_available
-				from ". DB_TABLE_PREFIX ."products_stock_options pso
+				from ". DB_PREFIX ."products_stock_options pso
 
-				left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
+				left join ". DB_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
 
 				left join (
 					select oi.stock_option_id, sum(oi.quantity) as quantity_reserved
-					from ". DB_TABLE_PREFIX ."orders_items oi
-					left join ". DB_TABLE_PREFIX ."orders o on (o.id = oi.order_id)
+					from ". DB_PREFIX ."orders_items oi
+					left join ". DB_PREFIX ."orders o on (o.id = oi.order_id)
 					where o.order_status_id in (
-						select id from ". DB_TABLE_PREFIX ."order_statuses
+						select id from ". DB_PREFIX ."order_statuses
 						where stock_action = 'reserve'
 					)
 					group by oi.stock_option_id
@@ -586,7 +586,7 @@
 			". ((isset($filter['sort']) && $filter['sort'] === 'popularity') ?
 			"left join (
 				select entity_id as product_id, sum(count) as views
-				from ". DB_TABLE_PREFIX ."statistics
+				from ". DB_PREFIX ."statistics
 				where entity_type = 'product'
 				and measure_group_type = 'week'
 				and measure_group_value in ('". date('Y-W') ."', '". date('Y-W') ."')
@@ -596,15 +596,15 @@
 
 			left join (
 				select product_id, max($sql_column_price) as regular_price, min($sql_column_price) as final_price
-				from ". DB_TABLE_PREFIX ."products_prices
+				from ". DB_PREFIX ."products_prices
 				where (customer_group_id is null or customer_group_id = ". (int)customer::$data['group_id'] .")
 				and (geo_zone_id is null or geo_zone_id in (
-					select geo_zone_id from ". DB_TABLE_PREFIX ."zones_to_geo_zones
+					select geo_zone_id from ". DB_PREFIX ."zones_to_geo_zones
 					where country_code = '". database::input(customer::$data['country_code']) ."'
 					and (zone_code = '' or zone_code is null or zone_code = '". database::input(customer::$data['zone_code']) ."')
 				))
 				and (campaign_id is null or campaign_id in (
-					select id from ". DB_TABLE_PREFIX ."campaigns
+					select id from ". DB_PREFIX ."campaigns
 					where status
 					and (valid_from is not null and valid_from <= '". date('Y-m-d H:i:s') ."')
 					and (valid_to is not null and valid_to >= '". date('Y-m-d H:i:s') ."')
@@ -614,14 +614,14 @@
 
 			left join (
 				select product_id, group_concat(concat(group_id, '-', if(custom_value != '', custom_value, value_id)) separator ',') as attributes
-				from ". DB_TABLE_PREFIX ."products_attributes
+				from ". DB_PREFIX ."products_attributes
 				group by product_id
 				order by id
 			) pa on (p.id = pa.product_id)
 
-			left join ". DB_TABLE_PREFIX ."brands b on (b.id = p.brand_id)
+			left join ". DB_PREFIX ."brands b on (b.id = p.brand_id)
 
-			left join ". DB_TABLE_PREFIX ."sold_out_statuses ss on (p.sold_out_status_id = ss.id)
+			left join ". DB_PREFIX ."sold_out_statuses ss on (p.sold_out_status_id = ss.id)
 
 			". (!empty($sql_outer_where) ? "where (". implode(PHP_EOL . "and ", $sql_outer_where) .")" : "") ."
 

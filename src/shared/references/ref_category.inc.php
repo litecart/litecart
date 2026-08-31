@@ -46,14 +46,14 @@
 					$this->_data['ancestor'] = database::query(
 						"select t2.id from (
 							select @r as _id,
-								(select @r := parent_id from ". DB_TABLE_PREFIX ."categories where id = _id) as parent_id,
+								(select @r := parent_id from ". DB_PREFIX ."categories where id = _id) as parent_id,
 								@l := @l + 1
 							from (
 								select @r := ". (int)$this->id .", @l := 0) vars,
-								". DB_TABLE_PREFIX ."categories h
+								". DB_PREFIX ."categories h
 								where @r <> 0
 							) t1
-							join  ". DB_TABLE_PREFIX ."categories t2 on (t1._id = t2.id)
+							join  ". DB_PREFIX ."categories t2 on (t1._id = t2.id)
 						limit 1;"
 					)->fetch(function($category){
 						return reference::category($category['id'], $this->_language_codes[0]);
@@ -78,14 +78,14 @@
 				case 'products':
 
 					$this->_data['products'] = database::query(
-						"select id from ". DB_TABLE_PREFIX ."products
+						"select id from ". DB_PREFIX ."products
 						where status
 						and id in (
-							select product_id from ". DB_TABLE_PREFIX ."products_to_categories
+							select product_id from ". DB_PREFIX ."products_to_categories
 							where category_id = ". (int)$this->_data['id'] ."
 						)
 						and (quantity > 0 or sold_out_status_id in (
-							select id from ". DB_TABLE_PREFIX ."sold_out_statuses
+							select id from ". DB_PREFIX ."sold_out_statuses
 							where (hidden is null or hidden = 0)
 						))
 						and (valid_from is null or valid_from <= '". date('Y-m-d H:i:s') ."')
@@ -104,7 +104,7 @@
 					}
 
 					$this->_data['num_subcategories'] = database::query(
-						"select count(id) as num_subcategories from ". DB_TABLE_PREFIX ."categories
+						"select count(id) as num_subcategories from ". DB_PREFIX ."categories
 						where status
 						and parent_id ". (int)$this->_data['id'] .";"
 					)->fetch('num_subcategories');
@@ -119,15 +119,15 @@
 					}
 
 					$this->_data['num_products'] = database::query(
-						"select count(id) as num_products from ". DB_TABLE_PREFIX ."products
+						"select count(id) as num_products from ". DB_PREFIX ."products
 						where status
 						and id in (
-							select product_id from ". DB_TABLE_PREFIX ."products_to_categories
+							select product_id from ". DB_PREFIX ."products_to_categories
 							where category_id = ". (int)$this->_data['id'] ."
 							". ($this->descendants ? "or category_id in (". implode(", ", array_keys($this->descendants)) .")" : "") ."
 						)
 						and (quantity > 0 or sold_out_status_id in (
-							select id from ". DB_TABLE_PREFIX ."sold_out_statuses
+							select id from ". DB_PREFIX ."sold_out_statuses
 							where (hidden is null or hidden = 0)
 						))
 						and (valid_from is null or valid_from <= '". date('Y-m-d H:i:s') ."')
@@ -143,7 +143,7 @@
 					if (empty($this->parent_id)) return;
 
 					database::query(
-						"select id from ". DB_TABLE_PREFIX ."categories
+						"select id from ". DB_PREFIX ."categories
 						where status
 						and parent_id = ". (int)$this->parent_id ."
 						and id != ". (int)$this->_data['id'] ."
@@ -159,7 +159,7 @@
 					$this->_data['descendants'] = [];
 
 					database::query(
-						"select id, parent_id from ". DB_TABLE_PREFIX ."categories
+						"select id, parent_id from ". DB_PREFIX ."categories
 						join (select @parent_id := ". (int)$this->_data['id'] .") tmp
 						where find_in_set(parent_id, @parent_id)
 						and length(@parent_id := concat(@parent_id, ',', id));"
@@ -175,7 +175,7 @@
 					$this->_data['children'] = [];
 
 					database::query(
-						"select id from ". DB_TABLE_PREFIX ."categories
+						"select id from ". DB_PREFIX ."categories
 						where status
 						and parent_id = ". (int)$this->_data['id'] ."
 						order by priority;"
@@ -190,7 +190,7 @@
 				default:
 
 					$category = database::query(
-						"select * from ". DB_TABLE_PREFIX ."categories
+						"select * from ". DB_PREFIX ."categories
 						where id = ". (int)$this->_data['id'] ."
 						limit 1;"
 					)->fetch(function($category) {
@@ -224,7 +224,7 @@
 
 					if (!$category) {
 						$category = database::query(
-							"show fields from ". DB_TABLE_PREFIX ."categories;"
+							"show fields from ". DB_PREFIX ."categories;"
 						)->fetch_all(function($field) {
 							return database::create_variable($field);
 						});

@@ -6,14 +6,14 @@
 		$stats = [];
 
 		$order_statuses = database::query(
-			"select id from ". DB_TABLE_PREFIX ."order_statuses where is_sale;"
+			"select id from ". DB_PREFIX ."order_statuses where is_sale;"
 		)->fetch_all('id');
 
 		// Total Sales
 
 		$orders = database::query(
 			"select count(id) as num_orders, max(total) as max_order_amount, sum(total - total_tax) as total_sales
-			from ". DB_TABLE_PREFIX ."orders
+			from ". DB_PREFIX ."orders
 			where order_status_id in ('". implode("', '", $order_statuses) ."');"
 		)->fetch();
 
@@ -24,7 +24,7 @@
 		// Total Sales Year
 		$stats['total_sales_year'] = database::query(
 			"select sum(total - total_tax) as total_sales_year
-			from ". DB_TABLE_PREFIX ."orders
+			from ". DB_PREFIX ."orders
 			where order_status_id in ('". implode("', '", $order_statuses) ."')
 			and created_at >= '". date('Y-m-d H:i:s', mktime(0, 0, 0, 1, 1, date('Y'))) ."';"
 		)->fetch('total_sales_year');
@@ -32,7 +32,7 @@
 		// Total Sales Month
 		$stats['total_sales_month'] = database::query(
 			"select sum(total - total_tax) as total_sales_month
-			from ". DB_TABLE_PREFIX ."orders
+			from ". DB_PREFIX ."orders
 			where order_status_id in ('". implode("', '", $order_statuses) ."')
 			and created_at >= '". date('Y-m-d H:i:s', mktime(0, 0, 0, date('m'), 1, date('Y'))) ."';"
 		)->fetch('total_sales_month');
@@ -40,7 +40,7 @@
 		// Average order amount
 		$orders = database::query(
 			"select count(id) as num_orders, sum(total - total_tax) as total_sales
-			from ". DB_TABLE_PREFIX ."orders
+			from ". DB_PREFIX ."orders
 			where order_status_id in ('". implode("', '", $order_statuses) ."')
 			and created_at >= '". date('Y-m-d', strtotime('-6 months')) ."';"
 		)->fetch();
@@ -50,7 +50,7 @@
 		// Average order count
 		$total_orders = database::query(
 			"select count(id) as num_orders
-			from ". DB_TABLE_PREFIX ."orders
+			from ". DB_PREFIX ."orders
 			where order_status_id in ('". implode("', '", $order_statuses) ."')
 			and created_at >= '". date('Y-m-d', strtotime('-6 months')) ."'
 			group by date_format(created_at, '%Y-%m');"
@@ -61,13 +61,13 @@
 		// Num customers
 		$stats['num_customers'] = database::query(
 			"select count(id) as num_customers
-			from ". DB_TABLE_PREFIX ."customers;"
+			from ". DB_PREFIX ."customers;"
 		)->fetch('num_customers');
 
 		// Num products
 		$stats['num_products'] = database::query(
 			"select count(id) as num_products
-			from ". DB_TABLE_PREFIX ."products;"
+			from ". DB_PREFIX ."products;"
 		)->fetch('num_products');
 
 		cache::set($widget_stats_cache_token, $stats);

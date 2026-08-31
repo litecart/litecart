@@ -18,7 +18,7 @@
 			$this->data = [];
 
 			database::query(
-				"show fields from ". DB_TABLE_PREFIX ."emails;"
+				"show fields from ". DB_PREFIX ."emails;"
 			)->each(function($field){
 				$this->data[$field['Field']] = database::create_variable($field);
 			});
@@ -49,7 +49,7 @@
 			$this->reset();
 
 			$email = database::query(
-				"select * from ". DB_TABLE_PREFIX ."emails
+				"select * from ". DB_PREFIX ."emails
 				where id = ". (int)$id ."
 				limit 1;"
 			)->fetch();
@@ -75,7 +75,7 @@
 
 			if (!$this->data['id']) {
 				database::query(
-					"insert into ". DB_TABLE_PREFIX ."emails
+					"insert into ". DB_PREFIX ."emails
 					(status, code, ip_address, hostname, user_agent, created_at) values
 					('". database::input($this->data['status']) ."', '". database::input($this->data['code']) ."', '". database::input($_SERVER['REMOTE_ADDR']) ."', '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."', '". database::input($_SERVER['HTTP_USER_AGENT']) ."', '". ($this->data['created_at'] = date('Y-m-d H:i:s')) ."');"
 				);
@@ -84,7 +84,7 @@
 			}
 
 			database::query(
-				"update ". DB_TABLE_PREFIX ."emails
+				"update ". DB_PREFIX ."emails
 				set status = '". (!empty($this->data['status']) ? database::input($this->data['status']) : 'draft') ."',
 					code = '". database::input($this->data['code']) ."',
 					reference = '". database::input($this->data['reference']) ."',
@@ -463,7 +463,7 @@
 		public function delete(): void {
 
 			database::query(
-				"delete from ". DB_TABLE_PREFIX ."emails
+				"delete from ". DB_PREFIX ."emails
 				where id = ". (int)$this->data['id'] .";"
 			);
 
@@ -475,7 +475,7 @@
 		public function cleanup(string $time_ago = '-30 days'): void {
 
 			database::query(
-				"delete from ". DB_TABLE_PREFIX ."emails
+				"delete from ". DB_PREFIX ."emails
 				where status in ('sent', 'error')
 				and updated_at < '". date('Y-m-d H:i:s', strtotime($time_ago)) ."';"
 			);

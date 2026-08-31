@@ -33,7 +33,7 @@
 			}
 
 			database::query(
-				"delete from ". DB_TABLE_PREFIX ."cart_items
+				"delete from ". DB_PREFIX ."cart_items
 				where created_at < '". date('Y-m-d H:i:s', strtotime('-3 months')) ."';"
 			);
 
@@ -131,7 +131,7 @@
 			self::reset();
 
 			database::query(
-				"delete from ". DB_TABLE_PREFIX ."cart_items
+				"delete from ". DB_PREFIX ."cart_items
 				where cart_uid = '". database::input(self::$data['uid']) ."';"
 			);
 		}
@@ -142,7 +142,7 @@
 
 			if (customer::check_login()) {
 				database::query(
-					"update ". DB_TABLE_PREFIX ."cart_items
+					"update ". DB_PREFIX ."cart_items
 					set cart_uid = '". database::input(self::$data['uid']) ."',
 						customer_id = ". (int)customer::$data['id'] ."
 					where (
@@ -153,14 +153,14 @@
 			}
 
 			database::query(
-				"select * from ". DB_TABLE_PREFIX ."cart_items
+				"select * from ". DB_PREFIX ."cart_items
 				where cart_uid = '". database::input(self::$data['uid']) ."';"
 			)->each(function($item){
 
 				// Remove duplicate cart item if present
 				if (!empty(self::$items[$item['key']])) {
 					database::query(
-						"delete from ". DB_TABLE_PREFIX ."cart_items
+						"delete from ". DB_PREFIX ."cart_items
 						where cart_uid = '". database::input(self::$data['uid']) ."'
 						and id = ". (int)$item['id'] ."
 						limit 1;"
@@ -373,7 +373,7 @@
 			if (!empty(self::$items[$item_key]['id'])) {
 
 				database::query(
-					"update ". DB_TABLE_PREFIX ."cart_items
+					"update ". DB_PREFIX ."cart_items
 					set quantity = ". (float)self::$items[$item_key]['quantity'] .",
 						updated_at = '". date('Y-m-d H:i:s') ."'
 					where cart_uid = '". database::input(self::$data['uid']) ."'
@@ -386,7 +386,7 @@
 				if (!$force) {
 
 					database::query(
-						"insert into ". DB_TABLE_PREFIX ."cart_items
+						"insert into ". DB_PREFIX ."cart_items
 						(customer_id, cart_uid, `key`, product_id, stock_option_id, userdata, image, quantity, updated_at, created_at)
 						values (". (customer::$data['id'] ? (int)customer::$data['id'] : "null") .", '". database::input(self::$data['uid']) ."', '". database::input($item_key) ."', ". ($item['product_id'] ? (int)$item['product_id'] : "null") .", ". ($item['stock_option_id'] ? (int)$item['stock_option_id'] : "null") .", '". database::input(f::format_json($item['userdata'])) ."', '". database::input($item['image']) ."', ". (float)$item['quantity'] .", '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
 					);
@@ -440,7 +440,7 @@
 			if (!isset(self::$items[$item_key])) return false;
 
 			database::query(
-				"delete from ". DB_TABLE_PREFIX ."cart_items
+				"delete from ". DB_PREFIX ."cart_items
 				where cart_uid = '". database::input(self::$data['uid']) ."'
 				and id = ". (int)self::$items[$item_key]['id'] ."
 				limit 1;"

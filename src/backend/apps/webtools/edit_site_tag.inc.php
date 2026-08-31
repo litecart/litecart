@@ -90,7 +90,7 @@
 	];
 
 	$consent_options = database::query(
-		"select * from ". DB_TABLE_PREFIX ."third_parties"
+		"select * from ". DB_PREFIX ."third_parties"
 	)->fetch_all(function($third_party) use ($privacy_classes) {
 
 		$options = [];

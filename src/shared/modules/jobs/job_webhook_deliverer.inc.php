@@ -16,12 +16,12 @@
 			if (empty($this->settings['status'])) return;
 
 			database::query(
-				"delete from ". DB_TABLE_PREFIX ."webhook_requests
+				"delete from ". DB_PREFIX ."webhook_requests
 				where created_at < '". date('Y-m-d H:i:s', strtotime('-1 month')) ."';"
 			);
 
 			$pending_requests = database::query(
-				"select * from ". DB_TABLE_PREFIX ."webhook_requests
+				"select * from ". DB_PREFIX ."webhook_requests
 				where (
 					status = 'pending'
 					or (status = 'pending_retry' and failed_attempts = 1 and last_attempt < '". date('Y-m-d H:i:s', strtotime('-1 hour')) ."')
@@ -61,7 +61,7 @@
 
 				if (in_array($client->last_response['status_code'], [200, 201, 202, 204, 304])) {
 					database::query(
-						"update ". DB_TABLE_PREFIX ."webhook_requests
+						"update ". DB_PREFIX ."webhook_requests
 						set status = 'delivered',
 							last_attempt = '". date('Y-m-d H:i:s') ."',
 							raw_request = '". database::input($request_log) ."',
@@ -71,7 +71,7 @@
 					);
 				} else if (substr($client->last_response['status_code'], 0, 1) == '4') {
 					database::query(
-						"update ". DB_TABLE_PREFIX ."webhook_requests
+						"update ". DB_PREFIX ."webhook_requests
 						set status = 'failed',
 							last_attempt = '". date('Y-m-d H:i:s') ."',
 							raw_request = '". database::input($request_log) ."',
@@ -82,7 +82,7 @@
 					);
 				} else {
 					database::query(
-						"update ". DB_TABLE_PREFIX ."webhook_requests
+						"update ". DB_PREFIX ."webhook_requests
 						set status = '". ($request['failed_attempts'] >= 10 ? 'failed' : 'pending_retry') ."',
 							last_attempt = '". date('Y-m-d H:i:s') ."',
 							raw_request = '". database::input($request_log) ."',

@@ -18,7 +18,7 @@
 			$this->data = [];
 
 			database::query(
-				"show fields from ". DB_TABLE_PREFIX ."tax_rates;"
+				"show fields from ". DB_PREFIX ."tax_rates;"
 			)->each(function($field){
 				$this->data[$field['Field']] = database::create_variable($field);
 			});
@@ -37,7 +37,7 @@
 			$this->reset();
 
 			$tax_rate = database::query(
-				"select * from ". DB_TABLE_PREFIX ."tax_rates
+				"select * from ". DB_PREFIX ."tax_rates
 				where id = ". (int)$id ."
 				limit 1;"
 			)->fetch();
@@ -55,7 +55,7 @@
 
 			if (!$this->data['id']) {
 				database::query(
-					"insert into ". DB_TABLE_PREFIX ."tax_rates
+					"insert into ". DB_PREFIX ."tax_rates
 					(created_at)
 					values ('". ($this->data['created_at'] = date('Y-m-d H:i:s')) ."');"
 				);
@@ -64,7 +64,7 @@
 			}
 
 			database::query(
-				"update ". DB_TABLE_PREFIX ."tax_rates
+				"update ". DB_PREFIX ."tax_rates
 				set tax_class_id = ". (int)$this->data['tax_class_id'] .",
 					geo_zone_id = ". (int)$this->data['geo_zone_id'] .",
 					code = '". database::input($this->data['code']) ."',
@@ -89,7 +89,7 @@
 		public function delete(): void {
 
 			database::query(
-				"delete from ". DB_TABLE_PREFIX ."tax_rates
+				"delete from ". DB_PREFIX ."tax_rates
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"
 			);

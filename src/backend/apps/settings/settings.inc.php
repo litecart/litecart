@@ -15,7 +15,7 @@
 			foreach (array_keys($_POST['settings']) as $key) {
 
 				$setting = database::query(
-					"select * from ". DB_TABLE_PREFIX ."settings
+					"select * from ". DB_PREFIX ."settings
 					where `key` = '". database::input($key) ."'
 					limit 1;"
 				)->fetch();
@@ -67,7 +67,7 @@
 				}
 
 				database::query(
-					"update ". DB_TABLE_PREFIX ."settings
+					"update ". DB_PREFIX ."settings
 					set `value` = '". database::input($value) ."',
 						updated_at = '". date('Y-m-d H:i:s') ."'
 					where `key` = '". database::input($key) ."'
@@ -95,7 +95,7 @@
 	}
 
 	$settings_group = database::query(
-		"select * from ". DB_TABLE_PREFIX ."settings_groups
+		"select * from ". DB_PREFIX ."settings_groups
 		where `key` = '". database::input(__DOC__) ."'
 		order by priority, `key`
 		limit 1;"
@@ -117,7 +117,7 @@
 
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$settings = database::prepare(
-		"select * from ". DB_TABLE_PREFIX ."settings
+		"select * from ". DB_PREFIX ."settings
 		where `group_key` = '". database::input($settings_group['key']) ."'
 		order by priority, `key` asc;"
 	)->fetch_page(function(&$setting){

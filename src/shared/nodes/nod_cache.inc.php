@@ -20,7 +20,7 @@
 				self::clear_cache();
 
 				database::query(
-					"update ". DB_TABLE_PREFIX ."settings
+					"update ". DB_PREFIX ."settings
 					set value = '0'
 					where `key` = 'cache_clear'
 					limit 1;"
@@ -46,7 +46,7 @@
 				}
 
 				database::query(
-					"update ". DB_TABLE_PREFIX ."settings
+					"update ". DB_PREFIX ."settings
 					set value = '0'
 					where `key` = 'cache_clear_thumbnails'
 					limit 1;"

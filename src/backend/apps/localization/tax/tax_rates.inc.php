@@ -12,9 +12,9 @@
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$tax_rates = database::prepare(
 		"select tr.*, gz.name as geo_zone, tc.name as tax_class
-		from ". DB_TABLE_PREFIX ."tax_rates tr
-		left join ". DB_TABLE_PREFIX ."geo_zones gz on (gz.id = tr.geo_zone_id)
-		left join ". DB_TABLE_PREFIX ."tax_classes tc on (tc.id = tr.tax_class_id)
+		from ". DB_PREFIX ."tax_rates tr
+		left join ". DB_PREFIX ."geo_zones gz on (gz.id = tr.geo_zone_id)
+		left join ". DB_PREFIX ."tax_classes tc on (tc.id = tr.tax_class_id)
 		order by tc.name, gz.name, tr.name;"
 	)->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
 

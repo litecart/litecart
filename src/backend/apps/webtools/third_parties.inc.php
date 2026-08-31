@@ -34,7 +34,7 @@
 
 // Table Rows
 	$third_parties = database::prepare(
-		"select * from ". DB_TABLE_PREFIX ."third_parties
+		"select * from ". DB_PREFIX ."third_parties
 		order by name asc;"
 	)->fetch_page(null, null, $_GET['page'], settings::get('data_table_rows_per_page'), $num_rows, $num_pages);
 

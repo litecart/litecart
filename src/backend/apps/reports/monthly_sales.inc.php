@@ -30,9 +30,9 @@
 			sum(o.shipping_option_fee) as total_shipping_fees,
 			sum(o.payment_option_fee) as total_payment_fees,
 			date_format(o.created_at, '%Y-%m') as `year_month`
-		from ". DB_TABLE_PREFIX ."orders o
+		from ". DB_PREFIX ."orders o
 		where o.order_status_id in (
-			select id from ". DB_TABLE_PREFIX ."order_statuses
+			select id from ". DB_PREFIX ."order_statuses
 			where is_sale
 		)
 		". (!empty($_GET['date_from']) ? "and o.created_at >= '". date('Y-m-d 00:00:00', strtotime($_GET['date_from'])) ."'" : "") ."

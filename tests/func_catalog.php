@@ -6,15 +6,15 @@
 
 		// Save auto increment IDs
 		$products_auto_id = database::query(
-			"SHOW TABLE STATUS LIKE '". DB_TABLE_PREFIX ."products';"
+			"SHOW TABLE STATUS LIKE '". DB_PREFIX ."products';"
 		)->fetch('Auto_increment');
 
 		$categories_auto_id = database::query(
-			"SHOW TABLE STATUS LIKE '". DB_TABLE_PREFIX ."categories';"
+			"SHOW TABLE STATUS LIKE '". DB_PREFIX ."categories';"
 		)->fetch('Auto_increment');
 
 		$brands_auto_id = database::query(
-			"SHOW TABLE STATUS LIKE '". DB_TABLE_PREFIX ."brands';"
+			"SHOW TABLE STATUS LIKE '". DB_PREFIX ."brands';"
 		)->fetch('Auto_increment');
 
 		database::begin_transaction();
@@ -198,7 +198,7 @@
 
 		database::rollback();
 
-		database::query("ALTER TABLE ". DB_TABLE_PREFIX ."products AUTO_INCREMENT = ". (int)$products_auto_id .";");
-		database::query("ALTER TABLE ". DB_TABLE_PREFIX ."categories AUTO_INCREMENT = ". (int)$categories_auto_id .";");
-		database::query("ALTER TABLE ". DB_TABLE_PREFIX ."brands AUTO_INCREMENT = ". (int)$brands_auto_id .";");
+		database::query("ALTER TABLE ". DB_PREFIX ."products AUTO_INCREMENT = ". (int)$products_auto_id .";");
+		database::query("ALTER TABLE ". DB_PREFIX ."categories AUTO_INCREMENT = ". (int)$categories_auto_id .";");
+		database::query("ALTER TABLE ". DB_PREFIX ."brands AUTO_INCREMENT = ". (int)$brands_auto_id .";");
 	}

@@ -3,8 +3,8 @@
 	// Table Rows
 	$orders = database::query(
 		"select o.*, os.color as order_status_color, os.icon as order_status_icon, json_value(os.name, '$.". database::input(language::$selected['code']) ."') as order_status_name
-		from ". DB_TABLE_PREFIX ."orders o
-		left join ". DB_TABLE_PREFIX ."order_statuses os on (os.id = o.order_status_id)
+		from ". DB_PREFIX ."orders o
+		left join ". DB_PREFIX ."order_statuses os on (os.id = o.order_status_id)
 		where o.order_status_id
 		and os.is_archived = 0
 		order by o.created_at desc, o.id desc

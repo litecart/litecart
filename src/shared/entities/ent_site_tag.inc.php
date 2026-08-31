@@ -18,7 +18,7 @@
 			$this->data = [];
 
 			database::query(
-				"show fields from ". DB_TABLE_PREFIX ."site_tags;"
+				"show fields from ". DB_PREFIX ."site_tags;"
 			)->each(function($field) {
 				$this->data[$field['Field']] = database::create_variable($field['Type']);
 			});
@@ -35,7 +35,7 @@
 			$this->reset();
 
 			$site_tag = database::query(
-				"select * from ". DB_TABLE_PREFIX ."site_tags
+				"select * from ". DB_PREFIX ."site_tags
 				where id = ". (int)$site_tag_id ."
 				limit 1;"
 			)->fetch();
@@ -54,7 +54,7 @@
 			if (!$this->data['id']) {
 
 				database::query(
-					"insert into ". DB_TABLE_PREFIX ."site_tags
+					"insert into ". DB_PREFIX ."site_tags
 					(created_at)
 					values ('". ($this->data['created_at'] = date('Y-m-d H:i:s')) ."');"
 				);
@@ -63,7 +63,7 @@
 			}
 
 			database::query(
-				"update ". DB_TABLE_PREFIX ."site_tags
+				"update ". DB_PREFIX ."site_tags
 				set status = '". (empty($this->data['status']) ? 0 : 1) ."',
 					position = '". database::input($this->data['position']) ."',
 					name = '". database::input($this->data['name']) ."',
@@ -83,7 +83,7 @@
 		public function delete(): void {
 
 			database::query(
-				"delete from ". DB_TABLE_PREFIX ."site_tags
+				"delete from ". DB_PREFIX ."site_tags
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"
 			);

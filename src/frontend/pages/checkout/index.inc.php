@@ -33,7 +33,7 @@
 		// Don't resume an already processed order
 		if (!empty($order->data['id'])) {
 			if (!database::query(
-				"select * from ". DB_TABLE_PREFIX ."orders
+				"select * from ". DB_PREFIX ."orders
 				where id = ". (int)$order->data['id'] ."
 				and order_status_id is not null
 				and created_at > '". date('Y-m-d H:i:s', strtotime('-15 minutes')) ."'

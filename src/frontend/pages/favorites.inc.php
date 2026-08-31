@@ -22,7 +22,7 @@
 			}
 
 			database::query(
-				"insert ignore into ". DB_TABLE_PREFIX ."favorites
+				"insert ignore into ". DB_PREFIX ."favorites
 				(customer_id, cart_uid, product_id, created_at)
 				values (" . (int)customer::$data['id'] .", '". database::input(cart::$data['uid']) ."', ". (int)$_POST['product_id'] .", '". date('Y-m-d H:i:s') ."');",
 			);
@@ -57,7 +57,7 @@
 			}
 
 			database::query(
-				"delete from ". DB_TABLE_PREFIX ."favorites
+				"delete from ". DB_PREFIX ."favorites
 				where (
 					customer_id = ". (int) customer::$data['id'] ."
 					or cart_uid = '". database::input(cart::$data['uid']) ."'
@@ -100,7 +100,7 @@
 	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/favorites.inc.php');
 
 	$product_ids = database::query(
-		"select product_id from ". DB_TABLE_PREFIX ."favorites
+		"select product_id from ". DB_PREFIX ."favorites
 		where customer_id = ". (int)customer::$data['id'] ."
 		or cart_uid = '". database::input(cart::$data['uid']) ."';"
 	)->fetch_all('product_id');

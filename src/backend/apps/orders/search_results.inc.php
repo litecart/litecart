@@ -18,7 +18,7 @@
 			+ if(shipping_tracking_id like '%". database::input($query) ."%', 5, 0)
 			+ if(payment_transaction_id like '%". database::input($query) ."%', 5, 0)
 		) as relevance
-		from ". DB_TABLE_PREFIX ."orders
+		from ". DB_PREFIX ."orders
 		having relevance > 0
 		order by relevance desc, id desc
 		limit 5;"

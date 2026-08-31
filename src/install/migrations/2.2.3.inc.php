@@ -28,16 +28,16 @@
 	// Reconstruct product options
 
 	database::query(
-		"RENAME TABLE ". DB_TABLE_PREFIX ."products_options TO ". DB_TABLE_PREFIX ."products_options_values"
+		"RENAME TABLE ". DB_PREFIX ."products_options TO ". DB_PREFIX ."products_options_values"
 	);
 
 	database::query(
-		"ALTER TABLE ". DB_TABLE_PREFIX ."products_options_values
+		"ALTER TABLE ". DB_PREFIX ."products_options_values
 		ADD `custom_value` VARCHAR(64) NOT NULL AFTER `value_id`;"
 	);
 
 	database::query(
-		"CREATE TABLE ". DB_TABLE_PREFIX ."products_options (
+		"CREATE TABLE ". DB_PREFIX ."products_options (
 			`id` INT(11) NOT NULL AUTO_INCREMENT,
 			`product_id` INT(11) NOT NULL,
 			`group_id` INT(11) NOT NULL,
@@ -53,60 +53,60 @@
 	);
 
 	database::query(
-		"INSERT INTO ". DB_TABLE_PREFIX ."products_options (product_id, group_id, `function`, required, sort)
-		SELECT pov.product_id, pov.group_id, ov.`function`, ov.required, ov.sort FROM `". DB_TABLE_PREFIX ."products_options_values` pov
-		LEFT JOIN `". DB_TABLE_PREFIX ."option_groups` ov ON (ov.id = pov.group_id)
+		"INSERT INTO ". DB_PREFIX ."products_options (product_id, group_id, `function`, required, sort)
+		SELECT pov.product_id, pov.group_id, ov.`function`, ov.required, ov.sort FROM `". DB_PREFIX ."products_options_values` pov
+		LEFT JOIN `". DB_PREFIX ."option_groups` ov ON (ov.id = pov.group_id)
 		GROUP BY pov.product_id, pov.group_id;"
 	);
 
 	database::query(
-		"UPDATE `". DB_TABLE_PREFIX ."products_options` SET sort = 'custom' WHERE sort = 'product';"
+		"UPDATE `". DB_PREFIX ."products_options` SET sort = 'custom' WHERE sort = 'product';"
 	);
 
 	if (!database::query(
 		"SELECT * FROM INFORMATION_SCHEMA.COLUMNS
 		WHERE TABLE_SCHEMA = '". DB_DATABASE ."'
-		AND TABLE_NAME = '". DB_TABLE_PREFIX ."attribute_groups'
+		AND TABLE_NAME = '". DB_PREFIX ."attribute_groups'
 		AND COLUMN_NAME = 'sort';"
 	)->num_rows) {
 		database::query(
-			"ALTER TABLE ". DB_TABLE_PREFIX ."attribute_groups
+			"ALTER TABLE ". DB_PREFIX ."attribute_groups
 			ADD COLUMN `sort` ENUM('alphabetical','priority') NOT NULL DEFAULT 'alphabetical' AFTER `code`;"
 		);
 	}
 
 	// Copy option groups into attribute groups
 	if (!database::query(
-		"select id from ". DB_TABLE_PREFIX ."attribute_groups
+		"select id from ". DB_PREFIX ."attribute_groups
 		limit 1;"
 	)->num_rows) {
 
 		database::query(
-			"insert ignore  into ". DB_TABLE_PREFIX ."attribute_groups
+			"insert ignore  into ". DB_PREFIX ."attribute_groups
 			(id, sort, date_updated, date_created)
-			select id, sort, date_updated, date_created from ". DB_TABLE_PREFIX ."option_groups"
+			select id, sort, date_updated, date_created from ". DB_PREFIX ."option_groups"
 		);
 
 		database::query(
-			"insert ignore  into ". DB_TABLE_PREFIX ."attribute_groups_info
+			"insert ignore  into ". DB_PREFIX ."attribute_groups_info
 			(id, group_id, language_code, name)
-			select id, group_id, language_code, name from ". DB_TABLE_PREFIX ."option_groups_info"
+			select id, group_id, language_code, name from ". DB_PREFIX ."option_groups_info"
 		);
 
 		database::query(
-			"insert ignore  into ". DB_TABLE_PREFIX ."attribute_values
+			"insert ignore  into ". DB_PREFIX ."attribute_values
 			(id, group_id, priority)
-			select id, group_id, priority from ". DB_TABLE_PREFIX ."option_values"
+			select id, group_id, priority from ". DB_PREFIX ."option_values"
 		);
 
 		database::query(
-			"insert ignore  into ". DB_TABLE_PREFIX ."attribute_values_info
+			"insert ignore  into ". DB_PREFIX ."attribute_values_info
 			(id, value_id, language_code, name)
-			select id, value_id, language_code, name from ". DB_TABLE_PREFIX ."option_values_info"
+			select id, value_id, language_code, name from ". DB_PREFIX ."option_values_info"
 		);
 
 		database::query(
-			"select * from ". DB_TABLE_PREFIX ."option_groups
+			"select * from ". DB_PREFIX ."option_groups
 			order by id;"
 		)->each(function($option_group) {
 
@@ -115,7 +115,7 @@
 			}
 
 			database::query(
-				"update ". DB_TABLE_PREFIX ."products_options
+				"update ". DB_PREFIX ."products_options
 				set `function` = '". database::input($option_group['function']) ."',
 					`sort` = '". database::input($option_group['sort']) ."'
 				where group_id = ". (int)$option_group['id'] .";"
@@ -126,7 +126,7 @@
 	} else {
 
 		database::query(
-			"ALTER TABLE ". DB_TABLE_PREFIX ."products_options_values
+			"ALTER TABLE ". DB_PREFIX ."products_options_values
 			ADD COLUMN `attribute_group_id` INT NOT NULL DEFAULT 0 AFTER `group_id`,
 			ADD COLUMN `attribute_value_id` INT NOT NULL DEFAULT 0 AFTER `value_id`,
 			ADD INDEX `priority` (`priority`),
@@ -136,14 +136,14 @@
 		);
 
 		$store_language_code = database::query(
-			"select * from ". DB_TABLE_PREFIX ."settings
+			"select * from ". DB_PREFIX ."settings
 			where `key` = 'store_language_code'
 			limit 1;"
 		)->fetch('value');
 
 		database::query(
-			"select og.*, ogi.name from ". DB_TABLE_PREFIX ."option_groups og
-			left join ". DB_TABLE_PREFIX ."option_groups_info ogi on (ogi.group_id = og.id and language_code = '". database::input($store_language_code) ."')
+			"select og.*, ogi.name from ". DB_PREFIX ."option_groups og
+			left join ". DB_PREFIX ."option_groups_info ogi on (ogi.group_id = og.id and language_code = '". database::input($store_language_code) ."')
 			order by id;"
 		)->each(function($option_group){
 
@@ -151,8 +151,8 @@
 
 			// Is there an attribute group matching the option group name?
 			$attribute_groups_query = database::query(
-				"select ag.*, agi.name from ". DB_TABLE_PREFIX ."attribute_groups ag
-				left join ". DB_TABLE_PREFIX ."attribute_groups_info agi on (agi.group_id = ag.id and agi.language_code = '". database::input($store_language_code) ."')
+				"select ag.*, agi.name from ". DB_PREFIX ."attribute_groups ag
+				left join ". DB_PREFIX ."attribute_groups_info agi on (agi.group_id = ag.id and agi.language_code = '". database::input($store_language_code) ."')
 				where agi.name = '". database::input($option_group['name']) ."'
 				limit 1;"
 			);
@@ -162,18 +162,18 @@
 				$attribute_group_id = $attribute_group['id'];
 
 			// Is the attribute group id vacant?
-			} else if (!database::query("select id from ". DB_TABLE_PREFIX ."attribute_groups where id = ". (int)$option_group['id'] ." limit 1;")->num_rows) {
+			} else if (!database::query("select id from ". DB_PREFIX ."attribute_groups where id = ". (int)$option_group['id'] ." limit 1;")->num_rows) {
 
 				database::query(
-					"insert ignore into ". DB_TABLE_PREFIX ."attribute_groups
+					"insert ignore into ". DB_PREFIX ."attribute_groups
 					(id, date_updated, date_created)
 					values (". (int)$option_group['id'] .", '". database::input($option_group['date_updated']) ."', '". database::input($option_group['date_created']) ."');"
 				);
 
 				database::query(
-					"insert ignore into ". DB_TABLE_PREFIX ."attribute_groups_info
+					"insert ignore into ". DB_PREFIX ."attribute_groups_info
 					(group_id, language_code, name)
-					select group_id, language_code, name from ". DB_TABLE_PREFIX ."option_groups_info
+					select group_id, language_code, name from ". DB_PREFIX ."option_groups_info
 					where group_id = ". (int)$option_group['id'] .";"
 				);
 
@@ -183,7 +183,7 @@
 			} else {
 
 				database::query(
-					"insert ignore into ". DB_TABLE_PREFIX ."attribute_groups
+					"insert ignore into ". DB_PREFIX ."attribute_groups
 					(code, date_created) values ('option_". (int)$option_group['id'] ."', '". date('Y-m-d H:i:s') ."');"
 				);
 
@@ -191,16 +191,16 @@
 
 				// Make certain the attribute group id does not collide with a previous option group id
 				$new_attribute_group_id = $attribute_group_id;
-				while (database::query("select id from ". DB_TABLE_PREFIX ."option_groups where id = ". (int)$new_attribute_group_id ." limit 1;")->num_rows) {
+				while (database::query("select id from ". DB_PREFIX ."option_groups where id = ". (int)$new_attribute_group_id ." limit 1;")->num_rows) {
 					$new_attribute_group_id++;
-					while (database::query("select id from ". DB_TABLE_PREFIX ."attribute_groups where id = ". (int)$new_attribute_group_id ." limit 1;")->num_rows) {
+					while (database::query("select id from ". DB_PREFIX ."attribute_groups where id = ". (int)$new_attribute_group_id ." limit 1;")->num_rows) {
 						$new_attribute_group_id++;
 					}
 				}
 
 				if ($new_attribute_group_id != $attribute_group_id) {
 					database::query(
-						"update ". DB_TABLE_PREFIX ."attribute_groups
+						"update ". DB_PREFIX ."attribute_groups
 						set id = ". (int)$new_attribute_group_id ."
 						where id = ". (int)$attribute_group_id ."
 						limit 1;"
@@ -209,15 +209,15 @@
 				}
 
 				database::query(
-					"insert ignore into ". DB_TABLE_PREFIX ."attribute_groups_info
+					"insert ignore into ". DB_PREFIX ."attribute_groups_info
 					(group_id, language_code, name)
-					select '". $attribute_group_id ."', language_code, name from ". DB_TABLE_PREFIX ."option_groups_info
+					select '". $attribute_group_id ."', language_code, name from ". DB_PREFIX ."option_groups_info
 					where group_id = ". (int)$option_group['id'] .";"
 				);
 			}
 
 			database::query(
-				"update ". DB_TABLE_PREFIX ."products_options
+				"update ". DB_PREFIX ."products_options
 				set group_id = ". (int)$attribute_group_id .",
 					`function` = '". database::input($option_group['function']) ."',
 					`sort` = '". database::input($option_group['sort']) ."'
@@ -226,8 +226,8 @@
 
 			// Update values in products_options and products_options_values
 			$option_values_query = database::query(
-				"select ov.*, ovi.name from ". DB_TABLE_PREFIX ."option_values ov
-				left join ". DB_TABLE_PREFIX ."option_values_info ovi on (ovi.value_id = ov.id and ovi.language_code = '". database::input($store_language_code) ."')
+				"select ov.*, ovi.name from ". DB_PREFIX ."option_values ov
+				left join ". DB_PREFIX ."option_values_info ovi on (ovi.value_id = ov.id and ovi.language_code = '". database::input($store_language_code) ."')
 				where ov.group_id = ". (int)$option_group['id'] .";"
 			);
 
@@ -235,8 +235,8 @@
 
 				// Is there an attribute value matching the option value name?
 				$attribute_values_query = database::query(
-					"select agv.*, agvi.name from ". DB_TABLE_PREFIX ."attribute_values agv
-					left join ". DB_TABLE_PREFIX ."attribute_values_info agvi on (agvi.value_id = agv.id and agvi.language_code = '". database::input($store_language_code) ."')
+					"select agv.*, agvi.name from ". DB_PREFIX ."attribute_values agv
+					left join ". DB_PREFIX ."attribute_values_info agvi on (agvi.value_id = agv.id and agvi.language_code = '". database::input($store_language_code) ."')
 					where agv.group_id = ". (int)$attribute_group_id ."
 					and agvi.name = '". database::input($option_value['name']) ."'
 					limit 1;"
@@ -247,18 +247,18 @@
 					$attribute_value_id = $attribute_value['id'];
 
 				// Is the attribute value id vacant?
-				} else if (!database::query("select id from ". DB_TABLE_PREFIX ."attribute_values where id = ". (int)$option_value['id'] ." limit 1;")->num_rows) {
+				} else if (!database::query("select id from ". DB_PREFIX ."attribute_values where id = ". (int)$option_value['id'] ." limit 1;")->num_rows) {
 
 					database::query(
-						"insert ignore into ". DB_TABLE_PREFIX ."attribute_values
+						"insert ignore into ". DB_PREFIX ."attribute_values
 						(id, group_id, priority, date_updated, date_created)
 						values (". (int)$option_value['id'] .", ". (int)$attribute_group_id .", ". (int)$option_value['priority'] .", '". database::input($option_group['date_updated']) ."', '". database::input($option_group['date_created']) ."');"
 					);
 
 					database::query(
-						"insert ignore into ". DB_TABLE_PREFIX ."attribute_values_info
+						"insert ignore into ". DB_PREFIX ."attribute_values_info
 						(value_id, language_code, name)
-						select value_id, language_code, name from ". DB_TABLE_PREFIX ."option_values_info
+						select value_id, language_code, name from ". DB_PREFIX ."option_values_info
 						where value_id = ". (int)$option_value['id'] .";"
 					);
 
@@ -267,7 +267,7 @@
 				} else {
 
 					database::query(
-						"insert ignore into ". DB_TABLE_PREFIX ."attribute_values
+						"insert ignore into ". DB_PREFIX ."attribute_values
 						(group_id, date_created) values (". (int)$attribute_group_id .", '". date('Y-m-d H:i:s') ."');"
 					);
 
@@ -275,16 +275,16 @@
 
 					// Make certain the attribute value id does not collide with a previous option value id
 					$new_attribute_value_id = $attribute_value_id;
-					while (database::query("select id from ". DB_TABLE_PREFIX ."option_values where id = ". (int)$new_attribute_value_id ." limit 1;")->num_rows) {
+					while (database::query("select id from ". DB_PREFIX ."option_values where id = ". (int)$new_attribute_value_id ." limit 1;")->num_rows) {
 						$new_attribute_value_id++;
-						while (database::query("select id from ". DB_TABLE_PREFIX ."attribute_values where id = ". (int)$new_attribute_value_id ." limit 1;")->num_rows) {
+						while (database::query("select id from ". DB_PREFIX ."attribute_values where id = ". (int)$new_attribute_value_id ." limit 1;")->num_rows) {
 							$new_attribute_value_id++;
 						}
 					}
 
 					if ($new_attribute_value_id != $attribute_value_id) {
 						database::query(
-							"update ". DB_TABLE_PREFIX ."attribute_values
+							"update ". DB_PREFIX ."attribute_values
 							set id = ". (int)$new_attribute_value_id ."
 							where id = ". (int)$attribute_value_id ."
 							limit 1;"
@@ -293,14 +293,14 @@
 					}
 
 					database::query(
-						"insert ignore into ". DB_TABLE_PREFIX ."attribute_values_info (value_id, language_code, name)
-						select '". (int)$attribute_value_id ."', language_code, name from ". DB_TABLE_PREFIX ."option_values_info
+						"insert ignore into ". DB_PREFIX ."attribute_values_info (value_id, language_code, name)
+						select '". (int)$attribute_value_id ."', language_code, name from ". DB_PREFIX ."option_values_info
 						where value_id = ". (int)$option_value['id'] .";"
 					);
 				}
 
 				database::query(
-					"update ". DB_TABLE_PREFIX ."products_options_values
+					"update ". DB_PREFIX ."products_options_values
 					set attribute_group_id = ". (int)$attribute_group_id .",
 						attribute_value_id = ". (int)$attribute_value_id ."
 					where group_id = ". (int)$option_group['id'] ."
@@ -311,13 +311,13 @@
 
 					// Update stock options
 					$stock_options_query = database::query(
-						"select * from ". DB_TABLE_PREFIX ."products_options_stock
+						"select * from ". DB_PREFIX ."products_options_stock
 						where combination regexp '(^|,)". (int)$option_group['id'] ."-". (int)$option_value['id'] ."(,|$)';"
 					);
 
 					while ($stock_option = database::fetch($stock_options_query)) {
 						database::query(
-							"update ". DB_TABLE_PREFIX ."products_options_stock
+							"update ". DB_PREFIX ."products_options_stock
 							set combination = '". database::input(preg_replace('#(^|.*,)'. (int)$option_group['id'] ."-". (int)$option_value['id'] .'(,.*|$)#', '${1}'. (int)$attribute_group_id .'-'. (int)$attribute_value_id . '${2}', $stock_option['combination'])) ."'
 							where id = ". (int)$stock_option['id'] .";"
 						);
@@ -325,13 +325,13 @@
 
 					// Update order items
 					$order_items_query = database::query(
-						"select * from ". DB_TABLE_PREFIX ."orders_items
+						"select * from ". DB_PREFIX ."orders_items
 						where option_stock_combination regexp '(^|,)". (int)$option_group['id'] ."-". (int)$option_value['id'] ."(,|$)';"
 					);
 
 					while ($order_item = database::fetch($order_items_query)) {
 						database::query(
-							"update ". DB_TABLE_PREFIX ."orders_items
+							"update ". DB_PREFIX ."orders_items
 							set option_stock_combination = '". database::input(preg_replace('#(^|.*,)'. (int)$option_group['id'] ."-". (int)$option_value['id'] .'(,.*|$)#', '${1}'. (int)$attribute_group_id .'-'. (int)$attribute_value_id . '${2}', $order_item['option_stock_combination'])) ."'
 							where id = ". (int)$order_item['id'] .";"
 						);
@@ -344,7 +344,7 @@
 		});
 
 		database::query(
-			"ALTER TABLE ". DB_TABLE_PREFIX ."products_options_values
+			"ALTER TABLE ". DB_PREFIX ."products_options_values
 			DROP COLUMN `group_id`,
 			DROP COLUMN `value_id`,
 			CHANGE COLUMN `attribute_group_id` `group_id` INT(11) NOT NULL AFTER `product_id`,
@@ -353,26 +353,26 @@
 	}
 
 	database::query(
-		"ALTER TABLE ". DB_TABLE_PREFIX ."products_options_values
+		"ALTER TABLE ". DB_PREFIX ."products_options_values
 		ADD UNIQUE INDEX `product_option_value` (`product_id`, `group_id`, `value_id`, `custom_value`);"
 	);
 
 	// Delete option groups
 
 	database::query(
-		"drop table ". DB_TABLE_PREFIX ."option_groups;"
+		"drop table ". DB_PREFIX ."option_groups;"
 	);
 
 	database::query(
-		"drop table ". DB_TABLE_PREFIX ."option_groups_info;"
+		"drop table ". DB_PREFIX ."option_groups_info;"
 	);
 
 	database::query(
-		"drop table ". DB_TABLE_PREFIX ."option_values;"
+		"drop table ". DB_PREFIX ."option_values;"
 	);
 
 	database::query(
-		"drop table ". DB_TABLE_PREFIX ."option_values_info;"
+		"drop table ". DB_PREFIX ."option_values_info;"
 	);
 
 	// Move/rename cache files

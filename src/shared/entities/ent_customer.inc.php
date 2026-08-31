@@ -18,7 +18,7 @@
 			$this->data = [];
 
 			database::query(
-				"show fields from ". DB_TABLE_PREFIX ."customers;"
+				"show fields from ". DB_PREFIX ."customers;"
 			)->each(function($field){
 				if (preg_match('#^shipping_(.*)$#', $field['Field'], $matches)) {
 					$this->data['shipping_address'][$matches[1]] = database::create_variable($field);
@@ -43,7 +43,7 @@
 			$this->reset();
 
 			$customer = database::query(
-				"select * from ". DB_TABLE_PREFIX ."customers
+				"select * from ". DB_PREFIX ."customers
 				". (preg_match('#^\d+$#', $id) ? "where id = ". (int)$id : "") ."
 				". (preg_match('#@#', $id) ? "where email = '". database::input(strtolower($id)) ."'" : "") ."
 				limit 1;"
@@ -74,7 +74,7 @@
 			$this->data = array_replace($this->data, array_intersect_key($customer, $this->data));
 
 			$this->data['newsletter'] = database::query(
-				"select id from ". DB_TABLE_PREFIX ."newsletter_recipients
+				"select id from ". DB_PREFIX ."newsletter_recipients
 				where email = '". database::input($this->data['email']) ."'
 				limit 1;"
 			)->num_rows ? 1 : 0;
@@ -86,7 +86,7 @@
 
 			if (!$this->data['id']) {
 				database::query(
-					"insert into ". DB_TABLE_PREFIX ."customers
+					"insert into ". DB_PREFIX ."customers
 					(email, created_at)
 					values ('". database::input($this->data['email']) ."', '". ($this->data['created_at'] = date('Y-m-d H:i:s')) ."');"
 				);
@@ -94,7 +94,7 @@
 				$this->data['id'] = database::insert_id();
 
 				database::query(
-					"update ". DB_TABLE_PREFIX ."orders
+					"update ". DB_PREFIX ."orders
 					set customer_id = ". (int)$this->data['id'] ."
 					where customer_email = '". database::input(strtolower($this->data['email'])) ."'
 					and customer_id = 0;"
@@ -102,7 +102,7 @@
 			}
 
 			database::query(
-				"update ". DB_TABLE_PREFIX ."customers
+				"update ". DB_PREFIX ."customers
 				set code = '". database::input($this->data['code']) ."',
 					status = '". (!empty($this->data['status']) ? '1' : '0') ."',
 					group_id = ". (int)$this->data['group_id'] .",
@@ -140,7 +140,7 @@
 
 			if (!empty($this->previous['email']) && $this->previous['email'] != $this->data['email']) {
 				database::query(
-					"update ". DB_TABLE_PREFIX ."newsletter_recipients
+					"update ". DB_PREFIX ."newsletter_recipients
 					set email = '". database::input(strtolower($this->data['email'])) ."',
 						firstname = '". database::input($this->data['firstname']) ."',
 						lastname = '". database::input($this->data['lastname']) ."'
@@ -150,13 +150,13 @@
 
 			if (!empty($this->data['newsletter'])) {
 				database::query(
-					"insert ignore into ". DB_TABLE_PREFIX ."newsletter_recipients
+					"insert ignore into ". DB_PREFIX ."newsletter_recipients
 					(email, firstname, lastname, ip_address, hostname, user_agent, created_at)
 					values ('". database::input(strtolower($this->data['email'])) ."', '". database::input($this->data['firstname']) ."', '". database::input($this->data['lastname']) ."', '". database::input($_SERVER['REMOTE_ADDR']) ."', '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."', '". database::input($_SERVER['HTTP_USER_AGENT']) ."', '". date('Y-m-d H:i:s') ."');"
 				);
 			} else if (!empty($this->previous['id'])) {
 				database::query(
-					"delete from ". DB_TABLE_PREFIX ."newsletter_recipients
+					"delete from ". DB_PREFIX ."newsletter_recipients
 					where email = '". database::input(strtolower($this->data['email'])) ."';"
 				);
 			}
@@ -195,7 +195,7 @@
 			}
 
 			database::query(
-				"update ". DB_TABLE_PREFIX ."customers
+				"update ". DB_PREFIX ."customers
 				set password_hash = '". database::input($this->data['password_hash'] = password_hash($password, PASSWORD_DEFAULT)) ."'
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"
@@ -279,15 +279,15 @@
 		public function delete(): void {
 
 			database::query(
-				"update ". DB_TABLE_PREFIX ."orders
+				"update ". DB_PREFIX ."orders
 				set customer_id = 0
 				where customer_id = ". (int)$this->data['id'] .";"
 			);
 
 			database::query(
 				"delete c, nr
-				from ". DB_TABLE_PREFIX ."customers c
-				left join ". DB_TABLE_PREFIX ."newsletter_recipients nr on (nr.email = c.email)
+				from ". DB_PREFIX ."customers c
+				left join ". DB_PREFIX ."newsletter_recipients nr on (nr.email = c.email)
 				where c.id = ". (int)$this->data['id'] .";"
 			);
 

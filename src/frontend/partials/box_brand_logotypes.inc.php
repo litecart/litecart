@@ -12,7 +12,7 @@
 	if (!$box_brand_logotypes->snippets['brands'] = cache::get($box_brand_logotypes_cache_token)) {
 
 		$box_brand_logotypes->snippets['brands'] = database::query(
-			"select id, image, name from ". DB_TABLE_PREFIX ."brands
+			"select id, image, name from ". DB_PREFIX ."brands
 			where status
 			and featured
 			and (image is not null and image != '')

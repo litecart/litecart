@@ -76,7 +76,7 @@
 
 	// Installed Modules
 	$installed_modules = database::query(
-		"select module_id from ". DB_TABLE_PREFIX ."modules
+		"select module_id from ". DB_PREFIX ."modules
 		where type = '". database::input($type) ."';"
 	)->fetch_all('module_id');
 

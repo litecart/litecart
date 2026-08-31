@@ -11,7 +11,7 @@
 
 		// Get the current auto increment ID - this will be used to revert the ID after the test
 		$auto_increment_id = database::query(
-			"SHOW TABLE STATUS LIKE '". DB_TABLE_PREFIX ."emails';"
+			"SHOW TABLE STATUS LIKE '". DB_PREFIX ."emails';"
 		)->fetch('Auto_increment');
 
 		// Start a MySQL transaction so we can rollback the test
@@ -390,7 +390,7 @@
 
 		// Verify second email was deleted
 		if (database::query(
-			"select id from ". DB_TABLE_PREFIX ."emails
+			"select id from ". DB_PREFIX ."emails
 			where id = ". (int)$email2_id ."
 			limit 1;"
 		)->num_rows) {
@@ -403,7 +403,7 @@
 
 		// Verify email was deleted
 		if (database::query(
-			"select id from ". DB_TABLE_PREFIX ."emails
+			"select id from ". DB_PREFIX ."emails
 			where id = ". (int)$email_id ."
 			limit 1;"
 		)->num_rows) {
@@ -424,6 +424,6 @@
 
 		// Revert the auto increment ID
 		database::query(
-			"ALTER TABLE ". DB_TABLE_PREFIX ."emails AUTO_INCREMENT = ". (int)$auto_increment_id .";"
+			"ALTER TABLE ". DB_PREFIX ."emails AUTO_INCREMENT = ". (int)$auto_increment_id .";"
 		);
 	}

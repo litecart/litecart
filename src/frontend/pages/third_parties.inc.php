@@ -15,7 +15,7 @@
 
 	$_page->snippets['third_parties'] =  database::query(
 		"select *, json_value(name, '$.". language::$selected['code'] ."') as name
-		from ". DB_TABLE_PREFIX ."third_parties
+		from ". DB_PREFIX ."third_parties
 		where status
 		order by name;"
 	)->fetch_all(function($party) {

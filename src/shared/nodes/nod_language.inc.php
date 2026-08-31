@@ -56,7 +56,7 @@
 
 				database::query(
 					"select id, code, json_unquote(coalesce(nullif(json_value(`text`, '$selected_path'), ''), json_value(`text`, '$.en'))) as text
-					from ". DB_TABLE_PREFIX ."translations
+					from ". DB_PREFIX ."translations
 					where ". ((isset(route::$request['endpoint']) && route::$request['endpoint'] == 'backend') ? "backend = 1" : "frontend = 1") ."
 					having text != '';"
 				)->each(function($translation){
@@ -75,7 +75,7 @@
 		public static function shutdown(): void {
 
 			database::query(
-				"update ". DB_TABLE_PREFIX ."translations
+				"update ". DB_PREFIX ."translations
 				set ". ((isset(route::$request['endpoint']) && route::$request['endpoint'] == 'backend') ? "backend = 1" : "frontend = 1") .",
 					last_accessed = '". date('Y-m-d H:i:s') ."'
 				where code in ('". implode("', '", database::input(self::$_accessed_translations)) ."');"
@@ -88,7 +88,7 @@
 
 		public static function load(): void {
 			self::$languages = database::query(
-				"select * from ". DB_TABLE_PREFIX ."languages
+				"select * from ". DB_PREFIX ."languages
 				where status
 				order by priority, name;"
 			)->fetch_all(null, 'code');
@@ -113,7 +113,7 @@
 				// Update customer language
 				if (class_exists('customer', false) && customer::check_login()) {
 					database::query(
-						"update ". DB_TABLE_PREFIX ."customers
+						"update ". DB_PREFIX ."customers
 						set language_code = '". database::input(self::$selected['code']) ."'
 						where id = ". (int)session::$data['customer']['id'] ."
 						limit 1;"
@@ -200,7 +200,7 @@
 			if (preg_match('#\.([a-z]{2})$#', $_SERVER['HTTP_HOST'], $matches)) {
 
 				$country = database::query(
-					"select * from ". DB_TABLE_PREFIX ."countries
+					"select * from ". DB_PREFIX ."countries
 					where iso_code_2 = '". database::input(strtoupper($matches[1])) ."'
 					limit 1;"
 				)->fetch();
@@ -264,7 +264,7 @@
 			// Get translation from database
 			$translation = database::query(
 				"select id, json_value(`text`, '$.en') as text_en, json_value(`text`, '$.". database::input($language_code) ."') as text_". $language_code ."
-				from ". DB_TABLE_PREFIX ."translations
+				from ". DB_PREFIX ."translations
 				where code = '". database::input($code) ."'
 				limit 1;"
 			)->fetch();
@@ -272,7 +272,7 @@
 			// Create translation if it doesn't exist
 			if (!$translation) {
 				database::query(
-					"insert into ". DB_TABLE_PREFIX ."translations
+					"insert into ". DB_PREFIX ."translations
 					(code, `text`, html, updated_at, created_at)
 					values ('". database::input($code) ."', '{\"en\":\"". database::input($default, true) ."\"}', '". (($default != strip_tags($default)) ? 1 : 0) ."', '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
 				);

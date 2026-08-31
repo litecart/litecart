@@ -18,7 +18,7 @@
 
 	$date_first_order = database::query(
 		"select min(created_at) as min_date
-		from ". DB_TABLE_PREFIX ."orders
+		from ". DB_PREFIX ."orders
 		limit 1;"
 	)->fetch(function($result){
 		return isset($result['min_date']) ? date('Y-m-d', strtotime($result['min_date'])) : null;
@@ -46,9 +46,9 @@
 			o.customer_id as id,
 			if(o.customer_company, o.customer_company, concat(o.customer_firstname, ' ', o.customer_lastname)) as name,
 			customer_email as email
-		from ". DB_TABLE_PREFIX ."orders o
+		from ". DB_PREFIX ."orders o
 		where o.order_status_id in (
-			select id from ". DB_TABLE_PREFIX ."order_statuses
+			select id from ". DB_PREFIX ."order_statuses
 			where is_sale
 		)
 		". (!empty($_GET['date_from']) ? "and o.created_at >= '". date('Y-m-d 00:00:00', strtotime($_GET['date_from'])) ."'" : '') ."

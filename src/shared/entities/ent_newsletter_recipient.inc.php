@@ -18,7 +18,7 @@
 			$this->data = [];
 
 			database::query(
-				"show fields from ". DB_TABLE_PREFIX ."newsletter_recipients;"
+				"show fields from ". DB_PREFIX ."newsletter_recipients;"
 			)->each(function($field){
 				$this->data[$field['Field']] = database::create_variable($field);
 			});
@@ -39,7 +39,7 @@
 			$this->reset();
 
 			$recipient = database::query(
-				"select * from ". DB_TABLE_PREFIX ."newsletter_recipients
+				"select * from ". DB_PREFIX ."newsletter_recipients
 				". (preg_match('#^\d+$#', $id) ? "where id = ". (int)$id ."" : "") ."
 				". (preg_match('#@#', $id) ? "where email = '". database::input(strtolower($id)) ."'" : "") ."
 				limit 1;"
@@ -58,7 +58,7 @@
 
 			if (!$this->data['id']) {
 				database::query(
-					"insert into ". DB_TABLE_PREFIX ."newsletter_recipients
+					"insert into ". DB_PREFIX ."newsletter_recipients
 					(email, created_at)
 					values ('". database::input($this->data['email']) ."', '". ($this->data['created_at'] = date('Y-m-d H:i:s')) ."');"
 				);
@@ -67,7 +67,7 @@
 			}
 
 			database::query(
-				"update ". DB_TABLE_PREFIX ."newsletter_recipients
+				"update ". DB_PREFIX ."newsletter_recipients
 				set subscribed = ". (!empty($this->data['subscribed']) ? 1 : 0) .",
 					firstname = '". database::input($this->data['firstname']) ."',
 					lastname = '". database::input($this->data['lastname']) ."',
@@ -89,7 +89,7 @@
 		public function delete(): void {
 
 			database::query(
-				"delete from ". DB_TABLE_PREFIX ."newsletter_recipients
+				"delete from ". DB_PREFIX ."newsletter_recipients
 				where id = ". (int)$this->data['id'] .";"
 			);
 

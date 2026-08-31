@@ -43,12 +43,12 @@
 
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$geo_zones = database::prepare(
-		"select * from ". DB_TABLE_PREFIX ."geo_zones
+		"select * from ". DB_PREFIX ."geo_zones
 		order by name asc;"
 	)->fetch_page(function($geo_zone){
 
 		$geo_zone['num_zones'] = database::query(
-			"select id from ". DB_TABLE_PREFIX ."zones_to_geo_zones
+			"select id from ". DB_PREFIX ."zones_to_geo_zones
 			where geo_zone_id = ". (int)$geo_zone['id']
 		)->num_rows;
 

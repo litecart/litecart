@@ -26,7 +26,7 @@
 			$sent = 0;
 
 			database::query(
-				"select * from ". DB_TABLE_PREFIX ."emails
+				"select * from ". DB_PREFIX ."emails
 				where status = 'scheduled'
 				and (scheduled_at is null or scheduled_at < '". date('Y-m-d H:i:s') ."')
 				order by scheduled_at, id

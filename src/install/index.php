@@ -312,7 +312,7 @@ input[name="development_type"]:checked + div {
 		<div class="col-md-6">
 			<label class="form-group">
 				<div class="form-label">Table Prefix</div>
-				<input class="form-input" name="db_table_prefix" type="text" value="lc_" style="max-width: 50%;">
+				<input class="form-input" name="db_prefix" type="text" value="lc_" style="max-width: 50%;">
 			</label>
 		</div>
 

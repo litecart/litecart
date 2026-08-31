@@ -18,7 +18,7 @@
 			$this->data = [];
 
 			database::query(
-				"show fields from ". DB_TABLE_PREFIX ."currencies;"
+				"show fields from ". DB_PREFIX ."currencies;"
 			)->each(function($field){
 				$this->data[$field['Field']] = database::create_variable($field);
 			});
@@ -35,7 +35,7 @@
 			$this->reset();
 
 			$currency = database::query(
-				"select * from ". DB_TABLE_PREFIX ."currencies
+				"select * from ". DB_PREFIX ."currencies
 				". (preg_match('#^\d{1,2}$#', $currency_code) ? "where id = ". (int)$currency_code : "") ."
 				". (preg_match('#^\d{3}$#', $currency_code) ? "where number = '". database::input($currency_code) ."'" : "") ."
 				". (preg_match('#^[A-Z]{3}$#', $currency_code) ? "where code = '". database::input($currency_code) ."'" : "") ."
@@ -69,7 +69,7 @@
 			}
 
 			if (database::query(
-				"select id from ". DB_TABLE_PREFIX ."currencies
+				"select id from ". DB_PREFIX ."currencies
 				where (
 					code = '". database::input($this->data['code']) ."'
 					". (!empty($this->data['number']) ? "or number = '". database::input($this->data['number']) ."'" : "") ."
@@ -83,7 +83,7 @@
 			if (!$this->data['id']) {
 
 				database::query(
-					"insert into ". DB_TABLE_PREFIX ."currencies
+					"insert into ". DB_PREFIX ."currencies
 					(code, number, created_at)
 					values ('". database::input($this->data['code']) ."', '". database::input($this->data['number']) ."', '". ($this->data['created_at'] = date('Y-m-d H:i:s')) ."');"
 				);
@@ -92,7 +92,7 @@
 			}
 
 			database::query(
-				"update ". DB_TABLE_PREFIX ."currencies
+				"update ". DB_PREFIX ."currencies
 				set status = ". (int)$this->data['status'] .",
 					code = '". database::input($this->data['code']) ."',
 					number = '". database::input($this->data['number']) ."',
@@ -123,7 +123,7 @@
 			}
 
 			database::query(
-				"delete from ". DB_TABLE_PREFIX ."currencies
+				"delete from ". DB_PREFIX ."currencies
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"
 			);

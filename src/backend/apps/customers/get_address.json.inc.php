@@ -1,7 +1,7 @@
 <?php
 
 	$customer = database::query(
-		"select * from ". DB_TABLE_PREFIX ."customers
+		"select * from ". DB_PREFIX ."customers
 		where id = '". database::input($_REQUEST['customer_id']) ."'
 		limit 1;"
 	)->fetch();

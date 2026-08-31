@@ -7,7 +7,7 @@
 	*/
 
 	if (customer::$data['email'] && database::query(
-		"select id from ". DB_TABLE_PREFIX ."newsletter_recipients
+		"select id from ". DB_PREFIX ."newsletter_recipients
 		where email = '". database::input(strtolower(customer::$data['email'])) ."'
 		limit 1;"
 	)->num_rows) {

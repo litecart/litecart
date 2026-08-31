@@ -280,7 +280,7 @@
 		$code_regex = f::format_regex_code($_GET['query']);
 
 		$matched_products = database::query(
-			"select id from ". DB_TABLE_PREFIX ."products
+			"select id from ". DB_PREFIX ."products
 			where id = '". database::input($_GET['query']) ."'
 			or find_in_set('". database::input($_GET['query']) ."', keywords)
 			or code regexp '". database::input($code_regex) ."'
@@ -296,25 +296,25 @@
 				or match(json_value(description, '$.". database::input(language::$selected['code']) ."') against ('*". database::input_fulltext($_GET['query']) ."*')
 			)
 			or id in (
-				select product_id from ". DB_TABLE_PREFIX ."products_stock_options
+				select product_id from ". DB_PREFIX ."products_stock_options
 				where stock_item_id in (
-					select id from ". DB_TABLE_PREFIX ."stock_items
+					select id from ". DB_PREFIX ."stock_items
 					where sku regexp '". database::input($code_regex) ."'
 					or gtin regexp '". database::input($code_regex) ."'
 				)
 			)
 			or brand_id in (
-				select id from ". DB_TABLE_PREFIX ."brands
+				select id from ". DB_PREFIX ."brands
 				where name like '%". database::input($_GET['query']) ."%'
 			)
 			or supplier_id in (
-				select id from ". DB_TABLE_PREFIX ."brands
+				select id from ". DB_PREFIX ."brands
 				where name like '%". database::input($_GET['query']) ."%'
 			);"
 		)->fetch_all('id');
 
 		$matched_categories = database::query(
-			"select id from ". DB_TABLE_PREFIX ."categories
+			"select id from ". DB_PREFIX ."categories
 			where id = '". database::input($_GET['query']) ."'
 			or find_in_set('". database::input($_GET['query']) ."', keywords)
 			or (
@@ -326,7 +326,7 @@
 				or match(json_value(short_description, '$.". database::input(language::$selected['code']) ."') against ('*". database::input_fulltext($_GET['query']) ."*')
 			)
 			or id in (
-				select category_id from ". DB_TABLE_PREFIX ."products_to_categories
+				select category_id from ". DB_PREFIX ."products_to_categories
 				where product_id in ('". implode("', '", database::input($matched_products)) ."')
 			);"
 		)->fetch_all('id');
@@ -339,7 +339,7 @@
 
 	} else {
 		$category_branches = database::query(
-			"select id from ". DB_TABLE_PREFIX ."categories
+			"select id from ". DB_PREFIX ."categories
 			where parent_id is null;"
 		)->fetch_all('id');
 		$opened_categories = !empty($_GET['category_id']) ? array_keys(reference::category($_GET['category_id'])->path) : [];
@@ -434,7 +434,7 @@ table .icon-folder-open {
 
 		$category = database::query(
 			"select c.id, c.status, json_value(c.name, '$.". database::input(language::$selected['code']) ."') as name
-			from ". DB_TABLE_PREFIX ."categories c
+			from ". DB_PREFIX ."categories c
 			where c.id = ". (int)$category_id ."
 			order by c.priority asc, name asc;"
 		)->fetch();
@@ -479,13 +479,13 @@ table .icon-folder-open {
 		if (in_array($category['id'], $opened_categories)) {
 
 			$has_subcategories = database::query(
-				"select id from ". DB_TABLE_PREFIX ."categories
+				"select id from ". DB_PREFIX ."categories
 				where parent_id = ". (int)$category['id'] ."
 				limit 1;"
 			)->num_rows ? true : false;
 
 			$has_products	= database::query(
-				"select product_id from ". DB_TABLE_PREFIX ."products_to_categories
+				"select product_id from ". DB_PREFIX ."products_to_categories
 				where category_id = ". (int)$category['id']."
 				limit 1;"
 			)->num_rows ? true : false;
@@ -495,7 +495,7 @@ table .icon-folder-open {
 				// Output subcategories
 				$subcategories = database::query(
 					"select c.id, c.status, json_value(c.name, '$.". database::input(language::$selected['code']) ."') as name
-					from ". DB_TABLE_PREFIX ."categories c
+					from ". DB_PREFIX ."categories c
 					where c.parent_id = ". (int)$category['id'] ."
 					". (!empty($_GET['query']) ? "and c.id in ('". implode("', '", database::input($matched_categories)) ."')" : "") ."
 					order by name;"
@@ -517,15 +517,15 @@ table .icon-folder-open {
 						oi.quantity_reserved, pso.total_quantity - oi.quantity_reserved as quantity_available,
 						ptc.category_id
 
-					from ". DB_TABLE_PREFIX ."products p
+					from ". DB_PREFIX ."products p
 
-					left join ". DB_TABLE_PREFIX ."products_to_categories ptc on (ptc.product_id = p.id)
+					left join ". DB_PREFIX ."products_to_categories ptc on (ptc.product_id = p.id)
 
 					left join (
 						select product_id, min($sql_column_price) as regular_price, max($sql_column_price) as final_price
-						from ". DB_TABLE_PREFIX ."products_prices
+						from ". DB_PREFIX ."products_prices
 						where (campaign_id is null or campaign_id in (
-							select id from ". DB_TABLE_PREFIX ."campaigns
+							select id from ". DB_PREFIX ."campaigns
 							where status
 							and (valid_from is not null and valid_from > '". date('Y-m-d H:i:s') ."')
 							and (valid_to is not null and valid_to < '". date('Y-m-d H:i:s') ."')
@@ -535,25 +535,25 @@ table .icon-folder-open {
 
 					left join (
 						select pso.id, pso.product_id, pso.stock_item_id, count(pso.stock_item_id) as num_stock_options, sum(si.quantity) as total_quantity
-						from ". DB_TABLE_PREFIX ."products_stock_options pso
-						left join ". DB_TABLE_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
+						from ". DB_PREFIX ."products_stock_options pso
+						left join ". DB_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
 						group by pso.product_id
 					) pso on (pso.product_id = p.id)
 
 					left join (
 						select oi.product_id, sum(oi.quantity) as quantity_reserved
-						from ". DB_TABLE_PREFIX ."orders_stock_items osi
-						left join ". DB_TABLE_PREFIX ."orders_items oi on (oi.id = osi.item_id and osi.order_id = oi.order_id)
-						left join ". DB_TABLE_PREFIX ."orders o on (o.id = osi.order_id)
+						from ". DB_PREFIX ."orders_stock_items osi
+						left join ". DB_PREFIX ."orders_items oi on (oi.id = osi.item_id and osi.order_id = oi.order_id)
+						left join ". DB_PREFIX ."orders o on (o.id = osi.order_id)
 						where o.order_status_id in (
-							select id from ". DB_TABLE_PREFIX ."order_statuses
+							select id from ". DB_PREFIX ."order_statuses
 							where stock_action = 'reserve'
 						)
 						group by oi.product_id
 					) oi on (oi.product_id = p.id)
 
 					where ". (!empty($category['id']) ? "p.id in (
-						select product_id from ". DB_TABLE_PREFIX ."products_to_categories ptc
+						select product_id from ". DB_PREFIX ."products_to_categories ptc
 						where category_id = ". (int)$category['id'] ."
 					)" : "ptc.category_id is null") ."
 

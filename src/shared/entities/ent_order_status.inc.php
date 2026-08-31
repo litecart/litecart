@@ -18,7 +18,7 @@
 			$this->data = [];
 
 			database::query(
-				"show fields from ". DB_TABLE_PREFIX ."order_statuses;"
+				"show fields from ". DB_PREFIX ."order_statuses;"
 			)->each(function($field){
 				$this->data[$field['Field']] = database::create_variable($field);
 			});
@@ -46,7 +46,7 @@
 			$this->reset();
 
 			$order_status = database::query(
-				"select * from ". DB_TABLE_PREFIX ."order_statuses
+				"select * from ". DB_PREFIX ."order_statuses
 				where id = ". (int)$id ."
 				limit 1;"
 			)->fetch();
@@ -69,7 +69,7 @@
 
 			$this->data['num_orders'] = database::query(
 				"select count(*) as num_orders
-				from ". DB_TABLE_PREFIX ."orders
+				from ". DB_PREFIX ."orders
 				where order_status_id = ". (int)$this->data['id'] .";"
 			)->fetch('num_orders');
 
@@ -85,7 +85,7 @@
 			if (!$this->data['id']) {
 
 				database::query(
-					"insert into ". DB_TABLE_PREFIX ."order_statuses
+					"insert into ". DB_PREFIX ."order_statuses
 					(created_at)
 					values ('". ($this->data['created_at'] = date('Y-m-d H:i:s')) ."');"
 				);
@@ -94,7 +94,7 @@
 			}
 
 			database::query(
-				"update ". DB_TABLE_PREFIX ."order_statuses
+				"update ". DB_PREFIX ."order_statuses
 				set hidden = '". (empty($this->data['hidden']) ? '0' : '1') ."',
 					state = '". database::input($this->data['state']) ."',
 					icon = '". database::input($this->data['icon']) ."',
@@ -127,7 +127,7 @@
 
 			database::query(
 				"delete os
-				from ". DB_TABLE_PREFIX ."order_statuses os
+				from ". DB_PREFIX ."order_statuses os
 				where os.id = ". (int)$this->data['id'] .";"
 			);
 

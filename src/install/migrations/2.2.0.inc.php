@@ -188,7 +188,7 @@
 
 	// Complete Order Items
 	database::query(
-		"select * from ". DB_TABLE_PREFIX ."orders_items;"
+		"select * from ". DB_PREFIX ."orders_items;"
 	)->each(function($order_item){
 
 		if (empty($order_item['product_id'])) return;
@@ -196,7 +196,7 @@
 		// Get stock option
 		if (!empty($order_item['option_stock_combination'])) {
 			$stock_option = database::query(
-				"select * from ". DB_TABLE_PREFIX ."products_options_stock
+				"select * from ". DB_PREFIX ."products_options_stock
 				where combination = '". database::input($order_item['option_stock_combination']) ."'
 				limit 1;"
 			)->fetch();
@@ -204,7 +204,7 @@
 
 		if (empty($stock_option)) {
 			$stock_option = database::query(
-				"select * from ". DB_TABLE_PREFIX ."products_options_stock
+				"select * from ". DB_PREFIX ."products_options_stock
 				where sku = '". database::input($order_item['sku']) ."'
 				limit 1;"
 			)->fetch();
@@ -212,14 +212,14 @@
 
 		// Product
 		$product = database::query(
-			"select * from ". DB_TABLE_PREFIX ."products
+			"select * from ". DB_PREFIX ."products
 			where id = ". (!empty($stock_option['product_id']) ? (int)$stock_option['product_id'] : (int)$order_item['product_id']) ."
 			limit 1;"
 		)->fetch();
 
 		if (!$product) {
 			$product = database::query(
-				"select * from ". DB_TABLE_PREFIX ."products
+				"select * from ". DB_PREFIX ."products
 				where sku = '". database::input($order_item['sku']) ."'
 				limit 1;"
 			)->fetch();
@@ -229,7 +229,7 @@
 
 		// Update order item
 		database::query(
-			"update ". DB_TABLE_PREFIX ."orders_items
+			"update ". DB_PREFIX ."orders_items
 			set gtin = '". database::input($product['gtin']) ."',
 				taric = '". database::input($product['taric']) ."',
 				weight = ". (!empty($stock_option['dim_x']) ? (float)$stock_option['weight'] : (float)$product['weight']) .",
@@ -245,19 +245,19 @@
 
 	// Order Public Key
 	database::query(
-		"ALTER TABLE `". DB_TABLE_PREFIX ."orders`
+		"ALTER TABLE `". DB_PREFIX ."orders`
 		ADD COLUMN `public_key` VARCHAR(32) NOT NULL AFTER `domain`;"
 	);
 
 	database::query(
-		"select * from ". DB_TABLE_PREFIX ."orders
+		"select * from ". DB_PREFIX ."orders
 		where public_key = '';"
 	)->each(function($order) {
 
 		$public_key = md5($order['id'] . $order['uid'] . $order['customer_email'] . $order['date_created']);
 
 		database::query(
-			"update ". DB_TABLE_PREFIX ."orders
+			"update ". DB_PREFIX ."orders
 			set public_key = '". database::input($public_key) ."'
 			where id = ". (int)$order['id'] .";"
 		);
@@ -265,21 +265,21 @@
 
 	// Fix unique indexes (ALTER IGNORE is deprecated)
 	foreach ([
-		['table' => DB_TABLE_PREFIX.'categories_info',            'index' => 'category',                 'columns' => '`category_id`, `language_code`'],
-		['table' => DB_TABLE_PREFIX.'slides_info',                'index' => 'slide_info',               'columns' => '`slide_id`, `language_code`'],
-		['table' => DB_TABLE_PREFIX.'delivery_statuses_info',     'index' => 'delivery_status_info',     'columns' => '`delivery_status_id`, `language_code`'],
-		['table' => DB_TABLE_PREFIX.'manufacturers_info',         'index' => 'manufacturer_info',        'columns' => '`manufacturer_id`, `language_code`'],
-		['table' => DB_TABLE_PREFIX.'option_groups_info',         'index' => 'option_group_info',        'columns' => '`group_id`, `language_code`'],
-		['table' => DB_TABLE_PREFIX.'option_values_info',         'index' => 'option_value_info',        'columns' => '`value_id`, `language_code`'],
-		['table' => DB_TABLE_PREFIX.'order_statuses_info',        'index' => 'order_status_info',        'columns' => '`order_status_id`, `language_code`'],
-		['table' => DB_TABLE_PREFIX.'pages_info',                 'index' => 'page_info',                'columns' => '`page_id`, `language_code`'],
-		['table' => DB_TABLE_PREFIX.'products_info',              'index' => 'product_info',             'columns' => '`product_id`, `language_code`'],
-		['table' => DB_TABLE_PREFIX.'products_options',           'index' => 'product_option',           'columns' => '`product_id`, `group_id`, `value_id`'],
-		['table' => DB_TABLE_PREFIX.'products_options_stock',     'index' => 'product_option_stock',     'columns' => '`product_id`, `combination`'],
-		['table' => DB_TABLE_PREFIX.'products_to_categories',     'index' => 'mapping',                  'columns' => '`product_id`, `category_id`'],
-		['table' => DB_TABLE_PREFIX.'quantity_units_info',        'index' => 'quantity_unit_info',       'columns' => '`quantity_unit_id`, `language_code`'],
-		['table' => DB_TABLE_PREFIX.'sold_out_statuses_info',     'index' => 'sold_out_status_info',     'columns' => '`sold_out_status_id`, `language_code`'],
-		['table' => DB_TABLE_PREFIX.'zones_to_geo_zones',         'index' => 'region',                   'columns' => '`geo_zone_id`, `country_code`, `zone_code`'],
+		['table' => DB_PREFIX.'categories_info',            'index' => 'category',                 'columns' => '`category_id`, `language_code`'],
+		['table' => DB_PREFIX.'slides_info',                'index' => 'slide_info',               'columns' => '`slide_id`, `language_code`'],
+		['table' => DB_PREFIX.'delivery_statuses_info',     'index' => 'delivery_status_info',     'columns' => '`delivery_status_id`, `language_code`'],
+		['table' => DB_PREFIX.'manufacturers_info',         'index' => 'manufacturer_info',        'columns' => '`manufacturer_id`, `language_code`'],
+		['table' => DB_PREFIX.'option_groups_info',         'index' => 'option_group_info',        'columns' => '`group_id`, `language_code`'],
+		['table' => DB_PREFIX.'option_values_info',         'index' => 'option_value_info',        'columns' => '`value_id`, `language_code`'],
+		['table' => DB_PREFIX.'order_statuses_info',        'index' => 'order_status_info',        'columns' => '`order_status_id`, `language_code`'],
+		['table' => DB_PREFIX.'pages_info',                 'index' => 'page_info',                'columns' => '`page_id`, `language_code`'],
+		['table' => DB_PREFIX.'products_info',              'index' => 'product_info',             'columns' => '`product_id`, `language_code`'],
+		['table' => DB_PREFIX.'products_options',           'index' => 'product_option',           'columns' => '`product_id`, `group_id`, `value_id`'],
+		['table' => DB_PREFIX.'products_options_stock',     'index' => 'product_option_stock',     'columns' => '`product_id`, `combination`'],
+		['table' => DB_PREFIX.'products_to_categories',     'index' => 'mapping',                  'columns' => '`product_id`, `category_id`'],
+		['table' => DB_PREFIX.'quantity_units_info',        'index' => 'quantity_unit_info',       'columns' => '`quantity_unit_id`, `language_code`'],
+		['table' => DB_PREFIX.'sold_out_statuses_info',     'index' => 'sold_out_status_info',     'columns' => '`sold_out_status_id`, `language_code`'],
+		['table' => DB_PREFIX.'zones_to_geo_zones',         'index' => 'region',                   'columns' => '`geo_zone_id`, `country_code`, `zone_code`'],
 	] as $table) {
 
 		if (!database::query(
@@ -296,30 +296,30 @@
 
 	// Remove some indexes
 	if (database::query(
-		"SHOW KEYS FROM `". DB_TABLE_PREFIX ."products_prices`
+		"SHOW KEYS FROM `". DB_PREFIX ."products_prices`
 		WHERE Key_name = 'product_price'
 		AND Non_unique = 0;"
 	)->num_rows) {
 		database::query(
-			"ALTER TABLE `". DB_TABLE_PREFIX ."products_prices`
+			"ALTER TABLE `". DB_PREFIX ."products_prices`
 			DROP KEY `product_price`;"
 		);
 	}
 
 	if (database::query(
-		"SHOW KEYS FROM `". DB_TABLE_PREFIX ."products_to_categories`
+		"SHOW KEYS FROM `". DB_PREFIX ."products_to_categories`
 		WHERE Key_name = 'mapping'
 		AND Non_unique = 0;"
 	)->num_rows) {
 		database::query(
-			"ALTER TABLE `". DB_TABLE_PREFIX ."products_to_categories`
+			"ALTER TABLE `". DB_PREFIX ."products_to_categories`
 			DROP KEY `mapping`;"
 		);
 	}
 
 	// Migrate product groups to product attributes
 	database::query(
-		"select id, product_groups from `". DB_TABLE_PREFIX ."products`
+		"select id, product_groups from `". DB_PREFIX ."products`
 		where product_groups != ''
 		order by id;"
 	)->fetch(function($product) {
@@ -328,7 +328,7 @@
 			list($group_id, $value_id) = explode('-', $product_group);
 
 			database::query(
-				"insert into `". DB_TABLE_PREFIX ."products_attributes`
+				"insert into `". DB_PREFIX ."products_attributes`
 				(product_id, group_id, value_id) values
 				(". (int)$product['id'] .", ". (int)$group_id .", ". (int)$value_id .");"
 			);
@@ -337,21 +337,21 @@
 
 	// Migrate product groups to category filters
 	database::query(
-		"select id from `". DB_TABLE_PREFIX ."categories`
+		"select id from `". DB_PREFIX ."categories`
 		order by id;"
 	)->fetch(function($category) {
 
 		database::query(
-			"select distinct group_id from `". DB_TABLE_PREFIX ."products_attributes`
+			"select distinct group_id from `". DB_PREFIX ."products_attributes`
 			where product_id in (
-				select id from `". DB_TABLE_PREFIX ."products_to_categories`
+				select id from `". DB_PREFIX ."products_to_categories`
 				where category_id = ". (int)$category['id'] ."
 			)
 			order by group_id;"
 		)->each(function($attribute) use ($category) {
 
 			database::query(
-				"insert into `". DB_TABLE_PREFIX ."categories_filters`
+				"insert into `". DB_PREFIX ."categories_filters`
 				(category_id, attribute_group_id, select_multiple) values
 				(". (int)$category['id'] .", ". (int)$attribute['group_id'] .", 1);"
 			);
@@ -360,6 +360,6 @@
 
 	// Finally remove product_groups column
 	database::query(
-		"alter table `". DB_TABLE_PREFIX ."products`
+		"alter table `". DB_PREFIX ."products`
 		drop column `product_groups`;"
 	);

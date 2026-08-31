@@ -51,22 +51,22 @@
 			stt.quantity_deposited,
 			oit.quantity_withdrawn
 
-		from ". DB_TABLE_PREFIX ."stock_items si
+		from ". DB_PREFIX ."stock_items si
 
 		left join (
 			select stock_item_id, sum(quantity_adjustment) as quantity_deposited
-			from ". DB_TABLE_PREFIX ."stock_transactions_contents
+			from ". DB_PREFIX ."stock_transactions_contents
 			group by stock_item_id
 		) stt on (stt.stock_item_id = si.id)
 
 		left join (
 			select osi.stock_item_id, sum(oi.quantity * osi.quantity) as quantity_reserved
-			from ". DB_TABLE_PREFIX ."orders_stock_items osi
-			left join ". DB_TABLE_PREFIX ."orders_items oi on (oi.id = osi.item_id)
+			from ". DB_PREFIX ."orders_stock_items osi
+			left join ". DB_PREFIX ."orders_items oi on (oi.id = osi.item_id)
 			where osi.order_id in (
-				select id from ". DB_TABLE_PREFIX ."orders o
+				select id from ". DB_PREFIX ."orders o
 				where order_status_id in (
-					select id from ". DB_TABLE_PREFIX ."order_statuses os
+					select id from ". DB_PREFIX ."order_statuses os
 					where stock_action = 'reserve'
 				)
 			)
@@ -75,12 +75,12 @@
 
 		left join (
 			select osi.stock_item_id, sum(oi.quantity * osi.quantity) as quantity_withdrawn
-			from ". DB_TABLE_PREFIX ."orders_stock_items osi
-			left join ". DB_TABLE_PREFIX ."orders_items oi on (oi.id = osi.item_id)
+			from ". DB_PREFIX ."orders_stock_items osi
+			left join ". DB_PREFIX ."orders_items oi on (oi.id = osi.item_id)
 			where osi.order_id in (
-				select id from ". DB_TABLE_PREFIX ."orders o
+				select id from ". DB_PREFIX ."orders o
 				where order_status_id in (
-					select id from ". DB_TABLE_PREFIX ."order_statuses os
+					select id from ". DB_PREFIX ."order_statuses os
 					where stock_action = 'withdraw'
 				)
 			)

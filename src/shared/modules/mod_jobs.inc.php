@@ -24,7 +24,7 @@
 				}
 
 				database::query(
-					"update ". DB_TABLE_PREFIX ."modules
+					"update ". DB_PREFIX ."modules
 					set last_pushed = '". date('Y-m-d H:i:s') ."'
 					where module_id = '". database::input($module_id) ."'
 					limit 1;"
@@ -55,7 +55,7 @@
 					$output .= $log . PHP_EOL . PHP_EOL;
 
 					database::query(
-						"update ". DB_TABLE_PREFIX ."modules
+						"update ". DB_PREFIX ."modules
 						set last_log = '". database::input($log) ."',
 							last_processed = '". date('Y-m-d H:i:s') ."'
 						where module_id = '". database::input($module_id) ."'

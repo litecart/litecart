@@ -39,9 +39,9 @@
 
 	// Table Rows
 	$countries = database::query(
-		"select c.*, z.num_zones from ". DB_TABLE_PREFIX ."countries c
+		"select c.*, z.num_zones from ". DB_PREFIX ."countries c
 		left join (
-			select country_code, count(*) as num_zones from ". DB_TABLE_PREFIX ."zones
+			select country_code, count(*) as num_zones from ". DB_PREFIX ."zones
 			group by country_code
 		) z on (z.country_code = c.iso_code_2)
 		order by status desc, name asc;"

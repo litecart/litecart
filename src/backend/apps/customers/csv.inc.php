@@ -37,8 +37,8 @@
 					case 'customer_groups':
 
 						database::multi_query(
-							"truncate ". DB_TABLE_PREFIX ."customer_groups;
-							update ". DB_TABLE_PREFIX ."customers set group_id = null;"
+							"truncate ". DB_PREFIX ."customer_groups;
+							update ". DB_PREFIX ."customers set group_id = null;"
 						);
 
 						break;
@@ -46,8 +46,8 @@
 					case 'customers':
 
 						database::multi_query(
-							"truncate ". DB_TABLE_PREFIX ."customers;
-							update ". DB_TABLE_PREFIX ."orders set customer_id = 0;"
+							"truncate ". DB_PREFIX ."customers;
+							update ". DB_PREFIX ."orders set customer_id = 0;"
 						);
 
 						break;
@@ -55,7 +55,7 @@
 					case 'newsletter_recipients':
 
 						database::multi_query(
-							"truncate ". DB_TABLE_PREFIX ."newsletter_recipients;"
+							"truncate ". DB_PREFIX ."newsletter_recipients;"
 						);
 
 						break;
@@ -74,7 +74,7 @@
 					case 'customer_groups':
 
 						// Find group
-						if (!empty($row['id']) && $address = database::query("select id from ". DB_TABLE_PREFIX ."customer_groups where id = ". (int)$row['id'] ." limit 1;")->fetch()) {
+						if (!empty($row['id']) && $address = database::query("select id from ". DB_PREFIX ."customer_groups where id = ". (int)$row['id'] ." limit 1;")->fetch()) {
 							$group = new ent_customer_group($address['id']);
 						}
 
@@ -100,7 +100,7 @@
 
 							if (!empty($row['id'])) {
 								database::query(
-									"insert into ". DB_TABLE_PREFIX ."customer_groups (id, created_at)
+									"insert into ". DB_PREFIX ."customer_groups (id, created_at)
 									values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');"
 								);
 								$group = new ent_customer_group($row['id']);
@@ -127,13 +127,13 @@
 					case 'customers':
 
 						// Find customer
-						if (!empty($row['id']) && $customer = database::query("select id from ". DB_TABLE_PREFIX ."customers where id = ". (int)$row['id'] ." limit 1;")->fetch()) {
+						if (!empty($row['id']) && $customer = database::query("select id from ". DB_PREFIX ."customers where id = ". (int)$row['id'] ." limit 1;")->fetch()) {
 							$customer = new ent_customer($customer['id']);
 
-						} else if (!empty($row['code']) && $customer = database::query("select id from ". DB_TABLE_PREFIX ."customers where code = '". database::input($row['code']) ."' limit 1;")->fetch()) {
+						} else if (!empty($row['code']) && $customer = database::query("select id from ". DB_PREFIX ."customers where code = '". database::input($row['code']) ."' limit 1;")->fetch()) {
 							$customer = new ent_customer($customer['id']);
 
-						} else if (!empty($row['email']) && $customer = database::query("select id from ". DB_TABLE_PREFIX ."customers where email = '". database::input($row['email']) ."' limit 1;")->fetch()) {
+						} else if (!empty($row['email']) && $customer = database::query("select id from ". DB_PREFIX ."customers where email = '". database::input($row['email']) ."' limit 1;")->fetch()) {
 							$customer = new ent_customer($customer['id']);
 						}
 
@@ -159,7 +159,7 @@
 
 							if (!empty($row['id'])) {
 								database::query(
-									"insert into ". DB_TABLE_PREFIX ."customers (id, created_at)
+									"insert into ". DB_PREFIX ."customers (id, created_at)
 									values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');"
 								);
 								$customer = new ent_customer($row['id']);
@@ -221,10 +221,10 @@
 					case 'newsletter_recipients':
 
 						// Find newsletter recipient
-						if (!empty($row['id']) && $recipient = database::query("select id from ". DB_TABLE_PREFIX ."newsletter_recipients where id = ". (int)$row['id'] ." limit 1;")->fetch()) {
+						if (!empty($row['id']) && $recipient = database::query("select id from ". DB_PREFIX ."newsletter_recipients where id = ". (int)$row['id'] ." limit 1;")->fetch()) {
 							$recipient = new ent_newsletter_recipient($recipient['id']);
 
-						} else if (!empty($row['email']) && $recipient = database::query("select id from ". DB_TABLE_PREFIX ."newsletter_recipients where email = '". database::input($row['email']) ."' limit 1;")->fetch()) {
+						} else if (!empty($row['email']) && $recipient = database::query("select id from ". DB_PREFIX ."newsletter_recipients where email = '". database::input($row['email']) ."' limit 1;")->fetch()) {
 							$recipient = new ent_newsletter_recipient($recipient['id']);
 						}
 
@@ -250,7 +250,7 @@
 
 							if (!empty($row['id'])) {
 								database::query(
-									"insert into ". DB_TABLE_PREFIX ."newsletter_recipients (id, created_at)
+									"insert into ". DB_PREFIX ."newsletter_recipients (id, created_at)
 									values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');"
 								);
 								$recipient = new ent_newsletter_recipient($row['id']);
@@ -306,7 +306,7 @@
 				case 'addresses':
 
 					$csv = database::query(
-						"select * from ". DB_TABLE_PREFIX ."customers_addresses
+						"select * from ". DB_PREFIX ."customers_addresses
 						order by created_at asc;"
 					)->export($result)->fetch_all();
 
@@ -319,7 +319,7 @@
 				case 'customers':
 
 					$csv = database::query(
-						"select * from ". DB_TABLE_PREFIX ."customers
+						"select * from ". DB_PREFIX ."customers
 						order by created_at asc;"
 					)->export($result)->fetch_all();
 
@@ -332,7 +332,7 @@
 				case 'customer_groups':
 
 					$csv = database::query(
-						"select * from ". DB_TABLE_PREFIX ."customer_groups
+						"select * from ". DB_PREFIX ."customer_groups
 						order by created_at asc;"
 					)->export($result)->fetch_all();
 
@@ -345,7 +345,7 @@
 				case 'newsletter_recipients':
 
 					$csv = database::query(
-						"select * from ". DB_TABLE_PREFIX ."newsletter_recipients
+						"select * from ". DB_PREFIX ."newsletter_recipients
 						order by created_at asc;"
 					)->export($result)->fetch_all();
 

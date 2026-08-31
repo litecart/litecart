@@ -132,7 +132,7 @@
 			## Products
 
 			database::query(
-				"select id, updated_at from ". DB_TABLE_PREFIX ."products
+				"select id, updated_at from ". DB_PREFIX ."products
 				where status
 				order by id;"
 			)->each(function($product) use (&$draw_url_node) {
@@ -142,7 +142,7 @@
 			## Product Images
 
 			database::query(
-				"select id, default_image, updated_at from ". DB_TABLE_PREFIX ."products
+				"select id, default_image, updated_at from ". DB_PREFIX ."products
 				where status
 				order by id;"
 			)->each(function($product) use (&$fh, &$count, &$bump_sitemap) {
@@ -157,7 +157,7 @@
 					})),
 
 					implode(PHP_EOL, database::query(
-						"select filename from ". DB_TABLE_PREFIX ."products_images
+						"select filename from ". DB_PREFIX ."products_images
 						where product_id = ". (int)$product['id'] ."
 						order by priority;"
 					)->fetch_all(function($image){

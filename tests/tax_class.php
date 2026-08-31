@@ -6,7 +6,7 @@
 
 		// Get the current auto increment ID - this will be used to revert the ID after the test
 		$auto_increment_id = database::query(
-			"SHOW TABLE STATUS LIKE '". DB_TABLE_PREFIX ."tax_classes';"
+			"SHOW TABLE STATUS LIKE '". DB_PREFIX ."tax_classes';"
 		)->fetch('Auto_increment');
 
 		// Start a MySQL transaction so we can rollback the test
@@ -81,7 +81,7 @@
 
 		// Check if the entity was deleted
 		if (database::query(
-			"select id from ". DB_TABLE_PREFIX ."tax_classes
+			"select id from ". DB_PREFIX ."tax_classes
 			where id = ". (int)$tax_class_id ."
 			limit 1;"
 		)->num_rows) {
@@ -102,6 +102,6 @@
 
 		// Revert the auto increment ID
 		database::query(
-			"ALTER TABLE ". DB_TABLE_PREFIX ."tax_classes AUTO_INCREMENT = ". (int)$auto_increment_id .";"
+			"ALTER TABLE ". DB_PREFIX ."tax_classes AUTO_INCREMENT = ". (int)$auto_increment_id .";"
 		);
 	}

@@ -67,7 +67,7 @@
 
 	// Site Tags
 	database::query(
-		"select * from ". DB_TABLE_PREFIX ."site_tags
+		"select * from ". DB_PREFIX ."site_tags
 		where status
 		order by priority desc, name asc;"
 	)->each(function($site_tag) use ($privacy_consents) {

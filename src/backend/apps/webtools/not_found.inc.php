@@ -18,7 +18,7 @@
 			}
 
 			database::query(
-				"delete from ". DB_TABLE_PREFIX ."not_found
+				"delete from ". DB_PREFIX ."not_found
 				where id in (". implode(', ', array_map('intval', $_POST['not_found'])) .");"
 			);
 
@@ -32,7 +32,7 @@
 	}
 
 	$not_found_rows = database::query(
-		"select * from ". DB_TABLE_PREFIX ."not_found
+		"select * from ". DB_PREFIX ."not_found
 		order by hits desc, last_requested desc, url asc;"
 	)->fetch_page(function(&$row) {
 

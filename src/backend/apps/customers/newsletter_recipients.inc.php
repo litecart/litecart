@@ -25,7 +25,7 @@
 
 				if (database::query(
 					"select *, concat(firstname, ' ', lastname) as name
-					from ". DB_TABLE_PREFIX ."newsletter_recipients
+					from ". DB_PREFIX ."newsletter_recipients
 					where email = '". database::input(strtolower($recipient)) ."'
 					limit 1;"
 				)->num_rows) {
@@ -112,7 +112,7 @@
 		header('Content-Type: text/plain; charset='. mb_http_output());
 
 		database::query(
-			"select email from ". DB_TABLE_PREFIX ."newsletter_recipients
+			"select email from ". DB_PREFIX ."newsletter_recipients
 			where true
 			". ((isset($_GET['subscribed']) && $_GET['subscribed'] != '') ? "and subscribed = ". (int)$_GET['subscribed'] ."" : "") ."
 			". (!empty($_GET['query']) ? "and c.email like '%". database::input($_GET['query']) ."%'" : "") ."
@@ -126,7 +126,7 @@
 
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$recipients = database::query(
-		"select * from ". DB_TABLE_PREFIX ."newsletter_recipients
+		"select * from ". DB_PREFIX ."newsletter_recipients
 		where true
 		". (!empty($_GET['query']) ? "and email like '%". database::input($_GET['query']) ."%'" : "") ."
 		". ((isset($_GET['subscribed']) && $_GET['subscribed'] != '') ? "and subscribed = ". (int)$_GET['subscribed'] ."" : "") ."

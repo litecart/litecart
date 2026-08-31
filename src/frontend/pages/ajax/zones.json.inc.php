@@ -14,7 +14,7 @@
 
 		$result = database::query(
 			"select code, name
-			from ". DB_TABLE_PREFIX ."zones
+			from ". DB_PREFIX ."zones
 			where country_code = '". database::input($_GET['country_code']) ."'
 			order by name asc;"
 		)->fetch_all();

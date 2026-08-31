@@ -5,7 +5,7 @@
 	try {
 
 		$auto_increment_id = database::query(
-			"SHOW TABLE STATUS LIKE '". DB_TABLE_PREFIX ."customers';"
+			"SHOW TABLE STATUS LIKE '". DB_PREFIX ."customers';"
 		)->fetch('Auto_increment');
 
 		database::begin_transaction();
@@ -41,7 +41,7 @@
 		$customer->save();
 
 		$row = database::query(
-			"select * from ". DB_TABLE_PREFIX ."customers
+			"select * from ". DB_PREFIX ."customers
 			where id = ". (int)$customer_id ."
 			limit 1;"
 		)->fetch();
@@ -100,6 +100,6 @@
 		database::rollback();
 
 		database::query(
-			"ALTER TABLE ". DB_TABLE_PREFIX ."customers AUTO_INCREMENT = ". (int)$auto_increment_id .";"
+			"ALTER TABLE ". DB_PREFIX ."customers AUTO_INCREMENT = ". (int)$auto_increment_id .";"
 		);
 	}

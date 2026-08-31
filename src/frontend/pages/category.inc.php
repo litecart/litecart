@@ -119,10 +119,10 @@
 
 	// Brands
 	$_page->snippets['brands'] = database::query(
-		"select id, name from ". DB_TABLE_PREFIX ."brands b
+		"select id, name from ". DB_PREFIX ."brands b
 		where id in (
-			select p.brand_id from ". DB_TABLE_PREFIX ."products p
-			". (!empty($_GET['category_id']) ? " left join ". DB_TABLE_PREFIX ."products_to_categories pc on pc.product_id = p.id " : "") ."
+			select p.brand_id from ". DB_PREFIX ."products p
+			". (!empty($_GET['category_id']) ? " left join ". DB_PREFIX ."products_to_categories pc on pc.product_id = p.id " : "") ."
 			where p.status
 			and p.brand_id
 			". (!empty($_GET['category_id']) ? "and pc.category_id = " . (int)$_GET['category_id']  : "") ."
@@ -139,18 +139,18 @@
 	// Attributes
 	database::query(
 		"select cf.attribute_group_id as id, cf.select_multiple, json_value(ag.name, '$.". database::input(language::$selected['code']) ."') as name
-		from ". DB_TABLE_PREFIX ."categories_filters cf
-		left join ". DB_TABLE_PREFIX ."attribute_groups ag on (ag.id = cf.attribute_group_id)
+		from ". DB_PREFIX ."categories_filters cf
+		left join ". DB_PREFIX ."attribute_groups ag on (ag.id = cf.attribute_group_id)
 		where category_id = ". (int)$_GET['category_id'] ."
 		order by priority;"
 	)->each(function($attribute) use (&$_page) {
 
 		$attribute['values'] = database::query(
 			"select distinct pa.value_id as id, if(pa.custom_value != '', pa.custom_value, json_value(av.name, '$.". database::input(language::$selected['code']) ."')) as value
-			from ". DB_TABLE_PREFIX ."products_attributes pa
-			left join ". DB_TABLE_PREFIX ."attribute_values av on (av.id = pa.value_id)
+			from ". DB_PREFIX ."products_attributes pa
+			left join ". DB_PREFIX ."attribute_values av on (av.id = pa.value_id)
 			where product_id in (
-				select product_id from ". DB_TABLE_PREFIX ."products_to_categories
+				select product_id from ". DB_PREFIX ."products_to_categories
 				where category_id = ". (int)$_GET['category_id'] ."
 			)
 			and pa.group_id = ". (int)$attribute['id'] ."

@@ -46,7 +46,7 @@
 			}
 
 			if (isset($params['category_id'])) {
-				$conditions[] = "p.id in (select product_id from ". DB_TABLE_PREFIX ."products_to_categories where category_id = ". (int)$params['category_id'] .")";
+				$conditions[] = "p.id in (select product_id from ". DB_PREFIX ."products_to_categories where category_id = ". (int)$params['category_id'] .")";
 			}
 
 			if (isset($params['brand_id'])) {
@@ -64,8 +64,8 @@
 
 			$products = database::query(
 				"select p.id, pi.name, p.sku, p.default_image, p.quantity, p.status, p.created_at
-				from ". DB_TABLE_PREFIX ."products p
-				left join ". DB_TABLE_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
+				from ". DB_PREFIX ."products p
+				left join ". DB_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
 				". $sql_where ."
 				order by pi.name asc
 				limit ". $limit .";"

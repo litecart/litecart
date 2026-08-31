@@ -22,7 +22,7 @@
 			}
 
 			$customer = database::query(
-				"select * from ". DB_TABLE_PREFIX ."customers
+				"select * from ". DB_PREFIX ."customers
 				where email = '". database::input($_REQUEST['email']) ."'
 				limit 1;"
 			)->fetch();
@@ -80,7 +80,7 @@
 					];
 
 					database::query(
-						"update ". DB_TABLE_PREFIX ."customers
+						"update ". DB_PREFIX ."customers
 						set verification_token = '". database::input(f::format_json($verification_token, false)) ."'
 						where id = ". (int)$customer['id'] ."
 						limit 1;"

@@ -26,7 +26,7 @@
 			}
 
 			$administrator = database::query(
-				"select * from ". DB_TABLE_PREFIX ."administrators
+				"select * from ". DB_PREFIX ."administrators
 				where username = '". database::input(strtolower($_POST['username'])) ."'
 				or email = '". database::input(strtolower($_POST['username'])) ."'
 				limit 1;"
@@ -60,7 +60,7 @@
 				if (++$administrator['login_attempts'] < 3) {
 
 					database::query(
-						"update ". DB_TABLE_PREFIX ."administrators
+						"update ". DB_PREFIX ."administrators
 						set login_attempts = login_attempts + 1
 						where id = ". (int)$administrator['id'] ."
 						limit 1;"
@@ -71,7 +71,7 @@
 				} else {
 
 					database::query(
-						"update ". DB_TABLE_PREFIX ."administrators
+						"update ". DB_PREFIX ."administrators
 						set login_attempts = 0,
 						valid_from = '". date('Y-m-d H:i:00', strtotime('+15 minutes')) ."'
 						where id = ". (int)$administrator['id'] ."
@@ -118,7 +118,7 @@
 
 			if (password_needs_rehash($administrator['password_hash'], PASSWORD_DEFAULT)) {
 				database::query(
-					"update ". DB_TABLE_PREFIX ."administrators
+					"update ". DB_PREFIX ."administrators
 					set password_hash = '". database::input(password_hash($_POST['password'], PASSWORD_DEFAULT)) ."'
 					where id = ". (int)$administrator['id'] ."
 					limit 1;"
@@ -139,7 +139,7 @@
 			}
 
 			database::query(
-				"update ". DB_TABLE_PREFIX ."administrators
+				"update ". DB_PREFIX ."administrators
 				set known_fingerprints = '". database::input(implode(',', $administrator['known_fingerprints'])) ."',
 					last_ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."',
 					last_hostname = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
@@ -201,7 +201,7 @@
 					$administrator['known_ips'] = array_slice(array_unique($administrator['known_ips']), 0, 10);
 
 					database::query(
-						"update ". DB_TABLE_PREFIX ."administrators
+						"update ". DB_PREFIX ."administrators
 						set known_ips = '". database::input(implode(',', $administrator['known_ips'])) ."'
 						where id = ". (int)$administrator['id'] ."
 						limit 1;"

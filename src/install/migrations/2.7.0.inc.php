@@ -5,7 +5,7 @@
 // Runs after the 2.7.0.sql patch has created the table.
 
   $currency_codes = database::query(
-    "select code from ". DB_TABLE_PREFIX ."currencies
+    "select code from ". DB_PREFIX ."currencies
     where status = 1
     order by priority;"
   )->fetch_all('code');
@@ -14,7 +14,7 @@
   if (!empty($currency_codes)) {
     $regular_query = database::query(
       "select product_id, `". implode('`, `', array_map('database::input', $currency_codes)) ."`
-      from ". DB_TABLE_PREFIX ."products_prices;"
+      from ". DB_PREFIX ."products_prices;"
     );
 
     while ($row = database::fetch($regular_query)) {
@@ -24,7 +24,7 @@
       }
 
       database::query(
-        "insert into ". DB_TABLE_PREFIX ."products_prices_history
+        "insert into ". DB_PREFIX ."products_prices_history
         (product_id, campaign_id, price, valid_from, valid_to)
         values (". (int)$row['product_id'] .", 0, '". database::input(json_encode($price, JSON_UNESCAPED_UNICODE)) ."', '". date('Y-m-d H:i:s') ."', NULL);"
       );
@@ -35,7 +35,7 @@
   if (!empty($currency_codes)) {
     $campaign_query = database::query(
       "select id, product_id, `". implode('`, `', array_map('database::input', $currency_codes)) ."`
-      from ". DB_TABLE_PREFIX ."products_campaigns;"
+      from ". DB_PREFIX ."products_campaigns;"
     );
 
     while ($row = database::fetch($campaign_query)) {
@@ -45,7 +45,7 @@
       }
 
       database::query(
-        "insert into ". DB_TABLE_PREFIX ."products_prices_history
+        "insert into ". DB_PREFIX ."products_prices_history
         (product_id, campaign_id, price, valid_from, valid_to)
         values (". (int)$row['product_id'] .", ". (int)$row['id'] .", '". database::input(json_encode($price, JSON_UNESCAPED_UNICODE)) ."', '". date('Y-m-d H:i:s') ."', NULL);"
       );

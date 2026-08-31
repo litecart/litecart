@@ -6,19 +6,19 @@
 
 		// Save auto increment IDs for rollback
 		$geo_zones_auto_id = database::query(
-			"SHOW TABLE STATUS LIKE '". DB_TABLE_PREFIX ."geo_zones';"
+			"SHOW TABLE STATUS LIKE '". DB_PREFIX ."geo_zones';"
 		)->fetch('Auto_increment');
 
 		$zones_to_geo_zones_auto_id = database::query(
-			"SHOW TABLE STATUS LIKE '". DB_TABLE_PREFIX ."zones_to_geo_zones';"
+			"SHOW TABLE STATUS LIKE '". DB_PREFIX ."zones_to_geo_zones';"
 		)->fetch('Auto_increment');
 
 		$tax_classes_auto_id = database::query(
-			"SHOW TABLE STATUS LIKE '". DB_TABLE_PREFIX ."tax_classes';"
+			"SHOW TABLE STATUS LIKE '". DB_PREFIX ."tax_classes';"
 		)->fetch('Auto_increment');
 
 		$tax_rates_auto_id = database::query(
-			"SHOW TABLE STATUS LIKE '". DB_TABLE_PREFIX ."tax_rates';"
+			"SHOW TABLE STATUS LIKE '". DB_PREFIX ."tax_rates';"
 		)->fetch('Auto_increment');
 
 		database::begin_transaction();
@@ -26,25 +26,25 @@
 		// Create test fixtures: geo zone + zone mapping + tax class + tax rate
 
 		database::query(
-			"insert into ". DB_TABLE_PREFIX ."geo_zones
+			"insert into ". DB_PREFIX ."geo_zones
 			(code, name) values ('TEST', 'Test Tax Zone');"
 		);
 		$geo_zone_id = database::insert_id();
 
 		database::query(
-			"insert into ". DB_TABLE_PREFIX ."zones_to_geo_zones
+			"insert into ". DB_PREFIX ."zones_to_geo_zones
 			(geo_zone_id, country_code, zone_code, city)
 			values (". (int)$geo_zone_id .", 'DE', '', '');"
 		);
 
 		database::query(
-			"insert into ". DB_TABLE_PREFIX ."tax_classes
+			"insert into ". DB_PREFIX ."tax_classes
 			(code, name) values ('test_standard', 'Test Standard Tax');"
 		);
 		$tax_class_id = database::insert_id();
 
 		database::query(
-			"insert into ". DB_TABLE_PREFIX ."tax_rates
+			"insert into ". DB_PREFIX ."tax_rates
 			(tax_class_id, geo_zone_id, code, name, rate, address_type, rule_companies_with_tax_id, rule_companies_without_tax_id, rule_individuals_with_tax_id, rule_individuals_without_tax_id)
 			values (". (int)$tax_class_id .", ". (int)$geo_zone_id .", 'DE_VAT', 'DE VAT 19%', 19.00, 'payment', 0, 1, 1, 1);"
 		);
@@ -189,8 +189,8 @@
 
 		database::rollback();
 
-		database::query("ALTER TABLE ". DB_TABLE_PREFIX ."geo_zones AUTO_INCREMENT = ". (int)$geo_zones_auto_id .";");
-		database::query("ALTER TABLE ". DB_TABLE_PREFIX ."zones_to_geo_zones AUTO_INCREMENT = ". (int)$zones_to_geo_zones_auto_id .";");
-		database::query("ALTER TABLE ". DB_TABLE_PREFIX ."tax_classes AUTO_INCREMENT = ". (int)$tax_classes_auto_id .";");
-		database::query("ALTER TABLE ". DB_TABLE_PREFIX ."tax_rates AUTO_INCREMENT = ". (int)$tax_rates_auto_id .";");
+		database::query("ALTER TABLE ". DB_PREFIX ."geo_zones AUTO_INCREMENT = ". (int)$geo_zones_auto_id .";");
+		database::query("ALTER TABLE ". DB_PREFIX ."zones_to_geo_zones AUTO_INCREMENT = ". (int)$zones_to_geo_zones_auto_id .";");
+		database::query("ALTER TABLE ". DB_PREFIX ."tax_classes AUTO_INCREMENT = ". (int)$tax_classes_auto_id .";");
+		database::query("ALTER TABLE ". DB_PREFIX ."tax_rates AUTO_INCREMENT = ". (int)$tax_rates_auto_id .";");
 	}

@@ -27,7 +27,7 @@
 
 			// Get order statuses that count as a sale
 			$order_statuses = database::query(
-				"select id from ". DB_TABLE_PREFIX ."order_statuses where is_sale;"
+				"select id from ". DB_PREFIX ."order_statuses where is_sale;"
 			)->fetch_all('id');
 
 			if (!$order_statuses) {
@@ -57,7 +57,7 @@
 					sum(total_tax) as total_tax,
 					max(total) as max_order_amount,
 					min(total) as min_order_amount
-				from ". DB_TABLE_PREFIX ."orders
+				from ". DB_PREFIX ."orders
 				where order_status_id in ('" . implode("', '", database::input($order_statuses)) . "')
 				". $sql_date_filter .";"
 			)->fetch(function($orders) {
@@ -74,8 +74,8 @@
 			// Most sold products
 			$result['most_sold_products'] = database::query(
 				"select oi.product_id, oi.name, sum(oi.quantity) as total_quantity, sum(oi.price * oi.quantity) as total_revenue
-				from ". DB_TABLE_PREFIX ."orders_items oi
-				left join ". DB_TABLE_PREFIX ."orders o on (o.id = oi.order_id)
+				from ". DB_PREFIX ."orders_items oi
+				left join ". DB_PREFIX ."orders o on (o.id = oi.order_id)
 				where o.order_status_id in ('" . implode("', '", database::input($order_statuses)) . "')
 				". str_replace('created_at', 'o.created_at', $sql_date_filter) ."
 				group by oi.product_id, oi.name
@@ -93,19 +93,19 @@
 			// Counts
 			$result['counts'] = [
 				'customers' => (int)database::query(
-					"select count(id) as num_customers from ". DB_TABLE_PREFIX ."customers;"
+					"select count(id) as num_customers from ". DB_PREFIX ."customers;"
 				)->fetch('num_customers'),
 
 				'categories' => (int)database::query(
-					"select count(id) as num_categories from ". DB_TABLE_PREFIX ."categories where status;"
+					"select count(id) as num_categories from ". DB_PREFIX ."categories where status;"
 				)->fetch('num_categories'),
 
 				'products' => (int)database::query(
-					"select count(id) as num_products from ". DB_TABLE_PREFIX ."products where status;"
+					"select count(id) as num_products from ". DB_PREFIX ."products where status;"
 				)->fetch('num_products'),
 
 				'stock_items' => (int)database::query(
-					"select count(id) as num_stock_items from ". DB_TABLE_PREFIX ."products where status;"
+					"select count(id) as num_stock_items from ". DB_PREFIX ."products where status;"
 				)->fetch('num_stock_items'),
 			];
 

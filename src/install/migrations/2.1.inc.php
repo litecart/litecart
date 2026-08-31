@@ -43,7 +43,7 @@
 
 	// Copy missing short description from description
 	database::query(
-		"select id, description from ". DB_TABLE_PREFIX ."products_info
+		"select id, description from ". DB_PREFIX ."products_info
 		where short_description = ''
 		and description != '';"
 	)->each(function($product_info){
@@ -57,7 +57,7 @@
 		}
 
 		database::query(
-			"update ". DB_TABLE_PREFIX ."products_info
+			"update ". DB_PREFIX ."products_info
 			set short_description = '". database::input($short_description) ."'
 			where id = ". (int)$product_info['id'] ."
 			limit 1;"

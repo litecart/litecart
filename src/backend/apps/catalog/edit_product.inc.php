@@ -26,7 +26,7 @@
 
 			if (!empty($_POST['code'])) {
 				if (database::query(
-					"select id from ". DB_TABLE_PREFIX ."products
+					"select id from ". DB_PREFIX ."products
 					where id != ". (int)$product->data['id'] ."
 					and code = '". database::input($_POST['code']) ."'
 					limit 1;"
@@ -1011,7 +1011,7 @@
 		switch ($('select[name=tax_class_id]').val()) {
 <?php
 	database::query(
-		"select * from ". DB_TABLE_PREFIX ."tax_classes
+		"select * from ". DB_PREFIX ."tax_classes
 		order by name asc;"
 	)->each(function($tax_class){
 		echo '      case "'. $tax_class['id'] . '": return '. tax::get_tax(100, $tax_class['id'], 'store') .';' . PHP_EOL;

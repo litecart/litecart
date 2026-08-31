@@ -18,7 +18,7 @@
 			$this->data = [];
 
 			database::query(
-				"show fields from ". DB_TABLE_PREFIX ."sessions;"
+				"show fields from ". DB_PREFIX ."sessions;"
 			)->each(function($field) {
 				$this->data[$field['Field']] = database::create_variable($field['Type']);
 			});
@@ -37,7 +37,7 @@
 			$this->reset();
 
 			$session = database::query(
-				"select * from ". DB_TABLE_PREFIX ."sessions
+				"select * from ". DB_PREFIX ."sessions
 				where id = '". database::input($id) ."'
 				limit 1;"
 			)->fetch(function($row){
@@ -60,14 +60,14 @@
 				$this->data['id'] = bin2hex(random_bytes(16));
 
 				database::query(
-					"insert into ". DB_TABLE_PREFIX ."sessions
+					"insert into ". DB_PREFIX ."sessions
 					(id, created_at)
 					values ('". database::input($this->data['id']) ."', '". date('Y-m-d H:i:s') ."');"
 				);
 			}
 
 			database::query(
-				"update ". DB_TABLE_PREFIX ."sessions
+				"update ". DB_PREFIX ."sessions
 				set customer_id = ". (!empty($this->data['customer_id']) ? (int)$this->data['customer_id'] : "null") .",
 					data = '". database::input(f::format_json($this->data['data'])) ."',
 					ip_address = '". database::input($this->data['ip_address']) ."',

@@ -30,7 +30,7 @@
 
 			if (!empty($_POST['code'])) {
 				if (database::query(
-					"select id from ". DB_TABLE_PREFIX ."categories
+					"select id from ". DB_PREFIX ."categories
 					where id != '". (isset($_GET['category_id']) ? (int)$_GET['category_id'] : 0) ."'
 					and code = '". database::input($_POST['code']) ."'
 					limit 1;"

@@ -553,7 +553,7 @@
 	echo '<p>Writing fresh new config file... ';
 
 	$timezone = database::query(
-		"select `value` from ". DB_TABLE_PREFIX ."settings
+		"select `value` from ". DB_PREFIX ."settings
 		where `key` = 'store_timezone'
 		limit 1;"
 	)->fetch('value');
@@ -566,7 +566,7 @@
 		'{DB_PASSWORD}' => DB_PASSWORD,
 		'{DB_DATABASE}' => DB_DATABASE,
 		'{DB_COLLATION}' => 'utf8mb4_general_ci',
-		'{DB_TABLE_PREFIX}' => DB_TABLE_PREFIX,
+		'{DB_PREFIX}' => DB_PREFIX,
 		'{CLIENT_IP}' => $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1',
 		'{STORE_TIME_ZONE}' => $timezone,
 	]);
@@ -790,7 +790,7 @@
 	database::query(
 		"select TABLE_NAME, COLUMN_NAME, COLUMN_TYPE, IS_NULLABLE, COLUMN_DEFAULT from information_schema.COLUMNS
 		where TABLE_SCHEMA = '". DB_DATABASE ."'
-		and TABLE_NAME like '". DB_TABLE_PREFIX ."%'
+		and TABLE_NAME like '". DB_PREFIX ."%'
 		and COLUMN_TYPE like 'varchar(256)'
 		order by TABLE_NAME;"
 	)->each(function($column){
@@ -804,7 +804,7 @@
 	database::query(
 		"select TABLE_NAME, COLUMN_NAME, COLUMN_TYPE, IS_NULLABLE, COLUMN_DEFAULT from information_schema.COLUMNS
 		where TABLE_SCHEMA = '". DB_DATABASE ."'
-		and TABLE_NAME like '". DB_TABLE_PREFIX ."%'
+		and TABLE_NAME like '". DB_PREFIX ."%'
 		and (COLUMN_NAME like '%country_code%' or COLUMN_NAME like '%language_code%')
 		and COLUMN_TYPE = 'varchar(2)'
 		order by TABLE_NAME;"
@@ -818,7 +818,7 @@
 	database::query(
 		"select TABLE_NAME, COLUMN_NAME, COLUMN_TYPE, IS_NULLABLE, COLUMN_DEFAULT from information_schema.COLUMNS
 		where TABLE_SCHEMA = '". DB_DATABASE ."'
-		and TABLE_NAME like '". DB_TABLE_PREFIX ."%'
+		and TABLE_NAME like '". DB_PREFIX ."%'
 		and COLUMN_NAME like '%currency_code%'
 		and COLUMN_TYPE = 'varchar(3)'
 		order by TABLE_NAME;"
@@ -839,7 +839,7 @@
 	database::query(
 		"SELECT TABLE_NAME, TABLE_COLLATION FROM information_schema.TABLES
 		WHERE TABLE_SCHEMA = '". DB_DATABASE ."'
-		AND TABLE_NAME like '". DB_TABLE_PREFIX ."%'
+		AND TABLE_NAME like '". DB_PREFIX ."%'
 		order by TABLE_NAME;"
 	)->each(function($table) use ($collations) {
 
@@ -879,7 +879,7 @@
 	database::query(
 		"select TABLE_NAME, COLUMN_NAME from information_schema.COLUMNS
 		where TABLE_SCHEMA = '". DB_DATABASE ."'
-		and TABLE_NAME like '". DB_TABLE_PREFIX ."%'
+		and TABLE_NAME like '". DB_PREFIX ."%'
 		and COLUMN_NAME = 'date_updated';"
 	)->each(function($column) {
 		database::query(
@@ -892,7 +892,7 @@
 	database::query(
 		"select TABLE_NAME, COLUMN_NAME from information_schema.COLUMNS
 		where TABLE_SCHEMA = '". DB_DATABASE ."'
-		and TABLE_NAME like '". DB_TABLE_PREFIX ."%'
+		and TABLE_NAME like '". DB_PREFIX ."%'
 		and COLUMN_NAME = 'date_created';"
 	)->each(function($column) {
 		database::query(
@@ -904,34 +904,34 @@
 	// Remove some indexes if they exist
 	if (database::query(
 		"select * from INFORMATION_SCHEMA.STATISTICS
-		where TABLE_NAME = '". DB_TABLE_PREFIX ."brands_info'
+		where TABLE_NAME = '". DB_PREFIX ."brands_info'
 		and INDEX_NAME = 'brand'
-		and INDEX_SCHEMA = '". DB_TABLE_PREFIX ."brands_info';"
+		and INDEX_SCHEMA = '". DB_PREFIX ."brands_info';"
 	)->num_rows) {
 		database::query(
-			"ALTER TABLE `". DB_TABLE_PREFIX ."brands_info`
+			"ALTER TABLE `". DB_PREFIX ."brands_info`
 			DROP INDEX `manufacturer`;"
 		);
 	}
 
 	if (database::query(
 		"select * from INFORMATION_SCHEMA.STATISTICS
-		where TABLE_NAME = '". DB_TABLE_PREFIX ."brands_info'
+		where TABLE_NAME = '". DB_PREFIX ."brands_info'
 		and INDEX_NAME = 'brand_info'
-		and INDEX_SCHEMA = '". DB_TABLE_PREFIX ."brands_info';"
+		and INDEX_SCHEMA = '". DB_PREFIX ."brands_info';"
 	)->num_rows) {
 		database::query(
-			"ALTER TABLE `". DB_TABLE_PREFIX ."manufacturers_info`
+			"ALTER TABLE `". DB_PREFIX ."manufacturers_info`
 			DROP INDEX `brand_info`;"
 		);
 	}
 
 	// Lowercase admin usernames
 	database::query(
-		"select id, username from ". DB_TABLE_PREFIX ."administrators;"
+		"select id, username from ". DB_PREFIX ."administrators;"
 	)->each(function($admin) {
 		database::query(
-			"update ". DB_TABLE_PREFIX ."administrators
+			"update ". DB_PREFIX ."administrators
 			set username = '". database::input(strtolower($admin['username'])) ."'
 			where id = ". (int)$admin['id'] ."
 			limit 1;"
@@ -940,15 +940,15 @@
 
 	// Migrate order items
 	database::query(
-		"select osi.*, p.default_image from ". DB_TABLE_PREFIX ."orders_stock_items osi
-		left join ". DB_TABLE_PREFIX ."products p on (p.product_id = osi.product_id)
+		"select osi.*, p.default_image from ". DB_PREFIX ."orders_stock_items osi
+		left join ". DB_PREFIX ."products p on (p.product_id = osi.product_id)
 		order by osi.id asc;"
 	)->each(function($item){
 
 		$item['userdata'] = unserialize($item['userdata']);
 
 		database::query(
-			"insert into ". DB_TABLE_PREFIX ."orders_items (id, order_id, product_id, code, name, image, userdata, quantity, regular_price, final_price, tax_class_id, tax_rate, sum, sum_tax, priority)
+			"insert into ". DB_PREFIX ."orders_items (id, order_id, product_id, code, name, image, userdata, quantity, regular_price, final_price, tax_class_id, tax_rate, sum, sum_tax, priority)
 			values (
 				". (int)$item['id'] .",
 				". (int)$item['order_id'] .",
@@ -971,24 +971,24 @@
 
 	// Separate product customizations from stock options
 	database::query(
-		"select * from ". DB_TABLE_PREFIX ."products_stock_options;"
+		"select * from ". DB_PREFIX ."products_stock_options;"
 	)->each(function($stock_option){
 		foreach (explode(',', $stock_option['attributes']) as $pair) {
 
 			list($group_id, $value_id) = explode('-', $pair);
 
 			database::query(
-				"delete from ". DB_TABLE_PREFIX ."products_customizations_values
+				"delete from ". DB_PREFIX ."products_customizations_values
 				where product_id = ". (int)$stock_option['product_id'] ."
 				and (group_id = ". (int)$group_id ." and value_id = ". (int)$value_id .");"
 			);
 
 			database::query(
-				"delete from ". DB_TABLE_PREFIX ."products_customizations
+				"delete from ". DB_PREFIX ."products_customizations
 				where product_id = ". (int)$stock_option['product_id'] ."
 				and group_id = ". (int)$group_id ."
 				and product_id not in (
-					select product_id from ". DB_TABLE_PREFIX ."products_customizations_values
+					select product_id from ". DB_PREFIX ."products_customizations_values
 					where product_id = ". (int)$stock_option['product_id'] ."
 					and group_id = ". (int)$group_id ."
 				);"
@@ -998,13 +998,13 @@
 
 	// Migrate PHP serialized userdata to JSON
 	database::query(
-		"select * from ". DB_TABLE_PREFIX ."cart_items;"
+		"select * from ". DB_PREFIX ."cart_items;"
 	)->each(function($item){
 
 		$item['userdata'] = $item['userdata'] ? unserialize($item['userdata']) : [];
 
 		database::query(
-			"update ". DB_TABLE_PREFIX ."cart_items
+			"update ". DB_PREFIX ."cart_items
 			set userdata = '". (!empty($item['userdata']) ? json_encode($item['userdata'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) : '') ."'
 			where id = ". (int)$item['id'] ."
 			limit 1;"
@@ -1013,13 +1013,13 @@
 
 	// Migrate Stock Options
 	database::query(
-		"select * from ". DB_TABLE_PREFIX ."products_stock_options;"
+		"select * from ". DB_PREFIX ."products_stock_options;"
 	)->each(function($stock_option){
 
 		$attributes = preg_split('#\s*,\s*#', $stock_option['attributes'], -1, PREG_SPLIT_NO_EMPTY);
 
 		database::query(
-			"update ". DB_TABLE_PREFIX ."orders_items
+			"update ". DB_PREFIX ."orders_items
 			set stock_option_id = ". (int)$stock_option['id'] .",
 				/*attributes = trim(both ',' from replace(concat(',', attributes, ','), concat(',', '". $stock_option['attributes'] ."', ','), ','))*/
 			where product_id = ". (int)$stock_option['product_id'] ."
@@ -1029,10 +1029,10 @@
 
 	// Set subtotal for all previous orders
 	database::query(
-		"update ". DB_TABLE_PREFIX ."orders o
+		"update ". DB_PREFIX ."orders o
 		left join (
 			select order_id, sum(quantity * price) as subtotal, sum(quantity * tax) as subtotal_tax
-			from ". DB_TABLE_PREFIX ."orders_items
+			from ". DB_PREFIX ."orders_items
 			group by order_id
 		) oi on (oi.order_id = o.id)
 		set o.subtotal = if(oi.subtotal, oi.subtotal, 0),
@@ -1041,12 +1041,12 @@
 
 	// Set hostname for recent orders
 	database::query(
-		"select ip_address from ". DB_TABLE_PREFIX ."orders
+		"select ip_address from ". DB_PREFIX ."orders
 		order by created_at desc
 		limit 250;"
 	)->each(function($order) {
 		database::query(
-			"update ". DB_TABLE_PREFIX ."orders
+			"update ". DB_PREFIX ."orders
 			set hostname = '". gethostbyaddr($order['ip_address']) ."'
 			where ip_address = '". $order['ip_address'] ."';"
 		);
@@ -1056,7 +1056,7 @@
 	$campaigns = [];
 
 	database::query(
-		"select * from ". DB_TABLE_PREFIX ."products_campaigns;"
+		"select * from ". DB_PREFIX ."products_campaigns;"
 	)->each(function($campaign_product) use (&$campaigns) {
 
 		$valid_from = $campaign_product['start_date'] ? date('YmdHis', strtotime($campaign_product['start_date'])) : '0';
@@ -1068,7 +1068,7 @@
 	foreach ($campaigns as $campaign_products) {
 
 		database::query(
-			"insert into ". DB_TABLE_PREFIX ."campaigns
+			"insert into ". DB_PREFIX ."campaigns
 			(name, valid_from, valid_to)
 			values ('', ". (!empty($campaign[0]['valid_from']) ? "'". $campaign[0]['valid_from'] ."'" : "null") .", ". (!empty($campaign[0]['valid_to']) ? "'". $campaign[0]['valid_to'] ."'" : "null") .");"
 		);
@@ -1082,7 +1082,7 @@
 			}, ARRAY_FILTER_USE_KEY);
 
 			database::query(
-				"insert into ". DB_TABLE_PREFIX ."products_prices
+				"insert into ". DB_PREFIX ."products_prices
 				(product_id, campaign_id, price)
 				values (". (int)$campaign_product['product_id'] .", ". (int)$campaign_id .", '". database::input(json_encode($prices)) ."');"
 			);
@@ -1090,17 +1090,17 @@
 	}
 
 	database::query(
-		"drop table ". DB_TABLE_PREFIX ."products_campaigns;"
+		"drop table ". DB_PREFIX ."products_campaigns;"
 	);
 
 	// Migrate product prices
 
 	$currencies = database::query(
-		"select * from ". DB_TABLE_PREFIX ."currencies;"
+		"select * from ". DB_PREFIX ."currencies;"
 	)->fetch_all('code');
 
 	database::query(
-		"select * from ". DB_TABLE_PREFIX ."products_prices;"
+		"select * from ". DB_PREFIX ."products_prices;"
 	)->each(function($product_price) use ($currencies) {
 
 		$prices = array_filter($product_price, function ($key) {
@@ -1108,7 +1108,7 @@
 		}, ARRAY_FILTER_USE_KEY);
 
 		database::query(
-			"update ". DB_TABLE_PREFIX ."products_prices
+			"update ". DB_PREFIX ."products_prices
 			set price = '". database::input(json_encode(array_filter($prices))) ."'
 			where id = ". (int)$product_price['id'] ."
 			limit 1;"
@@ -1118,14 +1118,14 @@
 	// Drop currency columns from table
 	foreach ($currencies as $currency_code) {
 		database::query(
-			"alter table ". DB_TABLE_PREFIX ."products_prices
+			"alter table ". DB_PREFIX ."products_prices
 			drop column `". database::input($currency_code) ."`;"
 		);
 	}
 
 	// Migrate product custization value prices
 	database::query(
-		"select * from ". DB_TABLE_PREFIX ."products_prices;"
+		"select * from ". DB_PREFIX ."products_prices;"
 	)->each(function($product_price) use ($currencies) {
 
 		$price_adjustment = array_filter($product_price, function ($key) {
@@ -1133,7 +1133,7 @@
 		}, ARRAY_FILTER_USE_KEY);
 
 		database::query(
-			"update ". DB_TABLE_PREFIX ."products_customizations_values
+			"update ". DB_PREFIX ."products_customizations_values
 			set price_adjustment = '". database::input(json_encode(array_filter($price_adjustment))) ."'
 			where id = ". (int)$product_price['id'] ."
 			limit 1;"
@@ -1143,14 +1143,14 @@
 	// Drop currency columns from table
 	foreach ($currencies as $currency_code) {
 		database::query(
-			"alter table ". DB_TABLE_PREFIX ."products_customizations_values
+			"alter table ". DB_PREFIX ."products_customizations_values
 			drop column `". database::input($currency_code) ."`;"
 		);
 	}
 
 	// Migrate products_customizations price adjustments that are bound to a stock option
 	database::query(
-		"select * from ". DB_TABLE_PREFIX ."products_stock_options
+		"select * from ". DB_PREFIX ."products_stock_options
 		where attributes != '';"
 	)->each(function($stock_option) {
 
@@ -1163,14 +1163,14 @@
 			list($group_id, $value_id) = $attribute;
 
 			database::query(
-				"select * from ". DB_TABLE_PREFIX ."products_customizations_values
+				"select * from ". DB_PREFIX ."products_customizations_values
 				where product_id = ". (int)$stock_option['product_id'] ."
 				and group_id = ". (int)$group_id ."
 				and value_id = ". (int)$value_id ."
 				limit 1;"
 			)->fetch(function($customization_value) {
 				database::query(
-					"update ". DB_TABLE_PREFIX ."products_products_stock_options
+					"update ". DB_PREFIX ."products_products_stock_options
 					set price_modifier = '". database::input($customization_value['price_modifier']) ."'
 						price_adjustment = '". database::input($customization_value['price_adjustment']) ."'
 					where id = ". (int)$stock_option['id'] ."
@@ -1180,7 +1180,7 @@
 
 			// Remove customization value now as we migrated it to the stock option
 			database::query(
-				"delete from ". DB_TABLE_PREFIX ."products_customizations_values
+				"delete from ". DB_PREFIX ."products_customizations_values
 				where product_id = ". (int)$stock_option['product_id'] ."
 				and group_id = ". (int)$group_id ."
 				and value_id = ". (int)$value_id .";"
@@ -1188,10 +1188,10 @@
 
 			// Delete orpan customization groups
 			database::query(
-				"delete from ". DB_TABLE_PREFIX ."products_customizations
+				"delete from ". DB_PREFIX ."products_customizations
 				where product_id = ". (int)$stock_option['product_id'] ."
 				and group_id not in (
-					select id from ". DB_TABLE_PREFIX ."products_customizations_values
+					select id from ". DB_PREFIX ."products_customizations_values
 					where product_id = ". (int)$stock_option['product_id'] ."
 					and group_id = ". (int)$group_id ."
 				);"
@@ -1202,15 +1202,15 @@
 	// Migrate products (having a quantity but no stock option) to stock options
 	database::query(
 		"select id, sku, weight, weight_unit, length, width, height, length_unit, quantity
-		from ". DB_TABLE_PREFIX ."products
+		from ". DB_PREFIX ."products
 		where id not in (
-			select product_id from ". DB_TABLE_PREFIX ."products_stock_options
+			select product_id from ". DB_PREFIX ."products_stock_options
 		)
 		and quantity != 0;"
 	)->each(function($product) {
 
 		database::query(
-			"insert into ". DB_TABLE_PREFIX ."products_stock_options
+			"insert into ". DB_PREFIX ."products_stock_options
 			(product_id, sku, weight, weight_unit, length, width, height, length_unit, quantity)
 			values (
 				". (int)$product['id'] .",
@@ -1228,7 +1228,7 @@
 		$stock_option_id = database::insert_id();
 
 		database::query(
-			"update ". DB_TABLE_PREFIX ."orders_items
+			"update ". DB_PREFIX ."orders_items
 			set stock_option_id = ". (int)$stock_option_id."
 			where product_id = ". (int)$product['id'] ."
 			and stock_option_id is null;"
@@ -1238,12 +1238,12 @@
 	// Migrate stock options to stock items
 	database::query(
 		"select pso.id, pso.product_id, p.brand_id, p.supplier_id, p.name, pso.sku, p.gtin, p.mpn, p.taric, pso.weight, pso.weight_unit, pso.length, pso.width, pso.height, pso.length_unit, pso.quantity, p.quantity_unit_id, p.purchase_price, p.purchase_price_currency_code, pso.updated_at, pso.created_at
-		from ". DB_TABLE_PREFIX ."products_stock_options pso
-		left join ". DB_TABLE_PREFIX ."products p on (p.id = pso.product_id);"
+		from ". DB_PREFIX ."products_stock_options pso
+		left join ". DB_PREFIX ."products p on (p.id = pso.product_id);"
 	)->each(function($stock_option) {
 
 		database::query(
-			"insert into ". DB_TABLE_PREFIX ."stock_items
+			"insert into ". DB_PREFIX ."stock_items
 			(brand_id, supplier_id, name, sku, gtin, mpn, taric, weight, weight_unit, length, width, height, length_unit, quantity, quantity_unit_id, purchase_price, purchase_price_currency_code, updated_at, created_at)
 			values (
 				". ($stock_option['brand_id'] ? (int)$stock_option['brand_id'] : "null") .",
@@ -1271,14 +1271,14 @@
 		$stock_item_id = database::insert_id();
 
 		database::query(
-			"update ". DB_TABLE_PREFIX ."products_stock_options
+			"update ". DB_PREFIX ."products_stock_options
 			set stock_item_id = ". (int)$stock_item_id ."
 			where id = ". (int)$stock_option['id'] ."
 			limit 1;"
 		);
 
 		database::query(
-			"update ". DB_TABLE_PREFIX ."orders_items
+			"update ". DB_PREFIX ."orders_items
 			set stock_items = '". json_encode(['id' => $stock_item_id, 'quantity' => 1], true) ."'
 			where product_id = ". (int)$stock_option['product_id'] ."
 			and stock_option_id = ". (int)$stock_option['id'] .";"
@@ -1287,26 +1287,26 @@
 
 	// Create initial stock transaction
 	database::query(
-		"insert into `". DB_TABLE_PREFIX ."stock_transactions` (id, name, description)
+		"insert into `". DB_PREFIX ."stock_transactions` (id, name, description)
 		values (1, 'Initial Stock Transaction', 'This is an initial system generated stock transaction to deposit stock for all sold items and items in stock. We need this for future inconcistency checks.');"
 	);
 
 	// Insert initial stock into stock transactions contents
 	database::query(
-		"insert into `". DB_TABLE_PREFIX ."stock_transactions_contents` (transaction_id, stock_item_id, quantity_adjustment)
+		"insert into `". DB_PREFIX ."stock_transactions_contents` (transaction_id, stock_item_id, quantity_adjustment)
 		select '1', stock_item_id, sum(quantity)
-		from `". DB_TABLE_PREFIX ."products_stock_options`
+		from `". DB_PREFIX ."products_stock_options`
 		group by product_id, stock_item_id;"
 	);
 
 	// Append initial stock with sold quantities
 	database::query(
 		"select product_id, stock_items, quantity
-		from `". DB_TABLE_PREFIX ."orders_items` oi
+		from `". DB_PREFIX ."orders_items` oi
 		where oi.order_id in (
-			select id from `". DB_TABLE_PREFIX ."orders`
+			select id from `". DB_PREFIX ."orders`
 			where order_status_id in (
-				select id from `". DB_TABLE_PREFIX ."order_statuses`
+				select id from `". DB_PREFIX ."order_statuses`
 				where stock_action = 'withdraw'
 			)
 		)
@@ -1315,7 +1315,7 @@
 		$order_item['stock_items'] = json_decode($order_item['stock_items'], true);
 		foreach ($order_item['stock_items'] as $stock_item) {
 			database::query(
-				"insert into `". DB_TABLE_PREFIX ."stock_transactions_contents` (transaction_id, stock_item_id, quantity_adjustment)
+				"insert into `". DB_PREFIX ."stock_transactions_contents` (transaction_id, stock_item_id, quantity_adjustment)
 				values (1, ". (int)$stock_item_id .", ". (int)$order_item['quantity'] .")
 				on duplicate key update quantity_adjustment = quantity_adjustment + ". ((float)$order_item['quantity'] * $stock_item['quantity']) .";"
 			);
@@ -1397,20 +1397,20 @@
 
 	// Migrate settings titles from translations to settings table
 	database::query(
-		"update ". DB_TABLE_PREFIX ."settings
+		"update ". DB_PREFIX ."settings
 		set `title` = JSON_SET('{}', '$.en', title),
 			`description` = JSON_SET('{}', '$.en', description);"
 	);
 
 	database::query(
-		"select * from ". DB_TABLE_PREFIX ."translations
+		"select * from ". DB_PREFIX ."translations
 		where `code` like 'settings_key:title_%';"
 	)->each(function($translation) {
 
 		foreach (array_keys(language::$languages) as $language_code) {
 			$key = preg_replace('#^settings_key:title_#', '', $translation['code']);
 			database::query(
-				"update ". DB_TABLE_PREFIX ."settings
+				"update ". DB_PREFIX ."settings
 				set title = json_set(title, '$.". $language_code ."', '". database::input($translation['text_'.$language_code] ?? '') ."')
 				where `key` = '". database::input($key) ."'
 				limit 1;"
@@ -1418,21 +1418,21 @@
 		}
 
 		database::query(
-			"delete from ". DB_TABLE_PREFIX ."translations
+			"delete from ". DB_PREFIX ."translations
 			where `code` = '". database::input($translation['code']) ."';"
 		);
 	});
 
 	// Migrate settings descriptions from translations to settings table
 	database::query(
-		"select * from ". DB_TABLE_PREFIX ."translations
+		"select * from ". DB_PREFIX ."translations
 		where `code` like 'settings_key:description_%';"
 	)->each(function($translation) {
 
 		foreach (array_keys(language::$languages) as $language_code) {
 			$key = preg_replace('#^settings_key:description_#', '', $translation['code']);
 			database::query(
-				"update ". DB_TABLE_PREFIX ."settings
+				"update ". DB_PREFIX ."settings
 				set description = json_set(description, '$.". $language_code ."', '". database::input($translation['text_'.$language_code] ?? '') ."')
 				where `key` = '". database::input($key) ."'
 				limit 1;"
@@ -1440,20 +1440,20 @@
 		}
 
 		database::query(
-			"delete from ". DB_TABLE_PREFIX ."translations
+			"delete from ". DB_PREFIX ."translations
 			where `code` = '". database::input($translation['code']) ."';"
 		);
 	});
 
 	// Migrate setting group translations to setting groups table
 	database::query(
-		"update ". DB_TABLE_PREFIX ."settings_groups
+		"update ". DB_PREFIX ."settings_groups
 		set `name` = JSON_SET('{}', '$.en', name),
 			`description` = JSON_SET('{}', '$.en', description);"
 	);
 
 	database::query(
-		"select * from ". DB_TABLE_PREFIX ."translations
+		"select * from ". DB_PREFIX ."translations
 		where `code` like 'setting_group:title_%';"
 	)->each(function($translation) {
 
@@ -1462,7 +1462,7 @@
 			$key = preg_replace('#^setting_group_key:title_#', '', $translation['code']);
 
 			database::query(
-				"update ". DB_TABLE_PREFIX ."settings_groups
+				"update ". DB_PREFIX ."settings_groups
 				set name = json_set(name, '$.". $language_code ."', '". database::input($translation['text_'.$language_code] ?? '') ."')
 				where `key` = '". database::input($key) ."'
 				limit 1;"
@@ -1470,14 +1470,14 @@
 		}
 
 		database::query(
-			"delete from ". DB_TABLE_PREFIX ."translations
+			"delete from ". DB_PREFIX ."translations
 			where `code` = '". database::input($translation['code']) ."';"
 		);
 	});
 
 	// Migrate setting group descriptions from translations to setting groups table
 	database::query(
-		"select * from ". DB_TABLE_PREFIX ."translations
+		"select * from ". DB_PREFIX ."translations
 		where `code` like 'settings_group:description_%';"
 	)->each(function($translation) {
 
@@ -1486,7 +1486,7 @@
 			$key = preg_replace('#^settings_group:description_#', '', $translation['code']);
 
 			database::query(
-				"update ". DB_TABLE_PREFIX ."settings_groups
+				"update ". DB_PREFIX ."settings_groups
 				set description = json_set(description, '$.". $language_code ."', '". database::input($translation['text_'.$language_code] ?? '') ."')
 				where `key` = '". database::input($key) ."'
 				limit 1;"
@@ -1494,7 +1494,7 @@
 		}
 
 		database::query(
-			"delete from ". DB_TABLE_PREFIX ."translations
+			"delete from ". DB_PREFIX ."translations
 			where `code` = '". database::input($translation['code']) ."';"
 		);
 	});
@@ -1504,12 +1504,12 @@
 
 		// Get all columns in main table
 		$columns = database::query(
-			"show fields from `". DB_TABLE_PREFIX . $collection['plural'] ."`;"
+			"show fields from `". DB_PREFIX . $collection['plural'] ."`;"
 		)->fetch_all('Field');
 
 		// Get all columns in info table
 		$info_columns = database::query(
-			"show fields from ". DB_TABLE_PREFIX . $collection['plural'] ."_info;"
+			"show fields from ". DB_PREFIX . $collection['plural'] ."_info;"
 		)->fetch_all(function($field) use ($collection) {
 			if (in_array($field['Field'], ['id', 'language_code']) || preg_match('#_id$#', $field['Field'])) return false;
 			return $field['Field'];
@@ -1518,7 +1518,7 @@
 		// Create missing columns in main table
 		foreach (array_diff($info_columns, $columns) as $column) {
 			database::query(
-				"alter table `". DB_TABLE_PREFIX . $collection['plural'] ."`
+				"alter table `". DB_PREFIX . $collection['plural'] ."`
 				add column `". database::input($column) ."` text not null default '{}';"
 			);
 		}
@@ -1529,11 +1529,11 @@
 				". implode(',' . PHP_EOL, array_map(function($field){
 					return "CONCAT('{', GROUP_CONCAT(CONCAT('\"', language_code, '\":', JSON_QUOTE(`". database::input($field) ."`)) ORDER BY language_code), '}') AS ". $field;
 				}, $info_columns)) ."
-			from `". DB_TABLE_PREFIX . database::input($collection['plural']) ."_info`
+			from `". DB_PREFIX . database::input($collection['plural']) ."_info`
 			group by `". database::input(strtr($collection['singular'].'_id', $aliases)) ."`;"
 		)->each(function($info) use ($collection, $info_columns) {
 			database::query(
-				"update `". DB_TABLE_PREFIX . database::input($collection['plural']) ."`
+				"update `". DB_PREFIX . database::input($collection['plural']) ."`
 				set ". implode(',' . PHP_EOL, array_map(function($field) use ($info) {
 					return "`". database::input($field) ."` = '". database::input($info[$field]) ."'";
 				}, $info_columns)) ."
@@ -1544,13 +1544,13 @@
 
 		// Drop info table
 		database::query(
-			"drop table `". DB_TABLE_PREFIX . $collection['plural'] ."_info`;"
+			"drop table `". DB_PREFIX . $collection['plural'] ."_info`;"
 		);
 	}
 
 	// Add the new `text` JSON column for translations
 	database::query(
-		"ALTER TABLE `". DB_TABLE_PREFIX ."translations`
+		"ALTER TABLE `". DB_PREFIX ."translations`
 		ADD COLUMN IF NOT EXISTS `text` JSON NOT NULL DEFAULT (JSON_OBJECT()) COMMENT 'TYPE:JSON_TRANSLATIONS' AFTER `code`;"
 	);
 
@@ -1559,7 +1559,7 @@
 		"SELECT COLUMN_NAME
 		FROM information_schema.COLUMNS
 		WHERE TABLE_SCHEMA = '". database::input(DB_DATABASE) ."'
-		AND TABLE_NAME = '". DB_TABLE_PREFIX ."translations'
+		AND TABLE_NAME = '". DB_PREFIX ."translations'
 		AND COLUMN_NAME LIKE 'text\\_%' ESCAPE '\\\\';"
 	)->fetch_all('COLUMN_NAME');
 
@@ -1567,7 +1567,7 @@
 
     // Build new JSON object: { "en": "...", "sv": "...", ... }
 		database::query(
-			"UPDATE `". DB_TABLE_PREFIX ."translations`
+			"UPDATE `". DB_PREFIX ."translations`
 			SET `text` = COALESCE(". implode(",\n", array_map(function($column) {
         return "IFNULL(JSON_OBJECT('". database::input(strtok($column, '_')) ."', `". database::input($column) ."`), JSON_OBJECT())";
       }, $language_columns)) .", JSON_OBJECT());"
@@ -1575,7 +1575,7 @@
 
     // Drop old columns
 		database::query(
-			"ALTER TABLE `". DB_TABLE_PREFIX ."translations`
+			"ALTER TABLE `". DB_PREFIX ."translations`
       ". implode(",\n", array_map(function($drop) {
         return "DROP COLUMN `". database::input($column) ."`";
       }, $language_columns)) .";"
@@ -1584,14 +1584,14 @@
 
 	// Remove deprecated columns
 	database::query(
-		"alter table `". DB_TABLE_PREFIX ."orders_stock_items`
+		"alter table `". DB_PREFIX ."orders_stock_items`
 		drop column `attributes`,
 		drop column `tax`;"
 	);
 
 	// Drop deprecated columns from products_stock_options
 	database::query(
-		"alter table ". DB_TABLE_PREFIX ."products_stock_options
+		"alter table ". DB_PREFIX ."products_stock_options
 		drop column `attributes`,
 		drop column `sku`,
 		drop column `weight`,
@@ -1605,12 +1605,12 @@
 
 	// Merge apps, widgets into a single permissions column
 	database::query(
-		"alter table `". DB_TABLE_PREFIX ."administrators`
+		"alter table `". DB_PREFIX ."administrators`
 		add column `permissions` TEXT NOT NULL DEFAULT '{}' AFTER `email`;"
 	);
 
 	database::query(
-		"select id, apps, widgets from ". DB_TABLE_PREFIX ."administrators;"
+		"select id, apps, widgets from ". DB_PREFIX ."administrators;"
 	)->each(function($admin) {
 
 		$permissions = [
@@ -1625,7 +1625,7 @@
 		$permissions = f::array_filter_recursive($permissions);
 
 		database::query(
-			"update ". DB_TABLE_PREFIX ."administrators
+			"update ". DB_PREFIX ."administrators
 			set permissions = '". database::input(json_encode($permissions ?: [], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ."'
 			where id = ". (int)$admin['id'] ."
 			limit 1;"
@@ -1633,28 +1633,28 @@
 	});
 
 	database::query(
-		"alter table `". DB_TABLE_PREFIX ."administrators`
+		"alter table `". DB_PREFIX ."administrators`
 		drop column `apps`,
 		drop column `widgets`;"
 	);
 
 	// Migrate translations to JSON
 	database::query(
-		"alter table `". DB_TABLE_PREFIX ."translations`
+		"alter table `". DB_PREFIX ."translations`
 		add column `text` JSON NOT NULL DEFAULT '{}' COMMENT 'TYPE:JSON_TRANSLATION' AFTER `code`;"
 	);
 
 	database::query(
-		"select * from ". DB_TABLE_PREFIX ."languages;"
+		"select * from ". DB_PREFIX ."languages;"
 	)->each(function($language) {
 
 		database::query(
-			"update ". DB_TABLE_PREFIX ."translations
+			"update ". DB_PREFIX ."translations
 			set `text` = json_set(`text`, '$.". database::input($language['code']) ."', `text_". database::input($language['code']) ."`);"
 		);
 
 		database::query(
-			"alter table ". DB_TABLE_PREFIX ."translations
+			"alter table ". DB_PREFIX ."translations
 			drop column `text_". database::input($language['code']) ."`;"
 		);
 	});

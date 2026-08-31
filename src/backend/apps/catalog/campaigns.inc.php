@@ -35,18 +35,18 @@
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$campaigns = database::query(
 		"select c.*, cp.num_products, csp.num_scope_products
-		from ". DB_TABLE_PREFIX ."campaigns c
+		from ". DB_PREFIX ."campaigns c
 		left join (
 			select campaign_id, count(*) as num_products
-			from ". DB_TABLE_PREFIX ."products_prices
+			from ". DB_PREFIX ."products_prices
 			where campaign_id is not null
 			group by campaign_id
 		) cp on (cp.campaign_id = c.id)
 		left join (
 			select cs.campaign_id, count(distinct p.id) as num_scope_products
-			from ". DB_TABLE_PREFIX ."campaigns_scopes cs
-			left join ". DB_TABLE_PREFIX ."products_to_categories ptc on (cs.scope_type = 'category' and cs.scope_id = ptc.category_id)
-			left join ". DB_TABLE_PREFIX ."products p on (p.id = ptc.product_id or (cs.scope_type = 'brand' and p.brand_id = cs.scope_id))
+			from ". DB_PREFIX ."campaigns_scopes cs
+			left join ". DB_PREFIX ."products_to_categories ptc on (cs.scope_type = 'category' and cs.scope_id = ptc.category_id)
+			left join ". DB_PREFIX ."products p on (p.id = ptc.product_id or (cs.scope_type = 'brand' and p.brand_id = cs.scope_id))
 			where p.id is not null
 			group by cs.campaign_id
 		) csp on (csp.campaign_id = c.id)

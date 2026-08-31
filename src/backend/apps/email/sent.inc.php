@@ -12,7 +12,7 @@
 	if (!empty($_POST['delete'])) {
 		if (!empty($_POST['emails'])) {
 			database::query(
-				"delete from " . DB_TABLE_PREFIX . "emails
+				"delete from " . DB_PREFIX . "emails
 				where id in ('". implode("', '", database::input($_POST['emails'])) ."');",
 			);
 		}
@@ -23,7 +23,7 @@
 	}
 
 	$emails = database::prepare(
-		"select * from " . DB_TABLE_PREFIX . "emails
+		"select * from " . DB_PREFIX . "emails
 		where status = 'sent'
 		". (!empty($_GET['query'])? 'and ('. implode(PHP_EOL . 'or ', [
 			"recipients like '%" . database::input_like($_GET['query']) . "%'",

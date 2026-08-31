@@ -8,7 +8,7 @@
 
 		$placeholders = [
 			'STORAGE_FOLDER', 'ADMIN_FOLDER',
-			'DB_SERVER', 'DB_USERNAME', 'DB_PASSWORD', 'DB_DATABASE', 'DB_TABLE_PREFIX',
+			'DB_SERVER', 'DB_USERNAME', 'DB_PASSWORD', 'DB_DATABASE', 'DB_PREFIX',
 			'CLIENT_IP', 'STORE_TIME_ZONE', 'HMAC_KEY_REMEMBER_ME',
 		];
 
@@ -30,7 +30,7 @@
 			'DB_PASSWORD'           => DB_PASSWORD,
 			'DB_DATABASE'           => DB_DATABASE,
 			'DB_COLLATION'          => DB_COLLATION,
-			'DB_TABLE_PREFIX'       => DB_TABLE_PREFIX,
+			'DB_PREFIX'       => DB_PREFIX,
 			'CLIENT_IP'             => $_REQUEST['client_ip'] ? filter_var($_REQUEST['client_ip'], FILTER_VALIDATE_IP) : '127.0.0.1',
 			'STORE_TIME_ZONE'       => $_REQUEST['timezone'],
 			'HMAC_KEY_REMEMBER_ME'  => bin2hex(random_bytes(32)),

@@ -11,10 +11,10 @@
 
 	$customer_groups = database::query(
 		"select cg.*, c.num_customers
-		from ". DB_TABLE_PREFIX ."customer_groups cg
+		from ". DB_PREFIX ."customer_groups cg
 		left join (
 			select group_id, count(*) as num_customers
-			from ". DB_TABLE_PREFIX ."customers
+			from ". DB_PREFIX ."customers
 			group by group_id
 		) c on (c.group_id = cg.id)
 		where true

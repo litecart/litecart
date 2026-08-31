@@ -20,7 +20,7 @@
 			$this->data = [];
 
 			database::query(
-				"show fields from ". DB_TABLE_PREFIX ."reviews;"
+				"show fields from ". DB_PREFIX ."reviews;"
 			)->each(function($field){
 				$this->data[$field['Field']] = database::create_variable($field);
 			});
@@ -42,7 +42,7 @@
 			$this->reset();
 
 			$review = database::query(
-				"select * from ". DB_TABLE_PREFIX ."reviews
+				"select * from ". DB_PREFIX ."reviews
 				where id = ". (int)$review_id ."
 				limit 1;"
 			)->fetch(function(&$review) {
@@ -66,7 +66,7 @@
 
 			if (empty($this->data['id'])) {
 				database::query(
-					"insert into ". DB_TABLE_PREFIX ."reviews
+					"insert into ". DB_PREFIX ."reviews
 					(product_id, customer_id, created_at)
 					values (". (int)$this->data['product_id'] .", ". (int)$this->data['customer_id'] .", '". database::input(date('Y-m-d H:i:s')) ."');"
 				);
@@ -75,7 +75,7 @@
 			}
 
 			database::query(
-				"update ". DB_TABLE_PREFIX ."reviews
+				"update ". DB_PREFIX ."reviews
 				set status = ". (int)$this->data['status'] .",
 					product_id = ". (int)$this->data['product_id'] .",
 					customer_id = ". (int)$this->data['customer_id'] .",
@@ -90,7 +90,7 @@
 			);
 
 			database::query(
-				"update ". DB_TABLE_PREFIX ."reviews
+				"update ". DB_PREFIX ."reviews
 				set status = ". (int)$this->data['status'] .",
 					product_id = ". (int)$this->data['product_id'] .",
 					customer_id = ". (int)$this->data['customer_id'] .",
@@ -109,7 +109,7 @@
 
 			// Delete attachments that were removed
 			// Delete files for attachments removed
-			$existing_attachments = json_decode(database::query("select attachments from ". DB_TABLE_PREFIX ."reviews where id = ". (int)$this->data['id'] ." limit 1;")->fetch('attachments'), true) ?: [];
+			$existing_attachments = json_decode(database::query("select attachments from ". DB_PREFIX ."reviews where id = ". (int)$this->data['id'] ." limit 1;")->fetch('attachments'), true) ?: [];
 			$remaining_ids = array_column($this->data['attachments'], 'id');
 			foreach ($existing_attachments as $attachment) {
 				if (!in_array($attachment['id'], $remaining_ids)) {
@@ -141,7 +141,7 @@
 
 			// persist attachments JSON
 			database::query(
-				"update ". DB_TABLE_PREFIX ."reviews set attachments = '". database::input(f::format_json($this->data['attachments'])) ."' where id = ". (int)$this->data['id'] ." limit 1;"
+				"update ". DB_PREFIX ."reviews set attachments = '". database::input(f::format_json($this->data['attachments'])) ."' where id = ". (int)$this->data['id'] ." limit 1;"
 			);
 
 			$this->previous = $this->data;
@@ -181,7 +181,7 @@
 
 			// persist attachments JSON
 			database::query(
-				"update ". DB_TABLE_PREFIX ."reviews set attachments = '". database::input(f::format_json($this->data['attachments'])) ."' where id = ". (int)$this->data['id'] ." limit 1;"
+				"update ". DB_PREFIX ."reviews set attachments = '". database::input(f::format_json($this->data['attachments'])) ."' where id = ". (int)$this->data['id'] ." limit 1;"
 			);
 		}
 
@@ -198,7 +198,7 @@
 
 			// delete review row
 			database::query(
-				"delete from ". DB_TABLE_PREFIX ."reviews
+				"delete from ". DB_PREFIX ."reviews
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"
 			);
