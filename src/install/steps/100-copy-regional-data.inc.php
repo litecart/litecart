@@ -67,15 +67,16 @@
 
 						if (empty($sql)) continue;
 
+						echo basename($file) .' ';
+
 						$sql = preg_replace('#\r\n?#', "\n", $sql);
 						$sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, $sql);
 
 						foreach (preg_split('#^-- -----*$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {
 							$query = preg_replace('#^-- .*?\R+#m', '', $query);
-
-							echo basename($file) .' ';
 							database::query($query);
 						}
+
 						echo '<span class="ok">[OK]</span></p>' . PHP_EOL;
 					}
 				}

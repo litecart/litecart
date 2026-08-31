@@ -25,9 +25,9 @@
 				$query = "INSERT INTO `". database::input($table) ."` (`". implode('`, `', database::input(array_keys($rows[0]))) ."`) VALUES ";
 
 				foreach ($rows as $columns) {
-					$query .= "(". implode(", ", array_map(function($value) {
-						return $value == '' ? "null" : "'". database::input($value) ."'";
-					}, $columns)) ."'),";
+					$query .= "(" . implode(", ", array_map(function($value) {
+						return $value ? "'" . database::input($value) . "'" : "null";
+					}, $columns)) . "),";
 				}
 
 				$query = rtrim($query, ',') . ";";
@@ -36,7 +36,7 @@
 				database::query($query);
 
 			}
-			
+
 			echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 		}
 
