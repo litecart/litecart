@@ -24,56 +24,68 @@
 
 					foreach ($data_files as $file) {
 
-						$table = DB_TABLE_PREFIX . basename($file, '.csv');
+						try {
 
-						$contents = file_get_contents($file);
+							echo '<p>' . basename($file) .' ';
 
-						foreach ([
-							'{STORE_NAME}' => isset($_REQUEST['store_name']) ? $_REQUEST['store_name'] : '',
-							'{STORE_EMAIL}' => isset($_REQUEST['store_email']) ? $_REQUEST['store_email'] : '',
-							'{STORE_COUNTRY_CODE}' => isset($_REQUEST['country_code']) ? $_REQUEST['country_code'] : '',
-							'CURRENT_TIMESTAMP' => date('Y-m-d H:i:s'),
-						] as $search => $replace) {
-							$contents = str_replace($search, database::input($replace), $contents);
-						}
+							$table = DB_TABLE_PREFIX . basename($file, '.csv');
 
-						$rows = f::csv_decode($contents);
+							$contents = file_get_contents($file);
 
-						$column_names = array_keys($rows[0]);
-
-						// Look up each column's nullability
-						$column_nullable = [];
-						foreach (database::query("show fields from ". $table)->fetch_all() as $field) {
-							$column_nullable[$field['Field']] = ($field['Null'] === 'YES');
-						}
-
-						$query = "INSERT INTO `". database::input($table) ."` (`". implode('`, `', database::input($column_names)) ."`) VALUES ";
-
-						foreach ($rows as $columns) {
-
-							$values = [];
-
-							foreach ($column_names as $index => $name) {
-
-								$value = $columns[$index] ?? '';
-
-								if ($value !== '') {
-									$values[] = "'" . database::input($value) . "'";
-									continue;
-								}
-
-								$values[] = !empty($column_nullable[$name]) ? 'NULL' : "''";
+							foreach ([
+								'{STORE_NAME}' => isset($_REQUEST['store_name']) ? $_REQUEST['store_name'] : '',
+								'{STORE_EMAIL}' => isset($_REQUEST['store_email']) ? $_REQUEST['store_email'] : '',
+								'{STORE_COUNTRY_CODE}' => isset($_REQUEST['country_code']) ? $_REQUEST['country_code'] : '',
+								'CURRENT_TIMESTAMP' => date('Y-m-d H:i:s'),
+							] as $search => $replace) {
+								$contents = str_replace($search, database::input($replace), $contents);
 							}
 
-							$query .= "(" . implode(', ', $values) . "),";
+							$rows = f::csv_decode($contents);
+
+							$column_names = array_keys($rows[0]);
+
+							// Look up each column's nullability
+							$column_nullable = [];
+							foreach (database::query("show fields from ". $table)->fetch_all() as $field) {
+								$column_nullable[$field['Field']] = ($field['Null'] === 'YES');
+							}
+
+							$query = "INSERT INTO `". database::input($table) ."` (`". implode('`, `', database::input($column_names)) ."`) VALUES ";
+
+							foreach ($rows as $columns) {
+
+								$values = [];
+
+								foreach ($column_names as $index => $name) {
+
+									$value = $columns[$index] ?? '';
+
+									if ($value !== '') {
+										$values[] = "'" . database::input($value) . "'";
+										continue;
+									}
+
+									$values[] = !empty($column_nullable[$name]) ? 'NULL' : "''";
+								}
+
+								$query .= "(" . implode(', ', $values) . "),";
+							}
+
+							$query = rtrim($query, ',') . ";";
+
+							database::query($query);
+
+							echo '<span class="ok">[OK]</span></p>' . PHP_EOL;
+
+						} catch (Exception $e) {
+							echo implode(PHP_EOL, [
+								'<span class="error">[Error]</span></p>',
+								'<div class="error-message">'. $e->getMessage() .'</div>',
+								'',
+								'',
+							]);
 						}
-
-						$query = rtrim($query, ',') . ";";
-
-						echo basename($file) .' ';
-						database::query($query);
-
-						echo '<span class="ok">[OK]</span></p>' . PHP_EOL;
 					}
 
 					echo PHP_EOL;
@@ -86,30 +98,52 @@
 					echo '<p>Writing database table data from SQL files... ' . PHP_EOL;
 
 					foreach ($data_files as $file) {
-						$sql = file_get_contents($file);
 
-						if (empty($sql)) continue;
+						if (empty(file_get_contents($file))) continue;
 
-						echo basename($file) .' ';
+						try {
 
-						$sql = preg_replace('#\r\n?#', "\n", $sql);
-						$sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, $sql);
+							echo '<p>' . basename($file) .' ';
 
-						foreach (preg_split('#^-- -----*$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {
-							$query = preg_replace('#^-- .*?\R+#m', '', $query);
-							database::query($query);
+							$sql = file_get_contents($file);
+
+							$sql = preg_replace('#\r\n?#', "\n", $sql);
+							$sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, $sql);
+
+							foreach (preg_split('#^-- -----*$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {
+								$query = preg_replace('#^-- .*?\R+#m', '', $query);
+								database::query($query);
+							}
+
+							echo '<span class="ok">[OK]</span></p>' . PHP_EOL;
+
+						} catch (Exception $e) {
+							echo implode(PHP_EOL, [
+								'<span class="error">[Error]</span>',
+								'<div class="error-message">'. $e->getMessage() .'</div></p>',
+								'',
+							]);
 						}
-
-						echo '<span class="ok">[OK]</span></p>' . PHP_EOL;
 					}
 				}
 
 				## Copy Files
 
-				perform_action('copy', [
-					__DIR__.'/../data/'. $dir .'/src/' => FS_DIR_APP,
-					__DIR__.'/../data/'. $dir .'/storage/' => FS_DIR_STORAGE,
-				]);
+				try {
+
+					perform_action('copy', [
+						__DIR__.'/../data/'. $dir .'/src/' => FS_DIR_APP,
+						__DIR__.'/../data/'. $dir .'/storage/' => FS_DIR_STORAGE,
+					]);
+
+				} catch (Exception $e) {
+					echo implode(PHP_EOL, [
+						'<p>Copy regional files ('. $dir .')... <span class="error">[Error]</span></p>',
+						'<div class="error-message">'. $e->getMessage() .'</div>',
+						'',
+						'',
+					]);
+				}
 			}
 		}
 

@@ -4,44 +4,55 @@
 
 	if (!empty($_REQUEST['download_updates'])) {
 
-		echo '<p>Checking for updates... ';
+		try {
 
-		require_once FS_DIR_APP . 'shared/clients/http_client.inc.php';
-		$client = new http_client();
+			echo '<p>Checking for updates... ';
 
-		$update_file = function($file) use ($client) {
+			require_once FS_DIR_APP . 'shared/clients/http_client.inc.php';
+			$client = new http_client();
 
-			$response = $client->call('GET', 'https://raw.githubusercontent.com/litecart/litecart/'. PLATFORM_VERSION .'/src/'. $file);
+			$update_file = function($file) use ($client) {
 
-			if ($client->last_response['status_code'] != 200) return false;
+				$response = $client->call('GET', 'https://raw.githubusercontent.com/litecart/litecart/'. PLATFORM_VERSION .'/src/'. $file);
 
-			if (!is_dir(dirname(FS_DIR_APP . $file))) {
-				mkdir(dirname(FS_DIR_APP . $file), 0777, true);
-			}
+				if ($client->last_response['status_code'] != 200) return false;
 
-			file_put_contents(FS_DIR_APP . $file, $response);
+				if (!is_dir(dirname(FS_DIR_APP . $file))) {
+					mkdir(dirname(FS_DIR_APP . $file), 0777, true);
+				}
 
-			return true;
-		};
+				file_put_contents(FS_DIR_APP . $file, $response);
 
-		$calculate_md5 = function($file) {
-			if (!is_file(FS_DIR_APP . $file)) return;
-			$contents = preg_replace('#(\r\n?|\n)#', "\n", file_get_contents(FS_DIR_APP . $file));
-			return md5($contents);
-		};
+				return true;
+			};
 
-		if ($update_file('install/checksums.md5')) {
+			$calculate_md5 = function($file) {
+				if (!is_file(FS_DIR_APP . $file)) return;
+				$contents = preg_replace('#(\r\n?|\n)#', "\n", file_get_contents(FS_DIR_APP . $file));
+				return md5($contents);
+			};
 
-			$files_updated = 0;
-			foreach (file(FS_DIR_APP . 'install/checksums.md5', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {
-				list($checksum, $file) = explode("\t", $line);
-				if ($calculate_md5($file) != $checksum) {
-					if ($update_file($file)) $files_updated++;
+			if ($update_file('install/checksums.md5')) {
+
+				$files_updated = 0;
+				foreach (file(FS_DIR_APP . 'install/checksums.md5', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {
+					list($checksum, $file) = explode("\t", $line);
+					if ($calculate_md5($file) != $checksum) {
+						if ($update_file($file)) $files_updated++;
+					}
+				}
+
+				if (!empty($files_updated)) {
+					echo 'Updated '. $files_updated .' file(s) <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 				}
 			}
 
-			if (!empty($files_updated)) {
-				echo 'Updated '. $files_updated .' file(s) <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
-			}
+		} catch (Exception $e) {
+			echo implode(PHP_EOL, [
+				'<span class="error">[Error]</span>',
+				'<div class="error-message">'. $e->getMessage() .'</div></p>',
+				'',
+				'',
+			]);
 		}
 	}
