@@ -203,7 +203,7 @@
 
 			try {
 
-				echo '<p>' . basename($file) .' ';
+				echo ' ' . basename($file) .' ';
 
 				$table = DB_TABLE_PREFIX . basename($file, '.csv');
 
@@ -253,11 +253,13 @@
 
 				database::query($query);
 
-				echo '<span class="ok">[OK]</span></p>' . PHP_EOL;
+				echo '<span class="ok">[OK]</span>' . PHP_EOL;
 
 			} catch (Throwable $t) {
 				echo '<span class="error">𐄂</span>';
 			}
+
+			echo '</p>' . PHP_EOL;
 		}
 	}
 

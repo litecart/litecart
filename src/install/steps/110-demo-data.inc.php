@@ -53,12 +53,15 @@
 
 						$query .= "(" . implode(', ', $values) . "),";
 					}
-
 					$query = rtrim($query, ',') . ";";
 
-					echo basename($file) .'... ';
-					database::query($query);
-
+					try {
+						echo ' '. basename($file) .' ';
+						database::query($query);
+						echo '<span class="ok">✔</span>';
+					} catch (Throwable $t) {
+						echo '<span class="error">𐄂</span>';
+					}
 				}
 
 				echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
