@@ -1,0 +1,302 @@
+{
+  "repo_notes": [
+    {
+      "content": ""
+    }
+  ],
+  "pages": [
+    {
+      "title": "LiteCart Overview",
+      "purpose": "High-level introduction to LiteCart: what it is, its tech stack, folder structure, key architectural concepts, and how the major subsystems relate. Links to all child sections for deeper reading.",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Getting Started & Installation",
+      "purpose": "Step-by-step guide to installing LiteCart: environment requirements, running the web/CLI installer, regional data seeding, and Docker-based setup. Covers the install/ wizard, checksums.md5 integrity verification, and config.inc.php generation.",
+      "parent": "LiteCart Overview",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Upgrading & Database Migrations",
+      "purpose": "How to upgrade an existing LiteCart installation: the upgrade.php orchestrator, the sequential SQL and PHP patch pipeline in upgrade_patches/, and the perform_action() helper. Covers major migration milestones (1.x → 2.x → 2.6.x).",
+      "parent": "LiteCart Overview",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Contributing & Code Standards",
+      "purpose": "Guidelines for contributors: coding standards (STANDARD.md), file naming conventions, autoloader prefix conventions, git hooks (pre-commit PHP lint checker and checksum calculator), and GitHub issue templates.",
+      "parent": "LiteCart Overview",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Core Architecture",
+      "purpose": "Overview of LiteCart's server-side architecture: the request lifecycle from index.php through bootstrapping, routing, output, and shutdown. Introduces the key library classes and links to child pages for each subsystem.",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Request Lifecycle & Routing",
+      "purpose": "Detailed walkthrough of a single HTTP request: app_header.inc.php bootstrapping order (vMod init → config → autoloader → CSRF guard), the route library's URI normalization and pattern matching, SEO URL rewriting, and the document output pipeline (capture → prepare → optimize).",
+      "parent": "Core Architecture",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Database Layer",
+      "purpose": "The database class: connection management, SQL mode normalization, query execution, the database_result wrapper (fetch, fetch_all, fetch_page), input sanitization helpers, and the stats/performance logging integration.",
+      "parent": "Core Architecture",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Autoloader & Class Conventions",
+      "purpose": "How PHP classes are resolved at runtime: the spl_autoload_register logic, prefix-to-directory mapping (ent_, ref_, mod_, sm_, pm_, etc.), vMod integration in the autoloader, and the bare-class init() auto-call pattern for library nodes.",
+      "parent": "Core Architecture",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Event System & Settings",
+      "purpose": "The event class (register/fire pattern, one-time events, shutdown hooks) and the settings library (key-value store backed by lc_settings, global vs. local types, setting_group_key categories). How modules and libraries hook into the lifecycle.",
+      "parent": "Core Architecture",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Caching System",
+      "purpose": "The cache class: tiered storage backends (APCu, file, session), cache token generation with environmental dependencies (currency, language, country, customer), output buffering via capture/end_capture, and the system breakpoint invalidation mechanism.",
+      "parent": "Core Architecture",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Virtual Modifications (vMod)",
+      "purpose": "The vMod system: how lib_vmod.inc.php intercepts file includes, applies XML-defined search-and-replace patches, manages the .cache/ directory, and supports install/upgrade/uninstall scripts. Covers the admin UI for managing, testing, and configuring vmods, plus vQmod legacy compatibility.",
+      "parent": "Core Architecture",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Catalog & Product System",
+      "purpose": "Overview of the product catalog subsystem: entities, references, admin management, and storefront display. Links to child pages covering each layer.",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Product & Category Entities",
+      "purpose": "The ent_product and ent_category entity classes: CRUD lifecycle, dual-state (data/previous) change tracking, image handling (add_image, thumbnailing), option stock combinations, campaign pricing, attribute management, and recursive category deletion safety.",
+      "parent": "Catalog & Product System",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Product Reference Model",
+      "purpose": "The ref_product lazy-loading reference class: __get magic method, segment-based _load() calls, multi-language fallback for text fields, campaign price calculation, option price adjustments (operators: +, %, *, =), and options stock combination lookup.",
+      "parent": "Catalog & Product System",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Catalog Admin Interface",
+      "purpose": "Admin controllers for catalog management: edit_product, edit_category, edit_manufacturer, edit_page, edit_slide. Covers the tabbed UI pattern, regional input fields for multi-language content, image async preview, stock adjustment modes, and the catalog listing/search views.",
+      "parent": "Catalog & Product System",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Storefront Product Display",
+      "purpose": "The product.inc.php page controller and its view layer: data flow from controller to ent_view snippets, pricing/tax calculation pipeline, product options rendering (checkbox/radio/select/text), real-time price-adjust JavaScript, image processing (thumbnail, watermark, AVIF/WebP), SEO metadata (JSON-LD, Open Graph), and the listing/category views.",
+      "parent": "Catalog & Product System",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Shopping Cart & Checkout",
+      "purpose": "Overview of the end-to-end purchase flow from cart to confirmed order. Links to child pages for cart management, checkout UI, and order processing.",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Cart Management",
+      "purpose": "The cart library: initialization, cart UID cookie persistence, add_product validation pipeline (availability, quantity constraints, option sanitization, stock combination check), item key hashing, update/remove operations, and database synchronization with cart_items.",
+      "parent": "Shopping Cart & Checkout",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Checkout Flow",
+      "purpose": "The multi-step checkout UI: checkout.inc.php layout, AJAX-driven section updates (cart, customer, shipping, payment, summary), the box_checkout_* view fragments, customer address handling, and the regional_settings lightbox for guest users.",
+      "parent": "Shopping Cart & Checkout",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Order Processing & Payment",
+      "purpose": "The order_process.inc.php pipeline: validation, payment pre_check, gateway transfer (POST/GET/HTML methods), payment verification, order persistence, cart clearing, and post-process hooks. Covers ent_order save/stock-action lifecycle, order_success page, and the public_key guest access pattern.",
+      "parent": "Shopping Cart & Checkout",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Order Administration",
+      "purpose": "Admin-side order management: the orders list view, edit_order.inc.php (currency conversion on load/save, AJAX address fetch, zones dropdown), add_product modal, order status state machine (stock_action: commit/reserve), order comments (bubbles UI), and printable order/packing slip views.",
+      "parent": "Shopping Cart & Checkout",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Modules System",
+      "purpose": "Overview of LiteCart's pluggable module architecture: the abs_module abstract base, the mod_* orchestrators, and the five module types. Links to child pages for each module category.",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Shipping & Payment Modules",
+      "purpose": "How shipping modules (sm_*) and payment modules (pm_*) work: the mod_shipping/mod_payment orchestrators, options()/select()/cheapest() API, the sm_zone_weight built-in module, the pm_cod built-in module, transfer/verify/after_process hooks, and how to add new modules.",
+      "parent": "Modules System",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Order Total & Order Modules",
+      "purpose": "Order total modules (ot_*): ot_subtotal, ot_shipping_fee, ot_payment_fee and the calculate flag. Order modules (om_*): validate/after_process/success/update/delete hooks. How totals are recalculated via ent_order::refresh_total().",
+      "parent": "Modules System",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Job Modules & Background Tasks",
+      "purpose": "The mod_jobs orchestrator and job_* modules: the process()/settings() lifecycle, frequency-based scheduling (daily/weekly/monthly), built-in jobs (job_mysql_optimizer, job_cache_cleaner, job_error_reporter), the run_job admin trigger, and the push_jobs endpoint.",
+      "parent": "Modules System",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Localization & Regionalization",
+      "purpose": "Overview of LiteCart's i18n/l10n architecture: language detection, currency conversion, tax calculation, and geo zones. Links to child pages for each subsystem.",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Language & Translation System",
+      "purpose": "The language library: multi-step identify() waterfall (URI, domain, cookie, browser headers), translate() with database-backed cache, shutdown() translation access tracking, regional input fields for admin forms, the translations admin (scan, collections, batch translator), and CSV import/export.",
+      "parent": "Localization & Regionalization",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Currency & Tax",
+      "purpose": "The currency library (convert, format, format_raw), tax library (get_price, tax_class_id lookup, geo zone targeting), tax rate and tax class admin management, and how prices flow through the system (gross vs. net, tax-inclusive display).",
+      "parent": "Localization & Regionalization",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Geo Zones & Countries",
+      "purpose": "Geographic data model: lc_countries (ISO codes, address format, postcode/tax_id regex), lc_geo_zones for targeting tax rates and shipping modules, zone management admin UI, and the customer::identify() regional waterfall (TLD, CloudFlare, Accept-Language).",
+      "parent": "Localization & Regionalization",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Authentication & Session Management",
+      "purpose": "Overview of identity management for both customers and admin users. Links to child pages for session security, customer auth, and user auth.",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    }
+  ]
+}
