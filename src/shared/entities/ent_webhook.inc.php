@@ -17,11 +17,9 @@
 
 			$this->data = [];
 
-			database::query(
-				"show fields from ". DB_PREFIX ."webhooks;"
-			)->each(function($field) {
+			foreach (database::schema(DB_PREFIX .'webhooks') as $field) {
 				$this->data[$field['Field']] = database::create_variable($field['Type']);
-			});
+			}
 
 			$this->previous = $this->data;
 		}

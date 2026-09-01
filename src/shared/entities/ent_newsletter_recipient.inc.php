@@ -17,11 +17,9 @@
 
 			$this->data = [];
 
-			database::query(
-				"show fields from ". DB_PREFIX ."newsletter_recipients;"
-			)->each(function($field){
+			foreach (database::schema(DB_PREFIX .'newsletter_recipients') as $field) {
 				$this->data[$field['Field']] = database::create_variable($field);
-			});
+			}
 
 			$this->data['ip_address'] = $_SERVER['REMOTE_ADDR'] ?? '';
 			$this->data['hostname'] = $this->data['ip_address'] ? gethostbyaddr($this->data['ip_address']) : '';

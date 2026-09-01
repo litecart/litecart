@@ -7,8 +7,9 @@
 
 	class database {
 
-		public static $links = [];
-		public static $stats = [
+		private static array $_schemas = [];
+		public static array $links = [];
+		public static array $stats = [
 			'duration' => 0,
 			'queries' => 0,
 		];
@@ -341,6 +342,27 @@
 
 				default:
 					return strval(!is_null($value) ? $value : $field['Default']);
+			}
+		}
+
+		public static function schema(string $table): array {
+
+			if (isset(self::$_schemas[$table])) {
+				return self::$_schemas[$table];
+			}
+
+			return self::$_schemas[$table] = self::query(
+				"show fields from `". self::input($table) ."`;"
+			)->fetch_all();
+		}
+
+		// Clear the schema cache (e.g. after schema migration). Optional — schema is
+		// process-local anyway and resets on FPM worker recycle.
+		public static function clear_schema_cache(string|null $table=null): void {
+			if ($table) {
+				unset(self::$_schemas[$table]);
+			} else {
+				self::$_schemas = [];
 			}
 		}
 

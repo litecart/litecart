@@ -17,15 +17,13 @@
 
 			$this->data = [];
 
-			database::query(
-				"show fields from ". DB_PREFIX ."customers;"
-			)->each(function($field){
+			foreach (database::schema(DB_PREFIX .'customers') as $field) {
 				if (preg_match('#^shipping_(.*)$#', $field['Field'], $matches)) {
 					$this->data['shipping_address'][$matches[1]] = database::create_variable($field);
 				} else {
 					$this->data[$field['Field']] = database::create_variable($field);
 				}
-			});
+			}
 
 			$this->data['status'] = 1;
 			$this->data['group_id'] = settings::get('default_customer_group_id');

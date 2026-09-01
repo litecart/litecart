@@ -17,11 +17,9 @@
 
 			$this->data = [];
 
-			database::query(
-				"show fields from ". DB_PREFIX ."third_parties;"
-			)->each(function($field) {
+			foreach (database::schema(DB_PREFIX .'third_parties') as $field) {
 				$this->data[$field['Field']] = database::create_variable($field['Type']);
-			});
+			}
 
 			foreach ([
 				'description',

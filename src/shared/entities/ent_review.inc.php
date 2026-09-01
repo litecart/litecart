@@ -19,11 +19,9 @@
 
 			$this->data = [];
 
-			database::query(
-				"show fields from ". DB_PREFIX ."reviews;"
-			)->each(function($field){
+			foreach (database::schema(DB_PREFIX .'reviews') as $field) {
 				$this->data[$field['Field']] = database::create_variable($field);
-			});
+			}
 
 			// initialize multi-language fields previously stored in a separate info table
 			$this->data['title'] = array_fill_keys(array_keys(language::$languages), '');

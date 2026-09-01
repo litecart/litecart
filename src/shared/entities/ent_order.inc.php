@@ -20,9 +20,7 @@
 
 			$this->data = [];
 
-			database::query(
-				"show fields from ". DB_PREFIX ."orders;"
-			)->each(function($field) {
+			foreach (database::schema(DB_PREFIX .'orders') as $field) {
 				switch (true) {
 
 					case (preg_match('#^customer_#', $field['Field'])):
@@ -45,7 +43,7 @@
 						$this->data[$field['Field']] = database::create_variable($field);
 						break;
 				}
-			});
+			}
 
 			$this->data = array_merge($this->data, [
 				'order_status_id' => settings::get('default_order_status_id'),

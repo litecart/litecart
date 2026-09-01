@@ -17,11 +17,9 @@
 
 			$this->data = [];
 
-			database::query(
-				"show fields from ". DB_PREFIX ."tax_rates;"
-			)->each(function($field){
+			foreach (database::schema(DB_PREFIX .'tax_rates') as $field) {
 				$this->data[$field['Field']] = database::create_variable($field);
-			});
+			}
 
 			$this->data['addrress_type'] = 'shipping';
 

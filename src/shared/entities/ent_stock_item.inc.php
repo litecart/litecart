@@ -17,11 +17,9 @@
 
 			$this->data = [];
 
-			database::query(
-				"show fields from ". DB_PREFIX ."stock_items;"
-			)->each(function($field){
+			foreach (database::schema(DB_PREFIX .'stock_items') as $field) {
 				$this->data[$field['Field']] = database::create_variable($field);
-			});
+			}
 
 			$this->data['name'] = array_fill_keys(array_keys(language::$languages), '');
 			$this->data['quantity_reserved'] = 0;

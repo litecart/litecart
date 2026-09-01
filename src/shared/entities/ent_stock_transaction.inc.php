@@ -17,11 +17,9 @@
 
 			$this->data = [];
 
-			database::query(
-				"show fields from ". DB_PREFIX ."stock_transactions;"
-			)->each(function($field){
+			foreach (database::schema(DB_PREFIX .'stock_transactions') as $field) {
 				$this->data[$field['Field']] = database::create_variable($field);
-			});
+			}
 
 			$this->data['contents'] = [];
 

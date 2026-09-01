@@ -17,11 +17,9 @@
 
 			$this->data = [];
 
-			database::query(
-				"show fields from ". DB_PREFIX ."countries;"
-			)->each(function($field){
+			foreach (database::schema(DB_PREFIX .'countries') as $field) {
 				$this->data[$field['Field']] = database::create_variable($field);
-			});
+			}
 
 			$this->data['zones'] = [];
 

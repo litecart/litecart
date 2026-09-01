@@ -34,11 +34,11 @@
 
 		public function reset(): void {
 
-			$this->data = database::query(
-				"show fields from `". database::input($this->_table) ."`;"
-			)->each(function($field) {
-				return database::create_variable($field);
-			});
+			$fields = database::schema($this->_table);
+			$this->data = [];
+			foreach ($fields as $field) {
+				$this->data[$field['Field']] = database::create_variable($field);
+			}
 
 			$this->previous = $this->data;
 		}

@@ -17,11 +17,9 @@
 
 			$this->data = [];
 
-			database::query(
-				"show fields from ". DB_PREFIX ."sessions;"
-			)->each(function($field) {
+			foreach (database::schema(DB_PREFIX .'sessions') as $field) {
 				$this->data[$field['Field']] = database::create_variable($field['Type']);
-			});
+			}
 
 			$this->data['id'] = bin2hex(random_bytes(16));
 

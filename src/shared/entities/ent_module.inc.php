@@ -41,11 +41,9 @@
 
 			$this->data = [];
 
-			database::query(
-				"show fields from ". DB_PREFIX ."modules;"
-			)->each(function($field){
+			foreach (database::schema(DB_PREFIX .'modules') as $field) {
 				$this->data[$field['Field']] = database::create_variable($field);
-			});
+			}
 
 			$this->data['settings'] = [];
 		}
