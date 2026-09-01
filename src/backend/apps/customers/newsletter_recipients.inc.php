@@ -46,7 +46,7 @@
 				}
 
 				$newsletter_recipient->data['client_id'] = $_SERVER['REMOTE_ADDR'];
-				$newsletter_recipient->data['hostname'] = gethostbyaddr($_SERVER['REMOTE_ADDR']);
+				$newsletter_recipient->data['hostname'] = reverse_dns($_SERVER['REMOTE_ADDR']);
 				$newsletter_recipient->data['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
 
 				$newsletter_recipient->save();

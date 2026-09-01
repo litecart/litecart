@@ -71,7 +71,7 @@
 	</div>
 
 	<div class="card-action">
-		<?php echo f::form_button_link(document::ilink(__APP__ . '/edit'), t('title_create_new_email', 'Create New Email'), '', 'create'); ?>
+		<?php echo f::form_button_link(document::ilink(__APP__ . '/edit_email'), t('title_create_new_email', 'Create New Email'), '', 'create'); ?>
 	</div>
 
 	<div class="card-filter">

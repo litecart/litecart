@@ -42,6 +42,10 @@
 
 			perform_action('modify', [
 				FS_DIR_APP . 'backend/template/layouts/*.inc.php' => [
+					['search' => 'app.min.css',       'replace' => 'app.css'],
+					['search' => 'framework.min.css',  'replace' => 'framework.css'],
+					['search' => 'printable.min.css',  'replace' => 'printable.css'],
+					['search' => 'app.min.js',         'replace' => 'app.js'],
 					['search' => 'framework.min.js',  'replace' => 'framework.js'],
 					['search' => 'printable.min.js',  'replace' => 'printable.js'],
 				],

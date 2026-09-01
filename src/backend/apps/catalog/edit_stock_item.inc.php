@@ -410,7 +410,7 @@
 	<?php if (empty($stock_item->data['id'])) { ?>
 	$('form[name="stock_item_form"] input[name^="name"]').each(function() {
 		if ($(this).val() == '') {
-			var $field = 'input[name="' + $(this).attr('name') + '"]';
+			var $field = $('input[name="' + $(this).attr('name') + '"]');
 			$(this).val( $field.not(this).val() );
 		}
 	});

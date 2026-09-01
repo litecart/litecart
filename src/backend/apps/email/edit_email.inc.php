@@ -205,10 +205,12 @@
 </div>
 
 <script>
-	var template = `<?php echo f::escape_js($html); ?>`;
+	var template = `<?php echo addcslashes(f::escape_js($html), '{}'); ?>`;
 
 	$('textarea[name="multiparts[0][body]"]').on('input', function(){
-		let content = template.replace(/\{\{content\}\}/g, $(this).val());
+		let content = template
+			.replace(/\{\{jumbotron\}\}/g, $(this).val())
+			.replace(/\{\{content\}\}/g, $(this).val());
 		let iframeDoc = $('#preview')[0].contentDocument || $('#preview')[0].contentWindow.document;
 		iframeDoc.body.innerHTML = content;
 	});

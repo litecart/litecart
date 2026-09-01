@@ -2600,6 +2600,28 @@
 		}
 	}
 
+	function form_select_system_locale(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
+
+		if ($input === true) {
+			$input = form_reinsert_value($name);
+		}
+
+		if (preg_match('#^WIN#i', PHP_OS)) {
+			return form_input_text($name, $input, ['placeholder' => 'en-US,english', ...$attributes]);
+		}
+
+		$options = array_map(function($locale){
+			return [$locale];
+		}, preg_split('#\R+#', shell_exec('locale -a'), -1, PREG_SPLIT_NO_EMPTY));
+
+		if (preg_match('#\[\]$#', $name)) {
+			return form_select_multiple($name, $options, $input, $attributes);
+		} else {
+			array_unshift($options, ['', '-- '. t('title_select', 'Select') . ' --']);
+			return form_select($name, $options, $input, $attributes);
+		}
+	}
+
 	function form_select_tax_class(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
 		if (count($args = func_get_args()) > 2 && is_bool($args[2])) {

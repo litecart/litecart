@@ -13,6 +13,10 @@
 
 		'menu' => [
 			[
+				'title' => t('title_imap_client', 'IMAP Client'),
+				'doc' => 'imap_client',
+			],
+			[
 				'title' => t('title_drafts', 'Drafts'),
 				'doc' => 'drafts',
 			],
@@ -35,8 +39,10 @@
 			'scheduled' => 'scheduled.inc.php',
 			'sent' => 'sent.inc.php',
 			'view' => 'view.inc.php',
-			'edit' => 'edit.inc.php',
+			'edit_email' => 'edit_email.inc.php',
 			'failed' => 'failed.inc.php',
+			'imap_client' => 'imap_client.inc.php',
+			'imap_view' => 'imap_view.inc.php',
 		],
 	];
 

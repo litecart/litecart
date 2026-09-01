@@ -69,13 +69,13 @@
 			],
 		];
 
-		public function __construct(float $value, string $unit) {
+		public function __construct(float|null $value, string $unit) {
 
 			if (!isset(self::UNITS[$unit])) {
 				trigger_error('The unit '. $unit .' is not a valid length unit.', E_USER_WARNING);
 			}
 
-			$this->value = $value;
+			$this->value = (float)$value;
 			$this->unit = $unit;
 		}
 

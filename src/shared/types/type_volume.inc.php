@@ -111,7 +111,7 @@
 			],
 		];
 
-		public function __construct(float $value, string $unit) {
+		public function __construct(float|null $value, string $unit) {
 
 			$unit = strtolower($unit);
 

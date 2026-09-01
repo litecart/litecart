@@ -75,7 +75,7 @@
 	</div>
 
 	<div class="card-action">
-		<?php echo f::form_button_link(document::ilink(__APP__ . '/edit'), t('title_create_new_email', 'Create New Email'), '', 'create'); ?>
+		<?php echo f::form_button_link(document::ilink(__APP__ . '/edit_email'), t('title_create_new_email', 'Create New Email'), '', 'create'); ?>
 	</div>
 
 	<div class="card-filter">
@@ -117,14 +117,14 @@
 					<td><?php echo strtr($email['status'], $statuses); ?></td>
 					<td><?php echo f::escape_html(implode(', ', array_column($email['recipients'], 'name'))); ?></td>
 					<td>
-						<a class="link" href="<?php echo document::href_ilink(__APP__ . '/edit', ['email_id' => $email['id']]); ?>">
+						<a class="link" href="<?php echo document::href_ilink(__APP__ . '/edit_email', ['email_id' => $email['id']]); ?>">
 							<?php echo $email['subject'] ? f::escape_html($email['subject']) : '<em>(' . t('title_untitled', 'Untitled') . ')</em>'; ?>
 						</a>
 					</td>
 					<td><?php echo f::datetime_format('datetime', $email['updated_at']); ?></td>
 					<td><?php echo f::datetime_format('datetime', $email['created_at']); ?></td>
 					<td class="text-end">
-						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__ . '/edit', ['email_id' => $email['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>">
+						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__ . '/edit_email', ['email_id' => $email['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>">
 							<?php echo f::draw_fonticon('edit'); ?>
 						</a>
 					</td>

@@ -215,15 +215,15 @@
 		return language::number_format($number, $decimals);
 	}
 
-	function format_length(float $length, string $unit): string {
+	function format_length(float|null $length, string $unit): string {
 		return (new type_length($length, $unit))->format();
 	}
 
-	function format_weight(float $weight, string $unit): string {
+	function format_weight(float|null $weight, string $unit): string {
 		return (new type_weight($weight, $unit))->format();
 	}
 
-	function format_volume(float $volume, string $unit): string {
+	function format_volume(float|null $volume, string $unit): string {
 		return (new type_volume($volume, $unit))->format();
 	}
 
