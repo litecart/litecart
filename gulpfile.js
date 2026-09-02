@@ -103,12 +103,19 @@ gulp.task('scss-backend', function() {
 		.pipe(tabify())
 		.pipe(gulp.dest('src/backend/template/css/', { overwrite: true }));
 
+	// Unminified app.css (no sourcemap)
+	gulp.src(['src/backend/template/scss/*.scss', '!src/backend/template/scss/variables.scss'])
+		.pipe(sass(sassOptions).on('error', sass.logError))
+		.pipe(header(banner, { pkg: packageData }))
+		.pipe(tabify())
+		.pipe(gulp.dest('src/backend/template/css/', { overwrite: true }));
+
+	// Minified app.min.css with sourcemap referencing app.scss
 	return gulp.src(['src/backend/template/scss/*.scss', '!src/backend/template/scss/variables.scss'])
 		.pipe(sourcemaps.init())
 		.pipe(sass(sassOptions).on('error', sass.logError))
 		.pipe(header(banner, { pkg: packageData }))
-		.pipe(tabify()) // Use tab indentation
-		//.pipe(gulp.dest('src/backend/template/css/', { overwrite: true }))
+		.pipe(tabify())
 		.pipe(cleancss())
 		.pipe(rename({ extname: '.min.css' }))
 		.pipe(sourcemaps.write('.', { includeContent: false }))
