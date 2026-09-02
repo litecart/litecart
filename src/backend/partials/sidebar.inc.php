@@ -1,6 +1,6 @@
 <?php
 
-	$box_apps_menu = new ent_view('app://backend/template/partials/box_apps_menu.inc.php');
+	$sidebar = new ent_view('app://backend/template/partials/sidebar.inc.php');
 
 	$groups = [
 		'ecommerce' => [
@@ -21,6 +21,11 @@
 		'system' => [
 			'id' => 'system',
 			'name' => t('title_system', 'System'),
+			'apps' => [],
+		],
+		'tools' => [
+			'id' => 'tools',
+			'name' => t('title_tools', 'Tools'),
 			'apps' => [],
 		],
 		'other' => [
@@ -93,6 +98,6 @@
 		return !empty($group['apps']);
 	});
 
-	$box_apps_menu->snippets['groups'] = $groups;
+	$sidebar->snippets['groups'] = $groups;
 
-	echo $box_apps_menu;
+	echo $sidebar;

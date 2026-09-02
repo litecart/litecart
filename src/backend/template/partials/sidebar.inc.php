@@ -1,4 +1,4 @@
-<nav id="box-apps-menu">
+<nav id="sidebar-menu">
 	<ul class="groups">
 
 		<?php foreach ($groups as $group) { ?>
