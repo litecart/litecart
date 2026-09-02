@@ -558,7 +558,7 @@
           // Close currently-open history row for this campaign (if any)
             database::query(
               "update ". DB_TABLE_PREFIX ."products_prices_history
-              set valid_to = ". date("Y-m-d H:i:s") ."
+              set valid_to = '". date("Y-m-d H:i:s") ."'
               where product_id = ". (int)$this->data['id'] ."
               and campaign_id = ". (int)$this->data['campaigns'][$key]['id'] ."
               and valid_to is null;"
