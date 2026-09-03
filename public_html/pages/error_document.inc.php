@@ -4,11 +4,7 @@
   header('X-Robots-Tag: noindex');
   document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex">';
 
-  if (document::$template == 'template.admin') {
-    document::$layout = 'blank';
-  } else {
-    document::$layout = 'default';
-  }
+  document::$layout = 'blank';
 
   if (!empty($_GET['code'])) {
     http_response_code((int)$_GET['code']);
