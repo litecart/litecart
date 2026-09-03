@@ -347,6 +347,45 @@
       return true;
     }
 
+    public static function delete($token) {
+
+      if (empty($token) || empty($token['id']) || empty($token['storage'])) {
+        trigger_error('Invalid cache token', E_USER_WARNING);
+        return false;
+      }
+
+      switch ($token['storage']) {
+
+        case 'file':
+          $cache_file = FS_DIR_STORAGE .'cache/'. substr($token['id'], 0, 2) .'/'. $token['id'] .'.cache';
+          if (file_exists($cache_file)) {
+            return @unlink($cache_file);
+          }
+          return true;
+
+        case 'memory':
+          switch (true) {
+            case (function_exists('apcu_delete')):
+              return apcu_delete($_SERVER['HTTP_HOST'].':'.$token['id']);
+            case (function_exists('apc_delete')):
+              return apc_delete($_SERVER['HTTP_HOST'].':'.$token['id']);
+            default:
+              $token['storage'] = 'file';
+              return self::delete($token);
+          }
+
+        case 'session':
+          if (isset(self::$_data[$token['id']])) {
+            unset(self::$_data[$token['id']]);
+          }
+          return true;
+
+        default:
+          trigger_error('Invalid cache storage ('. $token['storage'] .')', E_USER_WARNING);
+          return false;
+      }
+    }
+
     public static function end_capture($token=null) {
 
       if (is_string($token)) {
