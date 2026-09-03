@@ -131,7 +131,7 @@
           );
         }
 
-        self::add_product($item['product_id'], unserialize($item['options']), $item['quantity'], true, $item['key']);
+        self::add_product($item['product_id'], json_decode($item['options'] ?: '[]', true), $item['quantity'], true, $item['key']);
         if (isset(self::$items[$item['key']])) self::$items[$item['key']]['id'] = $item['id'];
       }
     }
@@ -414,7 +414,7 @@
           database::query(
             "insert into ". DB_TABLE_PREFIX ."cart_items
             (customer_id, cart_uid, `key`, product_id, options, quantity, date_updated, date_created)
-            values (". (int)customer::$data['id'] .", '". database::input(self::$data['uid']) ."', '". database::input($item_key) ."', ". (int)$item['product_id'] .", '". database::input(serialize($item['options'])) ."', ". (float)$item['quantity'] .", '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
+            values (". (int)customer::$data['id'] .", '". database::input(self::$data['uid']) ."', '". database::input($item_key) ."', ". (int)$item['product_id'] .", '". database::input(!empty($item['options']) ? json_encode($item['options'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) : '') ."', ". (float)$item['quantity'] .", '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
           );
           self::$items[$item_key]['id'] = database::insert_id();
         }
