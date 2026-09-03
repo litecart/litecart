@@ -1,5 +1,7 @@
 <?php
 
+  user::require_login();
+
   if (!empty($_GET['slide_id'])) {
     $slide = new ent_slide($_GET['slide_id']);
   } else {

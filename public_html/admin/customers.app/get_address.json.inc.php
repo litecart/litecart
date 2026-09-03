@@ -1,4 +1,7 @@
 <?php
+
+  user::require_login();
+
   ob_end_clean();
   header('Content-type: text/plain; charset='. language::$selected['charset']);
 

@@ -1,5 +1,7 @@
 <?php
 
+  user::require_login();
+
   @set_time_limit(300);
 
   document::$snippets['title'][] = language::translate('title_run_job', 'Run Job') .' '. functions::escape_html($_GET['module_id']);

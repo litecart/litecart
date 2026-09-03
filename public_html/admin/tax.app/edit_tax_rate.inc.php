@@ -1,5 +1,7 @@
 <?php
 
+  user::require_login();
+
   if (!empty($_GET['tax_rate_id'])) {
     $tax_rate = new ent_tax_rate($_GET['tax_rate_id']);
   } else {

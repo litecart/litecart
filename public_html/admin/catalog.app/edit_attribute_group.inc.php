@@ -1,5 +1,7 @@
 <?php
 
+  user::require_login();
+
   if (!empty($_GET['group_id'])) {
     $attribute_group = new ent_attribute_group($_GET['group_id']);
   } else {

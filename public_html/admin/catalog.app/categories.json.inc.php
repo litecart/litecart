@@ -1,5 +1,7 @@
 <?php
 
+  user::require_login();
+
   try {
 
     if (empty($_GET['parent_id'])) $_GET['parent_id'] = 0;

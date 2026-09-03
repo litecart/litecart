@@ -1,5 +1,7 @@
 <?php
 
+  user::require_login();
+
   if (!empty($_GET['quantity_unit_id'])) {
     $quantity_unit = new ent_quantity_unit($_GET['quantity_unit_id']);
   } else {

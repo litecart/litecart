@@ -1,4 +1,7 @@
 <?php
+
+  user::require_login();
+
   document::$layout = 'ajax';
 ?>
 <style>

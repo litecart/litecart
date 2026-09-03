@@ -1,4 +1,7 @@
 <?php
+
+  user::require_login();
+
   if (empty($_GET['module_id'])) die('Unknown module id');
 
   $module_id = basename($_GET['module_id']);

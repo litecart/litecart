@@ -1,5 +1,7 @@
 <?php
 
+  user::require_login();
+
   if (is_file(FS_DIR_APP . 'includes/templates/'. settings::get('store_template_catalog') .'/less/variables.less')) {
     $stylesheet = FS_DIR_APP . 'includes/templates/'. settings::get('store_template_catalog') .'/less/variables.less';
 

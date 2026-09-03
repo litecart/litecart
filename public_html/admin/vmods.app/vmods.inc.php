@@ -1,5 +1,7 @@
 <?php
 
+  user::require_login();
+
   if (isset($_POST['enable']) || isset($_POST['disable'])) {
 
     try {

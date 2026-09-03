@@ -1,5 +1,7 @@
 <?php
 
+  user::require_login();
+
   document::$snippets['title'][] = language::translate('title_catalog', 'Catalog');
 
   breadcrumbs::add(language::translate('title_catalog', 'Catalog'));

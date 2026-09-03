@@ -1,5 +1,7 @@
 <?php
 
+  user::require_login();
+
   if (!empty($_GET['language_code'])) {
     $language = new ent_language($_GET['language_code']);
   } else {
