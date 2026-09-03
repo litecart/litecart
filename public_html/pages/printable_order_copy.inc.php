@@ -19,7 +19,7 @@
     }
 
   } catch (Exception $e) {
-    http_response_code($e->getCode() ?: 500);
+    http_response_code($e->getCode() ? $e->getCode() : 500);
     include vmod::check(FS_DIR_APP . 'pages/error_document.inc.php');
     return;
   }

@@ -141,7 +141,7 @@
 			throw new McpException('Invalid Request', 400, -32600);
 		}
 
-		$rpc_id = $rpc['id'] ?? null;
+		$rpc_id = isset($rpc['id']) ? $rpc['id'] : null;
 		$params = isset($rpc['params']) && is_array($rpc['params']) ? $rpc['params'] : [];
 
 		switch ($rpc['method']) {
@@ -188,8 +188,8 @@
 
 						$tool_schemas[] = [
 							'name' => $resource['name'],
-							'description' => $resource['description'] ?? '',
-							'inputSchema' => $resource['inputSchema'] ?? [
+							'description' => isset($resource['description']) ? $resource['description'] : '',
+							'inputSchema' => isset($resource['inputSchema']) ? $resource['inputSchema'] : [
 								'type' => 'object',
 								'properties' => new stdClass(),
 							],
@@ -227,7 +227,7 @@
 					}
 
 					// Support both 'arguments' (MCP standard) and 'input' (legacy)
-					$tool_args = $params['arguments'] ?? $params['input'] ?? [];
+					$tool_args = isset($params['arguments']) ? $params['arguments'] : (isset($params['input']) ? $params['input'] : []);
 
 					// Check input against required parameters
 					if (!empty($tool['inputSchema']['required']) && is_array($tool['inputSchema']['required'])) {
@@ -274,15 +274,15 @@
 
 					foreach ($toolset['resources'] as $resource) {
 
-						if (empty($resource['uri']) || empty($resource['name']) || !is_callable($resource['function'] ?? null)) continue;
+						if (empty($resource['uri']) || empty($resource['name']) || empty($resource['function']) || !is_callable($resource['function'])) continue;
 
 						if (!empty($allowed_resources) && !in_array($resource['uri'], $allowed_resources)) continue;
 
 						$resources[] = [
 							'uri' => $resource['uri'],
 							'name' => $resource['name'],
-							'description' => $resource['description'] ?? '',
-							'mimeType' => $resource['mimeType'] ?? 'text/plain',
+							'description' => isset($resource['description']) ? $resource['description'] : '',
+							'mimeType' => isset($resource['mimeType']) ? $resource['mimeType'] : 'text/plain',
 						];
 					}
 				}
@@ -307,15 +307,15 @@
 
 					foreach ($toolset['resourceTemplates'] as $template) {
 
-						if (empty($template['uriTemplate']) || empty($template['name']) || !is_callable($template['function'] ?? null)) continue;
+						if (empty($template['uriTemplate']) || empty($template['name']) || empty($template['function']) || !is_callable($template['function'])) continue;
 
 						if (!empty($allowed_resources) && !in_array($template['uriTemplate'], $allowed_resources)) continue;
 
 						$resource_templates[] = [
 							'uriTemplate' => $template['uriTemplate'],
 							'name' => $template['name'],
-							'description' => $template['description'] ?? '',
-							'mimeType' => $template['mimeType'] ?? 'text/plain',
+							'description' => isset($template['description']) ? $template['description'] : '',
+							'mimeType' => isset($template['mimeType']) ? $template['mimeType'] : 'text/plain',
 						];
 					}
 				}
@@ -355,7 +355,7 @@
 							}
 
 							$read_result = ($resource['function'])($params);
-							$read_mime = $resource['mimeType'] ?? 'text/plain';
+							$read_mime = isset($resource['mimeType']) ? $resource['mimeType'] : 'text/plain';
 							break 2;
 						}
 					}
@@ -374,7 +374,7 @@
 							}
 
 							$read_result = ($template['function'])($template_params);
-							$read_mime = $template['mimeType'] ?? 'text/plain';
+							$read_mime = isset($template['mimeType']) ? $template['mimeType'] : 'text/plain';
 							break 2;
 						}
 					}
@@ -397,8 +397,8 @@
 					$contents = [[
 						'uri' => $uri,
 						'mimeType' => $read_mime,
-						'text' => $read_result['text'] ?? null,
-						'blob' => $read_result['blob'] ?? null,
+						'text' => isset($read_result['text']) ? $read_result['text'] : null,
+						'blob' => isset($read_result['blob']) ? $read_result['blob'] : null,
 					]];
 				} else {
 					$contents = [[
@@ -436,8 +436,8 @@
 
 						$tool_schemas[] = [
 							'name' => $tool['name'],
-							'description' => $tool['description'] ?? '',
-							'inputSchema' => $tool['inputSchema'] ?? [
+							'description' => isset($tool['description']) ? $tool['description'] : '',
+							'inputSchema' => isset($tool['inputSchema']) ? $tool['inputSchema'] : [
 								'type' => 'object',
 								'properties' => new stdClass(),
 							],
@@ -475,7 +475,7 @@
 					}
 
 					// Support both 'arguments' (MCP standard) and 'input' (legacy)
-					$tool_args = $params['arguments'] ?? $params['input'] ?? [];
+					$tool_args = isset($params['arguments']) ? $params['arguments'] : (isset($params['input']) ? $params['input'] : []);
 
 					// Check input against required parameters
 					if (!empty($tool['inputSchema']['required']) && is_array($tool['inputSchema']['required'])) {

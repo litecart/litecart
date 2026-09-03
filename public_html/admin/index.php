@@ -97,15 +97,12 @@
 // App content
   } else {
 
-  // Helper endpoints (*.json, *.csv, *_picker) aren't individually tickable in the
-  // administrator edit UI — they're auxiliary routes consumed by the main docs.
-  // Allow them implicitly as long as the user has the app enabled.
-    $is_helper = preg_match('#\.(json|csv)$#', $_GET['doc'] ?? '')
-              || str_ends_with($_GET['doc'] ?? '', '_picker');
+  // Allow helper endpoints implicitly as long as the user has the app enabled
+    $is_helper = preg_match('#\.(json|csv)$|_picker$#', isset($_GET['doc']) ? $_GET['doc'] : '');
 
     if (empty(user::$data['apps'])
     || (!empty(user::$data['apps'][$_GET['app']]['status'])
-        && ($is_helper || in_array($_GET['doc'], user::$data['apps'][$_GET['app']]['docs'])))) {
+      && ($is_helper || in_array($_GET['doc'], user::$data['apps'][$_GET['app']]['docs'])))) {
 
       if (!is_file(FS_DIR_ADMIN . $_GET['app'].'.app/config.inc.php')) {
         http_response_code(404);
@@ -152,7 +149,6 @@
       }
 
       $_page->snippets['doc'] = ob_get_clean();
-
 
       if (!isset($_SERVER['HTTP_X_REQUESTED_WITH']) || strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) != 'xmlhttprequest') {
         echo $_page->stitch('pages/doc');

@@ -174,7 +174,7 @@
       session::rotate_csrf_token();
 
       if (!empty($_POST['remember_me']) && defined('HMAC_KEY_REMEMBER_ME')) {
-        $expiry_days = (int)(settings::get('remember_me_days') ?: 30);
+        $expiry_days = !empty(settings::get('remember_me_days')) ? (int)settings::get('remember_me_days') : 30;
         $token = functions::token_create_remember($user['id'], $user['password_hash'], $expiry_days);
         header('Set-Cookie: remember_me='. $token .'; Path='. WS_DIR_APP .'; Expires='. gmdate('r', strtotime('+'. $expiry_days .' days')) .'; HttpOnly; SameSite=Lax' . (!empty($_SERVER['HTTPS']) ? '; Secure' : ''), false);
       } else if (!empty($_COOKIE['remember_me'])) {
