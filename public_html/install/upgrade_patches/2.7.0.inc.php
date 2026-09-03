@@ -1,9 +1,5 @@
 <?php
 
-// Backfill lc_products_prices_history with one row per product and per campaign,
-// containing all configured currencies as a JSON object in the `price` column.
-// Runs after the 2.7.0.sql patch has created the table.
-
   $currency_codes = database::query(
     "select code from ". DB_TABLE_PREFIX ."currencies
     where status = 1
@@ -51,3 +47,17 @@
       );
     }
   }
+
+// Block traversal requests in .htaccess (for security reasons)
+  perform_action('modify', [
+    FS_DIR_APP . '.htaccess' => [
+      'search' => '  # No rewrite logic for physical files',
+      'replace' => implode(PHP_EOL, [
+        '  # Block traversal request (for security reasons)',
+        '  RewriteCond %{REQUEST_URI} (?:%2e|\.)(?:%2e|\.)(?:[/\\%]|$) [NC]',
+        '  RewriteRule ^ - [F]',
+        '',
+        '  # No rewrite logic for physical files',
+      ]),
+    ],
+  ], 'skip');
