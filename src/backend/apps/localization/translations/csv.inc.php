@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	document::$title[] = t('title_import_export_csv', 'Import/Export CSV');
 
 	breadcrumbs::add(t('title_localization', 'Localization'));

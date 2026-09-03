@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	document::$title[] = t('title_import', 'Import');
 
 	breadcrumbs::add(t('title_data_studio', 'Data Studio'));

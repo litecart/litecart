@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	document::$title[] = t('title_export_data', 'Export Data');
 
 	breadcrumbs::add(t('title_export_data', 'Export Data'));

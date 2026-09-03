@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	document::$title[] = t('title_site_tags', 'Site Tags');
 
 	breadcrumbs::add(t('title_webtools', 'Webtools'));

@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	if (!empty($_GET['delivery_status_id'])) {
 		$delivery_status = new ent_delivery_status($_GET['delivery_status_id']);
 	} else {

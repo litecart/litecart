@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	$customer = database::query(
 		"select * from ". DB_PREFIX ."customers
 		where id = '". database::input($_REQUEST['customer_id']) ."'

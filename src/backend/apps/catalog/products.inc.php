@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	document::$title[] = t('title_products', 'Products');
 
 	breadcrumbs::add(t('title_products', 'Products'));

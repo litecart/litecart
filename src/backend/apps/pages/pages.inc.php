@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	document::$title[] = t('title_pages', 'Pages');
 
 	breadcrumbs::add(t('title_pages', 'Pages'), document::ilink());

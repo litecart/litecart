@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	document::$title[] = t('title_logotype', 'Logotype');
 
 	breadcrumbs::add(t('title_appearance', 'Appearance'));

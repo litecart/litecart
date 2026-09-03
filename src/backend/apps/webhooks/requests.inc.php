@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	if (!empty($_GET['request_id'])) {
 
 		try {

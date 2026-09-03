@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	document::add_csp('img-src', ["'self'", 'data:', 'https://*.litecart.net/']);
 
 	if (isset($_GET['addon_id'])) {

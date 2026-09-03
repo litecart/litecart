@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	$tables = database::query(
 		"show table status;"
 	)->fetch_all(function($table) {

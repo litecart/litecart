@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	if (!empty($_GET['administrator_id'])) {
 		$administrator = new ent_administrator($_GET['administrator_id']);
 	} else {

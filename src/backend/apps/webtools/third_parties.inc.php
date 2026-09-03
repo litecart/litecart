@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	document::$title[] = t('title_third_parties', 'Third Parties');
 
 	breadcrumbs::add(t('title_webtools', 'Webtools'));

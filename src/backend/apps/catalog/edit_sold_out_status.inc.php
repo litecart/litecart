@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	if (!empty($_GET['sold_out_status_id'])) {
 		$sold_out_status = new ent_sold_out_status($_GET['sold_out_status_id']);
 	} else {

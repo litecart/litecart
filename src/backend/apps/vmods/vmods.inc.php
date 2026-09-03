@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	document::$title[] = t('title_vmods', 'vMods');
 
 	breadcrumbs::add(t('title_vmods', 'vMods'), document::ilink());

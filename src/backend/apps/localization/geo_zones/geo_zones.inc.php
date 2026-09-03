@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	document::$title[] = t('title_geo_zones', 'Geo Zones');
 
 	breadcrumbs::add(t('title_localization', 'Localization'));

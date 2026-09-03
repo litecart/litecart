@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	if (!empty($_GET['redirect_id'])) {
 		$redirect = new ent_redirect($_GET['redirect_id']);
 	} else {

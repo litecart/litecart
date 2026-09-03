@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	document::$title[] = t('title_installed_addons', 'Installed Add-ons');
 
 	breadcrumbs::add(t('title_addons', 'Add-Ons'));

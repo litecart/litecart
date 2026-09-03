@@ -1,5 +1,7 @@
 <?php
 	if (empty($_GET['path'])) die('Missing path');
+	administrator::require_login();
+
 
 	$_GET['path'] = '/' . f::file_resolve_path($_GET['path']);
 

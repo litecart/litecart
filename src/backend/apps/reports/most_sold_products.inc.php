@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	document::$title[] = t('title_most_sold_products', 'Most Sold Products');
 
 	breadcrumbs::add(t('title_reports', 'Reports'));

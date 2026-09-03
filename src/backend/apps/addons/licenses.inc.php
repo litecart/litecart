@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	document::$title[] = t('title_licenses', 'Licenses');
 
 	breadcrumbs::add(t('title_addons', 'Add-Ons'), document::ilink(__APP__ . '/installed'));

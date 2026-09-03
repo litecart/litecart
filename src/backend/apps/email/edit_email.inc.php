@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	breadcrumbs::add(t('title_email', 'Email'));
 
 	try {

@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	if (!empty($_GET['campaign_id'])) {
 		$campaign = new ent_campaign($_GET['campaign_id']);
 	} else {

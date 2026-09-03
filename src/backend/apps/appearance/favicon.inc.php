@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	document::$title[] = t('title_favicon', 'Favicon');
 
 	breadcrumbs::add(t('title_appearance', 'Appearance'));

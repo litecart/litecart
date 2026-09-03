@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	if (!empty($_GET['name'])) {
 		$table = new ent_database_table($_GET['name']);
 	} else {

@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	if (!empty($_GET['addon_id'])) {
 		$addon = new ent_addon($_GET['addon_id']);
 	} else {

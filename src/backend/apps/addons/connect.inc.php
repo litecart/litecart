@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	document::$title[] = t('title_connect', 'Connect');
 
 	breadcrumbs::add(t('title_marketplace', 'Marketplace'), document::ilink(__APP__ . '/marketplace'));

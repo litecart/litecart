@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	document::add_csp('img-src', ["'self'", 'data:', 'https://*.litecart.net/']);
 	document::add_csp('img-src', ["'self'", 'data:', 'https://*.libravatar.org']);
 

@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	extract(match(__DOC__) {
 		'customer' => [
 			'title' => t('title_customer_modules', 'Customer Modules'),

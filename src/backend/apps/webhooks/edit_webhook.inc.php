@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	if (!empty($_GET['webhook_id'])) {
 		$webhook = new ent_webhook($_GET['webhook_id']);
 	} else {

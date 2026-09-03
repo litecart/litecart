@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	document::$title[] = t('title_tax_classes', 'Tax Classes');
 
 	breadcrumbs::add(t('title_localization', 'Localization'));

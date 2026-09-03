@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	document::$title[] = t('title_run_job', 'Run Job');
 
 	breadcrumbs::add(t('title_modules', 'Modules'), document::ilink(__APP__.'/modules'));

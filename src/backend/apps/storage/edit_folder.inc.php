@@ -1,24 +1,35 @@
 <?php
-	if (empty($_GET['path'])) die('No file');
 
-	$_GET['path'] = '/' . f::file_resolve_path($_GET['path']);
+	administrator::require_login();
 
-	if ((!$folder = f::file_realpath(FS_DIR_STORAGE . $_GET['path'])) || !is_dir($folder) || !preg_match('#^'. preg_quote(FS_DIR_STORAGE, '#') .'#', $folder)) {
-		die('Invalid file');
-	}
+	try {
 
-	if (!empty($_GET['path'])) {
-		$prefix = '';
-		foreach (array_slice(explode('/', ltrim($_GET['path'], '/')), 0, -1) as $part) {
-			breadcrumbs::add($part, document::ilink(__APP__.'/files', ['file' => $prefix .'/'. $part . '/']));
-			$prefix .= '/' . $part;
+		if (empty($_GET['path'])) {
+			throw new Exception(t('error_folder_not_specified', 'Folder not specified'));
 		}
-		breadcrumbs::add(basename($_GET['path']));
-	}
 
-	if (!$_POST) {
-		$_POST['filename'] = $_GET['path'];
-		$_POST['mode'] = substr(sprintf('%o', fileperms($folder)), -4);
+		$_GET['path'] = '/' . f::file_resolve_path($_GET['path']);
+
+		if ((!$folder = f::file_realpath(FS_DIR_STORAGE . $_GET['path'])) || !is_dir($folder) || !preg_match('#^'. preg_quote(FS_DIR_STORAGE, '#') .'#', $folder)) {
+			throw new Exception(t('error_invalid_folder', 'Invalid folder'));
+		}
+
+		if (!empty($_GET['path'])) {
+			$prefix = '';
+			foreach (array_slice(explode('/', ltrim($_GET['path'], '/')), 0, -1) as $part) {
+				breadcrumbs::add($part, document::ilink(__APP__.'/files', ['file' => $prefix .'/'. $part . '/']));
+				$prefix .= '/' . $part;
+			}
+			breadcrumbs::add(basename($_GET['path']));
+		}
+
+		if (!$_POST) {
+			$_POST['filename'] = $_GET['path'];
+			$_POST['mode'] = substr(sprintf('%o', fileperms($folder)), -4);
+		}
+
+	} catch (Exception $e) {
+		notices::add('errors', $e->getMessage());
 	}
 
 	if (!empty($_POST['save'])) {

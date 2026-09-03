@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	if (!empty($_GET['site_tag_id'])) {
 		$site_tag = new ent_site_tag($_GET['site_tag_id']);
 	} else {

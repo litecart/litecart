@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	if (!empty($_GET['vmod'])) {
 		$vmod = new ent_vmod($_GET['vmod']);
 	} else {

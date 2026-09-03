@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
 		$_GET['page'] = 1;
 	}

@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	document::$snippets['title'][] = t('title_auto_translate', 'Auto Translate');
 
 	breadcrumbs::add(t('title_translations', 'Translations'));

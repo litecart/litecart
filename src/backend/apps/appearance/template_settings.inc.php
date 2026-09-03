@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	document::$title[] = t('title_template_settings', 'Template Settings');
 
 	breadcrumbs::add(t('title_appearance', 'Appearance'));

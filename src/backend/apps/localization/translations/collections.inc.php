@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	// Define translatable collections
 
 	$collections = include 'app://shared/collections.inc.php';

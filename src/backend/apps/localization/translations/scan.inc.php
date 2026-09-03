@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	document::$title[] = t('title_scan_translations', 'Scan Translations');
 
 	breadcrumbs::add(t('title_localization', 'Localization'));

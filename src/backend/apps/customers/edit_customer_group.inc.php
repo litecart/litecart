@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	if (!empty($_GET['group_id'])) {
 		$customer_group = new ent_customer_group($_GET['group_id']);
 	} else {

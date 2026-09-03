@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	/*
 		MySQL Pretty Print
 		Author: T. Almroth - LiteCart AB <info@litecart.net>

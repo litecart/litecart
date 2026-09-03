@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	$_GET['vmod'] = isset($_GET['vmod']) ? basename($_GET['vmod']) : null;
 
 	document::$title[] = t('title_configure_vmod', 'Configure vMod');

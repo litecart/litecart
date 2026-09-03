@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 return [
 	[
 		'name' => t('title_customers', 'Customers'),

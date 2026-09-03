@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	if (!empty($_GET['stock_item_id'])) {
 		$stock_item = new ent_stock_item($_GET['stock_item_id']);
 	} else {

@@ -1,4 +1,7 @@
 <?php
+
+	administrator::require_login();
+
 	document::$layout = 'ajax';
 ?>
 <style>

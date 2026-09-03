@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	document::$title[] = t('title_settings', 'Settings');
 
 	breadcrumbs::add(t('title_settings', 'Settings'), document::ilink());

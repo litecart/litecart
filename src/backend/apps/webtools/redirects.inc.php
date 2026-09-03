@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	document::$title[] = t('title_redirects', 'Redirects');
 
 	breadcrumbs::add(t('title_webtools', 'Webtools'));

@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	document::$title[] = t('title_csv_import_export', 'CSV Import/Export');
 
 	breadcrumbs::add(t('title_customers', 'Customers'), document::ilink(__APP__.'/customers'));

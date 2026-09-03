@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	if (!empty($_GET['currency_code'])) {
 		$currency = new ent_currency($_GET['currency_code']);
 	} else {

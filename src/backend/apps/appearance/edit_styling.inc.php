@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	if (is_file($file = FS_DIR_APP . 'frontend/templates/'. settings::get('template') .'/.development')) {
 		$developement = file_get_contents($file);
 	} else {

@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	try {
 		if (empty($_GET['path'])) {
 			$_GET['path'] = '';

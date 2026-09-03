@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	try {
 
 		// Simple AJAX endpoint to read/update a single cell in a table

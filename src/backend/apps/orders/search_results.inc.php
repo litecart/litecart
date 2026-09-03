@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	$result = [
 		'name' => t('title_orders', 'Orders'),
 		'results' => [],

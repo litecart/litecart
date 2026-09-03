@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	if (!empty($_GET['country_code'])) {
 		$country = new ent_country($_GET['country_code']);
 	} else {

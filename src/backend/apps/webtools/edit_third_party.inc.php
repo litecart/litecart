@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	if (!empty($_GET['third_party_id'])) {
 		$third_party = new ent_third_party($_GET['third_party_id']);
 	} else {

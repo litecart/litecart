@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	document::$title[] = t('title_newsletter_recipients', 'Newsletter Recipients');
 
 	breadcrumbs::add(t('title_customers', 'Customers'), document::ilink(__APP__.'/customers'));

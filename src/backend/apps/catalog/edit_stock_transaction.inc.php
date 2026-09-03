@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	if (!empty($_GET['transaction_id'])) {
 		$stock_transaction = new ent_stock_transaction($_GET['transaction_id']);
 	} else {

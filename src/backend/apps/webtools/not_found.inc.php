@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	document::$title[] = t('title_not_found', 'Not Found');
 
 	breadcrumbs::add(t('title_webtools', 'Webtools'));

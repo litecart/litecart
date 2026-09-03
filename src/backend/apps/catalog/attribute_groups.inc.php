@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	document::$title[] = t('title_attribute_groups', 'Attribute Groups');
 
 	breadcrumbs::add(t('title_catalog', 'Catalog'));

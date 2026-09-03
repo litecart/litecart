@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	if (!empty($_GET['brand_id'])) {
 		$brand = new ent_brand($_GET['brand_id']);
 	} else {

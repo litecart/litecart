@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	if (empty($_GET['email_id']) || !is_numeric($_GET['email_id'])) {
 		notices::add('errors', t('error_must_provide_email', 'You must provide an email'));
 	}

@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	if (isset($_GET['review_id'])) {
 		$review = new ent_review($_GET['review_id']);
 	} else {

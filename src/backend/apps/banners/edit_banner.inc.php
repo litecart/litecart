@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	if (!empty($_GET['banner_id'])) {
 		$banner = new ent_banner($_GET['banner_id']);
 	} else {

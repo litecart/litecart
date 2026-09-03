@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	if (empty($_GET['country_code'])) {
 		http_response_code(400);
 		exit;

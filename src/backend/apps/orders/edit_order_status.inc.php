@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	if (!empty($_GET['order_status_id'])) {
 		$order_status = new ent_order_status($_GET['order_status_id']);
 	} else {

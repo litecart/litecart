@@ -1,30 +1,41 @@
 <?php
-	if (empty($_GET['path'])) die('No file');
 
-	$_GET['path'] = f::file_resolve_path(ltrim($_GET['path'], '/'));
+	administrator::require_login();
 
-	if ((!$file = f::file_realpath('storage://' . $_GET['path'])) || !is_file($file) || !preg_match('#^'. preg_quote(FS_DIR_STORAGE, '#') .'#', $file)) {
-		die('Invalid file');
-	}
+	try {
 
-	if (!empty($_GET['path'])) {
-		$prefix = '';
-		foreach (array_slice(explode('/', $_GET['path']), 0, -1) as $part) {
-			breadcrumbs::add($part, document::ilink(__APP__.'/files', ['path' => $prefix .'/'. $part . '/']));
-			$prefix .= '/' . $part;
+		if (empty($_GET['path'])) {
+			throw new Exception(t('error_file_not_specified', 'File not specified'));
 		}
-		breadcrumbs::add(basename($_GET['path']));
-	}
 
-	if (f::file_is_binary('storage://' . $_GET['path'])) {
-		notices::add('warnings', 'File is a binary file');
-		$disable_editing = true;
-	}
+		$_GET['path'] = f::file_resolve_path(ltrim($_GET['path'], '/'));
 
-	if (!$_POST) {
-		$_POST['filename'] = $_GET['path'];
-		$_POST['mode'] = substr(sprintf('%o', fileperms($file)), -4);
-		$_POST['content'] = file_get_contents($file);
+		if ((!$file = f::file_realpath('storage://' . $_GET['path'])) || !is_file($file) || !preg_match('#^'. preg_quote(FS_DIR_STORAGE, '#') .'#', $file)) {
+			throw new Exception(t('error_invalid_file', 'Invalid file'));
+		}
+
+		if (!empty($_GET['path'])) {
+			$prefix = '';
+			foreach (array_slice(explode('/', $_GET['path']), 0, -1) as $part) {
+				breadcrumbs::add($part, document::ilink(__APP__.'/files', ['path' => $prefix .'/'. $part . '/']));
+				$prefix .= '/' . $part;
+			}
+			breadcrumbs::add(basename($_GET['path']));
+		}
+
+		if (f::file_is_binary('storage://' . $_GET['path'])) {
+			notices::add('warnings', 'File is a binary file');
+			$disable_editing = true;
+		}
+
+		if (!$_POST) {
+			$_POST['filename'] = $_GET['path'];
+			$_POST['mode'] = substr(sprintf('%o', fileperms($file)), -4);
+			$_POST['content'] = file_get_contents($file);
+		}
+
+	} catch (Exception $e) {
+		notices::add('errors', $e->getMessage());
 	}
 
 	if (!empty($_POST['save'])) {
