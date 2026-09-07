@@ -80,6 +80,14 @@
 		}
 	}
 
+	// Bot challenge security
+	if (settings::get('bot_challenge')) {
+		if (!isset($_COOKIE['__challenge']) || $_COOKIE['__challenge'] != 'passed') {
+			include 'app://frontend/pages/bot_challenge.inc.php';
+			return;
+		}
+	}
+
 	// Recognize some destinations
 	route::load('app://frontend/routes/url_*.inc.php');
 	route::load('app://backend/routes/url_*.inc.php');

@@ -35,7 +35,7 @@
 				"$result[message] in $result[file] on line $result[line]",
 				"Request: $_SERVER[REQUEST_METHOD] " . parse_url($result['url'], PHP_URL_PATH) . " $_SERVER[SERVER_PROTOCOL]",
 				"Host: $_SERVER[HTTP_HOST]",
-				"Client: $_SERVER[REMOTE_ADDR] (" . gethostbyaddr($_SERVER['REMOTE_ADDR']) . ')',
+				"Client: $_SERVER[REMOTE_ADDR] (" . reverse_dns($_SERVER['REMOTE_ADDR']) . ')',
 				"User Agent: $_SERVER[HTTP_USER_AGENT]",
 				!empty($_SERVER['HTTP_REFERER']) ? "Referer: {$_SERVER['HTTP_REFERER']}" : '',
 			]),

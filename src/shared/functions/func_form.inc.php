@@ -878,12 +878,17 @@
 				}
 			}
 
-			if (($option[0] ?? '') === ($input ?? '')) {
-				$content[] = f::draw_element('option', ['value' => $option[0], 'selected' => ''], $option[1] ?? $option[0]);
-			}	else {
-				$content[] = f::draw_element('option', ['value' => $option[0]], $option[1] ?? $option[0]);
+			if (isset($option[2])) {
+				$option[2] = is_array($option[2]) ? $option[2] : form_attributes($option[2]);
+			} else {
+				$option[2] = [];
 			}
 
+			if (!strcmp($option[0], $input)) {
+				$content[] = f::draw_element('option', ['value' => $option[0], 'selected' => '', ...$option[2]], $option[1] ?? $option[0]);
+			}	else {
+				$content[] = f::draw_element('option', ['value' => $option[0]], $option[1] ?? $option[0], ...$option[2]);
+			}
 		}
 
 		return f::draw_element('select', ['class' => 'form-select', 'name' => $name, ...$attributes], implode(PHP_EOL, $content));
@@ -1562,7 +1567,7 @@
 		}
 
 		$options = f::array_each(currency::$currencies, fn($currency) =>
-			[$currency['code'], $currency['name'], 'data-value="'. (float)$currency['value'] .'" data-decimals="'. (int)$currency['decimals'] .'" data-prefix="'. f::escape_attr($currency['prefix']) .'" data-suffix="'. f::escape_attr($currency['suffix']) .'"']
+			[$currency['code'], $currency['name'], ['data-value' => (float)$currency['value'], 'data-decimals' => (int)$currency['decimals'], 'data-prefix' => $currency['prefix'], 'data-suffix' => $currency['suffix']]]
 		);
 
 		if (preg_match('#\[\]$#', $name)) {
@@ -1767,9 +1772,9 @@
 			"select id, email, company, firstname, lastname
 			from ". DB_PREFIX ."customers
 			order by email;"
-		)->fetch_all(function($customer) {
-			return [$customer['id'], $customer['email'], 'data-name="'. f::escape_attr($customer['company'] ?: $customer['firstname'] .' '. $customer['lastname']) .'"'];
-		});
+		)->fetch_all(fn($customer) => 
+			[$customer['id'], $customer['email'], ['data-name' => $customer['company'] ?: $customer['firstname'] .' '. $customer['lastname']]]
+		);
 
 		if (preg_match('#\[\]$#', $name)) {
 			return form_select_multiple($name, $options, $input, $attributes);
@@ -1800,9 +1805,9 @@
 				json_value(description, '$.description') as description
 			from ". DB_PREFIX ."delivery_statuses
 			order by name asc;"
-		)->fetch_all(function($row) {
-			return [$row['id'], $row['name'], 'title="'. f::escape_attr($row['description']) .'"'];
-		});
+		)->fetch_all(fn($row) =>
+			[$row['id'], $row['name'], ['title' => $row['description']]]
+		);
 
 		if (preg_match('#\[\]$#', $name)) {
 			return form_select_multiple($name, $options, $input, $attributes);
@@ -2036,7 +2041,7 @@
 		}
 
 		$options = f::array_each(language::$languages, fn($language) =>
-			[$language['code'], $language['name'], 'data-decimal-point="'. $language['decimal_point'] .'" data-thousands-sep="'. $language['thousands_sep'] .'"']
+			[$language['code'], $language['name'], ['data-decimal-point' => $language['decimal_point'], 'data-thousands-sep' => $language['thousands_sep']]]
 		);
 
 		if (preg_match('#\[\]$#', $name)) {
@@ -2125,7 +2130,7 @@
 			from ". DB_PREFIX ."order_statuses os
 			order by field(os.state, 'created', 'on_hold', 'ready', 'delayed', 'processing', 'completed', 'dispatched', 'in_transit', 'delivered', 'returning', 'returned', 'cancelled', ''), os.priority, name asc;"
 		)->fetch_all(function($row) {
-			return [$row['id'], f::draw_fonticon($row['icon'], 'style="color: '. $row['color'] .';"') .' '. $row['name'], 'data-icon="'. f::escape_attr($row['icon']) .'" data-color="'. f::escape_attr($row['color']) .'"'];
+			return [$row['id'], f::draw_fonticon($row['icon'], 'style="color: '. $row['color'] .';"') .' '. $row['name'], ['data-icon' => $row['icon'], 'data-color"' => f::escape_attr($row['color'])]];
 		});
 
 		if (!preg_match('#\[\]$#', $name)) {

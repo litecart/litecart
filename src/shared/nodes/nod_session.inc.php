@@ -8,7 +8,6 @@
 
 			$_SESSION = &self::$data;
 
-			event::register('before_output', [__CLASS__, 'save']);
 			register_shutdown_function([__CLASS__, 'save']);
 
 			$session_name = ini_get('session.name');
@@ -143,11 +142,15 @@
 				// Create new visitor record
 				if (!$visitor) {
 
-					database::query(
-						"insert into ". DB_PREFIX ."visitors
-						(session_id, ip_address, hostname, user_agent, referrer, updated_at, created_at)
-						values ('". database::input(self::$data['id']) ."', '". database::input($_SERVER['REMOTE_ADDR'])."', '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."', '". database::input($_SERVER['HTTP_USER_AGENT'])."', '". @database::input($_SERVER['HTTP_REFERER'])."', '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
-					);
+					database::insert('visitors', [
+						'session_id' => $this->data['session_id'],
+						'ip_address' => $this->data['ip_address'],
+						'hostname' => $this->data['hostname'],
+						'user_agent' => $this->data['user_agent'],
+						'referrer' => $this->data['referrer'],
+						'updated_at' => $this->data['update_at'] = date('&-m-d H:i:s'),
+						'created_at' => $this->data['created_at'] = date('&-m-d H:i:s'),
+					]);
 
 					$visitor['id'] = database::insert_id();
 				}

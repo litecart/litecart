@@ -1,4 +1,3 @@
-
 <div id="sidebar" class="hidden-print">
 	<input id="sidebar-compact-toggle" type="checkbox" hidden>
 
@@ -26,8 +25,8 @@
 						<?php foreach ($group['apps'] as $app) { ?>
 						<li class="app<?php echo $app['active'] ? ' active' : ''; ?>" data-id="<?php echo $app['id']; ?>" style="--app-color: <?php echo $app['theme']['color']; ?>;">
 
-							<a href="<?php echo f::escape_html($app['link']); ?>">
-								<span class="app-icon" title="<?php echo f::escape_html($app['name']); ?>">
+							<a href="<?php echo f::escape_html($app['link']); ?>" title="<?php echo f::escape_html($app['name']); ?>">
+								<span class="app-icon">
 									<?php echo f::draw_fonticon($app['theme']['icon']); ?>
 								</span>
 								<span class="name"><?php echo $app['name']; ?></span>

@@ -63,7 +63,10 @@
 		$max_input_vars = (int)ini_get('max_input_vars');
 		$received_vars = count($_POST, COUNT_RECURSIVE) + count($_FILES, COUNT_RECURSIVE);
 		if ($max_input_vars > 0 && $received_vars >= $max_input_vars) {
-			notices::add('errors', strtr(t('error_post_truncated', 'The submitted form has too many fields for the server (received :received fields, server limit :limit). Some data was not saved. Ask your hoster to increase the PHP setting max_input_vars in php.ini, .htaccess (Apache), or .user.ini.'), [':received' => $received_vars, ':limit' => $max_input_vars]));
+			notices::add('errors', strtr(t('error_post_truncated', 'The submitted form has too many fields for the server (received {received} fields, server limit {limit}). Some data was not saved. Ask your hoster to increase the PHP setting max_input_vars in php.ini, .htaccess (Apache), or .user.ini.'), [
+				'{received}' => $received_vars,
+				'{limit}' => $max_input_vars
+			]));
 		}
 	}
 

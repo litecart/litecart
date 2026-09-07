@@ -90,7 +90,9 @@ advanced,"{""en"":""Clear System Cache""}","{""en"":""Remove all cached system i
 advanced,"{""en"":""Static Content Domain Name""}","{""en"":""Use the given alias domain name for static content (images, stylesheets, javascripts).""}",static_domain,,string,text(),0,12,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 advanced,"{""en"":""Control Panel Link""}","{""en"":""The URL to your control panel, e.g. cPanel.""}",control_panel_link,,string,text(),0,18,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 advanced,"{""en"":""Webmail Link""}","{""en"":""The URL to your webmail client.""}",webmail_link,,string,text(),0,20,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
-security,"{""en"":""CAPTCHA""}","{""en"":""Prevent robots from posting form data by enabling CAPTCHA security.""}",captcha_enabled,1,bool,toggle(),0,16,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+security,"{""en"":""CAPTCHA Security""}","{""en"":""Prevent robots from posting form data by enabling CAPTCHA security.""}",captcha,1,bool,toggle(),0,16,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+security,"{""en"":""CSRF-Protection""}","{""en"":""Enable CSRF (Cross-Site Request Forgery) protection for form submissions.""}",csrf_protection,1,bool,toggle(),0,10,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+security,"{""en"":""Bot Challenge""}","{""en"":""Enable bot challenge for form submissions. Logic to be added in a future release.""}",bot_challenge,0,bool,toggle(),0,30,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 social_media,"{""en"":""Facebook Link""}","{""en"":""The link to your Facebook page.""}",facebook_link,#,string,url(),0,10,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 social_media,"{""en"":""Instagram Link""}","{""en"":""The link to your Instagram page.""}",instagram_link,#,string,url(),0,20,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 social_media,"{""en"":""LinkedIn Link""}","{""en"":""The link to your LinkedIn page.""}",linkedin_link,#,string,url(),0,30,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP

@@ -47,7 +47,7 @@
 							<?php echo f::form_input_file('attachments[]', ['multiple' => '', 'accept' => '.jpg,.jpeg,.png,.gif,.webp,.avif,.txt,.doc,.docx,.pdf,.mp4']); ?>
 						</label>
 
-						<?php if (settings::get('captcha_enabled')) { ?>
+						<?php if (settings::get('captcha')) { ?>
 						<label class="form-group" style="max-width: 250px;">
 							<div class="form-label"><?php echo t('title_captcha', 'CAPTCHA'); ?></div>
 							<?php echo f::form_captcha('contact_us'); ?>

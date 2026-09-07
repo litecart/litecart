@@ -1,10 +1,10 @@
 <?php
 
-	$draw_checkbox = function($class_id, $value, $parameters='') use ($consents) {
+	$draw_checkbox = function($class_id, $value, $attributes=[]) use ($consents) {
 		if (!isset($_COOKIE['privacy_consents']) || (isset($consents[$class_id]) && in_array($value, $consents[$class_id]))) {
-			return f::form_checkbox('consents['. $class_id .'][]', $value, $value, $parameters);
+			return f::form_checkbox('consents['. $class_id .'][]', $value, $value, $attributes);
 		} else {
-			return f::form_checkbox('consents['. $class_id .'][]', $value, true, $parameters);
+			return f::form_checkbox('consents['. $class_id .'][]', $value, true, $attributes);
 		}
 	};
 

@@ -83,7 +83,7 @@
 
 		try {
 
-			if (settings::get('captcha_enabled') && !f::captcha_validate('review_product')) {
+			if (settings::get('captcha') && !f::captcha_validate('review_product')) {
 				throw new Exception(t('error_invalid_captcha', 'Invalid CAPTCHA given'));
 			}
 

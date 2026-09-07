@@ -160,7 +160,7 @@
 								</div>
 							<?php } ?>
 
-							<?php if (settings::get('captcha_enabled')) { ?>
+							<?php if (settings::get('captcha')) { ?>
 								<label class="form-group">
 									<div class="form-label"><?php echo t('title_captcha', 'CAPTCHA'); ?></div>
 									<?php echo f::form_captcha('sign_up'); ?>

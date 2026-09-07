@@ -29,23 +29,19 @@
 				'doc' => 'third_parties',
 			],
 			[
-				'title' => 'robots.txt',
-				'doc' => 'robots_txt',
+				'title' => t('title_machine_readables', 'Machine Readables'),
+				'doc' => 'machine_readables',
 			],
 		],
 
 		'docs' => [
 			'edit_redirect' => 'edit_redirect.inc.php',
 			'redirects' => 'redirects.inc.php',
-
 			'not_found' => 'not_found.inc.php',
-
 			'edit_site_tag' => 'edit_site_tag.inc.php',
 			'site_tags' => 'site_tags.inc.php',
-
 			'third_parties' => 'third_parties.inc.php',
 			'edit_third_party' => 'edit_third_party.inc.php',
-
-			'robots_txt' => 'robots_txt.inc.php',
+			'machine_readables' => 'machine_readables.inc.php',
 		],
 	];

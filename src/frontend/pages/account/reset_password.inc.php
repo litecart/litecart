@@ -63,7 +63,7 @@
 				}
 			}
 
-			if (settings::get('captcha_enabled') && !f::captcha_validate('reset_password')) {
+			if (settings::get('captcha') && !f::captcha_validate('reset_password')) {
 				throw new Exception(t('error_invalid_captcha', 'Invalid CAPTCHA given'));
 			}
 

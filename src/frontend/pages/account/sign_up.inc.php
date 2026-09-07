@@ -108,7 +108,7 @@
 				}
 			}
 
-			if (settings::get('captcha_enabled') && !f::captcha_validate('sign_up')) {
+			if (settings::get('captcha') && !f::captcha_validate('sign_up')) {
 				throw new Exception(t('error_invalid_captcha', 'Invalid CAPTCHA given'));
 			}
 

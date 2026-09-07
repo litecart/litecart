@@ -14,7 +14,7 @@
 				throw new Exception(t('error_must_provide_email', 'You must provide an email address'));
 			}
 
-			if (settings::get('captcha_enabled') && !f::captcha_validate('newsletter_subscribe')) {
+			if (settings::get('captcha') && !f::captcha_validate('newsletter_subscribe')) {
 				throw new Exception(t('error_invalid_captcha', 'Invalid CAPTCHA given'));
 			}
 
@@ -44,12 +44,12 @@
 
 			$newsletter_recipient->data['subscribed'] = 1;
 			$newsletter_recipient->data['ip_address'] = $_SERVER['REMOTE_ADDR'];
-			$newsletter_recipient->data['hostname'] = gethostbyaddr($_SERVER['REMOTE_ADDR']);
+			$newsletter_recipient->data['hostname'] = reverse_dns($_SERVER['REMOTE_ADDR']);
 			$newsletter_recipient->data['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
 
 			$aliases = [
 				'{ipaddress}' => $_SERVER['REMOTE_ADDR'],
-				'{hostname}' => gethostbyaddr($_SERVER['REMOTE_ADDR']),
+				'{hostname}' => reverse_dns($_SERVER['REMOTE_ADDR']),
 				'{datetime}' => f::datetime_format('datetime'),
 				'{store_name}' => settings::get('store_name'),
 				'{store_link}' => document::ilink(),
@@ -87,7 +87,7 @@
 				throw new Exception(t('error_must_provide_email', 'You must provide an email address'));
 			}
 
-			if (settings::get('captcha_enabled') && !f::captcha_validate('newsletter_unsubscribe')) {
+			if (settings::get('captcha') && !f::captcha_validate('newsletter_unsubscribe')) {
 				throw new Exception(t('error_invalid_captcha', 'Invalid CAPTCHA given'));
 			}
 
@@ -106,14 +106,14 @@
 
 			$newsletter_recipient->data['subscribe'] = 0;
 			$newsletter_recipient->data['client_id'] = $_SERVER['REMOTE_ADDR'];
-			$newsletter_recipient->data['hostname'] = gethostbyaddr($_SERVER['REMOTE_ADDR']);
+			$newsletter_recipient->data['hostname'] = reverse_dns($_SERVER['REMOTE_ADDR']);
 			$newsletter_recipient->data['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
 
 			$newsletter_recipient->save();
 
 			$aliases = [
 				'{ipaddress}' => $_SERVER['REMOTE_ADDR'],
-				'{hostname}' => gethostbyaddr($_SERVER['REMOTE_ADDR']),
+				'{hostname}' => reverse_dns($_SERVER['REMOTE_ADDR']),
 				'{datetime}' => f::datetime_format('datetime'),
 				'{store_name}' => settings::get('store_name'),
 				'{store_link}' => document::ilink(),

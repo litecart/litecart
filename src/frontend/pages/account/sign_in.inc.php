@@ -113,7 +113,7 @@
 				set known_ips = '". database::input(implode(',', $customer['known_ips'])) ."',
 					known_fingerprints = '". database::input(implode(',', $customer['known_fingerprints'])) ."',
 					last_ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."',
-					last_hostname = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
+					last_hostname = '". database::input(reverse_dns($_SERVER['REMOTE_ADDR'])) ."',
 					last_user_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."',
 					last_login = '". date('Y-m-d H:i:s') ."',
 					login_attempts = 0,

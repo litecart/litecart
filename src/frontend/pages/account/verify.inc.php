@@ -40,7 +40,9 @@
 
 				// The unknown-IP challenge records the successful IP as trusted.
 				// TOTP is location-independent and intentionally doesn't.
-				$known_ips = customer::$data['known_ips'];
+				$known_ips = customer::$data['known_ips'] ?? '';
+				$known_ips = is_array($known_ips) ? $known_ips : (string)$known_ips;
+				$known_ips = array_filter(explode(',', $known_ips));
 				array_unshift($known_ips, $_SERVER['REMOTE_ADDR']);
 				$known_ips = array_slice(array_unique($known_ips), 0, 10);
 
@@ -54,11 +56,14 @@
 
 			unset(security::$data['verification']);
 
+			security::$data['timestamp'] = time();
+			security::rotate_csrf_token();
+
 			if (!empty($_POST['redirect_url'])) {
 				$redirect_url = new type_url($_POST['redirect_url']);
 				$redirect_url->host = '';
 			} else {
-				$redirect_url = document::ilink('b:');
+				$redirect_url = document::ilink('f:account/sign_in');
 			}
 
 			notices::add('success', strtr(t('success_now_logged_in_as', 'You are now logged in as {username}'), [
@@ -72,10 +77,10 @@
 
 			notices::add('errors', $e->getMessage());
 
-			if (++security::$data['verification']['attempts'] >= 5) {
+			if (!empty(security::$data['verification']) && ++security::$data['verification']['attempts'] >= 5) {
 				unset(security::$data['verification']);
 				notices::add('errors', t('error_too_many_attempts', 'Too many failed attempts. Please sign in again.'));
-				redirect(document::ilink('login'));
+				redirect(document::ilink('account/sign_in'));
 				exit;
 			}
 		}

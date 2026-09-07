@@ -513,7 +513,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 										</div>
 									</div>
 
-									<?php if (settings::get('captcha_enabled')) { ?>
+									<?php if (settings::get('captcha')) { ?>
 									<div class="form-group">
 										<label><?php echo t('title_captcha', 'CAPTCHA'); ?></label>
 										<div style="max-width: 250px;"><?php echo f::form_captcha('review_product', ['required' => '']); ?></div>

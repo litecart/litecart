@@ -802,6 +802,10 @@ INSERT INTO `lc_settings` (`group_key`, `title`, `description`, `key`, `value`, 
 ('email', 'IMAP Username', 'Username for IMAP authentication.', 'imap_username', '', 'text()', 0, 23, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ('email', 'IMAP Password', 'Password for IMAP authentication.', 'imap_password', '', 'password()', 0, 24, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 -- -----
+INSERT IGNORE INTO `lc_settings` (`group_key`, `title`, `description`, `key`, `value`, `function`, `required`, `priority`, `date_created`, `date_updated`) VALUES
+('security', 'CSRF-Protection', 'Enable CSRF (Cross-Site Request Forgery) protection for form submissions.', 'csrf_protection', '1', 'toggle()', 0, 10, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('security', 'Bot Challenge', 'Enable bot challenge for form submissions. Logic to be added in a future release.', 'bot_challenge', '0', 'toggle()', 0, 30, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+-- -----
 UPDATE `lc_attribute_groups`
 SET name = '{}';
 -- -----
@@ -1085,6 +1089,11 @@ UPDATE `lc_settings`
 SET `title` = concat('{"en":"', title, '"}'),
 	`description` = concat('{"en":"', description, '"}');
 WHERE `title` NOT LIKE '{%';
+-- -----
+UPDATE `lc_settings`
+SET `group_key` = 'security',
+	`key` = 'captcha';
+WHERE `key` = 'captcha_enabled';
 -- -----
 UPDATE `lc_sold_out_statuses`
 SET name = '{}',

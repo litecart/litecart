@@ -52,7 +52,7 @@
 							</div>
 						</div>
 
-						<?php if (settings::get('captcha_enabled')) { ?>
+						<?php if (settings::get('captcha')) { ?>
 						<div class="grid">
 							<div class="col-xs-6">
 								<label class="form-group">

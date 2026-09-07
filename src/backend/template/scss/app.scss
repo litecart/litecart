@@ -334,7 +334,8 @@ h4 { font-size: 1.10em; }
 				border-radius: var(--border-radius);
 
 				.name {
-					font-weight: 700;
+					font-weight: 500;
+					margin-inline-start: .75em;
 				}
 			}
 
@@ -365,7 +366,7 @@ h4 { font-size: 1.10em; }
 						padding: 0 .25em;
 					}
 					.name {
-  					padding-left: .5em;
+  					margin-inline-start: .75em;
 					}
 				}
 			}
