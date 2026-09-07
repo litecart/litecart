@@ -142,7 +142,7 @@
 			database::query(
 				"update ". DB_PREFIX ."customers
 				set last_ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."',
-					last_hostname = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
+					last_hostname = '". database::input(reverse_dns($_SERVER['REMOTE_ADDR'])) ."',
 					last_user_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."'
 				where id = ". (int)$customer->data['id'] ."
 				limit 1;"

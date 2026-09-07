@@ -1047,7 +1047,7 @@
 	)->each(function($order) {
 		database::query(
 			"update ". DB_PREFIX ."orders
-			set hostname = '". gethostbyaddr($order['ip_address']) ."'
+			set hostname = '". reverse_dns($order['ip_address']) ."'
 			where ip_address = '". $order['ip_address'] ."';"
 		);
 	});

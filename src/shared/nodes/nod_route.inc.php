@@ -298,14 +298,14 @@
 					'". database::input(date('Y-m-d H:i:s')) ."',
 					'". database::input($_SERVER['HTTP_REFERER'] ?? '') ."',
 					'". database::input($_SERVER['REMOTE_ADDR'] ?? '') ."',
-					'". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'] ?? '')) ."'
+					'". database::input(reverse_dns($_SERVER['REMOTE_ADDR'] ?? '')) ."'
 				)
 				on duplicate key update
 					hits = hits + 1,
 					last_requested = '". database::input(date('Y-m-d H:i:s')) ."',
 					last_referrer = '". database::input($_SERVER['HTTP_REFERER'] ?? '') ."',
 					last_ip_address = '". database::input($_SERVER['REMOTE_ADDR'] ?? '') ."',
-					last_hostname = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'] ?? '')) ."';"
+					last_hostname = '". database::input(reverse_dns($_SERVER['REMOTE_ADDR'] ?? '')) ."';"
 			);
 
 			// Display error document

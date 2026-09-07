@@ -67,7 +67,7 @@
 					database::query(
 						"update ". DB_PREFIX ."administrators
 						set last_ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."',
-							last_hostname = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
+							last_hostname = '". database::input(reverse_dns($_SERVER['REMOTE_ADDR'])) ."',
 							last_user_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."',
 							last_login = '". date('Y-m-d H:i:s') ."',
 							login_attempts = 0,

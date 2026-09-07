@@ -7,7 +7,7 @@
 	} else {
 		$order = new ent_order();
 		$order->data['ip_address'] = $_SERVER['REMOTE_ADDR'];
-		$order->data['hostname'] = gethostbyaddr($_SERVER['REMOTE_ADDR']);
+		$order->data['hostname'] = reverse_dns($_SERVER['REMOTE_ADDR']);
 		$order->data['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
 		$order->data['created_at'] = date('Y-m-d H:i:s');
 	}

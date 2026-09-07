@@ -112,7 +112,7 @@
 			'version' => php_uname('v'),
 		],
 		'ip_address' => $_SERVER['SERVER_ADDR'],
-		'hostname' => gethostbyaddr($_SERVER['SERVER_ADDR']),
+		'hostname' => reverse_dns($_SERVER['SERVER_ADDR']),
 		'cpu_usage' => $cpu_usage ?? '',
 		'memory_usage' => $ram_usage ?? '',
 		'uptime' =>  $uptime ?? '',

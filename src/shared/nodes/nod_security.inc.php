@@ -72,7 +72,7 @@
 						}
 
 						// Check if client IP address lacks a hostname
-						if ($_SERVER['REMOTE_ADDR'] == gethostbyaddr($_SERVER['REMOTE_ADDR'])) {
+						if ($_SERVER['REMOTE_ADDR'] == reverse_dns($_SERVER['REMOTE_ADDR'])) {
 							throw new Exception('IP address without a hostname');
 						}
 
@@ -136,7 +136,7 @@
 				return;
 			}
 
-			$remote_hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
+			$remote_hostname = reverse_dns($_SERVER['REMOTE_ADDR']);
 
 			foreach ([
 				'.applebot.apple.com',

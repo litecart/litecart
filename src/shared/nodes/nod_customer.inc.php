@@ -74,7 +74,7 @@
 					database::query(
 						"update ". DB_PREFIX ."customers
 						set last_ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."',
-							last_hostname = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
+							last_hostname = '". database::input(reverse_dns($_SERVER['REMOTE_ADDR'])) ."',
 							last_user_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."',
 							last_login = '". date('Y-m-d H:i:s') ."',
 							login_attempts = 0,
@@ -410,7 +410,7 @@
 				'data' => !empty($event['data']) ? f::format_json($event['data']) : null,
 				'url' => $event['url'] ?? document::link(),
 				'ip_address' => $event['ip_address'] ?? $_SERVER['REMOTE_ADDR'],
-				'hostname' => $event['hostname'] ?? gethostbyaddr($event['ip_address'] ?? $_SERVER['REMOTE_ADDR']),
+				'hostname' => $event['hostname'] ?? reverse_dns($event['ip_address'] ?? $_SERVER['REMOTE_ADDR']),
 				'user_agent' => $event['user_agent'] ?? $_SERVER['HTTP_USER_AGENT'] ?? '',
 				'expires_at' => isset($event['expires_at']) ? date('Y-m-d H:i:s', strtotime($event['expires_at'])) : date('Y-m-d H:i:s', strtotime('+90 days')),
 				'created_at' => date('Y-m-d H:i:s'),

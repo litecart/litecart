@@ -59,6 +59,16 @@
 		exit;
 	}
 
+	function reverse_dns(string $ip): string {
+		static $cache = [];
+
+		if (isset($cache[$ip])) {
+			return $cache[$ip];
+		}
+
+		return $cache[$ip] = gethostbyaddr($ip);
+	}
+
 	// Checks if variables are not set, null, (bool)false, (int)0, (float)0, (string)"", (string)"0", (string)"0.00", (array)[], or array with nil nodes
 	function nil(&...$args) { // ... as of PHP 5.6
 

@@ -164,7 +164,7 @@
 						country_code = '". database::input(customer::$data['country_code'] ?? '') ."',
 						last_page = '". database::input((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']) ."',
 						ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."',
-						hostname = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
+						hostname = '". database::input(reverse_dns($_SERVER['REMOTE_ADDR'])) ."',
 						user_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."',
 						updated_at = '". date('Y-m-d H:i:s') ."'
 					where id = ". (int)$visitor['id'] ."
