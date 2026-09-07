@@ -57,11 +57,10 @@
 
 				$this->data['id'] = bin2hex(random_bytes(16));
 
-				database::query(
-					"insert into ". DB_PREFIX ."sessions
-					(id, created_at)
-					values ('". database::input($this->data['id']) ."', '". date('Y-m-d H:i:s') ."');"
-				);
+				database::insert('sessions', [
+					'id' => $this->data['id'],
+					'created_at' => date('Y-m-d H:i:s'),
+				]);
 			}
 
 			database::query(

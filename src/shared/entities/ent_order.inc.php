@@ -223,11 +223,10 @@
 			// Insert order
 			if (!$this->data['id']) {
 
-				database::query(
-					"insert into ". DB_PREFIX ."orders
-					(public_key, created_at)
-					values ('". database::input($this->data['public_key']) ."', '". ($this->data['created_at'] = date('Y-m-d H:i:s')) ."');"
-				);
+				database::insert('orders', [
+					'public_key' => $this->data['public_key'],
+					'created_at' => $this->data['created_at'] = date('Y-m-d H:i:s'),
+				]);
 
 				$this->data['id'] = database::insert_id();
 			}
@@ -337,11 +336,9 @@
 
 				if (empty($item['id'])) {
 
-					database::query(
-						"insert into ". DB_PREFIX ."orders_items
-						(order_id)
-						values (". (int)$this->data['id'] .");"
-					);
+					database::insert('orders_items', [
+						'order_id' => (int)$this->data['id'],
+					]);
 
 					$this->data['items'][$key]['id'] = $item['id'] = database::insert_id();
 				}
@@ -380,11 +377,10 @@
 
 					if (empty($stock_item['id'])) {
 
-						database::query(
-							"insert into ". DB_PREFIX ."orders_stock_items
-							(order_id, item_id)
-							values (". (int)$this->data['id'] .", ". (int)$item['id'] .");"
-						);
+						database::insert('orders_stock_items', [
+							'order_id' => (int)$this->data['id'],
+							'item_id' => (int)$item['id'],
+						]);
 
 						$this->data['items'][$item_key]['stock_items'][$stock_item_key]['id'] = $stock_item['id'] = database::insert_id();
 					}
@@ -463,11 +459,11 @@
 
 					if (empty($comment['id'])) {
 
-						database::query(
-							"insert into ". DB_PREFIX ."orders_comments
-							(order_id, created_at)
-							values (". (int)$this->data['id'] .", '". ($this->data['comments'][$key]['created_at'] = date('Y-m-d H:i:s')) ."');"
-						);
+						$this->data['comments'][$key]['created_at'] = date('Y-m-d H:i:s');
+						database::insert('orders_comments', [
+							'order_id' => (int)$this->data['id'],
+							'created_at' => $this->data['comments'][$key]['created_at'],
+						]);
 
 						$comment['id'] = $this->data['comments'][$key]['id'] = database::insert_id();
 

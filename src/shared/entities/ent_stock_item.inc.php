@@ -129,11 +129,13 @@
 
 			if (!$this->data['id']) {
 
-				database::query(
-					"insert into ". DB_PREFIX ."stock_items
-					(sku, mpn, gtin, created_at)
-					values ('". database::input($this->data['sku']) ."', '". database::input($this->data['mpn']) ."', '". database::input($this->data['gtin']) ."', '". ($this->data['created_at'] = date('c')) ."');"
-				);
+				$this->data['created_at'] = date('c');
+				database::insert('stock_items', [
+					'sku' => $this->data['sku'],
+					'mpn' => $this->data['mpn'],
+					'gtin' => $this->data['gtin'],
+					'created_at' => $this->data['created_at'],
+				]);
 
 				$this->data['id'] = database::insert_id();
 			}
@@ -272,11 +274,10 @@
 
 					if (empty($reference['id'])) {
 
-						database::query(
-							"insert into ". DB_PREFIX ."stock_items_references
-							(stock_item_id, supplier_id)
-							values (". (int)$this->data['id'] .", ". (int)$reference['supplier_id'] .");"
-						);
+						database::insert('stock_items_references', [
+							'stock_item_id' => (int)$this->data['id'],
+							'supplier_id' => (int)$reference['supplier_id'],
+						]);
 
 						$reference['id'] = $this->data['references'][$key]['id'] = database::insert_id();
 					}

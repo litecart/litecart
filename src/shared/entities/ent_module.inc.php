@@ -98,11 +98,11 @@
 
 			if (!$this->data['id']) {
 
-				database::query(
-					"insert into ". DB_PREFIX ."modules
-					(module_id, type, created_at)
-					values ('". database::input($this->data['module_id']) ."', '". database::input($this->data['type']) ."', '". ($this->data['created_at'] = date('Y-m-d H:i:s')) ."');"
-				);
+				database::insert('modules', [
+					'module_id' => $this->data['module_id'],
+					'type' => $this->data['type'],
+					'created_at' => $this->data['created_at'] = date('Y-m-d H:i:s'),
+				]);
 
 				$this->data['id'] = database::insert_id();
 

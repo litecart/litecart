@@ -103,11 +103,11 @@
 
 			if (!$this->data['id']) {
 
-				database::query(
-					"insert into ". DB_PREFIX ."categories
-					(parent_id, code, created_at)
-					values (". (!empty($this->data['parent_id']) ? (int)$this->data['parent_id'] : "null") .", '". database::input($this->data['code']) ."', '". ($this->data['created_at'] = date('Y-m-d H:i:s')) ."');"
-				);
+				database::insert('categories', [
+					'parent_id' => !empty($this->data['parent_id']) ? (int)$this->data['parent_id'] : null,
+					'code' => $this->data['code'],
+					'created_at' => $this->data['created_at'] = date('Y-m-d H:i:s'),
+				]);
 
 				$this->data['id'] = database::insert_id();
 			}
@@ -158,11 +158,10 @@
 
 				if (empty($filter['id'])) {
 
-					database::query(
-						"insert into ". DB_PREFIX ."categories_filters
-						(category_id, attribute_group_id)
-						values (". (int)$this->data['id'] .", ". (int)$filter['attribute_group_id'] .");"
-					);
+					database::insert('categories_filters', [
+						'category_id' => (int)$this->data['id'],
+						'attribute_group_id' => (int)$filter['attribute_group_id'],
+					]);
 
 					$this->data['filters'][$key]['id'] = $filter['id'] = database::insert_id();
 				}

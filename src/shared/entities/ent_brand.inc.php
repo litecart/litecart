@@ -74,11 +74,9 @@
 
 			if (!$this->data['id']) {
 
-				database::query(
-					"insert into ". DB_PREFIX ."brands
-					(created_at)
-					values ('". ($this->data['created_at'] = date('Y-m-d H:i:s')) ."');"
-				);
+				database::insert('brands', [
+					'created_at' => $this->data['created_at'] = date('Y-m-d H:i:s'),
+				]);
 
 				$this->data['id'] = database::insert_id();
 			}

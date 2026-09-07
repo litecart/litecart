@@ -52,11 +52,9 @@
 
 			if (!$this->data['id']) {
 
-				database::query(
-					"insert into ". DB_PREFIX ."webhook_requests
-					(created_at)
-					values ('". date('Y-m-d H:i:s') ."');"
-				);
+				database::insert('webhook_requests', [
+					'created_at' => date('Y-m-d H:i:s'),
+				]);
 
 				$this->data['id'] = database::insert_id();
 			}

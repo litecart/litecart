@@ -92,11 +92,10 @@
 			// Group
 			if (!$this->data['id']) {
 
-				database::query(
-					"insert into ". DB_PREFIX ."attribute_groups
-					(created_at)
-					values ('". ($this->data['created_at'] = date('Y-m-d H:i:s')) ."');"
-				);
+				$this->data['created_at'] = date('Y-m-d H:i:s');
+				database::insert('attribute_groups', [
+					'created_at' => $this->data['created_at'],
+				]);
 
 				$this->data['id'] = database::insert_id();
 			}
@@ -148,11 +147,11 @@
 
 				if (empty($value['id'])) {
 
-					database::query(
-						"insert into ". DB_PREFIX ."attribute_values
-						(group_id, created_at)
-						values (". (int)$this->data['id'] .", '". ($this->data['values'][$key]['created_at'] = date('Y-m-d H:i:s')) ."');"
-					);
+					$this->data['values'][$key]['created_at'] = date('Y-m-d H:i:s');
+					database::insert('attribute_values', [
+						'group_id' => (int)$this->data['id'],
+						'created_at' => $this->data['values'][$key]['created_at'],
+					]);
 
 					$value['id'] = $this->data['values'][$key]['id'] = database::insert_id();
 				}

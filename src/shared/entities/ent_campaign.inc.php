@@ -86,11 +86,10 @@
 
 			if (!$this->data['id']) {
 
-				database::query(
-					"insert into ". DB_PREFIX ."campaigns
-					(id, created_at)
-					values (". (int)$this->data['id'] .", '". ($this->data['created_at'] = date('Y-m-d H:i:s')) ."');"
-				);
+				database::insert('campaigns', [
+					'id' => (int)$this->data['id'],
+					'created_at' => $this->data['created_at'] = date('Y-m-d H:i:s'),
+				]);
 
 				$this->data['id'] = database::insert_id();
 			}
@@ -120,11 +119,10 @@
 
 				if (empty($product['id'])) {
 
-					database::query(
-						"insert into ". DB_PREFIX ."products_prices
-						(product_id, campaign_id)
-						values (". (int)$product['product_id'] .", ". (int)$this->data['id'] .");"
-					);
+					database::insert('products_prices', [
+						'product_id' => (int)$product['product_id'],
+						'campaign_id' => (int)$this->data['id'],
+					]);
 
 					$this->data['products'][$key]['id'] = $product['id'] = database::insert_id();
 				}

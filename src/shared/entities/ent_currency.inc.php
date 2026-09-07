@@ -80,11 +80,11 @@
 
 			if (!$this->data['id']) {
 
-				database::query(
-					"insert into ". DB_PREFIX ."currencies
-					(code, number, created_at)
-					values ('". database::input($this->data['code']) ."', '". database::input($this->data['number']) ."', '". ($this->data['created_at'] = date('Y-m-d H:i:s')) ."');"
-				);
+				database::insert('currencies', [
+					'code' => $this->data['code'],
+					'number' => $this->data['number'],
+					'created_at' => $this->data['created_at'] = date('Y-m-d H:i:s'),
+				]);
 
 				$this->data['id'] = database::insert_id();
 			}

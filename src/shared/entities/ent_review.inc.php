@@ -63,11 +63,11 @@
 		public function save(): void {
 
 			if (empty($this->data['id'])) {
-				database::query(
-					"insert into ". DB_PREFIX ."reviews
-					(product_id, customer_id, created_at)
-					values (". (int)$this->data['product_id'] .", ". (int)$this->data['customer_id'] .", '". database::input(date('Y-m-d H:i:s')) ."');"
-				);
+				database::insert('reviews', [
+					'product_id' => (int)$this->data['product_id'],
+					'customer_id' => (int)$this->data['customer_id'],
+					'created_at' => date('Y-m-d H:i:s'),
+				]);
 
 				$this->data['id'] = database::insert_id();
 			}

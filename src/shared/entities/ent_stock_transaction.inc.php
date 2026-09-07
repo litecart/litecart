@@ -79,11 +79,11 @@
 			// Insert/update transaction
 			if (!$this->data['id']) {
 
-				database::query(
-					"insert into ". DB_PREFIX ."stock_transactions
-					(name, created_at)
-					values ('". database::input($this->data['name']) ."', '". ($this->data['created_at'] = date('Y-m-d H:i:s')) ."');"
-				);
+				$this->data['created_at'] = date('Y-m-d H:i:s');
+				database::insert('stock_transactions', [
+					'name' => $this->data['name'],
+					'created_at' => $this->data['created_at'],
+				]);
 
 				$this->data['id'] = database::insert_id();
 			}
@@ -120,11 +120,10 @@
 
 				if (empty($content['id'])) {
 
-					database::query(
-						"insert into ". DB_PREFIX ."stock_transactions_contents
-						(transaction_id, stock_item_id)
-						values (". (int)$this->data['id'] .", ". (int)$content['stock_item_id'] .");"
-					);
+					database::insert('stock_transactions_contents', [
+						'transaction_id' => (int)$this->data['id'],
+						'stock_item_id' => (int)$content['stock_item_id'],
+					]);
 
 					$this->data['contents'][$key]['id'] = $content['id'] = database::insert_id();
 				}

@@ -50,11 +50,9 @@
 
 			if (!$this->data['id']) {
 
-				database::query(
-					"insert into ". DB_PREFIX ."customer_groups
-					(created_at)
-					values ('". database::input(date('Y-m-d H:i:s')) ."');"
-				);
+				database::insert('customer_groups', [
+					'created_at' => $this->data['created_at'] = date('Y-m-d H:i:s'),
+				]);
 
 				$this->data['id'] = database::insert_id();
 			}

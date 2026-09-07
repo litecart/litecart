@@ -82,11 +82,10 @@
 
 			if (!$this->data['id']) {
 
-				database::query(
-					"insert into ". DB_PREFIX ."order_statuses
-					(created_at)
-					values ('". ($this->data['created_at'] = date('Y-m-d H:i:s')) ."');"
-				);
+				$this->data['created_at'] = date('Y-m-d H:i:s');
+				database::insert('order_statuses', [
+					'created_at' => $this->data['created_at'],
+				]);
 
 				$this->data['id'] = database::insert_id();
 			}

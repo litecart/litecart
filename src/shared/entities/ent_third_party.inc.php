@@ -72,11 +72,11 @@
 
 			if (!$this->data['id']) {
 
-				database::query(
-					"insert into ". DB_PREFIX ."third_parties
-					(name, created_at)
-					values ('". database::input($this->data['name']) ."', '". ($this->data['created_at'] = date('Y-m-d H:i:s')) ."');"
-				);
+				$this->data['created_at'] = date('Y-m-d H:i:s');
+				database::insert('third_parties', [
+					'name' => $this->data['name'],
+					'created_at' => $this->data['created_at'],
+				]);
 
 				$this->data['id'] = database::insert_id();
 			}

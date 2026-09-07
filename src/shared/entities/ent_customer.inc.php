@@ -83,11 +83,10 @@
 		public function save(): void {
 
 			if (!$this->data['id']) {
-				database::query(
-					"insert into ". DB_PREFIX ."customers
-					(email, created_at)
-					values ('". database::input($this->data['email']) ."', '". ($this->data['created_at'] = date('Y-m-d H:i:s')) ."');"
-				);
+				database::insert('customers', [
+					'email' => $this->data['email'],
+					'created_at' => $this->data['created_at'] = date('Y-m-d H:i:s'),
+				]);
 
 				$this->data['id'] = database::insert_id();
 

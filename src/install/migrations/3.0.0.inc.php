@@ -1209,21 +1209,17 @@
 		and quantity != 0;"
 	)->each(function($product) {
 
-		database::query(
-			"insert into ". DB_PREFIX ."products_stock_options
-			(product_id, sku, weight, weight_unit, length, width, height, length_unit, quantity)
-			values (
-				". (int)$product['id'] .",
-				'". database::input($product['sku']) ."',
-				". (float)$product['weight'] .",
-				". (int)$product['weight_unit'] .",
-				". (float)$product['length'] .",
-				". (float)$product['width'] .",
-				". (float)$product['height'] .",
-				". (int)$product['length_unit'] .",
-				". (int)$product['quantity'] ."
-			);"
-		);
+		database::insert('products_stock_options', [
+			'product_id' => (int)$product['id'],
+			'sku' => $product['sku'],
+			'weight' => (float)$product['weight'],
+			'weight_unit' => (int)$product['weight_unit'],
+			'length' => (float)$product['length'],
+			'width' => (float)$product['width'],
+			'height' => (float)$product['height'],
+			'length_unit' => (int)$product['length_unit'],
+			'quantity' => (int)$product['quantity'],
+		]);
 
 		$stock_option_id = database::insert_id();
 
@@ -1286,10 +1282,11 @@
 	});
 
 	// Create initial stock transaction
-	database::query(
-		"insert into `". DB_PREFIX ."stock_transactions` (id, name, description)
-		values (1, 'Initial Stock Transaction', 'This is an initial system generated stock transaction to deposit stock for all sold items and items in stock. We need this for future inconcistency checks.');"
-	);
+	database::insert('stock_transactions', [
+		'id' => 1,
+		'name' => 'Initial Stock Transaction',
+		'description' => 'This is an initial system generated stock transaction to deposit stock for all sold items and items in stock. We need this for future inconcistency checks.',
+	]);
 
 	// Insert initial stock into stock transactions contents
 	database::query(

@@ -52,11 +52,10 @@
 		public function save(): void {
 
 			if (!$this->data['id']) {
-				database::query(
-					"insert into ". DB_PREFIX ."tax_rates
-					(created_at)
-					values ('". ($this->data['created_at'] = date('Y-m-d H:i:s')) ."');"
-				);
+				$this->data['created_at'] = date('Y-m-d H:i:s');
+				database::insert('tax_rates', [
+					'created_at' => $this->data['created_at'],
+				]);
 
 				$this->data['id'] = database::insert_id();
 			}

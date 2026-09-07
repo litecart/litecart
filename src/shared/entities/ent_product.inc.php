@@ -167,11 +167,10 @@
 
 			if (!$this->data['id']) {
 
-				database::query(
-					"insert into ". DB_PREFIX ."products
-					(created_at)
-					values ('". ($this->data['created_at'] = date('Y-m-d H:i:s')) ."');"
-				);
+				$this->data['created_at'] = date('Y-m-d H:i:s');
+				database::insert('products', [
+					'created_at' => $this->data['created_at'],
+				]);
 
 				$this->data['id'] = database::insert_id();
 			}
@@ -242,11 +241,10 @@
 
 			foreach ($this->data['categories'] as $category_id) {
 				if (in_array($category_id, $this->previous['categories'])) continue;
-				database::query(
-					"insert into ". DB_PREFIX ."products_to_categories
-					(product_id, category_id)
-					values (". (int)$this->data['id'] .", ". (int)$category_id .");"
-				);
+				database::insert('products_to_categories', [
+					'product_id' => (int)$this->data['id'],
+					'category_id' => (int)$category_id,
+				]);
 			}
 
 			// Delete images
@@ -329,11 +327,9 @@
 
 				if (empty($price['id'])) {
 
-					database::query(
-						"insert into ". DB_PREFIX ."products_prices
-						(product_id)
-						values (". (int)$this->data['id'] .");"
-					);
+					database::insert('products_prices', [
+						'product_id' => (int)$this->data['id'],
+					]);
 
 					$this->data['prices'][$key]['id'] = $price['id'] = database::insert_id();
 				}
@@ -372,11 +368,12 @@
 
 					if (empty($attribute['id'])) {
 
-						database::query(
-							"insert into ". DB_PREFIX ."products_attributes
-							(product_id, group_id, value_id, custom_value)
-							values (". (int)$this->data['id'] .", ". (int)$attribute['group_id'] .", ". (int)$attribute['value_id'] .", '". database::input($attribute['custom_value']) ."');"
-						);
+						database::insert('products_attributes', [
+							'product_id' => (int)$this->data['id'],
+							'group_id' => (int)$attribute['group_id'],
+							'value_id' => (int)$attribute['value_id'],
+							'custom_value' => $attribute['custom_value'],
+						]);
 
 						$this->data['attributes'][$key]['id'] = $attribute['id'] = database::insert_id();
 					}
@@ -419,11 +416,10 @@
 
 					if (empty($option['id'])) {
 
-						database::query(
-							"insert into ". DB_PREFIX ."products_customizations
-							(product_id, group_id)
-							values (". (int)$this->data['id'] .", ". (int)$option['group_id'] .");"
-						);
+						database::insert('products_customizations', [
+							'product_id' => (int)$this->data['id'],
+							'group_id' => (int)$option['group_id'],
+						]);
 
 						$option['id'] = $this->data['customizations'][$key]['id'] = database::insert_id();
 					}
@@ -456,11 +452,11 @@
 
 							if (empty($value['id'])) {
 
-								database::query(
-									"insert into ". DB_PREFIX ."products_customizations_values
-									(product_id, group_id, value_id)
-									values (". (int)$this->data['id'] .", ". (int)$option['group_id'] .", ". (int)$value['value_id'] .");"
-								);
+								database::insert('products_customizations_values', [
+									'product_id' => (int)$this->data['id'],
+									'group_id' => (int)$option['group_id'],
+									'value_id' => (int)$value['value_id'],
+								]);
 
 								$value['id'] = $this->data['customizations'][$key]['values'][$value_key]['id'] = database::insert_id();
 							}
@@ -504,11 +500,10 @@
 
 					if (empty($stock_option['id'])) {
 
-						database::query(
-							"insert into ". DB_PREFIX ."products_stock_options
-							(product_id, stock_item_id)
-							values (". (int)$this->data['id'] .", ". (int)$stock_option['stock_item_id'] .");"
-						);
+						database::insert('products_stock_options', [
+							'product_id' => (int)$this->data['id'],
+							'stock_item_id' => (int)$stock_option['stock_item_id'],
+						]);
 
 						$stock_option['id'] = $this->data['stock_options'][$key]['id'] = database::insert_id();
 					}
@@ -584,11 +579,12 @@
 
 			f::image_delete_cache('storage://images/' . $filename);
 
-			database::query(
-				"insert into ". DB_PREFIX ."products_images
-				(product_id, filename, checksum, priority)
-				values (". (int)$this->data['id'] .", '". database::input($filename) ."', '". database::input($checksum) ."', ". (int)$priority .");"
-			);
+			database::insert('products_images', [
+				'product_id' => (int)$this->data['id'],
+				'filename' => $filename,
+				'checksum' => $checksum,
+				'priority' => (int)$priority,
+			]);
 
 			$image_id = database::insert_id();
 

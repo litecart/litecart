@@ -122,6 +122,25 @@
 			return $errors;
 		}
 
+		public static function insert(string $table_name, array $data, string $link='default'): database_result|bool {
+
+			$columns = array_map(
+				fn($column) => '`'. str_replace('`', '``', $column) .'`',
+				array_keys($data)
+			);
+
+			$values = [];
+			foreach (database::input($data) as $value) {
+				$values[] = ($value === null) ? 'NULL' : "'". $value ."'";
+			}
+
+			return database::query(
+				"insert into `". DB_PREFIX . $table_name ."`
+				(". implode(", ", $columns) .")
+				values (". implode(", ", $values) .");"
+			);
+		}
+
 		public static function query(string $sql, string $link='default'): database_statement|bool {
 
 			if (!isset(self::$links[$link])) {

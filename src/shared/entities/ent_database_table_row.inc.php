@@ -65,11 +65,7 @@
 		public function save(): void {
 
 			if (!$this->data[$this->_primary_column]) {
-				database::query(
-					"insert into `". database::input($this->_table) ."`
-					(`". implode("`, `", database::input(array_keys($this->data))) ."`)
-					values ('". implode("', '", database::input($this->data)) ."');"
-				);
+				database::insert($this->_table, $this->data);
 			} else {
 				$set = array_map(function($value, $key) {
 					return "`". database::input($key) ."` = '". database::input($value) ."'";

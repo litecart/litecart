@@ -72,11 +72,14 @@
 		public function save(): void {
 
 			if (!$this->data['id']) {
-				database::query(
-					"insert into ". DB_PREFIX ."emails
-					(status, code, ip_address, hostname, user_agent, created_at) values
-					('". database::input($this->data['status']) ."', '". database::input($this->data['code']) ."', '". database::input($_SERVER['REMOTE_ADDR']) ."', '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."', '". database::input($_SERVER['HTTP_USER_AGENT']) ."', '". ($this->data['created_at'] = date('Y-m-d H:i:s')) ."');"
-				);
+				database::insert('emails', [
+					'status' => $this->data['status'],
+					'code' => $this->data['code'],
+					'ip_address' => $_SERVER['REMOTE_ADDR'],
+					'hostname' => gethostbyaddr($_SERVER['REMOTE_ADDR']),
+					'user_agent' => $_SERVER['HTTP_USER_AGENT'],
+					'created_at' => $this->data['created_at'] = date('Y-m-d H:i:s'),
+				]);
 
 				$this->data['id'] = database::insert_id();
 			}

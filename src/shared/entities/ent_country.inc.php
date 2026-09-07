@@ -84,11 +84,9 @@
 
 			if (!$this->data['id']) {
 
-				database::query(
-					"insert into ". DB_PREFIX ."countries
-					(created_at)
-					values ('". ($this->data['created_at'] = date('Y-m-d H:i:s')) ."');"
-				);
+				database::insert('countries', [
+					'created_at' => $this->data['created_at'] = date('Y-m-d H:i:s'),
+				]);
 
 				$this->data['id'] = database::insert_id();
 			}
@@ -128,11 +126,10 @@
 
 				if (empty($zone['id'])) {
 
-					database::query(
-						"insert into ". DB_PREFIX ."zones
-						(country_code, created_at)
-						values ('". database::input($this->data['iso_code_2']) ."', '". date('Y-m-d H:i:s') ."');"
-					);
+					database::insert('zones', [
+						'country_code' => $this->data['iso_code_2'],
+						'created_at' => date('Y-m-d H:i:s'),
+					]);
 
 					$zone['id'] = $this->data['zones'][$key]['id'] = database::insert_id();
 				}
