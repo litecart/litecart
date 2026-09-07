@@ -14,12 +14,8 @@
 	if (!empty($_POST['delete'])) {
 		if (!empty($_POST['emails'])) {
 			database::query(
-				'delete from ' .
-					DB_PREFIX .
-					"emails
-					where id in ('" .
-					implode("', '", database::input($_POST['emails'])) .
-					"');",
+				"delete from ". DB_PREFIX ."emails
+				where id in ('". implode("', '", database::input($_POST['emails'])) ."');",
 			);
 		}
 

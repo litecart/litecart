@@ -17,13 +17,19 @@
 		$_GET['languages'] = array_slice(array_unique(array_merge($defined_languages, $all_languages)), 0, 2);
 	}
 
-	$collections = include 'app://backend/apps/localization/translations/collections.inc.php';
-
-	// Validate requested language codes before they are used in SQL identifier contexts.
-	$allowed_language_codes = array_keys(language::$languages);
-	foreach ($_GET['languages'] as $_lang_code) {
-		database::identifier($_lang_code, $allowed_language_codes);
+	try {
+		// Validate requested language codes before they are used in SQL identifier contexts.
+		foreach ($_GET['languages'] as $language_code) {
+			if (!in_array($language_code, array_keys(language::$languages))) {
+				throw new Exception('Invalid language code provided');
+			}
+		}
+	} catch (Exception $e) {
+		notices::add('errors', $e->getMessage());
+		return;
 	}
+
+	$collections = include 'app://backend/apps/localization/translations/collections.inc.php';
 
 	if (isset($_POST['save'])) {
 		try {
@@ -124,24 +130,6 @@
 				". implode(", ", f::array_each($_GET['languages'], fn($language_code) => "json_unquote(coalesce(json_value(`text`, '$.". database::input($language_code) ."'), '')) as `text_". database::identifier($language_code) ."`")) ."
 			from ". DB_PREFIX ."translations
 			where code regexp '^(cm|job|om|ot|pm|sm)_'"
-		);
-	}
-
-	if (empty($_GET['collections']) || in_array('settings_groups', $_GET['collections'])) {
-		$sql_union[] = (
-			"select 'translation' as entity, frontend, backend, code, updated_at, html,
-				". implode(", ", f::array_each($_GET['languages'], fn($language_code) => "json_unquote(coalesce(json_value(`text`, '$.". database::input($language_code) ."'), '')) as `text_". database::identifier($language_code) ."`")) ."
-			from ". DB_PREFIX ."translations
-			where code regexp '^settings_group:'"
-		);
-	}
-
-	if (empty($_GET['collections']) || in_array('settings', $_GET['collections'])) {
-		$sql_union[] = (
-			"select 'translation' as entity, frontend, backend, code, updated_at, html,
-				". implode(", ", f::array_each($_GET['languages'], fn($language_code) => "json_unquote(coalesce(json_value(`text`, '$.". database::input($language_code) ."'), '')) as `text_". database::identifier($language_code) ."`")) ."
-			from ". DB_PREFIX ."translations
-			where code regexp '^settings_key:'"
 		);
 	}
 

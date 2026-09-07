@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	$_GET['debug'] = true;
 	$_GET['vmod'] = isset($_GET['vmod']) ? basename($_GET['vmod']) : null;
 
