@@ -1,6 +1,6 @@
 <?php
 
-	$_partial = new ent_view('app://backend/template/partials/site_top_navigation.inc.php');
+	$_partial = new ent_view('app://backend/template/partials/top_navigation.inc.php');
 
 	$_partial->snippets = [
 		'items' => [
@@ -76,53 +76,4 @@
 
 	$_partial->snippets['draw_menu_item'] = $draw_menu_item;
 
-	if (is_file('app://backend/template/partials/site_top_navigation.inc.php')) {
-		echo $_partial->render();
-		return;
-	} else {
-		extract($_partial->snippets);
-	}
-
-?>
-<style>
-.brightness .form-toggle {
-	padding: 0 !important;
-	gap: 0;
-}
-</style>
-
-<ul id="toolbar" class="shadow hidden-print">
-	<li>
-		<div>
-			<label class="nav-toggle btn btn-default" for="sidebar-compact">
-				<?php echo f::draw_fonticon('icon-sidebar', 'style="font-size: 1.5em;"'); ?>
-			</label>
-		</div>
-	</li>
-
-	<li style="flex-grow: 1;">
-		<div id="search" class="dropdown">
-			<?php echo f::form_input_search('query', false, ['placeholder' => f::escape_attr(t('title_search', 'Search')) . '…', 'autocomplete' => 'off']); ?>
-			<div class="results dropdown-menu"></div>
-		</div>
-	</li>
-
-	<li>
-		<div class="btn-group" data-toggle="buttons">
-			<button name="font_size" class="btn btn-default btn-sm" type="button" value="decrease"><span style="font-size: .8em;">A</span></button>
-			<button name="font_size" class="btn btn-default btn-sm" type="button" value="increase"><span style="font-size: 1.25em;">A</span></button>
-		</div>
-	</li>
-
-	<li class="brightness">
-		<?php echo f::form_toggle('dark_mode', ['0' => f::draw_fonticon('icon-sun'), '1' => f::draw_fonticon('icon-moon')]); ?>
-	</li>
-
-	<?php foreach ($items as $item) echo $draw_menu_item($item); ?>
-
-</ul>
-
-<script>
-	$('label:has(input[name="dark_mode"][value="0"])').attr('title', '<?php echo f::escape_js(t('title_light_mode', 'Light Mode')); ?>');
-	$('label:has(input[name="dark_mode"][value="1"])').attr('title', '<?php echo f::escape_js(t('title_dark_mode', 'Dark Mode')); ?>');
-</script>
+	echo $_partial->render();

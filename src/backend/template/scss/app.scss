@@ -29,6 +29,10 @@ h4 { font-size: 1.10em; }
 	background: var(--sidebar-background);
 	box-shadow: 0 1px 1rem rgb(0 0 0 / 5%);
 	padding: 1em;
+	gap: 1em;
+
+	.sidebar-header {
+	}
 
 	.sidebar-content {
 		flex: 1 1 auto;
@@ -44,14 +48,20 @@ h4 { font-size: 1.10em; }
 
 	.sidebar-footer {
 		flex-shrink: 0;
-		padding: 1em;
 		background: var(--sidebar-background);
 	}
 
 	.logotype {
 		display: block;
-		padding: 1em;
-
+		border: 1px solid var(--default-border-color);
+		border-radius: var(--border-radius);
+		padding: .5em 1em;
+		transition:all 100ms linear;
+		&:hover {
+			border-color: var(--link-color);
+			filter: scale(1.05) brightness(.9);
+			box-shadow: 0 0 1rem rgb(0 0 0 / 5%);
+		}
 		img {
 			max-height: 20px;
 		}
@@ -60,7 +70,6 @@ h4 { font-size: 1.10em; }
 	.platform {
 		display: inline-block;
 		padding: .5em 1em;
-		margin: 10px auto;
 		letter-spacing: 1pt;
 		text-align: center;
 		font-weight: 700;
@@ -89,40 +98,37 @@ h4 { font-size: 1.10em; }
 	}
 }
 
-#sidebar-compact:checked {
-	padding: var(--gutter-y) var(--gutter-x);
+#sidebar:has(#sidebar-compact-toggle:checked) {
+	flex-basis: auto;
+	padding: 0;
 
-	~ #sidebar {
-		flex-basis: auto;
-
-		.app > a {
+	.app {
+		> a {
 			text-align: center;
 			padding: 0 .25em;
-
-			&:hover {
-				transform: scale(1.15);
-			}
-
-			.app-icon {
-				font-size: 1.25em;
-			}
 		}
-
-		.group > .title {
-			display: none;
+		&:hover {
+			transform: scale(1.25);
 		}
-
-		.name, .docs {
-			display: none;
+		.app-icon {
+			font-size: 1.5em;
 		}
+	}
 
-		.logotype,
-		.filter,
-		//.platform .name,
-		.platform,
-		.copyright {
-			display: none;
-		}
+	.group > .title {
+		display: none;
+	}
+
+	.name, .docs {
+		display: none;
+	}
+
+	.logotype,
+	.filter,
+	//.platform .name,
+	.platform,
+	.copyright {
+		display: none;
 	}
 }
 
@@ -132,7 +138,7 @@ h4 { font-size: 1.10em; }
 }
 
 
-#toolbar {
+#top-navigation {
 	display: flex;
 	gap: .75em 1em;
 	padding: .5em .75em;
@@ -183,6 +189,12 @@ h4 { font-size: 1.10em; }
 	.form-toggle {
 		gap: .5em;
 	}
+}
+
+.theme-toggle .form-toggle {
+	width: fit-content;
+	padding: 0;
+	gap: 0;
 }
 
 #search {
@@ -242,7 +254,6 @@ h4 { font-size: 1.10em; }
 #sidebar-menu {
 	display: block;
 	padding: 0;
-	margin: 1em 0;
 	color: var(--sidebar-text-color);
 	line-height: 2;
 
@@ -427,7 +438,7 @@ h4 { font-size: 1.10em; }
 
 html.dark-mode {
 
-	#toolbar > li > a {
+	#top-navigation > li > a {
 		color: inherit;
 	}
 
@@ -452,7 +463,7 @@ html.condensed {
 	--sidebar-width: 18rem;
 	--gutter-x: 1.5em;
 
-	#toolbar {
+	#top-navigation {
 		margin: 0;
 		border-radius: 0;
 	}

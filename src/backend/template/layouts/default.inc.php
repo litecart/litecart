@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{language}}" dir="{{text_direction}}" class="<?php echo !empty($_COOKIE['dark_mode']) ? 'dark-mode' : ''; ?>">
+<html lang="{{language}}" dir="{{text_direction}}" class="<?php echo (isset($_COOKIE['theme']) && $_COOKIE['theme'] == 'dark') ? 'dark-mode' : ''; ?>">
 <head>
 <title>{{title}}</title>
 <meta charset="{{charset}}">
@@ -20,46 +20,14 @@
 
 <div class="flex-columns flex-nogap">
 
-	<input id="sidebar-compact" type="checkbox" hidden>
-
-	<div id="sidebar" class="hidden-print">
-
-		<div class="sidebar-content">
-
-			<div class="filter">
-				<?php echo f::form_input_search('filter', false, ['placeholder' => (t('title_filter', 'Filter') . '…'), 'autocomplete' => 'off']); ?>
-			</div>
-
-			<?php include 'app://backend/partials/sidebar.inc.php'; ?>
-
-		</div>
-
-		<div class="sidebar-footer">
-
-			<div class="text-center">
-				<a class="platform" href="<?php echo document::href_ilink('about'); ?>">
-					<span class="name"><?php echo PLATFORM_NAME; ?>®</span>
-					<span class="version"><?php echo PLATFORM_VERSION; ?></span>
-				</a>
-			</div>
-
-			<div class="copyright" class="text-center">Copyright &copy; <?php echo date('2012-Y'); ?><br>
-				<a href="https://www.litecart.net" target="_blank">www.litecart.net</a>
-			</div>
-
-			<a class="logotype" href="<?php echo document::href_ilink(''); ?>">
-				<img class="center-block responsive" src="<?php echo document::href_rlink('storage://images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>">
-			</a>
-
-		</div>
-	</div>
+	<?php include 'app://backend/partials/sidebar.inc.php'; ?>
 
 	<div class="flex-grow">
 
 		<main id="main">
 			<div class="container">
 
-				<?php include 'app://backend/partials/site_top_navigation.inc.php'; ?>
+				<?php include 'app://backend/partials/top_navigation.inc.php'; ?>
 
 				<div id="content">
 

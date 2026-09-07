@@ -6,12 +6,12 @@ waitFor('jQuery', function($){
 		document.cookie = `font_size=${new_size}; Path=${_env.platform.path}; Max-Age=2592000;`;
 	});
 
-	$('input[name="dark_mode"]').on('click', function(){
-		if ($(this).val() == 1) {
-			document.cookie = `dark_mode=1; Path=${_env.platform.path}; Max-Age=2592000;`;
+	$('input[name="theme"]').on('click', function(){
+		if ($(this).val() == 'dark') {
+			document.cookie = `theme=dark; Path=${_env.platform.path}; Max-Age=2592000;`;
 			$('html').addClass('dark-mode');
 		} else {
-			document.cookie = `dark_mode=0; Path=${_env.platform.path}; Max-Age=2592000;`;
+			document.cookie = `theme=light; Path=${_env.platform.path}; Max-Age=2592000;`;
 			$('html').removeClass('dark-mode');
 		}
 	});

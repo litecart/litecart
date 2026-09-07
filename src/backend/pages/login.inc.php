@@ -86,7 +86,7 @@
 							'{username}' => $administrator['username'],
 							'{expires}' => date('Y-m-d H:i:00', strtotime('+15 minutes')),
 							'{ip_address}' => $_SERVER['REMOTE_ADDR'],
-							'{hostname}' => gethostbyaddr($_SERVER['REMOTE_ADDR']),
+							'{hostname}' => reverse_dns($_SERVER['REMOTE_ADDR']),
 							'{user_agent}' => $_SERVER['HTTP_USER_AGENT'],
 						];
 
@@ -142,7 +142,7 @@
 				"update ". DB_PREFIX ."administrators
 				set known_fingerprints = '". database::input(implode(',', $administrator['known_fingerprints'])) ."',
 					last_ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."',
-					last_hostname = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
+					last_hostname = '". database::input(reverse_dns($_SERVER['REMOTE_ADDR'])) ."',
 					last_user_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."',
 					login_attempts = 0,
 					total_logins = total_logins + 1,
@@ -272,8 +272,10 @@
 body {
 	display: flex;
 	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 	width: 100vw;
-	height: 100vh;
+	min-height: 100vh;
 }
 
 .loader-wrapper {
@@ -281,8 +283,8 @@ body {
 	position: absolute !important;
 	top: 50%;
 	left: 50%;
-	margin-top: -64px;
-	margin-inline-start: -64px;
+	margin-top: -128px;
+	margin-inline-start: -128px;
 }
 
 #box-login {
@@ -307,62 +309,121 @@ body {
 	border: none;
 	color: inherit;
 }
+
+.card-footer .row {
+	align-items: center;
+}
+button[name="login"] {
+  font-size: 1.25rem;
+  padding: .5em 1em;
+}
+.btn-unstyled span {
+	text-decoration: none;
+	background-image: linear-gradient(currentColor, currentColor);
+	background-size: 0% 1px;
+	background-repeat: no-repeat;
+	background-position: 0 100%;
+	transition: background-size .25s ease, color .25s ease;
+}
+.btn-unstyled:hover span,
+.btn-unstyled:focus-visible span {
+	background-size: 100% 1px;
+}
+
+.login-brand {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 1.5rem 0;
+	text-align: center;
+}
+.login-brand a {
+	display: inline-block;
+	text-decoration: none;
+	transition: transform .25s ease, filter .25s ease;
+}
+.login-brand a:hover {
+	transform: scale(1.05);
+}
+.login-brand img {
+	display: block;
+	height: 1.5rem;
+	width: auto;
+	transition: all linear 150ms;
+	filter: drop-shadow(0px 0 0 rgba(0,0,0,0)) drop-shadow(0 0 0 rgba(0,0,0,0));
+}
+.login-brand:hover img {
+	filter: drop-shadow(0px 5px 2px rgba(0,0,0,.15)) drop-shadow(0 1px 2px rgba(0,0,0,.025));
+}
+.login-brand .brand-fallback {
+	font-size: 1.1rem;
+	font-weight: 700;
+	letter-spacing: -.02em;
+	color: var(--login-text);
+	filter: drop-shadow(0 2px 6px rgba(0, 0, 0, .35));
+}
+
+.theme-toggle {
+	justify-self: end;
+}
 </style>
 
 <div class="loader-wrapper">
-	<div class="loader" style="width: 128px; height: 128px;"></div>
+	<div class="loader" style="width: 256px; height: 256px;"></div>
 </div>
 
-<div id="box-login">
+<?php echo f::form_begin('login_form', 'post'); ?>
+	<?php echo f::form_input_hidden('login', 'true'); ?>
+	<?php echo f::form_input_hidden('redirect_url', true); ?>
 
-	<?php echo f::form_begin('login_form', 'post'); ?>
-		<?php echo f::form_input_hidden('login', 'true'); ?>
-		<?php echo f::form_input_hidden('redirect_url', true); ?>
-
-		<div class="card" style="margin: 0;">
-			<div class="card-header text-center">
-				<a href="<?php echo document::href_ilink(''); ?>">
-					<img src="<?php echo document::href_rlink('storage://images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>">
-				</a>
+	<article id="box-login" class="card">
+		<div class="card-header">
+			<div class="theme-toggle">
+				<?php echo f::form_toggle('theme', ['light' => f::draw_fonticon('icon-sun'), 'dark' => f::draw_fonticon('icon-moon')], (!empty($_COOKIE['theme']) && in_array($_COOKIE['theme'], ['light', 'dark'])) ? $_COOKIE['theme'] : 'light'); ?>
 			</div>
-
-			<div class="card-body">
-
-				{{notices}}
-
-				<h1><?php echo t('title_sign_in', 'Sign In'); ?></h1>
-
-				<label class="form-group">
-					<?php echo f::form_input_username('username', true, ['placeholder' => t('title_username_or_email_address', 'Username or Email Address')]); ?>
-					<div class="form-label"></div>
-				</label>
-
-				<label class="form-group">
-					<?php echo f::form_input_password('password', '', ['placeholder' => t('title_password', 'Password') , 'autocomplete' => 'current-password']); ?>
-					<div class="form-label"></div>
-				</label>
-
-				<div class="form-group">
-					<?php echo f::form_checkbox('remember_me', ['1', t('title_remember_me', 'Remember Me')], true); ?>
-				</div>
-			</div>
-
-			<div class="card-footer">
-				<div class="grid">
-					<div class="col-md-6 text-start">
-						<a class="btn btn-unstyled btn-lg" href="<?php echo document::href_ilink('f:'); ?>">
-							<?php echo f::draw_fonticon('icon-chevron-left'); ?> <?php echo t('title_frontend', 'Frontend'); ?>
-						</a>
-					</div>
-					<div class="col-md-6 text-end">
-						<?php echo f::form_button('login', t('title_login', 'Login'), 'submit', ['class' => 'btn btn-default btn-lg']); ?>
-					</div>
-				</div>
-			</div>
-
+			<h1><?php echo t('title_sign_in', 'Sign In'); ?></h1>
 		</div>
 
-	<?php echo f::form_end(); ?>
+		<div class="card-body">
+
+			{{notices}}
+
+			<label class="form-group">
+				<?php echo f::form_input_username('username', true, ['placeholder' => t('title_username_or_email_address', 'Username or Email Address'), 'autocomplete' => 'username']); ?>
+				<div class="form-label"></div>
+			</label>
+
+			<label class="form-group">
+				<?php echo f::form_input_password('password', '', ['placeholder' => t('title_password', 'Password') , 'autocomplete' => 'current-password']); ?>
+				<div class="form-label"></div>
+			</label>
+
+			<div class="form-group">
+				<?php echo f::form_checkbox('remember_me', ['1', t('title_remember_me', 'Remember Me')], true); ?>
+			</div>
+		</div>
+
+		<div class="card-footer">
+			<div class="row">
+				<div class="col-6 text-center">
+					<a class="btn btn-unstyled" href="<?php echo document::href_ilink('f:'); ?>">
+						<?php echo f::draw_fonticon('icon-chevron-left'); ?> <span><?php echo t('title_frontend', 'Frontend'); ?></span>
+					</a>
+				</div>
+				<div class="col-6 text-center">
+					<?php echo f::form_button('login', t('title_login', 'Login'), 'submit', ['class' => 'btn btn-default btn-lg']); ?>
+				</div>
+			</div>
+		</div>
+
+	</article>
+
+<?php echo f::form_end(); ?>
+
+<div class="login-brand">
+	<a href="https://www.litecart.net/" aria-label="LiteCart">
+		<img src="<?php echo document::href_rlink('app://backend/template/images/logotype.svg'); ?>" alt="<?php echo f::escape_html(settings::get('store_name')); ?>">
+	</a>
 </div>
 
 <script>
@@ -375,11 +436,10 @@ body {
 	$('form[name="login_form"]').submit(function(e) {
 		e.preventDefault();
 		let form = this;
-		$('#box-login .card-body').slideUp(100, function() {
-			$('#box-login').fadeOut(250, function() {
-				$('.loader-wrapper').fadeIn(100, function() {
-					form.submit();
-				});
+
+		$('#box-login').slideUp(500, function() {
+			$('.loader-wrapper').fadeIn(500, function() {
+				form.submit();
 			});
 		});
 	});
