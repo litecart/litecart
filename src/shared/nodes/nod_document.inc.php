@@ -394,7 +394,7 @@
 					$hreflang_tags[] = '<link rel="alternate" hreflang="'. f::escape_attr($language['code']) .'" href="'. f::escape_html(self::ilink(null, [], true, [], $language['code'])) .'">';
 				}
 				if (!empty($hreflang_tags)) {
-					$default_lang = settings::get('site_language_code');
+					$default_lang = settings::get('store_language_code');
 					$hreflang_tags[] = '<link rel="alternate" hreflang="x-default" href="'. f::escape_html(self::ilink(null, [], true, [], $default_lang)) .'">';
 					$_layout->snippets['head_tags']['hreflang'] = implode(PHP_EOL, $hreflang_tags);
 				}

@@ -1772,7 +1772,7 @@
 			"select id, email, company, firstname, lastname
 			from ". DB_PREFIX ."customers
 			order by email;"
-		)->fetch_all(fn($customer) => 
+		)->fetch_all(fn($customer) =>
 			[$customer['id'], $customer['email'], ['data-name' => $customer['company'] ?: $customer['firstname'] .' '. $customer['lastname']]]
 		);
 
@@ -2019,7 +2019,7 @@
 		}
 
 		if (!class_exists('ResourceBundle')) {
-			trigger_error('The PHP extension "intl" is required to use form_select_locale()', E_USER_WARNING);
+			trigger_error('The PHP extension "intl" is required to use form_select_intl_locale()', E_USER_WARNING);
 			return form_input_text($name, $input, $attributes . ($attributes ? ' ' : '') .'placeholder="en_US.utf8, en-US.UTF-8, english"');
 		}
 
@@ -2068,7 +2068,7 @@
 		}
 
 		$options = f::array_each(type_length::UNITS, fn($unit) =>
-			[$unit['unit'], $unit['unit'], 'data-value="'. (float)$unit['value'] .'" data-decimals="'. (int)$unit['decimals'] .'" title="'. f::escape_attr($unit['name']) .'"']
+			[$unit['unit'], $unit['unit'], ['data-value' => (float)$unit['value'], 'data-decimals' => (int)$unit['decimals'], 'title' => f::escape_attr($unit['name'])]]
 		);
 
 		if (preg_match('#\[\]$#', $name)) {
@@ -2615,9 +2615,7 @@
 			return form_input_text($name, $input, ['placeholder' => 'en-US,english', ...$attributes]);
 		}
 
-		$options = array_map(function($locale){
-			return [$locale];
-		}, preg_split('#\R+#', shell_exec('locale -a'), -1, PREG_SPLIT_NO_EMPTY));
+		$options = f::array_each(preg_split('#\R+#', shell_exec('locale -a'), -1, PREG_SPLIT_NO_EMPTY), fn($locale) => [$locale]);
 
 		if (preg_match('#\[\]$#', $name)) {
 			return form_select_multiple($name, $options, $input, $attributes);
@@ -2663,9 +2661,7 @@
 			if (isset($args[3])) $attributes = $args[2];
 		}
 
-		$options = f::array_each(f::file_search('app://frontend/templates/*', GLOB_ONLYDIR), fn($folder) =>
-			basename($folder)
-		);
+		$options = f::array_each(f::file_search('app://frontend/templates/*', GLOB_ONLYDIR), fn($folder) => basename($folder));
 
 		if (preg_match('#\[\]$#', $name)) {
 			return form_select_multiple($name, $options, $input, $attributes);

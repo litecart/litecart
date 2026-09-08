@@ -450,23 +450,23 @@
 		}
 
 		// Check dynamic identifiers
-		public static function identifier(array|string $identifiers, array|null $allowlist = null): string {
+		public static function identifier(array|string $identifiers, array $allowlist=[]): string {
 
-			if (is_string($identifiers)) {
+			if (!is_array($identifiers)) {
 				$identifiers = [$identifiers];
 			}
 
 			foreach ($identifiers as $identifier) {
 				if (!preg_match('#^[A-Za-z0-9_-]+$#', $identifier)) {
-					throw new InvalidArgumentException('Invalid SQL identifier');
+					throw new \InvalidArgumentException('Invalid SQL identifier');
 				}
 
-				if ($allowlist || !in_array($identifier, $allowlist, true)) {
-					throw new InvalidArgumentException('SQL identifier not in allowlist');
+				if ($allowlist && !in_array($identifier, $allowlist, true)) {
+					throw new \InvalidArgumentException('SQL identifier not in allowlist');
 				}
 			}
 
-			return $identifiers[0];
+			return reset($identifiers);
 		}
 	}
 

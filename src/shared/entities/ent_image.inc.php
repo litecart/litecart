@@ -580,7 +580,7 @@
 						$this->_data['height'] = $this->_image->getImageHeight();
 						unset($this->_data['aspect_ratio']);
 
-						return $result;
+						return true;
 
 					} catch (\ImagickException $e) {
 						throw new Exception("Error trimming image ($this->_file)");
@@ -604,9 +604,10 @@
 					$this->data['height'] = ImageSY($this->_image);
 					unset($this->_data['aspect_ratio']);
 
-					return $result;
-
+					return true;
 			}
+
+			return false;
 		}
 
 		public function watermark(string $watermark, string $align_x = 'RIGHT', string $align_y = 'BOTTOM', int $margin = 5): ?bool {

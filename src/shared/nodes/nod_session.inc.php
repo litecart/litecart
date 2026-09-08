@@ -143,13 +143,13 @@
 				if (!$visitor) {
 
 					database::insert('visitors', [
-						'session_id' => $this->data['session_id'],
-						'ip_address' => $this->data['ip_address'],
-						'hostname' => $this->data['hostname'],
-						'user_agent' => $this->data['user_agent'],
-						'referrer' => $this->data['referrer'],
-						'updated_at' => $this->data['update_at'] = date('&-m-d H:i:s'),
-						'created_at' => $this->data['created_at'] = date('&-m-d H:i:s'),
+						'session_id' => self::$data['id'],
+						'ip_address' => self::$data['ip_address'],
+						'hostname' => self::$data['hostname'],
+						'user_agent' => self::$data['user_agent'],
+						'referrer' => self::$data['referrer'],
+						'updated_at' => date('Y-m-d H:i:s'),
+						'created_at' => date('Y-m-d H:i:s'),
 					]);
 
 					$visitor['id'] = database::insert_id();
