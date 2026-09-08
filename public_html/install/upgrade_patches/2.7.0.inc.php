@@ -1,9 +1,5 @@
 <?php
 
-// Backfill lc_products_prices_history with one row per product and per campaign,
-// containing all configured currencies as a JSON object in the `price` column.
-// Runs after the 2.7.0.sql patch has created the table.
-
   $currency_codes = database::query(
     "select code from ". DB_TABLE_PREFIX ."currencies
     where status = 1

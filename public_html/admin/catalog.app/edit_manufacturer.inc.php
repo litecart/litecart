@@ -1,5 +1,7 @@
 <?php
 
+  user::require_login();
+
   if (!empty($_GET['manufacturer_id'])) {
     $manufacturer = new ent_manufacturer($_GET['manufacturer_id']);
   } else {

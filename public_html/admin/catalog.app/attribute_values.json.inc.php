@@ -1,5 +1,7 @@
 <?php
 
+  user::require_login();
+
   ob_clean();
 
   header('Content-type: application/json; charset='. language::$selected['charset']);

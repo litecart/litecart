@@ -1,5 +1,7 @@
 <?php
 
+  user::require_login();
+
   if (!empty($_GET['product_id'])) {
     $product = new ent_product($_GET['product_id']);
   } else {

@@ -1,5 +1,7 @@
 <?php
 
+  user::require_login();
+
   if (!empty($_GET['category_id'])) {
     $category = new ent_category($_GET['category_id']);
   } else {

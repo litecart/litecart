@@ -1,5 +1,7 @@
 <?php
 
+  user::require_login();
+
   if (!empty($_GET['tax_class_id'])) {
     $tax_class = new ent_tax_class($_GET['tax_class_id']);
   } else {

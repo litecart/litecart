@@ -1,5 +1,7 @@
 <?php
 
+  user::require_login();
+
   switch ($_GET['doc']) {
     case 'customer':
       $title = language::translate('title_customer_modules', 'Customer Modules');

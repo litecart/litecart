@@ -1,5 +1,7 @@
 <?php
 
+  user::require_login();
+
   document::$snippets['title'][] = language::translate('title_csv_import_export', 'CSV Import/Export');
 
   breadcrumbs::add(language::translate('title_customers', 'Customers'), document::link(WS_DIR_ADMIN, ['doc' => 'customers'], ['app']));

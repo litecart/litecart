@@ -21,24 +21,38 @@
 
     try {
 
+    // Rate limit checking
+      if (database::query(
+        "select count(*) as num_attempts from ". DB_TABLE_PREFIX ."rate_limiting
+        where action = 'login_failed'
+        and ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."'
+        and date_created >= '". date('Y-m-d H:i:s', strtotime('-5 minutes')) ."'"
+      )->fetch('num_attempts') > 3) {
+        throw new Exception(language::translate('error_too_many_attempts', 'Too many failed attempts. Please try again later.'));
+      }
+
+      $client_ip = $_SERVER['REMOTE_ADDR'];
+
       if (!empty($_COOKIE['remember_me'])) {
         header('Set-Cookie: remember_me=; Path='. WS_DIR_APP .'; Max-Age=-1; HttpOnly; SameSite=Lax', false);
       }
 
       if (empty($_POST['username'])) throw new Exception(language::translate('error_missing_username', 'You must provide a username'));
 
-      $user_query = database::query(
+      $user = database::query(
         "select * from ". DB_TABLE_PREFIX ."users
         where lower(username) = '". database::input(strtolower($_POST['username'])) ."'
         or lower(email) = '". database::input(strtolower($_POST['username'])) ."'
         limit 1;"
-      );
+      )->fetch();
 
-      if (!$user = database::fetch($user_query)) {
+      if (!$user) {
         throw new Exception(language::translate('error_user_not_found', 'The user could not be found in our database'));
       }
 
-      if (empty($user['status'])) throw new Exception(language::translate('error_user_account_disabled', 'The user account is disabled'));
+      if (empty($user['status'])) {
+        throw new Exception(language::translate('error_user_account_disabled', 'The user account is disabled'));
+      }
 
       if (!empty($user['date_valid_from']) && date('Y-m-d H:i:s') < $user['date_valid_from']) {
         throw new Exception(strtr(language::translate('error_account_is_blocked', 'The account is blocked until %s'), ['%s' => language::strftime(language::$selected['format_datetime'], strtotime($user['date_valid_from']))]));
@@ -49,6 +63,65 @@
       }
 
       if (!password_verify($_POST['password'], $user['password_hash'])) {
+
+        database::query(
+          "insert into ". DB_TABLE_PREFIX ."rate_limiting
+          (action, ip_address, hostname, user_agent, date_created)
+          values ('login_failed', '". database::input($client_ip) ."', '". database::input(gethostbyaddr($client_ip)) ."', '". database::input($_SERVER['HTTP_USER_AGENT']) ."', '". date('Y-m-d H:i:s') ."')"
+        );
+
+        // Notify the user on the first rate-limiting threshold hit
+        if (!empty($user['email'])) {
+          $window_start = date('Y-m-d H:i:s', strtotime('-5 minutes'));
+          $failed_count = (int)database::query(
+            "select count(*) as num_attempts from ". DB_TABLE_PREFIX ."rate_limiting
+            where action = 'login_failed'
+            and date_created >= '". $window_start ."'"
+          )->fetch('num_attempts');
+
+          $notified = (int)database::query(
+            "select count(*) as num_sent from ". DB_TABLE_PREFIX ."rate_limiting
+            where action = 'login_failed_notified'
+            and date_created >= '". $window_start ."'"
+          )->fetch('num_sent');
+
+          if ($failed_count >= 3 && !$notified) {
+
+            database::query(
+              "insert into ". DB_TABLE_PREFIX ."rate_limiting
+              (action, ip_address, hostname, user_agent, date_created)
+              values ('login_failed_notified', '". database::input($client_ip) ."', '". database::input(gethostbyaddr($client_ip)) ."', '". database::input($_SERVER['HTTP_USER_AGENT']) ."', '". date('Y-m-d H:i:s') ."')"
+            );
+
+            $aliases = [
+              '%store_name' => settings::get('store_name'),
+              '%store_link' => document::ilink(''),
+              '%username' => $user['username'],
+              '%expires' => date('Y-m-d H:i:00', strtotime('+15 minutes')),
+              '%ip_address' => $client_ip,
+              '%hostname' => gethostbyaddr($client_ip),
+              '%user_agent' => $_SERVER['HTTP_USER_AGENT'],
+            ];
+
+            $subject = language::translate('user_account_blocked:email_subject', 'User Account Blocked');
+            $message = strtr(language::translate('user_account_blocked:email_body', implode("\r\n", [
+              "Your user account %username has been blocked because of too many invalid login attempts.",
+              "",
+              "Client: %hostname (%ip_address)",
+              "%user_agent",
+              "",
+              "%store_name",
+              "%store_link",
+            ])), $aliases);
+
+            $email = new ent_email();
+            $email->add_recipient($user['email'], $user['username'])
+                  ->set_subject($subject)
+                  ->add_body($message)
+                  ->send();
+          }
+        }
+
         if (++$user['login_attempts'] < 3) {
 
           database::query(
@@ -69,36 +142,6 @@
             where id = ". (int)$user['id'] ."
             limit 1;"
           );
-
-          if (!empty($user['email'])) {
-
-            $aliases = [
-              '%store_name' => settings::get('store_name'),
-              '%store_link' => document::ilink(''),
-              '%username' => $user['username'],
-              '%expires' => date('Y-m-d H:i:00', strtotime('+15 minutes')),
-              '%ip_address' => $_SERVER['REMOTE_ADDR'],
-              '%hostname' => gethostbyaddr($_SERVER['REMOTE_ADDR']),
-              '%user_agent' => $_SERVER['HTTP_USER_AGENT'],
-            ];
-
-            $subject = language::translate('user_account_blocked:email_subject', 'User Account Blocked');
-            $message = strtr(language::translate('user_account_blocked:email_body',
-              "Your user account %username has been blocked until %expires because of too many invalid login attempts.\r\n"
-            . "\r\n"
-            . "Client: %hostname (%ip_address)\r\n"
-            . "%user_agent\r\n"
-            . "\r\n"
-            . "%store_name\r\n"
-            . "%store_link"
-            ), $aliases);
-
-            $email = new ent_email();
-            $email->add_recipient($user['email'], $user['username'])
-                  ->set_subject($subject)
-                  ->add_body($message)
-                  ->send();
-          }
 
           throw new Exception(strtr(language::translate('error_account_has_been_blocked_x_minutes', 'This account has been temporarily blocked for %d minutes.'), ['%d' => 15]));
         }
@@ -173,8 +216,15 @@
       user::load($user['id']);
       session::rotate_csrf_token();
 
+    // Clear IP-based rate limit records on successful login
+      database::query(
+        "delete from ". DB_TABLE_PREFIX ."rate_limiting
+        where action in ('login_failed', 'login_failed_notified')
+        and ip_address = '". database::input($client_ip) ."'"
+      );
+
       if (!empty($_POST['remember_me']) && defined('HMAC_KEY_REMEMBER_ME')) {
-        $expiry_days = (int)(settings::get('remember_me_days') ?: 30);
+        $expiry_days = !empty(settings::get('remember_me_days')) ? (int)settings::get('remember_me_days') : 30;
         $token = functions::token_create_remember($user['id'], $user['password_hash'], $expiry_days);
         header('Set-Cookie: remember_me='. $token .'; Path='. WS_DIR_APP .'; Expires='. gmdate('r', strtotime('+'. $expiry_days .' days')) .'; HttpOnly; SameSite=Lax' . (!empty($_SERVER['HTTPS']) ? '; Secure' : ''), false);
       } else if (!empty($_COOKIE['remember_me'])) {
@@ -193,6 +243,7 @@
       exit;
 
     } catch (Exception $e) {
+
       http_response_code(401); // Troublesome with HTTP Auth (e.g. .htpasswd)
       notices::add('errors', $e->getMessage());
     }

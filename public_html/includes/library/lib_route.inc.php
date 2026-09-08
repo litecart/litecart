@@ -140,19 +140,46 @@
 
       if (empty($path)) return '';
 
-      $path = preg_replace('#/+#', '/', $path); // Bad bot nonsense
+    // Collapse repeated slashes and stray dots (e.g. ////, /./, /.../) used by bad bots
+      $path = preg_replace('#/+\.?\.?/?#', '/', $path);
 
       if (!$path = parse_url($path, PHP_URL_PATH)) {
         return '';
       }
 
-      if (!$path = urldecode($path)) {
+    // Decode then re-collapse to defeat double-encoded traversal payloads (e.g. %2F, %2E%2E)
+      $previous = null;
+      while ($path !== $previous) {
+        $previous = $path;
+        $decoded = urldecode($path);
+        if ($decoded === false || $decoded === $path) break;
+        $path = $decoded;
+      }
+
+      if (!$path = preg_replace('#/+\.?\.?/?#', '/', $path)) {
         return '';
       }
 
+    // Strip language/app prefix
       if (!$path = preg_replace('#^'. WS_DIR_APP . '(index\.php/)?(('. implode('|', array_keys(language::$languages)) .')(/|$))?#', '', $path)) {
         return '';
       }
+
+    // Reject path traversal segments (.. and .) before they reach the router/filesystem
+      $segments = explode('/', $path);
+      $segments = array_filter($segments, function($segment) {
+        return $segment !== '..' && $segment !== '.';
+      });
+      $path = implode('/', $segments);
+
+    // Collapse any slashes introduced by segment removal
+      $path = preg_replace('#/+#', '/', $path);
+
+    // Strip NUL bytes (defense against null-byte poisoning)
+      $path = str_replace(chr(0), '', $path);
+
+    // Disallow control characters and other non-printables
+      $path = preg_replace('#[\x00-\x1F\x7F]+#', '', $path);
 
       return $path;
     }

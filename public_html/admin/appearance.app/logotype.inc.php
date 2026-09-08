@@ -1,5 +1,7 @@
 <?php
 
+  user::require_login();
+
   document::$snippets['title'][] = language::translate('title_logotype', 'Logotype');
 
   breadcrumbs::add(language::translate('title_appearance', 'Appearance'));

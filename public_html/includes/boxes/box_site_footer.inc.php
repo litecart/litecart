@@ -12,7 +12,7 @@
 
   // Categories
     if (!isset(document::$settings['footer_categories']) || document::$settings['footer_categories']) {
-      $footer_categories_limit = (int)(document::$settings['footer_categories_limit'] ?? 9);
+      $footer_categories_limit = isset(document::$settings['footer_categories_limit']) ? (int)document::$settings['footer_categories_limit'] : 9;
 
       $categories_query = database::query(
         "select c.id, ci.name
@@ -44,7 +44,7 @@
 
   // Manufacturers
     if (!isset(document::$settings['footer_manufacturers']) || document::$settings['footer_manufacturers']) {
-      $footer_manufacturers_limit = (int)(document::$settings['footer_manufacturers_limit'] ?? 9);
+      $footer_manufacturers_limit = (int)(isset(document::$settings['footer_manufacturers_limit']) ? document::$settings['footer_manufacturers_limit'] : 9);
 
       $manufacturers_query = database::query(
         "select m.id, m.name

@@ -1,5 +1,7 @@
 <?php
 
+  user::require_login();
+
   if (!empty($_GET['customer_id'])) {
     $customer = new ent_customer($_GET['customer_id']);
   } else {

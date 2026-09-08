@@ -1,5 +1,7 @@
 <?php
 
+  user::require_login();
+
   if (!empty($_GET['vmod_id'])) {
 
     if (!is_file($file = FS_DIR_STORAGE . 'vmods/' . basename($_GET['vmod_id']) . '.xml')) {

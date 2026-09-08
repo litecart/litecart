@@ -5,7 +5,10 @@ ALTER TABLE `lc_products_prices`
 DROP KEY product_id,
 ADD UNIQUE KEY product_id (product_id);
 -- -----
-ALTER TABLE `lc_products_images`
+DELETE t1 FROM `lc_products_images` t1
+JOIN `lc_products_images` t2 ON t1.product_id = t2.product_id AND t1.filename = t2.filename AND t1.id > t2.id;
+-- -----
+ALTER IGNORE TABLE `lc_products_images`
 ADD UNIQUE INDEX `product_id_filename` (`product_id`, `filename`);
 -- -----
 INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, `key`, `value`, `function`, `priority`, `date_updated`, `date_created`) VALUES

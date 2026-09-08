@@ -51,6 +51,10 @@ ErrorDocument 500 "Internal Server Error"
   # Web path to application root
   RewriteBase {BASE_DIR}
 
+  # Block traversal request (for security reasons)
+  RewriteCond %{REQUEST_URI} (%2E%2E|\.\.|\.\./|/\.\.)
+  RewriteRule ^ - [F]
+
   # No rewrite logic for physical files
   RewriteCond %{REQUEST_FILENAME} -d [OR]
   RewriteCond %{REQUEST_FILENAME} -f [OR]

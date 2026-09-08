@@ -2,7 +2,7 @@
 	"name": "litecart",
 	"title": "LiteCart",
 	"description": "Lightweight e-commerce platform built with PHP, jQuery and HTML.",
-	"version": "2.7.0",
+	"version": "2.7.1",
 	"author": {
 		"name": "T. Almroth",
 		"url": "https://www.litecart.net/"
@@ -30,10 +30,10 @@
 		"grunt-phplint": "^0.1.0",
 		"grunt-text-replace": "^0.4.0",
 		"phplint": "^2.0.5",
-		"sass": "^1.103.1"
+		"sass": "^1.104.0"
 	},
 	"scripts": {
-		"archive": "git archive --format=zip --output latest.zip",
+		"archive": "git archive --format=zip --output latest.zip HEAD",
 		"build": "grunt",
 		"changelog": "git log --oneline 'master'..'dev' > changelog.txt",
 		"hash": "php .git-hooks/pre-commit.d/calculate_checksums.php",

@@ -1,5 +1,7 @@
 <?php
 
+  user::require_login();
+
   if (!empty($_GET['user_id'])) {
     $user = new ent_user($_GET['user_id']);
   } else {

@@ -44,7 +44,7 @@
               <?php } ?>
 
               <?php if (settings::get('captcha_enabled')) { ?>
-              <div class="form-group">
+              <div class="form-group" style="max-width: 250px;">
                 <label><?php echo language::translate('title_captcha', 'CAPTCHA'); ?></label>
                 <?php echo functions::form_draw_captcha_field('captcha', 'reset_password', 'required'); ?>
               </div>

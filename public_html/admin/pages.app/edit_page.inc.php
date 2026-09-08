@@ -1,5 +1,7 @@
 <?php
 
+  user::require_login();
+
   if (!empty($_GET['page_id'])) {
     $page = new ent_page($_GET['page_id']);
   } else {

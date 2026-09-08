@@ -1,5 +1,7 @@
 <?php
 
+  user::require_login();
+
   $_GET['debug'] = true;
 
   try {

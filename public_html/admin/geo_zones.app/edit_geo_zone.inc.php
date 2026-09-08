@@ -1,5 +1,7 @@
 <?php
 
+  user::require_login();
+
   if (!empty($_GET['geo_zone_id'])) {
     $geo_zone = new ent_geo_zone($_GET['geo_zone_id']);
   } else {

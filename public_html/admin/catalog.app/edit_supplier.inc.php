@@ -1,5 +1,7 @@
 <?php
 
+  user::require_login();
+
   if (!empty($_GET['supplier_id'])) {
     $supplier = new ent_supplier($_GET['supplier_id']);
   } else {
