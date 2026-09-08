@@ -1,5 +1,9 @@
 <?php
 
+  perform_action('delete', [
+    FS_DIR_APP . 'ext/jquery/jquery-3.7.1.min.js',
+  ]);
+
 // Block traversal requests in .htaccess (for security reasons)
   perform_action('modify', [
     FS_DIR_APP . '.htaccess' => [
