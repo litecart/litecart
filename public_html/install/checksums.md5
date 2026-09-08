@@ -568,7 +568,7 @@ ee82322900ed74357fc88637d036bde4	install/data/default/public_html/images/slides/
 d41d8cd98f00b204e9800998ecf8427e	install/data/default/public_html/images/uploads/index.html
 aa020306757062579e49df4368082bc6	install/data/default/public_html/robots.txt
 d7603cebc5fbc361d3e7dac232528e53	install/data/default/public_html/vmods/google_analytics.disabled
-a46d656640dc601c63570f59b12dfc9b	install/data/demo/data.sql
+08e475a54fcf7c37a1c304cc199e4f51	install/data/demo/data.sql
 97074381a7fa9bfa40439fc5da0f4c6e	install/data/demo/public_html/images/manufacturers/1-acme-corp.png
 f8176cc134ac9e77b99bbd252e96aa47	install/data/demo/public_html/images/products/1-yellow-duck-1.jpg
 63669b05d08842a26337f153983ad801	install/data/demo/public_html/images/products/2-green-duck-1.jpg
@@ -699,7 +699,8 @@ cd37a7f25119ad9ac30f171d57ef6db2	install/upgrade_patches/2.6.1.sql
 f90a56242d3956dc3dcf217afc5cb09e	install/upgrade_patches/2.6.3.sql
 bf4036885fd8f0a428691d3581ed0f75	install/upgrade_patches/2.7.0.inc.php
 4ae0c1da8cf2c3e71ea24a5e5c7d4353	install/upgrade_patches/2.7.0.sql
-0394051c214d5ddf82fa53a0f007985c	install/upgrade_patches/2.7.1.inc.php
+f7731ed1370e75fe84dfa3c43b245d87	install/upgrade_patches/2.7.1.inc.php
+4fb8a2c1fb6999dc019a9ee2283b9f38	install/upgrade_patches/2.7.1.sql
 62bac9360222fee7de79173307177c9e	logs/.htaccess
 d41d8cd98f00b204e9800998ecf8427e	logs/index.html
 70df41f74e6b15be767a8052f14b4036	pages/ajax/cart.json.inc.php
