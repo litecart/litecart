@@ -1,10 +1,10 @@
 <?php
 
   #[AllowDynamicProperties]
-  class job_cache_cleaner {
+  class job_cleaner {
     public $id = __CLASS__;
-    public $name = 'Cache Cleaner';
-    public $description = 'Wipe out old cache files that are starting to collect dust.';
+    public $name = 'Cleaner';
+    public $description = 'Wipes out old data and doing system housekeeping.';
     public $author = 'LiteCart Dev Team';
     public $version = '1.0';
     public $website = 'https://www.litecart.net';
@@ -17,6 +17,8 @@
       if (empty($force)) {
         if (strtotime($last_run) > strtotime('-1 hour')) return;
       }
+
+    // Cache
 
       echo 'Wipe out old cache files...' . PHP_EOL;
 
@@ -52,6 +54,17 @@
       }
 
       echo PHP_EOL . "Cleaned up $deleted_files files and $deleted_dirs directories" . PHP_EOL;
+
+    // Rate Limiting
+
+      echo 'Wiping out old rate limiting records...' . PHP_EOL;
+
+      database::query(
+        "delete from ". DB_TABLE_PREFIX ."rate_limiting
+        where date_created < '". date('Y-m-d H:i:s', strtotime('-7 days')) ."';"
+      );
+
+      echo PHP_EOL . "Deleted ". database::affected_rows() ." rate-limit failures" . PHP_EOL;
     }
 
     function settings() {

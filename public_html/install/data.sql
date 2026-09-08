@@ -265,7 +265,7 @@ INSERT INTO `lc_modules` (`id`, `module_id`, `type`, `status`, `priority`, `sett
 (2, 'ot_shipping_fee', 'order_total', 1, 20, '{"status":"1","free_shipping_amount":"0","priority":"20"}', '', NOW(), NOW()),
 (3, 'ot_payment_fee', 'order_total', 1, 30, '{"status":"1","priority":"30"}', '', NOW(), NOW()),
 (4, 'job_error_reporter', 'job', 1, 0, '{"status":"1","frequency":"Weekly","email_receipient":"","priority":"0"}', '', NOW(), NOW()),
-(5, 'job_cache_cleaner', 'job', 1, 0, '{"status":"1","priority":"0"}', '', NOW(), NOW()),
+(5, 'job_cleaner', 'job', 1, 0, '{"status":"1","priority":"0"}', '', NOW(), NOW()),
 (6, 'job_mysql_optimizer', 'job', 1, 0, '{"status":"1","frequency":"monthly","priority":"0"}', '', NOW(), NOW());
 -- -----
 INSERT INTO `lc_order_statuses` (`id`, `state`, `icon`, `color`, `is_sale`, `is_archived`, `is_trackable`, `stock_action`, `date_updated`, `date_created`) VALUES

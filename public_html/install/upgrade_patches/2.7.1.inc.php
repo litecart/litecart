@@ -2,6 +2,7 @@
 
   perform_action('delete', [
     FS_DIR_APP . 'ext/jquery/jquery-3.7.1.min.js',
+    FS_DIR_APP . 'includes/modules/jobs/job_cache_cleaner.inc.php',
   ]);
 
 // Block traversal requests in .htaccess (for security reasons)
