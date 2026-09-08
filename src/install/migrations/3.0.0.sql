@@ -408,6 +408,8 @@ ADD COLUMN `language_code` CHAR(2) NOT NULL DEFAULT '' AFTER `shipping_email`,
 ADD COLUMN `group_id` INT UNSIGNED NULL AFTER `id`,
 ADD COLUMN `known_ips` VARCHAR(512) NOT NULL DEFAULT '' AFTER `total_logins`,
 ADD COLUMN `last_active` TIMESTAMP NULL AFTER `last_login`,
+ADD COLUMN `two_factor_auth` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0 AFTER `last_active`,
+ADD COLUMN `totp_secret` VARCHAR(64) NULL AFTER `two_factor_auth`,
 ADD INDEX `group_id` (`group_id`);
 -- -----
 ALTER TABLE `lc_delivery_statuses`

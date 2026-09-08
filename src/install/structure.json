@@ -410,6 +410,8 @@
 				"last_user_agent": { "type": "VARCHAR", "length": 255, "default": "''" },
 				"last_login": { "type": "TIMESTAMP", "nullable": true },
 				"last_active": { "type": "TIMESTAMP", "nullable": true },
+				"two_factor_auth": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
+				"totp_secret": { "type": "VARCHAR", "length": 64, "nullable": true },
 				"blocked_until": { "type": "TIMESTAMP", "nullable": true },
 				"sessions_expiry": { "type": "TIMESTAMP", "nullable": true },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
@@ -1453,6 +1455,23 @@
 			"check_constraints": {
 				"quantity_units_chk_name": "JSON_VALID(name)",
 				"quantity_units_chk_description": "JSON_VALID(description)"
+			}
+		},
+		"rate_limiting": {
+			"columns": {
+				"id": { "type": "BIGINT", "length": 20, "unsigned": true, "auto_increment": true },
+				"action": { "type": "VARCHAR", "length": 64 },
+				"scope_type": { "type": "VARCHAR", "length": 32, "nullable": true },
+				"scope_key": { "type": "VARCHAR", "length": 128, "nullable": true },
+				"ip_address": { "type": "VARCHAR", "length": 39 },
+				"hostname": { "type": "VARCHAR", "length": 128 },
+				"user_agent": { "type": "VARCHAR", "length": 255 },
+				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
+			},
+			"primary_key": ["id"],
+			"keys": {
+				"scope": ["scope_type", "scope_key", "action", "created_at"],
+				"record": ["ip_address", "action", "created_at"]
 			}
 		},
 		"redirects": {

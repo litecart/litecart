@@ -87,6 +87,17 @@
 
 			##
 
+			echo "Wiping out old rate limiting records..." . PHP_EOL;
+
+			database::query(
+				"delete from ". DB_PREFIX ."rate_limiting
+				where created_at < '". date('Y-m-d H:i:s', strtotime('-7 days')) ."';"
+			);
+
+			echo '- Removed '. f::format_number(database::affected_rows()) .' rate-limit record(s).' . PHP_EOL . PHP_EOL;
+
+			##
+
 			echo "Cleaning up old log files..." . PHP_EOL;
 
 			$deleted_files = 0;

@@ -53,6 +53,10 @@ Options -Indexes
 	RewriteCond %{REQUEST_FILENAME} !-f
 	RewriteRule ^ {WS_DIR_APP}storage/images/favicons/favicon-256x256.png [L]
 
+	# Block traversal requests (for security reasons)
+	RewriteCond %{REQUEST_URI} (?:%2e|\.)(?:%2e|\.)(?:[/\\%]|$) [NC]
+	RewriteRule ^ - [F]
+
 	# Web path to application root
 	RewriteBase {WS_DIR_APP}
 

@@ -57,6 +57,74 @@
 					</div>
 				</section>
 
+				<section id="box-totp-authenticator" class="card" aria-label="<?php echo f::escape_attr(t('title_totp_authenticator', 'TOTP Authenticator')); ?>">
+					<div class="card-header">
+						<h1 class="card-title"><?php echo t('title_totp_authenticator', 'TOTP Authenticator'); ?></h1>
+					</div>
+					<div class="card-body" style="max-width: 720px;">
+						<?php if (!empty(customer::$data['totp_secret'])) { ?>
+
+							<div class="alert alert-success">
+								<?php echo t('text_totp_enabled', 'TOTP is enabled. You will be prompted for a code on each login.'); ?>
+							</div>
+
+							<?php echo f::form_begin('totp_disable_form', 'post', null, false, ['aria-label' => f::escape_attr(t('title_disable_totp', 'Disable TOTP'))]); ?>
+								<div class="form-grid" style="align-items: end;">
+									<div class="col-sm-6">
+										<label class="form-group">
+											<div class="form-label"><?php echo t('title_password', 'Password'); ?></div>
+											<?php echo f::form_input_password('totp_disable_password', '', ['autocomplete' => 'off', 'required' => '']); ?>
+										</label>
+									</div>
+									<div class="col-sm-6">
+										<?php echo f::form_button('totp_disable', t('title_disable_totp', 'Disable TOTP'), 'submit', ['class' => 'btn btn-danger']); ?>
+									</div>
+								</div>
+							<?php echo f::form_end(); ?>
+
+						<?php } elseif (!empty(session::$data['totp_pending_secret'])) { ?>
+
+							<?php
+								$totp_account = customer::$data['email'] ?: customer::$data['code'];
+								$totp_uri = f::totp_build_uri(session::$data['totp_pending_secret'], $totp_account, settings::get('store_name'));
+								$totp_svg = f::qr_generate($totp_uri, 200);
+							?>
+
+							<div style="text-align: center; margin-bottom: 1em;">
+								<?php echo $totp_svg; ?>
+							</div>
+
+							<div class="form-group">
+								<div class="form-label"><?php echo t('title_manual_setup_key', 'Manual Setup Key'); ?></div>
+								<code style="word-break: break-all; user-select: all;"><?php echo session::$data['totp_pending_secret']; ?></code>
+							</div>
+
+							<?php echo f::form_begin('totp_confirm_form', 'post', null, false, ['aria-label' => f::escape_attr(t('title_confirm', 'Confirm'))]); ?>
+								<div class="form-grid" style="align-items: end;">
+									<div class="col-sm-6">
+										<label class="form-group">
+											<div class="form-label"><?php echo t('title_verification_code', 'Verification Code'); ?></div>
+											<?php echo f::form_input_text('totp_code', '', ['autocomplete' => 'one-time-code', 'inputmode' => 'numeric', 'maxlength' => '6', 'pattern' => '\d{6}', 'required' => '']); ?>
+										</label>
+									</div>
+									<div class="col-sm-6">
+										<?php echo f::form_button('totp_confirm', t('title_confirm', 'Confirm'), 'submit', ['class' => 'btn btn-success']); ?>
+									</div>
+								</div>
+							<?php echo f::form_end(); ?>
+
+						<?php } else { ?>
+
+							<p><?php echo t('text_totp_intro', 'Set up an authenticator app (such as Google Authenticator, 1Password, or Authy) to require a one-time code on each login.'); ?></p>
+
+							<?php echo f::form_begin('totp_setup_form', 'post', null, false, ['aria-label' => f::escape_attr(t('title_enable_totp', 'Enable TOTP'))]); ?>
+								<?php echo f::form_button('totp_setup', t('title_enable_totp', 'Enable TOTP'), 'submit', ['class' => 'btn btn-default']); ?>
+							<?php echo f::form_end(); ?>
+
+						<?php } ?>
+					</div>
+				</section>
+
 				<section id="box-edit-details" class="card" aria-label="<?php echo f::escape_attr(t('title_customer_profile', 'Customer Profile')); ?>">
 					<div class="card-header">
 						<h1 class="card-title"><?php echo t('title_customer_profile', 'Customer Profile'); ?></h1>

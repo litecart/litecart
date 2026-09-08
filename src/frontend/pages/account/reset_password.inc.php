@@ -15,7 +15,23 @@
 
 	if (!empty($_POST['reset_password'])) {
 
+		$has_code = !empty($_REQUEST['verification_code']);
+		$rate_limit_action = $has_code ? 'password_reset_failed' : 'password_reset_requested';
+
 		try {
+
+			// Rate limit checking
+			if (database::query(
+				"select count(*) as num_attempts from ". DB_PREFIX ."rate_limiting
+				where action = '". $rate_limit_action ."'
+				and (
+					ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."'
+					". (!empty($_REQUEST['email']) ? "or (scope_type = 'email' and scope_key = '". database::input($_REQUEST['email']) ."')" : '') ."
+				)
+				and created_at >= '". date('Y-m-d H:i:s', strtotime('-5 minutes')) ."'"
+			)->fetch('num_attempts') > 3) {
+				throw new Exception(t('error_too_many_attempts', 'Too many failed attempts. Please try again later.'));
+			}
 
 			if (empty($_REQUEST['email'])) {
 				throw new Exception(t('error_must_provide_email_address', 'You must provide an email address'));
@@ -95,6 +111,16 @@
 						]),
 					]);
 
+					database::insert('rate_limiting', [
+						'action' => 'password_reset_requested',
+						'ip_address' => $_SERVER['REMOTE_ADDR'],
+						'hostname' => reverse_dns($_SERVER['REMOTE_ADDR']),
+						'user_agent' => $_SERVER['HTTP_USER_AGENT'],
+						'scope_type' => 'email',
+						'scope_key' => $customer['email'],
+						'created_at' => date('Y-m-d H:i:s'),
+					]);
+
 				} else {
 					// Timing-neutral dummy path so unknown/inactive accounts respond in the same ballpark as real sends.
 					usleep(random_int(200000, 500000));
@@ -111,12 +137,34 @@
 				$customer->data['sessions_expiry'] = date('Y-m-d H:i:s');
 				$customer->save();
 
+				// Clear failed-reset attempts for this IP and email after a successful reset.
+				database::query(
+					"delete from ". DB_PREFIX ."rate_limiting
+					where action = 'password_reset_failed'
+					and (
+						ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."'
+						". (!empty($_REQUEST['email']) ? "or (scope_type = 'email' and scope_key = '". database::input($_REQUEST['email']) ."')" : '') ."
+					)"
+				);
+
 				notices::add('success', t('success_new_password_set', 'Your new password has been set. You may now sign in.'));
 				redirect(document::ilink('account/sign_in', ['email' => $customer->data['email']]), 303);
 				exit;
 			}
 
 		} catch (Exception $e) {
+
+			// Record failed attempts for rate-limiting
+			database::insert('rate_limiting', [
+				'action' => $rate_limit_action,
+				'ip_address' => $_SERVER['REMOTE_ADDR'],
+				'hostname' => reverse_dns($_SERVER['REMOTE_ADDR']),
+				'user_agent' => $_SERVER['HTTP_USER_AGENT'],
+				'scope_type' => !empty($_REQUEST['email']) ? 'email' : null,
+				'scope_key' => !empty($_REQUEST['email']) ? $_REQUEST['email'] : null,
+				'created_at' => date('Y-m-d H:i:s'),
+			]);
+
 			notices::add('errors', $e->getMessage());
 		}
 	}

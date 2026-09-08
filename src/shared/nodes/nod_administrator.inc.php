@@ -41,24 +41,6 @@
 					// Verify HMAC with actual password hash
 					$verified_id = f::token_verify_remember($_COOKIE['remember_me'], $administrator['password_hash']);
 					if ($verified_id === false) {
-
-						if (++$administrator['login_attempts'] < 3) {
-							database::query(
-								"update ". DB_PREFIX ."administrators
-								set login_attempts = login_attempts + 1
-								where id = ". (int)$administrator['id'] ."
-								limit 1;"
-							);
-						} else {
-							database::query(
-								"update ". DB_PREFIX ."administrators
-								set login_attempts = 0,
-								valid_from = '". date('Y-m-d H:i:00', strtotime('+15 minutes')) ."'
-								where id = ". (int)$administrator['id'] ."
-								limit 1;"
-							);
-						}
-
 						throw new Exception('Invalid token signature');
 					}
 
@@ -70,7 +52,6 @@
 							last_hostname = '". database::input(reverse_dns($_SERVER['REMOTE_ADDR'])) ."',
 							last_user_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."',
 							last_login = '". date('Y-m-d H:i:s') ."',
-							login_attempts = 0,
 							total_logins = total_logins + 1
 						where id = ". (int)$administrator['id'] ."
 						limit 1;"
@@ -171,8 +152,12 @@
 				exit;
 			}
 
-			if (!empty(session::$data['security_verification'])) {
-				if (!in_array(route::$selected['resource'], ['b:login', 'b:logout', 'b:verify'])) {
+			if (self::$data['two_factor_auth'] && !empty(session::$data['security.administrator']['verification'])) {
+				if (!in_array(route::$selected['resource'], [
+					'b:login',
+					'b:logout',
+					'b:verify',
+				])) {
 					redirect(document::ilink('b:verify', ['redirect_url' => $_SERVER['REQUEST_URI']]), 302);
 					exit;
 				}

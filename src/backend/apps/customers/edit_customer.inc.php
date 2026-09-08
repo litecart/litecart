@@ -27,7 +27,7 @@
 
 			customer::load($_GET['customer_id']);
 
-			security::$data['timestamp'] = time();
+			session::$data['security.customer']['timestamp'] = time();
 			session::regenerate_id();
 
 			notices::add('success', strtr(t('success_logged_in_as_user', 'You are now logged in as {firstname} {lastname}.'), [
@@ -69,12 +69,17 @@
 				$_POST['tax_id'] = '';
 			}
 
+			if (!empty($_POST['two_factor_auth']) && empty($_POST['email'])) {
+				throw new Exception(t('error_email_required_for_two_factor_authentication', 'An email address is required for two-factor authentication'));
+			}
+
 			foreach ([
 				'code',
 				'status',
 				'group_id',
 				'email',
 				'password',
+				'two_factor_auth',
 				'language_code',
 				'tax_id',
 				'company',
@@ -211,19 +216,20 @@
 ?>
 <nav class="tabs">
 
-	<a class="tab-item active" href="#tab-profile" data-toggle="tab">
-		<?php echo t('title_customers', 'Customers'); ?>
+	<a class="tab-item active" href="#tab-details" data-toggle="tab">
+		<?php echo t('title_details', 'Details'); ?>
 	</a>
-
+	
+	<?php if (!empty($customer->data['id'])) { ?>
 	<a class="tab-item" href="#tab-event-logs" data-toggle="tab">
 		<?php echo t('title_event_logs', 'Event Logs'); ?>
 	</a>
-
+	<?php } ?>
 </nav>
 
 <div class="tab-contents">
 
-	<div id="tab-profile" class="tab-contents">
+	<div id="tab-details" class="tab-contents">
 		<div class="card">
 			<div class="card-header">
 				<div class="card-title">
@@ -235,7 +241,6 @@
 				<?php echo f::form_begin('customer_form', 'post', '', false, ['autocomplete' => 'off']); ?>
 
 					<div class="grid">
-
 						<div class="col-md-6">
 
 							<h3><?php echo t('title_account_details', 'Account Details'); ?></h3>
@@ -268,21 +273,30 @@
 							</label>
 
 							<div class="grid">
-								<div class="col-md-8">
+								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_email_address', 'Email Address'); ?></div>
 										<?php echo f::form_input_email('email', true); ?>
 									</label>
 								</div>
 
-								<div class="col-md-4">
+								<div class="col-md-6">
 									<label class="form-group">
-										<div class="form-label"><?php echo t('title_newsletter', 'Newsletter'); ?></div>
-										<?php echo f::form_checkbox('newsletter', ['1', t('title_subscribe', 'Subscribe')], true); ?>
+										<div class="form-label"><?php echo t('title_two_factor_authentication', 'Two-Factor Authentication'); ?></div>
+										<?php echo f::form_toggle('two_factor_auth', 'e/d', true); ?>
 									</label>
 								</div>
+							</div>
 
-								<div class="col-md-12">
+							<div class="grid">
+								<div class="col-md-6">
+									<label class="form-group">
+										<div class="form-label"><?php echo t('title_newsletter', 'Newsletter'); ?></div>
+										<?php echo f::form_checkbox('newsletter', ['1', t('title_subscribed', 'Subscribed')], true); ?>
+									</label>
+								</div>
+								
+								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_language', 'Language'); ?></div>
 										<?php echo f::form_select_language('language_code', true); ?>
@@ -291,7 +305,6 @@
 							</div>
 
 							<div class="grid">
-
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo !empty($customer->data['id']) ? t('title_new_password', 'New Password') : t('title_password', 'Password'); ?></div>
@@ -380,7 +393,7 @@
 									</label>
 								</div>
 							</div>
-
+	
 							<div class="grid">
 								<div class="col-md-6">
 									<label class="form-group">
@@ -427,6 +440,16 @@
 										<?php echo f::form_select_zone('zone_code', $_POST['country_code'] ?? '', true); ?>
 									</label>
 								</div>
+							</div>
+							
+							<div class="grid">
+								<div class="col-sm-6">
+									<label class="form-group">
+										<div class="form-label"><?php echo t('title_phone', 'Phone'); ?></div>
+										<?php echo f::form_input_phone('phone', true); ?>
+									</label>
+								</div>
+
 							</div>
 
 							<h3><?php echo f::form_checkbox('different_shipping_address', ['1', t('title_different_shipping_address', 'Different Shipping Address')], !empty($_POST['different_shipping_address']) ? '1' : '', ['style' => 'margin: 0px;']); ?></h3>
@@ -528,7 +551,7 @@
 
 					<div class="card-action">
 						<?php echo f::form_button_predefined('save'); ?>
-						<?php if (!empty($customer->data['id'])) echo f::form_button_predefined('delete'); ?>
+						<?php echo !empty($customer->data['id']) ? f::form_button_predefined('delete') : ''; ?>
 						<?php echo f::form_button_predefined('cancel'); ?>
 					</div>
 
@@ -576,10 +599,11 @@
 </div>
 
 <script>
+
 	// Init
 
-	$('input[name="type"]').on('change', function() {
-		if ($(this).val() == 'company') {
+	$('input[name="type"]').on('change', function(){
+		if ($('input[name="type"]:checked').val() == 'business') {
 			$('.company-details :input').prop('disabled', false);
 			$('.company-details').slideDown('fast');
 		} else {
@@ -665,8 +689,9 @@
 					return;
 				}
 				$.each(data, function(key, value) {
-					console.log(key +' '+ value);
-					if ($('input[name="'+key+'"]').length && $('input[name="'+key+'"]').val() == '') $('input[name="'+key+'"]').val(data[key]);
+					if ($('input[name="'+key+'"]').length && $('input[name="'+key+'"]').val() == '') {
+						$('input[name="'+key+'"]').val(data[key]);
+					}
 				});
 			}
 		});

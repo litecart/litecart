@@ -36,6 +36,61 @@
 
 		try {
 
+			// TOTP enroll/confirm/disable
+			if (!empty($_POST['totp_setup']) || !empty($_POST['totp_confirm']) || !empty($_POST['totp_disable'])) {
+
+				if (!empty($_POST['totp_setup'])) {
+					session::$data['totp_pending_secret'] = f::totp_generate_secret();
+					reload();
+					exit;
+				}
+
+				if (!empty($_POST['totp_confirm'])) {
+
+					if (empty(session::$data['totp_pending_secret'])) {
+						throw new Exception(t('error_totp_setup_expired', 'TOTP setup session expired. Please try again.'));
+					}
+
+					if (empty($_POST['totp_code']) || !f::totp_verify_code(session::$data['totp_pending_secret'], $_POST['totp_code'])) {
+						throw new Exception(t('error_invalid_verification_code', 'Invalid verification code'));
+					}
+
+					database::query(
+						"update ". DB_PREFIX ."customers
+						set totp_secret = '". database::input(session::$data['totp_pending_secret']) ."',
+							two_factor_auth = 1
+						where id = ". (int)$customer->data['id'] ."
+						limit 1;"
+					);
+
+					unset(session::$data['totp_pending_secret']);
+					$customer = new ent_customer(customer::$data['id']);
+					notices::add('success', t('success_totp_enabled', 'TOTP has been enabled'));
+					reload();
+					exit;
+				}
+
+				if (!empty($_POST['totp_disable'])) {
+
+					if (empty($_POST['totp_disable_password']) || !password_verify($_POST['totp_disable_password'], customer::$data['password_hash'])) {
+						throw new Exception(t('error_wrong_password', 'Wrong password'));
+					}
+
+					database::query(
+						"update ". DB_PREFIX ."customers
+						set totp_secret = null
+						where id = ". (int)$customer->data['id'] ."
+						limit 1;"
+					);
+
+					unset(session::$data['totp_pending_secret']);
+					$customer = new ent_customer(customer::$data['id']);
+					notices::add('success', t('success_totp_disabled', 'TOTP has been disabled'));
+					reload();
+					exit;
+				}
+			}
+
 			if (isset($_POST['email'])) {
 				$_POST['email'] = strtolower($_POST['email']);
 			}

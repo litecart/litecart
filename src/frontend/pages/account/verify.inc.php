@@ -12,6 +12,21 @@
 	if (isset($_POST['verify'])) {
 		try {
 
+			// Rate limit checking
+			if (database::query(
+				"select count(*) as num_attempts from ". DB_PREFIX ."rate_limiting
+				where action = 'verification_failed'
+				and ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."'
+				and created_at >= '". date('Y-m-d H:i:s', strtotime('-5 minutes')) ."'"
+			)->fetch('num_attempts') > 3) {
+				throw new Exception(t('error_too_many_attempts', 'Too many failed attempts. Please try again later.'));
+			}
+
+			if (empty(customer::$data['id'])) {
+				unset(security::$data['verification']);
+				throw new Exception(t('error_verification_session_expired', 'Your verification session has expired. Please sign in again.'));
+			}
+
 			if (empty($_POST['code'])) {
 				throw new Exception(t('error_must_provide_verification_code', 'You must provide a verification code'));
 			}
@@ -31,10 +46,28 @@
 			} else {
 
 				if ($_POST['code'] != security::$data['verification']['code']) {
+
+					database::insert('rate_limiting', [
+						'action' => 'verification_failed',
+						'ip_address' => $_SERVER['REMOTE_ADDR'],
+						'hostname' => reverse_dns($_SERVER['REMOTE_ADDR']),
+						'user_agent' => $_SERVER['HTTP_USER_AGENT'],
+						'created_at' => date('Y-m-d H:i:s'),
+					]);
+
 					throw new Exception(t('error_invalid_verification_code', 'Invalid verification code'));
 				}
 
 				if (time() > security::$data['verification']['expires']) {
+
+					database::insert('rate_limiting', [
+						'action' => 'verification_failed',
+						'ip_address' => $_SERVER['REMOTE_ADDR'],
+						'hostname' => reverse_dns($_SERVER['REMOTE_ADDR']),
+						'user_agent' => $_SERVER['HTTP_USER_AGENT'],
+						'created_at' => date('Y-m-d H:i:s'),
+					]);
+
 					throw new Exception(t('error_verification_code_expired', 'The verification code has expired'));
 				}
 
@@ -55,6 +88,12 @@
 			}
 
 			unset(security::$data['verification']);
+
+			database::query(
+				"delete from ". DB_PREFIX ."rate_limiting
+				where action = 'verification_failed'
+				and ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."'"
+			);
 
 			security::$data['timestamp'] = time();
 			security::rotate_csrf_token();
@@ -89,8 +128,26 @@
 	if (isset($_POST['resend'])) {
 		try {
 
+			// Rate limit checking
+			if (database::query(
+				"select count(*) as num_attempts from ". DB_PREFIX ."rate_limiting
+				where action = 'verification_sent'
+				and ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."'
+				and created_at >= '". date('Y-m-d H:i:s', strtotime('-5 minutes')) ."'"
+			)->fetch('num_attempts') > 3) {
+				throw new Exception(t('error_too_many_attempts', 'Too many failed attempts. Please try again later.'));
+			}
+
 			(new ent_customer())->send_email('verification_code', [
 				'code' => security::$data['verification']['code'],
+			]);
+
+			database::insert('rate_limiting', [
+				'action' => 'verification_sent',
+				'ip_address' => $_SERVER['REMOTE_ADDR'],
+				'hostname' => reverse_dns($_SERVER['REMOTE_ADDR']),
+				'user_agent' => $_SERVER['HTTP_USER_AGENT'],
+				'created_at' => date('Y-m-d H:i:s'),
 			]);
 
 			notices::add('notices', t('notice_verification_code_sent_via_email', 'A verification code was sent via email'));

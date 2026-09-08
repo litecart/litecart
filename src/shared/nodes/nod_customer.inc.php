@@ -69,7 +69,7 @@
 					}
 
 					self::load($customer['id']);
-					security::$data['timestamp'] = time();
+					session::$data['security.customer']['timestamp'] = time();
 
 					database::query(
 						"update ". DB_PREFIX ."customers
@@ -77,8 +77,7 @@
 							last_hostname = '". database::input(reverse_dns($_SERVER['REMOTE_ADDR'])) ."',
 							last_user_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."',
 							last_login = '". date('Y-m-d H:i:s') ."',
-							login_attempts = 0,
-							total_logins = total_logins + 1
+							num_logins = num_logins + 1
 						where id = ". (int)$customer['id'] ."
 						limit 1;"
 					);
@@ -106,8 +105,10 @@
 						throw new Exception(t('error_your_account_is_disabled', 'Your account is disabled'));
 					}
 
-					if (self::is_session_expired($customer)) {
-						throw new Exception(t('error_session_expired_due_to_account_changes', 'Session expired due to changes in the account'));
+					if (!empty($customer['sessions_expiry'])) {
+						if (!isset(session::$data['security.customer']['timestamp']) || session::$data['security.customer']['timestamp'] < strtotime($customer['sessions_expiry'])) {
+							throw new Exception(t('error_session_expired_due_to_account_changes', 'Session expired due to changes in the account'));
+						}
 					}
 
 					session::$data['customer'] = f::array_update(session::$data['customer'], $customer);
@@ -125,6 +126,13 @@
 					redirect(document::ilink('f:account/sign_in'), 303);
 					exit;
 				}
+
+				database::query(
+					"update ". DB_PREFIX ."customers
+					set last_active = '". date('Y-m-d H:i:s') ."'
+					where id = ". (int)self::$data['id'] ."
+					limit 1;"
+				);
 			}
 
 			self::identify();
@@ -189,7 +197,7 @@
 			}
 		}
 
-		######################################################################
+		## Node Specific Methods
 
 		public static function identify(): void {
 
@@ -367,35 +375,30 @@
 
 			if (!self::check_login()) {
 				notices::add('warnings', t('warning_must_login_page', 'You must be logged in to view the page.'));
-				$redirect_url = $_SERVER['REQUEST_URI'];
-				redirect(document::ilink('f:account/sign_in', ['redirect_url' => $redirect_url]), 302);
+				$redirect_url = strtok($_SERVER['REQUEST_URI'], '?') . (!empty($_SERVER['QUERY_STRING']) ? '?' . $_SERVER['QUERY_STRING'] : '');
+				header('X-Robots-Tag: noindex, nofollow');
+				redirect(document::ilink('f:account/sign_in', ['redirect_url' => $redirect_url]), 303);
 				exit;
+			}
+
+			// Enforce two-factor verification
+			if (!empty(self::$data['two_factor_auth']) || !empty(self::$data['totp_secret'])) {
+				if (!empty(session::$data['security.customer']['verification'])) {
+					if (!in_array(route::$selected['resource'] ?? '', [
+						'f:account/verify',
+						'f:account/sign_in',
+						'f:account/sign_out'
+					])) {
+						redirect(document::ilink('f:account/verify', ['redirect_url' => $_SERVER['REQUEST_URI']]), 303);
+						exit;
+					}
+				}
 			}
 		}
 
 		public static function check_login(): bool {
 			if (!empty(self::$data['id'])) return true;
 			return false;
-		}
-
-		// Returns true when the current session's customer_security_timestamp is older than
-		// the customer's sessions_expiry (or missing entirely). Used by init() to revoke
-		// sessions after a password reset or similar security event.
-		public static function is_session_expired($customer=null): bool {
-
-			if ($customer === null) {
-				$customer = self::$data;
-			}
-
-			if (empty($customer['sessions_expiry'])) {
-				return false;
-			}
-
-			if (!isset(security::$data['timestamp'])) {
-				return true;
-			}
-
-			return strtotime($customer['sessions_expiry']) > security::$data['timestamp'];
 		}
 
 		public static function log(array $event): void {
@@ -420,7 +423,11 @@
 				return $val != null;
 			});
 
-			if (preg_match('#bot|crawl#', $event['hostname']) || preg_match('#bot|crawl#', $event['user_agent'])) {
+			if (!empty($event['hostname']) && preg_match('#bot|crawl#', $event['hostname'])) {
+				return;
+			}
+
+			 if (!empty($event['user_agent']) && preg_match('#bot|crawl#', $event['user_agent'])) {
 				return;
 			}
 

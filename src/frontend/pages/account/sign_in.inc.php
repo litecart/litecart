@@ -29,6 +29,19 @@
 
 		try {
 
+			// Rate limit checking
+			if (database::query(
+				"select count(*) as num_attempts from ". DB_PREFIX ."rate_limiting
+				where action = 'login_failed'
+				and (
+					ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."'
+					or (scope_type = 'email' and scope_key = '". database::input($_POST['email']) ."')
+				)
+				and created_at >= '". date('Y-m-d H:i:s', strtotime('-5 minutes')) ."'"
+			)->fetch('num_attempts') > 3) {
+				throw new Exception(t('error_too_many_attempts', 'Too many failed attempts. Please try again later.'));
+			}
+
 			if (empty($_POST['email']) || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
 				throw new Exception(t('error_must_provide_email', 'You must provide an email address'));
 			}
@@ -46,10 +59,32 @@
 			if (!$customer) {
 				// Dummy password_verify to prevent timing-based user enumeration
 				password_verify($_POST['password'], '$2y$10$abcdefghijklmnopqrstuuABCDEFGHIJKLMNOPQRSTUVWXYZ01234');
+
+				database::insert('rate_limiting', [
+					'action' => 'login_failed',
+					'ip_address' => $_SERVER['REMOTE_ADDR'],
+					'hostname' => reverse_dns($_SERVER['REMOTE_ADDR']),
+					'user_agent' => $_SERVER['HTTP_USER_AGENT'],
+					'scope_type' => 'email',
+					'scope_key' => strtolower($_POST['email']),
+					'created_at' => date('Y-m-d H:i:s'),
+				]);
+
 				throw new Exception(t('error_wrong_email_password_combination', 'Wrong combination of email and password or the account does not exist'));
 			}
 
 			if (!$customer['status']) {
+
+				database::insert('rate_limiting', [
+					'action' => 'login_failed',
+					'ip_address' => $_SERVER['REMOTE_ADDR'],
+					'hostname' => reverse_dns($_SERVER['REMOTE_ADDR']),
+					'user_agent' => $_SERVER['HTTP_USER_AGENT'],
+					'scope_type' => 'email',
+					'scope_key' => $customer['email'],
+					'created_at' => date('Y-m-d H:i:s'),
+				]);
+
 				throw new Exception(t('error_wrong_email_password_combination', 'Wrong combination of email and password or the account does not exist'));
 			}
 
@@ -60,6 +95,16 @@
 			}
 
 			if (!password_verify($_POST['password'], $customer['password_hash'])) {
+
+				database::insert('rate_limiting', [
+					'action' => 'login_failed',
+					'ip_address' => $_SERVER['REMOTE_ADDR'],
+					'hostname' => reverse_dns($_SERVER['REMOTE_ADDR']),
+					'user_agent' => $_SERVER['HTTP_USER_AGENT'],
+					'scope_type' => 'email',
+					'scope_key' => $customer['email'],
+					'created_at' => date('Y-m-d H:i:s'),
+				]);
 
 				if (++$customer['login_attempts'] < 3) {
 
@@ -124,8 +169,57 @@
 
 			customer::load($customer['id']);
 
-			security::$data['timestamp'] = time();
+			database::query(
+				"delete from ". DB_PREFIX ."rate_limiting
+				where action = 'login_failed'
+				and (
+					ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."'
+					or (scope_type = 'email' and scope_key = '". database::input($customer['email']) ."')
+				)"
+			);
+
 			session::regenerate_id();
+
+			// Two-factor challenge
+			if (!empty(customer::$data['totp_secret'])) {
+
+				security::$data['verification'] = [
+					'type' => 'totp',
+					'code' => random_int(100000, 999999), // Not used for TOTP, but required for the verification form.
+					'expires' => strtotime('+5 minutes'),
+					'attempts' => 0,
+				];
+
+				notices::add('notices', t('notice_verification_code_sent_via_email', 'A verification code was sent via email'));
+
+				$redirect_url = !empty($_POST['redirect_url']) ? $_POST['redirect_url'] : document::ilink('f:');
+				redirect(document::ilink('account/verify', ['redirect_url' => $redirect_url]), 303);
+				exit;
+			}
+
+			if (!empty(customer::$data['two_factor_auth']) && !empty(customer::$data['email'])) {
+
+				$code = random_int(100000, 999999);
+
+				security::$data['verification'] = [
+					'type' => 'eotp',
+					'code' => $code,
+					'expires' => strtotime('+15 minutes'),
+					'attempts' => 0,
+				];
+
+				(new ent_customer(customer::$data['id']))->send_email('verification_code', [
+					'code' => $code,
+				]);
+
+				notices::add('notices', t('notice_verification_code_sent_via_email', 'A verification code was sent via email'));
+
+				$redirect_url = !empty($_POST['redirect_url']) ? $_POST['redirect_url'] : document::ilink('f:');
+				redirect(document::ilink('account/verify', ['redirect_url' => $redirect_url]), 303);
+				exit;
+			}
+
+			security::$data['timestamp'] = time();
 			security::rotate_csrf_token();
 
 			if (!empty($_POST['remember_me']) && defined('HMAC_KEY_REMEMBER_ME')) {

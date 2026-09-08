@@ -17,6 +17,16 @@
 				header('Set-Cookie: remember_me=; Path='. WS_DIR_APP .'; Max-Age=-1; HttpOnly; SameSite=Lax', false);
 			}
 
+			// Rate limit checking
+			if (database::query(
+				"select count(*) as num_attempts from ". DB_PREFIX ."rate_limiting
+				where action = 'login_failed'
+				and ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."'
+				and created_at >= '". date('Y-m-d H:i:s', strtotime('-5 minutes')) ."'"
+			)->fetch('num_attempts') > 3) {
+				throw new Exception(t('error_too_many_attempts', 'Too many failed attempts. Please try again later.'));
+			}
+
 			if (empty($_POST['username'])) {
 				throw new Exception(t('error_must_provide_username_or_email', 'You must provide your username or email address'));
 			}
@@ -56,6 +66,67 @@
 			}
 
 			if (!password_verify($_POST['password'], $administrator['password_hash'])) {
+
+				database::insert('rate_limiting', [
+					'action' => 'login_failed',
+					'ip_address' => $_SERVER['REMOTE_ADDR'],
+					'hostname' => reverse_dns($_SERVER['REMOTE_ADDR']),
+					'user_agent' => $_SERVER['HTTP_USER_AGENT'],
+					'created_at' => date('Y-m-d H:i:s'),
+				]);
+
+				// Notify the administrator on first rate limiting hit
+				if (!empty($administrator['email'])) {
+					$window_start = date('Y-m-d H:i:s', strtotime('-5 minutes'));
+					$failed_count = (int)database::query(
+						"select count(*) as num_attempts from ". DB_PREFIX ."rate_limiting
+						where action = 'login_failed'
+						and created_at >= '". $window_start ."'"
+					)->fetch('num_attempts');
+
+					$notified = (int)database::query(
+						"select count(*) as num_sent from ". DB_PREFIX ."rate_limiting
+						where action = 'login_failed_notified'
+						and created_at >= '". $window_start ."'"
+					)->fetch('num_sent');
+
+					if ($failed_count >= 3 && !$notified) {
+
+						database::insert('rate_limiting', [
+							'action' => 'login_failed_notified',
+							'ip_address' => $_SERVER['REMOTE_ADDR'],
+							'hostname' => reverse_dns($_SERVER['REMOTE_ADDR']),
+							'user_agent' => $_SERVER['HTTP_USER_AGENT'],
+							'created_at' => date('Y-m-d H:i:s'),
+						]);
+
+						$aliases = [
+							'{store_name}' => settings::get('store_name'),
+							'{store_link}' => document::ilink(''),
+							'{username}' => $administrator['username'],
+							'{ip_address}' => $_SERVER['REMOTE_ADDR'],
+							'{hostname}' => reverse_dns($_SERVER['REMOTE_ADDR']),
+							'{user_agent}' => $_SERVER['HTTP_USER_AGENT'],
+						];
+
+						$subject = t('title_administrator_account_blocked', 'Administrator Account Blocked');
+						$message = strtr(t('administrator_account_blocked:email_body', implode("\r\n", [
+							'Your administrator account {username} has been temporarily blocked because of too many invalid login attempts.',
+							'',
+							'Client: {ip_address} ({hostname})',
+							'{user_agent}',
+							'',
+							'{site_name}',
+							'{site_link}',
+						])), $aliases);
+
+						(new ent_email())
+							->add_recipient($administrator['email'], $administrator['username'])
+							->set_subject($subject)
+							->add_body($message)
+							->send();
+					}
+				}
 
 				if (++$administrator['login_attempts'] < 3) {
 
@@ -152,6 +223,12 @@
 			);
 
 			administrator::load($administrator['id']);
+
+			database::query(
+				"delete from ". DB_PREFIX ."rate_limiting
+				where action = 'login_failed'
+				and ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."'"
+			);
 
 			session::$data['security.administrator']['timestamp'] = time();
 			session::regenerate_id();
