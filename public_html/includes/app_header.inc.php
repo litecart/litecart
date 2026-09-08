@@ -33,29 +33,89 @@
 // Set error handler
   require_once vmod::check(FS_DIR_APP . 'includes/error_handler.inc.php');
 
-// Jump-start some library modules
-  class_exists('document');
-  class_exists('notices');
-  class_exists('stats');
+// Bot Challenge
+	if (settings::get('bot_challenge')) {
+		if (!isset($_COOKIE['__challenge']) || $_COOKIE['__challenge'] != 'passed') {
 
-// CSRF protection for state-changing requests
-  if (!in_array($_SERVER['REQUEST_METHOD'], ['GET', 'HEAD', 'OPTIONS']) && session_status() === PHP_SESSION_ACTIVE) {
-    $skip_csrf = false;
+      try {
 
-    // Excluded paths (payment gateway callbacks, MCP JSON-RPC API)
-    foreach ([
-      '#^ext/#',
-      '#^mcp(\?|$)#',
-      '#^order_process(\?|$)#',
-      '#(webhook|callback)#i',
-    ] as $pattern) {
-      if (preg_match($pattern, route::$request)) {
-        $skip_csrf = true;
-        break;
+        $request_url = strtok($_SERVER['REQUEST_URI'], '?'); // Don't rely on parse_url()
+
+      // No challange for crucial urls
+        foreach ([
+          '#/ajax/#',
+          '#/ext/#',
+          '#/feeds/#',
+          '#/mcp(/|\?|$)#',
+          '#/manifest\.json(\?|$)#',
+          '#/sitemap\.xml(\?|$)#',
+        ] as $pattern) {
+          if (preg_match($pattern, $request_uri)) {
+            throw new Exception('Skipping challenge for crucial URL');
+          }
+        }
+
+      // No challange for known user agents
+        if (isset($_SERVER['HTTP_USER_AGENT'])) {
+          foreach (preg_split('#\s*(,|\R)+\s*#', settings::get('whitelisted_user_agents'), -1, PREG_SPLIT_NO_EMPTY) as $user_agent) {
+            if (stripos($_SERVER['HTTP_USER_AGENT'], $user_agent) !== false) {
+              throw new Exception('Skipping challenge for recognized user agent');
+            }
+          }
+        }
+
+      // No challange for known hostnames
+        if (isset($_SERVER['REMOTE_ADDR'])) {
+          $client_hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
+          foreach (preg_split('#\R+#', settings::get('whitelisted_hostnames'), -1, PREG_SPLIT_NO_EMPTY) as $hostname) {
+            if (preg_match('#'. preg_quote($hostname) .'$#', $client_hostname)) {
+              throw new Exception('Skipping challenge for recognized user agent');
+            }
+          }
+        }
+
+      // Respond with challenge
+        include 'app://frontend/pages/bot_challenge.inc.php';
+        exit;
+
+      } catch (Throwable $t) {
+        // Do nothing
       }
     }
+	}
 
-    if (!$skip_csrf) {
+// CSRF protection for state-changing requests
+  if (settings::get('csrf_protection')) {
+
+    try {
+
+    // Skip if not given request method
+      if (!isset($_SERVER['REQUEST_METHOD']) || !in_array($_SERVER['REQUEST_METHOD'], ['POST', 'PUT', 'PATCH', 'DELETE'])) {
+        throw new Exception('Skipping CSRF for request method');
+      }
+
+    // Excluded paths (payment gateway callbacks, MCP JSON-RPC API)
+      foreach ([
+        '#^ext/#',
+        '#^mcp(\?|$)#',
+        '#^order_process(\?|$)#',
+        '#(webhook|callback)#i',
+      ] as $pattern) {
+        if (preg_match($pattern, route::$request)) {
+          throw new Exception('Skipping CSRF protection for excluded path');
+        }
+      }
+
+    // No enforcement for known hostnames
+      if (isset($_SERVER['REMOTE_ADDR'])) {
+        $client_hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
+        foreach (preg_split('#\R+#', settings::get('whitelisted_hostnames'), -1, PREG_SPLIT_NO_EMPTY) as $hostname) {
+          if (preg_match('#'. preg_quote($hostname) .'$#', $client_hostname)) {
+            throw new Exception('Skipping challenge for recognized user agent');
+          }
+        }
+      }
+
       $submitted_token = isset($_POST['csrf_token']) ? $_POST['csrf_token'] : (isset($_SERVER['HTTP_X_CSRF_TOKEN']) ? $_SERVER['HTTP_X_CSRF_TOKEN'] : '');
       if (!hash_equals(session::csrf_token(), $submitted_token)) {
         http_response_code(403);
@@ -63,12 +123,23 @@
           header('Content-Type: application/json');
           echo json_encode(['error' => 'CSRF token mismatch. Please reload the page and try again.']);
         } else {
-          echo '<h1>403 Forbidden</h1><p>CSRF token mismatch. Please <a href="javascript:history.back()">go back</a> and try again.</p>';
+          echo implode(PHP_EOL, [
+            '<h1>403 Forbidden</h1>',
+            '<p>CSRF token mismatch. Please <a href="javascript:history.back()">go back</a> and try again.</p>',
+          ]);
         }
         exit;
       }
+
+    } catch (Throwable $t) {
+      // Do nothing
     }
   }
+
+// Jump-start some library modules
+  class_exists('document');
+  class_exists('notices');
+  class_exists('stats');
 
 // Detect truncated POST (PHP max_input_vars exceeded)
   if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST') {
