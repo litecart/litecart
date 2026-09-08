@@ -123,21 +123,34 @@
 		}
 
 		public static function insert(string $table_name, array $data, string $link='default'): database_result|bool {
-
-			$columns = array_map(
-				fn($column) => '`'. str_replace('`', '``', $column) .'`',
-				array_keys($data)
+			return self::query(
+				"insert into `". database::identifier(DB_PREFIX . $table_name) ."`
+				(`". implode("`, `", array_map(fn($column) => str_replace('`', '``', $column), array_keys($data))) ."`)
+				values ('". implode("', '", array_map(fn($value) => self::input($value), $data)) ."');"
 			);
+		}
 
-			$values = [];
-			foreach (database::input($data) as $value) {
-				$values[] = ($value === null) ? 'NULL' : "'". $value ."'";
-			}
+		public static function update(string $table_name, array $data, array $where, string $link='default'): database_result|bool {
 
-			return database::query(
-				"insert into `". DB_PREFIX . $table_name ."`
-				(". implode(", ", $columns) .")
-				values (". implode(", ", $values) .");"
+			$schema = self::schema($table_name);
+
+			$quote = function($column, $value) use ($schema) {
+
+			  if ($value != '') {
+					return "'". self::input($value) ."'";
+				}
+
+				if (!empty($schema[$column]['nullable'])) {
+					return 'null';
+				}
+
+				return '';
+			};
+
+			return self::query(
+				"update `". database::identifier(DB_PREFIX . $table_name) ."`
+				set ". implode(", ", array_map($quote, array_keys($data), $data)) ."
+				". ($where ? "where $where" : "") .";"
 			);
 		}
 
