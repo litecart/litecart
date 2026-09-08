@@ -22,8 +22,8 @@
   --whitespace-color: #fff;
   --top-background-color: var(--card-background-color);
   --top-text-color: var(--card-text-color);
-  --page-background-color: #f5f6f7;
-  --sidebar-background-color: #e6e9ed;
+  --page-background-color: #e8eaee;
+  --sidebar-background-color: #fff;
   --sidebar-border-color: var(--default-border-color);
   --sidebar-text-color: #333;
   --sidebar-width: 18em;
