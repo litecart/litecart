@@ -9,6 +9,10 @@
 			FS_DIR_APP => 'app://',
 		] as $search => $replace) {
 			$errfile = preg_replace('#^'. preg_quote($search, '#') .'#', $replace, str_replace('\\', '/', $errfile));
+			$vmod_cache_file = 'storage://vmods/.cache/'. str_replace('/', '-', preg_replace('#^app://#', '', $errfile));
+			if (is_file($vmod_cache_file)) {
+				$errfile = $vmod_cache_file;
+			}
 		}
 
 		$output = [];
@@ -67,6 +71,10 @@
 					FS_DIR_APP => 'app://',
 				] as $search => $replace) {
 					$trace['file'] = preg_replace('#^'. preg_quote($search, '#') .'#', $replace, str_replace('\\', '/', $trace['file']));
+					$vmod_cache_file = 'storage://vmods/.cache/'. str_replace('/', '-', preg_replace('#^app://#', '', $trace['file']));
+					if (is_file($vmod_cache_file)) {
+						$trace['file'] = $vmod_cache_file;
+					}
 				}
 
 				$output[] = "<div> ↪ <strong>$trace[file]</strong> on line <strong>$trace[line]</strong> in <strong>$trace[function]()</strong></div>";
