@@ -71,11 +71,11 @@
 				default => WS_DIR_APP . 'frontend/templates/'.settings::get('template').'/',
 			};
 
-			// Alert errors if administrator
+			// Floating error indicator for administrators
 			if (administrator::check_login()) {
-				self::add_head_tags(implode(PHP_EOL, [
-					'<script nonce="'. security::$data['nonce'] .'">let _alertedErrors=0;window.onerror=(c,r,a,p)=>{_alertedErrors++<5&&alert(c+" in "+r.split("/").pop().split("?")[0]+" on line "+a)};</script>',
-				]), 'alert_errors');
+				self::add_head_tags([
+					'<script>var _e=0;addEventListener("error",function(){var b=document.getElementById("_e")||(b=document.createElement("button"),b.id="_e",b.title="Open console (F12)",b.style.cssText="position:fixed;right:12px;bottom:12px;z-index:2147483647;display:none;padding:4px 8px;background:#c00;color:#fff;border:0;border-radius:4px;font:600 12px sans-serif;cursor:pointer",b.onclick=function(){alert("Open browser console (F12) to view errors")},document.body.appendChild(b));b.textContent=++_e+" Error";b.style.display="block"});</script>',
+				], 'alert_errors');
 
 				// Client-side error reporter
 				self::$javascript['error-reporter'] = implode(PHP_EOL, [
@@ -95,9 +95,9 @@
 			}
 
 			// Wait For (Mini version)
-			self::add_head_tags(implode(PHP_EOL, [
-				'<script nonce="'. security::$data['nonce'] .'">window.waitFor=window.waitFor||((i,o)=>{void 0!==window[i]?o(window[i]):setTimeout((()=>waitFor(i,o)),50)});</script>',
-			]), 'waitFor');
+			self::add_head_tags([
+				'<script>window.waitFor=window.waitFor||((i,o)=>{void 0!==window[i]?o(window[i]):setTimeout((()=>waitFor(i,o)),50)});</script>',
+			], 'waitFor');
 
 			// Load jQuery
 			self::load_script('app://assets/jquery/jquery-4.0.0.min.js', 'jquery');
@@ -191,7 +191,9 @@
 				'country_code' => customer::$data['country_code'],
 			];
 
-			self::$head_tags[] = '<script nonce="'. security::$data['nonce'] .'">window._env='. f::format_json(self::$jsenv, false) .'</script>';
+			self::add_head_tags([
+				'<script nonce="'. security::$data['nonce'] .'">window._env='. f::format_json(self::$jsenv, false) .'</script>',
+			]);
 		}
 
 		## Node specific methods
@@ -360,6 +362,7 @@
 				'foot_tags' => self::$foot_tags,
 				'javascript' => self::$javascript,
 				'important_notice' => settings::get('important_notice'),
+				'theme' => !empty($_COOKIE['theme']) && in_array($_COOKIE['theme'], ['light', 'dark']) ? $_COOKIE['theme'] : null,
 			]);
 
 			// Prepare title
@@ -370,7 +373,7 @@
 				}
 
 				self::$title = array_filter(self::$title);
-				$_layout->snippets['title'] = implode(' · ', array_reverse(self::$title));
+				$_layout->snippets['title'] = implode(' – ', array_reverse(self::$title));
 			}
 
 			// Add meta description
@@ -527,12 +530,12 @@
 			foreach ($resources as $resource) {
 				if (preg_match('#^(app://|storage://|'. preg_quote(DOCUMENT_ROOT, '#') .')#', $resource)) {
 					if (is_file($resource)) {
-						$scripts[] = '<script defer nonce="'. security::$data['nonce'] .'" integrity="sha256-'. base64_encode(hash_file('sha256', $resource, true)) .'" crossorigin="anonymous" src="'. self::href_rlink($resource) .'"></script>';
+						$scripts[] = '<script defer src="'. self::href_rlink($resource) .'" nonce="'. security::$data['nonce'] .'" integrity="sha256-'. base64_encode(hash_file('sha256', $resource, true)) .'" crossorigin="anonymous"></script>';
 					} else {
 						trigger_error('Script not found: '. $resource, E_USER_WARNING);
 					}
 				} else {
-					$scripts[] = '<script nonce="'. security::$data['nonce'] .'" src="'. self::href_link($resource) .'"></script>';
+					$scripts[] = '<script defer src="'. self::href_link($resource) .'" nonce="'. security::$data['nonce'] .'" cross-origin="anonymous"></script>';
 				}
 			}
 
