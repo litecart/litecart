@@ -108,7 +108,7 @@
   --input-padding-x: 1.5em;
   --input-padding-y: 0.5em;
   --input-text-color: #000;
-  --input-border-radius: 1em;
+  --input-border-radius: 8px;
   /* Pills */
   --pills-background-color: transparent;
   --pills-background-color-active: #d7dae3;
