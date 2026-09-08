@@ -383,6 +383,20 @@
 				$_layout->snippets['head_tags'][] = '<link rel="canonical" href="'. f::escape_attr(self::$canonical) .'">';
 			}
 
+			// Add hreflang tags for multilingual support
+			if (!empty(language::$languages)) {
+				$hreflang_tags = [];
+				foreach (language::$languages as $language) {
+					if ($language['url_type'] == 'none') continue;
+					$hreflang_tags[] = '<link rel="alternate" hreflang="'. f::escape_attr($language['code']) .'" href="'. f::escape_html(self::ilink(null, [], true, [], $language['code'])) .'">';
+				}
+				if (!empty($hreflang_tags)) {
+					$default_lang = settings::get('site_language_code');
+					$hreflang_tags[] = '<link rel="alternate" hreflang="x-default" href="'. f::escape_html(self::ilink(null, [], true, [], $default_lang)) .'">';
+					$_layout->snippets['head_tags']['hreflang'] = implode(PHP_EOL, $hreflang_tags);
+				}
+			}
+
 			// Prepare JSON Schema
 			if (!empty(self::$schema)) {
 				$_layout->snippets['head_tags']['schema_json'] = implode('', [
