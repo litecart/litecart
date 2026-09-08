@@ -50,7 +50,7 @@
           '#/manifest\.json(\?|$)#',
           '#/sitemap\.xml(\?|$)#',
         ] as $pattern) {
-          if (preg_match($pattern, $request_uri)) {
+          if (preg_match($pattern, $request_url)) {
             throw new Exception('Skipping challenge for crucial URL');
           }
         }
@@ -75,7 +75,7 @@
         }
 
       // Respond with challenge
-        include 'app://frontend/pages/bot_challenge.inc.php';
+        include vmod::check(FS_DIR_APP . '/pages/bot_challenge.inc.php');
         exit;
 
       } catch (Throwable $t) {
