@@ -86,6 +86,8 @@ DROP TABLE IF EXISTS `lc_quantity_units`;
 -- -----
 DROP TABLE IF EXISTS `lc_quantity_units_info`;
 -- -----
+DROP TABLE IF EXISTS `lc_rate_limiting`;
+-- -----
 DROP TABLE IF EXISTS `lc_settings`;
 -- -----
 DROP TABLE IF EXISTS `lc_settings_groups`;

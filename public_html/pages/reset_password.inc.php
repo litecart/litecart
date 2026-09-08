@@ -8,7 +8,23 @@
 
   if (!empty($_POST['reset_password'])) {
 
+    $has_code = !empty($_REQUEST['reset_token']);
+    $rate_limit_action = $has_code ? 'password_reset_failed' : 'password_reset_requested';
+
     try {
+
+    // Rate limit checking (defence in depth on top of the cache-based counter further down)
+      if (database::query(
+        "select count(*) as num_attempts from ". DB_TABLE_PREFIX ."rate_limiting
+        where action = '". $rate_limit_action ."'
+        and (
+          ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."'
+          ". (!empty($_REQUEST['email']) ? "or (scope_type = 'email' and scope_key = '". database::input($_REQUEST['email']) ."')" : '') ."
+        )
+        and date_created >= '". date('Y-m-d H:i:s', strtotime('-5 minutes')) ."'"
+      )->fetch('num_attempts') > 3) {
+        throw new Exception(language::translate('error_too_many_attempts', 'Too many failed attempts. Please try again later.'));
+      }
 
       if (empty($_REQUEST['email']) || !filter_var($_REQUEST['email'], FILTER_VALIDATE_EMAIL)) {
         throw new Exception(language::translate('error_must_provide_email_address', 'You must provide an email address'));
@@ -132,6 +148,12 @@
           ->add_body($message)
           ->send();
 
+        database::query(
+          "insert into ". DB_TABLE_PREFIX ."rate_limiting
+          (action, scope_type, scope_key, ip_address, hostname, user_agent, date_created)
+          values ('password_reset_requested', 'email', '". database::input($customer['email']) ."', '". database::input($_SERVER['REMOTE_ADDR']) ."', '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."', '". database::input($_SERVER['HTTP_USER_AGENT']) ."', '". date('Y-m-d H:i:s') ."')"
+        );
+
         notices::add('success', $generic_request_msg);
         header('Location: '. document::ilink('reset_password', ['email' => $_REQUEST['email'], 'reset_token' => '']));
         exit;
@@ -140,6 +162,15 @@
 
       // Clear rate limit + reset token on successful use
         cache::delete($rate_token);
+
+        database::query(
+          "delete from ". DB_TABLE_PREFIX ."rate_limiting
+          where action = 'password_reset_failed'
+          and (
+            ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."'
+            or (scope_type = 'email' and scope_key = '". database::input($_REQUEST['email']) ."')
+          )"
+        );
 
         $customer = new ent_customer($customer['id']);
         $customer->set_password($_POST['new_password']);
@@ -152,6 +183,14 @@
       }
 
     } catch (Exception $e) {
+
+    // Record failed attempts for rate-limiting
+      database::query(
+        "insert into ". DB_TABLE_PREFIX ."rate_limiting
+        (action, scope_type, scope_key, ip_address, hostname, user_agent, date_created)
+        values ('". $rate_limit_action ."', '". (!empty($_REQUEST['email']) ? 'email' : '') ."', '". (!empty($_REQUEST['email']) ? database::input($_REQUEST['email']) : '') ."', '". database::input($_SERVER['REMOTE_ADDR']) ."', '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."', '". database::input($_SERVER['HTTP_USER_AGENT']) ."', '". date('Y-m-d H:i:s') ."')"
+      );
+
       notices::add('errors', $e->getMessage());
     }
   }

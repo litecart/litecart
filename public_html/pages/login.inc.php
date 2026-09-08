@@ -23,6 +23,19 @@
 
     try {
 
+    // Rate limit checking
+      if (database::query(
+        "select count(*) as num_attempts from ". DB_TABLE_PREFIX ."rate_limiting
+        where action = 'login_failed'
+        and (
+          ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."'
+          ". (!empty($_POST['email']) ? "or (scope_type = 'email' and scope_key = '". database::input(strtolower($_POST['email'])) ."')" : '') ."
+        )
+        and date_created >= '". date('Y-m-d H:i:s', strtotime('-5 minutes')) ."'"
+      )->fetch('num_attempts') > 3) {
+        throw new Exception(language::translate('error_too_many_attempts', 'Too many failed attempts. Please try again later.'));
+      }
+
       if (!empty($_COOKIE['customer_remember_me'])) {
         header('Set-Cookie: customer_remember_me=; Path='. WS_DIR_APP .'; Max-Age=-1; HttpOnly; SameSite=Lax', false);
       }
@@ -38,10 +51,24 @@
       );
 
       if (!$customer = database::fetch($customer_query)) {
+
+        database::query(
+          "insert into ". DB_TABLE_PREFIX ."rate_limiting
+          (action, scope_type, scope_key, ip_address, hostname, user_agent, date_created)
+          values ('login_failed', 'email', '". database::input(strtolower($_POST['email'])) ."', '". database::input($_SERVER['REMOTE_ADDR']) ."', '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."', '". database::input($_SERVER['HTTP_USER_AGENT']) ."', '". date('Y-m-d H:i:s') ."')"
+        );
+
         throw new Exception(language::translate('error_email_not_found_in_database', 'The email does not exist in our database'));
       }
 
       if (empty($customer['status'])) {
+
+        database::query(
+          "insert into ". DB_TABLE_PREFIX ."rate_limiting
+          (action, scope_type, scope_key, ip_address, hostname, user_agent, date_created)
+          values ('login_failed', 'email', '". database::input($customer['email']) ."', '". database::input($_SERVER['REMOTE_ADDR']) ."', '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."', '". database::input($_SERVER['HTTP_USER_AGENT']) ."', '". date('Y-m-d H:i:s') ."')"
+        );
+
         throw new Exception(language::translate('error_customer_account_disabled_or_not_activated', 'The customer account is disabled or not activated'));
       }
 
@@ -50,6 +77,12 @@
       }
 
       if (!password_verify($_POST['password'], $customer['password_hash'])) {
+
+        database::query(
+          "insert into ". DB_TABLE_PREFIX ."rate_limiting
+          (action, scope_type, scope_key, ip_address, hostname, user_agent, date_created)
+          values ('login_failed', 'email', '". database::input($customer['email']) ."', '". database::input($_SERVER['REMOTE_ADDR']) ."', '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."', '". database::input($_SERVER['HTTP_USER_AGENT']) ."', '". date('Y-m-d H:i:s') ."')"
+        );
 
         if (++$customer['login_attempts'] < 3) {
 
@@ -99,6 +132,16 @@
 
       customer::load($customer['id']);
       session::rotate_csrf_token();
+
+    // Clear IP/email-based rate limit records on successful login
+      database::query(
+        "delete from ". DB_TABLE_PREFIX ."rate_limiting
+        where action = 'login_failed'
+        and (
+          ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."'
+          or (scope_type = 'email' and scope_key = '". database::input($customer['email']) ."')
+        )"
+      );
 
       if (!empty($_POST['remember_me']) && defined('HMAC_KEY_REMEMBER_ME')) {
         $expiry_days = !empty(settings::get('remember_me_days')) ? (int)settings::get('remember_me_days') : 30;
