@@ -64,7 +64,7 @@ a67674d0395602a1f9474e2ab3c91f38	admin/index.php
 d41d8cd98f00b204e9800998ecf8427e	admin/languages.app/index.html
 e3f917e33a0e24cc6f3fa0bdd727a574	admin/languages.app/languages.inc.php
 c5cad31f173943cfc9dbf6710387aa0b	admin/languages.app/storage_encoding.inc.php
-c0127d3144a617aca904b8a47c4d9786	admin/login.php
+8f1b39407fbb14fd3838986e5a6ff03c	admin/login.php
 22435b91fb0308d6667ef2ce3353e14e	admin/logout.php
 05544af868785957f8044cbf814c62f4	admin/modules.app/config.inc.php
 b9ec8b4459f0a1daca4336d1be7cfe1d	admin/modules.app/edit_module.inc.php
@@ -146,7 +146,7 @@ d41d8cd98f00b204e9800998ecf8427e	data/index.html
 aacf274db0520d79711283626beaae60	ext/fontawesome/font-awesome.min.css
 ad211c14d3f1e0e44198408c6fde7473	ext/fontawesome/fontawesome-webfont.woff2
 d41d8cd98f00b204e9800998ecf8427e	ext/index.html
-2c872dbe60f4ba70fb85356113d8b35e	ext/jquery/jquery-3.7.1.min.js
+a8e7cabd4d49dfaf0146678ee147dfc5	ext/jquery/jquery-4.0.0.min.js
 ad8606c8267f88d7cdabc0b203002ba9	ext/trumbowyg/LICENSE
 f872d0b88582aacd1bba70c67d3c614b	ext/trumbowyg/langs/ar.min.js
 9aea9ab11bcb16b99dab87463592ceed	ext/trumbowyg/langs/bg.min.js
@@ -208,7 +208,7 @@ d41d8cd98f00b204e9800998ecf8427e	images/slides/index.html
 17fd4de7d9e88047254c3fdd7371afa3	includes/abstracts/abs_module.inc.php
 d41d8cd98f00b204e9800998ecf8427e	includes/abstracts/index.html
 ac174e17a6b2cd728f87d25164f708b6	includes/app_footer.inc.php
-8520d9a5a3bde96094d73a3619b38837	includes/app_header.inc.php
+d348cccbccf4ddf71d9062c6f29b6841	includes/app_header.inc.php
 b993799879c0d8ae32ab6c51ca3e7d4b	includes/autoloader.inc.php
 3762e4cb2077d20baa72f956c45735b6	includes/boxes/box_account_links.inc.php
 1261bb2e9890d2b077b7943070c7981a	includes/boxes/box_also_purchased_products.inc.php
@@ -246,7 +246,7 @@ b5771c7eff986dd9acd60aba2b7cdab0	includes/entities/ent_delivery_status.inc.php
 197f5cd84c0f915da7109f091b42db36	includes/entities/ent_link.inc.php
 07c9eba067bccda3b28cf602d3e833bd	includes/entities/ent_manufacturer.inc.php
 4966835a89d80d83d29bd0c622ce2e73	includes/entities/ent_module.inc.php
-56e433666b0d4ac5bd5569ea6f9788e7	includes/entities/ent_order.inc.php
+a5ef584115c7c2e2dd0935316215e3e8	includes/entities/ent_order.inc.php
 8fecf25d0a1c5ec72b93d6c4a5bfa56b	includes/entities/ent_order_status.inc.php
 1e5b8f0574a83afbcaa7478051a5d93f	includes/entities/ent_page.inc.php
 2b9a847c8e9e672741b09f6cc2a62dcd	includes/entities/ent_product.inc.php
@@ -281,11 +281,11 @@ d41d8cd98f00b204e9800998ecf8427e	includes/index.html
 d41d8cd98f00b204e9800998ecf8427e	includes/library/index.html
 28cd0f2c16abfd11a2cc4be0816e0127	includes/library/lib_breadcrumbs.inc.php
 922b344ab534f7073cd3345f313e9839	includes/library/lib_cache.inc.php
-151c61f255638511b3a9959882ae9748	includes/library/lib_cart.inc.php
+809aeafa71d0951e3789095f39d60a58	includes/library/lib_cart.inc.php
 0f14dd8a55acb482677c6ec16535d7b3	includes/library/lib_currency.inc.php
 6a53e50fa9cde007438af181ee96a25c	includes/library/lib_customer.inc.php
 11d14aac6c59cde35ec0ae9c6d47bd8a	includes/library/lib_database.inc.php
-4cdf951c4d6af3c21a18cd15d4f92d4d	includes/library/lib_document.inc.php
+bf277d36742c5ce780265179dd12728d	includes/library/lib_document.inc.php
 b4401ef3e46e288212dfc2fd3eb1d165	includes/library/lib_event.inc.php
 ea8d7ddb2524ec3236c7099e10854816	includes/library/lib_functions.inc.php
 040a7b80d8759f4c1cdb9d7ede6e0601	includes/library/lib_language.inc.php
@@ -305,7 +305,7 @@ b9e2e809bf272136adc1789aeb388fa0	includes/mcp/mcp_ping.inc.php
 d41d8cd98f00b204e9800998ecf8427e	includes/modules/customer/index.html
 d41d8cd98f00b204e9800998ecf8427e	includes/modules/index.html
 d41d8cd98f00b204e9800998ecf8427e	includes/modules/jobs/index.html
-39e817df636f34fb765f740df507ce86	includes/modules/jobs/job_cache_cleaner.inc.php
+e599a8ac9312211a1f8144edeae1138d	includes/modules/jobs/job_cleaner.inc.php
 18682a4984f91e0bc96d8477f2239c28	includes/modules/jobs/job_error_reporter.inc.php
 a7be2287148811f7641782554e13d59f	includes/modules/jobs/job_mysql_optimizer.inc.php
 ad531c8df27d488f161cd717e63e2769	includes/modules/mod_customer.inc.php
@@ -534,9 +534,9 @@ d41d8cd98f00b204e9800998ecf8427e	includes/wrappers/index.html
 f4c4574be46f27067a197e01813b44a7	includes/wrappers/wrap_http.inc.php
 c98f227b459c1abc1b8c2ad6d665df2e	includes/wrappers/wrap_smtp.inc.php
 2b2ad35c8bc176eae39aeffba903ac37	index.php
-d334f3fe57b30944147ddfaf47481742	install/clean.sql
+f8a1549b9b2d27346ae4bc866321ebe6	install/clean.sql
 71febae4e5008ddfbd252f1cb231e8c9	install/config
-c5089e3e0c09868b5c361b26b8d3aec6	install/data.sql
+e63eaaca889a2709c30217313e352684	install/data.sql
 2b2639ce48f7d6723c0768bcf39ca725	install/data/AU/AU.sql
 9a133ec15a84f54a925d396fd0e270c3	install/data/CA/CA.sql
 80a156bc4202b15b747be924bad59315	install/data/DE/DE.sql
@@ -579,9 +579,9 @@ d459f0ff7c7684a60ae0f8d79237f6fb	install/data/demo/public_html/images/products/3
 5ce62c13340c52070b1f99ff16a9a850	install/includes/footer.inc.php
 c0a24aa900902b46c62b360f650d12fe	install/includes/functions.inc.php
 a37bf7b37ad3919a13f46de67748afed	install/includes/header.inc.php
-3b1dc22b93033193888fed8177457caf	install/index.php
+0d8f99cb373b11d0a11132f7ccbf5867	install/index.php
 a14e5b798dcc00ac3a90051a6ef9cec7	install/install.php
-15d872789a21a52beae8f0df87be8525	install/structure.sql
+2dcaa64b03ff00cdb011200ee367aa18	install/structure.sql
 2804ed8ee10d22afb0de511176a1ec5e	install/upgrade.php
 a2dbda6a4f7ebf41735a468682ed243c	install/upgrade_patches/1.0.1.3.inc.php
 e40d16965a907467b8a8249a35927faf	install/upgrade_patches/1.0.1.4.inc.php
@@ -699,7 +699,7 @@ cd37a7f25119ad9ac30f171d57ef6db2	install/upgrade_patches/2.6.1.sql
 f90a56242d3956dc3dcf217afc5cb09e	install/upgrade_patches/2.6.3.sql
 bf4036885fd8f0a428691d3581ed0f75	install/upgrade_patches/2.7.0.inc.php
 4ae0c1da8cf2c3e71ea24a5e5c7d4353	install/upgrade_patches/2.7.0.sql
-62bedbdc93bbbaf5492dfce3c99f122d	install/upgrade_patches/2.7.1.inc.php
+0394051c214d5ddf82fa53a0f007985c	install/upgrade_patches/2.7.1.inc.php
 62bac9360222fee7de79173307177c9e	logs/.htaccess
 d41d8cd98f00b204e9800998ecf8427e	logs/index.html
 70df41f74e6b15be767a8052f14b4036	pages/ajax/cart.json.inc.php
@@ -725,7 +725,7 @@ d41d8cd98f00b204e9800998ecf8427e	pages/feeds/index.html
 d41d8cd98f00b204e9800998ecf8427e	pages/index.html
 0a3f559a27f82909541a503fc5fdeef4	pages/index.inc.php
 abd9f78dc5888bbb68927beb5b8cdd06	pages/information.inc.php
-0b1209b37f96ff7f2e683967b2b2f440	pages/login.inc.php
+f3b26afa23e73a05e05d1d548801c612	pages/login.inc.php
 7e36a0db48089c613393aaf51a4a4745	pages/logout.inc.php
 7a6919c51b4bde72accb628c8f894c2a	pages/maintenance_mode.inc.php
 a84dd6bf3a3c2d3ec007452f6f08fa99	pages/manifest.json.inc.php
@@ -742,7 +742,7 @@ c645b676b9a2866be05a2f8eb8826f74	pages/order_history.inc.php
 208d869c06e70418875c48114a465764	pages/product.inc.php
 710bc9d08ae56704a2586855e62fc2af	pages/push_jobs.inc.php
 72da1ca1d9e845343f82020f5e953e20	pages/regional_settings.inc.php
-e5c1a780c242c45c95f8448866f01ee9	pages/reset_password.inc.php
+fb9047d60c23a2f5ccb9b0d1641e73d7	pages/reset_password.inc.php
 be86a9bd36e281f7b9a52a8d14d91567	pages/search.inc.php
 d41d8cd98f00b204e9800998ecf8427e	vmods/.cache/index.html
 62bac9360222fee7de79173307177c9e	vmods/.htaccess
