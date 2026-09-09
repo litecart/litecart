@@ -517,7 +517,7 @@
       $rows = [];
       $num_rows = mysqli_num_rows($this->_result);
       $num_pages = ceil($num_rows / $items_per_page);
-      $pointer = (((int)$_GET['page']) -1) * $items_per_page;
+      $pointer = ((int)$page -1) * $items_per_page;
 
       if ($pointer < $num_rows) {
 
@@ -529,7 +529,7 @@
           $pointer++;
 
           if (!empty($row) || !is_numeric($row)) {
-        $rows[] = $row;
+            $rows[] = $row;
           }
 
           if ($pointer == $num_rows) {
