@@ -284,7 +284,7 @@ d41d8cd98f00b204e9800998ecf8427e	includes/library/index.html
 809aeafa71d0951e3789095f39d60a58	includes/library/lib_cart.inc.php
 0f14dd8a55acb482677c6ec16535d7b3	includes/library/lib_currency.inc.php
 6a53e50fa9cde007438af181ee96a25c	includes/library/lib_customer.inc.php
-11d14aac6c59cde35ec0ae9c6d47bd8a	includes/library/lib_database.inc.php
+628913b44b5e95b94f7370e8816620e7	includes/library/lib_database.inc.php
 bf277d36742c5ce780265179dd12728d	includes/library/lib_document.inc.php
 b4401ef3e46e288212dfc2fd3eb1d165	includes/library/lib_event.inc.php
 ea8d7ddb2524ec3236c7099e10854816	includes/library/lib_functions.inc.php
@@ -415,7 +415,7 @@ d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/css/index.ht
 a5cc2c8694665511b5d244683fa17f72	includes/templates/default.catalog/css/printable.css
 ad4edf5d093a8dd2cdcc8fdb3999fd68	includes/templates/default.catalog/css/printable.min.css
 211c109dbc2578c488d2a82fda94d462	includes/templates/default.catalog/css/printable.min.css.map
-03c7fe74ebf84fb08f6fcb780a3201d9	includes/templates/default.catalog/css/variables.css
+d7797fd550fb1feab54e1cb872a57c76	includes/templates/default.catalog/css/variables.css
 68b09b64bbc846a37fee1665f893af46	includes/templates/default.catalog/fonts/.htaccess
 07ddea58648d8d8e8806b78a2b19df98	includes/templates/default.catalog/fonts/asap-v30-latin_latin-ext-700.woff2
 49eccfbe21b8d64a861d63c525999b23	includes/templates/default.catalog/fonts/asap-v30-latin_latin-ext-regular.woff2
@@ -466,7 +466,7 @@ bf2c1f92035e0522a702286f6c0d0a61	includes/templates/default.catalog/less/framewo
 f68e2d41e6dd83608c607cc96103b311	includes/templates/default.catalog/less/framework/typography.less
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.catalog/less/index.html
 d5c93818b242b46839b3f1dbc3acdabb	includes/templates/default.catalog/less/printable.less
-7bdf0744aa13ab9321dd21131c9848c8	includes/templates/default.catalog/less/variables.less
+42e584638a89b64565a0188504fdff9c	includes/templates/default.catalog/less/variables.less
 984cbdda599e468eb70e497e8b24d7ff	includes/templates/default.catalog/pages/categories.inc.php
 146c2a64ed07a129e2c303b727a5e15e	includes/templates/default.catalog/pages/category.inc.php
 76408a07ffb29cede91812fde8e9e436	includes/templates/default.catalog/pages/checkout.inc.php
