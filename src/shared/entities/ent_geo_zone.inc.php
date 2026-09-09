@@ -92,13 +92,12 @@
 				foreach ($this->data['zones'] as $key => $zone) {
 
 					if (empty($zone['id'])) {
-					$this->data['zones'][$key]['created_at'] = date('Y-m-d H:i:s');
 					database::insert('zones_to_geo_zones', [
 						'geo_zone_id' => (int)$this->data['id'],
 						'country_code' => $zone['country_code'],
 						'zone_code' => $zone['zone_code'],
 						'city' => $zone['city'],
-						'created_at' => $this->data['zones'][$key]['created_at'],
+						'created_at' => $this->data['zones'][$key]['created_at'] = date('Y-m-d H:i:s'),
 					]);
 					$this->data['zones'][$key]['id'] = $zone['id'] = database::insert_id();
 				}

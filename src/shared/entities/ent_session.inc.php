@@ -55,10 +55,8 @@
 
 			if (!$this->data['id']) {
 
-				$this->data['id'] = bin2hex(random_bytes(16));
-
 				database::insert('sessions', [
-					'id' => $this->data['id'],
+					'id' => $this->data['id'] = bin2hex(random_bytes(16)),
 					'created_at' => date('Y-m-d H:i:s'),
 				]);
 			}

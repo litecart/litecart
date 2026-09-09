@@ -6,7 +6,7 @@
 			if (!class_exists('functions', true)) {
 				require __DIR__.'/nodes/nod_functions.inc.php';
 			}
-			return forward_static_call('functions::'.$function, ...$arguments);
+			return forward_static_call(['functions', $function], ...$arguments);
 		}
 	}
 

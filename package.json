@@ -42,11 +42,11 @@
 		"update": "bun update --latest"
 	},
 	"devDependencies": {
-		"@playwright/test": "^1.62.1",
+		"@playwright/test": "^1.63.0",
 		"@sequencemedia/gulp-clean-css": "^1.0.285",
 		"@sequencemedia/gulp-sourcemaps": "^1.0.301",
 		"editorconfig-checker": "^7.0.0",
-		"eslint": "^10.9.1",
+		"eslint": "^10.10.0",
 		"eslint-plugin-html": "^8.2.0",
 		"gulp": "^5.0.1",
 		"gulp-clean-css": "^4.3.0",
@@ -62,8 +62,8 @@
 		"phplint": "^2.0.5",
 		"postcss-html": "^2.0.0",
 		"postcss-scss": "^4.0.9",
-		"sass": "^1.103.1",
-		"stylelint": "^17.14.1",
+		"sass": "^1.104.0",
+		"stylelint": "^17.15.0",
 		"stylelint-config-standard-scss": "^17.0.0"
 	}
 }

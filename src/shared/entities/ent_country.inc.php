@@ -128,7 +128,7 @@
 
 					database::insert('zones', [
 						'country_code' => $this->data['iso_code_2'],
-						'created_at' => date('Y-m-d H:i:s'),
+						'created_at' => $this->data['zones'][$key]['created_at'] = date('Y-m-d H:i:s'),
 					]);
 
 					$zone['id'] = $this->data['zones'][$key]['id'] = database::insert_id();

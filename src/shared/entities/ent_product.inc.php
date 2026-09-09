@@ -167,9 +167,8 @@
 
 			if (!$this->data['id']) {
 
-				$this->data['created_at'] = date('Y-m-d H:i:s');
 				database::insert('products', [
-					'created_at' => $this->data['created_at'],
+					'created_at' => $this->data['created_at'] = date('Y-m-d H:i:s'),
 				]);
 
 				$this->data['id'] = database::insert_id();

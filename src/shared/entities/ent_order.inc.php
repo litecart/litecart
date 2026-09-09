@@ -459,10 +459,9 @@
 
 					if (empty($comment['id'])) {
 
-						$this->data['comments'][$key]['created_at'] = date('Y-m-d H:i:s');
 						database::insert('orders_comments', [
 							'order_id' => (int)$this->data['id'],
-							'created_at' => $this->data['comments'][$key]['created_at'],
+							'created_at' => $this->data['comments'][$key]['created_at'] = date('Y-m-d H:i:s'),
 						]);
 
 						$comment['id'] = $this->data['comments'][$key]['id'] = database::insert_id();

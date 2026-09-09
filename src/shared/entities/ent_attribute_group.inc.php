@@ -92,9 +92,8 @@
 			// Group
 			if (!$this->data['id']) {
 
-				$this->data['created_at'] = date('Y-m-d H:i:s');
 				database::insert('attribute_groups', [
-					'created_at' => $this->data['created_at'],
+					'created_at' => $this->data['created_at'] = date('Y-m-d H:i:s'),
 				]);
 
 				$this->data['id'] = database::insert_id();
@@ -147,10 +146,9 @@
 
 				if (empty($value['id'])) {
 
-					$this->data['values'][$key]['created_at'] = date('Y-m-d H:i:s');
 					database::insert('attribute_values', [
 						'group_id' => (int)$this->data['id'],
-						'created_at' => $this->data['values'][$key]['created_at'],
+						'created_at' => $this->data['values'][$key]['created_at'] = date('Y-m-d H:i:s'),
 					]);
 
 					$value['id'] = $this->data['values'][$key]['id'] = database::insert_id();

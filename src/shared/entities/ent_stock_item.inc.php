@@ -129,12 +129,11 @@
 
 			if (!$this->data['id']) {
 
-				$this->data['created_at'] = date('c');
 				database::insert('stock_items', [
 					'sku' => $this->data['sku'],
 					'mpn' => $this->data['mpn'],
 					'gtin' => $this->data['gtin'],
-					'created_at' => $this->data['created_at'],
+					'created_at' => $this->data['created_at'] = date('c'),
 				]);
 
 				$this->data['id'] = database::insert_id();
