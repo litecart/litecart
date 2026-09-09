@@ -698,7 +698,7 @@ cd37a7f25119ad9ac30f171d57ef6db2	install/upgrade_patches/2.6.1.sql
 30c3e5bcc89bac50022777666f8fd35e	install/upgrade_patches/2.6.3.inc.php
 f90a56242d3956dc3dcf217afc5cb09e	install/upgrade_patches/2.6.3.sql
 bf4036885fd8f0a428691d3581ed0f75	install/upgrade_patches/2.7.0.inc.php
-4ae0c1da8cf2c3e71ea24a5e5c7d4353	install/upgrade_patches/2.7.0.sql
+d9c4fedf0e4d713ec193526fbaa416c3	install/upgrade_patches/2.7.0.sql
 f7731ed1370e75fe84dfa3c43b245d87	install/upgrade_patches/2.7.1.inc.php
 c5c2c3f46be698b30d6ba37911c4b8be	install/upgrade_patches/2.7.1.sql
 62bac9360222fee7de79173307177c9e	logs/.htaccess
