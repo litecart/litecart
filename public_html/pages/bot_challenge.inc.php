@@ -218,7 +218,7 @@ body {
       }
 
       // Check for crypto support
-      if (typeof crypto?.randomUUID != 'function') {
+      if (window.isSecureContext && typeof crypto?.randomUUID !== 'function') {
         throw new Error('Failed crypto check');
       }
 

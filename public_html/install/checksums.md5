@@ -194,9 +194,9 @@ c4ab4892c83771532d1ef4a2da1ef2fc	ext/trumbowyg/plugins/colors/trumbowyg.colors.m
 9c0973fb3d7dc556d067a23ac33a7d51	ext/trumbowyg/plugins/colors/ui/trumbowyg.colors.min.css
 439a2b3e3cd6d8e934404edc2fb024a6	ext/trumbowyg/plugins/table/trumbowyg.table.min.js
 41b48c40da4759756240f206d4652b62	ext/trumbowyg/plugins/table/ui/trumbowyg.table.min.css
-9daa7eefa73ee46d03209d24621c6b44	ext/trumbowyg/trumbowyg.min.js
-6cd03bfbb88d16c8495ad4c161632d65	ext/trumbowyg/ui/icons.svg
-97aea844c5ed88752566ea2e841c86f3	ext/trumbowyg/ui/trumbowyg.min.css
+9af00c36a99fb85da2e0e3c2e298b44d	ext/trumbowyg/trumbowyg.min.js
+a60b3a02b8960a18b7f4812b9d489c43	ext/trumbowyg/ui/icons.svg
+4186e494670f38c3cc27c721c8d4169b	ext/trumbowyg/ui/trumbowyg.min.css
 bdf1f915525861277993816806160114	ext/trumbowyg/ui/trumbowyg.scss
 d41d8cd98f00b204e9800998ecf8427e	images/categories/index.html
 d41d8cd98f00b204e9800998ecf8427e	images/index.html
@@ -371,7 +371,7 @@ c4d3c6986dd5bb9a5aae143cbf3d6898	includes/templates/default.admin/layouts/login.
 279107f00bc99d3e19629782eb9ab0f0	includes/templates/default.admin/less/framework/animations.less
 5ea23628afdf6ef97c8058c57e788e1b	includes/templates/default.admin/less/framework/base.less
 c9ed538c79dab8901cf3babc43af0b68	includes/templates/default.admin/less/framework/breadcrumbs.less
-fff4922a8da5780f57a081aa35d82fb7	includes/templates/default.admin/less/framework/buttons.less
+8beddae18c356f9df3c35bef8c8f4fa6	includes/templates/default.admin/less/framework/buttons.less
 9aef10b7b0e32a671deb82e6fdd5b379	includes/templates/default.admin/less/framework/cards.less
 c9d9a6da4ca416235da5473b7b7609a5	includes/templates/default.admin/less/framework/chat.less
 1cc97db74524c02b932b48b8d82cb6bb	includes/templates/default.admin/less/framework/dropdown.less
@@ -494,6 +494,7 @@ e760c75c85a4c6b9aed9015d78e4f2d7	includes/templates/default.catalog/pages/produc
 df595bac8dd411dedf5bbd25f9fc1383	includes/templates/default.catalog/pages/regional_settings.inc.php
 6fe3c92676d2f2a706f9cd1d455d6b50	includes/templates/default.catalog/pages/reset_password.inc.php
 3bafea13f78b57a2164b79f220654a33	includes/templates/default.catalog/pages/search_results.inc.php
+1e7e2c240cc2dd4cc81e66ee37039dd3	includes/templates/default.catalog/pages/withdrawal_request.inc.php
 d6add72ed2100b49cfdd7e1a6f3227cb	includes/templates/default.catalog/views/box_account_links.inc.php
 a5a213882fd9411e159ec948fd98ab93	includes/templates/default.catalog/views/box_account_login.inc.php
 0d4eb0853585d7f1fda9348f6ec7a0a7	includes/templates/default.catalog/views/box_also_purchased_products.inc.php
@@ -582,7 +583,7 @@ a37bf7b37ad3919a13f46de67748afed	install/includes/header.inc.php
 0d8f99cb373b11d0a11132f7ccbf5867	install/index.php
 a14e5b798dcc00ac3a90051a6ef9cec7	install/install.php
 2dcaa64b03ff00cdb011200ee367aa18	install/structure.sql
-2804ed8ee10d22afb0de511176a1ec5e	install/upgrade.php
+c2b1be1f794887b0bed4ae30962ac6d0	install/upgrade.php
 a2dbda6a4f7ebf41735a468682ed243c	install/upgrade_patches/1.0.1.3.inc.php
 e40d16965a907467b8a8249a35927faf	install/upgrade_patches/1.0.1.4.inc.php
 9560e70752a13b7a22ec65231e1b61e0	install/upgrade_patches/1.0.1.5.inc.php
@@ -713,7 +714,7 @@ e6953649a200825cfcfd08be0a536f14	pages/ajax/get_address.json.inc.php
 d41d8cd98f00b204e9800998ecf8427e	pages/ajax/index.html
 d1eeb8ac8d6f281e1bff0b76e4142b58	pages/ajax/product_options_stock.json.inc.php
 1c4ac6df3b950e7757ee543ee666001c	pages/ajax/zones.json.inc.php
-e1e90c9baff340e832358767e56bcc0f	pages/bot_challenge.inc.php
+2153b4237c8a461ff56d017af7cc4e15	pages/bot_challenge.inc.php
 2036d4a768c600509cc84e1f4fd2a08d	pages/categories.inc.php
 bdc5d73a8faa651c53b3b2baeb08f1ad	pages/category.inc.php
 e1eb0445c1946b7708afc93e87f13e53	pages/checkout.inc.php
@@ -746,6 +747,7 @@ c645b676b9a2866be05a2f8eb8826f74	pages/order_history.inc.php
 72da1ca1d9e845343f82020f5e953e20	pages/regional_settings.inc.php
 fb9047d60c23a2f5ccb9b0d1641e73d7	pages/reset_password.inc.php
 be86a9bd36e281f7b9a52a8d14d91567	pages/search.inc.php
+db120c1711c32b0725c281d525df0ee2	pages/withdrawal_request.inc.php
 d41d8cd98f00b204e9800998ecf8427e	vmods/.cache/index.html
 62bac9360222fee7de79173307177c9e	vmods/.htaccess
 d41d8cd98f00b204e9800998ecf8427e	vmods/index.html
