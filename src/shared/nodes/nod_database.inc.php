@@ -73,8 +73,16 @@
 
 			// Set time zone for current session
 			if ($timezone = ini_get('date.timezone')) {
-				$datetime = new \DateTime('now', new \DateTimezone($timezone));
-				self::query("SET time_zone = '". self::input($datetime->format('P')) ."';", $link);
+				if (database::query(
+					"SELECT 1 FROM mysql.time_zone_name
+					WHERE Name = '". database::input($timezone) ."'
+					LIMIT 1;"
+				)->num_rows) {
+					self::query("SET time_zone = '". self::input($timezone) ."';", $link);
+				} else {
+					$datetime = new \DateTime('now', new \DateTimezone($timezone));
+					self::query("SET time_zone = '". self::input($datetime->format('P')) ."';", $link);
+				}
 			}
 
 			return self::$links[$link];
