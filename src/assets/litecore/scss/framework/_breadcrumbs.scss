@@ -2,8 +2,8 @@
 
 .breadcrumbs {
 	margin: 0;
-	margin-bottom: 2em;
-	padding: 1em 2em;
+	margin-bottom: 1.5em;
+	padding: .75em 1.5em;
 	border-radius: var(--border-radius);
 	background: var(--breadcrumbs-background);
 	box-shadow: var(--breadcrumbs-shadow);
@@ -36,14 +36,14 @@
 .breadcrumbs-2 {
 	display: flex;
 	flex-flow: row wrap;
-	gap: .5em;
+	gap: .75em;
 	margin: 0;
-	padding: .5em;
+	padding: .75em;
 	background: var(--breadcrumbs-background);
 	box-shadow: var(--breadcrumbs-shadow);
 	border: var(--breadcrumbs-border-width) solid var(--breadcrumbs-border-color);
 	border-radius: var(--border-radius);
-	margin-bottom: 2em;
+	margin-bottom: 1.5em;
 
 	&:is(ul, ol) {
 		list-style: none;

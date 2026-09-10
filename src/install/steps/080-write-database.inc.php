@@ -157,6 +157,12 @@
 				$sql .= ' ENGINE=InnoDB';
 			}
 
+			if (isset($table['row_format'])) {
+				$sql .= ' ROW_FORMAT=' . database::input($table['row_format']);
+			} else {
+				$sql .= ' ROW_FORMAT=DYNAMIC';
+			}
+
 			if (isset($table['charset'])) {
 				$sql .= ' DEFAULT CHARSET=' . database::input($table['charset']);
 			} else {

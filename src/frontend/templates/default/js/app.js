@@ -79,9 +79,7 @@ if (!localStorage.getItem('bot_challenge_passed')) {
 			suspicious: [],
 		};
 
-		// -------------------------------------------------------------------------
 		// Basic automation detection
-		// -------------------------------------------------------------------------
 
 		report.webdriver = !!navigator.webdriver;
 
@@ -98,9 +96,7 @@ if (!localStorage.getItem('bot_challenge_passed')) {
 		report.hardwareConcurrency = navigator.hardwareConcurrency || 0;
 		report.deviceMemory = navigator.deviceMemory || null;
 
-		// -------------------------------------------------------------------------
 		// Human interaction tracking
-		// -------------------------------------------------------------------------
 
 		let lastMove = null;
 
@@ -146,9 +142,7 @@ if (!localStorage.getItem('bot_challenge_passed')) {
 			report.scrollEvents++;
 		}, { passive: true });
 
-		// -------------------------------------------------------------------------
 		// Focus / visibility
-		// -------------------------------------------------------------------------
 
 		document.addEventListener('visibilitychange', () => {
 			report.visibilityChanges++;
@@ -162,9 +156,7 @@ if (!localStorage.getItem('bot_challenge_passed')) {
 			report.focusChanges++;
 		});
 
-		// -------------------------------------------------------------------------
 		// Canvas fingerprint
-		// -------------------------------------------------------------------------
 
 		try {
 
@@ -184,9 +176,7 @@ if (!localStorage.getItem('bot_challenge_passed')) {
 
 		} catch {}
 
-		// -------------------------------------------------------------------------
 		// WebGL fingerprint
-		// -------------------------------------------------------------------------
 
 		try {
 
@@ -214,9 +204,7 @@ if (!localStorage.getItem('bot_challenge_passed')) {
 
 		} catch {}
 
-		// -------------------------------------------------------------------------
 		// Entropy scoring
-		// -------------------------------------------------------------------------
 
 		function stddev(values) {
 
@@ -239,15 +227,11 @@ if (!localStorage.getItem('bot_challenge_passed')) {
 
 		report.entropy = stddev(report.timings);
 
-		// -------------------------------------------------------------------------
 		// Wait in background
-		// -------------------------------------------------------------------------
 
 		await new Promise(resolve => setTimeout(resolve, 8000));
 
-		// -------------------------------------------------------------------------
 		// Simple scoring
-		// -------------------------------------------------------------------------
 
 		let score = 0;
 
@@ -277,12 +261,10 @@ if (!localStorage.getItem('bot_challenge_passed')) {
 
 		report.botScore = score;
 
-		// -------------------------------------------------------------------------
 		// Send to backend
-		// -------------------------------------------------------------------------
 
 		navigator.sendBeacon(
-			'/bot-check',
+			'/bot_check',
 			JSON.stringify(report)
 		);
 

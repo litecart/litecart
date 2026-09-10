@@ -231,7 +231,7 @@
 		if (preg_match('#\[\]$#', $name)) {
 			return f::draw_element('input', ['class' => 'form-check', 'type' => 'checkbox', 'name' => $name, 'value' => $value, ...$attributes] + ((is_array($input) && in_array($value, $input)) ? ['checked' => ''] : []));
 		} else {
-			return f::draw_element('input', ['class' => 'form-check', 'type' => 'checkbox', 'name' => $name, 'value' => $value, ...$attributes] + (($input ?? '') === ($value ?? '') ? ['checked' => ''] : []));
+			return f::draw_element('input', ['class' => 'form-check', 'type' => 'checkbox', 'name' => $name, 'value' => $value, ...$attributes] + (!strcmp($input, $value) ? ['checked' => ''] : []));
 		}
 	}
 
@@ -423,8 +423,8 @@
 
 		return implode(PHP_EOL, [
 			'<div class="input-group">',
-			'  <span class="input-group-icon">'. f::draw_fonticon('icon-envelope') .'</span>',
-			'  ' . f::draw_element('input', ['class' => 'form-input', 'type' => 'email', 'name' => $name, 'value' => $input, ...$attributes]),
+			'	<span class="input-group-icon">'. f::draw_fonticon('icon-envelope') .'</span>',
+			'	' . f::draw_element('input', ['class' => 'form-input', 'type' => 'email', 'name' => $name, 'value' => $input, ...$attributes]),
 			'</div>',
 		]);
 	}
@@ -543,8 +543,8 @@
 
 		return implode(PHP_EOL, [
 			'<div class="input-group">',
-			'  <span class="input-group-icon">'. f::draw_fonticon('icon-key') .'</span>',
-			'  ' . f::draw_element('input', ['class' => 'form-input', 'type' => 'password', 'name' => $name, 'value' => $input, ...$attributes]),
+			'	<span class="input-group-icon">'. f::draw_fonticon('icon-key') .'</span>',
+			'	' . f::draw_element('input', ['class' => 'form-input', 'type' => 'password', 'name' => $name, 'value' => $input, ...$attributes]),
 			'</div>',
 		]);
 	}
@@ -559,9 +559,9 @@
 
 		return implode(PHP_EOL, [
 			'<div class="input-group">',
-			'  <span class="input-group-icon">'. f::draw_fonticon('icon-key') .'</span>',
-			'  ' . f::draw_element('input', ['class' => 'form-input', 'type' => 'password', 'name' => $name, 'value' => $input, ...$attributes]),
-			'  ' . f::draw_element('button', ['class' => 'btn btn-default', 'type' => 'button', 'onclick' => "$(this).prev().attr('type', ($(this).prev().attr('type') == 'password') ? 'text' : 'password');"], f::draw_fonticon('icon-eye')),
+			'	<span class="input-group-icon">'. f::draw_fonticon('icon-key') .'</span>',
+			'	' . f::draw_element('input', ['class' => 'form-input', 'type' => 'password', 'name' => $name, 'value' => $input, ...$attributes]),
+			'	' . f::draw_element('button', ['class' => 'btn btn-default', 'type' => 'button', 'onclick' => "$(this).prev().attr('type', ($(this).prev().attr('type') == 'password') ? 'text' : 'password');"], f::draw_fonticon('icon-eye')),
 			'</div>',
 		]);
 	}
@@ -570,8 +570,8 @@
 
 		return implode(PHP_EOL, [
 			'<div class="input-group">',
-			'  ' . form_input_decimal($name, $input, $decimals, $attributes),
-			'  <span class="input-group-text">%</span>',
+			'	' . form_input_decimal($name, $input, $decimals, $attributes),
+			'	<span class="input-group-text">%</span>',
 			'</div>',
 		]);
 	}
@@ -586,8 +586,8 @@
 
 		return implode(PHP_EOL, [
 			'<div class="input-group">',
-			'  <span class="input-group-icon">'. f::draw_fonticon('icon-phone') .'</span>',
-			'  ' . f::draw_element('input', ['class' => 'form-input', 'type' => 'tel', 'name' => $name, 'value' => $input, 'pattern' => '\+?(\d|-| )+', ...$attributes]),
+			'	<span class="input-group-icon">'. f::draw_fonticon('icon-phone') .'</span>',
+			'	' . f::draw_element('input', ['class' => 'form-input', 'type' => 'tel', 'name' => $name, 'value' => $input, 'pattern' => '\+?(\d|-| )+', ...$attributes]),
 			'</div>',
 		]);
 	}
@@ -598,8 +598,8 @@
 
 		if (is_array($value)) {
 			return f::draw_element('label', ['class' => 'form-check', ...$attributes], implode(PHP_EOL, [
-				'  ' . form_radio_button($name, $value[0], $input, $attributes),
-				'  ' . ($value[1] ?? $value[0]),
+				form_radio_button($name, $value[0], $input, $attributes),
+				($value[1] ?? $value[0]),
 			]));
 		}
 
@@ -609,7 +609,7 @@
 
 		$attributes = is_array($attributes) ? $attributes : form_attributes($attributes);
 
-		return f::draw_element('input', ['class' => 'form-radio', 'type' => 'radio', 'name' => $name, 'value' => $value, ...$attributes] + (($input ?? '') === ($value ?? '') ? ['checked' => ''] : []));
+		return f::draw_element('input', ['class' => 'form-radio', 'type' => 'radio', 'name' => $name, 'value' => $value, ...$attributes] + (!strcmp($input, $value) ? ['checked' => ''] : []));
 	}
 
 	function form_input_range(string $name, bool|string $input=true, string|int|float $min='', string|int|float $max='', string|int|float $step='', array|string $attributes=[]): string {
@@ -633,8 +633,8 @@
 
 		return implode(PHP_EOL, [
 			'<div class="input-group">',
-			'  <span class="input-group-icon">'. f::draw_fonticon('icon-search') .'</span>',
-			'  ' . f::draw_element('input', ['class' => 'form-input', 'type' => 'search', 'name' => $name, 'value' => $input, ...$attributes]),
+			'	<span class="input-group-icon">'. f::draw_fonticon('icon-search') .'</span>',
+			'	' . f::draw_element('input', ['class' => 'form-input', 'type' => 'search', 'name' => $name, 'value' => $input, ...$attributes]),
 			'</div>',
 		]);
 	}
@@ -693,8 +693,8 @@
 
 		return implode(PHP_EOL, [
 			'<div class="input-group">',
-			'  <span class="input-group-icon">'. f::draw_fonticon('icon-user') .'</span>',
-			'  ' . f::draw_element('input', ['class' => 'form-input', 'type' => 'text', 'name' => $name, 'value' => $input, ...$attributes]),
+			'	<span class="input-group-icon">'. f::draw_fonticon('icon-user') .'</span>',
+			'	' . f::draw_element('input', ['class' => 'form-input', 'type' => 'text', 'name' => $name, 'value' => $input, ...$attributes]),
 			'</div>',
 		]);
 	}
@@ -741,24 +741,24 @@
 
 		document::$javascript[] = implode(PHP_EOL, [
 			'$(\'textarea[name="'. $name .'"]\').trumbowyg({',
-			'  btns: [["viewHTML"], ["formatting"], ["strong", "em", "underline", "del"], ["foreColor", "backColor"], ["link"], ["insertImage"], ["table"], ["justifyLeft", "justifyCenter", "justifyRight"], ["lists"], ["preformatted"], ["horizontalRule"], ["removeformat"], ["fullscreen"]],',
-			'  btnsDef: {',
-			'    lists: {',
-			'      dropdown: ["unorderedList", "orderedList"],',
-			'      title: "Lists",',
-			'      ico: "unorderedList",',
-			'    }',
-			'  },',
-			'  plugins: {',
-			'    upload: {',
-			'      serverPath: "'. document::href_rlink('app://assets/trumbowyg/plugins/upload/trumbowyg.upload.php') .'",',
-			'    }',
-			'  },',
-			'  lang: "'. language::$selected['code'] .'",',
-			//'  autogrowOnEnter: true,',
-			'  imageWidthModalEdit: true,',
-			'  removeformatPasted: true,',
-			'  semantic: false',
+			'	btns: [["viewHTML"], ["formatting"], ["strong", "em", "underline", "del"], ["foreColor", "backColor"], ["link"], ["insertImage"], ["table"], ["justifyLeft", "justifyCenter", "justifyRight"], ["lists"], ["preformatted"], ["horizontalRule"], ["removeformat"], ["fullscreen"]],',
+			'	btnsDef: {',
+			'		lists: {',
+			'			dropdown: ["unorderedList", "orderedList"],',
+			'			title: "Lists",',
+			'			ico: "unorderedList",',
+			'		}',
+			'	},',
+			'	plugins: {',
+			'		upload: {',
+			'			serverPath: "'. document::href_rlink('app://assets/trumbowyg/plugins/upload/trumbowyg.upload.php') .'",',
+			'		}',
+			'	},',
+			'	lang: "'. language::$selected['code'] .'",',
+			'  autogrowOnEnter: false,',
+			'	imageWidthModalEdit: true,',
+			'	removeformatPasted: true,',
+			'	semantic: false',
 			'});',
 		]);
 
@@ -807,7 +807,7 @@
 		return implode(PHP_EOL, [
 			'<div class="input-group">',
 			'  <span class="input-group-text" style="font-family: monospace;" title="'. f::escape_attr($language_name) .'">'. f::escape_html($language_code) .'</span>',
-			'  ' . form_input_text($name, $input, $attributes),
+			'	' . form_input_text($name, $input, $attributes),
 			'</div>',
 		]);
 	}
@@ -827,7 +827,7 @@
 		return implode(PHP_EOL, [
 			'<div class="input-group">',
 			'  <span class="input-group-text" style="font-family: monospace;" title="'. f::escape_attr($language_name) .'">'. f::escape_html($language_code) .'</span>',
-			'  ' . form_textarea($name, $input, $attributes),
+			'	' . form_textarea($name, $input, $attributes),
 			'</div>',
 		]);
 	}
@@ -847,7 +847,7 @@
 		return implode(PHP_EOL, [
 			'<div class="input-group">',
 			'  <span class="input-group-text" style="font-family: monospace;" title="'. f::escape_attr($language_name) .'">'. f::escape_html($language_code) .'</span>',
-			'  ' . form_input_wysiwyg($name, $input, $attributes),
+			'	' . form_input_wysiwyg($name, $input, $attributes),
 			'</div>',
 		]);
 	}
@@ -863,9 +863,7 @@
 		}
 
 		$attributes = is_array($attributes) ? $attributes : form_attributes($attributes);
-
 		$content = [];
-
 		$is_numerical_index = array_is_list($options);
 
 		foreach ($options as $key => $option) {
@@ -887,7 +885,7 @@
 			if (!strcmp($option[0], $input)) {
 				$content[] = f::draw_element('option', ['value' => $option[0], 'selected' => '', ...$option[2]], $option[1] ?? $option[0]);
 			}	else {
-				$content[] = f::draw_element('option', ['value' => $option[0]], $option[1] ?? $option[0], ...$option[2]);
+				$content[] = f::draw_element('option', ['value' => $option[0], ...$option[2]], $option[1] ?? $option[0]);
 			}
 		}
 
@@ -954,7 +952,7 @@
 				if (preg_match('#\[\]$#', $name)) {
 					$content[] = '  <option value="'. f::escape_attr($option[0]) .'"'. (in_array($option[0], $input) ? ' selected' : '') . (!empty($option[2]) ? ' ' . $option[2] : '') . '>'. ($option[1] ?? $option[0]) .'</option>' . PHP_EOL;
 				} else {
-					$content[] = '  <option value="'. f::escape_attr($option[0]) .'"'. (($option[0] ?? '') === ($input ?? '') ? ' selected' : '') . (!empty($option[2]) ? ' ' . $option[2] : '') . '>'. ($option[1] ?? $option[0]) .'</option>' . PHP_EOL;
+					$content[] = '  <option value="'. f::escape_attr($option[0]) .'"'. (!strcmp($option[0], $input) ? ' selected' : '') . (!empty($option[2]) ? ' ' . $option[2] : '') . '>'. ($option[1] ?? $option[0]) .'</option>' . PHP_EOL;
 				}
 			}
 
@@ -1053,15 +1051,15 @@
 
 			if (preg_match('#\[\]$#', $name)) {
 				$content .= implode(PHP_EOL, [
-					'  <label>',
-					'    <input type="checkbox" name="'. f::escape_attr($name) .'" value="'. f::escape_attr($option[0]) .'" hidden'. ((is_array($input) && in_array($option[0], $input)) ? ' checked' : '') . (!empty($option[2]) ? ' '. $option[2] : '') .'>'. $option[1],
-					'  </label>',
+					'	<label>',
+					'		<input type="checkbox" name="'. f::escape_attr($name) .'" value="'. f::escape_attr($option[0]) .'" hidden'. ((is_array($input) && in_array($option[0], $input)) ? ' checked' : '') . (!empty($option[2]) ? ' '. $option[2] : '') .'>'. $option[1],
+					'	</label>',
 				]) . PHP_EOL;
 			} else {
 				$content .= implode(PHP_EOL, [
-					'  <label>',
-					'    <input type="radio" name="'. f::escape_attr($name) .'" value="'. f::escape_attr($option[0]) .'" hidden'. (($option[0] == $input) ? ' checked' : '') . (!empty($option[2]) ? ' '. $option[2] : '') .'>'. $option[1],
-					'  </label>',
+					'	<label>',
+					'		<input type="radio" name="'. f::escape_attr($name) .'" value="'. f::escape_attr($option[0]) .'" hidden'. (($option[0] == $input) ? ' checked' : '') . (!empty($option[2]) ? ' '. $option[2] : '') .'>'. $option[1],
+					'	</label>',
 				]) . PHP_EOL;
 			}
 		}
@@ -1087,7 +1085,7 @@
 
 		$options = [];
 		if (!empty($matches[2])) {
-			$options = preg_split('#\s*,\s*#', $matches[2], -1, PREG_SPLIT_NO_EMPTY);
+			$options = f::string_split($matches[2]);
 			$options = f::array_each($options, fn($s) => trim($s, '\'" '));
 		}
 
@@ -1097,7 +1095,7 @@
 				return form_select_administrator($name, $input, $attributes);
 
 			case 'bigtext':
-				return form_textarea($name, $input, [...$attributes, 'rows' => 10]);
+				return form_textarea($name, $input, ['rows' => 10, ...$attributes]);
 
 			case 'campaign':
 				return form_select_campaign($name, $input, $attributes);
@@ -1367,9 +1365,9 @@
 		$options = database::query(
 			"select id, name from ". DB_PREFIX ."brands
 			order by name asc;"
-		)->fetch_all(function($brand){
-			return [$brand['id'], $brand['name']];
-		});
+		)->fetch_all(fn($brand) =>
+			[$brand['id'], $brand['name']]
+		);
 
 		if (preg_match('#\[\]$#', $name)) {
 			return form_select_multiple($name, $options, $input, $attributes);
@@ -1580,7 +1578,7 @@
 
 	function form_select_customer(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
 
-		if (empty(administrator::$data['id'])) {
+		if (!administrator::check_login()) {
 			throw new Error('Must be logged in to use form_select_customer()');
 		}
 
@@ -1931,8 +1929,8 @@
 		$attributes = is_array($attributes) ? $attributes : form_attributes($attributes);
 
 		return f::draw_element('div', ['class' => 'form-input', ...$attributes], implode(PHP_EOL, [
-			'  ' . form_input_hidden($name, true),
-			'  <span class="value">'. ($input ? f::escape_html($input) : '('. t('title_none', 'None') .')') .'</span> <a href="'. document::href_ilink('b:files/file_picker') .'" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin-inline-start: 5px;">'. t('title_change', 'Change') .'</a>',
+			'	' . form_input_hidden($name, true),
+			'	<span class="value">'. ($input ? f::escape_html($input) : '('. t('title_none', 'None') .')') .'</span> <a href="'. document::href_ilink('b:files/file_picker') .'" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin-inline-start: 5px;">'. t('title_change', 'Change') .'</a>',
 		]));
 	}
 
@@ -1977,7 +1975,7 @@
 		});
 
 		if (!$options) {
-			return form_select($name, $options, $input, $attributes . ' disabled');
+			return form_select($name, $options, $input, ['disabled' => '', ...$attributes]);
 		}
 
 		if (preg_match('#\[\]$#', $name)) {
@@ -2018,9 +2016,11 @@
 			$input = form_reinsert_value($name);
 		}
 
+		$attributes = is_array($attributes) ? form_attributes($attributes) : $attributes;
+
 		if (!class_exists('ResourceBundle')) {
 			trigger_error('The PHP extension "intl" is required to use form_select_intl_locale()', E_USER_WARNING);
-			return form_input_text($name, $input, $attributes . ($attributes ? ' ' : '') .'placeholder="en_US.utf8, en-US.UTF-8, english"');
+			return form_input_text($name, $input, ['placeholder' => 'en_US.utf8, en-US.UTF-8, english', ...$attributes]);
 		}
 
 		$options = f::array_each(ResourceBundle::getLocales(''), fn($locale) => [$locale]);

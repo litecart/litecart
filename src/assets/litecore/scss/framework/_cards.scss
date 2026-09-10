@@ -6,19 +6,19 @@
 	color: var(--card-text-color);
 	border: var(--card-border-width) solid var(--card-border-color);
 	box-shadow: var(--card-shadow);
-	margin-bottom: var(--gutter-y);
+	margin-bottom: 1.5em;
 	border-radius: var(--border-radius);
 
 	.card-header,
 	.card-filter,
 	.card-body,
 	.card-footer {
-		padding: calc(var(--gutter-y) / 2) var(--gutter-x);
+		padding: 1.5em;
 	}
 
 	.card-filter {
 		display: flex;
-		gap: var(--gutter-y) var(--gutter-x);
+		gap: 1em;
 
 		.expandable {
 			flex: 1;
@@ -27,30 +27,27 @@
 
 	.card-action {
 		position: absolute;
-		top: var(--gutter-y);
-		right: var(--gutter-x);
+		top: 1.5em;
+		inset-inline-end: 1.5em;
 	}
 
 	> *[class*="card-"]:first-child {
-		padding-top: var(--gutter-y);
 		border-start-start-radius: var(--border-radius);
 		border-start-end-radius: var(--border-radius);
 	}
 
 	> *[class*="card-"]:last-child,
 	> form:last-child *[class*="card-"]:last-child {
-		padding-bottom: var(--gutter-y);
 	}
 
 	> *[class*="card-footer"]:last-child {
-		padding-top: var(--gutter-y);
 		border-end-start-radius: var(--border-radius);
 		border-end-end-radius: var(--border-radius);
 	}
 
 	> table,
 	> form > table {
-		margin: 1em 0;
+		margin: 1.5em 0;
 	}
 
 	.card-header {
@@ -90,19 +87,14 @@
 	}
 
 	> .list-group:first-child .list-group-item:first-child {
-		border-start-start-radius: 0.25rem;
-		border-start-end-radius: 0.25rem;
+		border-start-start-radius: .25rem;
+		border-start-end-radius: .25rem;
 	}
 
 	> .list-group:last-child .list-group-item:last-child {
-		border-end-end-radius: 0.25rem;
-		border-end-start-radius: 0.25rem;
+		border-end-end-radius: .25rem;
+		border-end-start-radius: .25rem;
 	}
-}
-
-[dir="rtl"] .card-action {
-	left: 2em;
-	right: auto;
 }
 
 .litebox .card {

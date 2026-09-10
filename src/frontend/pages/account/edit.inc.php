@@ -7,7 +7,6 @@
 	*/
 
 	header('X-Robots-Tag: noindex');
-	document::$head_tags['noindex'] = '<meta name="robots" content="noindex">';
 
 	customer::require_login();
 
@@ -64,7 +63,7 @@
 					);
 
 					unset(session::$data['totp_pending_secret']);
-					$customer = new ent_customer(customer::$data['id']);
+					customer::load(customer::$data['id']);
 					notices::add('success', t('success_totp_enabled', 'TOTP has been enabled'));
 					reload();
 					exit;
@@ -79,12 +78,13 @@
 					database::query(
 						"update ". DB_PREFIX ."customers
 						set totp_secret = null
-						where id = ". (int)$customer->data['id'] ."
+						where id = ". (int)customer::$data['id'] ."
 						limit 1;"
 					);
 
 					unset(session::$data['totp_pending_secret']);
-					$customer = new ent_customer(customer::$data['id']);
+					customer::load(customer::$data['id']);
+
 					notices::add('success', t('success_totp_disabled', 'TOTP has been disabled'));
 					reload();
 					exit;

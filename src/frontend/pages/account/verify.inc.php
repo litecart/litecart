@@ -1,13 +1,38 @@
 <?php
 
+	/*
+		This file contains PHP logic that is separated from the HTML view.
+		Visual changes can be made to the file found in the template folder:
+		- frontend/templates/default/pages/account/verify.inc.php
+	*/
 	document::$layout = 'blank';
 
 	document::$head_tags[] = '<meta name="viewport" content="width=device-width, initial-scale=1">';
 
-	if (empty(security::$data['verification'])) {
+  if (empty(session::$data['security.customer']['verification'])) {
 		redirect(document::ilink(''), 303);
 		exit;
 	}
+
+  $send_verification_code = function(){
+
+		session::$data['security.customer']['verification'] = [
+			'type' => 'eotp',
+			'code' => str_pad((string)random_int(0, 999999), 6, '0', STR_PAD_LEFT),
+			'expires' => date('Y-m-d H:i:s', strtotime('+15 minutes')),
+			'attempts' => 0,
+		];
+
+		(new ent_email())
+			->add_recipient(customer::$data['email'])
+			->set_subject(t('title_verification_code', 'Verification Code'))
+			->add_body(strtr(t('email_verification_code', 'Verification code: {code}'), [
+				'{code}' => session::$data['security.customer']['verification']['code'],
+			]))
+			->send();
+
+		notices::add('notices', t('notice_verification_code_sent_via_email', 'A verification code was sent via email'));
+	};
 
 	if (isset($_POST['verify'])) {
 		try {
@@ -17,82 +42,74 @@
 				"select count(*) as num_attempts from ". DB_PREFIX ."rate_limiting
 				where action = 'verification_failed'
 				and ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."'
-				and created_at >= '". date('Y-m-d H:i:s', strtotime('-5 minutes')) ."'"
+				and created_at >= '". date('Y-m-d H:i:s', strtotime('-5 minutes')) ."';"
 			)->fetch('num_attempts') > 3) {
 				throw new Exception(t('error_too_many_attempts', 'Too many failed attempts. Please try again later.'));
-			}
-
-			if (empty(customer::$data['id'])) {
-				unset(security::$data['verification']);
-				throw new Exception(t('error_verification_session_expired', 'Your verification session has expired. Please sign in again.'));
 			}
 
 			if (empty($_POST['code'])) {
 				throw new Exception(t('error_must_provide_verification_code', 'You must provide a verification code'));
 			}
 
-			$is_totp = !empty(security::$data['verification']['type'])
-				&& security::$data['verification']['type'] === 'totp';
+			$code_valid = false;
 
-			if ($is_totp) {
+			if (session::$data['security.customer']['verification']['type'] === 'totp') {
 
-				require_once 'app://shared/functions/func_totp.inc.php';
-
-				if (empty(customer::$data['totp_secret'])
-					|| !totp_verify_code(customer::$data['totp_secret'], $_POST['code'])) {
-					throw new Exception(t('error_invalid_verification_code', 'Invalid verification code'));
+				if (!empty(customer::$data['totp_secret'])
+					&& f::totp_verify_code(customer::$data['totp_secret'], $_POST['code'])) {
+					$code_valid = true;
 				}
 
 			} else {
 
-				if ($_POST['code'] != security::$data['verification']['code']) {
-
-					database::insert('rate_limiting', [
-						'action' => 'verification_failed',
-						'ip_address' => $_SERVER['REMOTE_ADDR'],
-						'hostname' => reverse_dns($_SERVER['REMOTE_ADDR']),
-						'user_agent' => $_SERVER['HTTP_USER_AGENT'],
-						'created_at' => date('Y-m-d H:i:s'),
-					]);
-
-					throw new Exception(t('error_invalid_verification_code', 'Invalid verification code'));
-				}
-
-				if (time() > security::$data['verification']['expires']) {
-
-					database::insert('rate_limiting', [
-						'action' => 'verification_failed',
-						'ip_address' => $_SERVER['REMOTE_ADDR'],
-						'hostname' => reverse_dns($_SERVER['REMOTE_ADDR']),
-						'user_agent' => $_SERVER['HTTP_USER_AGENT'],
-						'created_at' => date('Y-m-d H:i:s'),
-					]);
-
+				if (time() > strtotime(session::$data['security.customer']['verification']['expires'])) {
 					throw new Exception(t('error_verification_code_expired', 'The verification code has expired'));
 				}
 
-				// The unknown-IP challenge records the successful IP as trusted.
-				// TOTP is location-independent and intentionally doesn't.
-				$known_ips = customer::$data['known_ips'] ?? '';
-				$known_ips = is_array($known_ips) ? $known_ips : (string)$known_ips;
-				$known_ips = array_filter(explode(',', $known_ips));
-				array_unshift($known_ips, $_SERVER['REMOTE_ADDR']);
-				$known_ips = array_slice(array_unique($known_ips), 0, 10);
-
-				database::query(
-					"update ". DB_PREFIX ."customers
-					set known_ips = '". database::input(implode(',', $known_ips)) ."'
-					where id = ". (int)customer::$data['id'] ."
-					limit 1;"
-				);
+				if ($_POST['code'] === (string)session::$data['security.customer']['verification']['code']) {
+					$code_valid = true;
+				}
 			}
 
-			unset(security::$data['verification']);
+			if (!$code_valid) {
+
+				database::insert('rate_limiting', [
+					'action' => 'verification_failed',
+					'ip_address' => $_SERVER['REMOTE_ADDR'],
+					'hostname' => gethostbyaddr($_SERVER['REMOTE_ADDR']),
+					'user_agent' => $_SERVER['HTTP_USER_AGENT'],
+					'scope_type' => 'email',
+					'scope_key' => customer::$data['email'],
+					'created_at' => date('Y-m-d H:i:s'),
+				]);
+
+				throw new Exception(t('error_invalid_verification_code', 'Invalid verification code'));
+			}
+
+			$known_ips = f::string_split(customer::$data['known_ips']);
+
+			array_unshift($known_ips, $_SERVER['REMOTE_ADDR']);
+			$known_ips = array_unique($known_ips);
+
+			if (count($known_ips) > 5) {
+				array_pop($known_ips);
+			}
+
+			database::query(
+				"update ". DB_PREFIX ."customers
+				set verified = 1,
+					known_ips = '". database::input(implode(',', $known_ips)) ."'
+				where id = ". (int)customer::$data['id'] ."
+				limit 1;"
+			);
 
 			database::query(
 				"delete from ". DB_PREFIX ."rate_limiting
 				where action = 'verification_failed'
-				and ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."'"
+				and (
+					ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."'
+					". (!empty(customer::$data['email']) ? "or (scope_type = 'email' and scope_key = '". database::input(customer::$data['email']) ."')" : '') ."
+				);"
 			);
 
 			security::$data['timestamp'] = time();
@@ -102,7 +119,7 @@
 				$redirect_url = new type_url($_POST['redirect_url']);
 				$redirect_url->host = '';
 			} else {
-				$redirect_url = document::ilink('f:account/sign_in');
+				$redirect_url = document::ilink('f:account/index');
 			}
 
 			notices::add('success', strtr(t('success_now_logged_in_as', 'You are now logged in as {username}'), [
@@ -116,11 +133,17 @@
 
 			notices::add('errors', $e->getMessage());
 
-			if (!empty(security::$data['verification']) && ++security::$data['verification']['attempts'] >= 5) {
-				unset(security::$data['verification']);
-				notices::add('errors', t('error_too_many_attempts', 'Too many failed attempts. Please sign in again.'));
-				redirect(document::ilink('account/sign_in'));
-				exit;
+			if (session::$data['security.customer']['verification']['type'] == 'eotp') {
+				if (++session::$data['security.customer']['verification']['attempts'] >= 5 || time() > strtotime(session::$data['security.customer']['verification']['expires'])) {
+					$send_verification_code();
+				}
+			} elseif (session::$data['security.customer']['verification']['type'] == 'totp') {
+				if (++session::$data['security.customer']['verification']['attempts'] >= 5) {
+					unset(session::$data['security.customer']['verification']);
+					notices::add('errors', t('error_too_many_attempts', 'Too many failed attempts. Please sign in again.'));
+					redirect(document::ilink('account/sign_in'));
+					exit;
+				}
 			}
 		}
 	}
@@ -133,21 +156,21 @@
 				"select count(*) as num_attempts from ". DB_PREFIX ."rate_limiting
 				where action = 'verification_sent'
 				and ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."'
-				and created_at >= '". date('Y-m-d H:i:s', strtotime('-5 minutes')) ."'"
+				and created_at >= '". date('Y-m-d H:i:s', strtotime('-5 minutes')) ."';"
 			)->fetch('num_attempts') > 3) {
 				throw new Exception(t('error_too_many_attempts', 'Too many failed attempts. Please try again later.'));
 			}
 
-			(new ent_customer())->send_email('verification_code', [
-				'code' => security::$data['verification']['code'],
-			]);
+			$send_verification_code();
 
 			database::insert('rate_limiting', [
 				'action' => 'verification_sent',
 				'ip_address' => $_SERVER['REMOTE_ADDR'],
 				'hostname' => reverse_dns($_SERVER['REMOTE_ADDR']),
 				'user_agent' => $_SERVER['HTTP_USER_AGENT'],
-				'created_at' => date('Y-m-d H:i:s'),
+				'scope_type' => 'email',
+				'scope_key' => customer::$data['email'],
+				'created_at' => date('Y-m-d H:i:s')
 			]);
 
 			notices::add('notices', t('notice_verification_code_sent_via_email', 'A verification code was sent via email'));
@@ -210,7 +233,6 @@ input[autocomplete="one-time-code"] {
 .selector {
 	caret-shape: block;
 }
-
 </style>
 
 <section id="box-verify-identity">
@@ -254,8 +276,8 @@ input[autocomplete="one-time-code"] {
 	$('input[name="code"]').trigger('focus');
 
 	$('input[name="code"]').on('input', function() {
-		if ($(this).val().length === 6) {
-			$(this).closest('form').submit();
+		if ($(this).val().match(/^\d{6}$/)) {
+			$('button[name="verify"]').trigger('click');
 		}
 	});
 </script>

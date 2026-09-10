@@ -111,6 +111,11 @@
 		return array_intersect_key($array, array_flip($matching_keys));
 	}
 
+	// Return an array of values not defined by the given keys
+	function array_exclude(array $array, array $excluded_keys):array {
+		return array_diff_key($input, array_flip($excluded_keys));
+	}
+
 	// Function to map array_keys instead of values
 	function array_map_keys($callback, $array, ...$args): array {
 		$new_keys = array_map($callback, array_keys($array), ...$args);

@@ -79,7 +79,7 @@ label.form-check > input {
 	line-height: 1.2;
 	overflow-y: auto;
 	transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-	transition: all 200ms;
+	transition: all 100ms;
 	outline: 0 solid transparent;
 
 	&:hover:not(:focus-within) {

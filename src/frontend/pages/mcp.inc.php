@@ -1,9 +1,6 @@
 <?php
 
-	// -----------------------------------------------------------------------------
 	// Model Context Protocol (MCP) server over HTTP JSON-RPC 2.0
-	// Provides CRUD tools that mirror LiteCart collections/entities.
-	// -----------------------------------------------------------------------------
 
 	// Custom exception for JSON-RPC error output
 	class McpException extends Exception {

@@ -6,7 +6,7 @@
 .float-end { float: inline-end; }
 
 .container-fluid, .container {
-	padding: calc(var(--gutter-y)/2) calc(var(--gutter-x) / 2);
+	padding: .75em;
 }
 
 .container {

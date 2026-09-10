@@ -12,8 +12,9 @@
 		customer::reset();
 
 		session::regenerate_id();
-		security::rotate_csrf_token();
 		session::$data['cart']['uid'] = null;
+
+		security::rotate_csrf_token();
 
 		header('Set-Cookie: cart[uid]=; Path='. WS_DIR_APP .'; Max-Age=-1; SameSite=Lax', false);
 

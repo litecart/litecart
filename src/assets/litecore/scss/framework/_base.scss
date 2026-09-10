@@ -116,7 +116,8 @@ button, input[type=button], input[type=reset], input[type=submit] {
 }
 
 fieldset {
-	padding: 1em 2em;
+	padding: 1em;
+	padding-top: .5em;
 	border: 1px solid var(--default-border-color);
 	border-radius: var(--border-radius);
 

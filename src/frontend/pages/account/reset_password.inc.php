@@ -15,10 +15,14 @@
 
 	if (!empty($_POST['reset_password'])) {
 
-		$has_code = !empty($_REQUEST['verification_code']);
+		$has_code = !empty($_POST['code']) && !empty($_POST['email']);
 		$rate_limit_action = $has_code ? 'password_reset_failed' : 'password_reset_requested';
 
 		try {
+
+			if (empty($_POST['email'])) {
+				throw new Exception(t('error_must_provide_email_address', 'You must provide an email address'));
+			}
 
 			// Rate limit checking
 			if (database::query(
@@ -26,40 +30,39 @@
 				where action = '". $rate_limit_action ."'
 				and (
 					ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."'
-					". (!empty($_REQUEST['email']) ? "or (scope_type = 'email' and scope_key = '". database::input($_REQUEST['email']) ."')" : '') ."
+					". (!empty($_POST['email']) ? "or (scope_type = 'email' and scope_key = '". database::input($_POST['email']) ."')" : '') ."
 				)
 				and created_at >= '". date('Y-m-d H:i:s', strtotime('-5 minutes')) ."'"
 			)->fetch('num_attempts') > 3) {
 				throw new Exception(t('error_too_many_attempts', 'Too many failed attempts. Please try again later.'));
 			}
 
-			if (empty($_REQUEST['email'])) {
-				throw new Exception(t('error_must_provide_email_address', 'You must provide an email address'));
-			}
-
 			$customer = database::query(
 				"select * from ". DB_PREFIX ."customers
-				where email = '". database::input($_REQUEST['email']) ."'
+				where email = '". database::input($_POST['email']) ."'
 				limit 1;"
 			)->fetch();
 
-			if (!empty($_REQUEST['verification_code'])) {
+			// Unknown or inactive accounts surface as a generic "invalid verification code" error.
+			if (!$customer || empty($customer['status'])) {
+				throw new Exception(t('error_invalid_verification_code', 'Invalid verification code'));
+			}
 
-				// Unknown or inactive accounts surface as a generic "invalid verification code" error.
-				if (!$customer || empty($customer['status'])) {
-					throw new Exception(t('error_invalid_verification_code', 'Invalid verification code'));
+			if ($has_code) {
+
+				$verification = session::$data['security.customer']['verification']['password_reset'] ?? null;
+
+				if (empty($verification) || ($verification['email'] ?? null) !== $customer['email']) {
+					throw new Exception(t('error_invalid_reset_code', 'Invalid or expired verification code. Please request a new one.'));
 				}
 
-				if (!isset(security::$data['verification']['code'])) {
-					throw new Exception(t('error_invalid_verification_code', 'Invalid verification code'));
+				if (time() > strtotime($verification['expires'])) {
+					unset(session::$data['security.customer']['verification']['password_reset']);
+					throw new Exception(t('error_reset_code_expired', 'The verification code has expired. Please request a new one.'));
 				}
 
-				if ($_REQUEST['verification_code'] != security::$data['verification']['code']) {
-					throw new Exception(t('error_incorrect_verification_code', 'Incorrect verification code'));
-				}
-
-				if (security::$data['verification']['expires'] < time()) {
-					throw new Exception(t('error_verification_code_expired', 'The verification code has expired'));
+				if ($_POST['code'] !== (string)$verification['code']) {
+					throw new Exception(t('error_incorrect_reset_code', 'Incorrect verification code'));
 				}
 
 				if (empty($_POST['new_password'])) {
@@ -85,49 +88,51 @@
 
 			// Process
 
-			if (empty($_REQUEST['verification_code'])) {
+			if (!$has_code) {
 
-				// Uniform-response branch: never leak whether the email belongs to a known or active account.
-				if ($customer && !empty($customer['status'])) {
+				// Step 1: generate a 6-digit code and email it.
+				$code = str_pad((string)random_int(0, 999999), 6, '0', STR_PAD_LEFT);
 
-					$verification_token = [
-						'code' => bin2hex(random_bytes(24)),
-						'expires' => date('Y-m-d H:i:s', strtotime('+15 minutes')),
-					];
+				session::$data['security.customer']['verification']['password_reset'] = [
+					'email' => $customer['email'],
+					'code' => $code,
+					'expires' => date('Y-m-d H:i:s', strtotime('+15 minutes')),
+					'attempts' => 0,
+				];
 
-					database::query(
-						"update ". DB_PREFIX ."customers
-						set verification_token = '". database::input(f::format_json($verification_token, false)) ."'
-						where id = ". (int)$customer['id'] ."
-						limit 1;"
-					);
+				$aliases = [
+					'{email}' => $customer['email'],
+					'{store_name}' => settings::get('store_name'),
+					'{code}' => $code,
+				];
 
-					$customer = new ent_customer($customer['id']);
-					$customer->send_email('reset_password', [
-						'{code}' => $verification_token['code'],
-						'{link}' => document::ilink('account/reset_password', [
-							'email' => $customer['email'],
-							'verification_code' => $verification_token['code']
-						]),
-					]);
+				$subject = t('title_reset_password', 'Reset Password');
+				$message = strtr(t('email_body_reset_password', implode("\r\n", [
+					'You recently requested to reset your password for {store_name}. If you did not request a password reset, please ignore this email.',
+					'',
+					'Your verification code is: {code}',
+					'',
+					'This code will expire in 15 minutes.'
+				])), $aliases);
 
-					database::insert('rate_limiting', [
-						'action' => 'password_reset_requested',
-						'ip_address' => $_SERVER['REMOTE_ADDR'],
-						'hostname' => reverse_dns($_SERVER['REMOTE_ADDR']),
-						'user_agent' => $_SERVER['HTTP_USER_AGENT'],
-						'scope_type' => 'email',
-						'scope_key' => $customer['email'],
-						'created_at' => date('Y-m-d H:i:s'),
-					]);
+				(new ent_email())
+					->add_recipient($customer['email'], $customer['firstname'] .' '. $customer['lastname'])
+					->set_subject($subject)
+					->add_body($message)
+					->send();
 
-				} else {
-					// Timing-neutral dummy path so unknown/inactive accounts respond in the same ballpark as real sends.
-					usleep(random_int(200000, 500000));
-				}
+				database::insert('rate_limiting', [
+					'action' => 'password_reset_requested',
+					'ip_address' => $_SERVER['REMOTE_ADDR'],
+					'hostname' => reverse_dns($_SERVER['REMOTE_ADDR']),
+					'user_agent' => $_SERVER['HTTP_USER_AGENT'],
+					'scope_type' => 'email',
+					'scope_key' => $customer['email'],
+					'created_at' => date('Y-m-d H:i:s'),
+				]);
 
 				notices::add('success', t('success_reset_password_email_sent_uniform', 'If an account exists for this email, instructions have been sent.'));
-				redirect(document::ilink('account/reset_password', ['email' => $_REQUEST['email'], 'verification_code' => '']), 303);
+				redirect(document::ilink('account/reset_password', ['email' => $_POST['email']]), 303);
 				exit;
 
 			} else {
@@ -137,13 +142,15 @@
 				$customer->data['sessions_expiry'] = date('Y-m-d H:i:s');
 				$customer->save();
 
+				unset(session::$data['security.customer']['verification']['password_reset']);
+
 				// Clear failed-reset attempts for this IP and email after a successful reset.
 				database::query(
 					"delete from ". DB_PREFIX ."rate_limiting
 					where action = 'password_reset_failed'
 					and (
 						ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."'
-						". (!empty($_REQUEST['email']) ? "or (scope_type = 'email' and scope_key = '". database::input($_REQUEST['email']) ."')" : '') ."
+						". (!empty($_POST['email']) ? "or (scope_type = 'email' and scope_key = '". database::input($_POST['email']) ."')" : '') ."
 					)"
 				);
 
@@ -160,10 +167,13 @@
 				'ip_address' => $_SERVER['REMOTE_ADDR'],
 				'hostname' => reverse_dns($_SERVER['REMOTE_ADDR']),
 				'user_agent' => $_SERVER['HTTP_USER_AGENT'],
-				'scope_type' => !empty($_REQUEST['email']) ? 'email' : null,
-				'scope_key' => !empty($_REQUEST['email']) ? $_REQUEST['email'] : null,
+				'scope_type' => !empty($_POST['email']) ? 'email' : null,
+				'scope_key' => !empty($_POST['email']) ? $_POST['email'] : null,
 				'created_at' => date('Y-m-d H:i:s'),
 			]);
+			
+			// Timing-neutral dummy path so unknown/inactive accounts respond in the same ballpark as real sends.
+			usleep(random_int(200000, 500000));
 
 			notices::add('errors', $e->getMessage());
 		}

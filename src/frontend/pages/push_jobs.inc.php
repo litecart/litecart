@@ -16,6 +16,10 @@
 		}
 	}
 
+	if (class_exists('session', false)) {
+		session::close();
+	}
+
 	database::query(
 		"update ". DB_PREFIX ."settings
 		set value = '". date('Y-m-d H:i:s') ."'

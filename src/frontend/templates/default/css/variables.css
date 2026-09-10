@@ -80,9 +80,9 @@
 	--breadcrumbs-border-width: 1px;
 	--breadcrumbs-border-color: #d6d6e1;
 	--breadcrumbs-shadow: var(--default-shadow);
-	--breadcrumb-item-background: #f1f1f7;
+	--breadcrumb-item-background: transparent;
 	--breadcrumb-item-text-color: #444;
-	--breadcrumb-item-border-width: 1px;
+	--breadcrumb-item-border-width: 0;
 	--breadcrumb-item-border-color: #d6d6e1;
 	/* Buttons */
 	--button-padding-x: 1em;

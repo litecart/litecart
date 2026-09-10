@@ -21,7 +21,7 @@
 		public static function stop_watch(string $id): void {
 
 			if (!isset(self::$_watches[$id])) {
-				trigger_error('Cannot stop a non-existing timer ('. $id .')', E_USER_NOTICE);
+				//trigger_error('Cannot stop a non-existing timer ('. $id .')', E_USER_NOTICE);
 				return;
 			}
 
@@ -47,9 +47,9 @@
 				'  - Memory Peak: ' . number_format(memory_get_peak_usage(true) / 1e6, 2, '.', ' ') . ' MB / '. ini_get('memory_limit'),
 				'  - Included Files: ' . count(get_included_files()),
 				'  - Page Load: ' . number_format($page_parse_time * 1000, 0, '.', ' ') . ' ms',
-				'    - Before Content: ' . number_format(self::$data['before_content'] * 1000, 0, '.', ' ') . ' ms',
-				'    - Content Capturing: ' . number_format(self::$data['content_capture'] * 1000, 0, '.', ' ') . ' ms',
-				'    - After Content: ' . number_format(self::$data['after_content'] * 1000, 0, '.', ' ') . ' ms',
+				'    - Before Content: ' . number_format((self::$data['before_content'] ?? 0) * 1000, 0, '.', ' ') . ' ms',
+				'    - Content Capturing: ' . number_format((self::$data['content_capture'] ?? 0) * 1000, 0, '.', ' ') . ' ms',
+				'    - After Content: ' . number_format((self::$data['after_content'] ?? 0) * 1000, 0, '.', ' ') . ' ms',
 				'    - Rendering: ' . number_format(self::$data['rendering'] * 1000, 0, '.', ' ') . ' ms',
 				'  - Database Queries: ' . number_format(database::$stats['queries'], 0, '.', ' '),
 				'  - Database Duration: ' . number_format(database::$stats['duration'] * 1000, 0, '.', ' ') . ' ms',

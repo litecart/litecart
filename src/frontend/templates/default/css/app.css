@@ -12,12 +12,12 @@ body {
 }
 
 #important-notice {
-	padding: 0.75em 2em;
+	padding: 0.75em 1.5em;
 	background: var(--important-notice-background);
 	color: var(--important-notice-text-color);
 	border: var(--important-notice-border-size) solid var(--important-notice-border-color);
 	border-radius: var(--border-radius);
-	margin-bottom: 0.5em;
+	margin-bottom: 1em;
 	text-align: center;
 }
 
@@ -200,7 +200,7 @@ body {
 	#site-navigation .categories .dropdown-menu {
 		flex-wrap: wrap;
 		max-height: 250px;
-		gap: 0 2em;
+		gap: 0 1.5em;
 	}
 }
 #site-footer {
@@ -458,7 +458,7 @@ body {
 	height: 480px;
 	max-height: 50vh;
 	padding: 1em;
-	margin-bottom: 2em;
+	margin-bottom: 1.5em;
 	overflow-y: auto;
 	border-color: transparent;
 }
@@ -478,7 +478,7 @@ body {
 }
 #site-privacy-consent .privacy-classes .require-consent:not(:empty) {
 	border: 1px dashed var(--default-border-color);
-	padding: 2em;
+	padding: 1.5em;
 	text-align: center;
 }
 #site-privacy-consent .privacy-classes .class .name {
@@ -501,7 +501,7 @@ body {
 #box-recently-viewed-products .products {
 	list-style: none;
 	display: grid;
-	gap: 1em;
+	gap: 1.5em;
 	grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
 }
 
@@ -522,7 +522,8 @@ body {
 }
 
 [data-toggle=momentum-scroll] .listing {
-	margin: 1em 2em;
+	margin: 1.5em 1.5em;
+	margin-top: 0.5em;
 }
 
 .listing {
@@ -546,7 +547,7 @@ body {
 }
 @media (width >= 992px) {
 	.listing {
-		gap: 2em;
+		gap: 1.5em;
 	}
 }
 .listing.brands {
@@ -565,7 +566,7 @@ body {
 @media (width >= 576px) {
 	.listing.categories {
 		grid-template-columns: repeat(auto-fill, minmax(285px, 1fr));
-		margin-bottom: 2em;
+		margin-bottom: 1.5em;
 	}
 }
 .listing.products.columns {
@@ -865,12 +866,12 @@ body {
 }
 @media (width >= 768px) {
 	[data-toggle=momentum-scroll] .listing {
-		gap: 1.5em;
+		gap: 1.25em;
 	}
 }
 @media (width >= 992px) {
 	[data-toggle=momentum-scroll] .listing {
-		gap: 2em;
+		gap: 1.5em;
 	}
 }
 [data-toggle=momentum-scroll] .listing .product {
@@ -883,12 +884,12 @@ body {
 }
 @media (width >= 768px) {
 	[data-toggle=momentum-scroll] .listing .product {
-		flex: 0 0 calc(25% - 2em);
+		flex: 0 0 calc(25% - 1.25em);
 	}
 }
 @media (width >= 992px) {
 	[data-toggle=momentum-scroll] .listing .product {
-		flex: 0 0 calc(20% - 2em);
+		flex: 0 0 calc(20% - 1.5em);
 	}
 }
 

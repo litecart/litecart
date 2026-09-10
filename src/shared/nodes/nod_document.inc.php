@@ -74,11 +74,11 @@
 			// Floating error indicator for administrators
 			if (administrator::check_login()) {
 				self::add_head_tags([
-					'<script>var _e=0;addEventListener("error",function(){var b=document.getElementById("_e")||(b=document.createElement("button"),b.id="_e",b.title="Open console (F12)",b.style.cssText="position:fixed;right:12px;bottom:12px;z-index:2147483647;display:none;padding:4px 8px;background:#c00;color:#fff;border:0;border-radius:4px;font:600 12px sans-serif;cursor:pointer",b.onclick=function(){alert("Open browser console (F12) to view errors")},document.body.appendChild(b));b.textContent=++_e+" Error";b.style.display="block"});</script>',
+					'<script nonce="'. security::$data['nonce'] .'">var _e=0;addEventListener("error",function(){var b=document.getElementById("_e")||(b=document.createElement("button"),b.id="_e",b.title="Open console (F12)",b.class="hidden-print",b.style.cssText="position:fixed;right:12px;bottom:12px;z-index:2147483647;display:none;padding:4px 8px;background:#c00;color:#fff;border:0;border-radius:4px;font:600 12px sans-serif;cursor:pointer",b.onclick=function(){alert("Open browser console (F12) to view errors")},document.body.appendChild(b));b.textContent=++_e+" Error";b.style.display="block"});</script>',
 				], 'alert_errors');
 
 				// Client-side error reporter
-				self::$javascript['error-reporter'] = implode(PHP_EOL, [
+				self::add_script([
 					'  window.onerror = function(message, file, line) {',
 					'    fetch("' . document::ilink('f:ajax/report_error') . '", {',
 					'      method: "POST",',
@@ -91,12 +91,12 @@
 					'      })',
 					'    });',
 					'  };',
-				]);
+				], 'error-reporter');
 			}
 
 			// Wait For (Mini version)
 			self::add_head_tags([
-				'<script>window.waitFor=window.waitFor||((i,o)=>{void 0!==window[i]?o(window[i]):setTimeout((()=>waitFor(i,o)),50)});</script>',
+				'<script nonce="'. security::$data['nonce'] .'">window.waitFor=window.waitFor||((i,o)=>{void 0!==window[i]?o(window[i]):setTimeout((()=>waitFor(i,o)),50)});</script>',
 			], 'waitFor');
 
 			// Load jQuery
