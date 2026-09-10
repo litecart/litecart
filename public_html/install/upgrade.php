@@ -173,7 +173,7 @@
 
       ### Installer > Update ########################################
 
-      if (!empty($_REQUEST['skip_updates'])) {
+      if (empty($_REQUEST['skip_updates'])) {
         echo '<p>Checking for updates... ';
 
         require_once __DIR__.'/../includes/wrappers/wrap_http.inc.php';
