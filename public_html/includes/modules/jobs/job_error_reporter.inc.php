@@ -112,6 +112,8 @@
         $this->settings['email_recipient'] = settings::get('store_email');
       }
 
+      if (!$buffer) return;
+
       echo 'Sending report to '. $this->settings['email_recipient'];
 
       $email = new ent_email();
