@@ -36,10 +36,6 @@
 		border-start-end-radius: var(--border-radius);
 	}
 
-	> *[class*="card-"]:last-child,
-	> form:last-child *[class*="card-"]:last-child {
-	}
-
 	> *[class*="card-footer"]:last-child {
 		border-end-start-radius: var(--border-radius);
 		border-end-end-radius: var(--border-radius);

@@ -438,9 +438,13 @@
 			document::$head_tags['prerender'] = '<link rel="prerender" href="'. document::href_link($_SERVER['REQUEST_URI'], ['page' => $_GET['page']+1]) .'">';
 		}
 
-		$pagination = new ent_view('app://frontend/templates/'. settings::get('template') .'/partials/pagination.inc.php', [
-			'items' => [],
-		]);
+		if (isset(route::$selected['endpoint']) && route::$selected['endpoint'] == 'backend') {
+			$pagination = new ent_view('app://backend/template/partials/pagination.inc.php');
+		} else {
+			$pagination = new ent_view('app://frontend/template/partials/pagination.inc.php');
+		}
+
+		$pagination->snippets['items'] = [];
 
 		$pagination->snippets['items'][] = [
 			'page' => $_GET['page']-1,

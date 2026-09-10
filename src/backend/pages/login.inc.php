@@ -390,10 +390,6 @@ body {
 .card-footer .row {
 	align-items: center;
 }
-button[name="login"] {
-  font-size: 1.25rem;
-  padding: .5em 1em;
-}
 .btn-unstyled span {
 	text-decoration: none;
 	background-image: linear-gradient(currentColor, currentColor);
@@ -441,6 +437,9 @@ button[name="login"] {
 }
 
 .theme-toggle {
+	position: absolute;
+	top: 1.5em;
+	inset-inline-end: 1.5em;
 	justify-self: end;
 }
 </style>
@@ -455,10 +454,12 @@ button[name="login"] {
 
 	<article id="box-login" class="card">
 		<div class="card-header">
+			<div class="card-title">
+				<?php echo t('title_sign_in', 'Sign In'); ?>
+			</div>
 			<div class="theme-toggle">
 				<?php echo f::form_toggle('theme', ['light' => f::draw_fonticon('icon-sun'), 'dark' => f::draw_fonticon('icon-moon')], (!empty($_COOKIE['theme']) && in_array($_COOKIE['theme'], ['light', 'dark'])) ? $_COOKIE['theme'] : 'light'); ?>
 			</div>
-			<h1><?php echo t('title_sign_in', 'Sign In'); ?></h1>
 		</div>
 
 		<div class="card-body">
@@ -482,13 +483,13 @@ button[name="login"] {
 
 		<div class="card-footer">
 			<div class="row">
-				<div class="col-6 text-center">
+				<div class="col-6 text-start">
 					<a class="btn btn-unstyled" href="<?php echo document::href_ilink('f:'); ?>">
 						<?php echo f::draw_fonticon('icon-chevron-left'); ?> <span><?php echo t('title_frontend', 'Frontend'); ?></span>
 					</a>
 				</div>
-				<div class="col-6 text-center">
-					<?php echo f::form_button('login', t('title_login', 'Login'), 'submit', ['class' => 'btn btn-default btn-lg']); ?>
+				<div class="col-6 text-end">
+					<?php echo f::form_button('login', t('title_login', 'Login'), 'submit'); ?>
 				</div>
 			</div>
 		</div>
