@@ -8,12 +8,6 @@
 			throw new Exception(t('error_not_signed_in', 'You are not currently signed in.'), 401);
 		}
 
-		customer::log([
-			'type' => 'sign_out',
-			'description' => 'User signed out',
-			'expires_at' => strtotime('+12 months'),
-		]);
-
 		cart::reset();
 		customer::reset();
 
@@ -26,6 +20,12 @@
 		if (!empty($_COOKIE['customer_remember_me'])) {
 			header('Set-Cookie: customer_remember_me=; Path='. WS_DIR_APP .'; Max-Age=-1; HttpOnly; SameSite=Lax', false);
 		}
+
+		customer::log([
+			'type' => 'sign_out',
+			'description' => 'User signed out',
+			'expires_at' => strtotime('+1 month'),
+		]);
 
 		// Headless requests
 		if (!empty($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false) {

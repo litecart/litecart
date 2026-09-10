@@ -152,7 +152,7 @@
 				'customer_id' => $customer->data['id'],
 				'type' => 'create_account',
 				'description' => 'User created an account',
-				'expires_at' => strtotime('+12 months'),
+				'expires_at' => strtotime('+1 month'),
 			]);
 
 			customer::load($customer->data['id']);

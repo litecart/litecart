@@ -146,7 +146,7 @@
 			customer::log([
 				'type' => 'edit_account_security',
 				'description' => 'User edited account security details',
-				'expires_at' => strtotime('+12 months'),
+				'expires_at' => strtotime('+1 month'),
 			]);
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
@@ -278,7 +278,7 @@
 			customer::log([
 				'type' => 'edit_account_details',
 				'description' => 'User edited account details',
-				'expires_at' => strtotime('+12 months'),
+				'expires_at' => strtotime('+1 month'),
 			]);
 
 			// Headless requests
