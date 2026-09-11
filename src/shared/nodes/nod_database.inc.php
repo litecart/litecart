@@ -14,7 +14,20 @@
 			'queries' => 0,
 		];
 
+		private static $_schemas_cache_token;
+
 		public static function init(): void {
+
+			self::$_schemas_cache_token = cache::token('database_schemas', [], 'file', 86400);
+
+			if ($data = cache::get(self::$_schemas_cache_token)) {
+				self::$_schemas = $data;
+			}
+
+			event::register('shutdown', function(){
+				cache::set(self::$_schemas_cache_token, self::$_schemas);
+			});
+
 			event::register('shutdown', [__CLASS__, 'disconnect']);
 		}
 
@@ -391,12 +404,15 @@
 				return self::$_schemas[$table];
 			}
 
-			return self::$_schemas[$table] = self::query(
+			$data = self::query(
 				"show fields from `". self::input($table) ."`;"
 			)->fetch_all();
+
+			return self::$_schemas[$table] = $data;
 		}
 
 		public static function clear_schema_cache(string|null $table=null): void {
+
 			if ($table) {
 				unset(self::$_schemas[$table]);
 			} else {
