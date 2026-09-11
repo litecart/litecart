@@ -96,7 +96,7 @@
 
 			// Wait For (Mini version)
 			self::add_head_tags([
-				'<script nonce="'. security::$data['nonce'] .'">window.waitFor=window.waitFor||((i,o)=>{void 0!==window[i]?o(window[i]):setTimeout((()=>waitFor(i,o)),50)});</script>',
+				'<script nonce="'. security::$data['nonce'] .'">window.waitFor=window.waitFor||((i,o)=>{void 0!==window[i]?o(window[i]):setTimeout((()=>waitFor(i,o)),25)});</script>',
 			], 'waitFor');
 
 			// Load jQuery
