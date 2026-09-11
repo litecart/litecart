@@ -999,6 +999,7 @@ body {
 
 			.product:hover .actions {
 				display: flex;
+				top: 10px;
 				flex-direction: row;
 				gap: 0.5em;
 			}

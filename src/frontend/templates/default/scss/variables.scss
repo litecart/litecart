@@ -31,7 +31,7 @@
 	--listing-border-size: 1px;
 	--listing-border-color: var(--default-border-color);
 
-	--modal-background: var(--whitespace-color);
+	--modal-background: #fff;
 
 	/* Scrollbar */
 	--scrollbar-thumb-background: #c1c1c1;
@@ -181,6 +181,7 @@
 	--navbar-shadow: 0 1px 2px rgb(0 0 0 / 6%);
 	--navbar-border-width: 1px;
 	--navbar-border-color: 	var(--default-border-color);
+	--navbar-dropdown-background: #fff;
 
 	/* Notices */
 	--notice-default-background: #e5e3e3;

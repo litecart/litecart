@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="150" height="150" viewBox="0 0 100 100" fill="none">
-  	<circle cx="50" cy="50" r="35" stroke="#E2E8F0" stroke-width="4"></circle>
-	<path d="M50 15 A 35 35 0 0 1 85 50" stroke="#4876a8" stroke-width="4" stroke-linecap="round">
+  	<circle cx="50" cy="50" r="35" stroke="#E2E8F099" stroke-width="4"></circle>
+	<path d="M50 15 A 35 35 0 0 1 85 50" stroke="#535e68" stroke-width="4" stroke-linecap="round">
 		<animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="1s" repeatCount="indefinite" />
 	</path>
 </svg>

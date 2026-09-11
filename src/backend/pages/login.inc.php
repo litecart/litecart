@@ -356,18 +356,50 @@ body {
 }
 
 .loader-wrapper {
-	display: none;
+	opacity: 0;
+	visibility: hidden;
 	position: absolute !important;
 	top: 50%;
 	left: 50%;
 	margin-top: -128px;
 	margin-inline-start: -128px;
+	transition: opacity 500ms ease, visibility 500ms ease;
 }
 
 #box-login {
 	width: 320px;
 	margin: auto;
 	border-radius: var(--border-radius);
+	overflow: hidden;
+	max-height: 30rem;
+	transition: max-height 500ms ease, margin 500ms ease, opacity 250ms ease;
+}
+
+#box-login.is-leaving {
+	max-height: 0;
+	margin-top: 0;
+	margin-bottom: 0;
+	opacity: 0;
+	pointer-events: none;
+}
+
+.loader-wrapper.is-revealed {
+	opacity: 1;
+	visibility: visible;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.loader-wrapper,
+	#box-login {
+		transition: none;
+	}
+
+	#box-login.is-leaving {
+		max-height: 30rem;
+		margin-top: auto;
+		margin-bottom: auto;
+		opacity: 1;
+	}
 }
 
 #box-login .card-header a {
@@ -410,6 +442,30 @@ body {
 	margin: 1.5rem 0;
 	text-align: center;
 }
+
+#box-login {
+	animation: welcome-fade 600ms ease-out backwards;
+}
+
+.form-group:has([required]) .form-label::after {
+	display: none;
+}
+
+@keyframes welcome-fade {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	#box-login {
+		animation: none;
+	}
+}
+
 .login-brand a {
 	display: inline-block;
 	text-decoration: none;
@@ -467,12 +523,12 @@ body {
 			{{notices}}
 
 			<label class="form-group">
-				<?php echo f::form_input_username('username', true, ['placeholder' => t('title_username_or_email_address', 'Username or Email Address'), 'autocomplete' => 'username']); ?>
+				<?php echo f::form_input_username('username', true, ['placeholder' => t('title_username_or_email_address', 'Username or Email Address'), 'autocomplete' => 'username', 'required' => true]); ?>
 				<div class="form-label"></div>
 			</label>
 
 			<label class="form-group">
-				<?php echo f::form_input_password('password', '', ['placeholder' => t('title_password', 'Password') , 'autocomplete' => 'current-password']); ?>
+				<?php echo f::form_input_password('password', '', ['placeholder' => t('title_password', 'Password') , 'autocomplete' => 'current-password', 'required' => true]); ?>
 				<div class="form-label"></div>
 			</label>
 
@@ -515,8 +571,10 @@ body {
 		e.preventDefault();
 		let form = this;
 
-		$('#box-login').slideUp(500, function() {
-			$('.loader-wrapper').fadeIn(500, function() {
+		$('#box-login').addClass('is-leaving');
+		$('#box-login').one('transitionend', function() {
+			$('.loader-wrapper').addClass('is-revealed');
+			$('.loader-wrapper').one('transitionend', function() {
 				form.submit();
 			});
 		});
