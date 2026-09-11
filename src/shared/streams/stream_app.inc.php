@@ -2,7 +2,9 @@
 
 	class stream_app {
 
-		private static $_cache = [];
+		private static $_directories_cache = [];
+		private static $_files_cache = [];
+
 		private $_directory = [];
 		private $_stream;
 		public $context;
@@ -16,7 +18,7 @@
 
 			$this->_directory = [];
 
-			if (!isset(self::$_cache[$path])) {
+			if (!isset(self::$_directories_cache[$path])) {
 
 				// File System
 				foreach (glob($path.'*', GLOB_NOSORT) as $file) { // glob() seems faster than opendir() for this operation
@@ -52,10 +54,10 @@
 					stats::$data['streamwrappers'] = microtime(true) - $microtime;
 				}
 
-				self::$_cache[$path] = $this->_directory;
+				self::$_directories_cache[$path] = $this->_directory;
 
 			} else {
-				$this->_directory = self::$_cache[$path];
+				$this->_directory = self::$_directories_cache[$path];
 			}
 
 			return true;
@@ -266,27 +268,29 @@
 
 		private function _resolve_file(string $path): string {
 
-			$path = $this->_resolve_path($path);
-			$relative_path = preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $path);
-			$parent_folder = dirname($path).'/';
-			$basename = basename($path);
+			if (isset(self::$_files_cache[$path])) {
+				return self::$_files_cache[$path];
+			}
 
-			if (isset(self::$_cache[$parent_folder])) {
-				if (isset(self::$_cache[$parent_folder][$basename])) {
-					return self::$_cache[$parent_folder][$basename];
-				}
+			$resolved = $this->_resolve_path($path);
+			$relative_path = preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $resolved);
+			$parent_folder = dirname($resolved).'/';
+			$basename = basename($resolved);
+
+			if (isset(self::$_directories_cache[$parent_folder]) && isset(self::$_directories_cache[$parent_folder][$basename])) {
+				return self::$_files_cache[$path] = self::$_directories_cache[$parent_folder][$basename];
 			}
 
 			foreach (glob(FS_DIR_STORAGE .'addons/*/'.$relative_path) as $file) {
 				$file = str_replace('\\', '/', $file);
 				if (preg_match('#^'. preg_quote(FS_DIR_STORAGE .'addons/', '#') .'[^/]+.disabled/#', $file)) continue;
-				$path = $file;
+				$resolved = $file;
 			}
 
 			if (!defined('VMOD_DISABLED') || VMOD_DISABLED !== 'true') {
-				$path = vmod::check($path);
+				$resolved = vmod::check($resolved);
 			}
 
-			return $path;
+			return self::$_files_cache[$path] = $resolved;
 		}
 	}
