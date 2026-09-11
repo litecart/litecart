@@ -50,11 +50,10 @@
 					});
 
 					if (!$order_status) {
-						$order_status = database::query(
-							"show fields from ". DB_PREFIX ."order_statuses;"
-						)->each(function($field) use ($order_status) {
-							$order_status[$field['Field']] = database::create_variable($field);
-						});
+												$order_status = [];
+						foreach (database::schema('order_statuses') as $field) {
+							$order_status[$field] = database::create_variable($field);
+						}
 					}
 
 					foreach ($order_status as $key => $value) {

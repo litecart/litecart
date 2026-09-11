@@ -334,11 +334,9 @@
 
 			$customer = [];
 
-			database::query(
-				"show fields from ". DB_PREFIX ."customers;"
-			)->each(function($field) use (&$customer) {
+			foreach (database::schema(DB_PREFIX .'customers') as $field) {
 				$customer[$field['Field']] = database::create_variable($field);
-			});
+			}
 
 			$customer['display_prices_including_tax'] = null;
 

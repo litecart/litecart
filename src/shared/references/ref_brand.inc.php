@@ -96,11 +96,10 @@
 					});
 
 					if (!$brand) {
-						$brand = database::query(
-							"show fields from ". DB_PREFIX ."brands;"
-						)->fetch(function($field) {
-							return database::create_variable($field);
-						});
+						$brand = [];
+						foreach (database::schema('brands') as $field) {
+							$brand[$field] = database::create_variable($field);
+						}
 					}
 
 					foreach ($brand as $key => $value) {

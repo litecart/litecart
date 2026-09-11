@@ -223,11 +223,10 @@
 					});
 
 					if (!$category) {
-						$category = database::query(
-							"show fields from ". DB_PREFIX ."categories;"
-						)->fetch_all(function($field) {
-							return database::create_variable($field);
-						});
+						$category = [];
+						foreach (database::schema('categories') as $field) {
+							$category[$field] = database::create_variable($field);
+						}
 					}
 
 					foreach ($category as $key => $value) {

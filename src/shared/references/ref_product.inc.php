@@ -658,11 +658,10 @@
 					});
 
 					if (!$product) {
-						$product = database::query(
-							"show fields from ". DB_PREFIX ."products;"
-						)->fetch(function($field){
-							return database::create_variable($field);
-						});
+						$product = [];
+						foreach (database::schema('products') as $field) {
+							$product[$field] = database::create_variable($field);
+						}
 					}
 
 					foreach ($product as $key => $value) {

@@ -113,11 +113,9 @@
 
 			$administrator = [];
 
-			database::query(
-				"show fields from ". DB_PREFIX ."administrators;"
-			)->each(function($field) use (&$administrator) {
+			foreach (database::schema(DB_PREFIX .'administrators') as $field) {
 				$administrator[$field['Field']] = database::create_variable($field);
-			});
+			}
 
 			$administrator['permissions'] = [];
 

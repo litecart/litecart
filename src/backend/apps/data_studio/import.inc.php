@@ -234,7 +234,9 @@
 
 					$properties = [];
 
-					database::query('show fields from `' . database::input($table_name) . '`;')->each(function ($field) use (&$properties) {
+					database::query(
+						"show fields from `" . database::input($table_name) . "`;"
+					)->each(function ($field) use (&$properties) {
 						$properties[] = $field['Field'];
 					});
 
