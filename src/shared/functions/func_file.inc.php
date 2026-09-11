@@ -127,6 +127,10 @@
 		return (substr_count($block, "^ -~")/512 > 0.3) or (substr_count($block, "\x00") > 0);
 	}
 
+	function file_join(...$parts) {
+		return preg_replace('#(?<!:)//+#', '/', str_replace('\\', '/', implode('/', $parts)));
+	}
+
 	function file_move(string $source, string $target, bool $overwrite=false, array &$results=[]): bool {
 
 		$source = str_replace('\\', '/', $source);
