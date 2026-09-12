@@ -582,7 +582,7 @@ c0a24aa900902b46c62b360f650d12fe	install/includes/functions.inc.php
 a37bf7b37ad3919a13f46de67748afed	install/includes/header.inc.php
 0d8f99cb373b11d0a11132f7ccbf5867	install/index.php
 a14e5b798dcc00ac3a90051a6ef9cec7	install/install.php
-2dcaa64b03ff00cdb011200ee367aa18	install/structure.sql
+82864d847d3b24ab03bea0cb946cb34e	install/structure.sql
 c2b1be1f794887b0bed4ae30962ac6d0	install/upgrade.php
 a2dbda6a4f7ebf41735a468682ed243c	install/upgrade_patches/1.0.1.3.inc.php
 e40d16965a907467b8a8249a35927faf	install/upgrade_patches/1.0.1.4.inc.php
@@ -699,7 +699,7 @@ cd37a7f25119ad9ac30f171d57ef6db2	install/upgrade_patches/2.6.1.sql
 30c3e5bcc89bac50022777666f8fd35e	install/upgrade_patches/2.6.3.inc.php
 f90a56242d3956dc3dcf217afc5cb09e	install/upgrade_patches/2.6.3.sql
 bf4036885fd8f0a428691d3581ed0f75	install/upgrade_patches/2.7.0.inc.php
-d9c4fedf0e4d713ec193526fbaa416c3	install/upgrade_patches/2.7.0.sql
+67cfcabeb5a096697a70bbd0459495de	install/upgrade_patches/2.7.0.sql
 f7731ed1370e75fe84dfa3c43b245d87	install/upgrade_patches/2.7.1.inc.php
 c5c2c3f46be698b30d6ba37911c4b8be	install/upgrade_patches/2.7.1.sql
 62bac9360222fee7de79173307177c9e	logs/.htaccess
@@ -734,7 +734,7 @@ f3b26afa23e73a05e05d1d548801c612	pages/login.inc.php
 a84dd6bf3a3c2d3ec007452f6f08fa99	pages/manifest.json.inc.php
 92b1b340832ced0b67b131da205f4799	pages/manufacturer.inc.php
 fbe136a97b9eb800569b9b303424c535	pages/manufacturers.inc.php
-c1287ea3010876ec4ef269f4ff987889	pages/mcp.inc.php
+0f34f650aba2fa887a98972447ac362d	pages/mcp.inc.php
 5562c96cd2c2a4446a6bb6a22261fada	pages/newsletter.inc.php
 1ed81235cd6f4b7195d59783f2c258e2	pages/order.inc.php
 c645b676b9a2866be05a2f8eb8826f74	pages/order_history.inc.php

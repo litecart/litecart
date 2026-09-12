@@ -198,7 +198,7 @@
 				}
 
 				$result = [
-					'tools' => $resources_schemas,
+					'tools' => $resource_schemas,
 				];
 
 				break;

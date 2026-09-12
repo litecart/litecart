@@ -9,7 +9,7 @@ DELETE t1 FROM `lc_products_images` t1
 JOIN `lc_products_images` t2 ON t1.product_id = t2.product_id AND t1.filename = t2.filename AND t1.id > t2.id;
 -- -----
 ALTER TABLE `lc_products_images`
-ADD UNIQUE INDEX `product_id_filename` (`product_id`, `filename`);
+ADD INDEX `checksum` (`checksum`);
 -- -----
 INSERT INTO `lc_settings` (`setting_group_key`, `type`, `title`, `description`, `key`, `value`, `function`, `priority`, `date_updated`, `date_created`) VALUES
 ('checkout', 'local', 'Withdrawal Window Days', 'The number of days a customer has to request a withdrawal after placing an order.', 'withdrawal_window_days', '14', 'number()', 14, NOW(), NOW());
