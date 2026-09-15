@@ -47,7 +47,7 @@ c808cdf34ba9e8dc6d4d0be4e2304afa	admin/customers.app/customers.inc.php
 7d1f6e740597fbb16a864f443a817c3a	admin/customers.app/edit_customer.inc.php
 98a51ad162625fd970d71b2106320946	admin/customers.app/get_address.json.inc.php
 d41d8cd98f00b204e9800998ecf8427e	admin/customers.app/index.html
-2f6fe09688967e0c3efdba4241ef80b0	admin/customers.app/newsletter_recipients.inc.php
+d41d8cd98f00b204e9800998ecf8427e	admin/customers.app/newsletter_recipients.inc.php
 f9165b2e802ddc96e821f0aa639844fe	admin/discussions.widget/config.inc.php
 c5c8b008582cac4619c92d5cc9d04402	admin/discussions.widget/discussions.inc.php
 d41d8cd98f00b204e9800998ecf8427e	admin/discussions.widget/index.html
@@ -73,7 +73,7 @@ d41d8cd98f00b204e9800998ecf8427e	admin/modules.app/index.html
 648312eac61d22ab649a8e602f29f952	admin/modules.app/run_job.inc.php
 63498b1ab7471b46b0ba50fc39a99c53	admin/orders.app/add_product.inc.php
 381895587d3476f5387c80a618b4bdf9	admin/orders.app/config.inc.php
-77437a9734283f7620d0d1357318b892	admin/orders.app/edit_order.inc.php
+fb8ee3436f147be75d299620094c7600	admin/orders.app/edit_order.inc.php
 de6c105bce546872dbeb7f9faad67495	admin/orders.app/edit_order_status.inc.php
 d41d8cd98f00b204e9800998ecf8427e	admin/orders.app/index.html
 96e5e69709245104b6a9cb007195f0d9	admin/orders.app/order_statuses.inc.php

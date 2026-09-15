@@ -1105,14 +1105,12 @@
       },
       success: function(data) {
         $('select[name="customer[zone_code]"]').html('');
-        if ($('select[name="customer[zone_code]"]').attr('disabled')) $('select[name="customer[zone_code]"]').prop('disabled', false);
         if (data) {
           $.each(data, function(i, zone) {
             $('select[name="customer[zone_code]"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>');
           });
-        } else {
-          $('select[name="customer[zone_code]"]').prop('disabled', true);
         }
+        $('select[name="customer[zone_code]"]').prop('disabled', $('select[name="customer[zone_code]"] option').length ? false : true);
       },
       complete: function() {
         $('body').css('cursor', 'auto');
@@ -1155,15 +1153,13 @@
         console.error(errorThrown.message);
       },
       success: function(data) {
-        $('select[name="customer[shipping_address][zone_code]"]').html('');
-        if ($('select[name="customer[shipping_address][zone_code]"]').attr('disabled')) $('select[name="customer[shipping_address][zone_code]"]').prop('disabled', false);
+        $('select[name="customer[shipping_addres][zone_code]"]').html('');
         if (data) {
           $.each(data, function(i, zone) {
-            $('select[name="customer[shipping_address][zone_code]"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>');
+            $('select[name="customer[shipping_addres][zone_code]"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>');
           });
-        } else {
-          $('select[name="customer[shipping_address][zone_code]]"]').prop('disabled', true);
         }
+        $('select[name="customer[shipping_addres][zone_code]"]').prop('disabled', $('select[name="customer[shipping_addres][zone_code]"] option').length ? false : true);
       },
       complete: function() {
         $('body').css('cursor', 'auto');
