@@ -47,7 +47,7 @@ c808cdf34ba9e8dc6d4d0be4e2304afa	admin/customers.app/customers.inc.php
 7d1f6e740597fbb16a864f443a817c3a	admin/customers.app/edit_customer.inc.php
 98a51ad162625fd970d71b2106320946	admin/customers.app/get_address.json.inc.php
 d41d8cd98f00b204e9800998ecf8427e	admin/customers.app/index.html
-2f6fe09688967e0c3efdba4241ef80b0	admin/customers.app/newsletter_recipients.inc.php
+d41d8cd98f00b204e9800998ecf8427e	admin/customers.app/newsletter_recipients.inc.php
 f9165b2e802ddc96e821f0aa639844fe	admin/discussions.widget/config.inc.php
 c5c8b008582cac4619c92d5cc9d04402	admin/discussions.widget/discussions.inc.php
 d41d8cd98f00b204e9800998ecf8427e	admin/discussions.widget/index.html
@@ -73,7 +73,7 @@ d41d8cd98f00b204e9800998ecf8427e	admin/modules.app/index.html
 648312eac61d22ab649a8e602f29f952	admin/modules.app/run_job.inc.php
 63498b1ab7471b46b0ba50fc39a99c53	admin/orders.app/add_product.inc.php
 381895587d3476f5387c80a618b4bdf9	admin/orders.app/config.inc.php
-77437a9734283f7620d0d1357318b892	admin/orders.app/edit_order.inc.php
+fb8ee3436f147be75d299620094c7600	admin/orders.app/edit_order.inc.php
 de6c105bce546872dbeb7f9faad67495	admin/orders.app/edit_order_status.inc.php
 d41d8cd98f00b204e9800998ecf8427e	admin/orders.app/index.html
 96e5e69709245104b6a9cb007195f0d9	admin/orders.app/order_statuses.inc.php
@@ -196,7 +196,7 @@ c4ab4892c83771532d1ef4a2da1ef2fc	ext/trumbowyg/plugins/colors/trumbowyg.colors.m
 41b48c40da4759756240f206d4652b62	ext/trumbowyg/plugins/table/ui/trumbowyg.table.min.css
 9af00c36a99fb85da2e0e3c2e298b44d	ext/trumbowyg/trumbowyg.min.js
 a60b3a02b8960a18b7f4812b9d489c43	ext/trumbowyg/ui/icons.svg
-4186e494670f38c3cc27c721c8d4169b	ext/trumbowyg/ui/trumbowyg.min.css
+97aea844c5ed88752566ea2e841c86f3	ext/trumbowyg/ui/trumbowyg.min.css
 bdf1f915525861277993816806160114	ext/trumbowyg/ui/trumbowyg.scss
 d41d8cd98f00b204e9800998ecf8427e	images/categories/index.html
 d41d8cd98f00b204e9800998ecf8427e	images/index.html
@@ -344,8 +344,8 @@ db390b3ff0e45b37533913f7c5b345f5	includes/routes/url_order_process.inc.php
 d4d01a85f22fa99cee958c04b3fb645c	includes/routes/url_push_jobs.inc.php
 57eccdc3679f0cf3fcc7bd9e0cc5aff1	includes/templates/default.admin/css/app.min.css
 408eac90086fb29a3c92a26d8f5d33a6	includes/templates/default.admin/css/app.min.css.map
-d4a1e4a38123c54042498f5004a2fbbc	includes/templates/default.admin/css/framework.min.css
-f098ecfd60193c6ca6d4a532bfcc3529	includes/templates/default.admin/css/framework.min.css.map
+ceba867fe28a8a36468f6a09ef4441ba	includes/templates/default.admin/css/framework.min.css
+996ea81d8bad20a04146ca97c01dd4a1	includes/templates/default.admin/css/framework.min.css.map
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.admin/css/index.html
 22ce4b29af0998bcd3552f0909816301	includes/templates/default.admin/css/printable.min.css
 82fb8e6529a815691311fa342df6dbe2	includes/templates/default.admin/css/printable.min.css.map
