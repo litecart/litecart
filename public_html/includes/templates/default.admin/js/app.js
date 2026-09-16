@@ -382,6 +382,251 @@
 }(jQuery);
 
 /*
+ * jQuery Image Crop
+ * by LiteCart
+ *
+ * Lets the user draw a crop selection on an image with the mouse. The selection
+ * is kept in natural image pixels, so the posted values do not depend on how the
+ * image happens to be scaled on screen.
+ *
+ *   $('#my-image').crop({aspectRatio: 1, minWidth: 200});
+ *   var box = $('#my-image').cropData();  // {x, y, width, height} or null
+ *   $('#my-image').cropDestroy();
+ */
+
++function($) {
+
+  var defaults = {
+    aspectRatio: null, // null = free, or a number such as 1 or 4/3
+    minWidth: 32,      // Natural pixels, smaller selections are discarded
+    minHeight: 32,
+    onChange: null     // function(data) {}
+  };
+
+  var sequence = 0;
+
+  function point(e) {
+    var touch = e.originalEvent && e.originalEvent.touches && e.originalEvent.touches[0];
+    return {x: touch ? touch.pageX : e.pageX, y: touch ? touch.pageY : e.pageY};
+  }
+
+  function clamp(value, min, max) {
+    return value < min ? min : (value > max ? max : value);
+  }
+
+  function Crop(img, config) {
+    this.$img = $(img);
+    this.config = $.extend({}, defaults, config);
+    this.selection = null; // {x, y, w, h} in natural pixels
+    this.drag = null;
+
+    if (this.$img.prop('complete') && this.$img.prop('naturalWidth')) {
+      this.build();
+    } else {
+      this.$img.one('load', $.proxy(this.build, this));
+    }
+  }
+
+  Crop.prototype.build = function() {
+    var self = this;
+
+    this.ns = '.crop' + (++sequence);
+
+    this.$img.wrap('<div class="crop-box"></div>');
+    this.$box = this.$img.parent();
+    this.$selection = $('<div class="crop-sel"></div>').hide().appendTo(this.$box);
+
+    $.each(['nw', 'ne', 'sw', 'se'], function(i, name) {
+      $('<div class="crop-handle crop-handle-'+ name +'"></div>')
+        .attr('data-handle', name)
+        .appendTo(self.$selection);
+    });
+
+    this.$box.on('mousedown'+ this.ns +' touchstart'+ this.ns, $.proxy(this.onDown, this));
+    $(document)
+      .on('mousemove'+ this.ns +' touchmove'+ this.ns, $.proxy(this.onMove, this))
+      .on('mouseup'+ this.ns +' touchend'+ this.ns, $.proxy(this.onUp, this));
+    $(window).on('resize'+ this.ns, $.proxy(this.render, this));
+  }
+
+// Displayed pixels per natural pixel
+  Crop.prototype.scale = function() {
+    return this.$img.width() / this.$img.prop('naturalWidth');
+  }
+
+  Crop.prototype.natural = function(e) {
+    var p = point(e),
+        offset = this.$img.offset(),
+        scale = this.scale();
+
+    return {
+      x: clamp((p.x - offset.left) / scale, 0, this.$img.prop('naturalWidth')),
+      y: clamp((p.y - offset.top) / scale, 0, this.$img.prop('naturalHeight'))
+    };
+  }
+
+  Crop.prototype.onDown = function(e) {
+    var p = this.natural(e),
+        handle = $(e.target).attr('data-handle'),
+        s = this.selection;
+
+    if (handle && s) {
+    // Resizing from a corner is the same operation as drawing a new selection anchored at the opposite corner
+      this.drag = {
+        mode: 'draw',
+        ox: handle.indexOf('e') > -1 ? s.x : s.x + s.w,
+        oy: handle.indexOf('s') > -1 ? s.y : s.y + s.h
+      };
+
+    } else if (s && $(e.target).hasClass('crop-sel')) {
+      this.drag = {mode: 'move', dx: p.x - s.x, dy: p.y - s.y};
+
+    } else {
+      this.drag = {mode: 'draw', ox: p.x, oy: p.y};
+      this.selection = {x: p.x, y: p.y, w: 0, h: 0};
+    }
+
+    e.preventDefault();
+  }
+
+  Crop.prototype.onMove = function(e) {
+
+    if (!this.drag) return;
+
+    var p = this.natural(e),
+        natural_width = this.$img.prop('naturalWidth'),
+        natural_height = this.$img.prop('naturalHeight'),
+        ratio = this.config.aspectRatio,
+        drag = this.drag,
+        width, height, sx, sy, limit;
+
+    if (drag.mode == 'move') {
+      this.selection.x = clamp(p.x - drag.dx, 0, natural_width - this.selection.w);
+      this.selection.y = clamp(p.y - drag.dy, 0, natural_height - this.selection.h);
+
+    } else {
+      width = p.x - drag.ox;
+      height = p.y - drag.oy;
+      sx = width < 0 ? -1 : 1;
+      sy = height < 0 ? -1 : 1;
+      width = Math.abs(width);
+      height = Math.abs(height);
+
+      if (ratio) {
+        if (width / ratio > height) {
+          height = width / ratio;
+        } else {
+          width = height * ratio;
+        }
+
+      // Keep the ratio but pull the box back inside the image
+        limit = Math.min(
+          1,
+          sx > 0 ? (natural_width - drag.ox) / width : drag.ox / width,
+          sy > 0 ? (natural_height - drag.oy) / height : drag.oy / height
+        );
+
+        width *= limit;
+        height *= limit;
+      }
+
+      this.selection = {
+        x: sx > 0 ? drag.ox : drag.ox - width,
+        y: sy > 0 ? drag.oy : drag.oy - height,
+        w: width,
+        h: height
+      };
+    }
+
+    this.render();
+    e.preventDefault();
+  }
+
+  Crop.prototype.onUp = function() {
+
+    if (!this.drag) return;
+
+    this.drag = null;
+
+    if (this.selection && (this.selection.w < this.config.minWidth || this.selection.h < this.config.minHeight)) {
+      this.selection = null;
+      this.render();
+    }
+
+    if ($.isFunction(this.config.onChange)) this.config.onChange(this.getData());
+  }
+
+  Crop.prototype.render = function() {
+
+    if (!this.selection) {
+      this.$selection.hide();
+      return;
+    }
+
+    var scale = this.scale();
+
+    this.$selection.show().css({
+      left: Math.round(this.selection.x * scale) + 'px',
+      top: Math.round(this.selection.y * scale) + 'px',
+      width: Math.round(this.selection.w * scale) + 'px',
+      height: Math.round(this.selection.h * scale) + 'px'
+    });
+  }
+
+  Crop.prototype.getData = function() {
+
+    if (!this.selection) return null;
+
+    return {
+      x: Math.round(this.selection.x),
+      y: Math.round(this.selection.y),
+      width: Math.round(this.selection.w),
+      height: Math.round(this.selection.h)
+    };
+  }
+
+// Unbind the document/window listeners and restore the original markup
+  Crop.prototype.destroy = function() {
+
+    this.$img.off('load');
+
+    if (this.ns) {
+      $(document).off(this.ns);
+      $(window).off(this.ns);
+    }
+
+    if (this.$box) {
+      this.$box.off(this.ns);
+      this.$selection.remove();
+      this.$img.unwrap();
+    }
+
+    this.selection = this.drag = null;
+  }
+
+  $.fn.crop = function(config) {
+    return this.each(function(){
+      if (!$.data(this, 'crop')) $.data(this, 'crop', new Crop(this, config));
+    });
+  }
+
+  $.fn.cropData = function() {
+    var crop = this.length ? $.data(this[0], 'crop') : null;
+    return crop ? crop.getData() : null;
+  }
+
+  $.fn.cropDestroy = function() {
+    return this.each(function(){
+      var crop = $.data(this, 'crop');
+      if (!crop) return;
+      crop.destroy();
+      $.removeData(this, 'crop');
+    });
+  }
+
+}(jQuery);
+
+/*
  * Escape HTML
  */
 function escapeHTML(string) {
