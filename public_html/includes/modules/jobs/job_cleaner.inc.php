@@ -20,24 +20,19 @@
 
     // Cache
 
-      echo 'Wipe out old cache files...' . PHP_EOL;
+      echo 'Wiping out old cache files...' . PHP_EOL;
 
       $deleted_files = 0;
       $deleted_dirs = 0;
-      $timestamp = strtotime('-24 hours');
+      $breakpoint = strtotime('-24 hours');
 
       clearstatcache();
 
       foreach (functions::file_search(FS_DIR_STORAGE .'cache/*', GLOB_ONLYDIR) as $dir) {
-
         foreach (functions::file_search($dir.'/*.cache') as $file) {
-
           if (!is_file($file)) continue;
-          if (filemtime($file) > $timestamp) continue;
-
-          echo '  Deleting ' . basename($file) . PHP_EOL;
+          if (filemtime($file) > $breakpoint) continue;
           unlink($file);
-
           $deleted_files++;
         }
 
@@ -74,14 +69,14 @@
 
     // Rate Limiting
 
-      echo 'Wiping out old rate limiting records...' . PHP_EOL;
+      echo 'Wiping old rate limiting records...' . PHP_EOL;
 
       database::query(
         "delete from ". DB_TABLE_PREFIX ."rate_limiting
         where date_created < '". date('Y-m-d H:i:s', strtotime('-7 days')) ."';"
       );
 
-      echo PHP_EOL . "Deleted ". database::affected_rows() ." rate-limit failures" . PHP_EOL;
+      echo "Deleted ". database::affected_rows() ." records." . PHP_EOL . PHP_EOL;
     }
 
     function settings() {
