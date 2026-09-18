@@ -340,6 +340,9 @@
                       <div class="input-group-text">
                         <a class="btn btn-default btn-sm move-up" href="#" title="<?php echo functions::escape_html(language::translate('title_move_up', 'Move Up')); ?>"><?php echo functions::draw_fonticon('move-up'); ?></a>
                         <a class="btn btn-default btn-sm move-down" href="#" title="<?php echo functions::escape_html(language::translate('title_move_down', 'Move Down')); ?>"><?php echo functions::draw_fonticon('move-down'); ?></a>
+                        <?php if (!empty($_POST['images'][$key]['id'])) { ?>
+                        <a class="btn btn-default btn-sm crop" href="#" data-image-id="<?php echo (int)$_POST['images'][$key]['id']; ?>" data-image-src="<?php echo functions::escape_html(document::href_rlink(FS_DIR_STORAGE . 'images/' . $product->data['images'][$key]['filename'])); ?>" title="<?php echo functions::escape_html(language::translate('title_crop', 'Crop')); ?>"><?php echo functions::draw_fonticon('fa-crop', 'style="color: #39c;"'); ?></a>
+                        <?php } ?>
                         <a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a>
                       </div>
                     </div>
@@ -886,6 +889,69 @@
     e.preventDefault();
     $(this).closest('.form-group').remove();
     refreshMainImage();
+  });
+
+  $('#images').on('click', '.crop', function(e) {
+    e.preventDefault();
+
+    var button = $(this),
+        row = button.closest('.form-group'),
+        hint = '<?php echo functions::escape_js(language::translate('text_select_crop_area', 'Select an area of the image to crop')); ?>',
+        dialog = $('<div class="crop-dialog">'
+                 + '  <div class="crop-canvas"><img src="'+ button.data('image-src') +'" alt=""></div>'
+                 + '  <div class="crop-toolbar">'
+                 + '    <span class="crop-selection">'+ hint +'</span>'
+                 + '    <button type="button" class="btn btn-default crop-apply" disabled><?php echo functions::escape_js(language::translate('title_crop', 'Crop')); ?></button>'
+                 + '  </div>'
+                 + '</div>'),
+        img, apply;
+
+    $.featherlight(dialog, {
+      afterOpen: function() {
+        var lightbox = this;
+
+      // Featherlight clones the given content, so the live nodes come from the instance
+        img = this.$content.find('img');
+        apply = this.$content.find('.crop-apply');
+
+        img.crop({
+          onChange: function(data) {
+            apply.prop('disabled', !data);
+            lightbox.$content.find('.crop-selection').text(data ? data.width +' × '+ data.height +' px' : hint);
+          }
+        });
+
+        apply.on('click', function() {
+          var selection = img.cropData();
+          if (!selection) return;
+
+          apply.prop('disabled', true);
+
+          $.ajax({
+            url: '<?php echo document::link(WS_DIR_ADMIN, ['doc' => 'crop_image.json'], ['app']); ?>',
+            type: 'POST',
+            dataType: 'json',
+            data: $.extend({
+              product_id: <?php echo (int)$product->data['id']; ?>,
+              image_id: button.data('image-id')
+            }, selection),
+            success: function(json) {
+              row.find('img').attr('src', json.thumbnail);
+              button.data('image-src', json.original);
+              refreshMainImage();
+              lightbox.close();
+            },
+            error: function(jqXHR) {
+              apply.prop('disabled', false);
+              alert((jqXHR.responseJSON && jqXHR.responseJSON.error) ? jqXHR.responseJSON.error : '<?php echo functions::escape_js(language::translate('error_crop_image_failed', 'Failed cropping image')); ?>');
+            }
+          });
+        });
+      },
+      afterClose: function() {
+        if (img) img.cropDestroy();
+      }
+    });
   });
 
   $('#images .add').click(function(e) {

@@ -444,6 +444,78 @@
       }
     }
 
+    public function crop($x, $y, $width, $height) {
+
+      settype($x, 'int');
+      settype($y, 'int');
+      settype($width, 'int');
+      settype($height, 'int');
+
+    // Clamp the crop box to the canvas
+      if ($x < 0) {
+        $width += $x;
+        $x = 0;
+      }
+
+      if ($y < 0) {
+        $height += $y;
+        $y = 0;
+      }
+
+      if ($width > $this->width() - $x) $width = $this->width() - $x;
+      if ($height > $this->height() - $y) $height = $this->height() - $y;
+
+      if ($width < 1 || $height < 1) {
+        throw new Exception('Crop area is outside of the image');
+      }
+
+      switch($this->_library) {
+
+        case 'imagick':
+
+          if (empty($this->_image)) $this->load();
+
+          if (empty($this->_image)) {
+            throw new Exception('Not a valid image object');
+          }
+
+          if (!$this->_image->cropImage($width, $height, $x, $y)) return false;
+
+        // Discard the virtual canvas left behind by the crop
+          $this->_image->setImagePage($width, $height, 0, 0);
+
+          $this->_width = $width;
+          $this->_height = $height;
+
+          return true;
+
+        case 'gd':
+
+          if (!$this->_image) $this->load();
+
+          if (!$this->_image) {
+            throw new Exception('Not a valid image resource');
+          }
+
+          $_cropped = ImageCreateTrueColor($width, $height);
+          ImageAlphaBlending($_cropped, false);
+          ImageSaveAlpha($_cropped, true);
+          ImageFill($_cropped, 0, 0, ImageColorAllocateAlpha($_cropped, $this->_whitespace[0], $this->_whitespace[1], $this->_whitespace[2], 127));
+
+          if (!ImageCopy($_cropped, $this->_image, 0, 0, $x, $y, $width, $height)) return false;
+
+          if (PHP_VERSION_ID < 80000) {
+            ImageDestroy($this->_image);
+          }
+
+          $this->_image = $_cropped;
+          $this->_width = $width;
+          $this->_height = $height;
+
+          return true;
+      }
+    }
+
     public function filter($filter) {
 
       switch($this->_library) {
@@ -866,10 +938,10 @@
 
           if ($interlaced) ImageInterlace($this->_image, true);
 
-          if (function_exists('exif_read_data')) {
+          if (function_exists('exif_read_data') && !empty($this->_src) && in_array($this->type(), ['jpg', 'jpeg'])) {
 
           // Get the EXIF data of the image
-            $exif = exif_read_data($filename);
+            $exif = @exif_read_data($this->_src);
 
           // Check if orientation data exists
             if (isset($exif['Orientation'])) {

@@ -56,6 +56,7 @@
       'catalog' => 'catalog.inc.php',
       'category_picker' => 'category_picker.inc.php',
       'categories.json' => 'categories.json.inc.php',
+      'crop_image.json' => 'crop_image.json.inc.php',
       'csv' => 'csv.inc.php',
       'delivery_statuses' => 'delivery_statuses.inc.php',
       'edit_attribute_group' => 'edit_attribute_group.inc.php',
