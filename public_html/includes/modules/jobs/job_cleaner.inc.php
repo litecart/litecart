@@ -53,7 +53,24 @@
         }
       }
 
-      echo PHP_EOL . "Cleaned up $deleted_files files and $deleted_dirs directories" . PHP_EOL;
+      echo "Deleted $deleted_files files and $deleted_dirs directories." . PHP_EOL . PHP_EOL;
+
+      // Logs
+
+      echo 'Wiping out old log files...' . PHP_EOL;
+
+      $breakpoint = strtotime('-30 days');
+      $deleted_files = 0;
+
+      foreach (functions::file_search(FS_DIR_STORAGE .'logs/**.log') as $file) {
+        if (!is_file($file)) continue;
+        if (filemtime($file) < $breakpoint) {
+          unlink($file);
+          $deleted_files++;
+        }
+      }
+
+      echo "$deleted_files files deleted." . PHP_EOL . PHP_EOL;
 
     // Rate Limiting
 
