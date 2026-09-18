@@ -1261,7 +1261,7 @@ html[dir=rtl] .dropdown label:has([data-toggle=dropdown]) {
 	font-family: "LiteCore";
 	font-style: normal;
 	font-weight: 400;
-	src: url("../fonts/fonticons.woff2?1787955612") format("woff2");
+	src: url("../fonts/fonticons.woff2?1789717743") format("woff2");
 }
 [class^=icon-], [class*=" icon-"] {
 	display: inline-block;
@@ -1955,6 +1955,14 @@ html[dir=rtl] .dropdown label:has([data-toggle=dropdown]) {
 
 .icon-location:before {
 	content: "\e0a8";
+}
+
+.icon-publish:before {
+	content: "\e0a9";
+}
+
+.icon-crop:before {
+	content: "\e0aa";
 }
 
 .icon-download:before {
@@ -4091,8 +4099,8 @@ body.navbar-expanded {
 }
 .notices .notice {
 	border-radius: var(--border-radius);
-	margin-bottom: 1rem;
-	padding: 1em 2em;
+	margin-bottom: 1.5em;
+	padding: 0.75em 1.5em;
 }
 .notices .notice .close {
 	float: inline-end;

@@ -35,7 +35,7 @@
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_company_name', 'Company Name'); ?></div>
-										<?php echo f::form_input_text('company', true, ['required' => '', 'autocomplete' => 'organization'] + ((isset($_POST['type']) && $_POST['type'] == 'individual') ? ['disabled' => ''] : [])); ?>
+										<?php echo f::form_input_text('company', true, ['required' => true, 'autocomplete' => 'organization'] + ((isset($_POST['type']) && $_POST['type'] == 'individual') ? ['disabled' => true] : [])); ?>
 									</label>
 								</div>
 								<?php } ?>
@@ -55,14 +55,14 @@
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_firstname', 'First Name'); ?></div>
-										<?php echo f::form_input_text('firstname', true, ['required' => '', 'autocomplete' => 'given-name']); ?>
+										<?php echo f::form_input_text('firstname', true, ['required' => true, 'autocomplete' => 'given-name']); ?>
 									</label>
 								</div>
 
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_lastname', 'Last Name'); ?></div>
-										<?php echo f::form_input_text('lastname', true, ['required' => '', 'autocomplete' => 'family-name']); ?>
+										<?php echo f::form_input_text('lastname', true, ['required' => true, 'autocomplete' => 'family-name']); ?>
 									</label>
 								</div>
 							</div>
@@ -103,7 +103,7 @@
 								<div class="col-sm-<?php echo settings::get('customer_field_zone') ? 6 : 12; ?>">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_country', 'Country'); ?></div>
-										<?php echo f::form_select_country('country_code', true, ['required' => '', 'autocomplete' => 'country']); ?>
+										<?php echo f::form_select_country('country_code', true, ['required' => true, 'autocomplete' => 'country']); ?>
 									</label>
 								</div>
 
@@ -111,7 +111,7 @@
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_zone_state_province', 'Zone/State/Province'); ?></div>
-										<?php echo f::form_select_zone('zone_code', $_POST['country_code'] ?? '', true, ['required' => '', 'autocomplete' => 'address-level1']); ?>
+										<?php echo f::form_select_zone('zone_code', $_POST['country_code'] ?? '', true, ['required' => true, 'autocomplete' => 'address-level1']); ?>
 									</label>
 								</div>
 								<?php } ?>
@@ -121,7 +121,7 @@
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_email', 'Email'); ?></div>
-										<?php echo f::form_input_email('email', true, ['required' => '', 'autocomplete' => 'email']); ?>
+										<?php echo f::form_input_email('email', true, ['required' => true, 'autocomplete' => 'email']); ?>
 									</label>
 								</div>
 
@@ -137,14 +137,14 @@
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_desired_password', 'Desired Password'); ?></div>
-										<?php echo f::form_input_password('password', '', ['required' => '', 'autocomplete' => 'new-password']); ?>
+										<?php echo f::form_input_password('password', '', ['required' => true, 'autocomplete' => 'new-password']); ?>
 									</label>
 								</div>
 
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_confirm_password', 'Confirm Password'); ?></div>
-										<?php echo f::form_input_password('confirmed_password', '', ['required' => '', 'autocomplete' => 'new-password']); ?>
+										<?php echo f::form_input_password('confirmed_password', '', ['required' => true, 'autocomplete' => 'new-password']); ?>
 									</label>
 								</div>
 							</div>
@@ -156,7 +156,7 @@
 							<?php if ($consent) { ?>
 
 								<div class="form-group">
-									<?php echo f::form_checkbox('terms_agreed', ['1', $consent], true, ['required' => '']); ?>
+									<?php echo f::form_checkbox('terms_agreed', ['1', $consent], true, ['required' => true]); ?>
 								</div>
 							<?php } ?>
 

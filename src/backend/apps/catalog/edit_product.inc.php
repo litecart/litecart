@@ -546,7 +546,7 @@
 								<td><?php echo f::form_select_attribute_group('new_attribute[group_id]', ''); ?></td>
 								<td>
 									<?php echo f::form_select('new_attribute[value_id]', [], ''); ?>
-									<?php echo f::form_input_text('new_attribute[custom_value]', '', ['disabled' => '', 'hidden' => '']); ?>
+									<?php echo f::form_input_text('new_attribute[custom_value]', '', ['disabled' => true, 'hidden' => '']); ?>
 								</td>
 								<td class="text-end"><?php echo f::form_button('add', t('title_add', 'Add'), 'button'); ?></td>
 							</tr>
@@ -668,7 +668,7 @@
 								<div class="col-md-3">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_value', 'Value'); ?></div>
-										<?php echo f::form_select('new_predefined_customization[value_id]', [['','']], '', ['disabled' => '']); ?>
+										<?php echo f::form_select('new_predefined_customization[value_id]', [['','']], '', ['disabled' => true]); ?>
 									</label>
 								</div>
 

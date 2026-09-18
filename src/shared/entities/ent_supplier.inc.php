@@ -17,7 +17,7 @@
 
 			$this->data = [];
 
-			foreach (database::schema(DB_PREFIX .'suppliers') as $field) {
+			foreach (database::schema('suppliers') as $field) {
 				$this->data[$field['Field']] = database::create_variable($field);
 			}
 

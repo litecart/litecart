@@ -193,7 +193,7 @@
 				<legend><?php echo t('text_with_selected', 'With selected'); ?>:</legend>
 
 				<ul class="list-inline">
-					<li><?php echo f::form_button('delete', t('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!confirm(\''. t('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete'); ?></li>
+					<li><?php echo f::form_button_predefined('delete'); ?></li>
 				</ul>
 			</fieldset>
 		</div>

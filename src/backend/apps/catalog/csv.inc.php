@@ -1530,14 +1530,14 @@
 							<div class="col-sm-6">
 								<label class="form-group">
 									<div class="form-label"><?php echo t('title_language', 'Language'); ?></div>
-									<?php echo f::form_select_language('language_code', true, ['required' => '']); ?>
+									<?php echo f::form_select_language('language_code', true, ['required' => true]); ?>
 								</label>
 							</div>
 
 							<div class="col-sm-6">
 								<label class="form-group">
 									<div class="form-label"><?php echo t('title_currency', 'Currency'); ?></div>
-									<?php echo f::form_select_currency('currency_code', true, ['required' => '']); ?>
+									<?php echo f::form_select_currency('currency_code', true, ['required' => true]); ?>
 								</label>
 							</div>
 						</div>

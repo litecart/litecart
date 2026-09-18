@@ -205,14 +205,14 @@
 				<div class="col-md-6">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_code', 'Code'); ?> (ISO 4217) <a href="https://en.wikipedia.org/wiki/ISO_4217" target="_blank"><?php echo f::draw_fonticon('icon-square-out'); ?></a></div>
-						<?php echo f::form_input_text('code', true, ['required' => '', 'pattern' => '[A-Z]{3}']); ?>
+						<?php echo f::form_input_text('code', true, ['required' => true, 'pattern' => '[A-Z]{3}']); ?>
 					</label>
 				</div>
 
 				<div class="col-md-6">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_number', 'Number'); ?> (ISO 4217) <a href="https://en.wikipedia.org/wiki/ISO_4217" target="_blank"><?php echo f::draw_fonticon('icon-square-out'); ?></a></div>
-						<?php echo f::form_input_text('number', true, ['required' => '', 'pattern' => '\d{3}']); ?>
+						<?php echo f::form_input_text('number', true, ['required' => true, 'pattern' => '\d{3}']); ?>
 					</label>
 				</div>
 			</div>

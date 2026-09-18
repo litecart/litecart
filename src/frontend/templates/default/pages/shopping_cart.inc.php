@@ -139,7 +139,7 @@
 							<?php if (empty(customer::$data['email'])) { ?>
 							<div class="form-group">
 								<div class="form-label"><?php echo t('title_email_address', 'Email Address'); ?></div>
-								<?php echo f::form_input_email('email', true, ['required' => '', 'autocomplete' => 'email'] + (!empty($shopping_cart->data['customer']['id']) ? ['readonly' => ''] : [])); ?>
+								<?php echo f::form_input_email('email', true, ['required' => true, 'autocomplete' => 'email'] + (!empty($shopping_cart->data['customer']['id']) ? ['readonly' => true] : [])); ?>
 							</div>
 							<?php } ?>
 

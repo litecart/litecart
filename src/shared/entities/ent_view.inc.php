@@ -8,7 +8,7 @@
 		public $cleanup = false;
 		private $_parsers = [];
 
-		public function __construct(string $view = '', array $snippets = []) {
+		public function __construct(string $view='', array $snippets=[]) {
 
 			if ($view) {
 

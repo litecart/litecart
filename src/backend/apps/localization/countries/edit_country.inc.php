@@ -164,7 +164,7 @@
 						<div class="col-md-6">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_number', 'Number'); ?> (ISO 3166-1 numeric) <a href="https://en.wikipedia.org/wiki/ISO_3166-1_numeric" target="_blank"><?php echo f::draw_fonticon('icon-square-out'); ?></a></div>
-								<?php echo f::form_input_text('iso_code_1', true, ['required' => '', 'pattern' => '\d{3}']); ?>
+								<?php echo f::form_input_text('iso_code_1', true, ['required' => true, 'pattern' => '\d{3}']); ?>
 							</label>
 						</div>
 					</div>
@@ -173,14 +173,14 @@
 						<div class="col-md-6">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_code', 'Code'); ?> (ISO 3166-1 alpha-2) <a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2" target="_blank"><?php echo f::draw_fonticon('icon-square-out'); ?></a></div>
-								<?php echo f::form_input_text('iso_code_2', true, ['required' => '', 'pattern' => '[A-Z]{2}']); ?>
+								<?php echo f::form_input_text('iso_code_2', true, ['required' => true, 'pattern' => '[A-Z]{2}']); ?>
 							</label>
 						</div>
 
 						<div class="col-md-6">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_code', 'Code'); ?> (ISO 3166-1 alpha-3) <a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-3" target="_blank"><?php echo f::draw_fonticon('icon-square-out'); ?></a></div>
-								<?php echo f::form_input_text('iso_code_3', true, ['required' => '', 'pattern' => '[A-Z]{3}']); ?>
+								<?php echo f::form_input_text('iso_code_3', true, ['required' => true, 'pattern' => '[A-Z]{3}']); ?>
 							</label>
 						</div>
 					</div>

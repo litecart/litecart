@@ -17,7 +17,7 @@
 
 			$this->data = [];
 
-			foreach (database::schema(DB_PREFIX .'customers') as $field) {
+			foreach (database::schema('customers') as $field) {
 				if (preg_match('#^shipping_(.*)$#', $field['Field'], $matches)) {
 					$this->data['shipping_address'][$matches[1]] = database::create_variable($field);
 				} else {

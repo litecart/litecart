@@ -20,9 +20,7 @@
 	breadcrumbs::add(t('title_administrators', 'Administrators'), document::href_ilink(__APP__.'/administrators'));
 	breadcrumbs::add(!empty($administrator->data['username']) ? t('title_edit_administrator', 'Edit Administrator') : t('title_create_new_administrator', 'Create New Administrator'));
 
-	// TOTP enroll/confirm/disable — handled before the main save so the sub-form
-	// buttons (totp_setup, totp_confirm, totp_disable) don't have to go through
-	// the generic save validation.
+	// TOTP enroll/confirm/disable
 	if (!empty($administrator->data['id']) && (!empty($_POST['totp_setup']) || !empty($_POST['totp_confirm']) || !empty($_POST['totp_disable']))) {
 
 		try {
@@ -187,7 +185,7 @@
 						<div class="col-sm-6">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_username', 'Username'); ?></div>
-								<?php echo f::form_input_text('username', true, ['autocomplete' => 'off', 'required' => '']); ?>
+								<?php echo f::form_input_text('username', true, ['autocomplete' => 'off', 'required' => true]); ?>
 							</label>
 						</div>
 					</div>
@@ -196,13 +194,13 @@
 						<div class="col-sm-6">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_firstname', 'Firstname'); ?></div>
-								<?php echo f::form_input_text('firstname', true, ['required' => '']); ?>
+								<?php echo f::form_input_text('firstname', true, ['required' => true]); ?>
 							</label>
 						</div>
 						<div class="col-sm-6">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_lastname', 'Lastname'); ?></div>
-								<?php echo f::form_input_text('lastname', true, ['required' => '']); ?>
+								<?php echo f::form_input_text('lastname', true, ['required' => true]); ?>
 							</label>
 						</div>
 					</div>
@@ -324,13 +322,13 @@
 						<div class="col-md-6">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_last_ip_address', 'Last IP Address'); ?></div>
-								<?php echo f::form_input_text('last_ip_address', true, ['readonly' => '']); ?>
+								<?php echo f::form_input_text('last_ip_address', true, ['readonly' => true]); ?>
 							</label>
 						</div>
 						<div class="col-md-6">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_last_hostname', 'Last Hostname'); ?></div>
-								<?php echo f::form_input_text('last_hostname', true, ['readonly' => '']); ?>
+								<?php echo f::form_input_text('last_hostname', true, ['readonly' => true]); ?>
 							</label>
 						</div>
 					</div>
@@ -339,13 +337,13 @@
 						<div class="col-md-6">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_last_login', 'Last Login'); ?></div>
-								<?php echo f::form_input_text('last_login', true, ['readonly' => '']); ?>
+								<?php echo f::form_input_text('last_login', true, ['readonly' => true]); ?>
 							</label>
 						</div>
 						<div class="col-md-6">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_last_active', 'Last Active'); ?></div>
-								<?php echo f::form_input_text('last_active', true, ['readonly' => '']); ?>
+								<?php echo f::form_input_text('last_active', true, ['readonly' => true]); ?>
 							</label>
 						</div>
 					</div>

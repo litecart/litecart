@@ -3,6 +3,7 @@
 	administrator::require_login();
 
 	try {
+
 		if (empty($_GET['path'])) {
 			$_GET['path'] = '';
 		}
@@ -39,6 +40,17 @@
 
 		try {
 
+			if (!settings::get('csrf_protection')) {
+
+				if (empty($_POST['csrf_token'])) {
+					throw new Exception('Missing CSRF token');
+				}
+
+				if (!hash_equals(security::csrf_token(), $_POST['csrf_token'])) {
+					throw new Exception(t('error_csrf_token_mismatch', 'CSRF token mismatch. Please go back and try again.'));
+				}
+			}
+
 			if (empty($_POST['directory'])) {
 				throw new Exception('No directory name provided');
 			}
@@ -64,6 +76,17 @@
 	if (!empty($_POST['chmod'])) {
 
 		try {
+
+			if (!settings::get('csrf_protection')) {
+
+				if (empty($_POST['csrf_token'])) {
+					throw new Exception('Missing CSRF token');
+				}
+
+				if (!hash_equals(security::csrf_token(), $_POST['csrf_token'])) {
+					throw new Exception(t('error_csrf_token_mismatch', 'CSRF token mismatch. Please go back and try again.'));
+				}
+			}
 
 			if (empty($_POST['file'])) {
 				throw new Exception('No file to chmod');
@@ -93,6 +116,17 @@
 	if (!empty($_POST['delete'])) {
 
 		try {
+
+			if (!settings::get('csrf_protection')) {
+
+				if (empty($_POST['csrf_token'])) {
+					throw new Exception('Missing CSRF token');
+				}
+
+				if (!hash_equals(security::csrf_token(), $_POST['csrf_token'])) {
+					throw new Exception(t('error_csrf_token_mismatch', 'CSRF token mismatch. Please go back and try again.'));
+				}
+			}
 
 			if (empty($_POST['folders']) && empty($_POST['files'])) {
 				throw new Exception('No files or folders selected');
@@ -129,6 +163,17 @@
 
 		try {
 
+			if (!settings::get('csrf_protection')) {
+
+				if (empty($_POST['csrf_token'])) {
+					throw new Exception('Missing CSRF token');
+				}
+
+				if (!hash_equals(security::csrf_token(), $_POST['csrf_token'])) {
+					throw new Exception(t('error_csrf_token_mismatch', 'CSRF token mismatch. Please go back and try again.'));
+				}
+			}
+
 			if (empty($_FILES['files'])) {
 				throw new Exception('No files uploaded');
 			}
@@ -157,10 +202,20 @@
 		}
 	}
 
-
 	if (isset($_POST['download'])) {
 
 		try {
+
+			if (!settings::get('csrf_protection')) {
+
+				if (empty($_POST['csrf_token'])) {
+					throw new Exception('Missing CSRF token');
+				}
+
+				if (!hash_equals(security::csrf_token(), $_POST['csrf_token'])) {
+					throw new Exception(t('error_csrf_token_mismatch', 'CSRF token mismatch. Please go back and try again.'));
+				}
+			}
 
 			if (empty($_POST['folders']) && empty($_POST['files'])) {
 				throw new Exception('No files or folders selected');
@@ -347,7 +402,6 @@
 
 .dropzone.in {
 	position: relative;
-
 	/* border: 2px dashed #999; */
 }
 
@@ -383,13 +437,15 @@ table .icon-folder {
 	</div>
 
 	<?php echo f::form_begin('upload_form', 'post', '', true); ?>
-	<div class="card-action">
-		<ul class="flex flex-columns">
-			<li><?php echo f::form_input_file('new_files[]', ['multiple' => '']); ?></li>
-			<li><?php echo f::form_button('upload', ['true', f::draw_fonticon('icon-upload') . ' ' . t('title_upload', 'Upload')]); ?></li>
-			<li><?php echo f::form_button('create_folder', ['true', f::draw_fonticon('icon-folder') . ' ' . t('title_create_new_folder', 'Create New Folder')]); ?></li>
-		</ul>
-	</div>
+		<?php if (!settings::get('csrf_protection')) echo f::form_input_hidden('csrf_token', security::csrf_token()); ?>
+
+		<div class="card-action">
+			<ul class="flex flex-columns">
+				<li><?php echo f::form_input_file('new_files[]', ['multiple' => true]); ?></li>
+				<li><?php echo f::form_button('upload', ['true', f::draw_fonticon('icon-upload') . ' ' . t('title_upload', 'Upload')]); ?></li>
+				<li><?php echo f::form_button('create_folder', ['true', f::draw_fonticon('icon-folder') . ' ' . t('title_create_new_folder', 'Create New Folder')]); ?></li>
+			</ul>
+		</div>
 	<?php echo f::form_end(); ?>
 
 	<?php echo f::form_begin('search_form', 'get'); ?>
@@ -524,7 +580,13 @@ table .icon-folder {
 		e.preventDefault();
 		let folder_name = prompt("<?php echo t('text_new_folder_name', 'New Folder Name'); ?>");
 		if (!folder_name) return false;
-		let form = $('<form method="post"><input name="mkdir" type="true"><input name="directory" type="hidden"></form>');
+		let form = $([
+			'<form method="post">',
+			<?php if (!settings::get('csrf_protection')) echo '<input name="csrf_token", "'. security::csrf_token() ."'>" ?>
+			'	<input name="mkdir" type="true">',
+			'	<input name="directory" type="hidden">',
+			'</form>',
+		].join('\n'));
 		$('input[name="directory"]').val(folder_name).closest('form').submit();
 		console.log('x');
 	});
@@ -584,6 +646,7 @@ table .icon-folder {
 					form_data.append('paths[]', file.relpath);
 				});
 
+				<?php if (!settings::get('csrf_protection')) echo "form_data.append('csrf_token', ". security::csrf_token() .";" ?>
 				form_data.append('upload', 'true');
 
 				$.ajax({

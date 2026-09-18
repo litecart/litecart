@@ -23,14 +23,14 @@
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_email_address', 'Email Address'); ?></div>
-										<?php echo f::form_input_email('email', true, ['required' => '', 'autocomplete' => 'email']); ?>
+										<?php echo f::form_input_email('email', true, ['required' => true, 'autocomplete' => 'email']); ?>
 									</label>
 								</div>
 
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_password', 'Password'); ?></div>
-										<?php echo f::form_input_password('password', '', ['required' => '', 'autocomplete' => 'current-password']); ?>
+										<?php echo f::form_input_password('password', '', ['required' => true, 'autocomplete' => 'current-password']); ?>
 									</label>
 								</div>
 							</div>
@@ -73,7 +73,7 @@
 									<div class="col-sm-6">
 										<label class="form-group">
 											<div class="form-label"><?php echo t('title_password', 'Password'); ?></div>
-											<?php echo f::form_input_password('totp_disable_password', '', ['autocomplete' => 'off', 'required' => '']); ?>
+											<?php echo f::form_input_password('totp_disable_password', '', ['autocomplete' => 'off', 'required' => true]); ?>
 										</label>
 									</div>
 									<div class="col-sm-6">
@@ -104,7 +104,7 @@
 									<div class="col-sm-6">
 										<label class="form-group">
 											<div class="form-label"><?php echo t('title_verification_code', 'Verification Code'); ?></div>
-											<?php echo f::form_input_text('totp_code', '', ['autocomplete' => 'one-time-code', 'inputmode' => 'numeric', 'maxlength' => '6', 'pattern' => '\d{6}', 'required' => '']); ?>
+											<?php echo f::form_input_text('totp_code', '', ['autocomplete' => 'one-time-code', 'inputmode' => 'numeric', 'maxlength' => '6', 'pattern' => '\d{6}', 'required' => true]); ?>
 										</label>
 									</div>
 									<div class="col-sm-6">
@@ -149,7 +149,7 @@
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_company_name', 'Company Name'); ?></div>
-										<?php echo f::form_input_text('customer[company]', true, ['required' => '', 'autocomplete' => 'organization'] + ((isset($_POST['customer']['type']) && $_POST['customer']['type'] == 'individual') ? ['disabled' => ''] : [])); ?>
+										<?php echo f::form_input_text('customer[company]', true, ['required' => true, 'autocomplete' => 'organization'] + ((isset($_POST['customer']['type']) && $_POST['customer']['type'] == 'individual') ? ['disabled' => true] : [])); ?>
 									</label>
 								</div>
 								<?php } ?>
@@ -168,14 +168,14 @@
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_firstname', 'First Name'); ?></div>
-										<?php echo f::form_input_text('firstname', true, ['required' => '', 'autocomplete' => 'given-name']); ?>
+										<?php echo f::form_input_text('firstname', true, ['required' => true, 'autocomplete' => 'given-name']); ?>
 									</label>
 								</div>
 
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_lastname', 'Last Name'); ?></div>
-										<?php echo f::form_input_text('lastname', true, ['required' => '', 'autocomplete' => 'family-name']); ?>
+										<?php echo f::form_input_text('lastname', true, ['required' => true, 'autocomplete' => 'family-name']); ?>
 									</label>
 								</div>
 							</div>
@@ -216,14 +216,14 @@
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_country', 'Country'); ?></div>
-										<?php echo f::form_select_country('country_code', true, ['required' => '', 'autocomplete' => 'country']); ?>
+										<?php echo f::form_select_country('country_code', true, ['required' => true, 'autocomplete' => 'country']); ?>
 									</label>
 								</div>
 
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_zone_state_province', 'Zone/State/Province'); ?></div>
-										<?php echo form_select_zone('zone_code', $_POST['country_code'] ?? null, true, ['required' => '', 'autocomplete' => 'address-level1']); ?>
+										<?php echo form_select_zone('zone_code', $_POST['country_code'] ?? null, true, ['required' => true, 'autocomplete' => 'address-level1']); ?>
 									</label>
 								</div>
 							</div>

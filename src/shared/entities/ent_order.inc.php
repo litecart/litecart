@@ -20,7 +20,7 @@
 
 			$this->data = [];
 
-			foreach (database::schema(DB_PREFIX .'orders') as $field) {
+			foreach (database::schema('orders') as $field) {
 				switch (true) {
 
 					case (preg_match('#^customer_#', $field['Field'])):
@@ -453,7 +453,7 @@
 						$comment['author_id'] = ($comment['author'] == 'customer') ? -1 : 0;
 					}
 
-					if (isset($item['order_id']) && $item['order_id'] != $this->data['id']) {
+					if (isset($comment['order_id']) && $comment['order_id'] != $this->data['id']) {
 						$comment['id'] = null;
 					}
 
@@ -921,7 +921,7 @@
 			foreach ($this->data['items'] as $item) {
 
 				if (!empty($item['product_id'])) {
-					$product = reference::product($item['product_id'], $language_code);
+					$product = reference::product($item['product_id'], $language_code, $this->data['currency_code'], $this->data['customer']);
 
 					$userdata = [];
 					if (!empty($item['userdata'])) {
@@ -1108,5 +1108,10 @@
 				database::rollback();
 				throw $e;
 			}
+		}
+
+		// Serialize only $data for session storage (json_encode compatibility)
+		public function jsonSerialize(): mixed {
+			return $this->data;
 		}
 	}

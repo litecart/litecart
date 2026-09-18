@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	// Display app content
 	if (defined('__APP__')) {
 

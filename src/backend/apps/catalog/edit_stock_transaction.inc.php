@@ -152,7 +152,7 @@
 						<?php echo f::escape_html($_POST['contents'][$key]['sku']); ?>
 					</td>
 					<td><?php echo f::escape_html($_POST['contents'][$key]['name']); ?></td>
-					<td><?php echo f::form_input_decimal('contents['. $key .'][quantity]', true, 2, ['readonly' => '']); ?></td>
+					<td><?php echo f::form_input_decimal('contents['. $key .'][quantity]', true, 2, ['readonly' => true]); ?></td>
 					<td class="text-center">
 						<div class="input-group">
 							<span class="input-group-text">&plusmn;</span>
@@ -174,7 +174,7 @@
 				<tr>
 					<td><?php echo f::form_input_text('new[sku]', true, ['list' => 'available-stock-items']); ?></td>
 					<td><?php echo f::form_input_text('new[name]', true, ['tabindex' => '-1']); ?></td>
-					<td><?php echo f::form_input_decimal('new[quantity]', true, 2, ['tabindex' => '-1', 'readonly' => '']); ?></td>
+					<td><?php echo f::form_input_decimal('new[quantity]', true, 2, ['tabindex' => '-1', 'readonly' => true]); ?></td>
 					<td>
 						<div class="input-group">
 							<span class="input-group-text">&plusmn;</span>
@@ -268,7 +268,7 @@
 			'       ' + $option.attr('value'),
 			'    </td>',
 			'    <td><?php echo f::escape_js(f::form_input_hidden('contents[__index__][name]', '')); ?>'+ $option.data('name') +'</td>',
-			'    <td><?php echo f::escape_js(f::form_input_decimal('contents[__index__][quantity]', '', 2, ['readonly' => ''])); ?></td>',
+			'    <td><?php echo f::escape_js(f::form_input_decimal('contents[__index__][quantity]', '', 2, ['readonly' => true])); ?></td>',
 			'    <td>',
 			'      <div class="input-group">',
 			'        <span class="input-group-text">&plusmn;</span>',

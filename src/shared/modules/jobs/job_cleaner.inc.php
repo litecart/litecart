@@ -76,17 +76,6 @@
 
 			##
 
-			echo "Cleaning up old webhook requests..." . PHP_EOL;
-
-			database::query(
-				"delete from ". DB_PREFIX ."webhook_requests
-				where created_at < '". database::input(date('Y-m-d H:i:s', strtotime('-30 days'))) ."';"
-			);
-
-			echo '- Removed '. f::format_number(database::affected_rows()) .' webhook request(s).' . PHP_EOL . PHP_EOL;
-
-			##
-
 			echo "Wiping out old rate limiting records..." . PHP_EOL;
 
 			database::query(
@@ -95,6 +84,28 @@
 			);
 
 			echo '- Removed '. f::format_number(database::affected_rows()) .' rate-limit record(s).' . PHP_EOL . PHP_EOL;
+
+			##
+
+			echo "Cleaning up old sessions..." . PHP_EOL;
+
+			database::query(
+				"delete from ". DB_PREFIX ."sessions
+				where expires_at < '". database::input(date('Y-m-d H:i:s')) ."';"
+			);
+
+			echo '- Removed '. f::format_number(database::affected_rows()) .' webhook request(s).' . PHP_EOL . PHP_EOL;
+
+			##
+
+			echo "Cleaning up old webhook requests..." . PHP_EOL;
+
+			database::query(
+				"delete from ". DB_PREFIX ."webhook_requests
+				where created_at < '". database::input(date('Y-m-d H:i:s', strtotime('-30 days'))) ."';"
+			);
+
+			echo '- Removed '. f::format_number(database::affected_rows()) .' webhook request(s).' . PHP_EOL . PHP_EOL;
 
 			##
 

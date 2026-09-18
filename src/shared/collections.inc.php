@@ -3,7 +3,6 @@
 	/*
 		This file is a reference for the collection definitions used in the application.
 		It defines the collections, their names, entities, and how they are identified.
-
 	*/
 
 	// Define collections

@@ -95,8 +95,8 @@
 		<div class="card-body">
 			<fieldset>
 				<legend><?php echo t('text_with_selected', 'With selected'); ?>:</legend>
-				<?php echo f::form_button('enable', t('title_enable', 'Enable'), 'submit', '', 'on'); ?>
-				<?php echo f::form_button('disable', t('title_disable', 'Disable'), 'submit', '', 'off'); ?>
+				<?php echo f::form_button_predefined('enable'); ?>
+				<?php echo f::form_button_predefined('disable'); ?>
 			</fieldset>
 		</div>
 

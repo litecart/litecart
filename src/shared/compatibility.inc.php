@@ -23,8 +23,8 @@
 		}
 	}
 
+	// Polyfill for CLI operations
 	if (!isset($_SERVER['REQUEST_METHOD'])) { // Don't rely on php_sapi_name()
-
 
 		// Polyfill $argv / $argc when register_argc_argv is disabled
 		if (filter_var(ini_get('register_argc_argv'), FILTER_VALIDATE_BOOLEAN) && !isset($GLOBALS['argv'])) {
@@ -53,7 +53,7 @@
 			$GLOBALS['argc'] = count($argv);
 		}
 
-		// Polyfill for some $_SERVER variables in CLI
+		// Polyfill some $_SERVER variables
 		$_SERVER['DOCUMENT_ROOT'] = realpath(__DIR__.'/..');
 		$_SERVER['REMOTE_ADDR'] = '127.0.0.1';
 		$_SERVER['SERVER_NAME'] = 'localhost';

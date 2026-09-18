@@ -17,7 +17,7 @@
 
 			$this->data = [];
 
-			foreach (database::schema(DB_PREFIX .'campaigns') as $field) {
+			foreach (database::schema('campaigns') as $field) {
 				$this->data[$field['Field']] = database::create_variable($field);
 			}
 
@@ -87,7 +87,6 @@
 			if (!$this->data['id']) {
 
 				database::insert('campaigns', [
-					'id' => (int)$this->data['id'],
 					'created_at' => $this->data['created_at'] = date('Y-m-d H:i:s'),
 				]);
 

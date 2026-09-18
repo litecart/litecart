@@ -801,7 +801,7 @@
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_email_address', 'Email Address'); ?></div>
-										<?php echo f::form_input_email('shipping_address[email]', true, ['required' => '']); ?>
+										<?php echo f::form_input_email('shipping_address[email]', true, ['required' => true]); ?>
 									</label>
 								</div>
 							</div>
@@ -1258,7 +1258,7 @@
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_tax_rate', 'Tax Rate'); ?></div>
 							<div class="input-group">
-								<?php echo f::form_input_decimal('tax_rate', true, 2, ['readonly' => '']); ?>
+								<?php echo f::form_input_decimal('tax_rate', true, 2, ['readonly' => true]); ?>
 								<span class="input-group-text">%</span>
 							</div>
 						</label>
@@ -1267,7 +1267,7 @@
 					<div class="col-md-4">
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_tax', 'Tax'); ?></div>
-							<?php echo f::form_input_money('tax', $_POST['currency_code'], true, ['readonly' => '']); ?>
+							<?php echo f::form_input_money('tax', $_POST['currency_code'], true, ['readonly' => trueueue]); ?>
 						</label>
 					</div>
 				</div>
@@ -1412,7 +1412,7 @@
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_tax_rate', 'Tax Rate'); ?></div>
 							<div class="input-group">
-								<?php echo f::form_input_decimal('tax_rate', true, 2, ['readonly' => '']); ?>
+								<?php echo f::form_input_decimal('tax_rate', true, 2, ['readonly' => true]); ?>
 								<span class="input-group-text">%</span>
 							</div>
 						</label>
@@ -1421,7 +1421,7 @@
 					<div class="col-md-4">
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_tax', 'Tax'); ?></div>
-							<?php echo f::form_input_money('tax', $_POST['currency_code'], true, ['readonly' => '']); ?>
+							<?php echo f::form_input_money('tax', $_POST['currency_code'], true, ['readonly' => true]); ?>
 						</label>
 					</div>
 				</div>

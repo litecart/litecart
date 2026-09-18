@@ -142,7 +142,7 @@
 		}
 
 		public static function get_licenses() {
-return [];
+
 			try {
 
 				$result = self::_call('GET', '/licenses');

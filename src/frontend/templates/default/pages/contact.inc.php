@@ -15,36 +15,36 @@
 							<div class="col-md-6">
 								<label class="form-group">
 									<div class="form-label"><?php echo t('title_firstname', 'First Name'); ?></div>
-									<?php echo f::form_input_text('firstname', true, ['required' => '', 'autocomplete' => 'given-name']); ?>
+									<?php echo f::form_input_text('firstname', true, ['required' => true, 'autocomplete' => 'given-name']); ?>
 								</label>
 							</div>
 
 							<div class="col-md-6">
 								<label class="form-group">
 									<div class="form-label"><?php echo t('title_lastname', 'Last Name'); ?></div>
-									<?php echo f::form_input_text('lastname', true, ['required' => '', 'autocomplete' => 'family-name']); ?>
+									<?php echo f::form_input_text('lastname', true, ['required' => true, 'autocomplete' => 'family-name']); ?>
 								</label>
 							</div>
 						</div>
 
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_email_address', 'Email Address'); ?></div>
-							<?php echo f::form_input_email('email', true, ['required' => '', 'autocomplete' => 'email']); ?>
+							<?php echo f::form_input_email('email', true, ['required' => true, 'autocomplete' => 'email']); ?>
 						</label>
 
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_subject', 'Subject'); ?></div>
-							<?php echo f::form_input_text('subject', true, ['required' => '', 'autocomplete' => 'off']); ?>
+							<?php echo f::form_input_text('subject', true, ['required' => true, 'autocomplete' => 'off']); ?>
 						</label>
 
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_message', 'Message'); ?></div>
-							<?php echo f::form_textarea('message', true, ['required' => '', 'autocomplete' => 'off', 'style' => 'height: 250px;']); ?>
+							<?php echo f::form_textarea('message', true, ['required' => true, 'autocomplete' => 'off', 'style' => 'height: 250px;']); ?>
 						</label>
 
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_attachments', 'Attachments'); ?></div>
-							<?php echo f::form_input_file('attachments[]', ['multiple' => '', 'accept' => '.jpg,.jpeg,.png,.gif,.webp,.avif,.txt,.doc,.docx,.pdf,.mp4']); ?>
+							<?php echo f::form_input_file('attachments[]', ['multiple' => true, 'accept' => '.jpg,.jpeg,.png,.gif,.webp,.avif,.txt,.doc,.docx,.pdf,.mp4']); ?>
 						</label>
 
 						<?php if (settings::get('captcha')) { ?>

@@ -4,7 +4,7 @@ waitFor('jQuery', ($) => {
 	$(':input[required]').closest('.form-group').addClass('required');
 
 	// Dropdown Select
-	$('.dropdown .form-select + .dropdown-menu :input').on('input', function(e) {
+	function updateDropdownLabel() {
 
 		const $dropdown = $(this).closest('.dropdown');
 
@@ -33,8 +33,13 @@ waitFor('jQuery', ($) => {
 
 		$dropdown.find('.form-select').text( values.join(', ') );
 		$dropdown.removeClass('open');
+	}
 
-	}).trigger('input');
+	$('.dropdown .form-select + .dropdown-menu :input').on('input', updateDropdownLabel);
+
+	// Initialize dropdown labels on page load by calling the handler directly,
+	// without dispatching input events (which would trigger other listeners).
+	$('.dropdown .form-select + .dropdown-menu :input').each(updateDropdownLabel);
 
 	// Input Number Decimals
 	$('body').on('change', 'input[type="number"][data-decimals]', function() {

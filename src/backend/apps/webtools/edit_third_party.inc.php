@@ -115,7 +115,7 @@
 				<div class="col-md-6">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
-						<?php echo f::form_input_text('name', true, ['required' => '']); ?>
+						<?php echo f::form_input_text('name', true, ['required' => true]); ?>
 					</label>
 				</div>
 			</div>

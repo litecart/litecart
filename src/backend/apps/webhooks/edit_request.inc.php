@@ -126,7 +126,7 @@
 				<div class="col-md-9">
 					<label class="form-group">
 						<div><?php echo t('title_url', 'URL'); ?></div>
-						<?php echo f::form_input_url('url', true, ['required' => '']); ?>
+						<?php echo f::form_input_url('url', true, ['required' => true]); ?>
 					</label>
 				</div>
 			</div>

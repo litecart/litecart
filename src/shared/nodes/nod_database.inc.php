@@ -400,6 +400,10 @@
 
 		public static function schema(string $table): array {
 
+			if (!preg_match('#^'. preg_quote(DB_PREFIX, '#'). '#', $table)) {
+				$table = DB_PREFIX . $table;
+			}
+
 			if (isset(self::$_schemas[$table])) {
 				return self::$_schemas[$table];
 			}

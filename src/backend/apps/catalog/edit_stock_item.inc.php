@@ -353,7 +353,7 @@
 						<div class="col-md-2">
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_downloads', 'Downloads'); ?></div>
-								<?php echo f::form_input_number('downloads', true, ['readonly' => '']); ?>
+								<?php echo f::form_input_number('downloads', true, ['readonly' => true]); ?>
 							</label>
 						</div>
 					</div>

@@ -5,7 +5,7 @@ waitFor('jQuery', ($) => {
 		$(this).closest('.dropdown').toggleClass('open');
 	});
 
-	$(document).on('click', '.dropdown-item a,button,input[type="radio"]', function(e) {
+	$(document).on('click', '.dropdown-item a, .dropdown-item button, .dropdown-item input[type="radio"]', function(e) {
 		$(this).closest('.dropdown').removeClass('open');
 	});
 

@@ -441,14 +441,14 @@ textarea.warning {
 
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_id', 'ID'); ?></div>
-								<?php echo f::form_input_text('id', true, ['required' => '', 'placeholder' => 'my_awesome_addon', 'pattern' => '^[0-9a-zA-Z_\-]+$']); ?>
+								<?php echo f::form_input_text('id', true, ['required' => true, 'placeholder' => 'my_awesome_addon', 'pattern' => '^[0-9a-zA-Z_\-]+$']); ?>
 							</label>
 
 							<div class="grid">
 								<div class="col-md-8">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
-										<?php echo f::form_input_text('name', true, ['required' => '', 'placeholder' => 'My Awesome Add-on']); ?>
+										<?php echo f::form_input_text('name', true, ['required' => true, 'placeholder' => 'My Awesome Add-on']); ?>
 									</label>
 								</div>
 
@@ -518,7 +518,7 @@ textarea.warning {
 
 									<?php if (!empty($addon->data['id'])) { ?>
 									<div class="upload-bar">
-										<?php echo f::form_input_file('files[]', ['multiple' => '']); ?>
+										<?php echo f::form_input_file('files[]', ['multiple' => true]); ?>
 										<?php echo f::form_button('upload', ['true', t('title_upload', 'Upload')]); ?>
 									</div>
 									<?php } ?>
@@ -675,7 +675,7 @@ textarea.warning {
 										<div class="form-label"><?php echo t('title_key', 'Key'); ?></div>
 										<div class="input-group">
 											<span class="input-group-text" style="font-family: monospace;">{alias:</span>
-											<?php echo f::form_input_text('aliases['.$key.'][key]', true, ['required' => '']); ?>
+											<?php echo f::form_input_text('aliases['.$key.'][key]', true, ['required' => true]); ?>
 											<span class="input-group-text" style="font-family: monospace;">}</span>
 										</div>
 									</label>
@@ -728,7 +728,7 @@ textarea.warning {
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_title', 'Title'); ?></div>
-										<?php echo f::form_input_text('settings['.$key.'][title]', true, ['required' => '']); ?>
+										<?php echo f::form_input_text('settings['.$key.'][title]', true, ['required' => true]); ?>
 									</label>
 								</div>
 
@@ -741,14 +741,14 @@ textarea.warning {
 
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_description', 'Description'); ?></div>
-								<?php echo f::form_input_text('settings['.$key.'][description]', true, ['required' => '']); ?>
+								<?php echo f::form_input_text('settings['.$key.'][description]', true, ['required' => true]); ?>
 							</label>
 
 							<div class="grid">
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_function', 'Function'); ?></div>
-										<?php echo f::form_input_text('settings['.$key.'][function]', true, ['required' => '', 'placeholder' => 'text()']); ?>
+										<?php echo f::form_input_text('settings['.$key.'][function]', true, ['required' => true, 'placeholder' => 'text()']); ?>
 									</label>
 								</div>
 
@@ -904,7 +904,7 @@ textarea.warning {
 
 		<label class="form-group">
 			<h4><?php echo t('title_find', 'Find'); ?></h4>
-			<?php echo f::form_input_code('files[current_tab_index][operations][new_operation_index][find][content]', '', ['class' => 'form-code', 'required' => '']); ?>
+			<?php echo f::form_input_code('files[current_tab_index][operations][new_operation_index][find][content]', '', ['class' => 'form-code', 'required' => true]); ?>
 		</label>
 
 		<div class="grid" style="font-size: .8em;">
@@ -1453,7 +1453,7 @@ textarea.warning {
 			'				<div class="form-label"><?php echo t('title_key', 'Key'); ?></div>',
 			'				<div class="input-group">',
 			'					<span class="input-group-text" style="font-family: monospace;">{alias:</span>',
-			'					<?php echo f::form_input_text('aliases[__index__][key]', '', ['required' => '']); ?>',
+			'					<?php echo f::form_input_text('aliases[__index__][key]', '', ['required' => true]); ?>',
 			'					<span class="input-group-text" style="font-family: monospace;">}</span>',
 			'				</div>',
 			'			</label>',
@@ -1462,7 +1462,7 @@ textarea.warning {
 			'		<div class="col-md-6">',
 			'			<label class="form-group">',
 			'				<div class="form-label"><?php echo f::escape_js(t('title_value', 'Value')); ?></div>',
-			'				<?php echo f::escape_js(f::form_input_text('aliases[__index__][value]', '', ['required' => ''])); ?>',
+			'				<?php echo f::escape_js(f::form_input_text('aliases[__index__][value]', '', ['required' => true])); ?>',
 			'			</label>',
 			'		</div>',
 			'',
@@ -1514,7 +1514,7 @@ textarea.warning {
 			'				<div class="form-label"><?php echo t('title_key', 'Key'); ?></div>',
 			'				<div class="input-group">',
 			'					<span class="input-group-text" style="font-family: monospace;">{setting:</span>',
-			'					<?php echo f::form_input_text('settings[__index__][key]', '', ['required' => '']); ?>',
+			'					<?php echo f::form_input_text('settings[__index__][key]', '', ['required' => true]); ?>',
 			'					<span class="input-group-text" style="font-family: monospace;">}</span>',
 			'				</div>',
 			'			</label>',
@@ -1523,7 +1523,7 @@ textarea.warning {
 			'		<div class="col-md-6">',
 			'			<label class="form-group">',
 			'				<div class="form-label"><?php echo f::escape_js(t('title_title', 'Title')); ?></div>',
-			'				<?php echo f::escape_js(f::form_input_text('settings[new_setting_index][title]', '', ['required' => ''])); ?>',
+			'				<?php echo f::escape_js(f::form_input_text('settings[new_setting_index][title]', '', ['required' => true])); ?>',
 			'			</label>',
 			'		</div>',
 			'',
@@ -1536,14 +1536,14 @@ textarea.warning {
 			'',
 			'	<label class="form-group">',
 			'		<div class="form-label"><?php echo f::escape_js(t('title_description', 'Description')); ?></div>',
-			'		<?php echo f::escape_js(f::form_input_text('settings[__index__][description]', '', ['required' => ''])); ?>',
+			'		<?php echo f::escape_js(f::form_input_text('settings[__index__][description]', '', ['required' => true])); ?>',
 			'	</label>',
 			'',
 			'	<div class="grid">',
 			'		<div class="col-md-6">',
 			'			<label class="form-group">',
 			'				<div class="form-label"><?php echo f::escape_js(t('title_function', 'Function')); ?></div>',
-			'				<?php echo f::escape_js(f::form_input_text('settings[__index__][function]', '', ['required' => ''])); ?>',
+			'				<?php echo f::escape_js(f::form_input_text('settings[__index__][function]', '', ['required' => true])); ?>',
 			'			</label>',
 			'		</div>',
 			'',

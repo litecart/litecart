@@ -219,7 +219,7 @@
 	<a class="tab-item active" href="#tab-details" data-toggle="tab">
 		<?php echo t('title_details', 'Details'); ?>
 	</a>
-	
+
 	<?php if (!empty($customer->data['id'])) { ?>
 	<a class="tab-item" href="#tab-event-logs" data-toggle="tab">
 		<?php echo t('title_event_logs', 'Event Logs'); ?>
@@ -295,7 +295,7 @@
 										<?php echo f::form_checkbox('newsletter', ['1', t('title_subscribed', 'Subscribed')], true); ?>
 									</label>
 								</div>
-								
+
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_language', 'Language'); ?></div>
@@ -325,14 +325,14 @@
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_last_ip_address', 'Last IP Address'); ?></div>
-										<?php echo f::form_input_text('last_ip_address', true, ['readonly' => '']); ?>
+										<?php echo f::form_input_text('last_ip_address', true, ['readonly' => true]); ?>
 									</label>
 								</div>
 
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?php echo t('title_last_hostname', 'Last Hostname'); ?></div>
-										<?php echo f::form_input_text('last_hostname', true, ['readonly' => '']); ?>
+										<?php echo f::form_input_text('last_hostname', true, ['readonly' => true]); ?>
 									</label>
 								</div>
 							</div>
@@ -393,7 +393,7 @@
 									</label>
 								</div>
 							</div>
-	
+
 							<div class="grid">
 								<div class="col-md-6">
 									<label class="form-group">
@@ -441,7 +441,7 @@
 									</label>
 								</div>
 							</div>
-							
+
 							<div class="grid">
 								<div class="col-sm-6">
 									<label class="form-group">

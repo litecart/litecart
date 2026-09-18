@@ -4,7 +4,7 @@
 	font-family: "LiteCore";
 	font-style: normal;
 	font-weight: 400;
-	src: url("../fonts/fonticons.woff2?1787955612") format("woff2");
+	src: url("../fonts/fonticons.woff2?1789717743") format("woff2");
 }
 
 [class^="icon-"], [class*=" icon-"] {
@@ -193,6 +193,8 @@
 .icon-ellipsis-v:before { content: "\e0a6"; }
 .icon-ellipsis-horizontal:before { content: "\e0a7"; }
 .icon-location:before { content: "\e0a8"; }
+.icon-publish:before { content: "\e0a9"; }
+.icon-crop:before { content: "\e0aa"; }
 .icon-download:before { content: "\e0ac"; }
 .icon-display:before { content: "\e0ad"; }
 .icon-dictionary:before { content: "\e0ae"; }

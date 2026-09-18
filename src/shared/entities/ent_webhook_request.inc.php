@@ -18,7 +18,7 @@
 
 			$this->data = [];
 
-			foreach (database::schema(DB_PREFIX .'webhook_requests') as $field) {
+			foreach (database::schema('webhook_requests') as $field) {
 				$this->data[$field['Field']] = database::create_variable($field['Type']);
 			}
 

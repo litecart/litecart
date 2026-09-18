@@ -136,7 +136,7 @@
 				<div class="col-sm-6">
 					<label class="form-group">
 						<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
-						<?php echo f::form_input_text('name', true, ['required' => '']); ?>
+						<?php echo f::form_input_text('name', true, ['required' => true]); ?>
 					</label>
 				</div>
 			</div>
@@ -164,7 +164,7 @@
 
 			<label class="form-group">
 				<div class="form-label"><?php echo t('title_html_content', 'HTML Content'); ?></div>
-				<?php echo f::form_input_code('content', true, ['required' => '', 'style' => 'height: 480px;']); ?>
+				<?php echo f::form_input_code('content', true, ['required' => true, 'style' => 'height: 480px;']); ?>
 			</label>
 
 			<div class="card-action">

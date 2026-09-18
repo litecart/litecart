@@ -81,8 +81,10 @@
 		$html = '<form'. (($name) ? ' name="'. f::escape_attr($name) .'"' : '') .' method="'. ((strtolower($method) == 'get') ? 'get' : 'post') .'" enctype="'. (($multipart == true) ? 'multipart/form-data' : 'application/x-www-form-urlencoded') .'" accept-charset="'. mb_http_output() .'"'. (($action) ? ' action="'. f::escape_attr($action) .'"' : '') . ($attributes ? ' '. $attributes : '') .'>';
 
 		// Auto-inject CSRF token for POST forms
-		if (strtolower($method) !== 'get' && class_exists('session', false)) {
-			$html .= f::draw_element('input', ['type' => 'hidden', 'name' => 'csrf_token', 'value' => security::csrf_token()]);
+		if (settings::get('csrf_protection')) {
+			if (isset($method) &&in_array(strtoupper($method), ['POST', 'PATCH', 'PUT', 'DELETE'])) {
+				$html .= f::draw_element('input', ['type' => 'hidden', 'name' => 'csrf_token', 'value' => security::csrf_token()]);
+			}
 		}
 
 		return $html;
@@ -146,24 +148,24 @@
 	function form_button_predefined(string $name, array|string $attributes=[]): string {
 
 		$button = match($name) {
-			'cancel' => f::form_button('cancel', t('title_cancel', 'Cancel'), 'button', ['onclick' => 'history.go(-1);'] + $attributes, 'cancel'),
-			'delete' => f::form_button('delete', t('title_delete', 'Delete'), 'submit', ['formnovalidate' => true, 'class' => 'btn btn-danger', 'onclick' => 'if (!confirm("'. t('text_are_you_sure', 'Are you sure?') .'")) return false;'] + $attributes, 'delete'),
+			'cancel' => f::form_button('cancel', t('title_cancel', 'Cancel'), 'button', ['onclick' => 'history.go(-1);', ...$attributes], 'cancel'),
+			'delete' => f::form_button('delete', t('title_delete', 'Delete'), 'submit', ['formnovalidate' => true, 'class' => 'btn btn-danger', 'onclick' => 'if (!confirm("'. t('text_are_you_sure', 'Are you sure?') .'")) return false;', ...$attributes], 'delete'),
 			'enable' => f::form_button('enable', t('title_enable', 'Enable'), 'submit', $attributes, 'on'),
 			'disable' => f::form_button('disable', t('title_disable', 'Disable'), 'submit', $attributes, 'off'),
-			'move-up' => f::form_button('move_up', t('title_move_up', 'Move Up'), 'button', ['class' => 'btn btn-default'] + $attributes, 'move-up'),
-			'move-up-sm' => f::form_button('move_up', '', 'button', ['title' => t('title_move_up', 'Move Up'), 'class' => 'btn btn-default btn-sm'] + $attributes, 'move-up'),
-			'move-down' => f::form_button('move_down', t('title_move_up', 'Move Up'), 'button', ['class' => 'btn btn-default'] + $attributes, 'move-down'),
-			'move-down-sm' => f::form_button('move_down', '', 'button', ['title' => t('title_move_down', 'Move Down'), 'class' => 'btn btn-default btn-sm'] + $attributes, 'move-down'),
-			'remove' => f::form_button('remove', t('title_remove', 'Remove'), 'button', ['class' => 'btn btn-default'] + $attributes, 'remove'),
-			'remove-sm' => f::form_button('remove', '', 'button', ['title' => t('title_remove', 'Remove'), 'class' => 'btn btn-default btn-sm'] + $attributes, 'remove'),
-			'save' => f::form_button('save', t('title_save', 'Save'), 'submit', ['class' => 'btn btn-success'] + $attributes, 'save'),
+			'move-up' => f::form_button('move_up', t('title_move_up', 'Move Up'), 'button', ['class' => 'btn btn-default', ...$attributes], 'move-up'),
+			'move-up-sm' => f::form_button('move_up', '', 'button', ['title' => t('title_move_up', 'Move Up'), 'class' => 'btn btn-default btn-sm', ...$attributes], 'move-up'),
+			'move-down' => f::form_button('move_down', t('title_move_up', 'Move Up'), 'button', ['class' => 'btn btn-default', ...$attributes], 'move-down'),
+			'move-down-sm' => f::form_button('move_down', '', 'button', ['title' => t('title_move_down', 'Move Down'), 'class' => 'btn btn-default btn-sm', ...$attributes], 'move-down'),
+			'remove' => f::form_button('remove', t('title_remove', 'Remove'), 'button', ['class' => 'btn btn-default', ...$attributes], 'remove'),
+			'remove-sm' => f::form_button('remove', '', 'button', ['title' => t('title_remove', 'Remove'), 'class' => 'btn btn-default btn-sm', ...$attributes], 'remove'),
+			'save' => f::form_button('save', t('title_save', 'Save'), 'submit', ['class' => 'btn btn-success', ...$attributes], 'save'),
 			'quicksave' => implode(PHP_EOL, [
 				'<div class="btn-group">',
-				'	'. f::form_button('quicksave', ['true', ''], 'submit', ['class' => 'btn btn-success btn-icon', 'title' => t('title_quicksave', 'Quicksave'), 'style' => 'padding-left: .75em; padding-right: .75em;'] + $attributes, 'save'),
-				'	'. f::form_button('save', t('title_save', 'Save'), 'submit', ['class' => 'btn btn-success', 'style' => 'padding-left: .75em;'] + $attributes),
+				'	'. f::form_button('quicksave', ['true', ''], 'submit', ['class' => 'btn btn-success btn-icon', 'title' => t('title_quicksave', 'Quicksave'), 'style' => 'padding-left: .75em; padding-right: .75em;', ...$attributes], 'save'),
+				'	'. f::form_button('save', t('title_save', 'Save'), 'submit', ['class' => 'btn btn-success', 'style' => 'padding-left: .75em;', ...$attributes]),
 				'</div>',
 			]),
-			'send' => f::form_button('send', t('title_send', 'Send'), 'submit', ['class' => 'btn btn-success'] + $attributes, 'send'),
+			'send' => f::form_button('send', t('title_send', 'Send'), 'submit', ['class' => 'btn btn-success', ...$attributes], 'send'),
 		};
 
 		if (!$button) {
@@ -188,7 +190,7 @@
 		$button = match($name) {
 			'create' => form_button_link($url, t('title_create', 'Create'), $attributes, 'add'),
 			'edit' => form_button_link($url, t('title_edit', 'Edit'), $attributes, 'edit'),
-			'edit-sm' => form_button_link($url, '', ['title' => t('title_edit', 'Edit')] + $attributes, 'edit'),
+			'edit-sm' => form_button_link($url, '', ['title' => t('title_edit', 'Edit'), ...$attributes], 'edit'),
 		};
 
 		if (!$button) {
@@ -1975,7 +1977,7 @@
 		});
 
 		if (!$options) {
-			return form_select($name, $options, $input, ['disabled' => '', ...$attributes]);
+			return form_select($name, $options, $input, ['disabled' => true, ...$attributes]);
 		}
 
 		if (preg_match('#\[\]$#', $name)) {

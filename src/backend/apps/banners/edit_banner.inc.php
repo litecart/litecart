@@ -201,7 +201,7 @@ table th:last-child {
 
 		let $output = $([
 			'<tr>',
-			'  <td><?php echo f::form_input_text('keys[__index__]', '__index__', ['required' => '', 'pattern' => '[0-9A-Za-z_-]+', 'placeholder' => 'keyname']); ?></td>',
+			'  <td><?php echo f::form_input_text('keys[__index__]', '__index__', ['required' => true, 'pattern' => '[0-9A-Za-z_-]+', 'placeholder' => 'keyname']); ?></td>',
 			<?php foreach (language::$languages as $language) { ?>
 			'  <td><?php echo f::form_input_text('values['. $language['code'] .'][__index__]', true); ?></td>',
 			<?php } ?>

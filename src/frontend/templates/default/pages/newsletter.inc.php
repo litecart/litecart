@@ -33,7 +33,7 @@
 
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_email_address', 'Email Address'); ?></div>
-							<?php echo f::form_input_email('email', true, ['required' => '', 'autocomplete' => 'email']); ?>
+							<?php echo f::form_input_email('email', true, ['required' => true, 'autocomplete' => 'email']); ?>
 						</label>
 
 						<div class="grid">
@@ -65,7 +65,7 @@
 
 						<?php if ($consent) { ?>
 						<div class="form-group consent">
-							<?php echo f::form_checkbox('terms_agreed', ['1', $consent], true, ['required' => '']) .'</label>'; ?>
+							<?php echo f::form_checkbox('terms_agreed', ['1', $consent], true, ['required' => true]) .'</label>'; ?>
 						</div>
 						<?php } ?>
 
@@ -85,7 +85,7 @@
 
 						<label class="form-group">
 							<div class="form-label"><?php echo t('title_email_address', 'Email Address'); ?></div>
-							<?php echo f::form_input_email('email', true, ['required' => '', 'autocomplete' => 'email']); ?>
+							<?php echo f::form_input_email('email', true, ['required' => true, 'autocomplete' => 'email']); ?>
 						</label>
 
 						<label class="form-group">

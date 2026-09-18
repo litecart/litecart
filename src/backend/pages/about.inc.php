@@ -1,5 +1,7 @@
 <?php
 
+	administrator::require_login();
+
 	breadcrumbs::add(t('title_about', 'About'), document::link());
 
 	if (!isset($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
@@ -367,7 +369,7 @@
 					</tr>
 					<tr>
 						<th>CPU Usage</th>
-						<td><?php echo !empty($machine['cpu_usage']) ? '<meter class="memory-usage" value="'. (float)$machine['cpu_usage'] .'" max="100" min="0" high="30" low="10" optimum="5"></meter>' : '<em>n/a</em>'; ?></td>
+						<td><?php echo !empty($machine['cpu_usage']) ? '<meter class="cpu-usage" value="'. (float)$machine['cpu_usage'] .'" max="100" min="0" high="30" low="10" optimum="5"></meter>' : '<em>n/a</em>'; ?></td>
 					</tr>
 					<tr>
 						<th>Memory Usage</th>
@@ -487,7 +489,7 @@
 			</div>
 
 			<div class="card-action">
-				<?php echo f::form_input_search('filter', true, 'placeholder="'. t('title_filter', 'Filter') .'"'); ?>
+				<?php echo f::form_input_search('filter', true, ['placeholder' => t('title_filter', 'Filter')]); ?>
 			</div>
 
 			<table id="php-config" class="table data-table">

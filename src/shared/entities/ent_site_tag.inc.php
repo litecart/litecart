@@ -17,7 +17,7 @@
 
 			$this->data = [];
 
-			foreach (database::schema(DB_PREFIX .'site_tags') as $field) {
+			foreach (database::schema('site_tags') as $field) {
 				$this->data[$field['Field']] = database::create_variable($field['Type']);
 			}
 

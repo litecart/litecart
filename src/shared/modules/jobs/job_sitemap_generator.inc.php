@@ -13,23 +13,8 @@
 		public function process(string $force, string $last_run): void {
 
 			if (!$force) {
-
-				if (empty($this->settings['status'])) return;
-
-				switch ($this->settings['frequency']) {
-
-					case 'Daily':
-						if (date('Ymd', strtotime($last_run)) == date('Ymd')) return;
-						break;
-
-					case 'Weekly':
-						if (date('W', strtotime($last_run)) == date('W')) return;
-						break;
-
-					case 'Monthly':
-						if (date('Ym', strtotime($last_run)) == date('Ym')) return;
-						break;
-				}
+				if (!$this->settings['status']) return;
+				if (strtotime($last_run) > f::datetime_last_by_interval($this->settings['frequency'], $last_run)) return;
 			}
 
 			if (!is_dir($dir = 'storage://cache/sitemap/')) {

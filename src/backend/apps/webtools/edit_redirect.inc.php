@@ -174,7 +174,7 @@
 					<div class="col-md-8">
 						<div class="input-group">
 							<?php echo f::form_select('regex_helper[domain][operator]', $domain_options, true, ['style' => 'width: auto;']); ?>
-							<?php echo f::form_input_text('regex_helper[domain][criteria]', true, ['required' => '', 'placeholder' => 'Example: domain.com']); ?>
+							<?php echo f::form_input_text('regex_helper[domain][criteria]', true, ['required' => true, 'placeholder' => 'Example: domain.com']); ?>
 						</div>
 					</div>
 				</div>
@@ -186,7 +186,7 @@
 					<div class="col-md-8">
 						<div class="input-group">
 							<?php echo f::form_select('regex_helper[path][operator]', $path_options, true, ['style' => 'width: auto;']); ?>
-							<?php echo f::form_input_text('regex_helper[path][criteria]', true, ['required' => '', 'placeholder' => 'Example: /path/to/document']); ?>
+							<?php echo f::form_input_text('regex_helper[path][criteria]', true, ['required' => true, 'placeholder' => 'Example: /path/to/document']); ?>
 						</div>
 					</div>
 				</div>
@@ -198,7 +198,7 @@
 					<div class="col-md-8">
 						<div class="input-group">
 							<?php echo f::form_select('regex_helper[query][operator]', $query_options, true, ['style' => 'width: auto;']); ?>
-							<?php echo f::form_input_text('regex_helper[query][criteria]', true, ['required' => '', 'placeholder' => 'Example: foo=bar', 'disabled' => '']); ?>
+							<?php echo f::form_input_text('regex_helper[query][criteria]', true, ['required' => true, 'placeholder' => 'Example: foo=bar', 'disabled' => true]); ?>
 						</div>
 					</div>
 				</div>
@@ -207,7 +207,7 @@
 
 			<label class="form-group">
 				<div class="form-label"><?php echo t('title_url_regex_pattern', 'URL Regex Pattern'); ?></div>
-				<?php echo f::form_input_text('pattern', true, ['list' => 'sources', 'required' => '']); ?>
+				<?php echo f::form_input_text('pattern', true, ['list' => 'sources', 'required' => true]); ?>
 				<datalist id="sources">
 					<option value="^https://<?php echo strtr($hostname, ['.' => '\\.']); ?>/path/to/file(\?|$)">Exact match of path with optional query at the end</option>
 					<option value="^https://<?php echo strtr($hostname, ['.' => '\\.']); ?>/path/to/file\?foo=bar$">Exact match of path and query on specific domain and protocol</option>
@@ -226,8 +226,8 @@
 			<label class="form-group">
 				<div class="form-label"><?php echo t('title_destination', 'Destination'); ?></div>
 				<div class="input-group">
-					<?php echo f::form_input_text('destination', true, ['list' => 'destinations', 'required' => '']); ?>
-					<?php echo f::form_select('http_response_code', $type_options, true, ['required' => '']); ?>
+					<?php echo f::form_input_text('destination', true, ['list' => 'destinations', 'required' => true]); ?>
+					<?php echo f::form_select('http_response_code', $type_options, true, ['required' => true]); ?>
 				</div>
 				<datalist id="destinations">
 					<option value="https://<?php echo $hostname; ?>/path/to/file">Exact URL</option>

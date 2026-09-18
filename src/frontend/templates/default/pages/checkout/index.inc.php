@@ -286,7 +286,7 @@ h2 {
 
 								<?php if (!$error && $consent) { ?>
 								<div class="form-group consent">
-									<?php echo f::form_checkbox('terms_agreed', ['1', $consent], true, ['required' => '']); ?>
+									<?php echo f::form_checkbox('terms_agreed', ['1', $consent], true, ['required' => true]); ?>
 								</div>
 								<?php } ?>
 

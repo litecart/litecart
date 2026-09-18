@@ -19,7 +19,7 @@
 
 			$this->data = [];
 
-			foreach (database::schema(DB_PREFIX .'reviews') as $field) {
+			foreach (database::schema('reviews') as $field) {
 				$this->data[$field['Field']] = database::create_variable($field);
 			}
 

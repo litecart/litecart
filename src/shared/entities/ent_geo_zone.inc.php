@@ -17,7 +17,7 @@
 
 			$this->data = [];
 
-			foreach (database::schema(DB_PREFIX .'geo_zones') as $field) {
+			foreach (database::schema('geo_zones') as $field) {
 				$this->data[$field['Field']] = database::create_variable($field);
 			}
 

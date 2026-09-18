@@ -85,37 +85,40 @@
 			}
 
 			// CSRF protection for state-changing requests
-			if ($_SERVER['SERVER_SOFTWARE'] != 'CLI' && !in_array($_SERVER['REQUEST_METHOD'], ['GET', 'HEAD', 'OPTIONS'])) {
+			if (settings::get('csrf_protection') && $_SERVER['SERVER_SOFTWARE'] != 'CLI') {
+				if (isset($_SERVER['REQUEST_METHOD']) && in_array($_SERVER['REQUEST_METHOD'], ['POST', 'PATCH', 'PUT', 'DELETE'])) {
 
-				$skip_csrf = false;
+					$skip_csrf = false;
 
-				foreach ([
-					'#^ext/#', // 3rd party stuff
-					'#^ajax/event(\?|$)#', // As beacons don't support X-CSRF-Token
-					'#/mcp(\?|$)#',
-					'#^order_process(\?|$)#',
-					'#(webhook|callback)#i',
-				] as $pattern) {
-					if (preg_match($pattern, route::$request)) {
-						$skip_csrf = true;
-						break;
+					foreach ([
+						'#^ext/#', // 3rd party stuff
+						'#^ajax/event(\?|$)#', // As beacons don't support X-CSRF-Token
+						'#/mcp(\?|$)#',
+						'#^order_process(\?|$)#',
+						'#(webhook|callback)#i',
+					] as $pattern) {
+						if (preg_match($pattern, route::$request)) {
+							$skip_csrf = true;
+							break;
+						}
 					}
-				}
 
-				if (!$skip_csrf) {
-					$submitted_token = $_POST['csrf_token'] ?? $_SERVER['HTTP_X_CSRF_TOKEN'] ?? '';
-					if (!hash_equals(security::csrf_token(), $submitted_token)) {
-						http_response_code(403);
-						if (is_ajax_request()) {
-							header('Content-Type: application/json');
-							echo f::format_json(['error' => 'CSRF token mismatch. Please reload the page and try again.']);
-							exit;
-						} else {
+					if (!$skip_csrf) {
+						$submitted_token = $_POST['csrf_token'] ?? $_SERVER['HTTP_X_CSRF_TOKEN'] ?? '';
+						if (!hash_equals(security::csrf_token(), $submitted_token)) {
 							http_response_code(403);
-							notices::add('errors', t('error_csrf_token_mismatch', 'CSRF token mismatch. Please go back and try again.'));
-							include 'app://frontend/pages/error_document.inc.php';
-							include 'app://shared/app_footer.inc.php';
-							exit;
+							$error_message = t('error_csrf_token_mismatch', 'CSRF token mismatch. Please go back and try again.');
+							if (is_ajax_request()) {
+								header('Content-Type: application/json');
+								echo f::format_json(['error' => $error_message]);
+								exit;
+							} else {
+								http_response_code(403);
+								notices::add('errors', $error_message);
+								include 'app://frontend/pages/error_document.inc.php';
+								include 'app://shared/app_footer.inc.php';
+								exit;
+							}
 						}
 					}
 				}

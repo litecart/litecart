@@ -113,7 +113,7 @@
 
 			$administrator = [];
 
-			foreach (database::schema(DB_PREFIX .'administrators') as $field) {
+			foreach (database::schema('administrators') as $field) {
 				$administrator[$field['Field']] = database::create_variable($field);
 			}
 

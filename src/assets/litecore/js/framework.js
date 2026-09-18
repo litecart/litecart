@@ -1,9 +1,9 @@
 /*!
-	LiteCart v3.0.0 - Superfast, lightweight e-commerce platform built built with for simplicity.
-	Link: https://www.litecart.net/
-	License: CC-BY-ND-4.0
-	Author: T. Almroth, LiteCart AB
-*/
+ * LiteCart.net v3.0.0 - Official website
+ * @link https://www.litecart.net/
+ * @license UNLICENSED
+ * @author T. Almroth
+ */
 
 /* Minimal waitFor() implementation
  * Calls callback when objectName is defined in the global scope
@@ -412,7 +412,7 @@ waitFor('jQuery', ($) => {
 		$(this).closest('.dropdown').toggleClass('open');
 	});
 
-	$(document).on('click', '.dropdown-item a,button,input[type="radio"]', function(e) {
+	$(document).on('click', '.dropdown-item a, .dropdown-item button, .dropdown-item input[type="radio"]', function(e) {
 		$(this).closest('.dropdown').removeClass('open');
 	});
 
@@ -449,7 +449,7 @@ waitFor('jQuery', ($) => {
 	$(':input[required]').closest('.form-group').addClass('required');
 
 	// Dropdown Select
-	$('.dropdown .form-select + .dropdown-menu :input').on('input', function(e) {
+	function updateDropdownLabel() {
 
 		const $dropdown = $(this).closest('.dropdown');
 
@@ -478,8 +478,13 @@ waitFor('jQuery', ($) => {
 
 		$dropdown.find('.form-select').text( values.join(', ') );
 		$dropdown.removeClass('open');
+	}
 
-	}).trigger('input');
+	$('.dropdown .form-select + .dropdown-menu :input').on('input', updateDropdownLabel);
+
+	// Initialize dropdown labels on page load by calling the handler directly,
+	// without dispatching input events (which would trigger other listeners).
+	$('.dropdown .form-select + .dropdown-menu :input').each(updateDropdownLabel);
 
 	// Input Number Decimals
 	$('body').on('change', 'input[type="number"][data-decimals]', function() {

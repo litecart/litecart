@@ -140,7 +140,7 @@
 
 				// Load from add-ons
 				foreach (glob(FS_DIR_STORAGE . 'addons/*/vmod.xml', GLOB_BRACE) as $file) {
-					//self::load($file);
+					self::load($file);
 				}
 
 				// Load from vMods

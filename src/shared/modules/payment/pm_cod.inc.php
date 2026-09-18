@@ -36,7 +36,7 @@
 			];
 		}
 
-		public function transfer(array $order, string $success_url, string $cancel_url): array {
+		public function transfer(ent_order $order, string $success_url, string $cancel_url): array {
 			return [
 				'action' => '', // Target URL
 				'method' => '', // GET, POST
@@ -44,7 +44,7 @@
 			];
 		}
 
-		public function verify(array $order): array {
+		public function verify(ent_order $order): array {
 			return [
 				'order_status_id' => $this->settings['order_status_id'],
 				'payment_transaction_id' => '',

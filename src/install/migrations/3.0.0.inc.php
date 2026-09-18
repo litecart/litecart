@@ -1634,24 +1634,3 @@
 		drop column `apps`,
 		drop column `widgets`;"
 	);
-
-	// Migrate translations to JSON
-	database::query(
-		"alter table `". DB_PREFIX ."translations`
-		add column `text` JSON NOT NULL DEFAULT '{}' COMMENT 'TYPE:JSON_TRANSLATION' AFTER `code`;"
-	);
-
-	database::query(
-		"select * from ". DB_PREFIX ."languages;"
-	)->each(function($language) {
-
-		database::query(
-			"update ". DB_PREFIX ."translations
-			set `text` = json_set(`text`, '$.". database::input($language['code']) ."', `text_". database::input($language['code']) ."`);"
-		);
-
-		database::query(
-			"alter table ". DB_PREFIX ."translations
-			drop column `text_". database::input($language['code']) ."`;"
-		);
-	});

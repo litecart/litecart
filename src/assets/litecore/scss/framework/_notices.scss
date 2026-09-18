@@ -13,8 +13,8 @@
 
 	.notice {
 		border-radius: var(--border-radius);
-		margin-bottom: 1rem;
-		padding: 1em 2em;
+		margin-bottom: 1.5em;
+		padding: .75em 1.5em;
 
 		.close {
 			float: inline-end;
@@ -26,7 +26,7 @@
 
 			&:hover {
 				text-decoration: none;
-				opacity: 0.4; // Added for better hover feedback
+				opacity: .4; // Added for hover feedback
 			}
 		}
 

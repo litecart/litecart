@@ -11,7 +11,7 @@
 			"select count(id) as total_visits, sum(pageviews) as total_pageviews, created_at, date_format(created_at, '%Y-%m-%d') as date
 			from ". DB_PREFIX ."visitors
 			where created_at >= '". date('Y-m-d H:i:s', strtotime('-30 days')) ."'
-				group by date
+			group by date
 			order by created_at asc;"
 		)->fetch_all(function($day){
 			return [

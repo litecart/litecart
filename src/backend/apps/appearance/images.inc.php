@@ -19,6 +19,14 @@
 		[
 			'id' => 'logotype',
 			'name' => t('title_logotype', 'Logotype'),
+			'file' => 'storage://images/logotype.svg',
+			'extension' => 'svg',
+			'mime' => 'image/svg+xml',
+			'max' => ['width' => 600, 'height' => 200],
+		],
+		[
+			'id' => 'logotype',
+			'name' => t('title_logotype', 'Logotype'),
 			'file' => 'storage://images/logotype.png',
 			'extension' => 'png',
 			'mime' => 'image/png',

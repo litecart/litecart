@@ -40,9 +40,10 @@
 				where username = '". database::input(strtolower($_POST['username'])) ."'
 				or email = '". database::input(strtolower($_POST['username'])) ."'
 				limit 1;"
-			)->fetch(function(&$administrator){
+			)->fetch(function($administrator){
 				$administrator['known_ips'] = f::string_split($administrator['known_ips']);
 				$administrator['known_fingerprints'] = f::string_split($administrator['known_fingerprints']);
+				return $administrator;
 			});
 
 			if (!$administrator) {
@@ -223,6 +224,10 @@
 			);
 
 			administrator::load($administrator['id']);
+
+			if (!administrator::check_login()) {
+				throw new Exception(t('error_administrator_session_binding_failed', 'Could not bind administrator to the session.'));
+			}
 
 			database::query(
 				"delete from ". DB_PREFIX ."rate_limiting
@@ -482,7 +487,7 @@ body {
 	filter: drop-shadow(0px 0 0 rgba(0,0,0,0)) drop-shadow(0 0 0 rgba(0,0,0,0));
 }
 .login-brand:hover img {
-	filter: drop-shadow(0px 5px 2px rgba(0,0,0,.15)) drop-shadow(0 1px 2px rgba(0,0,0,.025));
+	filter: drop-shadow(0px 2px 2px rgba(0,0,0,.15)) drop-shadow(0 1px 2px rgba(0,0,0,.025));
 }
 .login-brand .brand-fallback {
 	font-size: 1.1rem;
@@ -568,15 +573,12 @@ body {
 	}
 
 	$('form[name="login_form"]').submit(function(e) {
-		e.preventDefault();
-		let form = this;
-
 		$('#box-login').addClass('is-leaving');
-		$('#box-login').one('transitionend', function() {
+		setTimeout(function() {
 			$('.loader-wrapper').addClass('is-revealed');
-			$('.loader-wrapper').one('transitionend', function() {
+			setTimeout(function() {
 				form.submit();
-			});
-		});
+			}, 500);
+		}, 500);
 	});
 </script>

@@ -9,7 +9,7 @@
 
 			<label class="form-group">
 				<div class="form-label"><?php echo t('title_email_address', 'Email Address'); ?></div>
-				<?php echo f::form_input_email('email', true, ['required' => '', 'autocomplete' => 'email', 'placeholder' => t('title_email_address', 'Email Address')]); ?>
+				<?php echo f::form_input_email('email', true, ['required' => true, 'autocomplete' => 'email', 'placeholder' => t('title_email_address', 'Email Address')]); ?>
 			</label>
 
 			<label class="form-group">

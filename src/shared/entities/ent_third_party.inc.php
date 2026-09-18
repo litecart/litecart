@@ -17,7 +17,7 @@
 
 			$this->data = [];
 
-			foreach (database::schema(DB_PREFIX .'third_parties') as $field) {
+			foreach (database::schema('third_parties') as $field) {
 				$this->data[$field['Field']] = database::create_variable($field['Type']);
 			}
 

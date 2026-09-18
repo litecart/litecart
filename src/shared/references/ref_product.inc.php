@@ -428,6 +428,17 @@
 
 					$this->_data['quantity_available'] = null;
 
+					$this->_data['quantity_reserved'] = database::query(
+						"select sum(oi.quantity) as quantity_reserved
+						from ". DB_PREFIX ."orders_items oi
+						left join ". DB_PREFIX ."orders o on (o.id = oi.order_id)
+						where oi.product_id = '". database::input($this->_data['id']) ."'
+						and o.order_status_id in (
+							select id from ". DB_PREFIX ."order_statuses
+							where stock_action = 'reserve'
+						);"
+					)->fetch('quantity_reserved');
+
 					if (!$this->stock_options) {
 						break;
 					}
@@ -816,4 +827,3 @@
 			}
 		}
 	}
-
