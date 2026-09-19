@@ -97,29 +97,26 @@
 	}
 
 	$settings_group = database::query(
-		"select * from ". DB_PREFIX ."settings_groups
+		"select *,
+			coalesce(nullif(json_value(name, '$.". database::input(language::$selected['code']) ."'), ''), json_value(name, '$.en')) as name,
+			coalesce(nullif(json_value(description, '$.". database::input(language::$selected['code']) ."'), ''), json_value(description, '$.en')) as description
+		from ". DB_PREFIX ."settings_groups
 		where `key` = '". database::input(__DOC__) ."'
 		order by priority, `key`
 		limit 1;"
-	)->fetch(function(&$group){
-
-		// Decode JSON translations for title and description
-		$group['name'] = !empty($group['name']) ? json_decode($group['name'], true) : [];
-		$group['name'] = $group['name'][language::$selected['code']] ?? $group['name']['en'] ?? '';
-
-		$group['description'] = !empty($group['description']) ? json_decode($group['description'], true) : [];
-		$group['description'] = $group['description'][language::$selected['code']] ?? $group['description']['en'] ?? '';
-
-	});
+	)->fetch();
 
 	if (!$settings_group) {
-		notices::add('errors', 'Invalid setting group ('. __DOC__ .')');
+		notices::add('errors', 'Invalid settings group ('. __DOC__ .')');
 		return;
 	}
 
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$settings = database::prepare(
-		"select * from ". DB_PREFIX ."settings
+		"select *,
+			coalesce(nullif(json_value(title, '$.". database::input(language::$selected['code']) ."'), ''), json_value(title, '$.en')) as title,
+			coalesce(nullif(json_value(description, '$.". database::input(language::$selected['code']) ."'), ''), json_value(description, '$.en')) as description
+		from ". DB_PREFIX ."settings
 		where `group_key` = '". database::input($settings_group['key']) ."'
 		order by priority, `key` asc;"
 	)->fetch_page(function(&$setting){

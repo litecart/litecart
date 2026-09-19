@@ -53,7 +53,6 @@
 	foreach ([
 		'customer',
 		'route',
-		'security',
 	] as $node) {
 		class_exists($node);
 	}

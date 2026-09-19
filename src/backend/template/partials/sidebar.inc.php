@@ -3,7 +3,7 @@
 
 	<div class="sidebar-header">
 		<div class="filter">
-			<?php echo f::form_input_search('filter', false, ['placeholder' => (t('title_filter', 'Filter') . '…'), 'autocomplete' => 'off']); ?>
+			<?php echo f::form_input_search('filter', false, ['placeholder' => t('title_filter', 'Filter').'…', 'autocomplete' => 'off']); ?>
 		</div>
 	</div>
 

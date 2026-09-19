@@ -229,6 +229,7 @@ h4 { font-size: 1.10em; }
 				padding: .5em 1em;
 				border-radius: var(--border-radius);
 				transition: all 100ms linear;
+
 				&:hover {
 					transform: scale(1.03);
 				}
@@ -250,7 +251,6 @@ h4 { font-size: 1.10em; }
 }
 
 /* Apps */
-
 #sidebar-menu {
 	display: block;
 	padding: 0;

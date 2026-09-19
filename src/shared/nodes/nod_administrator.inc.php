@@ -118,6 +118,8 @@
 			}
 
 			$administrator['permissions'] = [];
+			$administrator['known_ips'] = [];
+			$administrator['known_fingerprints'] = [];
 
 			session::$data['administrator'] = $administrator;
 		}

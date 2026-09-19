@@ -16,12 +16,10 @@
 	];
 
 	database::query(
-		"select * from ". DB_PREFIX ."settings_groups
+		"select *, coalesce(json_value(name, '$.". database::input(language::$selected['code']) ."'), json_value(name, '$.en')) as name
+		from ". DB_PREFIX ."settings_groups
 		order by priority, `key`;"
 	)->each(function($group) use (&$app_config) {
-
-		$group['name'] = !empty($group['name']) ? json_decode($group['name'], true) : [];
-		$group['name'] = $group['name'][language::$selected['code']] ?? $group['name']['en'] ?? '';
 
 		$app_config['menu'][] = [
 			'title' => $group['name'],

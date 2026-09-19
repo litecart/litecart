@@ -25,12 +25,12 @@
 		$selects = [
 			"'translation' as entity",
 			't.code',
-			"coalesce(json_unquote(json_value(t.`text`, '$.". database::input($source_code) ."')), '') as source_text",
+			"coalesce(json_value(t.`text`, '$.". database::input($source_code) ."'), '') as source_text",
 			't.html',
 		];
 
 		foreach ($target_codes as $target_language_code) {
-			$selects[] = "coalesce(json_unquote(json_value(t.`text`, '$.". database::input($target_language_code) ."')), '') as `text_". database::input($target_language_code) ."`";
+			$selects[] = "coalesce(json_value(t.`text`, '$.". database::input($target_language_code) ."'), '') as `text_". database::input($target_language_code) ."`";
 		}
 
 		return (
