@@ -42,6 +42,7 @@
 
 			// Content-Security-Policy headers are generated after capture to allow dynamic additions
 			self::add_csp('default-src', ["'self'", "'unsafe-eval'", "data:"]);
+			self::add_csp('font-src', ["'self'"]);
 			self::add_csp('script-src', ["'self'", "'unsafe-inline'", "'nonce-". security::$data['nonce'] ."'"]);
 			self::add_csp('style-src', ["'self'", "'unsafe-inline'", "data:"]);
 			self::add_csp('frame-ancestors', ["'self'"]); // Clickjacking Protection

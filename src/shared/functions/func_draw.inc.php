@@ -125,12 +125,16 @@
 
 			// Bootstrap Icons
 			case (preg_match('#^bi-#', $icon)):
+				document::add_csp('font-src', ['https://cdn.jsdelivr.net']);
+				document::add_csp('style-src', ['https://cdn.jsdelivr.net']);
 				document::$head_tags['bootstrap-icons'] = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">';
 				return draw_element('i', ['class' => 'bi '. $icon, ...$attributes]);
 
 			// Fontawesome 4
 			case (preg_match('#^fa-#', $icon)):
 				trigger_error('Fontawesome 4 icon `'. f::escape_html($icon) .'` is deprecated. Please use Fontawesome 5 instead.', E_USER_DEPRECATED);
+				document::add_csp('font-src', ['https://use.fontawesome.com']);
+				document::add_csp('style-src', ['https://use.fontawesome.com']);
 				document::$head_tags['fontawesome4'] = '<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/v4-shims.css">';
 				document::$head_tags['fontawesome5'] = '<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">';
 				return draw_element('i', ['class' => 'fa '. $icon, ...$attributes]);
@@ -140,21 +144,29 @@
 			case (substr($icon, 0, 7) == 'far fa-'):
 			case (substr($icon, 0, 7) == 'fab fa-'):
 			case (substr($icon, 0, 7) == 'fas fa-'):
+				document::add_csp('font-src', ['https://use.fontawesome.com']);
+				document::add_csp('style-src', ['https://use.fontawesome.com']);
 				document::$foot_tags['fontawesome7'] = '<script src="https://use.fontawesome.com/releases/v7.1.0/js/all.js" crossorigin="anonymous"></script>';
 				return draw_element('i', ['class' => $icon, ...$attributes]);
 
 			// Foundation
 			case (preg_match('#^fi-#', $icon)):
+				document::add_csp('font-src', ['https://cdn.jsdelivr.net']);
+				document::add_csp('style-src', ['https://cdn.jsdelivr.net']);
 				document::$head_tags['foundation-icons'] = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/foundation-icons/latest/foundation-icons.min.css">';
 				return draw_element('i', ['class' => $icon, ...$attributes]);
 
 			// Ion Icons
 			case (preg_match('#^ion-#', $icon)):
+				document::add_csp('font-src', ['https://cdn.jsdelivr.net']);
+				document::add_csp('style-src', ['https://cdn.jsdelivr.net']);
 				document::$head_tags['ionicons'] = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/ionicons/latest/css/ionicons.min.css">';
 				return draw_element('i', ['class' => $icon, ...$attributes]);
 
 			// Material Design Icons
 			case (preg_match('#^mdi-#', $icon)):
+				document::add_csp('font-src', ['https://cdn.jsdelivr.net']);
+				document::add_csp('style-src', ['https://cdn.jsdelivr.net']);
 				document::$head_tags['material-design-icons'] = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css">';
 				return draw_element('i', ['class' => 'mdi '. $icon, ...$attributes]);
 		}
@@ -414,6 +426,37 @@
 		$js[] = '});';
 
 		document::add_script($js, 'litebox-'. $selector);
+	}
+
+	function draw_loader(string|null $title=null, string|null $message=null, int|null $progress=null): string|false {
+
+		$output = implode(PHP_EOL, [
+			'<div class="loader-container">',
+			'	<div class="loader" aria-hidden="true">',
+			'		<div class="loader-ring"></div>',
+			'		<div class="loader-ring"></div>',
+			'		<div class="loader-ring"></div>',
+			'		<div class="loader-core"></div>',
+			'	</div>',
+		]);
+
+		if ($title ||$message) $output .= implode(PHP_EOL, [
+			'	<div class="message">',
+			'		<h1>'. f::escape_html($title) .'<span class="dots"></span></h1>',
+			$message ? '		<p>'. f::escape_html($message) .'</p>' : '',
+			'	</div>',
+		]);
+
+		if ($progress !== null) {
+			$output .= implode(PHP_EOL, [
+				'	<div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'. max(0, min($progress, 100)) .'">',
+				'		<div class="progress-bar" class="progress"></div>',
+				'	</div>',
+				'</div>',
+			]);
+		}
+
+		return $output;
 	}
 
 	function draw_pagination(int $pages): string|false {
