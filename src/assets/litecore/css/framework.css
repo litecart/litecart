@@ -4180,6 +4180,47 @@ body.navbar-expanded {
 	cursor: not-allowed;
 }
 
+/* Panels */
+.panel {
+	background: var(--panel-background);
+	border: var(--panel-border-width) solid var(--panel-border-color);
+	border-radius: 4px;
+	display: flex;
+	flex-direction: column;
+	min-width: 0;
+	min-height: 0;
+	overflow: hidden;
+}
+
+.panel-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0.5rem 0.75rem;
+	border-bottom: var(--panel-border-width) solid var(--panel-border-color);
+	font-weight: 600;
+	background: var(--highlight-soft-color);
+	flex-shrink: 0;
+}
+
+.panel-body {
+	flex: 1;
+	overflow: auto;
+	padding: 0.25rem 0;
+	min-height: 0;
+}
+
+.panel-body.no-padding {
+	padding: 0;
+}
+
+.panel-footer {
+	border-top: var(--panel-border-width) solid var(--panel-border-color);
+	padding: 0.5rem 0.75rem;
+	background: var(--highlight-soft-color);
+	flex-shrink: 0;
+}
+
 .php-feedback {
 	font-size: 12px;
 	opacity: 0.75;
