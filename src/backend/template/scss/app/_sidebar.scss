@@ -1,0 +1,251 @@
+
+#sidebar {
+	position: sticky;
+	top: 0;
+	align-self: flex-start;
+	flex: 0 0 var(--sidebar-width);
+	flex-shrink: 0;
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
+	max-height: 100vh;
+	overflow: hidden;
+	background: var(--sidebar-background);
+	box-shadow: 0 1px 1rem rgb(0 0 0 / 5%);
+	padding: 1em;
+	gap: 1em;
+
+	.sidebar-header {
+	}
+
+	.sidebar-content {
+		flex: 1 1 auto;
+		overflow-y: auto;
+		min-height: 0;
+		padding: 1em;
+		--scrollbar-thumb-background: #ddd;
+		--scrollbar-track-background: transparent;
+		::-moz-scrollbar-button, ::-webkit-scrollbar-button {
+			width: 0px;
+		}
+	}
+
+	.sidebar-footer {
+		flex-shrink: 0;
+		background: var(--sidebar-background);
+	}
+
+	.logotype {
+		display: block;
+		border: 1px solid var(--default-border-color);
+		border-radius: var(--border-radius);
+		padding: .5em 1em;
+		transition:all 100ms linear;
+		&:hover {
+			border-color: var(--link-color);
+			filter: scale(1.05) brightness(.9);
+			box-shadow: 0 0 1rem rgb(0 0 0 / 5%);
+		}
+		img {
+			max-height: 20px;
+		}
+	}
+
+	.platform {
+		display: inline-block;
+		padding: .5em 1em;
+		letter-spacing: 1pt;
+		text-align: center;
+		font-weight: 700;
+		color: var(--copyright-text-color);
+		border-radius: var(--border-radius);
+
+		&:hover {
+			background: rgb(230 228 235);
+			text-decoration: none;
+		}
+	}
+
+	.copyright {
+		font-size: .75em;
+		color: var(--copyright-text-color);
+		text-align: center;
+
+		a {
+			color: inherit;
+			text-decoration: none;
+
+			&:hover {
+				text-decoration: underline;
+			}
+		}
+	}
+}
+
+#sidebar:has(#sidebar-compact-toggle:checked) {
+	flex-basis: auto;
+	padding: 0;
+
+	.app {
+		> a {
+			text-align: center;
+			padding: 0 .25em;
+		}
+		&:hover {
+			transform: scale(1.25);
+		}
+		.app-icon {
+			font-size: 1.5em;
+		}
+	}
+
+	.group > .title {
+		display: none;
+	}
+
+	.name, .docs {
+		display: none;
+	}
+
+	.logotype,
+	.filter,
+	//.platform .name,
+	.platform,
+	.copyright {
+		display: none;
+	}
+}
+
+/* Apps */
+#sidebar-menu {
+	display: block;
+	padding: 0;
+	color: var(--sidebar-text-color);
+	line-height: 2;
+
+	ul.groups,
+	ul.apps,
+	ul.docs {
+		padding: 0;
+		margin: 0;
+		list-style: none;
+	}
+
+	a {
+		display: block;
+		padding: .25em .5em;
+		text-decoration: none;
+		color: inherit;
+	}
+
+	.group {
+		margin: 0;
+		padding: .5em 0;
+		list-style: none;
+
+		> .title {
+			font-size: .8em;
+			text-transform: uppercase;
+			font-weight: 500;
+			letter-spacing: .25pt;
+		}
+	}
+
+	.app {
+		position: relative;
+		display: block;
+		border: var(--sidebar-app-border-size) solid transparent;
+
+		border-radius: var(--border-radius);
+		transition: all 100ms linear;
+		overflow: hidden;
+
+		&:hover:not(.active) {
+			background: var(--sidebar-app-background--hover);
+			border: var(--sidebar-app-border-size) solid var(--app-color);
+		}
+
+		> a {
+			padding: .25em 0;
+			transition: linear 100ms all;
+
+			&:hover {
+				padding: .25em .5em;
+				background: transparent;
+				color: var(--sidebar-text-color--hover);
+			}
+
+			.icon-stack {
+				font-size: 1em;
+			}
+		}
+
+		.app-icon {
+			background: none;
+		}
+
+		> a > .name {
+			font-weight: 500;
+		}
+
+		&.active {
+			margin-bottom: .25em;
+
+			a {
+				padding: .25em .5em;
+			}
+
+			> a {
+				background: color-mix(in lab,var(--app-color) 25%,transparent);
+				border-radius: var(--border-radius);
+
+				.name {
+					font-weight: 500;
+					margin-inline-start: .75em;
+				}
+			}
+
+			.docs {
+				display: block;
+				padding: .5em 0;
+			}
+
+			.doc {
+				border: 1px solid transparent;
+				border-radius: var(--border-radius);
+
+				&:hover,
+				&:active {
+					border-color: color-mix(in lab, var(--app-color) 50%, transparent 100%);
+				}
+
+				&.active {
+					background: color-mix(in lab, var(--app-color) 15%, transparent 100%);
+					border-color: color-mix(in lab, var(--app-color) 50%, transparent 100%);
+				}
+
+				a {
+					padding: .15em 1em;
+					&:before {
+						content: '■ ';
+						color: var(--app-color);
+						padding: 0 .25em;
+					}
+					.name {
+  					margin-inline-start: .75em;
+					}
+				}
+			}
+		}
+	}
+
+	.docs {
+		display: none;
+	}
+
+	.name u {
+		text-decoration: underline;
+		text-decoration-thickness: 1px;
+		text-underline-offset: 2px;
+	}
+}

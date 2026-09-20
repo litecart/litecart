@@ -104,22 +104,23 @@ gulp.task('scss-backend', function() {
 		.pipe(gulp.dest('src/backend/template/css/', { overwrite: true }));
 
 	// Unminified app.css (no sourcemap)
-	gulp.src(['src/backend/template/scss/*.scss', '!src/backend/template/scss/variables.scss'])
+	gulp.src(['src/backend/template/scss/app/[m]ain.scss']) // Glob star to prevent error "File not found with singular glob"
 		.pipe(sass(sassOptions).on('error', sass.logError))
 		.pipe(header(banner, { pkg: packageData }))
 		.pipe(tabify())
+		.pipe(rename({ basename: 'app', extname: '.css' }))
 		.pipe(gulp.dest('src/backend/template/css/', { overwrite: true }));
 
 	// Minified app.min.css with sourcemap referencing app.scss
-	return gulp.src(['src/backend/template/scss/*.scss', '!src/backend/template/scss/variables.scss'])
+	return gulp.src(['src/backend/template/scss/app/[m]ain.scss']) // Glob star to prevent error "File not found with singular glob"
 		.pipe(sourcemaps.init())
 		.pipe(sass(sassOptions).on('error', sass.logError))
 		.pipe(header(banner, { pkg: packageData }))
 		.pipe(tabify())
 		.pipe(cleancss())
-		.pipe(rename({ extname: '.min.css' }))
+		.pipe(rename({ basename: 'app', extname: '.min.css' }))
 		.pipe(sourcemaps.write('.', { includeContent: false }))
-		.pipe(gulp.dest('src/backend/template/css', { overwrite: true }));
+		.pipe(gulp.dest('src/backend/template/css/', { overwrite: true }));
 });
 
 // Build and uglify JS files
