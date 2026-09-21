@@ -97,4 +97,28 @@ waitFor('jQuery', ($) => {
 		}
 	});
 
+	// Toggle docs subset when an app with a `.docs` child is clicked.
+	// Without a docs subset the app link navigates to the default doc as before.
+	// In compact mode icons-only the docs are hidden by CSS so we keep navigation.
+	$('#sidebar-menu').on('click', '.app > a', function(e) {
+		if ($('#sidebar-compact-toggle').is(':checked')) return;
+		const $app = $(this).closest('.app');
+		const $docs = $app.children('.docs');
+		if (!$docs.length) return;
+		e.preventDefault();
+		$app.toggleClass('expanded');
+	});
+
+	// On page load, scroll the sidebar content so the active app is in view (vertically centered).
+	$(function() {
+		const $content = $('#sidebar .sidebar-content');
+		if (!$content.length) return;
+		const $active = $content.find('.app.active').first();
+		if (!$active.length) return;
+		const container = $content[0];
+		const el = $active[0];
+		const elTop = el.getBoundingClientRect().top - container.getBoundingClientRect().top + container.scrollTop;
+		const target = elTop - container.clientHeight / 2 + el.offsetHeight / 2;
+		container.scrollTop = Math.max(0, target);
+	});
 });

@@ -87,12 +87,12 @@
 	padding: 0;
 
 	.app {
+		&:hover {
+			transform: scale(1.25);
+		}
 		> a {
 			text-align: center;
 			padding: 0 .25em;
-		}
-		&:hover {
-			transform: scale(1.25);
 		}
 		.app-icon {
 			font-size: 1.5em;
@@ -103,7 +103,7 @@
 		display: none;
 	}
 
-	.name, .docs {
+	.name, .docs, .app-toggle {
 		display: none;
 	}
 
@@ -161,16 +161,21 @@
 		overflow: hidden;
 
 		&:hover:not(.active) {
-			background: var(--sidebar-app-background--hover);
-			border: var(--sidebar-app-border-size) solid var(--app-color);
+
 		}
 
 		> a {
-			padding: .25em 0;
+			padding: .25em .5em;
 			transition: linear 100ms all;
+			display: flex;
+			align-items: center;
+			gap: .35em;
+			border: var(--sidebar-app-border-size) solid transparent;
+			border-radius: var(--border-radius);
 
 			&:hover {
-				padding: .25em .5em;
+				background: var(--sidebar-app-background--hover);
+				border: var(--sidebar-app-border-size) solid var(--app-color);
 				background: transparent;
 				color: var(--sidebar-text-color--hover);
 			}
@@ -178,6 +183,19 @@
 			.icon-stack {
 				font-size: 1em;
 			}
+
+			// Disclosure toggle: square plus/minus glyph indicates if the app has docs
+			// and whether the docs subset is currently open.
+			.app-toggle {
+				margin-top: -.9em;
+				margin-inline-start: auto;
+				opacity: .6;
+				transition: opacity 100ms linear;
+			}
+		}
+
+		&:hover > a > .app-toggle {
+			opacity: 1;
 		}
 
 		.app-icon {
@@ -188,23 +206,8 @@
 			font-weight: 500;
 		}
 
-		&.active {
-			margin-bottom: .25em;
-
-			a {
-				padding: .25em .5em;
-			}
-
-			> a {
-				background: color-mix(in lab,var(--app-color) 25%,transparent);
-				border-radius: var(--border-radius);
-
-				.name {
-					font-weight: 500;
-					margin-inline-start: .75em;
-				}
-			}
-
+		// Open state: server-side (current route) or click-toggled by sidebar.js
+		&:is(.active, .expanded) {
 			.docs {
 				display: block;
 				padding: .5em 0;
@@ -232,15 +235,43 @@
 						padding: 0 .25em;
 					}
 					.name {
-  					margin-inline-start: .75em;
+						margin-inline-start: .75em;
 					}
 				}
 			}
 		}
+
+		// Active-route styling only (not for click-toggled peers)
+		&.active {
+			margin-bottom: .25em;
+
+			a {
+				padding: .25em .5em;
+			}
+
+			> a {
+				background: color-mix(in lab,var(--app-color) 25%,transparent);
+				border-radius: var(--border-radius);
+
+				.name {
+					font-weight: 500;
+					margin-inline-start: .75em;
+				}
+			}
+		}
+
 	}
 
 	.docs {
 		display: none;
+	}
+
+
+	// Disclosure icon: swap square-plus for square-minus when the app is open.
+	// Uses the LiteCore icon font (icon-square-plus / icon-square-minus) defined in framework/_fonticons.scss.
+	.app.has-docs.active > a > .app-toggle::before,
+	.app.has-docs.expanded > a > .app-toggle::before {
+		content: "\e035"; /* icon-square-minus */
 	}
 
 	.name u {

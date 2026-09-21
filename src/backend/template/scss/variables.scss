@@ -200,6 +200,8 @@
 	--dropdown-item-background--hover: #f1f2f5;
 	--dropdown-item-text-color--hover: #444;
 
+	--highlight-soft-color: #fafafa;
+
 	/* Modals */
 	--modal-background: #fff;
 	--modal-text-color: #fff;
@@ -226,6 +228,18 @@
 	--pagination-item-border-color: var(--default-border-color);
 	--pagination-item-border-width: 1px;
 	--pagination-item-background--hover: #c8cbd0;
+
+	/* Panels */
+	--panel-background: #fff;
+	--panel-text-color: #444;
+	--panel-title-text-size: 1em;
+	--panel-title-text-weight: 700;
+	--panel-border-color: #e0e0e0;
+	--panel-border-width: 1px;
+	--panel-shadow: 0 0 0 0 #0000, 0 0 0 0 #0000, 0 5px 8px -3px rgb(0 0 0 / 10%), 0 2px 3px -2px rgb(0 0 0 / 10%);
+	--panel-footer-background: #f9f9f9;
+
+	--panel-background--hover: #f5f5f5;
 
 	/* Pills */
 	--pill-item-background: #f2f3f6;
@@ -311,6 +325,39 @@ html.dark-mode {
 	--link-text-color: #acb6c7;
 	--whitespace-color: #1d2026;
 
+	--breadcrumbs-background: #242934;
+	--breadcrumbs-border-color: transparent;
+
+	--breadcrumb-item-background: transparent;
+	--breadcrumb-item-text-color: #727881;
+
+	--button-default-background: #252a34;
+	--button-default-background--hover: #29303e;
+	--button-default-background--active: #29303e;
+	--button-default-text-color: #acb6c2;
+	--button-default-border-color: #202020;
+
+	--button-success-background: #557417;
+	--button-success-background--hover: #63871b;
+	--button-success-background--active: #63871b;
+	--button-success-text-color: #fff;
+	--button-success-border-color: rgb(0 0 0 / 10%);
+	--button-success-border-color--hover: rgb(0 0 0 / 10%);
+	--button-success-border-color--active: rgb(0 0 0 / 10%);
+
+	--button-danger-background: #3c2a29;
+	--button-danger-background--hover: #482927;
+	--button-danger-background--active: #482927;
+	--button-danger-text-color: #fff;
+	--button-danger-border-color: rgb(0 0 0 / 10%);
+	--button-danger-border-color--hover: rgb(0 0 0 / 10%);
+	--button-danger-border-color--active: rgb(0 0 0 / 10%);
+
+	--card-background: linear-gradient(180deg, #363c48, #2c313c 200px);
+	--card-text-color: #acb6c2;
+	--card-border-color: #253046;
+	--card-footer-background: #1b1f28;
+
 	--input-background: #1d2026;
 	--input-border-color: #31384a;
 	--input-border-width: 1px;
@@ -324,23 +371,25 @@ html.dark-mode {
 	--input-checkbox-background: #1d2026;
 	--input-checkbox-background--active: #495abd;
 
-	--breadcrumbs-background: #242934;
-
-	--breadcrumb-item-background: transparent;
-	--breadcrumb-item-text-color: #727881;
-	--breadcrumbs-border-color: transparent;
-
-	--card-background: linear-gradient(180deg, #363c48, #2c313c 200px);
-	--card-text-color: #acb6c2;
-	--card-border-color: #253046;
-	--card-footer-background: #1b1f28;
-
-	/* Modals */
 	--modal-background: var(--card-background);
 	--modal-text-color: var(--card-text-color);
+
+	--panel-background: linear-gradient(180deg, #363c48, #2c313c 200px);
+	--panel-text-color: #acb6c2;
+	--panel-border-color: #253046;
+	--panel-footer-background: #1b1f28;
+
 	--pill-item-background: #333c4e;
 	--pill-item-text-color: #acb6c2;
 	--pill-item-border-color: transparent;
+
+	--pagination-background: #1a2133;
+	--pagination-item-background: #1a2133;
+	--pagination-item-background--hover: #35415a;
+	--pagination-item-background--active: #35415a;
+	--pagination-item-text-color: #acb6c2;
+	--pagination-item-border-color: #1c243a;
+	--pagination-item-border-width: 1px;
 
 	--tab-bar-background: transparent;
 	--tab-bar-border-color: var(--default-border-color);
@@ -368,33 +417,4 @@ html.dark-mode {
 	--table-footer-text-color: #acb6c2;
 	--table-border-color: #23252c;
 	--table-border-width: 1px;
-
-	--pagination-background: #1a2133;
-	--pagination-item-background: #1a2133;
-	--pagination-item-background--hover: #35415a;
-	--pagination-item-background--active: #35415a;
-	--pagination-item-text-color: #acb6c2;
-	--pagination-item-border-color: #1c243a;
-	--pagination-item-border-width: 1px;
-
-	--button-default-background: #252a34;
-	--button-default-background--hover: #29303e;
-	--button-default-background--active: #29303e;
-	--button-default-text-color: #acb6c2;
-	--button-default-border-color: #202020;
-
-	--button-success-background: #557417;
-	--button-success-background--hover: #63871b;
-	--button-success-background--active: #63871b;
-	--button-success-text-color: #fff;
-	--button-success-border-color: rgb(0 0 0 / 10%);
-	--button-success-border-color--hover: rgb(0 0 0 / 10%);
-	--button-success-border-color--active: rgb(0 0 0 / 10%);
-	--button-danger-background: #3c2a29;
-	--button-danger-background--hover: #482927;
-	--button-danger-background--active: #482927;
-	--button-danger-text-color: #fff;
-	--button-danger-border-color: rgb(0 0 0 / 10%);
-	--button-danger-border-color--hover: rgb(0 0 0 / 10%);
-	--button-danger-border-color--active: rgb(0 0 0 / 10%);
 }
