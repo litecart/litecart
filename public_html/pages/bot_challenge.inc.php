@@ -232,12 +232,23 @@ body {
         throw new Error('Failed canvas check');
       }
 
-      // Check for headless browser indicators
-      if (navigator.plugins.length === 0 || navigator.languages.length === 0) {
-        throw new Error('Failed headless browser check');
+      // Detect mobile devices — relax checks that mobile browsers commonly fail
+      const isMobile = /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+      // Check for headless browser indicators.
+      // Note: Mobile browsers (Chrome, Samsung Browser, Safari) often have 0 plugins
+      // and may report an empty languages array, so we only enforce these on desktop.
+      if (!isMobile) {
+        if (navigator.plugins.length === 0 && typeof navigator.plugins !== 'undefined') {
+          throw new Error('Failed headless browser check');
+        }
+
+        if (navigator.languages && navigator.languages.length === 0 && !navigator.language) {
+          throw new Error('Failed language check');
+        }
       }
 
-      // Check for WebDriver (Selenium) presence
+      // Check for WebDriver (Selenium) presence (applies to all platforms)
       if (navigator.webdriver) {
         throw new Error('Failed WebDriver check');
       }
@@ -253,10 +264,19 @@ body {
 
     } catch (e) {
       console.error(e);
-      let link = document.createElement('a')
+
+      let link = document.createElement('a');
       link.href = window.location.href;
       link.innerHTML = '<?php echo functions::escape_js(language::translate('text_try_again', 'Try again')); ?>';
-      setProgress(100, '<?php echo functions::escape_js(language::translate('text_verification_failed', 'Verification failed')); ?>. ' + link.outerHTML);
+
+      let emsg = document.createElement('div');
+      emsg.class = 'error-message';
+      emsg.innerText = '('+ e.message + ')';
+
+      setProgress(100, [
+        '<?php echo functions::escape_js(language::translate('text_verification_failed', 'Verification failed')); ?>. ' + link.outerHTML,
+        emsg.outerHTML,
+      ].join('\n'));
     }
 
   })();
