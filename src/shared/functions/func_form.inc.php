@@ -311,12 +311,10 @@
 		}
 
 		$attributes = is_array($attributes) ? $attributes : form_attributes($attributes);
-		$attributes['data-toggle'] = 'input-csv';
-		$attributes['style'] = 'min-height: 150px;';
 
 		document::add_script(implode(PHP_EOL, [
-			'$(\'textarea[data-toggle="input-csv"][name="'. f::escape_js($name) .'"]\').inputCSV('. f::format_json([
-				'text' => [
+			'$(\'textarea[name="'. f::escape_js($name) .'"]\').inputCSV('. f::format_json([
+				'i18n' => [
 					'table' => t('title_table', 'Table'),
 					'raw' => t('title_raw', 'Raw'),
 					'add_row' => t('title_add_row', 'Add Row'),
@@ -330,7 +328,7 @@
 
 		return implode(PHP_EOL, [
 			'<div class="form-input form-input-csv">',
-			'  ' . form_textarea($name, $input, $attributes),
+			'  ' . form_textarea($name, $input, ['style' => 'min-height: 150px;', ...$attributes]),
 			'</div>',
 		]);
 	}

@@ -4,7 +4,7 @@ waitFor('jQuery', ($) => {
 	$.fn.inputCSV = function(config){
 
 		const cfg = $.extend({
-			text: {
+			i18n: {
 				table: 'Table',
 				raw: 'Raw',
 				add_row: 'Add Row',
@@ -32,10 +32,10 @@ waitFor('jQuery', ($) => {
 				: $('<div class="csv-view-tabs btn-group btn-group-sm" role="tablist"></div>').insertBefore($textarea);
 
 			if (!$tabs.find('[data-view="table"]').length) {
-				$('<button type="button" class="csv-view-tab btn btn-default btn-sm active" data-view="table">'+ cfg.text.table +'</button>').appendTo($tabs);
+				$('<button type="button" class="csv-view-tab btn btn-default btn-sm active" data-view="table">'+ cfg.i18n.table +'</button>').appendTo($tabs);
 			}
 			if (!$tabs.find('[data-view="raw"]').length) {
-				$('<button type="button" class="csv-view-tab btn btn-default btn-sm" data-view="raw">'+ cfg.text.raw +'</button>').appendTo($tabs);
+				$('<button type="button" class="csv-view-tab btn btn-default btn-sm" data-view="raw">'+ cfg.i18n.raw +'</button>').appendTo($tabs);
 			}
 
 			let $table = $wrapper.find('table.csv-table');
@@ -51,11 +51,11 @@ waitFor('jQuery', ($) => {
 					'	</tfoot>',
 					'</table>'
 				].join('\n')).insertAfter($textarea);
-				$table.find('.add-row').text(cfg.text.add_row);
+				$table.find('.add-row').text(cfg.i18n.add_row);
 			}
 
-			function detectDelimiter(text){
-				const lines = (text || '').split(/\r?\n/).filter(line => line.trim().length);
+			function detectDelimiter(string){
+				const lines = (string || '').split(/\r?\n/).filter(line => line.trim().length);
 				if (!lines.length) return ',';
 
 				const candidates = ['\t', '|', ';', ','];
@@ -66,15 +66,15 @@ waitFor('jQuery', ($) => {
 				return ',';
 			}
 
-			function getDelimiter(text){
-				return cfg.delimiter === 'auto' ? detectDelimiter(text) : cfg.delimiter;
+			function getDelimiter(string){
+				return cfg.delimiter === 'auto' ? detectDelimiter(string) : cfg.delimiter;
 			}
 
 			// Parse textarea CSV → { columns, rows }
-			function parse(text){
+			function parse(string){
 				const rows = [];
-				const delimiter = getDelimiter(text);
-				const lines = (text || '').split(/\r?\n/).filter(l => l.length);
+				const delimiter = getDelimiter(string);
+				const lines = (string || '').split(/\r?\n/).filter(l => l.length);
 				if (!lines.length) return { columns: [], rows: [] };
 
 				const parseLine = (line) => {
@@ -105,18 +105,18 @@ waitFor('jQuery', ($) => {
 				return { columns, rows };
 			}
 
-			// Serialize table → CSV text
+			// Serialize table → CSV string
 			function serialize(){
 				const delimiter = getDelimiter($textarea.val());
 				const lines = [];
 				const columnCount = $table.find('thead tr th').not('.csv-header-actions').length || 0;
 				$table.find('thead tr, tbody tr').each(function(){
 					const cells = $(this).find('th:not(.csv-header-actions),td:not(:last-child)').map(function(){
-						let text = $(this).text();
-						if (text.indexOf('"') !== -1 || text.indexOf(delimiter) !== -1 || text.indexOf('\n') !== -1){
-							text = '"' + text.replace(/"/g, '""') + '"';
+						let string = $(this).text();
+						if (i18n.indexOf('"') !== -1 || i18n.indexOf(delimiter) !== -1 || i18n.indexOf('\n') !== -1){
+							string = '"' + i18n.replace(/"/g, '""') + '"';
 						}
-						return text;
+						return string;
 					}).get();
 					if (cells.length || $(this).is('tbody tr')) {
 						lines.push(cells.join(delimiter));
@@ -128,7 +128,7 @@ waitFor('jQuery', ($) => {
 				return lines.join('\n');
 			}
 
-			// Render table from CSV text
+			// Render table from CSV string
 			function render(){
 				const { columns, rows } = parse($textarea.val());
 				const hasHeaders = columns.length > 0;
@@ -150,7 +150,7 @@ waitFor('jQuery', ($) => {
 						'	<button type="button" class="add-column btn btn-default btn-sm"></button>',
 						'</th>'
 					].join('\n'));
-					$table.find('.add-column').text(cfg.text.add_column);
+					$table.find('.add-column').text(cfg.i18n.add_column);
 				}
 
 				const $tbody = $table.find('tbody').empty();
@@ -163,7 +163,7 @@ waitFor('jQuery', ($) => {
 						$tr.append([
 							'<td>',
 							'	<button type="button" name="remove_row" class="btn btn-default btn-sm">',
-								cfg.text.remove,
+								cfg.i18n.remove,
 							'	</button>',
 							'</td>'
 						].join('\n'));
@@ -204,7 +204,7 @@ waitFor('jQuery', ($) => {
 					$table.find('thead tr').append([
 						'<th contenteditable>',
 						'	<button type="button" name="remove_column" class="btn btn-default btn-sm">',
-							cfg.text.remove,
+							cfg.i18n.remove,
 						'	</button>',
 						'</th>'
 					].join('\n'));
@@ -216,7 +216,7 @@ waitFor('jQuery', ($) => {
 				$tr.append([
 					'<td>',
 					'	<button type="button" name="remove_row" class="btn btn-default btn-sm">',
-						cfg.text.remove,
+						cfg.i18n.remove,
 					'	</button>',
 					'</td>'
 				].join('\n'));
@@ -227,14 +227,14 @@ waitFor('jQuery', ($) => {
 			$table.on('click', '.add-column', function(e){
 				e.preventDefault();
 				if ($table.data('has-headers')) return;
-				const title = prompt(cfg.text.column_title);
+				const title = prompt(cfg.i18n.column_title);
 
 				if (!title) return;
 
 				$table.find('thead tr th:last-child:last-child').before([
 					'<th contenteditable>',
 						title,
-					'	<button type="button" name="remove_column" class="btn btn-default btn-sm">'+ cfg.text.remove +'</button>',
+					'	<button type="button" name="remove_column" class="btn btn-default btn-sm">'+ cfg.i18n.remove +'</button>',
 					'</th>'
 				].join('\n'));
 
