@@ -629,7 +629,7 @@
 
     if (!$.support.transition) return complete.call(this)
 
-    var scrollSize = $.camelCase(['scroll', dimension].join('-'))
+    var scrollSize = dimension == 'width' ? 'scrollWidth' : 'scrollHeight'
 
     this.$element
       .one('bsTransitionEnd', $.proxy(complete, this))
@@ -715,7 +715,7 @@
       var data    = $this.data('bs.collapse')
       var options = $.extend({}, Collapse.DEFAULTS, $this.data(), typeof option == 'object' && option)
 
-      if (!data && options.toggle && /show|hide/.test(option)) options.toggle = false
+      if (!data && options.toggle && typeof option == 'string' && /show|hide/.test(option)) options.toggle = false
       if (!data) $this.data('bs.collapse', (data = new Collapse(this, options)))
       if (typeof option == 'string') data[option]()
     })
