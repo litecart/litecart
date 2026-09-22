@@ -706,7 +706,7 @@
 
           </div>
 
-          <div class="table-responsive" style="margin: 0 -2em;">
+          <div class="table-responsive" style="margin: 0 -1.5em;">
             <table id="table-stock" class="table table-striped table-hover data-table">
               <thead>
                 <tr>
