@@ -2,30 +2,31 @@
 # Application Files #
 #####################
 
-!src/**/index.html
-!src/**/.htaccess
-!src/vendor/composer.json
+!/src/**/index.html
+!/src/**/.htaccess
+!/src/vendor/composer.json
 
-src/.well-known/*
-src/cgi-bin/*
-src/storage/*
-src/vendor/*
-src/storage/backups/**
-src/storage/cache/**
-src/storage/data/**
-src/storage/images/products/*
-src/storage/logs/**
+/src/.well-known/*
+/src/cgi-bin/*
+/src/storage/*
+/src/vendor/*
+/src/storage/backups/**
+/src/storage/cache/**
+/src/storage/data/**
+/src/storage/images/products/*
+/src/storage/logs/**
 
-package-lock.json
-migrations/.migrated
-src/.htaccess
-src/.user.ini
-src/favicon.ico
-src/google*.html
-src/php.ini
-src/robots.txt
-src/storage/config.inc.php
-src/vendor/composer.lock
+/migrations/.migrated
+/src/storage/config.inc.php
+/src/vendor/composer.lock
+/src/.htaccess
+/src/.user.ini
+/src/favicon.ico
+/src/google*.html
+/src/php.ini
+/src/robots.txt
+/bun.lock
+/package-lock.json
 
 google*.html
 BingSiteAuth.xml
