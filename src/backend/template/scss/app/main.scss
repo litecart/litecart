@@ -3,6 +3,7 @@
 @use 'pos' as *;
 @use 'sidebar' as *;
 @use 'top_navigation' as *;
+@use 'tags' as *;
 
 body {
 	background: var(--site-background);
@@ -201,6 +202,23 @@ html.condensed {
 	}
 
 	.card-action {
+	}
+}
+
+/* Notices (floating) */
+
+.notices.notices-floating {
+	position: fixed;
+	top: var(--gutter-y);
+	inset-inline-end: var(--gutter-x);
+	z-index: 999;
+	max-width: 28em;
+	margin: 0;
+
+	.notice {
+		min-width: 250px;
+		margin-bottom: .5em;
+		box-shadow: 0 2px .5rem rgb(0 0 0 / 15%);
 	}
 }
 

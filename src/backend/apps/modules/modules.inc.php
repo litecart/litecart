@@ -103,6 +103,14 @@
 		];
 	}
 
+	// Sort: installed before uninstalled, then enabled before disabled
+	usort($modules, function($a, $b) {
+		if ($a['installed'] !== $b['installed']) {
+			return $b['installed'] <=> $a['installed'];
+		}
+		return $b['status'] <=> $a['status'];
+	});
+
 	// Number of Rows
 	$num_rows = count($modules);
 ?>
@@ -113,18 +121,13 @@
 		</div>
 	</div>
 
+	<?php if ($type == 'job') { ?>
 	<div class="card-action">
-
-		<?php if ($type == 'job') { ?>
 		<button id="cron-example" class="btn btn-default" type="button" style="margin-inline-end: 1em;">
 			<?php echo f::draw_fonticon('icon-info'); ?> <?php echo t('title_cron_job', 'Cron Job'); ?>
 		</button>
-		<?php } ?>
-
-		<a class="btn btn-default" href="https://www.litecart.net/addons" target="_blank">
-			<?php echo f::draw_fonticon('icon-globe'); ?> LiteCart Add-ons
-		</a>
 	</div>
+	<?php } ?>
 
 	<?php echo f::form_begin('modules_form', 'post'); ?>
 
@@ -133,10 +136,9 @@
 				<tr>
 					<th><?php echo f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
 					<th></th>
+					<th><?php echo t('title_id', 'ID'); ?></th>
 					<th class="main"><?php echo t('title_name', 'Name'); ?></th>
 					<th></th>
-					<th><?php echo t('title_id', 'ID'); ?></th>
-					<th><?php echo t('title_version', 'Version'); ?></th>
 					<th><?php echo t('title_developer', 'Developer'); ?></th>
 					<th class="text-center"><?php echo t('title_priority', 'Priority'); ?></th>
 					<th></th>
@@ -149,7 +151,12 @@
 				<tr class="<?php echo empty($module['status']) ? 'semi-transparent' : ''; ?>">
 					<td><?php echo f::form_checkbox('modules[]', $module['id']); ?></td>
 					<td><?php echo f::draw_fonticon($module['status'] ? 'on' : 'off'); ?></td>
-					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_'.$type, ['module_id' => $module['id']]); ?>"><?php echo $module['name']; ?></a></td>
+					<td><?php echo $module['id']; ?></td>
+					<td>
+						<a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_'.$type, ['module_id' => $module['id']]); ?>">
+							<?php echo $module['name']; ?> / <?php echo $module['version']; ?>
+						</a>
+					</td>
 					<?php if (__DOC__ == 'jobs' && !empty($module['status'])) { ?>
 					<td class="text-center">
 						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/run_job', ['module_id' => $module['id']]); ?>" target="_blank">
@@ -159,8 +166,6 @@
 					<?php } else { ?>
 					<td class="text-center"></td>
 					<?php } ?>
-					<td><?php echo $module['id']; ?></td>
-					<td class="text-end"><?php echo $module['version']; ?></td>
 					<td><?php echo !empty($module['website']) ? '<a href="'. f::escape_attr($module['website']) .'" target="_blank">'. $module['author'] .'</a>' : $module['author']; ?></td>
 					<td class="text-center"><?php echo $module['priority']; ?></td>
 					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/'.$edit_doc, ['module_id' => $module['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo f::draw_fonticon('edit'); ?></a></td>
@@ -169,14 +174,13 @@
 				<tr class="semi-transparent">
 					<td></td>
 					<td></td>
+					<td><?php echo $module['id']; ?></td>
 					<td>
 						<a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_'.$type, ['module_id' => $module['id']]); ?>">
-							<?php echo $module['name']; ?>
+							<?php echo $module['name']; ?> / <?php echo $module['version']; ?>
 						</a>
 					</td>
 					<td class="text-center"></td>
-					<td><?php echo $module['id']; ?></td>
-					<td class="text-end"><?php echo $module['version']; ?></td>
 					<td><?php echo !empty($module['website']) ? '<a href="'. f::escape_attr($module['website']) .'" target="_blank">'. $module['author'] .'</a>' : $module['author']; ?></td>
 					<td class="text-center">-</td>
 					<td class="text-end">

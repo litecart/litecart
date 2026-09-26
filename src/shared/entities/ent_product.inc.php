@@ -178,11 +178,11 @@
 			$this->data['categories'] = array_filter($this->data['categories'], function($var) { return ($var != ''); }); // Don't filter root ('0')
 			$this->data['categories'] = array_unique($this->data['categories']);
 
-			$this->data['keywords'] = f::string_split($this->data['keywords']);
-			$this->data['keywords'] = array_map('trim', $this->data['keywords']);
-			$this->data['keywords'] = array_filter($this->data['keywords']);
-			$this->data['keywords'] = array_unique($this->data['keywords']);
-			$this->data['keywords'] = implode(',', $this->data['keywords']);
+			$this->data['tags'] = f::string_split($this->data['tags']);
+			$this->data['tags'] = array_map('trim', $this->data['tags']);
+			$this->data['tags'] = array_filter($this->data['tags']);
+			$this->data['tags'] = array_unique($this->data['tags']);
+			$this->data['tags'] = implode(',', $this->data['tags']);
 
 			foreach (array_keys($this->data['synonyms']) as $language_code) {
 				$this->data['synonyms'][$language_code] = f::string_split($this->data['synonyms'][$language_code]);
@@ -214,7 +214,7 @@
 					synonyms = '". database::input(f::format_json($this->data['synonyms'])) ."',
 					head_title = '". database::input(f::format_json($this->data['head_title'])) ."',
 					meta_description = '". database::input(f::format_json($this->data['meta_description'])) ."',
-					keywords = '". database::input($this->data['keywords']) ."',
+					tags = '". database::input($this->data['tags']) ."',
 					stock_option_type = '". database::input($this->data['stock_option_type']) ."',
 					quantity_min = ". (float)$this->data['quantity_min'] .",
 					quantity_max = ". (float)$this->data['quantity_max'] .",

@@ -39,6 +39,9 @@ node_modules/
 playwright/
 test-results/
 
+# E2E helper token (generated on first run, see tests/e2e/frontend/_helpers/README.md)
+/playwright/.e2e_token
+
 *.bak
 *.old
 *.ignore

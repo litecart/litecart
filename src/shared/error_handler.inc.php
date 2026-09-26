@@ -20,24 +20,24 @@
 		switch ($errno) {
 
 			case 2048: // Equals E_STRICT but deprecated in PHP 8.4
-				$output[] = '<div class="php-feedback error">❌ <strong>Strict:</strong> <pre style="white-space:pre;"> '. htmlspecialchars($errstr) .' </pre> in <strong>$errfile</strong> on line <strong>'. (int)$errline .'</strong></div>';
+				$output[] = '<div class="php-feedback error">❌ <strong>Strict:</strong> <pre style="white-space:pre-wrap;"> '. htmlspecialchars($errstr) .' </pre> in <strong>$errfile</strong> on line <strong>'. (int)$errline .'</strong></div>';
 				break;
 
 			case E_NOTICE:
 			case E_USER_NOTICE:
-				$output[] = '<div class="php-feedback notice">ℹ️ <strong>Notice:</strong> <pre style="white-space:pre;"> <quote>'. htmlspecialchars($errstr) .'</quote> </pre> in <strong>'. $errfile .'</strong> on line <strong>'. (int)$errline .'</strong></div>';
+				$output[] = '<div class="php-feedback notice">ℹ️ <strong>Notice:</strong> <pre style="white-space:pre-wrap;"> <quote>'. htmlspecialchars($errstr) .'</quote> </pre> in <strong>'. $errfile .'</strong> on line <strong>'. (int)$errline .'</strong></div>';
 				break;
 
 			case E_WARNING:
 			case E_USER_WARNING:
 			case E_COMPILE_WARNING:
 			case E_RECOVERABLE_ERROR:
-				$output[] = '<div class="php-feedback warning">⚠️ <strong>Warning:</strong> <pre style="white-space:pre;"> <quote>'. htmlspecialchars($errstr) .'</quote> </pre> in <strong>'. $errfile .'</strong> on line <strong>'. (int)$errline .'</strong></div>';
+				$output[] = '<div class="php-feedback warning">⚠️ <strong>Warning:</strong> <pre style="white-space:pre-wrap;"> <quote>'. htmlspecialchars($errstr) .'</quote> </pre> in <strong>'. $errfile .'</strong> on line <strong>'. (int)$errline .'</strong></div>';
 				break;
 
 			case E_DEPRECATED:
 			case E_USER_DEPRECATED:
-				$output[] = '<div class="php-feedback notice">ℹ️ <strong>Deprecated:</strong> <pre style="white-space:pre;"> <quote>'. htmlspecialchars($errstr) .'</quote> </pre> in <strong>'. $errfile .'</strong> on line <strong>'. (int)$errline .'</strong></div>';
+				$output[] = '<div class="php-feedback notice">ℹ️ <strong>Deprecated:</strong> <pre style="white-space:pre-wrap;"> <quote>'. htmlspecialchars($errstr) .'</quote> </pre> in <strong>'. $errfile .'</strong> on line <strong>'. (int)$errline .'</strong></div>';
 				break;
 
 			case E_PARSE:
@@ -45,11 +45,11 @@
 			case E_CORE_ERROR:
 			case E_COMPILE_ERROR:
 			case 256: // Equals E_USER_ERROR but deprecated in PHP 8.4
-				$output[] = '<div class="php-feedback error">❌ <strong>Fatal Error:</strong> <pre style="white-space:pre;"> <quote>'. htmlspecialchars($errstr) .'</quote> </pre> in <strong>'. $errfile .'</strong> on line <strong>'. (int)$errline .'</strong></div>';
+				$output[] = '<div class="php-feedback error">❌ <strong>Fatal Error:</strong> <pre style="white-space:pre-wrap;"> <quote>'. htmlspecialchars($errstr) .'</quote> </pre> in <strong>'. $errfile .'</strong> on line <strong>'. (int)$errline .'</strong></div>';
 				break;
 
 			default:
-				$output[] = '<div class="php-feedback error">❌ <strong>Unknown Error:</strong> <pre style="white-space:pre;"> <quote>'. htmlspecialchars($errstr) .'</quote> </pre> in <strong>'. $errfile .'</strong> on line <strong>'. (int)$errline .'</strong></div>';
+				$output[] = '<div class="php-feedback error">❌ <strong>Unknown Error:</strong> <pre style="white-space:pre-wrap;"> <quote>'. htmlspecialchars($errstr) .'</quote> </pre> in <strong>'. $errfile .'</strong> on line <strong>'. (int)$errline .'</strong></div>';
 				break;
 		}
 
@@ -84,10 +84,10 @@
 		// Display errors
 		if (filter_var(ini_get('display_errors'), FILTER_VALIDATE_BOOLEAN)) {
 			if (filter_var(ini_get('html_errors'), FILTER_VALIDATE_BOOLEAN) && $_SERVER['SERVER_SOFTWARE'] != 'CLI') {
-				echo isset($_GET['debug']) ? implode('<br>'.PHP_EOL, $output) : $output[0]; // HTML
+				echo isset($_GET['debug']) ? implode(PHP_EOL, $output) : $output[0]; // HTML
 			} else {
 				echo html_entity_decode(strip_tags(
-					isset($_GET['debug']) ? implode('<br>'.PHP_EOL, $output) : $output[0] // Plain text
+					isset($_GET['debug']) ? implode(PHP_EOL, $output) : $output[0] // Plain text
 				));
 			}
 		}

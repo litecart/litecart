@@ -23,7 +23,7 @@
 			"p.id = '". database::input($_REQUEST['query']) ."'",
 			"p.code like '". addcslashes(database::input($_REQUEST['query']), '%_') ."%'",
 			"json_value(p.name, '$.". database::input($_GET['language_code']) ."') like '%". addcslashes(database::input($_REQUEST['query']), '%_') ."%'",
-			"find_in_set(p.keywords, '". database::input($_REQUEST['query']) ."')",
+			"find_in_set(p.tags, '". database::input($_REQUEST['query']) ."')",
 		];
 	}
 

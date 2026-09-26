@@ -284,7 +284,7 @@
 		$matched_products = database::query(
 			"select id from ". DB_PREFIX ."products
 			where id = '". database::input($_GET['query']) ."'
-			or find_in_set('". database::input($_GET['query']) ."', keywords)
+			or find_in_set('". database::input($_GET['query']) ."', tags)
 			or code regexp '". database::input($code_regex) ."'
 			or (
 				json_value(name, '$.". database::input(language::$selected['code']) ."') like '%". database::input($_GET['query']) ."%'

@@ -103,6 +103,7 @@
 
 #invoice-total {
 	gap: 4mm;
+	place-self: end;
 }
 
 #invoice-total .summary {

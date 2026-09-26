@@ -639,7 +639,7 @@
 		]);
 	}
 
-	function form_input_tags(string $name, bool|array|string $input=true, array|string $attributes=[]): string {
+	function form_input_tags(string $name, bool|array|string $input=true, array|string $attributes=[], array $suggestions=[]): string {
 
 		if ($input === true) {
 			$input = form_reinsert_value($name);
@@ -647,7 +647,26 @@
 
 		$attributes = is_array($attributes) ? $attributes : form_attributes($attributes);
 
-		return f::draw_element('input', ['class' => 'form-input', 'type' => 'text', 'data-toggle' => 'tags', 'name' => $name, 'value' => implode(', ', (array)$input), ...$attributes]);
+		if (is_array($input)) {
+			$value = implode(',', array_filter(array_map('trim', $input)));
+		} else {
+			$value = (string)$input;
+		}
+
+		$suggestions = array_values(array_unique(array_filter(array_map('strval', $suggestions))));
+		if (!empty($suggestions)) {
+			$attributes['data-suggestions'] = json_encode($suggestions, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+		}
+
+		return f::draw_element('input', [
+			'class' => 'form-input',
+			'type' => 'text',
+			'data-toggle' => 'input-tags',
+			'name' => $name,
+			'value' => $value,
+			'autocomplete' => 'off',
+			...$attributes,
+		]);
 	}
 
 	function form_input_text(string $name, bool|string $input=true, array|string $attributes=[]): string {
