@@ -76,7 +76,7 @@
 				'head_title',
 				'meta_description',
 				'synonyms',
-				'keywords',
+				'tags',
 				'images',
 				'attributes',
 				'prices',
@@ -289,7 +289,7 @@
 
 							<label class="form-group">
 								<div class="form-label"><?php echo t('title_keywords', 'Keywords'); ?></div>
-								<?php echo f::form_input_tags('keywords', true); ?>
+								<?php echo f::form_input_tags('tags', true); ?>
 							</label>
 
 							<label class="form-group">

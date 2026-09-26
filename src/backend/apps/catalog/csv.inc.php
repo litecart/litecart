@@ -690,7 +690,7 @@
 							'default_catgeory_id',
 							'supplier_id',
 							'code',
-							'keywords',
+							'tags',
 							'tax_class_id',
 							'quantity',
 							'quantity_min',

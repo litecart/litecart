@@ -635,7 +635,7 @@
 							'technical_data',
 							'head_title',
 							'meta_description',
-							'keywords',
+							'tags',
 							'synonyms',
 						] as $field) {
 

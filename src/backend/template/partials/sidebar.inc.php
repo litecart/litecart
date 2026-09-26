@@ -8,10 +8,18 @@
 	</div>
 
 	<div class="sidebar-content">
-
 		<nav id="sidebar-menu">
-			<div class=ebar>
 			<ul class="groups">
+				<li class="group">
+					<ul class="apps">
+						<li class="app<?php echo !defined('__APP__') ? ' active' : ''; ?>" style="--app-color: #ccc;">
+							<a href="<?php echo document::href_ilink('b:'); ?>" title="<?php echo f::escape_attr(t('title_dashboard', 'Dashboard')); ?>">
+								<span class="app-icon"><?php echo f::draw_fonticon('icon-grid-view-o'); ?></span>
+								<span class="name"><?php echo t('title_dashboard', 'Dashboard'); ?></span>
+							</a>
+						</li>
+					</ul>
+				</li>
 
 				<?php foreach ($groups as $group) { ?>
 				<li class="group">
@@ -61,15 +69,15 @@
 
 	<div class="sidebar-footer">
 
-		<div class="text-center">
-			<a class="platform" href="<?php echo document::href_ilink('about'); ?>">
-				<span class="name"><?php echo PLATFORM_NAME; ?>®</span> <span class="version"><?php echo PLATFORM_VERSION; ?></span>
-			</a>
-		</div>
-
-		<div class="copyright" class="text-center">
-			Copyright &copy; <?php echo date('2012-Y'); ?> LiteCart AB
-		</div>
+		<a class="platform" href="<?php echo document::href_ilink('about'); ?>">
+			<img src="<?php echo document::href_rlink('app://backend/template/images/symbol.svg'); ?>">
+			<div>
+				<div class="name"><?php echo PLATFORM_NAME; ?>® <span class="version"><?php echo PLATFORM_VERSION; ?></span></div>
+				<div class="copyright" class="text-center">
+					<small>Copyright &copy; <?php echo date('2012-Y'); ?> LiteCart AB</small>
+				</div>
+			</div>
+		</a>
 
 	</div>
 </div>
