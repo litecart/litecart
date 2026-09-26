@@ -290,7 +290,7 @@ summary {
 .breadcrumbs {
 	margin: 0;
 	margin-bottom: 1.5em;
-	padding: 0.75em 1.5em;
+	padding: 1em 1.5em;
 	border-radius: var(--border-radius);
 	background: var(--breadcrumbs-background);
 	box-shadow: var(--breadcrumbs-shadow);
@@ -449,7 +449,7 @@ summary {
 	background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(101deg, #78e4ff, #ff48fa);
 }
 .btn.btn-sm {
-	padding: 0.4em 0.65em;
+	padding: 0.5em 0.75em;
 	font-size: 0.8em;
 }
 .btn.btn-lg {
@@ -1261,7 +1261,7 @@ html[dir=rtl] .dropdown label:has([data-toggle=dropdown]) {
 	font-family: "LiteCore";
 	font-style: normal;
 	font-weight: 400;
-	src: url("../fonts/fonticons.woff2?1789717743") format("woff2");
+	src: url("../fonts/fonticons.woff2?1790464046") format("woff2");
 }
 [class^=icon-], [class*=" icon-"] {
 	display: inline-block;
@@ -3334,7 +3334,7 @@ img.crop {
 }
 
 .container-fluid, .container {
-	padding: 0.75em;
+	padding: 1em;
 }
 
 .container {
