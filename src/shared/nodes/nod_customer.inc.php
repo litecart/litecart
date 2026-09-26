@@ -337,7 +337,7 @@
 			foreach (database::schema('customers') as $field) {
 				$customer[$field['Field']] = database::create_variable($field);
 			}
-	
+
 			foreach ($customer as $field => $value) {
 				if (preg_match('#^shipping_(.*)$#', $field, $matches)) {
 					unset($customer['shipping_'.$matches[1]]);

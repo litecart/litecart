@@ -54,6 +54,18 @@ CREATE TABLE `lc_customer_groups` (
 	PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 -- -----
+CREATE TABLE IF NOT EXISTS `lc_customer_notes` (
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`customer_id` INT(10) UNSIGNED NOT NULL,
+	`author_id` INT(10) UNSIGNED NULL,
+	`author` ENUM('system','staff','customer') NOT NULL DEFAULT 'staff',
+	`text` VARCHAR(1024) NOT NULL DEFAULT '',
+	`hidden` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
+	`created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (`id`),
+	INDEX `customer_id` (`customer_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+-- -----
 CREATE TABLE IF NOT EXISTS `lc_event_logs` (
 	`id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`session_id` VARCHAR(64) NULL,
@@ -395,6 +407,7 @@ CHANGE COLUMN `shipping_city` `shipping_city` VARCHAR(32) NOT NULL DEFAULT '',
 CHANGE COLUMN `shipping_country_code` `shipping_country_code` CHAR(2) NOT NULL DEFAULT '',
 CHANGE COLUMN `shipping_zone_code` `shipping_zone_code` VARCHAR(8) NOT NULL DEFAULT '',
 CHANGE COLUMN `shipping_phone` `shipping_phone` VARCHAR(16) NOT NULL DEFAULT '',
+CHANGE COLUMN `notes` `about` TEXT NOT NULL DEFAULT '',
 CHANGE COLUMN `login_attempts` `login_attempts` INT(11) NOT NULL DEFAULT '0',
 CHANGE COLUMN `total_logins` `total_logins` INT(10) UNSIGNED NOT NULL DEFAULT '0',
 CHANGE COLUMN `last_ip` `last_ip_address` VARCHAR(39) NOT NULL DEFAULT '',
@@ -403,6 +416,7 @@ CHANGE COLUMN `last_agent` `last_user_agent` VARCHAR(255) NOT NULL DEFAULT '',
 CHANGE COLUMN `date_login` `last_login` TIMESTAMP NULL AFTER `last_user_agent`,
 CHANGE COLUMN `date_blocked_until` `blocked_until` TIMESTAMP NULL AFTER `last_login`,
 CHANGE COLUMN `date_expire_sessions` `sessions_expiry` TIMESTAMP NULL AFTER `blocked_until`,
+ADD COLUMN `tags` VARCHAR(255) NOT NULL DEFAULT '' AFTER `about`,
 ADD COLUMN `shipping_email` VARCHAR(64) NOT NULL DEFAULT '' AFTER `shipping_phone`,
 ADD COLUMN `language_code` CHAR(2) NOT NULL DEFAULT '' AFTER `shipping_email`,
 ADD COLUMN `group_id` INT UNSIGNED NULL AFTER `id`,

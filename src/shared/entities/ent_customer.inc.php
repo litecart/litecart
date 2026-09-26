@@ -47,6 +47,8 @@
 				limit 1;"
 			)->fetch(function($customer){
 
+				$customer['tags'] = f::string_split($customer['tags']);
+
 				foreach ($customer as $key => $value) {
 					if (preg_match('#^shipping_(.*)$#', $key, $matches)) {
 						unset($customer['shipping_'.$matches[1]]);
@@ -98,11 +100,18 @@
 				);
 			}
 
+			$this->data['tags'] = f::string_split($this->data['tags']);
+			$this->data['tags'] = array_map('trim', $this->data['tags']);
+			$this->data['tags'] = array_filter($this->data['tags']);
+			$this->data['tags'] = array_unique($this->data['tags']);
+			$this->data['tags'] = implode(',', $this->data['tags']);
+
 			database::query(
 				"update ". DB_PREFIX ."customers
 				set code = '". database::input($this->data['code']) ."',
 					status = '". (!empty($this->data['status']) ? '1' : '0') ."',
 					group_id = ". (int)$this->data['group_id'] .",
+					tags = '". database::input($this->data['tags']) ."',
 					email = '". database::input(strtolower($this->data['email'])) ."',
 					tax_id = '". database::input($this->data['tax_id']) ."',
 					company = '". database::input($this->data['company']) ."',
@@ -127,7 +136,7 @@
 					shipping_zone_code = '". database::input($this->data['shipping_address']['zone_code']) ."',
 					shipping_phone = '". database::input($this->data['shipping_address']['phone']) ."',
 					language_code = '". database::input($this->data['language_code']) ."',
-					notes = '". database::input($this->data['notes']) ."',
+					about = '". database::input($this->data['about']) ."',
 					blocked_until = ". (!empty($this->data['blocked_until']) ? "'". database::input($this->data['blocked_until']) ."'" : "null") .",
 					sessions_expiry = ". (!empty($this->data['sessions_expiry']) ? "'". database::input($this->data['sessions_expiry']) ."'" : "null") .",
 					updated_at = '". ($this->data['updated_at'] = date('Y-m-d H:i:s')) ."'

@@ -401,7 +401,8 @@
 				"shipping_phone": { "type": "VARCHAR", "length": 16, "default": "''" },
 				"shipping_email": { "type": "VARCHAR", "length": 64, "default": "''" },
 				"language_code": { "type": "CHAR", "length": 2, "nullable": true },
-				"notes": { "type": "TEXT" },
+				"about": { "type": "TEXT" },
+				"tags": { "type": "VARCHAR", "length": 255, "default": "''" },
 				"password_hash": { "type": "VARCHAR", "length": 250, "default": "''" },
 				"login_attempts": { "type": "INT", "length": 11, "default": 0 },
 				"total_logins": { "type": "INT", "length": 10, "unsigned": true, "default": 0 },
@@ -436,6 +437,21 @@
 						"on_delete": "SET NULL"
 					}
 				}
+			}
+		},
+		"customer_notes": {
+			"columns": {
+				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
+				"customer_id": { "type": "INT", "length": 10, "unsigned": true },
+				"author_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
+				"author": { "type": "ENUM('system','staff','customer')", "default": "'staff'" },
+				"text": { "type": "VARCHAR", "length": 1024, "default": "''" },
+				"hidden": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 0 },
+				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
+			},
+			"primary_key": ["id"],
+			"keys": {
+				"customer_id": ["customer_id"]
 			}
 		},
 		"delivery_statuses": {

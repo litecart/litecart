@@ -35,6 +35,7 @@
 		],
 
 		'docs' => [
+			'customer' => 'customer.inc.php',
 			'customer_picker' => 'customer_picker.inc.php',
 			'customer_groups' => 'customer_groups.inc.php',
 			'customers' => 'customers.inc.php',
