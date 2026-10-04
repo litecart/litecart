@@ -43,6 +43,81 @@
 		}
 	}
 
+	// Load all MCP resource/tool sets from disk (with vmod overrides applied).
+	if (!function_exists('mcp_load_sets')) {
+
+		function mcp_load_sets() {
+			$sets = [
+				'tools' => [],
+				'resources' => [],
+				'resourceTemplates' => []
+			];
+
+			foreach (functions::file_search(vmod::check(FS_DIR_APP . 'includes/mcp/mcp_*.inc.php')) as $mcp_file) {
+
+				$set = (function() use ($mcp_file) {
+					return include $mcp_file;
+				})();
+
+				if (!is_array($$set)) continue;
+
+				if (!empty($$set['tools']) && is_array($$set['tools'])) {
+					$sets['tools'] = array_merge($sets['tools'], $$set['tools']);
+				}
+
+				if (!empty($$set['resources']) && is_array($$set['resources'])) {
+					$sets['resources'] = array_merge($sets['resources'], $$set['resources']);
+				}
+
+				if (!empty($$set['resourceTemplates']) && is_array($$set['resourceTemplates'])) {
+					$sets['resourceTemplates'] = array_merge($sets['resourceTemplates'], $$set['resourceTemplates']);
+				}
+			}
+			return $sets;
+		}
+	}
+
+	// Normalize a resource callback return value into MCP contents[] entries.
+	if (!function_exists('mcp_normalize_contents')) {
+		function mcp_normalize_contents($result, $uri, $default_mime = 'text/plain') {
+
+			if (is_string($result)) {
+				return [[
+					'uri' => $uri,
+					'mimeType' => $default_mime,
+					'text' => $result
+				]];
+			}
+
+			if (is_array($result) && isset($result['contents']) && is_array($result['contents'])) {
+				return $result['contents'];
+			}
+
+			if (is_array($result) && (isset($result['text']) || isset($result['blob']))) {
+				$entry = [
+					'uri' => $uri,
+					'mimeType' => $default_mime
+				];
+
+				if (array_key_exists('text', $result)) {
+					$entry['text'] = $result['text'];
+				}
+
+				if (array_key_exists('blob', $result)) {
+					$entry['blob'] = $result['blob'];
+				}
+
+				return [ $entry ];
+			}
+
+			return [[
+				'uri' => $uri,
+				'mimeType' => 'application/json',
+				'text' => json_encode($result, JSON_UNESCAPED_SLASHES),
+			]];
+		}
+	}
+
 	try {
 
 		$method = $_SERVER['REQUEST_METHOD'];
@@ -125,10 +200,16 @@
 			throw new McpException('MCP server expects GET, POST or DELETE requests', 405, -32600);
 		}
 
-		// Validate Accept header per MCP Streamable HTTP transport
+		// Validate Accept header per MCP Streamable HTTP transport.
+		// Tolerate comma-separated media-type lists (e.g. "application/json, text/event-stream").
 		if (!empty($_SERVER['HTTP_ACCEPT']) && $_SERVER['HTTP_ACCEPT'] !== '*/*') {
-			$accept = $_SERVER['HTTP_ACCEPT'];
-			if (strpos($accept, 'application/json') === false && strpos($accept, 'text/event-stream') === false) {
+			$accept_types = array_map('trim', explode(',', $_SERVER['HTTP_ACCEPT']));
+			$has_json = false; $has_sse = false;
+			foreach ($accept_types as $type) {
+				if (strpos($type, 'application/json') === 0) $has_json = true;
+				if (strpos($type, 'text/event-stream') === 0) $has_sse = true;
+			}
+			if (!$has_json && !$has_sse) {
 				throw new McpException('Client must accept application/json or text/event-stream', 406, -32600);
 			}
 		}
@@ -143,6 +224,7 @@
 
 		$rpc_id = isset($rpc['id']) ? $rpc['id'] : null;
 		$params = isset($rpc['params']) && is_array($rpc['params']) ? $rpc['params'] : [];
+		$is_notification = !array_key_exists('id', $rpc);
 
 		switch ($rpc['method']) {
 			case 'initialize':
@@ -156,174 +238,70 @@
 					'capabilities' => [
 						'tools' => new stdClass(),
 						'resources' => new stdClass(),
+						'logging' => new stdClass(),
 					],
+					'instructions' => 'LiteCart MCP server. Authenticate with HTTP Basic credentials of an admin user.',
 				];
 
+				break;
+
+			case 'ping':
+
+				$result = new stdClass();
 				break;
 
 			case 'notifications/initialized':
+			case 'notifications/cancelled':
+			case 'notifications/progress':
 
-				$result = null;
-				break;
-
-			case 'resources/list':
-
-				$resource_schemas = [];
-
-				foreach (functions::file_search(vmod::check(FS_DIR_APP . 'includes/mcp/mcp_*.inc.php')) as $mcp_file) {
-
-					// Include without polluting global scope
-					$resources = (function() use ($mcp_file) {
-						return include $mcp_file;
-					})();
-
-					if (empty($toolset['tools'])) continue;
-
-					foreach ($toolset['tools'] as $tool) {
-
-						if (empty($resource['name']) || !is_array($resource['inputSchema'])) continue;
-
-						// Skip tools the administrator isn't permitted to use
-						if (!empty($allowed_tools) && !in_array($resource['name'], $allowed_tools)) continue;
-
-						$tool_schemas[] = [
-							'name' => $resource['name'],
-							'description' => isset($resource['description']) ? $resource['description'] : '',
-							'inputSchema' => isset($resource['inputSchema']) ? $resource['inputSchema'] : [
-								'type' => 'object',
-								'properties' => new stdClass(),
-							],
-						];
-					}
-				}
-
-				$result = [
-					'tools' => $resource_schemas,
-				];
-
-				break;
-
-			case 'resources/call':
-
-				if (empty($params['name'])) {
-					throw new McpException('Missing tool name', 400, -32602);
-				}
-
-				foreach (functions::file_search(vmod::check(FS_DIR_APP . 'includes/mcp/*.inc.php')) as $mcp_file) {
-				// Include without polluting global scope
-				$toolset = (function() use ($mcp_file) {
-					return include $mcp_file;
-				})();
-
-				if (!is_array($toolset) || empty($toolset['tools'])) continue;
-
-				foreach ($toolset['tools'] as $tool) {
-
-					if (empty($tool['name']) || $tool['name'] !== $params['name']) continue;
-
-					// Per-toolset permission check
-					if (!empty($allowed_tools) && !in_array($tool['name'], $allowed_tools)) {
-						throw new McpException('Tool not permitted for this administrator', 403, -32001, $rpc_id);
-					}
-
-					// Support both 'arguments' (MCP standard) and 'input' (legacy)
-					$tool_args = isset($params['arguments']) ? $params['arguments'] : (isset($params['input']) ? $params['input'] : []);
-
-					// Check input against required parameters
-					if (!empty($tool['inputSchema']['required']) && is_array($tool['inputSchema']['required'])) {
-						foreach ($tool['inputSchema']['required'] as $field) {
-							if (!isset($tool_args[$field]) || $tool_args[$field] === '') {
-								throw new McpException("Missing required parameter: $field", 400, -32602);
-							}
-						}
-					}
-
-					$tool_result = ($tool['function'])($tool_args);
-					break 2;
-				}
-			}
-
-			if (!isset($tool_result)) {
-				throw new McpException('Tool not found', 404, -32601);
-			}
-
-			$result = [
-				'content' => [
-					[
-						'type' => 'text',
-						'text' => json_encode($tool_result, JSON_UNESCAPED_SLASHES),
-					]
-				],
-				'structuredContent' => is_array($tool_result) ? (object)$tool_result : $tool_result,
-				'isError' => false,
-			];
-
-			break;
+				// Notifications have no id and require no response.
+				ob_clean();
+				http_response_code(204);
+				exit;
 
 			case 'resources/list':
 
 				$resources = [];
+				foreach (mcp_load_sets()['resources'] as $resource) {
 
-				foreach (functions::file_search(vmod::check(FS_DIR_APP . 'includes/mcp/mcp_*.inc.php')) as $mcp_file) {
+					if (empty($resource['uri']) || empty($resource['name']) || empty($resource['function']) || !is_callable($resource['function'])) continue;
+					if (!empty($allowed_resources) && !in_array($resource['uri'], $allowed_resources)) continue;
 
-					$toolset = (function() use ($mcp_file) {
-						return include $mcp_file;
-					})();
-
-					if (!is_array($toolset) || empty($toolset['resources']) || !is_array($toolset['resources'])) continue;
-
-					foreach ($toolset['resources'] as $resource) {
-
-						if (empty($resource['uri']) || empty($resource['name']) || empty($resource['function']) || !is_callable($resource['function'])) continue;
-
-						if (!empty($allowed_resources) && !in_array($resource['uri'], $allowed_resources)) continue;
-
-						$resources[] = [
-							'uri' => $resource['uri'],
-							'name' => $resource['name'],
-							'description' => isset($resource['description']) ? $resource['description'] : '',
-							'mimeType' => isset($resource['mimeType']) ? $resource['mimeType'] : 'text/plain',
-						];
-					}
+					$resources[] = [
+						'uri' => $resource['uri'],
+						'name' => $resource['name'],
+						'description' => isset($resource['description']) ? $resource['description'] : '',
+						'mimeType' => isset($resource['mimeType']) ? $resource['mimeType'] : 'text/plain',
+					];
 				}
 
-				$result = [
-					'resources' => $resources,
-				];
-
+				$result = [ 'resources' => $resources ];
 				break;
 
 			case 'resources/templates/list':
 
 				$resource_templates = [];
+				foreach (mcp_load_sets()['resourceTemplates'] as $template) {
 
-				foreach (functions::file_search(vmod::check(FS_DIR_APP . 'includes/mcp/mcp_*.inc.php')) as $mcp_file) {
+					if (empty($template['uriTemplate']) || empty($template['name']) || empty($template['function']) || !is_callable($template['function'])) continue;
+					if (!empty($allowed_resources) && !in_array($template['uriTemplate'], $allowed_resources)) continue;
 
-					$toolset = (function() use ($mcp_file) {
-						return include $mcp_file;
-					})();
-
-					if (!is_array($toolset) || empty($toolset['resourceTemplates']) || !is_array($toolset['resourceTemplates'])) continue;
-
-					foreach ($toolset['resourceTemplates'] as $template) {
-
-						if (empty($template['uriTemplate']) || empty($template['name']) || empty($template['function']) || !is_callable($template['function'])) continue;
-
-						if (!empty($allowed_resources) && !in_array($template['uriTemplate'], $allowed_resources)) continue;
-
-						$resource_templates[] = [
-							'uriTemplate' => $template['uriTemplate'],
-							'name' => $template['name'],
-							'description' => isset($template['description']) ? $template['description'] : '',
-							'mimeType' => isset($template['mimeType']) ? $template['mimeType'] : 'text/plain',
-						];
-					}
+					$resource_templates[] = [
+						'uriTemplate' => $template['uriTemplate'],
+						'name' => $template['name'],
+						'description' => isset($template['description']) ? $template['description'] : '',
+						'mimeType' => isset($template['mimeType']) ? $template['mimeType'] : 'text/plain',
+					];
 				}
 
-				$result = [
-					'resourceTemplates' => $resource_templates,
-				];
+				$result = [ 'resourceTemplates' => $resource_templates ];
+				break;
 
+			case 'resources/subscribe':
+			case 'resources/unsubscribe':
+
+				// Stateless server: subscriptions are no-ops; clients may call these safely.
+				$result = new stdClass();
 				break;
 
 			case 'resources/read':
@@ -335,48 +313,38 @@
 				$uri = $params['uri'];
 				$read_result = null;
 				$read_mime = 'text/plain';
+				$sets = mcp_load_sets();
 
-				foreach (functions::file_search(vmod::check(FS_DIR_APP . 'includes/mcp/*.inc.php')) as $mcp_file) {
+				// Static resources (exact URI match)
+				foreach ($sets['resources'] as $resource) {
 
-					$toolset = (function() use ($mcp_file) {
-						return include $mcp_file;
-					})();
+					if (empty($resource['uri']) || $resource['uri'] !== $uri) continue;
 
-					if (!is_array($toolset)) continue;
-
-					// Static resources (exact URI match)
-					if (!empty($toolset['resources']) && is_array($toolset['resources'])) {
-						foreach ($toolset['resources'] as $resource) {
-
-							if (empty($resource['uri']) || $resource['uri'] !== $uri) continue;
-
-							if (!empty($allowed_resources) && !in_array($resource['uri'], $allowed_resources)) {
-								throw new McpException('Resource not permitted for this administrator', 403, -32001, $rpc_id);
-							}
-
-							$read_result = ($resource['function'])($params);
-							$read_mime = isset($resource['mimeType']) ? $resource['mimeType'] : 'text/plain';
-							break 2;
-						}
+					if (!empty($allowed_resources) && !in_array($resource['uri'], $allowed_resources)) {
+						throw new McpException('Resource not permitted for this administrator', 403, -32001, $rpc_id);
 					}
 
-					// Resource templates (URI pattern match)
-					if (!empty($toolset['resourceTemplates']) && is_array($toolset['resourceTemplates'])) {
-						foreach ($toolset['resourceTemplates'] as $template) {
+					$read_result = ($resource['function'])($params);
+					$read_mime = isset($resource['mimeType']) ? $resource['mimeType'] : 'text/plain';
+					break;
+				}
 
-							if (empty($template['uriTemplate'])) continue;
+				// Resource templates (URI pattern match)
+				if ($read_result === null) {
+					foreach ($sets['resourceTemplates'] as $template) {
 
-							$template_params = McpUriTemplate::match($template['uriTemplate'], $uri);
-							if ($template_params === null) continue;
+						if (empty($template['uriTemplate'])) continue;
 
-							if (!empty($allowed_resources) && !in_array($template['uriTemplate'], $allowed_resources)) {
-								throw new McpException('Resource not permitted for this administrator', 403, -32001, $rpc_id);
-							}
+						$template_params = McpUriTemplate::match($template['uriTemplate'], $uri);
+						if ($template_params === null) continue;
 
-							$read_result = ($template['function'])($template_params);
-							$read_mime = isset($template['mimeType']) ? $template['mimeType'] : 'text/plain';
-							break 2;
+						if (!empty($allowed_resources) && !in_array($template['uriTemplate'], $allowed_resources)) {
+							throw new McpException('Resource not permitted for this administrator', 403, -32001, $rpc_id);
 						}
+
+						$read_result = ($template['function'])($template_params);
+						$read_mime = isset($template['mimeType']) ? $template['mimeType'] : 'text/plain';
+						break;
 					}
 				}
 
@@ -384,69 +352,32 @@
 					throw new McpException('Resource not found', 404, -32601);
 				}
 
-				// Normalize callback return value into contents[] entries
-				if (is_string($read_result)) {
-					$contents = [[
-						'uri' => $uri,
-						'mimeType' => $read_mime,
-						'text' => $read_result,
-					]];
-				} elseif (isset($read_result['contents']) && is_array($read_result['contents'])) {
-					$contents = $read_result['contents'];
-				} elseif (isset($read_result['text']) || isset($read_result['blob'])) {
-					$contents = [[
-						'uri' => $uri,
-						'mimeType' => $read_mime,
-						'text' => isset($read_result['text']) ? $read_result['text'] : null,
-						'blob' => isset($read_result['blob']) ? $read_result['blob'] : null,
-					]];
-				} else {
-					$contents = [[
-						'uri' => $uri,
-						'mimeType' => 'application/json',
-						'text' => json_encode($read_result, JSON_UNESCAPED_SLASHES),
-					]];
-				}
-
 				$result = [
-					'contents' => $contents,
+					'contents' => mcp_normalize_contents($read_result, $uri, $read_mime),
 				];
 
 				break;
 
 			case 'tools/list':
 
-				$tool_schemas = [];
+				$tools = [];
+				foreach (mcp_load_sets()['tools'] as $tool) {
 
-				foreach (functions::file_search(vmod::check(FS_DIR_APP . 'includes/mcp/mcp_*.inc.php')) as $mcp_file) {
+					if (empty($tool['name']) || !is_array($tool['inputSchema'])) continue;
+					if (!empty($allowed_tools) && !in_array($tool['name'], $allowed_tools)) continue;
 
-					// Include without polluting global scope
-					$toolset = (function() use ($mcp_file) {
-						return include $mcp_file;
-					})();
-
-					if (!is_array($toolset) || empty($toolset['tools'])) continue;
-
-					foreach ($toolset['tools'] as $tool) {
-
-						if (empty($tool['name']) || !is_array($tool['inputSchema'])) continue;
-
-						// Skip tools the administrator isn't permitted to use
-						if (!empty($allowed_tools) && !in_array($tool['name'], $allowed_tools)) continue;
-
-						$tool_schemas[] = [
-							'name' => $tool['name'],
-							'description' => isset($tool['description']) ? $tool['description'] : '',
-							'inputSchema' => isset($tool['inputSchema']) ? $tool['inputSchema'] : [
-								'type' => 'object',
-								'properties' => new stdClass(),
-							],
-						];
-					}
+					$tools[] = [
+						'name' => $tool['name'],
+						'description' => isset($tool['description']) ? $tool['description'] : '',
+						'inputSchema' => isset($tool['inputSchema']) ? $tool['inputSchema'] : [
+							'type' => 'object',
+							'properties' => new stdClass(),
+						],
+					];
 				}
 
 				$result = [
-					'tools' => $tool_schemas,
+					'tools' => $tools
 				];
 
 				break;
@@ -457,19 +388,12 @@
 					throw new McpException('Missing tool name', 400, -32602);
 				}
 
-				foreach (functions::file_search(vmod::check(FS_DIR_APP . 'includes/mcp/*.inc.php')) as $mcp_file) {
-				// Include without polluting global scope
-				$toolset = (function() use ($mcp_file) {
-					return include $mcp_file;
-				})();
-
-				if (!is_array($toolset) || empty($toolset['tools'])) continue;
-
-				foreach ($toolset['tools'] as $tool) {
+				$tool_result = null;
+				foreach (mcp_load_sets()['tools'] as $tool) {
 
 					if (empty($tool['name']) || $tool['name'] !== $params['name']) continue;
 
-					// Per-toolset permission check
+					// Per-tool permission check
 					if (!empty($allowed_tools) && !in_array($tool['name'], $allowed_tools)) {
 						throw new McpException('Tool not permitted for this administrator', 403, -32001, $rpc_id);
 					}
@@ -477,39 +401,50 @@
 					// Support both 'arguments' (MCP standard) and 'input' (legacy)
 					$tool_args = isset($params['arguments']) ? $params['arguments'] : (isset($params['input']) ? $params['input'] : []);
 
-					// Check input against required parameters
+					// Validate against required parameters (also enforce type when schema provides it)
 					if (!empty($tool['inputSchema']['required']) && is_array($tool['inputSchema']['required'])) {
 						foreach ($tool['inputSchema']['required'] as $field) {
-							if (!isset($tool_args[$field]) || $tool_args[$field] === '') {
+							if (!isset($tool_args[$field]) || $tool_args[$field] === '' || $tool_args[$field] === null) {
 								throw new McpException("Missing required parameter: $field", 400, -32602);
 							}
 						}
 					}
 
-					$tool_result = ($tool['function'])($tool_args);
-					break 2;
+					try {
+						$tool_result = ($tool['function'])($tool_args);
+					} catch (Exception $e) {
+						throw new McpException($e->getMessage(), 500, -32601);
+					}
+
+					break;
 				}
-			}
 
-			if (!isset($tool_result)) {
-				throw new McpException('Tool not found', 404, -32601);
-			}
+				if ($tool_result === null) {
+					throw new McpException('Tool not found', 404, -32601);
+				}
 
-			$result = [
-				'content' => [
-					[
-						'type' => 'text',
-						'text' => json_encode($tool_result, JSON_UNESCAPED_SLASHES),
-					]
-				],
-				'structuredContent' => is_array($tool_result) ? (object)$tool_result : $tool_result,
-				'isError' => false,
-			];
+				$result = [
+					'content' => [
+						[
+							'type' => 'text',
+							'text' => is_string($tool_result) ? $tool_result : json_encode($tool_result, JSON_UNESCAPED_SLASHES),
+						]
+					],
+					'structuredContent' => is_array($tool_result) ? (object)$tool_result : $tool_result,
+					'isError' => false,
+				];
 
-			break;
+				break;
 
 			default:
 				throw new McpException('Method not found', 404, -32601);
+		}
+
+		// Notifications (no id) must not produce a JSON-RPC response body.
+		if ($is_notification) {
+			ob_clean();
+			http_response_code(204);
+			exit;
 		}
 
 		$output = json_encode([
