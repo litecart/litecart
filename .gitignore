@@ -22,6 +22,7 @@
 /public_html/vmods/.settings
 
 .user.ini
+bun.lock
 composer.lock
 package-lock.json
 php.ini
