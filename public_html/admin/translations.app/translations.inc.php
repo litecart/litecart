@@ -525,7 +525,7 @@
         index = matches[1],
         translation = matches[2].trim();
 
-      $(':input[name$="[text_'+ $modal.find('select[name="to_language_code"]').val() +']"]:eq('+ index +')').val(translation).css('border', '1px solid #f00');
+      $(':input[name$="[text_'+ $modal.find('select[name="to_language_code"]').val() +']"]').eq(index).val(translation).css('border', '1px solid #f00');
     });
 
     $.featherlight.close();

@@ -412,7 +412,7 @@
     $.each(available_stock_options, function(i, stock_option) {
       var matched = false;
       $.each(stock_option.combination.split(','), function(j, current_stock_combination){
-        if ($.inArray(current_stock_combination, selected_option_combinations) != -1) matched = true;
+        if (selected_option_combinations.indexOf(current_stock_combination) != -1) matched = true;
       });
 
       if (matched) {

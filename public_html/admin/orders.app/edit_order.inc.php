@@ -1466,7 +1466,7 @@
       $.each(item.options, function(group, value) {
         product_options += '<div>'
                          + '  - '+ group +': ';
-        if ($.isArray(value)) {
+        if (Array.isArray(value)) {
           $.each(value, function(i, array_value) {
             product_options += '<input type="hidden" name="items[new_'+ new_item_index +'][options]['+ group +'][]" value="'+ array_value +'">' + array_value +', ';
           });

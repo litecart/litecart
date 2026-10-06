@@ -790,7 +790,7 @@ textarea.warning {
 
     let method = $(this).val();
 
-    if ($.inArray(method, ['top', 'bottom', 'all']) != -1) {
+    if (['top', 'bottom', 'all'].indexOf(method) != -1) {
       $(this).closest('.operation').find(':input[name*="[find]"]').prop('disabled', true);
     } else {
       $(this).closest('.operation').find(':input[name*="[find]"]').prop('disabled', false);

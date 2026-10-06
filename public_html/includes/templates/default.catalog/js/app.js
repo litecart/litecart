@@ -45,7 +45,7 @@
 // Tabs (data-toggle="tab")
   $('.nav-tabs').each(function(){
     if (!$(this).find('.active').length) {
-      $(this).find('[data-toggle="tab"]:first').addClass('active');
+      $(this).find('[data-toggle="tab"]').first().addClass('active');
     }
 
     $(this).on('select', '[data-toggle="tab"]', function() {
@@ -324,11 +324,11 @@
     this.$active     = null
     this.$items      = null
 
-    this.options.keyboard && this.$element.on('keydown.bs.carousel', $.proxy(this.keydown, this))
+    this.options.keyboard && this.$element.on('keydown.bs.carousel', this.keydown.bind(this))
 
     this.options.pause == 'hover' && !('ontouchstart' in document.documentElement) && this.$element
-      .on('mouseenter.bs.carousel', $.proxy(this.pause, this))
-      .on('mouseleave.bs.carousel', $.proxy(this.cycle, this))
+      .on('mouseenter.bs.carousel', this.pause.bind(this))
+      .on('mouseleave.bs.carousel', this.cycle.bind(this))
   }
 
   Carousel.VERSION  = '3.4.1'
@@ -360,7 +360,7 @@
 
     this.options.interval
       && !this.paused
-      && (this.interval = setInterval($.proxy(this.next, this), this.options.interval))
+      && (this.interval = setInterval(this.next.bind(this), this.options.interval))
 
     return this
   }
@@ -632,7 +632,7 @@
     var scrollSize = dimension == 'width' ? 'scrollWidth' : 'scrollHeight'
 
     this.$element
-      .one('bsTransitionEnd', $.proxy(complete, this))
+      .one('bsTransitionEnd', complete.bind(this))
       .emulateTransitionEnd(Collapse.TRANSITION_DURATION)[dimension](this.$element[0][scrollSize])
   }
 
@@ -670,7 +670,7 @@
 
     this.$element
       [dimension](0)
-      .one('bsTransitionEnd', $.proxy(complete, this))
+      .one('bsTransitionEnd', complete.bind(this))
       .emulateTransitionEnd(Collapse.TRANSITION_DURATION)
   }
 
@@ -681,10 +681,10 @@
   Collapse.prototype.getParent = function () {
     return $(document).find(this.options.parent)
       .find('[data-toggle="collapse"][data-parent="' + this.options.parent + '"]')
-      .each($.proxy(function (i, element) {
+      .each(function (i, element) {
         var $element = $(element)
         this.addAriaAndCollapsedClass(getTargetFromTrigger($element), $element)
-      }, this))
+      }.bind(this))
       .end()
   }
 

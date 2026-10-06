@@ -79,7 +79,7 @@
 // Tabs (data-toggle="tab")
   $('.nav-tabs').each(function(){
     if (!$(this).find('.active').length) {
-      $(this).find('[data-toggle="tab"]:first').addClass('active');
+      $(this).find('[data-toggle="tab"]').first().addClass('active');
     }
 
     $(this).on('select', '[data-toggle="tab"]', function() {
@@ -423,7 +423,7 @@
     if (this.$img.prop('complete') && this.$img.prop('naturalWidth')) {
       this.build();
     } else {
-      this.$img.one('load', $.proxy(this.build, this));
+      this.$img.one('load', this.build.bind(this));
     }
   }
 
@@ -442,11 +442,11 @@
         .appendTo(self.$selection);
     });
 
-    this.$box.on('mousedown'+ this.ns +' touchstart'+ this.ns, $.proxy(this.onDown, this));
+    this.$box.on('mousedown'+ this.ns +' touchstart'+ this.ns, this.onDown.bind(this));
     $(document)
-      .on('mousemove'+ this.ns +' touchmove'+ this.ns, $.proxy(this.onMove, this))
-      .on('mouseup'+ this.ns +' touchend'+ this.ns, $.proxy(this.onUp, this));
-    $(window).on('resize'+ this.ns, $.proxy(this.render, this));
+      .on('mousemove'+ this.ns +' touchmove'+ this.ns, this.onMove.bind(this))
+      .on('mouseup'+ this.ns +' touchend'+ this.ns, this.onUp.bind(this));
+    $(window).on('resize'+ this.ns, this.render.bind(this));
   }
 
 // Displayed pixels per natural pixel
@@ -553,7 +553,7 @@
       this.render();
     }
 
-    if ($.isFunction(this.config.onChange)) this.config.onChange(this.getData());
+    if (typeof this.config.onChange === 'function') this.config.onChange(this.getData());
   }
 
   Crop.prototype.render = function() {
