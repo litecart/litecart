@@ -28,10 +28,6 @@
 				'title' => t('title_newsletter_recipients', 'Newsletter Recipients'),
 				'doc' => 'newsletter_recipients',
 			],
-			[
-				'title' => t('title_csv_import_export', 'CSV Import/Export'),
-				'doc' => 'csv',
-			],
 		],
 
 		'docs' => [
@@ -40,7 +36,6 @@
 			'customer_groups' => 'customer_groups.inc.php',
 			'customers' => 'customers.inc.php',
 			'customers.json' => 'customers.json.inc.php',
-			'csv' => 'csv.inc.php',
 			'edit_address' => 'edit_address.inc.php',
 			'edit_customer' => 'edit_customer.inc.php',
 			'edit_customer_group' => 'edit_customer_group.inc.php',
