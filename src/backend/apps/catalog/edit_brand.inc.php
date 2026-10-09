@@ -43,7 +43,7 @@
 				'name',
 				'short_description',
 				'description',
-				'keywords',
+				'tags',
 				'head_title',
 				'h1_title',
 				'meta_description',
@@ -154,8 +154,8 @@
 
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?= t('title_keywords', 'Keywords') ?></div>
-						<?= f::form_input_tags('keywords', true) ?>
+						<div class="form-label"><?= t('title_tags', 'Tags') ?></div>
+						<?= f::form_input_tags('tags', true) ?>
 					</label>
 				</div>
 			</div>

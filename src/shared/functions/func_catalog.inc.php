@@ -76,9 +76,9 @@
 			);
 		}
 
-		if (!empty($filter['keywords'])) {
-			$sql_select_relevance['keywords'] = (
-				"if(find_in_set('". implode("', p.keywords), 1, 0) + if(find_in_set('", database::input($filter['keywords'])) ."', p.keywords), 1, 0)"
+		if (!empty($filter['tags'])) {
+			$sql_select_relevance['tags'] = (
+				"if(find_in_set('". implode("', p.tags), 1, 0) + if(find_in_set('", database::input($filter['tags'])) ."', p.tags), 1, 0)"
 			);
 		}
 
@@ -237,9 +237,9 @@
 			$sql_inner_where['brands'] = "p.brand_id in ('". implode("', '", database::input($filter['brands'])) ."')";
 		}
 
-		if (!empty($filter['keywords'])) {
-			$sql_inner_where['keywords'] = "(". implode(" or ", f::array_each(database::input($filter['keywords']), fn($keyword) =>
-				"find_in_set('". database::input($keyword) ."', p.keywords)"
+		if (!empty($filter['tags'])) {
+			$sql_inner_where['tags'] = "(". implode(" or ", f::array_each(database::input($filter['tags']), fn($keyword) =>
+				"find_in_set('". database::input($keyword) ."', p.tags)"
 			)) .")";
 		}
 
@@ -264,7 +264,7 @@
 				pa.attributes, ss.hidden
 
 			from (
-				select p.id, p.delivery_status_id, p.sold_out_status_id, p.code, p.brand_id, p.keywords, p.default_image as image,
+				select p.id, p.delivery_status_id, p.sold_out_status_id, p.code, p.brand_id, p.tags, p.default_image as image,
 					p.recommended_price, p.tax_class_id, p.quantity_unit_id, p.created_at,
 					json_value(p.name, '$.". database::input(language::$selected['code']) ."') as name,
 					json_value(p.short_description, '$.". database::input(language::$selected['code']) ."') as short_description
@@ -491,9 +491,9 @@
 			);
 		}
 
-		if (!empty($filter['keywords'])) {
-			$sql_select_relevance['keywords'] = (
-				"if(find_in_set('". implode("', p.keywords), 1, 0) + if(find_in_set('", database::input($filter['keywords'])) ."', p.keywords), 1, 0)"
+		if (!empty($filter['tags'])) {
+			$sql_select_relevance['tags'] = (
+				"if(find_in_set('". implode("', p.tags), 1, 0) + if(find_in_set('", database::input($filter['tags'])) ."', p.tags), 1, 0)"
 			);
 		}
 
@@ -546,7 +546,7 @@
 				ifnull(pso.num_stock_options, 0) as num_stock_options, pso.total_quantity, pso.quantity_available, pa.attributes
 
 			from (
-				select id, delivery_status_id, sold_out_status_id,code,	brand_id,	keywords,	default_image as image, recommended_price, tax_class_id, quantity_unit_id, created_at,
+				select id, delivery_status_id, sold_out_status_id,code,	brand_id,	tags,	default_image as image, recommended_price, tax_class_id, quantity_unit_id, created_at,
 					json_value(name, '$.". database::input(language::$selected['code']) ."') as name,
 					json_value(short_description, '$.". database::input(language::$selected['code']) ."') as short_description,
 					(

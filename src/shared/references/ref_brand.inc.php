@@ -90,7 +90,7 @@
 							$brand[$key] = reset($brand[$key]);
 						}
 
-						$brand['keywords'] = preg_split('#\s*,\s*#', $brand['keywords'], -1, PREG_SPLIT_NO_EMPTY);
+						$brand['tags'] = preg_split('#\s*,\s*#', $brand['tags'], -1, PREG_SPLIT_NO_EMPTY);
 
 						return $brand;
 					});

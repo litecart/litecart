@@ -318,7 +318,7 @@
 		$matched_categories = database::query(
 			"select id from ". DB_PREFIX ."categories
 			where id = '". database::input($_GET['query']) ."'
-			or find_in_set('". database::input($_GET['query']) ."', keywords)
+			or find_in_set('". database::input($_GET['query']) ."', tags)
 			or (
 				json_value(name, '$.". database::input(language::$selected['code']) ."') like '%". database::input($_GET['query']) ."%'
 				or json_value(short_description, '$.". database::input(language::$selected['code']) ."') like '%". database::input($_GET['query']) ."%'

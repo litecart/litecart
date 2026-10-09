@@ -663,7 +663,7 @@
 						}
 
 						$product['synonyms'] = preg_split('#\s*,\s*#', (string)$product['synonyms'], -1, PREG_SPLIT_NO_EMPTY);
-						$product['keywords'] = preg_split('#\s*,\s*#', (string)$product['keywords'], -1, PREG_SPLIT_NO_EMPTY);
+						$product['tags'] = preg_split('#\s*,\s*#', (string)$product['tags'], -1, PREG_SPLIT_NO_EMPTY);
 
 						return $product;
 					});

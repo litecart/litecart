@@ -430,7 +430,7 @@
 							'parent_id',
 							'status',
 							'code',
-							'keywords',
+							'tags',
 							'image',
 							'priority',
 						] as $field) {
@@ -535,7 +535,7 @@
 							'status',
 							'code',
 							'name',
-							'keywords',
+							'tags',
 							'image',
 							'priority',
 						] as $field) {

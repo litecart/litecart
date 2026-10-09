@@ -46,7 +46,7 @@
 				'languages',
 				'link',
 				'html',
-				'keywords',
+				'tags',
 				'valid_from',
 				'valid_to',
 			] as $field) {
@@ -149,8 +149,8 @@ table th:last-child {
 			</label>
 
 			<label class="form-group">
-				<div class="form-label"><?= t('title_keywords', 'Keywords') ?></div>
-				<?= f::form_input_tags('keywords', true) ?>
+				<div class="form-label"><?= t('title_tags', 'Tags') ?></div>
+				<?= f::form_input_tags('tags', true) ?>
 			</label>
 
 			<div class="grid">

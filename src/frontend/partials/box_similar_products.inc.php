@@ -21,7 +21,7 @@
 			'categories' => isset($_GET['category_id']) ? [$_GET['category_id']] : array_keys($product->categories),
 			'brands' => [$product->brand_id],
 			'exclude_products' => [$product->id],
-			'keywords' => $product->keywords,
+			'tags' => $product->tags,
 			'limit' => settings::get('box_similar_products_num_items'),
 		])->fetch_all();
 

@@ -81,9 +81,9 @@
 				$this->data['id'] = database::insert_id();
 			}
 
-			$this->data['keywords'] = f::string_split($this->data['keywords']);
-			$this->data['keywords'] = array_unique($this->data['keywords']);
-			$this->data['keywords'] = implode(',', $this->data['keywords']);
+			$this->data['tags'] = f::string_split($this->data['tags']);
+			$this->data['tags'] = array_unique($this->data['tags']);
+			$this->data['tags'] = implode(',', $this->data['tags']);
 
 			database::query(
 				"update ". DB_PREFIX ."brands
@@ -98,7 +98,7 @@
 					meta_description = '". database::input(f::format_json($this->data['meta_description'])) ."',
 					link = '". database::input(f::format_json($this->data['link'])) ."',
 					image = '". database::input($this->data['image']) ."',
-					keywords = '". database::input($this->data['keywords']) ."'
+					tags = '". database::input($this->data['tags']) ."'
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"
 			);

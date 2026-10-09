@@ -38,7 +38,7 @@
 	$banners = database::query(
 		"select * from ". DB_PREFIX ."banners
 		where true
-		". (!empty($_GET['keyword']) ? "and find_in_set('". database::input($_GET['keywords']) ."', keywords)" : '') ."
+		". (!empty($_GET['tag']) ? "and find_in_set('". database::input($_GET['tags']) ."', tags)" : '') ."
 		". (!empty($_GET['query']) ? "and name like '%". database::input($_GET['query']) ."%'" : '') ."
 		order by status desc, name asc;"
 	)->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
@@ -69,7 +69,7 @@
 					<th></th>
 					<th><?= t('title_id', 'ID') ?></th>
 					<th class="main"><?= t('title_name', 'Name') ?></th>
-					<th><?= t('title_keywords', 'Keywords') ?></th>
+					<th><?= t('title_tags', 'Tags') ?></th>
 					<th class="text-center"><?= t('title_clicks', 'Clicks') ?></th>
 					<th class="text-center"><?= t('title_views', 'Views') ?></th>
 					<th class="text-center"><?= t('title_ratio', 'Ratio') ?></th>
@@ -86,7 +86,7 @@
 					<td><?= f::draw_fonticon(!empty($banner['status']) ? 'on' : 'off') ?></td>
 					<td><?= $banner['id'] ?></td>
 					<td><a class="link" href="<?= document::href_ilink(__APP__.'/edit_banner', ['banner_id' => $banner['id']]) ?>"><?= $banner['name'] ?></a></td>
-					<td><?= $banner['keywords'] ?></td>
+					<td><?= $banner['tags'] ?></td>
 					<td class="text-end"><?= $banner['total_clicks'] ?></td>
 					<td class="text-end"><?= $banner['total_views'] ?></td>
 					<td class="text-end"><?= !empty($banner['total_clicks']) ? '1:'.round($banner['total_views']/$banner['total_clicks']) : '-' ?></td>

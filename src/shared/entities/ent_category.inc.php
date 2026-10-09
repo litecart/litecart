@@ -116,10 +116,10 @@
 				$this->data['parent_id'] = 0;
 			}
 
-			$this->data['keywords'] = explode(',', $this->data['keywords']);
-			$this->data['keywords'] = array_map('trim', $this->data['keywords']);
-			$this->data['keywords'] = array_unique($this->data['keywords']);
-			$this->data['keywords'] = implode(',', $this->data['keywords']);
+			$tags = explode(',', $this->data['tags']);
+			$tags = array_map('trim', $tags);
+			$tags = array_unique($tags);
+			$this->data['tags'] = implode(',', $tags);
 
 			database::query(
 				"update ". DB_PREFIX ."categories
@@ -134,7 +134,7 @@
 					h1_title = '". database::input(f::format_json($this->data['h1_title'])) ."',
 					meta_description = '". database::input(f::format_json($this->data['meta_description'])) ."',
 					synonyms = '". database::input(f::format_json($this->data['synonyms'])) ."',
-					keywords = '". database::input($this->data['keywords']) ."',
+					tags = '". database::input($this->data['tags']) ."',
 					priority = ". (int)$this->data['priority'] .",
 					updated_at = '". ($this->data['updated_at'] = date('Y-m-d H:i:s')) ."'
 				where id = ". (int)$this->data['id'] ."

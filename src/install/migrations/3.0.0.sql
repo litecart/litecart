@@ -20,7 +20,7 @@ CREATE TABLE `lc_banners` (
 	`html` TEXT NOT NULL DEFAULT '',
 	`image` VARCHAR(64) NOT NULL DEFAULT '',
 	`link` VARCHAR(255) NOT NULL DEFAULT '',
-	`keywords` VARCHAR(255) NOT NULL DEFAULT '',
+	`tags` VARCHAR(255) NOT NULL DEFAULT '',
 	`total_views` INT(10) UNSIGNED NOT NULL DEFAULT '0',
 	`total_clicks` INT(10) UNSIGNED NOT NULL DEFAULT '0',
 	`valid_from` TIMESTAMP NULL,
@@ -312,6 +312,7 @@ ALTER TABLE `lc_brands`
 CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 CHANGE COLUMN `status` `status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
 CHANGE COLUMN `featured` `featured` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
+CHANGE COLUMN `keywords` `tags` VARCHAR(250) NOT NULL DEFAULT '',
 ADD COLUMN `short_description` TEXT NOT NULL DEFAULT '{}' AFTER `name`,
 ADD COLUMN `description` MEDIUMTEXT NOT NULL DEFAULT '{}' AFTER `short_description`,
 ADD COLUMN `h1_title` TEXT NOT NULL DEFAULT '{}' AFTER `description`,
@@ -341,6 +342,7 @@ CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 CHANGE COLUMN `parent_id` `parent_id` INT(10) UNSIGNED NULL,
 CHANGE COLUMN `google_taxonomy_id` `google_taxonomy_id` INT(10) UNSIGNED NOT NULL DEFAULT '0',
 CHANGE COLUMN `status` `status` TINYINT(1) UNSIGNED NOT NULL,
+CHANGE COLUMN `keywords` `tags` VARCHAR(250) NOT NULL DEFAULT '',
 ADD COLUMN `name` TEXT NOT NULL DEFAULT '' AFTER `code`,
 ADD COLUMN `short_description` TEXT NOT NULL DEFAULT '{}' AFTER `name`,
 ADD COLUMN `description` MEDIUMTEXT NOT NULL DEFAULT '{}' AFTER `short_description`,
@@ -594,7 +596,7 @@ CHANGE COLUMN `supplier_id` `supplier_id` INT(10) UNSIGNED NULL,
 CHANGE COLUMN `delivery_status_id` `delivery_status_id` INT(10) UNSIGNED NULL,
 CHANGE COLUMN `sold_out_status_id` `sold_out_status_id` INT(10) UNSIGNED NULL,
 CHANGE COLUMN `default_category_id` `default_category_id` INT(10) UNSIGNED NULL,
-CHANGE COLUMN `keywords` `keywords` VARCHAR(248) NOT NULL DEFAULT '',
+CHANGE COLUMN `tags` `tags` VARCHAR(248) NOT NULL DEFAULT '',
 CHANGE COLUMN `image` `default_image` VARCHAR(128) NOT NULL DEFAULT '',
 CHANGE COLUMN `quantity_min` `quantity_min` DECIMAL(10,4) UNSIGNED NOT NULL DEFAULT '1.0000',
 CHANGE COLUMN `quantity_max` `quantity_max` DECIMAL(10,4) UNSIGNED NOT NULL DEFAULT '0.0000',
@@ -617,7 +619,7 @@ ADD COLUMN `autofill_technical_data` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' AF
 ADD COLUMN `synonyms` TEXT NOT NULL DEFAULT '{}' AFTER `description`,
 ADD COLUMN `head_title` TEXT NOT NULL DEFAULT '{}' AFTER `synonyms`,
 ADD COLUMN `meta_description` TEXT NOT NULL DEFAULT '{}' AFTER `head_title`,
-ADD COLUMN `stock_option_type` ENUM('variants','bundle') NOT NULL DEFAULT 'variants' AFTER `keywords`,
+ADD COLUMN `stock_option_type` ENUM('variants','bundle') NOT NULL DEFAULT 'variants' AFTER `tags`,
 ADD COLUMN `video_url` VARCHAR(255) NOT NULL DEFAULT '' AFTER `image`,
 ADD COLUMN `valid_from` TIMESTAMP NULL AFTER `purchases`,
 ADD COLUMN `valid_to` TIMESTAMP NULL AFTER `valid_from`,
@@ -779,10 +781,10 @@ CHANGE COLUMN `zone_code` `zone_code` VARCHAR(8) NULL,
 CHANGE COLUMN `city` `city` VARCHAR(32) NULL;
 -- -----
 INSERT IGNORE INTO `lc_banners`
-(`id`, `status`, `name`, `languages`, `html`, `image`, `link`, `keywords`, `valid_from`, `valid_to`)
+(`id`, `status`, `name`, `languages`, `html`, `image`, `link`, `tags`, `valid_from`, `valid_to`)
 SELECT id, status, name, languages, '', replace(image, 'slides/', 'banners/'), '', 'jumbotron', date_valid_from, date_valid_to FROM `lc_slides`;
 -- -----
-INSERT INTO `lc_banners` (`status`, `name`, `languages`, `html`, `image`, `link`, `keywords`, `total_views`, `total_clicks`, `valid_from`, `valid_to`, `updated_at`, `created_at`) VALUES
+INSERT INTO `lc_banners` (`status`, `name`, `languages`, `html`, `image`, `link`, `tags`, `total_views`, `total_clicks`, `valid_from`, `valid_to`, `updated_at`, `created_at`) VALUES
 (0, 'Jumbotron', '', '', 'banners/leaderboard.svg', '', 'jumbotron', 0, 0, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 (0, 'Left', '', '<div class="placeholder" data-aspect-ratio="2:1" style="background: ivory;">Left</div>', '', '', 'left', 0, 0, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 (0, 'Middle', '', '<div class="placeholder" data-aspect-ratio="2:1" style="background: ivory;">Middle</div>', '', '', 'middle', 0, 0, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),

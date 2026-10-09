@@ -52,11 +52,11 @@
 
 		public function save(): void {
 
-			$this->data['keywords'] = preg_split('#\s*,\s*#', $this->data['keywords'], -1, PREG_SPLIT_NO_EMPTY);
-			$this->data['keywords'] = array_map('trim', $this->data['keywords']);
-			$this->data['keywords'] = array_filter($this->data['keywords']);
-			$this->data['keywords'] = array_unique($this->data['keywords']);
-			$this->data['keywords'] = implode(',', $this->data['keywords']);
+			$this->data['tags'] = preg_split('#\s*,\s*#', $this->data['tags'], -1, PREG_SPLIT_NO_EMPTY);
+			$this->data['tags'] = array_map('trim', $this->data['tags']);
+			$this->data['tags'] = array_filter($this->data['tags']);
+			$this->data['tags'] = array_unique($this->data['tags']);
+			$this->data['tags'] = implode(',', $this->data['tags']);
 
 			if (!$this->data['id']) {
 
@@ -75,7 +75,7 @@
 					link = '". database::input($this->data['link']) ."',
 					". (!empty($this->data['image']) ? "image = '" . database::input($this->data['image']) . "'," : '') ."
 					html = '". database::input($this->data['html'], true) ."',
-					keywords = '". database::input($this->data['keywords']) ."',
+					tags = '". database::input($this->data['tags']) ."',
 					valid_from = ". (!empty($this->data['valid_from']) ? "'". database::input($this->data['valid_from']) ."'" : "null") .",
 					valid_to = ". (!empty($this->data['valid_to']) ? "'". database::input($this->data['valid_to']) ."'" : "null") .",
 					updated_at = '". ($this->data['updated_at'] = date('Y-m-d H:i:s')) ."'

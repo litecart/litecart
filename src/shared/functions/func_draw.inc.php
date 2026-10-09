@@ -1,20 +1,20 @@
 <?php
 
-	function draw_banner(array|string $keywords, int $limit=0): string|null {
+	function draw_banner(array|string $tags, int $limit=0): string|null {
 
-		if (!is_array($keywords)) {
-			$keywords = preg_split('#\s*,\s*#', $keywords, -1, PREG_SPLIT_NO_EMPTY);
+		if (!is_array($tags)) {
+			$tags = preg_split('#\s*,\s*#', $tags, -1, PREG_SPLIT_NO_EMPTY);
 		}
 
-		$sql_where_keywords = "(". implode(" or ", f::array_each($keywords, fn($keyword) =>
-			"find_in_set('". database::input($keyword) ."', keywords)"
+		$sql_where_tags = "(". implode(" or ", f::array_each($tags, fn($tag) =>
+			"find_in_set('". database::input($tag) ."', tags)"
 		)) .")";
 
 		$banners = database::query(
 			"select * from ". DB_PREFIX ."banners
 			where status
 			and (image != '' or html != '')
-			and $sql_where_keywords
+			and $sql_where_tags
 			order by rand()
 			". ($limit ? "limit ". (int)$limit : '') .";"
 		)->fetch_all();

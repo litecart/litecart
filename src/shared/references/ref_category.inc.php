@@ -217,7 +217,7 @@
 							$category[$field] = '';
 						}
 
-						$category['keywords'] = f::string_split($category['keywords']);
+						$category['tags'] = f::string_split($category['tags']);
 
 						return $category;
 					});
