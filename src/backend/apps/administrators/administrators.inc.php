@@ -77,47 +77,47 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo t('title_administrators', 'Administrators'); ?>
+			<?= $app_icon ?> <?= t('title_administrators', 'Administrators') ?>
 		</div>
 	</div>
 
 	<div class="card-action">
-		<?php echo f::form_button_link(document::ilink(__APP__.'/edit_administrator'), t('title_create_new_administrator', 'Create New Administrator'), '', 'create'); ?>
+		<?= f::form_button_link(document::ilink(__APP__.'/edit_administrator'), t('title_create_new_administrator', 'Create New Administrator'), '', 'create') ?>
 	</div>
 
-	<?php echo f::form_begin('administrators_form', 'post'); ?>
+	<?= f::form_begin('administrators_form', 'post') ?>
 
 		<table class="table data-table">
 			<thead>
 				<tr>
-					<th><?php echo f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th class="text-center"><?= f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"') ?></th>
 					<th></th>
 					<th></th>
-					<th><?php echo t('title_username', 'Username'); ?></th>
-					<th><?php echo t('title_person_name', 'Name'); ?></th>
-					<th class="main"><?php echo t('title_email', 'Email'); ?></th>
-					<th><?php echo t('title_restrictions', 'Restrictions'); ?></th>
-					<th class="text-end" style="min-width: 200px;"><?php echo t('title_valid_from', 'Valid From'); ?></th>
-					<th class="text-end" style="min-width: 200px;"><?php echo t('title_valid_to', 'Valid To'); ?></th>
-					<th class="text-end"><?php echo t('title_last_login', 'Last Login'); ?></th>
+					<th><?= t('title_username', 'Username') ?></th>
+					<th><?= t('title_person_name', 'Name') ?></th>
+					<th class="main"><?= t('title_email', 'Email') ?></th>
+					<th><?= t('title_restrictions', 'Restrictions') ?></th>
+					<th class="text-end" style="min-width: 200px;"><?= t('title_valid_from', 'Valid From') ?></th>
+					<th class="text-end" style="min-width: 200px;"><?= t('title_valid_to', 'Valid To') ?></th>
+					<th class="text-end"><?= t('title_last_login', 'Last Login') ?></th>
 					<th></th>
 				</tr>
 			</thead>
 
 			<tbody>
 				<?php foreach ($administrators as $administrator) { ?>
-				<tr class="<?php echo empty($administrator['status']) ? 'semi-transparent' : ''; ?>">
-					<td><?php echo f::form_checkbox('administrators[]', $administrator['id']); ?></td>
-					<td><?php echo f::draw_fonticon($administrator['status'] ? 'on' : 'off'); ?></td>
-					<td class="warning"><?php echo !empty($administrator['warning']) ? f::draw_fonticon('icon-exclamation-triangle', 'title="'. f::escape_html($administrator['warning']) .'"') : ''; ?></td>
-					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_administrator', ['administrator_id' => $administrator['id']]); ?>"><?php echo $administrator['username']; ?></a></td>
-					<td><?php echo $administrator['name']; ?></td>
-					<td><?php echo $administrator['email']; ?></td>
-					<td><?php echo $administrator['permissions'] ? t('title_restricted', 'Restricted') : '-'; ?></td>
-					<td class="text-end"><?php echo $administrator['valid_from'] ? f::datetime_format('datetime', $administrator['valid_from']) : '-'; ?></td>
-					<td class="text-end"><?php echo $administrator['valid_to'] ? f::datetime_format('datetime', $administrator['valid_to']) : '-'; ?></td>
-					<td class="text-end"><?php echo $administrator['last_login'] ? f::datetime_format('datetime', $administrator['last_login']) : '-'; ?></td>
-					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_administrator', ['administrator_id' => $administrator['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo f::draw_fonticon('edit'); ?></a></td>
+				<tr class="<?= empty($administrator['status']) ? 'semi-transparent' : '' ?>">
+					<td><?= f::form_checkbox('administrators[]', $administrator['id']) ?></td>
+					<td><?= f::draw_fonticon($administrator['status'] ? 'on' : 'off') ?></td>
+					<td class="warning"><?= !empty($administrator['warning']) ? f::draw_fonticon('icon-exclamation-triangle', 'title="'. f::escape_html($administrator['warning']) .'"') : '' ?></td>
+					<td><a class="link" href="<?= document::href_ilink(__APP__.'/edit_administrator', ['administrator_id' => $administrator['id']]) ?>"><?= $administrator['username'] ?></a></td>
+					<td><?= $administrator['name'] ?></td>
+					<td><?= $administrator['email'] ?></td>
+					<td><?= $administrator['permissions'] ? t('title_restricted', 'Restricted') : '-' ?></td>
+					<td class="text-end"><?= $administrator['valid_from'] ? f::datetime_format('datetime', $administrator['valid_from']) : '-' ?></td>
+					<td class="text-end"><?= $administrator['valid_to'] ? f::datetime_format('datetime', $administrator['valid_to']) : '-' ?></td>
+					<td class="text-end"><?= $administrator['last_login'] ? f::datetime_format('datetime', $administrator['last_login']) : '-' ?></td>
+					<td class="text-end"><a class="btn btn-default btn-sm" href="<?= document::href_ilink(__APP__.'/edit_administrator', ['administrator_id' => $administrator['id']]) ?>" title="<?= t('title_edit', 'Edit') ?>"><?= f::draw_fonticon('edit') ?></a></td>
 				</tr>
 				<?php } ?>
 			</tbody>
@@ -125,7 +125,7 @@
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo t('title_administrators', 'Administrators'); ?>: <?php echo f::format_number($num_rows); ?>
+						<?= t('title_administrators', 'Administrators') ?>: <?= f::format_number($num_rows) ?>
 					</td>
 				</tr>
 			</tfoot>
@@ -135,22 +135,22 @@
 			<fieldset id="actions">
 
 				<legend>
-					<?php echo t('text_with_selected', 'With selected'); ?>:
+					<?= t('text_with_selected', 'With selected') ?>:
 				</legend>
 
 				<div class="btn-group">
-					<?php echo f::form_button_predefined('enable'); ?>
-					<?php echo f::form_button_predefined('disable'); ?>
+					<?= f::form_button_predefined('enable') ?>
+					<?= f::form_button_predefined('disable') ?>
 				</div>
 
 			</fieldset>
 		</div>
 
-	<?php echo f::form_end(); ?>
+	<?= f::form_end() ?>
 
 	<?php if ($num_pages > 1) { ?>
 	<div class="card-footer">
-		<?php echo f::draw_pagination($num_pages); ?>
+		<?= f::draw_pagination($num_pages) ?>
 	</div>
 	<?php } ?>
 </div>

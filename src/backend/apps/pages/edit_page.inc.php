@@ -84,18 +84,18 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo !empty($page->data['id']) ? t('title_edit_page', 'Edit Page') : t('title_create_new_page', 'Create New Page'); ?>
+			<?= $app_icon ?> <?= !empty($page->data['id']) ? t('title_edit_page', 'Edit Page') : t('title_create_new_page', 'Create New Page') ?>
 		</div>
 	</div>
 
 	<div class="card-body">
-		<?php echo f::form_begin('pages_form', 'post', false, false, ['style' => 'max-width: 720px;']); ?>
+		<?= f::form_begin('pages_form', 'post', false, false, ['style' => 'max-width: 720px;']) ?>
 
 			<div class="grid">
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_status', 'Status'); ?></div>
-						<?php echo f::form_toggle('status', 'e/d', true); ?>
+						<div class="form-label"><?= t('title_status', 'Status') ?></div>
+						<?= f::form_toggle('status', 'e/d', true) ?>
 					</label>
 				</div>
 			</div>
@@ -103,15 +103,15 @@
 			<div class="grid">
 				<div class="col-md-8">
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_parent', 'Parent'); ?></div>
-						<?php echo f::form_select_parent_page('parent', true); ?>
+						<div class="form-label"><?= t('title_parent', 'Parent') ?></div>
+						<?= f::form_select_parent_page('parent', true) ?>
 					</label>
 				</div>
 
 				<div class="col-md-4">
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_priority', 'Priority'); ?></div>
-						<?php echo f::form_input_number('priority', true); ?>
+						<div class="form-label"><?= t('title_priority', 'Priority') ?></div>
+						<?= f::form_input_number('priority', true) ?>
 					</label>
 				</div>
 			</div>
@@ -119,44 +119,44 @@
 			<?php if (count(language::$languages) > 1) { ?>
 			<nav class="tabs">
 				<?php foreach (language::$languages as $language) { ?>
-				<a class="tab-item<?php if ($language['code'] == language::$selected['code']) echo ' active'; ?>" data-toggle="tab" href="#<?php echo $language['code']; ?>"><?php echo $language['name']; ?></a>
+				<a class="tab-item<?php if ($language['code'] == language::$selected['code']) echo ' active'; ?>" data-toggle="tab" href="#<?= $language['code'] ?>"><?= $language['name'] ?></a>
 				<?php } ?>
 			</nav>
 			<?php } ?>
 
 			<div class="tab-contents">
 				<?php foreach (array_keys(language::$languages) as $language_code) { ?>
-				<div id="<?php echo $language_code; ?>" class="tab-content<?php if ($language_code == language::$selected['code']) echo ' active'; ?>">
+				<div id="<?= $language_code ?>" class="tab-content<?php if ($language_code == language::$selected['code']) echo ' active'; ?>">
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_title', 'Title'); ?></div>
-						<?php echo f::form_regional_text('title['. $language_code .']', $language_code, true, ''); ?>
+						<div class="form-label"><?= t('title_title', 'Title') ?></div>
+						<?= f::form_regional_text('title['. $language_code .']', $language_code, true, '') ?>
 					</label>
 
 					<div class="form-group">
-						<div class="form-label"><?php echo t('title_content', 'Content'); ?></div>
-						<?php echo f::form_regional_wysiwyg('content['. $language_code .']', $language_code, true, ['style' => 'height: 400px;']); ?>
+						<div class="form-label"><?= t('title_content', 'Content') ?></div>
+						<?= f::form_regional_wysiwyg('content['. $language_code .']', $language_code, true, ['style' => 'height: 400px;']) ?>
 					</div>
 
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_head_title', 'Head Title'); ?></div>
-						<?php echo f::form_regional_text('head_title['. $language_code .']', $language_code, true); ?>
+						<div class="form-label"><?= t('title_head_title', 'Head Title') ?></div>
+						<?= f::form_regional_text('head_title['. $language_code .']', $language_code, true) ?>
 					</label>
 
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_meta_description', 'Meta Description'); ?></div>
-						<?php echo f::form_regional_text('meta_description['. $language_code .']', $language_code, true); ?>
+						<div class="form-label"><?= t('title_meta_description', 'Meta Description') ?></div>
+						<?= f::form_regional_text('meta_description['. $language_code .']', $language_code, true) ?>
 					</label>
 				</div>
 				<?php } ?>
 			</div>
 
 			<div class="card-action">
-				<?php echo f::form_button_predefined('save'); ?>
+				<?= f::form_button_predefined('save') ?>
 				<?php if (!empty($page->data['id'])) echo f::form_button_predefined('delete'); ?>
-				<?php echo f::form_button_predefined('cancel'); ?>
+				<?= f::form_button_predefined('cancel') ?>
 			</div>
 
-		<?php echo f::form_end(); ?>
+		<?= f::form_end() ?>
 	</div>
 </div>
 

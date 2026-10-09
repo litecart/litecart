@@ -11,7 +11,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 }
 </style>
 
-<article id="box-product" data-id="{{product_id}}" data-name="{{name|escape}}" data-price="<?php echo currency::format_raw($final_price); ?>">
+<article id="box-product" data-id="{{product_id}}" data-name="{{name|escape}}" data-price="<?= currency::format_raw($final_price) ?>">
 
 	<div class="card">
 		<div class="card-body">
@@ -19,8 +19,8 @@ form[name="buy_now_form"] .dropdown-menu .image {
 				<div class="col-sm-4">
 					<div class="images">
 
-						<a class="main-image" href="<?php echo document::href_rlink($image); ?>" data-toggle="lightbox" data-gallery="product">
-							<?php echo f::draw_thumbnail($image, 320, 0, 'product', 'alt="'. f::escape_attr($name) .'"'); ?>
+						<a class="main-image" href="<?= document::href_rlink($image) ?>" data-toggle="lightbox" data-gallery="product">
+							<?= f::draw_thumbnail($image, 320, 0, 'product', 'alt="'. f::escape_attr($name) .'"') ?>
 							{{sticker}}
 						</a>
 
@@ -28,17 +28,17 @@ form[name="buy_now_form"] .dropdown-menu .image {
 						<div class="grid">
 							<?php foreach ($extra_images as $extra_image) { ?>
 							<div class="col-6">
-								<a class="extra-image" href="<?php echo document::href_rlink($extra_image); ?>" data-toggle="lightbox" data-gallery="product">
-									<?php echo f::draw_thumbnail($extra_image, 160, 0, 'product', 'alt="'. f::escape_attr($name) .'"'); ?>
+								<a class="extra-image" href="<?= document::href_rlink($extra_image) ?>" data-toggle="lightbox" data-gallery="product">
+									<?= f::draw_thumbnail($extra_image, 160, 0, 'product', 'alt="'. f::escape_attr($name) .'"') ?>
 								</a>
 							</div>
 							<?php } ?>
 
 							<?php if ($video_url) { ?>
 							<div class="col-4">
-								<a class="video" href="<?php echo document::href_rlink($video_url); ?>" data-toggle="lightbox" data-gallery="product">
-									<?php echo f::draw_thumbnail($image, 320, 0, 'product', 'alt="'. f::escape_attr($name) .'"'); ?>
-									<span class="video-icon"><?php echo f::draw_fonticon('icon-play'); ?></span>
+								<a class="video" href="<?= document::href_rlink($video_url) ?>" data-toggle="lightbox" data-gallery="product">
+									<?= f::draw_thumbnail($image, 320, 0, 'product', 'alt="'. f::escape_attr($name) .'"') ?>
+									<span class="video-icon"><?= f::draw_fonticon('icon-play') ?></span>
 								</a>
 							</div>
 							<?php } ?>
@@ -59,11 +59,11 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 					<?php if (!empty($brand)) { ?>
 					<div class="brand">
-						<a href="<?php echo f::escape_html($brand['link']); ?>">
+						<a href="<?= f::escape_html($brand['link']) ?>">
 							<?php if ($brand['image']) { ?>
-							<?php echo f::draw_thumbnail($brand['image'], 0, 40, '', 'style="max-height: 40px; margin-inline-start: 0;"'); ?>
+							<?= f::draw_thumbnail($brand['image'], 0, 40, '', 'style="max-height: 40px; margin-inline-start: 0;"') ?>
 							<?php } else { ?>
-							<h3><?php echo $brand['name']; ?></h3>
+							<h3><?= $brand['name'] ?></h3>
 							<?php } ?>
 						</a>
 					</div>
@@ -71,16 +71,16 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 					<?php if ($recommended_price) { ?>
 					<div class="recommended-price" style="margin: 1em 0;">
-						<?php echo t('title_recommended_price', 'Recommended Price'); ?>:
+						<?= t('title_recommended_price', 'Recommended Price') ?>:
 						<span class="value">{{recommended_price|money}}</span>
 					</div>
 					<?php } ?>
 
 					<?php if ($cheapest_shipping_fee !== null) { ?>
 					<div class="cheapest-shipping" style="margin: 1em 0;">
-						<?php echo f::draw_fonticon('icon-truck'); ?> <?php echo strtr(t('text_cheapest_shipping_from_price', 'Cheapest shipping from <strong class="value">{price}</strong>'), [
+						<?= f::draw_fonticon('icon-truck') ?> <?= strtr(t('text_cheapest_shipping_from_price', 'Cheapest shipping from <strong class="value">{price}</strong>'), [
 							'{price}' => currency::format($cheapest_shipping_fee)
-						]); ?>
+						]) ?>
 					</div>
 					<?php } ?>
 
@@ -88,21 +88,21 @@ form[name="buy_now_form"] .dropdown-menu .image {
 					<div class="codes" style="margin: 1em 0;">
 						<?php if ($sku) { ?>
 						<div class="sku">
-							<?php echo t('title_sku', 'SKU'); ?>:
+							<?= t('title_sku', 'SKU') ?>:
 							<span class="value">{{sku}}</span>
 						</div>
 						<?php } ?>
 
 						<?php if ($mpn) { ?>
 						<div class="mpn">
-							<?php echo t('title_mpn', 'MPN'); ?>:
+							<?= t('title_mpn', 'MPN') ?>:
 							<span class="value">{{mpn}}</span>
 						</div>
 						<?php } ?>
 
 						<?php if ($gtin) { ?>
 						<div class="gtin">
-							<?php echo t('title_gtin', 'GTIN'); ?>:
+							<?= t('title_gtin', 'GTIN') ?>:
 							<span class="value">{{gtin}}</span>
 						</div>
 						<?php } ?>
@@ -113,28 +113,28 @@ form[name="buy_now_form"] .dropdown-menu .image {
 					<div class="stock-status" style="margin: 1em 0;">
 						<?php if ($quantity_available > 0) { ?>
 						<div class="stock-available">
-							<?php echo t('title_stock_status', 'Stock Status'); ?>:
+							<?= t('title_stock_status', 'Stock Status') ?>:
 							<span class="value">{{stock_status}}</span>
 						</div>
 
 						<?php if ($delivery_status) { ?>
 						<div class="stock-delivery">
-							<?php echo t('title_delivery_status', 'Delivery Status'); ?>:
-							<span class="value"><?php echo $delivery_status['name']; ?></span>
+							<?= t('title_delivery_status', 'Delivery Status') ?>:
+							<span class="value"><?= $delivery_status['name'] ?></span>
 						</div>
 						<?php } ?>
 
 						<?php } else { ?>
 						<?php if ($sold_out_status) { ?>
-						<div class="<?php echo $orderable ? 'stock-partly-available' : 'stock-unavailable'; ?>">
-							<?php echo t('title_stock_status', 'Stock Status'); ?>:
-							<span class="value"><?php echo $sold_out_status['name']; ?></span>
+						<div class="<?= $orderable ? 'stock-partly-available' : 'stock-unavailable' ?>">
+							<?= t('title_stock_status', 'Stock Status') ?>:
+							<span class="value"><?= $sold_out_status['name'] ?></span>
 						</div>
 
 						<?php } else { ?>
 						<div class="stock-unavailable">
-							<?php echo t('title_stock_status', 'Stock Status'); ?>:
-							<span class="value"><?php echo t('title_sold_out', 'Sold Out'); ?></span>
+							<?= t('title_stock_status', 'Stock Status') ?>:
+							<span class="value"><?= t('title_sold_out', 'Sold Out') ?></span>
 						</div>
 						<?php } ?>
 						<?php } ?>
@@ -142,17 +142,17 @@ form[name="buy_now_form"] .dropdown-menu .image {
 					<?php } ?>
 
 					<?php if (isset($final_price)) { ?>
-					<?php echo f::form_begin('buy_now_form', 'post'); ?>
+					<?= f::form_begin('buy_now_form', 'post') ?>
 
-						<?php echo f::form_input_hidden('product_id', $product_id); ?>
+						<?= f::form_input_hidden('product_id', $product_id) ?>
 						<fieldset class="buy_now" style="margin: 2em 0;">
 
-							<legend><?php echo t('title_purchase_now', 'Purchase Now'); ?></legend>
+							<legend><?= t('title_purchase_now', 'Purchase Now') ?></legend>
 
 							<?php if ($stock_options) { ?>
 							<div class="form-group">
-								<div class="form-label"><?php echo t('text_select_desired_option', 'Select desired option'); ?></div>
-								<?php echo form_select_product_stock_option('stock_option_id', $product_id, true); ?>
+								<div class="form-label"><?= t('text_select_desired_option', 'Select desired option') ?></div>
+								<?= form_select_product_stock_option('stock_option_id', $product_id, true) ?>
 							</div>
 							<?php } ?>
 
@@ -161,15 +161,15 @@ form[name="buy_now_form"] .dropdown-menu .image {
 								<div class="col-xl-8">
 									<?php if (!settings::get('catalog_only_mode')) { ?>
 									<label class="form-group">
-										<div class="form-label"><?php echo t('title_quantity', 'Quantity'); ?></div>
+										<div class="form-label"><?= t('title_quantity', 'Quantity') ?></div>
 										<div style="display: flex">
 											<div class="input-group" style="flex: 0 1 150px;">
-												<?php echo !empty($quantity_unit['decimals']) ? f::form_input_decimal('quantity', isset($_POST['quantity']) ? true : 1, $quantity_unit['decimals'], 'min="'. ($quantity_min ?: '1') .'" max="'. ($quantity_max ?: '') .'" step="'. ($quantity_step ?: '') .'"') : f::form_input_number('quantity', isset($_POST['quantity']) ? true : 1, 'min="'. ($quantity_min ?: '1') .'" max="'. ($quantity_max ?: '') .'" step="'. ($quantity_step ?: '') .'"'); ?>
+												<?= !empty($quantity_unit['decimals']) ? f::form_input_decimal('quantity', isset($_POST['quantity']) ? true : 1, $quantity_unit['decimals'], 'min="'. ($quantity_min ?: '1') .'" max="'. ($quantity_max ?: '') .'" step="'. ($quantity_step ?: '') .'"') : f::form_input_number('quantity', isset($_POST['quantity']) ? true : 1, 'min="'. ($quantity_min ?: '1') .'" max="'. ($quantity_max ?: '') .'" step="'. ($quantity_step ?: '') .'"') ?>
 												<?php if (!empty($quantity_unit['name'])) echo '<div class="input-group-text">'. $quantity_unit['name'] .'</div>'; ?>
 											</div>
 
 											<div style="flex: 1 0 auto; padding-inline-start: 1em;">
-												<?php echo '<button class="btn btn-success" name="add_cart_product" value="true" type="submit"'. (($quantity_available <= 0 && !$orderable) ? ' disabled' : '') .'>'. t('title_add_to_cart', 'Add To Cart') .'</button>'; ?>
+												<?= '<button class="btn btn-success" name="add_cart_product" value="true" type="submit"'. (($quantity_available <= 0 && !$orderable) ? ' disabled' : '') .'>'. t('title_add_to_cart', 'Add To Cart') .'</button>' ?>
 											</div>
 										</div>
 									</label>
@@ -178,13 +178,13 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 								<div class="col-xl-4">
 									<br>
-									<?php echo f::draw_price_tag($regular_price, $final_price, currency::$selected['code']); ?>
+									<?= f::draw_price_tag($regular_price, $final_price, currency::$selected['code']) ?>
 
 									<div class="tax" style="margin: 0 0 1em;">
 									<?php if ($tax_rates) { ?>
-										<?php echo $including_tax ? t('title_including_tax', 'Including Tax') : t('title_excluding_tax', 'Excluding Tax'); ?>: <span class="total-tax">{{total_tax|money}}</span>
+										<?= $including_tax ? t('title_including_tax', 'Including Tax') : t('title_excluding_tax', 'Excluding Tax') ?>: <span class="total-tax">{{total_tax|money}}</span>
 									<?php } else { ?>
-										<?php echo t('title_excluding_tax', 'Excluding Tax'); ?>
+										<?= t('title_excluding_tax', 'Excluding Tax') ?>
 									<?php } ?>
 									</div>
 								</div>
@@ -192,46 +192,46 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 						</fieldset>
 
-					<?php echo f::form_end(); ?>
+					<?= f::form_end() ?>
 					<?php } ?>
 
 					<div class="social-bookmarks">
 
 						<a class="link btn btn-default" href="#">
-							<?php echo f::draw_fonticon('icon-link', 'style="background: #333; color: #fff;"'); ?>
-							<div class="description"><?php echo f::escape_html(t('text_share_url', 'Share URL')); ?></div>
+							<?= f::draw_fonticon('icon-link', 'style="background: #333; color: #fff;"') ?>
+							<div class="description"><?= f::escape_html(t('text_share_url', 'Share URL')) ?></div>
 						</a>
 
-						<a class="btn btn-default" href="<?php echo 'mailto:user@email.com?', http_build_query(['subject' => t('text_is_this_a_product_for_you', 'Is this a product for you?'), 'body' => document::ilink()]); ?>" >
-							<?php echo f::draw_fonticon('icon-envelope', 'style="background: #333; color: #fff;"'); ?>
-							<div class="description"><?php echo f::escape_html(t('text_share_via_email', 'Share via Email')); ?></div>
+						<a class="btn btn-default" href="<?= 'mailto:user@email.com?', http_build_query(['subject' => t('text_is_this_a_product_for_you', 'Is this a product for you?'), 'body' => document::ilink()]) ?>" >
+							<?= f::draw_fonticon('icon-envelope', 'style="background: #333; color: #fff;"') ?>
+							<div class="description"><?= f::escape_html(t('text_share_via_email', 'Share via Email')) ?></div>
 						</a>
 
 						<?php /* Requires appId
-						<a class="x btn btn-default" href="<?php echo document::href_link('fb-messenger://share/', ['link' => $link]); ?>" target="_blank">
-							<?php echo f::draw_fonticon('icon-brand-messenger', 'style="background: #000; color: #fff;"'); ?>
-							<div class="description"><?php echo f::escape_html(t('text_share_via_s', 'Share via {s}'), ['{s}' => 'Messenger']); ?></div>
+						<a class="x btn btn-default" href="<?= document::href_link('fb-messenger://share/', ['link' => $link]) ?>" target="_blank">
+							<?= f::draw_fonticon('icon-brand-messenger', 'style="background: #000; color: #fff;"') ?>
+							<div class="description"><?= f::escape_html(t('text_share_via_s', 'Share via {s}'), ['{s}' => 'Messenger']) ?></div>
 						</a>
 							*/ ?>
 
-						<a class="x btn btn-default" href="<?php echo document::href_link('https://wa.me/', ['text' => $name .' - '. $link]); ?>" target="_blank">
-							<?php echo f::draw_fonticon('icon-brand-whatsapp', 'style="background: #25D366; color: #fff;"'); ?>
-							<div class="description"><?php echo f::escape_html(strtr(t('text_share_on_s', 'Share on {s}'), ['{s}' => 'WhatsApp'])); ?></div>
+						<a class="x btn btn-default" href="<?= document::href_link('https://wa.me/', ['text' => $name .' - '. $link]) ?>" target="_blank">
+							<?= f::draw_fonticon('icon-brand-whatsapp', 'style="background: #25D366; color: #fff;"') ?>
+							<div class="description"><?= f::escape_html(strtr(t('text_share_on_s', 'Share on {s}'), ['{s}' => 'WhatsApp'])) ?></div>
 						</a>
 
-						<a class="facebook btn btn-default" href="<?php echo document::href_link('https://www.facebook.com/sharer.php', ['u' => $link]); ?>" target="_blank">
-							<?php echo f::draw_fonticon('icon-brand-facebook', 'style="background: #3b5998; color: #fff;"'); ?>
-							<div class="description"><?php echo f::escape_html(strtr(t('text_share_on_s', 'Share on {s}'), ['{s}' => 'Facebook'])); ?></div>
+						<a class="facebook btn btn-default" href="<?= document::href_link('https://www.facebook.com/sharer.php', ['u' => $link]) ?>" target="_blank">
+							<?= f::draw_fonticon('icon-brand-facebook', 'style="background: #3b5998; color: #fff;"') ?>
+							<div class="description"><?= f::escape_html(strtr(t('text_share_on_s', 'Share on {s}'), ['{s}' => 'Facebook'])) ?></div>
 						</a>
 
-						<a class="x btn btn-default" href="<?php echo document::href_link('https://x.com/intent/tweet/', ['text' => $name .' - '. $link]); ?>" target="_blank">
-							<?php echo f::draw_fonticon('icon-brand-x', 'style="background: #000; color: #fff;"'); ?>
-							<div class="description"><?php echo f::escape_html(strtr(t('text_share_on_s', 'Share on {s}'), ['{s}' => 'X'])); ?></div>
+						<a class="x btn btn-default" href="<?= document::href_link('https://x.com/intent/tweet/', ['text' => $name .' - '. $link]) ?>" target="_blank">
+							<?= f::draw_fonticon('icon-brand-x', 'style="background: #000; color: #fff;"') ?>
+							<div class="description"><?= f::escape_html(strtr(t('text_share_on_s', 'Share on {s}'), ['{s}' => 'X'])) ?></div>
 						</a>
 
-						<a class="pinterest btn btn-default" href="<?php echo document::href_link('https://pinterest.com/pin/create/button/', ['url' => $link]); ?>" target="_blank">
-							<?php echo f::draw_fonticon('icon-brand-pinterest', 'style="background: #bd081c; color: #fff;"'); ?>
-							<div class="description"><?php echo f::escape_html(strtr(t('text_share_on_s', 'Share on {s}'), ['{s}' => 'Pinterest'])); ?></div>
+						<a class="pinterest btn btn-default" href="<?= document::href_link('https://pinterest.com/pin/create/button/', ['url' => $link]) ?>" target="_blank">
+							<?= f::draw_fonticon('icon-brand-pinterest', 'style="background: #bd081c; color: #fff;"') ?>
+							<div class="description"><?= f::escape_html(strtr(t('text_share_on_s', 'Share on {s}'), ['{s}' => 'Pinterest'])) ?></div>
 						</a>
 					</div>
 
@@ -242,11 +242,11 @@ form[name="buy_now_form"] .dropdown-menu .image {
 </article>
 
 <script>
-	$('#box-product[data-id="<?php echo $product_id; ?>"] form[name="buy_now_form"]').on('input', function(e) {
+	$('#box-product[data-id="<?= $product_id ?>"] form[name="buy_now_form"]').on('input', function(e) {
 
-		var regular_price = <?php echo currency::format_raw($regular_price); ?>,
-			final_price = <?php echo currency::format_raw($final_price ?: $regular_price); ?>,
-			tax = <?php echo currency::format_raw($total_tax); ?>;
+		var regular_price = <?= currency::format_raw($regular_price) ?>,
+			final_price = <?= currency::format_raw($final_price ?: $regular_price) ?>,
+			tax = <?= currency::format_raw($total_tax) ?>;
 
 		$('input[type="radio"]:checked, input[type="checkbox"]:checked', this).each(function() {
 			if ($(this).data('price-adjust')) regular_price += $(this).data('price-adjust');
@@ -278,7 +278,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 		$.ajax({
 			type: 'post',
-			url: '<?php echo document::ilink('ajax/product_options_stock.json'); ?>',
+			url: '<?= document::ilink('ajax/product_options_stock.json') ?>',
 			data: $(this).closest('form').serialize(),
 			dataType: 'json',
 			cache: false,
@@ -296,6 +296,6 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 	$('#box-product[data-id="{{product_id}}"] .social-bookmarks .link').off().on('click', function(e) {
 		e.preventDefault();
-		prompt("<?php echo t('text_link_to_this_product', 'Link to this product'); ?>", '{{link}}');
+		prompt("<?= t('text_link_to_this_product', 'Link to this product') ?>", '{{link}}');
 	});
 </script>

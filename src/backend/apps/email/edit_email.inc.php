@@ -135,79 +135,79 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo t('title_email', 'Email'); ?>
+			<?= $app_icon ?> <?= t('title_email', 'Email') ?>
 		</div>
 	</div>
 
 	<div class="card-body">
 
-		<?php echo f::form_begin('email_form', 'post'); ?>
+		<?= f::form_begin('email_form', 'post') ?>
 
 			<div class="row">
 				<div class="col-md-6">
 
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_scheduled_at', 'Scheduled At'); ?></div>
-						<?php echo f::form_input_datetime('scheduled_at', true); ?>
+						<div class="form-label"><?= t('title_scheduled_at', 'Scheduled At') ?></div>
+						<?= f::form_input_datetime('scheduled_at', true) ?>
 					</label>
 
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_from', 'From'); ?></div>
-						<?php echo f::form_select('sender', $senders, true); ?>
+						<div class="form-label"><?= t('title_from', 'From') ?></div>
+						<?= f::form_select('sender', $senders, true) ?>
 					</label>
 
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_to', 'To'); ?></div>
-						<?php echo f::form_input_tags('recipients[]', true); ?>
+						<div class="form-label"><?= t('title_to', 'To') ?></div>
+						<?= f::form_input_tags('recipients[]', true) ?>
 					</label>
 
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_cc', 'CC'); ?></div>
-						<?php echo f::form_input_tags('ccs[]', true); ?>
+						<div class="form-label"><?= t('title_cc', 'CC') ?></div>
+						<?= f::form_input_tags('ccs[]', true) ?>
 					</label>
 
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_bcc', 'BCC'); ?></div>
-						<?php echo f::form_input_tags('bccs[]', true); ?>
+						<div class="form-label"><?= t('title_bcc', 'BCC') ?></div>
+						<?= f::form_input_tags('bccs[]', true) ?>
 					</label>
 
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_headers', 'Headers'); ?></div>
-						<?php echo f::form_textarea('multiparts[0][headers]', true); ?>
+						<div class="form-label"><?= t('title_headers', 'Headers') ?></div>
+						<?= f::form_textarea('multiparts[0][headers]', true) ?>
 					</label>
 
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_subject', 'Subject'); ?></div>
-						<?php echo f::form_input_text('subject', true); ?>
+						<div class="form-label"><?= t('title_subject', 'Subject') ?></div>
+						<?= f::form_input_text('subject', true) ?>
 					</label>
 
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_body', 'Body'); ?></div>
-						<?php echo f::form_input_wysiwyg('multiparts[0][body]', true); ?>
+						<div class="form-label"><?= t('title_body', 'Body') ?></div>
+						<?= f::form_input_wysiwyg('multiparts[0][body]', true) ?>
 					</label>
 				</div>
 
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_preview', 'Preview'); ?></div>
+						<div class="form-label"><?= t('title_preview', 'Preview') ?></div>
 						<iframe id="preview"></iframe>
 					</label>
 				</div>
 			</div>
 
 			<div class="card-action">
-				<?php echo f::form_button_predefined('save'); ?>
-				<?php echo f::form_button_predefined('send'); ?>
-				<?php echo $email->data['id'] ? f::form_button_predefined('delete') : ''; ?>
-				<?php echo f::form_button_predefined('cancel'); ?>
+				<?= f::form_button_predefined('save') ?>
+				<?= f::form_button_predefined('send') ?>
+				<?= $email->data['id'] ? f::form_button_predefined('delete') : '' ?>
+				<?= f::form_button_predefined('cancel') ?>
 			</div>
 
-		<?php echo f::form_end(); ?>
+		<?= f::form_end() ?>
 	</div>
 </div>
 
 <script>
-	var template = `<?php echo addcslashes(f::escape_js($html), '{}'); ?>`;
+	var template = `<?= addcslashes(f::escape_js($html), '{}') ?>`;
 
 	$('textarea[name="multiparts[0][body]"]').on('input', function(){
 		let content = template

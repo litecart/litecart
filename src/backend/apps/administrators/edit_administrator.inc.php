@@ -164,12 +164,12 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo !empty($administrator->data['username']) ? t('title_edit_administrator', 'Edit Administrator') : t('title_create_new_administrator', 'Create New Administrator'); ?>
+			<?= $app_icon ?> <?= !empty($administrator->data['username']) ? t('title_edit_administrator', 'Edit Administrator') : t('title_create_new_administrator', 'Create New Administrator') ?>
 		</div>
 	</div>
 
 	<div class="card-body">
-		<?php echo f::form_begin('administrator_form', 'post', false, false, ['autocomplete' => 'off']); ?>
+		<?= f::form_begin('administrator_form', 'post', false, false, ['autocomplete' => 'off']) ?>
 
 			<div class="grid" style="max-width: 1200px;">
 
@@ -177,15 +177,15 @@
 					<div class="grid">
 						<div class="col-md-6">
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_status', 'Status'); ?></div>
-								<?php echo f::form_toggle('status', 'e/d', $_POST['status'] ?? '1'); ?>
+								<div class="form-label"><?= t('title_status', 'Status') ?></div>
+								<?= f::form_toggle('status', 'e/d', $_POST['status'] ?? '1') ?>
 							</label>
 						</div>
 
 						<div class="col-sm-6">
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_username', 'Username'); ?></div>
-								<?php echo f::form_input_text('username', true, ['autocomplete' => 'off', 'required' => true]); ?>
+								<div class="form-label"><?= t('title_username', 'Username') ?></div>
+								<?= f::form_input_text('username', true, ['autocomplete' => 'off', 'required' => true]) ?>
 							</label>
 						</div>
 					</div>
@@ -193,14 +193,14 @@
 					<div class="grid">
 						<div class="col-sm-6">
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_firstname', 'Firstname'); ?></div>
-								<?php echo f::form_input_text('firstname', true, ['required' => true]); ?>
+								<div class="form-label"><?= t('title_firstname', 'Firstname') ?></div>
+								<?= f::form_input_text('firstname', true, ['required' => true]) ?>
 							</label>
 						</div>
 						<div class="col-sm-6">
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_lastname', 'Lastname'); ?></div>
-								<?php echo f::form_input_text('lastname', true, ['required' => true]); ?>
+								<div class="form-label"><?= t('title_lastname', 'Lastname') ?></div>
+								<?= f::form_input_text('lastname', true, ['required' => true]) ?>
 							</label>
 						</div>
 					</div>
@@ -208,15 +208,15 @@
 					<div class="grid">
 						<div class="col-sm-6">
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_email', 'Email'); ?></div>
-								<?php echo f::form_input_email('email', true, ['autocomplete' => 'off']); ?>
+								<div class="form-label"><?= t('title_email', 'Email') ?></div>
+								<?= f::form_input_email('email', true, ['autocomplete' => 'off']) ?>
 							</label>
 						</div>
 
 						<div class="col-md-6">
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_two_factor_authentication', 'Two-Factor Authentication'); ?></div>
-								<?php echo f::form_toggle('two_factor_auth', 'e/d', true); ?>
+								<div class="form-label"><?= t('title_two_factor_authentication', 'Two-Factor Authentication') ?></div>
+								<?= f::form_toggle('two_factor_auth', 'e/d', true) ?>
 							</label>
 						</div>
 					</div>
@@ -224,8 +224,8 @@
 					<div class="grid">
 						<div class="col-sm-6">
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_display_errors', 'Display Errors'); ?></div>
-								<?php echo f::form_toggle('display_errors', 'e/d', true); ?>
+								<div class="form-label"><?= t('title_display_errors', 'Display Errors') ?></div>
+								<?= f::form_toggle('display_errors', 'e/d', true) ?>
 							</label>
 						</div>
 					</div>
@@ -234,20 +234,20 @@
 					<div class="grid">
 						<div class="col-md-12">
 							<div class="form-group">
-								<div class="form-label"><?php echo t('title_totp_authenticator', 'TOTP Authenticator'); ?></div>
+								<div class="form-label"><?= t('title_totp_authenticator', 'TOTP Authenticator') ?></div>
 
 								<?php if (!empty($administrator->data['totp_secret'])) { ?>
 
 									<div class="alert alert-success" style="margin-bottom: 1em;">
-										<?php echo t('text_totp_enabled', 'TOTP is enabled. You will be prompted for a code on each login.'); ?>
+										<?= t('text_totp_enabled', 'TOTP is enabled. You will be prompted for a code on each login.') ?>
 									</div>
 
 									<div class="grid">
 										<div class="col-md-6">
-											<?php echo f::form_input_password('totp_disable_password', '', ['autocomplete' => 'off', 'placeholder' => t('title_password', 'Password')]); ?>
+											<?= f::form_input_password('totp_disable_password', '', ['autocomplete' => 'off', 'placeholder' => t('title_password', 'Password')]) ?>
 										</div>
 										<div class="col-md-6">
-											<?php echo f::form_button('totp_disable', t('title_disable_totp', 'Disable TOTP'), 'submit', ['class' => 'btn btn-danger']); ?>
+											<?= f::form_button('totp_disable', t('title_disable_totp', 'Disable TOTP'), 'submit', ['class' => 'btn btn-danger']) ?>
 										</div>
 									</div>
 
@@ -259,26 +259,26 @@
 									?>
 
 									<div style="text-align: center; margin-bottom: 1em;">
-										<?php echo $totp_svg; ?>
+										<?= $totp_svg ?>
 									</div>
 
 									<div class="form-group">
-										<div class="form-label"><?php echo t('title_manual_setup_key', 'Manual Setup Key'); ?></div>
-										<code style="word-break: break-all; user-select: all;"><?php echo session::$data['totp_pending_secret']; ?></code>
+										<div class="form-label"><?= t('title_manual_setup_key', 'Manual Setup Key') ?></div>
+										<code style="word-break: break-all; user-select: all;"><?= session::$data['totp_pending_secret'] ?></code>
 									</div>
 
 									<div class="grid">
 										<div class="col-md-6">
-											<?php echo f::form_input_text('totp_code', '', ['placeholder' => t('title_verification_code', 'Verification Code') , 'autocomplete' => 'one-time-code', 'inputmode' => 'numeric', 'maxlength' => '6', 'pattern' => '\d{6}']); ?>
+											<?= f::form_input_text('totp_code', '', ['placeholder' => t('title_verification_code', 'Verification Code') , 'autocomplete' => 'one-time-code', 'inputmode' => 'numeric', 'maxlength' => '6', 'pattern' => '\d{6}']) ?>
 										</div>
 										<div class="col-md-6">
-											<?php echo f::form_button('totp_confirm', t('title_confirm', 'Confirm'), 'submit', ['class' => 'btn btn-success']); ?>
+											<?= f::form_button('totp_confirm', t('title_confirm', 'Confirm'), 'submit', ['class' => 'btn btn-success']) ?>
 										</div>
 									</div>
 
 								<?php } else { ?>
 
-									<?php echo f::form_button('totp_setup', t('title_enable_totp', 'Enable TOTP'), 'submit', ['class' => 'btn btn-default']); ?>
+									<?= f::form_button('totp_setup', t('title_enable_totp', 'Enable TOTP'), 'submit', ['class' => 'btn btn-default']) ?>
 
 								<?php } ?>
 							</div>
@@ -289,14 +289,14 @@
 					<div class="grid">
 						<div class="col-md-6">
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_new_password', 'New Password'); ?></div>
-								<?php echo f::form_input_password_unmaskable('password', '', ['autocomplete' => 'new-password']); ?>
+								<div class="form-label"><?= t('title_new_password', 'New Password') ?></div>
+								<?= f::form_input_password_unmaskable('password', '', ['autocomplete' => 'new-password']) ?>
 							</label>
 						</div>
 						<div class="col-md-6">
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_confirm_password', 'Confirm Password'); ?></div>
-								<?php echo f::form_input_password_unmaskable('confirmed_password', '', ['autocomplete' => 'new-password']); ?>
+								<div class="form-label"><?= t('title_confirm_password', 'Confirm Password') ?></div>
+								<?= f::form_input_password_unmaskable('confirmed_password', '', ['autocomplete' => 'new-password']) ?>
 							</label>
 						</div>
 					</div>
@@ -304,15 +304,15 @@
 					<div class="grid">
 						<div class="col-md-6">
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_valid_from', 'Valid From'); ?></div>
-								<?php echo f::form_input_datetime('valid_from', true); ?>
+								<div class="form-label"><?= t('title_valid_from', 'Valid From') ?></div>
+								<?= f::form_input_datetime('valid_from', true) ?>
 							</label>
 						</div>
 
 						<div class="col-md-6">
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_valid_to', 'Valid To'); ?></div>
-								<?php echo f::form_input_datetime('valid_to', true); ?>
+								<div class="form-label"><?= t('title_valid_to', 'Valid To') ?></div>
+								<?= f::form_input_datetime('valid_to', true) ?>
 							</label>
 						</div>
 					</div>
@@ -321,14 +321,14 @@
 					<div class="grid">
 						<div class="col-md-6">
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_last_ip_address', 'Last IP Address'); ?></div>
-								<?php echo f::form_input_text('last_ip_address', true, ['readonly' => true]); ?>
+								<div class="form-label"><?= t('title_last_ip_address', 'Last IP Address') ?></div>
+								<?= f::form_input_text('last_ip_address', true, ['readonly' => true]) ?>
 							</label>
 						</div>
 						<div class="col-md-6">
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_last_hostname', 'Last Hostname'); ?></div>
-								<?php echo f::form_input_text('last_hostname', true, ['readonly' => true]); ?>
+								<div class="form-label"><?= t('title_last_hostname', 'Last Hostname') ?></div>
+								<?= f::form_input_text('last_hostname', true, ['readonly' => true]) ?>
 							</label>
 						</div>
 					</div>
@@ -336,29 +336,29 @@
 					<div class="grid">
 						<div class="col-md-6">
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_last_login', 'Last Login'); ?></div>
-								<?php echo f::form_input_text('last_login', true, ['readonly' => true]); ?>
+								<div class="form-label"><?= t('title_last_login', 'Last Login') ?></div>
+								<?= f::form_input_text('last_login', true, ['readonly' => true]) ?>
 							</label>
 						</div>
 						<div class="col-md-6">
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_last_active', 'Last Active'); ?></div>
-								<?php echo f::form_input_text('last_active', true, ['readonly' => true]); ?>
+								<div class="form-label"><?= t('title_last_active', 'Last Active') ?></div>
+								<?= f::form_input_text('last_active', true, ['readonly' => true]) ?>
 							</label>
 						</div>
 					</div>
 
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_known_ip_addresses', 'Known IP Addresses'); ?></div>
+						<div class="form-label"><?= t('title_known_ip_addresses', 'Known IP Addresses') ?></div>
 						<div class="form-input" readonly style="height: 80px;">
-							<?php echo implode(', ', $administrator->data['known_ips']); ?>
+							<?= implode(', ', $administrator->data['known_ips']) ?>
 						</div>
 					</label>
 
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_known_fingerprints', 'Known Fingerprints'); ?></div>
+						<div class="form-label"><?= t('title_known_fingerprints', 'Known Fingerprints') ?></div>
 						<div class="form-input" readonly style="height: 80px;">
-							<?php echo implode(', ', $administrator->data['known_fingerprints']); ?>
+							<?= implode(', ', $administrator->data['known_fingerprints']) ?>
 						</div>
 					</label>
 
@@ -367,7 +367,7 @@
 
 				<div class="col-md-4">
 					<div id="app-permissions" class="form-group">
-						<?php echo f::form_checkbox('apps_toggle', ['1', t('title_apps', 'Apps')]); ?>
+						<?= f::form_checkbox('apps_toggle', ['1', t('title_apps', 'Apps')]) ?>
 						<div class="form-input" style="height: 400px; overflow-y: scroll;">
 							<ul class="list-unstyled">
 <?php
@@ -389,7 +389,7 @@
 					</div>
 
 					<div id="widget-permissions" class="form-group">
-						<?php echo f::form_checkbox('widgets_toggle', ['1', t('title_widgets', 'Widgets')]); ?>
+						<?= f::form_checkbox('widgets_toggle', ['1', t('title_widgets', 'Widgets')]) ?>
 						<div class="form-input" style="height: 150px; overflow-y: scroll;">
 							<ul class="list-unstyled">
 <?php
@@ -406,7 +406,7 @@
 					</div>
 
 					<div id="mcp-permissions" class="form-group">
-						<?php echo f::form_checkbox('mcp_toggle', ['1', t('title_mcp_tools', 'MCP Tools')]); ?>
+						<?= f::form_checkbox('mcp_toggle', ['1', t('title_mcp_tools', 'MCP Tools')]) ?>
 						<div class="form-input" style="height: 150px; overflow-y: scroll;">
 							<ul class="list-unstyled">
 <?php
@@ -430,12 +430,12 @@
 			</div>
 
 			<div class="card-action">
-				<?php echo f::form_button_predefined('save'); ?>
+				<?= f::form_button_predefined('save') ?>
 				<?php if (!empty($administrator->data['id'])) echo f::form_button_predefined('delete'); ?>
-				<?php echo f::form_button_predefined('cancel'); ?>
+				<?= f::form_button_predefined('cancel') ?>
 			</div>
 
-		<?php echo f::form_end(); ?>
+		<?= f::form_end() ?>
 	</div>
 </div>
 

@@ -151,76 +151,76 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo !empty($table->previous['name']) ? t('title_edit_table', 'Edit Table') : t('title_create_new_table', 'Create New Table'); ?>
+			<?= $app_icon ?> <?= !empty($table->previous['name']) ? t('title_edit_table', 'Edit Table') : t('title_create_new_table', 'Create New Table') ?>
 		</div>
 	</div>
 
-	<?php echo f::form_begin('closest_form', 'post'); ?>
+	<?= f::form_begin('closest_form', 'post') ?>
 
 		<div class="card-body">
 
 			<div class="row">
 				<div class="col-md-3">
-					<h2><?php echo t('title_general', 'General'); ?></h2>
+					<h2><?= t('title_general', 'General') ?></h2>
 
 					<div class="">
 						<div class="form-group">
-							<label><?php echo t('title_name', 'Name'); ?></label>
-							<?php echo f::form_input_text('name'); ?>
+							<label><?= t('title_name', 'Name') ?></label>
+							<?= f::form_input_text('name') ?>
 						</div>
 
 						<div class="form-group">
-							<label><?php echo t('title_auto_increment', 'Auto Increment'); ?></label>
-							<?php echo f::form_input_number('auto_increment', true); ?>
+							<label><?= t('title_auto_increment', 'Auto Increment') ?></label>
+							<?= f::form_input_number('auto_increment', true) ?>
 						</div>
 
 						<div class="form-group">
-							<label><?php echo t('title_collation', 'Collation'); ?></label>
-							<?php echo f::form_select_mysql_collation('collation', true); ?>
+							<label><?= t('title_collation', 'Collation') ?></label>
+							<?= f::form_select_mysql_collation('collation', true) ?>
 						</div>
 
 						<div class="form-group">
-							<label><?php echo t('title_engine', 'Engine'); ?></label>
-							<?php echo f::form_select_mysql_engine('engine', true); ?>
+							<label><?= t('title_engine', 'Engine') ?></label>
+							<?= f::form_select_mysql_engine('engine', true) ?>
 						</div>
 					</div>
 
 				</div>
 
 				<div class="col-md-9">
-					<h2><?php echo t('title_indexes', 'Indexes'); ?></h2>
+					<h2><?= t('title_indexes', 'Indexes') ?></h2>
 
 					<table class="indexes table table-striped table-hover table-sortable data-table">
 						<thead>
 							<tr>
-								<th><?php echo f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
+								<th class="text-center"><?= f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"') ?></th>
 								<th></th>
-								<th><?php echo t('title_name', 'Name'); ?></th>
-								<th><?php echo t('title_type', 'Type'); ?></th>
-								<th class="main"><?php echo t('title_columns', 'Columns'); ?></th>
-								<th><?php echo t('title_cardinality', 'Cardinality'); ?></th>
-								<th class="main"><?php echo t('title_type', 'Type'); ?></th>
+								<th><?= t('title_name', 'Name') ?></th>
+								<th><?= t('title_type', 'Type') ?></th>
+								<th class="main"><?= t('title_columns', 'Columns') ?></th>
+								<th><?= t('title_cardinality', 'Cardinality') ?></th>
+								<th class="main"><?= t('title_type', 'Type') ?></th>
 								<th></th>
 							</tr>
 						</thead>
 
 						<tbody>
 							<?php foreach ($_POST['indexes'] as $key => $index) { ?>
-							<tr<?php echo ($index['kind'] == 'primary') ? ' style="font-weight: bold;"' : ''; ?>>
-								<td><?php echo f::form_checkbox('selected_indexes[]', $key); ?></td>
+							<tr<?= ($index['kind'] == 'primary') ? ' style="font-weight: bold;"' : '' ?>>
+								<td><?= f::form_checkbox('selected_indexes[]', $key) ?></td>
 								<td>
-									<?php echo ($index['kind'] == 'primary') ? f::draw_fonticon('icon-key', 'style="color: #e5d72c;"') : ''; ?>
-									<?php echo ($index['kind'] == 'unique') ? f::draw_fonticon('icon-key', 'style="color: #e52c2c;"') : ''; ?>
-									<?php echo ($index['kind'] == 'key') ? f::draw_fonticon('icon-key', 'style="color: #7ce52c;"') : ''; ?>
-									<?php echo ($index['kind'] == 'fulltext') ? f::draw_fonticon('icon-search', 'style="color: #2c7ce5;"') : ''; ?>
+									<?= ($index['kind'] == 'primary') ? f::draw_fonticon('icon-key', 'style="color: #e5d72c;"') : '' ?>
+									<?= ($index['kind'] == 'unique') ? f::draw_fonticon('icon-key', 'style="color: #e52c2c;"') : '' ?>
+									<?= ($index['kind'] == 'key') ? f::draw_fonticon('icon-key', 'style="color: #7ce52c;"') : '' ?>
+									<?= ($index['kind'] == 'fulltext') ? f::draw_fonticon('icon-search', 'style="color: #2c7ce5;"') : '' ?>
 								</td>
-								<td><?php echo $index['name']; ?></td>
-								<td><?php echo $index['kind']; ?></td>
-								<td><?php echo implode(', ', $index['columns']); ?></td>
-								<td><?php echo $index['cardinality']; ?></td>
-								<td><?php echo $index['type']; ?></td>
+								<td><?= $index['name'] ?></td>
+								<td><?= $index['kind'] ?></td>
+								<td><?= implode(', ', $index['columns']) ?></td>
+								<td><?= $index['cardinality'] ?></td>
+								<td><?= $index['type'] ?></td>
 								<td class="text-end">
-									<button class="btn btn-danger btn-sm" name="remove" value="true" type="button" title="<?php echo t('title_remove', 'Remove'); ?>"><?php echo f::draw_fonticon('icon-trash'); ?></button>
+									<button class="btn btn-danger btn-sm" name="remove" value="true" type="button" title="<?= t('title_remove', 'Remove') ?>"><?= f::draw_fonticon('icon-trash') ?></button>
 								</td>
 							</tr>
 							<?php } ?>
@@ -233,17 +233,17 @@
 		<table class="columns table table-striped table-hover table-dragable table-form data-table">
 			<thead>
 				<tr>
-					<th><?php echo f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th class="text-center"><?= f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"') ?></th>
 					<th></th>
-					<th style="min-width: 150px;"><?php echo t('title_column', 'Column'); ?></th>
-					<th style="min-width: 150px;"><?php echo t('title_type', 'Type'); ?></th>
-					<th style="min-width: 35px;"><?php echo t('title_unsigned', 'Unsigned'); ?></th>
-					<th style="min-width: 100px;"><?php echo t('title_length_set', 'Length/Set'); ?></th>
-					<th style="min-width: 35px;"><?php echo t('title_nullable', 'Nullable'); ?></th>
-					<th style="min-width: 150px;"><?php echo t('title_default', 'Default'); ?></th>
-					<th style="min-width: 200px;"><?php echo t('title_collation', 'Collation'); ?></th>
-					<th class="main"><?php echo t('title_comment', 'Comment'); ?></th>
-					<th style="min-width: 10px;"><?php echo t('title_move', 'Move'); ?></th>
+					<th style="min-width: 150px;"><?= t('title_column', 'Column') ?></th>
+					<th style="min-width: 150px;"><?= t('title_type', 'Type') ?></th>
+					<th style="min-width: 35px;"><?= t('title_unsigned', 'Unsigned') ?></th>
+					<th style="min-width: 100px;"><?= t('title_length_set', 'Length/Set') ?></th>
+					<th style="min-width: 35px;"><?= t('title_nullable', 'Nullable') ?></th>
+					<th style="min-width: 150px;"><?= t('title_default', 'Default') ?></th>
+					<th style="min-width: 200px;"><?= t('title_collation', 'Collation') ?></th>
+					<th class="main"><?= t('title_comment', 'Comment') ?></th>
+					<th style="min-width: 10px;"><?= t('title_move', 'Move') ?></th>
 					<th style="min-width: 45px;"></th>
 				</tr>
 			</thead>
@@ -251,24 +251,24 @@
 			<tbody>
 				<?php foreach ($_POST['columns'] as $column) { ?>
 				<tr draggable="true">
-					<td><?php echo f::form_checkbox('selected_columns[]', '1'); ?></td>
+					<td><?= f::form_checkbox('selected_columns[]', '1') ?></td>
 					<td>
-						<?php echo ($column['key'] == 'PRI') ? f::draw_fonticon('icon-key', 'style="color: #e5d72c;"') : ''; ?>
-						<?php echo ($column['key'] == 'UNI') ? f::draw_fonticon('icon-key', 'style="color: #e52c2c;"') : ''; ?>
-						<?php echo ($column['key'] == 'MUL') ? f::draw_fonticon('icon-key', 'style="color: #7ce52c;"') : ''; ?>
+						<?= ($column['key'] == 'PRI') ? f::draw_fonticon('icon-key', 'style="color: #e5d72c;"') : '' ?>
+						<?= ($column['key'] == 'UNI') ? f::draw_fonticon('icon-key', 'style="color: #e52c2c;"') : '' ?>
+						<?= ($column['key'] == 'MUL') ? f::draw_fonticon('icon-key', 'style="color: #7ce52c;"') : '' ?>
 					</td>
-					<td><?php echo f::form_input_text('columns['.$column['name'].'][name]', true); ?></td>
-					<td><?php echo f::form_select_optgroup('columns['.$column['name'].'][type]', $column_types, true); ?></td>
-					<td class="text-center"><?php echo f::form_checkbox('columns['.$column['name'].'][unsigned]', '1', true); ?></td>
-					<td><?php echo f::form_input_text('columns['.$column['name'].'][length]', true); ?></td>
-					<td class="text-center"><?php echo f::form_checkbox('columns['.$column['name'].'][null]', '1', true); ?></td>
-					<td><?php echo f::form_input_text('columns['.$column['name'].'][default]', true, ['list' => 'default-options']); ?></td>
-					<td><?php echo f::form_select_mysql_collation('columns['.$column['name'].'][collation]', true); ?></td>
-					<td><?php echo f::form_input_text('columns['.$column['name'].'][comment]', true); ?></td>
-					<td class="grabbable text-center"><?php echo f::draw_fonticon('icon-arrows-vertical'); ?></td>
+					<td><?= f::form_input_text('columns['.$column['name'].'][name]', true) ?></td>
+					<td><?= f::form_select_optgroup('columns['.$column['name'].'][type]', $column_types, true) ?></td>
+					<td class="text-center"><?= f::form_checkbox('columns['.$column['name'].'][unsigned]', '1', true) ?></td>
+					<td><?= f::form_input_text('columns['.$column['name'].'][length]', true) ?></td>
+					<td class="text-center"><?= f::form_checkbox('columns['.$column['name'].'][null]', '1', true) ?></td>
+					<td><?= f::form_input_text('columns['.$column['name'].'][default]', true, ['list' => 'default-options']) ?></td>
+					<td><?= f::form_select_mysql_collation('columns['.$column['name'].'][collation]', true) ?></td>
+					<td><?= f::form_input_text('columns['.$column['name'].'][comment]', true) ?></td>
+					<td class="grabbable text-center"><?= f::draw_fonticon('icon-arrows-vertical') ?></td>
 					<td class="text-end">
-						<button class="btn btn-danger btn-sm" name="remove" value="true" type="button" title="<?php echo t('title_remove', 'Remove'); ?>">
-							<?php echo f::draw_fonticon('icon-trash'); ?>
+						<button class="btn btn-danger btn-sm" name="remove" value="true" type="button" title="<?= t('title_remove', 'Remove') ?>">
+							<?= f::draw_fonticon('icon-trash') ?>
 						</button>
 					</td>
 				</tr>
@@ -278,34 +278,34 @@
 			<tfoot>
 				<td colspan="99">
 					<button class="btn btn-default" name="add_column" type="button">
-						<?php echo f::draw_fonticon('add'); ?> <?php echo t('title_add_column', 'Add Column'); ?>
+						<?= f::draw_fonticon('add') ?> <?= t('title_add_column', 'Add Column') ?>
 					</button>
 					<button class="btn btn-default" name="delete" type="button" data-require-columns="true">
-						<?php echo f::draw_fonticon('icon-trash'); ?> <?php echo t('title_delete', 'Delete'); ?>
+						<?= f::draw_fonticon('icon-trash') ?> <?= t('title_delete', 'Delete') ?>
 					</button>
 					<button class="btn btn-default" name="add_primary_key" type="button" data-require-columns="true">
-						<?php echo f::draw_fonticon('add'); ?> <?php echo t('title_add_primary_key', 'Add Primary Key'); ?>
+						<?= f::draw_fonticon('add') ?> <?= t('title_add_primary_key', 'Add Primary Key') ?>
 					</button>
 					<button class="btn btn-default" name="add_key" type="button" data-require-columns="true">
-						<?php echo f::draw_fonticon('add'); ?> <?php echo t('title_add_key', 'Add Key'); ?>
+						<?= f::draw_fonticon('add') ?> <?= t('title_add_key', 'Add Key') ?>
 					</button>
 					<button class="btn btn-default" name="add_unique_key" type="button" data-require-columns="true">
-						<?php echo f::draw_fonticon('add'); ?> <?php echo t('title_add_unique_key', 'Add Unique Key'); ?>
+						<?= f::draw_fonticon('add') ?> <?= t('title_add_unique_key', 'Add Unique Key') ?>
 					</button>
 					<button class="btn btn-default" name="add_fulltext_key" type="button" data-require-columns="true">
-						<?php echo f::draw_fonticon('add'); ?> <?php echo t('title_add_fulltext_key', 'Add Fulltext Key'); ?>
+						<?= f::draw_fonticon('add') ?> <?= t('title_add_fulltext_key', 'Add Fulltext Key') ?>
 					</button>
 				</td>
 			</tfoot>
 		</table>
 
 		<div class="card-action">
-			<?php echo f::form_button('save', t('title_save', 'Save'), 'submit', ['class' => 'btn btn-success'], 'save'); ?>
-			<?php echo (!empty($table->previous['name'])) ? f::form_button('delete', t('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\''. t('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
-			<?php echo f::form_button('cancel', t('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
+			<?= f::form_button('save', t('title_save', 'Save'), 'submit', ['class' => 'btn btn-success'], 'save') ?>
+			<?= (!empty($table->previous['name'])) ? f::form_button('delete', t('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\''. t('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false ?>
+			<?= f::form_button('cancel', t('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel') ?>
 		</div>
 
-	<?php echo f::form_end(); ?>
+	<?= f::form_end() ?>
 </div>
 
 <datalist id="default-options">
@@ -335,19 +335,19 @@
 	$('table.columns button[name="add_column"]').on('click', function(){
 		$row = $(
 			'<tr draggable="true">' +
-			'  <td><?php echo f::escape_js(f::form_checkbox('selected_columns[]', '1')); ?></td>' +
+			'  <td><?= f::escape_js(f::form_checkbox('selected_columns[]', '1')) ?></td>' +
 			'  <td></td>' +
-			'  <td><?php echo f::escape_js(f::form_input_text('columns[new_key_i][name]', '')); ?></td>' +
-			'  <td><?php echo f::escape_js(f::form_select_optgroup('columns[new_key_i][type]', $column_types, '')); ?></td>' +
-			'  <td class="text-center"><?php echo f::escape_js(f::form_checkbox('columns[new_key_i][unsigned]', 'YES', '')); ?></td>' +
-			'  <td><?php echo f::escape_js(f::form_input_text('columns[new_key_i][length]', '')); ?></td>' +
-			'  <td class="text-center"><?php echo f::escape_js(f::form_checkbox('columns[new_key_i][null]', 'YES', '')); ?></td>' +
-			'  <td><?php echo f::escape_js(f::form_input_text('columns[new_key_i][default]', '', ['list' => 'default-options'])); ?></td>' +
-			'  <td><?php echo f::escape_js(f::form_select_mysql_collation('columns[new_key_i][collation]', '')); ?></td>' +
-			'  <td><?php echo f::escape_js(f::form_input_text('columns[new_key_i][comment]', '')); ?></td>' +
-			'  <td class="grabbable text-center"><?php echo f::draw_fonticon('icon-arrows-vertical'); ?></td>' +
+			'  <td><?= f::escape_js(f::form_input_text('columns[new_key_i][name]', '')) ?></td>' +
+			'  <td><?= f::escape_js(f::form_select_optgroup('columns[new_key_i][type]', $column_types, '')) ?></td>' +
+			'  <td class="text-center"><?= f::escape_js(f::form_checkbox('columns[new_key_i][unsigned]', 'YES', '')) ?></td>' +
+			'  <td><?= f::escape_js(f::form_input_text('columns[new_key_i][length]', '')) ?></td>' +
+			'  <td class="text-center"><?= f::escape_js(f::form_checkbox('columns[new_key_i][null]', 'YES', '')) ?></td>' +
+			'  <td><?= f::escape_js(f::form_input_text('columns[new_key_i][default]', '', ['list' => 'default-options'])) ?></td>' +
+			'  <td><?= f::escape_js(f::form_select_mysql_collation('columns[new_key_i][collation]', '')) ?></td>' +
+			'  <td><?= f::escape_js(f::form_input_text('columns[new_key_i][comment]', '')) ?></td>' +
+			'  <td class="grabbable text-center"><?= f::draw_fonticon('icon-arrows-vertical') ?></td>' +
 			'  <td class="text-end">' +
-			'    <button class="btn btn-danger btn-sm" name="remove" value="true" type="button" title="<?php echo f::escape_js(t('title_remove', 'Remove')); ?>"><?php echo f::escape_js(f::draw_fonticon('icon-trash')); ?></button>' +
+			'    <button class="btn btn-danger btn-sm" name="remove" value="true" type="button" title="<?= f::escape_js(t('title_remove', 'Remove')) ?>"><?= f::escape_js(f::draw_fonticon('icon-trash')) ?></button>' +
 			'  </td>' +
 			'</tr>'
 		).html(function(index,html){
@@ -358,12 +358,12 @@
 	});
 
 	$('table.columns').on('click', 'button[name="remove"]', function(){
-		if (!window.confirm("<?php echo f::escape_js(t('text_are_you_sure', 'Are you sure?')); ?>")) return false;
+		if (!window.confirm("<?= f::escape_js(t('text_are_you_sure', 'Are you sure?')) ?>")) return false;
 		$(this).closest('tr').remove();
 	});
 
 	$('table.tfoot').on('click', 'button[name="delete"]', function(){
-		if (!window.confirm("<?php echo f::escape_js(t('text_are_you_sure', 'Are you sure?')); ?>")) return false;
+		if (!window.confirm("<?= f::escape_js(t('text_are_you_sure', 'Are you sure?')) ?>")) return false;
 		$('table.columns tbody tr td:first-child :checkbox:checked').closest('tr').remove();
 	});
 
@@ -374,15 +374,15 @@
 			if (!name) return;
 			var $row = $([
 				'<tr draggable="true">',
-				'  <td><?php echo f::escape_js(f::form_checkbox('selected_columns[]', '')); ?></td>',
+				'  <td><?= f::escape_js(f::form_checkbox('selected_columns[]', '')) ?></td>',
 				'  <td>'+ name +'</td>',
 				'  <td>'+ kind +'</td>',
 				'  <td>'+ kind +'</td>',
 				'  <td></td>',
 				'  <td></td>',
 				'  <td></td>',
-				'  <td class="grabbable text-center"><?php echo f::draw_fonticon('icon-arrows-vertical'); ?></td>',
-				'  <td class="text-end"><button class="btn btn-danger btn-sm" name="remove" value="true" type="button" title="<?php echo f::escape_js(t('title_remove', 'Remove')); ?>"><?php echo f::draw_fonticon('icon-trash'); ?></button></td>',
+				'  <td class="grabbable text-center"><?= f::draw_fonticon('icon-arrows-vertical') ?></td>',
+				'  <td class="text-end"><button class="btn btn-danger btn-sm" name="remove" value="true" type="button" title="<?= f::escape_js(t('title_remove', 'Remove')) ?>"><?= f::draw_fonticon('icon-trash') ?></button></td>',
 				'</tr>'
 			].join('\n')
 				.replace(/new_index_key_i/, new_index_key_i++));
@@ -390,7 +390,7 @@
 	});
 
 	$('table.indexes').on('click', 'button[name="remove"]', function(){
-		if (!window.confirm("<?php echo f::escape_js(t('text_are_you_sure', 'Are you sure?')); ?>")) return false;
+		if (!window.confirm("<?= f::escape_js(t('text_are_you_sure', 'Are you sure?')) ?>")) return false;
 		$(this).closest('tr').remove();
 	});
 

@@ -351,32 +351,32 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo !empty($language->data['id']) ? t('title_edit_language', 'Edit Language') : t('title_create_new_language', 'Create New Language'); ?>
+			<?= $app_icon ?> <?= !empty($language->data['id']) ? t('title_edit_language', 'Edit Language') : t('title_create_new_language', 'Create New Language') ?>
 		</div>
 	</div>
 
 	<div class="card-body">
-		<?php echo f::form_begin('language_form', 'post', false, false, ['style' => 'max-width: 720px;']); ?>
+		<?= f::form_begin('language_form', 'post', false, false, ['style' => 'max-width: 720px;']) ?>
 
 			<?php if (!empty($prefillable_language_options)) { ?>
 			<label class="form-group">
-				<div class="form-label"><?php echo t('text_prefill_from_the_web', 'Prefill from the web'); ?></div>
-				<?php echo f::form_select('prefill', $prefillable_language_options, ''); ?>
+				<div class="form-label"><?= t('text_prefill_from_the_web', 'Prefill from the web') ?></div>
+				<?= f::form_select('prefill', $prefillable_language_options, '') ?>
 			</label>
 			<?php } ?>
 
 			<div class="grid">
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_status', 'Status'); ?></div>
-						<?php echo f::form_toggle('status', $statuses); ?>
+						<div class="form-label"><?= t('title_status', 'Status') ?></div>
+						<?= f::form_toggle('status', $statuses) ?>
 					</label>
 				</div>
 
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_text_direction', 'Text Direction'); ?></div>
-						<?php echo f::form_toggle('direction', $text_directions); ?>
+						<div class="form-label"><?= t('title_text_direction', 'Text Direction') ?></div>
+						<?= f::form_toggle('direction', $text_directions) ?>
 					</label>
 				</div>
 			</div>
@@ -384,15 +384,15 @@
 			<div class="grid">
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
-						<?php echo f::form_input_text('name', true, ['list' => 'available-languages']); ?>
+						<div class="form-label"><?= t('title_name', 'Name') ?></div>
+						<?= f::form_input_text('name', true, ['list' => 'available-languages']) ?>
 					</label>
 				</div>
 
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_system_locale', 'System Locale'); ?></div>
-						<?php echo f::form_select_system_locale('locale', true); ?>
+						<div class="form-label"><?= t('title_system_locale', 'System Locale') ?></div>
+						<?= f::form_select_system_locale('locale', true) ?>
 					</label>
 				</div>
 			</div>
@@ -400,60 +400,44 @@
 			<div class="grid">
 				<div class="col-md-4">
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_code', 'Code'); ?> (ISO 639-1) <a href="https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes" target="_blank"><?php echo f::draw_fonticon('icon-square-out'); ?></a></div>
-						<?php echo f::form_input_text('code', true, ['required' => true, 'pattern' => '[a-z]{2}']); ?>
+						<div class="form-label"><?= t('title_code', 'Code') ?> (ISO 639-1) <a href="https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes" target="_blank"><?= f::draw_fonticon('icon-square-out') ?></a></div>
+						<?= f::form_input_text('code', true, ['required' => true, 'pattern' => '[a-z]{2}']) ?>
 					</label>
 				</div>
 
 				<div class="col-md-4">
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_code', 'Code'); ?> 2 (ISO 639-2) <a href="https://en.wikipedia.org/wiki/List_of_ISO_639-2_codes" target="_blank"><?php echo f::draw_fonticon('icon-square-out'); ?></a></div>
-						<?php echo f::form_input_text('code2', true, ['required' => true, 'pattern' => '[a-z]{3}']); ?>
+						<div class="form-label"><?= t('title_code', 'Code') ?> 2 (ISO 639-2) <a href="https://en.wikipedia.org/wiki/List_of_ISO_639-2_codes" target="_blank"><?= f::draw_fonticon('icon-square-out') ?></a></div>
+						<?= f::form_input_text('code2', true, ['required' => true, 'pattern' => '[a-z]{3}']) ?>
 					</label>
 				</div>
 
 				<div class="col-md-4">
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_php_int_locale', 'PHP Intl Locale'); ?></div>
-						<?php echo f::form_select_intl_locale('intl_locale', true); ?>
+						<div class="form-label"><?= t('title_php_int_locale', 'PHP Intl Locale') ?></div>
+						<?= f::form_select_intl_locale('intl_locale', true) ?>
 					</label>
 				</div>
 			</div>
 
 
 			<label class="form-group">
-				<div class="form-label"><?php echo t('title_database_collation', 'Database Collation'); ?></div>
-				<?php echo f::form_select_mysql_collation('mysql_collation', true); ?>
+				<div class="form-label"><?= t('title_database_collation', 'Database Collation') ?></div>
+				<?= f::form_select_mysql_collation('mysql_collation', true) ?>
 			</label>
 
 			<div class="grid">
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_url_type', 'URL Type'); ?></div>
-						<?php echo f::form_toggle('url_type', $url_types); ?>
+						<div class="form-label"><?= t('title_url_type', 'URL Type') ?></div>
+						<?= f::form_toggle('url_type', $url_types) ?>
 					</label>
 				</div>
 
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_domain_name', 'Domain Name'); ?></div>
-						<?php echo f::form_input_text('domain_name', true); ?>
-					</label>
-				</div>
-			</div>
-
-			<div class="grid">
-				<div class="col-md-6">
-					<label class="form-group">
-						<div class="form-label"><?php echo t('title_date_format', 'Date Format'); ?> <a href="https://php.net/manual/en/function.strftime.php" target="_blank"><?php echo f::draw_fonticon('icon-square-out'); ?></a></div>
-						<?php echo f::form_select('format_date', $date_format_options, true); ?>
-					</label>
-				</div>
-
-				<div class="col-md-6">
-					<label class="form-group">
-						<div class="form-label"><?php echo t('title_time_format', 'Time Format'); ?> <a href="https://php.net/manual/en/function.strftime.php" target="_blank"><?php echo f::draw_fonticon('icon-square-out'); ?></a></div>
-						<?php echo f::form_select_optgroup('format_time', $time_format_options, true); ?>
+						<div class="form-label"><?= t('title_domain_name', 'Domain Name') ?></div>
+						<?= f::form_input_text('domain_name', true) ?>
 					</label>
 				</div>
 			</div>
@@ -461,31 +445,15 @@
 			<div class="grid">
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_raw_date_format', 'Raw Date Format'); ?> <a href="https://php.net/manual/en/function.date.php" target="_blank"><?php echo f::draw_fonticon('icon-square-out'); ?></a></div>
-						<?php echo f::form_select_optgroup('raw_date', $raw_date_options, true); ?>
+						<div class="form-label"><?= t('title_date_format', 'Date Format') ?> <a href="https://php.net/manual/en/function.strftime.php" target="_blank"><?= f::draw_fonticon('icon-square-out') ?></a></div>
+						<?= f::form_select('format_date', $date_format_options, true) ?>
 					</label>
 				</div>
 
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_raw_time_format', 'Raw Time Format'); ?> <a href="https://php.net/manual/en/function.date.php" target="_blank"><?php echo f::draw_fonticon('icon-square-out'); ?></a></div>
-						<?php echo f::form_select_optgroup('raw_time', $raw_time_options, true); ?>
-					</label>
-				</div>
-			</div>
-
-			<div class="grid">
-				<div class="col-md-6">
-					<label class="form-group">
-						<div class="form-label"><?php echo t('title_decimal_point', 'Decimal Point'); ?></div>
-						<?php echo f::form_select('decimal_point', $decimal_point_options, true); ?>
-					</label>
-				</div>
-
-				<div class="col-md-6">
-					<label class="form-group">
-						<div class="form-label"><?php echo t('title_thousands_sep', 'Thousands Separator'); ?></div>
-						<?php echo f::form_select('thousands_sep', $thousands_separator_options, true); ?>
+						<div class="form-label"><?= t('title_time_format', 'Time Format') ?> <a href="https://php.net/manual/en/function.strftime.php" target="_blank"><?= f::draw_fonticon('icon-square-out') ?></a></div>
+						<?= f::form_select_optgroup('format_time', $time_format_options, true) ?>
 					</label>
 				</div>
 			</div>
@@ -493,8 +461,40 @@
 			<div class="grid">
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_priority', 'Priority'); ?></div>
-						<?php echo f::form_input_number('priority', true); ?>
+						<div class="form-label"><?= t('title_raw_date_format', 'Raw Date Format') ?> <a href="https://php.net/manual/en/function.date.php" target="_blank"><?= f::draw_fonticon('icon-square-out') ?></a></div>
+						<?= f::form_select_optgroup('raw_date', $raw_date_options, true) ?>
+					</label>
+				</div>
+
+				<div class="col-md-6">
+					<label class="form-group">
+						<div class="form-label"><?= t('title_raw_time_format', 'Raw Time Format') ?> <a href="https://php.net/manual/en/function.date.php" target="_blank"><?= f::draw_fonticon('icon-square-out') ?></a></div>
+						<?= f::form_select_optgroup('raw_time', $raw_time_options, true) ?>
+					</label>
+				</div>
+			</div>
+
+			<div class="grid">
+				<div class="col-md-6">
+					<label class="form-group">
+						<div class="form-label"><?= t('title_decimal_point', 'Decimal Point') ?></div>
+						<?= f::form_select('decimal_point', $decimal_point_options, true) ?>
+					</label>
+				</div>
+
+				<div class="col-md-6">
+					<label class="form-group">
+						<div class="form-label"><?= t('title_thousands_sep', 'Thousands Separator') ?></div>
+						<?= f::form_select('thousands_sep', $thousands_separator_options, true) ?>
+					</label>
+				</div>
+			</div>
+
+			<div class="grid">
+				<div class="col-md-6">
+					<label class="form-group">
+						<div class="form-label"><?= t('title_priority', 'Priority') ?></div>
+						<?= f::form_input_number('priority', true) ?>
 					</label>
 				</div>
 			</div>
@@ -502,25 +502,25 @@
 			<div class="grid">
 				<div class="col-md-6">
 					<div class="form-group">
-						<?php echo f::form_checkbox('auto_translate', ['1', t('title_auto_translate', 'Auto Translate')]); ?>
+						<?= f::form_checkbox('auto_translate', ['1', t('title_auto_translate', 'Auto Translate')]) ?>
 					</div>
 				</div>
 
 				<div class="col-md-6">
 					<div class="form-group">
-						<?php echo f::form_checkbox('set_default', ['1', t('description_set_as_default_language', 'Set as default language')], (isset($language->data['code']) && $language->data['code'] && $language->data['code'] == settings::get('default_language_code')) ? '1' : true); ?>
-						<?php echo f::form_checkbox('set_store', ['1', t('description_set_as_store_language', 'Set as store language')], (isset($language->data['code']) && $language->data['code'] && $language->data['code'] == settings::get('store_language_code')) ? '1' : true); ?></label>
+						<?= f::form_checkbox('set_default', ['1', t('description_set_as_default_language', 'Set as default language')], (isset($language->data['code']) && $language->data['code'] && $language->data['code'] == settings::get('default_language_code')) ? '1' : true) ?>
+						<?= f::form_checkbox('set_store', ['1', t('description_set_as_store_language', 'Set as store language')], (isset($language->data['code']) && $language->data['code'] && $language->data['code'] == settings::get('store_language_code')) ? '1' : true) ?></label>
 					</div>
 				</div>
 			</div>
 
 			<div class="card-action">
-				<?php echo f::form_button_predefined('save'); ?>
+				<?= f::form_button_predefined('save') ?>
 				<?php if (!empty($language->data['id'])) echo f::form_button_predefined('delete'); ?>
-				<?php echo f::form_button_predefined('cancel'); ?>
+				<?= f::form_button_predefined('cancel') ?>
 			</div>
 
-		<?php echo f::form_end(); ?>
+		<?= f::form_end() ?>
 	</div>
 </div>
 

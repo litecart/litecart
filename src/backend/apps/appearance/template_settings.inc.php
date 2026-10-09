@@ -118,21 +118,21 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo t('title_template_settings', 'Template Settings'); ?>
+			<?= $app_icon ?> <?= t('title_template_settings', 'Template Settings') ?>
 		</div>
 	</div>
 
-	<?php echo f::form_begin('template_settings_form', 'post'); ?>
+	<?= f::form_begin('template_settings_form', 'post') ?>
 
 		<table class="table data-table">
 			<tbody>
 				<?php foreach ($settings as $setting) { ?>
 				<tr>
 					<td style="white-space: normal;">
-						<u><?php echo t(settings::get('template').':title_'.$setting['key'], $setting['title']); ?></u><br>
-						<?php echo t(settings::get('template').':description_'.$setting['key'], $setting['description']); ?>
+						<u><?= t(settings::get('template').':title_'.$setting['key'], $setting['title']) ?></u><br>
+						<?= t(settings::get('template').':description_'.$setting['key'], $setting['description']) ?>
 					</td>
-					<td><?php echo f::form_function('settings['.$setting['key'].']', $setting['function'], true); ?></td>
+					<td><?= f::form_function('settings['.$setting['key'].']', $setting['function'], true) ?></td>
 
 				</tr>
 				<?php } ?>
@@ -140,7 +140,7 @@
 				<?php if (!$settings) { ?>
 				<tr>
 					<td colspan="99">
-						<?php echo t('text_no_frontend_template_settings', 'There are no settings available for the frontend template.'); ?>
+						<?= t('text_no_frontend_template_settings', 'There are no settings available for the frontend template.') ?>
 					</td>
 				</tr>
 				<?php } ?>
@@ -148,8 +148,8 @@
 		</table>
 
 		<div class="card-action">
-			<?php echo f::form_button_predefined('save'); ?>
+			<?= f::form_button_predefined('save') ?>
 		</div>
 
-	<?php echo f::form_end(); ?>
+	<?= f::form_end() ?>
 </div>

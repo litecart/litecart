@@ -184,26 +184,26 @@ table.data-table td {
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo t('title_scan_files_for_translations', 'Scan Files For Translations'); ?>
+			<?= $app_icon ?> <?= t('title_scan_files_for_translations', 'Scan Files For Translations') ?>
 		</div>
 	</div>
 
 	<div class="card-body">
 		<div class="grid">
 			<div class="col-md-4">
-				<?php echo f::form_begin('scan_form', 'post'); ?>
+				<?= f::form_begin('scan_form', 'post') ?>
 
-					<p><?php echo t('description_scan_for_translations', 'This will scan your files for translations. New translations will be added to the database.'); ?></p>
+					<p><?= t('description_scan_for_translations', 'This will scan your files for translations. New translations will be added to the database.') ?></p>
 
-					<p><label><?php echo f::form_checkbox('update', ['1', t('text_update_empty_translations', 'Update empty translations if applicable')]); ?></label></p>
+					<p><label><?= f::form_checkbox('update', ['1', t('text_update_empty_translations', 'Update empty translations if applicable')]) ?></label></p>
 
-					<p><?php echo f::form_button('scan', t('title_scan', 'Scan'), 'submit'); ?></p>
+					<p><?= f::form_button('scan', t('title_scan', 'Scan'), 'submit') ?></p>
 
-				<?php echo f::form_end(); ?>
+				<?= f::form_end() ?>
 
 				<?php if (!empty($_POST['scan'])) { ?>
 				<pre id="log">
-				<?php echo $log; ?>
+				<?= $log ?>
 				</pre>
 				<?php } ?>
 			</div>
@@ -211,35 +211,35 @@ table.data-table td {
 			<?php if (!empty($_POST['scan']) && !empty($orphan)) { ?>
 			<div class="col-md-8">
 
-				<h2><?php echo t('title_orphan_translations', 'Orphan Translations'); ?></h2>
+				<h2><?= t('title_orphan_translations', 'Orphan Translations') ?></h2>
 
-					<?php echo f::form_begin('scan_form', 'post'); ?>
+					<?= f::form_begin('scan_form', 'post') ?>
 
 					<table class="table data-table">
 						<thead>
 							<tr>
-								<th><?php echo f::draw_fonticon('icon-square-check checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
-								<th><?php echo t('title_code', 'Code'); ?></th>
-								<th><?php echo t('title_translation', 'Translation'); ?></th>
+								<th class="text-center"><?= f::draw_fonticon('icon-square-check checkbox-toggle', 'data-toggle="checkbox-toggle"') ?></th>
+								<th><?= t('title_code', 'Code') ?></th>
+								<th><?= t('title_translation', 'Translation') ?></th>
 							</tr>
 						</thead>
 
 						<tbody>
 							<?php foreach ($orphan as $row) { ?>
 							<tr>
-								<td><?php echo f::form_checkbox('translations[]', $row['code'], true); ?></td>
-								<td><?php echo $row['code']; ?></td>
-								<td><?php echo (mb_strlen($row['text_'.language::$selected['code']]) > 100) ? mb_substr($row['text_'.language::$selected['code']], 0, 100) . '...' : $row['text_'.language::$selected['code']]; ?></td>
+								<td><?= f::form_checkbox('translations[]', $row['code'], true) ?></td>
+								<td><?= $row['code'] ?></td>
+								<td><?= (mb_strlen($row['text_'.language::$selected['code']]) > 100) ? mb_substr($row['text_'.language::$selected['code']], 0, 100) . '...' : $row['text_'.language::$selected['code']] ?></td>
 							</tr>
 							<?php } ?>
 						</tbody>
 					</table>
 
 					<div class="btn-group">
-						<?php echo f::form_button_predefined('delete'); ?>
+						<?= f::form_button_predefined('delete') ?>
 					</div>
 
-				<?php echo f::form_end(); ?>
+				<?= f::form_end() ?>
 
 			</div>
 			<?php } ?>

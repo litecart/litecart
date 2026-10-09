@@ -3,9 +3,9 @@
 		{{breadcrumbs}}
 		{{notices}}
 
-		<section id="box-page" class="card" aria-label="<?php echo f::escape_attr(!empty($title) ? $title : t('title_page', 'Page')); ?>">
+		<section id="box-page" class="card" aria-label="<?= f::escape_attr(!empty($title) ? $title : t('title_page', 'Page')) ?>">
 			<div class="card-body">
-				<?php echo $content; ?>
+				<?= $content ?>
 			</div>
 		</section>
 	</div>

@@ -117,30 +117,30 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo $title; ?>
+			<?= $app_icon ?> <?= $title ?>
 		</div>
 	</div>
 
 	<?php if ($type == 'job') { ?>
 	<div class="card-action">
 		<button id="cron-example" class="btn btn-default" type="button" style="margin-inline-end: 1em;">
-			<?php echo f::draw_fonticon('icon-info'); ?> <?php echo t('title_cron_job', 'Cron Job'); ?>
+			<?= f::draw_fonticon('icon-info') ?> <?= t('title_cron_job', 'Cron Job') ?>
 		</button>
 	</div>
 	<?php } ?>
 
-	<?php echo f::form_begin('modules_form', 'post'); ?>
+	<?= f::form_begin('modules_form', 'post') ?>
 
 		<table class="table data-table">
 			<thead>
 				<tr>
-					<th><?php echo f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th class="text-center"><?= f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"') ?></th>
 					<th></th>
-					<th><?php echo t('title_id', 'ID'); ?></th>
-					<th class="main"><?php echo t('title_name', 'Name'); ?></th>
+					<th><?= t('title_id', 'ID') ?></th>
+					<th class="main"><?= t('title_name', 'Name') ?></th>
 					<th></th>
-					<th><?php echo t('title_developer', 'Developer'); ?></th>
-					<th class="text-center"><?php echo t('title_priority', 'Priority'); ?></th>
+					<th><?= t('title_developer', 'Developer') ?></th>
+					<th class="text-center"><?= t('title_priority', 'Priority') ?></th>
 					<th></th>
 				</tr>
 			</thead>
@@ -148,44 +148,44 @@
 			<tbody>
 				<?php foreach ($modules as $module) { ?>
 				<?php if (!empty($module['installed'])) { ?>
-				<tr class="<?php echo empty($module['status']) ? 'semi-transparent' : ''; ?>">
-					<td><?php echo f::form_checkbox('modules[]', $module['id']); ?></td>
-					<td><?php echo f::draw_fonticon($module['status'] ? 'on' : 'off'); ?></td>
-					<td><?php echo $module['id']; ?></td>
+				<tr class="<?= empty($module['status']) ? 'semi-transparent' : '' ?>">
+					<td><?= f::form_checkbox('modules[]', $module['id']) ?></td>
+					<td><?= f::draw_fonticon($module['status'] ? 'on' : 'off') ?></td>
+					<td><?= $module['id'] ?></td>
 					<td>
-						<a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_'.$type, ['module_id' => $module['id']]); ?>">
-							<?php echo $module['name']; ?> / <?php echo $module['version']; ?>
+						<a class="link" href="<?= document::href_ilink(__APP__.'/edit_'.$type, ['module_id' => $module['id']]) ?>">
+							<?= $module['name'] ?> / <?= $module['version'] ?>
 						</a>
 					</td>
 					<?php if (__DOC__ == 'jobs' && !empty($module['status'])) { ?>
 					<td class="text-center">
-						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/run_job', ['module_id' => $module['id']]); ?>" target="_blank">
-							<strong><?php echo t('title_run_now', 'Run Now'); ?></strong>
+						<a class="btn btn-default btn-sm" href="<?= document::href_ilink(__APP__.'/run_job', ['module_id' => $module['id']]) ?>" target="_blank">
+							<strong><?= t('title_run_now', 'Run Now') ?></strong>
 						</a>
 					</td>
 					<?php } else { ?>
 					<td class="text-center"></td>
 					<?php } ?>
-					<td><?php echo !empty($module['website']) ? '<a href="'. f::escape_attr($module['website']) .'" target="_blank">'. $module['author'] .'</a>' : $module['author']; ?></td>
-					<td class="text-center"><?php echo $module['priority']; ?></td>
-					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/'.$edit_doc, ['module_id' => $module['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo f::draw_fonticon('edit'); ?></a></td>
+					<td><?= !empty($module['website']) ? '<a href="'. f::escape_attr($module['website']) .'" target="_blank">'. $module['author'] .'</a>' : $module['author'] ?></td>
+					<td class="text-center"><?= $module['priority'] ?></td>
+					<td class="text-end"><a class="btn btn-default btn-sm" href="<?= document::href_ilink(__APP__.'/'.$edit_doc, ['module_id' => $module['id']]) ?>" title="<?= t('title_edit', 'Edit') ?>"><?= f::draw_fonticon('edit') ?></a></td>
 				</tr>
 				<?php } else { ?>
 				<tr class="semi-transparent">
 					<td></td>
 					<td></td>
-					<td><?php echo $module['id']; ?></td>
+					<td><?= $module['id'] ?></td>
 					<td>
-						<a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_'.$type, ['module_id' => $module['id']]); ?>">
-							<?php echo $module['name']; ?> / <?php echo $module['version']; ?>
+						<a class="link" href="<?= document::href_ilink(__APP__.'/edit_'.$type, ['module_id' => $module['id']]) ?>">
+							<?= $module['name'] ?> / <?= $module['version'] ?>
 						</a>
 					</td>
 					<td class="text-center"></td>
-					<td><?php echo !empty($module['website']) ? '<a href="'. f::escape_attr($module['website']) .'" target="_blank">'. $module['author'] .'</a>' : $module['author']; ?></td>
+					<td><?= !empty($module['website']) ? '<a href="'. f::escape_attr($module['website']) .'" target="_blank">'. $module['author'] .'</a>' : $module['author'] ?></td>
 					<td class="text-center">-</td>
 					<td class="text-end">
-						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_'.$type, ['module_id' => $module['id']]); ?>">
-							<?php echo f::draw_fonticon('add'); ?> <?php echo t('title_install', 'Install'); ?>
+						<a class="btn btn-default btn-sm" href="<?= document::href_ilink(__APP__.'/edit_'.$type, ['module_id' => $module['id']]) ?>">
+							<?= f::draw_fonticon('add') ?> <?= t('title_install', 'Install') ?>
 						</a>
 					</td>
 				</tr>
@@ -196,7 +196,7 @@
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo t('title_modules', 'Modules'); ?>: <?php echo f::format_number($num_rows); ?>
+						<?= t('title_modules', 'Modules') ?>: <?= f::format_number($num_rows) ?>
 					</td>
 				</tr>
 			</tfoot>
@@ -206,23 +206,23 @@
 			<fieldset id="actions" disabled>
 
 				<legend>
-					<?php echo t('text_with_selected', 'With selected'); ?>:
+					<?= t('text_with_selected', 'With selected') ?>:
 				</legend>
 
 				<div class="btn-group">
-					<?php echo f::form_button_predefined('enable'); ?>
-					<?php echo f::form_button_predefined('disable'); ?>
+					<?= f::form_button_predefined('enable') ?>
+					<?= f::form_button_predefined('disable') ?>
 				</div>
 
 			</fieldset>
 		</div>
 
-	<?php echo f::form_end(); ?>
+	<?= f::form_end() ?>
 </div>
 
 <script>
 	$('#cron-example').on('click', function() {
-		prompt("<?php echo t('title_cron_job_configuration', 'Cron Job Configuration'); ?>", "*/5 * * * * php <?php echo f::escape_js(FS_DIR_APP); ?>index.php push_jobs &>/dev/null");
+		prompt("<?= t('title_cron_job_configuration', 'Cron Job Configuration') ?>", "*/5 * * * * php <?= f::escape_js(FS_DIR_APP) ?>index.php push_jobs &>/dev/null");
 	});
 
 	$('.data-table :checkbox').on('change', function() {

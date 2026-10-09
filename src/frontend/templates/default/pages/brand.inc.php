@@ -13,7 +13,7 @@
 		<div class="col-md-9">
 			<div id="content">
 
-				<article id="box-brand" class="card" aria-label="<?php echo f::escape_attr(!empty($title) ? $title : t('title_brand', 'Brand')); ?>">
+				<article id="box-brand" class="card" aria-label="<?= f::escape_attr(!empty($title) ? $title : t('title_brand', 'Brand')) ?>">
 
 					<div class="card-header">
 						<h1 class="card-title">{{title}}</h1>
@@ -29,22 +29,22 @@
 						<div class="flex flex-gap">
 							<div class="dropdown" style="flex-grow: 0;">
 								<div class="form-select" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									<?php echo t('title_sort_by', 'Sort By'); ?>
+									<?= t('title_sort_by', 'Sort By') ?>
 								</div>
 
-								<ul class="dropdown-content" role="menu" aria-label="<?php echo f::escape_attr(t('title_sort_by', 'Sort By')); ?>">
+								<ul class="dropdown-content" role="menu" aria-label="<?= f::escape_attr(t('title_sort_by', 'Sort By')) ?>">
 									<?php foreach ($sort_alternatives as $key => $title) { ?>
-									<li role="none"><?php echo f::form_radio_button('sort', [$key, $title], true); ?></li>
+									<li role="none"><?= f::form_radio_button('sort', [$key, $title], true) ?></li>
 									<?php } ?>
 								</ul>
 							</div>
 
 							<div style="flex-grow: 0;">
-								<?php echo f::form_toggle('list_style', ['columns' => f::draw_fonticon('icon-th-large'), 'rows' => f::draw_fonticon('icon-bars')], true, ['data-token-group' => 'list_style', 'data-token-title' => t('title_list_style', 'List Style'), 'aria-label' => f::escape_attr(t('title_list_style', 'List Style'))]); ?>
+								<?= f::form_toggle('list_style', ['columns' => f::draw_fonticon('icon-th-large'), 'rows' => f::draw_fonticon('icon-bars')], true, ['data-token-group' => 'list_style', 'data-token-title' => t('title_list_style', 'List Style'), 'aria-label' => f::escape_attr(t('title_list_style', 'List Style'))]) ?>
 							</div>
 						</div>
 
-						<ul class="listing products columns" role="list" aria-label="<?php echo f::escape_attr(t('title_products', 'Products')); ?>">
+						<ul class="listing products columns" role="list" aria-label="<?= f::escape_attr(t('title_products', 'Products')) ?>">
 							<?php foreach ($products as $product) echo '<li role="listitem">' . f::draw_listing_product($product, ['brand_id']) . '</li>'; ?>
 						</ul>
 

@@ -47,52 +47,52 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo t('title_banners', 'Banners'); ?>
+			<?= $app_icon ?> <?= t('title_banners', 'Banners') ?>
 		</div>
 	</div>
 
 	<div class="card-action">
-		<?php echo f::form_begin('filter_form', 'get'); ?>
+		<?= f::form_begin('filter_form', 'get') ?>
 			<ul class="list-inline">
-				<li><?php echo f::form_input_search('query', true, ['placeholder' => t('text_search_phrase_or_keyword', 'Search phrase or keyword') , 'style' => 'width: 250px;']); ?></li>
-				<li><?php echo f::form_button_link(document::ilink(__APP__.'/edit_banner'), t('title_create_new_banner', 'Create New Banner'), '', 'create'); ?></li>
+				<li><?= f::form_input_search('query', true, ['placeholder' => t('text_search_phrase_or_keyword', 'Search phrase or keyword') , 'style' => 'width: 250px;']) ?></li>
+				<li><?= f::form_button_link(document::ilink(__APP__.'/edit_banner'), t('title_create_new_banner', 'Create New Banner'), '', 'create') ?></li>
 			</ul>
-		<?php echo f::form_end(); ?>
+		<?= f::form_end() ?>
 	</div>
 
-	<?php echo f::form_begin('banners_form', 'post'); ?>
+	<?= f::form_begin('banners_form', 'post') ?>
 
 		<table class="table data-table">
 			<thead>
 				<tr>
-					<th><?php echo f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th class="text-center"><?= f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"') ?></th>
 					<th></th>
-					<th><?php echo t('title_id', 'ID'); ?></th>
-					<th class="main"><?php echo t('title_name', 'Name'); ?></th>
-					<th><?php echo t('title_keywords', 'Keywords'); ?></th>
-					<th class="text-center"><?php echo t('title_clicks', 'Clicks'); ?></th>
-					<th class="text-center"><?php echo t('title_views', 'Views'); ?></th>
-					<th class="text-center"><?php echo t('title_ratio', 'Ratio'); ?></th>
-					<th class="text-center"><?php echo t('title_valid_from', 'Valid From'); ?></th>
-					<th class="text-center"><?php echo t('title_valid_to', 'Valid To'); ?></th>
+					<th><?= t('title_id', 'ID') ?></th>
+					<th class="main"><?= t('title_name', 'Name') ?></th>
+					<th><?= t('title_keywords', 'Keywords') ?></th>
+					<th class="text-center"><?= t('title_clicks', 'Clicks') ?></th>
+					<th class="text-center"><?= t('title_views', 'Views') ?></th>
+					<th class="text-center"><?= t('title_ratio', 'Ratio') ?></th>
+					<th class="text-center"><?= t('title_valid_from', 'Valid From') ?></th>
+					<th class="text-center"><?= t('title_valid_to', 'Valid To') ?></th>
 					<th></th>
 				</tr>
 			</thead>
 
 			<tbody>
 				<?php foreach ($banners as $banner) { ?>
-				<tr class="<?php echo $banner['status'] ? false : ' semi-transparent'; ?>">
-					<td><?php echo f::form_checkbox('banners[]', $banner['id']); ?></td>
-					<td><?php echo f::draw_fonticon(!empty($banner['status']) ? 'on' : 'off'); ?></td>
-					<td><?php echo $banner['id']; ?></td>
-					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_banner', ['banner_id' => $banner['id']]); ?>"><?php echo $banner['name']; ?></a></td>
-					<td><?php echo $banner['keywords']; ?></td>
-					<td class="text-end"><?php echo $banner['total_clicks']; ?></td>
-					<td class="text-end"><?php echo $banner['total_views']; ?></td>
-					<td class="text-end"><?php echo !empty($banner['total_clicks']) ? '1:'.round($banner['total_views']/$banner['total_clicks']) : '-'; ?></td>
-					<td class="text-center"><?php echo $banner['valid_from'] ? f::datetime_when($banner['valid_from']) : '-'; ?></td>
-					<td class="text-center"><?php echo $banner['valid_to'] ? f::datetime_when($banner['valid_to']) : '-'; ?></td>
-					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_banner', ['banner_id' => $banner['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo f::draw_fonticon('edit'); ?></a></td>
+				<tr class="<?= $banner['status'] ? false : ' semi-transparent' ?>">
+					<td><?= f::form_checkbox('banners[]', $banner['id']) ?></td>
+					<td><?= f::draw_fonticon(!empty($banner['status']) ? 'on' : 'off') ?></td>
+					<td><?= $banner['id'] ?></td>
+					<td><a class="link" href="<?= document::href_ilink(__APP__.'/edit_banner', ['banner_id' => $banner['id']]) ?>"><?= $banner['name'] ?></a></td>
+					<td><?= $banner['keywords'] ?></td>
+					<td class="text-end"><?= $banner['total_clicks'] ?></td>
+					<td class="text-end"><?= $banner['total_views'] ?></td>
+					<td class="text-end"><?= !empty($banner['total_clicks']) ? '1:'.round($banner['total_views']/$banner['total_clicks']) : '-' ?></td>
+					<td class="text-center"><?= $banner['valid_from'] ? f::datetime_when($banner['valid_from']) : '-' ?></td>
+					<td class="text-center"><?= $banner['valid_to'] ? f::datetime_when($banner['valid_to']) : '-' ?></td>
+					<td class="text-end"><a class="btn btn-default btn-sm" href="<?= document::href_ilink(__APP__.'/edit_banner', ['banner_id' => $banner['id']]) ?>" title="<?= t('title_edit', 'Edit') ?>"><?= f::draw_fonticon('edit') ?></a></td>
 				</tr>
 				<?php } ?>
 			</tbody>
@@ -100,7 +100,7 @@
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo t('title_banners', 'Banners'); ?>: <?php echo $num_rows; ?>
+						<?= t('title_banners', 'Banners') ?>: <?= $num_rows ?>
 					</td>
 				</tr>
 			</tfoot>
@@ -110,22 +110,22 @@
 			<fieldset id="actions">
 
 				<legend>
-					<?php echo t('text_with_selected', 'With selected'); ?>:
+					<?= t('text_with_selected', 'With selected') ?>:
 				</legend>
 
 				<div class="btn-group">
-					<?php echo f::form_button_predefined('enable'); ?>
-					<?php echo f::form_button_predefined('disable'); ?>
+					<?= f::form_button_predefined('enable') ?>
+					<?= f::form_button_predefined('disable') ?>
 				</div>
 
 			</fieldset>
 		</div>
 
-	<?php echo f::form_end(); ?>
+	<?= f::form_end() ?>
 
 	<?php if ($num_pages > 1) { ?>
 	<div class="card-footer">
-		<?php echo f::draw_pagination($num_pages); ?>
+		<?= f::draw_pagination($num_pages) ?>
 	</div>
 	<?php } ?>
 </div>

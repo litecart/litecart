@@ -59,59 +59,59 @@
 <div class="card card-app">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo t('title_reviews', 'Reviews'); ?>
+			<?= $app_icon ?> <?= t('title_reviews', 'Reviews') ?>
 		</div>
 	</div>
 
 	<div class="card-action">
-		<?php echo f::form_button_link(document::ilink(__APP__.'/reviews_csv'), t('title_import_export_csv', 'Import/Export CSV')); ?>
-		<?php echo f::form_button_link(document::ilink(__APP__.'/edit_review'), t('title_create_new_review', 'Create New Review'), '', 'add'); ?>
+		<?= f::form_button_link(document::ilink(__APP__.'/reviews_csv'), t('title_import_export_csv', 'Import/Export CSV')) ?>
+		<?= f::form_button_link(document::ilink(__APP__.'/edit_review'), t('title_create_new_review', 'Create New Review'), '', 'add') ?>
 	</div>
 
 	<div class="card-filter">
-		<?php echo f::form_begin('search_form', 'get'); ?>
+		<?= f::form_begin('search_form', 'get') ?>
 			<ul class="list-inline">
-				<li class="expandable"><?php echo f::form_input_search('query', true, ['placeholder' => t('text_search_phrase_or_keyword', 'Search phrase or keyword')]); ?></li>
-				<li><?php echo f::form_button('filter', t('title_search', 'Search'), 'submit'); ?></li>
+				<li class="expandable"><?= f::form_input_search('query', true, ['placeholder' => t('text_search_phrase_or_keyword', 'Search phrase or keyword')]) ?></li>
+				<li><?= f::form_button('filter', t('title_search', 'Search'), 'submit') ?></li>
 			</ul>
-		<?php echo f::form_end(); ?>
+		<?= f::form_end() ?>
 	</div>
 
-	<?php echo f::form_begin('reviews_form', 'post'); ?>
+	<?= f::form_begin('reviews_form', 'post') ?>
 
 		<table class="table table-striped data-table">
 			<thead>
 				<tr>
-					<th><?php echo f::draw_fonticon('icon-square-check checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th class="text-center"><?= f::draw_fonticon('icon-square-check checkbox-toggle', 'data-toggle="checkbox-toggle"') ?></th>
 					<th></th>
-					<th><?php echo t('title_id', 'ID'); ?></th>
-					<th><?php echo t('title_product', 'Product'); ?></th>
-					<th><?php echo t('title_customer', 'Customer'); ?></th>
-					<th class="main"><?php echo t('title_title', 'Title'); ?></th>
-					<th><?php echo t('title_rating', 'Rating'); ?></th>
-					<th><?php echo t('title_created', 'Created'); ?> / <?php echo t('title_updated', 'Updated'); ?></th>
+					<th><?= t('title_id', 'ID') ?></th>
+					<th><?= t('title_product', 'Product') ?></th>
+					<th><?= t('title_customer', 'Customer') ?></th>
+					<th class="main"><?= t('title_title', 'Title') ?></th>
+					<th><?= t('title_rating', 'Rating') ?></th>
+					<th><?= t('title_created', 'Created') ?> / <?= t('title_updated', 'Updated') ?></th>
 					<th></th>
 				</tr>
 			</thead>
 
 			<tbody>
 				<?php foreach ($reviews as $review) { ?>
-				<tr class="<?php echo $review['status'] ? false : ' semi-transparent'; ?>">
-					<td><?php echo f::form_checkbox('reviews[]', $review['id']); ?></td>
-					<td><?php echo f::draw_fonticon('icon-circle', 'style="color: '. (!empty($review['status']) ? '#99cc66' : '#ff6666') .';"'); ?></td>
-					<td><?php echo $review['id']; ?></td>
+				<tr class="<?= $review['status'] ? false : ' semi-transparent' ?>">
+					<td><?= f::form_checkbox('reviews[]', $review['id']) ?></td>
+					<td><?= f::draw_fonticon('icon-circle', 'style="color: '. (!empty($review['status']) ? '#99cc66' : '#ff6666') .';"') ?></td>
+					<td><?= $review['id'] ?></td>
 					<td>
-						<a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_review', ['review_id' => $review['id']]); ?>">
-							<?php echo $review['product_name']; ?>
+						<a class="link" href="<?= document::href_ilink(__APP__.'/edit_review', ['review_id' => $review['id']]) ?>">
+							<?= $review['product_name'] ?>
 						</a>
 					</td>
-					<td><?php echo !empty($review['customer_name']) ? $review['customer_name'] : '<em>'. t('title_guest', 'Guest') .'</em>'; ?></td>
-					<td><?php echo $review['title']; ?></td>
-					<td class="text-center"><?php echo $review['rating']; ?></td>
-					<td><?php echo $review['updated_at'] > $review['created_at'] ? $review['updated_at'] : $review['created_at']; ?></td>
+					<td><?= !empty($review['customer_name']) ? $review['customer_name'] : '<em>'. t('title_guest', 'Guest') .'</em>' ?></td>
+					<td><?= $review['title'] ?></td>
+					<td class="text-center"><?= $review['rating'] ?></td>
+					<td><?= $review['updated_at'] > $review['created_at'] ? $review['updated_at'] : $review['created_at'] ?></td>
 					<td>
-						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_review', ['review_id' => $review['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>">
-							<?php echo f::draw_fonticon('edit'); ?>
+						<a class="btn btn-default btn-sm" href="<?= document::href_ilink(__APP__.'/edit_review', ['review_id' => $review['id']]) ?>" title="<?= t('title_edit', 'Edit') ?>">
+							<?= f::draw_fonticon('edit') ?>
 						</a>
 					</td>
 				</tr>
@@ -121,7 +121,7 @@
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo t('title_reviews', 'Reviews'); ?>: <?php echo f::format_number($num_rows); ?>
+						<?= t('title_reviews', 'Reviews') ?>: <?= f::format_number($num_rows) ?>
 					</td>
 				</tr>
 			</tfoot>
@@ -129,20 +129,20 @@
 
 		<div class="card-body">
 			<fieldset id="actions" disabled>
-				<legend><?php echo t('text_with_selected', 'With selected'); ?></legend>
+				<legend><?= t('text_with_selected', 'With selected') ?></legend>
 
 				<div class="btn-group">
-					<?php echo f::form_button_predefined('enable'); ?>
-					<?php echo f::form_button_predefined('disable'); ?>
+					<?= f::form_button_predefined('enable') ?>
+					<?= f::form_button_predefined('disable') ?>
 				</div>
 			</fieldset>
 		</div>
 
-	<?php echo f::form_end(); ?>
+	<?= f::form_end() ?>
 
 	<?php if ($num_pages > 1) { ?>
 	<div class="card-footer">
-		<?php echo f::draw_pagination($num_pages); ?>
+		<?= f::draw_pagination($num_pages) ?>
 	</div>
 	<?php } ?>
 </div>

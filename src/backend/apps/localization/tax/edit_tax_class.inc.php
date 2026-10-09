@@ -69,25 +69,25 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo !empty($tax_class->data['id']) ? t('title_edit_tax_class', 'Edit Tax Class') : t('title_create_new_tax_class', 'Create New Tax Class'); ?>
+			<?= $app_icon ?> <?= !empty($tax_class->data['id']) ? t('title_edit_tax_class', 'Edit Tax Class') : t('title_create_new_tax_class', 'Create New Tax Class') ?>
 		</div>
 	</div>
 
 	<div class="card-body">
-		<?php echo f::form_begin('tax_class_form', 'post', false, false, ['style' => 'max-width: 720px;']); ?>
+		<?= f::form_begin('tax_class_form', 'post', false, false, ['style' => 'max-width: 720px;']) ?>
 
 			<div class="grid">
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_code', 'Code'); ?></div>
-						<?php echo f::form_input_text('code', true); ?>
+						<div class="form-label"><?= t('title_code', 'Code') ?></div>
+						<?= f::form_input_text('code', true) ?>
 					</label>
 				</div>
 
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
-						<?php echo f::form_input_text('name', true); ?>
+						<div class="form-label"><?= t('title_name', 'Name') ?></div>
+						<?= f::form_input_text('name', true) ?>
 					</label>
 				</div>
 			</div>
@@ -95,19 +95,19 @@
 			<div class="grid">
 				<div class="col-md-12">
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_description', 'Description'); ?></div>
-						<?php echo f::form_input_text('description', true); ?>
+						<div class="form-label"><?= t('title_description', 'Description') ?></div>
+						<?= f::form_input_text('description', true) ?>
 					</label>
 				</div>
 			</div>
 
 			<div class="card-action">
-				<?php echo f::form_button_predefined('save'); ?>
+				<?= f::form_button_predefined('save') ?>
 				<?php if ($tax_class->data['id']) echo f::form_button_predefined('delete'); ?>
-				<?php echo f::form_button_predefined('cancel'); ?>
+				<?= f::form_button_predefined('cancel') ?>
 			</div>
 
-		<?php echo f::form_end(); ?>
+		<?= f::form_end() ?>
 
 	</div>
 </div>

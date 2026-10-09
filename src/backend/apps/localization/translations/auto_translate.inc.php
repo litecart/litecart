@@ -358,41 +358,41 @@
 <div class="card card-app">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo t('title_auto_translate', 'Auto Translate'); ?>
+			<?= $app_icon ?> <?= t('title_auto_translate', 'Auto Translate') ?>
 		</div>
 	</div>
 
 	<div class="card-body">
 		<div style="width: 100%; max-width: 480px;">
 
-			<?php echo f::form_begin('auto_translate_form', 'post'); ?>
+			<?= f::form_begin('auto_translate_form', 'post') ?>
 
 				<label class="form-group">
-					<dic class="form-labet"><?php echo t('title_collections', 'Collections'); ?></dic>
-					<?php echo f::form_select('collections[]', $collection_options, true); ?>
+					<dic class="form-labet"><?= t('title_collections', 'Collections') ?></dic>
+					<?= f::form_select('collections[]', $collection_options, true) ?>
 				</label>
 
 				<label class="form-group">
-					<div class="<"><?php echo t('title_from_language', 'From Language'); ?></div>
-					<?php echo f::form_select_language('source_language_code', true); ?>
+					<div class="<"><?= t('title_from_language', 'From Language') ?></div>
+					<?= f::form_select_language('source_language_code', true) ?>
 				</label>
 
 				<div class="form-group">
-					<label><?php echo t('title_to_language', 'To Language'); ?></label>
-					<?php echo f::form_select_language('target_language_codes[]', true); ?>
+					<label><?= t('title_to_language', 'To Language') ?></label>
+					<?= f::form_select_language('target_language_codes[]', true) ?>
 				</div>
 
 				<div class="form-group">
-					<label><?php echo t('title_translate_mode', 'Mode'); ?></label>
-					<?php echo f::form_select('translate_mode', [
+					<label><?= t('title_translate_mode', 'Mode') ?></label>
+					<?= f::form_select('translate_mode', [
 						'missing' => t('title_translate_mode_missing', 'Missing only — fill in blank translations'),
 						'overwrite' => t('title_translate_mode_overwrite', 'Overwrite all — re-translate everything'),
-					], $translate_mode); ?>
+					], $translate_mode) ?>
 				</div>
 
-				<?php echo f::form_button('translate', t('title_translate', 'Translate'), 'submit'); ?>
+				<?= f::form_button('translate', t('title_translate', 'Translate'), 'submit') ?>
 
-			<?php echo f::form_end(); ?>
+			<?= f::form_end() ?>
 		</div>
 	</div>
 </div>

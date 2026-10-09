@@ -44,41 +44,41 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo t('title_site_tags', 'Site Tags'); ?>
+			<?= $app_icon ?> <?= t('title_site_tags', 'Site Tags') ?>
 		</div>
 	</div>
 
 	<div class="card-action">
 		<ul class="list-inline">
-			<li><?php echo f::form_button_link(document::ilink(__APP__.'/edit_site_tag'), t('title_create_new_site_tag', 'Create New Site Tag'), '', 'create'); ?></li>
+			<li><?= f::form_button_link(document::ilink(__APP__.'/edit_site_tag'), t('title_create_new_site_tag', 'Create New Site Tag'), '', 'create') ?></li>
 		</ul>
 	</div>
 
-	<?php echo f::form_begin('site_tags_form', 'post'); ?>
+	<?= f::form_begin('site_tags_form', 'post') ?>
 
 		<table class="table data-table">
 			<thead>
 				<tr>
-					<th><?php echo f::draw_fonticon('icon-square-check checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th class="text-center"><?= f::draw_fonticon('icon-square-check checkbox-toggle', 'data-toggle="checkbox-toggle"') ?></th>
 					<th></th>
-					<th class="main"><?php echo t('title_name', 'Name'); ?></th>
-					<th><?php echo t('title_require_consent', 'Require Consent'); ?></th>
-					<th><?php echo t('title_position', 'Position'); ?></th>
-					<th><?php echo t('title_priority', 'Priority'); ?></th>
+					<th class="main"><?= t('title_name', 'Name') ?></th>
+					<th><?= t('title_require_consent', 'Require Consent') ?></th>
+					<th><?= t('title_position', 'Position') ?></th>
+					<th><?= t('title_priority', 'Priority') ?></th>
 					<th></th>
 				</tr>
 			</thead>
 
 			<tbody>
 				<?php foreach ($site_tags as $site_tag) { ?>
-				<tr class="<?php echo empty($site_tag['status']) ? 'semi-transparent' : null; ?>">
-					<td><?php echo f::form_checkbox('site_tags[]', $site_tag['id']); ?></td>
-					<td><?php echo f::draw_fonticon(!empty($site_tag['status']) ? 'on' : 'off'); ?></td>
-					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_site_tag', ['site_tag_id' => $site_tag['id']]); ?>"><?php echo $site_tag['name']; ?></a></td>
-					<td class="text-center"><?php echo $site_tag['require_consent'] ? f::draw_fonticon('icon-check') : ''; ?></td>
-					<td class="text-center"><?php echo $site_tag['position']; ?></td>
-					<td class="text-center"><?php echo (int)$site_tag['priority']; ?></td>
-					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_site_tag', ['site_tag_id' => $site_tag['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo f::draw_fonticon('edit'); ?></a></td>
+				<tr class="<?= empty($site_tag['status']) ? 'semi-transparent' : null ?>">
+					<td><?= f::form_checkbox('site_tags[]', $site_tag['id']) ?></td>
+					<td><?= f::draw_fonticon(!empty($site_tag['status']) ? 'on' : 'off') ?></td>
+					<td><a class="link" href="<?= document::href_ilink(__APP__.'/edit_site_tag', ['site_tag_id' => $site_tag['id']]) ?>"><?= $site_tag['name'] ?></a></td>
+					<td class="text-center"><?= $site_tag['require_consent'] ? f::draw_fonticon('icon-check') : '' ?></td>
+					<td class="text-center"><?= $site_tag['position'] ?></td>
+					<td class="text-center"><?= (int)$site_tag['priority'] ?></td>
+					<td class="text-end"><a class="btn btn-default btn-sm" href="<?= document::href_ilink(__APP__.'/edit_site_tag', ['site_tag_id' => $site_tag['id']]) ?>" title="<?= t('title_edit', 'Edit') ?>"><?= f::draw_fonticon('edit') ?></a></td>
 				</tr>
 				<?php }?>
 			</tbody>
@@ -86,7 +86,7 @@
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo t('title_site_tags', 'Site Tags'); ?>: <?php echo $num_rows; ?>
+						<?= t('title_site_tags', 'Site Tags') ?>: <?= $num_rows ?>
 					</td>
 				</tr>
 			</tfoot>
@@ -96,21 +96,21 @@
 			<fieldset id="actions" disabled>
 
 				<legend>
-					<?php echo t('text_with_selected', 'With selected'); ?>:
+					<?= t('text_with_selected', 'With selected') ?>:
 				</legend>
 
 				<div class="btn-group">
-					<?php echo f::form_button_predefined('enable'); ?>
-					<?php echo f::form_button_predefined('disable'); ?>
+					<?= f::form_button_predefined('enable') ?>
+					<?= f::form_button_predefined('disable') ?>
 				</div>
 			</fieldset>
 		</div>
 
-	<?php echo f::form_end(); ?>
+	<?= f::form_end() ?>
 
 	<?php if ($num_pages > 1) { ?>
 	<div class="card-footer">
-		<?php echo f::draw_pagination($num_pages); ?>
+		<?= f::draw_pagination($num_pages) ?>
 	</div>
 	<?php } ?>
 </div>

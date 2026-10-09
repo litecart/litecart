@@ -509,17 +509,17 @@ body {
 	<div class="loader" style="width: 256px; height: 256px;"></div>
 </div>
 
-<?php echo f::form_begin('login_form', 'post'); ?>
-	<?php echo f::form_input_hidden('login', 'true'); ?>
-	<?php echo f::form_input_hidden('redirect_url', true); ?>
+<?= f::form_begin('login_form', 'post') ?>
+	<?= f::form_input_hidden('login', 'true') ?>
+	<?= f::form_input_hidden('redirect_url', true) ?>
 
 	<article id="box-login" class="card">
 		<div class="card-header">
 			<div class="card-title">
-				<?php echo t('title_sign_in', 'Sign In'); ?>
+				<?= t('title_sign_in', 'Sign In') ?>
 			</div>
 			<div class="theme-toggle">
-				<?php echo f::form_toggle('theme', ['light' => f::draw_fonticon('icon-sun'), 'dark' => f::draw_fonticon('icon-moon')], (!empty($_COOKIE['theme']) && in_array($_COOKIE['theme'], ['light', 'dark'])) ? $_COOKIE['theme'] : 'light'); ?>
+				<?= f::form_toggle('theme', ['light' => f::draw_fonticon('icon-sun'), 'dark' => f::draw_fonticon('icon-moon')], (!empty($_COOKIE['theme']) && in_array($_COOKIE['theme'], ['light', 'dark'])) ? $_COOKIE['theme'] : 'light') ?>
 			</div>
 		</div>
 
@@ -528,40 +528,40 @@ body {
 			{{notices}}
 
 			<label class="form-group">
-				<?php echo f::form_input_username('username', true, ['placeholder' => t('title_username_or_email_address', 'Username or Email Address'), 'autocomplete' => 'username', 'required' => true]); ?>
+				<?= f::form_input_username('username', true, ['placeholder' => t('title_username_or_email_address', 'Username or Email Address'), 'autocomplete' => 'username', 'required' => true]) ?>
 				<div class="form-label"></div>
 			</label>
 
 			<label class="form-group">
-				<?php echo f::form_input_password('password', '', ['placeholder' => t('title_password', 'Password') , 'autocomplete' => 'current-password', 'required' => true]); ?>
+				<?= f::form_input_password('password', '', ['placeholder' => t('title_password', 'Password') , 'autocomplete' => 'current-password', 'required' => true]) ?>
 				<div class="form-label"></div>
 			</label>
 
 			<div class="form-group">
-				<?php echo f::form_checkbox('remember_me', ['1', t('title_remember_me', 'Remember Me')], true); ?>
+				<?= f::form_checkbox('remember_me', ['1', t('title_remember_me', 'Remember Me')], true) ?>
 			</div>
 		</div>
 
 		<div class="card-footer">
 			<div class="row">
 				<div class="col-6 text-start">
-					<a class="btn btn-unstyled" href="<?php echo document::href_ilink('f:'); ?>">
-						<?php echo f::draw_fonticon('icon-chevron-left'); ?> <span><?php echo t('title_frontend', 'Frontend'); ?></span>
+					<a class="btn btn-unstyled" href="<?= document::href_ilink('f:') ?>">
+						<?= f::draw_fonticon('icon-chevron-left') ?> <span><?= t('title_frontend', 'Frontend') ?></span>
 					</a>
 				</div>
 				<div class="col-6 text-end">
-					<?php echo f::form_button('login', t('title_login', 'Login'), 'submit'); ?>
+					<?= f::form_button('login', t('title_login', 'Login'), 'submit') ?>
 				</div>
 			</div>
 		</div>
 
 	</article>
 
-<?php echo f::form_end(); ?>
+<?= f::form_end() ?>
 
 <div class="login-brand">
 	<a href="https://www.litecart.net/" aria-label="LiteCart">
-		<img src="<?php echo document::href_rlink('app://backend/template/images/logotype.svg'); ?>" alt="<?php echo f::escape_html(settings::get('store_name')); ?>">
+		<img src="<?= document::href_rlink('app://backend/template/images/logotype.svg') ?>" alt="<?= f::escape_html(settings::get('store_name')) ?>">
 	</a>
 </div>
 

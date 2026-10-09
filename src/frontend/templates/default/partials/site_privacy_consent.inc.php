@@ -9,42 +9,42 @@
 	};
 
 ?>
-<div id="site-privacy-consent" role="dialog" aria-modal="false" aria-label="<?php echo f::escape_attr(t('title_cookie_notice', 'Cookie Notice')); ?>"<?php if (isset($_COOKIE['privacy_consents'])) echo ' style="display: none;"'; ?>>
+<div id="site-privacy-consent" role="dialog" aria-modal="false" aria-label="<?= f::escape_attr(t('title_cookie_notice', 'Cookie Notice')) ?>"<?php if (isset($_COOKIE['privacy_consents'])) echo ' style="display: none;"'; ?>>
 	<div class="fourteen-forty">
 
 		<div class="notice">
 			<button name="customize" class="btn btn-default btn-sm" type="button" aria-expanded="false" aria-controls="privacy-classes">
-				<?php echo t('title_customize', 'Customize'); ?>
+				<?= t('title_customize', 'Customize') ?>
 			</button>
 
-			<h2 class="hidden"><?php echo t('title_cookie_notice', 'Cookie Notice'); ?></h2>
-			<span><?php echo strtr(t('text_cookie_notice', 'We rely on certain data, regulated by the EU ePrivacy Directive (EPD), for analytics, marketing, and retargeting purposes. This data is processed through third-party services and is subject to your consent.'), [
+			<h2 class="hidden"><?= t('title_cookie_notice', 'Cookie Notice') ?></h2>
+			<span><?= strtr(t('text_cookie_notice', 'We rely on certain data, regulated by the EU ePrivacy Directive (EPD), for analytics, marketing, and retargeting purposes. This data is processed through third-party services and is subject to your consent.'), [
 				'%url' => document::href_ilink('information', ['page_id' => settings::get('cookie_policy')])
-			]); ?></span>
+			]) ?></span>
 		</div>
 
-		<?php echo f::form_begin('cookies_form', 'post', false, false, ['aria-label' => f::escape_attr(t('title_privacy_consent', 'Privacy Consent'))]); ?>
+		<?= f::form_begin('cookies_form', 'post', false, false, ['aria-label' => f::escape_attr(t('title_privacy_consent', 'Privacy Consent'))]) ?>
 
 			<div class="privacy-classes">
 
 				<?php foreach ($privacy_classes as $class) { ?>
 				<?php if (empty($class['third_parties'])) continue; ?>
-				<div id="<?php echo $class['id']; ?>-cookies" class="privacy-class">
+				<div id="<?= $class['id'] ?>-cookies" class="privacy-class">
 					<div class="class">
 						<label>
 							<div class="grid">
 								<div class="col-1 text-center">
 									<?php if ($class['id'] == 'necessary') { ?>
-									<?php echo f::form_input_hidden('consents['. $class['id'] .'][]', 'all'); ?>
-									<?php echo f::form_checkbox('consents['. $class['id'] .'][]', 'all', 'all', ['disabled' => true]); ?>
+									<?= f::form_input_hidden('consents['. $class['id'] .'][]', 'all') ?>
+									<?= f::form_checkbox('consents['. $class['id'] .'][]', 'all', 'all', ['disabled' => true]) ?>
 									<?php } else { ?>
-									<?php echo $draw_checkbox($class['id'], 'all', 'all'); ?>
+									<?= $draw_checkbox($class['id'], 'all', 'all') ?>
 									<?php } ?>
 								</div>
 
 								<div class="col-11">
-									<div class="name"><?php echo f::escape_html($class['title']); ?></div>
-									<div class="description"><?php echo f::escape_html($class['description']); ?></div>
+									<div class="name"><?= f::escape_html($class['title']) ?></div>
+									<div class="description"><?= f::escape_html($class['description']) ?></div>
 								</div>
 							</div>
 						</label>
@@ -53,9 +53,9 @@
 							<?php foreach ($class['third_parties'] as $third_party) { ?>
 							<div class="third-party">
 								<label>
-									<?php echo $draw_checkbox($class['id'], $third_party['id'], 'disabled'); ?>
-									<a class="name" href="<?php echo document::href_ilink('third_parties', ['third_party_id' => $third_party['id']]); ?>">
-										<?php echo f::escape_html($third_party['name']); ?>
+									<?= $draw_checkbox($class['id'], $third_party['id'], 'disabled') ?>
+									<a class="name" href="<?= document::href_ilink('third_parties', ['third_party_id' => $third_party['id']]) ?>">
+										<?= f::escape_html($third_party['name']) ?>
 									</a>
 								</label>
 							</div>
@@ -68,11 +68,11 @@
 			</div>
 
 			<div class="buttons text-center">
-				<?php echo f::form_button('privacy_consent', ['1', t('text_accept', 'Accept')], 'submit', ['style' => 'font-weight: bold;']); ?>
-				<?php echo f::form_button('privacy_consent', ['0', t('text_reject', 'Reject')], 'submit'); ?>
+				<?= f::form_button('privacy_consent', ['1', t('text_accept', 'Accept')], 'submit', ['style' => 'font-weight: bold;']) ?>
+				<?= f::form_button('privacy_consent', ['0', t('text_reject', 'Reject')], 'submit') ?>
 			</div>
 
-		<?php echo f::form_end(); ?>
+		<?= f::form_end() ?>
 	</div>
 </div>
 
@@ -84,8 +84,8 @@
 				throw new Error('privacyConsent plugin not loaded');
 			}
 
-			var privacy_classes = <?php echo f::format_json($privacy_classes, ''); ?>;
-			var consents = <?php echo f::format_json($consents, ''); ?>;
+			var privacy_classes = <?= f::format_json($privacy_classes, '') ?>;
+			var consents = <?= f::format_json($consents, '') ?>;
 			$('#site-privacy-consent').privacyConsent(privacy_classes, consents);
 
 		} catch (e) {

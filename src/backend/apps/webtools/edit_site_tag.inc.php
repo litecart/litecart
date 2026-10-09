@@ -118,25 +118,25 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo !empty($site_tag->data['id']) ? t('title_edit_site_tag', 'Edit Site Tag') : t('title_create_new_site_tag', 'Create New Site Tag'); ?>
+			<?= $app_icon ?> <?= !empty($site_tag->data['id']) ? t('title_edit_site_tag', 'Edit Site Tag') : t('title_create_new_site_tag', 'Create New Site Tag') ?>
 		</div>
 	</div>
 
 	<div class="card-body">
-		<?php echo f::form_begin('site_tag_form', 'post', false, false, ['autocomplete' => 'off', 'style' => 'max-width: 960px;']); ?>
+		<?= f::form_begin('site_tag_form', 'post', false, false, ['autocomplete' => 'off', 'style' => 'max-width: 960px;']) ?>
 
 			<div class="grid">
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_status', 'Status'); ?></div>
-						<?php echo f::form_toggle('status', 'e/d', true); ?>
+						<div class="form-label"><?= t('title_status', 'Status') ?></div>
+						<?= f::form_toggle('status', 'e/d', true) ?>
 					</label>
 				</div>
 
 				<div class="col-sm-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
-						<?php echo f::form_input_text('name', true, ['required' => true]); ?>
+						<div class="form-label"><?= t('title_name', 'Name') ?></div>
+						<?= f::form_input_text('name', true, ['required' => true]) ?>
 					</label>
 				</div>
 			</div>
@@ -144,35 +144,35 @@
 			<div class="grid">
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_position', 'Position'); ?></div>
-						<?php echo f::form_select('position', $position_options, true); ?>
+						<div class="form-label"><?= t('title_position', 'Position') ?></div>
+						<?= f::form_select('position', $position_options, true) ?>
 					</label>
 				</div>
 
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_priority', 'Priority'); ?></div>
-						<?php echo f::form_input_number('priority', true); ?>
+						<div class="form-label"><?= t('title_priority', 'Priority') ?></div>
+						<?= f::form_input_number('priority', true) ?>
 					</label>
 				</div>
 			</div>
 
 			<label class="form-group">
-				<div class="form-label"><?php echo t('title_require_consent', 'Require Consent'); ?></div>
-				<?php echo f::form_select_optgroup('require_consent', $consent_options, true); ?>
+				<div class="form-label"><?= t('title_require_consent', 'Require Consent') ?></div>
+				<?= f::form_select_optgroup('require_consent', $consent_options, true) ?>
 			</label>
 
 			<label class="form-group">
-				<div class="form-label"><?php echo t('title_html_content', 'HTML Content'); ?></div>
-				<?php echo f::form_input_code('content', true, ['required' => true, 'style' => 'height: 480px;']); ?>
+				<div class="form-label"><?= t('title_html_content', 'HTML Content') ?></div>
+				<?= f::form_input_code('content', true, ['required' => true, 'style' => 'height: 480px;']) ?>
 			</label>
 
 			<div class="card-action">
-				<?php echo f::form_button_predefined('save'); ?>
-				<?php echo (!empty($site_tag->data['id'])) ? f::form_button_predefined('delete') : ''; ?>
-				<?php echo f::form_button_predefined('cancel'); ?>
+				<?= f::form_button_predefined('save') ?>
+				<?= (!empty($site_tag->data['id'])) ? f::form_button_predefined('delete') : '' ?>
+				<?= f::form_button_predefined('cancel') ?>
 			</div>
 
-		<?php echo f::form_end(); ?>
+		<?= f::form_end() ?>
 	</div>
 </div>

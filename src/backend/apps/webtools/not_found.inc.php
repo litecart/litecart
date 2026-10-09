@@ -61,22 +61,22 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo t('title_not_found', 'Not Found'); ?>
+			<?= $app_icon ?> <?= t('title_not_found', 'Not Found') ?>
 		</div>
 	</div>
 
-	<?php echo f::form_begin('not_found_form', 'post'); ?>
+	<?= f::form_begin('not_found_form', 'post') ?>
 
 		<table class="table data-table">
 			<thead>
 				<tr>
-					<th><?php echo f::draw_fonticon('icon-square-check checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
-					<th class="main"><?php echo t('title_url', 'URL'); ?></th>
-					<th><?php echo t('title_hits', 'Hits'); ?></th>
-					<th><?php echo t('title_last_requested', 'Last Requested'); ?></th>
-					<th><?php echo t('title_last_referrer', 'Last Referrer'); ?></th>
-					<th><?php echo t('title_last_ip_address', 'Last IP Address'); ?></th>
-					<th><?php echo t('title_last_hostname', 'Last Hostname'); ?></th>
+					<th class="text-center"><?= f::draw_fonticon('icon-square-check checkbox-toggle', 'data-toggle="checkbox-toggle"') ?></th>
+					<th class="main"><?= t('title_url', 'URL') ?></th>
+					<th><?= t('title_hits', 'Hits') ?></th>
+					<th><?= t('title_last_requested', 'Last Requested') ?></th>
+					<th><?= t('title_last_referrer', 'Last Referrer') ?></th>
+					<th><?= t('title_last_ip_address', 'Last IP Address') ?></th>
+					<th><?= t('title_last_hostname', 'Last Hostname') ?></th>
 					<th></th>
 				</tr>
 			</thead>
@@ -84,16 +84,16 @@
 			<tbody>
 				<?php foreach ($not_found_rows as $row) { ?>
 				<tr>
-					<td><?php echo f::form_checkbox('not_found[]', $row['id']); ?></td>
-					<td><?php echo f::escape_html($row['url']); ?></td>
-					<td class="text-end"><?php echo f::format_number($row['hits']); ?></td>
-					<td class="text-end"><?php echo f::datetime_when($row['last_requested']); ?></td>
-					<td><?php echo f::escape_html($row['last_referrer']); ?></td>
-					<td class="text-center"><?php echo f::escape_html($row['last_ip_address']); ?></td>
-					<td><?php echo f::escape_html($row['last_hostname']); ?></td>
+					<td><?= f::form_checkbox('not_found[]', $row['id']) ?></td>
+					<td><?= f::escape_html($row['url']) ?></td>
+					<td class="text-end"><?= f::format_number($row['hits']) ?></td>
+					<td class="text-end"><?= f::datetime_when($row['last_requested']) ?></td>
+					<td><?= f::escape_html($row['last_referrer']) ?></td>
+					<td class="text-center"><?= f::escape_html($row['last_ip_address']) ?></td>
+					<td><?= f::escape_html($row['last_hostname']) ?></td>
 					<td class="text-end">
-						<a class="btn btn-default btn-sm" href="<?php echo f::escape_attr($row['redirect_link']); ?>">
-							<?php echo t('title_create_redirect', 'Create Redirect'); ?>
+						<a class="btn btn-default btn-sm" href="<?= f::escape_attr($row['redirect_link']) ?>">
+							<?= t('title_create_redirect', 'Create Redirect') ?>
 						</a>
 					</td>
 				</tr>
@@ -103,7 +103,7 @@
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo t('title_not_found', 'Not Found'); ?>: <?php echo f::format_number($num_rows); ?>
+						<?= t('title_not_found', 'Not Found') ?>: <?= f::format_number($num_rows) ?>
 					</td>
 				</tr>
 			</tfoot>
@@ -113,19 +113,19 @@
 			<fieldset id="actions" disabled>
 
 				<legend>
-					<?php echo t('text_with_selected', 'With selected'); ?>:
+					<?= t('text_with_selected', 'With selected') ?>:
 				</legend>
 
-				<?php echo f::form_button_predefined('delete'); ?>
+				<?= f::form_button_predefined('delete') ?>
 
 			</fieldset>
 		</div>
 
-	<?php echo f::form_end(); ?>
+	<?= f::form_end() ?>
 
 	<?php if ($num_pages > 1) { ?>
 	<div class="card-footer">
-		<?php echo f::draw_pagination($num_pages); ?>
+		<?= f::draw_pagination($num_pages) ?>
 	</div>
 	<?php } ?>
 </div>

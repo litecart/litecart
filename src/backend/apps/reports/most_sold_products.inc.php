@@ -76,44 +76,44 @@ form[name="filter_form"] li {
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo t('title_most_sold_products', 'Most Sold Products'); ?>
+			<?= $app_icon ?> <?= t('title_most_sold_products', 'Most Sold Products') ?>
 		</div>
 	</div>
 
 	<div class="card-action">
-		<?php echo f::form_begin('filter_form', 'get'); ?>
+		<?= f::form_begin('filter_form', 'get') ?>
 			<ul class="list-inline">
-				<li><?php echo f::form_input_search('query', true, ['placeholder' => f::escape_attr(t('title_item_name_or_sku', 'Item Name or SKU'))]); ?></li>
+				<li><?= f::form_input_search('query', true, ['placeholder' => f::escape_attr(t('title_item_name_or_sku', 'Item Name or SKU'))]) ?></li>
 				<li>
 					<div class="input-group" style="max-width: 380px;">
-						<?php echo f::form_input_date('date_from', true); ?>
+						<?= f::form_input_date('date_from', true) ?>
 						<span class="input-group-text"> - </span>
-						<?php echo f::form_input_date('date_to', true); ?>
+						<?= f::form_input_date('date_to', true) ?>
 					</div>
 				</li>
 				<li><?php //echo f::form_select_brand('brand_id', true, ['style' => 'width: 320px;']); ?></li>
-				<li><?php echo f::form_button('filter', ['true', f::draw_fonticon('icon-funnel') .' '. t('title_filter_now', 'Filter')]); ?></li>
-				<li><?php echo f::form_button('download', ['true', f::draw_fonticon('icon-download') .' '. t('title_download', 'Download')]); ?></li>
+				<li><?= f::form_button('filter', ['true', f::draw_fonticon('icon-funnel') .' '. t('title_filter_now', 'Filter')]) ?></li>
+				<li><?= f::form_button('download', ['true', f::draw_fonticon('icon-download') .' '. t('title_download', 'Download')]) ?></li>
 			</ul>
-		<?php echo f::form_end(); ?>
+		<?= f::form_end() ?>
 	</div>
 
 	<table class="table data-table">
 		<thead>
 			<tr>
-				<th class="main"><?php echo t('title_product', 'Product'); ?></th>
-				<th class="text-center"><?php echo t('title_quantity', 'Quantity'); ?></th>
-				<th class="text-center"><?php echo t('title_sales', 'Sales'); ?></th>
-				<th class="text-center"><?php echo t('title_tax', 'Tax'); ?></th>
+				<th class="main"><?= t('title_product', 'Product') ?></th>
+				<th class="text-center"><?= t('title_quantity', 'Quantity') ?></th>
+				<th class="text-center"><?= t('title_sales', 'Sales') ?></th>
+				<th class="text-center"><?= t('title_tax', 'Tax') ?></th>
 			</tr>
 		</thead>
 		<tbody>
 			<?php foreach ($rows as $row) { ?>
 			<tr>
-				<td><?php echo $row['name']; ?></td>
-				<td class="text-center border-start"><?php echo (float)$row['total_quantity']; ?></td>
-				<td class="text-end border-start"><?php echo currency::format($row['total_sales'], false, settings::get('store_currency_code')); ?></td>
-				<td class="text-end border-start"><?php echo currency::format($row['total_tax'], false, settings::get('store_currency_code')); ?></td>
+				<td><?= $row['name'] ?></td>
+				<td class="text-center border-start"><?= (float)$row['total_quantity'] ?></td>
+				<td class="text-end border-start"><?= currency::format($row['total_sales'], false, settings::get('store_currency_code')) ?></td>
+				<td class="text-end border-start"><?= currency::format($row['total_tax'], false, settings::get('store_currency_code')) ?></td>
 			</tr>
 			<?php } ?>
 		</tbody>
@@ -121,7 +121,7 @@ form[name="filter_form"] li {
 
 	<?php if ($num_pages > 1) { ?>
 	<div class="card-footer">
-		<?php echo f::draw_pagination($num_pages); ?>
+		<?= f::draw_pagination($num_pages) ?>
 	</div>
 	<?php } ?>
 </div>

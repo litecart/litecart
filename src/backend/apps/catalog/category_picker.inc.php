@@ -32,19 +32,19 @@
 
 	<div class="modal-body">
 
-		<button class="btn btn-default" name="select" type="button" data-id="<?php echo !empty($_GET['parent_id']) ? (int)$_GET['parent_id'] : '0'; ?>" data-name="<?php echo !empty($_GET['parent_id']) ? reference::category($_GET['parent_id'])->name : t('title_root', 'Root'); ?>" style="position: absolute; inset-inline-end: 1.5em; margin-inline-start: 1em;">
-			<?php echo t('title_select', 'Select'); ?>
+		<button class="btn btn-default" name="select" type="button" data-id="<?= !empty($_GET['parent_id']) ? (int)$_GET['parent_id'] : '0' ?>" data-name="<?= !empty($_GET['parent_id']) ? reference::category($_GET['parent_id'])->name : t('title_root', 'Root') ?>" style="position: absolute; inset-inline-end: 1.5em; margin-inline-start: 1em;">
+			<?= t('title_select', 'Select') ?>
 		</button>
 
 		<nav class="pills" style="margin-bottom: 1em;">
 
-			<a class="pill-item" href="<?php echo document::href_ilink(null, ['parent_id' => 0]); ?>" data-id="0">
-				<?php echo t('title_root', 'Root'); ?>
+			<a class="pill-item" href="<?= document::href_ilink(null, ['parent_id' => 0]) ?>" data-id="0">
+				<?= t('title_root', 'Root') ?>
 			</a>
 
 			<?php foreach ($breadcrumbs as $category) { ?>
-			<a class="pill-item" href="<?php echo document::href_ilink(null, ['parent_id' => $category['id']]); ?>" data-id="<?php echo $category['id']; ?>">
-				<?php echo $category['name']; ?>
+			<a class="pill-item" href="<?= document::href_ilink(null, ['parent_id' => $category['id']]) ?>" data-id="<?= $category['id'] ?>">
+				<?= $category['name'] ?>
 			</a>
 			<?php } ?>
 
@@ -53,14 +53,14 @@
 		<nav class="pills">
 
 			<?php if (!empty($_GET['parent_id'])) { ?>
-			<a class="pill-item" href="<?php echo document::href_ilink(null, ['parent_id' => reference::category($_GET['parent_id'])->parent_id]); ?>">
-				<?php echo f::draw_fonticon('icon-arrow-left'); ?> <?php echo t('title_back', 'Back'); ?>
+			<a class="pill-item" href="<?= document::href_ilink(null, ['parent_id' => reference::category($_GET['parent_id'])->parent_id]) ?>">
+				<?= f::draw_fonticon('icon-arrow-left') ?> <?= t('title_back', 'Back') ?>
 			</a>
 			<?php } ?>
 
 			<?php foreach ($categories as $category) { ?>
-			<a class="pill-item" href="<?php echo document::href_ilink(null, ['parent_id' => $category['id']]); ?>">
-				<?php echo f::draw_fonticon('icon-folder', 'style="color: #cccc66;"'); ?> <?php echo $category['name']; ?>
+			<a class="pill-item" href="<?= document::href_ilink(null, ['parent_id' => $category['id']]) ?>">
+				<?= f::draw_fonticon('icon-folder', 'style="color: #cccc66;"') ?> <?= $category['name'] ?>
 			</a>
 			<?php } ?>
 

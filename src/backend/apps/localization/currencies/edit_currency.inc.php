@@ -171,48 +171,32 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo !empty($currency->data['id']) ? t('title_edit_currency', 'Edit Currency') : t('title_create_new_currency', 'Create New Currency'); ?>
+			<?= $app_icon ?> <?= !empty($currency->data['id']) ? t('title_edit_currency', 'Edit Currency') : t('title_create_new_currency', 'Create New Currency') ?>
 		</div>
 	</div>
 
 	<div class="card-body">
-		<?php echo f::form_begin('currency_form', 'post', false, false, ['style' => 'max-width: 720px;']); ?>
+		<?= f::form_begin('currency_form', 'post', false, false, ['style' => 'max-width: 720px;']) ?>
 
 			<?php if (!empty($prefillable_currency_options)) { ?>
 			<label class="form-group">
-				<div class="form-label"><?php echo t('text_prefill_from_the_web', 'Prefill from the web'); ?></div>
-				<?php echo f::form_select('prefill', $prefillable_currency_options, ''); ?>
+				<div class="form-label"><?= t('text_prefill_from_the_web', 'Prefill from the web') ?></div>
+				<?= f::form_select('prefill', $prefillable_currency_options, '') ?>
 			</label>
 			<?php } ?>
 
 			<div class="grid">
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_status', 'Status'); ?></div>
-						<?php echo f::form_toggle('status', $statuses, true); ?>
+						<div class="form-label"><?= t('title_status', 'Status') ?></div>
+						<?= f::form_toggle('status', $statuses, true) ?>
 					</label>
 				</div>
 
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
-						<?php echo f::form_input_text('name', true); ?>
-					</label>
-				</div>
-			</div>
-
-			<div class="grid">
-				<div class="col-md-6">
-					<label class="form-group">
-						<div class="form-label"><?php echo t('title_code', 'Code'); ?> (ISO 4217) <a href="https://en.wikipedia.org/wiki/ISO_4217" target="_blank"><?php echo f::draw_fonticon('icon-square-out'); ?></a></div>
-						<?php echo f::form_input_text('code', true, ['required' => true, 'pattern' => '[A-Z]{3}']); ?>
-					</label>
-				</div>
-
-				<div class="col-md-6">
-					<label class="form-group">
-						<div class="form-label"><?php echo t('title_number', 'Number'); ?> (ISO 4217) <a href="https://en.wikipedia.org/wiki/ISO_4217" target="_blank"><?php echo f::draw_fonticon('icon-square-out'); ?></a></div>
-						<?php echo f::form_input_text('number', true, ['required' => true, 'pattern' => '\d{3}']); ?>
+						<div class="form-label"><?= t('title_name', 'Name') ?></div>
+						<?= f::form_input_text('name', true) ?>
 					</label>
 				</div>
 			</div>
@@ -220,18 +204,34 @@
 			<div class="grid">
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_value', 'Value'); ?></div>
+						<div class="form-label"><?= t('title_code', 'Code') ?> (ISO 4217) <a href="https://en.wikipedia.org/wiki/ISO_4217" target="_blank"><?= f::draw_fonticon('icon-square-out') ?></a></div>
+						<?= f::form_input_text('code', true, ['required' => true, 'pattern' => '[A-Z]{3}']) ?>
+					</label>
+				</div>
+
+				<div class="col-md-6">
+					<label class="form-group">
+						<div class="form-label"><?= t('title_number', 'Number') ?> (ISO 4217) <a href="https://en.wikipedia.org/wiki/ISO_4217" target="_blank"><?= f::draw_fonticon('icon-square-out') ?></a></div>
+						<?= f::form_input_text('number', true, ['required' => true, 'pattern' => '\d{3}']) ?>
+					</label>
+				</div>
+			</div>
+
+			<div class="grid">
+				<div class="col-md-6">
+					<label class="form-group">
+						<div class="form-label"><?= t('title_value', 'Value') ?></div>
 						<div class="input-group">
-							<?php echo f::form_input_decimal('value', true, 4); ?>
-							<span class="input-group-text"><?php echo $store_currency->code; ?></span>
+							<?= f::form_input_decimal('value', true, 4) ?>
+							<span class="input-group-text"><?= $store_currency->code ?></span>
 						</div>
 					</label>
 				</div>
 
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_decimals', 'Decimals'); ?></div>
-						<?php echo f::form_input_number('decimals', true); ?>
+						<div class="form-label"><?= t('title_decimals', 'Decimals') ?></div>
+						<?= f::form_input_number('decimals', true) ?>
 					</label>
 				</div>
 			</div>
@@ -239,15 +239,15 @@
 			<div class="grid">
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_prefix', 'Prefix'); ?></div>
-						<?php echo f::form_input_text('prefix', true); ?>
+						<div class="form-label"><?= t('title_prefix', 'Prefix') ?></div>
+						<?= f::form_input_text('prefix', true) ?>
 					</label>
 				</div>
 
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_suffix', 'Suffix'); ?></div>
-						<?php echo f::form_input_text('suffix', true); ?>
+						<div class="form-label"><?= t('title_suffix', 'Suffix') ?></div>
+						<?= f::form_input_text('suffix', true) ?>
 					</label>
 				</div>
 			</div>
@@ -255,26 +255,26 @@
 			<div class="grid">
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_priority', 'Priority'); ?></div>
-						<?php echo f::form_input_number('priority', true); ?>
+						<div class="form-label"><?= t('title_priority', 'Priority') ?></div>
+						<?= f::form_input_number('priority', true) ?>
 					</label>
 				</div>
 
 				<div class="col-md-6">
 					<div class="form-group">
-						<?php echo f::form_checkbox('set_default', ['1', t('description_set_as_default_currency', 'Set as default currency')], (isset($currency->data['code']) && $currency->data['code'] && $currency->data['code'] == settings::get('default_currency_code')) ? '1' : true); ?>
-						<?php echo f::form_checkbox('set_store', ['1', t('description_set_as_store_currency', 'Set as store currency')], (isset($currency->data['code']) && $currency->data['code'] && $currency->data['code'] == settings::get('store_currency_code')) ? '1' : true); ?>
+						<?= f::form_checkbox('set_default', ['1', t('description_set_as_default_currency', 'Set as default currency')], (isset($currency->data['code']) && $currency->data['code'] && $currency->data['code'] == settings::get('default_currency_code')) ? '1' : true) ?>
+						<?= f::form_checkbox('set_store', ['1', t('description_set_as_store_currency', 'Set as store currency')], (isset($currency->data['code']) && $currency->data['code'] && $currency->data['code'] == settings::get('store_currency_code')) ? '1' : true) ?>
 					</div>
 				</div>
 			</div>
 
 			<div class="card-action">
-				<?php echo f::form_button_predefined('save'); ?>
-				<?php echo (!empty($currency->data['id'])) ? f::form_button_predefined('delete') : ''; ?>
-				<?php echo f::form_button_predefined('cancel'); ?>
+				<?= f::form_button_predefined('save') ?>
+				<?= (!empty($currency->data['id'])) ? f::form_button_predefined('delete') : '' ?>
+				<?= f::form_button_predefined('cancel') ?>
 			</div>
 
-		<?php echo f::form_end(); ?>
+		<?= f::form_end() ?>
 	</div>
 </div>
 

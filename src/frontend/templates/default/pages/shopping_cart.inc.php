@@ -6,49 +6,49 @@
 
 			<div class="col-md-8">
 
-				<section id="box-shopping-cart" class="card" aria-label="<?php echo f::escape_attr(t('title_shopping_cart', 'Shopping Cart')); ?>">
+				<section id="box-shopping-cart" class="card" aria-label="<?= f::escape_attr(t('title_shopping_cart', 'Shopping Cart')) ?>">
 
 					<div class="card-header">
-						<h2 class="card-title"><?php echo t('title_shopping_cart', 'Shopping Cart'); ?></h2>
+						<h2 class="card-title"><?= t('title_shopping_cart', 'Shopping Cart') ?></h2>
 					</div>
 
 					<div class="card-body">
 
-						<?php echo f::form_begin('shopping_cart_form', 'post', false, false, ['aria-label' => f::escape_attr(t('title_shopping_cart', 'Shopping Cart'))]); ?>
+						<?= f::form_begin('shopping_cart_form', 'post', false, false, ['aria-label' => f::escape_attr(t('title_shopping_cart', 'Shopping Cart'))]) ?>
 
-							<ul class="items list-unstyled" aria-label="<?php echo f::escape_attr(t('title_cart_items', 'Cart Items')); ?>">
+							<ul class="items list-unstyled" aria-label="<?= f::escape_attr(t('title_cart_items', 'Cart Items')) ?>">
 								<?php foreach ($items as $key => $item) { ?>
-								<li class="item" data-id="<?php echo $item['product_id']; ?>" data-sku="<?php echo $item['sku']; ?>" data-name="<?php echo f::escape_html($item['name']); ?>" data-regular-price="<?php echo currency::format_raw($item['regular_price']['value']); ?>" data-final-price="<?php echo currency::format_raw($item['final_price']['value']); ?>" data-tax="<?php echo currency::format_raw($item['final_price']['tax']); ?>" data-quantity="<?php echo currency::format_raw($item['quantity']); ?>">
+								<li class="item" data-id="<?= $item['product_id'] ?>" data-sku="<?= $item['sku'] ?>" data-name="<?= f::escape_html($item['name']) ?>" data-regular-price="<?= currency::format_raw($item['regular_price']['value']) ?>" data-final-price="<?= currency::format_raw($item['final_price']['value']) ?>" data-tax="<?= currency::format_raw($item['final_price']['tax']) ?>" data-quantity="<?= currency::format_raw($item['quantity']) ?>">
 									<div class="grid" style="align-items: center;">
 										<div class="col-11">
 
 											<div class="grid" style="align-items: center;">
 												<div class="col-4 col-md-3">
-													<a href="<?php echo f::escape_html($item['link']); ?>" class="float-start" style="max-width: 96px; margin-inline-end: 1em;" aria-label="<?php echo f::escape_attr($item['name']); ?>">
-														<?php echo f::draw_thumbnail($item['image']['original'], 96, 0, 'product', 'alt="'. f::escape_attr($item['name']) .'"'); ?>
+													<a href="<?= f::escape_html($item['link']) ?>" class="float-start" style="max-width: 96px; margin-inline-end: 1em;" aria-label="<?= f::escape_attr($item['name']) ?>">
+														<?= f::draw_thumbnail($item['image']['original'], 96, 0, 'product', 'alt="'. f::escape_attr($item['name']) .'"') ?>
 													</a>
 												</div>
 
 												<div class="col-8 col-md-9">
 													<div class="grid">
 														<div class="col-md-6">
-															<div><strong><a href="<?php echo f::escape_html($item['link']); ?>" style="color: inherit;" aria-label="<?php echo f::escape_attr($item['name']); ?>"><?php echo f::escape_html($item['name']); ?></a></strong></div>
+															<div><strong><a href="<?= f::escape_html($item['link']) ?>" style="color: inherit;" aria-label="<?= f::escape_attr($item['name']) ?>"><?= f::escape_html($item['name']) ?></a></strong></div>
 															<?php if (!empty($item['sku'])) echo '<div class="sku">'. f::escape_html($item['sku']) .'</div>'; ?>
 															<?php if (!empty($item['error'])) echo '<div class="error" role="alert">'. f::escape_html($item['error']) .'</div>'; ?>
-															<?php echo f::draw_price_tag($item['regular_price']['value'], $item['final_price']['value']); ?>
+															<?= f::draw_price_tag($item['regular_price']['value'], $item['final_price']['value']) ?>
 														</div>
 
 														<div class="col-md-6 text-center">
 															<div style="display: inline-flex;">
 																<?php if (!empty($item['quantity_unit']->name)) { ?>
 																<div class="input-group" style="max-width: 150px;">
-																	<?php echo !empty($item['quantity_unit']->decimals) ? f::form_input_decimal('item['.$key.'][quantity]', $item['quantity'], $item['quantity_unit']->decimals, 'autocomplete="off" min="0" max="'. ($item['quantity_max'] ?: '') .'" step="'. ($item['quantity_step'] ?: '') .'" aria-label="'. f::escape_attr(t('title_quantity', 'Quantity') .' - '. $item['name']) .'"') : f::form_input_number('item['.$key.'][quantity]', $item['quantity'], 'autocomplete="off" min="0" max="'. ($item['quantity_max'] ?: '') .'" step="'. ($item['quantity_step'] ?: '') .'" aria-label="'. f::escape_attr(t('title_quantity', 'Quantity') .' - '. $item['name']) .'"'); ?>
-																	<?php echo f::escape_html($item['quantity_unit_name']); ?>
+																	<?= !empty($item['quantity_unit']->decimals) ? f::form_input_decimal('item['.$key.'][quantity]', $item['quantity'], $item['quantity_unit']->decimals, 'autocomplete="off" min="0" max="'. ($item['quantity_max'] ?: '') .'" step="'. ($item['quantity_step'] ?: '') .'" aria-label="'. f::escape_attr(t('title_quantity', 'Quantity') .' - '. $item['name']) .'"') : f::form_input_number('item['.$key.'][quantity]', $item['quantity'], 'autocomplete="off" min="0" max="'. ($item['quantity_max'] ?: '') .'" step="'. ($item['quantity_step'] ?: '') .'" aria-label="'. f::escape_attr(t('title_quantity', 'Quantity') .' - '. $item['name']) .'"') ?>
+																	<?= f::escape_html($item['quantity_unit_name']) ?>
 																</div>
 																<?php } else { ?>
-																<?php echo !empty($item['quantity_unit']->decimals) ? f::form_input_decimal('item['.$key.'][quantity]', $item['quantity'], $item['quantity_unit']->decimals, 'autocomplete="off" min="0" aria-label="'. f::escape_attr(t('title_quantity', 'Quantity') .' - '. $item['name']) .'"') : f::form_input_number('item['.$key.'][quantity]', $item['quantity'], 'autocomplete="off" min="0" style="width: 125px;" aria-label="'. f::escape_attr(t('title_quantity', 'Quantity') .' - '. $item['name']) .'"'); ?>
+																<?= !empty($item['quantity_unit']->decimals) ? f::form_input_decimal('item['.$key.'][quantity]', $item['quantity'], $item['quantity_unit']->decimals, 'autocomplete="off" min="0" aria-label="'. f::escape_attr(t('title_quantity', 'Quantity') .' - '. $item['name']) .'"') : f::form_input_number('item['.$key.'][quantity]', $item['quantity'], 'autocomplete="off" min="0" style="width: 125px;" aria-label="'. f::escape_attr(t('title_quantity', 'Quantity') .' - '. $item['name']) .'"') ?>
 																<?php } ?>
-																<?php echo f::form_button('update_cart_item', [$key, f::draw_fonticon('icon-sync', 'aria-hidden="true"')], 'submit', 'title="'. f::escape_attr(t('title_update', 'Update')) .'" aria-label="'. f::escape_attr(t('title_update', 'Update') .': '. $item['name']) .'" formnovalidate style="margin-inline-start: 0.5em;"'); ?>
+																<?= f::form_button('update_cart_item', [$key, f::draw_fonticon('icon-sync', 'aria-hidden="true"')], 'submit', 'title="'. f::escape_attr(t('title_update', 'Update')) .'" aria-label="'. f::escape_attr(t('title_update', 'Update') .': '. $item['name']) .'" formnovalidate style="margin-inline-start: 0.5em;"') ?>
 															</div>
 														</div>
 													</div>
@@ -58,27 +58,27 @@
 										</div>
 
 										<div class="col-1 text-end">
-											<?php echo f::form_button('remove_cart_item', [$key, f::draw_fonticon('icon-trash', 'aria-hidden="true"')], 'submit', 'class="btn btn-danger" title="'. f::escape_attr(t('title_remove', 'Remove')) .'" aria-label="'. f::escape_attr(t('title_remove', 'Remove') .': '. $item['name']) .'" formnovalidate'); ?>
+											<?= f::form_button('remove_cart_item', [$key, f::draw_fonticon('icon-trash', 'aria-hidden="true"')], 'submit', 'class="btn btn-danger" title="'. f::escape_attr(t('title_remove', 'Remove')) .'" aria-label="'. f::escape_attr(t('title_remove', 'Remove') .': '. $item['name']) .'" formnovalidate') ?>
 										</div>
 									</div>
 								</li>
 								<?php } ?>
 							</ul>
 
-							<div class="subtotal text-lg text-end" aria-label="<?php echo f::escape_attr(t('title_subtotal', 'Subtotal')); ?>">
-								<div><?php echo t('title_subtotal', 'Subtotal'); ?>: <strong class="formatted-value"><?php echo !empty(customer::$data['display_prices_including_tax']) ?  currency::format($subtotal['value'] + $subtotal['tax']) : currency::format($subtotal['value']); ?></strong></div>
+							<div class="subtotal text-lg text-end" aria-label="<?= f::escape_attr(t('title_subtotal', 'Subtotal')) ?>">
+								<div><?= t('title_subtotal', 'Subtotal') ?>: <strong class="formatted-value"><?= !empty(customer::$data['display_prices_including_tax']) ?  currency::format($subtotal['value'] + $subtotal['tax']) : currency::format($subtotal['value']) ?></strong></div>
 								<?php if ($subtotal['tax'] != 0) { ?>
-								<div><?php echo t('title_tax', 'Tax'); ?>: <span class="formatted-value"><?php echo currency::format($subtotal['tax']); ?></span></div>
+								<div><?= t('title_tax', 'Tax') ?>: <span class="formatted-value"><?= currency::format($subtotal['tax']) ?></span></div>
 								<?php } ?>
 							</div>
 
 							<?php /*if (!empty($cheapest_shipping)) { ?>
 							<div class="subtotal text-lg text-end">
-								<?php echo t('title_cheapest_shipping', 'Cheapest Shipping'); ?>: <strong class="formatted-value"><?php echo !empty(customer::$data['display_prices_including_tax']) ? currency::format((float)$cheapest_shipping['fee'] + (float)$cheapest_shipping['tax']) : currency::format((float)$cheapest_shipping['fee']); ?></strong>
+								<?= t('title_cheapest_shipping', 'Cheapest Shipping') ?>: <strong class="formatted-value"><?= !empty(customer::$data['display_prices_including_tax']) ? currency::format((float)$cheapest_shipping['fee'] + (float)$cheapest_shipping['tax']) : currency::format((float)$cheapest_shipping['fee']) ?></strong>
 							</div>
 							<?php }*/ ?>
 
-						<?php echo f::form_end(); ?>
+						<?= f::form_end() ?>
 					</div>
 
 				</section>
@@ -91,31 +91,31 @@
 
 			<div class="col-md-4">
 
-				<section id="box-checkout-summary" class="card" aria-label="<?php echo f::escape_attr(t('title_checkout', 'Checkout')); ?>">
+				<section id="box-checkout-summary" class="card" aria-label="<?= f::escape_attr(t('title_checkout', 'Checkout')) ?>">
 
 					<div class="card-header">
-						<h2 class="card-title"><?php echo t('title_checkout', 'Checkout'); ?></h2>
+						<h2 class="card-title"><?= t('title_checkout', 'Checkout') ?></h2>
 					</div>
 
 					<div class="card-body">
 
-						<?php echo f::form_begin('shopping_cart_summary_form', 'post', false, false, ['aria-label' => f::escape_attr(t('title_checkout', 'Checkout'))]); ?>
+						<?= f::form_begin('shopping_cart_summary_form', 'post', false, false, ['aria-label' => f::escape_attr(t('title_checkout', 'Checkout'))]) ?>
 
 							<div class="flex">
 
 								<div class="form-group flex-grow">
-									<div class="form-label"><?php echo t('title_language', 'Language'); ?></div>
-									<div style="line-height: 2;"><?php echo f::escape_html(language::$selected['name']); ?></div>
+									<div class="form-label"><?= t('title_language', 'Language') ?></div>
+									<div style="line-height: 2;"><?= f::escape_html(language::$selected['name']) ?></div>
 								</div>
 
 								<div class="form-group flex-grow">
-									<div class="form-label"><?php echo t('title_currency', 'Currency'); ?></div>
-									<div style="line-height: 2;"><?php echo f::escape_html(currency::$selected['name']); ?> (<?php echo f::escape_html(currency::$selected['code']); ?>)</div>
+									<div class="form-label"><?= t('title_currency', 'Currency') ?></div>
+									<div style="line-height: 2;"><?= f::escape_html(currency::$selected['name']) ?> (<?= f::escape_html(currency::$selected['code']) ?>)</div>
 								</div>
 
 								<div>
-									<a class="btn btn-default change" href="<?php echo document::href_ilink('regional_settings', ['redirect_url' => document::link()]); ?>#box-regional-settings" data-toggle="lightbox" data-seamless="true">
-										<?php echo t('title_change', 'Change'); ?>
+									<a class="btn btn-default change" href="<?= document::href_ilink('regional_settings', ['redirect_url' => document::link()]) ?>#box-regional-settings" data-toggle="lightbox" data-seamless="true">
+										<?= t('title_change', 'Change') ?>
 									</a>
 								</div>
 							</div>
@@ -123,51 +123,51 @@
 							<div class="grid">
 								<div class="col-8">
 									<div class="form-group">
-										<div class="form-label"><?php echo t('title_country', 'Country'); ?></div>
-										<div style="line-height: 2;"><?php echo f::form_select_country('country_code', true, ['autocomplete' => 'country']); ?></div>
+										<div class="form-label"><?= t('title_country', 'Country') ?></div>
+										<div style="line-height: 2;"><?= f::form_select_country('country_code', true, ['autocomplete' => 'country']) ?></div>
 									</div>
 								</div>
 
 								<div class="col-4">
 									<div class="form-group">
-										<div class="form-label"><?php echo t('title_postcode', 'Postal Code'); ?></div>
-										<div style="line-height: 2;"><?php echo f::form_input_text('postcode', true, ['autocomplete' => 'postal-code']); ?></div>
+										<div class="form-label"><?= t('title_postcode', 'Postal Code') ?></div>
+										<div style="line-height: 2;"><?= f::form_input_text('postcode', true, ['autocomplete' => 'postal-code']) ?></div>
 									</div>
 								</div>
 							</div>
 
 							<?php if (empty(customer::$data['email'])) { ?>
 							<div class="form-group">
-								<div class="form-label"><?php echo t('title_email_address', 'Email Address'); ?></div>
-								<?php echo f::form_input_email('email', true, ['required' => true, 'autocomplete' => 'email'] + (!empty($shopping_cart->data['customer']['id']) ? ['readonly' => true] : [])); ?>
+								<div class="form-label"><?= t('title_email_address', 'Email Address') ?></div>
+								<?= f::form_input_email('email', true, ['required' => true, 'autocomplete' => 'email'] + (!empty($shopping_cart->data['customer']['id']) ? ['readonly' => true] : [])) ?>
 							</div>
 							<?php } ?>
 
 							<?php if (!empty(session::$data['checkout_order']) && empty(session::$data['checkout_order']->data['order_status_id'])) { ?>
 							<div class="form-group">
-								<?php echo f::form_button_link(document::ilink('checkout/index'), t('title_resume_previous_checkout', 'Resume Previous Checkout'), 'class="btn btn-lg btn-block" style="background: transparent; border: 1px solid var(--default-border-color); color: #ccc;"'); ?>
+								<?= f::form_button_link(document::ilink('checkout/index'), t('title_resume_previous_checkout', 'Resume Previous Checkout'), 'class="btn btn-lg btn-block" style="background: transparent; border: 1px solid var(--default-border-color); color: #ccc;"') ?>
 							</div>
 							<?php } ?>
 
 							<div class="form-group">
-								<?php echo f::form_button('checkout', ['standard', t('title_begin_checkout', 'Begin Checkout') .' '. f::draw_fonticon('icon-arrow-right', 'aria-hidden="true"')], 'submit', 'class="btn btn-success btn-block btn-lg"'); ?>
+								<?= f::form_button('checkout', ['standard', t('title_begin_checkout', 'Begin Checkout') .' '. f::draw_fonticon('icon-arrow-right', 'aria-hidden="true"')], 'submit', 'class="btn btn-success btn-block btn-lg"') ?>
 							</div>
 
 							<?php if ($checkouts) { ?>
 							<div class="strikethrough-divider" aria-hidden="true">
-								<span><?php echo t('text_or_checkout_with', 'Or checkout with'); ?></span>
+								<span><?= t('text_or_checkout_with', 'Or checkout with') ?></span>
 							</div>
 
-							<div id="alternative-checkout" aria-label="<?php echo f::escape_attr(t('title_alternative_checkout_methods', 'Alternative Checkout Methods')); ?>">
+							<div id="alternative-checkout" aria-label="<?= f::escape_attr(t('title_alternative_checkout_methods', 'Alternative Checkout Methods')) ?>">
 								<?php foreach ($checkouts as $checkout) { ?>
 								<div class="form-group">
-									<?php echo f::form_button('checkout', [$checkout['module_id'], $checkout['label']], 'button', 'class="option btn btn-default btn-lg btn-block" title="'. f::escape_attr($checkout['description']) .'" aria-label="'. f::escape_attr($checkout['label'] .' - '. $checkout['description']) .'"'); ?>
+									<?= f::form_button('checkout', [$checkout['module_id'], $checkout['label']], 'button', 'class="option btn btn-default btn-lg btn-block" title="'. f::escape_attr($checkout['description']) .'" aria-label="'. f::escape_attr($checkout['label'] .' - '. $checkout['description']) .'"') ?>
 								</div>
 								<?php } ?>
 							</div>
 							<?php } ?>
 
-						<?php echo f::form_end(); ?>
+						<?= f::form_end() ?>
 
 					</div>
 
@@ -190,7 +190,7 @@
 	});
 
 	<?php if (!empty(notices::$data['errors'])) { ?>
-	alert("<?php echo f::escape_js(notices::$data['errors'][0]); notices::$data['errors'] = []; ?>");
+	alert("<?= f::escape_js(notices::$data['errors'][0]); notices::$data['errors'] = [] ?>");
 	<?php } ?>
 
 	$('input[name="customer[type]"]').on('change', function() {
@@ -259,7 +259,7 @@
 		if ($(this).val() == '') return;
 		console.log('Get address (Trigger: '+ $(this).attr('name') +')');
 		$.ajax({
-			url: '<?php echo document::ilink('ajax/get_address.json'); ?>?trigger='+$(this).attr('name'),
+			url: '<?= document::ilink('ajax/get_address.json') ?>?trigger='+$(this).attr('name'),
 			type: 'post',
 			data: $('.billing-address :input').serialize(),
 			cache: false,
@@ -280,7 +280,7 @@
 		if ($(this).val() == '') return;
 		console.log('Get address (Trigger: '+ $(this).attr('name') +')');
 		$.ajax({
-			url: '<?php echo document::ilink('ajax/get_address.json'); ?>?trigger='+$(this).attr('name'),
+			url: '<?= document::ilink('ajax/get_address.json') ?>?trigger='+$(this).attr('name'),
 			type: 'post',
 			data: $('.shipping-address :input').serialize(),
 			cache: false,
@@ -322,7 +322,7 @@
 		<?php if (settings::get('customer_field_zone')) { ?>
 
 		$.ajax({
-			url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + $(this).val(),
+			url: '<?= document::ilink('ajax/zones.json') ?>?country_code=' + $(this).val(),
 			type: 'get',
 			cache: true,
 			async: true,
@@ -359,7 +359,7 @@
 		<?php if (settings::get('customer_field_zone')) { ?>
 
 		$.ajax({
-			url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + $(this).val(),
+			url: '<?= document::ilink('ajax/zones.json') ?>?country_code=' + $(this).val(),
 			type: 'get',
 			cache: true,
 			async: false,

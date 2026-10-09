@@ -1,7 +1,7 @@
-<section id="box-favorites" class="card" aria-label="<?php echo f::escape_attr(t('text_dont_forget_favorites', 'Don\'t forget your favorites')); ?>">
+<section id="box-favorites" class="card" aria-label="<?= f::escape_attr(t('text_dont_forget_favorites', 'Don\'t forget your favorites')) ?>">
 
 	<div class="card-header">
-		<h2 class="card-title"><?php echo t('text_dont_forget_favorites', 'Don\'t forget your favorites'); ?></h2>
+		<h2 class="card-title"><?= t('text_dont_forget_favorites', 'Don\'t forget your favorites') ?></h2>
 	</div>
 
 	<div class="card-body">

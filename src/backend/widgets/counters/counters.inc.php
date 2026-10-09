@@ -90,13 +90,13 @@
 			<div class="card">
 				<div class="card-header">
 					<div class="card-title">
-						<?php echo t('title_users_online', 'Users Online'); ?>
+						<?= t('title_users_online', 'Users Online') ?>
 					</div>
 				</div>
 
 				<div class="card-body">
 					<div class="text-xxl">
-						<?php echo f::draw_fonticon('icon-circle', 'style="color: #62d100; font-size: .5em;"'); ?> <?php echo f::format_number($stats['users_online']); ?>
+						<?= f::draw_fonticon('icon-circle', 'style="color: #62d100; font-size: .5em;"') ?> <?= f::format_number($stats['users_online']) ?>
 					</div>
 				</div>
 			</div>
@@ -106,13 +106,13 @@
 			<div class="card">
 				<div class="card-header">
 					<div class="card-title">
-						<?php echo t('title_orders_today', 'Orders Today'); ?>
+						<?= t('title_orders_today', 'Orders Today') ?>
 					</div>
 				</div>
 
 				<div class="card-body">
 					<div class="text-xxl">
-						<?php echo f::draw_fonticon('icon-orders', 'style="color: #8fc329;"') ?> <?php echo (int)$stats['num_orders_today']; ?>
+						<?= f::draw_fonticon('icon-orders', 'style="color: #8fc329;"') ?> <?= (int)$stats['num_orders_today'] ?>
 					</div>
 				</div>
 			</div>
@@ -122,13 +122,13 @@
 			<div class="card">
 				<div class="card-header">
 					<div class="card-title">
-						<?php echo t('title_sales_today', 'Sales Today'); ?>
+						<?= t('title_sales_today', 'Sales Today') ?>
 					</div>
 				</div>
 
 				<div class="card-body">
 					<div class="text-xxl">
-						<?php echo f::draw_fonticon('icon-money-coins', 'style="color: #d9b600;"'); ?> <?php echo currency::format($stats['sales_today'], false, settings::get('store_currency_code')); ?>
+						<?= f::draw_fonticon('icon-money-coins', 'style="color: #d9b600;"') ?> <?= currency::format($stats['sales_today'], false, settings::get('store_currency_code')) ?>
 					</div>
 				</div>
 			</div>
@@ -139,16 +139,16 @@
 			<div class="card">
 				<div class="card-header">
 					<div class="card-title">
-						<?php echo t('title_last_year_comparison', 'Last Year Comparison'); ?>
+						<?= t('title_last_year_comparison', 'Last Year Comparison') ?>
 					</div>
 				</div>
 
 				<div class="card-body">
 					<div class="text-xxl">
 						<?php if ($stats['last_year_comparison'] >= 0) { ?>
-							<?php echo f::draw_fonticon('icon-arrow-northeast', 'style="color: #62d100;"'); ?> +<?php echo f::format_number($stats['last_year_comparison'], 1); ?>%
+							<?= f::draw_fonticon('icon-arrow-northeast', 'style="color: #62d100;"') ?> +<?= f::format_number($stats['last_year_comparison'], 1) ?>%
 						<?php } else { ?>
-							<?php echo f::draw_fonticon('icon-arrow-southeast', 'style="color: #d10068;"'); ?> <?php echo f::format_number($stats['last_year_comparison'], 1); ?>%
+							<?= f::draw_fonticon('icon-arrow-southeast', 'style="color: #d10068;"') ?> <?= f::format_number($stats['last_year_comparison'], 1) ?>%
 						<?php } ?>
 					</div>
 				</div>
@@ -159,16 +159,16 @@
 			<div class="card">
 				<div class="card-header">
 					<div class="card-title">
-						<?php echo t('title_14_days_trend', '14 Days Trend'); ?>
+						<?= t('title_14_days_trend', '14 Days Trend') ?>
 					</div>
 				</div>
 
 				<div class="card-body">
 					<div class="text-xxl">
 						<?php if ($stats['trend_percentage'] >= 0) { ?>
-							<?php echo f::draw_fonticon('icon-arrow-northeast', 'style="color: #62d100;"'); ?> +<?php echo f::format_number($stats['trend_percentage'], 1); ?>%
+							<?= f::draw_fonticon('icon-arrow-northeast', 'style="color: #62d100;"') ?> +<?= f::format_number($stats['trend_percentage'], 1) ?>%
 						<?php } else { ?>
-							<?php echo f::draw_fonticon('icon-arrow-southeast', 'style="color: #d10068;"'); ?> <?php echo f::format_number($stats['trend_percentage'], 1); ?>%
+							<?= f::draw_fonticon('icon-arrow-southeast', 'style="color: #d10068;"') ?> <?= f::format_number($stats['trend_percentage'], 1) ?>%
 						<?php } ?>
 					</div>
 				</div>

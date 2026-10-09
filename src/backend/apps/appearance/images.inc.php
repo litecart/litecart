@@ -132,34 +132,34 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo t('title_images', 'Images'); ?>
+			<?= $app_icon ?> <?= t('title_images', 'Images') ?>
 		</div>
 	</div>
 
 	<div class="card-body">
-		<?php echo f::form_begin('images_form', 'post', false, true); ?>
+		<?= f::form_begin('images_form', 'post', false, true) ?>
 
 			<div class="grid">
 				<?php foreach ($images as $image) { ?>
 				<div class="col-md-3">
 					<label class="form-group">
-						<div class="form-label"><?php echo $image['name']; ?></div>
+						<div class="form-label"><?= $image['name'] ?></div>
 						<div class="image-container">
-							<div class="format"><?php echo strtoupper(pathinfo($image['file'], PATHINFO_EXTENSION)); ?></div>
-							<img class="thumbnail fit" src="<?php echo document::href_rlink($image['file']); ?>" data-original="<?php echo document::href_rlink($image['file']); ?>" alt="<?php echo f::escape_attr($image['name']); ?>">
+							<div class="format"><?= strtoupper(pathinfo($image['file'], PATHINFO_EXTENSION)) ?></div>
+							<img class="thumbnail fit" src="<?= document::href_rlink($image['file']) ?>" data-original="<?= document::href_rlink($image['file']) ?>" alt="<?= f::escape_attr($image['name']) ?>">
 						</div>
-						<?php echo f::form_input_file($image['id'], ['accept' => f::escape_attr($image['mime'])]); ?>
+						<?= f::form_input_file($image['id'], ['accept' => f::escape_attr($image['mime'])]) ?>
 					</label>
 				</div>
 				<?php } ?>
 			</div>
 
 			<div class="card-action">
-				<?php echo f::form_button_predefined('cancel'); ?>
-				<?php echo f::form_button_predefined('save'); ?>
+				<?= f::form_button_predefined('cancel') ?>
+				<?= f::form_button_predefined('save') ?>
 			</div>
 
-		<?php echo f::form_end(); ?>
+		<?= f::form_end() ?>
 	</div>
 </div>
 

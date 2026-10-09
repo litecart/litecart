@@ -120,37 +120,37 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo t('title_test_vmod', 'Test vMod'); ?>
+			<?= $app_icon ?> <?= t('title_test_vmod', 'Test vMod') ?>
 		</div>
 	</div>
 
 	<div class="card-body">
-		<h2><?php echo f::escape_html($vmod['name']); ?></h2>
+		<h2><?= f::escape_html($vmod['name']) ?></h2>
 	</div>
 
 	<table class="table data-table">
 		<thead>
 			<tr>
-				<th class="main"><?php echo t('title_file', 'File'); ?></th>
-				<th><?php echo t('title_result', 'Result'); ?></th>
+				<th class="main"><?= t('title_file', 'File') ?></th>
+				<th><?= t('title_result', 'Result') ?></th>
 			</tr>
 		</thead>
 		<tbody>
 			<?php foreach ($result['pathfiles'] as $pathfile) { ?>
 			<tr>
 				<td>
-					<h3><?php echo f::escape_html($pathfile['pathfile']); ?></h3>
+					<h3><?= f::escape_html($pathfile['pathfile']) ?></h3>
 					<?php foreach ($pathfile['files'] as $file) { ?>
-					<div><?php echo f::escape_html($file['file']); ?> <?php echo empty($file['error']) ? f::draw_fonticon('true') : f::draw_fonticon('false'); ?></div>
+					<div><?= f::escape_html($file['file']) ?> <?= empty($file['error']) ? f::draw_fonticon('true') : f::draw_fonticon('false') ?></div>
 					<ul>
 						<?php foreach ($file['operations'] as $i => $operation) { ?>
-						<li>Operation #<?php echo $i+1; ?> <?php echo empty($operation['error']) ? f::draw_fonticon('true') : f::draw_fonticon('false') .'<br>'. $operation['error']; ?></li>
+						<li>Operation #<?= $i+1 ?> <?= empty($operation['error']) ? f::draw_fonticon('true') : f::draw_fonticon('false') .'<br>'. $operation['error'] ?></li>
 						<?php } ?>
 					</ul>
 					<?php } ?>
 				</td>
 				<td style="font-size: 3em;">
-					<?php echo empty($pathfile['error']) ? f::draw_fonticon('true') : f::draw_fonticon('false'); ?>
+					<?= empty($pathfile['error']) ? f::draw_fonticon('true') : f::draw_fonticon('false') ?>
 				</td>
 			</tr>
 			<?php } ?>

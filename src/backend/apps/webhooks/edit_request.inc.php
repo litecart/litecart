@@ -92,25 +92,25 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo !empty($request->data['id']) ? t('title_edit_request', 'Edit Request') : t('title_create_new_request', 'Create New Request'); ?>
+			<?= $app_icon ?> <?= !empty($request->data['id']) ? t('title_edit_request', 'Edit Request') : t('title_create_new_request', 'Create New Request') ?>
 		</div>
 	</div>
 
 	<div class="card-body">
-		<?php echo f::form_begin('request_form', 'post', false, false, ['autocomplete' => 'off', 'style' => 'max-width: 720px;']); ?>
+		<?= f::form_begin('request_form', 'post', false, false, ['autocomplete' => 'off', 'style' => 'max-width: 720px;']) ?>
 
 			<div class="row">
 				<div class="col-md-6">
 					<label class="form-group">
-						<div><?php echo t('title_status', 'Status'); ?></div>
-						<?php echo f::form_select('status', $status_options, true); ?>
+						<div><?= t('title_status', 'Status') ?></div>
+						<?= f::form_select('status', $status_options, true) ?>
 					</label>
 				</div>
 
 				<div class="col-md-6">
 					<label class="form-group">
-						<div><?php echo t('title_scheduled_at', 'Date Scheduled'); ?></div>
-						<?php echo f::form_input_datetime('scheduled_at', true); ?>
+						<div><?= t('title_scheduled_at', 'Date Scheduled') ?></div>
+						<?= f::form_input_datetime('scheduled_at', true) ?>
 					</label>
 				</div>
 			</div>
@@ -118,42 +118,42 @@
 			<div class="row">
 				<div class="col-md-3">
 					<label class="form-group">
-						<div><?php echo t('title_method', 'Method'); ?></div>
-						<?php echo f::form_select('method', $method_options, true); ?>
+						<div><?= t('title_method', 'Method') ?></div>
+						<?= f::form_select('method', $method_options, true) ?>
 					</label>
 				</div>
 
 				<div class="col-md-9">
 					<label class="form-group">
-						<div><?php echo t('title_url', 'URL'); ?></div>
-						<?php echo f::form_input_url('url', true, ['required' => true]); ?>
+						<div><?= t('title_url', 'URL') ?></div>
+						<?= f::form_input_url('url', true, ['required' => true]) ?>
 					</label>
 				</div>
 			</div>
 
 			<label class="form-group">
-				<div><?php echo t('title_headers', 'Headers (JSON)'); ?></div>
-				<?php echo f::form_textarea('headers', true, ['rows' => '6']); ?>
+				<div><?= t('title_headers', 'Headers (JSON)') ?></div>
+				<?= f::form_textarea('headers', true, ['rows' => '6']) ?>
 			</label>
 
 			<label class="form-group">
-				<div><?php echo t('title_body', 'Body'); ?></div>
-				<?php echo f::form_textarea('body', true, ['rows' => '10']); ?>
+				<div><?= t('title_body', 'Body') ?></div>
+				<?= f::form_textarea('body', true, ['rows' => '10']) ?>
 			</label>
 
 			<?php if (!empty($request->data['last_attempt'])) { ?>
 			<div class="row">
 				<div class="col-md-6">
 					<label class="form-group">
-						<div><?php echo t('title_failed_attempts', 'Failed Attempts'); ?></div>
-						<div class="form-input"><?php echo (int)$request->data['failed_attempts']; ?></div>
+						<div><?= t('title_failed_attempts', 'Failed Attempts') ?></div>
+						<div class="form-input"><?= (int)$request->data['failed_attempts'] ?></div>
 					</label>
 				</div>
 
 				<div class="col-md-6">
 					<label class="form-group">
-						<div><?php echo t('title_last_attempt', 'Last Attempt'); ?></div>
-						<div class="form-input"><?php echo $request->data['last_attempt'] ?: '-'; ?></div>
+						<div><?= t('title_last_attempt', 'Last Attempt') ?></div>
+						<div class="form-input"><?= $request->data['last_attempt'] ?: '-' ?></div>
 					</label>
 				</div>
 			</div>
@@ -161,17 +161,17 @@
 
 			<?php if (!empty($request->data['raw_response'])) { ?>
 			<label class="form-group">
-				<div><?php echo t('title_raw_response', 'Raw Response'); ?></div>
-				<div class="form-input"><?php echo f::escape_html($request->data['raw_response']); ?></div>
+				<div><?= t('title_raw_response', 'Raw Response') ?></div>
+				<div class="form-input"><?= f::escape_html($request->data['raw_response']) ?></div>
 			</label>
 			<?php } ?>
 
 			<div class="form-group">
-				<?php echo f::form_button_predefined('save'); ?>
-				<?php echo (!empty($request->data['id'])) ? f::form_button_predefined('delete') : ''; ?>
-				<?php echo f::form_button_predefined('cancel'); ?>
+				<?= f::form_button_predefined('save') ?>
+				<?= (!empty($request->data['id'])) ? f::form_button_predefined('delete') : '' ?>
+				<?= f::form_button_predefined('cancel') ?>
 			</div>
 
-		<?php echo f::form_end(); ?>
+		<?= f::form_end() ?>
 	</div>
 </div>

@@ -9,13 +9,13 @@
 	};
 
 ?>
-<section id="box-account" aria-label="<?php echo f::escape_attr(t('title_account', 'Account')); ?>">
+<section id="box-account" aria-label="<?= f::escape_attr(t('title_account', 'Account')) ?>">
 
 	<h2 class="title">
-		<?php echo t('title_account', 'Account'); ?>
+		<?= t('title_account', 'Account') ?>
 	</h2>
 
-	<nav class="pills" aria-label="<?php echo f::escape_attr(t('title_account_navigation', 'Account Navigation')); ?>">
+	<nav class="pills" aria-label="<?= f::escape_attr(t('title_account_navigation', 'Account Navigation')) ?>">
 		<?php foreach ($menu_items as $item) echo $draw_menu_item($item); ?>
 	</nav>
 

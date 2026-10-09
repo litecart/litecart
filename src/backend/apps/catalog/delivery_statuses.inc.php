@@ -22,22 +22,22 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo t('title_delivery_statuses', 'Delivery Statuses'); ?>
+			<?= $app_icon ?> <?= t('title_delivery_statuses', 'Delivery Statuses') ?>
 		</div>
 	</div>
 
 	<div class="card-action">
-		<?php echo f::form_button_link(document::ilink(__APP__.'/edit_delivery_status'), t('title_create_new_status', 'Create New Status'), '', 'create'); ?>
+		<?= f::form_button_link(document::ilink(__APP__.'/edit_delivery_status'), t('title_create_new_status', 'Create New Status'), '', 'create') ?>
 	</div>
 
-	<?php echo f::form_begin('delivery_statuses_form', 'post'); ?>
+	<?= f::form_begin('delivery_statuses_form', 'post') ?>
 
 		<table class="table data-table">
 			<thead>
 				<tr>
-					<th><?php echo f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
-					<th><?php echo t('title_id', 'ID'); ?></th>
-					<th width="100%"><?php echo t('title_name', 'Name'); ?></th>
+					<th class="text-center"><?= f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"') ?></th>
+					<th><?= t('title_id', 'ID') ?></th>
+					<th width="100%"><?= t('title_name', 'Name') ?></th>
 					<th></th>
 				</tr>
 			</thead>
@@ -45,10 +45,10 @@
 			<tbody>
 				<?php foreach ($delivery_statuses as $delivery_status) { ?>
 				<tr>
-					<td><?php echo f::form_checkbox('delivery_statuses[]', $delivery_status['id']); ?></td>
-					<td><?php echo $delivery_status['id']; ?></td>
-					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_delivery_status', ['delivery_status_id' => $delivery_status['id']]); ?>"><?php echo $delivery_status['name']; ?></a></td>
-					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_delivery_status', ['delivery_status_id' => $delivery_status['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo f::draw_fonticon('edit'); ?></a></td>
+					<td><?= f::form_checkbox('delivery_statuses[]', $delivery_status['id']) ?></td>
+					<td><?= $delivery_status['id'] ?></td>
+					<td><a class="link" href="<?= document::href_ilink(__APP__.'/edit_delivery_status', ['delivery_status_id' => $delivery_status['id']]) ?>"><?= $delivery_status['name'] ?></a></td>
+					<td class="text-end"><a class="btn btn-default btn-sm" href="<?= document::href_ilink(__APP__.'/edit_delivery_status', ['delivery_status_id' => $delivery_status['id']]) ?>" title="<?= t('title_edit', 'Edit') ?>"><?= f::draw_fonticon('edit') ?></a></td>
 				</tr>
 				<?php } ?>
 			</tbody>
@@ -56,16 +56,16 @@
 			<tfoot>
 				<tr>
 				<td colspan="99">
-					<?php echo t('title_delivery_statuses', 'Delivery Statuses'); ?>: <?php echo f::format_number($num_rows); ?>
+					<?= t('title_delivery_statuses', 'Delivery Statuses') ?>: <?= f::format_number($num_rows) ?>
 				</td>
 			</tr>
 		</table>
 
-	<?php echo f::form_end(); ?>
+	<?= f::form_end() ?>
 
 	<?php if ($num_pages > 1) { ?>
 	<div class="card-footer">
-		<?php echo f::draw_pagination($num_pages); ?>
+		<?= f::draw_pagination($num_pages) ?>
 	</div>
 	<?php } ?>
 </div>

@@ -319,109 +319,109 @@
 <div>
 	<nav class="tabs">
 		<span class="tab-item active">
-			<?php echo t('title_import', 'Import'); ?>
+			<?= t('title_import', 'Import') ?>
 		</span>
-		<a class="tab-item" href="<?php echo document::href_ilink(__APP__ . '/export'); ?>">
-			<?php echo t('title_export', 'Export'); ?>
+		<a class="tab-item" href="<?= document::href_ilink(__APP__ . '/export') ?>">
+			<?= t('title_export', 'Export') ?>
 		</a>
 	</nav>
 
 	<div class="card">
 		<div class="card-header">
 			<div class="card-title">
-				<?php echo $app_icon; ?> <?php echo t('title_import_data', 'Import Data'); ?>
+				<?= $app_icon ?> <?= t('title_import_data', 'Import Data') ?>
 			</div>
 		</div>
 
 		<div class="card-body">
-			<?php echo f::form_begin('import_form', 'post', null, true, ['style' => 'max-width: 600px;']); ?>
+			<?= f::form_begin('import_form', 'post', null, true, ['style' => 'max-width: 600px;']) ?>
 
 				<label class="form-group">
-					<div class="form-label"><?php echo t('title_url', 'URL'); ?></div>
-					<?php echo f::form_input_url('url', true, ['placeholder' => 'https://www.example.tld/data.csv']); ?>
+					<div class="form-label"><?= t('title_url', 'URL') ?></div>
+					<?= f::form_input_url('url', true, ['placeholder' => 'https://www.example.tld/data.csv']) ?>
 				</label>
 
 				<div class="divider" style="margin-top: -1.5em;">
-					<span><?php echo t('title_or', 'or'); ?></span>
+					<span><?= t('title_or', 'or') ?></span>
 				</div>
 
 				<div class="row">
 					<label class="form-group col-sm-8">
-						<div class="form-label"><?php echo t('title_file', 'File'); ?></div>
-						<?php echo f::form_input_file('file', ['accept' => '.csv,.json,.yaml,.yml,.xml']); ?>
+						<div class="form-label"><?= t('title_file', 'File') ?></div>
+						<?= f::form_input_file('file', ['accept' => '.csv,.json,.yaml,.yml,.xml']) ?>
 					</label>
 
 					<label class="form-group col-sm-4">
-						<div class="form-label"><?php echo t('title_character_encoding', 'Character Encoding'); ?></div>
-						<?php echo f::form_select_encoding('charset', !empty($_POST['charset']) ? true : 'UTF-8'); ?>
+						<div class="form-label"><?= t('title_character_encoding', 'Character Encoding') ?></div>
+						<?= f::form_select_encoding('charset', !empty($_POST['charset']) ? true : 'UTF-8') ?>
 					</label>
 				</div>
 
 				<label class="form-group">
-					<div class="form-label"><?php echo t('title_target', 'Target'); ?></div>
+					<div class="form-label"><?= t('title_target', 'Target') ?></div>
 					<div>
-						<?php echo f::form_select_optgroup('target', $target_options, true); ?>
+						<?= f::form_select_optgroup('target', $target_options, true) ?>
 					</div>
 				</label>
 
 				<div id="formats">
 
 					<div class="form-group">
-						<label><?php echo t('title_format', 'Format'); ?></label>
-						<?php	echo f::form_toggle('format', $format_options, $_POST['format'] ?? 'csv'); ?>
+						<label><?= t('title_format', 'Format') ?></label>
+						<?= f::form_toggle('format', $format_options, $_POST['format'] ?? 'csv') ?>
 					</div>
 
 					<fieldset id="csv" class="options">
-						<legend><?php echo t('title_format_options', 'Format Options'); ?></legend>
+						<legend><?= t('title_format_options', 'Format Options') ?></legend>
 
 						<div class="grid">
 							<label class="form-group col-6">
-								<div class="form-label"><?php echo t('title_delimiter', 'Delimiter'); ?></div>
-								<?php echo f::form_select('delimiter', ['' => '(' . t('title_auto_detect', 'Auto Detect') . ')', ',' => ',', ';' => ';', "\t" => 'TAB', '|' => '|'], true); ?>
+								<div class="form-label"><?= t('title_delimiter', 'Delimiter') ?></div>
+								<?= f::form_select('delimiter', ['' => '(' . t('title_auto_detect', 'Auto Detect') . ')', ',' => ',', ';' => ';', "\t" => 'TAB', '|' => '|'], true) ?>
 							</label>
 
 							<label class="form-group col-6">
-								<div class="form-label"><?php echo t('title_enclosure', 'Enclosure'); ?></div>
-								<?php echo f::form_select('enclosure', ['"' => '" (' . t('text_default', 'default') . ')'], true); ?>
+								<div class="form-label"><?= t('title_enclosure', 'Enclosure') ?></div>
+								<?= f::form_select('enclosure', ['"' => '" (' . t('text_default', 'default') . ')'], true) ?>
 							</label>
 						</div>
 
 						<div class="grid">
 							<label class="form-group col-sm-6">
-								<div class="form-label"><?php echo t('title_escape_character', 'Escape Character'); ?></div>
-								<?php echo f::form_select('escapechar', ['"' => '" (' . t('text_default', 'default') . ')', '\\' => '\\'], true); ?>
+								<div class="form-label"><?= t('title_escape_character', 'Escape Character') ?></div>
+								<?= f::form_select('escapechar', ['"' => '" (' . t('text_default', 'default') . ')', '\\' => '\\'], true) ?>
 							</label>
 						</div>
 
 						<div class="form-group">
-							<div><?php echo f::form_radio_button('column_titles', ['1', t('text_first_row_contains_column_titles', 'The first row contains column titles')], true); ?></div>
-							<div><?php echo f::form_radio_button('column_titles', ['0', t('text_file_has_no_column_titles', 'The file has no column titles')], true); ?></div>
+							<div><?= f::form_radio_button('column_titles', ['1', t('text_first_row_contains_column_titles', 'The first row contains column titles')], true) ?></div>
+							<div><?= f::form_radio_button('column_titles', ['0', t('text_file_has_no_column_titles', 'The file has no column titles')], true) ?></div>
 						</div>
 					</fieldset>
 
 					<!--
 					<fieldset id="json" class="options">
-						<legend><?php echo t('title_format_options', 'Format Options'); ?></legend>
-						<div><em><?php echo t('text_no_options_for_selected_format', 'There are no options for this format.'); ?></em></div>
+						<legend><?= t('title_format_options', 'Format Options') ?></legend>
+						<div><em><?= t('text_no_options_for_selected_format', 'There are no options for this format.') ?></em></div>
 					</fieldset>
 
 					<fieldset id="yaml" class="options">
-						<legend><?php echo t('title_format_options', 'Format Options'); ?></legend>
-						<div><em><?php echo t('text_no_options_for_selected_format', 'There are no options for this format.'); ?></em></div>
+						<legend><?= t('title_format_options', 'Format Options') ?></legend>
+						<div><em><?= t('text_no_options_for_selected_format', 'There are no options for this format.') ?></em></div>
 					</fieldset>
 
 					<fieldset id="xml" class="options">
-						<legend><?php echo t('title_format_options', 'Format Options'); ?></legend>
-						<div><em><?php echo t('text_no_options_for_selected_format', 'There are no options for this format.'); ?></em></div>
+						<legend><?= t('title_format_options', 'Format Options') ?></legend>
+						<div><em><?= t('text_no_options_for_selected_format', 'There are no options for this format.') ?></em></div>
 					</fieldset>
 					-->
 				</div>
 
 				<div class="text-center">
-					<?php echo f::form_button('load', t('title_next', 'Next') . ' ' . f::draw_fonticon('icon-chevron-right'), 'submit', ['class' => 'btn btn-default btn-lg btn-block']); ?>
+					<?= f::form_button('load', t('title_next', 'Next') . ' ' . f::draw_fonticon('icon-chevron-right'), 'submit', ['class' => 'btn btn-default btn-lg btn-block']) ?>
 				</div>
 
-			<?php echo f::form_end(); ?>
+			<?= f::form_end() ?>
 		</div>
 	</div>
 </div>

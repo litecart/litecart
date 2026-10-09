@@ -66,20 +66,20 @@ pre {
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo t('title_view_modification', 'View Modification'); ?>
+			<?= $app_icon ?> <?= t('title_view_modification', 'View Modification') ?>
 		</div>
 	</div>
 
 	<div class="card-body">
 
-		<h1><?php echo $xml->id; ?></h1>
+		<h1><?= $xml->id ?></h1>
 
-		<p><?php echo t('description_view_vmod', 'Please note: These are the contents of the virtual modification to give you a good understanding of what it does. Do NOT make these changes yourself.'); ?></p>
+		<p><?= t('description_view_vmod', 'Please note: These are the contents of the virtual modification to give you a good understanding of what it does. Do NOT make these changes yourself.') ?></p>
 
 		<ul class="list-unstyled">
 			<?php foreach ($xml->file as $file) { ?>
 			<li>
-				<h2>In <strong><?php if (!empty($file->attributes()['path'])) echo $file->attributes()['path']; ?><?php echo $file->attributes()['name']; ?></strong>:</h2>
+				<h2>In <strong><?php if (!empty($file->attributes()['path'])) echo $file->attributes()['path']; ?><?= $file->attributes()['name'] ?></strong>:</h2>
 
 				<?php foreach ($file->operation as $operation) { ?>
 				<div class="operation">
@@ -91,18 +91,16 @@ pre {
 					<?php if (!empty($operation->find->attributes()['offset-before'])) echo ' (Offset Before: '. $operation->find->attributes()['offset-before'] .')'; ?>
 					<?php if (!empty($operation->find->attributes()['offset-after'])) echo ' (Offset After: '. $operation->find->attributes()['offset-after'] .')'; ?>
 
-						<pre><code><?php echo f::escape_html($operation->find); ?></code></pre>
+						<pre><code><?= f::escape_html($operation->find) ?></code></pre>
 					</div>
 
 					<div class="insert">
-<?php
-	echo match($operation->insert->attributes()['position']) {
+<?= match($operation->insert->attributes()['position']) {
 		'replace' => '** Replace with **',
 		'before', 'ibefore' => '** Before that, add **',
 		'after', 'iafter' => '** After that, add **',
-	};
-?>
-						<pre><code><?php echo f::escape_html($operation->insert); ?></code></pre>
+	} ?>
+						<pre><code><?= f::escape_html($operation->insert) ?></code></pre>
 					</div>
 				</div>
 				<?php } ?>

@@ -73,47 +73,47 @@
 <div class="card card-app">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo t('title_addons_market', 'Add-Ons Market'); ?>
+			<?= $app_icon ?> <?= t('title_addons_market', 'Add-Ons Market') ?>
 		</div>
 	</div>
 
-	<?php echo f::form_begin('search_form', 'get'); ?>
+	<?= f::form_begin('search_form', 'get') ?>
 
 		<div class="card-filter">
-			<?php echo f::form_select('category', $categories_options, true, ['style' => 'width: auto;']); ?>
-			<div class="expandable"><?php echo f::form_input_search('query', true, ['placeholder' => t('text_search_phrase_or_keyword', 'Search phrase or keyword')]); ?></div>
-			<?php echo f::form_button('filter', t('title_search', 'Search'), 'submit'); ?>
+			<?= f::form_select('category', $categories_options, true, ['style' => 'width: auto;']) ?>
+			<div class="expandable"><?= f::form_input_search('query', true, ['placeholder' => t('text_search_phrase_or_keyword', 'Search phrase or keyword')]) ?></div>
+			<?= f::form_button('filter', t('title_search', 'Search'), 'submit') ?>
 		</div>
 
-	<?php echo f::form_end(); ?>
+	<?= f::form_end() ?>
 
 	<div class="card-body">
 
-		<h2><?php echo t('title_addons', 'Add-ons'); ?></h2>
+		<h2><?= t('title_addons', 'Add-ons') ?></h2>
 
 		<div class="addons">
 			<?php foreach ($results['addons'] as $addon) { ?>
-			<a class="addon" href="<?php echo document::ilink(__APP__ . '/marketplace_addon', ['addon_id' => $addon['id']]); ?>">
-				<img class="thumbnail fit" src="<?php echo f::escape_html($addon['image']['thumbnail'] ?: document::rlink(FS_DIR_STORAGE . 'images/no_image.svg')); ?>">
+			<a class="addon" href="<?= document::ilink(__APP__ . '/marketplace_addon', ['addon_id' => $addon['id']]) ?>">
+				<img class="thumbnail fit" src="<?= f::escape_html($addon['image']['thumbnail'] ?: document::rlink(FS_DIR_STORAGE . 'images/no_image.svg')) ?>">
 				<div class="details">
-					<div class="name"><?php echo f::escape_html($addon['name']); ?></div>
-					<div class="description"><?php echo f::escape_html($addon['short_description']); ?></div>
+					<div class="name"><?= f::escape_html($addon['name']) ?></div>
+					<div class="description"><?= f::escape_html($addon['short_description']) ?></div>
 					<?php if ($addon['price'] > 0) { ?>
-					<div class="price"><?php echo f::escape_html($addon['price']['formatted']); ?></div>
+					<div class="price"><?= f::escape_html($addon['price']['formatted']) ?></div>
 					<?php } elseif ($addon['price'] === 0) { ?>
-					<div class="free"><?php echo t('title_free', 'Free'); ?></div>
+					<div class="free"><?= t('title_free', 'Free') ?></div>
 					<?php } ?>
 				</div>
 			</a>
 			<?php } ?>
 		</div>
 
-		<?php echo f::draw_pagination($results['pages']); ?>
+		<?= f::draw_pagination($results['pages']) ?>
 	</div>
 
-	<?php echo f::form_begin('market_form', 'post', '', true); ?>
+	<?= f::form_begin('market_form', 'post', '', true) ?>
 
-	<?php echo f::form_end(); ?>
+	<?= f::form_end() ?>
 </div>
 
 <script>

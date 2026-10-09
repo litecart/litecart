@@ -61,52 +61,52 @@
 
 		<div class="card-header">
 			<div class="card-title">
-				<?php echo t('title_webhook_requests', 'Webhook Requests'); ?>
+				<?= t('title_webhook_requests', 'Webhook Requests') ?>
 			</div>
 		</div>
 
 		<div class="card-action">
-			<a class="btn btn-default" href="<?php echo document::href_ilink(__APP__.'/edit_request'); ?>">
-				<?php echo f::draw_fonticon('add'); ?> <?php echo t('title_create_new_request', 'Create New Request'); ?>
+			<a class="btn btn-default" href="<?= document::href_ilink(__APP__.'/edit_request') ?>">
+				<?= f::draw_fonticon('add') ?> <?= t('title_create_new_request', 'Create New Request') ?>
 			</a>
 		</div>
 
-		<?php echo f::form_begin('filter_form', 'get'); ?>
+		<?= f::form_begin('filter_form', 'get') ?>
 
 			<div class="card-filter" style="gap: 1em;">
 				<ul class="list-inline">
 
 					<li class="expandable">
-						<?php echo f::form_input_search('query', true, ['placeholder' => f::escape_html(t('title_search', 'Search'))]); ?>
+						<?= f::form_input_search('query', true, ['placeholder' => f::escape_html(t('title_search', 'Search'))]) ?>
 					</li>
 
 					<li>
 						<div class="input-group" style="width: 480px;">
-							<?php echo f::form_input_datetime('date_from'); ?>
+							<?= f::form_input_datetime('date_from') ?>
 							<span class="input-group-text"> - </span>
-							<?php echo f::form_input_datetime('date_to'); ?>
+							<?= f::form_input_datetime('date_to') ?>
 						</div>
 					</li>
 
 					<li>
-							<?php echo f::form_button('filter', t('title_filter_now', 'Filter')); ?>
+							<?= f::form_button('filter', t('title_filter_now', 'Filter')) ?>
 					</li>
 
 				</ul>
 			</div>
 
-		<?php echo f::form_end(); ?>
+		<?= f::form_end() ?>
 
 		<table class="table table-striped data-table">
 
 			<thead>
 				<tr>
-					<th><?php echo t('title_status', 'Status'); ?></th>
-					<th class="main"><?php echo t('title_request', 'Request'); ?></th>
-					<th><?php echo t('title_last_attempt', 'Last Attempt'); ?></th>
-					<th><?php echo t('title_delivered', 'Delivered'); ?></th>
-					<th><?php echo t('title_scheduled', 'Scheduled'); ?></th>
-					<th><?php echo t('title_created', 'Created'); ?></th>
+					<th><?= t('title_status', 'Status') ?></th>
+					<th class="main"><?= t('title_request', 'Request') ?></th>
+					<th><?= t('title_last_attempt', 'Last Attempt') ?></th>
+					<th><?= t('title_delivered', 'Delivered') ?></th>
+					<th><?= t('title_scheduled', 'Scheduled') ?></th>
+					<th><?= t('title_created', 'Created') ?></th>
 					<th></th>
 					<th></th>
 				</tr>
@@ -114,22 +114,22 @@
 
 			<tbody>
 				<?php foreach ($requests as $request) { ?>
-				<tr data-id="<?php echo (int)$request['id']; ?>">
-					<td><?php echo f::escape_html($request['status']); ?></td>
-					<td><?php echo f::escape_html(ellipsis($request['method'] .' '. $request['url'])); ?></td>
-					<td><?php echo $request['last_attempt'] ? f::datetime_format('datetime', $request['last_attempt']) : '-'; ?></td>
-					<td><?php echo $request['delivered_at'] ? f::datetime_format('datetime', $request['delivered_at']) : '-'; ?></td>
-					<td><?php echo $request['scheduled_at'] ? f::datetime_format('datetime', $request['scheduled_at']) : '-'; ?></td>
-					<td><?php echo f::datetime_format('datetime', $request['created_at']); ?></td>
+				<tr data-id="<?= (int)$request['id'] ?>">
+					<td><?= f::escape_html($request['status']) ?></td>
+					<td><?= f::escape_html(ellipsis($request['method'] .' '. $request['url'])) ?></td>
+					<td><?= $request['last_attempt'] ? f::datetime_format('datetime', $request['last_attempt']) : '-' ?></td>
+					<td><?= $request['delivered_at'] ? f::datetime_format('datetime', $request['delivered_at']) : '-' ?></td>
+					<td><?= $request['scheduled_at'] ? f::datetime_format('datetime', $request['scheduled_at']) : '-' ?></td>
+					<td><?= f::datetime_format('datetime', $request['created_at']) ?></td>
 					<td class="text-end">
 						<button name="view" type="button" class="btn btn-default btn-sm">
-							<?php echo f::draw_fonticon('icon-search'); ?> <?php echo t('title_details', 'Details'); ?>
+							<?= f::draw_fonticon('icon-search') ?> <?= t('title_details', 'Details') ?>
 						</button>
 					</td>
 					<td class="text-end">
 						<?php if (!$request['delivered_at']) { ?>
-						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_request', ['request_id' => $request['id']]); ?>" title="<?php echo f::escape_html(t('title_edit', 'Edit')); ?>">
-							<?php echo f::draw_fonticon('edit'); ?>
+						<a class="btn btn-default btn-sm" href="<?= document::href_ilink(__APP__.'/edit_request', ['request_id' => $request['id']]) ?>" title="<?= f::escape_html(t('title_edit', 'Edit')) ?>">
+							<?= f::draw_fonticon('edit') ?>
 						</a>
 						<?php } ?>
 					</td>
@@ -140,7 +140,7 @@
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo t('title_requests', 'Requests'); ?>: <?php echo f::number_format($num_rows); ?>
+						<?= t('title_requests', 'Requests') ?>: <?= f::number_format($num_rows) ?>
 					</td>
 				</tr>
 			</tfoot>
@@ -148,7 +148,7 @@
 
 		<?php if ($num_pages > 1) { ?>
 		<div class="card-footer">
-			<?php echo f::draw_pagination($num_pages); ?>
+			<?= f::draw_pagination($num_pages) ?>
 		</div>
 		<?php } ?>
 
@@ -161,13 +161,13 @@
 		e.preventDefault();
 
 		var id = $(this).closest('tr').data('id');
-		var url = '<?php echo document::link(null, ['request_id' => '__request__id']); ?>'.replace(/__request__id/, id);
+		var url = '<?= document::link(null, ['request_id' => '__request__id']) ?>'.replace(/__request__id/, id);
 
 		$.getJSON(url, function(json) {
 
 			$output = $([
 				'<div>',
-					'<h2><?php echo t('title_last_log', 'Last Log'); ?></h2>',
+					'<h2><?= t('title_last_log', 'Last Log') ?></h2>',
 					'<pre>'+ json.last_log +'</pre>',
 				'</div>',
 			].join('\n'));

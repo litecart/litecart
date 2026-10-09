@@ -48,38 +48,38 @@
 			<div id="sidebar" style="margin-bottom: 2em;">
 
 				<nav class="pills" style="margin-bottom: 2em;">
-					<a class="pill-item" href="<?php echo document::href_ilink(''); ?>">
-						<?php echo f::draw_fonticon('icon-chevron-left'); ?> <?php echo t('title_back', 'Back'); ?>
+					<a class="pill-item" href="<?= document::href_ilink('') ?>">
+						<?= f::draw_fonticon('icon-chevron-left') ?> <?= t('title_back', 'Back') ?>
 					</a>
 				</nav>
 
-				<div class="card" aria-label="<?php echo f::escape_attr($main_category['name']); ?>">
+				<div class="card" aria-label="<?= f::escape_attr($main_category['name']) ?>">
 					<div class="card-header">
-						<h1 class="card-title"><?php echo f::escape_html($main_category['name']); ?></h1>
+						<h1 class="card-title"><?= f::escape_html($main_category['name']) ?></h1>
 					</div>
 
 					<div class="card-body">
 
 						<?php include 'app://frontend/partials/box_category_tree.inc.php'; ?>
 
-						<section id="box-category-filter" role="search" aria-label="<?php echo f::escape_attr(t('title_filter_products', 'Filter Products')); ?>">
-							<?php echo f::form_begin('filter_form', 'get', false, false, ['role' => 'search', 'aria-label' => f::escape_attr(t('title_filter_products', 'Filter Products'))]); ?>
+						<section id="box-category-filter" role="search" aria-label="<?= f::escape_attr(t('title_filter_products', 'Filter Products')) ?>">
+							<?= f::form_begin('filter_form', 'get', false, false, ['role' => 'search', 'aria-label' => f::escape_attr(t('title_filter_products', 'Filter Products'))]) ?>
 
 									<label class="form-group">
-										<div class="form-label"><?php echo t('title_product_name', 'Product Name'); ?></div>
-										<?php echo f::form_input_search('product_name', true, ['autocomplete' => 'off', 'data-token-group' => 'name', 'data-token-title' => t('title_name', 'Name'), 'placeholder' => f::escape_attr(t('text_filter_by_product_name', 'Filter by product name')), 'aria-label' => f::escape_attr(t('title_product_name', 'Product Name'))]); ?>
+										<div class="form-label"><?= t('title_product_name', 'Product Name') ?></div>
+										<?= f::form_input_search('product_name', true, ['autocomplete' => 'off', 'data-token-group' => 'name', 'data-token-title' => t('title_name', 'Name'), 'placeholder' => f::escape_attr(t('text_filter_by_product_name', 'Filter by product name')), 'aria-label' => f::escape_attr(t('title_product_name', 'Product Name'))]) ?>
 									</label>
 
 									<?php if ($brands) { ?>
 									<div class="form-group">
-										<div class="form-label"><?php echo t('title_brands', 'Brands'); ?></div>
+										<div class="form-label"><?= t('title_brands', 'Brands') ?></div>
 										<div class="dropdown">
 											<div class="form-select" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-												<?php echo t('title_brands', 'Brands'); ?>
+												<?= t('title_brands', 'Brands') ?>
 											</div>
-											<ul class="dropdown-content" role="menu" aria-label="<?php echo f::escape_attr(t('title_brands', 'Brands')); ?>">
+											<ul class="dropdown-content" role="menu" aria-label="<?= f::escape_attr(t('title_brands', 'Brands')) ?>">
 												<?php foreach ($brands as $brand) { ?>
-												<li role="none"><?php echo f::form_checkbox('brands[]', [$brand['id'], $brand['name']], true, ['data-token-group' => 'brand', 'data-token-title' => t('title_brand', 'Brand'), 'data-token-value' => $brand['name']]); ?></li>
+												<li role="none"><?= f::form_checkbox('brands[]', [$brand['id'], $brand['name']], true, ['data-token-group' => 'brand', 'data-token-title' => t('title_brand', 'Brand'), 'data-token-value' => $brand['name']]) ?></li>
 												<?php } ?>
 											</ul>
 										</div>
@@ -88,14 +88,14 @@
 
 									<?php foreach ($attributes as $attribute) { ?>
 									<div class="form-group">
-										<div class="form-label"><?php echo t('title_product_attributes', 'Product Attributes'); ?></div>
+										<div class="form-label"><?= t('title_product_attributes', 'Product Attributes') ?></div>
 										<div class="dropdown">
 											<div class="form-select" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-												<?php echo $attribute['name']; ?>
+												<?= $attribute['name'] ?>
 											</div>
-											<ul class="dropdown-content" role="menu" aria-label="<?php echo f::escape_attr($attribute['name']); ?>">
+											<ul class="dropdown-content" role="menu" aria-label="<?= f::escape_attr($attribute['name']) ?>">
 												<?php foreach ($attribute['values'] as $value) { ?>
-												<li role="none"><?php echo !empty($attribute['select_multiple']) ? f::form_checkbox('attributes['. $attribute['id'] .'][]', [$value['id'], $value['value']], true, ['data-token-group' => 'attribute-' . $attribute['id'], 'data-token-title' => f::escape_attr($attribute['name']), 'data-token-value' => f::escape_attr($value['value'])]) : f::form_radio_button('attributes['. $group['id'] .'][]', [$value['id'], $value['value']], true, ['data-token-group' => 'attribute-' . $attribute['id'], 'data-token-title' => f::escape_attr($attribute['name']), 'data-token-value' => f::escape_attr($value['value'])]); ?></li>
+												<li role="none"><?= !empty($attribute['select_multiple']) ? f::form_checkbox('attributes['. $attribute['id'] .'][]', [$value['id'], $value['value']], true, ['data-token-group' => 'attribute-' . $attribute['id'], 'data-token-title' => f::escape_attr($attribute['name']), 'data-token-value' => f::escape_attr($value['value'])]) : f::form_radio_button('attributes['. $group['id'] .'][]', [$value['id'], $value['value']], true, ['data-token-group' => 'attribute-' . $attribute['id'], 'data-token-title' => f::escape_attr($attribute['name']), 'data-token-value' => f::escape_attr($value['value'])]) ?></li>
 												<?php } ?>
 											</ul>
 										</div>
@@ -103,19 +103,19 @@
 									<?php } ?>
 
 									<div class="form-group">
-										<div class="form-label"><?php echo t('title_price_range', 'Price Range'); ?></div>
+										<div class="form-label"><?= t('title_price_range', 'Price Range') ?></div>
 										<div class="input-group">
-											<label for="price_range_min" class="hidden"><?php echo t('title_min', 'Min'); ?></label>
-											<?php echo f::form_input_number('price_range[min]', true, ['id' => 'price_range_min', 'autocomplete' => 'off', 'placeholder' => t('title_min', 'Min')]); ?>
+											<label for="price_range_min" class="hidden"><?= t('title_min', 'Min') ?></label>
+											<?= f::form_input_number('price_range[min]', true, ['id' => 'price_range_min', 'autocomplete' => 'off', 'placeholder' => t('title_min', 'Min')]) ?>
 											<span class="input-group-text" aria-hidden="true"> &ndash; </span>
-											<label for="price_range_max" class="hidden"><?php echo t('title_max', 'Max'); ?></label>
-											<?php echo f::form_input_number('price_range[max]', true, ['id' => 'price_range_max', 'autocomplete' => 'off', 'placeholder' => t('title_max', 'Max')]); ?>
+											<label for="price_range_max" class="hidden"><?= t('title_max', 'Max') ?></label>
+											<?= f::form_input_number('price_range[max]', true, ['id' => 'price_range_max', 'autocomplete' => 'off', 'placeholder' => t('title_max', 'Max')]) ?>
 										</div>
 									</div>
 
-									<?php echo f::form_input_hidden('sort', ''); ?>
+									<?= f::form_input_hidden('sort', '') ?>
 
-							<?php echo f::form_end(); ?>
+							<?= f::form_end() ?>
 						</section>
 
 					</div>
@@ -129,9 +129,9 @@
 			<div id="content">
 
 				<?php if ($description) { ?>
-				<article id="box-category-description" class="card" aria-label="<?php echo f::escape_attr($h1_title); ?>">
+				<article id="box-category-description" class="card" aria-label="<?= f::escape_attr($h1_title) ?>">
 					<div class="card-header">
-						<h1 class="card-title"><?php echo $h1_title; ?></h1>
+						<h1 class="card-title"><?= $h1_title ?></h1>
 					</div>
 
 					<div class="card-body">
@@ -141,7 +141,7 @@
 
 								<?php if ($short_description) { ?>
 								<p class="short-description text-medium" style="margin-top: 0;">
-									<?php echo $short_description; ?>
+									<?= $short_description ?>
 								</p>
 								<?php } ?>
 
@@ -152,7 +152,7 @@
 
 							<?php if ($image) { ?>
 							<div style="flex: 0 0 320px;">
-								<?php echo f::draw_thumbnail($image, 480, 0, 'category'); ?>
+								<?= f::draw_thumbnail($image, 480, 0, 'category') ?>
 							</div>
 							<?php } ?>
 
@@ -161,30 +161,30 @@
 				</article>
 				<?php } ?>
 
-				<article id="box-category" class="card" aria-label="<?php echo f::escape_attr($h1_title); ?>">
+				<article id="box-category" class="card" aria-label="<?= f::escape_attr($h1_title) ?>">
 					<div class="card-header hidden-xs">
 						<div class="grid">
 
 							<div class="col-6">
-								<h2 class="card-title"><?php echo $h1_title; ?></h2>
+								<h2 class="card-title"><?= $h1_title ?></h2>
 							</div>
 
 							<div class="col-6 text-end" style="display: flex; gap: 1em; justify-content: end;">
 
 								<div class="dropdown" style="display: inline-block; margin-inline-start: 1em;">
 									<div class="form-select" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										<?php echo t('title_sort_by', 'Sort By'); ?>
+										<?= t('title_sort_by', 'Sort By') ?>
 									</div>
 
-									<ul class="dropdown-content" role="menu" aria-label="<?php echo f::escape_attr(t('title_sort_by', 'Sort By')); ?>">
+									<ul class="dropdown-content" role="menu" aria-label="<?= f::escape_attr(t('title_sort_by', 'Sort By')) ?>">
 										<?php foreach ($sort_alternatives as $key => $title) { ?>
-										<li role="none"><?php echo f::form_radio_button('sort', [$key, $title], true); ?></li>
+										<li role="none"><?= f::form_radio_button('sort', [$key, $title], true) ?></li>
 										<?php } ?>
 									</ul>
 								</div>
 
 								<div style="display: inline-block;">
-									<?php echo f::form_toggle('list_style', ['columns' => f::draw_fonticon('icon-th-large'), 'rows' => f::draw_fonticon('icon-bars')], true, ['data-token-group' => 'list_style', 'data-token-title' => t('title_list_style', 'List Style')]); ?>
+									<?= f::form_toggle('list_style', ['columns' => f::draw_fonticon('icon-th-large'), 'rows' => f::draw_fonticon('icon-bars')], true, ['data-token-group' => 'list_style', 'data-token-title' => t('title_list_style', 'List Style')]) ?>
 								</div>
 							</div>
 						</div>
@@ -193,16 +193,16 @@
 					<div class="card-body">
 
 						<?php if ($products) { ?>
-						<div id="filter-tokens" role="status" aria-live="polite" aria-label="<?php echo f::escape_attr(t('title_active_filters', 'Active Filters')); ?>"></div>
+						<div id="filter-tokens" role="status" aria-live="polite" aria-label="<?= f::escape_attr(t('title_active_filters', 'Active Filters')) ?>"></div>
 
 <?php /*
 						<nav class="pills hidden-xs" style="margin-bottom: 1em;">
-							<a class="pill-item" href="<?php echo !empty($parent_id) ? document::href_ilink('category', ['category_id' => $parent_id]) : document::href_ilink(''); ?>"><?php echo f::draw_fonticon('icon-chevron-left'); ?> <?php echo t('title_back', 'Back'); ?></a>
-							<?php foreach ($subcategories as $subcategory) { ?><a class="nav-item" href="<?php echo document::href_ilink('category', ['category_id' => $subcategory['id']]); ?>"><?php echo $subcategory['name']; ?></a><?php } ?>
+							<a class="pill-item" href="<?= !empty($parent_id) ? document::href_ilink('category', ['category_id' => $parent_id]) : document::href_ilink('') ?>"><?= f::draw_fonticon('icon-chevron-left') ?> <?= t('title_back', 'Back') ?></a>
+							<?php foreach ($subcategories as $subcategory) { ?><a class="nav-item" href="<?= document::href_ilink('category', ['category_id' => $subcategory['id']]) ?>"><?= $subcategory['name'] ?></a><?php } ?>
 						</nav>
 */ ?>
 
-						<section class="listing products <?php echo (isset($_GET['list_style']) && $_GET['list_style'] == 'rows') ? 'rows' : 'columns'; ?>">
+						<section class="listing products <?= (isset($_GET['list_style']) && $_GET['list_style'] == 'rows') ? 'rows' : 'columns' ?>">
 							<?php foreach ($products as $product) echo f::draw_listing_product($product, ['category_id']); ?>
 						</section>
 
@@ -237,7 +237,7 @@
 		if ($('input[name="price_range[min]"]').val() || $('input[name="price_range[max]"]').val()) {
 			$('#filter-tokens').append([
 				'<span class="token" data-group="price-range" data-name="price_range[min]" data-value="'+ $('input[name="price_range[min]"]').val() +'">',
-				'<?php echo f::escape_js(t('title_price_range', 'Price Range')) ; ?>: '+ $('input[name="price_range[min]"]').val() +' &ndash; '+ $('input[name="price_range[max]"]').val(),
+				'<?= f::escape_js(t('title_price_range', 'Price Range'))  ?>: '+ $('input[name="price_range[min]"]').val() +' &ndash; '+ $('input[name="price_range[max]"]').val(),
 				'<a href="#" class="remove">×</a>',
 				'</span>'
 			].join('\n'));

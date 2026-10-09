@@ -194,12 +194,12 @@
 <div class="card card-app">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo t('title_addons_market', 'Add-Ons Market'); ?>
+			<?= $app_icon ?> <?= t('title_addons_market', 'Add-Ons Market') ?>
 		</div>
 	</div>
 
 	<div class="card-action">
-		<?php echo f::form_button_link('back', t('title_back', 'Back'), document::ilink(__APP__ . '/catalog')); ?>
+		<?= f::form_button_link('back', t('title_back', 'Back'), document::ilink(__APP__ . '/catalog')) ?>
 	</div>
 
 	<div class="card-body">
@@ -210,15 +210,15 @@
 					<div class="col-md-6">
 						<?php if (!empty($addon['images'])) { ?>
 						<div class="image">
-							<a href="<?php echo document::href_link($addon['images'][0]['original']); ?>" data-toggle="lightbox">
-								<img class="thumbnail" src="<?php echo f::escape_html($addon['images'][0]['thumbnail_2x']); ?>" alt="<?php echo f::escape_html($addon['name']); ?>">
+							<a href="<?= document::href_link($addon['images'][0]['original']) ?>" data-toggle="lightbox">
+								<img class="thumbnail" src="<?= f::escape_html($addon['images'][0]['thumbnail_2x']) ?>" alt="<?= f::escape_html($addon['name']) ?>">
 							</a>
 						</div>
 
 						<div class="images">
 							<?php foreach (array_slice($addon['images'], 1) as $image) { ?>
-								<a href="<?php echo document::href_link($image['original']); ?>" data-toggle="lightbox">
-									<img class="thumbnail" src="<?php echo f::escape_html($image['thumbnail']); ?>" srcset="<?php echo f::escape_html($image['thumbnail']); ?> 1x, <?php echo f::escape_html($image['thumbnail_2x']); ?> 2x" alt="<?php echo f::escape_html($addon['name']); ?>">
+								<a href="<?= document::href_link($image['original']) ?>" data-toggle="lightbox">
+									<img class="thumbnail" src="<?= f::escape_html($image['thumbnail']) ?>" srcset="<?= f::escape_html($image['thumbnail']) ?> 1x, <?= f::escape_html($image['thumbnail_2x']) ?> 2x" alt="<?= f::escape_html($addon['name']) ?>">
 								</a>
 							<?php } ?>
 						</div>
@@ -226,16 +226,16 @@
 					</div>
 
 					<div class="col-md-6">
-						<h2><?php echo f::escape_html($addon['name']); ?></h2>
+						<h2><?= f::escape_html($addon['name']) ?></h2>
 
-						<p class="short-description"><?php echo f::escape_html($addon['short_description']); ?></p>
+						<p class="short-description"><?= f::escape_html($addon['short_description']) ?></p>
 
 					</div>
 				</div>
 
-				<h3><?php echo t('title_description', 'Description'); ?></h3>
+				<h3><?= t('title_description', 'Description') ?></h3>
 
-				<p class="description"><?php echo nl2br($addon['description']); ?></p>
+				<p class="description"><?= nl2br($addon['description']) ?></p>
 
 			</div>
 
@@ -245,21 +245,21 @@
 				<div class="current-license">
 					<div class="grid">
 						<div class="col-md-6">
-							<h3><?php echo t('title_active_license', 'Active License'); ?></h3>
-							<div class="status"><?php echo t('text_valid_license_for_this_addon', 'You have a valid license for this add-on'); ?></div>
+							<h3><?= t('title_active_license', 'Active License') ?></h3>
+							<div class="status"><?= t('text_valid_license_for_this_addon', 'You have a valid license for this add-on') ?></div>
 						</div>
 
 						<div class="col-md-3">
-							<label><?php echo t('title_purchase_date', 'Purchase Date'); ?></label>
-							<div class="license-since"><?php echo f::datetime_format('date', $addon['license']['created_at']); ?></div>
+							<label><?= t('title_purchase_date', 'Purchase Date') ?></label>
+							<div class="license-since"><?= f::datetime_format('date', $addon['license']['created_at']) ?></div>
 						</div>
 
 						<div class="col-md-3">
-							<label><?php echo t('title_updates_expiry', 'Updates Expire'); ?></label>
+							<label><?= t('title_updates_expiry', 'Updates Expire') ?></label>
 							<?php if (empty($addon['license']['updates_expire'])) { ?>
-								<div class="updates-expiry"><?php echo t('title_never', 'Never'); ?></div>
+								<div class="updates-expiry"><?= t('title_never', 'Never') ?></div>
 							<?php } else { ?>
-								<div class="updates-expiry"><?php echo strtotime($addon['license']['updates_expire']) > time() ? f::datetime_format('date', $addon['license']['updates_expire']) : t('title_expired', 'Expired'); ?></div>
+								<div class="updates-expiry"><?= strtotime($addon['license']['updates_expire']) > time() ? f::datetime_format('date', $addon['license']['updates_expire']) : t('title_expired', 'Expired') ?></div>
 							<?php } ?>
 						</div>
 					</div>
@@ -267,20 +267,20 @@
 
 				<?php if (!empty($addon['installed'])) { ?>
 				<div id="install" style="margin-top: 2em;">
-					<h3><?php echo t('title_change_installed_package', 'Change Installed Package'); ?></h3>
+					<h3><?= t('title_change_installed_package', 'Change Installed Package') ?></h3>
 
 					<div class="form-group" style="display: flex; gap: 1em;">
 						<div class="dropdown" style="flex-grow: 1;">
-							<div class="form-select" data-toggle="dropdown">-- <?php echo t('title_select', 'Select'); ?> --</div>
+							<div class="form-select" data-toggle="dropdown">-- <?= t('title_select', 'Select') ?> --</div>
 							<ul class="dropdown-menu">
 								<?php foreach ($addon['packages'] as $package) { ?>
 								<li>
 									<label class="option">
-										<input type="radio" name="package_id" value="<?php echo $package['id']; ?>"<?php if ($package['installed']) {	echo ' checked'; } ?>>
-										<span class="title"><?php echo t('title_version', 'Version'); ?> <?php echo $package['installed'] ? ' (<strong>' . t('title_installed', 'Installed') . '</strong>)' : ''; ?></span>
+										<input type="radio" name="package_id" value="<?= $package['id'] ?>"<?php if ($package['installed']) {	echo ' checked'; } ?>>
+										<span class="title"><?= t('title_version', 'Version') ?> <?= $package['installed'] ? ' (<strong>' . t('title_installed', 'Installed') . '</strong>)' : '' ?></span>
 										<div class="compatible-versions">
 											<?php foreach ($package['compatible_versions'] as $version) { ?>
-											<?php echo $version == PLATFORM_VERSION ? '<span class="label label-success">' . $version . '</span>' : '<span class="label label-danger">' . $version . '</span>'; ?>
+											<?= $version == PLATFORM_VERSION ? '<span class="label label-success">' . $version . '</span>' : '<span class="label label-danger">' . $version . '</span>' ?>
 											<?php } ?>
 										</div>
 									</label>
@@ -290,43 +290,43 @@
 						</div>
 					</div>
 
-					<?php echo f::form_button('install', t('title_change', 'Change'), 'submit', ['class' => 'btn btn-success']); ?>
+					<?= f::form_button('install', t('title_change', 'Change'), 'submit', ['class' => 'btn btn-success']) ?>
 				</div>
 
 				<div id="uninstall" style="margin-top: 2em;">
 
-					<h3><?php echo t('title_uninstall_addon', 'Uninstall Add-on'); ?></h3>
+					<h3><?= t('title_uninstall_addon', 'Uninstall Add-on') ?></h3>
 
-					<?php echo f::form_begin('uninstall_form', 'post'); ?>
+					<?= f::form_begin('uninstall_form', 'post') ?>
 
 						<div class="form-group">
-							<?php echo f::form_checkbox('clean', [t('text_clean_up_traces_of_addon', 'Clean up all traces of the add-on')]); ?>
-							<p><?php echo t('description_clean_up_traces_of_addon', 'Check this option if you are permanently uninstalling the addon and want to remove all traces of files or database entries from the add-on.'); ?></p>
+							<?= f::form_checkbox('clean', [t('text_clean_up_traces_of_addon', 'Clean up all traces of the add-on')]) ?>
+							<p><?= t('description_clean_up_traces_of_addon', 'Check this option if you are permanently uninstalling the addon and want to remove all traces of files or database entries from the add-on.') ?></p>
 						</div>
 
 						<div>
-							<?php echo f::form_button('uninstall', t('title_uninstall', 'Uninstall'), 'submit', ['class' => 'btn btn-danger']); ?>
+							<?= f::form_button('uninstall', t('title_uninstall', 'Uninstall'), 'submit', ['class' => 'btn btn-danger']) ?>
 						</div>
 
-					<?php echo f::form_end(); ?>
+					<?= f::form_end() ?>
 				</div>
 
 				<?php } else { ?>
 
-				<h3 style="margin-top: 2em;"><?php echo t('text_select_package_to_install', 'Select package to install'); ?></h3>
+				<h3 style="margin-top: 2em;"><?= t('text_select_package_to_install', 'Select package to install') ?></h3>
 
 				<div class="form-group" style="display: flex; gap: 1em;">
 					<div class="dropdown" style="flex-grow: 1;">
-						<div class="form-select" data-toggle="dropdown">-- <?php echo t('title_select', 'Select'); ?> --</div>
+						<div class="form-select" data-toggle="dropdown">-- <?= t('title_select', 'Select') ?> --</div>
 						<ul class="dropdown-menu">
 							<?php foreach ($addon['packages'] as $package) { ?>
 							<li>
 								<label class="option">
-									<input type="radio" name="package_id" value="<?php echo $package['id']; ?>">
-									<span class="title"><?php echo t('title_version', 'Version'); ?> <?php echo $package['version']; ?></span>
+									<input type="radio" name="package_id" value="<?= $package['id'] ?>">
+									<span class="title"><?= t('title_version', 'Version') ?> <?= $package['version'] ?></span>
 									<div class="compatible-versions">
 										<?php foreach ($package['compatible_versions'] as $version) { ?>
-											<?php echo $version == PLATFORM_VERSION ? '<span class="label label-success">' . $version . '</span>' : '<span class="label label-danger">' . $version . '</span>'; ?>
+											<?= $version == PLATFORM_VERSION ? '<span class="label label-success">' . $version . '</span>' : '<span class="label label-danger">' . $version . '</span>' ?>
 										<?php } ?>
 									</div>
 								</label>
@@ -336,7 +336,7 @@
 					</div>
 
 					<div>
-						<?php echo f::form_button('install', t('title_install', 'Install'), 'submit', ['class' => 'btn btn-success']); ?>
+						<?= f::form_button('install', t('title_install', 'Install'), 'submit', ['class' => 'btn btn-success']) ?>
 					</div>
 				</div>
 				<?php } ?>
@@ -344,28 +344,28 @@
 
 				<?php if (empty($addon['license'])) { ?>
 				<div class="buy-license">
-					<h3><?php echo t('title_buy_license', 'Buy License'); ?></h3>
+					<h3><?= t('title_buy_license', 'Buy License') ?></h3>
 
 					<div class="grid">
 
 						<?php if (!empty($addon['monthly_fee'])) { ?>
 						<div class="col-md-4">
-							<label><?php echo t('title_monthly_subscription', 'Monthly Subscription'); ?></label>
-							<div class="monthly-fee"><?php echo $addon['monthly_fee_formatted']; ?></div>
+							<label><?= t('title_monthly_subscription', 'Monthly Subscription') ?></label>
+							<div class="monthly-fee"><?= $addon['monthly_fee_formatted'] ?></div>
 						</div>
 						<?php } ?>
 
 						<?php if (!empty($addon['price'])) { ?>
 						<div class="col-md-4">
-							<label><?php echo t('title_one_time_purchase', 'One-Time Purchase'); ?></label>
-							<div class="price"><?php echo $addon['price']['formatted']; ?></div>
+							<label><?= t('title_one_time_purchase', 'One-Time Purchase') ?></label>
+							<div class="price"><?= $addon['price']['formatted'] ?></div>
 						</div>
 						<?php } ?>
 					</div>
 
 					<div>
-						<a class="btn btn-success btn-lg" href="<?php echo document::href_link('https://www.litecart.net/addons/addon', ['addon_id' => $addon['id']]); ?>" target="_blank">
-							<?php echo t('title_buy_now', 'Buy Now'); ?> <?php echo f::draw_fonticon('icon-square-out'); ?>
+						<a class="btn btn-success btn-lg" href="<?= document::href_link('https://www.litecart.net/addons/addon', ['addon_id' => $addon['id']]) ?>" target="_blank">
+							<?= t('title_buy_now', 'Buy Now') ?> <?= f::draw_fonticon('icon-square-out') ?>
 						</a>
 					</div>
 				</div>

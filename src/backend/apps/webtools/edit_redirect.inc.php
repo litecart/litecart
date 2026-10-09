@@ -126,79 +126,79 @@
 ?>
 <div class="card">
 	<div class="card-header">
-		<h1 class="card-title"><?php echo $app_icon; ?> <?php echo !empty($redirect->data['id']) ? t('title_edit_redirect', 'Edit Redirect') : t('title_create_new_redirect', 'Create New Redirect'); ?></h1>
+		<h1 class="card-title"><?= $app_icon ?> <?= !empty($redirect->data['id']) ? t('title_edit_redirect', 'Edit Redirect') : t('title_create_new_redirect', 'Create New Redirect') ?></h1>
 	</div>
 
 	<div class="card-body">
-		<?php echo f::form_begin('redirect_form', 'post', false, false, ['autocomplete' => 'off', 'style' => 'max-width: 720px;']); ?>
+		<?= f::form_begin('redirect_form', 'post', false, false, ['autocomplete' => 'off', 'style' => 'max-width: 720px;']) ?>
 
 			<div class="grid">
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_status', 'Status'); ?></div>
-						<?php echo f::form_toggle('status', 'e/d', true); ?>
+						<div class="form-label"><?= t('title_status', 'Status') ?></div>
+						<?= f::form_toggle('status', 'e/d', true) ?>
 					</label>
 				</div>
 			</div>
 
 			<div class="form-group">
-				<?php echo f::form_radio_button('immediate', ['1', t('title_immediately', 'Immediately')], true); ?>
-				<div><?php echo t('text_perform_redirect_immediately', 'Perform a redirect immediately once the URL is requested.'); ?></div>
+				<?= f::form_radio_button('immediate', ['1', t('title_immediately', 'Immediately')], true) ?>
+				<div><?= t('text_perform_redirect_immediately', 'Perform a redirect immediately once the URL is requested.') ?></div>
 			</div>
 
 			<div class="form-group">
-				<?php echo f::form_radio_button('immediate', ['0', t('title_last_destination', 'Last Destination')], !file_get_contents('php://input') ? '0' : true); ?>
-				<div><?php echo t('text_perform_redirect_last_destination', 'Perform a redirect as a last destination when there is no resource matching the requested URL.'); ?></div>
+				<?= f::form_radio_button('immediate', ['0', t('title_last_destination', 'Last Destination')], !file_get_contents('php://input') ? '0' : true) ?>
+				<div><?= t('text_perform_redirect_last_destination', 'Perform a redirect as a last destination when there is no resource matching the requested URL.') ?></div>
 			</div>
 
 			<fieldset id="regex-helper" style="margin-bottom: 2em;">
 				<legend>
 					<strong>
-						<?php echo f::form_checkbox('use_helper', ['1', t('text_use_regex_helper', 'Use regex helper')]); ?>
+						<?= f::form_checkbox('use_helper', ['1', t('text_use_regex_helper', 'Use regex helper')]) ?>
 					</strong>
 				</legend>
 
 				<div class="grid form-group">
 					<div class="col-md-4">
-						<?php echo t('title_http_protocol', 'HTTP Protocol'); ?>
+						<?= t('title_http_protocol', 'HTTP Protocol') ?>
 					</div>
 					<div class="col-md-8">
-						<?php echo f::form_select('regex_helper[protocol][criteria]', $protocol_options, true, ['style' => 'width: auto;']); ?>
+						<?= f::form_select('regex_helper[protocol][criteria]', $protocol_options, true, ['style' => 'width: auto;']) ?>
 					</div>
 				</div>
 
 				<div class="grid form-group">
 					<div class="col-md-4">
-						<?php echo t('title_domain_name', 'Domain Name'); ?>
+						<?= t('title_domain_name', 'Domain Name') ?>
 					</div>
 					<div class="col-md-8">
 						<div class="input-group">
-							<?php echo f::form_select('regex_helper[domain][operator]', $domain_options, true, ['style' => 'width: auto;']); ?>
-							<?php echo f::form_input_text('regex_helper[domain][criteria]', true, ['required' => true, 'placeholder' => 'Example: domain.com']); ?>
+							<?= f::form_select('regex_helper[domain][operator]', $domain_options, true, ['style' => 'width: auto;']) ?>
+							<?= f::form_input_text('regex_helper[domain][criteria]', true, ['required' => true, 'placeholder' => 'Example: domain.com']) ?>
 						</div>
 					</div>
 				</div>
 
 				<div class="grid form-group">
 					<div class="col-md-4">
-						<?php echo t('title_path', 'Path'); ?>
+						<?= t('title_path', 'Path') ?>
 					</div>
 					<div class="col-md-8">
 						<div class="input-group">
-							<?php echo f::form_select('regex_helper[path][operator]', $path_options, true, ['style' => 'width: auto;']); ?>
-							<?php echo f::form_input_text('regex_helper[path][criteria]', true, ['required' => true, 'placeholder' => 'Example: /path/to/document']); ?>
+							<?= f::form_select('regex_helper[path][operator]', $path_options, true, ['style' => 'width: auto;']) ?>
+							<?= f::form_input_text('regex_helper[path][criteria]', true, ['required' => true, 'placeholder' => 'Example: /path/to/document']) ?>
 						</div>
 					</div>
 				</div>
 
 				<div class="grid form-group">
 					<div class="col-md-4">
-						<?php echo t('title_query_parameters', 'Query Parameters'); ?>
+						<?= t('title_query_parameters', 'Query Parameters') ?>
 					</div>
 					<div class="col-md-8">
 						<div class="input-group">
-							<?php echo f::form_select('regex_helper[query][operator]', $query_options, true, ['style' => 'width: auto;']); ?>
-							<?php echo f::form_input_text('regex_helper[query][criteria]', true, ['required' => true, 'placeholder' => 'Example: foo=bar', 'disabled' => true]); ?>
+							<?= f::form_select('regex_helper[query][operator]', $query_options, true, ['style' => 'width: auto;']) ?>
+							<?= f::form_input_text('regex_helper[query][criteria]', true, ['required' => true, 'placeholder' => 'Example: foo=bar', 'disabled' => true]) ?>
 						</div>
 					</div>
 				</div>
@@ -206,13 +206,13 @@
 			</fieldset>
 
 			<label class="form-group">
-				<div class="form-label"><?php echo t('title_url_regex_pattern', 'URL Regex Pattern'); ?></div>
-				<?php echo f::form_input_text('pattern', true, ['list' => 'sources', 'required' => true]); ?>
+				<div class="form-label"><?= t('title_url_regex_pattern', 'URL Regex Pattern') ?></div>
+				<?= f::form_input_text('pattern', true, ['list' => 'sources', 'required' => true]) ?>
 				<datalist id="sources">
-					<option value="^https://<?php echo strtr($hostname, ['.' => '\\.']); ?>/path/to/file(\?|$)">Exact match of path with optional query at the end</option>
-					<option value="^https://<?php echo strtr($hostname, ['.' => '\\.']); ?>/path/to/file\?foo=bar$">Exact match of path and query on specific domain and protocol</option>
-					<option value="^https://<?php echo strtr($hostname, ['.' => '\\.']); ?>/path/to/file?id=(1|2|3)$">Match a query with id 1, 2, or 3 on a specific domain and protocol</option>
-					<option value="^https?://(www\.)?<?php echo strtr($hostname, ['.' => '\\.']); ?>/path/to/file$">Match path on a specific domain with our without www</option>
+					<option value="^https://<?= strtr($hostname, ['.' => '\\.']) ?>/path/to/file(\?|$)">Exact match of path with optional query at the end</option>
+					<option value="^https://<?= strtr($hostname, ['.' => '\\.']) ?>/path/to/file\?foo=bar$">Exact match of path and query on specific domain and protocol</option>
+					<option value="^https://<?= strtr($hostname, ['.' => '\\.']) ?>/path/to/file?id=(1|2|3)$">Match a query with id 1, 2, or 3 on a specific domain and protocol</option>
+					<option value="^https?://(www\.)?<?= strtr($hostname, ['.' => '\\.']) ?>/path/to/file$">Match path on a specific domain with our without www</option>
 					<option value="^https?://[^/]*/path/to/file">Match path on any domain and protocol</option>
 					<option value="^https?://[^/]*/([a-z]{2}/)?path/to/file">Match path with any language prefix on any domain and protocol</option>
 					<option value="^...">URL begins with</option>
@@ -224,13 +224,13 @@
 			</label>
 
 			<label class="form-group">
-				<div class="form-label"><?php echo t('title_destination', 'Destination'); ?></div>
+				<div class="form-label"><?= t('title_destination', 'Destination') ?></div>
 				<div class="input-group">
-					<?php echo f::form_input_text('destination', true, ['list' => 'destinations', 'required' => true]); ?>
-					<?php echo f::form_select('http_response_code', $type_options, true, ['required' => true]); ?>
+					<?= f::form_input_text('destination', true, ['list' => 'destinations', 'required' => true]) ?>
+					<?= f::form_select('http_response_code', $type_options, true, ['required' => true]) ?>
 				</div>
 				<datalist id="destinations">
-					<option value="https://<?php echo $hostname; ?>/path/to/file">Exact URL</option>
+					<option value="https://<?= $hostname ?>/path/to/file">Exact URL</option>
 					<option value="/path/to/file">Absolute path relative to the domain</option>
 					<option value="$1">Output first matched paranthesis group</option>
 				</datalist>
@@ -239,15 +239,15 @@
 			<div class="grid">
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_valid_from', 'Valid From'); ?></div>
-						<?php echo f::form_input_datetime('valid_from', true); ?>
+						<div class="form-label"><?= t('title_valid_from', 'Valid From') ?></div>
+						<?= f::form_input_datetime('valid_from', true) ?>
 					</label>
 				</div>
 
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_valid_to', 'Valid To'); ?></div>
-						<?php echo f::form_input_datetime('valid_to', true); ?>
+						<div class="form-label"><?= t('title_valid_to', 'Valid To') ?></div>
+						<?= f::form_input_datetime('valid_to', true) ?>
 					</label>
 				</div>
 			</div>
@@ -256,27 +256,27 @@
 			<div class="grid">
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_redirects', 'Redirects'); ?></div>
-						<div class="form-input" readonly><?php echo (int)$redirect->data['total_redirects']; ?></div>
+						<div class="form-label"><?= t('title_redirects', 'Redirects') ?></div>
+						<div class="form-input" readonly><?= (int)$redirect->data['total_redirects'] ?></div>
 					</label>
 				</div>
 
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_last_redirected', 'Last Redirected'); ?></div>
-						<div class="form-input" readonly><?php echo $redirect->data['last_redirected'] ? f::datetime_when($redirect->data['last_redirected']): '-'; ?></div>
+						<div class="form-label"><?= t('title_last_redirected', 'Last Redirected') ?></div>
+						<div class="form-input" readonly><?= $redirect->data['last_redirected'] ? f::datetime_when($redirect->data['last_redirected']): '-' ?></div>
 					</label>
 				</div>
 			</div>
 			<?php } ?>
 
-		<?php echo f::form_end(); ?>
+		<?= f::form_end() ?>
 	</div>
 
 	<div class="card-action">
-		<?php echo f::form_button_predefined('save'); ?>
-		<?php echo (!empty($redirect->data['id'])) ? f::form_button_predefined('delete') : ''; ?>
-		<?php echo f::form_button_predefined('cancel'); ?>
+		<?= f::form_button_predefined('save') ?>
+		<?= (!empty($redirect->data['id'])) ? f::form_button_predefined('delete') : '' ?>
+		<?= f::form_button_predefined('cancel') ?>
 	</div>
 </div>
 

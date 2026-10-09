@@ -85,43 +85,43 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo !empty($attribute_group->data['id']) ? t('title_edit_attribute_group', 'Edit Attribute Group') : t('title_create_new_attribute_group', 'Create New Attribute Group'); ?>
+			<?= $app_icon ?> <?= !empty($attribute_group->data['id']) ? t('title_edit_attribute_group', 'Edit Attribute Group') : t('title_create_new_attribute_group', 'Create New Attribute Group') ?>
 		</div>
 	</div>
 
-	<?php echo f::form_begin('attribute_form', 'post', false, false, ['style' => 'max-width: 720px;']); ?>
+	<?= f::form_begin('attribute_form', 'post', false, false, ['style' => 'max-width: 720px;']) ?>
 
 	<div class="card-body">
 
 		<div class="grid">
 			<div class="col-md-6">
 				<label class="form-group">
-					<div class="form-label"><?php echo t('title_code', 'Code'); ?></div>
-					<?php echo f::form_input_text('code', true); ?>
+					<div class="form-label"><?= t('title_code', 'Code') ?></div>
+					<?= f::form_input_text('code', true) ?>
 				</label>
 			</div>
 
 			<div class="col-md-6">
 				<label class="form-group">
-					<div class="form-label"><?php echo t('title_sort_values', 'Sort Values'); ?></div>
-					<?php echo f::form_select('sort', $sort_options, true); ?>
+					<div class="form-label"><?= t('title_sort_values', 'Sort Values') ?></div>
+					<?= f::form_select('sort', $sort_options, true) ?>
 				</label>
 			</div>
 		</div>
 
 		<label class="form-group">
-			<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
+			<div class="form-label"><?= t('title_name', 'Name') ?></div>
 			<?php foreach (array_keys(language::$languages) as $language_code) echo f::form_regional_text('name['. $language_code .']', $language_code, true); ?>
 		</label>
 
-		<h2><?php echo t('title_values', 'Values'); ?></h2>
+		<h2><?= t('title_values', 'Values') ?></h2>
 
 		<table class="table data-table">
 			<thead>
 				<tr>
-					<th><?php echo t('title_id', 'ID'); ?></th>
-					<th class="main"><?php echo t('title_name', 'Name'); ?></th>
-					<th><?php echo t('title_in_use', 'In Use'); ?></th>
+					<th><?= t('title_id', 'ID') ?></th>
+					<th class="main"><?= t('title_name', 'Name') ?></th>
+					<th><?= t('title_in_use', 'In Use') ?></th>
 					<th></th>
 				</tr>
 			</thead>
@@ -129,10 +129,10 @@
 			<tbody>
 				<?php if (!empty($_POST['values'])) foreach ($_POST['values'] as $key => $group_value) { ?>
 				<tr draggable="true">
-					<td><?php echo $group_value['id']; ?><?php echo f::form_input_hidden('values['. $key .'][id]', $group_value['id']); ?></td>
+					<td><?= $group_value['id'] ?><?= f::form_input_hidden('values['. $key .'][id]', $group_value['id']) ?></td>
 					<td><?php foreach (array_keys(language::$languages) as $language_code) echo f::form_regional_text( 'values['. $key .'][name]['. $language_code .']', $language_code, true); ?></td>
-					<td class="text-center"><?php echo !empty($group_value['in_use']) ? t('title_yes', 'Yes') : t('title_no', 'No'); ?></td>
-					<td class="grabbable"><?php echo f::draw_fonticon('icon-arrows-vertical'); ?></td>
+					<td class="text-center"><?= !empty($group_value['in_use']) ? t('title_yes', 'Yes') : t('title_no', 'No') ?></td>
+					<td class="grabbable"><?= f::draw_fonticon('icon-arrows-vertical') ?></td>
 					<td class="text-end"><?php if (empty($group_value['in_use'])) echo '<a href="#" class="remove btn btn-default btn-sm" title="'. t('title_remove', 'Remove') .'">'. f::draw_fonticon('remove') .'</a>'; ?></td>
 				</tr>
 				<?php } ?>
@@ -142,7 +142,7 @@
 				<tr>
 					<td colspan="99">
 						<a class="add btn btn-default btn-sm" href="#">
-							<?php echo f::draw_fonticon('add'); ?>
+							<?= f::draw_fonticon('add') ?>
 						</a>
 					</td>
 				</tr>
@@ -150,13 +150,13 @@
 		</table>
 
 		<div class="card-action">
-			<?php echo f::form_button_predefined('save'); ?>
+			<?= f::form_button_predefined('save') ?>
 			<?php if (!empty($attribute_group->data['id'])) echo f::form_button_predefined('delete'); ?>
-			<?php echo f::form_button_predefined('cancel'); ?>
+			<?= f::form_button_predefined('cancel') ?>
 		</div>
 	</div>
 
-	<?php echo f::form_end(); ?>
+	<?= f::form_end() ?>
 </div>
 
 <script>
@@ -174,11 +174,11 @@
 ?>
 		let $output = $([
 			'<tr draggable="true">',
-			'  <td><?php echo f::escape_js(f::form_input_hidden('values[__index__][id]', '')); ?></td>',
-			'  <td><?php echo f::escape_js($name_fields); ?></td>',
-			'  <td class="text-center"><?php echo t('title_no', 'No'); ?></td>',
-			'  <td class="grabbable"><?php echo f::escape_js(f::draw_fonticon('icon-arrows-vertical')); ?></td>',
-			'  <td class="text-end"><?php echo f::escape_js(f::form_button_predefined('remove-sm')); ?></td>',
+			'  <td><?= f::escape_js(f::form_input_hidden('values[__index__][id]', '')) ?></td>',
+			'  <td><?= f::escape_js($name_fields) ?></td>',
+			'  <td class="text-center"><?= t('title_no', 'No') ?></td>',
+			'  <td class="grabbable"><?= f::escape_js(f::draw_fonticon('icon-arrows-vertical')) ?></td>',
+			'  <td class="text-end"><?= f::escape_js(f::form_button_predefined('remove-sm')) ?></td>',
 			'</tr>',
 		].join('\n')
 			.replace(/__index__/g, 'new_' + __index__)

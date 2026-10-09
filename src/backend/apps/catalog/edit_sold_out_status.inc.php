@@ -73,17 +73,17 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo !empty($sold_out_status->data['id']) ? t('title_edit_sold_out_status', 'Edit Sold Out Status') : t('title_create_new_sold_out_status', 'Create New Sold Out Status'); ?>
+			<?= $app_icon ?> <?= !empty($sold_out_status->data['id']) ? t('title_edit_sold_out_status', 'Edit Sold Out Status') : t('title_create_new_sold_out_status', 'Create New Sold Out Status') ?>
 		</div>
 	</div>
 
 	<div class="card-body">
-		<?php echo f::form_begin('sold_out_status_form', 'post', false, false, ['style' => 'max-width: 720px;']); ?>
+		<?= f::form_begin('sold_out_status_form', 'post', false, false, ['style' => 'max-width: 720px;']) ?>
 
 			<div class="grid">
 				<div class="col-md-8">
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
+						<div class="form-label"><?= t('title_name', 'Name') ?></div>
 						<?php foreach (array_keys(language::$languages) as $language_code) echo f::form_regional_text('name['. $language_code .']', $language_code, true, ''); ?>
 					</label>
 				</div>
@@ -92,7 +92,7 @@
 			<div class="grid">
 				<div class="col-md-8">
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_description', 'Description'); ?></div>
+						<div class="form-label"><?= t('title_description', 'Description') ?></div>
 						<?php foreach (array_keys(language::$languages) as $language_code) echo f::form_regional_textarea('description['. $language_code .']', $language_code, true, ['style' => 'height: 60px;']); ?>
 					</label>
 				</div>
@@ -101,18 +101,18 @@
 			<div class="grid">
 				<div class="col-md-6">
 					<div class="form-group">
-						<?php echo f::form_checkbox('hidden', ['1', t('text_hide_from_listing', 'Hide from listing')], true); ?>
-						<?php echo f::form_checkbox('orderable', ['1', t('text_product_is_orderable', 'Product is orderable')], true); ?>
+						<?= f::form_checkbox('hidden', ['1', t('text_hide_from_listing', 'Hide from listing')], true) ?>
+						<?= f::form_checkbox('orderable', ['1', t('text_product_is_orderable', 'Product is orderable')], true) ?>
 					</div>
 				</div>
 			</div>
 
 			<div class="card-action">
-				<?php echo f::form_button_predefined('save'); ?>
+				<?= f::form_button_predefined('save') ?>
 				<?php if (!empty($sold_out_status->data['id'])) echo f::form_button_predefined('delete'); ?>
-				<?php echo f::form_button_predefined('cancel'); ?>
+				<?= f::form_button_predefined('cancel') ?>
 			</div>
 
-		<?php echo f::form_end(); ?>
+		<?= f::form_end() ?>
 	</div>
 </div>

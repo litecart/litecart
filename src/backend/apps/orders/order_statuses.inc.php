@@ -89,33 +89,33 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo t('title_order_statuses', 'Order Statuses'); ?>
+			<?= $app_icon ?> <?= t('title_order_statuses', 'Order Statuses') ?>
 		</div>
 	</div>
 
 	<div class="card-action">
-		<?php echo f::form_button_link(document::ilink(__APP__.'/edit_order_status'), t('title_create_new_order_status', 'Create New Order Status'), '', 'create'); ?>
+		<?= f::form_button_link(document::ilink(__APP__.'/edit_order_status'), t('title_create_new_order_status', 'Create New Order Status'), '', 'create') ?>
 		</ul>
 	</div>
 
-	<?php echo f::form_begin('order_statuses_form', 'post'); ?>
+	<?= f::form_begin('order_statuses_form', 'post') ?>
 
 		<table class="table data-table">
 			<thead>
 				<tr>
-					<th><?php echo f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
-					<th><?php echo t('title_id', 'ID'); ?></th>
+					<th class="text-center"><?= f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"') ?></th>
+					<th><?= t('title_id', 'ID') ?></th>
 					<th></th>
-					<th class="main"><?php echo t('title_name', 'Name'); ?></th>
-					<th><?php echo t('title_status_state', 'State'); ?></th>
-					<th><?php echo t('title_stock_action', 'Stock Action'); ?></th>
-					<th><?php echo t('title_hidden', 'Hidden'); ?></th>
-					<th><?php echo t('title_sales', 'Sales'); ?></th>
-					<th><?php echo t('title_archived', 'Archived'); ?></th>
-					<th><?php echo t('title_track', 'Track'); ?></th>
-					<th><?php echo t('title_notify', 'Notify'); ?></th>
-					<th><?php echo t('title_orders', 'Orders'); ?></th>
-					<th><?php echo t('title_priority', 'Priority'); ?></th>
+					<th class="main"><?= t('title_name', 'Name') ?></th>
+					<th><?= t('title_status_state', 'State') ?></th>
+					<th><?= t('title_stock_action', 'Stock Action') ?></th>
+					<th><?= t('title_hidden', 'Hidden') ?></th>
+					<th><?= t('title_sales', 'Sales') ?></th>
+					<th><?= t('title_archived', 'Archived') ?></th>
+					<th><?= t('title_track', 'Track') ?></th>
+					<th><?= t('title_notify', 'Notify') ?></th>
+					<th><?= t('title_orders', 'Orders') ?></th>
+					<th><?= t('title_priority', 'Priority') ?></th>
 					<th></th>
 				</tr>
 			</thead>
@@ -123,26 +123,26 @@
 			<tbody>
 				<?php foreach ($order_statuses as $order_status) { ?>
 				<tr>
-					<td><?php echo f::form_checkbox('order_statuses[]', $order_status['id']); ?></td>
-					<td><?php echo $order_status['id']; ?></td>
-					<td class="text-center"><?php echo f::draw_fonticon($order_status['icon'], 'style="color: '. $order_status['color'] .';"'); ?></td>
-					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_order_status', ['order_status_id' => $order_status['id']]); ?>"><?php echo $order_status['name']; ?></a></td>
-					<td><?php echo strtr($order_status['state'], $states); ?></td>
-					<td class="text-center"><?php echo strtr($order_status['stock_action'], ['none' => t('title_none', 'None'), 'reserve' => t('title_reserve', 'Reserve'), 'commit' => t('title_commit', 'Commit')]); ?></td>
-					<td class="text-center"><?php echo !empty($order_status['hidden']) ? f::draw_fonticon('icon-check') : '-'; ?></td>
-					<td class="text-center"><?php echo !empty($order_status['is_sale']) ? f::draw_fonticon('icon-check') : '-'; ?></td>
-					<td class="text-center"><?php echo !empty($order_status['is_archived']) ? f::draw_fonticon('icon-check') : '-'; ?></td>
-					<td class="text-center"><?php echo !empty($order_status['is_trackable']) ? f::draw_fonticon('icon-check') : '-'; ?></td>
-					<td class="text-center"><?php echo !empty($order_status['notify']) ? f::draw_fonticon('icon-check') : '-'; ?></td>
+					<td><?= f::form_checkbox('order_statuses[]', $order_status['id']) ?></td>
+					<td><?= $order_status['id'] ?></td>
+					<td class="text-center"><?= f::draw_fonticon($order_status['icon'], 'style="color: '. $order_status['color'] .';"') ?></td>
+					<td><a class="link" href="<?= document::href_ilink(__APP__.'/edit_order_status', ['order_status_id' => $order_status['id']]) ?>"><?= $order_status['name'] ?></a></td>
+					<td><?= strtr($order_status['state'], $states) ?></td>
+					<td class="text-center"><?= strtr($order_status['stock_action'], ['none' => t('title_none', 'None'), 'reserve' => t('title_reserve', 'Reserve'), 'commit' => t('title_commit', 'Commit')]) ?></td>
+					<td class="text-center"><?= !empty($order_status['hidden']) ? f::draw_fonticon('icon-check') : '-' ?></td>
+					<td class="text-center"><?= !empty($order_status['is_sale']) ? f::draw_fonticon('icon-check') : '-' ?></td>
+					<td class="text-center"><?= !empty($order_status['is_archived']) ? f::draw_fonticon('icon-check') : '-' ?></td>
+					<td class="text-center"><?= !empty($order_status['is_trackable']) ? f::draw_fonticon('icon-check') : '-' ?></td>
+					<td class="text-center"><?= !empty($order_status['notify']) ? f::draw_fonticon('icon-check') : '-' ?></td>
 					<td class="text-center">
-						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/orders', ['order_status_id' => $order_status['id']]); ?>" title="<?php echo t('title_view', 'View'); ?>">
-							<?php echo f::draw_fonticon('icon-square-out'); ?> <?php echo f::format_number($order_status['num_orders'], 0); ?>
+						<a class="btn btn-default btn-sm" href="<?= document::href_ilink(__APP__.'/orders', ['order_status_id' => $order_status['id']]) ?>" title="<?= t('title_view', 'View') ?>">
+							<?= f::draw_fonticon('icon-square-out') ?> <?= f::format_number($order_status['num_orders'], 0) ?>
 						</a>
 					</td>
-					<td class="text-center"><?php echo (int)$order_status['priority']; ?></td>
+					<td class="text-center"><?= (int)$order_status['priority'] ?></td>
 					<td>
-						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_order_status', ['order_status_id' => $order_status['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>">
-							<?php echo f::draw_fonticon('edit'); ?>
+						<a class="btn btn-default btn-sm" href="<?= document::href_ilink(__APP__.'/edit_order_status', ['order_status_id' => $order_status['id']]) ?>" title="<?= t('title_edit', 'Edit') ?>">
+							<?= f::draw_fonticon('edit') ?>
 						</a>
 					</td>
 				</tr>
@@ -152,44 +152,44 @@
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo t('title_order_statuses', 'Order Statuses'); ?>: <?php echo f::format_number($num_rows); ?>
+						<?= t('title_order_statuses', 'Order Statuses') ?>: <?= f::format_number($num_rows) ?>
 					</td>
 				</tr>
 			</tfoot>
 		</table>
 
-	<?php echo f::form_end(); ?>
+	<?= f::form_end() ?>
 
 	<div class="card-body">
-		<?php echo f::form_begin('order_statuses_form', 'post'); ?>
+		<?= f::form_begin('order_statuses_form', 'post') ?>
 
 			<fieldset id="actions">
-				<legend><?php echo t('text_change_status_for_orders', 'Change status for orders'); ?></legend>
+				<legend><?= t('text_change_status_for_orders', 'Change status for orders') ?></legend>
 
 				<div class="grid">
 					<div class="col-md-2">
-						<label class="form-label"><?php echo t('title_from_order_status', 'From Order Status'); ?></label>
-						<?php echo f::form_select_order_status('from_order_status_id', true); ?>
+						<label class="form-label"><?= t('title_from_order_status', 'From Order Status') ?></label>
+						<?= f::form_select_order_status('from_order_status_id', true) ?>
 					</div>
 
 					<div class="col-md-2">
-						<label class="form-label"><?php echo t('title_to_order_status', 'To Order Status'); ?></label>
-						<?php echo f::form_select_order_status('to_order_status_id', true); ?>
+						<label class="form-label"><?= t('title_to_order_status', 'To Order Status') ?></label>
+						<?= f::form_select_order_status('to_order_status_id', true) ?>
 					</div>
 
 					<div class="col-md-1">
 						<br>
-						<?php echo f::form_button('change', [1, t('title_change', 'Change')], 'submit'); ?>
+						<?= f::form_button('change', [1, t('title_change', 'Change')], 'submit') ?>
 					</div>
 				</div>
 			</fieldset>
 
-		<?php echo f::form_end(); ?>
+		<?= f::form_end() ?>
 	</div>
 
 	<?php if ($num_pages > 1) { ?>
 	<div class="card-footer">
-		<?php echo f::draw_pagination($num_pages); ?>
+		<?= f::draw_pagination($num_pages) ?>
 	</div>
 	<?php } ?>
 </div>

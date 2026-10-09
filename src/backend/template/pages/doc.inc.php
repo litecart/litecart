@@ -1,6 +1,6 @@
 <style>
 #main {
-	--app-color: <?php echo $theme['color']; ?>;
+	--app-color: <?= $theme['color'] ?>;
 }
 </style>
 

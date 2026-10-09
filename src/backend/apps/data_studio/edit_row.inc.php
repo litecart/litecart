@@ -165,44 +165,44 @@
 <div class="card">
 	<div class="card-header">
 		<h1 class="card-title">
-			<?php echo f::draw_fonticon('edit'); ?> <?php echo (!empty($row[$primary_column])) ? t('title_edit_row', 'Edit Row') : t('title_create_new_row', 'Create New Row'); ?>
+			<?= f::draw_fonticon('edit') ?> <?= (!empty($row[$primary_column])) ? t('title_edit_row', 'Edit Row') : t('title_create_new_row', 'Create New Row') ?>
 		</h1>
 	</div>
 
-	<?php echo f::form_begin('row_form', 'post'); ?>
+	<?= f::form_begin('row_form', 'post') ?>
 		<table class="table table-striped table-hover table-sortable table-dragable data-table">
 			<thead>
 				<tr>
-					<th><?php echo t('title_column_name', 'Column Name'); ?></th>
-					<th><?php echo t('title_null', 'Null'); ?></th>
-					<th class="main"><?php echo t('title_value', 'Value'); ?></th>
+					<th><?= t('title_column_name', 'Column Name') ?></th>
+					<th><?= t('title_null', 'Null') ?></th>
+					<th class="main"><?= t('title_value', 'Value') ?></th>
 				</tr>
 			</thead>
 
 			<tbody>
 				<?php foreach ($columns as $column) { ?>
 				<tr>
-					<td><?php echo $column['name']; ?></td>
-					<td><?php echo f::form_checkbox('null['.$column['name'].']', '1', true, empty($column['null']) ? 'disabled' : ''); ?></td>
-					<td><?php echo $draw_input_field($column); ?></td>
+					<td><?= $column['name'] ?></td>
+					<td><?= f::form_checkbox('null['.$column['name'].']', '1', true, empty($column['null']) ? 'disabled' : '') ?></td>
+					<td><?= $draw_input_field($column) ?></td>
 				</tr>
 				<?php } ?>
 			</tbody>
 
 			<tfoot>
 				<td colspan="3">
-					<?php echo t('title_columns', 'Columns'); ?>: <?php echo count($columns); ?>
+					<?= t('title_columns', 'Columns') ?>: <?= count($columns) ?>
 				</td>
 			</tfoot>
 		</table>
 
 		<div class="card-action">
-			<?php echo f::form_button('save', t('title_save', 'Save'), 'submit', ['class' => 'btn btn-success'], 'save'); ?>
-			<?php echo (!empty($row[$primary_column])) ? f::form_button('delete', t('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\''. t('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
-			<?php echo f::form_button('cancel', t('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
+			<?= f::form_button('save', t('title_save', 'Save'), 'submit', ['class' => 'btn btn-success'], 'save') ?>
+			<?= (!empty($row[$primary_column])) ? f::form_button('delete', t('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\''. t('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false ?>
+			<?= f::form_button('cancel', t('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel') ?>
 		</div>
 
-	<?php echo f::form_end(); ?>
+	<?= f::form_end() ?>
 </div>
 
 <script>

@@ -381,34 +381,34 @@ table .icon-folder-open {
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo t('title_catalog', 'Catalog'); ?>
+			<?= $app_icon ?> <?= t('title_catalog', 'Catalog') ?>
 		</div>
 	</div>
 
 	<div class="card-action">
 		<ul class="list-inline">
-			<li><?php echo f::form_button_link(document::ilink(__APP__.'/edit_category', isset($_GET['category_id']) ? ['parent_id' => $_GET['category_id']] : []), t('title_create_new_category', 'Create New Category'), '', 'create'); ?></li>
-			<li><?php echo f::form_button_link(document::ilink(__APP__.'/edit_product', [], ['category_id']), t('title_create_new_product', 'Create New Product'), '', 'create'); ?></li>
+			<li><?= f::form_button_link(document::ilink(__APP__.'/edit_category', isset($_GET['category_id']) ? ['parent_id' => $_GET['category_id']] : []), t('title_create_new_category', 'Create New Category'), '', 'create') ?></li>
+			<li><?= f::form_button_link(document::ilink(__APP__.'/edit_product', [], ['category_id']), t('title_create_new_product', 'Create New Product'), '', 'create') ?></li>
 		</ul>
 	</div>
 
-	<?php echo f::form_begin('search_form', 'get'); ?>
+	<?= f::form_begin('search_form', 'get') ?>
 		<div class="card-filter">
-			<div class="expandable"><?php echo f::form_input_search('query', true, ['placeholder' => t('text_search_phrase_or_keyword', 'Search phrase or keyword'), 'onkeydown' => "if (event.keyCode == 13) location=('" . document::ilink('', [], true, ['page', 'query']) . "&query=' + encodeURIComponent(this.value))"]); ?></div>
-			<div><?php echo f::form_button('filter', t('title_search', 'Search'), 'submit'); ?></div>
+			<div class="expandable"><?= f::form_input_search('query', true, ['placeholder' => t('text_search_phrase_or_keyword', 'Search phrase or keyword'), 'onkeydown' => "if (event.keyCode == 13) location=('" . document::ilink('', [], true, ['page', 'query']) . "&query=' + encodeURIComponent(this.value))"]) ?></div>
+			<div><?= f::form_button('filter', t('title_search', 'Search'), 'submit') ?></div>
 		</div>
-	<?php echo f::form_end(); ?>
+	<?= f::form_end() ?>
 
-	<?php echo f::form_begin('catalog_form', 'post'); ?>
+	<?= f::form_begin('catalog_form', 'post') ?>
 
 		<table class="table data-table">
 			<thead>
 				<tr>
-					<th><?php echo f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th class="text-center"><?= f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"') ?></th>
 					<th></th>
 					<th></th>
-					<th class="main"><?php echo t('title_name', 'Name'); ?></th>
-					<th class="text-end"><?php echo t('title_price', 'Price'); ?></th>
+					<th class="main"><?= t('title_name', 'Name') ?></th>
+					<th class="text-end"><?= t('title_price', 'Price') ?></th>
 					<th></th>
 					<th></th>
 				</tr>
@@ -420,9 +420,9 @@ table .icon-folder-open {
 					<td></td>
 					<td></td>
 					<td>
-						<?php echo f::draw_fonticon('icon-folder-open', 'style="color: #cc6;"'); ?>
+						<?= f::draw_fonticon('icon-folder-open', 'style="color: #cc6;"') ?>
 						<a href="'. document::href_ilink(null, [], [], []) .'">
-							<strong>[<?php echo t('title_root', 'Root'); ?>]</strong>
+							<strong>[<?= t('title_root', 'Root') ?>]</strong>
 						</a>
 					</td>
 					<td></td>
@@ -645,7 +645,7 @@ table .icon-folder-open {
 				<tfoot>
 					<tr>
 						<td colspan="99">
-							<?php echo t('title_categories', 'Categories'); ?>: <?php echo $num_category_rows; ?>, <?php echo t('title_products', 'Products'); ?>: <?php echo $num_product_rows; ?>
+							<?= t('title_categories', 'Categories') ?>: <?= $num_category_rows ?>, <?= t('title_products', 'Products') ?>: <?= $num_product_rows ?>
 						</td>
 					</tr>
 				</tfoot>
@@ -655,36 +655,36 @@ table .icon-folder-open {
 			<fieldset id="actions">
 
 				<legend>
-					<?php echo t('text_with_selected', 'With selected'); ?>:
+					<?= t('text_with_selected', 'With selected') ?>:
 				</legend>
 
 				<div class="flex">
 
 					<div class="btn-group">
-						<?php echo f::form_button_predefined('enable'); ?>
-						<?php echo f::form_button_predefined('disable'); ?>
+						<?= f::form_button_predefined('enable') ?>
+						<?= f::form_button_predefined('disable') ?>
 					</div>
 
 					<div style="min-width: 250px;">
-						<?php echo f::form_select_category('category_id', true); ?>
+						<?= f::form_select_category('category_id', true) ?>
 					</div>
 
 					<div class="btn-group">
-						<?php echo f::form_button('move', t('title_move', 'Move'), 'submit', 'onclick="if (!window.confirm(\''. str_replace("'", "\\\'", t('warning_previous_mount_points_will_be_reset', 'Warning: All previous mount points will be reset.')) .'\')) return false;"'); ?>
-						<?php echo f::form_button('copy', t('title_copy', 'Copy'), 'submit'); ?>
-						<?php echo f::form_button('clone', t('title_clone', 'Clone'), 'submit', '', 'icon-copy'); ?>
+						<?= f::form_button('move', t('title_move', 'Move'), 'submit', 'onclick="if (!window.confirm(\''. str_replace("'", "\\\'", t('warning_previous_mount_points_will_be_reset', 'Warning: All previous mount points will be reset.')) .'\')) return false;"') ?>
+						<?= f::form_button('copy', t('title_copy', 'Copy'), 'submit') ?>
+						<?= f::form_button('clone', t('title_clone', 'Clone'), 'submit', '', 'icon-copy') ?>
 					</div>
 
-					<?php echo f::form_button('unmount', t('title_unmount', 'Unmount'), 'submit'); ?>
+					<?= f::form_button('unmount', t('title_unmount', 'Unmount'), 'submit') ?>
 
-					<?php echo f::form_button_predefined('delete'); ?>
+					<?= f::form_button_predefined('delete') ?>
 
 				</div>
 
 			</fieldset>
 		</div>
 
-	<?php echo f::form_end(); ?>
+	<?= f::form_end() ?>
 </div>
 
 <script>

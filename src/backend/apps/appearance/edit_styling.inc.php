@@ -43,7 +43,7 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo t('title_edit_styling', 'Edit Styling'); ?>
+			<?= $app_icon ?> <?= t('title_edit_styling', 'Edit Styling') ?>
 		</div>
 	</div>
 
@@ -51,27 +51,27 @@
 
 		<?php if (preg_match('#\.scss$#', $stylesheet)) { ?>
 		<div class="notices">
-			<div class="notice notice-default"><?php echo f::draw_fonticon('icon-info'); ?> <?php echo t('notice_detected_scss_version_of_variables', 'We detected a SCSS version present in this installation that will be used. A SCSS compiler is needed to compile the CSS versions (e.g. Developer Kit add-on).'); ?></div>
+			<div class="notice notice-default"><?= f::draw_fonticon('icon-info') ?> <?= t('notice_detected_scss_version_of_variables', 'We detected a SCSS version present in this installation that will be used. A SCSS compiler is needed to compile the CSS versions (e.g. Developer Kit add-on).') ?></div>
 		</div>
 		<?php } ?>
 
-		<?php echo f::form_begin('file_form', 'post'); ?>
+		<?= f::form_begin('file_form', 'post') ?>
 
 			<label class="form-group" style="max-width: 800px;">
-				<div class="form-label"><?php echo t('title_file', 'File'); ?></div>
-				<div class="form-input" readonly><?php echo preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $stylesheet); ?></div>
+				<div class="form-label"><?= t('title_file', 'File') ?></div>
+				<div class="form-input" readonly><?= preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $stylesheet) ?></div>
 			</label>
 
 			<label class="form-group">
-				<div class="form-label"><?php echo t('title_content', 'Content'); ?></div>
-				<?php echo f::form_input_code('content', true, ['style' => 'height: 600px;']); ?>
+				<div class="form-label"><?= t('title_content', 'Content') ?></div>
+				<?= f::form_input_code('content', true, ['style' => 'height: 600px;']) ?>
 			</label>
 
 			<div class="card-action">
-				<?php echo f::form_button_predefined('save'); ?>
-				<?php echo f::form_button_predefined('cancel'); ?>
+				<?= f::form_button_predefined('save') ?>
+				<?= f::form_button_predefined('cancel') ?>
 			</div>
 
-		<?php echo f::form_end(); ?>
+		<?= f::form_end() ?>
 	</div>
 </div>

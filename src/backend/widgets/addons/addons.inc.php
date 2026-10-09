@@ -77,7 +77,7 @@
 <div id="widget-addons" class="widget card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo t('title_latest_addons', 'Latest Add-ons'); ?>
+			<?= t('title_latest_addons', 'Latest Add-ons') ?>
 		</div>
 	</div>
 
@@ -86,12 +86,12 @@
 			<?php foreach ($addons as $item) { ?>
 			<div class="addon">
 				<div class="title">
-					<a href="<?php echo f::escape_attr($item['link']); ?>" target="_blank">
-						<?php echo f::escape_html($item['title']); ?>
+					<a href="<?= f::escape_attr($item['link']) ?>" target="_blank">
+						<?= f::escape_html($item['title']) ?>
 					</a>
 				</div>
 				<div class="description">
-					<?php echo f::escape_html($item['description']); ?>
+					<?= f::escape_html($item['description']) ?>
 				</div>
 			</div>
 			<?php } ?>

@@ -64,42 +64,42 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo !empty($customer_group->data['id']) ? t('title_edit_customer_group', 'Edit Customer Group') : t('title_create_new_customer_group', 'Create New Customer Group'); ?>
+			<?= $app_icon ?> <?= !empty($customer_group->data['id']) ? t('title_edit_customer_group', 'Edit Customer Group') : t('title_create_new_customer_group', 'Create New Customer Group') ?>
 		</div>
 	</div>
 
 	<div class="card-body">
 
-		<?php echo f::form_begin('customer_group_form', 'post', null, false, ['style' => 'max-width: 720px;']); ?>
+		<?= f::form_begin('customer_group_form', 'post', null, false, ['style' => 'max-width: 720px;']) ?>
 
 			<div class="grid">
 				<div class="col-md-4">
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_type', 'Type'); ?></div>
-						<?php echo f::form_select('type', $type_options, true); ?>
+						<div class="form-label"><?= t('title_type', 'Type') ?></div>
+						<?= f::form_select('type', $type_options, true) ?>
 					</label>
 				</div>
 
 				<div class="col-md-8">
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
-						<?php echo f::form_input_text('name', true); ?>
+						<div class="form-label"><?= t('title_name', 'Name') ?></div>
+						<?= f::form_input_text('name', true) ?>
 					</label>
 				</div>
 			</div>
 
 			<label class="form-group">
-				<div class="form-label"><?php echo t('title_description', 'Description'); ?></div>
-				<?php echo f::form_textarea('description', true); ?>
+				<div class="form-label"><?= t('title_description', 'Description') ?></div>
+				<?= f::form_textarea('description', true) ?>
 			</label>
 
 			<div class="card-action">
-				<?php echo f::form_button_predefined('save'); ?>
-				<?php echo !empty($customer_group->data['id']) ? f::form_button_predefined('delete') : ''; ?>
-				<?php echo f::form_button_predefined('cancel'); ?>
+				<?= f::form_button_predefined('save') ?>
+				<?= !empty($customer_group->data['id']) ? f::form_button_predefined('delete') : '' ?>
+				<?= f::form_button_predefined('cancel') ?>
 			</div>
 
-		<?php echo f::form_end(); ?>
+		<?= f::form_end() ?>
 
 	</div>
 </div>

@@ -54,7 +54,7 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo t('title_email', 'Email'); ?>
+			<?= $app_icon ?> <?= t('title_email', 'Email') ?>
 		</div>
 	</div>
 
@@ -64,23 +64,23 @@
 
 			<div class="head">
 				<div class="from">
-					<strong><?php echo t('title_from', 'From'); ?>:</strong> <?php echo f::escape_html($email['sender']['name'] . ' <' . $email['sender']['email'] . '>'); ?>
+					<strong><?= t('title_from', 'From') ?>:</strong> <?= f::escape_html($email['sender']['name'] . ' <' . $email['sender']['email'] . '>') ?>
 				</div>
 
 				<div class="to">
-					<strong><?php echo t('title_to', 'To'); ?>:</strong> <?php echo f::escape_html(implode(', ', $email['recipients'])); ?>
+					<strong><?= t('title_to', 'To') ?>:</strong> <?= f::escape_html(implode(', ', $email['recipients'])) ?>
 				</div>
 
 				<div class="ccs">
-					<strong><?php echo t('title_cc', 'CC'); ?>:</strong> <?php echo f::escape_html(implode(', ', $email['ccs'])); ?>
+					<strong><?= t('title_cc', 'CC') ?>:</strong> <?= f::escape_html(implode(', ', $email['ccs'])) ?>
 				</div>
 
 				<div class="bccs">
-					<strong><?php echo t('title_bcc', 'BCC'); ?>:</strong> <?php echo f::escape_html(implode(', ', $email['bccs'])); ?>
+					<strong><?= t('title_bcc', 'BCC') ?>:</strong> <?= f::escape_html(implode(', ', $email['bccs'])) ?>
 				</div>
 
 				<div class="subject">
-					<strong><?php echo t('title_subject', 'Subject'); ?>:</strong> <?php echo f::escape_html($email['subject']); ?>
+					<strong><?= t('title_subject', 'Subject') ?>:</strong> <?= f::escape_html($email['subject']) ?>
 				</div>
 			</div>
 

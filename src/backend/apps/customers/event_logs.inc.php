@@ -93,88 +93,88 @@
 <div class="card card-app">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo t('title_event_logs', 'Event Logs'); ?>
+			<?= $app_icon ?> <?= t('title_event_logs', 'Event Logs') ?>
 		</div>
 	</div>
 
-	<?php echo f::form_begin('search_form', 'get'); ?>
+	<?= f::form_begin('search_form', 'get') ?>
 		<div class="card-filter">
-			<div style="vertical-align: middle; width: 160px;"><?php echo f::form_select('type', $type_options, true, ['onchange' => '$(this).closest(\'form\').submit();']); ?></div>
-			<div class="expandable"><?php echo f::form_input_search('query', true, ['placeholder' => t('text_search_phrase_or_keyword', 'Search phrase or keyword')]); ?></div>
+			<div style="vertical-align: middle; width: 160px;"><?= f::form_select('type', $type_options, true, ['onchange' => '$(this).closest(\'form\').submit();']) ?></div>
+			<div class="expandable"><?= f::form_input_search('query', true, ['placeholder' => t('text_search_phrase_or_keyword', 'Search phrase or keyword')]) ?></div>
 			<div>
 				<div class="input-group" style="max-width: 450px;">
-					<?php echo f::form_input_datetime('from'); ?>
+					<?= f::form_input_datetime('from') ?>
 					<span class="input-group-text"> - </span>
-					<?php echo f::form_input_datetime('to'); ?>
+					<?= f::form_input_datetime('to') ?>
 				</div>
 			</div>
-			<div><?php echo f::form_button('filter', t('title_search', 'Search'), 'submit'); ?></div>
+			<div><?= f::form_button('filter', t('title_search', 'Search'), 'submit') ?></div>
 		</div>
-	<?php echo f::form_end(); ?>
+	<?= f::form_end() ?>
 
-	<?php echo f::form_begin('events_form', 'post'); ?>
+	<?= f::form_begin('events_form', 'post') ?>
 
 		<table class="table table-striped table-hover table-sortable data-table">
 			<thead>
 				<tr>
-					<th><?php echo f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
-					<th data-sort="session_id"><?php echo t('title_session_id', 'Session ID'); ?></th>
-					<th data-sort="customer_id"><?php echo t('title_customer', 'Customer'); ?></th>
-					<th data-sort="type"><?php echo t('title_type', 'Type'); ?></th>
-					<th data-sort="description" class="main"><?php echo t('title_description', 'Description'); ?></th>
-					<th data-sort="ip_address"><?php echo t('title_remote_host', 'Remote Host'); ?></th>
-					<th data-sort="created"><?php echo t('title_date', 'Date'); ?></th>
+					<th class="text-center"><?= f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"') ?></th>
+					<th data-sort="session_id"><?= t('title_session_id', 'Session ID') ?></th>
+					<th data-sort="customer_id"><?= t('title_customer', 'Customer') ?></th>
+					<th data-sort="type"><?= t('title_type', 'Type') ?></th>
+					<th data-sort="description" class="main"><?= t('title_description', 'Description') ?></th>
+					<th data-sort="ip_address"><?= t('title_remote_host', 'Remote Host') ?></th>
+					<th data-sort="created"><?= t('title_date', 'Date') ?></th>
 				</tr>
 			</thead>
 
 			<tbody>
 				<?php foreach ($events as $event) { ?>
 				<tr>
-					<td><?php echo f::form_checkbox('events[]', $event['id']); ?></td>
-					<td class="text-nowrap"><?php echo f::escape_html(f::string_ellipsis($event['session_id'], -6)); ?></td>
+					<td><?= f::form_checkbox('events[]', $event['id']) ?></td>
+					<td class="text-nowrap"><?= f::escape_html(f::string_ellipsis($event['session_id'], -6)) ?></td>
 					<td>
 						<?php if (!empty($event['customer_id'])) { ?>
-							<a class="link" href="<?php echo document::href_link('', ['doc' => 'edit_customer', 'customer_id' => $event['customer_id']], true); ?>">
-								<?php echo !empty($event['email']) ? f::escape_html($event['email']) : '#' . $event['customer_id']; ?>
+							<a class="link" href="<?= document::href_link('', ['doc' => 'edit_customer', 'customer_id' => $event['customer_id']], true) ?>">
+								<?= !empty($event['email']) ? f::escape_html($event['email']) : '#' . $event['customer_id'] ?>
 							</a>
 							<?php if (!empty($event['firstname']) || !empty($event['lastname'])) { ?>
-								<br><small class="text-muted"><?php echo f::escape_html(trim($event['firstname'] . ' ' . $event['lastname'])); ?></small>
+								<br><small class="text-muted"><?= f::escape_html(trim($event['firstname'] . ' ' . $event['lastname'])) ?></small>
 							<?php } ?>
 						<?php } else { ?>
-							<span class="text-muted"><?php echo t('text_guest', 'Guest'); ?></span>
+							<span class="text-muted"><?= t('text_guest', 'Guest') ?></span>
 						<?php } ?>
 					</td>
-					<td><?php echo f::escape_html($event['type']); ?></td>
+					<td><?= f::escape_html($event['type']) ?></td>
 					<td>
-						<?php echo f::escape_html($event['description']); ?>
+						<?= f::escape_html($event['description']) ?>
 						<?php if (!empty($event['url'])) { ?>
 							<div>
 								<small class="text-muted">
-									<a href="<?php echo f::escape_html($event['url']); ?>" target="_blank" title="<?php echo f::escape_html($event['url']); ?>">
-										<?php echo f::escape_html(f::string_ellipsis(parse_url($event['url'], PHP_URL_PATH) ?: $event['url'], 50)); ?>
+									<a href="<?= f::escape_html($event['url']) ?>" target="_blank" title="<?= f::escape_html($event['url']) ?>">
+										<?= f::escape_html(f::string_ellipsis(parse_url($event['url'], PHP_URL_PATH) ?: $event['url'], 50)) ?>
 									</a>
 								</small>
 							</div>
 						<?php } ?>
 						<?php if (!empty($event['data'])) { ?>
 							<div>
-								<small class="text-muted" title="<?php echo f::escape_html($event['data']); ?>">
-									<?php echo f::escape_html(f::string_ellipsis($event['data'], 100)); ?>
+								<small class="text-muted" title="<?= f::escape_html($event['data']) ?>">
+									<?= f::escape_html(f::string_ellipsis($event['data'], 100)) ?>
 								</small>
 							</div>
 						<?php } ?>
 					</td>
 					<td class="text-nowrap">
-						<?php echo f::escape_html($event['ip_address']); ?>
+						<?= f::escape_html($event['ip_address']) ?>
 						<?php if (!empty($event['hostname']) && $event['hostname'] != $event['ip_address']) { ?>
 							<div>
-								<small class="text-muted" title="<?php echo f::escape_html($event['hostname']); ?>">
-									<?php echo f::escape_html(f::string_ellipsis($event['hostname'], 50)); ?>
+								<small class="text-muted" title="<?= f::escape_html($event['hostname']) ?>">
+									<?= f::escape_html(f::string_ellipsis($event['hostname'], 50)) ?>
 								</small>
 							</div>
 						<?php } ?>
 					</td>
-					<td class="text-nowrap"><?php echo f::datetime_when($event['created_at']); ?></td>
+					<td class="text-nowrap"><?= f::datetime_when($event['created_at']) ?></td>
 				</tr>
 				<?php } ?>
 			</tbody>
@@ -182,7 +182,7 @@
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo t('title_events', 'Events'); ?>: <?php echo f::format_number($num_rows); ?>
+						<?= t('title_events', 'Events') ?>: <?= f::format_number($num_rows) ?>
 					</td>
 				</tr>
 			</tfoot>
@@ -190,19 +190,19 @@
 
 		<div class="card-body">
 			<fieldset id="actions" disabled>
-				<legend><?php echo t('text_with_selected', 'With selected'); ?>:</legend>
+				<legend><?= t('text_with_selected', 'With selected') ?>:</legend>
 
 				<ul class="list-inline">
-					<li><?php echo f::form_button_predefined('delete'); ?></li>
+					<li><?= f::form_button_predefined('delete') ?></li>
 				</ul>
 			</fieldset>
 		</div>
 
-	<?php echo f::form_end(); ?>
+	<?= f::form_end() ?>
 
 	<?php if ($num_pages > 1) { ?>
 	<div class="card-footer">
-		<?php echo f::draw_pagination($num_pages); ?>
+		<?= f::draw_pagination($num_pages) ?>
 	</div>
 	<?php } ?>
 </div>

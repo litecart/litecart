@@ -136,51 +136,35 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo !empty($country->data['id']) ? t('title_edit_country', 'Edit Country') : t('title_create_new_country', 'Create New Country'); ?>
+			<?= $app_icon ?> <?= !empty($country->data['id']) ? t('title_edit_country', 'Edit Country') : t('title_create_new_country', 'Create New Country') ?>
 		</div>
 	</div>
 
 	<div class="card-body">
-		<?php echo f::form_begin('country_form', 'post', false, false); ?>
+		<?= f::form_begin('country_form', 'post', false, false) ?>
 
 			<div class="grid">
 				<div class="col-lg-6">
 
 					<?php if (!empty($prefillable_country_options)) { ?>
 					<label class="form-group">
-						<div class="form-label"><?php echo t('text_prefill_from_the_web', 'Prefill from the web'); ?></div>
-						<?php echo f::form_select('prefill', $prefillable_country_options, ''); ?>
+						<div class="form-label"><?= t('text_prefill_from_the_web', 'Prefill from the web') ?></div>
+						<?= f::form_select('prefill', $prefillable_country_options, '') ?>
 					</label>
 					<?php } ?>
 
 					<div class="grid">
 						<div class="col-md-6">
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_status', 'Status'); ?></div>
-								<?php echo f::form_toggle('status', 'e/d', (file_get_contents('php://input') != '') ? true : '1'); ?>
+								<div class="form-label"><?= t('title_status', 'Status') ?></div>
+								<?= f::form_toggle('status', 'e/d', (file_get_contents('php://input') != '') ? true : '1') ?>
 							</label>
 						</div>
 
 						<div class="col-md-6">
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_number', 'Number'); ?> (ISO 3166-1 numeric) <a href="https://en.wikipedia.org/wiki/ISO_3166-1_numeric" target="_blank"><?php echo f::draw_fonticon('icon-square-out'); ?></a></div>
-								<?php echo f::form_input_text('iso_code_1', true, ['required' => true, 'pattern' => '\d{3}']); ?>
-							</label>
-						</div>
-					</div>
-
-					<div class="grid">
-						<div class="col-md-6">
-							<label class="form-group">
-								<div class="form-label"><?php echo t('title_code', 'Code'); ?> (ISO 3166-1 alpha-2) <a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2" target="_blank"><?php echo f::draw_fonticon('icon-square-out'); ?></a></div>
-								<?php echo f::form_input_text('iso_code_2', true, ['required' => true, 'pattern' => '[A-Z]{2}']); ?>
-							</label>
-						</div>
-
-						<div class="col-md-6">
-							<label class="form-group">
-								<div class="form-label"><?php echo t('title_code', 'Code'); ?> (ISO 3166-1 alpha-3) <a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-3" target="_blank"><?php echo f::draw_fonticon('icon-square-out'); ?></a></div>
-								<?php echo f::form_input_text('iso_code_3', true, ['required' => true, 'pattern' => '[A-Z]{3}']); ?>
+								<div class="form-label"><?= t('title_number', 'Number') ?> (ISO 3166-1 numeric) <a href="https://en.wikipedia.org/wiki/ISO_3166-1_numeric" target="_blank"><?= f::draw_fonticon('icon-square-out') ?></a></div>
+								<?= f::form_input_text('iso_code_1', true, ['required' => true, 'pattern' => '\d{3}']) ?>
 							</label>
 						</div>
 					</div>
@@ -188,36 +172,52 @@
 					<div class="grid">
 						<div class="col-md-6">
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
-								<?php echo f::form_input_text('name', true); ?>
+								<div class="form-label"><?= t('title_code', 'Code') ?> (ISO 3166-1 alpha-2) <a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2" target="_blank"><?= f::draw_fonticon('icon-square-out') ?></a></div>
+								<?= f::form_input_text('iso_code_2', true, ['required' => true, 'pattern' => '[A-Z]{2}']) ?>
 							</label>
 						</div>
 
 						<div class="col-md-6">
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_domestic_name', 'Domestic Name'); ?></div>
-								<?php echo f::form_input_text('domestic_name', true); ?>
+								<div class="form-label"><?= t('title_code', 'Code') ?> (ISO 3166-1 alpha-3) <a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-3" target="_blank"><?= f::draw_fonticon('icon-square-out') ?></a></div>
+								<?= f::form_input_text('iso_code_3', true, ['required' => true, 'pattern' => '[A-Z]{3}']) ?>
+							</label>
+						</div>
+					</div>
+
+					<div class="grid">
+						<div class="col-md-6">
+							<label class="form-group">
+								<div class="form-label"><?= t('title_name', 'Name') ?></div>
+								<?= f::form_input_text('name', true) ?>
+							</label>
+						</div>
+
+						<div class="col-md-6">
+							<label class="form-group">
+								<div class="form-label"><?= t('title_domestic_name', 'Domestic Name') ?></div>
+								<?= f::form_input_text('domestic_name', true) ?>
 							</label>
 						</div>
 					</div>
 
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_address_format', 'Address Format'); ?> (<a id="address-format-hint" href="#">?</a>) <a href="https://en.wikipedia.org/wiki/Address_(geography)" target="_blank"><?php echo f::draw_fonticon('icon-square-out'); ?></a></div>
-						<?php echo f::form_textarea('address_format', true, ['style' => 'height: 150px;']); ?>
+						<div class="form-label"><?= t('title_address_format', 'Address Format') ?> (<a id="address-format-hint" href="#">?</a>) <a href="https://en.wikipedia.org/wiki/Address_(geography)" target="_blank"><?= f::draw_fonticon('icon-square-out') ?></a></div>
+						<?= f::form_textarea('address_format', true, ['style' => 'height: 150px;']) ?>
 					</label>
 
 					<div class="grid">
 						<div class="col-md-6">
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_tax_id_format', 'Tax ID Format'); ?> <a href="https://en.wikipedia.org/wiki/Regular_expression" target="_blank"><?php echo f::draw_fonticon('icon-square-out'); ?></a></div>
-								<?php echo f::form_input_text('tax_id_format', true); ?>
+								<div class="form-label"><?= t('title_tax_id_format', 'Tax ID Format') ?> <a href="https://en.wikipedia.org/wiki/Regular_expression" target="_blank"><?= f::draw_fonticon('icon-square-out') ?></a></div>
+								<?= f::form_input_text('tax_id_format', true) ?>
 							</label>
 						</div>
 
 						<div class="col-md-6">
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_postcode_format', 'Postcode Format'); ?> <a href="https://en.wikipedia.org/wiki/Regular_expression" target="_blank"><?php echo f::draw_fonticon('icon-square-out'); ?></a></div>
-								<?php echo f::form_input_text('postcode_format', true); ?>
+								<div class="form-label"><?= t('title_postcode_format', 'Postcode Format') ?> <a href="https://en.wikipedia.org/wiki/Regular_expression" target="_blank"><?= f::draw_fonticon('icon-square-out') ?></a></div>
+								<?= f::form_input_text('postcode_format', true) ?>
 							</label>
 						</div>
 					</div>
@@ -225,35 +225,35 @@
 					<div class="grid">
 						<div class="col-md-4">
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_language_code', 'Language Code'); ?> <a href="http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes" target="_blank"><?php echo f::draw_fonticon('icon-square-out'); ?></a></div>
-								<?php echo f::form_input_text('language_code', true); ?>
+								<div class="form-label"><?= t('title_language_code', 'Language Code') ?> <a href="http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes" target="_blank"><?= f::draw_fonticon('icon-square-out') ?></a></div>
+								<?= f::form_input_text('language_code', true) ?>
 							</label>
 						</div>
 
 						<div class="col-md-4">
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_currency_code', 'Currency Code'); ?> <a href="https://en.wikipedia.org/wiki/List_of_countries_and_capitals_with_currency_and_language" target="_blank"><?php echo f::draw_fonticon('icon-square-out'); ?></a></div>
-								<?php echo f::form_input_text('currency_code', true); ?>
+								<div class="form-label"><?= t('title_currency_code', 'Currency Code') ?> <a href="https://en.wikipedia.org/wiki/List_of_countries_and_capitals_with_currency_and_language" target="_blank"><?= f::draw_fonticon('icon-square-out') ?></a></div>
+								<?= f::form_input_text('currency_code', true) ?>
 							</label>
 						</div>
 
 						<div class="col-md-4">
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_phone_country_code', 'Phone Country Code'); ?> <a href="https://en.wikipedia.org/wiki/List_of_country_calling_codes" target="_blank"><?php echo f::draw_fonticon('icon-square-out'); ?></a></div>
-								<?php echo f::form_input_text('phone_code', true); ?>
+								<div class="form-label"><?= t('title_phone_country_code', 'Phone Country Code') ?> <a href="https://en.wikipedia.org/wiki/List_of_country_calling_codes" target="_blank"><?= f::draw_fonticon('icon-square-out') ?></a></div>
+								<?= f::form_input_text('phone_code', true) ?>
 							</label>
 						</div>
 					</div>
 				</div>
 
 				<div class="col-lg-6">
-					<h2><?php echo t('title_zones', 'Zones'); ?></h2>
+					<h2><?= t('title_zones', 'Zones') ?></h2>
 					<table class="table data-table">
 						<thead>
 							<tr>
-								<th><?php echo t('title_id', 'ID'); ?></th>
-								<th style="padding-inline-end: 50px;"><?php echo t('title_code', 'Code'); ?></th>
-								<th class="main"><?php echo t('title_name', 'Name'); ?></th>
+								<th><?= t('title_id', 'ID') ?></th>
+								<th style="padding-inline-end: 50px;"><?= t('title_code', 'Code') ?></th>
+								<th class="main"><?= t('title_name', 'Name') ?></th>
 								<th></th>
 							</tr>
 						</thead>
@@ -261,12 +261,12 @@
 						<tbody>
 							<?php if (!empty($_POST['zones'])) foreach (array_keys($_POST['zones']) as $key) { ?>
 							<tr>
-								<td><?php echo f::form_input_hidden('zones['. $key .'][id]', true); ?><?php echo $_POST['zones'][$key]['id']; ?></td>
-								<td><?php echo f::form_input_text('zones['. $key .'][code]', true); ?></td>
-								<td><?php echo f::form_input_text('zones['. $key .'][name]', true); ?></td>
+								<td><?= f::form_input_hidden('zones['. $key .'][id]', true) ?><?= $_POST['zones'][$key]['id'] ?></td>
+								<td><?= f::form_input_text('zones['. $key .'][code]', true) ?></td>
+								<td><?= f::form_input_text('zones['. $key .'][name]', true) ?></td>
 								<td class="text-end">
-									<a class="btn btn-default btn-sm remove" href="#" title="<?php echo t('title_remove', 'Remove'); ?>">
-										<?php echo f::draw_fonticon('remove'); ?>
+									<a class="btn btn-default btn-sm remove" href="#" title="<?= t('title_remove', 'Remove') ?>">
+										<?= f::draw_fonticon('remove') ?>
 									</a>
 								</td>
 							</tr>
@@ -277,7 +277,7 @@
 							<tr>
 								<td colspan="99">
 									<a class="add btn btn-default" href="#">
-										<?php echo f::draw_fonticon('add'); ?> <?php echo t('title_add_zone', 'Add Zone'); ?>
+										<?= f::draw_fonticon('add') ?> <?= t('title_add_zone', 'Add Zone') ?>
 									</a>
 								</td>
 							</tr>
@@ -287,19 +287,19 @@
 			</div>
 
 			<div class="card-action">
-				<?php echo f::form_button_predefined('save'); ?>
+				<?= f::form_button_predefined('save') ?>
 				<?php if ($country->data['id']) echo f::form_button_predefined('delete'); ?>
-				<?php echo f::form_button_predefined('cancel'); ?>
+				<?= f::form_button_predefined('cancel') ?>
 			</div>
 
-		<?php echo f::form_end(); ?>
+		<?= f::form_end() ?>
 	</div>
 </div>
 
 <script>
 	$('#address-format-hint').on('click', function() {
 		alert([
-			'<?php echo t('title_syntax', 'Syntax'); ?>:',
+			'<?= t('title_syntax', 'Syntax') ?>:',
 			'',
 			'{company}, {firstname}, {lastname}',
 			'{address1}, {address2}, {postcode}, {city}',
@@ -319,10 +319,10 @@
 
 		let $output = $([
 			'<tr>',
-			'  <td><?php echo f::escape_js(f::form_input_hidden('zones[__index__][id]', '')); ?></td>',
-			'  <td><?php echo f::escape_js(f::form_input_text('zones[__index__][code]', '')); ?></td>',
-			'  <td><?php echo f::escape_js(f::form_input_text('zones[__index__][name]', '')); ?></td>',
-			'  <td class="text-end"><a class="btn btn-default btn-sm remove" href="#" title="<?php echo f::escape_js(t('title_remove', 'Remove'), true); ?>"><?php echo f::escape_js(f::draw_fonticon('remove')); ?></a></td>',
+			'  <td><?= f::escape_js(f::form_input_hidden('zones[__index__][id]', '')) ?></td>',
+			'  <td><?= f::escape_js(f::form_input_text('zones[__index__][code]', '')) ?></td>',
+			'  <td><?= f::escape_js(f::form_input_text('zones[__index__][name]', '')) ?></td>',
+			'  <td class="text-end"><a class="btn btn-default btn-sm remove" href="#" title="<?= f::escape_js(t('title_remove', 'Remove'), true) ?>"><?= f::escape_js(f::draw_fonticon('remove')) ?></a></td>',
 			'</tr>',
 		].join('\n')
 			.replace(/__index__/g, 'new_' + __index__)

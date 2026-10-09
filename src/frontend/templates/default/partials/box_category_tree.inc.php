@@ -21,7 +21,7 @@
 	};
 ?>
 
-<section id="box-category-tree" style="margin-bottom: 2em;" aria-label="<?php echo f::escape_attr(t('title_categories', 'Categories')); ?>">
+<section id="box-category-tree" style="margin-bottom: 2em;" aria-label="<?= f::escape_attr(t('title_categories', 'Categories')) ?>">
 
 	<ul class="pills" role="tree">
 		<?php foreach ($categories as $category) echo $draw_branch($category); ?>

@@ -168,24 +168,24 @@
 <div class="card card-app">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo t('title_installed_addons', 'Installed Add-ons'); ?>
+			<?= $app_icon ?> <?= t('title_installed_addons', 'Installed Add-ons') ?>
 		</div>
 	</div>
 
 	<div class="card-action">
-		<?php echo f::form_button_link(document::ilink(__APP__ . '/edit_addon'), t('title_create_new_addon', 'Create New Add-on'), '', 'create'); ?>
+		<?= f::form_button_link(document::ilink(__APP__ . '/edit_addon'), t('title_create_new_addon', 'Create New Add-on'), '', 'create') ?>
 	</div>
 
-	<?php echo f::form_begin('addon_form', 'post', '', true); ?>
+	<?= f::form_begin('addon_form', 'post', '', true) ?>
 
 		<table class="table table-striped table-hover data-table">
 			<thead>
 				<tr>
-					<th><?php echo f::draw_fonticon('icon-check-square-o icon-fw', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th><?= f::draw_fonticon('icon-check-square-o icon-fw', 'data-toggle="checkbox-toggle"') ?></th>
 					<th></th>
-					<th class="main"><?php echo t('title_name', 'Name'); ?> / <?php echo t('title_version', 'Version'); ?></th>
+					<th class="main"><?= t('title_name', 'Name') ?> / <?= t('title_version', 'Version') ?></th>
 					<th></th>
-					<th><?php echo t('title_conflicts', 'Conflicts'); ?></th>
+					<th><?= t('title_conflicts', 'Conflicts') ?></th>
 					<th></th>
 					<th></th>
 					<th></th>
@@ -194,43 +194,43 @@
 
 			<tbody>
 				<?php foreach ($addons as $addon) { ?>
-				<tr class="<?php echo $addon['status'] ? null : 'semi-transparent'; ?>">
-					<td><?php echo f::form_checkbox('addons[]', $addon['id']); ?></td>
-					<td><?php echo f::draw_fonticon($addon['status'] ? 'on' : 'off'); ?></td>
+				<tr class="<?= $addon['status'] ? null : 'semi-transparent' ?>">
+					<td><?= f::form_checkbox('addons[]', $addon['id']) ?></td>
+					<td><?= f::draw_fonticon($addon['status'] ? 'on' : 'off') ?></td>
 					<td>
 					<?php if (!empty($addon['marketplace']['addon_id'])) { ?>
-						<a class="link" href="<?php echo document::href_ilink(__APP__ . '/marketplace_addon', ['addon_id' => $addon['marketplace']['addon_id']]); ?>">
-							<?php echo $addon['name']; ?> / <?php echo $addon['version']; ?>
+						<a class="link" href="<?= document::href_ilink(__APP__ . '/marketplace_addon', ['addon_id' => $addon['marketplace']['addon_id']]) ?>">
+							<?= $addon['name'] ?> / <?= $addon['version'] ?>
 						</a>
 						<?php } else { ?>
-						<a class="link" href="<?php echo document::href_ilink(__APP__ . '/addon', ['addon_id' => $addon['id']]); ?>">
-							<?php echo $addon['name']; ?> / <?php echo $addon['version']; ?>
+						<a class="link" href="<?= document::href_ilink(__APP__ . '/addon', ['addon_id' => $addon['id']]) ?>">
+							<?= $addon['name'] ?> / <?= $addon['version'] ?>
 						</a>
 						<?php } ?>
 					</td>
 					<td class="text-center">
-						<?php echo f::draw_fonticon('icon-star', 'style="color: gold;"'); ?> <?php echo t('text_an_update_is_available', 'An update is available'); ?>
+						<?= f::draw_fonticon('icon-star', 'style="color: gold;"') ?> <?= t('text_an_update_is_available', 'An update is available') ?>
 					</td>
 					<td class="text-center">
 						<?php if (empty($addon['errors'])) { ?>
-						<span style="color: #8c4"><?php echo f::draw_fonticon('ok'); ?> <?php echo t('title_ok', 'OK'); ?></span>
+						<span style="color: #8c4"><?= f::draw_fonticon('ok') ?> <?= t('title_ok', 'OK') ?></span>
 						<?php } else { ?>
-						<span style="color: #c00"><?php echo f::draw_fonticon('warning'); ?> <?php echo t('title_fail', 'Fail'); ?></span>
+						<span style="color: #c00"><?= f::draw_fonticon('warning') ?> <?= t('title_fail', 'Fail') ?></span>
 						<?php } ?>
 					</td>
 					<td class="text-center">
 						<?php if (!empty($addon['marketplace']['addon_id'])) { ?>
-						<?php echo t('title_marketplace_addon', 'Marketplace Add-on'); ?>
+						<?= t('title_marketplace_addon', 'Marketplace Add-on') ?>
 						<?php } else { ?>
-						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__ . '/download', ['addon_id' => $addon['id']]); ?>" title="<?php echo t('title_download', 'Download'); ?>">
-							<?php echo f::draw_fonticon('icon-download'); ?> <?php echo t('title_download', 'Download'); ?>
+						<a class="btn btn-default btn-sm" href="<?= document::href_ilink(__APP__ . '/download', ['addon_id' => $addon['id']]) ?>" title="<?= t('title_download', 'Download') ?>">
+							<?= f::draw_fonticon('icon-download') ?> <?= t('title_download', 'Download') ?>
 						</a>
 						<?php } ?>
 					</td>
 					<td></td>
 					<td>
-						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__ . '/edit_addon', ['addon_id' => $addon['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>">
-							<?php echo f::draw_fonticon('edit'); ?>
+						<a class="btn btn-default btn-sm" href="<?= document::href_ilink(__APP__ . '/edit_addon', ['addon_id' => $addon['id']]) ?>" title="<?= t('title_edit', 'Edit') ?>">
+							<?= f::draw_fonticon('edit') ?>
 						</a>
 					</td>
 				</tr>
@@ -240,7 +240,7 @@
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo t('title_addons', 'Add-ons'); ?>: <?php echo f::format_number($num_rows); ?>
+						<?= t('title_addons', 'Add-ons') ?>: <?= f::format_number($num_rows) ?>
 					</td>
 				</tr>
 			</tfoot>
@@ -252,17 +252,17 @@
 					<fieldset id="actions">
 
 						<legend>
-							<?php echo t('text_with_selected', 'With selected'); ?>:
+							<?= t('text_with_selected', 'With selected') ?>:
 						</legend>
 
 						<div class="flex">
 
 							<div class="btn-group">
-								<?php echo f::form_button_predefined('enable'); ?>
-								<?php echo f::form_button_predefined('disable'); ?>
+								<?= f::form_button_predefined('enable') ?>
+								<?= f::form_button_predefined('disable') ?>
 							</div>
 
-							<?php echo f::form_button_predefined('delete'); ?>
+							<?= f::form_button_predefined('delete') ?>
 
 						</div>
 					</fieldset>
@@ -270,17 +270,17 @@
 
 			<div class="col-md-6">
 				<fieldset>
-					<legend><?php echo t('title_upload_new_addon', 'Upload a New Add-on'); ?>:</legend>
+					<legend><?= t('title_upload_new_addon', 'Upload a New Add-on') ?>:</legend>
 
 					<div class="input-group">
-						<?php echo f::form_input_file('addon', ['accept' => 'application/zip,application/xml']); ?>
-						<?php echo f::form_button('upload', t('title_upload', 'Upload'), 'submit'); ?>
+						<?= f::form_input_file('addon', ['accept' => 'application/zip,application/xml']) ?>
+						<?= f::form_button('upload', t('title_upload', 'Upload'), 'submit') ?>
 					</div>
 				</fieldset>
 			</div>
 		</div>
 
-	<?php echo f::form_end(); ?>
+	<?= f::form_end() ?>
 </div>
 
 <script>

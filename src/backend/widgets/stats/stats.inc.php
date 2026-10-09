@@ -84,7 +84,7 @@
 	<div class="card">
 		<div class="card-header">
 			<div class="card-title">
-				<?php echo t('title_statistics', 'Statistics'); ?>
+				<?= t('title_statistics', 'Statistics') ?>
 			</div>
 		</div>
 
@@ -96,20 +96,20 @@
 					<table class="table data-table">
 						<tbody>
 							<tr>
-								<td><?php echo t('title_total_sales', 'Total Sales') .' '. f::datetime_format('%B'); ?>:</td>
-								<td class="text-end"><?php echo currency::format($stats['total_sales_month'], false, settings::get('store_currency_code')); ?></td>
+								<td><?= t('title_total_sales', 'Total Sales') .' '. f::datetime_format('%B') ?>:</td>
+								<td class="text-end"><?= currency::format($stats['total_sales_month'], false, settings::get('store_currency_code')) ?></td>
 							</tr>
 							<tr>
-								<td><?php echo t('title_total_sales', 'Total Sales') .' '. date('Y'); ?>:</td>
-								<td class="text-end"><?php echo currency::format($stats['total_sales_year'], false, settings::get('store_currency_code')); ?></td>
+								<td><?= t('title_total_sales', 'Total Sales') .' '. date('Y') ?>:</td>
+								<td class="text-end"><?= currency::format($stats['total_sales_year'], false, settings::get('store_currency_code')) ?></td>
 							</tr>
 							<tr>
-								<td><?php echo t('title_total_sales', 'Total Sales'); ?>:</td>
-								<td class="text-end"><?php echo currency::format($stats['total_sales'], false, settings::get('store_currency_code')); ?></td>
+								<td><?= t('title_total_sales', 'Total Sales') ?>:</td>
+								<td class="text-end"><?= currency::format($stats['total_sales'], false, settings::get('store_currency_code')) ?></td>
 							</tr>
 							<tr>
-								<td><?php echo t('title_total_number_of_customers', 'Total Number of Customers'); ?>:</td>
-								<td class="text-end"><?php echo (int)$stats['num_customers']; ?></td>
+								<td><?= t('title_total_number_of_customers', 'Total Number of Customers') ?>:</td>
+								<td class="text-end"><?= (int)$stats['num_customers'] ?></td>
 							</tr>
 						</tbody>
 					</table>
@@ -121,20 +121,20 @@
 					<table class="table data-table">
 						<tbody>
 							<tr>
-								<td><?php echo t('title_total_number_of_orders', 'Total Number of Orders'); ?>:</td>
-								<td class="text-end"><?php echo (int)$stats['num_orders']; ?></td>
+								<td><?= t('title_total_number_of_orders', 'Total Number of Orders') ?>:</td>
+								<td class="text-end"><?= (int)$stats['num_orders'] ?></td>
 							</tr>
 							<tr>
-								<td><?php echo t('title_monthly_average_number_of_orders', 'Monthly Average Number of Orders'); ?>:</td>
-								<td class="text-end"><?php echo $stats['average_order_count']; ?></td>
+								<td><?= t('title_monthly_average_number_of_orders', 'Monthly Average Number of Orders') ?>:</td>
+								<td class="text-end"><?= $stats['average_order_count'] ?></td>
 							</tr>
 							<tr>
-								<td><?php echo t('title_average_order_amount', 'Average Order Amount'); ?>:</td>
-								<td class="text-end"><?php echo currency::format($stats['average_order_amount'], false, settings::get('store_currency_code')); ?></td>
+								<td><?= t('title_average_order_amount', 'Average Order Amount') ?>:</td>
+								<td class="text-end"><?= currency::format($stats['average_order_amount'], false, settings::get('store_currency_code')) ?></td>
 							</tr>
 							<tr>
-								<td><?php echo t('title_highest_order_amount', 'Highest Order Amount'); ?>:</td>
-								<td class="text-end"><?php echo currency::format($stats['max_order_amount'], false, settings::get('store_currency_code')); ?></td>
+								<td><?= t('title_highest_order_amount', 'Highest Order Amount') ?>:</td>
+								<td class="text-end"><?= currency::format($stats['max_order_amount'], false, settings::get('store_currency_code')) ?></td>
 							</tr>
 						</tbody>
 					</table>

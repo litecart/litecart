@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="<?php echo $language_code; ?>" dir="<?php echo $text_direction; ?>">
+<html lang="<?= $language_code ?>" dir="<?= $text_direction ?>">
 <head>
 <meta name="viewport" content="width=device-width">
-<meta http-equiv="Content-Type" content="text/html; charset=<?php echo mb_http_output(); ?>">
+<meta http-equiv="Content-Type" content="text/html; charset=<?= mb_http_output() ?>">
 <style>
-<?php echo file_get_contents('app://assets/litecore/css/email.min.css'); ?>
+<?= file_get_contents('app://assets/litecore/css/email.min.css') ?>
 </style>
 </head>
 
@@ -37,14 +37,14 @@
 
 							<tr>
 								<td class="content-block" align="center">
-									<img src="data:image/png;base64,<?php echo base64_encode(file_get_contents('storage://images/logotype.png')); ?>" title="<?php echo settings::get('store_name'); ?>" width="250">
+									<img src="data:image/png;base64,<?= base64_encode(file_get_contents('storage://images/logotype.png')) ?>" title="<?= settings::get('store_name') ?>" width="250">
 								</td>
 							</tr>
 
 							<tr>
 								<td class="content-block powered-by">
-									<?php echo settings::get('store_name'); ?><br>
-									<a href="<?php echo document::href_ilink('', [], [], [], $language_code); ?>" target="_blank"><?php echo document::ilink('', [], [], [], $language_code); ?></a>
+									<?= settings::get('store_name') ?><br>
+									<a href="<?= document::href_ilink('', [], [], [], $language_code) ?>" target="_blank"><?= document::ilink('', [], [], [], $language_code) ?></a>
 								</td>
 							</tr>
 						</table>

@@ -144,49 +144,49 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo t('title_newletter_recipients', 'Newsletter Recipients'); ?>
+			<?= $app_icon ?> <?= t('title_newletter_recipients', 'Newsletter Recipients') ?>
 		</div>
 	</div>
 
 	<div class="card-action">
-		<?php echo f::form_button('add_recipients', t('title_add_recipients', 'Add Recipients'), 'button', '', 'create'); ?>
-		<?php echo f::form_button_link(document::ilink(null, ['action' => 'export']), t('title_export', 'Export'), 'target="_blank"', 'icon-output'); ?>
+		<?= f::form_button('add_recipients', t('title_add_recipients', 'Add Recipients'), 'button', '', 'create') ?>
+		<?= f::form_button_link(document::ilink(null, ['action' => 'export']), t('title_export', 'Export'), 'target="_blank"', 'icon-output') ?>
 	</div>
 
-	<?php echo f::form_begin('search_form', 'get'); ?>
+	<?= f::form_begin('search_form', 'get') ?>
 		<div class="card-filter">
-			<div class="expandable"><?php echo f::form_input_search('query', true, ['placeholder' => t('text_search_phrase_or_keyword', 'Search phrase or keyword')]); ?></div>
-			<div><?php echo f::form_button('filter', t('title_search', 'Search'), 'submit'); ?></div>
+			<div class="expandable"><?= f::form_input_search('query', true, ['placeholder' => t('text_search_phrase_or_keyword', 'Search phrase or keyword')]) ?></div>
+			<div><?= f::form_button('filter', t('title_search', 'Search'), 'submit') ?></div>
 		</div>
-	<?php echo f::form_end(); ?>
+	<?= f::form_end() ?>
 
-	<?php echo f::form_begin('recipients_form', 'post'); ?>
+	<?= f::form_begin('recipients_form', 'post') ?>
 
 		<table class="table data-table">
 			<thead>
 				<tr>
-					<th style="width: 50px;"><?php echo f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
-					<th><?php echo t('title_subscribed', 'Subscribed'); ?></th>
-					<th style="width: 480px;"><?php echo t('title_email', 'Email'); ?></th>
-					<th class="main"><?php echo t('title_person_name', 'Name'); ?></th>
-					<th><?php echo t('title_ip_address', 'IP Address'); ?></th>
-					<th style="width: 200px;"><?php echo t('title_hostname', 'Hostname'); ?></th>
-					<th class="text-end" style="width: 200px;"><?php echo t('title_updated_at', 'Updated At'); ?></th>
-					<th class="text-end" style="width: 200px;"><?php echo t('title_created_at', 'Created At'); ?></th>
+					<th class="text-center" style="width: 50px;"><?= f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"') ?></th>
+					<th><?= t('title_subscribed', 'Subscribed') ?></th>
+					<th style="width: 480px;"><?= t('title_email', 'Email') ?></th>
+					<th class="main"><?= t('title_person_name', 'Name') ?></th>
+					<th><?= t('title_ip_address', 'IP Address') ?></th>
+					<th style="width: 200px;"><?= t('title_hostname', 'Hostname') ?></th>
+					<th class="text-end" style="width: 200px;"><?= t('title_updated_at', 'Updated At') ?></th>
+					<th class="text-end" style="width: 200px;"><?= t('title_created_at', 'Created At') ?></th>
 				</tr>
 			</thead>
 
 			<tbody>
 				<?php foreach ($recipients as $recipient) { ?>
 				<tr>
-					<td><?php echo f::form_checkbox('recipients[]', $recipient['id']); ?></td>
-					<td class="text-center"><?php echo !empty($recipient['subscribed']) ? f::draw_fonticon('true') : f::draw_fonticon('false'); ?></td>
-					<td><?php echo $recipient['email']; ?></td>
-					<td><?php echo f::escape_html($recipient['name']); ?></td>
-					<td><?php echo $recipient['ip_address']; ?></td>
-					<td><?php echo $recipient['hostname']; ?></td>
-					<td class="text-end"><?php echo f::datetime_when($recipient['updated_at']); ?></td>
-					<td class="text-end"><?php echo f::datetime_when($recipient['created_at']); ?></td>
+					<td><?= f::form_checkbox('recipients[]', $recipient['id']) ?></td>
+					<td class="text-center"><?= !empty($recipient['subscribed']) ? f::draw_fonticon('true') : f::draw_fonticon('false') ?></td>
+					<td><?= $recipient['email'] ?></td>
+					<td><?= f::escape_html($recipient['name']) ?></td>
+					<td><?= $recipient['ip_address'] ?></td>
+					<td><?= $recipient['hostname'] ?></td>
+					<td class="text-end"><?= f::datetime_when($recipient['updated_at']) ?></td>
+					<td class="text-end"><?= f::datetime_when($recipient['created_at']) ?></td>
 				</tr>
 				<?php } ?>
 			</tbody>
@@ -194,7 +194,7 @@
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo t('title_recipients', 'Recipients'); ?>: <?php echo f::format_number($num_rows); ?>
+						<?= t('title_recipients', 'Recipients') ?>: <?= f::format_number($num_rows) ?>
 					</td>
 				</tr>
 			</tfoot>
@@ -204,47 +204,47 @@
 			<fieldset id="actions" disabled>
 
 				<legend>
-					<?php echo t('text_with_selected', 'With selected'); ?>:
+					<?= t('text_with_selected', 'With selected') ?>:
 				</legend>
 
 				<div class="flex">
 
 					<div class="btn-group">
-						<?php echo f::form_button('subscribe', t('title_set_as_subscribed', 'Set As Subscribed'), 'submit', ['class' => 'btn btn-default'], 'icon-check'); ?>
-						<?php echo f::form_button('unsubscribe', t('title_set_as_unsubscribed', 'Set As Unsubscribed'), 'submit', ['class' => 'btn btn-default'], 'remove'); ?>
+						<?= f::form_button('subscribe', t('title_set_as_subscribed', 'Set As Subscribed'), 'submit', ['class' => 'btn btn-default'], 'icon-check') ?>
+						<?= f::form_button('unsubscribe', t('title_set_as_unsubscribed', 'Set As Unsubscribed'), 'submit', ['class' => 'btn btn-default'], 'remove') ?>
 					</div>
 
-					<?php echo f::form_button_predefined('delete'); ?>
+					<?= f::form_button_predefined('delete') ?>
 
 				</div>
 			</fieldset>
 		</div>
 
-	<?php echo f::form_end(); ?>
+	<?= f::form_end() ?>
 
 	<?php if ($num_pages > 1) { ?>
 	<div class="card-footer">
-		<?php echo f::draw_pagination($num_pages); ?>
+		<?= f::draw_pagination($num_pages) ?>
 	</div>
 	<?php } ?>
 </div>
 
 <div id="modal-add-recipients" class="modal fade" style="width: 640px; display: none;">
-	<?php echo f::form_begin('recipients_form', 'post'); ?>
+	<?= f::form_begin('recipients_form', 'post') ?>
 
 		<label class="form-group">
-			<div class="form-label"><?php echo t('title_recipients', 'Recipients'); ?></div>
-			<?php echo f::form_textarea('recipients', '', ['style' => 'height: 480px;']); ?>
+			<div class="form-label"><?= t('title_recipients', 'Recipients') ?></div>
+			<?= f::form_textarea('recipients', '', ['style' => 'height: 480px;']) ?>
 		</label>
 
 		<label class="form-group">
-			<div class="form-label"><?php echo t('title_subscribed', 'Subscribed'); ?></div>
-			<?php echo f::form_toggle('subscribe', [1 => t('title_subscribe', 'Subscribed'), 0 => t('title_unsubscribe', 'Unsubscribed')], '1'); ?>
+			<div class="form-label"><?= t('title_subscribed', 'Subscribed') ?></div>
+			<?= f::form_toggle('subscribe', [1 => t('title_subscribe', 'Subscribed'), 0 => t('title_unsubscribe', 'Unsubscribed')], '1') ?>
 		</label>
 
-		<?php echo f::form_button('add', t('title_add', 'Add'), 'submit', ['class' => 'btn btn-default btn-block']); ?>
+		<?= f::form_button('add', t('title_add', 'Add'), 'submit', ['class' => 'btn btn-default btn-block']) ?>
 
-	<?php echo f::form_end(); ?>
+	<?= f::form_end() ?>
 </div>
 
 <script>

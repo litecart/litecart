@@ -91,76 +91,76 @@
 <div class="card card-app">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo (empty($review->data['id'])) ? t('title_create_new_review', 'Create New Review') : t('title_edit_review', 'Edit Review'); ?>
+			<?= $app_icon ?> <?= (empty($review->data['id'])) ? t('title_create_new_review', 'Create New Review') : t('title_edit_review', 'Edit Review') ?>
 		</div>
 	</div>
 
 	<div class="card-body">
 
-		<?php echo f::form_begin(false, 'post', false, true, ['style' => 'max-width: 640px;']); ?>
+		<?= f::form_begin(false, 'post', false, true, ['style' => 'max-width: 640px;']) ?>
 
 			<div class="row">
 				<div class="col-md-6">
 					<div class="form-group">
-						<label><?php echo t('title_status', 'Status'); ?></label>
-						<?php echo f::form_toggle('status', true, 'e/d'); ?>
+						<label><?= t('title_status', 'Status') ?></label>
+						<?= f::form_toggle('status', true, 'e/d') ?>
 					</div>
 				</div>
 
 				<div class="col-md-6">
 					<div class="form-group">
-						<label><?php echo t('title_rating', 'Rating'); ?></label>
-						<?php echo f::form_input_number('rating', true, 1, 5); ?>
+						<label><?= t('title_rating', 'Rating') ?></label>
+						<?= f::form_input_number('rating', true, 1, 5) ?>
 					</div>
 				</div>
 			</div>
 
 			<div class="form-group">
-				<label><?php echo t('title_product', 'product'); ?></label>
-				<?php echo f::form_select_product('product_id', true); ?>
+				<label><?= t('title_product', 'product') ?></label>
+				<?= f::form_select_product('product_id', true) ?>
 			</div>
 
 			<div class="row">
 				<div class="col-md-6">
 					<div class="form-group">
-						<label><?php echo t('title_customer', 'Customer'); ?></label>
-						<?php echo f::form_input_hidden('customer_id', true); ?>
-						<div class="selected-account form-control disabled"><?php echo t('title_id', 'ID'); ?>: <span class="id"><?php echo @(int)$_POST['customer_id']; ?></span> &mdash; <span class="name"><?php echo $account_name; ?></span> <a href="#modal-customer-picker" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin-left: 5px;"><?php echo t('title_change', 'Change'); ?></a></div>
+						<label><?= t('title_customer', 'Customer') ?></label>
+						<?= f::form_input_hidden('customer_id', true) ?>
+						<div class="selected-account form-control disabled"><?= t('title_id', 'ID') ?>: <span class="id"><?= @(int)$_POST['customer_id'] ?></span> &mdash; <span class="name"><?= $account_name ?></span> <a href="#modal-customer-picker" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin-left: 5px;"><?= t('title_change', 'Change') ?></a></div>
 					</div>
 				</div>
 
 				<div class="col-md-6">
 					<div class="form-group">
-						<label><?php echo t('title_email', 'Email'); ?></label>
-						<?php echo f::form_input_email('customer_email', true); ?>
+						<label><?= t('title_email', 'Email') ?></label>
+						<?= f::form_input_email('customer_email', true) ?>
 					</div>
 				</div>
 
 				<div class="col-md-12">
 					<div class="form-group">
-						<label><?php echo t('title_name', 'Name'); ?></label>
-						<?php echo f::form_input_text('customer_name', true); ?>
+						<label><?= t('title_name', 'Name') ?></label>
+						<?= f::form_input_text('customer_name', true) ?>
 					</div>
 				</div>
 			</div>
 
 			<nav class="nav nav-tabs">
 				<?php foreach (language::$languages as $language) { ?>
-				<a class="nav-link<?php echo ($language['code'] == language::$selected['code']) ? ' active' : ''; ?>" data-toggle="tab" href="#<?php echo $language['code']; ?>"><?php echo $language['name']; ?></a>
+				<a class="nav-link<?= ($language['code'] == language::$selected['code']) ? ' active' : '' ?>" data-toggle="tab" href="#<?= $language['code'] ?>"><?= $language['name'] ?></a>
 				<?php } ?>
 			</nav>
 
 			<div class="tab-contents">
 				<?php foreach (array_keys(language::$languages) as $language_code) { ?>
-				<div id="<?php echo $language_code; ?>" class="tab-pane fade in<?php echo ($language_code == language::$selected['code']) ? ' active' : ''; ?>">
+				<div id="<?= $language_code ?>" class="tab-pane fade in<?= ($language_code == language::$selected['code']) ? ' active' : '' ?>">
 					<div class="form-group">
-						<label><?php echo t('title_title', 'Title'); ?></label>
-						<?php echo f::form_regional_text($language_code, 'title['. $language_code .']', true, ''); ?>
+						<label><?= t('title_title', 'Title') ?></label>
+						<?= f::form_regional_text($language_code, 'title['. $language_code .']', true, '') ?>
 					</div>
 
 					<div class="form-group">
-						<label><?php echo t('title_review', 'Review'); ?></label>
-						<?php echo f::form_regional_textarea($language_code, 'review['. $language_code .']', true, ['style' => 'height: 250px;']); ?>
+						<label><?= t('title_review', 'Review') ?></label>
+						<?= f::form_regional_textarea($language_code, 'review['. $language_code .']', true, ['style' => 'height: 250px;']) ?>
 					</div>
 				</div>
 				<?php } ?>
@@ -169,15 +169,15 @@
 			<div class="row">
 				<div class="col-md-6">
 					<div class="form-group">
-						<label><?php echo t('title_upvotes', 'Upvotes'); ?></label>
-						<?php echo f::form_input_number('upvotes', true, 0); ?>
+						<label><?= t('title_upvotes', 'Upvotes') ?></label>
+						<?= f::form_input_number('upvotes', true, 0) ?>
 					</div>
 				</div>
 
 				<div class="col-md-6">
 					<div class="form-group">
-						<label><?php echo t('title_downvotes', 'Downvotes'); ?></label>
-						<?php echo f::form_input_number('downvotes', true, 0); ?>
+						<label><?= t('title_downvotes', 'Downvotes') ?></label>
+						<?= f::form_input_number('downvotes', true, 0) ?>
 					</div>
 				</div>
 			</div>
@@ -187,15 +187,15 @@
 				<div class="attachments">
 					<?php if (!empty($_POST['attachments'])) foreach (array_keys($_POST['attachments']) as $key) { ?>
 					<div class="attachment form-group">
-						<?php echo f::form_input_hidden('attachments['.$key.'][id]', true); ?>
-						<?php echo f::form_input_hidden('attachments['.$key.'][filename]', $_POST['attachments'][$key]['filename']); ?>
+						<?= f::form_input_hidden('attachments['.$key.'][id]', true) ?>
+						<?= f::form_input_hidden('attachments['.$key.'][filename]', $_POST['attachments'][$key]['filename']) ?>
 
 						<div class="input-group">
-							<?php echo f::form_input_text('attachments['.$key.'][new_filename]', isset($_POST['attachments'][$key]['new_filename']) ? true : $_POST['attachments'][$key]['filename']); ?>
+							<?= f::form_input_text('attachments['.$key.'][new_filename]', isset($_POST['attachments'][$key]['new_filename']) ? true : $_POST['attachments'][$key]['filename']) ?>
 							<div class="input-group-text">
-								<?php echo f::form_button_predefined('move-up-sm'); ?>
-								<?php echo f::form_button_predefined('move-down-sm'); ?>
-								<?php echo f::form_button_predefined('remove-sm'); ?>
+								<?= f::form_button_predefined('move-up-sm') ?>
+								<?= f::form_button_predefined('move-down-sm') ?>
+								<?= f::form_button_predefined('remove-sm') ?>
 							</div>
 						</div>
 					</div>
@@ -204,52 +204,52 @@
 
 				<div class="new-attachments">
 					<div class="attachment form-group">
-						<label><?php echo t('title_attachment', 'Attachment'); ?></label>
+						<label><?= t('title_attachment', 'Attachment') ?></label>
 						<div class="input-group">
-							<?php echo f::form_input_file('new_attachments[]'); ?>
-							<?php echo f::form_button_predefined('remove-sm'); ?>
+							<?= f::form_input_file('new_attachments[]') ?>
+							<?= f::form_button_predefined('remove-sm') ?>
 						</div>
 					</div>
 				</div>
 
 				<div class="form-group">
-					<a href="#" class="add" title="<?php echo t('text_add', 'Add'); ?>"><?php echo f::draw_fonticon('add'); ?></a>
+					<a href="#" class="add" title="<?= t('text_add', 'Add') ?>"><?= f::draw_fonticon('add') ?></a>
 				</div>
 			</div>
 
 			<div class="card-action">
-				<?php echo f::form_button('save', t('title_save', 'Save'), 'submit', ['class' => 'btn btn-success'], 'save'); ?>
-				<?php echo !empty($review->data['id']) ? f::form_button('delete', t('title_delete', 'Delete'), 'submit', 'class="btn btn-danger" onclick="if (!confirm(&quot;'. t('text_are_you_sure', 'Are you sure?') .'&quot;)) return false;"', 'delete') : ''; ?>
-				<?php echo f::form_button('cancel', t('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
+				<?= f::form_button('save', t('title_save', 'Save'), 'submit', ['class' => 'btn btn-success'], 'save') ?>
+				<?= !empty($review->data['id']) ? f::form_button('delete', t('title_delete', 'Delete'), 'submit', 'class="btn btn-danger" onclick="if (!confirm(&quot;'. t('text_are_you_sure', 'Are you sure?') .'&quot;)) return false;"', 'delete') : '' ?>
+				<?= f::form_button('cancel', t('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel') ?>
 			</div>
 
-		<?php echo f::form_end(); ?>
+		<?= f::form_end() ?>
 	</div>
 </div>
 
 <div id="modal-customer-picker" class="modal fade" style="max-width: 640px; display: none;">
 
-	<h2><?php echo t('title_customer', 'Customer'); ?></h2>
+	<h2><?= t('title_customer', 'Customer') ?></h2>
 
 	<div class="modal-body">
 		<div class="form-group">
-			<?php echo f::form_input_text('query', true, ['placeholder' => f::escape_html(t('title_search', 'Search'))]); ?>
+			<?= f::form_input_text('query', true, ['placeholder' => f::escape_html(t('title_search', 'Search'))]) ?>
 		</div>
 
 		<div class="form-group results table-responsive">
 			<table class="table table-striped table-hover data-table">
 				<thead>
 					<tr>
-						<th><?php echo t('title_id', 'ID'); ?></th>
-						<th><?php echo t('title_name', 'Name'); ?></th>
-						<th class="main"><?php echo t('title_email', 'Email'); ?></th>
-						<th><?php echo t('title_date_registered', 'Date Registered'); ?></th>
+						<th><?= t('title_id', 'ID') ?></th>
+						<th><?= t('title_name', 'Name') ?></th>
+						<th class="main"><?= t('title_email', 'Email') ?></th>
+						<th><?= t('title_date_registered', 'Date Registered') ?></th>
 					</tr>
 				</thead>
 				<tbody>
 			</table>
 
-			<p class="text-center"><button class="set-guest btn btn-default" type="button"><?php echo t('text_set_as_guest', 'Set As Guest'); ?></button></p>
+			<p class="text-center"><button class="set-guest btn btn-default" type="button"><?= t('text_set_as_guest', 'Set As Guest') ?></button></p>
 		</div>
 	</div>
 
@@ -267,7 +267,7 @@
 			type: 'get',
 			async: true,
 			cache: false,
-			url: '<?php echo document::link('', ['app' => 'customers', 'doc' => 'customers.json']); ?>&query=' + $(this).val(),
+			url: '<?= document::link('', ['app' => 'customers', 'doc' => 'customers.json']) ?>&query=' + $(this).val(),
 			dataType: 'json',
 			beforeSend: function(jqXHR) {
 				jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'));
@@ -291,7 +291,7 @@
 					}
 				});
 				if ($('#modal-customer-picker .results tbody').html() == '') {
-					$('#modal-customer-picker .results tbody').html('<tr><td colspan="4"><em><?php echo f::escape_js(t('text_no_results', 'No results')); ?></em></td></tr>');
+					$('#modal-customer-picker .results tbody').html('<tr><td colspan="4"><em><?= f::escape_js(t('text_no_results', 'No results')) ?></em></td></tr>');
 				}
 			},
 		});
@@ -305,7 +305,7 @@
 
 		if (!id) {
 			id = 0;
-			name = '(<?php echo f::escape_js(t('title_guest', 'Guest')); ?>)';
+			name = '(<?= f::escape_js(t('title_guest', 'Guest')) ?>)';
 		}
 
 		$('input[name="customer_id"]').val(id).trigger('change');
@@ -317,7 +317,7 @@
 	$('#modal-customer-picker .set-guest').click(function(){
 		$('input[name="customer[id]"]').val('0');
 		$('.selected-account .id').text('0');
-		$('.selected-account .name').text('(<?php echo f::escape_js(t('title_guest', 'Guest')); ?>)');
+		$('.selected-account .name').text('(<?= f::escape_js(t('title_guest', 'Guest')) ?>)');
 		$.featherlight.close();
 	});
 
@@ -354,10 +354,10 @@
 
 		var $output = $([
 			'<div class="attachment form-group">'
-			'  <label><?php echo f::escape_js(t('title_attachment', 'Attachment')); ?></label>'
+			'  <label><?= f::escape_js(t('title_attachment', 'Attachment')) ?></label>'
 			'  <div class="input-group">'
-			'    <?php echo f::escape_js(f::form_input_file('new_attachments[]')); ?>',
-			'    <?php echo f::escape_js(f::form_button_predefined('remove-sm'), ''); ?>',
+			'    <?= f::escape_js(f::form_input_file('new_attachments[]')) ?>',
+			'    <?= f::escape_js(f::form_button_predefined('remove-sm'), '') ?>',
 			'  </div>',
 			'</div>',
 		].join(''));

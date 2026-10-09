@@ -68,62 +68,62 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo t('title_email_drafts', 'Email Drafts'); ?>
+			<?= $app_icon ?> <?= t('title_email_drafts', 'Email Drafts') ?>
 		</div>
 	</div>
 
 	<div class="card-action">
-		<?php echo f::form_button_link(document::ilink(__APP__ . '/edit_email'), t('title_create_new_email', 'Create New Email'), '', 'create'); ?>
+		<?= f::form_button_link(document::ilink(__APP__ . '/edit_email'), t('title_create_new_email', 'Create New Email'), '', 'create') ?>
 	</div>
 
 	<div class="card-filter">
 
-		<?php echo f::form_begin('emails_form', 'get'); ?>
+		<?= f::form_begin('emails_form', 'get') ?>
 
 			<ul class="list-inline">
 				<li class="expandable">
-					<?php echo f::form_input_search('query', true, ['placeholder' => t('text_search_phrase_or_keyword', 'Search phrase or keyword') , 'style' => 'width: 400px;']); ?>
+					<?= f::form_input_search('query', true, ['placeholder' => t('text_search_phrase_or_keyword', 'Search phrase or keyword') , 'style' => 'width: 400px;']) ?>
 				</li>
 				<li>
-					<?php echo f::form_button('search', t('title_search', 'Search'), 'submit'); ?>
+					<?= f::form_button('search', t('title_search', 'Search'), 'submit') ?>
 				</li>
 			</ul>
 
-		<?php echo f::form_end(); ?>
+		<?= f::form_end() ?>
 
 	</div>
 
-	<?php echo f::form_begin('emails_form', 'post'); ?>
+	<?= f::form_begin('emails_form', 'post') ?>
 
 		<table class="table data-table">
 			<thead>
 				<tr>
-					<th><?php echo f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th class="text-center"><?= f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"') ?></th>
 					<th></th>
-					<th><?php echo t('title_recipients', 'Recipients'); ?></th>
-					<th class="main"><?php echo t('title_subject', 'Subject'); ?></th>
-					<th><?php echo t('title_updated', 'Updated'); ?></th>
-					<th><?php echo t('title_created', 'Created'); ?></th>
+					<th><?= t('title_recipients', 'Recipients') ?></th>
+					<th class="main"><?= t('title_subject', 'Subject') ?></th>
+					<th><?= t('title_updated', 'Updated') ?></th>
+					<th><?= t('title_created', 'Created') ?></th>
 					<th></th>
 				</tr>
 			</thead>
 
 			<tbody>
 				<?php foreach ($emails as $email) { ?>
-				<tr class="<?php echo empty($email['status']) ? 'semi-transparent' : ''; ?>">
-					<td><?php echo f::form_checkbox('emails[]', $email['id']); ?></td>
-					<td><?php echo strtr($email['status'], $statuses); ?></td>
-					<td><?php echo f::escape_html(implode(', ', array_column($email['recipients'], 'name'))); ?></td>
+				<tr class="<?= empty($email['status']) ? 'semi-transparent' : '' ?>">
+					<td><?= f::form_checkbox('emails[]', $email['id']) ?></td>
+					<td><?= strtr($email['status'], $statuses) ?></td>
+					<td><?= f::escape_html(implode(', ', array_column($email['recipients'], 'name'))) ?></td>
 					<td>
-						<a class="link" href="<?php echo document::href_ilink(__APP__ . '/edit_email', ['email_id' => $email['id']]); ?>">
-							<?php echo $email['subject'] ? f::escape_html($email['subject']) : '<em>(' . t('title_untitled', 'Untitled') . ')</em>'; ?>
+						<a class="link" href="<?= document::href_ilink(__APP__ . '/edit_email', ['email_id' => $email['id']]) ?>">
+							<?= $email['subject'] ? f::escape_html($email['subject']) : '<em>(' . t('title_untitled', 'Untitled') . ')</em>' ?>
 						</a>
 					</td>
-					<td><?php echo f::datetime_format('datetime', $email['updated_at']); ?></td>
-					<td><?php echo f::datetime_format('datetime', $email['created_at']); ?></td>
+					<td><?= f::datetime_format('datetime', $email['updated_at']) ?></td>
+					<td><?= f::datetime_format('datetime', $email['created_at']) ?></td>
 					<td class="text-end">
-						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__ . '/edit_email', ['email_id' => $email['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>">
-							<?php echo f::draw_fonticon('edit'); ?>
+						<a class="btn btn-default btn-sm" href="<?= document::href_ilink(__APP__ . '/edit_email', ['email_id' => $email['id']]) ?>" title="<?= t('title_edit', 'Edit') ?>">
+							<?= f::draw_fonticon('edit') ?>
 						</a>
 					</td>
 				</tr>
@@ -133,7 +133,7 @@
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo t('title_emails', 'Emails'); ?>: <?php echo f::format_number($num_rows); ?>
+						<?= t('title_emails', 'Emails') ?>: <?= f::format_number($num_rows) ?>
 					</td>
 				</tr>
 			</tfoot>
@@ -141,17 +141,17 @@
 
 		<div class="card-body">
 			<fieldset id="actions">
-				<legend><?php echo t('text_with_selected', 'With selected'); ?>:</legend>
+				<legend><?= t('text_with_selected', 'With selected') ?>:</legend>
 
-				<?php echo f::form_button_predefined('delete'); ?>
+				<?= f::form_button_predefined('delete') ?>
 			</fieldset>
 		</div>
 
-	<?php echo f::form_end(); ?>
+	<?= f::form_end() ?>
 
 	<?php if ($num_pages > 1) { ?>
 	<div class="card-footer">
-		<?php echo f::draw_pagination($num_pages); ?>
+		<?= f::draw_pagination($num_pages) ?>
 	</div>
 	<?php } ?>
 </div>

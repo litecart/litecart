@@ -181,11 +181,11 @@
 		<div class="col-md-8">
 			<div class="card">
 				<div class="card-header">
-					<div class="card-title"><?php echo t('title_monthly_sales', 'Monthly Sales'); ?></div>
+					<div class="card-title"><?= t('title_monthly_sales', 'Monthly Sales') ?></div>
 				</div>
 
 				<div class="card-body">
-					<div id="chart-sales-monthly" style="width: 100%; height: 250px;" title="<?php echo f::escape_html(t('title_monthly_sales', 'Monthly Sales')); ?>"></div>
+					<div id="chart-sales-monthly" style="width: 100%; height: 250px;" title="<?= f::escape_html(t('title_monthly_sales', 'Monthly Sales')) ?>"></div>
 				</div>
 			</div>
 		</div>
@@ -193,11 +193,11 @@
 		<div class="col-md-4">
 			<div class="card">
 				<div class="card-header">
-					<div class="card-title"><?php echo t('title_daily_sales', 'Daily Sales'); ?></div>
+					<div class="card-title"><?= t('title_daily_sales', 'Daily Sales') ?></div>
 				</div>
 
 				<div class="card-body">
-					<div id="chart-sales-daily" style="width: 100%; height: 250px" title="<?php echo f::escape_html(t('title_daily_sales', 'Daily Sales')); ?>"></div>
+					<div id="chart-sales-daily" style="width: 100%; height: 250px" title="<?= f::escape_html(t('title_daily_sales', 'Daily Sales')) ?>"></div>
 				</div>
 			</div>
 		</div>
@@ -208,8 +208,8 @@
 
 	// Monthly Sales
 	var data = {
-		labels: <?php echo f::format_json(array_column($monthly_sales[date('Y')], 'label')); ?>,
-		series: <?php echo f::format_json([array_column($monthly_sales[date('Y')-2], 'total_sales'), array_column($monthly_sales[date('Y')-1], 'total_sales'), array_column($monthly_sales[date('Y')], 'total_sales')]); ?>
+		labels: <?= f::format_json(array_column($monthly_sales[date('Y')], 'label')) ?>,
+		series: <?= f::format_json([array_column($monthly_sales[date('Y')-2], 'total_sales'), array_column($monthly_sales[date('Y')-1], 'total_sales'), array_column($monthly_sales[date('Y')], 'total_sales')]) ?>
 	};
 
 	var options = {
@@ -219,7 +219,7 @@
 		axisY: {
 			offset: 60,
 			labelInterpolationFnc: function(value) {
-				return new Intl.NumberFormat('<?php echo language::$selected['code']; ?>').format(value);
+				return new Intl.NumberFormat('<?= language::$selected['code'] ?>').format(value);
 			}
 		}
 	};
@@ -259,8 +259,8 @@
 	// Daily Sales
 
 	var data = {
-		labels: <?php echo f::format_json(array_column($daily_sales, 'label')); ?>,
-		series: <?php echo f::format_json([array_column($daily_sales, 'total_sales'), array_column($daily_sales, 'average_sales')]); ?>
+		labels: <?= f::format_json(array_column($daily_sales, 'label')) ?>,
+		series: <?= f::format_json([array_column($daily_sales, 'total_sales'), array_column($daily_sales, 'average_sales')]) ?>
 	};
 
 	var options = {
@@ -268,7 +268,7 @@
 		axisY: {
 			offset: 60,
 			labelInterpolationFnc: function(value) {
-				return new Intl.NumberFormat('<?php echo language::$selected['code']; ?>').format(value);
+				return new Intl.NumberFormat('<?= language::$selected['code'] ?>').format(value);
 			}
 		}
 	};

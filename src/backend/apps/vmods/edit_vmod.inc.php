@@ -237,24 +237,24 @@ textarea.warning {
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo !empty($vmod->data['id']) ? t('title_edit_vmod', 'Edit vMod') : t('title_create_new_vmod', 'Create New vMod'); ?>
+			<?= $app_icon ?> <?= !empty($vmod->data['id']) ? t('title_edit_vmod', 'Edit vMod') : t('title_create_new_vmod', 'Create New vMod') ?>
 		</div>
 	</div>
 
-	<?php echo f::form_begin('vmod_form', 'post', false, true); ?>
+	<?= f::form_begin('vmod_form', 'post', false, true) ?>
 
 		<nav class="tabs">
 
 			<a class="tab-item active" href="#tab-general" data-toggle="tab">
-				<?php echo t('title_general', 'General'); ?>
+				<?= t('title_general', 'General') ?>
 			</a>
 
 			<a class="tab-item" href="#tab-settings" data-toggle="tab">
-				<?php echo t('title_settings', 'Settings'); ?>
+				<?= t('title_settings', 'Settings') ?>
 			</a>
 
 			<a class="tab-item" href="#tab-install" data-toggle="tab">
-				<?php echo t('title_install_uninstall', 'Install/Uninstall'); ?>
+				<?= t('title_install_uninstall', 'Install/Uninstall') ?>
 			</a>
 
 		</nav>
@@ -269,15 +269,15 @@ textarea.warning {
 							<div class="grid">
 								<div class="col-md-6">
 									<label class="form-group">
-										<div class="form-label"><?php echo t('title_status', 'Status'); ?></div>
-										<?php echo f::form_toggle('status', 'e/d', true); ?>
+										<div class="form-label"><?= t('title_status', 'Status') ?></div>
+										<?= f::form_toggle('status', 'e/d', true) ?>
 									</label>
 								</div>
 
 								<div class="col-md-6">
 									<label class="form-group">
-										<div class="form-label"><?php echo t('title_id', 'ID'); ?></div>
-										<?php echo f::form_input_text('id', true, ['required' => true, 'placeholder' => 'my_fancy_mod', 'pattern' => '^[0-9a-zA-Z_\-]+$']); ?>
+										<div class="form-label"><?= t('title_id', 'ID') ?></div>
+										<?= f::form_input_text('id', true, ['required' => true, 'placeholder' => 'my_fancy_mod', 'pattern' => '^[0-9a-zA-Z_\-]+$']) ?>
 									</label>
 								</div>
 							</div>
@@ -285,15 +285,15 @@ textarea.warning {
 							<div class="grid">
 								<div class="col-md-8">
 									<label class="form-group">
-										<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
-										<?php echo f::form_input_text('name', true, ['required' => true, 'placeholder' => 'My Fancy Mod']); ?>
+										<div class="form-label"><?= t('title_name', 'Name') ?></div>
+										<?= f::form_input_text('name', true, ['required' => true, 'placeholder' => 'My Fancy Mod']) ?>
 									</label>
 								</div>
 
 								<div class="col-md-4">
 									<label class="form-group">
-										<div class="form-label"><?php echo t('title_version', 'Version'); ?></div>
-										<?php echo f::form_input_text('version', true, ['placeholder' => date('Y-m-d')]); ?>
+										<div class="form-label"><?= t('title_version', 'Version') ?></div>
+										<?= f::form_input_text('version', true, ['placeholder' => date('Y-m-d')]) ?>
 									</label>
 								</div>
 							</div>
@@ -301,8 +301,8 @@ textarea.warning {
 							<div class="grid">
 								<div class="col-md-12">
 									<label class="form-group">
-										<div class="form-label"><?php echo t('title_description', 'Description'); ?></div>
-										<?php echo f::form_input_text('description', true); ?>
+										<div class="form-label"><?= t('title_description', 'Description') ?></div>
+										<?= f::form_input_text('description', true) ?>
 									</label>
 								</div>
 							</div>
@@ -310,8 +310,8 @@ textarea.warning {
 							<div class="grid">
 								<div class="col-md-12">
 									<label class="form-group">
-										<div class="form-label"><?php echo t('title_author', 'Author'); ?></div>
-										<?php echo f::form_input_text('author', true); ?>
+										<div class="form-label"><?= t('title_author', 'Author') ?></div>
+										<?= f::form_input_text('author', true) ?>
 									</label>
 								</div>
 							</div>
@@ -320,15 +320,15 @@ textarea.warning {
 							<div class="grid">
 								<div class="col-md-6">
 									<label class="form-group">
-										<div class="form-label"><?php echo t('title_created_at', 'Created At'); ?></div>
-										<div><?php echo f::datetime_when($vmod->data['created_at']); ?></div>
+										<div class="form-label"><?= t('title_created_at', 'Created At') ?></div>
+										<div><?= f::datetime_when($vmod->data['created_at']) ?></div>
 									</label>
 								</div>
 
 								<div class="col-md-6">
 									<label class="form-group">
-										<div class="form-label"><?php echo t('title_updated_at', 'Updated At'); ?></div>
-										<div><?php echo f::datetime_when($vmod->data['updated_at']); ?></div>
+										<div class="form-label"><?= t('title_updated_at', 'Updated At') ?></div>
+										<div><?= f::datetime_when($vmod->data['updated_at']) ?></div>
 									</label>
 								</div>
 							</div>
@@ -337,7 +337,7 @@ textarea.warning {
 
 						<div id="aliases" class="col-md-6">
 
-							<h2><?php echo t('title_aliases', 'Aliases'); ?></h2>
+							<h2><?= t('title_aliases', 'Aliases') ?></h2>
 
 							<div class="aliases">
 
@@ -346,26 +346,26 @@ textarea.warning {
 									<div class="grid">
 										<div class="col-md-4">
 											<label class="form-group">
-												<div class="form-label"><?php echo t('title_key', 'Key'); ?></div>
+												<div class="form-label"><?= t('title_key', 'Key') ?></div>
 												<div class="input-group">
 													<span class="input-group-text" style="font-family: monospace;">{alias:</span>
-													<?php echo f::form_input_text('aliases['.$key.'][key]', true, ['required' => true]); ?>
+													<?= f::form_input_text('aliases['.$key.'][key]', true, ['required' => true]) ?>
 													<span class="input-group-text" style="font-family: monospace;">}</span>
 												</div>
 											</label>
 										</div>
 										<div class="col-md-6">
 											<label class="form-group">
-												<div class="form-label"><?php echo t('title_value', 'Value'); ?></div>
-												<?php echo f::form_input_text('aliases['.$key.'][value]'); ?>
+												<div class="form-label"><?= t('title_value', 'Value') ?></div>
+												<?= f::form_input_text('aliases['.$key.'][value]') ?>
 											</label>
 										</div>
 										<div class="col-md-2" style="align-self: center;">
 											<div class="btn-group">
-												<?php echo f::form_button('aliases[new_alias_index][move_up]', f::draw_fonticon('move-up'), 'button', ['class' => 'btn btn-default btn-sm', 'title' => f::escape_attr(t('title_move_up', 'Move Up'))]); ?>
-												<?php echo f::form_button('aliases[new_alias_index][move_down]', f::draw_fonticon('move-down'), 'button', ['class' => 'btn btn-default btn-sm', 'title' => f::escape_attr(t('title_move_down', 'Move Down'))]); ?>
+												<?= f::form_button('aliases[new_alias_index][move_up]', f::draw_fonticon('move-up'), 'button', ['class' => 'btn btn-default btn-sm', 'title' => f::escape_attr(t('title_move_up', 'Move Up'))]) ?>
+												<?= f::form_button('aliases[new_alias_index][move_down]', f::draw_fonticon('move-down'), 'button', ['class' => 'btn btn-default btn-sm', 'title' => f::escape_attr(t('title_move_down', 'Move Down'))]) ?>
 											</div>
-											<?php echo f::form_button('aliases[new_alias_index][remove]', f::draw_fonticon('remove'), 'button', ['class' => 'btn btn-default btn-sm', 'title' => f::escape_attr(t('title_remove', 'Remove'))]); ?>
+											<?= f::form_button('aliases[new_alias_index][remove]', f::draw_fonticon('remove'), 'button', ['class' => 'btn btn-default btn-sm', 'title' => f::escape_attr(t('title_remove', 'Remove'))]) ?>
 										</div>
 									</div>
 								</fieldset>
@@ -374,35 +374,35 @@ textarea.warning {
 							</div>
 
 							<div class="form-group" style="margin-top: 2em;">
-								<?php echo f::form_button('add_alias', t('title_add_alias', 'Add Alias'), 'button', ['class' => 'btn btn-default'], 'add'); ?>
+								<?= f::form_button('add_alias', t('title_add_alias', 'Add Alias'), 'button', ['class' => 'btn btn-default'], 'add') ?>
 							</div>
 						</div>
 					</div>
 
-					<h2><?php echo t('title_modifications', 'Modifications'); ?></h2>
+					<h2><?= t('title_modifications', 'Modifications') ?></h2>
 
 					<nav class="tabs">
 						<?php foreach (array_keys($vmod->data['files']) as $f) { ?>
-						<a class="tab-item" data-toggle="tab" href="#tab-<?php echo $f; ?>">
-							<span class="file"><?php echo f::escape_html($_POST['files'][$f]['name']); ?></span> <span class="btn btn-default btn-sm remove" title="<?php t('title_remove', 'Remove')?>"><?php echo f::draw_fonticon('remove'); ?></span>
+						<a class="tab-item" data-toggle="tab" href="#tab-<?= $f ?>">
+							<span class="file"><?= f::escape_html($_POST['files'][$f]['name']) ?></span> <span class="btn btn-default btn-sm remove" title="<?php t('title_remove', 'Remove')?>"><?= f::draw_fonticon('remove') ?></span>
 						</a>
 						<?php } ?>
-						<a class="tab-item add" href="#"><?php echo f::draw_fonticon('add'); ?></a>
+						<a class="tab-item add" href="#"><?= f::draw_fonticon('add') ?></a>
 					</nav>
 
 					<div id="files" class="tab-contents">
 
 						<?php if (!empty($_POST['files'])) foreach (array_keys($_POST['files']) as $f) { ?>
-						<div id="tab-<?php echo $f; ?>" class="tab-contents" data-tab-index="<?php echo $f; ?>">
+						<div id="tab-<?= $f ?>" class="tab-contents" data-tab-index="<?= $f ?>">
 
 							<div class="grid">
 								<div class="col-md-6">
 
-									<h3><?php echo t('title_file_to_modify', 'File To Modify'); ?></h3>
+									<h3><?= t('title_file_to_modify', 'File To Modify') ?></h3>
 
 									<label class="form-group">
-										<div class="form-label"><?php echo t('title_file_pattern', 'File Pattern'); ?></div>
-										<?php echo f::form_input_text('files['.$f.'][name]', true, ['placeholder' => 'path/to/file.php', 'list' => 'scripts']); ?>
+										<div class="form-label"><?= t('title_file_pattern', 'File Pattern') ?></div>
+										<?= f::form_input_text('files['.$f.'][name]', true, ['placeholder' => 'path/to/file.php', 'list' => 'scripts']) ?>
 									</label>
 
 									<div class="sources"></div>
@@ -410,7 +410,7 @@ textarea.warning {
 
 								<div class="col-md-6">
 
-									<h3><?php echo t('title_operations', 'Operations'); ?></h3>
+									<h3><?= t('title_operations', 'Operations') ?></h3>
 
 									<div class="operations">
 										<?php $i=1; foreach (array_keys($_POST['files'][$f]['operations']) as $o) { ?>
@@ -418,75 +418,75 @@ textarea.warning {
 
 											<div class="float-end">
 												<div class="btn-group">
-													<a class="btn btn-default btn-sm move-up" href="#"><?php echo f::draw_fonticon('move-up'); ?></a>
-													<a class="btn btn-default btn-sm move-down" href="#"><?php echo f::draw_fonticon('move-down'); ?></a>
+													<a class="btn btn-default btn-sm move-up" href="#"><?= f::draw_fonticon('move-up') ?></a>
+													<a class="btn btn-default btn-sm move-down" href="#"><?= f::draw_fonticon('move-down') ?></a>
 												</div>
-												<a class="btn btn-default btn-sm remove" href="#"><?php echo f::draw_fonticon('remove'); ?></a>
+												<a class="btn btn-default btn-sm remove" href="#"><?= f::draw_fonticon('remove') ?></a>
 											</div>
 
-											<h3><?php echo t('title_operation', 'Operation'); ?> #<span class="number"><?php echo $i++;?></span></h3>
+											<h3><?= t('title_operation', 'Operation') ?> #<span class="number"><?= $i++ ?></span></h3>
 
 											<div class="grid">
 												<div class="col-md-3">
 													<label class="form-group">
-														<div class="form-label"><?php echo t('title_method', 'Method'); ?></div>
-														<?php echo f::form_select('files['.$f.'][operations]['.$o.'][method]', $method_options, true); ?>
+														<div class="form-label"><?= t('title_method', 'Method') ?></div>
+														<?= f::form_select('files['.$f.'][operations]['.$o.'][method]', $method_options, true) ?>
 													</label>
 												</div>
 
 												<div class="col-md-6">
 													<label class="form-group">
-														<div class="form-label"><?php echo t('title_match_type', 'Match Type'); ?></div>
-														<?php echo f::form_toggle('files['.$f.'][operations]['.$o.'][type]', $type_options, (!isset($_POST['files'][$f]['operations'][$o]['type']) || $_POST['files'][$f]['operations'][$o]['type'] == '') ? 'multiline' : true); ?>
+														<div class="form-label"><?= t('title_match_type', 'Match Type') ?></div>
+														<?= f::form_toggle('files['.$f.'][operations]['.$o.'][type]', $type_options, (!isset($_POST['files'][$f]['operations'][$o]['type']) || $_POST['files'][$f]['operations'][$o]['type'] == '') ? 'multiline' : true) ?>
 													</label>
 												</div>
 
 												<div class="col-md-3">
 													<label class="form-group">
-														<div class="form-label"><?php echo t('title_on_error', 'On Error'); ?></div>
-														<?php echo f::form_select('files['.$f.'][operations]['.$o.'][onerror]', $on_error_options, true); ?>
+														<div class="form-label"><?= t('title_on_error', 'On Error') ?></div>
+														<?= f::form_select('files['.$f.'][operations]['.$o.'][onerror]', $on_error_options, true) ?>
 													</label>
 												</div>
 											</div>
 
 											<label class="form-group">
-												<h4><?php echo t('title_find', 'Find'); ?></h4>
+												<h4><?= t('title_find', 'Find') ?></h4>
 												<?php if (isset($_POST['files'][$f]['operations'][$o]['type']) && in_array($_POST['files'][$f]['operations'][$o]['type'], ['inline', 'regex'])) { ?>
-												<?php echo f::form_input_text('files['.$f.'][operations]['.$o.'][find][content]', true, ['class' => 'form-code', 'required' => true]); ?>
+												<?= f::form_input_text('files['.$f.'][operations]['.$o.'][find][content]', true, ['class' => 'form-code', 'required' => true]) ?>
 												<?php } else { ?>
-												<?php echo f::form_input_code('files['.$f.'][operations]['.$o.'][find][content]', true, ['required' => true]); ?>
+												<?= f::form_input_code('files['.$f.'][operations]['.$o.'][find][content]', true, ['required' => true]) ?>
 												<?php }?>
 											</label>
 
 											<div class="grid" style="font-size: .8em;">
 												<div class="col-md-2">
 													<label class="form-group">
-														<div class="form-label"><?php echo t('title_index', 'Index'); ?></div>
-														<?php echo f::form_input_text('files['.$f.'][operations]['.$o.'][find][index]', true, ['placeholder' => '1,3,..']); ?>
+														<div class="form-label"><?= t('title_index', 'Index') ?></div>
+														<?= f::form_input_text('files['.$f.'][operations]['.$o.'][find][index]', true, ['placeholder' => '1,3,..']) ?>
 													</label>
 												</div>
 
 												<div class="col-md-2">
 													<label class="form-group">
-														<div class="form-label"><?php echo t('title_offset_before', 'Offset Before'); ?></div>
-														<?php echo f::form_input_text('files['.$f.'][operations]['.$o.'][find][offset-before]', true, ['placeholder' => '0']); ?>
+														<div class="form-label"><?= t('title_offset_before', 'Offset Before') ?></div>
+														<?= f::form_input_text('files['.$f.'][operations]['.$o.'][find][offset-before]', true, ['placeholder' => '0']) ?>
 													</label>
 												</div>
 
 												<div class="col-md-2">
 													<label class="form-group">
-														<div class="form-label"><?php echo t('title_offset_after', 'Offset After'); ?></div>
-														<?php echo f::form_input_text('files['.$f.'][operations]['.$o.'][find][offset-after]', true, ['placeholder' => '0']); ?>
+														<div class="form-label"><?= t('title_offset_after', 'Offset After') ?></div>
+														<?= f::form_input_text('files['.$f.'][operations]['.$o.'][find][offset-after]', true, ['placeholder' => '0']) ?>
 													</label>
 												</div>
 											</div>
 
 											<label class="form-group">
-												<h4><?php echo t('title_insert', 'Insert'); ?></h4>
+												<h4><?= t('title_insert', 'Insert') ?></h4>
 												<?php if (isset($_POST['files'][$f]['operations'][$o]['type']) && in_array($_POST['files'][$f]['operations'][$o]['type'], ['inline', 'regex'])) { ?>
-												<?php echo f::form_input_text('files['.$f.'][operations]['.$o.'][insert][content]', true, ['class' => 'form-code']); ?>
+												<?= f::form_input_text('files['.$f.'][operations]['.$o.'][insert][content]', true, ['class' => 'form-code']) ?>
 												<?php } else { ?>
-												<?php echo f::form_input_code('files['.$f.'][operations]['.$o.'][insert][content]', true); ?>
+												<?= f::form_input_code('files['.$f.'][operations]['.$o.'][insert][content]', true) ?>
 												<?php }?>
 											</label>
 
@@ -497,7 +497,7 @@ textarea.warning {
 
 									<div class="text-end">
 										<a class="btn btn-default add" href="#">
-											<?php echo f::draw_fonticon('add'); ?> <?php echo t('title_add_operation', 'Add Operation'); ?>
+											<?= f::draw_fonticon('add') ?> <?= t('title_add_operation', 'Add Operation') ?>
 										</a>
 									</div>
 
@@ -512,7 +512,7 @@ textarea.warning {
 
 				<div id="tab-settings" class="tab-contents">
 
-					<h2><?php echo t('title_settings', 'Settings'); ?></h2>
+					<h2><?= t('title_settings', 'Settings') ?></h2>
 
 					<div id="settings" style="max-width: 1200px;">
 						<?php if (!empty($_POST['settings'])) foreach (array_keys($_POST['settings']) as $key) { ?>
@@ -521,10 +521,10 @@ textarea.warning {
 							<div class="grid">
 								<div class="col-md-4">
 									<label class="form-group">
-										<div class="form-label"><?php echo t('title_key', 'Key'); ?></div>
+										<div class="form-label"><?= t('title_key', 'Key') ?></div>
 										<div class="input-group">
 											<span class="input-group-text" style="font-family: monospace;">{setting:</span>
-											<?php echo f::form_input_text('settings['.$key.'][key]', true, ['required' => true]); ?>
+											<?= f::form_input_text('settings['.$key.'][key]', true, ['required' => true]) ?>
 											<span class="input-group-text" style="font-family: monospace;">}</span>
 										</div>
 									</label>
@@ -532,37 +532,37 @@ textarea.warning {
 
 								<div class="col-md-6">
 									<label class="form-group">
-										<div class="form-label"><?php echo t('title_title', 'Title'); ?></div>
-										<?php echo f::form_input_text('settings['.$key.'][title]', true, ['required' => true]); ?>
+										<div class="form-label"><?= t('title_title', 'Title') ?></div>
+										<?= f::form_input_text('settings['.$key.'][title]', true, ['required' => true]) ?>
 									</label>
 								</div>
 
 								<div class="col-md-2 text-center" style="align-self: center;">
 									<div class="btn-group">
-										<?php echo f::form_button('settings['.$key.'][move_up]', f::draw_fonticon('move-up'), 'button', ['class' => 'btn btn-default btn-sm', 'title' => f::escape_attr(t('title_move_up', 'Move Up'))]); ?>
-										<?php echo f::form_button('settings['.$key.'][move_down]', f::draw_fonticon('move-down'), 'button', ['class' => 'btn btn-default btn-sm', 'title' => f::escape_attr(t('title_move_down', 'Move Down'))]); ?>
+										<?= f::form_button('settings['.$key.'][move_up]', f::draw_fonticon('move-up'), 'button', ['class' => 'btn btn-default btn-sm', 'title' => f::escape_attr(t('title_move_up', 'Move Up'))]) ?>
+										<?= f::form_button('settings['.$key.'][move_down]', f::draw_fonticon('move-down'), 'button', ['class' => 'btn btn-default btn-sm', 'title' => f::escape_attr(t('title_move_down', 'Move Down'))]) ?>
 									</div>
-									<?php echo f::form_button('settings['.$key.'][remove]', f::draw_fonticon('remove'), 'button', ['class' => 'btn btn-default btn-sm', 'title' => f::escape_attr(t('title_remove', 'Remove'))]); ?>
+									<?= f::form_button('settings['.$key.'][remove]', f::draw_fonticon('remove'), 'button', ['class' => 'btn btn-default btn-sm', 'title' => f::escape_attr(t('title_remove', 'Remove'))]) ?>
 								</div>
 							</div>
 
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_description', 'Description'); ?></div>
-								<?php echo f::form_input_text('settings['.$key.'][description]', true, ['required' => true]); ?>
+								<div class="form-label"><?= t('title_description', 'Description') ?></div>
+								<?= f::form_input_text('settings['.$key.'][description]', true, ['required' => true]) ?>
 							</label>
 
 							<div class="grid">
 								<div class="col-md-6">
 									<label class="form-group">
-										<div class="form-label"><?php echo t('title_function', 'Function'); ?></div>
-										<?php echo f::form_input_text('settings['.$key.'][function]', true, ['required' => true, 'placeholder' => 'text()']); ?>
+										<div class="form-label"><?= t('title_function', 'Function') ?></div>
+										<?= f::form_input_text('settings['.$key.'][function]', true, ['required' => true, 'placeholder' => 'text()']) ?>
 									</label>
 								</div>
 
 								<div class="col-md-6">
 									<label class="form-group">
-										<div class="form-label"><?php echo t('title_default_value', 'Default Value'); ?></div>
-										<?php echo f::form_input_text('settings['.$key.'][default_value]'); ?>
+										<div class="form-label"><?= t('title_default_value', 'Default Value') ?></div>
+										<?= f::form_input_text('settings['.$key.'][default_value]') ?>
 									</label>
 								</div>
 							</div>
@@ -571,7 +571,7 @@ textarea.warning {
 					</div>
 
 					<div class="form-group" style="margin-top: 2em;">
-						<?php echo f::form_button('add_setting', t('title_add_setting', 'Add Setting'), 'button', ['class' => 'btn btn-default'], 'add'); ?>
+						<?= f::form_button('add_setting', t('title_add_setting', 'Add Setting'), 'button', ['class' => 'btn btn-default'], 'add') ?>
 					</div>
 
 				</div>
@@ -580,72 +580,72 @@ textarea.warning {
 
 					<div class="grid">
 						<div class="col-md-6">
-							<h2><?php echo t('title_install', 'Install'); ?></h2>
+							<h2><?= t('title_install', 'Install') ?></h2>
 
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_script', 'Script'); ?></div>
-								<?php echo f::form_input_code('install', true, ['style' => 'height: 200px;']); ?>
+								<div class="form-label"><?= t('title_script', 'Script') ?></div>
+								<?= f::form_input_code('install', true, ['style' => 'height: 200px;']) ?>
 							</label>
 						</div>
 
 						<div class="col-md-6">
-							<h2><?php echo t('title_uninstall', 'Uninstall'); ?></h2>
+							<h2><?= t('title_uninstall', 'Uninstall') ?></h2>
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_script', 'Script'); ?></div>
-								<?php echo f::form_input_code('uninstall', true, ['style' => 'height: 200px;']); ?>
+								<div class="form-label"><?= t('title_script', 'Script') ?></div>
+								<?= f::form_input_code('uninstall', true, ['style' => 'height: 200px;']) ?>
 							</label>
 						</div>
 					</div>
 
-					<h2><?php echo t('title_upgrade_patches', 'Upgrade Patches'); ?></h2>
+					<h2><?= t('title_upgrade_patches', 'Upgrade Patches') ?></h2>
 
 					<div class="upgrades">
 						<?php if (!empty($_POST['upgrades'])) foreach (array_keys($_POST['upgrades']) as $key) { ?>
 						<fieldset class="upgrade">
 							<label class="form-group" style="max-width: 250px;">
-								<div class="form-label"><?php echo t('title_version', 'Version'); ?></div>
-								<?php echo f::form_input_text('upgrades['.$key.'][version]', true); ?>
+								<div class="form-label"><?= t('title_version', 'Version') ?></div>
+								<?= f::form_input_text('upgrades['.$key.'][version]', true) ?>
 							</label>
 
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_script', 'Script'); ?></div>
-								<?php echo f::form_input_code('upgrades['.$key.'][script]', true, ['style' => 'height: 200px;']); ?>
+								<div class="form-label"><?= t('title_script', 'Script') ?></div>
+								<?= f::form_input_code('upgrades['.$key.'][script]', true, ['style' => 'height: 200px;']) ?>
 							</label>
 						</fieldset>
 						<?php } ?>
 					</div>
 
 					<div class="form-group" style="margin-top: 2em;">
-						<?php echo f::form_button('add_patch', t('title_add_patch', 'Add Patch'), 'button', ['class' => 'btn btn-default'], 'add'); ?>
+						<?= f::form_button('add_patch', t('title_add_patch', 'Add Patch'), 'button', ['class' => 'btn btn-default'], 'add') ?>
 					</div>
 
 				</div>
 			</div>
 
 			<div class="card-action">
-			<?php echo f::form_button_predefined('quicksave'); ?>
+			<?= f::form_button_predefined('quicksave') ?>
 				<?php if (!empty($vmod->data['id'])) echo f::form_button_predefined('delete'); ?>
-				<?php echo f::form_button_predefined('cancel'); ?>
+				<?= f::form_button_predefined('cancel') ?>
 			</div>
 		</div>
-	<?php echo f::form_end(); ?>
+	<?= f::form_end() ?>
 </div>
 
 <div id="modal-uninstall" style="display: none;">
-	<?php echo f::form_begin('uninstall_form', 'post'); ?>
+	<?= f::form_begin('uninstall_form', 'post') ?>
 
-		<h2><?php echo t('title_uninstall_vmod', 'Uninstall vMod'); ?></h2>
+		<h2><?= t('title_uninstall_vmod', 'Uninstall vMod') ?></h2>
 
 		<p>
-			<?php echo f::form_checkbox('cleanup', ['1', t('text_remove_all_traces_of_the_vmod', 'Remove all traces of the vMod such as database tables, settings, etc.')], ''); ?>
+			<?= f::form_checkbox('cleanup', ['1', t('text_remove_all_traces_of_the_vmod', 'Remove all traces of the vMod such as database tables, settings, etc.')], '') ?>
 		</p>
 
 		<div>
-			<?php echo f::form_button('delete', t('title_uninstall', 'Uninstall'), 'submit', ['class' => 'btn btn-danger']); ?>
-			<?php echo f::form_button('cancel', t('title_cancel', 'Cancel'), 'button'); ?>
+			<?= f::form_button('delete', t('title_uninstall', 'Uninstall'), 'submit', ['class' => 'btn btn-danger']) ?>
+			<?= f::form_button('cancel', t('title_cancel', 'Cancel'), 'button') ?>
 		</div>
 
-	<?php echo f::form_end(); ?>
+	<?= f::form_end() ?>
 </div>
 
 <div id="new-tab-content-template" style="display: none;">
@@ -655,8 +655,8 @@ textarea.warning {
 			<div class="col-md-6">
 
 				<label class="form-group">
-					<div class="form-label"><?php echo t('title_file_pattern', 'File Pattern'); ?></div>
-					<?php echo f::form_input_text('files[new_tab_index][name]', true, ['placeholder' => 'path/to/file.php', 'list' => 'scripts']); ?>
+					<div class="form-label"><?= t('title_file_pattern', 'File Pattern') ?></div>
+					<?= f::form_input_text('files[new_tab_index][name]', true, ['placeholder' => 'path/to/file.php', 'list' => 'scripts']) ?>
 				</label>
 
 				<div class="sources"></div>
@@ -666,7 +666,7 @@ textarea.warning {
 				<div class="operations"></div>
 				<div>
 					<a class="btn btn-default add" href="#">
-						<?php echo f::draw_fonticon('add'); ?> <?php echo t('title_add_operation', 'Add Operation'); ?>
+						<?= f::draw_fonticon('add') ?> <?= t('title_add_operation', 'Add Operation') ?>
 					</a>
 				</div>
 			</div>
@@ -680,68 +680,68 @@ textarea.warning {
 
 		<div class="float-end">
 			<div class="btn-group">
-				<a class="btn btn-default btn-sm move-up" href="#"><?php echo f::draw_fonticon('move-up'); ?></a>
-				<a class="btn btn-default btn-sm move-down" href="#"><?php echo f::draw_fonticon('move-down'); ?></a>
+				<a class="btn btn-default btn-sm move-up" href="#"><?= f::draw_fonticon('move-up') ?></a>
+				<a class="btn btn-default btn-sm move-down" href="#"><?= f::draw_fonticon('move-down') ?></a>
 			</div>
-			<a class="btn btn-default btn-sm remove" href="#"><?php echo f::draw_fonticon('remove'); ?></a>
+			<a class="btn btn-default btn-sm remove" href="#"><?= f::draw_fonticon('remove') ?></a>
 		</div>
 
-		<h3><?php echo t('title_operation', 'Operation'); ?> #<span class="number"></span></h3>
+		<h3><?= t('title_operation', 'Operation') ?> #<span class="number"></span></h3>
 
 		<div class="grid">
 			<div class="col-md-3">
 				<label class="form-group">
-					<div class="form-label"><?php echo t('title_method', 'Method'); ?></div>
-					<?php echo f::form_select('files[current_tab_index][operations][new_operation_index][method]', $method_options, 'after'); ?>
+					<div class="form-label"><?= t('title_method', 'Method') ?></div>
+					<?= f::form_select('files[current_tab_index][operations][new_operation_index][method]', $method_options, 'after') ?>
 				</label>
 			</div>
 
 			<div class="col-md-6">
 				<label class="form-group">
-					<div class="form-label"><?php echo t('title_match_type', 'Match Type'); ?></div>
-					<?php echo f::form_toggle('files[current_tab_index][operations][new_operation_index][type]', $type_options, 'multiline'); ?>
+					<div class="form-label"><?= t('title_match_type', 'Match Type') ?></div>
+					<?= f::form_toggle('files[current_tab_index][operations][new_operation_index][type]', $type_options, 'multiline') ?>
 				</label>
 			</div>
 
 			<div class="col-md-3">
 				<label class="form-group">
-					<div class="form-label"><?php echo t('title_on_error', 'On Error'); ?></div>
-					<?php echo f::form_select('files[current_tab_index][operations][new_operation_index][onerror]', $on_error_options, ''); ?>
+					<div class="form-label"><?= t('title_on_error', 'On Error') ?></div>
+					<?= f::form_select('files[current_tab_index][operations][new_operation_index][onerror]', $on_error_options, '') ?>
 				</label>
 			</div>
 		</div>
 
 		<label class="form-group">
-			<h4><?php echo t('title_find', 'Find'); ?></h4>
-			<?php echo f::form_input_code('files[current_tab_index][operations][new_operation_index][find][content]', '', ['class' => 'form-code', 'required' => true]); ?>
+			<h4><?= t('title_find', 'Find') ?></h4>
+			<?= f::form_input_code('files[current_tab_index][operations][new_operation_index][find][content]', '', ['class' => 'form-code', 'required' => true]) ?>
 		</label>
 
 		<div class="grid" style="font-size: .8em;">
 			<div class="col-md-2">
 				<label class="form-group">
-					<div class="form-label"><?php echo t('title_index', 'Index'); ?></div>
-					<?php echo f::form_input_text('files[current_tab_index][operations][new_operation_index][find][index]', '', ['placeholder' => '1,3,..']); ?>
+					<div class="form-label"><?= t('title_index', 'Index') ?></div>
+					<?= f::form_input_text('files[current_tab_index][operations][new_operation_index][find][index]', '', ['placeholder' => '1,3,..']) ?>
 				</label>
 			</div>
 
 			<div class="col-md-2">
 				<label class="form-group">
-					<div class="form-label"><?php echo t('title_offset_before', 'Offset Before'); ?></div>
-					<?php echo f::form_input_text('files[current_tab_index][operations][new_operation_index][find][offset-before]', '', ['placeholder' => '0']); ?>
+					<div class="form-label"><?= t('title_offset_before', 'Offset Before') ?></div>
+					<?= f::form_input_text('files[current_tab_index][operations][new_operation_index][find][offset-before]', '', ['placeholder' => '0']) ?>
 				</label>
 			</div>
 
 			<div class="col-md-2">
 				<label class="form-group">
-					<div class="form-label"><?php echo t('title_offset_after', 'Offset After'); ?></div>
-					<?php echo f::form_input_text('files[current_tab_index][operations][new_operation_index][find][offset-after]', '', ['placeholder' => '0']); ?>
+					<div class="form-label"><?= t('title_offset_after', 'Offset After') ?></div>
+					<?= f::form_input_text('files[current_tab_index][operations][new_operation_index][find][offset-after]', '', ['placeholder' => '0']) ?>
 				</label>
 			</div>
 		</div>
 
 		<label class="form-group">
-			<h4><?php echo t('title_insert', 'Insert'); ?></h4>
-			<?php echo f::form_input_code('files[current_tab_index][operations][new_operation_index][insert][content]', '', ['class' => 'form-code']); ?>
+			<h4><?= t('title_insert', 'Insert') ?></h4>
+			<?= f::form_input_code('files[current_tab_index][operations][new_operation_index][insert][content]', '', ['class' => 'form-code']) ?>
 		</label>
 
 	</fieldset>
@@ -749,7 +749,7 @@ textarea.warning {
 
 <datalist id="scripts">
 	<?php foreach ($files_datalist as $option) { ?>
-	<option><?php echo $option; ?></option>
+	<option><?= $option ?></option>
 	<?php } ?>
 </datalist>
 
@@ -776,7 +776,7 @@ textarea.warning {
 
 		let $tab = $([
 			'<a class="nav-link" data-toggle="tab" href="#tab-__index__">',
-			'  <span class="file">__index__</span> <span class="btn btn-default btn-sm remove" title="<?php echo t('title_remove', 'Remove')?>"><?php echo f::draw_fonticon('remove'); ?></span>',
+			'  <span class="file">__index__</span> <span class="btn btn-default btn-sm remove" title="<?= t('title_remove', 'Remove') ?>"><?= f::draw_fonticon('remove') ?></span>',
 			'</a>'
 		].join('')
 			.replace(/__index__/g, 'new_'+ __index__)
@@ -796,7 +796,7 @@ textarea.warning {
 	$('.tabs').on('click', '.remove', function(e) {
 		e.preventDefault();
 
-		if (!confirm("<?php echo t('text_are_you_sure', 'Are you sure?'); ?>")) return false;
+		if (!confirm("<?= t('text_are_you_sure', 'Are you sure?') ?>")) return false;
 
 		let $tab = $(this).closest('.nav-link'),
 			$tab_pane = $tab.attr('href');
@@ -874,7 +874,7 @@ textarea.warning {
 		$('a[href="#tab-'+ tab_index +'"] .file').text(tab_name);
 
 		let file_pattern = $(this).closest('.grid').find(':input[name^="files"][name$="[name]"]').val(),
-			url = '<?php echo document::ilink(__APP__.'/sources', ['pattern' => 'thepattern']); ?>'.replace(/thepattern/, file_pattern);
+			url = '<?= document::ilink(__APP__.'/sources', ['pattern' => 'thepattern']) ?>'.replace(/thepattern/, file_pattern);
 
 		$.get(url, function(result) {
 			$('.sources', $tab_pane).html('');
@@ -938,7 +938,7 @@ textarea.warning {
 
 		let $operations = $(this).closest('.operations');
 
-		if (!confirm("<?php echo t('text_are_you_sure', 'Are you sure?'); ?>")) return;
+		if (!confirm("<?= t('text_are_you_sure', 'Are you sure?') ?>")) return;
 
 		$(this).closest('.operation').remove();
 		reindex_operations($operations);
@@ -1067,10 +1067,10 @@ textarea.warning {
 			'	<div class="grid">',
 			'		<div class="col-md-4">',
 			'			<label class="form-group">',
-			'				<div class="form-label"><?php echo t('title_key', 'Key'); ?></div>',
+			'				<div class="form-label"><?= t('title_key', 'Key') ?></div>',
 			'				<div class="input-group">',
 			'					<span class="input-group-text" style="font-family: monospace;">{alias:</span>',
-			'					<?php echo f::escape_js(f::form_input_text('aliases[__index__][key]', '', ['required' => true])); ?>',
+			'					<?= f::escape_js(f::form_input_text('aliases[__index__][key]', '', ['required' => true])) ?>',
 			'					<span class="input-group-text" style="font-family: monospace;">}</span>',
 			'				</div>',
 			'			</label>',
@@ -1078,17 +1078,17 @@ textarea.warning {
 			'',
 			'		<div class="col-md-6">',
 			'			<label class="form-group">',
-			'				<div class="form-label"><?php echo f::escape_js(t('title_value', 'Value')); ?></div>',
-			'				<?php echo f::escape_js(f::form_input_text('aliases[__index__][value]', '', ['required' => true])); ?>',
+			'				<div class="form-label"><?= f::escape_js(t('title_value', 'Value')) ?></div>',
+			'				<?= f::escape_js(f::form_input_text('aliases[__index__][value]', '', ['required' => true])) ?>',
 			'			</label>',
 			'		</div>',
 			'',
 			'		<div class="col-md-2" style="align-self: center;">',
 			'			<div class="btn-group">',
-			'				<?php echo f::escape_js(f::form_button('aliases[__index__][move_up]', f::draw_fonticon('move-up'), 'button', ['class' => 'btn btn-default btn-sm', 'title' => f::escape_attr(t('title_move_up', 'Move Up'))])); ?>',
-			'				<?php echo f::escape_js(f::form_button('aliases[__index__][move_down]', f::draw_fonticon('move-down'), 'button', ['class' => 'btn btn-default btn-sm', 'title' => f::escape_attr(t('title_move_down', 'Move Down'))])); ?>',
+			'				<?= f::escape_js(f::form_button('aliases[__index__][move_up]', f::draw_fonticon('move-up'), 'button', ['class' => 'btn btn-default btn-sm', 'title' => f::escape_attr(t('title_move_up', 'Move Up'))])) ?>',
+			'				<?= f::escape_js(f::form_button('aliases[__index__][move_down]', f::draw_fonticon('move-down'), 'button', ['class' => 'btn btn-default btn-sm', 'title' => f::escape_attr(t('title_move_down', 'Move Down'))])) ?>',
 			'			</div>',
-			'			<?php echo f::escape_js(f::form_button('aliases[__index__][remove]', f::draw_fonticon('remove'), 'button', ['class' => 'btn btn-default btn-sm', 'title' => f::escape_attr(t('title_remove', 'Remove'))])); ?>',
+			'			<?= f::escape_js(f::form_button('aliases[__index__][remove]', f::draw_fonticon('remove'), 'button', ['class' => 'btn btn-default btn-sm', 'title' => f::escape_attr(t('title_remove', 'Remove'))])) ?>',
 			'		</div>',
 			'	</div>',
 			'</fieldset>'
@@ -1114,7 +1114,7 @@ textarea.warning {
 	$('#aliases').on('click', 'button[name$="[remove]"]', function(e) {
 		e.preventDefault();
 
-		if (!confirm("<?php echo t('text_are_you_sure', 'Are you sure?'); ?>")) return;
+		if (!confirm("<?= t('text_are_you_sure', 'Are you sure?') ?>")) return;
 		$(this).closest('.alias').remove();
 	});
 
@@ -1130,10 +1130,10 @@ textarea.warning {
 			'	<div class="grid">',
 			'		<div class="col-md-4">',
 			'			<label class="form-group">',
-			'				<div class="form-label"><?php echo t('title_key', 'Key'); ?></div>',
+			'				<div class="form-label"><?= t('title_key', 'Key') ?></div>',
 			'				<div class="input-group">',
 			'					<span class="input-group-text" style="font-family: monospace;">{setting:</span>',
-			'					<?php echo f::escape_js(f::form_input_text('settings[__index__][key]', '', ['required' => true])); ?>',
+			'					<?= f::escape_js(f::form_input_text('settings[__index__][key]', '', ['required' => true])) ?>',
 			'					<span class="input-group-text" style="font-family: monospace;">}</span>',
 			'				</div>',
 			'			</label>',
@@ -1141,37 +1141,37 @@ textarea.warning {
 			'',
 			'		<div class="col-md-6">',
 			'			<label class="form-group">',
-			'				<div class="form-label"><?php echo f::escape_js(t('title_title', 'Title')); ?></div>',
-			'				<?php echo f::escape_js(f::form_input_text('settings[__index__][title]', '', ['required' => true])); ?>',
+			'				<div class="form-label"><?= f::escape_js(t('title_title', 'Title')) ?></div>',
+			'				<?= f::escape_js(f::form_input_text('settings[__index__][title]', '', ['required' => true])) ?>',
 			'			</label>',
 			'		</div>',
 			'',
 			'		<div class="col-md-2 text-center" style="align-self: center;">',
 			'			<div class="btn-group">',
-			'				<?php echo f::escape_js(f::form_button('settings[__index__][move_up]', f::draw_fonticon('move-up'), 'button', ['class' => 'btn btn-default btn-sm', 'title' => f::escape_attr(t('title_move_up', 'Move Up'))])); ?>',
-			'				<?php echo f::escape_js(f::form_button('settings[__index__][move_down]', f::draw_fonticon('move-down'), 'button', ['class' => 'btn btn-default btn-sm', 'title' => f::escape_attr(t('title_move_down', 'Move Down'))])); ?>',
+			'				<?= f::escape_js(f::form_button('settings[__index__][move_up]', f::draw_fonticon('move-up'), 'button', ['class' => 'btn btn-default btn-sm', 'title' => f::escape_attr(t('title_move_up', 'Move Up'))])) ?>',
+			'				<?= f::escape_js(f::form_button('settings[__index__][move_down]', f::draw_fonticon('move-down'), 'button', ['class' => 'btn btn-default btn-sm', 'title' => f::escape_attr(t('title_move_down', 'Move Down'))])) ?>',
 			'			</div>',
-			'			<?php echo f::escape_js(f::form_button('settings[__index__][remove]', f::draw_fonticon('remove'), 'button', ['class' => 'btn btn-default btn-sm', 'title' => f::escape_attr(t('title_remove', 'Remove'))])); ?>',
+			'			<?= f::escape_js(f::form_button('settings[__index__][remove]', f::draw_fonticon('remove'), 'button', ['class' => 'btn btn-default btn-sm', 'title' => f::escape_attr(t('title_remove', 'Remove'))])) ?>',
 			'		</div>',
 			'	</div>',
 			'',
 			'	<label class="form-group">',
-			'		<div class="form-label"><?php echo f::escape_js(t('title_description', 'Description')); ?></div>',
-			'		<?php echo f::escape_js(f::form_input_text('settings[__index__][description]', '', ['required' => true])); ?>',
+			'		<div class="form-label"><?= f::escape_js(t('title_description', 'Description')) ?></div>',
+			'		<?= f::escape_js(f::form_input_text('settings[__index__][description]', '', ['required' => true])) ?>',
 			'	</label>',
 			'',
 			'	<div class="grid">',
 			'		<div class="col-md-6">',
 			'			<label class="form-group">',
-			'				<div class="form-label"><?php echo f::escape_js(t('title_function', 'Function')); ?></div>',
-			'				<?php echo f::escape_js(f::form_input_text('settings[__index__][function]', '', ['required' => true])); ?>',
+			'				<div class="form-label"><?= f::escape_js(t('title_function', 'Function')) ?></div>',
+			'				<?= f::escape_js(f::form_input_text('settings[__index__][function]', '', ['required' => true])) ?>',
 			'			</label>',
 			'		</div>',
 			'',
 			'		<div class="col-md-6">',
 			'			<label class="form-group">',
-			'				<div class="form-label"><?php echo f::escape_js(t('title_default_value', 'Default Value')); ?></div>',
-			'				<?php echo f::escape_js(f::form_input_text('settings[__index__][default_value]', '')); ?>',
+			'				<div class="form-label"><?= f::escape_js(t('title_default_value', 'Default Value')) ?></div>',
+			'				<?= f::escape_js(f::form_input_text('settings[__index__][default_value]', '')) ?>',
 			'			</label>',
 			'		</div>',
 			'	</div>',
@@ -1199,7 +1199,7 @@ textarea.warning {
 	$('#settings').on('click', 'button[name$="[remove]"]', function(e) {
 		e.preventDefault();
 
-		if (!confirm("<?php echo t('text_are_you_sure', 'Are you sure?'); ?>")) return;
+		if (!confirm("<?= t('text_are_you_sure', 'Are you sure?') ?>")) return;
 		$(this).closest('.setting').remove();
 	});
 
@@ -1212,13 +1212,13 @@ textarea.warning {
 		let $output = ([
 			'<fieldset class="upgrade">',
 			'	<label class="form-group" style="max-width: 250px;">',
-			'		<div class="form-label"><?php echo f::escape_js(t('title_version', 'Version')); ?></div>',
-			'		<?php echo f::escape_js(f::form_input_text('upgrades[__index__][version]', '')); ?>',
+			'		<div class="form-label"><?= f::escape_js(t('title_version', 'Version')) ?></div>',
+			'		<?= f::escape_js(f::form_input_text('upgrades[__index__][version]', '')) ?>',
 			'	</label>',
 			'',
 			'	<label class="form-group">',
-			'		<div class="form-label"><?php echo f::escape_js(t('title_script', 'Script')); ?></div>',
-			'		<?php echo f::escape_js(f::form_input_code('upgrades[__index__][script]', '', ['style' => 'height: 200px;'])); ?>',
+			'		<div class="form-label"><?= f::escape_js(t('title_script', 'Script')) ?></div>',
+			'		<?= f::escape_js(f::form_input_code('upgrades[__index__][script]', '', ['style' => 'height: 200px;'])) ?>',
 			'	</label>',
 			'</fieldset>'
 		].join('\n')

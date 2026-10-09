@@ -2,6 +2,22 @@
 
 	administrator::require_login();
 
+	// The settings table has no datatype column, the type is carried by the
+	// function name such as toggle() or number()
+	$setting_datatype = function($function) {
+
+		if (!preg_match('#^(\w+)#', (string)$function, $matches)) {
+			return 'string';
+		}
+
+		return match($matches[1]) {
+			'toggle' => 'boolean',
+			'number' => 'number',
+			'float', 'percent' => 'decimal',
+			default => str_starts_with($matches[1], 'regional_') ? 'array' : 'string',
+		};
+	};
+
 	document::$title[] = t('title_settings', 'Settings');
 
 	breadcrumbs::add(t('title_settings', 'Settings'), document::ilink());
@@ -30,7 +46,7 @@
 					throw new Exception(t('error_cannot_set_empty_value_for_setting', 'You cannot set an empty value for this setting'));
 				}
 
-				switch ($setting['datatype']) {
+				switch ($setting_datatype($setting['function'])) {
 
 					case 'boolean':
 					case 'bool':
@@ -119,13 +135,13 @@
 		from ". DB_PREFIX ."settings
 		where `group_key` = '". database::input($settings_group['key']) ."'
 		order by priority, `key` asc;"
-	)->fetch_page(function(&$setting){
+	)->fetch_page(function(&$setting) use ($setting_datatype){
 
 		// Decode JSON translations for title and description
-		$setting['title'] = !empty($setting['title']) ? json_decode($setting['title'], true) : [];
+		$setting['title'] = is_array($setting['title']) ? $setting['title'] : (!empty($setting['title']) ? json_decode($setting['title'], true) : []);
 		$setting['title'] = $setting['title'][language::$selected['code']] ?? $setting['title']['en'] ?? '';
 
-		$setting['description'] = !empty($setting['description']) ? json_decode($setting['description'], true) : [];
+		$setting['description'] = is_array($setting['description']) ? $setting['description'] : (!empty($setting['description']) ? json_decode($setting['description'], true) : []);
 		$setting['description'] = $setting['description'][language::$selected['code']] ?? $setting['description']['en'] ?? '';
 
 		// Set Display Value
@@ -135,7 +151,7 @@
 				$setting['display_value'] = '****************';
 				break;
 
-			case (preg_match('#^order_status$#', $setting['function'])):
+			case (preg_match('#^order_status\b#', $setting['function'])):
 				$setting['display_value'] = $setting['value'] ? reference::order_status($setting['value'])->name : '';
 				break;
 
@@ -144,11 +160,11 @@
 				break;
 
 			case (preg_match('#^regional_#', $setting['function'])):
-				$setting['value'] = !empty($setting['value']) ? json_decode($setting['value'], true) : [];
+				$setting['value'] = is_array($setting['value']) ? $setting['value'] : (!empty($setting['value']) ? json_decode($setting['value'], true) : []);
 				$setting['display_value'] = isset($setting['value'][language::$selected['code']]) ? $setting['value'][language::$selected['code']] : '';
 				break;
 
-			case (preg_match('#^toggle$#', $setting['function'])):
+			case (preg_match('#^toggle\b#', $setting['function'])):
 				if (in_array($setting['value'], ['1', 'active', 'enabled', 'on', 'true', 'yes'])) {
 					$setting['display_value'] = t('title_true', 'True');
 				} else if (in_array(($setting['value']), ['', '0', 'inactive', 'disabled', 'off', 'false', 'no'])) {
@@ -158,7 +174,7 @@
 
 			default:
 
-				switch ($setting['datatype']) {
+				switch ($setting_datatype($setting['function'])) {
 
 					case 'array':
 					case 'json':
@@ -174,7 +190,7 @@
 		}
 
 		// Set HTTP POST Value
-		switch ($setting['datatype']) {
+		switch ($setting_datatype($setting['function'])) {
 
 			case 'array':
 				$_POST['settings'][$setting['key']] = (array)$setting['value'];
@@ -196,7 +212,7 @@
 				break;
 
 			case 'json':
-				$_POST['settings'][$setting['key']] = $setting['value'] ? json_decode($setting['value'], true) : [];
+				$_POST['settings'][$setting['key']] = is_array($setting['value']) ? $setting['value'] : ($setting['value'] ? json_decode($setting['value'], true) : []);
 				break;
 
 			case 'number':
@@ -218,17 +234,17 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo t('title_settings', 'Settings'); ?> &ndash; <?php echo f::escape_html($settings_group['name']); ?>
+			<?= $app_icon ?> <?= t('title_settings', 'Settings') ?> &ndash; <?= f::escape_html($settings_group['name']) ?>
 		</div>
 	</div>
 
-	<?php echo f::form_begin('settings_form', 'post'); ?>
+	<?= f::form_begin('settings_form', 'post') ?>
 
 		<table class="table data-table">
 			<thead>
 				<tr>
-					<th style="width: 35%;"><?php echo t('title_key', 'Key'); ?></th>
-					<th><?php echo t('title_value', 'Value'); ?></th>
+					<th style="width: 35%;"><?= t('title_key', 'Key') ?></th>
+					<th><?= t('title_value', 'Value') ?></th>
 					<th></th>
 				</tr>
 			</thead>
@@ -238,26 +254,26 @@
 				<?php if (isset($_GET['action']) && $_GET['action'] == 'edit' && $_GET['key'] == $setting['key']) { ?>
 				<tr>
 					<td>
-						<strong><?php echo $setting['title']; ?></strong><br>
-						<?php echo $setting['description']; ?>
+						<strong><?= $setting['title'] ?></strong><br>
+						<?= $setting['description'] ?>
 					</td>
-					<td><?php echo f::form_function('settings['.$setting['key'].']', $setting['function'], true); ?></td>
+					<td><?= f::form_function('settings['.$setting['key'].']', $setting['function'], true) ?></td>
 					<td class="text-end">
-						<?php echo f::form_button_predefined('save'); ?>
-						<?php echo f::form_button_predefined('cancel'); ?>
+						<?= f::form_button_predefined('save') ?>
+						<?= f::form_button_predefined('cancel') ?>
 					</td>
 				</tr>
 				<?php } else { ?>
 				<tr>
-					<td class="text-start"><a class="link" href="<?php echo document::href_ilink(null, ['action' => 'edit', 'key' => $setting['key']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo $setting['title']; ?></a></td>
+					<td class="text-start"><a class="link" href="<?= document::href_ilink(null, ['action' => 'edit', 'key' => $setting['key']]) ?>" title="<?= t('title_edit', 'Edit') ?>"><?= $setting['title'] ?></a></td>
 					<td style="white-space: normal;">
-						<div style="max-height: 200px; overflow-y: auto;" title="<?php echo f::escape_html($setting['description']); ?>">
-							<?php echo nl2br($setting['display_value'], false); ?>
+						<div style="max-height: 200px; overflow-y: auto;" title="<?= f::escape_html($setting['description']) ?>">
+							<?= nl2br($setting['display_value'], false) ?>
 						</div>
 					</td>
 					<td class="text-end">
-						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(null, ['action' => 'edit', 'key' => $setting['key']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>">
-							<?php echo f::draw_fonticon('edit'); ?>
+						<a class="btn btn-default btn-sm" href="<?= document::href_ilink(null, ['action' => 'edit', 'key' => $setting['key']]) ?>" title="<?= t('title_edit', 'Edit') ?>">
+							<?= f::draw_fonticon('edit') ?>
 						</a>
 					</td>
 				</tr>
@@ -266,11 +282,11 @@
 			</tbody>
 		</table>
 
-	<?php echo f::form_end(); ?>
+	<?= f::form_end() ?>
 
 	<?php if ($num_pages > 1) { ?>
 	<div class="card-footer">
-		<?php echo f::draw_pagination($num_pages); ?>
+		<?= f::draw_pagination($num_pages) ?>
 	</div>
 	<?php } ?>
 </div>

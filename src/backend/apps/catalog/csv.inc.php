@@ -1427,7 +1427,7 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-		<?php echo $app_icon; ?> <?php echo t('title_csv_import_export', 'CSV Import/Export'); ?>
+		<?= $app_icon ?> <?= t('title_csv_import_export', 'CSV Import/Export') ?>
 	</div>
 	</div>
 
@@ -1436,43 +1436,43 @@
 		<div class="grid" style="max-width: 1200px;">
 
 			<div class="col-lg-6">
-				<?php echo f::form_begin('import_form', 'post', '', true); ?>
+				<?= f::form_begin('import_form', 'post', '', true) ?>
 
 					<fieldset>
-						<legend><?php echo t('title_import', 'Import'); ?></legend>
+						<legend><?= t('title_import', 'Import') ?></legend>
 
 						<label class="form-group">
-							<div class="form-label"><?php echo t('title_type', 'Type'); ?></div>
+							<div class="form-label"><?= t('title_type', 'Type') ?></div>
 							<div class="form-input">
-								<?php echo f::form_radio_button('type', ['attributes', t('title_attributes', 'Attributes')], true); ?>
-								<?php echo f::form_radio_button('type', ['brands', t('title_brands', 'Brands')], true); ?>
-								<?php echo f::form_radio_button('type', ['campaigns', t('title_campaigns', 'Campaigns')], true); ?>
-								<?php echo f::form_radio_button('type', ['categories', t('title_categories', 'Categories')], true); ?>
-								<?php echo f::form_radio_button('type', ['products', t('title_products', 'Products')], true); ?>
-								<?php echo f::form_radio_button('type', ['product_prices', t('title_product_prices', 'Product Prices')], true); ?>
-								<?php echo f::form_radio_button('type', ['product_stock_options', t('title_product_stock_options', 'Product Stock Options')], true); ?>
-								<?php echo f::form_radio_button('type', ['stock_items', t('title_stock_items', 'Stock Items')], true); ?>
-								<?php echo f::form_radio_button('type', ['suppliers', t('title_suppliers', 'Suppliers')], true); ?>
+								<?= f::form_radio_button('type', ['attributes', t('title_attributes', 'Attributes')], true) ?>
+								<?= f::form_radio_button('type', ['brands', t('title_brands', 'Brands')], true) ?>
+								<?= f::form_radio_button('type', ['campaigns', t('title_campaigns', 'Campaigns')], true) ?>
+								<?= f::form_radio_button('type', ['categories', t('title_categories', 'Categories')], true) ?>
+								<?= f::form_radio_button('type', ['products', t('title_products', 'Products')], true) ?>
+								<?= f::form_radio_button('type', ['product_prices', t('title_product_prices', 'Product Prices')], true) ?>
+								<?= f::form_radio_button('type', ['product_stock_options', t('title_product_stock_options', 'Product Stock Options')], true) ?>
+								<?= f::form_radio_button('type', ['stock_items', t('title_stock_items', 'Stock Items')], true) ?>
+								<?= f::form_radio_button('type', ['suppliers', t('title_suppliers', 'Suppliers')], true) ?>
 							</div>
 						</label>
 
 						<label class="form-group">
-							<div class="form-label"><?php echo t('title_csv_file', 'CSV File'); ?></div>
-							<?php echo f::form_input_file('file', ['accept' => '.csv, .dsv, .tab, .tsv']); ?>
+							<div class="form-label"><?= t('title_csv_file', 'CSV File') ?></div>
+							<?= f::form_input_file('file', ['accept' => '.csv, .dsv, .tab, .tsv']) ?>
 						</label>
 
 						<div class="grid">
 							<div class="col-sm-6">
 								<label class="form-group">
-									<div class="form-label"><?php echo t('title_delimiter', 'Delimiter'); ?></div>
-									<?php echo f::form_select('delimiter', ['' => t('title_auto', 'Auto') .' ('. t('text_default', 'default') .')', ',' => ',',  ';' => ';', "\t" => 'TAB', '|' => '|'], true); ?>
+									<div class="form-label"><?= t('title_delimiter', 'Delimiter') ?></div>
+									<?= f::form_select('delimiter', ['' => t('title_auto', 'Auto') .' ('. t('text_default', 'default') .')', ',' => ',',  ';' => ';', "\t" => 'TAB', '|' => '|'], true) ?>
 								</label>
 							</div>
 
 							<div class="col-sm-6">
 								<label class="form-group">
-									<div class="form-label"><?php echo t('title_enclosure', 'Enclosure'); ?></div>
-									<?php echo f::form_select('enclosure', ['"' => '" ('. t('text_default', 'default') .')'], true); ?>
+									<div class="form-label"><?= t('title_enclosure', 'Enclosure') ?></div>
+									<?= f::form_select('enclosure', ['"' => '" ('. t('text_default', 'default') .')'], true) ?>
 								</label>
 							</div>
 						</div>
@@ -1480,64 +1480,64 @@
 						<div class="grid">
 							<div class="col-sm-6">
 								<label class="form-group">
-									<div class="form-label"><?php echo t('title_escape_character', 'Escape Character'); ?></div>
-									<?php echo f::form_select('escapechar', ['"' => '" ('. t('text_default', 'default') .')', '\\' => '\\'], true); ?>
+									<div class="form-label"><?= t('title_escape_character', 'Escape Character') ?></div>
+									<?= f::form_select('escapechar', ['"' => '" ('. t('text_default', 'default') .')', '\\' => '\\'], true) ?>
 								</label>
 							</div>
 
 							<div class="col-sm-6">
 								<label class="form-group">
-									<div class="form-label"><?php echo t('title_charset', 'Charset'); ?></div>
-									<?php echo f::form_select_encoding('charset', !empty($_POST['charset']) ? true : 'UTF-8'); ?>
+									<div class="form-label"><?= t('title_charset', 'Charset') ?></div>
+									<?= f::form_select_encoding('charset', !empty($_POST['charset']) ? true : 'UTF-8') ?>
 								</label>
 							</div>
 						</div>
 
 						<div class="form-group">
-							<?php echo f::form_checkbox('insert', ['1', t('text_insert_new_entries', 'Insert new entries')], true); ?>
-							<?php echo f::form_checkbox('reset', ['1', t('text_wipe_storage_clean_before_inserting_data', 'Wipe storage clean before inserting data')], true); ?>
-							<?php echo f::form_checkbox('overwrite', ['1', t('text_overwrite_existing_entries', 'Overwrite existing entries')], true); ?>
+							<?= f::form_checkbox('insert', ['1', t('text_insert_new_entries', 'Insert new entries')], true) ?>
+							<?= f::form_checkbox('reset', ['1', t('text_wipe_storage_clean_before_inserting_data', 'Wipe storage clean before inserting data')], true) ?>
+							<?= f::form_checkbox('overwrite', ['1', t('text_overwrite_existing_entries', 'Overwrite existing entries')], true) ?>
 						</div>
 
-						<?php echo f::form_button('import', t('title_import', 'Import'), 'submit'); ?>
+						<?= f::form_button('import', t('title_import', 'Import'), 'submit') ?>
 					</fieldset>
 
-				<?php echo f::form_end(); ?>
+				<?= f::form_end() ?>
 			</div>
 
 			<div class="col-lg-6">
-				<?php echo f::form_begin('export_form', 'post'); ?>
+				<?= f::form_begin('export_form', 'post') ?>
 
 					<fieldset>
-						<legend><?php echo t('title_export', 'Export'); ?></legend>
+						<legend><?= t('title_export', 'Export') ?></legend>
 
 						<label class="form-group">
-							<div class="form-label"><?php echo t('title_type', 'Type'); ?></div>
+							<div class="form-label"><?= t('title_type', 'Type') ?></div>
 							<div class="form-input">
-								<?php echo f::form_radio_button('type', ['attributes', t('title_attributes', 'Attributes')], true, ['data-dependencies' => 'language']); ?>
-								<?php echo f::form_radio_button('type', ['brands', t('title_brands', 'Brands')], true, ['data-dependencies' => 'language']); ?>
-								<?php echo f::form_radio_button('type', ['campaigns', t('title_campaigns', 'Campaigns')], true); ?>
-								<?php echo f::form_radio_button('type', ['categories', t('title_categories', 'Categories')], true, ['data-dependencies' => 'language']); ?>
-								<?php echo f::form_radio_button('type', ['products', t('title_products', 'Products')], true, ['data-dependencies' => 'language']); ?>
-								<?php echo f::form_radio_button('type', ['product_prices', t('title_product_prices', 'Product Prices')], true); ?>
-								<?php echo f::form_radio_button('type', ['product_stock_options', t('title_product_stock_options', 'Product Stock Options')], true); ?>
-								<?php echo f::form_radio_button('type', ['stock_items', t('title_stock_items', 'Stock Items')], true, ['data-dependencies' => 'language']); ?>
-								<?php echo f::form_radio_button('type', ['suppliers', t('title_suppliers', 'Suppliers')], true); ?>
+								<?= f::form_radio_button('type', ['attributes', t('title_attributes', 'Attributes')], true, ['data-dependencies' => 'language']) ?>
+								<?= f::form_radio_button('type', ['brands', t('title_brands', 'Brands')], true, ['data-dependencies' => 'language']) ?>
+								<?= f::form_radio_button('type', ['campaigns', t('title_campaigns', 'Campaigns')], true) ?>
+								<?= f::form_radio_button('type', ['categories', t('title_categories', 'Categories')], true, ['data-dependencies' => 'language']) ?>
+								<?= f::form_radio_button('type', ['products', t('title_products', 'Products')], true, ['data-dependencies' => 'language']) ?>
+								<?= f::form_radio_button('type', ['product_prices', t('title_product_prices', 'Product Prices')], true) ?>
+								<?= f::form_radio_button('type', ['product_stock_options', t('title_product_stock_options', 'Product Stock Options')], true) ?>
+								<?= f::form_radio_button('type', ['stock_items', t('title_stock_items', 'Stock Items')], true, ['data-dependencies' => 'language']) ?>
+								<?= f::form_radio_button('type', ['suppliers', t('title_suppliers', 'Suppliers')], true) ?>
 							</div>
 						</label>
 
 						<div class="grid">
 							<div class="col-sm-6">
 								<label class="form-group">
-									<div class="form-label"><?php echo t('title_language', 'Language'); ?></div>
-									<?php echo f::form_select_language('language_code', true, ['required' => true]); ?>
+									<div class="form-label"><?= t('title_language', 'Language') ?></div>
+									<?= f::form_select_language('language_code', true, ['required' => true]) ?>
 								</label>
 							</div>
 
 							<div class="col-sm-6">
 								<label class="form-group">
-									<div class="form-label"><?php echo t('title_currency', 'Currency'); ?></div>
-									<?php echo f::form_select_currency('currency_code', true, ['required' => true]); ?>
+									<div class="form-label"><?= t('title_currency', 'Currency') ?></div>
+									<?= f::form_select_currency('currency_code', true, ['required' => true]) ?>
 								</label>
 							</div>
 						</div>
@@ -1545,15 +1545,15 @@
 						<div class="grid">
 							<div class="col-sm-6">
 								<label class="form-group">
-									<div class="form-label"><?php echo t('title_delimiter', 'Delimiter'); ?></div>
-									<?php echo f::form_select('delimiter', [',' => ', ('. t('text_default', 'default') .')', ';' => ';', "\t" => 'TAB', '|' => '|'], true); ?>
+									<div class="form-label"><?= t('title_delimiter', 'Delimiter') ?></div>
+									<?= f::form_select('delimiter', [',' => ', ('. t('text_default', 'default') .')', ';' => ';', "\t" => 'TAB', '|' => '|'], true) ?>
 								</label>
 							</div>
 
 							<div class="col-sm-6">
 								<label class="form-group">
-									<div class="form-label"><?php echo t('title_enclosure', 'Enclosure'); ?></div>
-									<?php echo f::form_select('enclosure', ['"' => '" ('. t('text_default', 'default') .')'], true); ?>
+									<div class="form-label"><?= t('title_enclosure', 'Enclosure') ?></div>
+									<?= f::form_select('enclosure', ['"' => '" ('. t('text_default', 'default') .')'], true) ?>
 								</label>
 							</div>
 						</div>
@@ -1561,15 +1561,15 @@
 						<div class="grid">
 							<div class="col-sm-6">
 								<label class="form-group">
-									<div class="form-label"><?php echo t('title_escape_character', 'Escape Character'); ?></div>
-									<?php echo f::form_select('escapechar', ['"' => '" ('. t('text_default', 'default') .')', '\\' => '\\'], true); ?>
+									<div class="form-label"><?= t('title_escape_character', 'Escape Character') ?></div>
+									<?= f::form_select('escapechar', ['"' => '" ('. t('text_default', 'default') .')', '\\' => '\\'], true) ?>
 								</label>
 							</div>
 
 							<div class="col-sm-6">
 								<label class="form-group">
-									<div class="form-label"><?php echo t('title_charset', 'Charset'); ?></div>
-									<?php echo f::form_select_encoding('charset', !empty($_POST['charset']) ? true : 'UTF-8'); ?>
+									<div class="form-label"><?= t('title_charset', 'Charset') ?></div>
+									<?= f::form_select_encoding('charset', !empty($_POST['charset']) ? true : 'UTF-8') ?>
 								</label>
 							</div>
 						</div>
@@ -1577,23 +1577,23 @@
 						<div class="grid">
 							<div class="col-sm-6">
 								<label class="form-group">
-									<div class="form-label"><?php echo t('title_line_ending', 'Line Ending'); ?></div>
-									<?php echo f::form_select('eol', ['Win', 'Mac', 'Linux'], true); ?>
+									<div class="form-label"><?= t('title_line_ending', 'Line Ending') ?></div>
+									<?= f::form_select('eol', ['Win', 'Mac', 'Linux'], true) ?>
 								</label>
 							</div>
 
 							<div class="col-sm-6">
 								<label class="form-group">
-									<div class="form-label"><?php echo t('title_output', 'Output'); ?></div>
-									<?php echo f::form_select('output', ['screen' => t('title_screen', 'Screen'), 'file' => t('title_file', 'File')], true); ?>
+									<div class="form-label"><?= t('title_output', 'Output') ?></div>
+									<?= f::form_select('output', ['screen' => t('title_screen', 'Screen'), 'file' => t('title_file', 'File')], true) ?>
 								</label>
 							</div>
 						</div>
 
-						<?php echo f::form_button('export', t('title_export', 'Export'), 'submit'); ?>
+						<?= f::form_button('export', t('title_export', 'Export'), 'submit') ?>
 					</fieldset>
 
-				<?php echo f::form_end(); ?>
+				<?= f::form_end() ?>
 			</div>
 
 		</div>
@@ -1610,7 +1610,7 @@
 	$('form[name="export_form"] input[name="type"]:checked').trigger('change');
 
 	$('form[name="import_form"] input[name="reset"]').on('click', function() {
-		if ($(this).is(':checked') && !confirm("<?php echo t('text_are_you_sure', 'Are you sure?'); ?>")) return false;
+		if ($(this).is(':checked') && !confirm("<?= t('text_are_you_sure', 'Are you sure?') ?>")) return false;
 	});
 
 	$('form[name="import_form"] input[name="insert"]').on('change', function() {

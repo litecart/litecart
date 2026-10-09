@@ -70,35 +70,35 @@ textarea[name="content"] {
 <div class="card" style="min-width: 800px;">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo t('title_edit_folder', 'Edit Folder'); ?>
+			<?= $app_icon ?> <?= t('title_edit_folder', 'Edit Folder') ?>
 		</div>
 	</div>
 
 	<div class="card-body">
-		<?php echo f::form_begin('file_form', 'post'); ?>
+		<?= f::form_begin('file_form', 'post') ?>
 
 			<div class="grid" style="max-width: 640px;">
 				<div class="col-md-8">
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_filename', 'Filename'); ?></div>
-						<?php echo f::form_input_text('filename', true); ?>
+						<div class="form-label"><?= t('title_filename', 'Filename') ?></div>
+						<?= f::form_input_text('filename', true) ?>
 					</label>
 				</div>
 
 				<div class="col-md-4">
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_mode', 'Mode'); ?></div>
-						<?php echo f::form_input_text('mode', true); ?>
+						<div class="form-label"><?= t('title_mode', 'Mode') ?></div>
+						<?= f::form_input_text('mode', true) ?>
 					</label>
 				</div>
 			</div>
 
 			<div class="card-action">
-				<?php echo f::form_button('save', t('title_save', 'Save'), 'submit', ['class' => 'btn btn-success'], 'save'); ?>
-				<?php echo !empty($folder) ? f::form_button('delete', t('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\''. t('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false; ?>
-				<?php echo f::form_button('cancel', t('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel'); ?>
+				<?= f::form_button('save', t('title_save', 'Save'), 'submit', ['class' => 'btn btn-success'], 'save') ?>
+				<?= !empty($folder) ? f::form_button('delete', t('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!window.confirm(\''. t('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') : false ?>
+				<?= f::form_button('cancel', t('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel') ?>
 			</div>
 
-		<?php echo f::form_end(); ?>
+		<?= f::form_end() ?>
 	</div>
 </div>

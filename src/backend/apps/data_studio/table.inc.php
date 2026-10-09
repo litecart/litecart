@@ -138,14 +138,14 @@ textarea[name="query"] {
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo t('title_table_data', 'Table Data'); ?>
+			<?= $app_icon ?> <?= t('title_table_data', 'Table Data') ?>
 		</div>
 	</div>
 
 	<div class="card-action">
 		<ul class="list-inline">
-			<li><a class="btn btn-default" href="<?php echo document::href_ilink(__APP__.'/edit_table', ['name' => $_GET['name']]); ?>"><?php echo f::draw_fonticon('edit'); ?> <?php echo t('title_edit_table_structure', 'Edit Table Structure'); ?></a></li>
-			<li><a class="btn btn-default" href="<?php echo document::href_ilink(__APP__.'/edit_row', ['table' => $_GET['name']]); ?>"><?php echo f::draw_fonticon('create'); ?> <?php echo t('title_create_new_row', 'Create New Row'); ?></a></li>
+			<li><a class="btn btn-default" href="<?= document::href_ilink(__APP__.'/edit_table', ['name' => $_GET['name']]) ?>"><?= f::draw_fonticon('edit') ?> <?= t('title_edit_table_structure', 'Edit Table Structure') ?></a></li>
+			<li><a class="btn btn-default" href="<?= document::href_ilink(__APP__.'/edit_row', ['table' => $_GET['name']]) ?>"><?= f::draw_fonticon('create') ?> <?= t('title_create_new_row', 'Create New Row') ?></a></li>
 		</ul>
 	</div>
 
@@ -157,30 +157,30 @@ textarea[name="query"] {
 				<div class="col-md-5">
 
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_select_table', 'Select Table'); ?></div>
-						<?php echo f::form_select('table', $table_options, $_GET['name']); ?>
+						<div class="form-label"><?= t('title_select_table', 'Select Table') ?></div>
+						<?= f::form_select('table', $table_options, $_GET['name']) ?>
 					</label>
 
-					<?php echo f::form_begin('query_form', 'post', '', false, ['style' => 'max-width: 100vw;']); ?>
+					<?= f::form_begin('query_form', 'post', '', false, ['style' => 'max-width: 100vw;']) ?>
 
 						<label class="form-group">
-							<div class="form-label"><?php echo t('title_query', 'Query'); ?></div>
-						<?php echo f::form_textarea('query', true, ['style' => 'min-height: 100px;', 'spellcheck' => 'false']); ?>
+							<div class="form-label"><?= t('title_query', 'Query') ?></div>
+						<?= f::form_textarea('query', true, ['style' => 'min-height: 100px;', 'spellcheck' => 'false']) ?>
 						</label>
 
 						<div class="form-group">
-							<?php echo f::form_button('run', t('title_run_query', 'Run Query'), 'submit', ['class' => 'btn btn-success']); ?>
-							<?php echo f::form_button('pretty_print', t('title_pretty_print', 'Pretty Print'), 'button'); ?>
+							<?= f::form_button('run', t('title_run_query', 'Run Query'), 'submit', ['class' => 'btn btn-success']) ?>
+							<?= f::form_button('pretty_print', t('title_pretty_print', 'Pretty Print'), 'button') ?>
 						</div>
 
-					<?php echo f::form_end(); ?>
+					<?= f::form_end() ?>
 
 				</div>
 
 				<?php if (!empty($columns)) { ?>
 				<div class="col-md-7">
 					<fieldset id="toggle-columns">
-						<legend><?php echo t('title_toggle_columns', 'Toggle Columns'); ?></legend>
+						<legend><?= t('title_toggle_columns', 'Toggle Columns') ?></legend>
 						<div class="columns">
 						<?php foreach (array_slice($columns, 0, 10) as $column) echo f::form_checkbox('columns[]', [$column['name'], $column['name']], !empty($_POST['columns']) ? true : $column); ?>
 						<?php foreach (array_slice($columns, 10) as $column) echo f::form_checkbox('columns[]', [$column['name'], $column['name']], true); ?>
@@ -197,9 +197,9 @@ textarea[name="query"] {
 			<table class="table table-striped table-hover table-sortable data-table">
 				<thead>
 					<tr>
-						<th><?php echo f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
+						<th class="text-center"><?= f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"') ?></th>
 						<?php foreach ($columns as $column) {?>
-						<th data-name="<?php echo f::escape_attr($column['name']); ?>" data-type="<?php echo f::escape_attr($column['type']); ?>" data-length="<?php echo f::escape_attr($column['length']); ?>" data-nullable="<?php echo f::escape_attr($column['null']); ?>" data-unsigned="<?php echo f::escape_attr($column['unsigned']); ?>" data-zerofill="<?php echo f::escape_attr($column['zerofill']); ?>" data-default="<?php echo f::escape_attr($column['default']); ?>"><?php echo f::escape_html($column['name']); ?></th>
+						<th data-name="<?= f::escape_attr($column['name']) ?>" data-type="<?= f::escape_attr($column['type']) ?>" data-length="<?= f::escape_attr($column['length']) ?>" data-nullable="<?= f::escape_attr($column['null']) ?>" data-unsigned="<?= f::escape_attr($column['unsigned']) ?>" data-zerofill="<?= f::escape_attr($column['zerofill']) ?>" data-default="<?= f::escape_attr($column['default']) ?>"><?= f::escape_html($column['name']) ?></th>
 						<?php } ?>
 						<th class="main"></th>
 					</tr>
@@ -207,14 +207,14 @@ textarea[name="query"] {
 
 				<tbody>
 					<?php foreach ($rows as $row) { ?>
-					<tr data-pkv="<?php echo f::escape_attr($row[$primary_column]); ?>">
-						<td><?php echo f::form_checkbox('rows[]', $row[$primary_column]); ?></td>
+					<tr data-pkv="<?= f::escape_attr($row[$primary_column]) ?>">
+						<td><?= f::form_checkbox('rows[]', $row[$primary_column]) ?></td>
 						<?php foreach ($row as $column => $value) { ?>
-						<td data-column-name="<?php echo f::escape_attr($column); ?>"><?php echo $value !== null ? addcslashes(f::escape_html($value), "\t\r\n") : '<em>NULL</em>'; ?></td>
+						<td data-column-name="<?= f::escape_attr($column) ?>"><?= $value !== null ? addcslashes(f::escape_html($value), "\t\r\n") : '<em>NULL</em>' ?></td>
 						<?php } ?>
 						<td class="text-end">
-							<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_row', ['table' => $_GET['name'], $primary_column => $row[$primary_column]]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>">
-								<?php echo f::draw_fonticon('edit'); ?>
+							<a class="btn btn-default btn-sm" href="<?= document::href_ilink(__APP__.'/edit_row', ['table' => $_GET['name'], $primary_column => $row[$primary_column]]) ?>" title="<?= t('title_edit', 'Edit') ?>">
+								<?= f::draw_fonticon('edit') ?>
 							</a>
 						</td>
 					</tr>
@@ -222,8 +222,8 @@ textarea[name="query"] {
 				</tbody>
 
 				<tfoot>
-					<td colspan="<?php echo count($columns) + 2; ?>">
-						<?php echo t('title_rows', 'Rows'); ?>: <?php echo f::format_number($num_rows); ?>
+					<td colspan="<?= count($columns) + 2 ?>">
+						<?= t('title_rows', 'Rows') ?>: <?= f::format_number($num_rows) ?>
 					</td>
 				</tfoot>
 			</table>
@@ -233,27 +233,27 @@ textarea[name="query"] {
 		<?php if ($rows && in_array($primary_column, array_column($columns, 'name'))) { ?>
 		<div class="card-body">
 			<fieldset id="actions">
-				<legend><?php echo t('text_with_selected', 'With selected'); ?></legend>
+				<legend><?= t('text_with_selected', 'With selected') ?></legend>
 
 				<ul class="list-inline">
-					<li><?php echo f::form_button('delete', t('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!confirm(\''. t('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete'); ?></li>
+					<li><?= f::form_button('delete', t('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!confirm(\''. t('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') ?></li>
 				</ul>
 			</fieldset>
 		</div>
 		<?php } ?>
 
-	<?php echo f::form_end(); ?>
+	<?= f::form_end() ?>
 
 	<?php if ($num_pages > 1) { ?>
 	<div class="card-footer">
-		<?php echo f::draw_pagination($num_pages); ?>
+		<?= f::draw_pagination($num_pages) ?>
 	</div>
 	<?php } ?>
 </div>
 
 <script>
 	$('select[name="table"]').on('change', function() {
-		window.location.href = '<?php echo document::ilink(__APP__.'/table'); ?>' + '?name=' + encodeURIComponent(this.value);
+		window.location.href = '<?= document::ilink(__APP__.'/table') ?>' + '?name=' + encodeURIComponent(this.value);
 	});
 
 	// Textarea auto-resize that respects CSS max-height
@@ -327,8 +327,8 @@ textarea[name="query"] {
 	}).first().trigger('change'); // Initial state
 
 	$('button[name="pretty_print"]').on('click', function() {
-		$.post('<?php echo document::ilink(__APP__.'/pretty_print'); ?>', {
-			'csrf_token': '<?php echo security::csrf_token(); ?>',
+		$.post('<?= document::ilink(__APP__.'/pretty_print') ?>', {
+			'csrf_token': '<?= security::csrf_token() ?>',
 			'query': $('form[name="query_form"] textarea[name="query"]').val(),
 		}).then(function(response){
 			$('form[name="query_form"] textarea[name="query"]').val(response);
@@ -435,10 +435,10 @@ textarea[name="query"] {
 				return;
 			}
 
-			$.post('<?php echo document::ilink(__APP__.'/edit_cell'); ?>', {
-				'csrf_token': '<?php echo security::csrf_token(); ?>',
-				'table': '<?php echo f::escape_attr($_GET['name'] ?? ''); ?>',
-				'primary_column': '<?php echo f::escape_attr($primary_column); ?>',
+			$.post('<?= document::ilink(__APP__.'/edit_cell') ?>', {
+				'csrf_token': '<?= security::csrf_token() ?>',
+				'table': '<?= f::escape_attr($_GET['name'] ?? '') ?>',
+				'primary_column': '<?= f::escape_attr($primary_column) ?>',
 				'pkv': pkv,
 				'column': column,
 				'value': sendVal,

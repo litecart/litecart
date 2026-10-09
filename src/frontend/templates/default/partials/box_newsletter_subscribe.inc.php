@@ -15,29 +15,29 @@
 }
 </style>
 
-<section id="box-newsletter-subscribe" aria-label="<?php echo f::escape_attr(t('box-newsletter-subscribe:title', 'Subscribe to our newsletter!')); ?>">
+<section id="box-newsletter-subscribe" aria-label="<?= f::escape_attr(t('box-newsletter-subscribe:title', 'Subscribe to our newsletter!')) ?>">
 	<div class="container text-center">
 
 		<div class="flex-columns" style="place-content: center;">
 			<div class="hidden-xs" style="flex: 0 1 170px;">
-				<img class="responsive" src="<?php echo document::href_rlink('storage://images/illustration/newsletter.svg'); ?>" alt="" style="max-height: 150px;">
+				<img class="responsive" src="<?= document::href_rlink('storage://images/illustration/newsletter.svg') ?>" alt="" style="max-height: 150px;">
 			</div>
 
-			<?php echo f::form_begin('newsletter_subscribe_form', 'post', false, false, ['aria-label' => f::escape_attr(t('box-newsletter-subscribe:title', 'Subscribe to our newsletter!'))]); ?>
+			<?= f::form_begin('newsletter_subscribe_form', 'post', false, false, ['aria-label' => f::escape_attr(t('box-newsletter-subscribe:title', 'Subscribe to our newsletter!'))]) ?>
 
-				<h2><?php echo t('box-newsletter-subscribe:title', 'Subscribe to our newsletter!'); ?></h2>
+				<h2><?= t('box-newsletter-subscribe:title', 'Subscribe to our newsletter!') ?></h2>
 
-				<p><?php echo t('box_newsletter_subscribe:description', 'Get the latest news and offers straight to your inbox. Sign up now.'); ?></p>
+				<p><?= t('box_newsletter_subscribe:description', 'Get the latest news and offers straight to your inbox. Sign up now.') ?></p>
 
 				<div class="form-label">
 					<div style="display: flex; flex-direction: row; gap: 1em">
-						<label for="newsletter_subscribe_email" class="hidden"><?php echo t('title_email_address', 'Email Address'); ?></label>
-						<?php echo f::form_input_email('email', true, ['id' => 'newsletter_subscribe_email', 'placeholder' => f::escape_attr(t('text_enter_your_email_address', 'Enter your email address')), 'autocomplete' => 'email', 'required' => true]); ?>
-						<?php echo f::form_button('subscribe', t('title_subscribe', 'Subscribe')); ?>
+						<label for="newsletter_subscribe_email" class="hidden"><?= t('title_email_address', 'Email Address') ?></label>
+						<?= f::form_input_email('email', true, ['id' => 'newsletter_subscribe_email', 'placeholder' => f::escape_attr(t('text_enter_your_email_address', 'Enter your email address')), 'autocomplete' => 'email', 'required' => true]) ?>
+						<?= f::form_button('subscribe', t('title_subscribe', 'Subscribe')) ?>
 					</div>
 				</div>
 
-			<?php echo f::form_end(); ?>
+			<?= f::form_end() ?>
 		</div>
 
 	</div>
@@ -46,7 +46,7 @@
 <script>
 	$('form[name="newsletter_subscribe_form"]').submit(function(e){
 		e.preventDefault();
-		let url = '<?php echo document::ilink('newsletter'); ?>?email='+ $(this).find('input[name="email"]').val();
+		let url = '<?= document::ilink('newsletter') ?>?email='+ $(this).find('input[name="email"]').val();
 		$.litebox(url +' #box-newsletter-subscribe', {
 			"seamless": true,
 			"width": "640px"

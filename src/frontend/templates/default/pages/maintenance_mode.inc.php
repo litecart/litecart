@@ -22,11 +22,11 @@ body {
 
 <div class="fourteen-forty">
 	<main id="content">
-<section id="box-maintenance-mode" aria-label="<?php echo f::escape_attr(t('maintenance_mode:title', 'Maintenance Mode')); ?>">
-	<img src="<?php echo document::href_rlink('storage://images/logotype.png'); ?>" alt="<?php echo f::escape_attr(settings::get('store_name')); ?>" title="<?php echo f::escape_attr(settings::get('store_name')); ?>">
+<section id="box-maintenance-mode" aria-label="<?= f::escape_attr(t('maintenance_mode:title', 'Maintenance Mode')) ?>">
+	<img src="<?= document::href_rlink('storage://images/logotype.png') ?>" alt="<?= f::escape_attr(settings::get('store_name')) ?>" title="<?= f::escape_attr(settings::get('store_name')) ?>">
 	<hr>
-	<h1><?php echo t('maintenance_mode:title', 'Maintenance Mode'); ?></h1>
-	<p><?php echo t('maintenance_mode:description', 'This site is currently in maintenance mode. Please check back later.'); ?></p>
+	<h1><?= t('maintenance_mode:title', 'Maintenance Mode') ?></h1>
+	<p><?= t('maintenance_mode:description', 'This site is currently in maintenance mode. Please check back later.') ?></p>
 		</section>
 	</main>
 </div>

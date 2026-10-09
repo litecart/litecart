@@ -3,7 +3,7 @@
 
 	<div class="sidebar-header">
 		<div class="filter">
-			<?php echo f::form_input_search('filter', false, ['placeholder' => t('title_filter', 'Filter').'…', 'autocomplete' => 'off']); ?>
+			<?= f::form_input_search('filter', false, ['placeholder' => t('title_filter', 'Filter').'…', 'autocomplete' => 'off']) ?>
 		</div>
 	</div>
 
@@ -12,10 +12,10 @@
 			<ul class="groups">
 				<li class="group">
 					<ul class="apps">
-						<li class="app<?php echo !defined('__APP__') ? ' active' : ''; ?>" style="--app-color: #ccc;">
-							<a href="<?php echo document::href_ilink('b:'); ?>" title="<?php echo f::escape_attr(t('title_dashboard', 'Dashboard')); ?>">
-								<span class="app-icon"><?php echo f::draw_fonticon('icon-grid-view-o'); ?></span>
-								<span class="name"><?php echo t('title_dashboard', 'Dashboard'); ?></span>
+						<li class="app<?= !defined('__APP__') ? ' active' : '' ?>" style="--app-color: #ccc;">
+							<a href="<?= document::href_ilink('b:') ?>" title="<?= f::escape_attr(t('title_dashboard', 'Dashboard')) ?>">
+								<span class="app-icon"><?= f::draw_fonticon('icon-grid-view-o') ?></span>
+								<span class="name"><?= t('title_dashboard', 'Dashboard') ?></span>
 							</a>
 						</li>
 					</ul>
@@ -25,19 +25,19 @@
 				<li class="group">
 
 					<div class="title">
-						<?php echo $group['name']; ?>
+						<?= $group['name'] ?>
 					</div>
 
 					<ul class="apps">
 
 						<?php foreach ($group['apps'] as $app) { ?>
-						<li class="app<?php echo $app['active'] ? ' active' : ''; ?><?php echo !empty($app['menu']) ? ' has-docs' : ''; ?>" data-id="<?php echo $app['id']; ?>" style="--app-color: <?php echo $app['theme']['color']; ?>;">
+						<li class="app<?= $app['active'] ? ' active' : '' ?><?= !empty($app['menu']) ? ' has-docs' : '' ?>" data-id="<?= $app['id'] ?>" style="--app-color: <?= $app['theme']['color'] ?>;">
 
-							<a href="<?php echo f::escape_html($app['link']); ?>" title="<?php echo f::escape_html($app['name']); ?>">
+							<a href="<?= f::escape_html($app['link']) ?>" title="<?= f::escape_html($app['name']) ?>">
 								<span class="app-icon">
-									<?php echo f::draw_fonticon($app['theme']['icon']); ?>
+									<?= f::draw_fonticon($app['theme']['icon']) ?>
 								</span>
-								<span class="name"><?php echo $app['name']; ?></span>
+								<span class="name"><?= $app['name'] ?></span>
 								<?php if (!empty($app['menu'])) { ?>
 								<i class="app-toggle icon-square-plus"></i>
 								<?php } ?>
@@ -47,9 +47,9 @@
 							<ul class="docs">
 
 								<?php foreach ($app['menu'] as $item) { ?>
-								<li class="doc<?php echo $item['active'] ? ' active' : ''; ?>" data-id="<?php echo $item['doc']; ?>">
-									<a href="<?php echo f::escape_html($item['link']); ?>">
-										<span class="name"><?php echo $item['title']; ?></span>
+								<li class="doc<?= $item['active'] ? ' active' : '' ?>" data-id="<?= $item['doc'] ?>">
+									<a href="<?= f::escape_html($item['link']) ?>">
+										<span class="name"><?= $item['title'] ?></span>
 									</a>
 								</li>
 								<?php } ?>
@@ -69,12 +69,12 @@
 
 	<div class="sidebar-footer">
 
-		<a class="platform" href="<?php echo document::href_ilink('about'); ?>">
-			<img src="<?php echo document::href_rlink('app://backend/template/images/symbol.svg'); ?>">
+		<a class="platform" href="<?= document::href_ilink('about') ?>">
+			<img src="<?= document::href_rlink('app://backend/template/images/symbol.svg') ?>">
 			<div>
-				<div class="name"><?php echo PLATFORM_NAME; ?>® <span class="version"><?php echo PLATFORM_VERSION; ?></span></div>
+				<div class="name"><?= PLATFORM_NAME ?>® <span class="version"><?= PLATFORM_VERSION ?></span></div>
 				<div class="copyright" class="text-center">
-					<small>Copyright &copy; <?php echo date('2012-Y'); ?> LiteCart AB</small>
+					<small>Copyright &copy; <?= date('2012-Y') ?> LiteCart AB</small>
 				</div>
 			</div>
 		</a>

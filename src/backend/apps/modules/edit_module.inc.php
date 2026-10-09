@@ -79,26 +79,26 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo !empty($module->data['id']) ? t('title_edit_module', 'Edit Module') : t('title_install_module', 'Install Module'); ?>
+			<?= $app_icon ?> <?= !empty($module->data['id']) ? t('title_edit_module', 'Edit Module') : t('title_install_module', 'Install Module') ?>
 		</div>
 	</div>
 
 	<div class="card-body">
-		<h2><?php echo $object->name; ?></h2>
+		<h2><?= $object->name ?></h2>
 
-		<?php echo !empty($object->author) ? '<p><strong>'. t('title_developed_by', 'Developed by') .'</strong> <a href="'. $object->website .'" target="_blank">'. $object->author .'</a></p>' : false; ?>
+		<?= !empty($object->author) ? '<p><strong>'. t('title_developed_by', 'Developed by') .'</strong> <a href="'. $object->website .'" target="_blank">'. $object->author .'</a></p>' : false ?>
 
-		<?php echo !empty($object->description) ? '<p style="max-width: 960px;">'. $object->description .'</p>' : ''; ?>
+		<?= !empty($object->description) ? '<p style="max-width: 960px;">'. $object->description .'</p>' : '' ?>
 
-		<?php echo f::form_begin('module_form', 'post', false, false, ['autocomplete' => 'off', 'style' => 'max-width: 960px;']); ?>
+		<?= f::form_begin('module_form', 'post', false, false, ['autocomplete' => 'off', 'style' => 'max-width: 960px;']) ?>
 
 			<table class="table">
 				<tbody>
 					<?php foreach ($object->settings() as $setting) { ?>
 					<tr>
 						<td style="width: 50%">
-							<strong><?php echo $setting['title']; ?></strong>
-							<?php echo !empty($setting['description']) ? '<div>'. $setting['description'] .'</div>' : ''; ?>
+							<strong><?= $setting['title'] ?></strong>
+							<?= !empty($setting['description']) ? '<div>'. $setting['description'] .'</div>' : '' ?>
 						</td>
 						<td style="width: 50%">
 							<?php
@@ -113,27 +113,27 @@
 					<?php } ?>
 					<tr>
 						<td>
-							<label><?php echo t('title_translations', 'Translations'); ?></label>
+							<label><?= t('title_translations', 'Translations') ?></label>
 						</td>
 						<td>
-							<a href="<?php echo document::href_ilink('translations/search', ['query' => $module_id . ':', 'modules' => 'true']); ?>"><?php echo t('title_edit_translations', 'Edit Translations'); ?></a>
+							<a href="<?= document::href_ilink('translations/search', ['query' => $module_id . ':', 'modules' => 'true']) ?>"><?= t('title_edit_translations', 'Edit Translations') ?></a>
 						</td>
 					</tr>
 				</tbody>
 			</table>
 
 			<div class="card-action">
-				<?php echo f::form_button_predefined('save'); ?>
+				<?= f::form_button_predefined('save') ?>
 				<?php if (!empty($module->data['id'])) echo f::form_button('uninstall', t('title_uninstall', 'Uninstall'), 'submit', 'class="btn btn-danger" onclick="if (!confirm(&quot;'. t('text_are_you_sure', 'Are you sure?') .'&quot;)) return false;"', 'delete'); ?>
-				<?php echo f::form_button_predefined('cancel'); ?>
+				<?= f::form_button_predefined('cancel') ?>
 			</div>
 
-		<?php echo f::form_end(); ?>
+		<?= f::form_end() ?>
 
 		<?php if (!empty($module->data['last_log'])) { ?>
 		<div id="box-last-log">
-			<h2><?php echo t('title_last_log', 'Last Log'); ?></h2>
-			<pre class="form-input"><?php echo $module->data['last_log']; ?></pre>
+			<h2><?= t('title_last_log', 'Last Log') ?></h2>
+			<pre class="form-input"><?= $module->data['last_log'] ?></pre>
 		</div>
 		<?php } ?>
 	</div>

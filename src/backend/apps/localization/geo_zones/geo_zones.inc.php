@@ -62,23 +62,23 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo t('title_geo_zones', 'Geo Zones'); ?>
+			<?= $app_icon ?> <?= t('title_geo_zones', 'Geo Zones') ?>
 		</div>
 	</div>
 
 	<div class="card-action">
-		<?php echo f::form_button_link(document::ilink(__APP__.'/geo_zones/edit_geo_zone'), t('title_create_new_geo_zone', 'Create New Geo Zone'), '', 'create'); ?>
+		<?= f::form_button_link(document::ilink(__APP__.'/geo_zones/edit_geo_zone'), t('title_create_new_geo_zone', 'Create New Geo Zone'), '', 'create') ?>
 	</div>
 
-	<?php echo f::form_begin('geo_zones_form', 'post'); ?>
+	<?= f::form_begin('geo_zones_form', 'post') ?>
 
 		<table class="table data-table">
 			<thead>
 				<tr>
-					<th><?php echo f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
-					<th><?php echo t('title_id', 'ID'); ?></th>
-					<th class="main"><?php echo t('title_name', 'Name'); ?></th>
-					<th><?php echo t('title_zones', 'Zones'); ?></th>
+					<th class="text-center"><?= f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"') ?></th>
+					<th><?= t('title_id', 'ID') ?></th>
+					<th class="main"><?= t('title_name', 'Name') ?></th>
+					<th><?= t('title_zones', 'Zones') ?></th>
 					<th></th>
 				</tr>
 			</thead>
@@ -86,11 +86,11 @@
 			<tbody>
 				<?php foreach ($geo_zones as $geo_zone) { ?>
 				<tr>
-					<td><?php echo f::form_checkbox('geo_zones[]', $geo_zone['id']); ?></td>
-					<td><?php echo $geo_zone['id']; ?></td>
-					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/geo_zones/edit_geo_zone', ['geo_zone_id' => $geo_zone['id']]); ?>"><?php echo $geo_zone['name']; ?></a></td>
-					<td class="text-center"><?php echo $geo_zone['num_zones']; ?></td>
-					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/geo_zones/edit_geo_zone', ['geo_zone_id' => $geo_zone['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo f::draw_fonticon('edit'); ?></a></td>
+					<td><?= f::form_checkbox('geo_zones[]', $geo_zone['id']) ?></td>
+					<td><?= $geo_zone['id'] ?></td>
+					<td><a class="link" href="<?= document::href_ilink(__APP__.'/geo_zones/edit_geo_zone', ['geo_zone_id' => $geo_zone['id']]) ?>"><?= $geo_zone['name'] ?></a></td>
+					<td class="text-center"><?= $geo_zone['num_zones'] ?></td>
+					<td class="text-end"><a class="btn btn-default btn-sm" href="<?= document::href_ilink(__APP__.'/geo_zones/edit_geo_zone', ['geo_zone_id' => $geo_zone['id']]) ?>" title="<?= t('title_edit', 'Edit') ?>"><?= f::draw_fonticon('edit') ?></a></td>
 				</tr>
 				<?php } ?>
 			</tbody>
@@ -98,7 +98,7 @@
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo t('title_geo_zones', 'Geo Zones'); ?>: <?php echo f::format_number($num_rows); ?>
+						<?= t('title_geo_zones', 'Geo Zones') ?>: <?= f::format_number($num_rows) ?>
 					</td>
 				</tr>
 			</tfoot>
@@ -108,19 +108,19 @@
 			<fieldset id="actions">
 
 				<legend>
-					<?php echo t('text_with_selected', 'With selected'); ?>:
+					<?= t('text_with_selected', 'With selected') ?>:
 				</legend>
 
-				<?php echo f::form_button('clone', t('title_clone', 'Clone'), 'submit', '', 'icon-copy'); ?>
+				<?= f::form_button('clone', t('title_clone', 'Clone'), 'submit', '', 'icon-copy') ?>
 
 			</fieldset>
 		</div>
 
-	<?php echo f::form_end(); ?>
+	<?= f::form_end() ?>
 
 	<?php if ($num_pages > 1) { ?>
 	<div class="card-footer">
-		<?php echo f::draw_pagination($num_pages); ?>
+		<?= f::draw_pagination($num_pages) ?>
 	</div>
 	<?php } ?>
 </div>

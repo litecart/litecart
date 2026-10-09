@@ -74,62 +74,62 @@
 <div class="card card-app">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo t('title_who_purchased', 'Who Purchased?'); ?>
+			<?= $app_icon ?> <?= t('title_who_purchased', 'Who Purchased?') ?>
 		</div>
 	</div>
 
-	<?php echo f::form_begin('filter_form', 'get'); ?>
+	<?= f::form_begin('filter_form', 'get') ?>
 
-		<?php echo f::form_input_hidden('app'); ?>
-		<?php echo f::form_input_hidden('doc'); ?>
+		<?= f::form_input_hidden('app') ?>
+		<?= f::form_input_hidden('doc') ?>
 
 		<div class="card-filter">
 
 			<div class="expandable">
-				<?php echo f::form_input_search('query', true, ['placeholder' => f::escape_html(t('text_item_name_or_code', 'Item name or code'))]); ?>
+				<?= f::form_input_search('query', true, ['placeholder' => f::escape_html(t('text_item_name_or_code', 'Item name or code'))]) ?>
 			</div>
 
 			<div class="input-group" style="width: 450px;">
-				<?php echo f::form_input_month('date_from'); ?>
+				<?= f::form_input_month('date_from') ?>
 				<span class="input-group-text">-</span>
-				<?php echo f::form_input_month('date_to'); ?>
+				<?= f::form_input_month('date_to') ?>
 			</div>
 
-			<?php echo f::form_button('filter', ['true', f::draw_fonticon('icon-funnel') .' '. t('title_filter_now', 'Filter')]); ?>
+			<?= f::form_button('filter', ['true', f::draw_fonticon('icon-funnel') .' '. t('title_filter_now', 'Filter')]) ?>
 
 		</div>
 
 		<div class="card-action">
-			<?php echo f::form_button('download', ['true', f::draw_fonticon('icon-download') .' '. t('title_download', 'Download')]); ?>
+			<?= f::form_button('download', ['true', f::draw_fonticon('icon-download') .' '. t('title_download', 'Download')]) ?>
 		</div>
 
-	<?php echo f::form_end(); ?>
+	<?= f::form_end() ?>
 
 	<table class="table table-striped data-table">
 		<thead>
 			<tr>
-				<th style="width: 0;"><?php echo t('title_product_id', 'Product ID'); ?></th>
-				<th><?php echo t('title_product_name', 'Product Name'); ?></th>
-				<th><?php echo t('title_code', 'Code'); ?></th>
-				<th><?php echo t('title_customer_name', 'Customer Name'); ?></th>
-				<th><?php echo t('title_country', 'Country'); ?></th>
-				<th><?php echo t('title_email', 'Email'); ?></th>
-				<th style="width: 0;"><?php echo t('title_quantity', 'Quantity'); ?></th>
-				<th style="width: 0;"><?php echo t('title_purchase_date', 'Purchase Date'); ?></th>
+				<th style="width: 0;"><?= t('title_product_id', 'Product ID') ?></th>
+				<th><?= t('title_product_name', 'Product Name') ?></th>
+				<th><?= t('title_code', 'Code') ?></th>
+				<th><?= t('title_customer_name', 'Customer Name') ?></th>
+				<th><?= t('title_country', 'Country') ?></th>
+				<th><?= t('title_email', 'Email') ?></th>
+				<th style="width: 0;"><?= t('title_quantity', 'Quantity') ?></th>
+				<th style="width: 0;"><?= t('title_purchase_date', 'Purchase Date') ?></th>
 			</tr>
 		</thead>
 
 		<tbody>
 			<?php foreach ($rows as $row) { ?>
 			<tr>
-				<td class="text-center"><?php echo $row['product_id']; ?></td>
-				<td><?php echo $row['name']; ?></td>
-				<td><?php echo $row['code']; ?></td>
-				<td><a class="link" href="<?php echo document::link(null, ['app' => 'orders', 'doc' => 'edit_order', 'order_id' => (float)$row['order_id']], false); ?>"><?php echo $row['customer_name']; ?></a></td>
-				<td><?php echo reference::country($row['customer_country_code'])->name; ?></td>
-				<td><?php echo $row['customer_email']; ?></td>
-				<td class="text-center"><?php echo (float)$row['quantity']; ?></td>
-				<td><?php echo $row['order_created_at']; ?></td>
+				<td class="text-center"><?= $row['product_id'] ?></td>
+				<td><?= $row['name'] ?></td>
+				<td><?= $row['code'] ?></td>
+				<td><a class="link" href="<?= document::link(null, ['app' => 'orders', 'doc' => 'edit_order', 'order_id' => (float)$row['order_id']], false) ?>"><?= $row['customer_name'] ?></a></td>
+				<td><?= reference::country($row['customer_country_code'])->name ?></td>
+				<td><?= $row['customer_email'] ?></td>
+				<td class="text-center"><?= (float)$row['quantity'] ?></td>
+				<td><?= $row['order_created_at'] ?></td>
 			</tr>
 			<?php } ?>
 		</tbody>
@@ -137,7 +137,7 @@
 
 	<?php if ($num_pages > 1) { ?>
 	<div class="card-footer">
-		<?php echo f::draw_pagination($num_pages); ?>
+		<?= f::draw_pagination($num_pages) ?>
 	</div>
 	<?php } ?>
 </div>

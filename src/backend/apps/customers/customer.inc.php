@@ -339,7 +339,7 @@
 ?>
 <style>
 #customer-dashboard {
-	--theme-color: <?php echo '#21a261'; ?>;
+	--theme-color: <?= '#21a261' ?>;
 }
 
 #customer-dashboard .profile-header {
@@ -749,11 +749,11 @@
 
 <nav class="tabs">
 	<a class="tab-item active" href="#tab-overview" data-toggle="tab">
-		<?php echo t('title_overview', 'Overview'); ?>
+		<?= t('title_overview', 'Overview') ?>
 	</a>
 	<a class="tab-item" href="#tab-activity" data-toggle="tab">
-		<?php echo t('title_activity', 'Activity'); ?>
-		<?php if (count($feed)) { ?>(<?php echo count($feed); ?>)<?php } ?>
+		<?= t('title_activity', 'Activity') ?>
+		<?php if (count($feed)) { ?>(<?= count($feed) ?>)<?php } ?>
 	</a>
 </nav>
 
@@ -764,35 +764,35 @@
 		<div class="profile-header">
 
 			<div class="grid" style="display: grid; grid-template-columns: 72px 1fr auto; gap: 1.5em; align-items: center;">
-				<div class="avatar"><?php echo f::draw_fonticon('icon-user'); ?></div>
+				<div class="avatar"><?= f::draw_fonticon('icon-user') ?></div>
 				<div>
-					<h1 class="name"><?php echo f::escape_html($_display_name); ?></h1>
-					<p class="email"><?php echo f::escape_html($customer->data['email']); ?></p>
+					<h1 class="name"><?= f::escape_html($_display_name) ?></h1>
+					<p class="email"><?= f::escape_html($customer->data['email']) ?></p>
 					<div class="meta-line">
-						<?php echo t('title_customer_id', 'Customer ID'); ?>: #<?php echo (int)$customer->data['id']; ?>
-						<?php if ($group_name) { ?> · <?php echo f::escape_html($group_name); ?><?php } ?>
+						<?= t('title_customer_id', 'Customer ID') ?>: #<?= (int)$customer->data['id'] ?>
+						<?php if ($group_name) { ?> · <?= f::escape_html($group_name) ?><?php } ?>
 						<?php if (!empty($customer->data['status'])) { ?>
 							<span style="margin-inline-start: 0.5em; padding: 0.15em 0.6em; border-radius: 999px; background: rgba(33, 162, 97, 0.15); color: #21a261; font-size: 0.75em; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">
-								<?php echo f::draw_fonticon('icon-check'); ?> <?php echo t('title_active', 'Active'); ?>
+								<?= f::draw_fonticon('icon-check') ?> <?= t('title_active', 'Active') ?>
 							</span>
 						<?php } else { ?>
 							<span style="margin-inline-start: 0.5em; padding: 0.15em 0.6em; border-radius: 999px; background: rgba(151, 163, 181, 0.15); color: #97a3b5; font-size: 0.75em; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">
-								<?php echo f::draw_fonticon('icon-pause'); ?> <?php echo t('title_disabled', 'Disabled'); ?>
+								<?= f::draw_fonticon('icon-pause') ?> <?= t('title_disabled', 'Disabled') ?>
 							</span>
 						<?php } ?>
 						<?php if (!empty($customer->data['blocked_until']) && strtotime($customer->data['blocked_until']) > time()) { ?>
 							<span style="margin-inline-start: 0.5em; padding: 0.15em 0.6em; border-radius: 999px; background: rgba(220, 53, 69, 0.15); color: #dc3545; font-size: 0.75em; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">
-								<?php echo f::draw_fonticon('icon-lock'); ?> <?php echo t('title_blocked', 'Blocked'); ?> <?php echo f::datetime_when($customer->data['blocked_until']); ?>
+								<?= f::draw_fonticon('icon-lock') ?> <?= t('title_blocked', 'Blocked') ?> <?= f::datetime_when($customer->data['blocked_until']) ?>
 							</span>
 						<?php } ?>
 					</div>
 				</div>
 				<div class="actions">
-					<?php echo f::form_begin('sign_in_as_customer', 'post', document::href_ilink(__APP__.'/edit_customer', ['customer_id' => (int)$customer->data['id']]), false, ['style' => 'display: inline-block; margin: 0;']); ?>
-					<?php echo f::form_button('sign_in', ['true', t('text_sign_in_as_customer', 'Sign in as customer')], 'submit', ['class' => 'btn btn-default'], 'icon-key'); ?>
-					<?php echo f::form_end(); ?>
-					<a class="btn btn-default" href="<?php echo document::href_ilink(__APP__.'/edit_customer', ['customer_id' => (int)$customer->data['id']]); ?>">
-						<?php echo f::draw_fonticon('edit'); ?> <?php echo t('title_edit_profile', 'Edit Profile'); ?>
+					<?= f::form_begin('sign_in_as_customer', 'post', document::href_ilink(__APP__.'/edit_customer', ['customer_id' => (int)$customer->data['id']]), false, ['style' => 'display: inline-block; margin: 0;']) ?>
+					<?= f::form_button('sign_in', ['true', t('text_sign_in_as_customer', 'Sign in as customer')], 'submit', ['class' => 'btn btn-default'], 'icon-key') ?>
+					<?= f::form_end() ?>
+					<a class="btn btn-default" href="<?= document::href_ilink(__APP__.'/edit_customer', ['customer_id' => (int)$customer->data['id']]) ?>">
+						<?= f::draw_fonticon('edit') ?> <?= t('title_edit_profile', 'Edit Profile') ?>
 					</a>
 				</div>
 			</div>
@@ -800,22 +800,22 @@
 			<div class="tags-row">
 				<?php foreach (f::string_split((string)$customer->data['tags']) as $tag) { ?>
 				<span class="tag-chip">
-					<?php echo f::draw_fonticon('icon-tag'); ?> <?php echo f::escape_html($tag); ?>
+					<?= f::draw_fonticon('icon-tag') ?> <?= f::escape_html($tag) ?>
 				</span>
 				<?php } ?>
 
 				<?php if (!empty($customer->data['tags'])) { ?>
-				<span style="opacity: 0.55; font-size: 0.85em;"><?php echo t('text_no_tags', 'No tags'); ?></span>
+				<span style="opacity: 0.55; font-size: 0.85em;"><?= t('text_no_tags', 'No tags') ?></span>
 				<?php } ?>
 
 				<details>
-					<summary><?php echo f::draw_fonticon('icon-add'); ?> <?php echo t('title_add_tags', 'Add tags'); ?></summary>
-					<?php echo f::form_begin('tags_form', 'post', '', false, ['class' => 'tag-form']); ?>
+					<summary><?= f::draw_fonticon('icon-add') ?> <?= t('title_add_tags', 'Add tags') ?></summary>
+					<?= f::form_begin('tags_form', 'post', '', false, ['class' => 'tag-form']) ?>
 						<div style="flex: 1; min-width: 200px;">
-							<?php echo f::form_input_tags('tags', $customer->data['tags'], [], $available_tags); ?>
+							<?= f::form_input_tags('tags', $customer->data['tags'], [], $available_tags) ?>
 						</div>
-						<?php echo f::form_button('save_tags', t('title_save', 'Save'), 'submit', ['class' => 'btn btn-primary']); ?>
-					<?php echo f::form_end(); ?>
+						<?= f::form_button('save_tags', t('title_save', 'Save'), 'submit', ['class' => 'btn btn-primary']) ?>
+					<?= f::form_end() ?>
 				</details>
 			</div>
 
@@ -824,33 +824,33 @@
 		<div class="stat-strip">
 
 			<div class="stat-card">
-				<span class="stat-icon"><?php echo f::draw_fonticon('icon-orders'); ?></span>
-				<span class="label"><?php echo t('title_orders', 'Orders'); ?></span>
-				<span class="value"><?php echo (int)$orders_stats['total_count']; ?></span>
+				<span class="stat-icon"><?= f::draw_fonticon('icon-orders') ?></span>
+				<span class="label"><?= t('title_orders', 'Orders') ?></span>
+				<span class="value"><?= (int)$orders_stats['total_count'] ?></span>
 				<?php if ($orders_stats['is_repeat']) { ?>
-					<span class="badge-repeat"><?php echo f::draw_fonticon('icon-check'); ?> <?php echo t('text_repeat_customer', 'Repeat'); ?></span>
+					<span class="badge-repeat"><?= f::draw_fonticon('icon-check') ?> <?= t('text_repeat_customer', 'Repeat') ?></span>
 				<?php } else { ?>
-					<span class="badge-repeat" style="background: rgba(151, 163, 181, 0.15); color: #97a3b5;"><?php echo t('text_one_shot_customer', 'One-shot'); ?></span>
+					<span class="badge-repeat" style="background: rgba(151, 163, 181, 0.15); color: #97a3b5;"><?= t('text_one_shot_customer', 'One-shot') ?></span>
 				<?php } ?>
 			</div>
 
 			<div class="stat-card">
-				<span class="stat-icon"><?php echo f::draw_fonticon('icon-currency'); ?></span>
-				<span class="label"><?php echo t('title_total_sales', 'Total Sales'); ?></span>
-				<span class="value"><?php echo currency::format($orders_stats['total_sales'], false, settings::get('store_currency_code')); ?></span>
+				<span class="stat-icon"><?= f::draw_fonticon('icon-currency') ?></span>
+				<span class="label"><?= t('title_total_sales', 'Total Sales') ?></span>
+				<span class="value"><?= currency::format($orders_stats['total_sales'], false, settings::get('store_currency_code')) ?></span>
 			</div>
 
 			<div class="stat-card">
-				<span class="stat-icon"><?php echo f::draw_fonticon('icon-chart'); ?></span>
-				<span class="label"><?php echo t('title_average_order_value', 'Average Order Value'); ?></span>
-				<span class="value"><?php echo currency::format($orders_stats['aov'], false, settings::get('store_currency_code')); ?></span>
+				<span class="stat-icon"><?= f::draw_fonticon('icon-chart') ?></span>
+				<span class="label"><?= t('title_average_order_value', 'Average Order Value') ?></span>
+				<span class="value"><?= currency::format($orders_stats['aov'], false, settings::get('store_currency_code')) ?></span>
 			</div>
 
 			<div class="stat-card">
-				<span class="stat-icon"><?php echo f::draw_fonticon('icon-clock'); ?></span>
-				<span class="label"><?php echo t('title_last_order', 'Last Order'); ?></span>
+				<span class="stat-icon"><?= f::draw_fonticon('icon-clock') ?></span>
+				<span class="label"><?= t('title_last_order', 'Last Order') ?></span>
 				<span class="value" style="font-size: 1em;">
-					<?php echo $orders_stats['last_order_at'] ? f::datetime_when($orders_stats['last_order_at']) : '<em>'. t('title_never', 'Never') .'</em>'; ?>
+					<?= $orders_stats['last_order_at'] ? f::datetime_when($orders_stats['last_order_at']) : '<em>'. t('title_never', 'Never') .'</em>' ?>
 				</span>
 			</div>
 
@@ -863,58 +863,58 @@
 				<div class="card meta-card">
 					<div class="card-header">
 						<div class="card-title">
-							<?php echo t('title_details', 'Details'); ?>
+							<?= t('title_details', 'Details') ?>
 						</div>
 					</div>
 					<div class="card-body">
 						<dl>
-							<dt><?php echo t('title_customer_group', 'Customer Group'); ?></dt>
-							<dd><?php echo f::escape_html($group_name) ?: '—'; ?></dd>
+							<dt><?= t('title_customer_group', 'Customer Group') ?></dt>
+							<dd><?= f::escape_html($group_name) ?: '—' ?></dd>
 
-							<dt><?php echo t('title_language', 'Language'); ?></dt>
-							<dd><?php echo f::escape_html($customer->data['language_code'] ?: '—'); ?></dd>
+							<dt><?= t('title_language', 'Language') ?></dt>
+							<dd><?= f::escape_html($customer->data['language_code'] ?: '—') ?></dd>
 
-							<dt><?php echo t('title_newsletter', 'Newsletter'); ?></dt>
+							<dt><?= t('title_newsletter', 'Newsletter') ?></dt>
 							<dd>
 								<?php if (!empty($customer->data['newsletter'])) { ?>
-									<span style="color: #21a261;"><?php echo f::draw_fonticon('icon-check'); ?> <?php echo t('title_subscribed', 'Subscribed'); ?></span>
+									<span style="color: #21a261;"><?= f::draw_fonticon('icon-check') ?> <?= t('title_subscribed', 'Subscribed') ?></span>
 								<?php } else { ?>
-									<span style="opacity: 0.6;"><?php echo t('title_not_subscribed', 'Not subscribed'); ?></span>
+									<span style="opacity: 0.6;"><?= t('title_not_subscribed', 'Not subscribed') ?></span>
 								<?php } ?>
 							</dd>
 
-							<dt><?php echo t('title_two_factor_authentication', '2FA'); ?></dt>
+							<dt><?= t('title_two_factor_authentication', '2FA') ?></dt>
 							<dd>
 								<?php if (!empty($customer->data['two_factor_auth'])) { ?>
-									<span style="color: #21a261;"><?php echo f::draw_fonticon('icon-lock'); ?> <?php echo t('title_enabled', 'Enabled'); ?></span>
+									<span style="color: #21a261;"><?= f::draw_fonticon('icon-lock') ?> <?= t('title_enabled', 'Enabled') ?></span>
 								<?php } else { ?>
-									<span style="opacity: 0.6;"><?php echo t('title_disabled', 'Disabled'); ?></span>
+									<span style="opacity: 0.6;"><?= t('title_disabled', 'Disabled') ?></span>
 								<?php } ?>
 							</dd>
 
-							<dt><?php echo t('title_last_login', 'Last Login'); ?></dt>
+							<dt><?= t('title_last_login', 'Last Login') ?></dt>
 							<dd>
 								<?php if (!empty($customer->data['last_login'])) { ?>
-									<?php echo f::datetime_when($customer->data['last_login']); ?>
+									<?= f::datetime_when($customer->data['last_login']) ?>
 									<?php if (!empty($customer->data['last_ip_address'])) { ?>
-										<div style="font-size: 0.85em; opacity: 0.7;"><tt><?php echo f::escape_html($customer->data['last_ip_address']); ?></tt> <?php echo f::escape_html($customer->data['last_hostname']); ?></div>
+										<div style="font-size: 0.85em; opacity: 0.7;"><tt><?= f::escape_html($customer->data['last_ip_address']) ?></tt> <?= f::escape_html($customer->data['last_hostname']) ?></div>
 									<?php } ?>
 								<?php } else { ?>
-									<em><?php echo t('title_never', 'Never'); ?></em>
+									<em><?= t('title_never', 'Never') ?></em>
 								<?php } ?>
 							</dd>
 
-							<dt><?php echo t('title_total_logins', 'Total Logins'); ?></dt>
-							<dd><?php echo (int)($customer->data['total_logins'] ?? 0); ?></dd>
+							<dt><?= t('title_total_logins', 'Total Logins') ?></dt>
+							<dd><?= (int)($customer->data['total_logins'] ?? 0) ?></dd>
 
-							<dt><?php echo t('title_known_ips', 'Known IPs'); ?></dt>
-							<dd style="font-size: 0.85em; word-break: break-word;"><?php echo f::escape_html($customer->data['known_ips'] ?: '—'); ?></dd>
+							<dt><?= t('title_known_ips', 'Known IPs') ?></dt>
+							<dd style="font-size: 0.85em; word-break: break-word;"><?= f::escape_html($customer->data['known_ips'] ?: '—') ?></dd>
 
-							<dt><?php echo t('title_registered', 'Registered'); ?></dt>
-							<dd><?php echo f::datetime_when($customer->data['created_at']); ?></dd>
+							<dt><?= t('title_registered', 'Registered') ?></dt>
+							<dd><?= f::datetime_when($customer->data['created_at']) ?></dd>
 
-							<dt><?php echo t('title_updated', 'Updated'); ?></dt>
-							<dd><?php echo !empty($customer->data['updated_at']) ? f::datetime_when($customer->data['updated_at']) : '—'; ?></dd>
+							<dt><?= t('title_updated', 'Updated') ?></dt>
+							<dd><?= !empty($customer->data['updated_at']) ? f::datetime_when($customer->data['updated_at']) : '—' ?></dd>
 						</dl>
 					</div>
 				</div>
@@ -922,39 +922,39 @@
 				<div class="card">
 					<div class="card-header">
 						<div class="card-title">
-							<?php echo t('title_favourites', 'Favourites'); ?>
+							<?= t('title_favourites', 'Favourites') ?>
 							<?php if (count($favorites)) { ?>
-							<small style="opacity: 0.6; font-weight: 400;">(<?php echo count($favorites); ?>)</small>
+							<small style="opacity: 0.6; font-weight: 400;">(<?= count($favorites) ?>)</small>
 							<?php } ?>
 						</div>
 					</div>
 
 					<?php if (empty($favorites)) { ?>
 						<div class="card-body empty-state">
-							<?php echo f::draw_fonticon('icon-heart'); ?>
-							<div><?php echo t('text_no_favorites', 'No favourites yet.'); ?></div>
+							<?= f::draw_fonticon('icon-heart') ?>
+							<div><?= t('text_no_favorites', 'No favourites yet.') ?></div>
 						</div>
 					<?php } else { ?>
 						<div style="padding: 0.5em 1.5em;">
 							<?php foreach (array_slice($favorites, 0, 5) as $fav) { ?>
 								<div style="display: flex; justify-content: space-between; padding: 0.5em 0; border-bottom: 1px solid var(--default-border-color);">
-									<a class="link" href="<?php echo document::href_ilink('catalog/edit_product', ['product_id' => (int)$fav['product_id']]); ?>">
-										<?php echo f::escape_html(is_array($fav['name']) ? implode(' / ', array_filter((array)$fav['name'])) : $fav['name']); ?>
+									<a class="link" href="<?= document::href_ilink('catalog/edit_product', ['product_id' => (int)$fav['product_id']]) ?>">
+										<?= f::escape_html(is_array($fav['name']) ? implode(' / ', array_filter((array)$fav['name'])) : $fav['name']) ?>
 									</a>
-									<small style="opacity: 0.55;"><?php echo f::datetime_when($fav['added_at']); ?></small>
+									<small style="opacity: 0.55;"><?= f::datetime_when($fav['added_at']) ?></small>
 								</div>
 							<?php } ?>
 						</div>
 						<?php if (count($favorites) > 5) { ?>
 							<details style="padding: 0 1.5em 1em;">
-								<summary style="cursor: pointer; font-size: 0.85em; opacity: 0.7;"><?php echo t('title_show_all', 'Show all') .' ('. count($favorites) .')'; ?></summary>
+								<summary style="cursor: pointer; font-size: 0.85em; opacity: 0.7;"><?= t('title_show_all', 'Show all') .' ('. count($favorites) .')' ?></summary>
 								<div style="margin-top: 0.5em;">
 									<?php foreach (array_slice($favorites, 5) as $fav) { ?>
 										<div style="display: flex; justify-content: space-between; padding: 0.5em 0; border-bottom: 1px solid var(--default-border-color);">
-											<a class="link" href="<?php echo document::href_ilink('catalog/edit_product', ['product_id' => (int)$fav['product_id']]); ?>">
-												<?php echo f::escape_html(is_array($fav['name']) ? implode(' / ', array_filter((array)$fav['name'])) : $fav['name']); ?>
+											<a class="link" href="<?= document::href_ilink('catalog/edit_product', ['product_id' => (int)$fav['product_id']]) ?>">
+												<?= f::escape_html(is_array($fav['name']) ? implode(' / ', array_filter((array)$fav['name'])) : $fav['name']) ?>
 											</a>
-											<small style="opacity: 0.55;"><?php echo f::datetime_when($fav['added_at']); ?></small>
+											<small style="opacity: 0.55;"><?= f::datetime_when($fav['added_at']) ?></small>
 										</div>
 									<?php } ?>
 								</div>
@@ -965,40 +965,40 @@
 
 				<div class="card">
 					<div class="card-header">
-						<div class="card-title"><?php echo t('title_recent_orders', 'Recent Orders'); ?></div>
+						<div class="card-title"><?= t('title_recent_orders', 'Recent Orders') ?></div>
 						<?php if (count($orders) > 10) { ?>
 							<div class="card-action">
-								<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink('orders/orders', ['query' => $customer->data['email']]); ?>"><?php echo t('title_see_all', 'See all'); ?></a>
+								<a class="btn btn-default btn-sm" href="<?= document::href_ilink('orders/orders', ['query' => $customer->data['email']]) ?>"><?= t('title_see_all', 'See all') ?></a>
 							</div>
 						<?php } ?>
 					</div>
 
 					<?php if (empty($orders)) { ?>
 						<div class="card-body empty-state">
-							<?php echo f::draw_fonticon('icon-orders'); ?>
-							<div><?php echo t('text_no_orders_yet', 'No orders yet.'); ?></div>
+							<?= f::draw_fonticon('icon-orders') ?>
+							<div><?= t('text_no_orders_yet', 'No orders yet.') ?></div>
 						</div>
 					<?php } else { ?>
 						<table class="table data-table">
 							<thead>
 								<tr>
-									<th class="main"><?php echo t('title_order_no', 'Order No'); ?></th>
-									<th><?php echo t('title_status', 'Status'); ?></th>
-									<th class="text-end"><?php echo t('title_total', 'Total'); ?></th>
-									<th class="text-end"><?php echo t('title_created', 'Created'); ?></th>
+									<th class="main"><?= t('title_order_no', 'Order No') ?></th>
+									<th><?= t('title_status', 'Status') ?></th>
+									<th class="text-end"><?= t('title_total', 'Total') ?></th>
+									<th class="text-end"><?= t('title_created', 'Created') ?></th>
 								</tr>
 							</thead>
 							<tbody>
 								<?php foreach (array_slice($orders, 0, 10) as $order) { ?>
 								<tr>
 									<td>
-										<a class="link" href="<?php echo document::href_ilink('orders/order', ['order_id' => (int)$order['id']]); ?>">
-											#<?php echo (int)$order['no']; ?>
+										<a class="link" href="<?= document::href_ilink('orders/order', ['order_id' => (int)$order['id']]) ?>">
+											#<?= (int)$order['no'] ?>
 										</a>
 									</td>
-									<td><?php echo !empty($order['order_status_id']) ? f::escape_html(reference::order_status((int)$order['order_status_id'])->name ?? '') : '-'; ?></td>
-									<td class="text-end"><?php echo currency::format($order['total'], false, $order['currency_code'] ?? settings::get('store_currency_code')); ?></td>
-									<td><?php echo f::datetime_when($order['created_at']); ?></td>
+									<td><?= !empty($order['order_status_id']) ? f::escape_html(reference::order_status((int)$order['order_status_id'])->name ?? '') : '-' ?></td>
+									<td class="text-end"><?= currency::format($order['total'], false, $order['currency_code'] ?? settings::get('store_currency_code')) ?></td>
+									<td><?= f::datetime_when($order['created_at']) ?></td>
 								</tr>
 								<?php } ?>
 							</tbody>
@@ -1013,7 +1013,7 @@
 				<div class="card note-composer">
 					<div class="card-header">
 						<div class="card-title">
-							<?php echo t('title_quick_note', 'Quick Note'); ?>
+							<?= t('title_quick_note', 'Quick Note') ?>
 						</div>
 					</div>
 
@@ -1021,7 +1021,7 @@
 
 						<div class="notes">
 							<?php if (empty($notes)) { ?>
-								<div class="note-journal-empty"><?php echo t('text_no_notes_yet', 'No notes yet. Add the first one below.'); ?></div>
+								<div class="note-journal-empty"><?= t('text_no_notes_yet', 'No notes yet. Add the first one below.') ?></div>
 							<?php } else { ?>
 								<?php foreach ($notes as $note) {
 									$_author = match($note['author'] ?? 'staff') {
@@ -1031,31 +1031,31 @@
 									};
 								?>
 								<div class="note-entry">
-									<div class="note-entry-avatar"><?php echo f::draw_fonticon('icon-note'); ?></div>
+									<div class="note-entry-avatar"><?= f::draw_fonticon('icon-note') ?></div>
 									<div class="note-entry-body">
 										<div class="note-entry-meta">
-											<span class="note-entry-author"><?php echo f::escape_html($_author); ?></span>
-											<span class="note-entry-time"><?php echo f::datetime_when($note['created_at']); ?></span>
+											<span class="note-entry-author"><?= f::escape_html($_author) ?></span>
+											<span class="note-entry-time"><?= f::datetime_when($note['created_at']) ?></span>
 										</div>
-										<div class="note-entry-text"><?php echo f::escape_html($note['text']); ?></div>
+										<div class="note-entry-text"><?= f::escape_html($note['text']) ?></div>
 									</div>
-									<?php echo f::form_begin('delete_note_form_'. (int)$note['id'], 'post', '', false, ['class' => 'note-entry-delete']); ?>
-										<?php echo f::form_input_hidden('note_id', (int)$note['id']); ?>
-										<?php echo f::form_button('delete_note', f::draw_fonticon('icon-trash'), 'submit', ['class' => 'btn btn-default btn-sm', 'title' => t('title_delete', 'Delete'), 'onclick' => "return confirm('". f::escape_js(t('text_confirm_delete_note', 'Delete this note?')) ."')"]); ?>
-									<?php echo f::form_end(); ?>
+									<?= f::form_begin('delete_note_form_'. (int)$note['id'], 'post', '', false, ['class' => 'note-entry-delete']) ?>
+										<?= f::form_input_hidden('note_id', (int)$note['id']) ?>
+										<?= f::form_button('delete_note', f::draw_fonticon('icon-trash'), 'submit', ['class' => 'btn btn-default btn-sm', 'title' => t('title_delete', 'Delete'), 'onclick' => "return confirm('". f::escape_js(t('text_confirm_delete_note', 'Delete this note?')) ."')"]) ?>
+									<?= f::form_end() ?>
 								</div>
 								<?php } ?>
 							<?php } ?>
 						</div>
 
-						<?php echo f::form_begin('note_form', 'post', '', false); ?>
+						<?= f::form_begin('note_form', 'post', '', false) ?>
 							<label class="form-group">
-								<?php echo f::form_textarea('note_text', false, ['rows' => 3, 'placeholder' => f::escape_html(t('text_enter_note', 'Enter a note about this customer'))]); ?>
+								<?= f::form_textarea('note_text', false, ['rows' => 3, 'placeholder' => f::escape_html(t('text_enter_note', 'Enter a note about this customer'))]) ?>
 							</label>
 							<div class="text-end">
-								<?php echo f::form_button('add_note', t('title_add_note', 'Add Note'), 'submit', ['class' => 'btn btn-primary']); ?>
+								<?= f::form_button('add_note', t('title_add_note', 'Add Note'), 'submit', ['class' => 'btn btn-primary']) ?>
 							</div>
-						<?php echo f::form_end(); ?>
+						<?= f::form_end() ?>
 					</div>
 				</div>
 
@@ -1068,24 +1068,24 @@
 
 		<div class="card">
 			<div class="card-header">
-				<div class="card-title"><?php echo f::draw_fonticon('icon-event'); ?> <?php echo t('title_activity_timeline', 'Activity Timeline'); ?></div>
+				<div class="card-title"><?= f::draw_fonticon('icon-event') ?> <?= t('title_activity_timeline', 'Activity Timeline') ?></div>
 			</div>
 			<div class="card-body">
 
 				<?php if (empty($feed)) { ?>
 					<div class="empty-state">
-						<?php echo f::draw_fonticon('icon-event'); ?>
-						<div><?php echo t('text_no_activity', 'No activity yet.'); ?></div>
+						<?= f::draw_fonticon('icon-event') ?>
+						<div><?= t('text_no_activity', 'No activity yet.') ?></div>
 					</div>
 				<?php } else { ?>
 
 					<div class="feed-filter" id="feed-filter">
-						<button type="button" data-filter="all" class="active"><?php echo t('title_all', 'All'); ?></button>
-						<button type="button" data-filter="note"><?php echo f::draw_fonticon('icon-note'); ?> <?php echo t('title_notes', 'Notes'); ?></button>
-						<button type="button" data-filter="email"><?php echo f::draw_fonticon('icon-email'); ?> <?php echo t('title_emails', 'Emails'); ?></button>
-						<button type="button" data-filter="order"><?php echo f::draw_fonticon('icon-orders'); ?> <?php echo t('title_orders', 'Orders'); ?></button>
-						<button type="button" data-filter="login"><?php echo f::draw_fonticon('icon-login'); ?> <?php echo t('title_logins', 'Logins'); ?></button>
-						<button type="button" data-filter="tag"><?php echo f::draw_fonticon('icon-tag'); ?> <?php echo t('title_tags', 'Tags'); ?></button>
+						<button type="button" data-filter="all" class="active"><?= t('title_all', 'All') ?></button>
+						<button type="button" data-filter="note"><?= f::draw_fonticon('icon-note') ?> <?= t('title_notes', 'Notes') ?></button>
+						<button type="button" data-filter="email"><?= f::draw_fonticon('icon-email') ?> <?= t('title_emails', 'Emails') ?></button>
+						<button type="button" data-filter="order"><?= f::draw_fonticon('icon-orders') ?> <?= t('title_orders', 'Orders') ?></button>
+						<button type="button" data-filter="login"><?= f::draw_fonticon('icon-login') ?> <?= t('title_logins', 'Logins') ?></button>
+						<button type="button" data-filter="tag"><?= f::draw_fonticon('icon-tag') ?> <?= t('title_tags', 'Tags') ?></button>
 					</div>
 
 					<?php
@@ -1098,20 +1098,20 @@
 					?>
 					<?php foreach ($_buckets as $_bucket_key => $_bucket_items): ?>
 						<?php if (empty($_bucket_items)) continue; ?>
-						<div class="feed-day-header" data-bucket="<?php echo f::escape_attr($_bucket_key); ?>"><?php echo f::escape_html($_bucket_labels[$_bucket_key]); ?></div>
+						<div class="feed-day-header" data-bucket="<?= f::escape_attr($_bucket_key) ?>"><?= f::escape_html($_bucket_labels[$_bucket_key]) ?></div>
 						<?php foreach ($_bucket_items as $item): ?>
-							<div class="feed-entry" data-type="<?php echo f::escape_attr($item['type']); ?>">
-								<div class="feed-icon"><?php echo f::draw_fonticon($item['icon']); ?></div>
+							<div class="feed-entry" data-type="<?= f::escape_attr($item['type']) ?>">
+								<div class="feed-icon"><?= f::draw_fonticon($item['icon']) ?></div>
 								<div class="feed-body">
-									<div class="feed-title"><?php echo f::escape_html($item['title']); ?></div>
+									<div class="feed-title"><?= f::escape_html($item['title']) ?></div>
 									<?php if (!empty($item['body'])) { ?>
-										<p><?php echo f::escape_html(mb_substr((string)$item['body'], 0, 200)); ?><?php echo mb_strlen((string)$item['body']) > 200 ? '…' : ''; ?></p>
+										<p><?= f::escape_html(mb_substr((string)$item['body'], 0, 200)) ?><?= mb_strlen((string)$item['body']) > 200 ? '…' : '' ?></p>
 									<?php } ?>
 									<?php if (!empty($item['meta'])) { ?>
-										<div class="feed-meta"><?php echo f::escape_html($item['meta']); ?></div>
+										<div class="feed-meta"><?= f::escape_html($item['meta']) ?></div>
 									<?php } ?>
 								</div>
-								<div class="feed-time"><?php echo f::datetime_when($item['timestamp']); ?></div>
+								<div class="feed-time"><?= f::datetime_when($item['timestamp']) ?></div>
 							</div>
 						<?php endforeach; ?>
 					<?php endforeach; ?>

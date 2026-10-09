@@ -13,22 +13,22 @@
 
 <div id="modal-country-picker" class="modal fade" style="max-width: 640px; display: none;">
 
-	<button class="set-guest btn btn-default float-end" type="button"><?php echo t('text_set_as_guest', 'Set As Guest'); ?></button>
+	<button class="set-guest btn btn-default float-end" type="button"><?= t('text_set_as_guest', 'Set As Guest') ?></button>
 
-	<h2 style="margin-top: 0;"><?php echo t('title_country', 'Country'); ?></h2>
+	<h2 style="margin-top: 0;"><?= t('title_country', 'Country') ?></h2>
 
 	<div class="modal-body">
 		<label class="form-group">
-			<div class="form-label"><?php echo t('title_search', 'Search'); ?></div>
-			<?php echo f::form_input_search('query', true, ['placeholder' => f::escape_attr(t('title_search', 'Search'))]); ?>
+			<div class="form-label"><?= t('title_search', 'Search') ?></div>
+			<?= f::form_input_search('query', true, ['placeholder' => f::escape_attr(t('title_search', 'Search'))]) ?>
 		</label>
 
 		<div class="form-group results table-responsive">
 			<table class="table data-table">
 				<thead>
 					<tr>
-						<th class="main"><?php echo t('title_name', 'Name'); ?></th>
-						<th><?php echo t('title_code', 'Code'); ?></th>
+						<th class="main"><?= t('title_name', 'Name') ?></th>
+						<th><?= t('title_code', 'Code') ?></th>
 					</tr>
 				</thead>
 				<tbody></tbody>
@@ -50,7 +50,7 @@
 			type: 'get',
 			async: true,
 			cache: false,
-			url: '<?php echo document::ilink(__APP__.'/countries.json'); ?>?query=' + $(this).val(),
+			url: '<?= document::ilink(__APP__.'/countries.json') ?>?query=' + $(this).val(),
 			dataType: 'json',
 			beforeSend: function(jqXHR) {
 				jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'));
@@ -72,7 +72,7 @@
 					$('#modal-country-picker .results tbody').html([
 						'<tr>',
 						'	<td colspan="99">',
-						'		<em><?php echo f::escape_js(t('text_no_results', 'No results')); ?></em>',
+						'		<em><?= f::escape_js(t('text_no_results', 'No results')) ?></em>',
 						'	</td>',
 						'</tr>'
 					].join('\n'));
@@ -100,7 +100,7 @@
 
 		$(':input', $field).val('0').trigger('change');
 		$('.code', $field).text('');
-		$('.name', $field).text('(<?php echo f::escape_js(t('title_guest', 'Guest')); ?>)');
+		$('.name', $field).text('(<?= f::escape_js(t('title_guest', 'Guest')) ?>)');
 		$.litebox.close();
 	});
 </script>

@@ -12,24 +12,24 @@
 
 <div id="modal-product-picker" class="modal fade" style="max-width: 980px; display: none;">
 
-	<h2><?php echo t('title_products', 'Products'); ?></h2>
+	<h2><?= t('title_products', 'Products') ?></h2>
 
 	<div class="modal-body">
 		<label class="form-group">
-			<div class="form-label"><?php echo t('title_search', 'Search'); ?></div>
-			<?php echo f::form_input_text('query', true, ['placeholder' => f::escape_attr(t('title_search', 'Search')) , 'autocomplete' => 'off']); ?>
+			<div class="form-label"><?= t('title_search', 'Search') ?></div>
+			<?= f::form_input_text('query', true, ['placeholder' => f::escape_attr(t('title_search', 'Search')) , 'autocomplete' => 'off']) ?>
 		</label>
 
 		<table class="table data-table">
 			<thead>
 				<tr>
-					<th><?php echo t('title_id', 'ID'); ?></th>
-					<th class="main"><?php echo t('title_name', 'Name'); ?></th>
-					<th><?php echo t('title_stock_options', 'Stock Options'); ?></th>
-					<th><?php echo t('title_price', 'Price'); ?></th>
-					<th><?php echo t('title_in_stock', 'In Stock'); ?></th>
-					<th><?php echo t('title_reserved', 'Reserved'); ?></th>
-					<th><?php echo t('title_created_at', 'Created At'); ?></th>
+					<th><?= t('title_id', 'ID') ?></th>
+					<th class="main"><?= t('title_name', 'Name') ?></th>
+					<th><?= t('title_stock_options', 'Stock Options') ?></th>
+					<th><?= t('title_price', 'Price') ?></th>
+					<th><?= t('title_in_stock', 'In Stock') ?></th>
+					<th><?= t('title_reserved', 'Reserved') ?></th>
+					<th><?= t('title_created_at', 'Created At') ?></th>
 				</tr>
 			</thead>
 			<tbody></tbody>
@@ -56,7 +56,7 @@
 			type: 'get',
 			async: true,
 			cache: false,
-			url: '<?php echo document::ilink('catalog/products.json'); ?>?query=' + $(this).val(),
+			url: '<?= document::ilink('catalog/products.json') ?>?query=' + $(this).val(),
 			dataType: 'json',
 			beforeSend: function(jqXHR) {
 				jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'));
@@ -70,7 +70,7 @@
 					var $output = $([
 						'<tr>',
 						'  <td colspan="99">',
-						'    <em><?php echo f::escape_js(t('text_no_results', 'No results')); ?></em>',
+						'    <em><?= f::escape_js(t('text_no_results', 'No results')) ?></em>',
 						'  </td>',
 						'</tr>'
 					].join('\n'));
@@ -106,12 +106,12 @@
 
 		let $row = $(this).closest('tr'),
 			callback = $.litebox.current().$currentTarget.data('callback'),
-			expand = <?php echo (isset($_GET['collect']) && array_intersect(['price', 'stock_option'], $_GET['collect'])) ? 'true' : 'false'; ?>,
+			expand = <?= (isset($_GET['collect']) && array_intersect(['price', 'stock_option'], $_GET['collect'])) ? 'true' : 'false' ?>,
 			product = $row.data();
 
 		if (expand || $row.data('stock_option')) {
 			callback = function(product){
-				$.litebox('<?php echo document::ilink(__APP__.'/product_picker_configure', ['callback' => @$_GET['callback']]);?>&product_id='+ product.id);
+				$.litebox('<?= document::ilink(__APP__.'/product_picker_configure', ['callback' => @$_GET['callback']]) ?>&product_id='+ product.id);
 			};
 		}
 

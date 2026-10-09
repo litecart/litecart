@@ -300,9 +300,9 @@
 </style>
 
 <nav class="tabs">
-	<a class="tab-item active" data-toggle="tab" href="#tab-system"><?php echo t('title_system', 'System'); ?></a>
-	<a class="tab-item" data-toggle="tab" href="#tab-php-ini"><?php echo t('title_php_ini', 'PHP.ini'); ?></a>
-	<a class="tab-item" data-toggle="tab" href="#tab-errors"><?php echo t('title_error_log', 'Error Log'); ?></a>
+	<a class="tab-item active" data-toggle="tab" href="#tab-system"><?= t('title_system', 'System') ?></a>
+	<a class="tab-item" data-toggle="tab" href="#tab-php-ini"><?= t('title_php_ini', 'PHP.ini') ?></a>
+	<a class="tab-item" data-toggle="tab" href="#tab-errors"><?= t('title_error_log', 'Error Log') ?></a>
 </nav>
 
 <div class="tab-contents">
@@ -310,7 +310,7 @@
 		<div id="box-about" class="card">
 			<div class="card-header">
 				<div class="card-title">
-					<?php echo PLATFORM_NAME; ?> <?php echo PLATFORM_VERSION; ?>
+					<?= PLATFORM_NAME ?> <?= PLATFORM_VERSION ?>
 				</div>
 			</div>
 
@@ -323,15 +323,15 @@
 				<tbody>
 					<tr>
 						<th>System Path</th>
-						<td><?php echo FS_DIR_APP; ?></td>
+						<td><?= FS_DIR_APP ?></td>
 					</tr>
 					<tr>
 						<th>Document Root</th>
-						<td><?php echo DOCUMENT_ROOT; ?></td>
+						<td><?= DOCUMENT_ROOT ?></td>
 					</tr>
 					<tr>
 						<th>Web Path</th>
-						<td><?php echo WS_DIR_APP; ?></td>
+						<td><?= WS_DIR_APP ?></td>
 					</tr>
 				</tbody>
 			</table>
@@ -345,39 +345,39 @@
 				<tbody>
 					<tr>
 						<th>Name</th>
-						<td><?php echo $machine['name']; ?></td>
+						<td><?= $machine['name'] ?></td>
 					</tr>
 					<tr>
 						<th>IP Address</th>
-						<td><?php echo $machine['ip_address']; ?></td>
+						<td><?= $machine['ip_address'] ?></td>
 					</tr>
 					<tr>
 						<th>Hostname</th>
-						<td><?php echo $machine['hostname']; ?></td>
+						<td><?= $machine['hostname'] ?></td>
 					</tr>
 					<tr>
 						<th>Operating System</th>
-						<td><?php echo $machine['os']['name']; ?></td>
+						<td><?= $machine['os']['name'] ?></td>
 					</tr>
 					<tr>
 						<th>Operating System Version</th>
-						<td><?php echo $machine['os']['version']; ?></td>
+						<td><?= $machine['os']['version'] ?></td>
 					</tr>
 					<tr>
 						<th>System Architecture</th>
-						<td><?php echo $machine['architecture']; ?></td>
+						<td><?= $machine['architecture'] ?></td>
 					</tr>
 					<tr>
 						<th>CPU Usage</th>
-						<td><?php echo !empty($machine['cpu_usage']) ? '<meter class="cpu-usage" value="'. (float)$machine['cpu_usage'] .'" max="100" min="0" high="30" low="10" optimum="5"></meter>' : '<em>n/a</em>'; ?></td>
+						<td><?= !empty($machine['cpu_usage']) ? '<meter class="cpu-usage" value="'. (float)$machine['cpu_usage'] .'" max="100" min="0" high="30" low="10" optimum="5"></meter>' : '<em>n/a</em>' ?></td>
 					</tr>
 					<tr>
 						<th>Memory Usage</th>
-						<td><?php echo !empty($machine['memory_usage']) ? '<meter class="memory-usage" value="'. (float)$machine['memory_usage'] .'" max="100" min="0" high="30" low="10" optimum="5"></meter>' : '<em>n/a</em>'; ?></td>
+						<td><?= !empty($machine['memory_usage']) ? '<meter class="memory-usage" value="'. (float)$machine['memory_usage'] .'" max="100" min="0" high="30" low="10" optimum="5"></meter>' : '<em>n/a</em>' ?></td>
 					</tr>
 					<tr>
 						<th>Uptime</th>
-						<td><?php echo $uptime ?? '<em>n/a</em>'; ?></td>
+						<td><?= $uptime ?? '<em>n/a</em>' ?></td>
 					</tr>
 				</tbody>
 			</table>
@@ -391,19 +391,19 @@
 				<tbody>
 					<tr>
 						<th>Daemon</th>
-						<td><?php echo $web_server['name'] ?? '<em>Unknown</em>'; ?></td>
+						<td><?= $web_server['name'] ?? '<em>Unknown</em>' ?></td>
 					</tr>
 					<tr>
 						<th>SAPI</th>
-						<td><?php echo $web_server['sapi'] ?? '<em>Unknown</em>'; ?></td>
+						<td><?= $web_server['sapi'] ?? '<em>Unknown</em>' ?></td>
 					</tr>
 					<tr>
 						<th>Current User</th>
-						<td><?php echo $web_server['current_user'] ?? '<em>Unknown</em>'; ?></td>
+						<td><?= $web_server['current_user'] ?? '<em>Unknown</em>' ?></td>
 					</tr>
 					<tr>
 						<th>Enabled Modules</th>
-						<td><?php echo !empty($web_server['loaded_modules']) ? implode(', ', $web_server['loaded_modules']) : '<em>n/a</em>'; ?></td>
+						<td><?= !empty($web_server['loaded_modules']) ? implode(', ', $web_server['loaded_modules']) : '<em>n/a</em>' ?></td>
 					</tr>
 				</tbody>
 			</table>
@@ -418,27 +418,27 @@
 				<tbody>
 					<tr>
 						<th>Version</th>
-						<td><?php echo $php['version']; ?></td>
+						<td><?= $php['version'] ?></td>
 					</tr>
 					<tr>
 						<th>Configuration File</th>
-						<td><?php echo $php['config_path'] ?? '<em>Unknown</em>'; ?></td>
+						<td><?= $php['config_path'] ?? '<em>Unknown</em>' ?></td>
 					</tr>
 					<tr>
 						<th>Whoami</th>
-						<td><?php echo $php['whoami'] ?? '<em>Unknown</em>'; ?></td>
+						<td><?= $php['whoami'] ?? '<em>Unknown</em>' ?></td>
 					</tr>
 					<tr>
 						<th>PHP Extensions</th>
-						<td style="columns: 100px auto;"><div><?php echo !empty($php['loaded_extensions']) ? implode('</div><div>', $php['loaded_extensions']) : '<em>None</em>'; ?></div></td>
+						<td style="columns: 100px auto;"><div><?= !empty($php['loaded_extensions']) ? implode('</div><div>', $php['loaded_extensions']) : '<em>None</em>' ?></div></td>
 					</tr>
 					<tr>
 						<th>Disabled PHP Functions</th>
-						<td><?php echo !empty($php['disabled_functions']) ? implode(', ', $php['disabled_functions']) : '<em>None</em>'; ?></td>
+						<td><?= !empty($php['disabled_functions']) ? implode(', ', $php['disabled_functions']) : '<em>None</em>' ?></td>
 					</tr>
 					<tr>
 						<th>Memory Limit</th>
-						<td><?php echo ($php['memory_limit'] ?? '<em>n/a</em>'); ?></td>
+						<td><?= ($php['memory_limit'] ?? '<em>n/a</em>') ?></td>
 					</tr>
 				</tbody>
 			</table>
@@ -452,27 +452,27 @@
 				<tbody>
 					<tr>
 						<th>Server Name</th>
-						<td><?php echo $database['name'] ?? '-'; ?></td>
+						<td><?= $database['name'] ?? '-' ?></td>
 					</tr>
 					<tr>
 						<th>Client Library</th>
-						<td><?php echo $database['library'] ?? '-'; ?></td>
+						<td><?= $database['library'] ?? '-' ?></td>
 					</tr>
 					<tr>
 						<th>Hostname</th>
-						<td><?php echo $database['hostname']; ?></td>
+						<td><?= $database['hostname'] ?></td>
 					</tr>
 					<tr>
 						<th>User</th>
-						<td><?php echo $database['user']; ?></td>
+						<td><?= $database['user'] ?></td>
 					</tr>
 					<tr>
 						<th>Database</th>
-						<td><?php echo $database['database']; ?></td>
+						<td><?= $database['database'] ?></td>
 					</tr>
 					<tr>
 						<th>Variables</th>
-						<td><pre><?php echo f::format_json($database['variables']); ?></pre></td>
+						<td><pre><?= f::format_json($database['variables']) ?></pre></td>
 					</tr>
 				</tbody>
 			</table>
@@ -483,28 +483,28 @@
 		<div class="card">
 			<div class="card-header">
 				<div class="card-title">
-					<?php echo t('title_php_configuration', 'PHP Configuration'); ?>
+					<?= t('title_php_configuration', 'PHP Configuration') ?>
 				</div>
 				<div>&nbsp;</div>
 			</div>
 
 			<div class="card-action">
-				<?php echo f::form_input_search('filter', true, ['placeholder' => t('title_filter', 'Filter')]); ?>
+				<?= f::form_input_search('filter', true, ['placeholder' => t('title_filter', 'Filter')]) ?>
 			</div>
 
 			<table id="php-config" class="table data-table">
 				<thead>
 					<tr>
-						<th><?php echo t('title_setting', 'Setting'); ?></th>
-						<th><?php echo t('title_value', 'Value'); ?></th>
+						<th><?= t('title_setting', 'Setting') ?></th>
+						<th><?= t('title_value', 'Value') ?></th>
 					</tr>
 				</thead>
 
 				<tbody>
 					<?php foreach ($php['ini'] as $key => $value) { ?>
 					<tr>
-						<td><tt><?php echo f::escape_html($key); ?></tt></td>
-						<td><?php echo f::escape_html($value); ?></td>
+						<td><tt><?= f::escape_html($key) ?></tt></td>
+						<td><?= f::escape_html($value) ?></td>
 					</tr>
 					<?php } ?>
 				</tbody>
@@ -516,36 +516,36 @@
 		<div id="box-error-log" class="card">
 			<div class="card-header">
 				<div class="card-title">
-					<?php echo t('title_error_log', 'Error Log'); ?>
+					<?= t('title_error_log', 'Error Log') ?>
 				</div>
 			</div>
 
-			<?php echo f::form_begin('errors_form', 'post'); ?>
+			<?= f::form_begin('errors_form', 'post') ?>
 
 				<div class="card-action">
-					<?php echo f::form_button('clear_all', t('title_clear_all', 'Clear All'), 'submit', [], 'icon-broom'); ?>
+					<?= f::form_button('clear_all', t('title_clear_all', 'Clear All'), 'submit', [], 'icon-broom') ?>
 				</div>
 
 				<table class="table data-table">
 					<thead>
 						<tr>
-							<th><?php echo f::draw_fonticon('icon-square-check checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
-							<th class="main"><?php echo t('title_error', 'Error'); ?></th>
-							<th><?php echo t('title_occurrences', 'Occurrences'); ?></th>
-							<th><?php echo t('title_last_occurrence', 'Last Occurrence'); ?></th>
+							<th class="text-center"><?= f::draw_fonticon('icon-square-check checkbox-toggle', 'data-toggle="checkbox-toggle"') ?></th>
+							<th class="main"><?= t('title_error', 'Error') ?></th>
+							<th><?= t('title_occurrences', 'Occurrences') ?></th>
+							<th><?= t('title_last_occurrence', 'Last Occurrence') ?></th>
 						</tr>
 					</thead>
 
 					<tbody>
 						<?php foreach ($errors as $error) { ?>
-						<tr<?php echo $error['critical'] ? ' class="critical"' : ''; ?>>
-							<td><?php echo f::form_checkbox('errors[]', $error['error']); ?></td>
+						<tr<?= $error['critical'] ? ' class="critical"' : '' ?>>
+							<td><?= f::form_checkbox('errors[]', $error['error']) ?></td>
 							<td style="white-space: normal;">
-								<?php echo f::escape_html($error['error']); ?><br>
-								<div class="backtrace"><?php echo f::escape_html($error['backtrace']); ?></div>
+								<?= f::escape_html($error['error']) ?><br>
+								<div class="backtrace"><?= f::escape_html($error['backtrace']) ?></div>
 							</td>
-							<td class="text-center"><?php echo $error['occurrences']; ?></td>
-							<td><?php echo f::datetime_when($error['last_occurrence']); ?></td>
+							<td class="text-center"><?= $error['occurrences'] ?></td>
+							<td><?= f::datetime_when($error['last_occurrence']) ?></td>
 						</tr>
 						<?php } ?>
 					</tbody>
@@ -553,18 +553,18 @@
 
 				<div class="card-body">
 					<fieldset id="actions">
-						<legend><?php echo t('title_with_selected', 'With Selected'); ?></legend>
-						<?php echo f::form_button_predefined('delete'); ?>
+						<legend><?= t('title_with_selected', 'With Selected') ?></legend>
+						<?= f::form_button_predefined('delete') ?>
 					</fieldset>
 				</div>
 
 				<?php if ($num_pages > 1) { ?>
 				<div class="card-body">
-					<?php echo f::draw_pagination($num_pages); ?>
+					<?= f::draw_pagination($num_pages) ?>
 				</div>
 				<?php } ?>
 
-			<?php echo f::form_end(); ?>
+			<?= f::form_end() ?>
 		</div>
 	</div>
 </div>

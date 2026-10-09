@@ -32,32 +32,32 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo t('title_suppliers', 'Suppliers'); ?>
+			<?= $app_icon ?> <?= t('title_suppliers', 'Suppliers') ?>
 		</div>
 	</div>
 
 	<div class="card-action">
-		<?php echo f::form_button_link(document::ilink(__APP__.'/edit_supplier'), t('title_create_new_supplier', 'Create New Supplier'), '', 'create'); ?>
+		<?= f::form_button_link(document::ilink(__APP__.'/edit_supplier'), t('title_create_new_supplier', 'Create New Supplier'), '', 'create') ?>
 	</div>
 
-	<?php echo f::form_begin('search_form', 'get'); ?>
+	<?= f::form_begin('search_form', 'get') ?>
 
 		<div class="card-filter">
-			<div class="expandable"><?php echo f::form_input_search('query', true, ['placeholder' => t('text_search_phrase_or_keyword', 'Search phrase or keyword')]); ?></div>
-			<?php echo f::form_button('filter', t('title_search', 'Search'), 'submit'); ?>
+			<div class="expandable"><?= f::form_input_search('query', true, ['placeholder' => t('text_search_phrase_or_keyword', 'Search phrase or keyword')]) ?></div>
+			<?= f::form_button('filter', t('title_search', 'Search'), 'submit') ?>
 		</div>
 
-	<?php echo f::form_end(); ?>
+	<?= f::form_end() ?>
 
-	<?php echo f::form_begin('suppliers_form', 'post'); ?>
+	<?= f::form_begin('suppliers_form', 'post') ?>
 
 		<table class="table data-table">
 			<thead>
 				<tr>
-					<th><?php echo f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
-					<th><?php echo t('title_id', 'ID'); ?></th>
-					<th><?php echo t('title_code', 'Code'); ?></th>
-					<th class="main"><?php echo t('title_name', 'Name'); ?></th>
+					<th class="text-center"><?= f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"') ?></th>
+					<th><?= t('title_id', 'ID') ?></th>
+					<th><?= t('title_code', 'Code') ?></th>
+					<th class="main"><?= t('title_name', 'Name') ?></th>
 					<th></th>
 				</tr>
 			</thead>
@@ -65,17 +65,17 @@
 			<tbody>
 				<?php foreach ($suppliers as $supplier) { ?>
 				<tr>
-					<td><?php echo f::form_checkbox('suppliers[]', $supplier['id']); ?></td>
-					<td><?php echo $supplier['id']; ?></td>
-					<td><?php echo $supplier['code']; ?></td>
+					<td><?= f::form_checkbox('suppliers[]', $supplier['id']) ?></td>
+					<td><?= $supplier['id'] ?></td>
+					<td><?= $supplier['code'] ?></td>
 					<td>
-						<a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_supplier', ['supplier_id' => $supplier['id']]); ?>">
-							<?php echo $supplier['name']; ?>
+						<a class="link" href="<?= document::href_ilink(__APP__.'/edit_supplier', ['supplier_id' => $supplier['id']]) ?>">
+							<?= $supplier['name'] ?>
 						</a>
 					</td>
 					<td>
-						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_supplier', ['supplier_id' => $supplier['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>">
-							<?php echo f::draw_fonticon('edit'); ?>
+						<a class="btn btn-default btn-sm" href="<?= document::href_ilink(__APP__.'/edit_supplier', ['supplier_id' => $supplier['id']]) ?>" title="<?= t('title_edit', 'Edit') ?>">
+							<?= f::draw_fonticon('edit') ?>
 						</a>
 					</td>
 				</tr>
@@ -85,17 +85,17 @@
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo t('title_suppliers', 'Suppliers'); ?>: <?php echo f::format_number($num_rows); ?>
+						<?= t('title_suppliers', 'Suppliers') ?>: <?= f::format_number($num_rows) ?>
 					</td>
 				</tr>
 			</tfoot>
 		</table>
 
-	<?php echo f::form_end(); ?>
+	<?= f::form_end() ?>
 
 	<?php if ($num_pages > 1) { ?>
 	<div class="card-footer">
-		<?php echo f::draw_pagination($num_pages); ?>
+		<?= f::draw_pagination($num_pages) ?>
 	</div>
 	<?php } ?>
 </div>

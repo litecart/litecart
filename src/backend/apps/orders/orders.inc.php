@@ -376,45 +376,45 @@ table .tag {
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo t('title_orders', 'Orders'); ?>
+			<?= $app_icon ?> <?= t('title_orders', 'Orders') ?>
 		</div>
 	</div>
 
 	<div class="card-action">
-		<?php echo f::form_button_link(document::ilink(__APP__.'/edit_order', ['redirect_url' => $_SERVER['REQUEST_URI']]), t('title_create_new_order', 'Create New Order'), '', 'create'); ?>
+		<?= f::form_button_link(document::ilink(__APP__.'/edit_order', ['redirect_url' => $_SERVER['REQUEST_URI']]), t('title_create_new_order', 'Create New Order'), '', 'create') ?>
 	</div>
 
-	<?php echo f::form_begin('search_form', 'get'); ?>
+	<?= f::form_begin('search_form', 'get') ?>
 		<div class="card-filter">
-			<?php echo f::form_select_optgroup('order_status_id', $order_status_options, true, ['style' => 'width: auto;']); ?>
-			<div class="expandable"><?php echo f::form_input_search('query', true, ['placeholder' => t('text_search_phrase_or_keyword', 'Search phrase or keyword')]); ?></div>
+			<?= f::form_select_optgroup('order_status_id', $order_status_options, true, ['style' => 'width: auto;']) ?>
+			<div class="expandable"><?= f::form_input_search('query', true, ['placeholder' => t('text_search_phrase_or_keyword', 'Search phrase or keyword')]) ?></div>
 			<div class="input-group" style="max-width: 380px;">
-				<?php echo f::form_input_date('date_from', true); ?>
+				<?= f::form_input_date('date_from', true) ?>
 				<span class="input-group-text"> - </span>
-				<?php echo f::form_input_date('date_to', true); ?>
+				<?= f::form_input_date('date_to', true) ?>
 			</div>
-			<?php echo f::form_button('filter', t('title_search', 'Search'), 'submit'); ?>
+			<?= f::form_button('filter', t('title_search', 'Search'), 'submit') ?>
 		</div>
-	<?php echo f::form_end(); ?>
+	<?= f::form_end() ?>
 
-	<?php echo f::form_begin('orders_form', 'post'); ?>
+	<?= f::form_begin('orders_form', 'post') ?>
 
 		<table class="table data-table">
 			<thead>
 				<tr>
-					<th><?php echo f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th class="text-center"><?= f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"') ?></th>
 					<th></th>
-					<th class="text-end"><?php echo t('title_id', 'ID'); ?></th>
-					<th data-sort="id" class="text-end"><?php echo t('title_order_no', 'Order No'); ?></th>
+					<th class="text-end"><?= t('title_id', 'ID') ?></th>
+					<th data-sort="id" class="text-end"><?= t('title_order_no', 'Order No') ?></th>
 					<th></th>
 					<th></th>
-					<th class="text-center" data-sort="order_status"><?php echo t('title_order_status', 'Order Status'); ?></th>
-					<th data-sort="customer" class="main"><?php echo t('title_customer', 'Customer'); ?></th>
-					<th><?php echo t('title_in_stock', 'In Stock'); ?></th>
-					<th data-sort="payment_method"><?php echo t('title_payment_method', 'Payment Method'); ?></th>
-					<th class="text-center"><?php echo t('title_amount', 'Amount'); ?></th>
-					<th class="text-center"><?php echo t('title_tax', 'Tax'); ?></th>
-					<th class="text-end" data-sort="created_at"><?php echo t('title_created_at', 'Created At'); ?></th>
+					<th class="text-center" data-sort="order_status"><?= t('title_order_status', 'Order Status') ?></th>
+					<th data-sort="customer" class="main"><?= t('title_customer', 'Customer') ?></th>
+					<th><?= t('title_in_stock', 'In Stock') ?></th>
+					<th data-sort="payment_method"><?= t('title_payment_method', 'Payment Method') ?></th>
+					<th class="text-center"><?= t('title_amount', 'Amount') ?></th>
+					<th class="text-center"><?= t('title_tax', 'Tax') ?></th>
+					<th class="text-end" data-sort="created_at"><?= t('title_created_at', 'Created At') ?></th>
 					<th></th>
 					<th></th>
 				</tr>
@@ -422,48 +422,48 @@ table .tag {
 
 			<tbody>
 				<?php foreach ($orders as $order) { ?>
-				<tr class="<?php echo implode(' ', $order['css_classes']); ?>" data-id="<?php echo $order['id']; ?>">
-					<td><?php echo f::form_checkbox('orders[]', $order['id'], true); ?></td>
-					<td><?php echo !empty($order['starred']) ? f::draw_fonticon('icon-star', 'style="color: #f2b01e;"') : f::draw_fonticon('icon-star-o', 'style="color: #ccc;"'); ?></td>
-					<td class="text-end"><?php echo (int)$order['id']; ?></td>
-					<td class="text-center"><?php echo $order['no']; ?></td>
+				<tr class="<?= implode(' ', $order['css_classes']) ?>" data-id="<?= $order['id'] ?>">
+					<td><?= f::form_checkbox('orders[]', $order['id'], true) ?></td>
+					<td><?= !empty($order['starred']) ? f::draw_fonticon('icon-star', 'style="color: #f2b01e;"') : f::draw_fonticon('icon-star-o', 'style="color: #ccc;"') ?></td>
+					<td class="text-end"><?= (int)$order['id'] ?></td>
+					<td class="text-center"><?= $order['no'] ?></td>
 					<td></td>
-					<td><?php echo f::draw_fonticon($order['order_status_icon'], 'style="color: '. $order['order_status_color'] .';"'); ?></td>
-					<td class="text-center"><?php echo $order['order_status_id'] ? $order['order_status_name'] : t('title_uncompleted', 'Uncompleted'); ?></td>
+					<td><?= f::draw_fonticon($order['order_status_icon'], 'style="color: '. $order['order_status_color'] .';"') ?></td>
+					<td class="text-center"><?= $order['order_status_id'] ? $order['order_status_name'] : t('title_uncompleted', 'Uncompleted') ?></td>
 					<td>
-						<a class="link" href="<?php echo document::href_ilink(__APP__.'/order', ['order_id' => $order['id'], 'redirect_url' => $_SERVER['REQUEST_URI']]); ?>">
-							<?php echo f::draw_fonticon($order['customer_company'] ? 'icon-building' : 'icon-user', 'style="opacity: .5;"'); ?>
-							<?php echo $order['customer_company'] ?: $order['customer_firstname'] .' '. $order['customer_lastname']; ?><?php if (!$order['customer_id']) echo ' <em>('. t('title_guest', 'Guest') .')</em>'; ?>
+						<a class="link" href="<?= document::href_ilink(__APP__.'/order', ['order_id' => $order['id'], 'redirect_url' => $_SERVER['REQUEST_URI']]) ?>">
+							<?= f::draw_fonticon($order['customer_company'] ? 'icon-building' : 'icon-user', 'style="opacity: .5;"') ?>
+							<?= $order['customer_company'] ?: $order['customer_firstname'] .' '. $order['customer_lastname'] ?><?php if (!$order['customer_id']) echo ' <em>('. t('title_guest', 'Guest') .')</em>'; ?>
 						</a>
 
 						<?php foreach ($order['tags'] as $tag) echo '<code class="tag">'. f::escape_html($tag) .'</code>'; ?>
 
 						<?php if ($order['has_notes']) { ?>
-						<?php echo f::draw_fonticon('icon-sticky-note', 'title="'. t('title_notes', 'Notes') .'" style="color: #f2b01e; margin-left: .5em;"'); ?>
+						<?= f::draw_fonticon('icon-sticky-note', 'title="'. t('title_notes', 'Notes') .'" style="color: #f2b01e; margin-left: .5em;"') ?>
 						<?php } ?>
 					</td>
-					<td class="text-center"><?php echo $order['sufficient_stock_icon'] ?: '-'; ?></td>
-					<td><?php echo $order['payment_option_name']; ?></td>
-					<td class="text-end"><?php echo currency::format($order['total'], false, $order['currency_code'], $order['currency_value']); ?></td>
-					<td class="text-end"><?php echo ($order['total_tax'] != 0) ? currency::format($order['total_tax'], false, $order['currency_code'], $order['currency_value']) : '-'; ?></td>
-					<td class="text-end"><?php echo f::datetime_when($order['created_at']); ?></td>
+					<td class="text-center"><?= $order['sufficient_stock_icon'] ?: '-' ?></td>
+					<td><?= $order['payment_option_name'] ?></td>
+					<td class="text-end"><?= currency::format($order['total'], false, $order['currency_code'], $order['currency_value']) ?></td>
+					<td class="text-end"><?= ($order['total_tax'] != 0) ? currency::format($order['total_tax'], false, $order['currency_code'], $order['currency_value']) : '-' ?></td>
+					<td class="text-end"><?= f::datetime_when($order['created_at']) ?></td>
 					<td>
 						<div class="dropdown dropdown-end">
 							<div class="btn btn-default btn-sm dropdown-toggle"  data-toggle="dropdown">
-								<?php echo f::draw_fonticon('icon-print'); ?>
+								<?= f::draw_fonticon('icon-print') ?>
 							</div>
 							<nav class="dropdown-menu">
-								<a class="dropdown-item" href="<?php echo  document::href_ilink('f:printable_packing_slip', ['order_id' => $order['id'], 'public_key' => $order['public_key']]); ?>" target="_blank">
-									<?php echo f::escape_html(t('title_packing_slip', 'Packing Slip')); ?>
+								<a class="dropdown-item" href="<?= document::href_ilink('f:printable_packing_slip', ['order_id' => $order['id'], 'public_key' => $order['public_key']]) ?>" target="_blank">
+									<?= f::escape_html(t('title_packing_slip', 'Packing Slip')) ?>
 								</a>
-								<a class="dropdown-item" href="<?php echo document::href_ilink('f:printable_order_copy', ['order_id' => $order['id'], 'public_key' => $order['public_key']]); ?>" target="_blank" title="">
-									<?php echo f::escape_html(t('title_order_copy', 'Order Copy')); ?>
+								<a class="dropdown-item" href="<?= document::href_ilink('f:printable_order_copy', ['order_id' => $order['id'], 'public_key' => $order['public_key']]) ?>" target="_blank" title="">
+									<?= f::escape_html(t('title_order_copy', 'Order Copy')) ?>
 								</a>
 							</nav>
 						</div>
 					</td>
 					<td>
-						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_order', ['order_id' => $order['id'], 'redirect_url' => $_SERVER['REQUEST_URI']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo f::draw_fonticon('edit'); ?></a>
+						<a class="btn btn-default btn-sm" href="<?= document::href_ilink(__APP__.'/edit_order', ['order_id' => $order['id'], 'redirect_url' => $_SERVER['REQUEST_URI']]) ?>" title="<?= t('title_edit', 'Edit') ?>"><?= f::draw_fonticon('edit') ?></a>
 					</td>
 				</tr>
 				<?php } ?>
@@ -472,7 +472,7 @@ table .tag {
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo t('title_orders', 'Orders'); ?>: <?php echo f::format_number($num_rows); ?>
+						<?= t('title_orders', 'Orders') ?>: <?= f::format_number($num_rows) ?>
 					</td>
 				</tr>
 			</tfoot>
@@ -483,12 +483,12 @@ table .tag {
 
 				<li>
 					<fieldset>
-						<legend><?php echo t('title_set_order_status', 'Set Order Status'); ?></legend>
+						<legend><?= t('title_set_order_status', 'Set Order Status') ?></legend>
 						<div class="form-group">
 							<div class="input-group">
-								<?php echo f::form_select_order_status('order_status_id', true); ?>
+								<?= f::form_select_order_status('order_status_id', true) ?>
 								<button class="btn btn-default" name="action" value="set_order_status" type="submit" formtarget="_self">
-									<?php echo t('title_set', 'Set'); ?>
+									<?= t('title_set', 'Set') ?>
 								</button>
 							</div>
 						</div>
@@ -497,10 +497,10 @@ table .tag {
 
 				<li>
 					<fieldset>
-						<legend><?php echo t('title_shipping', 'Shipping'); ?></legend>
+						<legend><?= t('title_shipping', 'Shipping') ?></legend>
 
 						<div>
-							<?php echo f::form_button('action', ['book_shipping', t('title_book_shipping', 'Book Shipping')]); ?>
+							<?= f::form_button('action', ['book_shipping', t('title_book_shipping', 'Book Shipping')]) ?>
 						</div>
 
 					</fieldset>
@@ -508,18 +508,18 @@ table .tag {
 
 				<li>
 					<fieldset>
-						<legend><?php echo t('title_payment', 'Payment'); ?></legend>
+						<legend><?= t('title_payment', 'Payment') ?></legend>
 
 						<div>
-							<?php echo f::form_button('action', ['cancel_payment', t('title_cancel_payment', 'Cancel Payment')]); ?>
+							<?= f::form_button('action', ['cancel_payment', t('title_cancel_payment', 'Cancel Payment')]) ?>
 						</div>
 					</fieldset>
 				</li>
 
 				<?php foreach ($actions as $module) { ?>
 				<li>
-					<fieldset title="<?php echo f::escape_html($module['description']); ?>">
-						<legend><?php echo $module['name']; ?></legend>
+					<fieldset title="<?= f::escape_html($module['description']) ?>">
+						<legend><?= $module['name'] ?></legend>
 						<div class="btn-group">
 							<?php foreach ($module['actions'] as $action) echo f::form_button('action', [$module['id'].':'.$action['id'], $action['title']], 'submit', ['formtarget' => f::escape_attr($action['target']), 'title' => f::escape_attr($action['description'])]); ?>
 						</div>
@@ -530,11 +530,11 @@ table .tag {
 			</ul>
 		</div>
 
-	<?php echo f::form_end(); ?>
+	<?= f::form_end() ?>
 
 	<?php if ($num_pages > 1) { ?>
 	<div class="card-footer">
-		<?php echo f::draw_pagination($num_pages); ?>
+		<?= f::draw_pagination($num_pages) ?>
 	</div>
 	<?php } ?>
 </div>
@@ -559,7 +559,7 @@ table .tag {
 		e.stopPropagation();
 		let $star = $(this);
 		$.post('', 'star&order_id='+$star.closest('tr').data('id'), function(data) {
-			$star.replaceWith('<?php echo f::draw_fonticon('icon-star', 'style="color: #f2b01e;"'); ?>');
+			$star.replaceWith('<?= f::draw_fonticon('icon-star', 'style="color: #f2b01e;"') ?>');
 		});
 		return false;
 	});
@@ -568,13 +568,13 @@ table .tag {
 		e.stopPropagation();
 		let $star = $(this);
 		$.post('', 'unstar&order_id='+$star.closest('tr').data('id'), function(data) {
-			$star.replaceWith('<?php echo f::draw_fonticon('icon-star-o', 'style="color: #ccc;"'); ?>');
+			$star.replaceWith('<?= f::draw_fonticon('icon-star-o', 'style="color: #ccc;"') ?>');
 		});
 		return false;
 	});
 
 	$('#actions button').on('click', function(e) {
-		if (!confirm('<?php echo t('text_are_you_sure', 'Are you sure?'); ?>')) {
+		if (!confirm('<?= t('text_are_you_sure', 'Are you sure?') ?>')) {
 			e.preventDefault();
 			return false;
 		}

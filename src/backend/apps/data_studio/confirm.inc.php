@@ -226,21 +226,21 @@ table td {
 <div>
 		<nav class="tabs">
 		<span class="tab-item active">
-			<?php echo t('title_import', 'Import'); ?>
+			<?= t('title_import', 'Import') ?>
 		</span>
-		<a class="tab-item" href="<?php echo document::href_ilink(__APP__ . '/export'); ?>">
-			<?php echo t('title_export', 'Export'); ?>
+		<a class="tab-item" href="<?= document::href_ilink(__APP__ . '/export') ?>">
+			<?= t('title_export', 'Export') ?>
 		</a>
 	</nav>
 
 	<div class="card">
 		<div class="card-header">
 			<div class="card-title">
-				<?php echo $app_icon; ?> <?php echo t('title_import_data', 'Import Data'); ?>
+				<?= $app_icon ?> <?= t('title_import_data', 'Import Data') ?>
 			</div>
 		</div>
 
-		<?php echo f::form_begin('import_form', 'post'); ?>
+		<?= f::form_begin('import_form', 'post') ?>
 
 			<div class="card-body">
 
@@ -251,26 +251,26 @@ table td {
 						<table class="table table-striped data-table">
 							<thead>
 								<tr>
-									<th style="width: 33.33%;"><?php echo t('title_property', 'Property'); ?></th>
+									<th style="width: 33.33%;"><?= t('title_property', 'Property') ?></th>
 									<th style="width: 33.33%;" class="text-center">
 										<div class="input-group">
-											<button name="previous" class="btn btn-default btn-sm" type="button" ><?php echo f::draw_fonticon('icon-chevron-left'); ?></button>
+											<button name="previous" class="btn btn-default btn-sm" type="button" ><?= f::draw_fonticon('icon-chevron-left') ?></button>
 											<span class="input-group-text" style="flex-grow: 1;">
-												<span class="current"><?php echo 1; ?></span> /	<span class="total"><?php echo count(session::$data['csv_batch']['rows']); ?></span>
+												<span class="current"><?= 1 ?></span> /	<span class="total"><?= count(session::$data['csv_batch']['rows']) ?></span>
 											</span>
-											<button name="next" class="btn btn-default btn-sm" type="button"><?php echo f::draw_fonticon('icon-chevron-right'); ?></button>
+											<button name="next" class="btn btn-default btn-sm" type="button"><?= f::draw_fonticon('icon-chevron-right') ?></button>
 										</div>
 									</th>
-									<th style="width: 33.33%;"><?php echo t('title_map_to_property', 'Map To Property'); ?></th>
+									<th style="width: 33.33%;"><?= t('title_map_to_property', 'Map To Property') ?></th>
 								</tr>
 							</thead>
 
 							<tbody>
 								<?php foreach (array_keys(session::$data['csv_batch']['rows'][0]) as $column) { ?>
 								<tr>
-									<th class="text-start"><?php echo $column; ?></th>
-									<td class="text-start"><?php echo session::$data['csv_batch']['rows'][0][$column]; ?></td>
-									<td><?php echo f::form_select('map[' . $column . ']', $columns, true); ?></td>
+									<th class="text-start"><?= $column ?></th>
+									<td class="text-start"><?= session::$data['csv_batch']['rows'][0][$column] ?></td>
+									<td><?= f::form_select('map[' . $column . ']', $columns, true) ?></td>
 								</tr>
 								<?php } ?>
 							</tbody>
@@ -283,48 +283,48 @@ table td {
 
 							<div class="form-group">
 								<div>
-									<label><?php echo f::form_checkbox('truncate', '1', true); ?> <?php echo t('text_truncate_table_before_inserting_data', 'Truncate table before inserting data'); ?> <?php echo f::draw_fonticon('icon-exclamation-triangle', 'style="color: red;"'); ?></label>
+									<label><?= f::form_checkbox('truncate', '1', true) ?> <?= t('text_truncate_table_before_inserting_data', 'Truncate table before inserting data') ?> <?= f::draw_fonticon('icon-exclamation-triangle', 'style="color: red;"') ?></label>
 								</div>
 							</div>
 
 							<div class="form-group">
 								<div>
-									<label><?php echo f::form_checkbox('insert', '1', true); ?> <?php echo t('text_insert_new_rows', 'Insert new rows'); ?></label>
+									<label><?= f::form_checkbox('insert', '1', true) ?> <?= t('text_insert_new_rows', 'Insert new rows') ?></label>
 								</div>
 							</div>
 
 							<div class="form-group">
 								<label>Identify existing rows by matching values for the following column:</label>
-								<?php echo f::form_select('match_column', $columns, true); ?>
+								<?= f::form_select('match_column', $columns, true) ?>
 							</div>
 
 							<div class="form-group">
 								<div>
-									<label><?php echo f::form_radio_button('update', ['', t('text_skip_existing_rows', 'Skip existing rows')], true); ?></label>
-									<label><?php echo f::form_radio_button('update', ['overwrite', t('text_overwrite_existing_rows', 'Overwrite existing rows')], true); ?></label>
-									<label><?php echo f::form_radio_button('update', ['append', t('text_append_missing_data_to_existing_rows', 'Append missing data to existing rows')], true); ?></label>
+									<label><?= f::form_radio_button('update', ['', t('text_skip_existing_rows', 'Skip existing rows')], true) ?></label>
+									<label><?= f::form_radio_button('update', ['overwrite', t('text_overwrite_existing_rows', 'Overwrite existing rows')], true) ?></label>
+									<label><?= f::form_radio_button('update', ['append', t('text_append_missing_data_to_existing_rows', 'Append missing data to existing rows')], true) ?></label>
 								</div>
 							</div>
 
 							<div class="form-group">
-								<?php echo f::form_button('import', t('title_import_now', 'Import Now'), 'submit', ['class' => 'btn btn-success']); ?>
-								<?php echo f::form_button('abort', t('title_abort', 'Abort'), 'submit', ['class' => 'btn btn-danger']); ?>
+								<?= f::form_button('import', t('title_import_now', 'Import Now'), 'submit', ['class' => 'btn btn-success']) ?>
+								<?= f::form_button('abort', t('title_abort', 'Abort'), 'submit', ['class' => 'btn btn-danger']) ?>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 
-		<?php echo f::form_end(); ?>
+		<?= f::form_end() ?>
 	</div>
 </div>
 
 <script>
-	var data = <?php echo f::format_json(
+	var data = <?= f::format_json(
 		array_map(function ($node) {
 			return array_values($node);
 		}, array_slice(session::$data['csv_batch']['rows'], 0, 100)),
-	); ?>;
+	) ?>;
 
 	$('button[name="previous"]').on('click', function(e){
 		//e.preventDefault();
@@ -350,7 +350,7 @@ table td {
 
 	$('input[name="truncate"]').on('change', function(e){
 		if ($(this).prop('checked') == true) {
-			if (!confirm("<?php echo t('text_are_you_sure', 'Are you sure?'); ?>")){
+			if (!confirm("<?= t('text_are_you_sure', 'Are you sure?') ?>")){
 				$(this).prop('checked', false);
 			}
 		}

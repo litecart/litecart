@@ -186,85 +186,85 @@
 	<div class="card-header">
 		<div class="card-title">
 			<div class="card-title">
-				<?php echo $app_icon; ?> <?php echo !empty($stock_item->data['id']) ? t('title_edit_stock_item', 'Edit Stock Item') : t('title_create_new_stock_item', 'Create New Stock Item'); ?>
+				<?= $app_icon ?> <?= !empty($stock_item->data['id']) ? t('title_edit_stock_item', 'Edit Stock Item') : t('title_create_new_stock_item', 'Create New Stock Item') ?>
 			</div>
 		</div>
 	</div>
 
 	<div class="card-body">
 
-		<?php echo f::form_begin('stock_item_form', 'post', false, true); ?>
+		<?= f::form_begin('stock_item_form', 'post', false, true) ?>
 
 		<?php if ($stock_item->data['quantity_expected'] != $stock_item->data['quantity']) { ?>
 		<div class="inconsistency-warning">
-			<?php echo f::draw_fonticon('icon-exclamation-triangle'); ?>
-			<?php echo strtr(t('text_expected_quantity_mismatch', 'The expected quantity {expected} does not match the actual quantity {actual} set in the database. This can happen if there is a malfunction while items are withdrawn or reinserted to the stock.'), ['{expected}' => $stock_item->data['quantity_expected'], '{actual}' => $stock_item->data['quantity']]); ?>
-			<?php echo f::form_button('repair', t('button_repair', 'Repair'), 'submit', ['class' => 'btn btn-default btn-sm float-end']); ?>
+			<?= f::draw_fonticon('icon-exclamation-triangle') ?>
+			<?= strtr(t('text_expected_quantity_mismatch', 'The expected quantity {expected} does not match the actual quantity {actual} set in the database. This can happen if there is a malfunction while items are withdrawn or reinserted to the stock.'), ['{expected}' => $stock_item->data['quantity_expected'], '{actual}' => $stock_item->data['quantity']]) ?>
+			<?= f::form_button('repair', t('button_repair', 'Repair'), 'submit', ['class' => 'btn btn-default btn-sm float-end']) ?>
 		</div>
 		<?php } ?>
 
 			<div class="grid">
-				<div class="<?php echo (is_ajax_request()) ? 'col-xl-12' : 'col-xl-7'; ?>">
+				<div class="<?= (is_ajax_request()) ? 'col-xl-12' : 'col-xl-7' ?>">
 
 					<div class="grid">
 						<div class="col-md-4">
 							<div class="form-group">
-								<div class="form-label"><?php echo t('title_image', 'Image'); ?></div>
+								<div class="form-label"><?= t('title_image', 'Image') ?></div>
 
-								<?php echo f::draw_thumbnail('storage://images/' . ($stock_item->data['image'] ?: 'no_image.svg'), 360, 0, 'product'); ?>
+								<?= f::draw_thumbnail('storage://images/' . ($stock_item->data['image'] ?: 'no_image.svg'), 360, 0, 'product') ?>
 
 								<?php if ($stock_item->data['image']) { ?>
-								<small class="float-end"><?php echo f::form_checkbox('delete_image', ['1', t('text_delete', 'Delete')], true); ?></small>
+								<small class="float-end"><?= f::form_checkbox('delete_image', ['1', t('text_delete', 'Delete')], true) ?></small>
 								<?php } ?>
 
-								<?php echo f::form_input_file('image', ['accept' => 'image/*']); ?>
+								<?= f::form_input_file('image', ['accept' => 'image/*']) ?>
 							</div>
 						</div>
 
 						<div class="col-md-8">
 
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
+								<div class="form-label"><?= t('title_name', 'Name') ?></div>
 								<?php foreach (array_keys(language::$languages) as $language_code) echo f::form_regional_text('name['. $language_code .']', $language_code, true, ''); ?>
 							</label>
 
 							<label class="form-group references">
-								<div class="form-label"><?php echo t('title_references', 'References'); ?></div>
+								<div class="form-label"><?= t('title_references', 'References') ?></div>
 								<div class="input-group">
-									<label class="input-group-text" style="width: 125px;"><?php echo t('title_sku', 'SKU'); ?> <a href="https://en.wikipedia.org/wiki/Stock_keeping_unit" target="_blank"><?php echo f::draw_fonticon('icon-square-out'); ?></a></label>
-									<?php echo f::form_input_text('sku', true, ['style' => 'text-transform: uppercase;']); ?>
+									<label class="input-group-text" style="width: 125px;"><?= t('title_sku', 'SKU') ?> <a href="https://en.wikipedia.org/wiki/Stock_keeping_unit" target="_blank"><?= f::draw_fonticon('icon-square-out') ?></a></label>
+									<?= f::form_input_text('sku', true, ['style' => 'text-transform: uppercase;']) ?>
 								</div>
 
 								<div class="input-group">
-									<label class="input-group-text" style="width: 125px;"><?php echo t('title_gtin', 'GTIN'); ?> <a href="https://en.wikipedia.org/wiki/Global_Trade_Item_Number" target="_blank"><?php echo f::draw_fonticon('icon-square-out'); ?></a></label>
-									<?php echo f::form_input_text('gtin', true); ?>
+									<label class="input-group-text" style="width: 125px;"><?= t('title_gtin', 'GTIN') ?> <a href="https://en.wikipedia.org/wiki/Global_Trade_Item_Number" target="_blank"><?= f::draw_fonticon('icon-square-out') ?></a></label>
+									<?= f::form_input_text('gtin', true) ?>
 								</div>
 
 								<div class="input-group">
-									<label class="input-group-text" style="width: 125px;"><?php echo t('title_mpn', 'MPN'); ?> <a href="https://en.wikipedia.org/wiki/Manufacturer_part_number" target="_blank"><?php echo f::draw_fonticon('icon-square-out'); ?></a></label>
-									<?php echo f::form_input_text('mpn', true); ?>
+									<label class="input-group-text" style="width: 125px;"><?= t('title_mpn', 'MPN') ?> <a href="https://en.wikipedia.org/wiki/Manufacturer_part_number" target="_blank"><?= f::draw_fonticon('icon-square-out') ?></a></label>
+									<?= f::form_input_text('mpn', true) ?>
 								</div>
 
 								<div class="input-group">
-									<label class="input-group-text" style="width: 125px;"><?php echo t('title_taric', 'TARIC'); ?> <a href="https://en.wikipedia.org/wiki/TARIC_code" target="_blank"><?php echo f::draw_fonticon('icon-square-out'); ?></a></label>
-									<?php echo f::form_input_text('taric', true); ?>
+									<label class="input-group-text" style="width: 125px;"><?= t('title_taric', 'TARIC') ?> <a href="https://en.wikipedia.org/wiki/TARIC_code" target="_blank"><?= f::draw_fonticon('icon-square-out') ?></a></label>
+									<?= f::form_input_text('taric', true) ?>
 								</div>
 							</label>
 
 							<div class="grid">
 								<div class="col-md-6">
 									<label class="form-group">
-										<div class="form-label"><?php echo t('title_shelf_location', 'Shelf Location'); ?></div>
-										<?php echo f::form_input_text('shelf', true); ?>
+										<div class="form-label"><?= t('title_shelf_location', 'Shelf Location') ?></div>
+										<?= f::form_input_text('shelf', true) ?>
 									</label>
 								</div>
 
 								<div class="col-md-6">
 									<label class="form-group">
-										<div class="form-label"><?php echo t('title_purchase_price', 'Purchase Price'); ?></div>
+										<div class="form-label"><?= t('title_purchase_price', 'Purchase Price') ?></div>
 										<div class="input-group">
-											<?php echo f::form_input_decimal('purchase_price', true, 2, ['min' => '0']); ?>
-											<?php echo f::form_select_currency('purchase_price_currency_code', true); ?>
+											<?= f::form_input_decimal('purchase_price', true, 2, ['min' => '0']) ?>
+											<?= f::form_select_currency('purchase_price_currency_code', true) ?>
 										</div>
 									</label>
 								</div>
@@ -275,39 +275,39 @@
 					<div class="grid">
 						<div class="col-md-2">
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_reserved', 'Reserved'); ?></div>
+								<div class="form-label"><?= t('title_reserved', 'Reserved') ?></div>
 								<div class="form-input text-end" readonly>
-									<?php echo !empty($stock_item->data['id']) ? (float)$stock_item->data['quantity_reserved'] : 'n/a'; ?>
+									<?= !empty($stock_item->data['id']) ? (float)$stock_item->data['quantity_reserved'] : 'n/a' ?>
 								</div>
 							</label>
 						</div>
 
 						<div class="col-md-4">
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_stock_quantity', 'Stock Quantity'); ?></div>
+								<div class="form-label"><?= t('title_stock_quantity', 'Stock Quantity') ?></div>
 								<div class="input-group">
-									<?php echo f::form_input_decimal('quantity', true, 2, ['data-quantity' => (!empty($stock_item->data['id']) ? (float)$stock_item->data['quantity'] : '0')]); ?>
-									<?php echo f::form_select_quantity_unit('quantity_unit_id', true); ?>
+									<?= f::form_input_decimal('quantity', true, 2, ['data-quantity' => (!empty($stock_item->data['id']) ? (float)$stock_item->data['quantity'] : '0')]) ?>
+									<?= f::form_select_quantity_unit('quantity_unit_id', true) ?>
 								</div>
 							</label>
 						</div>
 
 						<div class="col-md-3">
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_quantity_adjustment', 'Quantity Adjustment'); ?></div>
+								<div class="form-label"><?= t('title_quantity_adjustment', 'Quantity Adjustment') ?></div>
 								<div class="input-group">
 									<span class="input-group-text">&plusmn;</span>
-									<?php echo f::form_input_decimal('quantity_adjustment', true, 2); ?>
+									<?= f::form_input_decimal('quantity_adjustment', true, 2) ?>
 								</div>
 							</label>
 						</div>
 
 						<div class="col-md-3">
 							<div class="form-group">
-								<div class="form-label"><?php echo t('title_backordered', 'Backordered'); ?></div>
+								<div class="form-label"><?= t('title_backordered', 'Backordered') ?></div>
 								<div class="input-group">
-									<?php echo f::form_button('transfer', f::draw_fonticon('icon-arrow-left'), 'button'); ?>
-									<?php echo f::form_input_decimal('backordered', true, 2, ['min' => '0']); ?>
+									<?= f::form_button('transfer', f::draw_fonticon('icon-arrow-left'), 'button') ?>
+									<?= f::form_input_decimal('backordered', true, 2, ['min' => '0']) ?>
 								</div>
 							</div>
 						</div>
@@ -316,24 +316,24 @@
 					<div class="grid">
 						<div class="col-md-4">
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_weight', 'Weight'); ?></div>
+								<div class="form-label"><?= t('title_weight', 'Weight') ?></div>
 								<div class="input-group">
-									<?php echo f::form_input_decimal('weight', true, 3, ['min' => '0']); ?>
-									<?php echo f::form_select_weight_unit('weight_unit', true); ?>
+									<?= f::form_input_decimal('weight', true, 3, ['min' => '0']) ?>
+									<?= f::form_select_weight_unit('weight_unit', true) ?>
 								</div>
 							</label>
 						</div>
 
 						<div class="col-md-8">
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_dimensions', 'Dimensions'); ?></div>
+								<div class="form-label"><?= t('title_dimensions', 'Dimensions') ?></div>
 								<div class="input-group">
-									<?php echo f::form_input_decimal('length', true, 3, ['min' => '0']); ?>
+									<?= f::form_input_decimal('length', true, 3, ['min' => '0']) ?>
 									<span class="input-group-text">x</span>
-									<?php echo f::form_input_decimal('width', true, 3, ['min' => '0']); ?>
+									<?= f::form_input_decimal('width', true, 3, ['min' => '0']) ?>
 									<span class="input-group-text">x</span>
-									<?php echo f::form_input_decimal('height', true, 3, ['min' => '0']); ?>
-									<?php echo f::form_select_length_unit('length_unit', true); ?>
+									<?= f::form_input_decimal('height', true, 3, ['min' => '0']) ?>
+									<?= f::form_select_length_unit('length_unit', true) ?>
 								</div>
 							</label>
 						</div>
@@ -342,31 +342,31 @@
 					<div class="grid">
 						<div class="col-md-10">
 							<div class="form-group">
-								<div class="form-label"><?php echo t('title_digital_item', 'Digital Item'); ?></div>
-								<?php echo f::form_input_file('file'); ?>
+								<div class="form-label"><?= t('title_digital_item', 'Digital Item') ?></div>
+								<?= f::form_input_file('file') ?>
 								<?php if (!empty($stock_item->data['file'])) { ?>
-								<div><?php echo f::form_checkbox('delete_file', ['1', t('text_delete', 'Delete') .' '. $stock_item->data['filename']], true); ?></div>
+								<div><?= f::form_checkbox('delete_file', ['1', t('text_delete', 'Delete') .' '. $stock_item->data['filename']], true) ?></div>
 								<?php } ?>
 							</div>
 						</div>
 
 						<div class="col-md-2">
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_downloads', 'Downloads'); ?></div>
-								<?php echo f::form_input_number('downloads', true, ['readonly' => true]); ?>
+								<div class="form-label"><?= t('title_downloads', 'Downloads') ?></div>
+								<?= f::form_input_number('downloads', true, ['readonly' => true]) ?>
 							</label>
 						</div>
 					</div>
 				</div>
 
-				<div class="<?php echo (is_ajax_request()) ? 'col-xl-12' : 'col-xl-5'; ?>">
-					<h2><?php echo t('title_references', 'References'); ?></h2>
+				<div class="<?= (is_ajax_request()) ? 'col-xl-12' : 'col-xl-5' ?>">
+					<h2><?= t('title_references', 'References') ?></h2>
 
 					<div class="table-responsive">
 						<table id="table-references" class="table data-table">
 							<thead>
-								<th style="min-width: 200px;"><?php echo t('title_supplier', 'Supplier'); ?></th>
-								<th class="main"><?php echo t('title_code', 'Code'); ?></th>
+								<th style="min-width: 200px;"><?= t('title_supplier', 'Supplier') ?></th>
+								<th class="main"><?= t('title_code', 'Code') ?></th>
 								<th></th>
 							</thead>
 
@@ -374,11 +374,11 @@
 								<?php if (!empty($_POST['references'])) foreach (array_keys($_POST['references']) as $key) { ?>
 								<tr>
 									<td>
-										<?php echo f::form_input_hidden('references['.$key.'][id]', true); ?>
-										<?php echo f::form_select_supplier('references['.$key.'][source]', true); ?>
+										<?= f::form_input_hidden('references['.$key.'][id]', true) ?>
+										<?= f::form_select_supplier('references['.$key.'][source]', true) ?>
 									</td>
-									<td><?php echo f::form_input_text('references['.$key.'][code]', true); ?></td>
-									<td><?php echo f::form_button_predefined('remove-sm'); ?></a></td>
+									<td><?= f::form_input_text('references['.$key.'][code]', true) ?></td>
+									<td><?= f::form_button_predefined('remove-sm') ?></a></td>
 								</tr>
 							<?php } ?>
 							</tbody>
@@ -387,7 +387,7 @@
 								<tr>
 									<td colspan="99">
 										<button class="btn btn-default add" type="button">
-											<?php echo f::draw_fonticon('add'); ?> <?php echo t('text_create_new_reference', 'Create New Reference'); ?>
+											<?= f::draw_fonticon('add') ?> <?= t('text_create_new_reference', 'Create New Reference') ?>
 										</button>
 									</td>
 								</tr>
@@ -399,12 +399,12 @@
 			</div>
 
 			<div class="card-action">
-				<?php echo f::form_button_predefined('save'); ?>
+				<?= f::form_button_predefined('save') ?>
 				<?php if ($stock_item->data['id']) echo f::form_button_predefined('delete'); ?>
-				<?php echo f::form_button_predefined('cancel'); ?>
+				<?= f::form_button_predefined('cancel') ?>
 			</div>
 
-		<?php echo f::form_end(); ?>
+		<?= f::form_end() ?>
 	</div>
 </div>
 
@@ -470,7 +470,7 @@
 		$('form[name="stock_item_form"]').submit(function(e){
 			e.preventDefault();
 			$.ajax({
-				url: '<?php echo document::link(); ?>',
+				url: '<?= document::link() ?>',
 				type: 'post',
 				cache: false,
 				async: true,
@@ -482,10 +482,10 @@
 						return;
 					}
 					<?php if (!empty($_GET['js_callback'])) { ?>
-					if (typeof window["<?php echo f::escape_js($_GET['js_callback']); ?>"] === 'function') {
-						window["<?php echo f::escape_js($_GET['js_callback']); ?>"](result.data);
+					if (typeof window["<?= f::escape_js($_GET['js_callback']) ?>"] === 'function') {
+						window["<?= f::escape_js($_GET['js_callback']) ?>"](result.data);
 					} else {
-						alert("Unknown callback function <?php echo f::escape_js($_GET['js_callback']); ?>");
+						alert("Unknown callback function <?= f::escape_js($_GET['js_callback']) ?>");
 					}
 					<?php } ?>
 					$.litebox.close();
@@ -513,11 +513,11 @@
 		let $output = $([
 			'<tr>',
 			'  <td>',
-			'    <?php echo f::escape_js(f::form_input_hidden('references[__index__][id]', true)); ?>',
-			'    <?php echo f::escape_js(f::form_select_supplier('references[__index__][source]', true)); ?>',
+			'    <?= f::escape_js(f::form_input_hidden('references[__index__][id]', true)) ?>',
+			'    <?= f::escape_js(f::form_select_supplier('references[__index__][source]', true)) ?>',
 			'  </td>',
-			'  <td><?php echo f::escape_js(f::form_input_text('references[__index__][code]', true)); ?></td>',
-			'  <td><?php echo f::escape_js(f::form_button_predefined('remove-sm')); ?></a></td>',
+			'  <td><?= f::escape_js(f::form_input_text('references[__index__][code]', true)) ?></td>',
+			'  <td><?= f::escape_js(f::form_button_predefined('remove-sm')) ?></a></td>',
 			'</tr>',
 		].join('\n')
 			.replace(/__index__/g, 'new_' + __index__)

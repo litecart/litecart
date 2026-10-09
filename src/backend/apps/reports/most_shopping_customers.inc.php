@@ -81,41 +81,41 @@ form[name="filter_form"] li {
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo t('title_most_shopping_customers', 'Most Shopping Customers'); ?>
+			<?= $app_icon ?> <?= t('title_most_shopping_customers', 'Most Shopping Customers') ?>
 		</div>
 	</div>
 
 	<div class="card-action">
-		<?php echo f::form_begin('filter_form', 'get'); ?>
+		<?= f::form_begin('filter_form', 'get') ?>
 			<ul class="list-inline">
 				<li>
 					<div class="input-group" style="max-width: 380px;">
-						<?php echo f::form_input_date('date_from', true); ?>
+						<?= f::form_input_date('date_from', true) ?>
 						<span class="input-group-text"> - </span>
-						<?php echo f::form_input_date('date_to', true); ?>
+						<?= f::form_input_date('date_to', true) ?>
 					</div>
 				</li>
-				<li><?php echo f::form_button('filter', ['true', f::draw_fonticon('icon-funnel') .' '. t('title_filter_now', 'Filter')]); ?></li>
-				<li><?php echo f::form_button('download', ['true', f::draw_fonticon('icon-download') .' '. t('title_download', 'Download')]); ?></li>
+				<li><?= f::form_button('filter', ['true', f::draw_fonticon('icon-funnel') .' '. t('title_filter_now', 'Filter')]) ?></li>
+				<li><?= f::form_button('download', ['true', f::draw_fonticon('icon-download') .' '. t('title_download', 'Download')]) ?></li>
 			</ul>
-		<?php echo f::form_end(); ?>
+		<?= f::form_end() ?>
 	</div>
 
 	<table class="table data-table">
 		<thead>
 			<tr>
-				<th><?php echo t('title_customer', 'Customer'); ?></th>
-				<th class="main"><?php echo t('title_email_address', 'Email Address'); ?></th>
-				<th class="text-center"><?php echo t('title_total_amount', 'Total Amount'); ?></th>
+				<th><?= t('title_customer', 'Customer') ?></th>
+				<th class="main"><?= t('title_email_address', 'Email Address') ?></th>
+				<th class="text-center"><?= t('title_total_amount', 'Total Amount') ?></th>
 			</tr>
 		</thead>
 
 		<tbody>
 			<?php foreach ($customers as $customer) { ?>
 			<tr>
-				<td><?php echo !empty($customer['id']) ? '<a href="'. document::href_ilink('customers/edit_customer', ['customer_id' => $customer['id']]) .'">'. $customer['name'] .'</a>' : $customer['name'] .' <em>('. t('title_guest', 'Guest') .')</em>'; ?></td>
-				<td><?php echo $customer['email']; ?></td>
-				<td class="text-end"><?php echo currency::format($customer['total_amount'], false, settings::get('store_currency_code')); ?></td>
+				<td><?= !empty($customer['id']) ? '<a href="'. document::href_ilink('customers/edit_customer', ['customer_id' => $customer['id']]) .'">'. $customer['name'] .'</a>' : $customer['name'] .' <em>('. t('title_guest', 'Guest') .')</em>' ?></td>
+				<td><?= $customer['email'] ?></td>
+				<td class="text-end"><?= currency::format($customer['total_amount'], false, settings::get('store_currency_code')) ?></td>
 			</tr>
 			<?php } ?>
 		</tbody>
@@ -123,7 +123,7 @@ form[name="filter_form"] li {
 
 	<?php if ($num_pages > 1) { ?>
 	<div class="card-footer">
-		<?php echo f::draw_pagination($num_pages); ?>
+		<?= f::draw_pagination($num_pages) ?>
 	</div>
 	<?php } ?>
 </div>

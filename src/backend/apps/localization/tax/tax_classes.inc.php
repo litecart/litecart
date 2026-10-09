@@ -21,23 +21,23 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo t('title_tax_classes', 'Tax Classes'); ?>
+			<?= $app_icon ?> <?= t('title_tax_classes', 'Tax Classes') ?>
 		</div>
 	</div>
 
 	<div class="card-action">
-		<?php echo f::form_button_link(document::ilink(__APP__.'/tax/edit_tax_class'), t('title_create_new_tax_class', 'Create New Tax Class'), '', 'create'); ?>
+		<?= f::form_button_link(document::ilink(__APP__.'/tax/edit_tax_class'), t('title_create_new_tax_class', 'Create New Tax Class'), '', 'create') ?>
 	</div>
 
-	<?php echo f::form_begin('tax_classs_form', 'post'); ?>
+	<?= f::form_begin('tax_classs_form', 'post') ?>
 
 		<table class="table data-table">
 			<thead>
 				<tr>
-					<th><?php echo f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
-					<th><?php echo t('title_id', 'ID'); ?></th>
-					<th><?php echo t('title_name', 'Name'); ?></th>
-					<th class="main"><?php echo t('title_description', 'Description'); ?></th>
+					<th class="text-center"><?= f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"') ?></th>
+					<th><?= t('title_id', 'ID') ?></th>
+					<th><?= t('title_name', 'Name') ?></th>
+					<th class="main"><?= t('title_description', 'Description') ?></th>
 					<th></th>
 				</tr>
 			</thead>
@@ -45,11 +45,11 @@
 			<tbody>
 				<?php foreach ($tax_classes as $tax_class) { ?>
 				<tr>
-					<td><?php echo f::form_checkbox('tax_classes[]', $tax_class['id']); ?></td>
-					<td><?php echo $tax_class['id']; ?></td>
-					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/tax/edit_tax_class', ['tax_class_id' => $tax_class['id']]); ?>"><?php echo $tax_class['name']; ?></a></td>
-					<td style="color: #999;"><?php echo $tax_class['description']; ?></td>
-					<td class="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/tax/edit_tax_class', ['tax_class_id' => $tax_class['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo f::draw_fonticon('edit'); ?></a></td>
+					<td><?= f::form_checkbox('tax_classes[]', $tax_class['id']) ?></td>
+					<td><?= $tax_class['id'] ?></td>
+					<td><a class="link" href="<?= document::href_ilink(__APP__.'/tax/edit_tax_class', ['tax_class_id' => $tax_class['id']]) ?>"><?= $tax_class['name'] ?></a></td>
+					<td style="color: #999;"><?= $tax_class['description'] ?></td>
+					<td class="text-end"><a class="btn btn-default btn-sm" href="<?= document::href_ilink(__APP__.'/tax/edit_tax_class', ['tax_class_id' => $tax_class['id']]) ?>" title="<?= t('title_edit', 'Edit') ?>"><?= f::draw_fonticon('edit') ?></a></td>
 				</tr>
 				<?php } ?>
 			</tbody>
@@ -57,17 +57,17 @@
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo t('title_tax_classes', 'Tax Classes'); ?>: <?php echo f::format_number($num_rows); ?>
+						<?= t('title_tax_classes', 'Tax Classes') ?>: <?= f::format_number($num_rows) ?>
 					</td>
 				</tr>
 			</tfoot>
 		</table>
 
-	<?php echo f::form_end(); ?>
+	<?= f::form_end() ?>
 
 	<?php if ($num_pages > 1) { ?>
 	<div class="card-footer">
-		<?php echo f::draw_pagination($num_pages); ?>
+		<?= f::draw_pagination($num_pages) ?>
 	</div>
 	<?php } ?>
 </div>

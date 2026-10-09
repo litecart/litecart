@@ -27,17 +27,17 @@
 ?>
 <div class="card card-default">
 	<div class="card-header">
-		<h2 class="card-title"><?php echo t('title_disconnect', 'Disconnect'); ?></h2>
+		<h2 class="card-title"><?= t('title_disconnect', 'Disconnect') ?></h2>
 	</div>
 
 	<div class="card-body">
-		<?php echo f::form_begin('disconnect_form', 'post'); ?>
+		<?= f::form_begin('disconnect_form', 'post') ?>
 
 			<label class="form-group">
-				<div class="form-label"><?php echo t('text_are_you_sure', 'Are you sure?'); ?></div>
-				<?php echo f::form_button('disconnect', t('title_disconnect', 'Disconnect'), 'submit', ['class' => 'btn btn-default']); ?>
+				<div class="form-label"><?= t('text_are_you_sure', 'Are you sure?') ?></div>
+				<?= f::form_button('disconnect', t('title_disconnect', 'Disconnect'), 'submit', ['class' => 'btn btn-default']) ?>
 			</label>
 
-		<?php echo f::form_end(); ?>
+		<?= f::form_end() ?>
 	</div>
 </div>

@@ -73,16 +73,16 @@
 
 <div id="modal-add-order-item" class="modal fade" style="max-width: 720px;">
 
-	<h2><?php echo t('title_add_product', 'Add Product'); ?></h2>
+	<h2><?= t('title_add_product', 'Add Product') ?></h2>
 
 	<div class="modal-body">
 
-		<?php echo f::form_begin('form_add_product', 'post'); ?>
-			<?php echo f::form_input_hidden('product_id', $product->id); ?>
+		<?= f::form_begin('form_add_product', 'post') ?>
+			<?= f::form_input_hidden('product_id', $product->id) ?>
 
 			<div class="grid">
 				<div class="col-md-4">
-					<?php echo f::draw_thumbnail('storage://images/' . $product->image, 320, 0, 'product'); ?>
+					<?= f::draw_thumbnail('storage://images/' . $product->image, 320, 0, 'product') ?>
 				</div>
 
 				<div class="col-md-8">
@@ -90,8 +90,8 @@
 					<div class="grid">
 						<div class="col-md-4">
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
-								<?php echo f::form_input_text('name', true, (!isset($_GET['collect']) || !in_array('name', $_GET['collect'])) ? 'readonly' : ''); ?>
+								<div class="form-label"><?= t('title_name', 'Name') ?></div>
+								<?= f::form_input_text('name', true, (!isset($_GET['collect']) || !in_array('name', $_GET['collect'])) ? 'readonly' : '') ?>
 							</label>
 						</div>
 					</div>
@@ -100,8 +100,8 @@
 						<?php if (isset($_GET['collect']) && in_array('quantity', $_GET['collect'])) { ?>
 						<div class="col-md-4">
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_quantity', 'Quantity'); ?></div>
-								<?php echo f::form_input_decimal('quantity', 1); ?>
+								<div class="form-label"><?= t('title_quantity', 'Quantity') ?></div>
+								<?= f::form_input_decimal('quantity', 1) ?>
 							</label>
 						</div>
 						<?php } ?>
@@ -109,15 +109,15 @@
 						<?php if (isset($_GET['collect']) && in_array('price', $_GET['collect'])) { ?>
 						<div class="col-md-4">
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_price', 'Price'); ?></div>
-								<?php echo f::form_input_money('price', $_GET['currency_code'], true); ?>
+								<div class="form-label"><?= t('title_price', 'Price') ?></div>
+								<?= f::form_input_money('price', $_GET['currency_code'], true) ?>
 							</label>
 						</div>
 
 						<div class="col-md-4">
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_tax', 'Tax'); ?></div>
-								<?php echo f::form_input_money('tax', $_GET['currency_code'], true); ?>
+								<div class="form-label"><?= t('title_tax', 'Tax') ?></div>
+								<?= f::form_input_money('tax', $_GET['currency_code'], true) ?>
 							</label>
 						</div>
 						<?php } ?>
@@ -130,25 +130,25 @@
 							<thead>
 								<tr>
 									<th></th>
-									<th><?php echo t('title_stock_option', 'Stock Option'); ?></th>
-									<th><?php echo t('title_sku', 'SKU'); ?></th>
-									<th class="text-end"><?php echo t('title_in_stock', 'In Stock'); ?></th>
+									<th><?= t('title_stock_option', 'Stock Option') ?></th>
+									<th><?= t('title_sku', 'SKU') ?></th>
+									<th class="text-end"><?= t('title_in_stock', 'In Stock') ?></th>
 								</tr>
 							</thead>
 							<tbody>
 								<?php foreach ($product->stock_options as $stock_option) { ?>
 								<tr>
-									<td><?php echo f::form_radio_button('stock_item_id', $stock_option['stock_item_id'], true, ['required' => true]); ?></td>
-									<td><?php echo $stock_option['name']; ?></td>
-									<td><?php echo $stock_option['sku']; ?></td>
-									<td class="text-end"><?php echo (float)$stock_option['quantity']; ?></td>
+									<td><?= f::form_radio_button('stock_item_id', $stock_option['stock_item_id'], true, ['required' => true]) ?></td>
+									<td><?= $stock_option['name'] ?></td>
+									<td><?= $stock_option['sku'] ?></td>
+									<td class="text-end"><?= (float)$stock_option['quantity'] ?></td>
 								</tr>
 								<?php } ?>
 							</tbody>
 							<tfoot>
 								<tr>
 									<td colspan="99" class="text-end">
-										<strong><?php echo t('title_total', 'Total'); ?>: </strong><?php echo (float)$product->quantity; ?>
+										<strong><?= t('title_total', 'Total') ?>: </strong><?= (float)$product->quantity ?>
 									</td>
 								</tr>
 							</tfoot>
@@ -158,14 +158,14 @@
 					<?php } ?>
 
 					<div class="card-action">
-						<?php echo f::form_button('ok', t('title_ok', 'OK'), 'button', '', 'ok'); ?>
-						<?php echo f::form_button('cancel', t('title_cancel', 'Cancel'), 'button', 'onclick="$.litebox.close();"', 'cancel'); ?>
+						<?= f::form_button('ok', t('title_ok', 'OK'), 'button', '', 'ok') ?>
+						<?= f::form_button('cancel', t('title_cancel', 'Cancel'), 'button', 'onclick="$.litebox.close();"', 'cancel') ?>
 					</div>
 
 				</div>
 			</div>
 
-		<?php echo f::form_end(); ?>
+		<?= f::form_end() ?>
 	</div>
 
 </div>

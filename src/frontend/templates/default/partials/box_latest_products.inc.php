@@ -1,7 +1,7 @@
-<section id="box-latest-products" class="card" aria-label="<?php echo f::escape_attr(t('title_latest_products', 'Latest Products')); ?>">
+<section id="box-latest-products" class="card" aria-label="<?= f::escape_attr(t('title_latest_products', 'Latest Products')) ?>">
 
 	<div class="card-header">
-		<h2 class="card-title"><?php echo t('title_latest_products', 'Latest Products'); ?></h2>
+		<h2 class="card-title"><?= t('title_latest_products', 'Latest Products') ?></h2>
 	</div>
 
 	<div data-toggle="momentum-scroll">

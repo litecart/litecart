@@ -99,83 +99,83 @@ table th:last-child {
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo !empty($banner->data['id']) ? t('title_edit_banner', 'Edit Banner') : t('title_create_new_banner', 'Create New Banner'); ?>
+			<?= $app_icon ?> <?= !empty($banner->data['id']) ? t('title_edit_banner', 'Edit Banner') : t('title_create_new_banner', 'Create New Banner') ?>
 		</div>
 	</div>
 
 	<div class="card-body">
-		<?php echo f::form_begin('banner_form', 'post', '', true, ['style' => 'max-width: 640px;']); ?>
+		<?= f::form_begin('banner_form', 'post', '', true, ['style' => 'max-width: 640px;']) ?>
 
 			<div class="grid">
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_status', 'Status'); ?></div>
-						<?php echo f::form_toggle('status', 'e/d', true); ?>
+						<div class="form-label"><?= t('title_status', 'Status') ?></div>
+						<?= f::form_toggle('status', 'e/d', true) ?>
 					</label>
 				</div>
 
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
-						<?php echo f::form_input_text('name', true); ?>
+						<div class="form-label"><?= t('title_name', 'Name') ?></div>
+						<?= f::form_input_text('name', true) ?>
 					</label>
 				</div>
 			</div>
 
 			<label class="form-group">
-				<div class="form-label"><?php echo t('title_languages', 'Languages'); ?> <em>(<?php echo t('text_leave_blank_for_all', 'Leave blank for all'); ?>)</em></div>
-				<div><?php echo f::form_select_language('languages[]', true); ?></div>
+				<div class="form-label"><?= t('title_languages', 'Languages') ?> <em>(<?= t('text_leave_blank_for_all', 'Leave blank for all') ?>)</em></div>
+				<div><?= f::form_select_language('languages[]', true) ?></div>
 			</label>
 
 			<label class="form-group">
-				<div class="form-label"><?php echo t('title_image', 'Image'); ?></div>
-				<?php echo f::form_input_file('image', ['accept' => 'image/*']); ?>
+				<div class="form-label"><?= t('title_image', 'Image') ?></div>
+				<?= f::form_input_file('image', ['accept' => 'image/*']) ?>
 				<?php if (!empty($banner->data['image'])) echo '<div>' . $banner->data['image'] .'</div>'; ?>
 			</label>
 
 			<label class="form-group">
-				<div class="form-label"><?php echo t('title_link', 'Link'); ?></div>
-				<?php echo f::form_input_url('link', true); ?>
+				<div class="form-label"><?= t('title_link', 'Link') ?></div>
+				<?= f::form_input_url('link', true) ?>
 			</label>
 
 			<label class="form-group">
-				<div class="form-label"><?php echo t('title_html', 'HTML'); ?></div>
+				<div class="form-label"><?= t('title_html', 'HTML') ?></div>
 				<div class="form-input" style="padding: 0;">
-					<?php echo f::form_input_code('html', true, ['placeholder' => f::escape_attr('<a href="$target_url"><img class="responsive" src="$image_url"></a>') , 'style' => 'height: 150px;']); ?>
+					<?= f::form_input_code('html', true, ['placeholder' => f::escape_attr('<a href="$target_url"><img class="responsive" src="$image_url"></a>') , 'style' => 'height: 150px;']) ?>
 					<div style="padding: 0.5em; background: var(--input-addon-background);">
-						<?php echo t('title_aliases', 'Aliases'); ?>: <em>$uid, $key, $language_code, $image_url, $target_url</em>
+						<?= t('title_aliases', 'Aliases') ?>: <em>$uid, $key, $language_code, $image_url, $target_url</em>
 					</div>
 				</div>
 			</label>
 
 			<label class="form-group">
-				<div class="form-label"><?php echo t('title_keywords', 'Keywords'); ?></div>
-				<?php echo f::form_input_tags('keywords', true); ?>
+				<div class="form-label"><?= t('title_keywords', 'Keywords') ?></div>
+				<?= f::form_input_tags('keywords', true) ?>
 			</label>
 
 			<div class="grid">
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_valid_from', 'Date Valid From'); ?></div>
-						<?php echo f::form_input_datetime('valid_from', true); ?>
+						<div class="form-label"><?= t('title_valid_from', 'Date Valid From') ?></div>
+						<?= f::form_input_datetime('valid_from', true) ?>
 					</label>
 				</div>
 
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_valid_to', 'Date Valid To'); ?></div>
-						<?php echo f::form_input_datetime('valid_to', true); ?>
+						<div class="form-label"><?= t('title_valid_to', 'Date Valid To') ?></div>
+						<?= f::form_input_datetime('valid_to', true) ?>
 					</label>
 				</div>
 			</div>
 
 			<div class="card-action">
-				<?php echo f::form_button_predefined('save'); ?>
+				<?= f::form_button_predefined('save') ?>
 				<?php if (!empty($banner->data['id'])) echo f::form_button_predefined('delete'); ?>
-				<?php echo f::form_button_predefined('cancel'); ?>
+				<?= f::form_button_predefined('cancel') ?>
 			</div>
 
-		<?php echo f::form_end(); ?>
+		<?= f::form_end() ?>
 	</div>
 </div>
 
@@ -201,11 +201,11 @@ table th:last-child {
 
 		let $output = $([
 			'<tr>',
-			'  <td><?php echo f::form_input_text('keys[__index__]', '__index__', ['required' => true, 'pattern' => '[0-9A-Za-z_-]+', 'placeholder' => 'keyname']); ?></td>',
+			'  <td><?= f::form_input_text('keys[__index__]', '__index__', ['required' => true, 'pattern' => '[0-9A-Za-z_-]+', 'placeholder' => 'keyname']) ?></td>',
 			<?php foreach (language::$languages as $language) { ?>
-			'  <td><?php echo f::form_input_text('values['. $language['code'] .'][__index__]', true); ?></td>',
+			'  <td><?= f::form_input_text('values['. $language['code'] .'][__index__]', true) ?></td>',
 			<?php } ?>
-			'  <td><a class="btn btn-default btn-sm remove" href="#" title="<?php echo f::escape_html(t('title_remove', 'Remove')); ?>"><?php echo f::draw_fonticon('remove'); ?></a></td>',
+			'  <td><a class="btn btn-default btn-sm remove" href="#" title="<?= f::escape_html(t('title_remove', 'Remove')) ?>"><?= f::draw_fonticon('remove') ?></a></td>',
 			'</tr>'
 		].join('\n')
 			.replace(/__index__/g, 'new_' + __index__)

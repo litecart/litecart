@@ -70,41 +70,41 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo t('title_redirects', 'Redirects'); ?>
+			<?= $app_icon ?> <?= t('title_redirects', 'Redirects') ?>
 		</div>
 	</div>
 
 	<div class="card-action">
 		<ul class="list-inline pull-right">
-			<li><?php echo f::form_button_link(document::ilink(__APP__.'/edit_redirect'), t('title_create_new_redirect', 'Create New Redirect'), '', 'create'); ?></li>
+			<li><?= f::form_button_link(document::ilink(__APP__.'/edit_redirect'), t('title_create_new_redirect', 'Create New Redirect'), '', 'create') ?></li>
 		</ul>
 	</div>
 
-	<?php echo f::form_begin('redirects_form', 'post'); ?>
+	<?= f::form_begin('redirects_form', 'post') ?>
 
 		<table class="table data-table">
 			<thead>
 				<tr>
-					<th><?php echo f::draw_fonticon('icon-square-check checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th class="text-center"><?= f::draw_fonticon('icon-square-check checkbox-toggle', 'data-toggle="checkbox-toggle"') ?></th>
 					<th></th>
-					<th><?php echo t('title_pattern', 'Pattern'); ?> (Regex)</th>
-					<th class="main"><?php echo t('title_destination', 'Destination'); ?></th>
-					<th><?php echo t('title_redirects', 'Redirects'); ?></th>
-					<th><?php echo t('title_last_redirected', 'Last Redirected'); ?></th>
+					<th><?= t('title_pattern', 'Pattern') ?> (Regex)</th>
+					<th class="main"><?= t('title_destination', 'Destination') ?></th>
+					<th><?= t('title_redirects', 'Redirects') ?></th>
+					<th><?= t('title_last_redirected', 'Last Redirected') ?></th>
 					<th></th>
 				</tr>
 			</thead>
 
 			<tbody>
 				<?php foreach ($redirects as $redirect) { ?>
-				<tr class="<?php echo empty($redirect['status']) ? 'semi-transparent' : null; ?>">
-					<td><?php echo f::form_checkbox('redirects[]', $redirect['id']); ?></td>
-					<td><?php echo f::draw_fonticon(!empty($redirect['status']) ? 'on' : 'off'); ?></td>
-					<td><a href="<?php echo document::href_ilink(__APP__.'/edit_redirect', ['redirect_id' => $redirect['id']]); ?>"><?php echo $redirect['pattern']; ?></a></td>
-					<td><?php echo $redirect['destination']; ?></td>
-					<td class="text-end"><?php echo f::format_number($redirect['redirects']); ?></td>
-					<td class="text-end"><?php echo $redirect['last_redirected'] ? f::datetime_when($redirect['last_redirected']) : '-'; ?></td>
-					<td class="text-end"><a href="<?php echo document::href_ilink(__APP__.'/edit_redirect', ['redirect_id' => $redirect['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo f::draw_fonticon('edit'); ?></a></td>
+				<tr class="<?= empty($redirect['status']) ? 'semi-transparent' : null ?>">
+					<td><?= f::form_checkbox('redirects[]', $redirect['id']) ?></td>
+					<td><?= f::draw_fonticon(!empty($redirect['status']) ? 'on' : 'off') ?></td>
+					<td><a href="<?= document::href_ilink(__APP__.'/edit_redirect', ['redirect_id' => $redirect['id']]) ?>"><?= $redirect['pattern'] ?></a></td>
+					<td><?= $redirect['destination'] ?></td>
+					<td class="text-end"><?= f::format_number($redirect['redirects']) ?></td>
+					<td class="text-end"><?= $redirect['last_redirected'] ? f::datetime_when($redirect['last_redirected']) : '-' ?></td>
+					<td class="text-end"><a href="<?= document::href_ilink(__APP__.'/edit_redirect', ['redirect_id' => $redirect['id']]) ?>" title="<?= t('title_edit', 'Edit') ?>"><?= f::draw_fonticon('edit') ?></a></td>
 				</tr>
 				<?php } ?>
 			</tbody>
@@ -112,7 +112,7 @@
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo t('title_redirects', 'Redirects'); ?>: <?php echo $num_rows; ?>
+						<?= t('title_redirects', 'Redirects') ?>: <?= $num_rows ?>
 					</td>
 				</tr>
 			</tfoot>
@@ -122,27 +122,27 @@
 			<fieldset id="actions">
 
 				<legend>
-					<?php echo t('text_with_selected', 'With selected'); ?>:
+					<?= t('text_with_selected', 'With selected') ?>:
 				</legend>
 
 				<div class="flex">
 
 					<div class="btn-group">
-						<?php echo f::form_button_predefined('enable'); ?>
-						<?php echo f::form_button_predefined('disable'); ?>
+						<?= f::form_button_predefined('enable') ?>
+						<?= f::form_button_predefined('disable') ?>
 					</div>
 
-					<?php echo f::form_button_predefined('delete'); ?>
+					<?= f::form_button_predefined('delete') ?>
 
 				</div>
 			</fieldset>
 		</div>
 
-	<?php echo f::form_end(); ?>
+	<?= f::form_end() ?>
 
 	<?php if ($num_pages > 1) { ?>
 		<div class="card-footer">
-			<?php echo f::draw_pagination($num_pages); ?>
+			<?= f::draw_pagination($num_pages) ?>
 		</div>
 	<?php } ?>
 </div>

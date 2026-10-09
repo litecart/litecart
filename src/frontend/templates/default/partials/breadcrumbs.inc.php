@@ -1,5 +1,5 @@
 <nav class="breadcrumbs-wrapper">
-	<ol class="breadcrumbs" aria-label="<?php echo f::escape_attr(t('title_breadcrumb', 'Breadcrumb')); ?>">
+	<ol class="breadcrumbs" aria-label="<?= f::escape_attr(t('title_breadcrumb', 'Breadcrumb')) ?>">
 		<?php foreach ($breadcrumbs as $breadcrumb) { ?>
 		<li>
 			<?php

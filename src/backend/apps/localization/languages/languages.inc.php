@@ -53,49 +53,49 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo t('title_languages', 'Languages'); ?>
+			<?= $app_icon ?> <?= t('title_languages', 'Languages') ?>
 		</div>
 	</div>
 
 	<div class="card-action">
-		<?php echo f::form_button_link(document::ilink(__APP__.'/languages/edit_language'), t('title_create_new_language', 'Create New Language'), '', 'create'); ?>
+		<?= f::form_button_link(document::ilink(__APP__.'/languages/edit_language'), t('title_create_new_language', 'Create New Language'), '', 'create') ?>
 	</div>
 
-	<?php echo f::form_begin('languages_form', 'post'); ?>
+	<?= f::form_begin('languages_form', 'post') ?>
 
 		<table class="table data-table">
 			<thead>
 				<tr>
-					<th><?php echo f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th class="text-center"><?= f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"') ?></th>
 					<th></th>
-					<th><?php echo t('title_id', 'ID'); ?></th>
-					<th class="main"><?php echo t('title_name', 'Name'); ?></th>
+					<th><?= t('title_id', 'ID') ?></th>
+					<th class="main"><?= t('title_name', 'Name') ?></th>
 					<th>ISO 639-1</th>
 					<th>ISO 639-2</th>
-					<th><?php echo t('title_url_type', 'URL Type'); ?></th>
-					<th><?php echo t('title_default_language', 'Default Language'); ?></th>
-					<th><?php echo t('title_store_language', 'Store Language'); ?></th>
-					<th><?php echo t('title_priority', 'Priority'); ?></th>
+					<th><?= t('title_url_type', 'URL Type') ?></th>
+					<th><?= t('title_default_language', 'Default Language') ?></th>
+					<th><?= t('title_store_language', 'Store Language') ?></th>
+					<th><?= t('title_priority', 'Priority') ?></th>
 					<th></th>
 				</tr>
 			</thead>
 
 			<tbody>
 			<?php foreach ($languages as $language) { ?>
-				<tr class="<?php echo empty($language['status']) ? 'semi-transparent' : ''; ?>">
-					<td><?php echo f::form_checkbox('languages[]', $language['code']); ?></td>
-					<td><?php echo f::draw_fonticon(($language['status'] == 1) ? 'on' : (($language['status'] == -1) ? 'semi-off' : 'off')); ?></td>
-					<td><?php echo $language['id']; ?></td>
-					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/languages/edit_language', ['language_code' => $language['code']]); ?>"><?php echo $language['name']; ?></a></td>
-					<td class="text-center"><?php echo $language['code']; ?></td>
-					<td class="text-center"><?php echo $language['code2']; ?></td>
-					<td class="text-center"><?php echo $language['url_type']; ?></td>
-					<td class="text-center"><?php echo ($language['code'] == settings::get('default_language_code')) ? f::draw_fonticon('icon-check') : ''; ?></td>
-					<td class="text-center"><?php echo ($language['code'] == settings::get('store_language_code')) ? f::draw_fonticon('icon-check') : ''; ?></td>
-					<td class="text-center"><?php echo $language['priority']; ?></td>
+				<tr class="<?= empty($language['status']) ? 'semi-transparent' : '' ?>">
+					<td><?= f::form_checkbox('languages[]', $language['code']) ?></td>
+					<td><?= f::draw_fonticon(($language['status'] == 1) ? 'on' : (($language['status'] == -1) ? 'semi-off' : 'off')) ?></td>
+					<td><?= $language['id'] ?></td>
+					<td><a class="link" href="<?= document::href_ilink(__APP__.'/languages/edit_language', ['language_code' => $language['code']]) ?>"><?= $language['name'] ?></a></td>
+					<td class="text-center"><?= $language['code'] ?></td>
+					<td class="text-center"><?= $language['code2'] ?></td>
+					<td class="text-center"><?= $language['url_type'] ?></td>
+					<td class="text-center"><?= ($language['code'] == settings::get('default_language_code')) ? f::draw_fonticon('icon-check') : '' ?></td>
+					<td class="text-center"><?= ($language['code'] == settings::get('store_language_code')) ? f::draw_fonticon('icon-check') : '' ?></td>
+					<td class="text-center"><?= $language['priority'] ?></td>
 					<td class="text-end">
-						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/languages/edit_language', ['language_code' => $language['code']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>">
-							<?php echo f::draw_fonticon('edit'); ?>
+						<a class="btn btn-default btn-sm" href="<?= document::href_ilink(__APP__.'/languages/edit_language', ['language_code' => $language['code']]) ?>" title="<?= t('title_edit', 'Edit') ?>">
+							<?= f::draw_fonticon('edit') ?>
 						</a>
 					</td>
 				</tr>
@@ -105,7 +105,7 @@
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo t('title_languages', 'Languages'); ?>: <?php echo f::format_number($num_rows); ?>
+						<?= t('title_languages', 'Languages') ?>: <?= f::format_number($num_rows) ?>
 					</td>
 				</tr>
 			</tfoot>
@@ -115,22 +115,22 @@
 			<fieldset id="actions">
 
 				<legend>
-					<?php echo t('text_with_selected', 'With selected'); ?>:
+					<?= t('text_with_selected', 'With selected') ?>:
 				</legend>
 
 				<div class="btn-group">
-					<?php echo f::form_button_predefined('enable'); ?>
-					<?php echo f::form_button_predefined('disable'); ?>
+					<?= f::form_button_predefined('enable') ?>
+					<?= f::form_button_predefined('disable') ?>
 				</div>
 
 			</fieldset>
 		</div>
 
-	<?php echo f::form_end(); ?>
+	<?= f::form_end() ?>
 
 	<?php if ($num_pages > 1) { ?>
 	<div class="card-footer">
-		<?php echo f::draw_pagination($num_pages); ?>
+		<?= f::draw_pagination($num_pages) ?>
 	</div>
 	<?php } ?>
 </div>

@@ -432,53 +432,53 @@ table .icon-folder {
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo t('title_file_storage', 'File Storage'); ?>
+			<?= $app_icon ?> <?= t('title_file_storage', 'File Storage') ?>
 		</div>
 	</div>
 
-	<?php echo f::form_begin('upload_form', 'post', '', true); ?>
+	<?= f::form_begin('upload_form', 'post', '', true) ?>
 		<?php if (!settings::get('csrf_protection')) echo f::form_input_hidden('csrf_token', security::csrf_token()); ?>
 
 		<div class="card-action">
 			<ul class="flex flex-columns">
-				<li><?php echo f::form_input_file('new_files[]', ['multiple' => true]); ?></li>
-				<li><?php echo f::form_button('upload', ['true', f::draw_fonticon('icon-upload') . ' ' . t('title_upload', 'Upload')]); ?></li>
-				<li><?php echo f::form_button('create_folder', ['true', f::draw_fonticon('icon-folder') . ' ' . t('title_create_new_folder', 'Create New Folder')]); ?></li>
+				<li><?= f::form_input_file('new_files[]', ['multiple' => true]) ?></li>
+				<li><?= f::form_button('upload', ['true', f::draw_fonticon('icon-upload') . ' ' . t('title_upload', 'Upload')]) ?></li>
+				<li><?= f::form_button('create_folder', ['true', f::draw_fonticon('icon-folder') . ' ' . t('title_create_new_folder', 'Create New Folder')]) ?></li>
 			</ul>
 		</div>
-	<?php echo f::form_end(); ?>
+	<?= f::form_end() ?>
 
-	<?php echo f::form_begin('search_form', 'get'); ?>
+	<?= f::form_begin('search_form', 'get') ?>
 		<div class="card-filter">
 			<div class="input-group" style="width: 640px;">
-				<span class="input-group-text"><?php echo t('title_location', 'Location'); ?></span>
-				<?php echo f::form_input_text('path', $_GET['path']); ?>
+				<span class="input-group-text"><?= t('title_location', 'Location') ?></span>
+				<?= f::form_input_text('path', $_GET['path']) ?>
 			</div>
 			<div class="expandable">
 				<div class="input-group" style="width: 400px;">
-					<span class="input-group-text"><?php echo t('title_filter', 'Filter') ?></span>
-					<?php echo f::form_input_text('filter[pattern]', true, ['placeholder' => t('title_filter_pattern', 'Filter Pattern') , 'list' => 'search-patterns']); ?>
-					<?php echo f::form_input_text('filter[content]', true, ['placeholder' => t('title_file_contents', 'File Contents')]); ?>
+					<span class="input-group-text"><?= t('title_filter', 'Filter') ?></span>
+					<?= f::form_input_text('filter[pattern]', true, ['placeholder' => t('title_filter_pattern', 'Filter Pattern') , 'list' => 'search-patterns']) ?>
+					<?= f::form_input_text('filter[content]', true, ['placeholder' => t('title_file_contents', 'File Contents')]) ?>
 				</div>
 			</div>
-			<?php echo f::form_button('search', t('title_search', 'Search'), 'submit'); ?>
+			<?= f::form_button('search', t('title_search', 'Search'), 'submit') ?>
 		</div>
-	<?php echo f::form_end(); ?>
+	<?= f::form_end() ?>
 
-	<?php echo f::form_begin('files_form', 'post'); ?>
+	<?= f::form_begin('files_form', 'post') ?>
 		<div class="dropzone">
 			<table class="table data-table">
 				<thead>
 					<tr>
-						<th><?php echo f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
-						<th class="main"><?php echo t('title_file', 'File'); ?></th>
+						<th class="text-center"><?= f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"') ?></th>
+						<th class="main"><?= t('title_file', 'File') ?></th>
 						<?php if (!empty($_GET['filter']['pattern']) || !empty($_GET['filter']['content'])) { ?>
-						<th><?php echo t('title_location', 'Location'); ?></th>
+						<th><?= t('title_location', 'Location') ?></th>
 						<?php } ?>
-						<th class="text-end"><?php echo t('title_size', 'Size'); ?></th>
-						<th class="text-end"><?php echo t('title_permissions', 'Permissions'); ?></th>
-						<th class="text-end"><?php echo t('title_modified', 'Modified'); ?></th>
-						<th class="text-end"><?php echo t('title_created', 'Created'); ?></th>
+						<th class="text-end"><?= t('title_size', 'Size') ?></th>
+						<th class="text-end"><?= t('title_permissions', 'Permissions') ?></th>
+						<th class="text-end"><?= t('title_modified', 'Modified') ?></th>
+						<th class="text-end"><?= t('title_created', 'Created') ?></th>
 						<th></th>
 					</tr>
 				</thead>
@@ -487,8 +487,8 @@ table .icon-folder {
 					<?php if (!empty($_GET['path']) && $_GET['path'] != '/') { ?>
 					<tr>
 						<td colspan="99">
-							<?php echo f::draw_fonticon('icon-arrow-left'); ?> <a href="<?php echo document::href_ilink(null, ['path' => dirname($_GET['path']) == '.' ? '' : str_replace('\\', '/', dirname($_GET['path']))]); ?>">
-								<?php echo t('title_back', 'Back'); ?>
+							<?= f::draw_fonticon('icon-arrow-left') ?> <a href="<?= document::href_ilink(null, ['path' => dirname($_GET['path']) == '.' ? '' : str_replace('\\', '/', dirname($_GET['path']))]) ?>">
+								<?= t('title_back', 'Back') ?>
 							</a>
 						</td>
 					</tr>
@@ -496,41 +496,41 @@ table .icon-folder {
 
 					<?php foreach ($folders as $folder) { ?>
 					<tr>
-						<td><?php echo f::form_checkbox('folders[]', $folder['path']); ?></td>
+						<td><?= f::form_checkbox('folders[]', $folder['path']) ?></td>
 						<td class="folder">
-							<?php echo f::draw_fonticon('icon-folder icon-lg'); ?> <a href="<?php echo document::href_ilink(null, ['path' => $folder['path']]); ?>">
-								<?php echo $folder['name']; ?>
+							<?= f::draw_fonticon('icon-folder icon-lg') ?> <a href="<?= document::href_ilink(null, ['path' => $folder['path']]) ?>">
+								<?= $folder['name'] ?>
 							</a>
 						</td>
 						<?php if (!empty($_GET['filter']['pattern']) || !empty($_GET['filter']['content'])) { ?>
-						<td><?php echo dirname($folder['location']); ?></td>
+						<td><?= dirname($folder['location']) ?></td>
 						<?php } ?>
-						<td class="text-end"><?php echo f::file_format_size($folder['size']); ?></td>
-						<td class="text-end"><tt><?php echo $folder['permissions']; ?></tt></td>
-						<td class="text-end"><?php echo f::datetime_when($folder['updated_at']); ?></td>
-						<td class="text-end"><?php echo f::datetime_when($folder['created_at']); ?></td>
+						<td class="text-end"><?= f::file_format_size($folder['size']) ?></td>
+						<td class="text-end"><tt><?= $folder['permissions'] ?></tt></td>
+						<td class="text-end"><?= f::datetime_when($folder['updated_at']) ?></td>
+						<td class="text-end"><?= f::datetime_when($folder['created_at']) ?></td>
 						<td class="text-end"></td>
 					</tr>
 					<?php } ?>
 
 					<?php foreach ($files as $file) { ?>
 					<tr>
-						<td><?php echo f::form_checkbox('files[]', $file['path']); ?></td>
+						<td><?= f::form_checkbox('files[]', $file['path']) ?></td>
 						<td class="file">
-							<?php echo f::draw_fonticon($file['icon'] . ' icon-lg'); ?> <a class="" href="<?php echo document::href_ilink(__APP__ . '/edit_file', ['path' => $file['path']]); ?>">
-								<?php echo $file['name']; ?>
+							<?= f::draw_fonticon($file['icon'] . ' icon-lg') ?> <a class="" href="<?= document::href_ilink(__APP__ . '/edit_file', ['path' => $file['path']]) ?>">
+								<?= $file['name'] ?>
 							</a>
 						</td>
 						<?php if (!empty($_GET['filter']['pattern']) || !empty($_GET['filter']['content'])) { ?>
-						<td><?php echo $file['location']; ?></td>
+						<td><?= $file['location'] ?></td>
 						<?php } ?>
-						<td class="text-end"><?php echo f::file_format_size($file['size']); ?></td>
-						<td class="text-end"><tt><?php echo $file['permissions']; ?></tt></td>
-						<td class="text-end"><?php echo f::datetime_when($file['updated_at']); ?></td>
-						<td class="text-end"><?php echo f::datetime_when($file['created_at']); ?></td>
+						<td class="text-end"><?= f::file_format_size($file['size']) ?></td>
+						<td class="text-end"><tt><?= $file['permissions'] ?></tt></td>
+						<td class="text-end"><?= f::datetime_when($file['updated_at']) ?></td>
+						<td class="text-end"><?= f::datetime_when($file['created_at']) ?></td>
 						<td class="text-end">
-							<a class="btn btn-default btn-sm download" href="<?php echo document::href_ilink(__APP__ . '/download', ['path' => $file['path']]); ?>" title="<?php echo t('title_download', 'Download'); ?>">
-								<?php echo f::draw_fonticon('icon-download'); ?>
+							<a class="btn btn-default btn-sm download" href="<?= document::href_ilink(__APP__ . '/download', ['path' => $file['path']]) ?>" title="<?= t('title_download', 'Download') ?>">
+								<?= f::draw_fonticon('icon-download') ?>
 							</a>
 						</td>
 					</tr>
@@ -539,15 +539,15 @@ table .icon-folder {
 
 				<tfoot>
 					<td colspan="99">
-						<?php echo t('title_folders', 'Folders'); ?>: <?php echo count($folders); ?>,
-						<?php echo t('title_files', 'Files'); ?>: <?php echo count($files); ?>,
-						<?php echo t('title_folder_size', 'Folder Size'); ?>: <?php echo f::file_format_size($folder_size); ?>
+						<?= t('title_folders', 'Folders') ?>: <?= count($folders) ?>,
+						<?= t('title_files', 'Files') ?>: <?= count($files) ?>,
+						<?= t('title_folder_size', 'Folder Size') ?>: <?= f::file_format_size($folder_size) ?>
 					</td>
 				</tfoot>
 			</table>
 
 			<div class="drag-notice">
-				<?php echo t('text_drag_and_drop_files_here', 'Drag and drop files here'); ?>
+				<?= t('text_drag_and_drop_files_here', 'Drag and drop files here') ?>
 			</div>
 
 		</div>
@@ -556,17 +556,17 @@ table .icon-folder {
 			<fieldset id="actions">
 
 				<legend>
-					<?php echo t('text_with_selected', 'With selected'); ?>:
+					<?= t('text_with_selected', 'With selected') ?>:
 				</legend>
 
 				<div class="flex">
-					<?php echo f::form_button('download', t('title_download', 'Download'), 'submit', ['class' => 'btn btn-default'], 'icon-download'); ?>
-					<?php echo f::form_button_predefined('delete'); ?>
+					<?= f::form_button('download', t('title_download', 'Download'), 'submit', ['class' => 'btn btn-default'], 'icon-download') ?>
+					<?= f::form_button_predefined('delete') ?>
 				</div>
 
 			</fieldset>
 		</div>
-	<?php echo f::form_end(); ?>
+	<?= f::form_end() ?>
 </div>
 
 <datalist id="search-patterns">
@@ -578,7 +578,7 @@ table .icon-folder {
 <script>
 	$('button[name="create_folder"]').on('click', function(e){
 		e.preventDefault();
-		let folder_name = prompt("<?php echo t('text_new_folder_name', 'New Folder Name'); ?>");
+		let folder_name = prompt("<?= t('text_new_folder_name', 'New Folder Name') ?>");
 		if (!folder_name) return false;
 		let form = $([
 			'<form method="post">',
@@ -592,7 +592,7 @@ table .icon-folder {
 	});
 
 	$('.folder .download').on('click', function(e){
-		if (!confirm("<?php echo t('text_are_you_sure', 'Are you sure?'); ?>")) return false;
+		if (!confirm("<?= t('text_are_you_sure', 'Are you sure?') ?>")) return false;
 	});
 
 	$('.data-table :checkbox').on('change', function() {

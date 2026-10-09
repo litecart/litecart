@@ -27,13 +27,13 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo t('title_run_job', 'Run Job'); ?>
+			<?= $app_icon ?> <?= t('title_run_job', 'Run Job') ?>
 		</div>
 	</div>
 
 	<div class="card-body">
 		<div class="form-code">
-			<pre><?php echo f::escape_html($log); ?></pre>
+			<pre><?= f::escape_html($log) ?></pre>
 		</div>
 	</div>
 </div>

@@ -55,13 +55,13 @@ table.items tbody tr:nth-child(11) {
 	<header class="header">
 		<div class="grid">
 			<div class="col-6">
-				<?php echo f::draw_image('storage://images/logotype.png', 0, 0, 'fit', 'class="logotype" alt="'. f::escape_attr(settings::get('store_name')) .'"'); ?>
+				<?= f::draw_image('storage://images/logotype.png', 0, 0, 'fit', 'class="logotype" alt="'. f::escape_attr(settings::get('store_name')) .'"') ?>
 			</div>
 
 			<div class="col-6 text-end">
-				<h1><?php echo t('title_packing_slip', 'Packing Slip'); ?></h1>
-				<div><?php echo t('title_order', 'Order'); ?> <?php echo $order['no']; ?></div>
-				<div><?php echo !empty($order['created_at']) ? date(language::$selected['raw_date'], strtotime($order['created_at'])) : date(language::$selected['raw_date']); ?></div>
+				<h1><?= t('title_packing_slip', 'Packing Slip') ?></h1>
+				<div><?= t('title_order', 'Order') ?> <?= $order['no'] ?></div>
+				<div><?= !empty($order['created_at']) ? date(language::$selected['raw_date'], strtotime($order['created_at'])) : date(language::$selected['raw_date']) ?></div>
 			</div>
 		</div>
 	</header>
@@ -71,27 +71,27 @@ table.items tbody tr:nth-child(11) {
 		<div class="addresses">
 			<div class="grid">
 				<div class="col-6">
-					<div class="label"><?php echo t('title_shipping_option', 'Shipping Option'); ?></div>
-					<div class="value"><?php echo $order['shipping_option']['name'] ?? '-'; ?></div>
+					<div class="label"><?= t('title_shipping_option', 'Shipping Option') ?></div>
+					<div class="value"><?= $order['shipping_option']['name'] ?? '-' ?></div>
 
-					<div class="label"><?php echo t('title_shipping_tracking_id', 'Shipping Tracking ID'); ?></div>
-					<div class="value"><?php echo $order['shipping_tracking_id'] ?? '-'; ?></div>
+					<div class="label"><?= t('title_shipping_tracking_id', 'Shipping Tracking ID') ?></div>
+					<div class="value"><?= $order['shipping_tracking_id'] ?? '-' ?></div>
 
-					<div class="label"><?php echo t('title_shipping_weight', 'Shipping Weight'); ?></div>
-					<div class="value"><?php echo !empty($order['weight_total']) ? f::format_weight($order['weight_total'], $order['weight_unit']) : '-'; ?></div>
+					<div class="label"><?= t('title_shipping_weight', 'Shipping Weight') ?></div>
+					<div class="value"><?= !empty($order['weight_total']) ? f::format_weight($order['weight_total'], $order['weight_unit']) : '-' ?></div>
 				</div>
 
 				<div class="col-6 shipping-address">
 					<div class="rounded-rectangle">
-						<div class="label"><?php echo t('title_shipping_address', 'Shipping Address'); ?></div>
-						<div class="value"><?php echo nl2br(f::escape_html(f::format_address($order['customer']['shipping_address']))); ?></div>
+						<div class="label"><?= t('title_shipping_address', 'Shipping Address') ?></div>
+						<div class="value"><?= nl2br(f::escape_html(f::format_address($order['customer']['shipping_address']))) ?></div>
 					</div>
 
-					<div class="label"><?php echo t('title_email', 'Email'); ?></div>
-					<div class="value"><?php echo isset($order['customer']['email']) ? f::escape_html($order['customer']['email']) : '-'; ?></div>
+					<div class="label"><?= t('title_email', 'Email') ?></div>
+					<div class="value"><?= isset($order['customer']['email']) ? f::escape_html($order['customer']['email']) : '-' ?></div>
 
-					<div class="label"><?php echo t('title_phone_number', 'Phone Number'); ?></div>
-					<div class="value"><?php echo isset($order['customer']['shipping_address']['phone']) ? f::escape_html($order['customer']['shipping_address']['phone']) : '-'; ?></div>
+					<div class="label"><?= t('title_phone_number', 'Phone Number') ?></div>
+					<div class="value"><?= isset($order['customer']['shipping_address']['phone']) ? f::escape_html($order['customer']['shipping_address']['phone']) : '-' ?></div>
 				</div>
 			</div>
 		</div>
@@ -99,11 +99,11 @@ table.items tbody tr:nth-child(11) {
 		<table class="items table data-table">
 			<thead>
 				<tr>
-					<th><?php echo t('title_qty', 'Qty'); ?></th>
-					<th class="main"><?php echo t('title_item', 'Item'); ?></th>
-					<th><?php echo t('title_sku', 'SKU'); ?></th>
-					<th><?php echo t('title_gtin', 'GTIN'); ?></th>
-					<th><?php echo t('title_taric', 'TARIC'); ?></th>
+					<th><?= t('title_qty', 'Qty') ?></th>
+					<th class="main"><?= t('title_item', 'Item') ?></th>
+					<th><?= t('title_sku', 'SKU') ?></th>
+					<th><?= t('title_gtin', 'GTIN') ?></th>
+					<th><?= t('title_taric', 'TARIC') ?></th>
 				</tr>
 			</thead>
 
@@ -125,11 +125,11 @@ table.items tbody tr:nth-child(11) {
 		<table class="items table data-table">
 			<thead>
 				<tr>
-					<th><?php echo t('title_qty', 'Qty'); ?></th>
-					<th class="main"><?php echo t('title_item', 'Item'); ?></th>
-					<th><?php echo t('title_sku', 'SKU'); ?></th>
-					<th><?php echo t('title_gtin', 'GTIN'); ?></th>
-					<th><?php echo t('title_taric', 'TARIC'); ?></th>
+					<th><?= t('title_qty', 'Qty') ?></th>
+					<th class="main"><?= t('title_item', 'Item') ?></th>
+					<th><?= t('title_sku', 'SKU') ?></th>
+					<th><?= t('title_gtin', 'GTIN') ?></th>
+					<th><?= t('title_taric', 'TARIC') ?></th>
 				</tr>
 			</thead>
 <?php
@@ -137,11 +137,11 @@ table.items tbody tr:nth-child(11) {
 ?>
 			<tbody>
 				<tr>
-					<td><?php echo ($item['total_quantity'] > 1) ? '<strong>'. (float)$item['total_quantity'].'</strong>' : (float)$item['total_quantity']; ?></td>
-					<td style="white-space: normal;"><?php echo $item['name']; ?></td>
-					<td><?php echo $item['sku']; ?></td>
-					<td><?php echo $item['gtin']; ?></td>
-					<td><?php echo $item['taric']; ?></td>
+					<td><?= ($item['total_quantity'] > 1) ? '<strong>'. (float)$item['total_quantity'].'</strong>' : (float)$item['total_quantity'] ?></td>
+					<td style="white-space: normal;"><?= $item['name'] ?></td>
+					<td><?= $item['sku'] ?></td>
+					<td><?= $item['gtin'] ?></td>
+					<td><?= $item['taric'] ?></td>
 				</tr>
 <?php
 	}
@@ -157,28 +157,28 @@ table.items tbody tr:nth-child(11) {
 
 		<div class="grid">
 			<div class="col-3">
-				<div class="label"><?php echo t('title_address', 'Address'); ?></div>
-				<div class="value"><?php echo nl2br(settings::get('store_postal_address')); ?></div>
+				<div class="label"><?= t('title_address', 'Address') ?></div>
+				<div class="value"><?= nl2br(settings::get('store_postal_address')) ?></div>
 			</div>
 
 			<div class="col-3">
 				<?php if (settings::get('store_phone')) { ?>
-				<div class="label"><?php echo t('title_phone_number', 'Phone Number'); ?></div>
-				<div class="value"><?php echo settings::get('store_phone'); ?></div>
+				<div class="label"><?= t('title_phone_number', 'Phone Number') ?></div>
+				<div class="value"><?= settings::get('store_phone') ?></div>
 				<?php } ?>
 
 				<?php if (settings::get('store_tax_id')) { ?>
-				<div class="label"><?php echo t('title_vat_registration_id', 'VAT Registration ID'); ?></div>
-				<div class="value"><?php echo settings::get('store_tax_id'); ?></div>
+				<div class="label"><?= t('title_vat_registration_id', 'VAT Registration ID') ?></div>
+				<div class="value"><?= settings::get('store_tax_id') ?></div>
 				<?php } ?>
 			</div>
 
 			<div class="col-3">
-				<div class="label"><?php echo t('title_email', 'Email'); ?></div>
-				<div class="value"><?php echo settings::get('store_email'); ?></div>
+				<div class="label"><?= t('title_email', 'Email') ?></div>
+				<div class="value"><?= settings::get('store_email') ?></div>
 
-				<div class="label"><?php echo t('title_website', 'Website'); ?></div>
-				<div class="value"><?php echo document::ilink(''); ?></div>
+				<div class="label"><?= t('title_website', 'Website') ?></div>
+				<div class="value"><?= document::ilink('') ?></div>
 			</div>
 
 			<div class="col-3">
@@ -192,7 +192,7 @@ table.items tbody tr:nth-child(11) {
 	<ul class="list-unstyled">
 		<li>
 			<button name="print" class="btn btn-default btn-lg">
-				<?php echo f::draw_fonticon('icon-print'); ?> <?php echo t('title_print', 'Print'); ?>
+				<?= f::draw_fonticon('icon-print') ?> <?= t('title_print', 'Print') ?>
 			</button>
 		</li>
 	</ul>

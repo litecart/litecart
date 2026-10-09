@@ -152,16 +152,16 @@ html[dir="rtl"] .whoami .avatar {
 <div class="card card-app">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo t('title_marketplace', 'Marketplace'); ?>
+			<?= $app_icon ?> <?= t('title_marketplace', 'Marketplace') ?>
 		</div>
 	</div>
 
 	<div class="card-action">
-		<?php echo f::form_begin('search_form', 'get', document::ilink(__APP__ . '/catalog')); ?>
+		<?= f::form_begin('search_form', 'get', document::ilink(__APP__ . '/catalog')) ?>
 			<div>
-				<?php echo f::form_input_search('query', true); ?>
+				<?= f::form_input_search('query', true) ?>
 			</div>
-		<?php echo f::form_end(); ?>
+		<?= f::form_end() ?>
 	</div>
 
 	<div class="card-body">
@@ -169,95 +169,95 @@ html[dir="rtl"] .whoami .avatar {
 		<div id="banners">
 
 			<div id="jumbotron" style="grid-area: jumbotron;">
-				<a href="<?php echo f::escape_html($marketplace['banners']['jumbotron']['link']); ?>">
-					<img class="thumbnail fit" src="<?php echo f::escape_html($marketplace['banners']['jumbotron']['image']); ?>">
+				<a href="<?= f::escape_html($marketplace['banners']['jumbotron']['link']) ?>">
+					<img class="thumbnail fit" src="<?= f::escape_html($marketplace['banners']['jumbotron']['image']) ?>">
 				</a>
 			</div>
 
 			<div id="profile" style="grid-area: profile;" style="margin-bottom: 30px;">
 				<?php if (!$profile) { ?>
-				<a class="connect btn btn-default" href="<?php echo document::ilink(__APP__ . '/connect'); ?>">
-					<?php echo f::draw_fonticon('icon-power-plug'); ?>
-					<?php echo t('title_connect_my_litecart_account', 'Connect my LiteCart account'); ?>
+				<a class="connect btn btn-default" href="<?= document::ilink(__APP__ . '/connect') ?>">
+					<?= f::draw_fonticon('icon-power-plug') ?>
+					<?= t('title_connect_my_litecart_account', 'Connect my LiteCart account') ?>
 				</a>
 				<?php } else { ?>
 				<div id="whoami" style="grid-area: whoami;" style="margin-bottom: 30px;">
-					<img class="avatar" src="<?php echo f::escape_html($profile['user']['avatar']); ?>">
-					<div class="username"><?php echo $profile['user']['username']; ?></div>
-					<div class="store-name"><?php echo $profile['store']['name']; ?></div>
-					<a class="disconnect btn btn-default btn-sm" href="<?php echo document::ilink(__APP__ . '/disconnect'); ?>"><?php echo f::draw_fonticon('icon-chain-broken'); ?> <?php echo t('title_disconnect', 'Disconnect'); ?></a>
+					<img class="avatar" src="<?= f::escape_html($profile['user']['avatar']) ?>">
+					<div class="username"><?= $profile['user']['username'] ?></div>
+					<div class="store-name"><?= $profile['store']['name'] ?></div>
+					<a class="disconnect btn btn-default btn-sm" href="<?= document::ilink(__APP__ . '/disconnect') ?>"><?= f::draw_fonticon('icon-chain-broken') ?> <?= t('title_disconnect', 'Disconnect') ?></a>
 				</div>
 				<?php } ?>
 			</div>
 
 			<div id="banner" style="grid-area: banner;">
-				<a href="<?php echo f::escape_html($marketplace['banners']['banner1']['link']); ?>">
-					<img class="thumbnail fit" src="<?php echo f::escape_html($marketplace['banners']['banner1']['image']); ?>">
+				<a href="<?= f::escape_html($marketplace['banners']['banner1']['link']) ?>">
+					<img class="thumbnail fit" src="<?= f::escape_html($marketplace['banners']['banner1']['image']) ?>">
 				</a>
 			</div>
 		</div>
 
-		<h2><?php echo t('title_browse_by_category', 'Browse By Category'); ?></h2>
+		<h2><?= t('title_browse_by_category', 'Browse By Category') ?></h2>
 
 		<nav class="categories pills" style="margin-bottom: 2em;">
 			<?php foreach ($marketplace['categories'] as $category) { ?>
-			<a class="pill-item" href="<?php echo document::ilink(__APP__ . '/catalog', ['category' => $category['name']]); ?>">
-				<?php echo f::escape_html($category['name']); ?>
+			<a class="pill-item" href="<?= document::ilink(__APP__ . '/catalog', ['category' => $category['name']]) ?>">
+				<?= f::escape_html($category['name']) ?>
 			</a>
 			<?php } ?>
 		</nav>
 
-		<h2><?php echo t('title_featured_addons', 'Featured Add-ons'); ?></h2>
+		<h2><?= t('title_featured_addons', 'Featured Add-ons') ?></h2>
 
 		<div class="addons">
 			<?php foreach ($marketplace['featured'] as $addon) { ?>
-			<a class="addon" href="<?php echo document::ilink(__APP__ . '/marketplace_addon', ['addon_id' => $addon['id']]); ?>">
-				<img class="thumbnail fit" src="<?php echo f::escape_html($addon['image']['thumbnail'] ?: document::rlink(FS_DIR_STORAGE . 'images/no_image.svg')); ?>">
+			<a class="addon" href="<?= document::ilink(__APP__ . '/marketplace_addon', ['addon_id' => $addon['id']]) ?>">
+				<img class="thumbnail fit" src="<?= f::escape_html($addon['image']['thumbnail'] ?: document::rlink(FS_DIR_STORAGE . 'images/no_image.svg')) ?>">
 				<div class="details">
-					<div class="name"><?php echo f::escape_html($addon['name']); ?></div>
-					<div class="description"><?php echo f::escape_html($addon['short_description']); ?></div>
+					<div class="name"><?= f::escape_html($addon['name']) ?></div>
+					<div class="description"><?= f::escape_html($addon['short_description']) ?></div>
 					<?php if ($addon['price']['value'] > 0) { ?>
-					<div class="price"><?php echo f::escape_html($addon['price']['formatted']); ?></div>
+					<div class="price"><?= f::escape_html($addon['price']['formatted']) ?></div>
 					<?php } elseif ($addon['price']['value'] === 0) { ?>
-					<div class="free"><?php echo t('title_free', 'Free'); ?></div>
+					<div class="free"><?= t('title_free', 'Free') ?></div>
 					<?php } ?>
 				</div>
 			</a>
 			<?php } ?>
 		</div>
 
-		<h2><?php echo t('title_best_selling_addons', 'Best Selling Add-ons'); ?></h2>
+		<h2><?= t('title_best_selling_addons', 'Best Selling Add-ons') ?></h2>
 
 		<div class="addons">
 			<?php foreach ($marketplace['best_selling'] as $addon) { ?>
-			<a class="addon" href="<?php echo document::ilink(__APP__ . '/marketplace_addon', ['addon_id' => $addon['id']]); ?>">
-				<img class="thumbnail fit" src="<?php echo f::escape_html($addon['image']['thumbnail'] ?: document::rlink(FS_DIR_STORAGE . 'images/no_image.svg')); ?>">
+			<a class="addon" href="<?= document::ilink(__APP__ . '/marketplace_addon', ['addon_id' => $addon['id']]) ?>">
+				<img class="thumbnail fit" src="<?= f::escape_html($addon['image']['thumbnail'] ?: document::rlink(FS_DIR_STORAGE . 'images/no_image.svg')) ?>">
 				<div class="details">
-					<div class="name"><?php echo f::escape_html($addon['name']); ?></div>
-					<div class="description"><?php echo f::escape_html($addon['short_description']); ?></div>
+					<div class="name"><?= f::escape_html($addon['name']) ?></div>
+					<div class="description"><?= f::escape_html($addon['short_description']) ?></div>
 					<?php if ($addon['price']['value'] > 0) { ?>
-					<div class="price"><?php echo f::escape_html($addon['price']['formatted']); ?></div>
+					<div class="price"><?= f::escape_html($addon['price']['formatted']) ?></div>
 					<?php } elseif ($addon['price']['value'] === 0) { ?>
-					<div class="free"><?php echo t('title_free', 'Free'); ?></div>
+					<div class="free"><?= t('title_free', 'Free') ?></div>
 					<?php } ?>
 				</div>
 			</a>
 			<?php } ?>
 		</div>
 
-		<h2><?php echo t('title_popular_addons', 'Popular Add-ons'); ?></h2>
+		<h2><?= t('title_popular_addons', 'Popular Add-ons') ?></h2>
 
 		<div class="addons">
 			<?php foreach ($marketplace['most_popular'] as $addon) { ?>
-			<a class="addon" href="<?php echo document::ilink(__APP__ . '/marketplace_addon', ['addon_id' => $addon['id']]); ?>">
-				<img class="thumbnail fit" src="<?php echo f::escape_html($addon['image']['thumbnail'] ?: document::rlink(FS_DIR_STORAGE . 'images/no_image.svg')); ?>">
+			<a class="addon" href="<?= document::ilink(__APP__ . '/marketplace_addon', ['addon_id' => $addon['id']]) ?>">
+				<img class="thumbnail fit" src="<?= f::escape_html($addon['image']['thumbnail'] ?: document::rlink(FS_DIR_STORAGE . 'images/no_image.svg')) ?>">
 				<div class="details">
-					<div class="name"><?php echo f::escape_html($addon['name']); ?></div>
-					<div class="description"><?php echo f::escape_html($addon['short_description']); ?></div>
+					<div class="name"><?= f::escape_html($addon['name']) ?></div>
+					<div class="description"><?= f::escape_html($addon['short_description']) ?></div>
 					<?php if ($addon['price']['value'] > 0) { ?>
-					<div class="price"><?php echo f::escape_html($addon['price']['formatted']); ?></div>
+					<div class="price"><?= f::escape_html($addon['price']['formatted']) ?></div>
 					<?php } elseif ($addon['price']['value'] === 0) { ?>
-					<div class="free"><?php echo t('title_free', 'Free'); ?></div>
+					<div class="free"><?= t('title_free', 'Free') ?></div>
 					<?php } ?>
 				</div>
 			</a>

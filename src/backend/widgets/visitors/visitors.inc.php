@@ -81,11 +81,11 @@
 <div class="widget">
 	<div class="card">
 		<div class="card-header">
-			<h2 class="card-title"><?php echo t('title_visitors', 'Visitors'); ?></h2>
+			<h2 class="card-title"><?= t('title_visitors', 'Visitors') ?></h2>
 		</div>
 
 		<div class="card-body">
-			<div id="chart-visits" style="height: 200px;" title="<?php echo t('title_visits', 'Visits'); ?>"></div>
+			<div id="chart-visits" style="height: 200px;" title="<?= t('title_visits', 'Visits') ?>"></div>
 		</div>
 
 		<div style="max-height: 300px; overflow: hidden auto;">
@@ -93,11 +93,11 @@
 				<thead>
 					<tr>
 						<th></th>
-						<th class="main"><?php echo t('title_visitor', 'Visitor'); ?></th>
-						<th><?php echo t('title_country', 'Country'); ?></th>
-						<th><?php echo t('title_pageviews', 'Pageviews'); ?></th>
-						<th><?php echo t('title_referrer', 'Referrer'); ?></th>
-						<th class="text-center"><?php echo t('title_last_active', 'Last Active'); ?></th>
+						<th class="main"><?= t('title_visitor', 'Visitor') ?></th>
+						<th><?= t('title_country', 'Country') ?></th>
+						<th><?= t('title_pageviews', 'Pageviews') ?></th>
+						<th><?= t('title_referrer', 'Referrer') ?></th>
+						<th class="text-center"><?= t('title_last_active', 'Last Active') ?></th>
 						<?php if (is_dir(FS_DIR_APP . 'backend/apps/firewall/')) { ?>
 						<th></th>
 						<?php } ?>
@@ -107,37 +107,37 @@
 				<tbody>
 					<?php foreach ($visitors as $visitor) { ?>
 					<tr>
-						<td><?php echo $visitor['icon']; ?></td>
+						<td><?= $visitor['icon'] ?></td>
 						<td>
 							<div>
-								<a target="_blank" href="https://ip-api.com/#<?php echo urlencode($visitor['ip_address']); ?>" title="<?php echo f::escape_html($visitor['user_agent']); ?>">
-									<?php echo f::escape_html($visitor['hostname']); ?>
+								<a target="_blank" href="https://ip-api.com/#<?= urlencode($visitor['ip_address']) ?>" title="<?= f::escape_html($visitor['user_agent']) ?>">
+									<?= f::escape_html($visitor['hostname']) ?>
 								</a>
 							</div>
 							<div>
-							<a target="_blank" href="<?php echo f::escape_html($visitor['last_page']); ?>">
+							<a target="_blank" href="<?= f::escape_html($visitor['last_page']) ?>">
 								<small>
-									<?php echo f::escape_html(f::string_ellipsis($visitor['last_page'], 250)); ?>
+									<?= f::escape_html(f::string_ellipsis($visitor['last_page'], 250)) ?>
 								</small>
 							</a>
 						</div>
 						</td>
-						<td class="text-center"><?php echo $visitor['country_code']; ?></td>
-						<td class="text-center"><?php echo $visitor['pageviews']; ?></td>
+						<td class="text-center"><?= $visitor['country_code'] ?></td>
+						<td class="text-center"><?= $visitor['pageviews'] ?></td>
 						<td>
 							<?php if (!empty($visitor['referrer'])) { ?>
-							<a target="_blank" href="<?php echo f::escape_html($visitor['referrer']); ?>" title="<?php echo f::escape_html($visitor['referrer']); ?>">
-								<?php echo f::escape_html(parse_url($visitor['referrer'], PHP_URL_HOST)); ?>
+							<a target="_blank" href="<?= f::escape_html($visitor['referrer']) ?>" title="<?= f::escape_html($visitor['referrer']) ?>">
+								<?= f::escape_html(parse_url($visitor['referrer'], PHP_URL_HOST)) ?>
 							</a>
 							<?php } else { ?>
-							<em><?php echo t('title_direct', 'Direct'); ?></em>
+							<em><?= t('title_direct', 'Direct') ?></em>
 							<?php } ?>
 						</td>
-						<td class="text-end"><?php echo f::datetime_when($visitor['updated_at']); ?></td>
+						<td class="text-end"><?= f::datetime_when($visitor['updated_at']) ?></td>
 						<?php if (is_dir(FS_DIR_APP . 'backend/apps/firewall/')) { ?>
 						<td>
-							<a class="btn btn-default" href="<?php echo document::href_ilink('firewall/edit_blacklist_entry', ['ip_address' => $visitor['ip_address'], 'hostname' => $visitor['hostname'], 'user_agent' => $visitor['user_agent']]); ?>">
-								<?php echo f::draw_fonticon('add'); ?> <?php echo t('title_blacklist', 'Blacklist'); ?>
+							<a class="btn btn-default" href="<?= document::href_ilink('firewall/edit_blacklist_entry', ['ip_address' => $visitor['ip_address'], 'hostname' => $visitor['hostname'], 'user_agent' => $visitor['user_agent']]) ?>">
+								<?= f::draw_fonticon('add') ?> <?= t('title_blacklist', 'Blacklist') ?>
 							</a>
 						</td>
 						<?php } ?>
@@ -151,8 +151,8 @@
 
 <script>
 	var data = {
-		labels: <?php echo f::format_json(array_column($stats, 'label'), ''); ?>,
-		series: <?php echo f::format_json([array_column($stats, 'total_visits')], ''); ?>
+		labels: <?= f::format_json(array_column($stats, 'label'), '') ?>,
+		series: <?= f::format_json([array_column($stats, 'total_visits')], '') ?>
 	};
 
 	var options = {

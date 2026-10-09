@@ -74,7 +74,7 @@
 <div id="widget-discussions" class="widget card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo t('title_most_recent_forum_topics', 'Most Recent Forum Topics'); ?>
+			<?= t('title_most_recent_forum_topics', 'Most Recent Forum Topics') ?>
 		</div>
 	</div>
 
@@ -83,15 +83,15 @@
 			<?php foreach ($discussions as $discussion) { ?>
 			<div class="topic">
 				<div class="title">
-					<a href="<?php echo f::escape_attr($discussion['link']); ?>" target="_blank">
-						<?php echo f::escape_html($discussion['title']); ?>
+					<a href="<?= f::escape_attr($discussion['link']) ?>" target="_blank">
+						<?= f::escape_html($discussion['title']) ?>
 					</a>
 				</div>
 				<div class="description">
-					<?php echo strtr(t('text_posted_date_by_author', 'Posted {date} by {author}'), [
+					<?= strtr(t('text_posted_date_by_author', 'Posted {date} by {author}'), [
 						'{date}' => f::datetime_format('%e %b', strtotime($discussion['date'])),
 						'{author}' => $discussion['author']
-					]); ?>
+					]) ?>
 				</div>
 			</div>
 			<?php } ?>

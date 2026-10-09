@@ -13,23 +13,23 @@
 
 <div id="modal-customer-picker" class="modal fade" style="max-width: 720px; display: none;">
 
-	<button class="set-guest btn btn-default btn-sm float-end" type="button"><?php echo t('text_set_as_guest', 'Set As Guest'); ?></button>
+	<button class="set-guest btn btn-default btn-sm float-end" type="button"><?= t('text_set_as_guest', 'Set As Guest') ?></button>
 
-	<h2 style="margin-top: 0;"><?php echo t('title_customers', 'Customers'); ?></h2>
+	<h2 style="margin-top: 0;"><?= t('title_customers', 'Customers') ?></h2>
 
 	<div class="modal-body">
 		<label class="form-group">
-			<div class="form-label"><?php echo f::form_input_search('query', true, ['placeholder' => f::escape_attr(t('title_search', 'Search')) , 'autocomplete' => 'off']); ?></div>
+			<div class="form-label"><?= f::form_input_search('query', true, ['placeholder' => f::escape_attr(t('title_search', 'Search')) , 'autocomplete' => 'off']) ?></div>
 		</label>
 
 		<div class="form-group results table-responsive">
 			<table class="table data-table">
 				<thead>
 					<tr>
-						<th><?php echo t('title_id', 'ID'); ?></th>
-						<th><?php echo t('title_person_name', 'Name'); ?></th>
-						<th class="main"><?php echo t('title_email', 'Email'); ?></th>
-						<th><?php echo t('title_date_registered', 'Date Registered'); ?></th>
+						<th><?= t('title_id', 'ID') ?></th>
+						<th><?= t('title_person_name', 'Name') ?></th>
+						<th class="main"><?= t('title_email', 'Email') ?></th>
+						<th><?= t('title_date_registered', 'Date Registered') ?></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -56,7 +56,7 @@
 			type: 'get',
 			async: true,
 			cache: false,
-			url: '<?php echo document::ilink('customers/customers.json'); ?>?query=' + $(this).val(),
+			url: '<?= document::ilink('customers/customers.json') ?>?query=' + $(this).val(),
 			dataType: 'json',
 			beforeSend: function(jqXHR) {
 				jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'));
@@ -90,7 +90,7 @@
 					$('#modal-customer-picker .results tbody').html([
 						'<tr>',
 						'	<td colspan="99">',
-						'		<em><?php echo f::escape_js(t('text_no_results', 'No results')); ?></em>',
+						'		<em><?= f::escape_js(t('text_no_results', 'No results')) ?></em>',
 						'	</td>',
 						'</tr>'
 					].join('\n'));
@@ -103,13 +103,13 @@
 
 		let $row = $(this).closest('tr'),
 			callback = $.litebox.current().$currentTarget.data('callback'),
-			expand = <?php echo (isset($_GET['collect']) && array_intersect(['address', 'stock_option'], $_GET['collect'])) ? 'true' : 'false'; ?>,
+			expand = <?= (isset($_GET['collect']) && array_intersect(['address', 'stock_option'], $_GET['collect'])) ? 'true' : 'false' ?>,
 			customer = $row.data();
 
 		if (!customer.id) {
 			customer = {
 				id: 0,
-				name: '(<?php echo f::escape_js(t('title_guest', 'Guest')); ?>)',
+				name: '(<?= f::escape_js(t('title_guest', 'Guest')) ?>)',
 			};
 		}
 
@@ -136,7 +136,7 @@
 
 		$(field).find(':input').val('0').trigger('change');
 		$(field).find('.id').text('0');
-		$(field).find('.name').text('(<?php echo f::escape_js(t('title_guest', 'Guest')); ?>)');
+		$(field).find('.name').text('(<?= f::escape_js(t('title_guest', 'Guest')) ?>)');
 		$.litebox.close();
 	});
 </script>

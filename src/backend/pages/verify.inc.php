@@ -169,7 +169,7 @@ body {
 	display: flex;
 	width: 100vw;
 	height: 100vh;
-	background: url(<?php echo document::href_rlink('app://backend/template/images/background.svg'); ?>);
+	background: url(<?= document::href_rlink('app://backend/template/images/background.svg') ?>);
 	background-size: cover;
 }
 html.dark-mode body {
@@ -218,37 +218,37 @@ input[autocomplete="one-time-code"] {
 <section id="box-verify-identity">
 	<div class="card" style="margin: 0;">
 		<div class="card-header text-center">
-			<a href="<?php echo document::href_ilink(''); ?>">
-				<img src="<?php echo document::href_rlink('storage://images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>">
+			<a href="<?= document::href_ilink('') ?>">
+				<img src="<?= document::href_rlink('storage://images/logotype.png') ?>" alt="<?= settings::get('store_name') ?>">
 			</a>
 		</div>
 
-		<?php echo f::form_begin('authentication_form', 'post'); ?>
-			<?php echo f::form_input_hidden('redirect_url', true); ?>
+		<?= f::form_begin('authentication_form', 'post') ?>
+			<?= f::form_input_hidden('redirect_url', true) ?>
 
 			<div class="card-body">
 
 				{{notices}}
 
-				<h1><?php echo t('title_two_factor_authentication', 'Two-Factor Authentication'); ?></h1>
+				<h1><?= t('title_two_factor_authentication', 'Two-Factor Authentication') ?></h1>
 
 				<label class="form-group">
-					<div class="form-label"><?php echo t('title_verification_code', 'Verification Code'); ?></div>
-					<?php echo f::form_input_text('code', '', ['autocomplete' => 'one-time-code', 'inputmode' => 'numeric', 'maxlength' => '6', 'pattern' => '\d{6}']); ?>
+					<div class="form-label"><?= t('title_verification_code', 'Verification Code') ?></div>
+					<?= f::form_input_text('code', '', ['autocomplete' => 'one-time-code', 'inputmode' => 'numeric', 'maxlength' => '6', 'pattern' => '\d{6}']) ?>
 				</label>
 
 				<label class="form-group">
-					<?php echo f::form_button('verify', t('title_verify', 'Verify'), 'submit', ['class' => 'btn btn-default btn-block btn-lg']); ?>
+					<?= f::form_button('verify', t('title_verify', 'Verify'), 'submit', ['class' => 'btn btn-default btn-block btn-lg']) ?>
 				</label>
 
 				<?php if (empty(session::$data['security.administrator']['verification']['type']) || session::$data['security.administrator']['verification']['type'] !== 'totp') { ?>
 				<label class="form-group text-center">
-					<?php echo f::form_button('resend', t('title_resend_code', 'Resend Code'), 'submit', ['class' => 'btn btn-default btn-sm']); ?>
+					<?= f::form_button('resend', t('title_resend_code', 'Resend Code'), 'submit', ['class' => 'btn btn-default btn-sm']) ?>
 				</label>
 				<?php } ?>
 			</div>
 
-		<?php echo f::form_end(); ?>
+		<?= f::form_end() ?>
 	</div>
 </section>
 

@@ -6,20 +6,20 @@
 
 			<?php if ($jumbotron = f::draw_banner('jumbotron')) { ?>
 			<div id="box-jumbotron" class="col-12">
-				<?php echo $jumbotron; ?>
+				<?= $jumbotron ?>
 			</div>
 			<?php } ?>
 
 			<div class="col-12 col-md-4">
-				<?php echo f::draw_banner('left'); ?>
+				<?= f::draw_banner('left') ?>
 			</div>
 
 			<div class="col-6 col-md-4">
-				<?php echo f::draw_banner('middle'); ?>
+				<?= f::draw_banner('middle') ?>
 			</div>
 
 			<div class="col-6 col-md-4">
-				<?php echo f::draw_banner('right'); ?>
+				<?= f::draw_banner('right') ?>
 			</div>
 		</div>
 

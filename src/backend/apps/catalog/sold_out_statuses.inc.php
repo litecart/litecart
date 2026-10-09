@@ -22,24 +22,24 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo t('title_sold_out_statuses', 'Sold Out Statuses'); ?>
+			<?= $app_icon ?> <?= t('title_sold_out_statuses', 'Sold Out Statuses') ?>
 		</div>
 	</div>
 
 	<div class="card-action">
-		<?php echo f::form_button_link(document::ilink(__APP__.'/edit_sold_out_status'), t('title_create_new_status', 'Create New Status'), '', 'create'); ?>
+		<?= f::form_button_link(document::ilink(__APP__.'/edit_sold_out_status'), t('title_create_new_status', 'Create New Status'), '', 'create') ?>
 	</div>
 
-	<?php echo f::form_begin('sold_out_statuses_form', 'post'); ?>
+	<?= f::form_begin('sold_out_statuses_form', 'post') ?>
 
 		<table class="table data-table">
 			<thead>
 				<tr>
-					<th><?php echo f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
-					<th><?php echo t('title_id', 'ID'); ?></th>
-					<th class="main"><?php echo t('title_name', 'Name'); ?></th>
-					<th><?php echo t('title_hidden', 'Hidden'); ?></th>
-					<th><?php echo t('title_orderable', 'Orderable'); ?></th>
+					<th class="text-center"><?= f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"') ?></th>
+					<th><?= t('title_id', 'ID') ?></th>
+					<th class="main"><?= t('title_name', 'Name') ?></th>
+					<th><?= t('title_hidden', 'Hidden') ?></th>
+					<th><?= t('title_orderable', 'Orderable') ?></th>
 					<th></th>
 				</tr>
 			</thead>
@@ -47,12 +47,12 @@
 			<tbody>
 				<?php foreach ($sold_out_statuses as $sold_out_status) { ?>
 				<tr>
-					<td><?php echo f::form_checkbox('delivery_statuses[]', $sold_out_status['id']); ?></td>
-					<td><?php echo $sold_out_status['id']; ?></td>
-					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_sold_out_status', ['sold_out_status_id' => $sold_out_status['id']]); ?>"><?php echo $sold_out_status['name']; ?></a></td>
+					<td><?= f::form_checkbox('delivery_statuses[]', $sold_out_status['id']) ?></td>
+					<td><?= $sold_out_status['id'] ?></td>
+					<td><a class="link" href="<?= document::href_ilink(__APP__.'/edit_sold_out_status', ['sold_out_status_id' => $sold_out_status['id']]) ?>"><?= $sold_out_status['name'] ?></a></td>
 					<td class="text-center"><?php if (!empty($sold_out_status['hidden'])) echo f::draw_fonticon('icon-check'); ?></td>
 					<td class="text-center"><?php if (!empty($sold_out_status['orderable'])) echo f::draw_fonticon('icon-check'); ?></td>
-					<td style="text-end"><a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_sold_out_status', ['sold_out_status_id' => $sold_out_status['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo f::draw_fonticon('edit'); ?></a></td>
+					<td style="text-end"><a class="btn btn-default btn-sm" href="<?= document::href_ilink(__APP__.'/edit_sold_out_status', ['sold_out_status_id' => $sold_out_status['id']]) ?>" title="<?= t('title_edit', 'Edit') ?>"><?= f::draw_fonticon('edit') ?></a></td>
 				</tr>
 				<?php } ?>
 			</tbody>
@@ -60,17 +60,17 @@
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo t('title_sold_out_statuses', 'Sold Out Statuses'); ?>: <?php echo f::format_number($num_rows); ?>
+						<?= t('title_sold_out_statuses', 'Sold Out Statuses') ?>: <?= f::format_number($num_rows) ?>
 					</td>
 				</tr>
 			</tfoot>
 		</table>
 
-	<?php echo f::form_end(); ?>
+	<?= f::form_end() ?>
 
 	<?php if ($num_pages > 1) { ?>
 	<div class="card-footer">
-		<?php echo f::draw_pagination($num_pages); ?>
+		<?= f::draw_pagination($num_pages) ?>
 	</div>
 	<?php } ?>
 </div>

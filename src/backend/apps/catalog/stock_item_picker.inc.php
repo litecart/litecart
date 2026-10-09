@@ -15,18 +15,18 @@
 
 	<div class="card-header">
 		<h2 class="card-title">
-			<?php echo t('title_stock_items', 'Stock Items'); ?>
+			<?= t('title_stock_items', 'Stock Items') ?>
 		</h2>
 	</div>
 
 	<div class="card-action">
-		<?php echo f::form_button_link(document::ilink(__APP__.'/edit_stock_item', [], ['js_callback']), t('title_create_new_stock_item', 'Create New Stock Item'), ['class' => 'btn btn-default', 'data-toggle' => 'lightbox', 'data-seamless' => 'true', 'data-width' => '980px'], 'add'); ?>
+		<?= f::form_button_link(document::ilink(__APP__.'/edit_stock_item', [], ['js_callback']), t('title_create_new_stock_item', 'Create New Stock Item'), ['class' => 'btn btn-default', 'data-toggle' => 'lightbox', 'data-seamless' => 'true', 'data-width' => '980px'], 'add') ?>
 	</div>
 
 	<div class="card-body">
 		<label class="form-group">
-			<div class="form-label"><?php echo t('title_search', 'Search'); ?></div>
-			<?php echo f::form_input_text('query', true, ['placeholder' => f::escape_attr(t('title_search', 'Search')) , 'autocomplete' => 'off']); ?>
+			<div class="form-label"><?= t('title_search', 'Search') ?></div>
+			<?= f::form_input_text('query', true, ['placeholder' => f::escape_attr(t('title_search', 'Search')) , 'autocomplete' => 'off']) ?>
 		</label>
 	</div>
 
@@ -34,13 +34,13 @@
 		<table class="table data-table">
 			<thead>
 				<tr>
-					<th><?php echo t('title_id', 'ID'); ?></th>
-					<th class="main"><?php echo t('title_name', 'Name'); ?></th>
-					<th><?php echo t('title_sku', 'SKU'); ?></th>
-					<th><?php echo t('title_gtin', 'GTIN'); ?></th>
-					<th><?php echo t('title_mpn', 'MPN'); ?></th>
-					<th><?php echo t('title_quantity', 'Quantity'); ?></th>
-					<th><?php echo t('title_created_at', 'Created At'); ?></th>
+					<th><?= t('title_id', 'ID') ?></th>
+					<th class="main"><?= t('title_name', 'Name') ?></th>
+					<th><?= t('title_sku', 'SKU') ?></th>
+					<th><?= t('title_gtin', 'GTIN') ?></th>
+					<th><?= t('title_mpn', 'MPN') ?></th>
+					<th><?= t('title_quantity', 'Quantity') ?></th>
+					<th><?= t('title_created_at', 'Created At') ?></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -69,7 +69,7 @@
 			type: 'get',
 			async: true,
 			cache: false,
-			url: '<?php echo document::ilink(__APP__.'/stock_items.json'); ?>?query=' + $(this).val(),
+			url: '<?= document::ilink(__APP__.'/stock_items.json') ?>?query=' + $(this).val(),
 			dataType: 'json',
 			beforeSend: function(jqXHR) {
 				jqXHR.overrideMimeType('text/html;charset=' + $('html meta[charset]').attr('charset'));
@@ -101,7 +101,7 @@
 					$('#stock-item-picker tbody').html([
 						'<tr>',
 						'  <td colspan="99">',
-						'    <em><?php echo f::escape_js(t('text_no_results', 'No results')); ?></em>',
+						'    <em><?= f::escape_js(t('text_no_results', 'No results')) ?></em>',
 						'</td>',
 						'</tr>',
 					].join('\n'));
@@ -113,7 +113,7 @@
 	$('#stock-item-picker tbody').on('click', 'td', function() {
 
 		let $row = $(this).closest('tr'),
-			callback = '<?php echo !empty($_GET['js_callback']) ? f::escape_js($_GET['js_callback']) : ''; ?>',
+			callback = '<?= !empty($_GET['js_callback']) ? f::escape_js($_GET['js_callback']) : '' ?>',
 			stock_item = $row.data();
 
 		if (callback) {

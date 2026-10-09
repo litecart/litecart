@@ -129,28 +129,28 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo t('title_storage_encoding', 'Storage Encoding'); ?>
+			<?= $app_icon ?> <?= t('title_storage_encoding', 'Storage Encoding') ?>
 		</div>
 	</div>
 
-	<?php echo f::form_begin('mysql_collation_form', 'post'); ?>
+	<?= f::form_begin('mysql_collation_form', 'post') ?>
 		<table class="table data-table">
 			<thead>
 				<tr>
-					<th><?php echo f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
-					<th class="main"><?php echo t('title_table', 'Table'); ?></th>
-					<th><?php echo t('title_collation', 'Collation'); ?></th>
-					<th><?php echo t('title_engine', 'Engine'); ?></th>
+					<th class="text-center"><?= f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"') ?></th>
+					<th class="main"><?= t('title_table', 'Table') ?></th>
+					<th><?= t('title_collation', 'Collation') ?></th>
+					<th><?= t('title_engine', 'Engine') ?></th>
 				</tr>
 			</thead>
 
 			<tbody>
 				<?php foreach ($tables as $table) { ?>
 				<tr>
-					<td><?php echo f::form_checkbox('tables[]', $table['TABLE_NAME'], true); ?></td>
-					<td><?php echo $table['TABLE_NAME']; ?></td>
-					<td><?php echo $table['TABLE_COLLATION']; ?></td>
-					<td><?php echo $table['ENGINE']; ?></td>
+					<td><?= f::form_checkbox('tables[]', $table['TABLE_NAME'], true) ?></td>
+					<td><?= $table['TABLE_NAME'] ?></td>
+					<td><?= $table['TABLE_COLLATION'] ?></td>
+					<td><?= $table['ENGINE'] ?></td>
 				</tr>
 				<?php } ?>
 			</tbody>
@@ -158,7 +158,7 @@
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo t('title_tables', 'Tables'); ?>: <?php echo f::format_number($num_rows); ?>
+						<?= t('title_tables', 'Tables') ?>: <?= f::format_number($num_rows) ?>
 					</td>
 				</tr>
 			</tfoot>
@@ -167,26 +167,26 @@
 		<div class="card-body">
 			<div style="width: 640px;">
 				<label class="form-group">
-					<div class="form-label"><?php echo t('title_collation', 'Collation'); ?></div>
-					<?php echo f::form_select_mysql_collation('collation', true); ?>
+					<div class="form-label"><?= t('title_collation', 'Collation') ?></div>
+					<?= f::form_select_mysql_collation('collation', true) ?>
 				</label>
 
 				<div class="form-group">
-					<?php echo f::form_checkbox('set_database_default', ['1', t('text_also_set_as_database_default', 'Also set as database default (when new tables are created)')], true); ?>
+					<?= f::form_checkbox('set_database_default', ['1', t('text_also_set_as_database_default', 'Also set as database default (when new tables are created)')], true) ?>
 				</div>
 
 				<label class="form-group">
-					<div class="form-label"><?php echo t('title_engine', 'Engine'); ?></div>
-					<?php echo f::form_select_mysql_engine('engine', true); ?>
+					<div class="form-label"><?= t('title_engine', 'Engine') ?></div>
+					<?= f::form_select_mysql_engine('engine', true) ?>
 				</label>
 			</div>
 
-			<p><?php echo t('description_set_mysql_collation', 'This will recursively convert the charset and collation for all selected database tables and belonging columns.'); ?></p>
+			<p><?= t('description_set_mysql_collation', 'This will recursively convert the charset and collation for all selected database tables and belonging columns.') ?></p>
 
 			<div class="btn-group">
-				<?php echo f::form_button('convert', t('title_convert', 'Convert'), 'submit'); ?>
+				<?= f::form_button('convert', t('title_convert', 'Convert'), 'submit') ?>
 			</div>
 		</div>
 
-	<?php echo f::form_end(); ?>
+	<?= f::form_end() ?>
 </div>

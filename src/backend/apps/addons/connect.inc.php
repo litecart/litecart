@@ -56,9 +56,9 @@
 ?>
 <div class="card card-app">
 	<div class="card-body">
-		<?php echo f::form_begin('connect_form', 'post'); ?>
-			<?php echo f::form_input_hidden('access_token', true); ?>
-			<?php echo f::form_button('connect', t('title_connect', 'Connect')); ?>
-		<?php echo f::form_end(); ?>
+		<?= f::form_begin('connect_form', 'post') ?>
+			<?= f::form_input_hidden('access_token', true) ?>
+			<?= f::form_button('connect', t('title_connect', 'Connect')) ?>
+		<?= f::form_end() ?>
 	</div>
 </div>

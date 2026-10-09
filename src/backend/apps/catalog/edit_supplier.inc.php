@@ -74,62 +74,62 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo !empty($supplier->data['id']) ? t('title_edit_supplier', 'Edit Supplier') : t('title_create_new_supplier', 'Create New Supplier'); ?>
+			<?= $app_icon ?> <?= !empty($supplier->data['id']) ? t('title_edit_supplier', 'Edit Supplier') : t('title_create_new_supplier', 'Create New Supplier') ?>
 		</div>
 	</div>
 
 	<div class="card-body">
-		<?php echo f::form_begin('supplier_form', 'post', false, false, ['style' => 'max-width: 720px;']); ?>
+		<?= f::form_begin('supplier_form', 'post', false, false, ['style' => 'max-width: 720px;']) ?>
 
 			<div class="grid">
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_code', 'Code'); ?></div>
-						<?php echo f::form_input_text('code', true); ?>
+						<div class="form-label"><?= t('title_code', 'Code') ?></div>
+						<?= f::form_input_text('code', true) ?>
 					</label>
 				</div>
 
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
-						<?php echo f::form_input_text('name', true); ?>
+						<div class="form-label"><?= t('title_name', 'Name') ?></div>
+						<?= f::form_input_text('name', true) ?>
 					</label>
 				</div>
 			</div>
 
 			<label class="form-group">
-				<div class="form-label"><?php echo t('title_description', 'Description'); ?></div>
-				<?php echo f::form_textarea('description', true); ?>
+				<div class="form-label"><?= t('title_description', 'Description') ?></div>
+				<?= f::form_textarea('description', true) ?>
 			</label>
 
 			<div class="grid">
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_email_address', 'Email Address'); ?></div>
-						<?php echo f::form_input_email('email', true, 'email', ''); ?>
+						<div class="form-label"><?= t('title_email_address', 'Email Address') ?></div>
+						<?= f::form_input_email('email', true, 'email', '') ?>
 					</label>
 				</div>
 
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_phone_number', 'Phone Number'); ?></div>
-						<?php echo f::form_input_text('phone', true); ?>
+						<div class="form-label"><?= t('title_phone_number', 'Phone Number') ?></div>
+						<?= f::form_input_text('phone', true) ?>
 					</label>
 				</div>
 			</div>
 
 			<label class="form-group">
-				<div class="form-label"><?php echo t('title_link', 'Link'); ?></div>
-				<?php echo f::form_input_text('link', true); ?>
+				<div class="form-label"><?= t('title_link', 'Link') ?></div>
+				<?= f::form_input_text('link', true) ?>
 			</label>
 
 			<div class="card-action">
-				<?php echo f::form_button_predefined('save'); ?>
+				<?= f::form_button_predefined('save') ?>
 				<?php if (!empty($supplier->data['id'])) echo f::form_button_predefined('delete'); ?>
-				<?php echo f::form_button_predefined('cancel'); ?>
+				<?= f::form_button_predefined('cancel') ?>
 			</div>
 
-		<?php echo f::form_end(); ?>
+		<?= f::form_end() ?>
 	</div>
 </div>
 

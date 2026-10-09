@@ -92,41 +92,41 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo !empty($webhook->data['id']) ? t('title_edit_webhook', 'Edit Webhook') : t('title_create_new_webhook', 'Create New Webhook'); ?>
+			<?= $app_icon ?> <?= !empty($webhook->data['id']) ? t('title_edit_webhook', 'Edit Webhook') : t('title_create_new_webhook', 'Create New Webhook') ?>
 		</div>
 	</div>
 
-	<?php echo f::form_begin('webhook_form', 'post', false, false, ['autocomplete' => 'off', 'style' => 'max-width: 640px;']); ?>
+	<?= f::form_begin('webhook_form', 'post', false, false, ['autocomplete' => 'off', 'style' => 'max-width: 640px;']) ?>
 
 		<div class="card-body">
 
 			<div class="row">
 				<div class="col-md-6">
 					<div class="form-group">
-						<label><?php echo t('title_status', 'Status'); ?></label>
-						<?php echo f::form_toggle('status', 'e/d', $_POST['status'] ?? '1'); ?>
+						<label><?= t('title_status', 'Status') ?></label>
+						<?= f::form_toggle('status', 'e/d', $_POST['status'] ?? '1') ?>
 					</div>
 				</div>
 
 				<div class="col-md-6">
 					<div class="form-group">
-						<label><?php echo t('title_event', 'Event'); ?></label>
-						<?php echo f::form_select_optgroup('event', $event_options, true); ?>
+						<label><?= t('title_event', 'Event') ?></label>
+						<?= f::form_select_optgroup('event', $event_options, true) ?>
 					</div>
 				</div>
 			</div>
 
 			<div class="form-group">
-				<label><?php echo t('title_url', 'URL'); ?></label>
-				<?php echo f::form_input_url('url', true, ['required' => true]); ?>
+				<label><?= t('title_url', 'URL') ?></label>
+				<?= f::form_input_url('url', true, ['required' => true]) ?>
 			</div>
 
 			<?php if (!empty($webhook->data['id'])) { ?>
 			<div class="row">
 				<div class="col-md-6">
 					<div class="form-group">
-						<label><?php echo t('title_last_sent', 'Last Sent'); ?></label>
-						<input class="form-input" readonly name="sent_at" value="<?php echo $webhook->data['sent_at'] ? f::format_datetime('datetime', $webhook->data['sent_at']) : '-'; ?>">
+						<label><?= t('title_last_sent', 'Last Sent') ?></label>
+						<input class="form-input" readonly name="sent_at" value="<?= $webhook->data['sent_at'] ? f::format_datetime('datetime', $webhook->data['sent_at']) : '-' ?>">
 					</div>
 				</div>
 			</div>
@@ -134,10 +134,10 @@
 		</div>
 
 		<div class="card-action">
-			<?php echo f::form_button_predefined('save'); ?>
-			<?php echo !empty($webhook->data['id']) ? f::form_button_predefined('delete') : ''; ?>
-			<?php echo f::form_button_predefined('cancel'); ?>
+			<?= f::form_button_predefined('save') ?>
+			<?= !empty($webhook->data['id']) ? f::form_button_predefined('delete') : '' ?>
+			<?= f::form_button_predefined('cancel') ?>
 		</div>
 
-	<?php echo f::form_end(); ?>
+	<?= f::form_end() ?>
 </div>

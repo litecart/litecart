@@ -1,7 +1,7 @@
-<section id="box-also-purchased-products" class="card" aria-label="<?php echo f::escape_attr(t('title_also_purchased_products', 'Also Purchased Products')); ?>">
+<section id="box-also-purchased-products" class="card" aria-label="<?= f::escape_attr(t('title_also_purchased_products', 'Also Purchased Products')) ?>">
 
 	<div class="card-header">
-		<h2 class="card-title"><?php echo t('title_also_purchased_products', 'Also Purchased Products'); ?></h2>
+		<h2 class="card-title"><?= t('title_also_purchased_products', 'Also Purchased Products') ?></h2>
 	</div>
 
 	<div class="card-body">

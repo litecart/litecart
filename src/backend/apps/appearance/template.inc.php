@@ -68,26 +68,26 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo t('title_template', 'Template'); ?>
+			<?= $app_icon ?> <?= t('title_template', 'Template') ?>
 		</div>
 	</div>
 
 	<div class="card-body">
-		<?php echo f::form_begin('template_form', 'post', null, false, ['style' => 'max-width: 320px;']); ?>
+		<?= f::form_begin('template_form', 'post', null, false, ['style' => 'max-width: 320px;']) ?>
 
 			<label class="form-group">
-				<div class="form-label"><?php echo t('title_frontend_template', 'Frontend Template'); ?></div>
+				<div class="form-label"><?= t('title_frontend_template', 'Frontend Template') ?></div>
 				<div class="input-group">
-					<?php echo f::form_select_template('template', empty($_POST['template']) ? settings::get('template') : true); ?>
-					<a class="btn btn-default" href="<?php echo document::href_ilink('appearance/template_settings'); ?>" title="<?php echo t('title_settings', 'Settings'); ?>"><?php echo f::draw_fonticon('icon-wrench'); ?></a>
+					<?= f::form_select_template('template', empty($_POST['template']) ? settings::get('template') : true) ?>
+					<a class="btn btn-default" href="<?= document::href_ilink('appearance/template_settings') ?>" title="<?= t('title_settings', 'Settings') ?>"><?= f::draw_fonticon('icon-wrench') ?></a>
 				</div>
 			</label>
 
 			<div class="card-action">
-				<?php echo f::form_button_predefined('save'); ?>
-				<?php echo f::form_button_predefined('cancel'); ?>
+				<?= f::form_button_predefined('save') ?>
+				<?= f::form_button_predefined('cancel') ?>
 			</div>
 
-		<?php echo f::form_end(); ?>
+		<?= f::form_end() ?>
 	</div>
 </div>

@@ -98,25 +98,25 @@ pre {
 
 <div class="card">
 	<div class="card-header">
-		<div class="card-title"><?php echo $app_icon; ?> <?php echo t('title_configure_vmod', 'Configure vMod'); ?></div>
+		<div class="card-title"><?= $app_icon ?> <?= t('title_configure_vmod', 'Configure vMod') ?></div>
 	</div>
 
 	<div class="card-body">
 
-		<h1><?php echo $xml->name; ?></h1>
+		<h1><?= $xml->name ?></h1>
 
-		<?php echo f::form_begin('settings_form', 'post', false, false, ['style' => 'max-width: 960px;']); ?>
+		<?= f::form_begin('settings_form', 'post', false, false, ['style' => 'max-width: 960px;']) ?>
 
 			<table class="table">
 				<tbody>
 					<?php foreach ($xml->setting as $setting) { ?>
 					<tr>
 						<td style="width: 50%">
-							<strong><?php echo $setting->title; ?></strong>
+							<strong><?= $setting->title ?></strong>
 							<?php if (!empty($setting->description)) echo '<div>'. $setting->description .'</div>'; ?>
 						</td>
 						<td style="width: 50%">
-							<?php echo f::form_function($setting->function, 'settings['.$setting->key.']', true); ?>
+							<?= f::form_function($setting->function, 'settings['.$setting->key.']', true) ?>
 						</td>
 					</tr>
 					<?php } ?>
@@ -124,10 +124,10 @@ pre {
 			</table>
 
 			<div class="card-action">
-				<?php echo f::form_button_predefined('save'); ?>
-				<?php echo f::form_button('cancel', t('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1)"', 'cancel'); ?>
+				<?= f::form_button_predefined('save') ?>
+				<?= f::form_button('cancel', t('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1)"', 'cancel') ?>
 			</div>
 
-		<?php echo f::form_end(); ?>
+		<?= f::form_end() ?>
 	</div>
 </div>

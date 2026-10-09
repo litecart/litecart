@@ -103,45 +103,45 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo t('title_favicon', 'Favicon'); ?>
+			<?= $app_icon ?> <?= t('title_favicon', 'Favicon') ?>
 		</div>
 	</div>
 
 	<div class="card-body">
-		<?php echo f::form_begin('favicon_form', 'post', false, true); ?>
+		<?= f::form_begin('favicon_form', 'post', false, true) ?>
 
 			<div class="icons">
 
 				<?php foreach ($thumbnail_sizes as $size) { ?>
 				<?php if (is_file($icon = FS_DIR_STORAGE . 'images/favicons/favicon-'.$size.'x'.$size.'.png')) { ?>
 				<div class="favicon">
-					<img class="thumbnail" src="<?php echo document::href_rlink($icon); ?>" alt="">
-					<div><?php echo basename($icon); ?></div>
+					<img class="thumbnail" src="<?= document::href_rlink($icon) ?>" alt="">
+					<div><?= basename($icon) ?></div>
 				</div>
 				<?php } ?>
 				<?php } ?>
 
 				<?php if (is_file($icon = 'storage://images/favicons/favicon.ico')) { ?>
 				<div class="favicon">
-					<img class="thumbnail" src="data:image/x-icon;base64,<?php echo base64_encode(file_get_contents($icon)); ?>" width="48" height="48" alt="">
-					<div><?php echo basename($icon); ?></div>
+					<img class="thumbnail" src="data:image/x-icon;base64,<?= base64_encode(file_get_contents($icon)) ?>" width="48" height="48" alt="">
+					<div><?= basename($icon) ?></div>
 				</div>
 				<?php } ?>
 
 			</div>
 
 			<div class="form-group" style="max-width: 480px;">
-				<label><?php echo t('title_new_icon', 'New Icon'); ?></label>
+				<label><?= t('title_new_icon', 'New Icon') ?></label>
 				<div class="input-group">
-					<?php echo f::form_input_file('image', ['accept' => '.ico,.png,.svg']); ?>
-					<?php echo f::form_button('upload', t('title_upload', 'Upload'), 'submit'); ?>
+					<?= f::form_input_file('image', ['accept' => '.ico,.png,.svg']) ?>
+					<?= f::form_button('upload', t('title_upload', 'Upload'), 'submit') ?>
 				</div>
 			</div>
 
-			<p><?php echo strtr(t('note_favicon_best_result_achieved', 'Note: Best results are achieved by uploading a {size} pixels PNG image with alpha transparency.'), [
+			<p><?= strtr(t('note_favicon_best_result_achieved', 'Note: Best results are achieved by uploading a {size} pixels PNG image with alpha transparency.'), [
 				'{size}' => '256x256'
-			]); ?></p>
+			]) ?></p>
 
-		<?php echo f::form_end(); ?>
+		<?= f::form_end() ?>
 	</div>
 </div>

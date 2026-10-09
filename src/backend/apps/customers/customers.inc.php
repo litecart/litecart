@@ -97,59 +97,59 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo t('title_customers', 'Customers'); ?>
+			<?= $app_icon ?> <?= t('title_customers', 'Customers') ?>
 		</div>
 	</div>
 
 	<div class="card-action">
-		<?php echo f::form_button_link(document::ilink('customers/edit_customer'), t('title_create_new_customer', 'Create New Customer'), '', 'create'); ?>
+		<?= f::form_button_link(document::ilink('customers/edit_customer'), t('title_create_new_customer', 'Create New Customer'), '', 'create') ?>
 	</div>
 
-	<?php echo f::form_begin('search_form', 'get'); ?>
+	<?= f::form_begin('search_form', 'get') ?>
 
 		<div class="card-filter">
-			<div><?php echo f::form_select_customer_group('group_id', true, ['style' => 'min-width: 200px;']); ?></div>
-			<div class="expandable"><?php echo f::form_input_search('query', true, ['placeholder' => t('text_search_phrase_or_keyword', 'Search phrase or keyword')]); ?></div>
-			<?php echo f::form_button('filter', t('title_search', 'Search'), 'submit'); ?>
+			<div><?= f::form_select_customer_group('group_id', true, ['style' => 'min-width: 200px;']) ?></div>
+			<div class="expandable"><?= f::form_input_search('query', true, ['placeholder' => t('text_search_phrase_or_keyword', 'Search phrase or keyword')]) ?></div>
+			<?= f::form_button('filter', t('title_search', 'Search'), 'submit') ?>
 		</div>
 
-	<?php echo f::form_end(); ?>
+	<?= f::form_end() ?>
 
-	<?php echo f::form_begin('customers_form', 'post'); ?>
+	<?= f::form_begin('customers_form', 'post') ?>
 
 		<table class="table data-table">
 			<thead>
 				<tr>
-					<th style="width: 40px;"><?php echo f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"'); ?></th>
+					<th class="text-center" style="width: 40px;"><?= f::draw_fonticon('icon-square-check', 'data-toggle="checkbox-toggle"') ?></th>
 					<th style="width: 40px;"></th>
-					<th data-sort="id" style="width: 50px;"><?php echo t('title_id', 'ID'); ?></th>
-					<th data-sort="name"><?php echo t('title_person_name', 'Name'); ?></th>
-					<th data-sort="email"><?php echo t('title_email', 'Email'); ?></th>
-					<th data-sort="company"><?php echo t('title_company_name', 'Company Name'); ?></th>
-					<th class="main"><?php echo t('title_last_hostname', 'Last Hostname'); ?></th>
-					<th class="text-center" data-sort="group"><?php echo t('title_customer_group', 'Customer Group'); ?></th>
-					<th data-sort="created_at" class="text-end"><?php echo t('title_date_registered', 'Date Registered'); ?></th>
+					<th data-sort="id" style="width: 50px;"><?= t('title_id', 'ID') ?></th>
+					<th data-sort="name"><?= t('title_person_name', 'Name') ?></th>
+					<th data-sort="email"><?= t('title_email', 'Email') ?></th>
+					<th data-sort="company"><?= t('title_company_name', 'Company Name') ?></th>
+					<th class="main"><?= t('title_last_hostname', 'Last Hostname') ?></th>
+					<th class="text-center" data-sort="group"><?= t('title_customer_group', 'Customer Group') ?></th>
+					<th data-sort="created_at" class="text-end"><?= t('title_date_registered', 'Date Registered') ?></th>
 					<th style="width: 50px;"></th>
 				</tr>
 			</thead>
 
 			<tbody>
 				<?php foreach ($customers as $customer) { ?>
-				<tr class="<?php echo empty($customer['status']) ? 'semi-transparent' : ''; ?>">
-					<td><?php echo f::form_checkbox('customers[]', $customer['id']); ?></td>
-					<td><?php echo f::draw_fonticon($customer['status'] ? 'on' : 'off'); ?></td>
-					<td><?php echo $customer['id']; ?></td>
-					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/customer', ['customer_id' => $customer['id']]); ?>">
-						<?php echo f::draw_fonticon($customer['company'] ? 'icon-building' : 'icon-user', 'style="opacity: .5;"'); ?>
-						<?php echo f::escape_html($customer['company'] ?: $customer['firstname'] .' '. $customer['lastname']); ?>
+				<tr class="<?= empty($customer['status']) ? 'semi-transparent' : '' ?>">
+					<td><?= f::form_checkbox('customers[]', $customer['id']) ?></td>
+					<td><?= f::draw_fonticon($customer['status'] ? 'on' : 'off') ?></td>
+					<td><?= $customer['id'] ?></td>
+					<td><a class="link" href="<?= document::href_ilink(__APP__.'/customer', ['customer_id' => $customer['id']]) ?>">
+						<?= f::draw_fonticon($customer['company'] ? 'icon-building' : 'icon-user', 'style="opacity: .5;"') ?>
+						<?= f::escape_html($customer['company'] ?: $customer['firstname'] .' '. $customer['lastname']) ?>
 					</a></td>
-					<td><?php echo f::escape_html($customer['email']); ?></td>
-					<td><?php echo f::escape_html($customer['company']); ?></td>
-					<td><?php echo f::escape_html($customer['last_hostname']); ?></td>
-					<td class="text-center"><?php echo f::escape_html($customer['group_name']); ?></td>
-					<td class="text-end"><?php echo f::datetime_when($customer['created_at']); ?></td>
+					<td><?= f::escape_html($customer['email']) ?></td>
+					<td><?= f::escape_html($customer['company']) ?></td>
+					<td><?= f::escape_html($customer['last_hostname']) ?></td>
+					<td class="text-center"><?= f::escape_html($customer['group_name']) ?></td>
+					<td class="text-end"><?= f::datetime_when($customer['created_at']) ?></td>
 					<td class="text-end">
-						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_customer', ['customer_id' => $customer['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>"><?php echo f::draw_fonticon('edit'); ?></a>
+						<a class="btn btn-default btn-sm" href="<?= document::href_ilink(__APP__.'/edit_customer', ['customer_id' => $customer['id']]) ?>" title="<?= t('title_edit', 'Edit') ?>"><?= f::draw_fonticon('edit') ?></a>
 					</td>
 				</tr>
 				<?php } ?>
@@ -158,7 +158,7 @@
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo t('title_customers', 'Customers'); ?>: <?php echo f::format_number($num_rows); ?>
+						<?= t('title_customers', 'Customers') ?>: <?= f::format_number($num_rows) ?>
 					</td>
 				</tr>
 			</tfoot>
@@ -168,33 +168,33 @@
 			<fieldset id="actions">
 
 				<legend>
-					<?php echo t('text_with_selected', 'With selected'); ?>:
+					<?= t('text_with_selected', 'With selected') ?>:
 				</legend>
 
 				<div class="flex">
 
 					<div div class="btn-group">
-						<?php echo f::form_button_predefined('enable'); ?>
-						<?php echo f::form_button_predefined('disable'); ?>
+						<?= f::form_button_predefined('enable') ?>
+						<?= f::form_button_predefined('disable') ?>
 					</div>
 
-					<?php echo f::form_button_predefined('delete'); ?>
+					<?= f::form_button_predefined('delete') ?>
 
 				</div>
 			</fieldset>
 		</div>
 
-	<?php echo f::form_end(); ?>
+	<?= f::form_end() ?>
 
 	<?php if ($num_pages > 1) { ?>
 	<div class="card-footer">
-		<?php echo f::draw_pagination($num_pages); ?>
+		<?= f::draw_pagination($num_pages) ?>
 	</div>
 	<?php } ?>
 </div>
 
 <script>
-	$('select[name="group_id"] option[value=""]').text('-- <?php echo t('title_all', 'All'); ?> --');
+	$('select[name="group_id"] option[value=""]').text('-- <?= t('title_all', 'All') ?> --');
 	$('select[name="group_id"]').on('change', function() {
 		$(this).closest('form').submit();
 	});

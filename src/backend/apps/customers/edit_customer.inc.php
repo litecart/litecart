@@ -169,78 +169,62 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo !empty($customer->data['id']) ? t('title_edit_customer', 'Edit Customer') : t('title_create_new_customer', 'Create New Customer'); ?>
+			<?= $app_icon ?> <?= !empty($customer->data['id']) ? t('title_edit_customer', 'Edit Customer') : t('title_create_new_customer', 'Create New Customer') ?>
 		</div>
 	</div>
 	<div class="card-body">
 
-		<?php echo f::form_begin('customer_form', 'post', '', false, ['autocomplete' => 'off']); ?>
+		<?= f::form_begin('customer_form', 'post', '', false, ['autocomplete' => 'off']) ?>
 
 			<div class="grid">
 				<div class="col-md-6">
 
-					<h3><?php echo t('title_account_details', 'Account Details'); ?></h3>
+					<h3><?= t('title_account_details', 'Account Details') ?></h3>
 
 					<?php if (!empty($customer->data['id'])) { ?>
 					<label class="form-group">
-						<?php echo f::form_button('sign_in', ['true', t('text_sign_in_as_customer', 'Sign in as customer')], 'submit', ['class' => 'btn btn-default btn-block'], 'icon-key'); ?>
+						<?= f::form_button('sign_in', ['true', t('text_sign_in_as_customer', 'Sign in as customer')], 'submit', ['class' => 'btn btn-default btn-block'], 'icon-key') ?>
 					</label>
 					<?php } ?>
 
 					<div class="grid">
 						<div class="col-md-6">
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_status', 'Status'); ?></div>
-								<?php echo f::form_toggle('status', 'e/d', (file_get_contents('php://input') != '') ? true : '1'); ?>
+								<div class="form-label"><?= t('title_status', 'Status') ?></div>
+								<?= f::form_toggle('status', 'e/d', (file_get_contents('php://input') != '') ? true : '1') ?>
 							</label>
 						</div>
 
 						<div class="col-md-6">
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_code', 'Code'); ?></div>
-								<?php echo f::form_input_text('code', true); ?>
+								<div class="form-label"><?= t('title_code', 'Code') ?></div>
+								<?= f::form_input_text('code', true) ?>
 							</label>
 						</div>
 					</div>
 
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_customer_group', 'Customer Group'); ?></div>
-						<?php echo f::form_select_customer_group('group_id', true); ?>
+						<div class="form-label"><?= t('title_customer_group', 'Customer Group') ?></div>
+						<?= f::form_select_customer_group('group_id', true) ?>
 					</label>
 
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_tags', 'Tags'); ?></div>
-						<?php echo f::form_input_tags('tags', true, [], $available_tags); ?>
+						<div class="form-label"><?= t('title_tags', 'Tags') ?></div>
+						<?= f::form_input_tags('tags', true, [], $available_tags) ?>
 					</label>
 
 					<div class="grid">
 						<div class="col-md-6">
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_email_address', 'Email Address'); ?></div>
-								<?php echo f::form_input_email('email', true); ?>
+								<div class="form-label"><?= t('title_email_address', 'Email Address') ?></div>
+								<?= f::form_input_email('email', true) ?>
 							</label>
 						</div>
 
 						<div class="col-md-6">
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_two_factor_authentication', 'Two-Factor Authentication'); ?></div>
-								<?php echo f::form_toggle('two_factor_auth', 'e/d', true); ?>
-							</label>
-						</div>
-					</div>
-
-					<div class="grid">
-						<div class="col-md-6">
-							<label class="form-group">
-								<div class="form-label"><?php echo t('title_newsletter', 'Newsletter'); ?></div>
-								<?php echo f::form_checkbox('newsletter', ['1', t('title_subscribed', 'Subscribed')], true); ?>
-							</label>
-						</div>
-
-						<div class="col-md-6">
-							<label class="form-group">
-								<div class="form-label"><?php echo t('title_language', 'Language'); ?></div>
-								<?php echo f::form_select_language('language_code', true); ?>
+								<div class="form-label"><?= t('title_two_factor_authentication', 'Two-Factor Authentication') ?></div>
+								<?= f::form_toggle('two_factor_auth', 'e/d', true) ?>
 							</label>
 						</div>
 					</div>
@@ -248,15 +232,31 @@
 					<div class="grid">
 						<div class="col-md-6">
 							<label class="form-group">
-								<div class="form-label"><?php echo !empty($customer->data['id']) ? t('title_new_password', 'New Password') : t('title_password', 'Password'); ?></div>
-								<?php echo f::form_input_password_unmaskable('new_password', '', ['autocomplete' => 'new-password']); ?>
+								<div class="form-label"><?= t('title_newsletter', 'Newsletter') ?></div>
+								<?= f::form_checkbox('newsletter', ['1', t('title_subscribed', 'Subscribed')], true) ?>
 							</label>
 						</div>
 
 						<div class="col-md-6">
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_last_login', 'Last Login'); ?></div>
-								<div class="form-input" readonly><?php echo $customer->data['last_login'] ? f::datetime_when($customer->data['last_login']) : '<em>'. t('title_never', 'Never') .'</em>'; ?></div>
+								<div class="form-label"><?= t('title_language', 'Language') ?></div>
+								<?= f::form_select_language('language_code', true) ?>
+							</label>
+						</div>
+					</div>
+
+					<div class="grid">
+						<div class="col-md-6">
+							<label class="form-group">
+								<div class="form-label"><?= !empty($customer->data['id']) ? t('title_new_password', 'New Password') : t('title_password', 'Password') ?></div>
+								<?= f::form_input_password_unmaskable('new_password', '', ['autocomplete' => 'new-password']) ?>
+							</label>
+						</div>
+
+						<div class="col-md-6">
+							<label class="form-group">
+								<div class="form-label"><?= t('title_last_login', 'Last Login') ?></div>
+								<div class="form-input" readonly><?= $customer->data['last_login'] ? f::datetime_when($customer->data['last_login']) : '<em>'. t('title_never', 'Never') .'</em>' ?></div>
 							</label>
 						</div>
 					</div>
@@ -265,15 +265,15 @@
 					<div class="grid">
 						<div class="col-md-6">
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_last_ip_address', 'Last IP Address'); ?></div>
-								<?php echo f::form_input_text('last_ip_address', true, ['readonly' => true]); ?>
+								<div class="form-label"><?= t('title_last_ip_address', 'Last IP Address') ?></div>
+								<?= f::form_input_text('last_ip_address', true, ['readonly' => true]) ?>
 							</label>
 						</div>
 
 						<div class="col-md-6">
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_last_hostname', 'Last Hostname'); ?></div>
-								<?php echo f::form_input_text('last_hostname', true, ['readonly' => true]); ?>
+								<div class="form-label"><?= t('title_last_hostname', 'Last Hostname') ?></div>
+								<?= f::form_input_text('last_hostname', true, ['readonly' => true]) ?>
 							</label>
 						</div>
 					</div>
@@ -283,20 +283,20 @@
 
 				<div class="col-md-6">
 
-					<h3><?php echo t('title_customer_details', 'Customer Details'); ?></h3>
+					<h3><?= t('title_customer_details', 'Customer Details') ?></h3>
 
 					<div class="grid">
 						<div class="col-md-6">
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_company', 'Company'); ?></div>
-								<?php echo f::form_input_text('company', true); ?>
+								<div class="form-label"><?= t('title_company', 'Company') ?></div>
+								<?= f::form_input_text('company', true) ?>
 							</label>
 						</div>
 
 						<div class="col-md-6">
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_tax_id', 'Tax ID / VATIN'); ?></div>
-								<?php echo f::form_input_text('tax_id', true); ?>
+								<div class="form-label"><?= t('title_tax_id', 'Tax ID / VATIN') ?></div>
+								<?= f::form_input_text('tax_id', true) ?>
 							</label>
 						</div>
 					</div>
@@ -304,30 +304,14 @@
 					<div class="grid">
 						<div class="col-md-6">
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_firstname', 'First Name'); ?></div>
-								<?php echo f::form_input_text('firstname', true); ?>
+								<div class="form-label"><?= t('title_firstname', 'First Name') ?></div>
+								<?= f::form_input_text('firstname', true) ?>
 							</label>
 						</div>
 						<div class="col-md-6">
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_lastname', 'Last Name'); ?></div>
-								<?php echo f::form_input_text('lastname', true); ?>
-							</label>
-						</div>
-					</div>
-
-					<div class="grid">
-						<div class="col-md-6">
-							<label class="form-group">
-								<div class="form-label"><?php echo t('title_address1', 'Address 1'); ?></div>
-								<?php echo f::form_input_text('address1', true); ?>
-							</label>
-						</div>
-
-						<div class="col-md-6">
-							<label class="form-group">
-								<div class="form-label"><?php echo t('title_address2', 'Address 2'); ?></div>
-								<?php echo f::form_input_text('address2', true); ?>
+								<div class="form-label"><?= t('title_lastname', 'Last Name') ?></div>
+								<?= f::form_input_text('lastname', true) ?>
 							</label>
 						</div>
 					</div>
@@ -335,15 +319,15 @@
 					<div class="grid">
 						<div class="col-md-6">
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_postcode', 'Postal Code'); ?></div>
-								<?php echo f::form_input_text('postcode', true); ?>
+								<div class="form-label"><?= t('title_address1', 'Address 1') ?></div>
+								<?= f::form_input_text('address1', true) ?>
 							</label>
 						</div>
 
 						<div class="col-md-6">
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_city', 'City'); ?></div>
-								<?php echo f::form_input_text('city', true); ?>
+								<div class="form-label"><?= t('title_address2', 'Address 2') ?></div>
+								<?= f::form_input_text('address2', true) ?>
 							</label>
 						</div>
 					</div>
@@ -351,15 +335,31 @@
 					<div class="grid">
 						<div class="col-md-6">
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_country', 'Country'); ?></div>
-								<?php echo f::form_select_country('country_code', true); ?>
+								<div class="form-label"><?= t('title_postcode', 'Postal Code') ?></div>
+								<?= f::form_input_text('postcode', true) ?>
 							</label>
 						</div>
 
 						<div class="col-md-6">
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_zone', 'Zone'); ?></div>
-								<?php echo f::form_select_zone('zone_code', $_POST['country_code'] ?? '', true); ?>
+								<div class="form-label"><?= t('title_city', 'City') ?></div>
+								<?= f::form_input_text('city', true) ?>
+							</label>
+						</div>
+					</div>
+
+					<div class="grid">
+						<div class="col-md-6">
+							<label class="form-group">
+								<div class="form-label"><?= t('title_country', 'Country') ?></div>
+								<?= f::form_select_country('country_code', true) ?>
+							</label>
+						</div>
+
+						<div class="col-md-6">
+							<label class="form-group">
+								<div class="form-label"><?= t('title_zone', 'Zone') ?></div>
+								<?= f::form_select_zone('zone_code', $_POST['country_code'] ?? '', true) ?>
 							</label>
 						</div>
 					</div>
@@ -367,22 +367,22 @@
 					<div class="grid">
 						<div class="col-sm-6">
 							<label class="form-group">
-								<div class="form-label"><?php echo t('title_phone', 'Phone'); ?></div>
-								<?php echo f::form_input_phone('phone', true); ?>
+								<div class="form-label"><?= t('title_phone', 'Phone') ?></div>
+								<?= f::form_input_phone('phone', true) ?>
 							</label>
 						</div>
 
 					</div>
 
-					<h3><?php echo f::form_checkbox('different_shipping_address', ['1', t('title_different_shipping_address', 'Different Shipping Address')], !empty($_POST['different_shipping_address']) ? '1' : '', ['style' => 'margin: 0px;']); ?></h3>
+					<h3><?= f::form_checkbox('different_shipping_address', ['1', t('title_different_shipping_address', 'Different Shipping Address')], !empty($_POST['different_shipping_address']) ? '1' : '', ['style' => 'margin: 0px;']) ?></h3>
 
-					<fieldset class="shipping-address"<?php echo (empty($_POST['different_shipping_address'])) ? ' style="display: none;" disabled' : ''; ?>>
+					<fieldset class="shipping-address"<?= (empty($_POST['different_shipping_address'])) ? ' style="display: none;" disabled' : '' ?>>
 
 						<div class="grid">
 							<div class="col-sm-6">
 								<label class="form-group">
-									<div class="form-label"><?php echo t('title_company', 'Company'); ?></div>
-									<?php echo f::form_input_text('shipping_address[company]', true); ?>
+									<div class="form-label"><?= t('title_company', 'Company') ?></div>
+									<?= f::form_input_text('shipping_address[company]', true) ?>
 								</label>
 							</div>
 						</div>
@@ -390,31 +390,15 @@
 						<div class="grid">
 							<div class="col-sm-6">
 								<label class="form-group">
-									<div class="form-label"><?php echo t('title_firstname', 'First Name'); ?></div>
-									<?php echo f::form_input_text('shipping_address[firstname]', true); ?>
+									<div class="form-label"><?= t('title_firstname', 'First Name') ?></div>
+									<?= f::form_input_text('shipping_address[firstname]', true) ?>
 								</label>
 							</div>
 
 							<div class="col-sm-6">
 								<label class="form-group">
-									<div class="form-label"><?php echo t('title_lastname', 'Last Name'); ?></div>
-									<?php echo f::form_input_text('shipping_address[lastname]', true); ?>
-								</label>
-							</div>
-						</div>
-
-						<div class="grid">
-							<div class="col-sm-6">
-								<label class="form-group">
-									<div class="form-label"><?php echo t('title_address1', 'Address 1'); ?></div>
-									<?php echo f::form_input_text('shipping_address[address1]', true); ?>
-								</label>
-							</div>
-
-							<div class="col-sm-6">
-								<label class="form-group">
-									<div class="form-label"><?php echo t('title_address2', 'Address 2'); ?></div>
-									<?php echo f::form_input_text('shipping_address[address2]', true); ?>
+									<div class="form-label"><?= t('title_lastname', 'Last Name') ?></div>
+									<?= f::form_input_text('shipping_address[lastname]', true) ?>
 								</label>
 							</div>
 						</div>
@@ -422,31 +406,15 @@
 						<div class="grid">
 							<div class="col-sm-6">
 								<label class="form-group">
-									<div class="form-label"><?php echo t('title_postcode', 'Postal Code'); ?></div>
-									<?php echo f::form_input_text('shipping_address[postcode]', true); ?>
+									<div class="form-label"><?= t('title_address1', 'Address 1') ?></div>
+									<?= f::form_input_text('shipping_address[address1]', true) ?>
 								</label>
 							</div>
 
 							<div class="col-sm-6">
 								<label class="form-group">
-									<div class="form-label"><?php echo t('title_city', 'City'); ?></div>
-									<?php echo f::form_input_text('shipping_address[city]', true); ?>
-								</label>
-							</div>
-						</div>
-
-						<div class="grid">
-							<div class="col-sm-6">
-								<label class="form-group">
-									<div class="form-label"><?php echo t('title_country', 'Country'); ?></div>
-									<?php echo f::form_select_country('shipping_address[country_code]', true); ?>
-								</label>
-							</div>
-
-							<div class="col-sm-6">
-								<label class="form-group">
-									<div class="form-label"><?php echo t('title_zone_state_province', 'Zone/State/Province'); ?></div>
-									<?php echo f::form_select_zone($_POST['shipping_address']['country_code'] ?? $_POST['country_code'], 'shipping_address[zone_code]', true); ?>
+									<div class="form-label"><?= t('title_address2', 'Address 2') ?></div>
+									<?= f::form_input_text('shipping_address[address2]', true) ?>
 								</label>
 							</div>
 						</div>
@@ -454,15 +422,47 @@
 						<div class="grid">
 							<div class="col-sm-6">
 								<label class="form-group">
-									<div class="form-label"><?php echo t('title_phone', 'Phone'); ?></div>
-									<?php echo f::form_input_phone('shipping_address[phone]', true); ?>
+									<div class="form-label"><?= t('title_postcode', 'Postal Code') ?></div>
+									<?= f::form_input_text('shipping_address[postcode]', true) ?>
 								</label>
 							</div>
 
 							<div class="col-sm-6">
 								<label class="form-group">
-									<div class="form-label"><?php echo t('title_email', 'Email'); ?></div>
-									<?php echo f::form_input_email('shipping_address[email]', true); ?>
+									<div class="form-label"><?= t('title_city', 'City') ?></div>
+									<?= f::form_input_text('shipping_address[city]', true) ?>
+								</label>
+							</div>
+						</div>
+
+						<div class="grid">
+							<div class="col-sm-6">
+								<label class="form-group">
+									<div class="form-label"><?= t('title_country', 'Country') ?></div>
+									<?= f::form_select_country('shipping_address[country_code]', true) ?>
+								</label>
+							</div>
+
+							<div class="col-sm-6">
+								<label class="form-group">
+									<div class="form-label"><?= t('title_zone_state_province', 'Zone/State/Province') ?></div>
+									<?= f::form_select_zone($_POST['shipping_address']['country_code'] ?? $_POST['country_code'], 'shipping_address[zone_code]', true) ?>
+								</label>
+							</div>
+						</div>
+
+						<div class="grid">
+							<div class="col-sm-6">
+								<label class="form-group">
+									<div class="form-label"><?= t('title_phone', 'Phone') ?></div>
+									<?= f::form_input_phone('shipping_address[phone]', true) ?>
+								</label>
+							</div>
+
+							<div class="col-sm-6">
+								<label class="form-group">
+									<div class="form-label"><?= t('title_email', 'Email') ?></div>
+									<?= f::form_input_email('shipping_address[email]', true) ?>
 								</label>
 							</div>
 						</div>
@@ -472,17 +472,17 @@
 			</div>
 
 			<div class="form-label">
-				<label><?php echo t('title_about', 'About'); ?></label>
-				<?php echo f::form_textarea('about', true, ['style' => 'height: 250px;']); ?>
+				<label><?= t('title_about', 'About') ?></label>
+				<?= f::form_textarea('about', true, ['style' => 'height: 250px;']) ?>
 			</div>
 
 			<div class="card-action">
-				<?php echo f::form_button_predefined('save'); ?>
-				<?php echo !empty($customer->data['id']) ? f::form_button_predefined('delete') : ''; ?>
-				<?php echo f::form_button_predefined('cancel'); ?>
+				<?= f::form_button_predefined('save') ?>
+				<?= !empty($customer->data['id']) ? f::form_button_predefined('delete') : '' ?>
+				<?= f::form_button_predefined('cancel') ?>
 			</div>
 
-		<?php echo f::form_end(); ?>
+		<?= f::form_end() ?>
 	</div>
 </div>
 
@@ -565,7 +565,7 @@
 		if ($(this).val() == '') return;
 
 		$.ajax({
-			url: '<?php echo document::ilink('ajax/get_address.json'); ?>?trigger='+$(this).attr('name'),
+			url: '<?= document::ilink('ajax/get_address.json') ?>?trigger='+$(this).attr('name'),
 			type: 'post',
 			data: $(this).closest('form').serialize(),
 			cache: false,
@@ -592,7 +592,7 @@
 		if ($(this).val() == '') return;
 
 		$.ajax({
-			url: '<?php echo document::ilink('ajax/get_address.json'); ?>?trigger='+$(this).attr('name'),
+			url: '<?= document::ilink('ajax/get_address.json') ?>?trigger='+$(this).attr('name'),
 			type: 'post',
 			data: $(this).closest('form').serialize(),
 			cache: false,
@@ -635,7 +635,7 @@
 		}
 
 		$.ajax({
-			url: '<?php echo document::ilink('countries/zones.json'); ?>?country_code=' + $(this).val(),
+			url: '<?= document::ilink('countries/zones.json') ?>?country_code=' + $(this).val(),
 			type: 'get',
 			cache: true,
 			async: true,
@@ -671,7 +671,7 @@
 		}
 
 		$.ajax({
-			url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + $(this).val(),
+			url: '<?= document::ilink('ajax/zones.json') ?>?country_code=' + $(this).val(),
 			type: 'get',
 			cache: true,
 			async: true,

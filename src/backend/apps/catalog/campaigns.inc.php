@@ -59,26 +59,26 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo t('title_campaigns', 'Campaigns'); ?>
+			<?= $app_icon ?> <?= t('title_campaigns', 'Campaigns') ?>
 		</div>
 	</div>
 
 	<div class="card-action">
-		<?php echo f::form_button_link(document::ilink(__APP__.'/edit_campaign'), t('title_create_new_campaign', 'Create New Campaign'), '', 'create'); ?>
+		<?= f::form_button_link(document::ilink(__APP__.'/edit_campaign'), t('title_create_new_campaign', 'Create New Campaign'), '', 'create') ?>
 	</div>
 
-	<?php echo f::form_begin('campaigns_form', 'post'); ?>
+	<?= f::form_begin('campaigns_form', 'post') ?>
 
 		<table class="table data-table">
 			<thead>
 				<tr>
-					<th><?php echo f::draw_fonticon('icon-square-check checkbox-toggle', 'data-toggle="checkbox-toggle"'); ?></th>
-					<th><?php echo t('title_ID', 'ID'); ?></th>
-					<th class="main"><?php echo t('title_Name', 'Name'); ?></th>
-					<th><?php echo t('title_type', 'Type'); ?></th>
-					<th class="text-end"><?php echo t('title_valid_from', 'Valid From'); ?></th>
-					<th class="text-end"><?php echo t('title_valid_to', 'Valid To'); ?></th>
-					<th class="text-end"><?php echo t('title_products', 'Products'); ?></th>
+					<th class="text-center"><?= f::draw_fonticon('icon-square-check checkbox-toggle', 'data-toggle="checkbox-toggle"') ?></th>
+					<th><?= t('title_ID', 'ID') ?></th>
+					<th class="main"><?= t('title_Name', 'Name') ?></th>
+					<th><?= t('title_type', 'Type') ?></th>
+					<th class="text-end"><?= t('title_valid_from', 'Valid From') ?></th>
+					<th class="text-end"><?= t('title_valid_to', 'Valid To') ?></th>
+					<th class="text-end"><?= t('title_products', 'Products') ?></th>
 					<th></th>
 				</tr>
 			</thead>
@@ -86,16 +86,16 @@
 			<tbody>
 				<?php foreach ($campaigns as $campaign) { ?>
 				<tr class="<?php if (!empty($campaign['end_date']) && $campaign['end_date'] < date('Y-m-d H:i:s')) echo 'semi-transparent'; ?>">
-					<td><?php echo f::form_checkbox('campaigns[]', $campaign['id']); ?></td>
-					<td><?php echo $campaign['id']; ?></td>
-					<td><a class="link" href="<?php echo document::href_ilink(__APP__.'/edit_campaign', ['campaign_id' => $campaign['id']]); ?>"><?php echo $campaign['name']; ?></a></td>
-					<td><?php echo $campaign['discount_mode'] == 'percentage' ? '-'. (float)$campaign['discount_percent'] .'%' : t('title_fixed_prices', 'Fixed Prices'); ?></td>
-					<td class="text-end"><?php echo $campaign['valid_from'] ? f::datetime_format('datetime', $campaign['valid_from']) : ''; ?></td>
-					<td class="text-end"><?php echo $campaign['valid_to'] ? f::datetime_format('datetime', $campaign['valid_to']) : ''; ?></td>
-					<td class="text-center"><?php echo f::format_number($campaign['discount_mode'] == 'percentage' ? $campaign['num_scope_products'] : $campaign['num_products']); ?></td>
+					<td><?= f::form_checkbox('campaigns[]', $campaign['id']) ?></td>
+					<td><?= $campaign['id'] ?></td>
+					<td><a class="link" href="<?= document::href_ilink(__APP__.'/edit_campaign', ['campaign_id' => $campaign['id']]) ?>"><?= $campaign['name'] ?></a></td>
+					<td><?= $campaign['discount_mode'] == 'percentage' ? '-'. (float)$campaign['discount_percent'] .'%' : t('title_fixed_prices', 'Fixed Prices') ?></td>
+					<td class="text-end"><?= $campaign['valid_from'] ? f::datetime_format('datetime', $campaign['valid_from']) : '' ?></td>
+					<td class="text-end"><?= $campaign['valid_to'] ? f::datetime_format('datetime', $campaign['valid_to']) : '' ?></td>
+					<td class="text-center"><?= f::format_number($campaign['discount_mode'] == 'percentage' ? $campaign['num_scope_products'] : $campaign['num_products']) ?></td>
 					<td class="text-end">
-						<a class="btn btn-default btn-sm" href="<?php echo document::href_ilink(__APP__.'/edit_campaign', ['campaign_id' => $campaign['id']]); ?>" title="<?php echo t('title_edit', 'Edit'); ?>">
-							<?php echo f::draw_fonticon('edit'); ?>
+						<a class="btn btn-default btn-sm" href="<?= document::href_ilink(__APP__.'/edit_campaign', ['campaign_id' => $campaign['id']]) ?>" title="<?= t('title_edit', 'Edit') ?>">
+							<?= f::draw_fonticon('edit') ?>
 						</a>
 					</td>
 				</tr>
@@ -105,17 +105,17 @@
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?php echo t('title_campaigns', 'Campaigns'); ?>: <?php echo f::format_number($num_rows); ?>
+						<?= t('title_campaigns', 'Campaigns') ?>: <?= f::format_number($num_rows) ?>
 					</td>
 				</tr>
 			</tfoot>
 		</table>
 
-	<?php echo f::form_end(); ?>
+	<?= f::form_end() ?>
 
 	<?php if ($num_pages > 1) { ?>
 	<div class="card-body">
-		<?php echo f::draw_pagination($num_pages); ?>
+		<?= f::draw_pagination($num_pages) ?>
 	</div>
 	<?php } ?>
 

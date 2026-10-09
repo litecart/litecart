@@ -72,46 +72,46 @@
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">
-			<?php echo $app_icon; ?> <?php echo !empty($geo_zone->data['id']) ? t('title_edit_geo_zone', 'Edit Geo Zone') : t('title_new_geo_zone', 'Create New Geo Zone'); ?>
+			<?= $app_icon ?> <?= !empty($geo_zone->data['id']) ? t('title_edit_geo_zone', 'Edit Geo Zone') : t('title_new_geo_zone', 'Create New Geo Zone') ?>
 		</div>
 	</div>
 
-	<?php echo f::form_begin('form_geo_zone', 'post'); ?>
+	<?= f::form_begin('form_geo_zone', 'post') ?>
 		<div class="card-body">
 
 			<div class="grid" style="max-width: 720px;">
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_code', 'Code'); ?></div>
-						<?php echo f::form_input_text('code', true); ?>
+						<div class="form-label"><?= t('title_code', 'Code') ?></div>
+						<?= f::form_input_text('code', true) ?>
 					</label>
 				</div>
 
 				<div class="col-md-6">
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_name', 'Name'); ?></div>
-						<?php echo f::form_input_text('name', true); ?>
+						<div class="form-label"><?= t('title_name', 'Name') ?></div>
+						<?= f::form_input_text('name', true) ?>
 					</label>
 				</div>
 
 				<div class="col-md-12">
 					<label class="form-group">
-						<div class="form-label"><?php echo t('title_description', 'Description'); ?></div>
-						<?php echo f::form_input_text('description', true); ?>
+						<div class="form-label"><?= t('title_description', 'Description') ?></div>
+						<?= f::form_input_text('description', true) ?>
 					</label>
 				</div>
 			</div>
 
-			<h2><?php echo t('title_zones', 'Zones'); ?></h2>
+			<h2><?= t('title_zones', 'Zones') ?></h2>
 		</div>
 
 		<table id="zones" class="table data-table">
 			<thead>
 				<tr>
-					<th><?php echo t('title_id', 'ID'); ?></th>
-					<th><?php echo t('title_country', 'Country'); ?></th>
-					<th><?php echo t('title_zone', 'Zone'); ?></th>
-					<th><?php echo t('title_city', 'City'); ?></th>
+					<th><?= t('title_id', 'ID') ?></th>
+					<th><?= t('title_country', 'Country') ?></th>
+					<th><?= t('title_zone', 'Zone') ?></th>
+					<th><?= t('title_city', 'City') ?></th>
 					<th></th>
 				</tr>
 			</thead>
@@ -119,45 +119,45 @@
 			<tbody>
 				<?php if (!empty($_POST['zones'])) foreach (array_keys($_POST['zones']) as $key) { ?>
 				<tr>
-					<td><?php echo f::form_input_hidden('zones['. $key .'][id]', true); ?><?php echo $_POST['zones'][$key]['id']; ?></td>
-					<td><?php echo f::form_input_hidden('zones['. $key .'][country_code]', true); ?> <?php echo reference::country($_POST['zones'][$key]['country_code'])->name; ?></td>
-					<td><?php echo f::form_input_hidden('zones['. $key .'][zone_code]', true); ?> <?php echo !empty($_POST['zones'][$key]['zone_code']) ? reference::country($_POST['zones'][$key]['country_code'])->zones[$_POST['zones'][$key]['zone_code']]['name'] : '-- '.t('title_all_zones', 'All Zones') .' --'; ?></td>
-					<td><?php echo f::form_input_hidden('zones['. $key .'][city]', true); ?> <?php echo $_POST['zones'][$key]['city'] ?? ('-- '. t('title_all_cities', 'All Cities') .' --'); ?></td>
-					<td class="text-end"><?php echo f::form_button_predefined('remove-sm'); ?></td>
+					<td><?= f::form_input_hidden('zones['. $key .'][id]', true) ?><?= $_POST['zones'][$key]['id'] ?></td>
+					<td><?= f::form_input_hidden('zones['. $key .'][country_code]', true) ?> <?= reference::country($_POST['zones'][$key]['country_code'])->name ?></td>
+					<td><?= f::form_input_hidden('zones['. $key .'][zone_code]', true) ?> <?= !empty($_POST['zones'][$key]['zone_code']) ? reference::country($_POST['zones'][$key]['country_code'])->zones[$_POST['zones'][$key]['zone_code']]['name'] : '-- '.t('title_all_zones', 'All Zones') .' --' ?></td>
+					<td><?= f::form_input_hidden('zones['. $key .'][city]', true) ?> <?= $_POST['zones'][$key]['city'] ?? ('-- '. t('title_all_cities', 'All Cities') .' --') ?></td>
+					<td class="text-end"><?= f::form_button_predefined('remove-sm') ?></td>
 				</tr>
 				<?php } ?>
 			</tbody>
 
 			<tfoot>
 				<tr>
-					<td><?php echo f::form_input_hidden('new_zone[id]', ''); ?></td>
-					<td><?php echo f::form_select_country('new_zone[country_code]', ''); ?></td>
-					<td><?php echo f::form_select_zone('', 'new_zone[zone_code]', '', '', 'all'); ?></td>
-					<td><?php echo f::form_input_text('new_zone[city]', '', ['placeholder' => '-- ' . t('text_all_cities', 'All cities') . ' --']); ?></td>
-					<td><?php echo f::form_button('add', ['', t('title_add', 'Add')], 'button'); ?></td>
+					<td><?= f::form_input_hidden('new_zone[id]', '') ?></td>
+					<td><?= f::form_select_country('new_zone[country_code]', '') ?></td>
+					<td><?= f::form_select_zone('', 'new_zone[zone_code]', '', '', 'all') ?></td>
+					<td><?= f::form_input_text('new_zone[city]', '', ['placeholder' => '-- ' . t('text_all_cities', 'All cities') . ' --']) ?></td>
+					<td><?= f::form_button('add', ['', t('title_add', 'Add')], 'button') ?></td>
 				</tr>
 			</tfoot>
 		</table>
 
 		<div class="card-action">
-			<?php echo f::form_button_predefined('save'); ?>
+			<?= f::form_button_predefined('save') ?>
 			<?php if (!empty($geo_zone->data['id'])) echo f::form_button_predefined('delete'); ?>
-			<?php echo f::form_button_predefined('cancel'); ?>
+			<?= f::form_button_predefined('cancel') ?>
 		</div>
 
-	<?php echo f::form_end(); ?>
+	<?= f::form_end() ?>
 </div>
 
 <script>
 	$('select[name$="new_zone[zone_code]"][disabled]').each(function() {
-		$(this).html('<option value="">-- <?php echo f::escape_js(t('title_all_zones', 'All Zones')); ?> --</option>');
+		$(this).html('<option value="">-- <?= f::escape_js(t('title_all_zones', 'All Zones')) ?> --</option>');
 	});
 
 	$('select[name="new_zone[country_code]"]').on('change', function() {
 		let $zone_field = $(this).closest('tr').find('select[name="new_zone[zone_code]"]');
 
 		$.ajax({
-			url: '<?php echo document::ilink('countries/zones.json'); ?>?country_code=' + $(this).val(),
+			url: '<?= document::ilink('countries/zones.json') ?>?country_code=' + $(this).val(),
 			type: 'get',
 			cache: true,
 			async: true,
@@ -165,13 +165,13 @@
 			success: function(data) {
 				$($zone_field).html('');
 				if (data) {
-					$($zone_field).append('<option value="">-- <?php echo f::escape_js(t('title_all_zones', 'All Zones')); ?> --</option>');
+					$($zone_field).append('<option value="">-- <?= f::escape_js(t('title_all_zones', 'All Zones')) ?> --</option>');
 					$.each(data, function(i, zone) {
 						$($zone_field).append('<option value="'+ zone.code +'">'+ zone.name +'</option>');
 					});
 					$($zone_field).prop('disabled', false);
 				} else {
-					$($zone_field).append('<option value="">-- <?php echo f::escape_js(t('title_all_zones', 'All Zones')); ?> --</option>');
+					$($zone_field).append('<option value="">-- <?= f::escape_js(t('title_all_zones', 'All Zones')) ?> --</option>');
 					$($zone_field).prop('disabled', true);
 				}
 			}
@@ -183,7 +183,7 @@
 		e.preventDefault();
 
 		if ($('select[name="new_zone[country_code]"]').val() == '') {
-			alert('<?php echo f::escape_js(t('error_must_select_country', 'You must select a country')); ?>');
+			alert('<?= f::escape_js(t('error_must_select_country', 'You must select a country')) ?>');
 			return;
 		}
 
@@ -200,7 +200,7 @@
 		});
 
 		if (found) {
-			alert('<?php echo f::escape_js(t('error_zone_already_exists', 'This zone already exists in the list'), true); ?>');
+			alert('<?= f::escape_js(t('error_zone_already_exists', 'This zone already exists in the list'), true) ?>');
 			return;
 		}
 
@@ -211,20 +211,20 @@
 		let city_name = $('input[name="new_zone[city]"]').val();
 
 		if (zone_name == '') {
-			zone_name = '-- <?php echo t('title_all_zones', 'All Zones'); ?> --';
+			zone_name = '-- <?= t('title_all_zones', 'All Zones') ?> --';
 		}
 
 		if (city_name == '') {
-			city_name = '-- <?php echo t('title_all_cities', 'All Cities'); ?> --';
+			city_name = '-- <?= t('title_all_cities', 'All Cities') ?> --';
 		}
 
 		let $output = $([
 			'<tr>',
-			'  <td><?php echo f::escape_js(f::form_input_hidden('zones[__index__][id]', '')); ?></td>',
-			'  <td><?php echo f::escape_js(f::form_input_hidden('zones[__index__][country_code]', '')); ?>' + $('select[name="new_zone[country_code]"] option:selected').text() + '</td>',
-			'  <td><?php echo f::escape_js(f::form_input_hidden('zones[__index__][zone_code]', '')); ?>' + zone_name + '</td>',
-			'  <td><?php echo f::escape_js(f::form_input_hidden('zones[__index__][city]', '')); ?>' + city_name + '</td>',
-			'  <td class="text-end"><?php echo f::escape_js(f::form_button_predefined('remove-sm')); ?></td>',
+			'  <td><?= f::escape_js(f::form_input_hidden('zones[__index__][id]', '')) ?></td>',
+			'  <td><?= f::escape_js(f::form_input_hidden('zones[__index__][country_code]', '')) ?>' + $('select[name="new_zone[country_code]"] option:selected').text() + '</td>',
+			'  <td><?= f::escape_js(f::form_input_hidden('zones[__index__][zone_code]', '')) ?>' + zone_name + '</td>',
+			'  <td><?= f::escape_js(f::form_input_hidden('zones[__index__][city]', '')) ?>' + city_name + '</td>',
+			'  <td class="text-end"><?= f::escape_js(f::form_button_predefined('remove-sm')) ?></td>',
 			'</tr>'
 		].join('\n')
 			.replace(/__index__/g, 'new_' + __index__)
