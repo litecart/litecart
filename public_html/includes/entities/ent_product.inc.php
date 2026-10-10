@@ -445,10 +445,10 @@
       // Close currently-open regular-price history row (if any)
         database::query(
           "update ". DB_TABLE_PREFIX ."products_prices_history
-          set valid_to = NOW()
+          set valid_to = '". date('Y-m-d H:i:s') ."'
           where product_id = ". (int)$this->data['id'] ."
           and campaign_id = 0
-          and valid_to IS NULL;"
+          and valid_to is null;"
         );
 
       // Insert new open regular-price row
@@ -460,7 +460,7 @@
         database::query(
           "insert into ". DB_TABLE_PREFIX ."products_prices_history
           (product_id, campaign_id, price, valid_from, valid_to)
-          values (". (int)$this->data['id'] .", 0, '". database::input(json_encode($price_object, JSON_UNESCAPED_UNICODE)) ."', NOW(), NULL);"
+          values (". (int)$this->data['id'] .", 0, '". database::input(json_encode($price_object, JSON_UNESCAPED_UNICODE)) ."', '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
         );
       }
 
@@ -485,10 +485,10 @@
       if (!empty($deleted_campaign_ids)) {
         database::query(
           "update ". DB_TABLE_PREFIX ."products_prices_history
-          set valid_to = ". date('Y-m-d H:i:s') ."
+          set valid_to = '". date('Y-m-d H:i:s') ."'
           where product_id = ". (int)$this->data['id'] ."
           and campaign_id in ('". implode("', '", $deleted_campaign_ids) ."')
-          and valid_to IS NULL;"
+          and valid_to is null;"
         );
       }
 
@@ -577,7 +577,7 @@
               database::query(
                 "insert into ". DB_TABLE_PREFIX ."products_prices_history
                 (product_id, campaign_id, price, valid_from, valid_to)
-                values (". (int)$this->data['id'] .", ". (int)$this->data['campaigns'][$key]['id'] .", '". database::input(json_encode($campaign_price_object, JSON_UNESCAPED_UNICODE)) ."', ". ($start_date ? "'". $start_date ."'" : "NOW()") .", ". ($end_date ? "'". $end_date ."'" : "NULL") .");"
+                values (". (int)$this->data['id'] .", ". (int)$this->data['campaigns'][$key]['id'] .", '". database::input(json_encode($campaign_price_object, JSON_UNESCAPED_UNICODE)) ."', ". ($start_date ? "'". $start_date ."'" : "null") .", ". ($end_date ? "'". $end_date ."'" : "null") .");"
               );
             }
           }
