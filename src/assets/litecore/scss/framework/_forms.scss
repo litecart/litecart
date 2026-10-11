@@ -13,6 +13,10 @@
 .form-label {
 	display: block;
 	margin-bottom: .25em;
+	font-weight: 500;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+	font-size: .75em;
 }
 
 label.form-check {
@@ -390,18 +394,14 @@ fieldset[disabled] > :not(legend),
 	}
 }
 
-input[data-toggle="tags"] + .form-input {
-
-	.tokens {
-		display: flex;
-		flex-direction: row;
-		flex-wrap: wrap;
-		list-style: none;
-		padding: 0;
-		margin: -.5em;
-		cursor: text;
-		font-size: .8em;
-	}
+.tokens {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	list-style: none;
+	padding: 0;
+	font-size: .8em;
 
 	.tag {
 		background: rgba(0, 93, 152, 0.2);
@@ -409,6 +409,10 @@ input[data-toggle="tags"] + .form-input {
 		margin: .25em;
 		border-radius: .25em;
 		cursor: default;
+
+		.value {
+			white-space: nowrap;
+		}
 
 		.remove {
 			background: rgba(255, 15, 15, 0.4);
@@ -422,6 +426,15 @@ input[data-toggle="tags"] + .form-input {
 			}
 		}
 	}
+}
+
+input[data-toggle="tags"] + .form-input {
+	position: relative;
+
+	.tokens {
+		margin: -.5em;
+		cursor: text;
+	}
 
 	.input {
 		flex: 1 1 auto;
@@ -429,6 +442,38 @@ input[data-toggle="tags"] + .form-input {
 		border: none;
 		outline: none;
 		padding: .5em .5em;
+	}
+
+	.suggestions {
+		display: none;
+		position: absolute;
+		z-index: 10;
+		inset-inline: 0;
+		top: 100%;
+		max-height: 12em;
+		overflow-y: auto;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		background: #fff;
+		border: 1px solid rgba(0, 0, 0, 0.15);
+		border-radius: .25em;
+		box-shadow: 0 .25em .5em rgba(0, 0, 0, 0.15);
+		font-size: .8em;
+
+		&.open {
+			display: block;
+		}
+
+		li {
+			padding: .5em;
+			cursor: pointer;
+
+			&.active,
+			&:hover {
+				background: rgba(0, 93, 152, 0.1);
+			}
+		}
 	}
 }
 

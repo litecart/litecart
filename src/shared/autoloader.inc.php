@@ -39,24 +39,15 @@
 			case (preg_match('#^tm_#', $class)):
 
 				$file = match(strtok($class, '_')) {
-					'chk' => FS_DIR_APP . 'shared/modules/checkout/' . $class . '.inc.php',
-					'cm' => FS_DIR_APP . 'shared/modules/customer/' . $class . '.inc.php',
-					'job' => FS_DIR_APP . 'shared/modules/jobs/' . $class . '.inc.php',
-					'om' => FS_DIR_APP . 'shared/modules/order/' . $class . '.inc.php',
-					'ot' => FS_DIR_APP . 'shared/modules/order_total/' . $class . '.inc.php',
-					'pm' => FS_DIR_APP . 'shared/modules/payment/' . $class . '.inc.php',
-					'sm' => FS_DIR_APP . 'shared/modules/shipping/' . $class . '.inc.php',
-					'tm' => FS_DIR_APP . 'shared/modules/translation/' . $class . '.inc.php',
+					'chk' => 'app://shared/modules/checkout/' . $class . '.inc.php',
+					'cm' => 'app://shared/modules/customer/' . $class . '.inc.php',
+					'job' => 'app://shared/modules/jobs/' . $class . '.inc.php',
+					'om' => 'app://shared/modules/order/' . $class . '.inc.php',
+					'ot' => 'app://shared/modules/order_total/' . $class . '.inc.php',
+					'pm' => 'app://shared/modules/payment/' . $class . '.inc.php',
+					'sm' => 'app://shared/modules/shipping/' . $class . '.inc.php',
+					'tm' => 'app://shared/modules/translation/' . $class . '.inc.php',
 				};
-
-				// Patch modules for PHP 8.2 Compatibility
-				if (PHP_VERSION_ID >= 80200 && is_file($file)) {
-					$source = file_get_contents($file);
-					if (!preg_match('#\#\[AllowDynamicProperties\]#', $source)) {
-						$source = preg_replace('#([ \t]*)class [a-zA-Z0-9_-]+\s*?\{(\n|\r\n?)#', '$1#[AllowDynamicProperties]$2$0', $source);
-						file_put_contents($file, $source);
-					}
-				}
 
 				require $file;
 				break;

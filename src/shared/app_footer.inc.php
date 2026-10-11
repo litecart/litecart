@@ -42,7 +42,7 @@
 
 		if (!in_array('exec', $disabled_functions)) {
 
-			exec('php -d register_argc_argv=on "'. FS_DIR_APP .'index.php" push_jobs &>/dev/null &');
+			exec('php -d register_argc_argv=on '. escapeshellarg(FS_DIR_APP .'index.php') .' push_jobs &>/dev/null &');
 
 		} else if (!in_array('fsockopen', $disabled_functions)) {
 

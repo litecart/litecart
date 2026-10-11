@@ -32,6 +32,17 @@
 
 		$address_format = preg_replace('#%([a-z0-9_]+)#', '{$1}', $address_format); // Convert % to {} for compatibility with older versions
 
+		if (!$address_format) {
+			$address_format = implode(PHP_EOL, [
+				"{firstname} {lastname}",
+				"{company}",
+				"{address1}",
+				"{address2}",
+				"{city} {postcode}",
+				"{country_name}"
+			]);
+		}
+
 		$output = strtr($address_format, [
 			'{company}' => $address['company'] ?? '',
 			'{firstname}' => $address['firstname'] ?? '',
@@ -56,7 +67,7 @@
 
 	function format_json(mixed $data, string $indent="\t"): string {
 
-		$json = json_encode($data, ($indent ? JSON_PRETTY_PRINT : 0) | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+		$json = json_encode($data, ($indent ? JSON_PRETTY_PRINT : 0) | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE);
 
 		if (json_last_error() !== JSON_ERROR_NONE) {
 			throw new Exception('JSON encode error: '. json_last_error_msg());

@@ -484,7 +484,7 @@
 		if (isset(route::$selected['endpoint']) && route::$selected['endpoint'] == 'backend') {
 			$pagination = new ent_view('app://backend/template/partials/pagination.inc.php');
 		} else {
-			$pagination = new ent_view('app://frontend/template/partials/pagination.inc.php');
+			$pagination = new ent_view('app://frontend/templates/'. settings::get('template') .'/partials/pagination.inc.php');
 		}
 
 		$pagination->snippets['items'] = [];

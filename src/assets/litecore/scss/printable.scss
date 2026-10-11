@@ -2,8 +2,22 @@
 	--page-margin: 10mm;
 }
 
-.page {
+@mixin dark_paper {
+	--default-text-color: #acb6c2;
+	--table-header-background: transparent;
+	--table-header-text-color: #acb6c2;
+	--table-body-background: transparent;
+	--table-border-color: #ffffff14;
+	--table-body-background--hover: #ffffff14;
+	--table-body-text-color: #acb6c2;
+	--table-footer-background: transparent;
+	--table-footer-text-color: #acb6c2;
 
+	color: #c7d0db;
+	background: #242934;
+}
+
+.page {
 	--default-text-color: #000;
 	--table-header-background: transparent;
 	--table-header-text-color: #000;
@@ -20,6 +34,7 @@
 	font-family: var(--default-text-font);
 	color: #444;
 	overflow: hidden;
+	border-radius: calc(var(--border-radius) / 2);
 
 	&[data-size="A4"] {
 		page: A4;
@@ -134,7 +149,6 @@ hr {
 		margin: 5mm auto;
 		background: #fff;
 		box-shadow: 0 0 10px rgb(0 0 0 / 15%);
-		border-radius: var(--border-radius);
 
 		+ .page {
 			margin-top: 10mm;
@@ -154,5 +168,16 @@ hr {
 		inset-inline-end: 1em;
 		font-size: 1.25em;
 		z-index: 999999;
+	}
+
+	html[data-theme="dark"] .page,
+	html.theme-dark .page {
+		@include dark_paper;
+	}
+
+	@media (prefers-color-scheme: dark) {
+		html:not([data-theme="light"]):not(.theme-light) .page {
+			@include dark_paper;
+		}
 	}
 }

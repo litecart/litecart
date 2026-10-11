@@ -19,6 +19,19 @@
 
 			##
 
+			echo "Cleaning up old cart items..." . PHP_EOL;
+
+			database::query(
+				"delete from ". DB_PREFIX ."cart_items
+				where created_at < '". date('Y-m-d H:i:s', strtotime('-3 months')) ."';"
+			);
+
+			if ($num_deleted = database::affected_rows()) {
+				echo '- Removed '. f::format_number($num_deleted) .' cart item(s).' . PHP_EOL . PHP_EOL;
+			}
+
+			##
+
 			echo "Cleaning up old and expired event logs..." . PHP_EOL;
 
 			database::query(
@@ -27,18 +40,9 @@
 				or (expires_at is null and created_at < '". date('Y-m-d H:i:s', strtotime('-3 months')) ."');"
 			);
 
-			echo '- Removed '. f::format_number(database::affected_rows()) .' log(s).' . PHP_EOL . PHP_EOL;
-
-			##
-
-			echo "Cleaning up expired sessions..." . PHP_EOL;
-
-			database::query(
-				"delete from ". DB_PREFIX ."sessions
-				where expires_at < '". date('Y-m-d H:i:s') ."';"
-			);
-
-			echo '- Removed '. f::format_number(database::affected_rows()) .' session(s).' . PHP_EOL . PHP_EOL;
+			if ($num_deleted = database::affected_rows()) {
+				echo '- Removed '. f::format_number($num_deleted) .' log(s).' . PHP_EOL . PHP_EOL;
+			}
 
 			##
 
@@ -50,7 +54,35 @@
 				and updated_at < '". date('Y-m-d 00:00:00', strtotime('-1 month')) ."';"
 			);
 
-			echo '- Removed '. f::format_number(database::affected_rows()) .' email(s).' . PHP_EOL . PHP_EOL;
+			if ($num_deleted = database::affected_rows()) {
+				echo '- Removed '. f::format_number($num_deleted) .' email(s).' . PHP_EOL . PHP_EOL;
+			}
+
+			##
+
+			echo "Cleaning up old firewall actions..." . PHP_EOL;
+
+			database::query(
+				"delete from ". DB_PREFIX ."firewall_actions_taken
+				where created_at < date_sub(now(), interval 1 month);"
+			);
+
+			if ($num_deleted = database::affected_rows()) {
+				echo '- Removed '. f::format_number($num_deleted) .' firewall action(s).' . PHP_EOL . PHP_EOL;
+			}
+
+			##
+
+			echo "Cleaning up old firewall blacklists..." . PHP_EOL;
+
+			database::query(
+				"delete from ". DB_PREFIX ."firewall_blacklist
+				where date_expires < date_sub(now(), interval 1 month);"
+			);
+
+			if ($num_deleted = database::affected_rows()) {
+				echo '- Removed '. f::format_number($num_deleted) .' blacklisted client(s).' . PHP_EOL . PHP_EOL;
+			}
 
 			##
 
@@ -61,18 +93,9 @@
 				where last_requested < '". date('Y-m-d 00:00:00', strtotime('-90 days')) ."';"
 			);
 
-			echo '- Removed '. f::format_number(database::affected_rows()) .' file(s).' . PHP_EOL . PHP_EOL;
-
-			##
-
-			echo "Cleaning up old visitor statistics..." . PHP_EOL;
-
-			database::query(
-				"delete from ". DB_PREFIX ."visitors
-				where created_at < '". date('Y-m-d 00:00:00', strtotime('-1 month')) ."';"
-			);
-
-			echo '- Removed '. f::format_number(database::affected_rows()) .' row(s).' . PHP_EOL . PHP_EOL;
+			if ($num_deleted = database::affected_rows()) {
+				echo '- Removed '. f::format_number($num_deleted) .' file(s).' . PHP_EOL . PHP_EOL;
+			}
 
 			##
 
@@ -83,7 +106,9 @@
 				where created_at < '". date('Y-m-d H:i:s', strtotime('-7 days')) ."';"
 			);
 
-			echo '- Removed '. f::format_number(database::affected_rows()) .' rate-limit record(s).' . PHP_EOL . PHP_EOL;
+			if ($num_deleted = database::affected_rows()) {
+				echo '- Removed '. f::format_number($num_deleted) .' rate-limit record(s).' . PHP_EOL . PHP_EOL;
+			}
 
 			##
 
@@ -94,7 +119,9 @@
 				where expires_at < '". database::input(date('Y-m-d H:i:s')) ."';"
 			);
 
-			echo '- Removed '. f::format_number(database::affected_rows()) .' webhook request(s).' . PHP_EOL . PHP_EOL;
+			if ($num_deleted = database::affected_rows()) {
+				echo '- Removed '. f::format_number($num_deleted) .' webhook request(s).' . PHP_EOL . PHP_EOL;
+			}
 
 			##
 
@@ -105,7 +132,22 @@
 				where created_at < '". database::input(date('Y-m-d H:i:s', strtotime('-30 days'))) ."';"
 			);
 
-			echo '- Removed '. f::format_number(database::affected_rows()) .' webhook request(s).' . PHP_EOL . PHP_EOL;
+			if ($num_deleted = database::affected_rows()) {
+				echo '- Removed '. f::format_number($num_deleted) .' webhook request(s).' . PHP_EOL . PHP_EOL;
+			}
+
+			##
+
+			echo "Cleaning up old visitor statistics..." . PHP_EOL;
+
+			database::query(
+				"delete from ". DB_PREFIX ."visitors
+				where created_at < '". date('Y-m-d 00:00:00', strtotime('-1 month')) ."';"
+			);
+
+			if ($num_deleted = database::affected_rows()) {
+				echo '- Removed '. f::format_number($num_deleted) .' row(s).' . PHP_EOL . PHP_EOL;
+			}
 
 			##
 
@@ -124,7 +166,9 @@
 				$deleted_files++;
 			}
 
-			echo '- Removed '. f::format_number($deleted_files) .' file(s).' . PHP_EOL . PHP_EOL;
+			if ($deleted_files) {
+				echo '- Removed '. f::format_number($deleted_files) .' file(s).' . PHP_EOL . PHP_EOL;
+			}
 
 			##
 
@@ -159,7 +203,9 @@
 				}
 			}
 
-			echo '- Removed '. f::format_number($deleted_files) .' file(s) and '. f::format_number($deleted_dirs) .' folder(s).' . PHP_EOL . PHP_EOL;
+			if ($deleted_dirs || $deleted_files) {
+				echo '- Removed '. f::format_number($deleted_files) .' file(s) and '. f::format_number($deleted_dirs) .' folder(s).' . PHP_EOL . PHP_EOL;
+			}
 
 			##
 

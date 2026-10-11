@@ -25,7 +25,7 @@
 	"scripts": {
 		"archive": "git archive --format=zip -o latest.zip HEAD",
 		"build": "gulp build",
-		"build:watch": "gulp build --watch",
+		"build:watch": "gulp build:watch",
 		"changelog": "git log --oneline 'master'..'dev' > changelog.txt",
 		"hash": "php .git-hooks/pre-commit.d/calculate_checksums.php",
 		"iconly": "gulp iconly && gulp scss-framework",

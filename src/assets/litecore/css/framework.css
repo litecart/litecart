@@ -191,6 +191,10 @@ textarea {
 	overflow: auto;
 }
 
+th {
+	text-align: start;
+}
+
 details {
 	display: block;
 }
@@ -1261,7 +1265,7 @@ html[dir=rtl] .dropdown label:has([data-toggle=dropdown]) {
 	font-family: "LiteCore";
 	font-style: normal;
 	font-weight: 400;
-	src: url("../fonts/fonticons.woff2?1790464046") format("woff2");
+	src: url("../fonts/fonticons.woff2?1791042563") format("woff2");
 }
 [class^=icon-], [class*=" icon-"] {
 	display: inline-block;
@@ -1271,14 +1275,11 @@ html[dir=rtl] .dropdown label:has([data-toggle=dropdown]) {
 	font-variant: normal;
 	text-rendering: auto;
 	text-align: center;
+	line-height: 1;
 	width: 1em;
 	height: 1em;
 	-moz-osx-font-smoothing: grayscale;
 	-webkit-font-smoothing: antialiased;
-}
-
-.icon-lg {
-	font-size: 1.2em;
 }
 
 .icon-zoom-out:before {
@@ -2270,6 +2271,10 @@ html[dir=rtl] .dropdown label:has([data-toggle=dropdown]) {
 .form-label {
 	display: block;
 	margin-bottom: 0.25em;
+	font-weight: 500;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+	font-size: 0.75em;
 }
 
 label.form-check {
@@ -2655,32 +2660,42 @@ fieldset[disabled] > :not(legend),
 	border-end-start-radius: 0;
 }
 
-input[data-toggle=tags] + .form-input .tokens {
+.tokens {
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
+	align-items: center;
 	list-style: none;
 	padding: 0;
-	margin: -0.5em;
-	cursor: text;
 	font-size: 0.8em;
 }
-input[data-toggle=tags] + .form-input .tag {
+.tokens .tag {
 	background: rgba(0, 93, 152, 0.2);
 	padding: 0.25em 0.5em;
 	margin: 0.25em;
 	border-radius: 0.25em;
 	cursor: default;
 }
-input[data-toggle=tags] + .form-input .tag .remove {
+.tokens .tag .value {
+	white-space: nowrap;
+}
+.tokens .tag .remove {
 	background: rgba(255, 15, 15, 0.4);
 	color: #fff;
 	border-radius: 0.25em;
 	padding: 0 0.25em;
 	cursor: pointer;
 }
-input[data-toggle=tags] + .form-input .tag .remove:hover {
+.tokens .tag .remove:hover {
 	background: rgba(255, 15, 15, 0.6);
+}
+
+input[data-toggle=tags] + .form-input {
+	position: relative;
+}
+input[data-toggle=tags] + .form-input .tokens {
+	margin: -0.5em;
+	cursor: text;
 }
 input[data-toggle=tags] + .form-input .input {
 	flex: 1 1 auto;
@@ -2688,6 +2703,33 @@ input[data-toggle=tags] + .form-input .input {
 	border: none;
 	outline: none;
 	padding: 0.5em 0.5em;
+}
+input[data-toggle=tags] + .form-input .suggestions {
+	display: none;
+	position: absolute;
+	z-index: 10;
+	inset-inline: 0;
+	top: 100%;
+	max-height: 12em;
+	overflow-y: auto;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	background: #fff;
+	border: 1px solid rgba(0, 0, 0, 0.15);
+	border-radius: 0.25em;
+	box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.15);
+	font-size: 0.8em;
+}
+input[data-toggle=tags] + .form-input .suggestions.open {
+	display: block;
+}
+input[data-toggle=tags] + .form-input .suggestions li {
+	padding: 0.5em;
+	cursor: pointer;
+}
+input[data-toggle=tags] + .form-input .suggestions li.active, input[data-toggle=tags] + .form-input .suggestions li:hover {
+	background: rgba(0, 93, 152, 0.1);
 }
 
 html[dir=rtl] .form-select {
@@ -3853,10 +3895,10 @@ body.litebox-open {
 .navbar .navbar-toggler,
 .navbar .navbar-toggle-btn {
 	flex-direction: column;
-	gap: 4px;
+	gap: 2px;
 	align-items: center;
 }
-.navbar .navbar .navbar-toggle-btn .icon-bar {
+.navbar .navbar-toggle-btn .icon-bar {
 	position: relative;
 	background-color: var(--navbar-text-color);
 	display: block;
@@ -3864,13 +3906,13 @@ body.litebox-open {
 	height: 2px;
 	transition: all 250ms ease-in-out;
 }
-.navbar .navbar .navbar-toggle-btn .icon-bar + .icon-bar {
+.navbar .navbar-toggle-btn .icon-bar + .icon-bar {
 	margin-top: 4px;
 }
 .navbar.expanded .navbar-toggle .navbar-toggler-bar:nth-of-type(1),
 .navbar.expanded .navbar-toggle .icon-bar:nth-of-type(1),
 .navbar.expanded .navbar-toggle .navbar-toggle-btn .icon-bar:nth-of-type(1) {
-	transform: translateY(6px) rotate(45deg);
+	transform: translateY(8px) rotate(45deg);
 }
 .navbar.expanded .navbar-toggle .navbar-toggler-bar:nth-of-type(2),
 .navbar.expanded .navbar-toggle .icon-bar:nth-of-type(2),
@@ -3880,13 +3922,13 @@ body.litebox-open {
 .navbar.expanded .navbar-toggle .navbar-toggler-bar:nth-of-type(3),
 .navbar.expanded .navbar-toggle .icon-bar:nth-of-type(3),
 .navbar.expanded .navbar-toggle .navbar-toggle-btn .icon-bar:nth-of-type(3) {
-	transform: translateY(-6px) rotate(-45deg);
+	transform: translateY(-8px) rotate(-45deg);
 }
 .navbar.expanded {
 	/* X animation when the menu is opened (CSS-only via :has() on the checkbox) */
 }
 .navbar.expanded .navbar-toggle-btn .icon-bar:nth-of-type(1) {
-	transform: translateY(6px) rotate(45deg);
+	transform: translateY(8px) rotate(45deg);
 }
 .navbar.expanded .navbar-toggle-btn .icon-bar:nth-of-type(2) {
 	background-color: transparent;
@@ -3903,7 +3945,7 @@ body.litebox-open {
 	}
 	.navbar.expanded .navbar-menu .open .dropdown-menu {
 		position: static;
-		width: auto;
+		width: 100%;
 		margin-top: 0;
 		background: var(--navbar-dropdown-background);
 		border: 0;
@@ -3972,10 +4014,41 @@ body.navbar-expanded {
 .navbar-toggle-btn {
 	display: inline-flex;
 	flex-direction: column;
-	justify-content: space-between;
+	justify-content: center;
 	gap: 4px;
+	width: 2.75em;
+	height: 2.75em;
 	padding: 0.5em;
 	cursor: pointer;
+	background: var(--navbar-dropdown-background);
+	color: var(--navbar-text-color);
+	border: var(--navbar-border-width) solid var(--navbar-border-color);
+	border-radius: var(--border-radius);
+	transition: background 200ms ease, transform 150ms ease;
+}
+.navbar-toggle-btn:hover {
+	background: rgba(0, 0, 0, 0.06);
+}
+.navbar-toggle-btn:active {
+	transform: scale(0.94);
+}
+html[data-theme=dark] .navbar-toggle-btn:hover, html:not([data-theme=light]) .navbar-toggle-btn:hover {
+	background: rgba(255, 255, 255, 0.08);
+}
+
+/* Animate the hamburger into an X when the offcanvas is opened
+	 (works for both the JS-toggled .expanded class and the CSS-only
+	 :has(:checked) checkbox state). */
+.navbar:has(.navbar-toggle:checked) .navbar-toggle-btn .icon-bar:nth-of-type(1) {
+	transform: translateY(8px) rotate(45deg);
+}
+
+.navbar:has(.navbar-toggle:checked) .navbar-toggle-btn .icon-bar:nth-of-type(2) {
+	background-color: transparent;
+}
+
+.navbar:has(.navbar-toggle:checked) .navbar-toggle-btn .icon-bar:nth-of-type(3) {
+	transform: translateY(-8px) rotate(-45deg);
 }
 
 @media (min-width: 768px) {
@@ -4024,6 +4097,9 @@ body.navbar-expanded {
 	}
 	.navbar .navbar-menu::-webkit-scrollbar-thumb:hover {
 		background: rgba(0, 0, 0, 0.4);
+	}
+	.theme-toggle {
+		order: 99;
 	}
 	/* Themed scrollbar (dark mode) */
 	html[data-theme=dark] .navbar .navbar-menu {
@@ -4597,6 +4673,11 @@ body.navbar-expanded {
 .table thead tr th {
 	padding: 0.5em 1em;
 	vertical-align: bottom;
+	text-align: start;
+	font-weight: 500;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	font-size: 0.8em;
 }
 .table thead tr td {
 	vertical-align: middle;

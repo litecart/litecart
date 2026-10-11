@@ -271,9 +271,9 @@ const buildTasks = [
 	'scss-trumbowyg',
 ];
 
-gulp.task('build', gulp.series(...buildTasks, 'watch'));
-gulp.task('build:once', gulp.series(...buildTasks));
+gulp.task('build', gulp.series(...buildTasks));
+gulp.task('build:watch', gulp.series(...buildTasks, 'watch'));
 
 gulp.task('default', gulp.series(
-	'build',
+	'build:watch',
 ));

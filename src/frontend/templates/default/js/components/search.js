@@ -1,37 +1,96 @@
 // AJAX Search
 waitFor('jQuery', ($) => {
 
-	$('.navbar-search :input').on('focus', function() {
+	let $search = $('.navbar-search');
+
+	if (!$search.length) {
+		return;
+	}
+
+	let $input = $search.find(':input'),
+		$dropdown = $search.find('.dropdown-menu');
+
+	function renderEmpty(message) {
+
+		$dropdown.html([
+			'<li class="search-suggestions-empty">',
+			'	<span class="search-suggestions-empty-icon font-icon icon-search" aria-hidden="true"></span>',
+			'	<span class="search-suggestions-empty-text">' + (message || '').escapeHTML() + '</span>',
+			'</li>',
+		].join('\n'));
+	}
+
+	function renderSection(title) {
+		return '<li class="search-suggestions-header">' + title.escapeHTML() + '</li>';
+	}
+
+	function renderSuggestion(item, kind) {
+
+		let thumb = (item.image && item.image.thumbnail) ? item.image.thumbnail : '';
+
+		let html = [
+			'<li class="dropdown-item search-suggestion search-suggestion--' + kind + '">',
+			'	<a class="search-suggestion-link" href="' + item.link.escapeAttr() + '">',
+		];
+
+		if (thumb) {
+			html.push('		<img class="search-suggestion-thumb" src="' + thumb.escapeAttr() + '" alt="" loading="lazy">');
+		} else {
+			html.push('		<span class="search-suggestion-icon font-icon ' + (kind === 'category' ? 'icon-tag' : 'icon-basket') + '" aria-hidden="true"></span>');
+		}
+
+		html.push('		<span class="search-suggestion-name">' + item.name.escapeHTML() + '</span>');
+		html.push('	</a>');
+		html.push('</li>');
+
+		return $(html.join('\n'));
+	}
+
+	function renderNoResults(query) {
+
+		$dropdown.html([
+			'<li class="search-suggestions-empty search-suggestions-empty--no-results">',
+			'	<span class="search-suggestions-empty-icon font-icon icon-frown" aria-hidden="true"></span>',
+			'	<span class="search-suggestions-empty-text">' + query.escapeHTML() + '</span>',
+			'	<span class="search-suggestions-empty-hint">' + 'No matches found'.escapeHTML() + '</span>',
+			+ '</li>',
+		].join('\n'));
+	}
+
+	$input.on('focus', function() {
+
 		$(this).closest('.dropdown').addClass('open');
+
+		if (!$(this).val().trim()) {
+			renderEmpty($search.data('hint'));
+		}
 	});
 
-	$('.navbar-search :input').on('blur', function() {
+	$input.on('blur', function() {
 		$(this).closest('.dropdown').removeClass('open');
 	});
 
 	let xhrAjaxSearch;
-	$('.navbar-search :input').on('input', function() {
 
-		let $navbar_search = $(this).closest('.navbar-search'),
-			$dropdown = $navbar_search.find('.dropdown-menu');
+	$input.on('input', function() {
 
-		$navbar_search.find('.dropdown-menu').html('');
+		$dropdown.html('');
+
+		let query = $(this).val().trim();
 
 		if (xhrAjaxSearch) {
 			xhrAjaxSearch.abort();
 		}
 
-		if (!$(this).val()) {
-			$navbar_search.find('.dropdown-menu').append(
-				$('<li></li>').text($navbar_search.data('hint'))
-			);
+		if (!query) {
+			renderEmpty($search.data('hint'));
 			return;
 		}
 
 		xhrAjaxSearch = $.ajax({
 			url: _env.platform.url + 'ajax/search_results.json',
 			type: 'get',
-			data: { query: $(this).val() },
+			data: { query: query },
 			cache: false,
 			async: true,
 			dataType: 'json',
@@ -41,35 +100,39 @@ waitFor('jQuery', ($) => {
 			success: function(result) {
 
 				if (!result) {
-					dropdown.html('<li>:(</li>');
+					renderNoResults(query);
 					return;
 				}
 
-				if (result.categories && result.categories.length) {
+				let hasCategories = result.categories && result.categories.length,
+					hasProducts = result.products && result.products.length;
+
+				if (!hasCategories && !hasProducts) {
+					renderNoResults(query);
+					return;
+				}
+
+				if (hasCategories) {
+
+					$dropdown.append(renderSection('Categories'));
+
 					$.each(result.categories, function(i, category) {
-
-						let $item = $([
-							'<li class="dropdown-item"><a class="dropdown-menu-link" href="'+ category.link.escapeAttr() +'">',
-							'  <img src="'+ category.image.thumbnail.escapeAttr() +'" style="height: 1em;"> ' + category.name.escapeAttr(),
-							'</a></li>',
-						].join('\n'));
-
-						$dropdown.append($item);
+						$dropdown.append(renderSuggestion(category, 'category'));
 					});
 				}
 
-				if (result.products && result.products.length) {
+				if (hasProducts) {
+
+					$dropdown.append(renderSection('Products'));
+
 					$.each(result.products, function(i, product) {
-
-						let $item = $([
-							'<li class="dropdown-item"><a class="dropdown-menu-link" href="'+ product.link.escapeAttr() +'">',
-							'  <img src="'+ product.image.thumbnail.escapeAttr() +'" style="height: 1em;"> ' + product.name.escapeAttr(),
-							'</a></li>',
-						].join('\n'));
-
-						$dropdown.append($item);
+						$dropdown.append(renderSuggestion(product, 'product'));
 					});
 				}
+			},
+			error: function(jqXHR) {
+				if (jqXHR.statusText === 'abort') return;
+				renderNoResults(query);
 			}
 		});
 	});

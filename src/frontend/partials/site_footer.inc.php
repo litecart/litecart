@@ -17,7 +17,7 @@
 			'social_bookmarks' => [],
 		];
 
-		// Pages
+		// Information pages
 		$site_footer->snippets['pages'] = database::query(
 			"select p.id, json_value(p.title, '$.". database::input(language::$selected['code']) ."') as title
 			from ". DB_PREFIX ."pages p
@@ -32,7 +32,7 @@
 			];
 		});
 
-		// Modules
+		// Shipping & payment module icons
 		database::query(
 			"select id, settings  from ". DB_PREFIX ."modules
 			where type in ('shipping', 'payment')
@@ -49,6 +49,7 @@
 
 			$site_footer->snippets['modules'][] = [
 				'id' => $module['id'],
+				'title' => !empty($module['settings']['title']) ? $module['settings']['title'] : '',
 				'icon' => $icon,
 			];
 		});

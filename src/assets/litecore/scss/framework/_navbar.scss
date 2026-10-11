@@ -189,11 +189,11 @@
 	.navbar-toggler,
 	.navbar-toggle-btn {
 		flex-direction: column;
-		gap: 4px;
+		gap: 2px;
 		align-items: center;
 	}
 
-	.navbar .navbar-toggle-btn .icon-bar {
+	.navbar-toggle-btn .icon-bar {
 		position: relative;
 		background-color: var(--navbar-text-color);
 		display: block;
@@ -201,7 +201,7 @@
 		height: 2px;
 		transition: all 250ms ease-in-out;
 	}
-	.navbar .navbar-toggle-btn .icon-bar + .icon-bar {
+	.navbar-toggle-btn .icon-bar + .icon-bar {
 		margin-top: 4px;
 	}
 
@@ -210,7 +210,7 @@
 			.navbar-toggler-bar:nth-of-type(1),
 			.icon-bar:nth-of-type(1),
 			.navbar-toggle-btn .icon-bar:nth-of-type(1) {
-				transform: translateY(6px) rotate(45deg);
+				transform: translateY(8px) rotate(45deg);
 			}
 
 			.navbar-toggler-bar:nth-of-type(2),
@@ -222,13 +222,13 @@
 			.navbar-toggler-bar:nth-of-type(3),
 			.icon-bar:nth-of-type(3),
 			.navbar-toggle-btn .icon-bar:nth-of-type(3) {
-				transform: translateY(-6px) rotate(-45deg);
+				transform: translateY(-8px) rotate(-45deg);
 			}
 		}
 
 		/* X animation when the menu is opened (CSS-only via :has() on the checkbox) */
 		.navbar-toggle-btn .icon-bar:nth-of-type(1) {
-			transform: translateY(6px) rotate(45deg);
+			transform: translateY(8px) rotate(45deg);
 		}
 		.navbar-toggle-btn .icon-bar:nth-of-type(2) {
 			background-color: transparent;
@@ -246,7 +246,7 @@
 
 				.open .dropdown-menu {
 					position: static;
-					width: auto;
+					width: 100%;
 					margin-top: 0;
 					background: var(--navbar-dropdown-background);
 					border: 0;
@@ -331,10 +331,41 @@ body.navbar-expanded {
 .navbar-toggle-btn {
 	display: inline-flex;
 	flex-direction: column;
-	justify-content: space-between;
+	justify-content: center;
 	gap: 4px;
+	width: 2.75em;
+	height: 2.75em;
 	padding: 0.5em;
 	cursor: pointer;
+	background: var(--navbar-dropdown-background);
+	color: var(--navbar-text-color);
+	border: var(--navbar-border-width) solid var(--navbar-border-color);
+	border-radius: var(--border-radius);
+	transition: background 200ms ease, transform 150ms ease;
+
+	&:hover {
+		background: rgba(0, 0, 0, 0.06);
+	}
+	&:active {
+		transform: scale(0.94);
+	}
+	html[data-theme=dark] &:hover,
+	html:not([data-theme=light]) &:hover {
+		background: rgba(255, 255, 255, 0.08);
+	}
+}
+
+/* Animate the hamburger into an X when the offcanvas is opened
+   (works for both the JS-toggled .expanded class and the CSS-only
+   :has(:checked) checkbox state). */
+.navbar:has(.navbar-toggle:checked) .navbar-toggle-btn .icon-bar:nth-of-type(1) {
+	transform: translateY(8px) rotate(45deg);
+}
+.navbar:has(.navbar-toggle:checked) .navbar-toggle-btn .icon-bar:nth-of-type(2) {
+	background-color: transparent;
+}
+.navbar:has(.navbar-toggle:checked) .navbar-toggle-btn .icon-bar:nth-of-type(3) {
+	transform: translateY(-8px) rotate(-45deg);
 }
 
 @media (min-width: $media-breakpoint-md) {
@@ -385,6 +416,10 @@ body.navbar-expanded {
 	}
 	.navbar .navbar-menu::-webkit-scrollbar-thumb:hover {
 		background: rgba(0, 0, 0, 0.4);
+	}
+
+	.theme-toggle {
+		order: 99;
 	}
 
 	/* Themed scrollbar (dark mode) */

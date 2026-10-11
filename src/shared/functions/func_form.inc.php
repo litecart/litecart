@@ -231,9 +231,9 @@
 		}
 
 		if (preg_match('#\[\]$#', $name)) {
-			return f::draw_element('input', ['class' => 'form-check', 'type' => 'checkbox', 'name' => $name, 'value' => $value, ...$attributes] + ((is_array($input) && in_array($value, $input)) ? ['checked' => ''] : []));
+			return f::draw_element('input', ['class' => 'form-check', 'type' => 'checkbox', 'name' => $name, 'value' => $value, ...$attributes] + ((is_array($input) && in_array($value, $input)) ? ['checked' => true] : []));
 		} else {
-			return f::draw_element('input', ['class' => 'form-check', 'type' => 'checkbox', 'name' => $name, 'value' => $value, ...$attributes] + (!strcmp($input, $value) ? ['checked' => ''] : []));
+			return f::draw_element('input', ['class' => 'form-check', 'type' => 'checkbox', 'name' => $name, 'value' => $value, ...$attributes] + (!strcmp($input, $value) ? ['checked' => true] : []));
 		}
 	}
 
@@ -609,7 +609,7 @@
 
 		$attributes = is_array($attributes) ? $attributes : form_attributes($attributes);
 
-		return f::draw_element('input', ['class' => 'form-radio', 'type' => 'radio', 'name' => $name, 'value' => $value, ...$attributes] + (!strcmp($input, $value) ? ['checked' => ''] : []));
+		return f::draw_element('input', ['class' => 'form-radio', 'type' => 'radio', 'name' => $name, 'value' => $value, ...$attributes] + (!strcmp($input, $value) ? ['checked' => true] : []));
 	}
 
 	function form_input_range(string $name, bool|string $input=true, string|int|float $min='', string|int|float $max='', string|int|float $step='', array|string $attributes=[]): string {
