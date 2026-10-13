@@ -49,6 +49,7 @@
           '#/mcp(/|\?|$)#',
           '#/manifest\.json(\?|$)#',
           '#/sitemap\.xml(\?|$)#',
+          '#(webhook|callback)#i', // Payment gateway callbacks (same exclusion as for CSRF)
         ] as $pattern) {
           if (preg_match($pattern, $request_url)) {
             throw new Exception('Skipping challenge for crucial URL');
