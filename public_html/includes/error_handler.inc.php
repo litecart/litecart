@@ -65,9 +65,9 @@
       if (filter_var(ini_get('html_errors'), FILTER_VALIDATE_BOOLEAN) && $_SERVER['SERVER_SOFTWARE'] != 'CLI') {
         echo isset($_GET['debug']) ? implode('<br>'.PHP_EOL, $output) : $output[0]; // HTML
       } else {
-        echo html_entity_decode(strip_tags(
+        fwrite(STDERR, html_entity_decode(strip_tags(
           isset($_GET['debug']) ? implode('<br>'.PHP_EOL, $output) : $output[0] // Plain text
-        ));
+        )) . PHP_EOL);
       }
     }
 
