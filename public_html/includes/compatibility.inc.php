@@ -258,9 +258,12 @@
     $_SERVER['HTTPS'] = 'off';
   }
 
-  // Unset a bogus Host header
-  if (isset($_SERVER['HTTP_HOST']) && !filter_var(trim($_SERVER['HTTP_HOST'], '[]'), FILTER_VALIDATE_IP) && !filter_var($_SERVER['HTTP_HOST'], FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME)) {
-    unset($_SERVER['HTTP_HOST']);
+  // Unset a bogus Host header (validate without the :port suffix)
+  if (isset($_SERVER['HTTP_HOST'])) {
+    $host_name = preg_replace('#:\d+$#', '', $_SERVER['HTTP_HOST']);
+    if (!filter_var(trim($host_name, '[]'), FILTER_VALIDATE_IP) && !filter_var($host_name, FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME)) {
+      unset($_SERVER['HTTP_HOST']);
+    }
   }
 
   if (empty($_SERVER['HTTP_HOST'])) {
