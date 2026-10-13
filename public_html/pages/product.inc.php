@@ -191,7 +191,18 @@
 // Lowest price last 30 days (EU Omnibus Directive) -Campaigns only-
   if (settings::get('display_lowest_price_30_days') && !empty($product->campaign['price']) && $product->campaign['price'] < $product->price) {
 
-    $cutoff = date('Y-m-d H:i:s', strtotime('-30 days'));
+  // Reference period is the 30 days BEFORE the price reduction, the running campaign itself excluded
+    $reduction_start = database::query(
+      "select min(valid_from) as valid_from from ". DB_TABLE_PREFIX ."products_prices_history
+      where product_id = ". (int)$product->id ."
+      and campaign_id = ". (int)$product->campaign['id'] .";"
+    )->fetch('valid_from');
+
+    if (!$reduction_start) {
+      $reduction_start = !empty($product->campaign['start_date']) ? $product->campaign['start_date'] : date('Y-m-d H:i:s');
+    }
+
+    $cutoff = date('Y-m-d H:i:s', strtotime($reduction_start .' -30 days'));
     $currency_codes = array_unique(
       array_merge(
         [currency::$selected['code'], settings::get('store_currency_code')],
@@ -207,8 +218,9 @@
       "select min(". $sql_column_price .") as lowest_price
       from ". DB_TABLE_PREFIX ."products_prices_history
       where product_id = ". (int)$product->id ."
-      and valid_from >= '". $cutoff ."'
-      and (valid_to IS NULL or valid_to >= '". $cutoff ."')
+      and campaign_id != ". (int)$product->campaign['id'] ."
+      and valid_from < '". database::input($reduction_start) ."'
+      and (valid_to IS NULL or valid_to > '". $cutoff ."')
       having lowest_price > 0;"
     )->fetch('lowest_price');
 
