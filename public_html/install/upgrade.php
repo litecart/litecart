@@ -16,27 +16,37 @@
       . "https://www.litecart.net/\n"
       . "Usage: php ". basename(__FILE__) ." [options]\n\n"
       . "Options:\n"
-      . "  --from_version       Manually set version migrating from. Omit for auto detection\n"
-      . "  --development_type   Set development type 'standard' or 'advanced' (Default: standard)\n"
-      . "  --cleanup            Delete the install/ directory after finising the upgrade.\n\n";
+      . "  --from_version=x.x.x          Manually set version migrating from. Omit for auto detection\n"
+      . "  --development-type=standard   Set development type 'standard' or 'advanced' (Default: standard)\n"
+      . "  --skip-updates                Skip downloading the latest updates from the remote repository.\n"
+      . "  --cleanup                     Delete the install/ directory after finising the upgrade.\n\n";
       exit;
     }
 
     $options = [
       'from_version::',
-      'development_type::',
+      'development-type::',
+      'skip-updates::',
       'cleanup::',
     ];
 
     $_REQUEST = getopt('', $options);
     $_REQUEST['upgrade'] = true;
 
+    if (isset($_REQUEST['development-type'])) {
+      $_REQUEST['development_type'] = $_REQUEST['development-type'];
+    }
+
+    if (isset($_REQUEST['skip-updates'])) {
+      $_REQUEST['skip_updates'] = true;
+    }
+
     if (isset($_REQUEST['cleanup'])) {
       $_REQUEST['cleanup'] = true;
     }
   }
 
-  if ($_SERVER['SERVER_SOFTWARE'] == 'CLI') {
+  if ($_SERVER['SERVER_SOFTWARE'] != 'CLI') {
     require_once __DIR__ . '/includes/header.inc.php';
   }
   require_once __DIR__ . '/includes/functions.inc.php';
