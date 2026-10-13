@@ -67,9 +67,10 @@
       $url = document::ilink('push_jobs');
       $disabled_functions = preg_split('#\s*,\s*#', ini_get('disable_functions'), -1, PREG_SPLIT_NO_EMPTY);
 
-      if (!in_array('fsockopen', $disabled_functions)) {
-        $parts = parse_url($url);
-        $fp = fsockopen($parts['host'], isset($parts['port']) ? $parts['port'] : 80, $errno, $errstr, 30);
+      $parts = parse_url($url);
+
+      // The store's own hostname may not be reachable from the server itself (Docker, NAT), fall back to exec
+      if (!in_array('fsockopen', $disabled_functions) && ($fp = @fsockopen($parts['host'], isset($parts['port']) ? $parts['port'] : 80, $errno, $errstr, 30))) {
         $out = "GET ". $parts['path'] ." HTTP/1.1\r\n"
              . "Host: ". $parts['host'] ."\r\n"
              . "Connection: Close\r\n\r\n";
