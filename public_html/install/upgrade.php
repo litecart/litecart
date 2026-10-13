@@ -8,7 +8,7 @@
 
   include_once __DIR__ . '/../includes/compatibility.inc.php';
 
-  if ($_SERVER['SERVER_SOFTWARE'] == 'CLI') {
+  if ($_SERVER['SERVER_SOFTWARE'] == 'CLI') { // Don't rely on php_sapi_name()
 
     if (!isset($argv[1]) || $argv[1] == 'help' || $argv[1] == '-h' || $argv[1] == '--help' || $argv[1] == '/?') {
       echo "\nLiteCart® 2.7.2\n"
@@ -36,13 +36,19 @@
     }
   }
 
-  require_once __DIR__ . '/includes/header.inc.php';
+  if ($_SERVER['SERVER_SOFTWARE'] == 'CLI') {
+    require_once __DIR__ . '/includes/header.inc.php';
+  }
   require_once __DIR__ . '/includes/functions.inc.php';
 
 // Include config
   if (is_file(__DIR__ . '/../includes/config.inc.php')) {
     include(__DIR__ . '/../includes/config.inc.php');
   } else {
+    if ($_SERVER['SERVER_SOFTWARE'] == 'CLI') {
+      fwrite(STDERR, "No installation detected. Run public_html/install/index.php first.\n");
+      exit(1);
+    }
     echo '<h2>No Installation Detected</h2>' . PHP_EOL
        . '<p>Warning: No configuration file was found.</p>' . PHP_EOL
        . '<p><a class="btn btn-default" href="index.php">Click here to install instead</a></p>' . PHP_EOL;

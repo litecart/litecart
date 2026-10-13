@@ -752,7 +752,7 @@
     }
 
   } catch (Exception $e) {
-    echo $e->getMessage() . PHP_EOL;
+    fwrite(STDERR, $e->getMessage() . PHP_EOL);
   }
 
   $buffer = ob_get_clean();
