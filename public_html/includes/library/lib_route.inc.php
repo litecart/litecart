@@ -165,6 +165,12 @@
         return '';
       }
 
+    // Strip NUL bytes (defense against null-byte poisoning)
+      $path = str_replace(chr(0), '', $path);
+
+    // Disallow control characters and other non-printables
+      $path = preg_replace('#[\x00-\x1F\x7F]+#', '', $path);
+
     // Reject path traversal segments (.. and .) before they reach the router/filesystem
       $segments = explode('/', $path);
       $segments = array_filter($segments, function($segment) {
@@ -174,12 +180,6 @@
 
     // Collapse any slashes introduced by segment removal
       $path = preg_replace('#/+#', '/', $path);
-
-    // Strip NUL bytes (defense against null-byte poisoning)
-      $path = str_replace(chr(0), '', $path);
-
-    // Disallow control characters and other non-printables
-      $path = preg_replace('#[\x00-\x1F\x7F]+#', '', $path);
 
       return $path;
     }
