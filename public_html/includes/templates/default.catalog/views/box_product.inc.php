@@ -25,11 +25,11 @@
         </div>
 
         <div class="col-md-6">
-          <h1 class="title"><?php echo $name; ?></h1>
+          <h1 class="title"><?php echo functions::escape_html($name); ?></h1>
 
           <?php if ($short_description) { ?>
           <p class="short-description">
-            <?php echo $short_description; ?>
+            <?php echo functions::escape_html($short_description); ?>
           </p>
           <?php } ?>
 
@@ -39,7 +39,7 @@
               <?php if ($manufacturer['image']) { ?>
               <img src="<?php echo document::href_rlink(FS_DIR_STORAGE . $manufacturer['image']['thumbnail']); ?>" srcset="<?php echo document::href_rlink(FS_DIR_STORAGE . $manufacturer['image']['thumbnail']); ?> 1x, <?php echo document::href_rlink(FS_DIR_STORAGE . $manufacturer['image']['thumbnail_2x']); ?> 2x" alt="<?php echo functions::escape_html($manufacturer['name']); ?>" title="<?php echo functions::escape_html($manufacturer['name']); ?>">
               <?php } else { ?>
-              <h3><?php echo $manufacturer['name']; ?></h3>
+              <h3><?php echo functions::escape_html($manufacturer['name']); ?></h3>
               <?php } ?>
             </a>
           </div>
@@ -55,19 +55,19 @@
           <div class="codes" style="margin: 1em 0;">
             <?php if ($sku) { ?>
             <div class="sku">
-              <?php echo language::translate('title_sku', 'SKU'); ?>: <span class="value"><?php echo $sku; ?></span>
+              <?php echo language::translate('title_sku', 'SKU'); ?>: <span class="value"><?php echo functions::escape_html($sku); ?></span>
             </div>
             <?php } ?>
 
             <?php if ($mpn) { ?>
             <div class="mpn">
-              <?php echo language::translate('title_mpn', 'MPN'); ?>: <span class="value"><?php echo $mpn; ?></span>
+              <?php echo language::translate('title_mpn', 'MPN'); ?>: <span class="value"><?php echo functions::escape_html($mpn); ?></span>
             </div>
             <?php } ?>
 
             <?php if ($gtin) { ?>
             <div class="gtin">
-              <?php echo language::translate('title_gtin', 'GTIN'); ?>: <span class="value"><?php echo $gtin; ?></span>
+              <?php echo language::translate('title_gtin', 'GTIN'); ?>: <span class="value"><?php echo functions::escape_html($gtin); ?></span>
             </div>
             <?php } ?>
           </div>
@@ -77,11 +77,11 @@
            <?php if ($quantity > 0) { ?>
             <div class="stock-available">
               <?php echo language::translate('title_stock_status', 'Stock Status'); ?>:
-              <span class="value"><?php echo $stock_status; ?></span>
+              <span class="value"><?php echo functions::escape_html($stock_status); ?></span>
             </div>
             <?php if ($delivery_status) { ?>
             <div class="stock-delivery">
-              <?php echo language::translate('title_delivery_status', 'Delivery Status'); ?>: <span class="value"><?php echo $delivery_status['name']; ?></span>
+              <?php echo language::translate('title_delivery_status', 'Delivery Status'); ?>: <span class="value"><?php echo functions::escape_html($delivery_status['name']); ?></span>
               <?php if (!empty($delivery_status['description'])) { ?>
               <div class="description"><?php echo $delivery_status['description']; ?></div>
               <?php } ?>
@@ -90,7 +90,7 @@
            <?php } else { ?>
             <?php if ($sold_out_status) { ?>
               <div class="<?php echo empty($sold_out_status['orderable']) ? 'stock-partly-available' : 'stock-unavailable'; ?>">
-                <?php echo language::translate('title_stock_status', 'Stock Status'); ?>: <span class="value"><?php echo $sold_out_status['name']; ?></span>
+                <?php echo language::translate('title_stock_status', 'Stock Status'); ?>: <span class="value"><?php echo functions::escape_html($sold_out_status['name']); ?></span>
                 <?php if (!empty($sold_out_status['description'])) { ?>
                 <div class="description"><?php echo $sold_out_status['description']; ?></div>
                 <?php } ?>
@@ -120,7 +120,7 @@
             <div class="options">
               <?php foreach ($options as $option) { ?>
               <div class="form-group">
-                <label><?php echo $option['name']; ?></label>
+                <label><?php echo functions::escape_html($option['name']); ?></label>
                 <?php echo $option['values']; ?>
               </div>
               <?php } ?>
@@ -161,7 +161,7 @@
               <div style="display: flex">
                 <div class="input-group">
                   <?php echo !empty($quantity_unit['decimals']) ? functions::form_draw_decimal_field('quantity', isset($_POST['quantity']) ? true : $quantity_min, $quantity_unit['decimals'], $quantity_min , $quantity_max, ($quantity_step ? 'step="'. $quantity_step .'"' : '')) : functions::form_draw_number_field('quantity', isset($_POST['quantity']) ? true : $quantity_min, $quantity_min , $quantity_max, ($quantity_step ? 'step="'. $quantity_step .'" ' : '') . 'style="width: 100px;"'); ?>
-                  <?php echo !empty($quantity_unit['name']) ? '<div class="input-group-text">'. $quantity_unit['name'] .'</div>' : ''; ?>
+                  <?php echo !empty($quantity_unit['name']) ? '<div class="input-group-text">'. functions::escape_html($quantity_unit['name']) .'</div>' : ''; ?>
                 </div>
 
                 <div style="padding-inline-start: 1em;">
@@ -246,10 +246,10 @@
   Number.prototype.toMoney = function() {
     var n = this,
       c = <?php echo (int)currency::$selected['decimals']; ?>,
-      d = '<?php echo language::$selected['decimal_point']; ?>',
-      t = '<?php echo addslashes(language::$selected['thousands_sep']); ?>',
-      p = '<?php echo currency::$selected['prefix']; ?>',
-      x = '<?php echo currency::$selected['suffix']; ?>',
+      d = '<?php echo functions::escape_js(language::$selected['decimal_point']); ?>',
+      t = '<?php echo functions::escape_js(language::$selected['thousands_sep']); ?>',
+      p = '<?php echo functions::escape_js(currency::$selected['prefix']); ?>',
+      x = '<?php echo functions::escape_js(currency::$selected['suffix']); ?>',
       s = n < 0 ? '-' : '',
       i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + '',
       f = n - i,
@@ -319,6 +319,6 @@
 
   $('#box-product[data-id="<?php echo $product_id; ?>"] .social-bookmarks .link').off().click(function(e){
     e.preventDefault();
-    prompt("<?php echo language::translate('text_link_to_this_product', 'Link to this product'); ?>", '<?php echo $link; ?>');
+    prompt("<?php echo functions::escape_js(language::translate('text_link_to_this_product', 'Link to this product')); ?>", '<?php echo functions::escape_js($link); ?>');
   });
 </script>

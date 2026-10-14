@@ -395,7 +395,7 @@ input[name="development_type"]:checked + div {
 
 <form name="installation_form" method="post" action="install.php">
 
-  <input class="form-control" name="client_ip" type="hidden" value="<?php echo $_SERVER['REMOTE_ADDR']; ?>">
+  <input class="form-control" name="client_ip" type="hidden" value="<?php echo htmlspecialchars($_SERVER['REMOTE_ADDR']); ?>">
 
   <h3>File System</h3>
 

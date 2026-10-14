@@ -29,7 +29,7 @@
 
 <section id="box-category-tree" class="box">
   <div class="card-header">
-    <h2 class="card-title"><?php echo $title; ?></h2>
+    <h2 class="card-title"><?php echo functions::escape_html($title); ?></h2>
   </div>
 
   <div class="card-body">

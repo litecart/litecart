@@ -28,7 +28,7 @@
       <?php } ?>
 
       <div class="card-header">
-        <h1 class="card-title"><?php echo $title; ?></h1>
+        <h1 class="card-title"><?php echo functions::escape_html($title); ?></h1>
       </div>
 
       <div class="card-body">

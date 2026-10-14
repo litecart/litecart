@@ -567,7 +567,7 @@
                 <a class="btn btn-default remove-group" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('fa-times', 'style="color: #cc3333;"'); ?></a>
               </div>
 
-              <h2><?php echo $option['name']; ?></h2>
+              <h2><?php echo functions::escape_html($option['name']); ?></h2>
               <?php echo functions::form_draw_hidden_field('options['.$group_id.'][id]', true) . functions::form_draw_hidden_field('options['.$group_id.'][group_id]', true) . functions::form_draw_hidden_field('options['.$group_id.'][name]', true); ?>
 
               <div class="row">
@@ -606,7 +606,7 @@
                   <tbody>
                   <?php foreach ($option['values'] as $value_id => $value) { ?>
                     <tr data-value-id="<?php echo functions::escape_html($value['value_id']); ?>" data-value-name="<?php echo functions::escape_html($_POST['options'][$group_id]['values'][$value_id]['name']); ?>">
-                      <td class="grabable"><?php echo functions::form_draw_hidden_field('options['.$group_id.'][values]['. $value_id .'][id]', true) . functions::form_draw_hidden_field('options['.$group_id.'][values]['. $value_id .'][value_id]', true) . functions::form_draw_hidden_field('options['.$group_id.'][values]['. $value_id .'][custom_value]', true) . functions::form_draw_hidden_field('options['.$group_id.'][values]['. $value_id .'][name]', true); ?><?php echo $value['name']; ?></td>
+                      <td class="grabable"><?php echo functions::form_draw_hidden_field('options['.$group_id.'][values]['. $value_id .'][id]', true) . functions::form_draw_hidden_field('options['.$group_id.'][values]['. $value_id .'][value_id]', true) . functions::form_draw_hidden_field('options['.$group_id.'][values]['. $value_id .'][custom_value]', true) . functions::form_draw_hidden_field('options['.$group_id.'][values]['. $value_id .'][name]', true); ?><?php echo functions::escape_html($value['name']); ?></td>
                       <td class="text-center"><?php echo functions::form_draw_select_field('options['.$group_id.'][values]['. $value_id .'][price_operator]', ['+','%','*','='], true); ?></td>
                       <?php foreach ($currency_codes as $currency_code) echo '<td>'. functions::form_draw_currency_field($currency_code, 'options['.$group_id.'][values]['. $value_id .']['. $currency_code. ']', (!empty($_POST['options'][$group_id]['values'][$value_id][$currency_code]) || $_POST['options'][$group_id]['values'][$value_id][$currency_code] != 0) ? true : '', 'style="width: 100px;"') .'</td>'; ?>
                       <td class="text-end"><a class="btn btn-default btn-sm move-up" href="#" title="<?php echo functions::escape_html(language::translate('title_move_up', 'Move Up')); ?>"><?php echo functions::draw_fonticon('move-up'); ?></a> <a class="btn btn-default btn-sm move-down" href="#" title="<?php echo functions::escape_html(language::translate('title_move_down', 'Move Down')); ?>"><?php echo functions::draw_fonticon('move-down'); ?></a> <a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>
@@ -1191,17 +1191,17 @@
     var parent = $(this).closest('tr');
 
     <?php foreach (currency::$currencies as $currency) { ?>
-    if ($('input[name^="prices"][name$="[<?php echo $currency['code']; ?>]"]').val() > 0) {
-      var value = Number($('input[name="prices[<?php echo $currency['code']; ?>]"]').val() * (100 - $(this).val()) / 100).toFixed(<?php echo $currency['decimals']; ?>);
-      $(parent).find('input[name$="[<?php echo $currency['code']; ?>]"]').val(value);
+    if ($('input[name^="prices"][name$="[<?php echo functions::escape_js($currency['code']); ?>]"]').val() > 0) {
+      var value = Number($('input[name="prices[<?php echo functions::escape_js($currency['code']); ?>]"]').val() * (100 - $(this).val()) / 100).toFixed(<?php echo $currency['decimals']; ?>);
+      $(parent).find('input[name$="[<?php echo functions::escape_js($currency['code']); ?>]"]').val(value);
     } else {
-      $(parent).find('input[name$="[<?php echo $currency['code']; ?>]"]').val("");
+      $(parent).find('input[name$="[<?php echo functions::escape_js($currency['code']); ?>]"]').val("");
     }
     <?php } ?>
 
     <?php foreach (currency::$currencies as $currency) { ?>
-    var value = Number($(parent).find('input[name^="campaigns"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').val() / <?php echo $currency['value']; ?>).toFixed(<?php echo $currency['decimals']; ?>);
-    $(parent).find('input[name^="campaigns"][name$="[<?php echo $currency['code']; ?>]"]').attr('placeholder', value);
+    var value = Number($(parent).find('input[name^="campaigns"][name$="[<?php echo functions::escape_js(settings::get('store_currency_code')); ?>]"]').val() / <?php echo $currency['value']; ?>).toFixed(<?php echo $currency['decimals']; ?>);
+    $(parent).find('input[name^="campaigns"][name$="[<?php echo functions::escape_js($currency['code']); ?>]"]').attr('placeholder', value);
     <?php } ?>
   });
 
@@ -1213,11 +1213,11 @@
 
     <?php foreach (currency::$currencies as $currency) { ?>
     var value = 0;
-    value = $(parent).find('input[name^="campaigns"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').val() / <?php echo $currency['value']; ?>;
+    value = $(parent).find('input[name^="campaigns"][name$="[<?php echo functions::escape_js(settings::get('store_currency_code')); ?>]"]').val() / <?php echo $currency['value']; ?>;
     value = value.toFixed(<?php echo $currency['decimals']; ?>);
-    $(parent).find('input[name^="campaigns"][name$="[<?php echo $currency['code']; ?>]"]').attr("placeholder", value);
-    if ($(parent).find('input[name^="campaigns"][name$="[<?php echo $currency['code']; ?>]"]').val() == 0) {
-      $(parent).find('input[name^="campaigns"][name$="[<?php echo $currency['code']; ?>]"]').val('');
+    $(parent).find('input[name^="campaigns"][name$="[<?php echo functions::escape_js($currency['code']); ?>]"]').attr("placeholder", value);
+    if ($(parent).find('input[name^="campaigns"][name$="[<?php echo functions::escape_js($currency['code']); ?>]"]').val() == 0) {
+      $(parent).find('input[name^="campaigns"][name$="[<?php echo functions::escape_js($currency['code']); ?>]"]').val('');
     }
     <?php } ?>
   });

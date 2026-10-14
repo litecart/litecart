@@ -16,9 +16,9 @@
     {snippet:notices}
 
     <article id="box-error-document" class="text-center">
-      <div class="code">HTTP <?php echo $code; ?></div>
-      <div class="title"><?php echo $title; ?></div>
-      <p class="description"><?php echo $description; ?></p>
+      <div class="code">HTTP <?php echo functions::escape_html($code); ?></div>
+      <div class="title"><?php echo functions::escape_html($title); ?></div>
+      <p class="description"><?php echo functions::escape_html($description); ?></p>
     </article>
   </main>
 </div>
