@@ -1,6 +1,6 @@
 <?php
 
-	return [
+	$toolset = [
 		'name' => 'statistics',
 		'description' => 'Tools for viewing shop statistics and reports.',
 		'tools' => [],
@@ -112,3 +112,5 @@
 			return $result;
 		},
 	];
+
+	return $toolset;
