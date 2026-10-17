@@ -27,7 +27,7 @@
 			}
 
 			$pattern = preg_quote($template, '#');
-			$pattern = preg_replace('/\\\{([^{}]+)\\\}/', '(?P<$1>[^/]+)', $pattern);
+			$pattern = preg_replace('#\\\{([^{}]+)\\\}#', '(?P<$1>[^/]+)', $pattern);
 			$pattern = '#^' . $pattern . '$#';
 
 			if (preg_match($pattern, $uri_path, $matches)) {
@@ -47,6 +47,12 @@
 	if (!function_exists('mcp_load_sets')) {
 
 		function mcp_load_sets() {
+			static $cache = null;
+
+			if ($cache !== null) {
+				return $cache;
+			}
+
 			$sets = [
 				'tools' => [],
 				'resources' => [],
@@ -59,62 +65,21 @@
 					return include $mcp_file;
 				})();
 
-				if (!is_array($$set)) continue;
+				if (!is_array($set)) continue;
 
-				if (!empty($$set['tools']) && is_array($$set['tools'])) {
-					$sets['tools'] = array_merge($sets['tools'], $$set['tools']);
+				if (!empty($set['tools']) && is_array($set['tools'])) {
+					$sets['tools'] = array_merge($sets['tools'], $set['tools']);
 				}
 
-				if (!empty($$set['resources']) && is_array($$set['resources'])) {
-					$sets['resources'] = array_merge($sets['resources'], $$set['resources']);
+				if (!empty($set['resources']) && is_array($set['resources'])) {
+					$sets['resources'] = array_merge($sets['resources'], $set['resources']);
 				}
 
-				if (!empty($$set['resourceTemplates']) && is_array($$set['resourceTemplates'])) {
-					$sets['resourceTemplates'] = array_merge($sets['resourceTemplates'], $$set['resourceTemplates']);
+				if (!empty($set['resourceTemplates']) && is_array($set['resourceTemplates'])) {
+					$sets['resourceTemplates'] = array_merge($sets['resourceTemplates'], $set['resourceTemplates']);
 				}
 			}
-			return $sets;
-		}
-	}
-
-	// Normalize a resource callback return value into MCP contents[] entries.
-	if (!function_exists('mcp_normalize_contents')) {
-		function mcp_normalize_contents($result, $uri, $default_mime = 'text/plain') {
-
-			if (is_string($result)) {
-				return [[
-					'uri' => $uri,
-					'mimeType' => $default_mime,
-					'text' => $result
-				]];
-			}
-
-			if (is_array($result) && isset($result['contents']) && is_array($result['contents'])) {
-				return $result['contents'];
-			}
-
-			if (is_array($result) && (isset($result['text']) || isset($result['blob']))) {
-				$entry = [
-					'uri' => $uri,
-					'mimeType' => $default_mime
-				];
-
-				if (array_key_exists('text', $result)) {
-					$entry['text'] = $result['text'];
-				}
-
-				if (array_key_exists('blob', $result)) {
-					$entry['blob'] = $result['blob'];
-				}
-
-				return [ $entry ];
-			}
-
-			return [[
-				'uri' => $uri,
-				'mimeType' => 'application/json',
-				'text' => json_encode($result, JSON_UNESCAPED_SLASHES),
-			]];
+			return $cache = $sets;
 		}
 	}
 
@@ -130,49 +95,57 @@
 
 		if (!empty($_SERVER['PHP_AUTH_USER']) && !empty($_SERVER['PHP_AUTH_PW'])) {
 
+			$auth_username = $_SERVER['PHP_AUTH_USER'];
+			$auth_ip = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '';
+
+			// Brute force protection using rate limiting
+			$auth_scope = "ip_address = '". database::input($auth_ip) ."' or (scope_type = 'username' and scope_key = '". database::input(strtolower($auth_username)) ."')";
+
+			if (database::query(
+				"select count(*) as num_attempts
+				from ". DB_TABLE_PREFIX ."rate_limiting
+				where action = 'mcp_auth_failed'
+				and (". $auth_scope .")
+				and date_created >= '". date('Y-m-d H:i:s', strtotime('-5 minutes')) ."'"
+			)->fetch('num_attempts') > 3) {
+				throw new McpException(language::translate('error_too_many_attempts', 'Too many failed attempts. Please try again later.'), 429);
+			}
+
+			$record_failed_attempt = function() use ($auth_ip, $auth_username) {
+				database::query(
+					"insert into ". DB_TABLE_PREFIX ."rate_limiting
+					(action, scope_type, scope_key, ip_address, hostname, user_agent, date_created)
+					values ('mcp_auth_failed', 'username', '". database::input(strtolower($auth_username)) ."', '". database::input($auth_ip) ."', '". database::input($auth_ip !== '' ? gethostbyaddr($auth_ip) : 'unknown') ."', '". database::input(isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '') ."', '". date('Y-m-d H:i:s') ."')"
+				);
+			};
+
 			$user = database::query(
 				"select * from ". DB_TABLE_PREFIX ."users
 				where status
-				and lower(username) = lower('". database::input($_SERVER['PHP_AUTH_USER']) ."')
+				and lower(username) = lower('". database::input($auth_username) ."')
 				and (date_valid_from is null or date_valid_from < '". database::input(date('Y-m-d H:i:s')) ."')
 				and (date_valid_to is null or date_valid_to > '". database::input(date('Y-m-d H:i:s')) ."')
 				limit 1;"
 			)->fetch();
 
+			// An unknown username and a wrong password answer with the same message and status,
+			// so the endpoint cannot be used to probe for valid accounts.
 			if (!$user) {
-				throw new McpException(language::translate('error_user_not_found', 'The user is either suspended or could not be found in our database'), 401);
-			}
-
-			if ($user['date_valid_from'] && $user['date_valid_from'] > date('Y-m-d H:i:s')) {
-				throw new McpException(strtr(language::translate('error_account_is_blocked_until', 'The account is blocked until %s'), ['%s' => date('Y-m-d H:i:s', strtotime($user['date_valid_from']))]), 403);
+				$record_failed_attempt();
+				throw new McpException(language::translate('error_wrong_username_password_combination', 'Wrong combination of username and password or the account does not exist.'), 401);
 			}
 
 			if (!password_verify($_SERVER['PHP_AUTH_PW'], $user['password_hash'])) {
-				if (++$user['login_attempts'] < 3) {
-
-					database::query(
-						"update ". DB_TABLE_PREFIX ."users
-						set login_attempts = login_attempts + 1
-						where id = ". (int)$user['id'] ."
-						limit 1;"
-					);
-
-					throw new McpException(strtr(language::translate('error_d_login_attempts_left', 'You have %d login attempts left until your account is temporary blocked'), ['%d' => 3 - $user['login_attempts']]), 403);
-
-				} else {
-					database::query(
-						"update ". DB_TABLE_PREFIX ."users
-						set login_attempts = 0,
-						date_valid_from = '". date('Y-m-d H:i:00', strtotime('+15 minutes')) ."'
-						where id = ". (int)$user['id'] ."
-						limit 1;"
-					);
-
-					throw new McpException(strtr(language::translate('error_account_has_been_blocked', 'The account has been temporary blocked %d minutes'), ['%d' => 15]), 403);
-				}
-
-				throw new McpException(language::translate('error_wrong_username_password_combination', 'Wrong combination of username and password or the account does not exist.'), 403);
+				$record_failed_attempt();
+				throw new McpException(language::translate('error_wrong_username_password_combination', 'Wrong combination of username and password or the account does not exist.'), 401);
 			}
+
+			// Authenticated, so the recorded attempts no longer apply.
+			database::query(
+				"delete from ". DB_TABLE_PREFIX ."rate_limiting
+				where action = 'mcp_auth_failed'
+				and (". $auth_scope .")"
+			);
 
 			if ($user['login_attempts'] > 0) {
 				database::query(
@@ -265,7 +238,6 @@
 				foreach (mcp_load_sets()['resources'] as $resource) {
 
 					if (empty($resource['uri']) || empty($resource['name']) || empty($resource['function']) || !is_callable($resource['function'])) continue;
-					if (!empty($allowed_resources) && !in_array($resource['uri'], $allowed_resources)) continue;
 
 					$resources[] = [
 						'uri' => $resource['uri'],
@@ -284,7 +256,6 @@
 				foreach (mcp_load_sets()['resourceTemplates'] as $template) {
 
 					if (empty($template['uriTemplate']) || empty($template['name']) || empty($template['function']) || !is_callable($template['function'])) continue;
-					if (!empty($allowed_resources) && !in_array($template['uriTemplate'], $allowed_resources)) continue;
 
 					$resource_templates[] = [
 						'uriTemplate' => $template['uriTemplate'],
@@ -307,7 +278,7 @@
 			case 'resources/read':
 
 				if (empty($params['uri'])) {
-					throw new McpException('Missing resource URI', 400, -32602);
+					throw new McpException('Missing resource URI', 200, -32602, $rpc_id);
 				}
 
 				$uri = $params['uri'];
@@ -315,45 +286,113 @@
 				$read_mime = 'text/plain';
 				$sets = mcp_load_sets();
 
-				// Static resources (exact URI match)
+				// Resolve a matching resource or template (exact URI or URI template).
+				$handler = null;
+				$handler_uri = null;
+				$handler_params = $params;
+				$handler_mime = 'text/plain';
+
 				foreach ($sets['resources'] as $resource) {
-
 					if (empty($resource['uri']) || $resource['uri'] !== $uri) continue;
-
-					if (!empty($allowed_resources) && !in_array($resource['uri'], $allowed_resources)) {
-						throw new McpException('Resource not permitted for this administrator', 403, -32001, $rpc_id);
-					}
-
-					$read_result = ($resource['function'])($params);
-					$read_mime = isset($resource['mimeType']) ? $resource['mimeType'] : 'text/plain';
+					$handler = $resource['function'];
+					$handler_uri = $resource['uri'];
+					$handler_mime = isset($resource['mimeType']) ? $resource['mimeType'] : 'text/plain';
 					break;
 				}
 
-				// Resource templates (URI pattern match)
-				if ($read_result === null) {
+				if (!$handler) {
 					foreach ($sets['resourceTemplates'] as $template) {
-
 						if (empty($template['uriTemplate'])) continue;
-
 						$template_params = McpUriTemplate::match($template['uriTemplate'], $uri);
 						if ($template_params === null) continue;
-
-						if (!empty($allowed_resources) && !in_array($template['uriTemplate'], $allowed_resources)) {
-							throw new McpException('Resource not permitted for this administrator', 403, -32001, $rpc_id);
-						}
-
-						$read_result = ($template['function'])($template_params);
-						$read_mime = isset($template['mimeType']) ? $template['mimeType'] : 'text/plain';
+						$handler = $template['function'];
+						$handler_uri = $template['uriTemplate'];
+						$handler_params = $template_params;
+						$handler_mime = isset($template['mimeType']) ? $template['mimeType'] : 'text/plain';
 						break;
 					}
 				}
 
-				if ($read_result === null) {
-					throw new McpException('Resource not found', 404, -32601);
+				if (!$handler) {
+					throw new McpException('Resource not found', 200, -32602, $rpc_id);
+				}
+
+				// A failing resource handler is a JSON-RPC level error, not a transport failure. Keep the
+				// status at 200, because a Streamable HTTP client rejects a non-2xx response and
+				// discards the body, which would hide the message it needs to see.
+				try {
+					$read_result = $handler($handler_params);
+				} catch (McpException $e) {
+					throw new McpException($e->getMessage(), 200, $e->rpc_code ?: -32603, $rpc_id);
+				} catch (Throwable $e) {
+					throw new McpException($e->getMessage(), 200, -32603, $rpc_id);
+				}
+				$read_mime = $handler_mime;
+
+				// A content entry is only valid with a uri and a text or blob member. A handler may
+				// return a ready made contents list, a single entry, or a plain value, so normalize all
+				// three here and encode anything without text or blob as JSON.
+				$content_entry = function($content) use ($uri, $read_mime) {
+					if (is_array($content) || is_object($content)) {
+						$content = (array)$content;
+						if (!array_key_exists('text', $content) && !array_key_exists('blob', $content)) {
+							$encoded = json_encode((object)$content, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE | JSON_PRETTY_PRINT);
+							$content = [
+								'text' => $encoded === false ? '' : $encoded,
+								'mimeType' => 'application/json',
+							];
+						}
+					} elseif (!is_string($content)) {
+						$content = ['text' => (string)$content];
+					}
+					if (!isset($content['uri'])) $content['uri'] = $uri;
+					if (!isset($content['mimeType'])) $content['mimeType'] = $read_mime;
+					return $content;
+				};
+
+				switch (gettype($read_result)) {
+
+					case 'array':
+						// Pre-built contents list: [['uri'=>..., 'mimeType'=>..., 'text'=>...], ...]
+						if (array_keys($read_result) === range(0, count($read_result) - 1)) {
+							$contents = array_map($content_entry, $read_result);
+						} else {
+							// Single content entry, or a plain associative array encoded as JSON
+							$contents = [ $content_entry($read_result) ];
+						}
+						break;
+
+					case 'object':
+						$contents = [ $content_entry($read_result) ];
+						break;
+
+					case 'NULL':
+						$contents = [[
+							'uri' => $uri,
+							'mimeType' => $read_mime,
+							'text' => '',
+						]];
+						break;
+
+					default:
+						$contents = [[
+							'uri' => $uri,
+							'mimeType' => $read_mime,
+							'text' => is_string($read_result) ? $read_result : (string)$read_result,
+						]];
+				}
+
+				// MCP requires a non-empty contents list.
+				if (empty($contents)) {
+					$contents = [[
+						'uri' => $uri,
+						'mimeType' => $read_mime,
+						'text' => '',
+					]];
 				}
 
 				$result = [
-					'contents' => mcp_normalize_contents($read_result, $uri, $read_mime),
+					'contents' => $contents,
 				];
 
 				break;
@@ -364,7 +403,6 @@
 				foreach (mcp_load_sets()['tools'] as $tool) {
 
 					if (empty($tool['name']) || !is_array($tool['inputSchema'])) continue;
-					if (!empty($allowed_tools) && !in_array($tool['name'], $allowed_tools)) continue;
 
 					$tools[] = [
 						'name' => $tool['name'],
@@ -385,59 +423,121 @@
 			case 'tools/call':
 
 				if (empty($params['name'])) {
-					throw new McpException('Missing tool name', 400, -32602);
+					throw new McpException('Missing tool name', 200, -32602, $rpc_id);
 				}
 
 				$tool_result = null;
-				foreach (mcp_load_sets()['tools'] as $tool) {
-
-					if (empty($tool['name']) || $tool['name'] !== $params['name']) continue;
-
-					// Per-tool permission check
-					if (!empty($allowed_tools) && !in_array($tool['name'], $allowed_tools)) {
-						throw new McpException('Tool not permitted for this administrator', 403, -32001, $rpc_id);
-					}
-
-					// Support both 'arguments' (MCP standard) and 'input' (legacy)
-					$tool_args = isset($params['arguments']) ? $params['arguments'] : (isset($params['input']) ? $params['input'] : []);
-
-					// Validate against required parameters (also enforce type when schema provides it)
-					if (!empty($tool['inputSchema']['required']) && is_array($tool['inputSchema']['required'])) {
-						foreach ($tool['inputSchema']['required'] as $field) {
-							if (!isset($tool_args[$field]) || $tool_args[$field] === '' || $tool_args[$field] === null) {
-								throw new McpException("Missing required parameter: $field", 400, -32602);
-							}
-						}
-					}
-
-					try {
-						$tool_result = ($tool['function'])($tool_args);
-					} catch (Exception $e) {
-						throw new McpException($e->getMessage(), 500, -32601);
-					}
-
+				$tool = null;
+				foreach (mcp_load_sets()['tools'] as $candidate) {
+					if (empty($candidate['name']) || $candidate['name'] !== $params['name']) continue;
+					$tool = $candidate;
 					break;
 				}
 
-				if ($tool_result === null) {
-					throw new McpException('Tool not found', 404, -32601);
+				if (!$tool) {
+					throw new McpException('Tool not found', 200, -32602, $rpc_id);
 				}
 
-				$result = [
-					'content' => [
-						[
-							'type' => 'text',
-							'text' => is_string($tool_result) ? $tool_result : json_encode($tool_result, JSON_UNESCAPED_SLASHES),
-						]
-					],
-					'structuredContent' => is_array($tool_result) ? (object)$tool_result : $tool_result,
-					'isError' => false,
-				];
+				// Support both 'arguments' (MCP standard) and 'input' (legacy)
+				$tool_args = isset($params['arguments']) ? $params['arguments'] : (isset($params['input']) ? $params['input'] : []);
+
+				// Validate against required parameters (also enforce type when schema provides it)
+				if (!empty($tool['inputSchema']['required']) && is_array($tool['inputSchema']['required'])) {
+					$missing = [];
+					foreach ($tool['inputSchema']['required'] as $field) {
+						if (!array_key_exists($field, $tool_args) || $tool_args[$field] === null || $tool_args[$field] === '') {
+							$missing[] = $field;
+						}
+					}
+					if (!empty($missing)) {
+						$result = [
+							'content' => [
+								[
+									'type' => 'text',
+									'text' => 'Missing required parameter(s): '. implode(', ', $missing),
+								]
+							],
+							'isError' => true,
+						];
+						break;
+					}
+				}
+
+				try {
+					$tool_result = ($tool['function'])($tool_args);
+				} catch (Throwable $e) {
+					$result = [
+						'content' => [
+							[
+								'type' => 'text',
+								'text' => $e->getMessage(),
+							]
+						],
+						'isError' => true,
+					];
+					break;
+				}
+
+				// Shape the tool result into MCP's tools/call response:
+				//   object       -> emit 'content' (text) + 'structuredContent'
+				//   list(array)  -> only treat as 'content' if every entry looks like a content block (has a 'type' key)
+				//   assoc array  -> emit as JSON object via 'content' (text) + 'structuredContent'
+				//   other        -> wrap in a single 'text' content block
+				$looks_like_content_blocks = is_array($tool_result)
+					&& array_keys($tool_result) === range(0, count($tool_result) - 1)
+					&& !empty($tool_result)
+					&& array_reduce($tool_result, function($carry, $block) {
+						return $carry && is_array($block) && isset($block['type']);
+					}, true);
+
+				switch (true) {
+
+					case $looks_like_content_blocks:
+						$result = [
+							'content' => $tool_result,
+							'isError' => false,
+						];
+						break;
+
+					case is_object($tool_result):
+						$result = [
+							'content' => [[
+								'type' => 'text',
+								'text' => json_encode($tool_result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE),
+							]],
+							'structuredContent' => $tool_result,
+							'isError' => false,
+						];
+						break;
+
+					case is_array($tool_result):
+						// Associative array returned as a JSON object
+						$result = [
+							'content' => [[
+								'type' => 'text',
+								'text' => json_encode($tool_result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE),
+							]],
+							'structuredContent' => (object)$tool_result,
+							'isError' => false,
+						];
+						break;
+
+					default:
+						$result = [
+							'content' => [
+								[
+									'type' => 'text',
+									'text' => is_string($tool_result) ? $tool_result : (string)$tool_result,
+								]
+							],
+							'isError' => false,
+						];
+				}
 
 				break;
 
 			default:
-				throw new McpException('Method not found', 404, -32601);
+				throw new McpException('Method not found', 200, -32601, $rpc_id);
 		}
 
 		// Notifications (no id) must not produce a JSON-RPC response body.
@@ -451,37 +551,42 @@
 			'jsonrpc' => '2.0',
 			'id' => $rpc_id,
 			'result' => $result,
-		], JSON_UNESCAPED_SLASHES);
+		], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE);
 
 		if ($output === false) {
-			throw new McpException('Encoding error', 500, -32603);
+			throw new McpException('Encoding error', 200, -32603, $rpc_id);
 		}
 
 	} catch (McpException $e) {
 
-		http_response_code(($e->getCode() >= 100 && $e->getCode() < 600) ? $e->getCode() : 200);
+		$http_code = ($e->getCode() >= 100 && $e->getCode() < 600) ? $e->getCode() : 200;
+		http_response_code($http_code);
+
+		if ($http_code === 401) {
+			header('WWW-Authenticate: Basic realm="MCP"');
+		}
 
 		$output = json_encode([
 			'jsonrpc' => '2.0',
-			'id' => $e->rpc_id,
+			'id' => $e->rpc_id ?? $rpc_id ?? null,
 			'error' => [
 				'code' => $e->rpc_code,
 				'message' => $e->getMessage(),
 			],
-		], JSON_UNESCAPED_SLASHES);
+		], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE);
 
 		if ($output === false) {
 			$output = json_encode([
 				'jsonrpc' => '2.0',
-				'id' => $e->rpc_id,
+				'id' => $e->rpc_id ?? $rpc_id ?? null,
 				'error' => [
 					'code' => -32603,
 					'message' => 'Encoding error',
 				],
-			], JSON_UNESCAPED_SLASHES);
+			], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE);
 		}
 
-	} catch (Exception $e) {
+	} catch (Throwable $e) {
 
 		http_response_code(($e->getCode() >= 100 && $e->getCode() < 600) ? $e->getCode() : 200);
 
@@ -492,17 +597,17 @@
 				'code' => -32000,
 				'message' => $e->getMessage(),
 			],
-		], JSON_UNESCAPED_SLASHES);
+		], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE);
 
 		if ($output === false) {
 			$output = json_encode([
 				'jsonrpc' => '2.0',
-				'id' => isset($rpc_id) ? $rpc_id : null,
+				'id' => $rpc_id ?? null,
 				'error' => [
 					'code' => -32603,
 					'message' => 'Encoding error',
 				],
-			], JSON_UNESCAPED_SLASHES);
+			], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE);
 		}
 	}
 
