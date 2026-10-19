@@ -207,6 +207,14 @@ gulp.task('scss-trumbowyg', function() {
 		.pipe(sourcemaps.write('.', { includeContent: false }));
 });
 
+// Lint PHP files
+gulp.task('phplint', function() {
+  return gulp
+		.src('src/**/*.php')
+		.pipe(phplint())
+		.pipe(phplint.reporter('fail'));
+});
+
 gulp.task('iconly', function() {
 	download({ url: 'https://dev.iconly.io/public/OoTc8FJRmnEY/iconly.woff2', filename: 'fonticons.woff2' })
 		.pipe(gulp.dest('src/assets/litecore/fonts/'));
@@ -273,7 +281,6 @@ const buildTasks = [
 
 gulp.task('build', gulp.series(...buildTasks));
 gulp.task('build:watch', gulp.series(...buildTasks, 'watch'));
+gulp.task('update:icons', gulp.series('iconly', 'scss-framework'));
 
-gulp.task('default', gulp.series(
-	'build:watch',
-));
+gulp.task('default', gulp.series('build:watch'));
