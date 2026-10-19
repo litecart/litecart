@@ -28,7 +28,7 @@
 		"build:watch": "gulp build:watch",
 		"changelog": "git log --oneline 'master'..'dev' > changelog.txt",
 		"hash": "php .git-hooks/pre-commit.d/calculate_checksums.php",
-		"iconly": "gulp iconly && gulp scss-framework",
+		"update:icons": "gulp update:icons",
 		"lint:js": "eslint \"src/**/*.{js,php,html}\"",
 		"lint:css": "stylelint \"src/**/*.{php,html}\" --fix --allow-empty-input --custom-syntax postcss-html",
 		"lint:scss": "stylelint \"src/**/*.scss\" --fix --allow-empty-input --custom-syntax postcss-scss",
@@ -42,12 +42,12 @@
 		"update": "bun update --latest"
 	},
 	"devDependencies": {
-		"@playwright/test": "^1.63.0",
+		"@playwright/test": "^1.64.1",
 		"@sequencemedia/gulp-clean-css": "^1.0.285",
 		"@sequencemedia/gulp-sourcemaps": "^1.0.301",
 		"editorconfig-checker": "^7.0.0",
-		"eslint": "^10.10.0",
-		"eslint-plugin-html": "^8.2.0",
+		"eslint": "^10.13.0",
+		"eslint-plugin-html": "^8.2.1",
 		"gulp": "^5.0.1",
 		"gulp-clean-css": "^4.3.0",
 		"gulp-concat": "^2.6.1",
@@ -62,8 +62,7 @@
 		"phplint": "^2.0.5",
 		"postcss-html": "^2.0.0",
 		"postcss-scss": "^4.0.9",
-		"sass": "^1.104.0",
-		"stylelint": "^17.15.0",
+		"stylelint": "^17.16.0",
 		"stylelint-config-standard-scss": "^17.0.0"
 	}
 }
