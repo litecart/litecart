@@ -332,7 +332,7 @@
 
 			// Static domain
 			if ($static_domain = settings::get('static_domain')) {
-				$output = preg_replace_callback('#"https?://'. preg_quote($_SERVER['HTTP_HOST'], '#') .'(/[^"]+\.(a?png|avif|bmp|css|eot|gif|ico|jpe?g|js|map|otf|png|svg|tiff?|ttf|woff2?)(\?[^"]+)?)"#', function($matches) use ($static_domain) {
+				$output = preg_replace_callback('#"https?://'. preg_quote($_SERVER['HTTP_HOST'], '#') .'(/[^"]+\.(a?png|avif|bmp|css|eot|gif|ico|jpe?g|js|jxl|map|otf|png|svg|tiff?|ttf|woff2?)(\?[^"]+)?)"#', function($matches) use ($static_domain) {
 					return '"'. rtrim($static_domain, '/') .$matches[1].'"';
 				}, $output);
 			}
@@ -576,7 +576,7 @@
 
 				$type = match (true) {
 					(preg_match('#\.(ttf|otf|woff2?)$#', $path)) => 'font',
-					(preg_match('#\.(a?png|avif|gif|jpe?g|tiff?|webp)$#', $path)) => 'image',
+					(preg_match('#\.(a?png|avif|gif|jpe?g|jxl|tiff?|webp)$#', $path)) => 'image',
 					(preg_match('#\.css$#', $path)) => 'style',
 					(preg_match('#\.js$#', $path)) => 'script',
 				};

@@ -92,6 +92,7 @@
 							case 3: $this->_data['type'] = 'png'; break 2;
 							case 18: $this->_data['type'] = 'webp'; break 2;
 							case 19: $this->_data['type'] = 'avif'; break 2;
+							case 26: $this->_data['type'] = 'jxl'; break 2;
 
 							case false:
 								if (str_contains(file_get_contents($this->_file, false, null, 0, 256), '<svg')) {
@@ -305,6 +306,11 @@
 						case 'webp':
 							$this->_data['type'] = 'webp';
 							$this->_image = ImageCreateFromWebP($this->_file);
+							break;
+
+						case 'jxl':
+							$this->_data['type'] = 'jxl';
+							$this->_image = ImageCreateFromJXL($this->_file);
 							break;
 
 						case 'svg':
@@ -783,7 +789,7 @@
 				$type = $this->type;
 			}
 
-			if (!preg_match('#^(avif|gif|jpe?g|png|webp|svg)$#i', $type)) {
+			if (!preg_match('#^(avif|gif|jpe?g|jxl|png|webp|svg)$#i', $type)) {
 				throw new Exception("Unknown image format ($type)");
 			}
 
@@ -843,6 +849,12 @@
 							}
 							break;
 
+						case 'jxl':
+							if (!in_array('JXL', $this->_image->queryFormats())) {
+								return $this->save(preg_replace('#\.jxl$#i', '.jpg', $destination), $quality, $interlaced);
+							}
+							break;
+
 						default:
 							$this->_image->setImageCompression(Imagick::COMPRESSION_ZIP);
 							break;
@@ -876,6 +888,10 @@
 						return $this->save(preg_replace('#\.webp$#i', '.jpg', $destination), $quality, $interlaced);
 					}
 
+					if ($type == 'jxl' && !function_exists('ImageJXL')) {
+						return $this->save(preg_replace('#\.jxl$#i', '.jpg', $destination), $quality, $interlaced);
+					}
+
 					if (function_exists('exif_read_data')) {
 
 						// Get the EXIF data of the image
@@ -905,7 +921,7 @@
 
 					$new_image = ImageCreateTrueColor($this->width, $this->height);
 
-					if (in_array($type, ['avif', 'png', 'webp'])) {
+					if (in_array($type, ['avif', 'jxl', 'png', 'webp'])) {
 						ImageAlphaBlending($new_image, true);
 						ImageSaveAlpha($new_image, true);
 					}
@@ -941,6 +957,10 @@
 
 						case 'webp':
 							$result = ImageWebP($new_image, $destination, $quality);
+							break;
+
+						case 'jxl':
+							$result = ImageJXL($new_image, $destination, $quality);
 							break;
 
 						default:

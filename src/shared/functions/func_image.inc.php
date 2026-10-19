@@ -45,6 +45,9 @@
 						if (settings::get('avif_enabled') && isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/avif#', $_SERVER['HTTP_ACCEPT'])) {
 							$options['extension'] = 'avif';
 
+						} else if (settings::get('jxl_enabled') && isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/jxl#', $_SERVER['HTTP_ACCEPT'])) {
+							$options['extension'] = 'jxl';
+
 						} else if (settings::get('webp_enabled') && isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/webp#', $_SERVER['HTTP_ACCEPT'])) {
 							$options['extension'] = 'webp';
 

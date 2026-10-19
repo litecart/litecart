@@ -80,6 +80,7 @@ images,"{""en"":""Thumbnail Quality""}","{""en"":""The JPEG quality for thumbnai
 images,"{""en"":""Interlaced Thumbnails""}","{""en"":""Generate interlaced thumbnail images for progressive loading. Increases the filesize by 10-20% but improves user experience.""}",image_thumbnail_interlaced,0,bool,toggle(),0,42,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 images,"{""en"":""Whitespace Color""}","{""en"":""Set the color of any generated whitespace to the given RGB value. Default: 255,255,255""}",image_whitespace_color,"255,255,255",string,text(),0,43,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 images,"{""en"":""AVIF Enabled""}","{""en"":""Use AVIF images if supported by the browser.""}",avif_enabled,0,bool,"toggle(""e/d"")",0,44,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+images,"{""en"":""JXL Enabled""}","{""en"":""Use JPEG XL images if supported by the browser.""}",jxl_enabled,0,bool,"toggle(""e/d"")",0,44,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 images,"{""en"":""WebP Enabled""}","{""en"":""Use WebP images if supported by the browser.""}",webp_enabled,0,bool,"toggle(""e/d"")",0,44,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 images,"{""en"":""Image Lazy Loading""}","{""en"":""Tells the browser to load images on the pages first when they are scrolled down to.""}",image_lazyload,1,bool,"toggle(""e/d"")",0,46,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 checkout,"{""en"":""Send Order Confirmation""}","{""en"":""Send order confirmations via email.""}",send_order_confirmation,1,bool,"toggle(""y/n"")",0,11,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP

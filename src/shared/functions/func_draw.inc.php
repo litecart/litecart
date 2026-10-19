@@ -116,7 +116,7 @@
 		switch(true) {
 
 			// Graphics elements
-			case (preg_match('#\.(avif|gif|jpe?g|png|webp|svg)$#', $icon)):
+			case (preg_match('#\.(avif|gif|jpe?g|jxl|png|webp|svg)$#', $icon)):
 				return draw_element('img', ['class' => 'icon', 'src' => document::rlink($icon), ...$attributes]);
 
 			// LiteCore Fonticons

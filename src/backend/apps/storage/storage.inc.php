@@ -368,7 +368,7 @@
 		} else {
 
 			$fonticon = match(true) {
-				(preg_match('#\.(a?png|avif|bmp|gif|ico|jpe?g|webp|tiff?)$#i', $file) === 1) => 'icon-file-image',
+				(preg_match('#\.(a?png|avif|bmp|gif|ico|jpe?g|jxl|webp|tiff?)$#i', $file) === 1) => 'icon-file-image',
 				(preg_match('#\.(css|html|js|less|php|scss)$#i', $file) === 1) => 'icon-file-code',
 				(preg_match('#\.(doc|pdf|txt|csv)$#i', $file) === 1) => 'icon-file-text',
 				default => 'icon-file',
