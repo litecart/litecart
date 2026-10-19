@@ -2,8 +2,8 @@
 
 ## Code Compliance
 
-- PHP code must comply with modern PHP standards no earlier than 8.0+ (recommended 8.3+).
-- HTML code must comply with HTML 5. Self-closing tags required (`<br />`, `<img ... />`).
+- PHP code must comply with modern PHP standards no earlier than 8.0+.
+- HTML code must comply with HTML 5.
 - Style definitions must be compliant with CSS 3. All color values must use CSS custom properties defined in `variables.scss`.
 - Any use of JavaScript should honour the jQuery framework.
 
@@ -211,13 +211,13 @@ When starting PHP logic, the tag should be written as "<?php", and not in the sh
 Incorrect:
 
 ```php
-	<?=$variable?>
 	<? echo $variable; ?>
 ```
 
 Correct:
 
 ```php
+	<?= $variable ?>
 	<?php echo $variable; ?>
 ```
 
@@ -255,7 +255,7 @@ Incorrect:
 ```php
 	$foo = "bar";
 
-	<img src=''>
+	<img src='' />
 
 	echo "<a href='http://www.site.com'>Hello World</a>";
 	echo "<a href=\"http://www.site.com\">Hello World</a>";
@@ -298,13 +298,13 @@ HTML Parameters that contains special characters or user data must be escaped.
 Incorrect:
 
 ```html
-	<img src="..." alt="<?php echo $title; ?>">
+	<img src="..." alt="<?= $title; ?>">
 ```
 
 Correct:
 
 ```html
-	<img src="..." alt="<?php echo f::escape_attr($title); ?>">
+	<img src="..." alt="<?= f::escape_attr($title) ?>">
 ```
 
 ## PHP Variable Scope
