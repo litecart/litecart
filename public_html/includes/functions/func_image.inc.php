@@ -45,7 +45,35 @@
             $extension = 'avif';
 
           } else {
-            $extension = pathinfo($source, PATHINFO_EXTENSION);
+            $extension = strtolower(pathinfo($source, PATHINFO_EXTENSION));
+          }
+
+        // Confirm the chosen format is writeable by the active library; otherwise ent_image::write() can fall back to .jpg.
+          if (!extension_loaded('imagick')) {
+
+            $gd_function_map = [
+              'avif' => 'ImageAVIF',
+              'gif' => 'ImageGIF',
+              'jpg' => 'ImageJPEG',
+              'jpeg' => 'ImageJPEG',
+              'jxl' => 'ImageJXL',
+              'png' => 'ImagePNG',
+              'webp' => 'ImageWebP',
+            ];
+
+            if (empty($gd_function_map[$extension]) || !function_exists($gd_function_map[$extension])) {
+              $source_ext = strtolower(pathinfo($source, PATHINFO_EXTENSION));
+              $extension = !empty($gd_function_map[$source_ext]) && function_exists($gd_function_map[$source_ext]) ? $source_ext : 'jpg';
+            }
+
+          } else if (class_exists('Imagick')) {
+
+            $imagick_formats = array_map('strtoupper', Imagick::queryFormats());
+
+            if (!in_array(strtoupper($extension), $imagick_formats)) {
+              $source_ext = strtolower(pathinfo($source, PATHINFO_EXTENSION));
+              $extension = in_array(strtoupper($source_ext), $imagick_formats) ? $source_ext : 'jpg';
+            }
           }
 
           switch ($options['clipping']) {
