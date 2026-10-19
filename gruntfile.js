@@ -106,13 +106,13 @@ module.exports = function(grunt) {
       },
     },
 
-    'dart-sass': {
+    sass: {
+      options: {
+        implementation: require('sass'),
+        sourceMap: false,
+        style: 'compressed'
+      },
       trumbowyg_minified: {
-        options: {
-          sourceMap: false,
-          outputStyle: 'compressed',
-          compass: false
-        },
         files: {
           'public_html/ext/trumbowyg/ui/trumbowyg.min.css': 'public_html/ext/trumbowyg/ui/trumbowyg.scss'
         }
@@ -176,7 +176,7 @@ module.exports = function(grunt) {
         files: [
           'public_html/ext/trumbowyg/ui/trumbowyg.scss',
         ],
-        tasks: ['dart-sass']
+        tasks: ['sass']
       },
     }
   });
@@ -184,11 +184,12 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-dart-sass');
+  grunt.loadNpmTasks('grunt-sass');
   grunt.loadNpmTasks('grunt-text-replace');
 
-  grunt.registerTask('default', ['replace', 'less', 'dart-sass', 'uglify']);
-  grunt.registerTask('compile', ['less', 'dart-sass', 'uglify']);
+  grunt.registerTask('build', ['replace', 'less', 'sass', 'uglify']);
+  grunt.registerTask('build:watch', ['build', 'watch']);
+  grunt.registerTask('default', ['build']);
 
   require('phplint').gruntPlugin(grunt);
   grunt.registerTask('test', ['phplint']);

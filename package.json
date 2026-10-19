@@ -26,8 +26,8 @@
 		"grunt-contrib-less": "^3.0.0",
 		"grunt-contrib-uglify": "^5.2.2",
 		"grunt-contrib-watch": "^1.1.0",
-		"grunt-dart-sass": "^2.0.1",
 		"grunt-phplint": "^0.1.0",
+		"grunt-sass": "^4.1.0",
 		"grunt-text-replace": "^0.4.0",
 		"phplint": "^2.0.5",
 		"sass": "^1.104.0"
