@@ -35,11 +35,14 @@
       if (is_dir($options['destination']) || substr($options['destination'], -1) == '/') {
         if (preg_match('#^'. preg_quote(FS_DIR_STORAGE . 'cache/', '#') .'$#', $options['destination'])) {
 
-          if (settings::get('avif_enabled') && isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/avif#', $_SERVER['HTTP_ACCEPT'])) {
-            $extension = 'avif';
+          if (settings::get('jxl_enabled') && isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/jxl#', $_SERVER['HTTP_ACCEPT'])) {
+            $extension = 'jxl';
 
           } else if (settings::get('webp_enabled') && isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/webp#', $_SERVER['HTTP_ACCEPT'])) {
             $extension = 'webp';
+
+          } else if (settings::get('avif_enabled') && isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/avif#', $_SERVER['HTTP_ACCEPT'])) {
+            $extension = 'avif';
 
           } else {
             $extension = pathinfo($source, PATHINFO_EXTENSION);

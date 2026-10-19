@@ -143,6 +143,11 @@
               $this->_image = ImageCreateFromJPEG($this->_src);
               break;
 
+            case 'jxl':
+              $this->_type = 'jxl';
+              $this->_image = ImageCreateFromJXL($this->_src);
+              break;
+
             case 'png':
               $this->_type = 'png';
               $this->_image = ImageCreateFromPNG($this->_src);
@@ -210,6 +215,10 @@
 
             case 18:
               $this->_type = 'webp';
+              break;
+
+            case 26:
+              $this->_type = 'jxl';
               break;
 
             case 3:
@@ -863,7 +872,7 @@
 
       $type = strtolower(pathinfo($destination, PATHINFO_EXTENSION));
 
-      if (!preg_match('#^(avif|gif|jpe?g|png|webp)$#i', $type)) {
+      if (!preg_match('#^(avif|gif|jpe?g|jxl|png|webp)$#i', $type)) {
         throw new Exception("Unknown image output format ($type)");
       }
 
@@ -1025,6 +1034,17 @@
               }
               return $result;
 
+            case 'jxl':
+              if (!function_exists('ImageJXL')) {
+                return $this->write(preg_replace('#\.jxl$#', '.jpg', $destination), $quality, $interlaced);
+              }
+              ImageSaveAlpha($this->_image, true);
+              $result = ImageJXL($this->_image, $destination, (int)$quality);
+              if (PHP_VERSION_ID < 80000) {
+                ImageDestroy($this->_image);
+              }
+              return $result;
+
             default:
               if (PHP_VERSION_ID < 80000) {
                 ImageDestroy($this->_image);
@@ -1114,6 +1134,17 @@
               }
               ImageSaveAlpha($this->_image, true);
               $result = ImageWebP($this->_image, false, (int)$quality);
+              if (PHP_VERSION_ID < 80000) {
+                ImageDestroy($this->_image);
+              }
+              return $result;
+
+            case 'jxl':
+              if (!function_exists('ImageJXL')) {
+                return $this->output('jpg', $quality, $interlaced);
+              }
+              ImageSaveAlpha($this->_image, true);
+              $result = ImageJXL($this->_image, false, (int)$quality);
               if (PHP_VERSION_ID < 80000) {
                 ImageDestroy($this->_image);
               }
@@ -1234,6 +1265,10 @@
 
             case 18:
               $this->_type = 'webp';
+              break;
+
+            case 26:
+              $this->_type = 'jxl';
               break;
 
             case 3:
