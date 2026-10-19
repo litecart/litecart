@@ -6,17 +6,16 @@
 !/src/**/.htaccess
 !/src/vendor/composer.json
 
-/src/.well-known/*
-/src/cgi-bin/*
-/src/storage/*
-/src/vendor/*
-/src/storage/backups/**
-/src/storage/cache/**
-/src/storage/data/**
-/src/storage/images/products/*
-/src/storage/logs/**
+/src/.well-known/
+/src/cgi-bin/
+/src/storage/
+/src/storage/backups/
+/src/storage/cache/
+/src/storage/data/
+/src/storage/images/products/
+/src/storage/logs/
+/src/vendor/
 
-/migrations/.migrated
 /src/storage/config.inc.php
 /src/vendor/composer.lock
 /src/.htaccess
@@ -25,6 +24,7 @@
 /src/google*.html
 /src/php.ini
 /src/robots.txt
+/migrations/.migrated
 /bun.lock
 /package-lock.json
 
