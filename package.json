@@ -30,11 +30,11 @@
 		"grunt-sass": "^4.1.0",
 		"grunt-text-replace": "^0.4.0",
 		"phplint": "^2.0.5",
-		"sass": "^1.104.0"
+		"sass": "^1.105.2"
 	},
 	"scripts": {
 		"archive": "git archive --format=zip --output latest.zip HEAD",
-		"build": "grunt",
+		"build": "grunt build",
 		"build:watch": "grunt watch",
 		"changelog": "git log --oneline 'master'..'dev' > changelog.txt",
 		"hash": "php .git-hooks/pre-commit.d/calculate_checksums.php",
@@ -42,7 +42,6 @@
 		"phplint": "grunt phplint",
 		"test": "grunt test",
 		"uglify": "grunt uglify",
-		"watch": "grunt watch",
-		"update": "ncu -u && npm install && npm audit fix"
+		"update": "bun update --latest"
 	}
 }
