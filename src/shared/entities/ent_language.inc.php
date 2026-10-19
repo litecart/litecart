@@ -153,12 +153,12 @@
 						);
 					}
 				}
+			}
 
-			} else {
+			// Seed an empty translation key for a newly created language
+			if (!$this->previous['id'] && $this->data['code']) {
 
 				$language_code = database::identifier($this->data['code']);
-
-				// Add new language to entity collections
 
 				$collections = include 'app://shared/collections.inc.php';
 
@@ -170,7 +170,8 @@
 					foreach ($collection['translatable'] as $column) {
 						database::query(
 							"update `$table`
-							set `{$column}` = json_set(ifnull(`{$column}`, '{}'), '$.". database::input($language_code) ."', '')"
+							set `{$column}` = json_set(ifnull(`{$column}`, '{}'), '$.". database::input($language_code) ."', '')
+							where not json_contains_path(coalesce(`{$column}`, '{}'), 'one', '$.". database::input($language_code) ."')"
 						);
 					}
 				}

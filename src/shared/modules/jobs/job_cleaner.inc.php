@@ -60,32 +60,6 @@
 
 			##
 
-			echo "Cleaning up old firewall actions..." . PHP_EOL;
-
-			database::query(
-				"delete from ". DB_PREFIX ."firewall_actions_taken
-				where created_at < date_sub(now(), interval 1 month);"
-			);
-
-			if ($num_deleted = database::affected_rows()) {
-				echo '- Removed '. f::format_number($num_deleted) .' firewall action(s).' . PHP_EOL . PHP_EOL;
-			}
-
-			##
-
-			echo "Cleaning up old firewall blacklists..." . PHP_EOL;
-
-			database::query(
-				"delete from ". DB_PREFIX ."firewall_blacklist
-				where date_expires < date_sub(now(), interval 1 month);"
-			);
-
-			if ($num_deleted = database::affected_rows()) {
-				echo '- Removed '. f::format_number($num_deleted) .' blacklisted client(s).' . PHP_EOL . PHP_EOL;
-			}
-
-			##
-
 			echo "Cleaning up old not found logs..." . PHP_EOL;
 
 			database::query(
@@ -95,6 +69,19 @@
 
 			if ($num_deleted = database::affected_rows()) {
 				echo '- Removed '. f::format_number($num_deleted) .' file(s).' . PHP_EOL . PHP_EOL;
+			}
+
+			##
+
+			echo "Cleaning up expired authorization codes..." . PHP_EOL;
+
+			database::query(
+				"delete from ". DB_PREFIX ."oauth_authorization_codes
+				where expires_at < '". database::input(date('Y-m-d H:i:s')) ."';"
+			);
+
+			if ($num_deleted = database::affected_rows()) {
+				echo '- Removed '. f::format_number($num_deleted) .' authorization code(s).' . PHP_EOL . PHP_EOL;
 			}
 
 			##

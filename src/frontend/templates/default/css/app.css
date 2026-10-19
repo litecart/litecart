@@ -187,6 +187,7 @@ body {
 #site-navigation .favorites.filled .badge {
 	display: inline-block;
 	background: var(--default-text-color);
+	color: var(--site-background);
 }
 #site-navigation .favorites.filled .checkout {
 	display: block;
@@ -299,7 +300,6 @@ body {
 	background: var(--footer-background);
 	color: var(--footer-text-color);
 	box-shadow: var(--footer-shadow);
-	padding: 1em 0;
 	border-top: 1px solid var(--default-border-color);
 }
 #site-footer a {

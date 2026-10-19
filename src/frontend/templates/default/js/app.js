@@ -909,12 +909,12 @@ waitFor('jQuery', ($) => {
 
 	function renderEmpty(message) {
 
-		$dropdown.html(
-			'<li class="search-suggestions-empty">'
-				+ '<span class="search-suggestions-empty-icon font-icon icon-search" aria-hidden="true"></span>'
-				+ '<span class="search-suggestions-empty-text">' + (message || '').escapeHTML() + '</span>'
-			+ '</li>'
-		);
+		$dropdown.html([
+			'<li class="search-suggestions-empty">',
+			'	<span class="search-suggestions-empty-icon font-icon icon-search" aria-hidden="true"></span>',
+			'	<span class="search-suggestions-empty-text">' + (message || '').escapeHTML() + '</span>',
+			'</li>',
+		].join('\n'));
 	}
 
 	function renderSection(title) {
@@ -945,13 +945,13 @@ waitFor('jQuery', ($) => {
 
 	function renderNoResults(query) {
 
-		$dropdown.html(
-			'<li class="search-suggestions-empty search-suggestions-empty--no-results">'
-				+ '<span class="search-suggestions-empty-icon font-icon icon-frown" aria-hidden="true"></span>'
-				+ '<span class="search-suggestions-empty-text">' + query.escapeHTML() + '</span>'
-				+ '<span class="search-suggestions-empty-hint">' + 'No matches found'.escapeHTML() + '</span>'
-			+ '</li>'
-		);
+		$dropdown.html([
+			'<li class="search-suggestions-empty search-suggestions-empty--no-results">',
+			'	<span class="search-suggestions-empty-icon font-icon icon-frown" aria-hidden="true"></span>',
+			'	<span class="search-suggestions-empty-text">' + query.escapeHTML() + '</span>',
+			'	<span class="search-suggestions-empty-hint">' + 'No matches found'.escapeHTML() + '</span>',
+			+ '</li>',
+		].join('\n'));
 	}
 
 	$input.on('focus', function() {

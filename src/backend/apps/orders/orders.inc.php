@@ -295,11 +295,11 @@
 
 		if (in_array(false, array_column($order['items'], 'sufficient_stock'), true)) {
 			$order['sufficient_stock'] = false;
-			$order['sufficient_stock_icon'] = f::draw_fonticon('icon-check', 'style="color: #88cc44;"');
+			$order['sufficient_stock_icon'] = f::draw_fonticon('true');
 
 		} else if (array_unique(array_column($order['items'], 'sufficient_stock'), true) == [true]) {
 			$order['sufficient_stock'] = true;
-			$order['sufficient_stock_icon'] = f::draw_fonticon('remove');
+			$order['sufficient_stock_icon'] = f::draw_fonticon('false');
 		} else {
 			$order['sufficient_stock'] = null;
 			$order['sufficient_stock_icon'] = '';
@@ -359,6 +359,7 @@ table .icon-star-o:hover {
 }
 
 table .tag {
+	font-family: monospace;
 	font-size: 0.8em;
 	opacity: 0.75;
 	border: 1px solid #b9bfc6;
@@ -381,7 +382,7 @@ table .tag {
 	</div>
 
 	<div class="card-action">
-		<?= f::form_button_link(document::ilink(__APP__.'/edit_order', ['redirect_url' => $_SERVER['REQUEST_URI']]), t('title_create_new_order', 'Create New Order'), '', 'create') ?>
+		<?= f::form_button_link(document::ilink(__APP__.'/edit_order', ['redirect_url' => $_SERVER['REQUEST_URI']]), t('title_create_new_order', 'Create New Order'), [], 'create') ?>
 	</div>
 
 	<?= f::form_begin('search_form', 'get') ?>

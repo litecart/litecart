@@ -1509,7 +1509,7 @@
 			'  </div>',
 			'',
 			'  <div class="dropdown">',
-			'  '. form_input_search('', '', ['autocomplete' => 'off', 'placeholder' => t('text_search_categories', 'Search categories') . '…']),
+			'  '. form_input_search('', '', ['autocomplete' => 'off', 'placeholder' => t('text_search_categories', 'Search categories') . '...']),
 			'    <div class="dropdown-content" style="padding: 1em; inset-inline-end: 0; max-height: 480px; overflow-y: auto;">',
 			'    </div>',
 			'  </div>',
@@ -2307,7 +2307,7 @@
 
 			$sql_column_price = "coalesce(". implode(", ", array_map(function($currency) {
 				return "if(json_value(price, '$.". database::input($currency['code']) ."') != 0, json_value(price, '$.". database::input($currency['code']) ."') * ". $currency['value'] .", null)";
-			})) .")";
+			}, currency::$currencies)) .")";
 
 			$product = database::query(
 				"select p.id, p.code, pp.regular_price, pp.final_price, json_value(p.name, '$.". database::input(language::$selected['code']) ."') as name

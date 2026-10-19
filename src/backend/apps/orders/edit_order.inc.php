@@ -1267,7 +1267,7 @@
 					<div class="col-md-4">
 						<label class="form-group">
 							<div class="form-label"><?= t('title_tax', 'Tax') ?></div>
-							<?= f::form_input_money('tax', $_POST['currency_code'], true, ['readonly' => trueueue]) ?>
+							<?= f::form_input_money('tax', $_POST['currency_code'], true, ['readonly' => true]) ?>
 						</label>
 					</div>
 				</div>
@@ -1282,8 +1282,8 @@
 		</div>
 
 		<div class="card-action">
-			<?= f::form_button('ok', t('title_ok', 'OK'), 'button', '', 'ok') ?>
-			<?= f::form_button('cancel', t('title_cancel', 'Cancel'), 'button', 'onclick="$.litebox.close();"', 'cancel') ?>
+			<?= f::form_button('ok', t('title_ok', 'OK'), 'button', [], 'ok') ?>
+			<?= f::form_button('cancel', t('title_cancel', 'Cancel'), 'button', ['onclick' => '$.litebox.close();'], 'cancel') ?>
 		</div>
 	</div>
 </div>
@@ -1436,8 +1436,8 @@
 		</div>
 
 		<div class="card-action">
-			<?= f::form_button('ok', t('title_ok', 'OK'), 'button', '', 'ok') ?>
-			<?= f::form_button('cancel', t('title_cancel', 'Cancel'), 'button', 'onclick="$.litebox.close();"', 'cancel') ?>
+			<?= f::form_button('ok', t('title_ok', 'OK'), 'button', [], 'ok') ?>
+			<?= f::form_button('cancel', t('title_cancel', 'Cancel'), 'button', ['onclick' => '$.litebox.close();'], 'cancel') ?>
 		</div>
 	</div>
 </div>
@@ -1475,7 +1475,7 @@
 
 	$('select[name="currency_code"]').on('change', function(e) {
 		$('input[type="number"][data-type="currency"]').data('decimals', $(this).find('option:selected').data('decimals'));
-		$(this).find('input[name="currency_value"]').val($('option:selected').data('value'));
+		$('input[name="currency_value"]').val($(this).find('option:selected').data('value'));
 		$('input[data-type="currency"]').closest('.input-group').find('.input-group-text').text($(this).val());
 		refresh_total();
 	});

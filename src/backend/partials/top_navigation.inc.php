@@ -53,7 +53,7 @@
 				'<li class="'. ($is_dropdown_item ? 'dropdown-item' : 'nav-item') .' dropdown'. (!empty($item['hidden-xs']) ? ' hidden-xs' : '') .'"'. (!empty($item['id']) ? ' data-id="'. f::escape_attr($item['id']) .'"' : '') .'>',
 				'	<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">',
 				'		'. $item['title'],
-				!empty($item['badge']) ? '		<div class="badge">'. $item['badge'] .'</div>' : '',
+				!empty($item['badge']) ? '		<div class="badge badge-default">'. $item['badge'] .'</div>' : '',
 				'	</a>',
 				'	<ul class="dropdown-menu">',
 				'		'. implode(PHP_EOL, array_map(function($subitem) use ($draw_menu_item, $indent) {
@@ -68,7 +68,7 @@
 			'<li class="'. ($is_dropdown_item ? 'dropdown-item' : 'nav-item') . (!empty($item['hidden-xs']) ? ' hidden-xs' : '') .'"'. (!empty($item['id']) ? ' data-id="'. f::escape_attr($item['id']) .'"' : '') .'>',
 			'	<a class="nav-link" href="'. f::escape_attr($item['link']) .'" target="'. (!empty($item['target']) ? 'target="'. f::escape_attr($item['target']) .'"' : '') .'">',
 			'		'. (!empty($item['icon']) ? f::draw_fonticon($item['icon']) : '') . (empty($item['icon_only']) ? ' '. f::escape_html($item['title']) : ''),
-			!empty($item['badge']) ? '		<div class="badge">'. $item['badge'] .'</div>' : '',
+			!empty($item['badge']) ? '		<div class="badge badge-default">'. $item['badge'] .'</div>' : '',
 			'	</a>',
 			'</li>',
 		]);

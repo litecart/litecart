@@ -1,6 +1,6 @@
 <?php
 
-	perform_action('delete', [
+	perform_action('core:delete', [
 		FS_DIR_ADMIN . 'addons.widget/addons.inc.php',
 		FS_DIR_ADMIN . 'addons.widget/config.inc.php',
 		FS_DIR_ADMIN . 'addons.widget/index.html',
@@ -522,27 +522,16 @@
 
 	// Copy default storage directory
 	perform_action('copy', [
-		FS_DIR_APP . 'install/data/default/storage/' => FS_DIR_APP . 'storage/',
+		FS_DIR_APP . 'install/data/default/storage/' => FS_DIR_STORAGE,
 		FS_DIR_APP . 'install/data/default/storage/images/illustration/' => FS_DIR_STORAGE . 'images/illustration/',
-		FS_DIR_APP . 'install/data/default/storage/images/favicon*' => FS_DIR_APP . 'storage/images/',
-		FS_DIR_APP . 'install/data/default/storage/images/no_image.svg' => FS_DIR_APP . 'storage/images/',
+		FS_DIR_APP . 'install/data/default/storage/images/favicon*' => FS_DIR_STORAGE .'images/',
+		FS_DIR_APP . 'install/data/default/storage/images/no_image.svg' => FS_DIR_STORAGE .'images/',
 	]);
-
-	// Copy/Move robots.txt
-	if (is_file(FS_DIR_APP . 'storage/robots.txt')) {
-		perform_action('move', [
-			FS_DIR_APP . 'robots.txt' => FS_DIR_STORAGE . 'robots.txt',
-		]);
-	} else {
-		perform_action('copy', [
-			FS_DIR_APP . 'install/data/default/storage/robots.txt' => FS_DIR_APP . 'storage/robots.txt',
-		]);
-	}
 
 	// Move files to trash
 	mkdir(FS_DIR_APP . '.deleteme', 0777, true);
 
-	perform_action('move', [
+	perform_action('core:move', [
 		FS_DIR_APP . 'includes/config.inc.php' => FS_DIR_APP . '.deleteme/config.inc.php',
 		FS_DIR_APP . 'includes/modules/order_total/' => FS_DIR_APP . '.deleteme/order_total/',
 		FS_DIR_APP . 'includes/routes/*' => FS_DIR_APP . '.deleteme/routes/',
@@ -558,39 +547,37 @@
 		limit 1;"
 	)->fetch('value');
 
-	$config = strtr(file_get_contents(FS_DIR_APP .'install/config'), [
-		'{STORAGE_FOLDER}' => 'storage',
-		'{ADMIN_FOLDER}' => BACKEND_ALIAS,
-		'{DB_SERVER}' => DB_SERVER,
-		'{DB_USERNAME}' => DB_USERNAME,
-		'{DB_PASSWORD}' => DB_PASSWORD,
-		'{DB_DATABASE}' => DB_DATABASE,
-		'{DB_COLLATION}' => 'utf8mb4_general_ci',
-		'{DB_PREFIX}' => DB_PREFIX,
-		'{CLIENT_IP}' => $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1',
-		'{STORE_TIME_ZONE}' => $timezone,
+	// Writing fresh new config file
+	perform_action('core:copy', [
+		FS_DIR_APP . 'install/config' => FS_DIR_STORAGE .'config.inc.php'
 	]);
 
-	if (file_put_contents(FS_DIR_APP . 'storage/config.inc.php', $config) !== false) {
-		echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
-
-	} else {
-		throw new Exception('<span class="error">[Error]</span></p>' . PHP_EOL . PHP_EOL);
-	}
-
-	echo '<p>Writing fresh new .htaccess file... ';
-	$htaccess = file_get_contents(__DIR__.'/../htaccess');
-
-	$htaccess = strtr($htaccess, [
-		'{WS_DIR_APP}' => WS_DIR_APP,
-		'{FS_DIR_APP}' => FS_DIR_APP,
+	perform_action('core:modify', [
+		FS_DIR_STORAGE .'config.inc.php' => [
+			['search' => '{STORAGE_FOLDER}', 'replace' => 'storage'],
+			['search' => '{ADMIN_FOLDER}', 'replace' => BACKEND_ALIAS],
+			['search' => '{DB_SERVER}', 'replace' => DB_SERVER],
+			['search' => '{DB_USERNAME}', 'replace' => DB_USERNAME],
+			['search' => '{DB_PASSWORD}', 'replace' => DB_PASSWORD],
+			['search' => '{DB_DATABASE}', 'replace' => DB_DATABASE],
+			['search' => '{DB_COLLATION}', 'replace' => 'utf8mb4_general_ci'],
+			['search' => '{DB_PREFIX}', 'replace' => DB_PREFIX],
+			['search' => '{CLIENT_IP}', 'replace' => $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1'],
+			['search' => '{STORE_TIME_ZONE}', 'replace' => $timezone],
+		],
 	]);
 
-	if (file_put_contents(FS_DIR_APP . '.htaccess', $htaccess)) {
-		echo ' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
-	} else {
-		throw new Exception('<span class="error">[Error]</span></p>' . PHP_EOL . PHP_EOL);
-	}
+	// Writing fresh new .htaccess file
+	perform_action('core:copy', [
+		__DIR__ . '/../htaccess' => FS_DIR_APP . '.htaccess'
+	]);
+
+	perform_action('core:modify', [
+		FS_DIR_APP . '.htaccess' => [
+			['search' => '{WS_DIR_APP}', 'replace' => WS_DIR_APP],
+			['search' => '{FS_DIR_APP}', 'replace' => FS_DIR_APP],
+		],
+	]);
 
 	// Move files to new locations
 
@@ -598,150 +585,216 @@
 
 		// Remove empty directories
 		if (!glob($directory . '/*')) {
-			perform_action('delete', [$directory]);
+			perform_action('core:delete', [$directory]);
 			continue;
 		}
 
-		perform_action('move', [$directory.'/*' => FS_DIR_APP . 'backend/apps/' . preg_replace('#\.app$#', '', basename($directory)) .'/']);
+		perform_action('move', [
+			$directory.'/*' => FS_DIR_APP . 'backend/apps/' . preg_replace('#\.app$#', '', basename($directory)) .'/',
+		]);
 	}
 
 	foreach (glob(FS_DIR_ADMIN . '*.widget') as $directory) {
 
 		// Remove empty directories
 		if (!glob($directory . '/*')) {
-			perform_action('delete', [$directory]);
+			perform_action('core:delete', [$directory]);
 			continue;
 		}
 
-		perform_action('move', [$directory.'/*' => FS_DIR_APP . 'backend/widgets/' . preg_replace('#\.widget$#', '', basename($directory)) .'/']);
+		perform_action('core:move', [
+			$directory.'/*' => FS_DIR_APP . 'backend/widgets/' . preg_replace('#\.widget$#', '', basename($directory)) .'/',
+		]);
 	}
 
 	foreach (glob(FS_DIR_APP . 'cache/*') as $file) {
-		perform_action('move', [$file => preg_replace('#^'. preg_quote(FS_DIR_APP . 'cache/', '#') .'#', FS_DIR_APP . 'storage/cache/', $file)]);
+		perform_action('move', [
+			$file => preg_replace('#^'. preg_quote(FS_DIR_APP . 'cache/', '#') .'#', FS_DIR_STORAGE .'cache/', $file),
+		]);
 	}
 
 	foreach (glob(FS_DIR_APP . 'data/*') as $file) {
-		perform_action('move', [$file => preg_replace('#^'. preg_quote(FS_DIR_APP . 'data/', '#') .'#', FS_DIR_APP . 'storage/', $file)]);
+		perform_action('move', [
+			$file => preg_replace('#^'. preg_quote(FS_DIR_APP . 'data/', '#') .'#', FS_DIR_STORAGE .'', $file),
+		]);
 	}
 
 	foreach (glob(FS_DIR_APP . 'ext/*') as $file) {
-		perform_action('move', [$file => FS_DIR_APP . 'assets/' . basename($file)]);
+		perform_action('core:move', [
+			$file => FS_DIR_APP . 'assets/' . basename($file),
+		]);
 	}
 
 	foreach (glob(FS_DIR_APP . 'images/*') as $file) {
-		perform_action('move', [$file => preg_replace('#^'. preg_quote(FS_DIR_APP . 'images/', '#') .'#', FS_DIR_APP . 'storage/images/', $file)]);
+		perform_action('move', [
+			$file => preg_replace('#^'. preg_quote(FS_DIR_APP . 'images/', '#') .'#', FS_DIR_STORAGE .'images/', $file),
+		]);
 	}
 
 	foreach (glob(FS_DIR_APP . 'includes/abstracts/*') as $file) {
-		perform_action('move', [$file => FS_DIR_APP . 'shared/abstracts/' . basename($file)]);
+		perform_action('core:move', [
+			$file => FS_DIR_APP . 'shared/abstracts/' . basename($file),
+		]);
 	}
 
 	foreach (glob(FS_DIR_APP . 'includes/boxes/*') as $file) {
-		perform_action('move', [$file => FS_DIR_APP . 'frontend/partials/' . basename($file)]);
+		perform_action('core:move', [
+			$file => FS_DIR_APP . 'frontend/partials/' . basename($file),
+		]);
 	}
 
 	foreach (glob(FS_DIR_APP . 'includes/entities/*') as $file) {
-		perform_action('move', [$file => FS_DIR_APP . 'shared/entities/' . basename($file)]);
+		perform_action('core:move', [
+			$file => FS_DIR_APP . 'shared/entities/' . basename($file),
+		]);
 	}
 
 	foreach (glob(FS_DIR_APP . 'includes/functions/*') as $file) {
-		perform_action('move', [$file => FS_DIR_APP . 'shared/functions/' . basename($file)]);
+		perform_action('core:move', [
+			$file => FS_DIR_APP . 'shared/functions/' . basename($file),
+		]);
 	}
 
 	foreach (glob(FS_DIR_APP . 'includes/modules/*') as $file) {
-		perform_action('move', [$file => FS_DIR_APP . 'shared/modules/' . basename($file)]);
+		perform_action('core:move', [
+			$file => FS_DIR_APP . 'shared/modules/' . basename($file),
+		]);
 	}
 
 	foreach (glob(FS_DIR_APP . 'includes/modules/customer/*') as $file) {
-		perform_action('move', [$file => FS_DIR_APP . 'shared/modules/customer/' . basename($file)]);
+		perform_action('core:move', [
+			$file => FS_DIR_APP . 'shared/modules/customer/' . basename($file),
+		]);
 	}
 
 	foreach (glob(FS_DIR_APP . 'includes/modules/jobs/*') as $file) {
-		perform_action('move', [$file => FS_DIR_APP . 'shared/modules/jobs/' . basename($file)]);
+		perform_action('core:move', [
+			$file => FS_DIR_APP . 'shared/modules/jobs/' . basename($file),
+		]);
 	}
 
 	foreach (glob(FS_DIR_APP . 'includes/modules/order/*') as $file) {
-		perform_action('move', [$file => FS_DIR_APP . 'shared/modules/order/' . basename($file)]);
+		perform_action('core:move', [
+			$file => FS_DIR_APP . 'shared/modules/order/' . basename($file),
+		]);
 	}
 
 	foreach (glob(FS_DIR_APP . 'includes/modules/order_total/*') as $file) {
-		perform_action('move', [$file => FS_DIR_APP . 'shared/modules/order_total/' . basename($file)]);
+		perform_action('core:move', [
+			$file => FS_DIR_APP . 'shared/modules/order_total/' . basename($file),
+		]);
 	}
 
 	foreach (glob(FS_DIR_APP . 'includes/modules/payment/*') as $file) {
-		perform_action('move', [$file => FS_DIR_APP . 'shared/modules/payment/' . basename($file)]);
+		perform_action('core:move', [
+			$file => FS_DIR_APP . 'shared/modules/payment/' . basename($file),
+		]);
 	}
 
 	foreach (glob(FS_DIR_APP . 'includes/modules/shipping/*') as $file) {
-		perform_action('move', [$file => FS_DIR_APP . 'shared/modules/shipping/' . basename($file)]);
+		perform_action('core:move', [
+			$file => FS_DIR_APP . 'shared/modules/shipping/' . basename($file),
+		]);
 	}
 
 	foreach (glob(FS_DIR_APP . 'includes/modules/mod_*') as $file) {
-		perform_action('move', [$file => FS_DIR_APP . 'shared/modules/' . basename($file)]);
+		perform_action('core:move', [
+			$file => FS_DIR_APP . 'shared/modules/' . basename($file),
+		]);
 	}
 
 	foreach (glob(FS_DIR_APP . 'includes/references/*') as $file) {
-		perform_action('move', [$file => FS_DIR_APP . 'shared/references/' . basename($file)]);
+		perform_action('core:move', [
+			$file => FS_DIR_APP . 'shared/references/' . basename($file),
+		]);
 	}
 
 	foreach (glob(FS_DIR_APP . 'includes/routes/*') as $file) {
-		perform_action('move', [$file => FS_DIR_APP . 'frontend/routes/' . basename($file)]);
+		perform_action('core:move', [
+			$file => FS_DIR_APP . 'frontend/routes/' . basename($file),
+		]);
 	}
 
 	foreach (glob(FS_DIR_APP . 'includes/templates/*.catalog/css/*') as $file) {
-		perform_action('move', [$file => FS_DIR_APP . 'frontend/templates/default/css/']);
+		perform_action('core:move', [
+			$file => FS_DIR_APP . 'frontend/templates/default/css/',
+		]);
 	}
 
 	foreach (glob(FS_DIR_APP . 'includes/templates/*.catalog/images/*') as $file) {
-		perform_action('move', [$file => FS_DIR_APP . 'frontend/templates/default/images/']);
+		perform_action('core:move', [
+			$file => FS_DIR_APP . 'frontend/templates/default/images/',
+		]);
 	}
 
 	foreach (glob(FS_DIR_APP . 'includes/templates/*.catalog/layouts/*') as $file) {
-		perform_action('move', [$file => FS_DIR_APP . 'frontend/templates/default/layouts/']);
+		perform_action('core:move', [
+			$file => FS_DIR_APP . 'frontend/templates/default/layouts/',
+		]);
 	}
 
 	foreach (glob(FS_DIR_APP . 'includes/templates/*.catalog/less/*') as $file) {
-		perform_action('move', [$file => FS_DIR_APP . 'frontend/templates/default/less/']);
+		perform_action('core:move', [
+			$file => FS_DIR_APP . 'frontend/templates/default/less/',
+		]);
 	}
 
 	foreach (glob(FS_DIR_APP . 'includes/templates/*.catalog/js/*') as $file) {
-		perform_action('move', [$file => FS_DIR_APP . 'frontend/templates/default/js/']);
+		perform_action('core:move', [
+			$file => FS_DIR_APP . 'frontend/templates/default/js/',
+		]);
 	}
 
 	foreach (glob(FS_DIR_APP . 'includes/templates/*.catalog/pages/*') as $file) {
-		perform_action('move', [$file => FS_DIR_APP . 'frontend/templates/default/pages/']);
+		perform_action('core:move', [
+			$file => FS_DIR_APP . 'frontend/templates/default/pages/',
+		]);
 	}
 
 	foreach (glob(FS_DIR_APP . 'includes/templates/*.catalog/views/*') as $file) {
-		perform_action('move', [$file => FS_DIR_APP . 'frontend/templates/default/views/']);
+		perform_action('core:move', [
+			$file => FS_DIR_APP . 'frontend/templates/default/views/',
+		]);
 	}
 
 	foreach (glob(FS_DIR_APP . 'includes/templates/*.catalog') as $file) {
-		perform_action('move', [$file => FS_DIR_APP . 'frontend/templates/' . preg_replace('#\.catalog#', '', basename($file))]);
+		perform_action('core:move', [
+			$file => FS_DIR_APP . 'frontend/templates/' . preg_replace('#\.catalog#', '', basename($file)),
+		]);
 	}
 
 	foreach (glob(FS_DIR_APP . 'includes/wrappers/*') as $file) {
-		perform_action('move', [$file => FS_DIR_APP . 'shared/clients/' . preg_replace('#^wrap_(.*)\.inc\.php$#', '$1_client.inc.php', basename($file))]);
+		perform_action('core:move', [
+			$file => FS_DIR_APP . 'shared/clients/' . preg_replace('#^wrap_(.*)\.inc\.php$#', '$1_client.inc.php', basename($file)),
+		]);
 	}
 
 	foreach (glob(FS_DIR_APP . 'includes/*.inc.php') as $file) {
-		perform_action('move', [$file => FS_DIR_APP . 'shared/' . basename($file)]);
+		perform_action('core:move', [
+			$file => FS_DIR_APP . 'shared/' . basename($file),
+		]);
 	}
 
-	foreach (glob(FS_DIR_APP . 'logs/*') as $file) {
-		perform_action('move', [$file => preg_replace('#^'. preg_quote(FS_DIR_APP . 'logs/', '#') .'#', FS_DIR_APP . 'storage/logs/', $file)]);
+	foreach (glob(FS_DIR_STORAGE . 'logs/*') as $file) {
+		perform_action('move', [
+			$file => preg_replace('#^'. preg_quote(FS_DIR_STORAGE . 'logs/', '#') .'#', FS_DIR_STORAGE .'logs/', $file),
+		]);
 	}
 
 	foreach (glob(FS_DIR_APP . 'vmods/*') as $file) {
-		perform_action('move', [$file => FS_DIR_APP . 'storage/vmods/' . basename($file)]);
+		perform_action('move', [
+			$file => FS_DIR_STORAGE .'vmods/' . basename($file),
+		]);
 	}
 
 	foreach (glob(FS_DIR_APP . 'pages/*') as $file) {
-		perform_action('move', [$file => preg_replace('#^'. preg_quote(FS_DIR_APP . 'pages/', '#') .'#', FS_DIR_APP . 'frontend/pages/', $file)]);
+		perform_action('core:move', [
+			$file => preg_replace('#^'. preg_quote(FS_DIR_APP . 'pages/', '#') .'#', FS_DIR_APP . 'frontend/pages/', $file),
+		]);
 	}
 
 	// Delete old directories
-	perform_action('delete', [
+	perform_action('core:delete', [
 		FS_DIR_ADMIN,
 		FS_DIR_APP . 'cache/',
 		FS_DIR_APP . 'data/',
@@ -755,12 +808,11 @@
 
 	// Change indentation from spaces to tabs in files
 	foreach ([
-		FS_DIR_APP . 'storage/config.inc.php',
-		FS_DIR_APP . 'storage/vmods/*.xml',
+		FS_DIR_STORAGE .'vmods/*.xml',
 		FS_DIR_APP . '.htaccess',
 	] as $file_pattern) {
 
-		perform_action('custom', [
+		perform_action('core:custom', [
 			$file_pattern => function($file){
 
 				$contents = file_get_contents($file);
@@ -777,7 +829,7 @@
 		], 'skip');
 	}
 
-	perform_action('modify', [
+	perform_action('core:modify', [
 		FS_DIR_APP . '.htaccess' => [
 			[
 				'search'  => 'RewriteRule ^.*$ index.php?%{QUERY_STRING} [L]',

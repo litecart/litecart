@@ -1108,6 +1108,8 @@ SET `group_key` = 'security',
 	`key` = 'captcha';
 WHERE `key` = 'captcha_enabled';
 -- -----
+ALTER TABLE `lc_settings` CHANGE `value` `value` VARCHAR(8192) NOT NULL DEFAULT '';
+-- -----
 UPDATE `lc_sold_out_statuses`
 SET name = '{}',
 	description = '{}';
@@ -1297,3 +1299,6 @@ DROP TABLE `lc_orders_totals`;
 DROP TABLE `lc_slides`;
 -- -----
 DROP TABLE `lc_slides_info`;
+-- -----
+INSERT INTO `lc_settings` (`group_key`, `title`, `description`, `key`, `value`, `function`, `required`, `priority`, `date_created`, `date_updated`) VALUES
+('images', 'JXL Enabled', 'Use JPEG XL images if supported by the browser.', 'jxl_enabled', '0', 'toggle("e/d")', 0, 44, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
