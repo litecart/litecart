@@ -140,7 +140,7 @@
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?= t('title_requests', 'Requests') ?>: <?= f::number_format($num_rows) ?>
+						<?= t('title_requests', 'Requests') ?>: <?= number_format($num_rows) ?>
 					</td>
 				</tr>
 			</tfoot>

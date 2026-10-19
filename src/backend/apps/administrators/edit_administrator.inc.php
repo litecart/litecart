@@ -12,7 +12,6 @@
 		$_POST = $administrator->data;
 		$_POST['apps_toggle'] = !empty($administrator->data['permissions']['apps']) ? 1 : 0;
 		$_POST['widgets_toggle'] = !empty($administrator->data['permissions']['widgets']) ? 1 : 0;
-		$_POST['mcp_toggle'] = !empty($administrator->data['permissions']['mcp']) ? 1 : 0;
 	}
 
 	document::$title[] = !empty($administrator->data['username']) ? t('title_edit_administrator', 'Edit Administrator') : t('title_create_new_administrator', 'Create New Administrator');
@@ -37,7 +36,7 @@
 					throw new Exception(t('error_totp_setup_expired', 'TOTP setup session expired. Please try again.'));
 				}
 
-				if (empty($_POST['totp_code']) || !totp_verify_code(session::$data['totp_pending_secret'], $_POST['totp_code'])) {
+				if (empty($_POST['totp_code']) || !f::totp_verify_code(session::$data['totp_pending_secret'], $_POST['totp_code'])) {
 					throw new Exception(t('error_invalid_verification_code', 'Invalid verification code'));
 				}
 
@@ -255,7 +254,7 @@
 
 									<?php
 										$totp_uri = f::totp_build_uri(session::$data['totp_pending_secret'], $administrator->data['username'], settings::get('store_name'));
-										$totp_svg = f::qr_generate($totp_uri, 200);
+										$totp_svg = (new type_qr($totp_uri))->render(200);
 									?>
 
 									<div style="text-align: center; margin-bottom: 1em;">
@@ -269,7 +268,7 @@
 
 									<div class="grid">
 										<div class="col-md-6">
-											<?= f::form_input_text('totp_code', '', ['placeholder' => t('title_verification_code', 'Verification Code') , 'autocomplete' => 'one-time-code', 'inputmode' => 'numeric', 'maxlength' => '6', 'pattern' => '\d{6}']) ?>
+											<?= f::form_input_text('totp_code', '', ['placeholder' => t('title_verification_code', 'Verification Code').' ('. t('label_otp_method_totp', 'TOTP').')', 'autocomplete' => 'one-time-code', 'inputmode' => 'numeric', 'maxlength' => '6', 'pattern' => '\d{6}']) ?>
 										</div>
 										<div class="col-md-6">
 											<?= f::form_button('totp_confirm', t('title_confirm', 'Confirm'), 'submit', ['class' => 'btn btn-success']) ?>
@@ -405,26 +404,12 @@
 						</div>
 					</div>
 
-					<div id="mcp-permissions" class="form-group">
-						<?= f::form_checkbox('mcp_toggle', ['1', t('title_mcp_tools', 'MCP Tools')]) ?>
-						<div class="form-input" style="height: 150px; overflow-y: scroll;">
-							<ul class="list-unstyled">
-<?php
-	foreach (f::admin_get_mcp_tools() as $toolset) {
-		echo implode(PHP_EOL, [
-			'<li data-mcp-toolset-id="'. f::escape_attr($toolset['id']) .'">',
-			'  '. f::form_checkbox('permissions_structure[mcp]['.$toolset['id'].']', ['1', $toolset['name']], true),
-			'  <ul class="list-unstyled">',
-			implode(PHP_EOL, array_map(function($tool) use ($toolset) {
-				return '    <li data-tool="'. f::escape_attr($tool) .'">'. f::form_checkbox('permissions[mcp]['.$toolset['id'].'][]', [$tool], true) .'</li>';
-			}, $toolset['tools'])),
-			'  </ul>',
-			'</li>',
-		]);
-	}
-?>
-							</ul>
-						</div>
+					<div class="form-group">
+						<div class="form-label"><?= t('title_mcp_tools', 'MCP Tools') ?></div>
+						<p class="text-muted">
+							<?= t('text_administrator_mcp_permissions_removed', 'MCP tool access is configured per access key on the Access Keys page, not on the administrator.') ?>
+						</p>
+						<a class="btn btn-default btn-sm" href="<?= document::href_ilink('integrations/access_keys') ?>"><?= f::draw_fonticon('icon-key') ?> <?= t('title_manage_access_keys', 'Manage Access Keys') ?></a>
 					</div>
 				</div>
 			</div>
@@ -466,26 +451,4 @@
 	$('input[name="widgets_toggle"]').on('change', function() {
 		$('input[name^="permissions[widgets]"]').prop('disabled', !$(this).is(':checked'));
 	}).trigger('change');
-
-	// MCP tool permissions
-	$('input[name="mcp_toggle"]').on('change', function() {
-		$('input[name^="permissions_structure[mcp]"]').prop('disabled', !$(this).is(':checked'));
-		$('input[name^="permissions[mcp]"][name$="[]"]').prop('disabled', !$(this).is(':checked'));
-	}).trigger('change');
-
-	$('input[name^="permissions_structure[mcp]"]').on('change', function() {
-		if ($(this).prop('checked')) {
-			if (!$(this).closest('[data-mcp-toolset-id]').find('ul :input:checked').length) {
-				$(this).closest('[data-mcp-toolset-id]').find('ul :input').prop('checked', true);
-			}
-		} else {
-			$(this).closest('[data-mcp-toolset-id]').find('ul :input').prop('checked', false);
-		}
-	});
-
-	$('input[name^="permissions[mcp]"][name$="[]"]').on('change', function() {
-		if ($(this).is(':checked')) {
-			$(this).closest('ul').closest('[data-mcp-toolset-id]').children().not('ul').find(':input').prop('checked', true);
-		}
-	});
 </script>

@@ -138,8 +138,7 @@
 
 	// Authenticate once for the lifetime of the process.
 	// This server is an OAuth 2.1 resource server: it accepts only a Bearer access token
-	// minted by our own token endpoint. The administrator is re-resolved and re-checked on
-	// every request so a suspended account cannot keep using a still-valid token.
+	// minted by our own token endpoint.
 	try {
 
 		$token = '';
@@ -170,25 +169,8 @@
 			throw new McpException('The access key is invalid or has been revoked', 401, -32000);
 		}
 
-		// Re-check the owning administrator as the account may have been suspended
-		$now = date('Y-m-d H:i:s');
-
-		$administrator = database::query(
-			"select * from ". DB_PREFIX ."administrators
-			where id = ". (int)$access_key['administrator_id'] ."
-			and status
-			and (valid_from is null or valid_from < '". database::input($now) ."')
-			and (valid_to is null or valid_to > '". database::input($now) ."')
-			and (blocked_until is null or blocked_until < '". database::input($now) ."')
-			limit 1;"
-		)->fetch();
-
-		if (!$administrator) {
-			security::rate_limit_add('mcp_auth_failed');
-			throw new McpException(t('error_administrator_not_found', 'The administrator is either suspended or could not be found in our database'), 401);
-		}
-
 		// Record key usage so unused keys stay visible in the manager
+		$now = date('Y-m-d H:i:s');
 		database::query(
 			"update ". DB_PREFIX ."access_keys
 			set last_used_at = '". database::input($now) ."'
@@ -198,7 +180,7 @@
 
 		security::rate_limit_clear('mcp_auth_failed');
 
-		$permissions   = !empty($administrator['permissions']) ? json_decode($administrator['permissions'], true) : [];
+		$permissions   = !empty($access_key['permissions']) ? json_decode($access_key['permissions'], true) : [];
 		$allowed_tools = array_merge(...($permissions['mcp'] ?? []));
 
 	} catch (McpException $e) {
@@ -276,7 +258,7 @@
 								'version' => PLATFORM_VERSION,
 							],
 						],
-						'instructions' => PLATFORM_NAME .' Model Context Protocol server. Tools are filtered by administrator permissions.',
+						'instructions' => PLATFORM_NAME .' Model Context Protocol server. Tools are filtered by the access key\'s permissions.',
 						'ttlMs' => 300000,
 						'cacheScope' => 'private',
 					];
@@ -301,7 +283,7 @@
 
 							if (empty($tool['name']) || !is_array($tool['inputSchema'])) continue;
 
-							// Skip tools the administrator isn't permitted to use
+							// Skip tools the access key isn't permitted to use
 							if (!empty($allowed_tools) && !in_array($tool['name'], $allowed_tools)) continue;
 
 							$tool_schemas[] = [
@@ -346,7 +328,7 @@
 
 							// Per-toolset permission check
 							if (!empty($allowed_tools) && !in_array($tool['name'], $allowed_tools)) {
-								throw new McpException('Tool not permitted for this administrator', 403, -32001, $rpc_id);
+								throw new McpException('Tool not permitted for this access key', 403, -32001, $rpc_id);
 							}
 
 							$tool_args = $params['arguments'] ?? [];

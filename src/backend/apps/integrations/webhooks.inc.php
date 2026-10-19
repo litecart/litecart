@@ -86,7 +86,7 @@
 			<tfoot>
 				<tr>
 					<td colspan="99">
-						<?= t('title_webhooks', 'Webhooks') ?>: <?= f::number_format($num_rows) ?>
+						<?= t('title_webhooks', 'Webhooks') ?>: <?= number_format($num_rows) ?>
 					</td>
 				</tr>
 			</tfoot>

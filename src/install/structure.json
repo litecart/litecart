@@ -1,5 +1,34 @@
 {
 	"tables": {
+		"access_keys": {
+			"columns": {
+				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
+				"label": { "type": "VARCHAR", "length": 128, "default": "''" },
+				"key_hash": { "type": "CHAR", "length": 64 },
+				"key_prefix": { "type": "VARCHAR", "length": 16, "default": "''" },
+				"permissions": { "type": "TEXT", "default": "'{}'", "comment": "TYPE:JSON" },
+				"status": { "type": "TINYINT", "length": 1, "unsigned": true, "default": 1 },
+				"last_used_at": { "type": "TIMESTAMP", "nullable": true },
+				"created_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP" }
+			},
+			"primary_key": ["id"],
+			"unique_keys": {
+				"key_hash": ["key_hash"]
+			},
+			"keys": {
+				"status": ["status"]
+			},
+			"foreign_keys": {
+				"administrator_id": {
+					"columns": ["administrator_id"],
+					"references": {
+						"table": "administrators",
+						"columns": ["id"]
+					},
+					"on_delete": "CASCADE"
+				}
+			}
+		},
 		"administrators": {
 			"columns": {
 				"id": { "type": "INT", "length": 10, "unsigned": true, "auto_increment": true },
