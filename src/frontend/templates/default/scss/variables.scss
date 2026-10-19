@@ -72,8 +72,14 @@
 	--link-text-color: #5292b1;
 
 	/* Badges */
-	--badge-background: #c00;
-	--badge-text-color: #fff;
+	--badge-default-background: #e5e3e3;
+	--badge-default-text-color: #333;
+	--badge-success-background: #d6eca6;
+	--badge-success-text-color: #567d00;
+	--badge-warning-background: #fc6;
+	--badge-warning-text-color: #a00;
+	--badge-danger-background: #fcc;
+	--badge-danger-text-color: #c44;
 
 	/* Banners */
 	--banner-shadow: 0 10px 20px rgb(0 0 0 / 5%);

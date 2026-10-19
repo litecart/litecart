@@ -106,8 +106,14 @@
 	--input-code-background: #323d52;
 	--input-code-text-color: #fff;
 	/* Badges */
-	--badge-background: #c00;
-	--badge-text-color: #fff;
+	--badge-default-background: #c3dde9;
+	--badge-default-text-color: #000;
+	--badge-success-background: #98cc34;
+	--badge-success-text-color: #000;
+	--badge-warning-background: #fc6;
+	--badge-warning-text-color: #a00;
+	--badge-danger-background: #d9534f;
+	--badge-danger-text-color: #fff;
 	/* Breadcrumbs */
 	--breadcrumbs-background: #f7f8fb;
 	--breadcrumbs-border-color: #e7e7e7;

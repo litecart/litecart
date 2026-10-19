@@ -132,7 +132,7 @@
 				<a class="navbar-item" href="<?= document::href_ilink('favorites') ?>" aria-label="<?= f::escape_attr(t('title_favorites', 'Favorites')) ?>">
 					<img class="img-responsive hidden-xs" src="<?= document::href_rlink('app://frontend/templates/'.settings::get('template') .'/images/'. (!empty($favorites['items']) ? 'favorites_filled.svg' : 'favorites.svg')) ?>" alt="">
 					<span class="hidden-sm hidden-md hidden-lg hidden-xl hidden-xxl"><?= t('title_favorites', 'Favorites') ?></span>
-					<span class="badge" aria-label="<?= f::escape_attr(strtr(t('title_num_items', '{num} items'), ['{num}' => (int)$favorites['num_items']])) ?>"><?= $favorites['num_items'] ?></span>
+					<span class="badge badge-default" aria-label="<?= f::escape_attr(strtr(t('title_num_items', '{num} items'), ['{num}' => (int)$favorites['num_items']])) ?>"><?= $favorites['num_items'] ?></span>
 				</a>
 			</li>
 
@@ -140,7 +140,7 @@
 				<div class="navbar-item" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					<img class="img-responsive hidden-xs" src="<?= document::href_rlink('app://frontend/templates/'.settings::get('template') .'/images/'. (!empty($shopping_cart['items']) ? 'cart_filled.svg' : 'cart.svg')) ?>" alt="">
 					<span class="hidden-sm hidden-md hidden-lg hidden-xl hidden-xxl"><?= t('title_shopping_cart', 'Shopping Cart') ?></span>
-					<span class="badge" aria-label="<?= f::escape_attr(strtr(t('title_num_items', '{num} items'), ['{num}' => (int)$shopping_cart['num_items']])) ?>"><?= $shopping_cart['num_items'] ?></span>
+					<span class="badge badge-default" aria-label="<?= f::escape_attr(strtr(t('title_num_items', '{num} items'), ['{num}' => (int)$shopping_cart['num_items']])) ?>"><?= $shopping_cart['num_items'] ?></span>
 				</div>
 
 				<div class="dropdown-content" style="min-width: 275px; max-width: 480px;">

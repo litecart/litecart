@@ -2,7 +2,7 @@
 
 	<a href="{{link|escape}}" aria-label="<?= f::escape_attr(t('title_shopping_cart', 'Shopping Cart') .' - '. ($num_items ? $num_items .' '. t('title_items', 'items') : t('title_empty', 'empty'))) ?>">
 		<img class="image" src="{{template_path}}images/<?= !empty($num_items) ? 'cart_filled.svg' : 'cart.svg' ?>" alt="">
-		<div class="badge quantity" aria-hidden="true"><?php if ($num_items) echo $num_items; ?></div>
+		<div class="badge badge-default quantity" aria-hidden="true"><?php if ($num_items) echo $num_items; ?></div>
 	</a>
 
 	<ul class="dropdown-menu" role="menu" aria-label="<?= f::escape_attr(t('title_shopping_cart_items', 'Shopping Cart Items')) ?>">
