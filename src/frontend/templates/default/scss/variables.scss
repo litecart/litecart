@@ -223,6 +223,17 @@
 	--tab-item-background--active: #fff;
 	--tab-item-shadow: var(--default-shadow);
 
+	// Accordion
+	--accordion-background: #fff;
+	--accordion-border-color: #e5e5ea;
+	--accordion-border-width: 1px;
+	--accordion-header-background: #f6f7f9;
+	--accordion-header-background--hover: #eceef1;
+	--accordion-header-background--active: #fff;
+	--accordion-header-text-color: var(--default-text-color);
+	--accordion-header-text-color--hover: var(--default-text-color);
+	--accordion-header-text-color--active: var(--default-text-color);
+
 	// Tables
 	--table-border-color: var(--default-border-color);
 	--table-border-width: 1px;

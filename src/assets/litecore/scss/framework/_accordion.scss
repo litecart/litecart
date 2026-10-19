@@ -1,0 +1,92 @@
+.accordion {
+	border: var(--accordion-border-width) solid var(--accordion-border-color);
+	border-radius: var(--border-radius);
+	background: var(--accordion-background);
+	overflow: hidden;
+
+	.accordion-item {
+		border-bottom: var(--accordion-border-width) solid var(--accordion-border-color);
+
+		&:last-child {
+			border-bottom: 0;
+		}
+
+		&.active > .accordion-header {
+			background: var(--accordion-header-background--active);
+			color: var(--accordion-header-text-color--active);
+		}
+
+		&.active > .accordion-header .accordion-icon {
+			transform: rotate(180deg);
+		}
+	}
+
+	.accordion-header {
+		display: flex;
+		align-items: center;
+		gap: .75em;
+		width: 100%;
+		margin: 0;
+		padding: .75em 1em;
+		background: var(--accordion-header-background);
+		color: var(--accordion-header-text-color);
+		font-size: inherit;
+		font-weight: inherit;
+		line-height: inherit;
+		text-align: start;
+		cursor: pointer;
+		transition: background-color .2s ease, color .2s ease;
+
+		&:hover,
+		&:focus-visible {
+			background: var(--accordion-header-background--hover);
+			color: var(--accordion-header-text-color--hover);
+		}
+
+		> .accordion-title {
+			flex: 1 1 auto;
+		}
+
+		> .accordion-icon {
+			flex: 0 0 auto;
+			transition: transform .2s ease;
+		}
+	}
+
+	.accordion-content {
+		display: grid;
+		grid-template-rows: 0fr;
+		transition: grid-template-rows .25s ease;
+
+		> .accordion-inner {
+			overflow: hidden;
+			opacity: 0;
+			transition: opacity .2s ease;
+		}
+
+		> .accordion-inner > * {
+			margin: 0;
+		}
+	}
+
+	.accordion-item.active > .accordion-content {
+		grid-template-rows: 1fr;
+
+		> .accordion-inner {
+			opacity: 1;
+		}
+	}
+}
+
+.accordion-flush {
+	border: 0;
+	border-radius: 0;
+	background: none;
+}
+
+// Reduced motion drops the chevron spin, the in place panel reveal stays
+@media (prefers-reduced-motion: reduce) {
+	.accordion .accordion-header > .accordion-icon {
+		transition: none;
+	}
+}

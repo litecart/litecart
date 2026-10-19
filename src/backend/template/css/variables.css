@@ -238,6 +238,16 @@
 	--tab-item-text-color--hover: #444;
 	--tab-item-text-color--active: #444;
 	--tab-item-shadow: 0 10px 20px rgb(0 0 0 / 15%);
+	/* Accordion */
+	--accordion-background: transparent;
+	--accordion-border-color: #e5e5e9;
+	--accordion-border-width: 1px;
+	--accordion-header-background: #f3f3f3;
+	--accordion-header-background--hover: #e9e9e9;
+	--accordion-header-background--active: #fdfdfd;
+	--accordion-header-text-color: #444;
+	--accordion-header-text-color--hover: #444;
+	--accordion-header-text-color--active: #444;
 	/* Tables */
 	--table-border-color: var(--default-border-color);
 	--table-border-width: 1px;
@@ -354,6 +364,14 @@ html.dark-mode {
 	--tab-item-text-color--hover: #acb6c2;
 	--tab-item-background--active: #363c48;
 	--tab-item-text-color--active: #acb6c2;
+	--accordion-background: transparent;
+	--accordion-border-color: var(--default-border-color);
+	--accordion-header-background: #232832;
+	--accordion-header-background--hover: #2f333d;
+	--accordion-header-background--active: #363c48;
+	--accordion-header-text-color: #acb6c2;
+	--accordion-header-text-color--hover: #acb6c2;
+	--accordion-header-text-color--active: #acb6c2;
 	--table-header-background: transparent;
 	--table-header-text-color: #acb6c2;
 	--table-body-background: #252a32;
