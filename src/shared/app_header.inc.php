@@ -54,7 +54,7 @@
 		'customer',
 		'route',
 	] as $node) {
-		class_exists($node);
+		class_exists($node, true);
 	}
 
 	// Detect truncated POST (PHP max_input_vars exceeded)

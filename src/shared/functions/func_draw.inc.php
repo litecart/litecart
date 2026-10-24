@@ -193,6 +193,7 @@
 			'on'          => draw_fonticon('icon-bullet', 'style="color: #8c4;"'),
 			'off'         => draw_fonticon('icon-bullet', 'style="color: #f64;"'),
 			'print'       => draw_fonticon('icon-print', 'style="color: #ded90f;"'),
+			'rotate'      => draw_fonticon('icon-rotate'),
 			'remove'      => draw_fonticon('icon-times', 'style="color: #c00;"'),
 			'secure'      => draw_fonticon('icon-lock'),
 			'semi-off'    => draw_fonticon('icon-bullet', 'style="color: #ded90f;"'),

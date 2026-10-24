@@ -1,5 +1,12 @@
 waitFor('jQuery', ($) => {
 
+	// Password Visibility
+	$(document).on('click', '[data-toggle="password-visibility"]', function() {
+
+		const $input = $(this).prev();
+		$input.attr('type', $input.attr('type') == 'password' ? 'text' : 'password');
+	});
+
 	// Password Strength
 	$('form').on('input', 'input[type="password"][data-toggle="password-strength"]', function() {
 

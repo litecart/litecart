@@ -74,12 +74,13 @@
 				$last_modified = $folder_last_modified;
 			}
 
-			foreach (glob(FS_DIR_STORAGE .'addons/*', GLOB_ONLYDIR) as $folder) {
+			foreach (scandir(FS_DIR_STORAGE .'addons/') as $folder) {
 
-				if (in_array(basename($folder), ['.', '..', '.cache'])) continue;
+				if (in_array($folder, ['.', '..', '.cache'])) continue;
+				if (!is_dir(FS_DIR_STORAGE .'addons/'.$folder)) continue;
 				if (preg_match('#\.disabled$#', $folder)) continue;
 
-				$vmod = $folder .'/vmod.xml';
+				$vmod = FS_DIR_STORAGE .'addons/'.$folder.'/vmod.xml';
 
 				if (filemtime($vmod) > $last_modified) {
 					$last_modified = filemtime($vmod);
@@ -91,8 +92,9 @@
 				$last_modified = $folder_last_modified;
 			}
 
-			foreach (glob(FS_DIR_STORAGE .'vmods/*.xml') as $file) {
-				if (($modification_last_modified = filemtime($file)) > $last_modified) {
+			foreach (scandir(FS_DIR_STORAGE .'vmods/') as $file) {
+				if (substr($file, -4) != '.xml') continue;
+				if (($modification_last_modified = filemtime(FS_DIR_STORAGE .'vmods/'. $file)) > $last_modified) {
 					$last_modified = $modification_last_modified;
 				}
 			}
@@ -139,13 +141,20 @@
 			if (!self::$_modifications) {
 
 				// Load from add-ons
-				foreach (glob(FS_DIR_STORAGE . 'addons/*/vmod.xml', GLOB_BRACE) as $file) {
-					self::load($file);
+				foreach (scandir(FS_DIR_STORAGE . 'addons/') as $folder) {
+
+					if (in_array($folder, ['.', '..', '.cache'])) continue;
+					if (preg_match('#\.disabled$#', $folder)) continue;
+
+					if (file_exists($vmod = FS_DIR_STORAGE . 'addons/'. $folder .'/vmod.xml')) {
+						self::load($vmod);
+					}
 				}
 
 				// Load from vMods
-				foreach (glob(FS_DIR_STORAGE . 'vmods/*.xml', GLOB_BRACE) as $file) {
-					self::load($file);
+				foreach (scandir(FS_DIR_STORAGE . 'vmods/') as $file) {
+					if (substr($file, -4) != '.xml') continue;
+					self::load(FS_DIR_STORAGE .'vmods/'. $file);
 				}
 
 				// Store modifications to cache
@@ -360,6 +369,11 @@
 					throw new \Exception(libxml_get_last_error()->message);
 				}
 
+				// Legacy vQmod files are not supported, so skip them silently
+				if ($dom->documentElement->tagName == 'modification') {
+					return;
+				}
+
 				$vmod = self::parse_xml($dom, $file);
 
 				// Load modification if installed
@@ -383,7 +397,16 @@
 							}
 						}
 
-						foreach (glob(FS_DIR_APP . $glob_pattern, GLOB_BRACE) as $file_to_modify) {
+						// Resolve plain paths with a single stat, fall back to glob for wildcard patterns
+						$target = FS_DIR_APP . $glob_pattern;
+
+						if (strpbrk($glob_pattern, '*?[') === false) {
+							$files_to_modify = is_file($target) ? [$target] : [];
+						} else {
+							$files_to_modify = glob($target, GLOB_BRACE);
+						}
+
+						foreach ($files_to_modify as $file_to_modify) {
 							$relative_path = preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $file_to_modify);
 
 							self::$_files_to_modifications[$relative_path][] = [
@@ -480,7 +503,7 @@
 					self::$_installed[$vmod['id']] = $vmod['version'];
 				}
 
-			} catch (\Exception $e) {
+			} catch (\Throwable $e) {
 				trigger_error("Could not load vMod ($file): " . $e->getMessage(), E_USER_WARNING);
 			}
 		}
@@ -519,14 +542,14 @@
 				'name' => $dom->getElementsByTagName('name')->item(0)->textContent,
 				'version' => $dom->getElementsByTagName('version')->item(0)->textContent,
 				'author' => !empty($dom->getElementsByTagName('author')) ? $dom->getElementsByTagName('author')->item(0)->textContent : '',
-				'updated_at' => date('Y-m-d H:i:s', filemtime($file)),
+				'updated_at' => is_file($file) ? date('Y-m-d H:i:s', filemtime($file)) : null,
 				'files' => [],
 				'install' => null,
 				'upgrades' => [],
 			];
 
 			if (empty($vmod['version'])) {
-				$vmod['version'] = date('Y-m-d', filemtime($file));
+				$vmod['version'] = is_file($file) ? date('Y-m-d', filemtime($file)) : null;
 			}
 
 			if (!isset(self::$_installed[$vmod['id']])) {

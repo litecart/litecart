@@ -337,11 +337,15 @@
 			if (is_string($field)) {
 				$field = [
 					'Type' => $field,
-					'Default' => null,
+					'Default' => 'null',
 				];
 			}
 
-			if (!empty($field['Default'])) {
+			if (isset($field['Null']) && filter_var($field['Null'], FILTER_VALIDATE_BOOLEAN) && $field['Default'] === null) {
+				return null;
+			}
+
+			if (isset($field['Default'])) {
 				switch (true) {
 
 					case (preg_match('#^null$#i', $field['Default'])):

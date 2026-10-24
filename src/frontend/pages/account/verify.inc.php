@@ -253,7 +253,7 @@ input[autocomplete="one-time-code"] {
 				<h1><?= t('title_two_factor_authentication', 'Two-Factor Authentication') ?></h1>
 
 				<label class="form-group">
-					<div class="form-label"><?= t('title_verification_code', 'Verification Code') ?></div>
+					<div class="form-label"><?= t('title_verification_code', 'Verification Code') ?><?= !empty(session::$data['security.customer']['verification']['type']) ? ' ('. t('label_otp_method_'. session::$data['security.customer']['verification']['type'], strtoupper(session::$data['security.customer']['verification']['type'])) .')' : '' ?></div>
 					<?= f::form_input_text('code', '', ['autocomplete' => 'one-time-code', 'inputmode' => 'numeric', 'maxlength' => '6', 'pattern' => '\d{6}']) ?>
 				</label>
 

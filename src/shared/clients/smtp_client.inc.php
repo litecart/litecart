@@ -8,6 +8,7 @@
 		private $_password;
 		private $_log_handle;
 		private $_last_response;
+		private $_implicit_tls = false;
 
 		// When an AUTH command is written, this counter is set to the
 		// number of subsequent write()s whose payload is a base64 credential
@@ -20,8 +21,10 @@
 
 			if ($port == 465) {
 				$this->_host = "ssl://$host:$port";
+				$this->_implicit_tls = true;
 			} else {
 				$this->_host = "tcp://$host:$port";
+				$this->_implicit_tls = false;
 			}
 
 			$this->_username = $username;
@@ -54,7 +57,7 @@
 				throw new Exception('Could not connect to socket '. $this->_host .': '. $errstr);
 			}
 
-			if (empty($this->_socket)) {
+			if (!$this->_socket) {
 				throw new Exception('Failed opening socket connection to '. $this->_host);
 			}
 
@@ -65,7 +68,7 @@
 				->read(220)
 				->write("EHLO {$_SERVER['SERVER_NAME']}\r\n", 250);
 
-			if (preg_match('#250.STARTTLS#', $this->_last_response)) {
+			if (!$this->_implicit_tls && preg_match('#250[ -]STARTTLS#', $this->_last_response)) {
 				$this->write("STARTTLS\r\n", 220);
 				if (!stream_socket_enable_crypto($this->_socket, true, STREAM_CRYPTO_METHOD_SSLv23_CLIENT)) {
 					//if (!stream_socket_enable_crypto($this->_socket, true, STREAM_CRYPTO_METHOD_TLS_CLIENT)) {

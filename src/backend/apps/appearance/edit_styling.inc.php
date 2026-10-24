@@ -2,16 +2,16 @@
 
 	administrator::require_login();
 
-	if (is_file($file = FS_DIR_APP . 'frontend/templates/'. settings::get('template') .'/.development')) {
+	if (is_file($file = 'app://frontend/templates/'. settings::get('template') .'/.development')) {
 		$developement = file_get_contents($file);
 	} else {
 		$development = false;
 	}
 
-	if ($development = 'advanced' && is_file(FS_DIR_APP . 'frontend/templates/'. settings::get('template') .'/scss/variables.scss')) {
-		$stylesheet = FS_DIR_APP . 'frontend/templates/'. settings::get('template') .'/scss/variables.scss';
-	} else if (is_file(FS_DIR_APP . 'frontend/templates/'. settings::get('template') .'/css/variables.css')) {
-		$stylesheet = FS_DIR_APP . 'frontend/templates/'. settings::get('template') .'/css/variables.css';
+	if ($development = 'advanced' && is_file('app://frontend/templates/'. settings::get('template') .'/scss/variables.scss')) {
+		$stylesheet = 'app://frontend/templates/'. settings::get('template') .'/scss/variables.scss';
+	} else if (is_file('app://frontend/templates/'. settings::get('template') .'/css/variables.css')) {
+		$stylesheet = 'app://frontend/templates/'. settings::get('template') .'/css/variables.css';
 
 	} else {
 		notices::add('errors', t('error_template_missing_variables_stylesheet', 'This template does not have an editable stylesheet with variables (e.g. variables.css)'));

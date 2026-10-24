@@ -21,7 +21,10 @@
 			if (database::query(
 				"select count(*) as num_attempts from ". DB_PREFIX ."rate_limiting
 				where action = 'login_failed'
-				and ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."'
+				and (
+					ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."'
+					". (!empty($_POST['username']) ? "or (scope_type = 'login' and scope_key = '". database::input(strtolower($_POST['username'])) ."')" : '') ."
+				)
 				and created_at >= '". date('Y-m-d H:i:s', strtotime('-5 minutes')) ."'"
 			)->fetch('num_attempts') > 3) {
 				throw new Exception(t('error_too_many_attempts', 'Too many failed attempts. Please try again later.'));
@@ -73,6 +76,8 @@
 					'ip_address' => $_SERVER['REMOTE_ADDR'],
 					'hostname' => reverse_dns($_SERVER['REMOTE_ADDR']),
 					'user_agent' => $_SERVER['HTTP_USER_AGENT'],
+					'scope_type' => 'login',
+					'scope_key' => strtolower($_POST['username']),
 					'created_at' => date('Y-m-d H:i:s'),
 				]);
 
@@ -82,6 +87,10 @@
 					$failed_count = (int)database::query(
 						"select count(*) as num_attempts from ". DB_PREFIX ."rate_limiting
 						where action = 'login_failed'
+						and (
+							ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."'
+							or (scope_type = 'login' and scope_key = '". database::input(strtolower($_POST['username'])) ."')
+						)
 						and created_at >= '". $window_start ."'"
 					)->fetch('num_attempts');
 
@@ -98,16 +107,18 @@
 							'ip_address' => $_SERVER['REMOTE_ADDR'],
 							'hostname' => reverse_dns($_SERVER['REMOTE_ADDR']),
 							'user_agent' => $_SERVER['HTTP_USER_AGENT'],
+							'scope_type' => 'email',
+							'scope_key' => $administrator['email'],
 							'created_at' => date('Y-m-d H:i:s'),
 						]);
 
 						$aliases = [
-							'{store_name}' => settings::get('store_name'),
-							'{store_link}' => document::ilink(''),
 							'{username}' => $administrator['username'],
 							'{ip_address}' => $_SERVER['REMOTE_ADDR'],
 							'{hostname}' => reverse_dns($_SERVER['REMOTE_ADDR']),
 							'{user_agent}' => $_SERVER['HTTP_USER_AGENT'],
+							'{store_name}' => settings::get('store_name'),
+							'{store_link}' => document::ilink(''),
 						];
 
 						$subject = t('title_administrator_account_blocked', 'Administrator Account Blocked');
@@ -127,62 +138,6 @@
 							->add_body($message)
 							->send();
 					}
-				}
-
-				if (++$administrator['login_attempts'] < 3) {
-
-					database::query(
-						"update ". DB_PREFIX ."administrators
-						set login_attempts = login_attempts + 1
-						where id = ". (int)$administrator['id'] ."
-						limit 1;"
-					);
-
-					throw new Exception(t('error_wrong_username_password_combination', 'Wrong combination of username and password or the account does not exist.'));
-
-				} else {
-
-					database::query(
-						"update ". DB_PREFIX ."administrators
-						set login_attempts = 0,
-						valid_from = '". date('Y-m-d H:i:00', strtotime('+15 minutes')) ."'
-						where id = ". (int)$administrator['id'] ."
-						limit 1;"
-					);
-
-					if (!empty($administrator['email'])) {
-
-						$aliases = [
-							'{store_name}' => settings::get('store_name'),
-							'{store_link}' => document::ilink(''),
-							'{username}' => $administrator['username'],
-							'{expires}' => date('Y-m-d H:i:00', strtotime('+15 minutes')),
-							'{ip_address}' => $_SERVER['REMOTE_ADDR'],
-							'{hostname}' => reverse_dns($_SERVER['REMOTE_ADDR']),
-							'{user_agent}' => $_SERVER['HTTP_USER_AGENT'],
-						];
-
-						$subject = t('title_administrator_account_blocked', 'Administrator Account Blocked');
-						$message = strtr(t('administrator_account_blocked:email_body', implode("\r\n", [
-							'Your administrator account {username} has been blocked until {expires} because of too many invalid login attempts.',
-							'',
-							'Client: {ip_address} ({hostname})',
-							'{user_agent}',
-							'',
-							'{store_name}',
-							'{store_link}',
-						])), $aliases);
-
-						(new ent_email())
-							->add_recipient($administrator['email'], $administrator['username'])
-							->set_subject($subject)
-							->add_body($message)
-							->send();
-					}
-
-					throw new Exception(strtr(t('error_account_has_been_blocked', 'This account has been temporary blocked {n} minutes'), [
-						'{n}' => 15
-					]));
 				}
 
 				throw new Exception(t('error_wrong_username_password_combination', 'Wrong combination of username and password or the account does not exist.'));
@@ -216,7 +171,6 @@
 					last_ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."',
 					last_hostname = '". database::input(reverse_dns($_SERVER['REMOTE_ADDR'])) ."',
 					last_user_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."',
-					login_attempts = 0,
 					total_logins = total_logins + 1,
 					last_login = '". date('Y-m-d H:i:s') ."'
 				where id = ". (int)$administrator['id'] ."
@@ -232,7 +186,10 @@
 			database::query(
 				"delete from ". DB_PREFIX ."rate_limiting
 				where action = 'login_failed'
-				and ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."'"
+				and (
+					ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."'
+					". (!empty($administrator['email']) ? "or (scope_type = 'login' and scope_key = '". database::input(strtolower($administrator['email'])) ."')" : '') ."
+				);"
 			);
 
 			session::$data['security.administrator']['timestamp'] = time();
@@ -241,15 +198,13 @@
 
 			unset(session::$data['security.administrator']['verification']);
 
-			// TOTP (opt-in per administrator). When enrolled, always challenge —
-			// independent of the known-IP check below. Email OTP remains the
-			// fallback for admins who haven't enrolled.
+			// TOTP
 			if (!empty($administrator['totp_secret'])) {
 
 				session::$data['security.administrator']['verification'] = [
 					'type' => 'totp',
-					'code' => random_int(100000, 999999), // Not used for TOTP, but required for the verification form.
-					'expires' => strtotime('+5 minutes'),
+					'code' => str_pad((string)random_int(0, 999999), 6, '0', STR_PAD_LEFT), // Not used for TOTP, but required for the verification form.
+					'expires' => date('Y-m-d H:i:s', strtotime('+5 minutes')),
 					'attempts' => 0,
 				];
 
@@ -295,8 +250,8 @@
 
 						session::$data['security.administrator']['verification'] = [
 							'type' => 'eotp',
-							'code' => random_int(100000, 999999),
-							'expires' => strtotime('+15 minutes'),
+							'code' => str_pad((string)random_int(0, 999999), 6, '0', STR_PAD_LEFT),
+							'expires' => date('Y-m-d H:i:s', strtotime('+5 minutes')),
 							'attempts' => 0,
 						];
 

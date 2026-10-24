@@ -103,7 +103,7 @@
 								<div class="form-grid" style="align-items: end;">
 									<div class="col-sm-6">
 										<label class="form-group">
-											<div class="form-label"><?= t('title_verification_code', 'Verification Code') ?></div>
+											<div class="form-label"><?= t('title_verification_code', 'Verification Code') ?> (<?= t('label_otp_method_totp', 'TOTP') ?>)</div>
 											<?= f::form_input_text('totp_code', '', ['autocomplete' => 'one-time-code', 'inputmode' => 'numeric', 'maxlength' => '6', 'pattern' => '\d{6}', 'required' => true]) ?>
 										</label>
 									</div>

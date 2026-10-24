@@ -63,6 +63,7 @@
 
 			$addon->save();
 
+			notices::add('success', t('success_changes_saved', 'Changes saved'));
 
 			if (isset($_POST['quicksave'])) {
 				redirect(document::ilink(__APP__.'/edit_addon', ['addon_id' => $addon->data['id']]), 303);
@@ -70,8 +71,6 @@
 				redirect(document::ilink(__APP__.'/addons'), 303);
 			}
 
-			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect($redirect_url, 303);
 			exit;
 
 		} catch (Exception $e) {
@@ -172,7 +171,6 @@
 			exit;
 
 		} catch (Exception $e) {
-			die($e->getMessage());
 			http_response_code(400);
 			notices::add('errors', $e->getMessage());
 		}
@@ -472,8 +470,9 @@ textarea.warning {
 
 							<label class="form-group">
 								<div class="form-label"><?= t('title_storage_location', 'Storage Location') ?></div>
-								<div class="form-input" readyonly><?= (($addon->data['location'] ?? '') ?: '<em>' . t('text_save_addon_to_establish_file_storage', 'Save the add-on to establish a file storage') . '</em>') ?></div>
+								<div class="form-input" readonly><?= (($addon->data['location'] ?? '') ?: '<em>' . t('text_save_addon_to_establish_file_storage', 'Save the add-on to establish a file storage') . '</em>') ?></div>
 							</label>
+
 							<?php if (!empty($addon->data['id'])) { ?>
 							<div class="grid">
 								<div class="col-md-6">

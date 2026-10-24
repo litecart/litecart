@@ -18,8 +18,11 @@
 			if (database::query(
 				"select count(*) as num_attempts from ". DB_PREFIX ."rate_limiting
 				where action = 'verification_failed'
-				and ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."'
-				and created_at >= '". date('Y-m-d H:i:s', strtotime('-5 minutes')) ."'"
+				and (
+					ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."'
+					". (!empty(administrator::$data['email']) ? "or (scope_type = 'email' and scope_key = '". database::input(administrator::$data['email']) ."')" : '') ."
+				)
+				and created_at >= '". date('Y-m-d H:i:s', strtotime('-5 minutes')) ."';"
 			)->fetch('num_attempts') > 3) {
 				throw new Exception(t('error_too_many_attempts', 'Too many failed attempts. Please try again later.'));
 			}
@@ -60,6 +63,8 @@
 						'ip_address' => $_SERVER['REMOTE_ADDR'],
 						'hostname' => reverse_dns($_SERVER['REMOTE_ADDR']),
 						'user_agent' => $_SERVER['HTTP_USER_AGENT'],
+						'scope_type' => 'email',
+						'scope_key' => administrator::$data['email'],
 						'created_at' => date('Y-m-d H:i:s'),
 					]);
 
@@ -80,13 +85,16 @@
 				);
 			}
 
-			unset(session::$data['security.administrator']['verification']);
-
 			database::query(
 				"delete from ". DB_PREFIX ."rate_limiting
 				where action = 'verification_failed'
-				and ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."'"
+				and (
+					ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."'
+					". (!empty(administrator::$data['email']) ? "or (scope_type = 'email' and scope_key = '". database::input(administrator::$data['email']) ."')" : '') ."
+				);"
 			);
+
+			unset(session::$data['security.administrator']['verification']);
 
 			if (!empty($_POST['redirect_url'])) {
 				$redirect_url = new type_url($_POST['redirect_url']);
@@ -124,15 +132,19 @@
 			if (database::query(
 				"select count(*) as num_attempts from ". DB_PREFIX ."rate_limiting
 				where action = 'verification_sent'
-				and ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."'
+				and (
+					ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."'
+					". (!empty(administrator::$data['email']) ? "or (scope_type = 'email' and scope_key = '". database::input(administrator::$data['email']) ."')" : '') ."
+				)
 				and created_at >= '". date('Y-m-d H:i:s', strtotime('-5 minutes')) ."'"
 			)->fetch('num_attempts') > 3) {
 				throw new Exception(t('error_too_many_attempts', 'Too many failed attempts. Please try again later.'));
 			}
 
 			session::$data['security.administrator']['verification'] = [
-				'code' => random_int(100000, 999999),
-				'expires' => strtotime('+15 minutes'),
+				'type' => 'eotp',
+				'code' => str_pad((string)random_int(0, 999999), 6, '0', STR_PAD_LEFT),
+				'expires' => date('Y-m-d H:i:s', strtotime('+5 minutes')),
 				'attempts' => 0,
 			];
 
@@ -149,6 +161,8 @@
 				'ip_address' => $_SERVER['REMOTE_ADDR'],
 				'hostname' => reverse_dns($_SERVER['REMOTE_ADDR']),
 				'user_agent' => $_SERVER['HTTP_USER_AGENT'],
+				'scope_type' => 'email',
+				'scope_key' => administrator::$data['email'],
 				'created_at' => date('Y-m-d H:i:s'),
 			]);
 
@@ -233,7 +247,7 @@ input[autocomplete="one-time-code"] {
 				<h1><?= t('title_two_factor_authentication', 'Two-Factor Authentication') ?></h1>
 
 				<label class="form-group">
-					<div class="form-label"><?= t('title_verification_code', 'Verification Code') ?></div>
+					<div class="form-label"><?= t('title_verification_code', 'Verification Code') ?><?= !empty(session::$data['security.administrator']['verification']['type']) ? ' ('. t('label_otp_method_'. session::$data['security.administrator']['verification']['type'], strtoupper(session::$data['security.administrator']['verification']['type'])) .')' : '' ?></div>
 					<?= f::form_input_text('code', '', ['autocomplete' => 'one-time-code', 'inputmode' => 'numeric', 'maxlength' => '6', 'pattern' => '\d{6}']) ?>
 				</label>
 

@@ -125,8 +125,10 @@
 		}
 
 		if (in_array($errno, [E_PARSE, E_ERROR, E_COMPILE_ERROR, E_CORE_ERROR, 256])) {
-			http_response_code(500);
-			exit(500);
+			if ($_SERVER['SERVER_SOFTWARE'] != 'CLI') {
+				http_response_code(500);
+			}
+			exit(1);
 		}
 	}
 

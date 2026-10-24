@@ -51,7 +51,7 @@
 			header('Permissions-Policy: ' . implode(',', [
 				'camera=()',
 				'clipboard-read=()',
-				'clipboard-write=()',
+				'clipboard-write=(self)',
 				'fullscreen=(self)',
 				'payment=()',
 				'geolocation=()',
@@ -429,7 +429,7 @@
 			// Prepare console log
 			if (!empty(self::$console)) {
 				self::$javascript[] = implode(PHP_EOL, f::array_each(self::$console, fn($log) =>
-					'console.'. $log['type'] .'("'. f::escape_attr($log['message']) .'", '. f::format_json($log['data']) .');'
+					'console.'. $log['type'] .'("'. f::escape_attr($log['message']) .'", '. f::format_json($log['data'], '') .');'
 				));
 			}
 
@@ -508,12 +508,12 @@
 			foreach ($resources as $resource) {
 				if (preg_match('#^(app://|storage://|'. preg_quote(DOCUMENT_ROOT, '#') .')#', $resource)) {
 					if (is_file($resource)) {
-						$styles[] = '<link rel="stylesheet" integrity="sha256-'. base64_encode(hash_file('sha256', $resource, true)) .'" crossorigin="anonymous" href="'. self::href_rlink($resource) .'">';
+						$styles[] = '<link rel="stylesheet" nonce="'. security::$data['nonce'] .'" integrity="sha256-'. base64_encode(hash_file('sha256', $resource, true)) .'" crossorigin="anonymous" href="'. self::href_rlink($resource) .'">';
 					} else {
 						trigger_error('Stylesheet not found: '. $resource, E_USER_WARNING);
 					}
 				} else {
-					$styles[] = '<link rel="stylesheet" href="'. self::href_link($resource) .'">';
+					$styles[] = '<link rel="stylesheet" nonce="'. security::$data['nonce'] .'" href="'. self::href_link($resource) .'">';
 				}
 			}
 

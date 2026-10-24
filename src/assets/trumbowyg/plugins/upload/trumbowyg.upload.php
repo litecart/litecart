@@ -1,6 +1,6 @@
 <?php
 
-	include '../../../../system/app_header.inc.php';
+	include '../../../../shared/app_header.inc.php';
 
 	try {
 
@@ -15,7 +15,8 @@
 
 			$image = new ent_image($_FILES['fileToUpload']['tmp_name']);
 
-			$i=0; $filename='';
+			$i = 0;
+			$filename = '';
 
 			while (empty($filename) || is_file($upload_directory . $filename)) {
 				$filename = pathinfo($_FILES['fileToUpload']['name'], PATHINFO_FILENAME) . ($i ? '_'.$i : '') .'.'. $image->type;

@@ -47,7 +47,7 @@ body.litebox-open {
 
 		&:not(.litebox-seamless) {
 			padding: var(--gutter-y) var(--gutter-x);
-			background: var(--modal-background, '#fff');
+			background: var(--modal-background, #fff);
 			box-shadow: 0 5px 2em rgb(0 0 0 / 25%);
 		}
 
@@ -83,7 +83,7 @@ body.litebox-open {
 		top: 50%;
 		margin-top: -1.5em;
 		background: rgb(0 0 0 / 33%);
-		color: var(--modal-text-color, '#fff');
+		color: var(--modal-text-color, #fff);
 		border-radius: var(--border-radius);
 		cursor: pointer;
 		backdrop-filter: blur(3px);
