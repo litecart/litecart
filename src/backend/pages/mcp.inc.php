@@ -26,9 +26,19 @@
 
 	$indent = "\t"; // No indentation by default for compact output; can be set to e.g. '  ' for pretty-printing
 
-	// Protocol versions this server supports (modern era, post-handshake).
-	// Listed newest-first; clients SHOULD pick the highest mutually supported.
+	// Protocol versions this server supports, newest-first.
+	// Modern era is post-handshake and stateless; clients SHOULD pick the highest
+	// mutually supported version.
 	$supported_versions = ['2026-07-28'];
+
+	// Legacy era: pre-handshake, session-oriented. Accepted for backwards
+	// compatibility so older clients can still connect. These versions speak the
+	// same stateless request/response wire format for every RPC we implement
+	// (tools/list, tools/call); the only difference is the initialize handshake.
+	$legacy_versions = ['2025-11-25', '2025-06-18', '2025-03-26', '2024-11-05'];
+
+	// Versions we will accept on an inbound request
+	$accepted_versions = array_merge($supported_versions, $legacy_versions);
 
 	// --- HTTP-only validation: method, headers, body size ---
 	if (!is_cli()) {
@@ -110,7 +120,7 @@
 			exit;
 		}
 
-		if ($requested_version && !in_array($requested_version, $supported_versions, true)) {
+		if ($requested_version && !in_array($requested_version, $accepted_versions, true)) {
 			$output = f::format_json([
 				'jsonrpc' => '2.0',
 				'id' => is_array($rpc) && isset($rpc['id']) ? $rpc['id'] : null,
@@ -118,7 +128,7 @@
 					'code' => -32022,
 					'message' => 'Unsupported protocol version',
 					'data' => [
-						'supported' => $supported_versions,
+						'supported' => $accepted_versions,
 						'requested' => $requested_version,
 					],
 				],
@@ -215,7 +225,7 @@
 	}
 
 	// Dispatch one JSON-RPC request. Returns the JSON response string, or null for notifications (no response).
-	$dispatch = function(string $raw) use ($indent, $allowed_tools, $supported_versions): ?string {
+	$dispatch = function(string $raw) use ($indent, $allowed_tools, $supported_versions, $legacy_versions, $accepted_versions): ?string {
 
 		$rpc_id = null;
 
@@ -233,15 +243,45 @@
 			// Per-request protocol version validation on stdio (HTTP validates before dispatch).
 			if (is_cli()) {
 				$req_ver = $params['_meta']['io.modelcontextprotocol/protocolVersion'] ?? null;
-				if ($req_ver && !in_array($req_ver, $supported_versions, true)) {
+				if ($req_ver && !in_array($req_ver, $accepted_versions, true)) {
 					throw new McpException('Unsupported protocol version', 400, -32022, $rpc_id, [
-						'supported' => $supported_versions,
+						'supported' => $accepted_versions,
 						'requested' => $req_ver,
 					]);
 				}
 			}
 
 			switch ($rpc['method']) {
+
+				// Legacy handshake, retained for clients that predate 2026-07-28.
+				// The server is stateless, so no Mcp-Session-Id is issued and every
+				// subsequent request is self-describing anyway.
+				case 'initialize':
+
+					// Echo back the client's requested version when we speak it,
+					// otherwise offer our newest supported version.
+					$client_version = $params['protocolVersion'] ?? null;
+					$negotiated = in_array($client_version, $accepted_versions, true)
+						? $client_version
+						: $supported_versions[0];
+
+					$result = [
+						'protocolVersion' => $negotiated,
+						'capabilities' => [
+							'tools' => new stdClass(),
+						],
+						'serverInfo' => [
+							'name' => PLATFORM_NAME .' MCP Server',
+							'version' => PLATFORM_VERSION,
+						],
+						'instructions' => PLATFORM_NAME .' Model Context Protocol server. Tools are filtered by the access key\'s permissions.',
+					];
+
+					break;
+
+				// Legacy notification, acknowledged with no response body.
+				case 'notifications/initialized':
+					return null;
 
 				// MCP built-in: capability and version discovery
 				case 'server/discover':
