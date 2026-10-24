@@ -1,0 +1,76 @@
+.loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.loader {
+  position: relative;
+  width: 120px;
+  height: 120px;
+}
+
+.loader-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  animation: spin 1.4s linear infinite;
+}
+
+.loader-ring:nth-child(1) {
+  border-top-color: #38bdf8;
+  animation-delay: 0s;
+}
+
+.loader-ring:nth-child(2) {
+  inset: 12px;
+  border-right-color: #a855f7;
+  animation-duration: 1.8s;
+  animation-direction: reverse;
+}
+
+.loader-ring:nth-child(3) {
+  inset: 24px;
+  border-bottom-color: #f472b6;
+  animation-duration: 2.2s;
+}
+
+.loader-core {
+  position: absolute;
+  inset: 42px;
+  background: linear-gradient(135deg, #38bdf8, #a855f7, #f472b6);
+  border-radius: 50%;
+  animation: pulse 1.6s ease-in-out infinite;
+  box-shadow:
+    0 0 30px rgba(56, 189, 248, 0.6),
+    0 0 60px rgba(168, 85, 247, 0.4);
+}
+
+.message {
+  text-align: center;
+  max-width: 420px;
+}
+
+.message h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.01em;
+}
+
+.message p {
+  font-size: 0.95rem;
+  color: #94a3b8;
+  line-height: 1.5;
+  transition: opacity 0.4s ease;
+}
+
+.dots::after {
+  content: '';
+  display: inline-block;
+  width: 1.5em;
+  text-align: left;
+  animation: dots 1.4s steps(4, end) infinite;
+}
