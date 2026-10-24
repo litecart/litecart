@@ -82,19 +82,24 @@
 
 				$vmod = FS_DIR_STORAGE .'addons/'.$folder.'/vmod.xml';
 
+				if (!is_file($vmod)) continue;
+
 				if (filemtime($vmod) > $last_modified) {
 					$last_modified = filemtime($vmod);
 				}
 			}
 
 			// vMods
-			if (($folder_last_modified = filemtime(FS_DIR_STORAGE .'vmods/')) > $last_modified) {
+			$vmods_folder = FS_DIR_STORAGE .'vmods/';
+			if (filemtime($vmods_folder) > $last_modified) {
 				$last_modified = $folder_last_modified;
 			}
 
-			foreach (scandir(FS_DIR_STORAGE .'vmods/') as $file) {
-				if (substr($file, -4) != '.xml') continue;
-				if (($modification_last_modified = filemtime(FS_DIR_STORAGE .'vmods/'. $file)) > $last_modified) {
+			foreach (scandir($vmods_folder) as $file) {
+
+				if ($file != 'vmod.xml') continue;
+
+				if (($modification_last_modified = filemtime($vmods_folder.$file)) > $last_modified) {
 					$last_modified = $modification_last_modified;
 				}
 			}
