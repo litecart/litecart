@@ -119,7 +119,7 @@
 			}
 
 			if (!is_dir('storage://images/brands/')) {
-				mkdir('storage://images/brands/', 0777);
+				mkdir('storage://images/brands/', 2775, true);
 			}
 
 			$image = new ent_image($file);

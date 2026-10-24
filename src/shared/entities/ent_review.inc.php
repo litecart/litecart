@@ -154,7 +154,7 @@
 			if (empty($this->data['id'])) $this->save();
 
 			if (!is_dir(self::FS_DIR_ATTACHMENTS)) {
-				f::file_mkdir(self::FS_DIR_ATTACHMENTS);
+				mkdir(self::FS_DIR_ATTACHMENTS, 2775, true);
 			}
 
 			$file = null;

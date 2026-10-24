@@ -205,7 +205,7 @@
 			$this->data['location'] = 'storage://addons/'.$this->data['folder'] .'/';
 
 			if (!$this->previous['folder']) {
-				mkdir($this->data['location']);
+				mkdir($this->data['location'], 2775, true);
 
 			} else if ($this->data['folder'] != $this->previous['folder']) {
 				if (!rename($this->previous['location'], $this->data['location'])) {

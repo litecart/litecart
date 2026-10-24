@@ -529,7 +529,9 @@
 	]);
 
 	// Move files to trash
-	mkdir(FS_DIR_APP . '.deleteme', 0777, true);
+	perform_action('core:mkdir', [
+		FS_DIR_APP . '.deleteme',
+	]);
 
 	perform_action('core:move', [
 		FS_DIR_APP . 'includes/config.inc.php' => FS_DIR_APP . '.deleteme/config.inc.php',

@@ -6,7 +6,7 @@
 
 		echo '<p>Set up storage folder... ';
 
-		if (!file_exists(FS_DIR_STORAGE) && !mkdir(FS_DIR_STORAGE, 0777)) {
+		if (!file_exists(FS_DIR_STORAGE) && !mkdir(FS_DIR_STORAGE, 2775, true)) {
 			throw new Exception('Could not create storage folder');
 		}
 
@@ -22,7 +22,7 @@
 
 		echo '<p>Set up logs folder... ';
 
-		if (!file_exists(FS_DIR_STORAGE . 'logs/') && !mkdir(FS_DIR_STORAGE . 'logs/', 0777)) {
+		if (!file_exists(FS_DIR_STORAGE . 'logs/') && !mkdir(FS_DIR_STORAGE . 'logs/', 2775, true)) {
 			throw new Exception('Could not create logs folder');
 		}
 

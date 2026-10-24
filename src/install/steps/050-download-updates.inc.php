@@ -14,7 +14,7 @@
 			$response = $client->call('GET', 'https://raw.githubusercontent.com/litecart/litecart/'. PLATFORM_VERSION .'/src/'. $file);
 			if ($client->last_response['status_code'] != 200) return false;
 			if (!is_dir(dirname(FS_DIR_APP . $file))) {
-				mkdir(dirname(FS_DIR_APP . $file), 0777, true);
+				mkdir(dirname(FS_DIR_APP . $file), 2775, true);
 			}
 			file_put_contents(FS_DIR_APP . $file, $response);
 			return true;

@@ -18,7 +18,7 @@
 			}
 
 			if (!is_dir($dir = 'storage://cache/sitemap/')) {
-				mkdir($dir);
+				mkdir($dir, 2775, true);
 			}
 
 			// Clean up previous sitemaps

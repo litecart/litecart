@@ -59,7 +59,7 @@
 				throw new Exception(t('error_access_forbidden', 'Access forbiden'));
 			}
 
-			if (!mkdir('storage://' . rtrim($_GET['path'], '/') . '/' . basename($_POST['directory']))) {
+			if (!mkdir('storage://' . rtrim($_GET['path'], '/') . '/' . basename($_POST['directory']), 2775, true)) {
 				throw new Exception('Could not create directory');
 			}
 
@@ -189,7 +189,7 @@
 			foreach (array_keys($_FILES['files']['tmp_name']) as $key) {
 				$new_file = 'storage://' . ltrim($_GET['path'], '/') . f::file_strip_path($_POST['paths'][$key]);
 				if (!is_dir(dirname($new_file))) {
-					mkdir(dirname($new_file), 0777, true);
+					mkdir(dirname($new_file), 2775, true);
 				}
 				move_uploaded_file($_FILES['files']['tmp_name'][$key], $new_file);
 			}

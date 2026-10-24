@@ -106,7 +106,7 @@
 			$filename = 'banners/' . f::format_path_friendly($this->data['id'] .'-'. $this->data['name']) .'.'. $image->type;
 
 			if (!file_exists('storage://images/banners/')) {
-				mkdir('storage://images/banners/', 0777);
+				mkdir('storage://images/banners/', 2775, true);
 			}
 
 			if (file_exists('storage://images/' . $filename)) {

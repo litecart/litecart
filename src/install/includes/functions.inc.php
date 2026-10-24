@@ -229,6 +229,13 @@
 
 				break;
 
+				case 'mkdir':
+
+					foreach ($payload as $source) {
+						mkdir($source, 2775, true);
+					}
+					break;
+
 				case 'modify':
 
 					foreach ($payload as $source => $operations) {

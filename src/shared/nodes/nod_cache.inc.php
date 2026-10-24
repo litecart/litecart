@@ -273,7 +273,7 @@
 					$cache_file = 'storage://cache/'. substr($token['id'], 0, 2) .'/'. $token['id'] .'.cache';
 
 					if (!is_dir(dirname($cache_file))) {
-						if (!mkdir(dirname($cache_file))) {
+						if (!mkdir(dirname($cache_file), 2775, true)) {
 							trigger_error('Could not create cache subfolder', E_USER_WARNING);
 							$result = false;
 							break;

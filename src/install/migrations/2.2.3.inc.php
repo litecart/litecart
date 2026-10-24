@@ -393,7 +393,7 @@
 		if ($new_file != $file) {
 
 			if (!file_exists(dirname($new_file))) {
-				mkdir(dirname($new_file));
+				perform_action('mkdir', [dirname(dirname($new_file))]);
 			}
 
 			rename($file, $new_file);

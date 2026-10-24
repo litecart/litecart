@@ -54,7 +54,7 @@
 
 			if ($file != f::realpath('storage://' . ltrim($_POST['filename'], '/'))) {
 				if (!is_dir(dirname('storage://' . ltrim($_POST['filename'], '/')))) {
-					mkdir(dirname('storage://' . ltrim($_POST['filename'], '/')));
+					mkdir(dirname('storage://' . ltrim($_POST['filename'], '/')), 2775, true);
 				}
 				rename($file, 'storage://' . ltrim($_POST['filename'], '/'));
 			}

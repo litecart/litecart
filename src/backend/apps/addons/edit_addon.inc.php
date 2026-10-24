@@ -115,7 +115,7 @@
 
 			foreach (array_keys($_FILES['files']['tmp_name']) as $key) {
 				$new_file = $addon->data['location'] . f::file_strip_path($_POST['paths'][$key]);
-				mkdir(dirname($new_file), 0777, true);
+				mkdir(dirname($new_file), 2775, true);
 				move_uploaded_file($_FILES['files']['tmp_name'][$key], $new_file);
 			}
 

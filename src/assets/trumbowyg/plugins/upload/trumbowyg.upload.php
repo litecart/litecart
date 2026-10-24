@@ -11,7 +11,10 @@
 		$upload_directory = 'storage://images/uploads/';
 
 		if (!empty($_FILES['fileToUpload']) && is_uploaded_file($_FILES['fileToUpload']['tmp_name'])) {
-			if (!is_dir($upload_directory)) mkdir($upload_directory, 0777);
+
+			if (!is_dir($upload_directory)) {
+				mkdir($upload_directory, 2775, true);
+			}
 
 			$image = new ent_image($_FILES['fileToUpload']['tmp_name']);
 

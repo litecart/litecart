@@ -44,7 +44,7 @@
 
 			if ($folder != f::realpath(FS_DIR_STORAGE . ltrim($_POST['filename'], '/'))) {
 				if (!is_dir(dirname(FS_DIR_STORAGE . ltrim($_POST['filename'], '/')))) {
-					mkdir(dirname(FS_DIR_STORAGE . ltrim($_POST['filename'], '/')));
+					mkdir(dirname(FS_DIR_STORAGE . ltrim($_POST['filename'], '/')), 2775, true);
 				}
 				rename($folder, FS_DIR_STORAGE . ltrim($_POST['filename'], '/'));
 			}

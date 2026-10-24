@@ -221,7 +221,7 @@
 			}
 
 			if (!is_dir('storage://images/categories/')) {
-				mkdir('storage://images/categories/', 0777);
+				mkdir('storage://images/categories/', 2775, true);
 			}
 
 			if (is_file('storage://images/' . $filename)) {

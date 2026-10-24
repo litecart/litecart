@@ -308,7 +308,7 @@
 			}
 
 			if (!is_dir('storage://images/stock_items/')){
-				mkdir('storage://images/stock_items/', 0777);
+				mkdir('storage://images/stock_items/', 2775, true);
 			}
 
 			$image = new ent_image($file);
@@ -366,7 +366,7 @@
 			}
 
 			if (!is_dir('storage://files/')){
-				mkdir('storage://files/', 0777);
+				mkdir('storage://files/', 2775, true);
 			}
 
 			if (is_file($this->data['file'])) {

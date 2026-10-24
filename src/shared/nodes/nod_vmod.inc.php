@@ -23,7 +23,7 @@
 			$timestamp = microtime(true);
 
 			if (!is_dir(FS_DIR_STORAGE . 'vmods/.cache/')) {
-				mkdir(FS_DIR_STORAGE . 'vmods/.cache/');
+				mkdir(FS_DIR_STORAGE . 'vmods/.cache/', 2775, true);
 			}
 
 			if (!is_file($installed_file = FS_DIR_STORAGE .'vmods/.installed')) {
@@ -312,7 +312,7 @@
 
 			// Create cache folder for modified files if missing
 			if (!is_dir(FS_DIR_STORAGE . 'vmods/.cache/')) {
-				if (!mkdir(FS_DIR_STORAGE . 'vmods/.cache/', 0777)) {
+				if (!mkdir(FS_DIR_STORAGE . 'vmods/.cache/', 2775, true)) {
 					throw new Error('The modifications cache directory could not be created');
 				}
 			}

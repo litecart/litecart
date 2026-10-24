@@ -22,7 +22,7 @@
 			if (is_dir($source)) {
 
 				if (!is_dir($target)) {
-					$results[$target] = mkdir($target);
+					$results[$target] = mkdir($target, 2775, true);
 					if (!$results[$target]) return false;
 				}
 
@@ -415,7 +415,7 @@
 			} else if (is_dir($source)) {
 
 				if (!is_dir($target)) {
-					$results[$target] = mkdir($target, 0777, true);
+					$results[$target] = mkdir($target, 2775, true);
 					if (!$results[$target]) return false;
 				}
 

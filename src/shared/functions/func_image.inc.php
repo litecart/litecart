@@ -85,7 +85,7 @@
 			}
 
 			if (!is_dir(dirname($options['destination']))) {
-				if (!mkdir(dirname($options['destination']), 0777, true)) {
+				if (!mkdir(dirname($options['destination']), 2775, true)) {
 					throw new Exception('Could not create destination folder');
 				}
 			}

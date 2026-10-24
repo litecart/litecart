@@ -554,7 +554,7 @@
 			}
 
 			if (!is_dir('storage://images/products/')) {
-				mkdir('storage://images/products/', 0777);
+				mkdir('storage://images/products/', 2775, true);
 			}
 
 			if (!$image = new ent_image($file)) {

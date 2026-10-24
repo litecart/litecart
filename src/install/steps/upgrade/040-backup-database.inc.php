@@ -9,7 +9,7 @@
       echo '<p>Backing up the database... ';
 
       if (!file_exists(FS_DIR_STORAGE . 'backups/')) {
-        if (!mkdir(FS_DIR_STORAGE . 'backups/', 0777)) {
+        if (!mkdir(FS_DIR_STORAGE . 'backups/', 2775, true)) {
           throw new Exception('Could not create folder for backups');
         }
       }
