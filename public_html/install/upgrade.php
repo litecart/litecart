@@ -461,7 +461,7 @@ input[name="development_type"]:checked + div {
 
     <div class="form-group col-md-6">
       <label style="margin-top: 2.25em;">
-        <input type="checkbox" class="form-check" name="skip_updates" value="0"> Skip downloading the latest updates
+        <input type="checkbox" class="form-check" name="skip_updates" value="1"> Skip downloading the latest updates
       </label>
     </div>
   </div>
