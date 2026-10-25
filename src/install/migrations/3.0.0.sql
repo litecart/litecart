@@ -804,7 +804,7 @@ INSERT INTO `lc_settings` (`group_key`, `title`, `description`, `key`, `value`, 
 ('defaults', 'Default Address Format', 'The default address format if not specified otherwise.', 'default_address_format', '%company\n%firstname %lastname\n%address1\n%address2\n%country_code-%postcode %city\n%country_name', 'textarea()', 1, 14, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ('customer_details', 'Different Shipping Address', 'Allow customers to provide a different address for shipping.', 'customer_shipping_address', '1', 'toggle("y/n")', 0, 24, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ('customer_details', 'Newsletter Subscription', 'Allow customers to subscribe to newsletter.', 'newsletter_enabled', '1', 'toggle("e/d")', 0, 25, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('listings', 'Featured Products Box: Number of Items', 'The maximum number of items to be displayed in the box.', 'box_featured_products_num_items', '10', 'number()', 0, 17, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('catalog', 'Featured Products Box: Number of Items', 'The maximum number of items to be displayed in the box.', 'box_featured_products_num_items', '10', 'number()', 0, 17, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ('checkout', 'Order Number Format', 'Specify the format for creating order numbers. {id} = order id, {yy} = year, {mm} = month, {q} = quarter, {l} length digit, {#} = luhn checksum digit', 'order_no_format', '{id}', 'text()', 1, 20, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ('advanced', 'Static Content Domain Name', 'Use the given alias domain name for static content (fonts, images, stylesheets, javascripts, etc.).', 'static_domain', '', 'text()', 0, 12, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ('social_media', 'Facebook Link', 'The link to your Facebook page.', 'facebook_link', '', 'url()', 0, 10, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
@@ -1107,6 +1107,16 @@ UPDATE `lc_settings`
 SET `group_key` = 'security',
 	`key` = 'captcha';
 WHERE `key` = 'captcha_enabled';
+-- -----
+UPDATE `lc_settings`
+SET `group_key` = 'catalog'
+WHERE `group_key` = 'listings';
+-- -----
+UPDATE `lc_settings_groups`
+SET `key` = 'catalog',
+	`name` = 'Catalog',
+	`description` = 'Settings for the catalog'
+WHERE `key` = 'listings';
 -- -----
 ALTER TABLE `lc_settings` CHANGE `value` `value` VARCHAR(8192) NOT NULL DEFAULT '';
 -- -----
