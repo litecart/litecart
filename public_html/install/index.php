@@ -321,7 +321,16 @@ input[name="development_type"]:checked + div {
   <h3>PHP</h3>
 
   <ul>
-    <li>5.6 - 8.6 <?php echo (PHP_VERSION_ID >= 50600 && PHP_VERSION_ID < 80600)? '<span class="ok">['. PHP_VERSION .']</span>' : '<span class="error">['. PHP_VERSION .']</span>'; ?></li>
+    <li>5.6 - 8.6 <?php echo (PHP_VERSION_ID >= 50600) ? '<span class="ok">['. PHP_VERSION .']</span>' : '<span class="error">['. PHP_VERSION .']</span>'; ?></li>
+    <?php if (
+      (PHP_VERSION_ID < 80200) ||
+      (PHP_VERSION_ID >= 80200 && PHP_VERSION_ID < 80235) ||
+      (PHP_VERSION_ID >= 80300 && PHP_VERSION_ID < 80336) ||
+      (PHP_VERSION_ID >= 80400 && PHP_VERSION_ID < 80427) ||
+      (PHP_VERSION_ID >= 80500 && PHP_VERSION_ID < 80512)
+    ) { ?>
+    <li><span class="warning">[Warning]</span> PHP <?php echo PHP_VERSION; ?> could be vulnerable to CVE-2026-109618 and CVE-2026-109619. Please upgrade to at minimum PHP 8.5.12, 8.4.27, 8.3.36 or 8.2.35.</li>
+    <?php } ?>
     <li>register_globals = <?php echo ini_get('register_globals') ? ini_get('register_globals') : 'off'; ?> <?php echo in_array(strtolower(ini_get('register_globals')), ['off', 'false', '', '0']) ? '<span class="ok">[OK]</span>' : '<span class="error">[Alert! Must be disabled]</span>'; ?></li>
     <li>arg_separator.output = <?php echo htmlspecialchars(ini_get('arg_separator.output')); ?> <?php echo (ini_get('arg_separator.output') == '&') ? '<span class="ok">[OK]</span>' : '<span class="error">[Not recommended]</span>'; ?></li>
     <li>memory_limit = <?php echo ini_get('memory_limit'); ?> <?php echo (return_bytes(ini_get('memory_limit')) >= 128*1024*1024) ? '<span class="ok">[OK]</span>' : '<span class="warning">[128+ MB recommeded]</span>'; ?></li>

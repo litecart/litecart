@@ -154,10 +154,19 @@
 
       echo '<p>Checking PHP version... ';
 
-      if (PHP_VERSION_ID < 50400) {
-        throw new Exception(PHP_VERSION .' <span class="error">[Error] PHP 5.4+ minimum requirement</span></p>' . PHP_EOL . PHP_EOL);
-      } else if (PHP_VERSION_ID <= 70200) {
-        echo PHP_VERSION .' <span class="warning">[Warning] PHP '. PHP_VERSION .' has reached <a href="https://www.php.net/supported-versions.php" target="_blank">end of life</a>.</span></p>' . PHP_EOL . PHP_EOL;
+      if (PHP_VERSION_ID < 50600) {
+        throw new Exception(PHP_VERSION .' <span class="error">[Error] PHP 5.6+ minimum requirement</span></p>' . PHP_EOL . PHP_EOL);
+      }
+
+      // Check if PHP version is vulnerable to CVE-2026-109618 and CVE-2026-109619.
+      if (
+        (PHP_VERSION_ID < 80200) ||
+        (PHP_VERSION_ID >= 80200 && PHP_VERSION_ID < 80235) ||
+        (PHP_VERSION_ID >= 80300 && PHP_VERSION_ID < 80336) ||
+        (PHP_VERSION_ID >= 80400 && PHP_VERSION_ID < 80427) ||
+        (PHP_VERSION_ID >= 80500 && PHP_VERSION_ID < 80512)
+      ) {
+        echo '<span class="warning">[Warning]</span>' . PHP_EOL . ' Your PHP version '. PHP_VERSION .' could be vulnerable to CVE-2026-109618 and CVE-2026-109619. Please upgrade to at minimum PHP 8.5.12, 8.4.27, 8.3.36 or 8.2.35.</p>' . PHP_EOL  . PHP_EOL;
       } else {
         echo PHP_VERSION .' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
       }
