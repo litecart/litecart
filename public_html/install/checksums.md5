@@ -131,7 +131,7 @@ d41d8cd98f00b204e9800998ecf8427e	admin/vmods.app/index.html
 d65e7b71a9f87f70dbdc5a6f83e70816	admin/vmods.app/test.inc.php
 d31bfdcae332df6521c99d9d85cb2974	admin/vmods.app/view.inc.php
 3f32ccf237968dd237afb3e49c44fa80	admin/vmods.app/vmods.inc.php
-7b826d48fc08e701f454eb6f0ed16cc0	cache/.htaccess
+29b52aa75adb58387300b6ae7d063733	cache/.htaccess
 d41d8cd98f00b204e9800998ecf8427e	cache/index.html
 62bac9360222fee7de79173307177c9e	data/.htaccess
 281a3f75048a959aaed510bbb1b2273a	data/captcha.ttf
@@ -242,7 +242,7 @@ e4e9a80e4ca667f1841e1683968f8290	includes/entities/ent_currency.inc.php
 b5771c7eff986dd9acd60aba2b7cdab0	includes/entities/ent_delivery_status.inc.php
 65ff5b4d46fe5d5903fca11e73c33d91	includes/entities/ent_email.inc.php
 969b581645fe1da64dea674feecbab77	includes/entities/ent_geo_zone.inc.php
-0bc81c9d4c439b7fba0bbb03954f8862	includes/entities/ent_image.inc.php
+d1142184d4d6b52bd858707726b69a34	includes/entities/ent_image.inc.php
 9bb8ed44705f055da33628dee6e5f190	includes/entities/ent_language.inc.php
 197f5cd84c0f915da7109f091b42db36	includes/entities/ent_link.inc.php
 07c9eba067bccda3b28cf602d3e833bd	includes/entities/ent_manufacturer.inc.php
@@ -272,7 +272,7 @@ d6ff07c5d82495bd03b18862d920d352	includes/functions/func_file.inc.php
 a925a79230b4a989f05615abf7d3c3f9	includes/functions/func_form.inc.php
 6835d6aa380a99dcca1fc24b1424224b	includes/functions/func_format.inc.php
 c95e56a0bd50153bdc4dda7362190fcd	includes/functions/func_general.inc.php
-62e9f5f1345a0a30b8870286a0b5f491	includes/functions/func_image.inc.php
+c69f2699ee360f55b107407550b67594	includes/functions/func_image.inc.php
 92001c14aa8fc6cdce90ad2f45751321	includes/functions/func_password.inc.php
 4ab8db2aa35d74b8bee3cd4dd6fb9fab	includes/functions/func_reference.inc.php
 94f2bf08ad62e42bcb06f88698d2348a	includes/functions/func_token.inc.php
@@ -281,7 +281,7 @@ d41d8cd98f00b204e9800998ecf8427e	includes/functions/index.html
 d41d8cd98f00b204e9800998ecf8427e	includes/index.html
 d41d8cd98f00b204e9800998ecf8427e	includes/library/index.html
 28cd0f2c16abfd11a2cc4be0816e0127	includes/library/lib_breadcrumbs.inc.php
-922b344ab534f7073cd3345f313e9839	includes/library/lib_cache.inc.php
+998b6f523fee03abcf00e243cc5832a4	includes/library/lib_cache.inc.php
 809aeafa71d0951e3789095f39d60a58	includes/library/lib_cart.inc.php
 0f14dd8a55acb482677c6ec16535d7b3	includes/library/lib_currency.inc.php
 6a53e50fa9cde007438af181ee96a25c	includes/library/lib_customer.inc.php
@@ -577,14 +577,14 @@ f8176cc134ac9e77b99bbd252e96aa47	install/data/demo/public_html/images/products/1
 d459f0ff7c7684a60ae0f8d79237f6fb	install/data/demo/public_html/images/products/3-red-duck-1.jpg
 4623955af0461b259b5347501300a70d	install/data/demo/public_html/images/products/4-blue-duck-1.jpg
 3293353f53c6af140981ea79036f741b	install/data/demo/public_html/images/products/5-purple-duck-1.jpg
-587972e4877c442c5712b4f7fe4c174a	install/htaccess
+168bc7227c153ef7fc91d2d875c75535	install/htaccess
 5ce62c13340c52070b1f99ff16a9a850	install/includes/footer.inc.php
 c0a24aa900902b46c62b360f650d12fe	install/includes/functions.inc.php
 a37bf7b37ad3919a13f46de67748afed	install/includes/header.inc.php
-e726a0a2e78434e2d61637c34abde6cb	install/index.php
-09f03e4fe8b514ff1c3980fdcc35dd1d	install/install.php
+3beae456b7daa4a2bf36beda1b17b23e	install/index.php
+88a39a4cd4012ec7f0b44752ef091eca	install/install.php
 82864d847d3b24ab03bea0cb946cb34e	install/structure.sql
-5df9342b28673c0cdac9aa22a52913bf	install/upgrade.php
+04e24cb35075c61e8627630898bf54fa	install/upgrade.php
 a2dbda6a4f7ebf41735a468682ed243c	install/upgrade_patches/1.0.1.3.inc.php
 e40d16965a907467b8a8249a35927faf	install/upgrade_patches/1.0.1.4.inc.php
 9560e70752a13b7a22ec65231e1b61e0	install/upgrade_patches/1.0.1.5.inc.php
@@ -703,7 +703,8 @@ bf4036885fd8f0a428691d3581ed0f75	install/upgrade_patches/2.7.0.inc.php
 67cfcabeb5a096697a70bbd0459495de	install/upgrade_patches/2.7.0.sql
 f7731ed1370e75fe84dfa3c43b245d87	install/upgrade_patches/2.7.1.inc.php
 c5c2c3f46be698b30d6ba37911c4b8be	install/upgrade_patches/2.7.1.sql
-da65102aab91d7f47bfa69fdcd120b9d	install/upgrade_patches/2.7.2.inc.php
+b47cbf1bcd925e269158a87f8f08f17d	install/upgrade_patches/2.7.2.inc.php
+68670ed73b2fabfce5260d126f0b4f36	install/upgrade_patches/2.7.2.sql
 62bac9360222fee7de79173307177c9e	logs/.htaccess
 d41d8cd98f00b204e9800998ecf8427e	logs/index.html
 70df41f74e6b15be767a8052f14b4036	pages/ajax/cart.json.inc.php
@@ -724,7 +725,7 @@ e1eb0445c1946b7708afc93e87f13e53	pages/checkout.inc.php
 7d25701ee6c9bc5c8e1a5ccd3c1543be	pages/customer_service.inc.php
 42e6d25b3e36cd4fe36d58bc0b1b6759	pages/development_mode.inc.php
 f2f3a19cd50b4a0cc74091de396a10c6	pages/edit_account.inc.php
-c17c18985d19a7711f0969b5068eb38a	pages/error_document.inc.php
+2577c898dfd55b6adaac8e77cadc6fc8	pages/error_document.inc.php
 d41d8cd98f00b204e9800998ecf8427e	pages/feeds/index.html
 44ecff979063417bf19e5407a5922911	pages/feeds/sitemap.xml.inc.php
 d41d8cd98f00b204e9800998ecf8427e	pages/index.html
