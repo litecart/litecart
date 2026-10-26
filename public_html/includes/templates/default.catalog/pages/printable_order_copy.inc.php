@@ -41,7 +41,7 @@ h1 {
 }
 </style>
 
-<section class="page" data-size="<?php echo $paper_size; ?>" dir="<?php echo $text_direction; ?>">
+<section class="page" data-size="<?php echo functions::escape_attr($paper_size); ?>" dir="<?php echo functions::escape_attr($text_direction); ?>">
   <header class="header">
     <div class="row">
       <div class="col-xs-6">

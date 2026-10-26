@@ -77,7 +77,7 @@
 
               <div class="form-group">
                 <label><?php echo language::translate('title_message', 'Message'); ?></label>
-                <?php echo functions::form_draw_textarea('message', true, 'style="height: 200px;"'); ?>
+                <?php echo functions::form_draw_textarea('message', true, 'rows="3"'); ?>
               </div>
 
               <div class="form-group">
@@ -98,7 +98,6 @@
                 <button class="btn btn-default" type="submit" name="send" value="true" style="font-weight: bold;">
                   <?php echo functions::draw_fonticon('fa-paper-plane'); ?> <?php echo language::translate('title_send_withdrawal_request', 'Send Withdrawal Request'); ?>
                 </button>
-                <a class="btn btn-default" href="<?php echo document::href_ilink('order_history'); ?>"><?php echo language::translate('title_cancel', 'Cancel'); ?></a>
               </div>
 
             <?php echo functions::form_draw_form_end(); ?>

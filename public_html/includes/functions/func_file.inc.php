@@ -211,6 +211,12 @@
 
     $regex = '#^'.$regex.'$#';
 
+  // A leading **/ also matches the current folder, so globstar means zero or more folders
+    $zero_level = [];
+    if (strpos($pattern, '**/') === 0) {
+      $zero_level = file_search($basedir . substr($pattern, 3) . $remains, $flags);
+    }
+
     $folders = [];
     $files = [];
 
@@ -254,7 +260,8 @@
     }
 
   // Merge folders and files into one and same result
-    $results = array_merge($folders, $files);
+    $results = array_merge($zero_level, $folders, $files);
+    $results = array_unique($results);
 
   // Sort results
     asort($results);
@@ -320,7 +327,7 @@
       } else if (is_file($source) || is_link($source)) {
 
         if (is_dir($target)) {
-          $results[$target] = copy(rtrim($source, '/') .'/*', rtrim($target, '/') .'/'. basename($source), $results);
+          $results[$target] = copy($source, rtrim($target, '/') .'/'. basename($source));
         } else {
           $results[$target] = copy($source, $target);
         }

@@ -65,9 +65,9 @@
       if (filter_var(ini_get('html_errors'), FILTER_VALIDATE_BOOLEAN) && $_SERVER['SERVER_SOFTWARE'] != 'CLI') {
         echo isset($_GET['debug']) ? implode('<br>'.PHP_EOL, $output) : $output[0]; // HTML
       } else {
-        echo html_entity_decode(strip_tags(
+        fwrite(STDERR, html_entity_decode(strip_tags(
           isset($_GET['debug']) ? implode('<br>'.PHP_EOL, $output) : $output[0] // Plain text
-        ));
+        )) . PHP_EOL);
       }
     }
 
@@ -97,7 +97,15 @@
     }
 
     if (in_array($errno, [E_PARSE, E_ERROR, E_COMPILE_ERROR, E_CORE_ERROR, 256])) { // 256 = E_USER_ERROR, deprecated in PHP 8.4
-      http_response_code(500);
+      if ($_SERVER['SERVER_SOFTWARE'] != 'CLI') {
+        http_response_code(500);
+
+        if (!class_exists('ent_view') || !class_exists('document')) return;
+
+        ob_clean();
+        include vmod::check(FS_DIR_APP . 'pages/error_document.inc.php');
+        include vmod::check(FS_DIR_APP . 'includes/app_footer.inc.php');
+      }
       exit;
     }
   }

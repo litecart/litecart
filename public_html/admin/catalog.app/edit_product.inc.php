@@ -340,6 +340,9 @@
                       <div class="input-group-text">
                         <a class="btn btn-default btn-sm move-up" href="#" title="<?php echo functions::escape_html(language::translate('title_move_up', 'Move Up')); ?>"><?php echo functions::draw_fonticon('move-up'); ?></a>
                         <a class="btn btn-default btn-sm move-down" href="#" title="<?php echo functions::escape_html(language::translate('title_move_down', 'Move Down')); ?>"><?php echo functions::draw_fonticon('move-down'); ?></a>
+                        <?php if (!empty($_POST['images'][$key]['id'])) { ?>
+                        <a class="btn btn-default btn-sm crop" href="#" data-image-id="<?php echo (int)$_POST['images'][$key]['id']; ?>" data-image-src="<?php echo functions::escape_html(document::href_rlink(FS_DIR_STORAGE . 'images/' . $product->data['images'][$key]['filename'])); ?>" title="<?php echo functions::escape_html(language::translate('title_crop', 'Crop')); ?>"><?php echo functions::draw_fonticon('fa-crop', 'style="color: #39c;"'); ?></a>
+                        <?php } ?>
                         <a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a>
                       </div>
                     </div>
@@ -564,7 +567,7 @@
                 <a class="btn btn-default remove-group" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('fa-times', 'style="color: #cc3333;"'); ?></a>
               </div>
 
-              <h2><?php echo $option['name']; ?></h2>
+              <h2><?php echo functions::escape_html($option['name']); ?></h2>
               <?php echo functions::form_draw_hidden_field('options['.$group_id.'][id]', true) . functions::form_draw_hidden_field('options['.$group_id.'][group_id]', true) . functions::form_draw_hidden_field('options['.$group_id.'][name]', true); ?>
 
               <div class="row">
@@ -603,7 +606,7 @@
                   <tbody>
                   <?php foreach ($option['values'] as $value_id => $value) { ?>
                     <tr data-value-id="<?php echo functions::escape_html($value['value_id']); ?>" data-value-name="<?php echo functions::escape_html($_POST['options'][$group_id]['values'][$value_id]['name']); ?>">
-                      <td class="grabable"><?php echo functions::form_draw_hidden_field('options['.$group_id.'][values]['. $value_id .'][id]', true) . functions::form_draw_hidden_field('options['.$group_id.'][values]['. $value_id .'][value_id]', true) . functions::form_draw_hidden_field('options['.$group_id.'][values]['. $value_id .'][custom_value]', true) . functions::form_draw_hidden_field('options['.$group_id.'][values]['. $value_id .'][name]', true); ?><?php echo $value['name']; ?></td>
+                      <td class="grabable"><?php echo functions::form_draw_hidden_field('options['.$group_id.'][values]['. $value_id .'][id]', true) . functions::form_draw_hidden_field('options['.$group_id.'][values]['. $value_id .'][value_id]', true) . functions::form_draw_hidden_field('options['.$group_id.'][values]['. $value_id .'][custom_value]', true) . functions::form_draw_hidden_field('options['.$group_id.'][values]['. $value_id .'][name]', true); ?><?php echo functions::escape_html($value['name']); ?></td>
                       <td class="text-center"><?php echo functions::form_draw_select_field('options['.$group_id.'][values]['. $value_id .'][price_operator]', ['+','%','*','='], true); ?></td>
                       <?php foreach ($currency_codes as $currency_code) echo '<td>'. functions::form_draw_currency_field($currency_code, 'options['.$group_id.'][values]['. $value_id .']['. $currency_code. ']', (!empty($_POST['options'][$group_id]['values'][$value_id][$currency_code]) || $_POST['options'][$group_id]['values'][$value_id][$currency_code] != 0) ? true : '', 'style="width: 100px;"') .'</td>'; ?>
                       <td class="text-end"><a class="btn btn-default btn-sm move-up" href="#" title="<?php echo functions::escape_html(language::translate('title_move_up', 'Move Up')); ?>"><?php echo functions::draw_fonticon('move-up'); ?></a> <a class="btn btn-default btn-sm move-down" href="#" title="<?php echo functions::escape_html(language::translate('title_move_down', 'Move Down')); ?>"><?php echo functions::draw_fonticon('move-down'); ?></a> <a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_html(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>
@@ -703,7 +706,7 @@
 
           </div>
 
-          <div class="table-responsive" style="margin: 0 -2em;">
+          <div class="table-responsive" style="margin: 0 -1.5em;">
             <table id="table-stock" class="table table-striped table-hover data-table">
               <thead>
                 <tr>
@@ -888,6 +891,69 @@
     refreshMainImage();
   });
 
+  $('#images').on('click', '.crop', function(e) {
+    e.preventDefault();
+
+    var button = $(this),
+        row = button.closest('.form-group'),
+        hint = '<?php echo functions::escape_js(language::translate('text_select_crop_area', 'Select an area of the image to crop')); ?>',
+        dialog = $('<div class="crop-dialog">'
+                 + '  <div class="crop-canvas"><img src="'+ button.data('image-src') +'" alt=""></div>'
+                 + '  <div class="crop-toolbar">'
+                 + '    <span class="crop-selection">'+ hint +'</span>'
+                 + '    <button type="button" class="btn btn-default crop-apply" disabled><?php echo functions::escape_js(language::translate('title_crop', 'Crop')); ?></button>'
+                 + '  </div>'
+                 + '</div>'),
+        img, apply;
+
+    $.featherlight(dialog, {
+      afterOpen: function() {
+        var lightbox = this;
+
+      // Featherlight clones the given content, so the live nodes come from the instance
+        img = this.$content.find('img');
+        apply = this.$content.find('.crop-apply');
+
+        img.crop({
+          onChange: function(data) {
+            apply.prop('disabled', !data);
+            lightbox.$content.find('.crop-selection').text(data ? data.width +' × '+ data.height +' px' : hint);
+          }
+        });
+
+        apply.on('click', function() {
+          var selection = img.cropData();
+          if (!selection) return;
+
+          apply.prop('disabled', true);
+
+          $.ajax({
+            url: '<?php echo document::link(WS_DIR_ADMIN, ['doc' => 'crop_image.json'], ['app']); ?>',
+            type: 'POST',
+            dataType: 'json',
+            data: $.extend({
+              product_id: <?php echo (int)$product->data['id']; ?>,
+              image_id: button.data('image-id')
+            }, selection),
+            success: function(json) {
+              row.find('img').attr('src', json.thumbnail);
+              button.data('image-src', json.original);
+              refreshMainImage();
+              lightbox.close();
+            },
+            error: function(jqXHR) {
+              apply.prop('disabled', false);
+              alert((jqXHR.responseJSON && jqXHR.responseJSON.error) ? jqXHR.responseJSON.error : '<?php echo functions::escape_js(language::translate('error_crop_image_failed', 'Failed cropping image')); ?>');
+            }
+          });
+        });
+      },
+      afterClose: function() {
+        if (img) img.cropDestroy();
+      }
+    });
+  });
+
   $('#images .add').click(function(e) {
     e.preventDefault();
     var output = '<div class="image form-group">'
@@ -922,8 +988,8 @@
   });
 
   function refreshMainImage() {
-    if ($('#images img:first').length) {
-      $('#tab-general .main-image').attr('src', $('#images img:first').attr('src'));
+    if ($('#images img').first().length) {
+      $('#tab-general .main-image').attr('src', $('#images img').first().attr('src'));
       return;
     }
 
@@ -1125,17 +1191,17 @@
     var parent = $(this).closest('tr');
 
     <?php foreach (currency::$currencies as $currency) { ?>
-    if ($('input[name^="prices"][name$="[<?php echo $currency['code']; ?>]"]').val() > 0) {
-      var value = Number($('input[name="prices[<?php echo $currency['code']; ?>]"]').val() * (100 - $(this).val()) / 100).toFixed(<?php echo $currency['decimals']; ?>);
-      $(parent).find('input[name$="[<?php echo $currency['code']; ?>]"]').val(value);
+    if ($('input[name^="prices"][name$="[<?php echo functions::escape_js($currency['code']); ?>]"]').val() > 0) {
+      var value = Number($('input[name="prices[<?php echo functions::escape_js($currency['code']); ?>]"]').val() * (100 - $(this).val()) / 100).toFixed(<?php echo $currency['decimals']; ?>);
+      $(parent).find('input[name$="[<?php echo functions::escape_js($currency['code']); ?>]"]').val(value);
     } else {
-      $(parent).find('input[name$="[<?php echo $currency['code']; ?>]"]').val("");
+      $(parent).find('input[name$="[<?php echo functions::escape_js($currency['code']); ?>]"]').val("");
     }
     <?php } ?>
 
     <?php foreach (currency::$currencies as $currency) { ?>
-    var value = Number($(parent).find('input[name^="campaigns"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').val() / <?php echo $currency['value']; ?>).toFixed(<?php echo $currency['decimals']; ?>);
-    $(parent).find('input[name^="campaigns"][name$="[<?php echo $currency['code']; ?>]"]').attr('placeholder', value);
+    var value = Number($(parent).find('input[name^="campaigns"][name$="[<?php echo functions::escape_js(settings::get('store_currency_code')); ?>]"]').val() / <?php echo $currency['value']; ?>).toFixed(<?php echo $currency['decimals']; ?>);
+    $(parent).find('input[name^="campaigns"][name$="[<?php echo functions::escape_js($currency['code']); ?>]"]').attr('placeholder', value);
     <?php } ?>
   });
 
@@ -1147,11 +1213,11 @@
 
     <?php foreach (currency::$currencies as $currency) { ?>
     var value = 0;
-    value = $(parent).find('input[name^="campaigns"][name$="[<?php echo settings::get('store_currency_code'); ?>]"]').val() / <?php echo $currency['value']; ?>;
+    value = $(parent).find('input[name^="campaigns"][name$="[<?php echo functions::escape_js(settings::get('store_currency_code')); ?>]"]').val() / <?php echo $currency['value']; ?>;
     value = value.toFixed(<?php echo $currency['decimals']; ?>);
-    $(parent).find('input[name^="campaigns"][name$="[<?php echo $currency['code']; ?>]"]').attr("placeholder", value);
-    if ($(parent).find('input[name^="campaigns"][name$="[<?php echo $currency['code']; ?>]"]').val() == 0) {
-      $(parent).find('input[name^="campaigns"][name$="[<?php echo $currency['code']; ?>]"]').val('');
+    $(parent).find('input[name^="campaigns"][name$="[<?php echo functions::escape_js($currency['code']); ?>]"]').attr("placeholder", value);
+    if ($(parent).find('input[name^="campaigns"][name$="[<?php echo functions::escape_js($currency['code']); ?>]"]').val() == 0) {
+      $(parent).find('input[name^="campaigns"][name$="[<?php echo functions::escape_js($currency['code']); ?>]"]').val('');
     }
     <?php } ?>
   });
@@ -1376,7 +1442,7 @@
     }
 
     var output = '<tr data-value-id="'+ escapeHTML($(valueElement).val()) +'" data-value-name="'+ escapeHTML(($(valueElement).val() != 0) ? $(valueElement).find('option:selected').text() : $(customValueElement).val()) +'">'
-               + '  <td class="grabable"><?php echo functions::escape_js(functions::form_draw_hidden_field('options[new_group_id][values][new_option_value_i][value_id]', 'new_value_id')) . functions::form_draw_hidden_field('options[new_group_id][values][new_option_value_i][custom_value]', 'new_custom_value'); ?>'+ (($.inArray($(valueElement).val(), ['', '0']) !== -1) ? $(customValueElement).val() : $(valueElement).find('option:selected').text()) +'</td>'
+               + '  <td class="grabable"><?php echo functions::escape_js(functions::form_draw_hidden_field('options[new_group_id][values][new_option_value_i][value_id]', 'new_value_id')) . functions::form_draw_hidden_field('options[new_group_id][values][new_option_value_i][custom_value]', 'new_custom_value'); ?>'+ ((['', '0'].indexOf($(valueElement).val()) !== -1) ? $(customValueElement).val() : $(valueElement).find('option:selected').text()) +'</td>'
                + '  <td class="text-center"><?php echo functions::escape_js(functions::form_draw_select_field('options[new_group_id][values][new_option_value_i][price_operator]', ['+','%','*','='], true)); ?></td>'
                + '  <?php foreach ($currency_codes as $currency_code) echo '<td style="width: 200px;">'. functions::escape_js(functions::form_draw_currency_field($currency_code, 'options[new_group_id][values][new_option_value_i]['. $currency_code. ']', '')) .'</td>'; ?>'
                + '  <td class="text-end"><a class="btn btn-default btn-sm move-up" href="#" title="<?php echo functions::escape_js(language::translate('text_move_up', 'Move up')); ?>"><?php echo functions::draw_fonticon('move-up'); ?></a> <a class="btn btn-default btn-sm move-down" href="#" title="<?php echo functions::escape_js(language::translate('text_move_down', 'Move down')); ?>"><?php echo functions::draw_fonticon('move-down'); ?></a> <a class="btn btn-default btn-sm remove" href="#" title="<?php echo functions::escape_js(language::translate('title_remove', 'Remove')); ?>"><?php echo functions::draw_fonticon('remove'); ?></a></td>'

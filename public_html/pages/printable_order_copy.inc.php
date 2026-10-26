@@ -31,7 +31,7 @@
 
   $within_withdrawal_period = !empty($order->data['date_created'])
     && (strtotime($order->data['date_created']) !== false)
-    && (strtotime($order->data['date_created']) >= strtotime('-14 days'));
+    && (strtotime($order->data['date_created']) >= strtotime('-'. settings::get('withdrawal_window_days', 14) .' days'));
   $_page = new ent_view();
   $_page->snippets = [
     'paper_size' => settings::get('default_print_paper_size'),

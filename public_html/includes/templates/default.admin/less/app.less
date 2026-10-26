@@ -239,6 +239,77 @@ html[dir="rtl"] #sidebar-compressed:checked ~ #sidebar #box-apps-menu > .app:hov
   }
 }
 
+/* Image Crop */
+
+.crop-box {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  line-height: 0;
+  cursor: crosshair;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+
+  img {
+    display: block;
+    max-width: 100%;
+  }
+}
+
+.crop-sel {
+  position: absolute;
+  box-sizing: border-box;
+  border: 1px dashed #fff;
+  outline: 1px dashed #000;
+  cursor: move;
+
+  /* Dims everything outside the selection, clipped by the overflow of .crop-box */
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, .5);
+}
+
+.crop-handle {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  background: #fff;
+  border: 1px solid #333;
+
+  &.crop-handle-nw {
+    top: -5px;
+    left: -5px;
+    cursor: nwse-resize;
+  }
+  &.crop-handle-ne {
+    top: -5px;
+    right: -5px;
+    cursor: nesw-resize;
+  }
+  &.crop-handle-sw {
+    bottom: -5px;
+    left: -5px;
+    cursor: nesw-resize;
+  }
+  &.crop-handle-se {
+    bottom: -5px;
+    right: -5px;
+    cursor: nwse-resize;
+  }
+}
+
+.crop-dialog {
+  .crop-canvas img {
+    max-height: 70vh;
+  }
+  .crop-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1em;
+    padding-top: .75em;
+  }
+}
+
 /* Footer */
 
 #footer {

@@ -8,41 +8,57 @@
 
   include_once __DIR__ . '/../includes/compatibility.inc.php';
 
-  if ($_SERVER['SERVER_SOFTWARE'] == 'CLI') {
+  if ($_SERVER['SERVER_SOFTWARE'] == 'CLI') { // Don't rely on php_sapi_name()
 
     if (!isset($argv[1]) || $argv[1] == 'help' || $argv[1] == '-h' || $argv[1] == '--help' || $argv[1] == '/?') {
-      echo "\nLiteCart® 2.7.1\n"
+      echo "\nLiteCart® 2.7.2\n"
       . "Copyright (c) ". date('Y') ." LiteCart AB\n"
       . "https://www.litecart.net/\n"
       . "Usage: php ". basename(__FILE__) ." [options]\n\n"
       . "Options:\n"
-      . "  --from_version       Manually set version migrating from. Omit for auto detection\n"
-      . "  --development_type   Set development type 'standard' or 'advanced' (Default: standard)\n"
-      . "  --cleanup            Delete the install/ directory after finising the upgrade.\n\n";
+      . "  --from_version=x.x.x          Manually set version migrating from. Omit for auto detection\n"
+      . "  --development-type=standard   Set development type 'standard' or 'advanced' (Default: standard)\n"
+      . "  --skip-updates                Skip downloading the latest updates from the remote repository.\n"
+      . "  --cleanup                     Delete the install/ directory after finising the upgrade.\n\n";
       exit;
     }
 
     $options = [
       'from_version::',
-      'development_type::',
+      'development-type::',
+      'skip-updates::',
       'cleanup::',
     ];
 
     $_REQUEST = getopt('', $options);
     $_REQUEST['upgrade'] = true;
 
+    if (isset($_REQUEST['development-type'])) {
+      $_REQUEST['development_type'] = $_REQUEST['development-type'];
+    }
+
+    if (isset($_REQUEST['skip-updates'])) {
+      $_REQUEST['skip_updates'] = true;
+    }
+
     if (isset($_REQUEST['cleanup'])) {
       $_REQUEST['cleanup'] = true;
     }
   }
 
-  require_once __DIR__ . '/includes/header.inc.php';
+  if ($_SERVER['SERVER_SOFTWARE'] != 'CLI') {
+    require_once __DIR__ . '/includes/header.inc.php';
+  }
   require_once __DIR__ . '/includes/functions.inc.php';
 
 // Include config
   if (is_file(__DIR__ . '/../includes/config.inc.php')) {
     include(__DIR__ . '/../includes/config.inc.php');
   } else {
+    if ($_SERVER['SERVER_SOFTWARE'] == 'CLI') {
+      fwrite(STDERR, "No installation detected. Run public_html/install/index.php first.\n");
+      exit(1);
+    }
     echo '<h2>No Installation Detected</h2>' . PHP_EOL
        . '<p>Warning: No configuration file was found.</p>' . PHP_EOL
        . '<p><a class="btn btn-default" href="index.php">Click here to install instead</a></p>' . PHP_EOL;
@@ -138,10 +154,19 @@
 
       echo '<p>Checking PHP version... ';
 
-      if (PHP_VERSION_ID < 50400) {
-        throw new Exception(PHP_VERSION .' <span class="error">[Error] PHP 5.4+ minimum requirement</span></p>' . PHP_EOL . PHP_EOL);
-      } else if (PHP_VERSION_ID <= 70200) {
-        echo PHP_VERSION .' <span class="warning">[Warning] PHP '. PHP_VERSION .' has reached <a href="https://www.php.net/supported-versions.php" target="_blank">end of life</a>.</span></p>' . PHP_EOL . PHP_EOL;
+      if (PHP_VERSION_ID < 50600) {
+        throw new Exception(PHP_VERSION .' <span class="error">[Error] PHP 5.6+ minimum requirement</span></p>' . PHP_EOL . PHP_EOL);
+      }
+
+      // Check if PHP version is vulnerable to CVE-2026-109618 and CVE-2026-109619.
+      if (
+        (PHP_VERSION_ID < 80200) ||
+        (PHP_VERSION_ID >= 80200 && PHP_VERSION_ID < 80235) ||
+        (PHP_VERSION_ID >= 80300 && PHP_VERSION_ID < 80336) ||
+        (PHP_VERSION_ID >= 80400 && PHP_VERSION_ID < 80427) ||
+        (PHP_VERSION_ID >= 80500 && PHP_VERSION_ID < 80512)
+      ) {
+        echo '<span class="warning">[Warning]</span>' . PHP_EOL . ' Your PHP version '. PHP_VERSION .' could be vulnerable to CVE-2026-109618 and CVE-2026-109619. Please upgrade to at minimum PHP 8.5.12, 8.4.27, 8.3.36 or 8.2.35.</p>' . PHP_EOL  . PHP_EOL;
       } else {
         echo PHP_VERSION .' <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
       }
@@ -445,7 +470,7 @@ input[name="development_type"]:checked + div {
 
     <div class="form-group col-md-6">
       <label style="margin-top: 2.25em;">
-        <input type="checkbox" class="form-check" name="skip_updates" value="0"> Skip downloading the latest updates
+        <input type="checkbox" class="form-check" name="skip_updates" value="1"> Skip downloading the latest updates
       </label>
     </div>
   </div>

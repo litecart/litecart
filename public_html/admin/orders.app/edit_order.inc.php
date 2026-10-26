@@ -294,7 +294,7 @@
 
               <div class="form-group col-md-3">
                 <label><?php echo language::translate('title_ip_address', 'IP Address'); ?></label>
-                <div class="form-control" readonly><?php echo $order->data['client_ip']; ?> <a href="https://ip-api.com/#<?php echo $order->data['client_ip']; ?>" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></div>
+                <div class="form-control" readonly><?php echo functions::escape_html($order->data['client_ip']); ?> <a href="https://ip-api.com/#<?php echo functions::escape_attr($order->data['client_ip']); ?>" target="_blank"><?php echo functions::draw_fonticon('fa-external-link'); ?></a></div>
               </div>
 
               <div class="form-group col-md-3">
@@ -1466,7 +1466,7 @@
       $.each(item.options, function(group, value) {
         product_options += '<div>'
                          + '  - '+ group +': ';
-        if ($.isArray(value)) {
+        if (Array.isArray(value)) {
           $.each(value, function(i, array_value) {
             product_options += '<input type="hidden" name="items[new_'+ new_item_index +'][options]['+ group +'][]" value="'+ array_value +'">' + array_value +', ';
           });

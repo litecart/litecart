@@ -1,6 +1,6 @@
 <?php
   define('PLATFORM_NAME', 'LiteCart');
-  define('PLATFORM_VERSION', '2.7.1');
+  define('PLATFORM_VERSION', '2.7.2');
   define('SCRIPT_TIMESTAMP_START', microtime(true));
 
 // Start redirecting output to the output buffer
@@ -49,6 +49,7 @@
           '#/mcp(/|\?|$)#',
           '#/manifest\.json(\?|$)#',
           '#/sitemap\.xml(\?|$)#',
+          '#(webhook|callback)#i', // Payment gateway callbacks (same exclusion as for CSRF)
         ] as $pattern) {
           if (preg_match($pattern, $request_url)) {
             throw new Exception('Skipping challenge for crucial URL');

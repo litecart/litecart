@@ -41,12 +41,12 @@
         clearstatcache();
 
         foreach (glob(FS_DIR_STORAGE .'cache/*', GLOB_ONLYDIR) as $dir) {
-          foreach (glob($dir.'/*.{avif,jpg,png,webp}', GLOB_BRACE) as $file) {
+          foreach (glob($dir.'/*.{avif,jpg,jxl,png,webp}', GLOB_BRACE) as $file) {
             unlink($file);
           }
         }
 
-        foreach (glob(FS_DIR_STORAGE .'cache/*.{avif,jpg,png,webp}', GLOB_BRACE) as $file) {
+        foreach (glob(FS_DIR_STORAGE .'cache/*.{avif,jpg,jxl,png,webp}', GLOB_BRACE) as $file) {
           unlink($file);
         }
 
@@ -80,12 +80,16 @@
 
       $dependencies[] = 'site';
 
-      if (settings::get('avif_enabled') && isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/avif#', $_SERVER['HTTP_ACCEPT'])) {
-        $dependencies[] = 'avif';
+      if (settings::get('jxl_enabled') && isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/jxl#', $_SERVER['HTTP_ACCEPT'])) {
+        $dependencies[] = 'jxl';
       }
 
       if (settings::get('webp_enabled') && isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/webp#', $_SERVER['HTTP_ACCEPT'])) {
         $dependencies[] = 'webp';
+      }
+
+      if (settings::get('avif_enabled') && isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/avif#', $_SERVER['HTTP_ACCEPT'])) {
+        $dependencies[] = 'avif';
       }
 
       $dependencies = array_unique($dependencies);
@@ -97,6 +101,12 @@
           case 'avif':
             if (isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/avif#', $_SERVER['HTTP_ACCEPT'])) {
               $hash_string .= 'avif';
+            }
+            break;
+
+          case 'jxl':
+            if (isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/jxl#', $_SERVER['HTTP_ACCEPT'])) {
+              $hash_string .= 'jxl';
             }
             break;
 

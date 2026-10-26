@@ -35,14 +35,45 @@
       if (is_dir($options['destination']) || substr($options['destination'], -1) == '/') {
         if (preg_match('#^'. preg_quote(FS_DIR_STORAGE . 'cache/', '#') .'$#', $options['destination'])) {
 
-          if (settings::get('avif_enabled') && isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/avif#', $_SERVER['HTTP_ACCEPT'])) {
-            $extension = 'avif';
+          if (settings::get('jxl_enabled') && isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/jxl#', $_SERVER['HTTP_ACCEPT'])) {
+            $extension = 'jxl';
 
           } else if (settings::get('webp_enabled') && isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/webp#', $_SERVER['HTTP_ACCEPT'])) {
             $extension = 'webp';
 
+          } else if (settings::get('avif_enabled') && isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/avif#', $_SERVER['HTTP_ACCEPT'])) {
+            $extension = 'avif';
+
           } else {
-            $extension = pathinfo($source, PATHINFO_EXTENSION);
+            $extension = strtolower(pathinfo($source, PATHINFO_EXTENSION));
+          }
+
+        // Confirm the chosen format is writeable by the active library; otherwise ent_image::write() can fall back to .jpg.
+          if (!extension_loaded('imagick')) {
+
+            $gd_function_map = [
+              'avif' => 'ImageAVIF',
+              'gif' => 'ImageGIF',
+              'jpg' => 'ImageJPEG',
+              'jpeg' => 'ImageJPEG',
+              'jxl' => 'ImageJXL',
+              'png' => 'ImagePNG',
+              'webp' => 'ImageWebP',
+            ];
+
+            if (empty($gd_function_map[$extension]) || !function_exists($gd_function_map[$extension])) {
+              $source_ext = strtolower(pathinfo($source, PATHINFO_EXTENSION));
+              $extension = !empty($gd_function_map[$source_ext]) && function_exists($gd_function_map[$source_ext]) ? $source_ext : 'jpg';
+            }
+
+          } else if (class_exists('Imagick')) {
+
+            $imagick_formats = array_map('strtoupper', Imagick::queryFormats());
+
+            if (!in_array(strtoupper($extension), $imagick_formats)) {
+              $source_ext = strtolower(pathinfo($source, PATHINFO_EXTENSION));
+              $extension = in_array(strtoupper($source_ext), $imagick_formats) ? $source_ext : 'jpg';
+            }
           }
 
           switch ($options['clipping']) {

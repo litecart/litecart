@@ -125,12 +125,6 @@
         if (method_exists($this->_module, 'install')) {
           $this->_module->install();
         }
-
-      } else {
-
-        if (method_exists($this->_module, 'update')) {
-          $this->_module->update();
-        }
       }
 
       if (isset($this->data['settings']['status']) && preg_match('#^(1|active|enabled|on|true|yes)$#i', $this->data['settings']['status'])) {

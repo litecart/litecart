@@ -17,7 +17,7 @@
     <?php if ($important_notice) { ?>
     <div id="important-notice">
       <div class="fourteen-forty">
-        <?php echo $important_notice; ?>
+        <?php echo functions::escape_html($important_notice); ?>
       </div>
     </div>
     <?php } ?>

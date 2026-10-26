@@ -4,8 +4,8 @@
      . PHP_EOL
      . 'Processing PHP lint checker' . PHP_EOL;
 
-  $tracked_files = preg_split('#(\r\n?|\n)#', shell_exec('git ls-files'), -1, PREG_SPLIT_NO_EMPTY);
-  $committed_files = preg_split('#(\r\n?|\n)#', shell_exec('git diff --cached --name-only 2>&1'), -1, PREG_SPLIT_NO_EMPTY);
+  $tracked_files = preg_split('#(\r\n?|\n)#', (string)shell_exec('git ls-files'), -1, PREG_SPLIT_NO_EMPTY);
+  $committed_files = preg_split('#(\r\n?|\n)#', (string)shell_exec('git diff --cached --name-only 2>&1'), -1, PREG_SPLIT_NO_EMPTY);
 
   foreach ($committed_files as $file) {
     if (!in_array($file, $tracked_files)) continue;

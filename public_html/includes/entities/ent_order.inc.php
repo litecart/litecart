@@ -292,7 +292,12 @@
       if (!empty($this->previous['order_status_id']) && reference::order_status($this->previous['order_status_id'], $this->data['language_code'])->stock_action == 'commit') {
         foreach ($this->previous['items'] as $previous_order_item) {
           if (empty($previous_order_item['product_id'])) continue;
-          $this->adjust_stock_quantity($previous_order_item['product_id'], $previous_order_item['option_stock_combination'], (float)$previous_order_item['quantity']);
+          try {
+            $this->adjust_stock_quantity($previous_order_item['product_id'], $previous_order_item['option_stock_combination'], (float)$previous_order_item['quantity']);
+          } catch (Exception $e) {
+            // Skip items whose product no longer exists and continue removing the item from the order
+            continue;
+          }
         }
       }
 

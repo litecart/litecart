@@ -48,7 +48,7 @@
           <li>
             <label class="option">
               <?php echo functions::form_draw_radio_button('sort', $key, true); ?>
-              <span class="title"><?php echo $title; ?></span>
+              <span class="title"><?php echo functions::escape_html($title); ?></span>
             </label>
           </li>
           <?php } ?>
