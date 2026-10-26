@@ -523,7 +523,7 @@ d545ed5026e367e906d43f4a2f7827db	includes/templates/default.catalog/views/box_ma
 88c3f2bb750fd3882265d0d21cdfdbe0	includes/templates/default.catalog/views/box_product.inc.php
 31d122331d0df63dc9d034fd3d63f48a	includes/templates/default.catalog/views/box_recently_viewed_products.inc.php
 fe29aeb6027be17f14ecf4ecbe4e1d08	includes/templates/default.catalog/views/box_similar_products.inc.php
-95e8cf87d0382bc9f1d16d8d48b3acd7	includes/templates/default.catalog/views/box_site_footer.inc.php
+e91ca8d7fecea621c974247ffe14d28d	includes/templates/default.catalog/views/box_site_footer.inc.php
 9306c8d0ca3021ca39de17ed2be20544	includes/templates/default.catalog/views/box_site_menu.inc.php
 4df3d48d4797f1bc80c1362b54aa25d3	includes/templates/default.catalog/views/box_slides.inc.php
 643da0d69826e305ca6935eba7bfb4eb	includes/templates/default.catalog/views/breadcrumbs.inc.php
@@ -585,7 +585,7 @@ a37bf7b37ad3919a13f46de67748afed	install/includes/header.inc.php
 3beae456b7daa4a2bf36beda1b17b23e	install/index.php
 88a39a4cd4012ec7f0b44752ef091eca	install/install.php
 82864d847d3b24ab03bea0cb946cb34e	install/structure.sql
-04e24cb35075c61e8627630898bf54fa	install/upgrade.php
+108c204a02fc84ab22f24eb856c467bf	install/upgrade.php
 a2dbda6a4f7ebf41735a468682ed243c	install/upgrade_patches/1.0.1.3.inc.php
 e40d16965a907467b8a8249a35927faf	install/upgrade_patches/1.0.1.4.inc.php
 9560e70752a13b7a22ec65231e1b61e0	install/upgrade_patches/1.0.1.5.inc.php
@@ -744,7 +744,7 @@ fbe136a97b9eb800569b9b303424c535	pages/manufacturers.inc.php
 c645b676b9a2866be05a2f8eb8826f74	pages/order_history.inc.php
 8d5d61ed5a05c80754026ef40965ba39	pages/order_process.inc.php
 3de677d41450e3b4ff619c7dd495c81b	pages/order_success.inc.php
-8dc3b8f46830ab07ea4f9b3fd2275b05	pages/printable_order_copy.inc.php
+e10764f73b0d287c990918130ed06a8d	pages/printable_order_copy.inc.php
 3f0d4593862fce6fde3163bfae884154	pages/printable_packing_slip.inc.php
 5996cc9e96849df9af4b6071ade67047	pages/product.inc.php
 710bc9d08ae56704a2586855e62fc2af	pages/push_jobs.inc.php
@@ -752,7 +752,7 @@ c645b676b9a2866be05a2f8eb8826f74	pages/order_history.inc.php
 fb9047d60c23a2f5ccb9b0d1641e73d7	pages/reset_password.inc.php
 be86a9bd36e281f7b9a52a8d14d91567	pages/search.inc.php
 3a32791f97feccc8b75e584c4f95c9c0	pages/withdrawal.inc.php
-db120c1711c32b0725c281d525df0ee2	pages/withdrawal_request.inc.php
+aa9ef61b10382157292dbc4a25ccd361	pages/withdrawal_request.inc.php
 d41d8cd98f00b204e9800998ecf8427e	vmods/.cache/index.html
 62bac9360222fee7de79173307177c9e	vmods/.htaccess
 d41d8cd98f00b204e9800998ecf8427e	vmods/index.html
