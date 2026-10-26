@@ -27,6 +27,7 @@
         <ul class="list-unstyled">
           <li><a href="<?php echo document::href_ilink('customer_service'); ?>"><?php echo language::translate('title_customer_service', 'Customer Service'); ?></a></li>
           <li><a href="<?php echo document::href_ilink('regional_settings'); ?>"><?php echo language::translate('title_regional_settings', 'Regional Settings'); ?></a></li>
+          <li><a href="<?php echo document::href_ilink('withdrawal'); ?>"><?php echo language::translate('title_request_withdrawal', 'Request Withdrawal'); ?></a></li>
           <?php if (empty(customer::$data['id'])) { ?>
           <li><a href="<?php echo document::href_ilink('create_account'); ?>"><?php echo language::translate('title_create_account', 'Create Account'); ?></a></li>
           <li><a href="<?php echo document::href_ilink('login'); ?>"><?php echo language::translate('title_login', 'Login'); ?></a></li>

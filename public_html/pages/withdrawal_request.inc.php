@@ -3,32 +3,54 @@
   header('X-Robots-Tag: noindex');
   document::$snippets['head_tags']['noindex'] = '<meta name="robots" content="noindex">';
 
-  customer::require_login();
-
   document::$snippets['title'][] = language::translate('title_withdrawal_request', 'Withdrawal Request');
 
-  breadcrumbs::add(language::translate('title_account', 'Account'), document::ilink('order_history'));
-  breadcrumbs::add(language::translate('title_order_history', 'Order History'), document::ilink('order_history'));
+  if (!empty(customer::$data['id'])) {
+    breadcrumbs::add(language::translate('title_account', 'Account'), document::ilink('order_history'));
+    breadcrumbs::add(language::translate('title_order_history', 'Order History'), document::ilink('order_history'));
+  }
   breadcrumbs::add(language::translate('title_withdrawal_request', 'Withdrawal Request'));
+
+  $withdrawal_window_days = settings::get('withdrawal_window_days', 14);
+
+  $order_id = isset($_GET['order_id']) ? (int)$_GET['order_id'] : 0;
+  $public_key = isset($_GET['public_key']) ? (string)$_GET['public_key'] : '';
 
   try {
 
-    if (empty($_GET['order_id']) || empty($_GET['public_key'])) {
+    if (empty($order_id)) {
       throw new Exception(language::translate('error_missing_order', 'Missing order'), 404);
     }
 
-    $order = new ent_order($_GET['order_id']);
-
-    if (empty($order->data['id']) || $_GET['public_key'] != $order->data['public_key']) {
-      throw new Exception(language::translate('error_invalid_order', 'Invalid order'), 400);
+    try {
+      $order = new ent_order($order_id);
+    } catch (Exception $e) {
+      throw new Exception(language::translate('error_invalid_order', 'Invalid order'), 404);
     }
 
-    if (empty($order->data['customer']['id']) || $order->data['customer']['id'] != customer::$data['id']) {
+    if (empty($order->data['id'])) {
+      throw new Exception(language::translate('error_invalid_order', 'Invalid order'), 404);
+    }
+
+  // Authorize the request: order owner, valid access key from the order confirmation link, or order identified by number and email address
+    $authorized = false;
+
+    if (!empty($public_key) && $public_key === $order->data['public_key']) {
+      $authorized = true;
+    } elseif (!empty(customer::$data['id']) && !empty($order->data['customer']['id']) && $order->data['customer']['id'] == customer::$data['id']) {
+      $authorized = true;
+    } elseif (isset(session::$data['withdrawal_access'][$order->data['id']]) && session::$data['withdrawal_access'][$order->data['id']] === $order->data['public_key']) {
+      $authorized = true;
+    }
+
+    if (!$authorized) {
       throw new Exception(language::translate('error_not_authorized_to_view_order', 'You are not authorized to view this order'), 403);
     }
 
-    if (empty($order->data['date_created']) || strtotime($order->data['date_created']) < strtotime('-14 days')) {
-      //throw new Exception(language::translate('error_withdrawal_period_expired', 'The withdrawal period of 14 days has expired'), 410);
+    if (empty($order->data['date_created']) || strtotime($order->data['date_created']) < strtotime('-'. $withdrawal_window_days .' days')) {
+      notices::add('warnings', strtr(language::translate('warning_withdrawal_period_expired', 'The withdrawal period of :days days has expired for this order'), [
+        ':days' => $withdrawal_window_days,
+      ]));
     }
 
   } catch (Exception $e) {
@@ -74,6 +96,18 @@
       if (settings::get('captcha_enabled')) {
         $captcha = functions::captcha_get('withdrawal_request');
         if (empty($captcha) || $captcha != $_POST['captcha']) throw new Exception(language::translate('error_invalid_captcha', 'Invalid CAPTCHA given'));
+      }
+
+    // Rate limit the number of withdrawal requests sent per IP address to prevent mailbox flooding
+      $ip_address = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '';
+
+      if (database::query(
+        "select count(*) as num_attempts from ". DB_TABLE_PREFIX ."rate_limiting
+        where action = 'withdrawal_request_sent'
+        and ip_address = '". database::input($ip_address) ."'
+        and date_created >= '". date('Y-m-d H:i:s', strtotime('-5 minutes')) ."'"
+      )->fetch('num_attempts') > 3) {
+        throw new Exception(language::translate('error_too_many_attempts', 'Too many failed attempts. Please try again later.'));
       }
 
       $items_summary = [];
@@ -129,6 +163,13 @@
       if (!$result) {
         throw new Exception(language::translate('error_sending_email_for_unknown_reason', 'The email could not be sent for an unknown reason'));
       }
+
+    // Record the sent request for rate limiting purposes
+      database::query(
+        "insert into ". DB_TABLE_PREFIX ."rate_limiting
+        (action, scope_type, scope_key, ip_address, hostname, user_agent, date_created)
+        values ('withdrawal_request_sent', 'order_id', '". database::input($order->data['id']) ."', '". database::input($ip_address) ."', '". database::input($ip_address !== '' ? gethostbyaddr($ip_address) : 'unknown') ."', '". database::input(isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '') ."', '". date('Y-m-d H:i:s') ."')"
+      );
 
       notices::add('success', language::translate('success_withdrawal_request_sent', 'Your withdrawal request has been sent successfully'));
       header('Location: '. document::link());
