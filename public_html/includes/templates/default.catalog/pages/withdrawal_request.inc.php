@@ -77,7 +77,7 @@
 
               <div class="form-group">
                 <label><?php echo language::translate('title_message', 'Message'); ?></label>
-                <?php echo functions::form_draw_textarea('message', true, 'style="height: 200px;"'); ?>
+                <?php echo functions::form_draw_textarea('message', true, 'rows="3"'); ?>
               </div>
 
               <div class="form-group">
