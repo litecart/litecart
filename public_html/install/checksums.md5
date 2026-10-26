@@ -261,9 +261,9 @@ f544238e0e4478eca32c9cd6db82f0bf	includes/entities/ent_user.inc.php
 39c3cd84791b801a24b8fccd1b3bddbb	includes/entities/ent_view.inc.php
 89925c5f49d69b6196f2de949b10341c	includes/entities/ent_vmod.inc.php
 d41d8cd98f00b204e9800998ecf8427e	includes/entities/index.html
-eb5e0b4c9a7032f4918445820b0133df	includes/error_handler.inc.php
+838ca68cf2398f6ddf9f8041a48e231c	includes/error_handler.inc.php
 988f26d135e78b5006307b43dac28557	includes/functions/func_admin.inc.php
-544c3df6a1845d6dd6a63fbe99ed9b40	includes/functions/func_captcha.inc.php
+5073bed83bf74a8de0cf9f6f38fbc2da	includes/functions/func_captcha.inc.php
 82f4989adeaaf6920ca5288d39226754	includes/functions/func_catalog.inc.php
 b71dd84509c274b1c4c9cea73fc060b7	includes/functions/func_csv.inc.php
 2e68497873af6e4dff32fb5861686967	includes/functions/func_draw.inc.php
@@ -495,7 +495,8 @@ e760c75c85a4c6b9aed9015d78e4f2d7	includes/templates/default.catalog/pages/produc
 df595bac8dd411dedf5bbd25f9fc1383	includes/templates/default.catalog/pages/regional_settings.inc.php
 6fe3c92676d2f2a706f9cd1d455d6b50	includes/templates/default.catalog/pages/reset_password.inc.php
 67480250daa60fd803a12c7b5c274aab	includes/templates/default.catalog/pages/search_results.inc.php
-1e7e2c240cc2dd4cc81e66ee37039dd3	includes/templates/default.catalog/pages/withdrawal_request.inc.php
+72e865799229bd6db42ce419216b4016	includes/templates/default.catalog/pages/withdrawal.inc.php
+51c3693b8f7e6eb0c4a06917c6c98f9a	includes/templates/default.catalog/pages/withdrawal_request.inc.php
 d6add72ed2100b49cfdd7e1a6f3227cb	includes/templates/default.catalog/views/box_account_links.inc.php
 a5a213882fd9411e159ec948fd98ab93	includes/templates/default.catalog/views/box_account_login.inc.php
 0d4eb0853585d7f1fda9348f6ec7a0a7	includes/templates/default.catalog/views/box_also_purchased_products.inc.php
@@ -750,6 +751,7 @@ c645b676b9a2866be05a2f8eb8826f74	pages/order_history.inc.php
 72da1ca1d9e845343f82020f5e953e20	pages/regional_settings.inc.php
 fb9047d60c23a2f5ccb9b0d1641e73d7	pages/reset_password.inc.php
 be86a9bd36e281f7b9a52a8d14d91567	pages/search.inc.php
+3a32791f97feccc8b75e584c4f95c9c0	pages/withdrawal.inc.php
 db120c1711c32b0725c281d525df0ee2	pages/withdrawal_request.inc.php
 d41d8cd98f00b204e9800998ecf8427e	vmods/.cache/index.html
 62bac9360222fee7de79173307177c9e	vmods/.htaccess
