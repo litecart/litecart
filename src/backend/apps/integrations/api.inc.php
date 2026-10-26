@@ -109,22 +109,3 @@ $api_base = (string)new type_url(WS_DIR_APP .'api');
 
 	</div>
 </div>
-
-<script>
-	(function() {
-		const buttons = document.querySelectorAll('[data-copy-target]');
-		buttons.forEach((button) => {
-			button.addEventListener('click', () => {
-				const target = document.getElementById(button.dataset.copyTarget);
-				if (!target) return;
-				const text = target.innerText || target.textContent;
-				if (!navigator.clipboard) return;
-				navigator.clipboard.writeText(text).then(() => {
-					const original = button.innerHTML;
-					button.innerHTML = '<i class="icon icon-check"></i> <?= f::escape_js(t('title_copied', 'Copied')) ?>';
-					setTimeout(() => { button.innerHTML = original; }, 1500);
-				});
-			});
-		});
-	})();
-</script>

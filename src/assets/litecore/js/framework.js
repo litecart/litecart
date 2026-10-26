@@ -1,8 +1,8 @@
 /*!
-	LiteCart v3.0.0 - Superfast, lightweight e-commerce platform built built with for simplicity.
+	LiteCart.net v3.0.0 - Official website
 	Link: https://www.litecart.net/
-	License: CC-BY-ND-4.0
-	Author: T. Almroth, LiteCart AB
+	License: UNLICENSED
+	Author: T. Almroth
 */
 
 // Accordion (.accordion)
@@ -403,6 +403,27 @@ waitFor('jQuery', ($) => {
 		$('[data-ride="carousel"]').each(function () {
 			Plugin.call($(this), $(this).data());
 		});
+	});
+
+});
+
+// Confirm Prompt and History Back
+waitFor('jQuery', ($) => {
+
+	// Inline handlers are blocked because script-src carries a nonce, so this is bound from script.
+	// data-confirm holds the message, matching the bootstrap data-bs-confirm convention.
+	$(document).on('click', '[data-toggle="confirm"]', function(e) {
+
+		if (!window.confirm($(this).data('confirm'))) {
+			e.preventDefault();
+			e.stopPropagation();
+		}
+	});
+
+	$(document).on('click', '[data-toggle="history-back"]', function(e) {
+
+		e.preventDefault();
+		history.go(-1);
 	});
 
 });
@@ -1374,6 +1395,13 @@ waitFor('jQuery', ($) => {
 });
 
 waitFor('jQuery', ($) => {
+
+	// Password Visibility
+	$(document).on('click', '[data-toggle="password-visibility"]', function() {
+
+		const $input = $(this).prev();
+		$input.attr('type', $input.attr('type') == 'password' ? 'text' : 'password');
+	});
 
 	// Password Strength
 	$('form').on('input', 'input[type="password"][data-toggle="password-strength"]', function() {

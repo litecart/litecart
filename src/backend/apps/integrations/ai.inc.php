@@ -230,7 +230,7 @@
 			</div>
 
 			<p class="text-muted">
-				<?= t('text_ai_tool_scope_per_key', 'Tool access is configured per access key. Scope each key on the {link} page.', ['{link}' => '<a href="'. f::escape_attr(document::href_ilink(__APP__ .'/access_keys')) .'">'. t('title_access_keys', 'Access Keys') .'</a>']) ?>
+				<?= strtr(t('text_ai_tool_scope_per_key', 'Tool access is configured per access key. Scope each key on the {link} page.'), ['{link}' => '<a href="'. f::escape_attr(document::href_ilink(__APP__ .'/access_keys')) .'">'. t('title_access_keys', 'Access Keys') .'</a>']) ?>
 			</p>
 
 			<div style="max-height: 34rem; overflow-y: auto;">
@@ -306,55 +306,3 @@
 
 	</div>
 </div>
-
-<script>
-	// The async clipboard needs a secure context, execCommand covers plain http
-	function copyText(text) {
-
-		if (navigator.clipboard && window.isSecureContext) {
-			return navigator.clipboard.writeText(text);
-		}
-
-		return new Promise((resolve, reject) => {
-			const field = $('<textarea>').val(text)
-				.css({position: 'fixed', top: '-9999px', left: 0, opacity: 0}).appendTo('body');
-			field[0].select();
-			const copied = document.execCommand('copy');
-			field.remove();
-			copied ? resolve() : reject();
-		});
-	}
-
-	function addNotice(text) {
-
-		// The server only renders the container when a notice is queued, so build it when missing
-		let $container = $('.notices');
-		if (!$container.length) {
-			$container = $('<div class="notices notices-floating" role="status" aria-live="polite"></div>').prependTo('#content');
-		}
-
-		$container.append(
-			$('<div class="notice notice-default"></div>')
-				.append('<a href="#" class="close" data-dismiss="notice" aria-label="<?= f::escape_attr(t('title_close', 'Close')) ?>">&times;</a>')
-				.append(' <?= f::draw_fonticon('icon-info', 'aria-hidden="true"') ?> ')
-				.append($('<span></span>').text(text))
-		);
-	}
-
-	$('[data-copy-target]').on('click', function() {
-
-		const $button = $(this);
-		const $target = $('#' + $button.data('copy-target'));
-
-		if (!$target.length) return;
-
-		copyText($target.text()).then(() => {
-			const label = $button.html();
-			$button.html('<i class="icon icon-check"></i> <?= f::escape_js(t('title_copied', 'Copied')) ?>');
-			setTimeout(() => $button.html(label), 2000);
-		}).catch((error) => {
-			console.warn('Copy to clipboard failed', error);
-			addNotice('<?= f::escape_js(t('text_copy_failed', 'The configuration could not be copied, copy it from the code block instead.')) ?>');
-		});
-	});
-</script>

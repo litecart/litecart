@@ -6,28 +6,6 @@
 		$_GET['page'] = 1;
 	}
 
-	$new_key = null;
-
-	if (isset($_POST['create'])) {
-
-		try {
-
-			$label = trim((string)($_POST['label'] ?? ''));
-
-			if ($label === '') {
-				throw new Exception(t('error_label_required', 'You must provide a label'));
-			}
-
-			// The plaintext key is only returned here and never stored
-			$new_key = ent_access_key::generate($label);
-
-			notices::add('success', t('success_access_key_created', 'Access key created'));
-
-		} catch (Exception $e) {
-			notices::add('errors', $e->getMessage());
-		}
-	}
-
 	if (isset($_POST['disable']) || isset($_POST['enable'])) {
 
 		try {
@@ -87,7 +65,25 @@
 
 	}, null, $_GET['page'], settings::get('data_table_rows_per_page'), $num_rows, $num_pages);
 
+	// One-time display of a freshly enrolled key. The list page consumes it on render.
+	$flash_key = !empty(session::$data['flash_access_key']) ? session::$data['flash_access_key'] : null;
+	unset(session::$data['flash_access_key']);
+
 ?>
+<?php if ($flash_key !== null) { ?>
+<div class="notices">
+	<div class="notice notice-success">
+		<a href="#" class="close" data-dismiss="notice">&times;</a>
+		<strong><?= f::draw_fonticon('icon-key') ?> <?= t('title_your_new_access_key', 'Your new access key') ?></strong>
+		<p class="text-muted" style="margin: .5em 0;"><?= t('text_access_key_shown_once', 'Copy this key now. It is hashed on the server and cannot be shown again.') ?></p>
+		<pre id="new_access_key" class="no-padding"><code><?= f::escape_html($flash_key) ?></code></pre>
+		<button type="button" class="btn btn-default btn-sm" data-copy-target="new_access_key">
+			<?= f::draw_fonticon('icon-copy') ?> <?= t('title_copy_key', 'Copy key') ?>
+		</button>
+	</div>
+</div>
+<?php } ?>
+
 <div class="card">
 
 	<div class="card-header">
@@ -96,43 +92,8 @@
 		</div>
 	</div>
 
-	<?php if ($new_key !== null) { ?>
-	<div class="card-body">
-		<div class="notice notice-success">
-			<strong><?= t('title_your_new_access_key', 'Your new access key') ?></strong>
-			<p class="text-muted"><?= t('text_access_key_shown_once', 'Copy this key now. It is hashed on the server and cannot be shown again.') ?></p>
-			<pre id="new_access_key" class="no-padding"><code><?= $new_key ?></code></pre>
-			<button type="button" class="btn btn-default btn-sm" data-copy-target="new_access_key">
-				<?= f::draw_fonticon('icon-copy') ?> <?= t('title_copy_key', 'Copy key') ?>
-			</button>
-		</div>
-	</div>
-	<?php } ?>
-
-	<div class="card-body">
-
-		<p class="text-muted">
-			<?= t('text_access_keys_intro', 'Access keys authenticate MCP clients and REST API clients through the Authorization header. The same key works for both. Only the hash is stored, so a lost key must be replaced.') ?>
-			<a href="<?= document::href_ilink(__APP__ .'/instructions') ?>"><?= t('title_view_install_instructions', 'View install instructions') ?></a>
-		</p>
-
-		<?= f::form_begin('create_access_key_form', 'post') ?>
-
-			<div class="row">
-				<div class="col-md-8">
-					<div class="form-group">
-						<label><?= t('title_label', 'Label') ?></label>
-						<input class="form-input" name="label" placeholder="<?= t('text_label_placeholder', 'Claude Code') ?>" required>
-					</div>
-				</div>
-				<div class="col-md-4">
-					<label>&nbsp;</label>
-					<?= f::form_button('create', t('title_create_access_key', 'Create Key'), 'submit', ['class' => 'btn btn-primary'], 'add') ?>
-				</div>
-			</div>
-
-		<?= f::form_end() ?>
-
+	<div class="card-action">
+		<?= f::form_button_link(document::ilink(__APP__ .'/edit_access_key'), t('title_create_new_access_key', 'Create New Access Key'), '', 'add') ?>
 	</div>
 
 	<?= f::form_begin('access_keys_form', 'post') ?>
@@ -158,7 +119,7 @@
 					<td><code><?= f::escape_html($access_key['key_prefix']) ?>…</code></td>
 					<td>
 						<?php if (!empty($access_key['mcp_restricted'])) { ?>
-							<span class="badge badge-warning"><?= t('text_mcp_restricted_n', '{n} tools', ['{n}' => number_format($access_key['mcp_tool_count'])]) ?></span>
+							<span class="badge badge-warning"><?= strtr(t('text_mcp_restricted_n', '{n} tools'), ['{n}' => number_format($access_key['mcp_tool_count'])]) ?></span>
 						<?php } else { ?>
 							<span class="text-muted"><?= t('text_mcp_unrestricted', 'All tools') ?></span>
 						<?php } ?>
@@ -196,22 +157,3 @@
 	</div>
 	<?php } ?>
 </div>
-
-<script>
-	(function() {
-		const buttons = document.querySelectorAll('[data-copy-target]');
-		buttons.forEach((button) => {
-			button.addEventListener('click', () => {
-				const target = document.getElementById(button.dataset.copyTarget);
-				if (!target) return;
-				const text = target.innerText || target.textContent;
-				if (!navigator.clipboard) return;
-				navigator.clipboard.writeText(text).then(() => {
-					const original = button.innerHTML;
-					button.innerHTML = '<i class="icon icon-check"></i> <?= f::escape_js(t('title_copied', 'Copied')) ?>';
-					setTimeout(() => { button.innerHTML = original; }, 1500);
-				});
-			});
-		});
-	})();
-</script>
