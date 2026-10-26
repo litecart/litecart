@@ -116,7 +116,7 @@
 				$this->data['parent_id'] = 0;
 			}
 
-			$tags = explode(',', $this->data['tags']);
+			$tags = explode(',', (string)$this->data['tags']);
 			$tags = array_map('trim', $tags);
 			$tags = array_unique($tags);
 			$this->data['tags'] = implode(',', $tags);

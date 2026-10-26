@@ -64,7 +64,7 @@
 
 				$event = [
 					'type' => $payload['type'],
-					'description' => $payload['description'],
+					'description' => $payload['description'] ?? '',
 					'data' => $payload['data'] ?: [],
 					'expires_at' => strtotime('+1 month'),
 					'url' => $payload['url'] ?? ($_SERVER['HTTP_REFERER'] ?? null),

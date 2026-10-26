@@ -1,7 +1,10 @@
 <?php
 
 	// Turns "a, b,,c," into ['a', 'b', 'c']. For line breaks pass $delimiter \r\n.
-	function string_split(string $string, string $delimiters=','): array {
+	function string_split(?string $string, string $delimiters=','): array {
+
+		if ($string === null || $string === '') return [];
+
 		return preg_split('#(\s*['. preg_quote($delimiters, '#') .']\s*)+#', $string, -1, PREG_SPLIT_NO_EMPTY);
 	}
 

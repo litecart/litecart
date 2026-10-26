@@ -45,14 +45,14 @@
 			}
 
 			$this->data = array_replace($this->data, array_intersect_key($banner, $this->data));
-			$this->data['languages'] = preg_split('#\s*,\s*#', $this->data['languages'], -1, PREG_SPLIT_NO_EMPTY);
+			$this->data['languages'] = preg_split('#\s*,\s*#', (string)$this->data['languages'], -1, PREG_SPLIT_NO_EMPTY);
 
 			$this->previous = $this->data;
 		}
 
 		public function save(): void {
 
-			$this->data['tags'] = preg_split('#\s*,\s*#', $this->data['tags'], -1, PREG_SPLIT_NO_EMPTY);
+			$this->data['tags'] = preg_split('#\s*,\s*#', (string)$this->data['tags'], -1, PREG_SPLIT_NO_EMPTY);
 			$this->data['tags'] = array_map('trim', $this->data['tags']);
 			$this->data['tags'] = array_filter($this->data['tags']);
 			$this->data['tags'] = array_unique($this->data['tags']);
