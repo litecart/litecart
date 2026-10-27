@@ -73,6 +73,13 @@
 		},
 	];
 
+	// Extensions of the staged files
+	$staged_extensions = [];
+	foreach ($staged_files as $file) {
+		$staged_extensions[] = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+	}
+	$staged_extensions = array_unique($staged_extensions);
+
 	// Unset the linters whose command is unavailable, so those files are skipped instead of failing
 	foreach ([
 		'sql' => ['sqlfluff --version', 'Install it with: pip install sqlfluff'],
@@ -80,6 +87,8 @@
 		'less' => ['npx lessc --version', 'Install it with: npm install less --save-dev'],
 		'css' => ['npx lessc --version', 'Install it with: npm install less --save-dev'],
 	] as $extension => list($command, $hint)) {
+
+		if (!in_array($extension, $staged_extensions)) continue;
 
 		exec($command .' 2>&1', $output, $result_code);
 
