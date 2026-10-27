@@ -1,10 +1,3 @@
-/*!
-	LiteCart v3.0.0 - Superfast, lightweight e-commerce platform built built with for simplicity.
-	Link: https://www.litecart.net/
-	License: CC-BY-ND-4.0
-	Author: T. Almroth, LiteCart AB
-*/
-
 * {
 	box-sizing: border-box;
 }
@@ -213,6 +206,83 @@ summary {
 }
 
 /* CSS Framework */
+.accordion {
+	border: var(--accordion-border-width) solid var(--accordion-border-color);
+	border-radius: var(--border-radius);
+	background: var(--accordion-background);
+	overflow: hidden;
+}
+.accordion .accordion-item {
+	border-bottom: var(--accordion-border-width) solid var(--accordion-border-color);
+}
+.accordion .accordion-item:last-child {
+	border-bottom: 0;
+}
+.accordion .accordion-item.active > .accordion-header {
+	background: var(--accordion-header-background--active);
+	color: var(--accordion-header-text-color--active);
+}
+.accordion .accordion-item.active > .accordion-header .accordion-icon {
+	transform: rotate(180deg);
+}
+.accordion .accordion-header {
+	display: flex;
+	align-items: center;
+	gap: 0.75em;
+	width: 100%;
+	margin: 0;
+	padding: 0.75em 1em;
+	background: var(--accordion-header-background);
+	color: var(--accordion-header-text-color);
+	font-size: inherit;
+	font-weight: inherit;
+	line-height: inherit;
+	text-align: start;
+	cursor: pointer;
+	transition: background-color 0.2s ease, color 0.2s ease;
+}
+.accordion .accordion-header:hover, .accordion .accordion-header:focus-visible {
+	background: var(--accordion-header-background--hover);
+	color: var(--accordion-header-text-color--hover);
+}
+.accordion .accordion-header > .accordion-title {
+	flex: 1 1 auto;
+}
+.accordion .accordion-header > .accordion-icon {
+	flex: 0 0 auto;
+	transition: transform 0.2s ease;
+}
+.accordion .accordion-content {
+	display: grid;
+	grid-template-rows: 0fr;
+	transition: grid-template-rows 0.25s ease;
+}
+.accordion .accordion-content > .accordion-inner {
+	overflow: hidden;
+	opacity: 0;
+	transition: opacity 0.2s ease;
+}
+.accordion .accordion-content > .accordion-inner > * {
+	margin: 0;
+}
+.accordion .accordion-item.active > .accordion-content {
+	grid-template-rows: 1fr;
+}
+.accordion .accordion-item.active > .accordion-content > .accordion-inner {
+	opacity: 1;
+}
+
+.accordion-flush {
+	border: 0;
+	border-radius: 0;
+	background: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.accordion .accordion-header > .accordion-icon {
+		transition: none;
+	}
+}
 /* Animations */
 @keyframes flasher {
 	0%, 100% {
@@ -1050,7 +1120,7 @@ summary {
 .dropdown-content > li > a:not(.btn):focus,
 .dropdown-content > li > a:not(.btn):active {
 	text-decoration: none;
-	background: #f5f5f5;
+	background: var(--dropdown-item-background--hover, #f5f5f5);
 }
 .dropdown-menu > .active > a,
 .dropdown-menu > .active > a:hover,
@@ -3520,7 +3590,7 @@ body.litebox-open {
 }
 .litebox .litebox-modal:not(.litebox-seamless) {
 	padding: var(--gutter-y) var(--gutter-x);
-	background: var(--modal-background, "#fff");
+	background: var(--modal-background, #fff);
 	box-shadow: 0 5px 2em rgba(0, 0, 0, 0.25);
 }
 .litebox .litebox-modal.litebox-seamless > * {
@@ -3551,7 +3621,7 @@ body.litebox-open {
 	top: 50%;
 	margin-top: -1.5em;
 	background: rgba(0, 0, 0, 0.33);
-	color: var(--modal-text-color, "#fff");
+	color: var(--modal-text-color, #fff);
 	border-radius: var(--border-radius);
 	cursor: pointer;
 	backdrop-filter: blur(3px);

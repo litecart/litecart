@@ -428,6 +428,170 @@ waitFor('jQuery', ($) => {
 	}
 });
 
+// Catalog component: filter drawer and live filtering
+waitFor('jQuery', ($) => {
+
+	const $form = $('#catalog-filter-form');
+
+	if (!$form.length) return;
+
+	let xhr = null;
+	let timer = null;
+
+	const default_list_style = $form.find(':input[name="list_style"]:checked').val();
+
+	// Build the url from the form, keeping it free of empty and default values
+	function form_url() {
+
+		const params = new URLSearchParams($form.serialize());
+
+		for (const [key, value] of [...params.entries()]) {
+			if (value === '') params.delete(key);
+		}
+
+		if (params.get('list_style') == default_list_style) {
+			params.delete('list_style');
+		}
+
+		const url = new URL(location.href);
+		url.search = params.toString();
+
+		return url;
+	}
+
+	// ── Drawer ──────────────────────────────────────────────────────────────
+
+	function openDrawer() {
+		document.body.classList.add('catalog-drawer-open');
+		$('#catalog-filter-button').attr('aria-expanded', 'true');
+	}
+
+	function closeDrawer() {
+		document.body.classList.remove('catalog-drawer-open');
+		$('#catalog-filter-button').attr('aria-expanded', 'false');
+	}
+
+	$(document).on('click', '[data-action="open-drawer"]', function(e) {
+		e.preventDefault();
+		openDrawer();
+	});
+
+	$(document).on('click', '[data-action="close-drawer"]', function(e) {
+		e.preventDefault();
+		closeDrawer();
+	});
+
+	$('#catalog-backdrop').on('click', closeDrawer);
+
+	$(document).on('keydown', function(e) {
+		if (e.key !== 'Escape') return;
+		if (!document.body.classList.contains('catalog-drawer-open')) return;
+		closeDrawer();
+	});
+
+	$(window).on('resize', function() {
+		if (window.innerWidth >= 768) closeDrawer();
+	});
+
+	// ── Live filtering ──────────────────────────────────────────────────────
+
+	function update() {
+
+		if (xhr) xhr.abort();
+
+		const url = form_url();
+
+		history.replaceState(null, '', url.href);
+
+		$('#catalog-results').addClass('catalog-loading');
+
+		xhr = $.ajax({
+			type: 'get',
+			url: url.href,
+			dataType: 'html',
+			success: function(response) {
+
+				const $doc = $(response);
+
+				const $results = $doc.find('#catalog-results');
+				if ($results.length) $('#catalog-results').replaceWith($results);
+
+				const $count = $doc.find('#catalog-result-count');
+				if ($count.length) $('#catalog-result-count').replaceWith($count);
+
+				const $chips = $doc.find('#catalog-chips');
+				if ($chips.length) $('#catalog-chips').replaceWith($chips);
+
+				// Only the counts change, the options themselves stay put
+				$doc.find('[data-count-for]').each(function() {
+					const key = $(this).attr('data-count-for');
+					const $target = $('#catalog-filters [data-count-for="'+ key +'"]');
+					if (!$target.length) return;
+					$target.text($(this).text());
+					$target.toggleClass('is-empty', $(this).text() == '0');
+				});
+
+				$('#catalog-results').removeClass('catalog-loading');
+			},
+			error: function(jqXHR) {
+				if (jqXHR.statusText === 'abort') return;
+				$('#catalog-results').removeClass('catalog-loading');
+			}
+		});
+	}
+
+	$form.on('input', function(e) {
+		if (e.target.type === 'checkbox' || e.target.type === 'radio') return;
+		clearTimeout(timer);
+		timer = setTimeout(update, 350);
+	});
+
+	$form.on('change', function(e) {
+		clearTimeout(timer);
+		if (e.target.name === 'list_style') return;
+		update();
+	});
+
+	// The list style only changes the layout, no need to reload the products
+	$form.on('change', ':input[name="list_style"]', function() {
+		$('#catalog-results .listing.products').removeClass('columns rows').addClass($(this).val());
+		history.replaceState(null, '', form_url().href);
+	});
+
+	// ── Chips ───────────────────────────────────────────────────────────────
+
+	$(document).on('click', '#catalog-chips .remove', function(e) {
+		e.preventDefault();
+
+		const name = $(this).attr('data-name');
+		const value = $(this).attr('data-value');
+
+		if (name == 'price') {
+			$form.find('#price_min, #price_max').val('');
+
+		} else if (name == 'query') {
+			$form.find('#catalog-query').val('');
+
+		} else {
+			$form.find(':input[name="'+ name +'"]').filter(function() {
+				return !value || $(this).val() == value;
+			}).prop('checked', false);
+		}
+
+		update();
+	});
+
+	// Reset drops every filter but keeps the page context
+	$(document).on('click', '[data-action="reset"]', function(e) {
+		e.preventDefault();
+		const url = new URL(location.href);
+		url.search = '';
+		location.href = url.href;
+	});
+
+});
+
+
 waitFor('jQuery', $ => {
 
 	$('.listing .product button[name="add_to_favorites"]').on('click', function (e) {

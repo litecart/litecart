@@ -1,12 +1,36 @@
 // Dropdown
 waitFor('jQuery', ($) => {
 
+	// Close an open dropdown, including any open dropdowns nested inside it
+	function closeDropdown($dropdown) {
+		$dropdown.removeClass('open');
+		$dropdown.find('.dropdown.open').removeClass('open');
+	}
+
 	$(document).on('click', '.dropdown [data-toggle="dropdown"]', function(e) {
-		$(this).closest('.dropdown').toggleClass('open');
+		e.preventDefault();
+
+		let $toggle = $(this);
+		let $dropdown = $toggle.closest('.dropdown');
+		let $ancestors = $dropdown.parents('.dropdown');
+
+		// Only one dropdown may be open at a time. Ancestors of this dropdown
+		// are kept open so that multi-level menus keep working.
+		$('.dropdown.open').not($dropdown).not($ancestors).each(function() {
+			closeDropdown($(this));
+		});
+
+		$dropdown.toggleClass('open');
+		$toggle.attr('aria-expanded', $dropdown.hasClass('open') ? 'true' : 'false');
 	});
 
 	$(document).on('click', '.dropdown-item a, .dropdown-item button, .dropdown-item input[type="radio"]', function(e) {
-		$(this).closest('.dropdown').removeClass('open');
+		// Dropdown toggles are handled by the handler above
+		if ($(e.target).closest('[data-toggle="dropdown"]').length) return;
+
+		let $dropdown = $(this).closest('.dropdown');
+		$dropdown.removeClass('open');
+		$dropdown.parents('.dropdown').removeClass('open');
 	});
 
 	$(document).on('change', '.dropdown :input', function(e) {
@@ -26,12 +50,19 @@ waitFor('jQuery', ($) => {
 		$toggle.text(values.join(', '));
 	});
 
-	// Listen for clicks outside the dropdown to uncheck the input
+	// Close open dropdowns when clicking outside of them
 	$(document).on('click', function(e) {
-		// If click is on dropdown::before psuedo element, remove open class
-		if ($('.dropdown.open').length && !$(e.target).closest('.dropdown').length) {
-			$('.dropdown.open').removeClass('open');
-		}
+		let $target = $(e.target);
+
+		$('.dropdown.open').each(function() {
+			let $dropdown = $(this);
+
+			// Keep the dropdown open when the click landed inside it, or inside
+			// a dropdown nested within it.
+			if ($dropdown.is($target) || $dropdown.has($target).length) return;
+
+			closeDropdown($dropdown);
+		});
 	});
 
 });

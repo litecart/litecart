@@ -104,7 +104,7 @@
 		&:focus,
 		&:active {
 			text-decoration: none;
-			background: #f5f5f5;
+			background: var(--dropdown-item-background--hover, #f5f5f5);
 		}
 	}
 
