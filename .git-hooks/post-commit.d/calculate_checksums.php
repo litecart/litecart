@@ -2,7 +2,8 @@
 
   $checksums_file = 'public_html/install/checksums.md5';
   $tracked_files = preg_split('#(\r\n?|\n)#', (string)shell_exec('git ls-files'), -1, PREG_SPLIT_NO_EMPTY);
-  $committed_files = preg_split('#(\r\n?|\n)#', (string)shell_exec('git diff --cached --name-only 2>&1'), -1, PREG_SPLIT_NO_EMPTY);
+  //$staged_files = preg_split('#(\r\n?|\n)#', (string)shell_exec('git diff --cached --name-only 2>&1'), -1, PREG_SPLIT_NO_EMPTY);
+  $committed_files = preg_split('#(\r\n?|\n)#', (string)shell_exec('git diff-tree --no-commit-id --name-only -r HEAD 2>&1'), -1, PREG_SPLIT_NO_EMPTY);
 
 // Create list of files for checksums
   $checksums = [];
@@ -26,7 +27,7 @@
   echo 'Updating checksums...' . PHP_EOL;
 
 // If there are no committed files, go through all tracked files
-  if (empty($committed_files)) {
+  if (empty($committed_files) || end($argv) == '--all') {
     echo 'No committed files detected. Going through all tracked files in repository...' . PHP_EOL;
     $committed_files = $tracked_files;
   }
