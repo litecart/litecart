@@ -280,7 +280,7 @@ table tbody .toggle {
 
 					<?= f::form_select_page('page_id', true) ?>
 
-					<?= f::form_button('move', t('title_move', 'Move'), 'submit', 'onclick="if (!confirm(\''. str_replace("'", "\\\'", t('text_are_you_sure', 'Are you sure?')) .'\')) return false;"') ?>
+					<?= f::form_button('move', t('title_move', 'Move'), 'submit', ['data-toggle' => 'confirm', 'confirm' => t('text_are_you_sure', 'Are you sure?')] ?>
 
 					<?= f::form_button_predefined('delete') ?>
 

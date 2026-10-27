@@ -159,7 +159,7 @@
 
 					<div class="card-action">
 						<?= f::form_button('ok', t('title_ok', 'OK'), 'button', '', 'ok') ?>
-						<?= f::form_button('cancel', t('title_cancel', 'Cancel'), 'button', 'onclick="$.litebox.close();"', 'cancel') ?>
+						<?= f::form_button('cancel', t('title_cancel', 'Cancel'), 'button', ['data-toggle' => 'close-modal'], 'cancel') ?>
 					</div>
 
 				</div>

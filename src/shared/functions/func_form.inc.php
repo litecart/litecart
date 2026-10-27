@@ -148,8 +148,8 @@
 	function form_button_predefined(string $name, array|string $attributes=[]): string {
 
 		$button = match($name) {
-			'cancel' => f::form_button('cancel', t('title_cancel', 'Cancel'), 'button', ['onclick' => 'history.go(-1);', ...$attributes], 'cancel'),
-			'delete' => f::form_button('delete', t('title_delete', 'Delete'), 'submit', ['formnovalidate' => true, 'class' => 'btn btn-danger', 'onclick' => 'if (!confirm("'. t('text_are_you_sure', 'Are you sure?') .'")) return false;', ...$attributes], 'delete'),
+			'cancel' => f::form_button('cancel', t('title_cancel', 'Cancel'), 'button', ['data-toggle' => 'history-back', ...$attributes], 'cancel'),
+			'delete' => f::form_button('delete', t('title_delete', 'Delete'), 'submit', ['formnovalidate' => true, 'class' => 'btn btn-danger', 'data-confirm' => t('text_are_you_sure', 'Are you sure?'), ...$attributes], 'delete'),
 			'enable' => f::form_button('enable', t('title_enable', 'Enable'), 'submit', $attributes, 'on'),
 			'disable' => f::form_button('disable', t('title_disable', 'Disable'), 'submit', $attributes, 'off'),
 			'move-up' => f::form_button('move_up', t('title_move_up', 'Move Up'), 'button', ['class' => 'btn btn-default', ...$attributes], 'move-up'),
@@ -561,7 +561,7 @@
 			'<div class="input-group">',
 			'	<span class="input-group-icon">'. f::draw_fonticon('icon-key') .'</span>',
 			'	' . f::draw_element('input', ['class' => 'form-input', 'type' => 'password', 'name' => $name, 'value' => $input, ...$attributes]),
-			'	' . f::draw_element('button', ['class' => 'btn btn-default', 'type' => 'button', 'onclick' => "$(this).prev().attr('type', ($(this).prev().attr('type') == 'password') ? 'text' : 'password');"], f::draw_fonticon('icon-eye')),
+			'	' . f::draw_element('button', ['class' => 'btn btn-default', 'type' => 'button', 'data-toggle' => 'password'],  f::draw_fonticon('icon-eye')),
 			'</div>',
 		]);
 	}

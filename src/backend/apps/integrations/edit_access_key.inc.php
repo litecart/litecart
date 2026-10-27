@@ -190,7 +190,8 @@
 							<?= f::form_button('regenerate', t('title_regenerate_key', 'Regenerate Key'), 'submit', [
 								'formnovalidate' => true,
 								'class' => 'btn btn-warning btn-sm',
-								'onclick' => 'if (!confirm("' . t('text_regenerate_key_confirm', 'Regenerating will invalidate the existing key. Any client using it will lose access until updated. Continue?') .'")) return false;',
+								'data-toggle' => 'confirm',
+								'confirm' => t('text_regenerate_key_confirm', 'Regenerating will invalidate the existing key. Any client using it will lose access until updated. Continue?'),
 							], 'rotate') ?>
 						</div>
 					</div>

@@ -125,7 +125,7 @@ pre {
 
 			<div class="card-action">
 				<?= f::form_button_predefined('save') ?>
-				<?= f::form_button('cancel', t('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1)"', 'cancel') ?>
+				<?= f::form_button('cancel', t('title_cancel', 'Cancel'), 'button', ['data-toggle' => 'history-back']) ?>
 			</div>
 
 		<?= f::form_end() ?>

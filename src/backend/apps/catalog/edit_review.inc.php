@@ -218,9 +218,9 @@
 			</div>
 
 			<div class="card-action">
-				<?= f::form_button('save', t('title_save', 'Save'), 'submit', ['class' => 'btn btn-success'], 'save') ?>
-				<?= !empty($review->data['id']) ? f::form_button('delete', t('title_delete', 'Delete'), 'submit', 'class="btn btn-danger" onclick="if (!confirm(&quot;'. t('text_are_you_sure', 'Are you sure?') .'&quot;)) return false;"', 'delete') : '' ?>
-				<?= f::form_button('cancel', t('title_cancel', 'Cancel'), 'button', 'onclick="history.go(-1);"', 'cancel') ?>
+				<?= f::form_button_predefined('save') ?>
+				<?= !empty($review->data['id']) ? f::form_button_predefined('delete') : '' ?>
+				<?= f::form_button_predefined('cancel') ?>
 			</div>
 
 		<?= f::form_end() ?>

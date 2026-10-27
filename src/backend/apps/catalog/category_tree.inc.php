@@ -670,7 +670,7 @@ table .icon-folder-open {
 					</div>
 
 					<div class="btn-group">
-						<?= f::form_button('move', t('title_move', 'Move'), 'submit', 'onclick="if (!window.confirm(\''. str_replace("'", "\\\'", t('warning_previous_mount_points_will_be_reset', 'Warning: All previous mount points will be reset.')) .'\')) return false;"') ?>
+						<?= f::form_button('move', t('title_move', 'Move'), 'submit', ['data-toggle' => 'confirm', 'data-confirm' => t('warning_previous_mount_points_will_be_reset', 'Warning: All previous mount points will be reset')]) ?>
 						<?= f::form_button('copy', t('title_copy', 'Copy'), 'submit') ?>
 						<?= f::form_button('clone', t('title_clone', 'Clone'), 'submit', '', 'icon-copy') ?>
 					</div>

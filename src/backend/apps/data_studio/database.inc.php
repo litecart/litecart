@@ -92,8 +92,8 @@
 				<ul class="list-inline">
 					<li><?= f::form_button('check', t('title_check', 'Check'), 'submit', '', 'icon-stethoscope') ?></li>
 					<li><?= f::form_button('repair', t('title_repair', 'Repair'), 'submit', '', 'icon-medkit') ?></li>
-					<li><?= f::form_button('truncate', t('title_truncate', 'Truncate'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!confirm(\''. t('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') ?></li>
-					<li><?= f::form_button('delete', t('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!confirm(\''. t('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete') ?></li>
+					<li><?= f::form_button('truncate', t('title_truncate', 'Truncate'), ['formnovalidate' => true, 'confirm' => t('text_are_you_sure', 'Are you sure?')]); ?></li>
+					<li><?= f::form_button_predefined('delete'); ?></li>
 				</ul>
 			</fieldset>
 		</div>

@@ -491,7 +491,7 @@
 				</li>
 				<li>
 					<?= f::form_button_predefined('save') ?>
-					<?php if (!empty($order->data['id'])) echo f::form_button('delete', t('title_delete', 'Delete'), 'submit', 'formnovalidate class="btn btn-danger" onclick="if (!confirm(\''. t('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'delete'); ?>
+					<?php if (!empty($order->data['id'])) echo f::form_button_predefined('delete'); ?>
 					<?= f::form_button_predefined('cancel') ?>
 				</li>
 			</ul>
@@ -1088,8 +1088,8 @@
 					<td colspan="99">
 						<button name="add_product" class="btn btn-default" href="<?= document::href_ilink('catalog/product_picker') ?>" data-toggle="lightbox" data-callback="selectProduct"><?= f::draw_fonticon('add') ?> <?= t('title_add_product', 'Add Product') ?></button>
 						<?= f::form_button('add', t('title_add_item', 'Add Item'), 'button', '', 'add') ?>
-						<?= f::form_button('return', t('title_return_items', 'Return Items'), 'submit', 'formnovalidate onclick="if (!confirm(\''. t('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'icon-reply') ?>
-						<?= f::form_button('split', t('title_split_items_from_order', 'Split Items From Order'), 'submit', 'formnovalidate onclick="if (!confirm(\''. t('text_are_you_sure', 'Are you sure?') .'\')) return false;"', 'icon-clone') ?>
+						<?= f::form_button('return', t('title_return_items', 'Return Items'), 'submit', ['formnovalidate' => true, 'data-toggle' => 'confirm', 'confirm' => t('text_are_you_sure', 'Are you sure?')], 'icon-reply') ?>
+						<?= f::form_button('split', t('title_split_items_from_order', 'Split Items From Order'), 'submit', ['formnovalidate' => true, 'data-toggle' => 'confirm', 'confirm' => t('text_are_you_sure', 'Are you sure?')], 'icon-clone') ?>
 					</td>
 				</tr>
 			</tfoot>
@@ -1283,7 +1283,7 @@
 
 		<div class="card-action">
 			<?= f::form_button('ok', t('title_ok', 'OK'), 'button', [], 'ok') ?>
-			<?= f::form_button('cancel', t('title_cancel', 'Cancel'), 'button', ['onclick' => '$.litebox.close();'], 'cancel') ?>
+			<?= f::form_button('cancel', t('title_cancel', 'Cancel'), 'button', ['data-toggle' => 'close-modal'], 'cancel') ?>
 		</div>
 	</div>
 </div>
@@ -1437,7 +1437,7 @@
 
 		<div class="card-action">
 			<?= f::form_button('ok', t('title_ok', 'OK'), 'button', [], 'ok') ?>
-			<?= f::form_button('cancel', t('title_cancel', 'Cancel'), 'button', ['onclick' => '$.litebox.close();'], 'cancel') ?>
+			<?= f::form_button('cancel', t('title_cancel', 'Cancel'), 'button', ['data-toggle' => 'close-modal'], 'cancel') ?>
 		</div>
 	</div>
 </div>

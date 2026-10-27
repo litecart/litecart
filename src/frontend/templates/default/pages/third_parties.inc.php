@@ -56,7 +56,7 @@
 		</div>
 
 		<div class="card-body">
-			<button name="privacy_settings" class="btn btn-default" type="button" onclick="" aria-expanded="false">
+			<button name="privacy_settings" class="btn btn-default" type="button" aria-expanded="false">
 				<?= t('title_privacy_settings', 'Display Privacy Settings') ?>
 			</button>
 

@@ -1041,7 +1041,7 @@
 									</div>
 									<?= f::form_begin('delete_note_form_'. (int)$note['id'], 'post', '', false, ['class' => 'note-entry-delete']) ?>
 										<?= f::form_input_hidden('note_id', (int)$note['id']) ?>
-										<?= f::form_button('delete_note', f::draw_fonticon('icon-trash'), 'submit', ['class' => 'btn btn-default btn-sm', 'title' => t('title_delete', 'Delete'), 'onclick' => "return confirm('". f::escape_js(t('text_confirm_delete_note', 'Delete this note?')) ."')"]) ?>
+										<?= f::form_button('delete_note', f::draw_fonticon('icon-trash'), 'submit', ['class' => 'btn btn-default btn-sm', 'title' => t('title_delete', 'Delete'), 'confirm' => t('text_confirm_delete_note', 'Delete this note?')]) ?>
 									<?= f::form_end() ?>
 								</div>
 								<?php } ?>

@@ -124,7 +124,7 @@
 
 			<div class="card-action">
 				<?= f::form_button_predefined('save') ?>
-				<?php if (!empty($module->data['id'])) echo f::form_button('uninstall', t('title_uninstall', 'Uninstall'), 'submit', 'class="btn btn-danger" onclick="if (!confirm(&quot;'. t('text_are_you_sure', 'Are you sure?') .'&quot;)) return false;"', 'delete'); ?>
+				<?php if (!empty($module->data['id'])) echo f::form_button('uninstall', t('title_uninstall', 'Uninstall'), 'submit', ['class' => 'btn btn-danger', 'data-toggle' => 'confirm', 'confirm' => t('text_are_you_sure', 'Are you sure?')]); ?>
 				<?= f::form_button_predefined('cancel') ?>
 			</div>
 

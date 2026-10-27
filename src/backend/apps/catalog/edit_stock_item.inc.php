@@ -493,7 +493,7 @@
 			});
 		});
 
-		$('form[name="stock_item_form"] button[name="cancel"]').attr('onclick', '$.litebox.close();');
+		$('form[name="stock_item_form"] button[name="cancel"]').attr('data-toggle', 'close-modal');
 		$('form[name="stock_item_form"] button[name="delete"]').remove();
 	}
 
