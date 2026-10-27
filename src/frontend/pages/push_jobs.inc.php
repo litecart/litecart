@@ -7,9 +7,9 @@
 	header('Content-type: text/plain; charset='. mb_http_output());
 
 	if (!is_cli()) {
-		if ($last_push = settings::get('jobs_last_push')) {
-			$last_push = strtotime($last_push);
-			if (date('Ymdh', $last_push) == date('Ymdh') && floor(date('i', $last_push)/5) == floor(date('i')/5)) {
+		if ($last_run = settings::get('jobs_last_run')) {
+			$last_run = strtotime($last_run);
+			if (date('Ymdh', $last_run) == date('Ymdh') && floor(date('i', $last_run)/5) == floor(date('i')/5)) {
 				header('HTTP/1.1 429 Too Many Requests');
 				die('Zzz...');
 			}
@@ -23,8 +23,7 @@
 	database::query(
 		"update ". DB_PREFIX ."settings
 		set value = '". date('Y-m-d H:i:s') ."'
-		where `key` = 'jobs_last_push'
-		limit 1;"
+		where `key` in ('jobs_last_push', 'jobs_last_run');"
 	);
 
 	$jobs = new mod_jobs();

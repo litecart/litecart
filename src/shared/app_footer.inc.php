@@ -40,23 +40,16 @@
 		$url = document::ilink('f:push_jobs');
 		$disabled_functions = f::string_split(ini_get('disable_functions'));
 
-		if (!in_array('exec', $disabled_functions)) {
+		$pushed = false;
 
-			exec('php -d register_argc_argv=on '. escapeshellarg(FS_DIR_APP .'index.php') .' push_jobs &>/dev/null &');
+		// The store's own hostname may not be reachable from the server itself (Docker, NAT), fall back to exec
+		if (!in_array('fsockopen', $disabled_functions) && !in_array('stream_socket_client', $disabled_functions)) {
 
-		} else if (!in_array('fsockopen', $disabled_functions)) {
+			$pushed = f::http_push_request($url);
+		}
 
-			$parts = parse_url($url);
-			$fp = fsockopen($parts['host'], $parts['port'] ?? 80, $errno, $errstr, 30);
+		if (!$pushed && !in_array('exec', $disabled_functions)) {
 
-			fwrite($fp, implode("\r\n", [
-				'GET '. $parts['path'] .' HTTP/1.1',
-				'Host: '. $parts['host'],
-				'Connection: Close',
-				'',
-				'',
-			]));
-
-			fclose($fp);
+			exec('php -d register_argc_argv=on '. escapeshellarg(FS_DIR_APP .'index.php') .' push_jobs > /dev/null 2>&1 &');
 		}
 	}
