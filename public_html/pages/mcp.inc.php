@@ -342,7 +342,8 @@
 								'mimeType' => 'application/json',
 							];
 						}
-					} elseif (!is_string($content)) {
+					} else {
+						// A plain value, a string included, becomes the text of a single content entry
 						$content = ['text' => (string)$content];
 					}
 					if (!isset($content['uri'])) $content['uri'] = $uri;
@@ -440,6 +441,9 @@
 
 				// Support both 'arguments' (MCP standard) and 'input' (legacy)
 				$tool_args = isset($params['arguments']) ? $params['arguments'] : (isset($params['input']) ? $params['input'] : []);
+				if (!is_array($tool_args)) {
+					throw new McpException('Invalid arguments: expected an object', 200, -32602, $rpc_id);
+				}
 
 				// Validate against required parameters (also enforce type when schema provides it)
 				if (!empty($tool['inputSchema']['required']) && is_array($tool['inputSchema']['required'])) {

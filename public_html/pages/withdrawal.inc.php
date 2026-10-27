@@ -136,9 +136,6 @@
         throw new Exception($generic_error_msg);
       }
 
-    // Grant access to the order for this session
-      session::$data['withdrawal_access'][$order['id']] = $order['public_key'];
-
     // Clear the recorded attempts for this scope
       database::query(
         "delete from ". DB_TABLE_PREFIX ."rate_limiting
@@ -146,7 +143,7 @@
         and (". $rate_limit_scope .")"
       );
 
-      header('Location: '. document::ilink('withdrawal_request', ['order_id' => $order['id']]));
+      header('Location: '. document::ilink('withdrawal_request', ['order_id' => $order['id'], 'public_key' => $order['public_key']]));
       exit;
 
     } catch (Exception $e) {
