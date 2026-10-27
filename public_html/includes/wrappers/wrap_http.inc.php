@@ -3,6 +3,7 @@
   class wrap_http {
     public $follow_redirects = false;
     public $timeout = 20;
+    public $verify_peer = true;
     public $last_request;
     public $last_response;
     public static $stats = [
@@ -67,13 +68,41 @@
         'body' => $data,
       ];
 
-      if (!$socket = stream_socket_client(strtr('scheme://host:port', $parts), $errno, $errstr, $this->timeout, STREAM_CLIENT_CONNECT)) {
+      $context = stream_context_create([
+        'ssl' => [
+          'peer_name' => $parts['host'],
+          'SNI_server_name' => $parts['host'],
+          'verify_peer' => $this->verify_peer,
+          'verify_peer_name' => $this->verify_peer,
+          'allow_self_signed' => !$this->verify_peer,
+        ],
+      ]);
+
+    // Asynchronous mode returns without waiting for the response
+      if ($asynchronous) {
+        // A failed connection is expected here, the caller decides what to do about it
+        if (!$socket = @stream_socket_client(strtr('scheme://host:port', $parts), $errno, $errstr, $this->timeout, STREAM_CLIENT_CONNECT, $context)) {
+          return;
+        }
+        fwrite($socket, $request_headers . "\r\n" . $data);
+        fflush($socket);
+        // Give the server a moment to pick the request up, closing too early discards it
+        stream_set_timeout($socket, 0, 25000);
+        fgets($socket);
+        fclose($socket);
+        self::$stats['requests']++;
+        self::$stats['duration'] += round(microtime(true) - $microtime_start, 3);
+        return true;
+      }
+
+      if (!$socket = stream_socket_client(strtr('scheme://host:port', $parts), $errno, $errstr, $this->timeout, STREAM_CLIENT_CONNECT, $context)) {
         return;
       }
 
       stream_set_timeout($socket, $this->timeout);
 
       fwrite($socket, $request_headers . "\r\n" . $data);
+      fflush($socket);
 
       $response = '';
       while (!feof($socket)) {
