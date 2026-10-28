@@ -1,44 +1,42 @@
-body {
-	background: var(--site-background);
+[data-toggle=momentum-scroll] {
+	position: relative;
 }
-
-#page {
-	display: flex;
-	flex-direction: column;
-	min-height: 100vh;
+[data-toggle=momentum-scroll] .scroll-content {
+	padding: var(--gutter-x) var(--gutter-x);
+	overflow: hidden;
+	user-select: none;
+	touch-action: pan-x;
+	cursor: grab;
 }
-#page #main {
-	flex-grow: 1;
+[data-toggle=momentum-scroll] .scroll-content::-webkit-scrollbar {
+	height: 0.5em;
 }
-
-#important-notice {
-	padding: 0.75em 1.5em;
-	background: var(--important-notice-background);
-	color: var(--important-notice-text-color);
-	border: var(--important-notice-border-size) solid var(--important-notice-border-color);
+[data-toggle=momentum-scroll] .scroll-content::-webkit-scrollbar * {
+	background: transparent;
+}
+[data-toggle=momentum-scroll] .scroll-content::-webkit-scrollbar-thumb {
+	background: rgba(0, 0, 0, 0.25) !important;
+	border-radius: 6px;
+}
+[data-toggle=momentum-scroll] button[name=left],
+[data-toggle=momentum-scroll] button[name=right] {
+	position: absolute;
+	top: 40%;
+	width: 3em;
+	height: 3em;
 	border-radius: var(--border-radius);
-	margin-bottom: 1em;
-	text-align: center;
+	padding: 0;
+}
+[data-toggle=momentum-scroll] button[name=left][name=left],
+[data-toggle=momentum-scroll] button[name=right][name=left] {
+	inset-inline-start: 1em;
+}
+[data-toggle=momentum-scroll] button[name=left][name=right],
+[data-toggle=momentum-scroll] button[name=right][name=right] {
+	inset-inline-end: 1em;
 }
 
-#site-toolbar {
-	background: var(--toolbar-background);
-	color: var(--toolbar-text-color);
-	z-index: 999999;
-}
-#site-toolbar .container {
-	display: flex;
-	justify-content: space-evenly;
-}
-#site-toolbar .nav {
-	justify-content: center;
-}
-#site-toolbar .code {
-	font-size: 0.8em;
-	background: var(--code-background);
-	padding: 0.25em 1em;
-}
-
+/* Site navigation */
 #site-navigation .regional-settings {
 	text-decoration: none;
 	color: var(--navigation-text-color);
@@ -293,6 +291,7 @@ body {
 		gap: 0 1.5em;
 	}
 }
+/* Footer */
 #site-footer {
 	--color-accent: #54aeff;
 	--color-text-muted: var(--footer-title-color);
@@ -458,6 +457,7 @@ body {
 	border-radius: 4px;
 }
 
+/* Copyright */
 #copyright {
 	background: var(--copyright-background);
 	color: var(--copyright-text-color);
@@ -482,6 +482,7 @@ body {
 	color: var(--color-text-muted);
 }
 
+/* Scroll to top */
 #scroll-up {
 	display: none;
 	bottom: 1em;
@@ -507,6 +508,7 @@ body {
 	opacity: 1;
 }
 
+/* Cookie consent */
 #site-cookie-consent {
 	background: var(--overlay-cookie-consent);
 	position: fixed;
@@ -591,6 +593,7 @@ body {
 	height: 1.5em;
 }
 
+/* Privacy consent */
 #site-privacy-consent {
 	background: var(--overlay-dark);
 	position: fixed;
@@ -678,6 +681,7 @@ body {
 	height: 1.5em;
 }
 
+/* Content boxes */
 @media (width >= 768px) {
 	#box-also-purchased-products {
 		position: sticky;
@@ -710,6 +714,7 @@ body {
 	color: var(--link-text-color);
 }
 
+/* Listings */
 [data-toggle=momentum-scroll] .listing {
 	margin: 1.5em 1.5em;
 	margin-top: 0.5em;
@@ -1083,6 +1088,7 @@ body {
 	}
 }
 
+/* Product box */
 #box-product .images {
 	margin-bottom: 2rem;
 }
@@ -1268,12 +1274,55 @@ body {
 	color: inherit;
 }
 
+/* Price tag */
 .price-tag .sale-price {
 	color: var(--color-sale-price);
 }
 
+/* Loader */
 .loader {
 	display: inline-block;
 	background: url("../images/loader.svg");
 	background-size: cover;
+}
+
+body {
+	background: var(--site-background);
+}
+
+#page {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+}
+#page #main {
+	flex-grow: 1;
+}
+
+#important-notice {
+	padding: 0.75em 1.5em;
+	background: var(--important-notice-background);
+	color: var(--important-notice-text-color);
+	border: var(--important-notice-border-size) solid var(--important-notice-border-color);
+	border-radius: var(--border-radius);
+	margin-bottom: 1em;
+	text-align: center;
+}
+
+#site-toolbar {
+	background: var(--toolbar-background);
+	color: var(--toolbar-text-color);
+	z-index: 999999;
+}
+#site-toolbar .container {
+	display: flex;
+	justify-content: space-evenly;
+}
+#site-toolbar .nav {
+	justify-content: center;
+}
+#site-toolbar .code {
+	font-size: 0.8em;
+	background: var(--code-background);
+	padding: 0.25em 1em;
 }

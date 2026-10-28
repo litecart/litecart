@@ -1,0 +1,50 @@
+// Store-front application styles.
+// Compiled by npx gulp scss-frontend to frontend/templates/default/css/app.css
+
+@use 'momentum_scroll';
+@use 'subcomponents';
+
+body {
+	background: var(--site-background);
+}
+
+#page {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+
+	#main {
+		flex-grow: 1;
+	}
+}
+
+#important-notice {
+	padding: .75em 1.5em;
+	background: var(--important-notice-background);
+	color: var(--important-notice-text-color);
+	border: var(--important-notice-border-size) solid var(--important-notice-border-color);
+	border-radius: var(--border-radius);
+	margin-bottom: 1em;
+	text-align: center;
+}
+
+#site-toolbar {
+	background: var(--toolbar-background);
+	color: var(--toolbar-text-color);
+	z-index: 999999;
+
+	.container {
+		display: flex;
+		justify-content: space-evenly;
+	}
+
+	.nav {
+		justify-content: center;
+	}
+
+	.code {
+		font-size: 0.8em;
+		background: var(--code-background);
+		padding: 0.25em 1em;
+	}
+}

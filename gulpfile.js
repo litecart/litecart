@@ -156,7 +156,21 @@ gulp.task('scss-frontend', function() {
 		.pipe(tabify()) // Use tab indentation
 		.pipe(gulp.dest('src/frontend/templates/default/css/', { overwrite: true }));
 
-	return gulp.src(['src/frontend/templates/default/scss/*.scss', '!src/frontend/templates/default/scss/variables*.scss'])
+	// Store-front application styles: scss/app/main.scss → css/app.css
+	const appStyles = gulp.src(['src/frontend/templates/default/scss/app/[m]ain.scss']) // Glob star to prevent error "File not found with singular glob"
+		.pipe(sourcemaps.init())
+		.pipe(sass(sassOptions).on('error', sass.logError))
+		.pipe(tabify()) // Use tab indentation
+		.pipe(rename({ basename: 'app', extname: '.css' }))
+		.pipe(gulp.dest('src/frontend/templates/default/css/', { overwrite: true }))
+		.pipe(cleancss())
+		.pipe(header(banner, { pkg: packageData }))
+		.pipe(rename({ basename: 'app', extname: '.min.css' }))
+		.pipe(sourcemaps.write('.', { includeContent: false }))
+		.pipe(gulp.dest('src/frontend/templates/default/css/', { overwrite: true }));
+
+	// Page styles: scss/catalog.scss, scss/checkout.scss
+	const pageStyles = gulp.src(['src/frontend/templates/default/scss/*.scss', '!src/frontend/templates/default/scss/variables*.scss'])
 		.pipe(sourcemaps.init())
 		.pipe(sass(sassOptions).on('error', sass.logError))
 		.pipe(tabify()) // Use tab indentation
@@ -166,6 +180,8 @@ gulp.task('scss-frontend', function() {
 		.pipe(rename({ extname: '.min.css' }))
 		.pipe(sourcemaps.write('.', { includeContent: false }))
 		.pipe(gulp.dest('src/frontend/templates/default/css/', { overwrite: true }));
+
+	return Promise.all([appStyles, pageStyles]);
 });
 
 gulp.task('js-frontend', function() {

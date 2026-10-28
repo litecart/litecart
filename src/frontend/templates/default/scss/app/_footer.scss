@@ -1,0 +1,243 @@
+/* Footer */
+#site-footer {
+	--color-accent: #54aeff;
+	--color-text-muted: var(--footer-title-color);
+
+	clear: both;
+	background: var(--footer-background);
+	color: var(--footer-text-color);
+	box-shadow: var(--footer-shadow);
+	border-top: 1px solid var(--default-border-color);
+
+	a {
+		text-decoration: none;
+	}
+
+	> .container {
+		padding-top: 2em;
+		padding-bottom: 2em;
+	}
+}
+
+.footer-layout {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 2.5em;
+	padding-bottom: 2em;
+
+	@media (min-width: 992px) {
+		grid-template-columns: minmax(0, 1fr) minmax(0, 2.1fr);
+		gap: 3.5em;
+	}
+}
+
+.footer-brand {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+
+	.logotype {
+		display: inline-flex;
+		align-items: center;
+		margin-bottom: .85em;
+
+		img {
+			display: block;
+			width: auto;
+			max-width: 100%;
+			height: auto;
+			max-height: 2.5em;
+		}
+	}
+
+	.tagline {
+		font-style: italic;
+		max-width: 34ch;
+		margin: 0 0 1.25em;
+		color: var(--color-text-muted);
+		font-size: .95em;
+		line-height: 1.6;
+		&:before, &:after {
+			content: '“';
+		}
+	}
+}
+
+.footer-column {
+	.facility {
+		border-radius: var(--border-radius);
+		margin-bottom: 1.25em;
+		overflow: hidden;
+		max-width: 100%;
+		align-self: stretch;
+
+		a {
+			display: block;
+			&:hover img {
+				filter: none(0);
+				transform: translateY(-2px);
+			}
+		}
+
+		img {
+			filter: grayscale(0.75);
+			width: 100%;
+			height: auto;
+			display: block;
+			transition: filter 250ms linear;
+		}
+	}
+}
+
+.footer-social {
+	display: flex;
+	flex-wrap: wrap;
+	gap: .5em;
+
+	a {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 2.4em;
+		height: 2.4em;
+		border-radius: 999px;
+		background: rgb(255 255 255 / 6%);
+		color: var(--footer-text-color);
+		font-size: 1.05em;
+		transition: background-color 100ms linear, color 100ms linear, transform 100ms linear;
+
+		&:hover {
+			background: var(--color-accent);
+			color: #fff;
+			transform: translateY(-2px);
+		}
+	}
+}
+
+.footer-columns {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+	gap: 1.75em 1.5em;
+}
+
+.footer-column {
+
+	.title {
+		margin: 0 0 .85em 0;
+		font-size: .8em;
+		font-weight: 700;
+		letter-spacing: .09em;
+		text-transform: uppercase;
+		color: var(--color-text-muted);
+	}
+
+	ul {
+		display: flex;
+		flex-direction: column;
+		gap: .55em;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	li {
+		font-size: .95em;
+		line-height: 1.45;
+
+		[class^="icon-"], [class*=" icon-"] {
+			margin-inline-end: .35em;
+			opacity: .8;
+		}
+	}
+
+	a {
+		color: var(--footer-text-color);
+		transition: color 100ms linear, padding-inline-start 100ms linear;
+
+		&:hover {
+			color: var(--color-accent);
+			padding-inline-start: .25em;
+		}
+	}
+}
+
+.footer-modules {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: .5em;
+	padding-top: 1.75em;
+	margin-top: .5em;
+	border-top: 1px solid rgb(255 255 255 / 10%);
+
+	.label {
+		margin-inline-end: .35em;
+		color: var(--color-text-muted);
+		font-size: .8em;
+		letter-spacing: .06em;
+		text-transform: uppercase;
+	}
+
+	img {
+		height: 24px;
+		width: auto;
+		border-radius: 4px;
+	}
+}
+
+/* Copyright */
+#copyright {
+	background: var(--copyright-background);
+	color: var(--copyright-text-color);
+
+	.container {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: .5em 1.5em;
+		padding: 1em var(--gutter-x);
+		font-size: .85em;
+	}
+
+	a {
+		color: inherit;
+		text-decoration: none;
+
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+
+	.trademark {
+		color: var(--color-text-muted);
+	}
+}
+
+/* Scroll to top */
+#scroll-up {
+	display: none;
+	bottom: 1em;
+	inset-inline-end: 1em;
+	width: 2em;
+	height: 2em;
+	opacity: 0.5;
+	position: fixed;
+	font-size: 1.5em;
+	transition: opacity 200ms linear;
+	color: var(--default-text-color) !important;
+	background: var(--card-background);
+	border-radius: 50%;
+	box-shadow: var(--default-shadow);
+	text-align: center;
+	line-height: 2em;
+
+	i, [class^="icon-"] {
+		color: inherit !important;
+		font-size: 1.5rem !important;
+	}
+
+	&:hover {
+		opacity: 1;
+	}
+}
