@@ -4291,7 +4291,7 @@ html[data-theme=dark] .navbar-toggle-btn:hover, html:not([data-theme=light]) .na
 .pagination .pagination-item {
 	position: relative;
 	display: inline-block;
-	padding: 0.5em 1em;
+	padding: 0.65em 1em;
 	background: var(--pagination-item-background);
 	color: var(--pagination-item-text-color);
 	border: var(--pagination-item-border-width) solid var(--pagination-item-border-color);
@@ -4741,7 +4741,7 @@ html[data-theme=dark] .navbar-toggle-btn:hover, html:not([data-theme=light]) .na
 	border-bottom: calc(var(--table-border-width) * 2) solid var(--table-border-color);
 }
 .table thead tr th {
-	padding: 0.5em 1em;
+	padding: 1em;
 	vertical-align: bottom;
 	text-align: start;
 	font-weight: 500;
