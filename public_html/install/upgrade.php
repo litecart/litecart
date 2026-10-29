@@ -124,12 +124,22 @@
 
   if (!empty($_REQUEST['upgrade'])) {
 
-    ob_start(function($buffer) {
+    $format_output = function($buffer) {
       if ($_SERVER['SERVER_SOFTWARE'] == 'CLI') {
         $buffer = strip_tags($buffer);
       }
       return $buffer;
-    });
+    };
+
+    ob_start($format_output);
+
+    // Stream the progress so the page never goes blank during a long upgrade
+    $flush_output = function() {
+      if (empty($_REQUEST['redirect'])) {
+        ob_flush();
+        flush();
+      }
+    };
 
     try {
 
@@ -183,6 +193,8 @@
         echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
       }
 
+      $flush_output();
+
       ### App > Check Version #######################################
 
       echo '<p>Checking application database version... ';
@@ -196,6 +208,8 @@
         throw new Exception(' <span class="error">[Undetected]</span></p>' . PHP_EOL . PHP_EOL);
       }
 
+      $flush_output();
+
       ### Installer > Update ########################################
 
       if (empty($_REQUEST['skip_updates'])) {
@@ -207,7 +221,7 @@
         $update_file = function($file) use ($client) {
           $local_file = preg_replace('#^admin/#', BACKEND_ALIAS.'/', $file);
           $response = $client->call('GET', 'https://raw.githubusercontent.com/litecart/litecart/'. PLATFORM_VERSION .'/public_html/'. $file);
-          if ($client->last_response['status_code'] != 200) return false;
+          if (empty($client->last_response['status_code']) || $client->last_response['status_code'] != 200) return false;
           if (!is_dir(dirname(FS_DIR_APP . $local_file))) {
             mkdir(dirname(FS_DIR_APP . $local_file), 0777, true);
           }
@@ -226,7 +240,8 @@
 
           $files_updated = 0;
           foreach (file(FS_DIR_APP . 'install/checksums.md5', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {
-            list($checksum, $file) = explode("\t", $line);
+            if (strpos($line, "\t") === false) continue;
+            list($checksum, $file) = explode("\t", $line, 2);
             if ($calculate_md5($file) != $checksum) {
               if ($update_file($file)) $files_updated++;
             }
@@ -234,9 +249,16 @@
 
           if (!empty($files_updated)) {
             echo 'Updated '. $files_updated .' file(s) <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
+          } else {
+            echo 'All files are up to date <span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
           }
+
+        } else {
+          echo '<span class="warning">[Skipped]</span> Could not retrieve the file list for version '. PLATFORM_VERSION .' from the upstream repository</p>' . PHP_EOL . PHP_EOL;
         }
       }
+
+      $flush_output();
 
       #############################################
 
@@ -274,6 +296,8 @@
         );
 
         echo ' <strong>'. $version .'</strong></p>' . PHP_EOL . PHP_EOL;
+
+        $flush_output();
       }
 
       #############################################
@@ -320,6 +344,8 @@
 
       echo PHP_EOL;
 
+      $flush_output();
+
       #############################################
 
       echo '<p>Reset error log... ';
@@ -329,6 +355,8 @@
       } else {
         echo ' <span class="error">[Failed]</span></p>' . PHP_EOL . PHP_EOL;
       }
+
+      $flush_output();
 
       #############################################
 
@@ -349,6 +377,8 @@
 
       echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
 
+      $flush_output();
+
       ### Cleanup ##########################################
 
       if (!empty($_REQUEST['cleanup'])) {
@@ -361,6 +391,8 @@
 
         echo '<span class="ok">[OK]</span></p>' . PHP_EOL . PHP_EOL;
       }
+
+      $flush_output();
 
       #############################################
 
@@ -376,7 +408,8 @@
       echo $e->getMessage();
     }
 
-    echo ob_get_clean();
+    $output = ob_get_clean();
+    echo $format_output($output === false ? '' : $output);
 
     if ($_SERVER['SERVER_SOFTWARE'] == 'CLI') exit;
 

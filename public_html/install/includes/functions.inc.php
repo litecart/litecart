@@ -101,16 +101,14 @@
 
             foreach ($operations as $operation) {
 
-              if (!empty($operations['regex'])) {
+              if (!empty($operation['regex'])) {
                 $contents = preg_replace($operation['search'], $operation['replace'], $contents, -1, $count);
               } else {
                 $contents = str_replace($operation['search'], $operation['replace'], $contents, $count);
               }
-
-              $results[] = $count ? true : false;
             }
 
-            $results[] = file_put_contents($file, $contents);
+            $results[] = file_put_contents($file, $contents) !== false;
           }
 
           if (!in_array(false, $results)) {

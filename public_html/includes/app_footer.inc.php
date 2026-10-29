@@ -67,17 +67,17 @@
       $url = document::ilink('push_jobs');
       $disabled_functions = preg_split('#\s*,\s*#', ini_get('disable_functions'), -1, PREG_SPLIT_NO_EMPTY);
 
-      $parts = parse_url($url);
+      $pushed = false;
 
       // The store's own hostname may not be reachable from the server itself (Docker, NAT), fall back to exec
-      if (!in_array('fsockopen', $disabled_functions) && ($fp = @fsockopen($parts['host'], isset($parts['port']) ? $parts['port'] : 80, $errno, $errstr, 30))) {
-        $out = "GET ". $parts['path'] ." HTTP/1.1\r\n"
-             . "Host: ". $parts['host'] ."\r\n"
-             . "Connection: Close\r\n\r\n";
-        fwrite($fp, $out);
-        fclose($fp);
+      if (!in_array('stream_socket_client', $disabled_functions)) {
+        $client = new wrap_http();
+        $client->timeout = 5;
+        $client->verify_peer = false;
+        $pushed = $client->call('GET', $url, null, [], true);
+      }
 
-      } else if (!in_array('exec', $disabled_functions)) {
+      if (!$pushed && !in_array('exec', $disabled_functions)) {
         exec('wget -q -O - '. escapeshellarg($url) .' > /dev/null 2>&1 &');
       }
     }

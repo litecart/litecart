@@ -289,7 +289,7 @@
           <div class="row">
             <div class="col-sm-7">
               <div class="form-group">
-                <label><?php echo language::translate('title_captcha', 'CAPTCHA'); ?></label>
+                <label><?php echo language::translate('title_vmod_file', 'vMod File'); ?></label>
                 <div class="input-group">
                   <?php echo functions::form_draw_file_field('vmod', 'accept="application/xml"'); ?>
                 </div>

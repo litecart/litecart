@@ -37,7 +37,7 @@
 		"build": "grunt build",
 		"build:watch": "grunt watch",
 		"changelog": "git log --oneline 'master'..'dev' > changelog.txt",
-		"hash": "php .git-hooks/pre-commit.d/calculate_checksums.php",
+		"hash": "php .git-hooks/post-commit.d/calculate_checksums.php --all",
 		"less": "grunt less",
 		"phplint": "grunt phplint",
 		"test": "grunt test",

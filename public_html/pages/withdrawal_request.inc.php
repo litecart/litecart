@@ -37,9 +37,7 @@
 
     if (!empty($public_key) && $public_key === $order->data['public_key']) {
       $authorized = true;
-    } elseif (!empty(customer::$data['id']) && !empty($order->data['customer']['id']) && $order->data['customer']['id'] == customer::$data['id']) {
-      $authorized = true;
-    } elseif (isset(session::$data['withdrawal_access'][$order->data['id']]) && session::$data['withdrawal_access'][$order->data['id']] === $order->data['public_key']) {
+    } elseif (!empty(customer::$data['id']) && !empty($order->data['customer']['id']) && customer::$data['id'] == $order->data['customer']['id']) {
       $authorized = true;
     }
 
