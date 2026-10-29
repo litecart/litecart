@@ -131,7 +131,7 @@
           );
         }
 
-        self::add_product($item['product_id'], json_decode($item['options'] ?: '[]', true), $item['quantity'], true, $item['key']);
+        self::add_product($item['product_id'], json_decode(!empty($item['options']) ? $item['options'] : '[]', true), $item['quantity'], true, $item['key']);
         if (isset(self::$items[$item['key']])) self::$items[$item['key']]['id'] = $item['id'];
       }
     }
