@@ -27,7 +27,7 @@
 				'destination' => $options['destination'] ?? 'storage://cache/',
 				'width' => $options['width'] ?? 0,
 				'height' => $options['height'] ?? 0,
-				'quality' => $options['quality'] ?? settings::get('image_quality'),
+				'quality' => $options['quality'] ?? settings::get('image_quality', 90),
 				'trim' => $options['trim'] ?? false,
 				'interlaced' => !empty($options['interlaced']),
 				'overwrite' => $options['overwrite'] ?? false,
@@ -42,13 +42,13 @@
 				if (preg_match('#^'. preg_quote('storage://cache/', '#') .'$#', $options['destination'])) {
 
 					if (!$options['extension']) {
-						if (settings::get('jxl_enabled') && isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/jxl#', $_SERVER['HTTP_ACCEPT'])) {
+						if (settings::get('jxl_enabled', false) && isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/jxl#', $_SERVER['HTTP_ACCEPT'])) {
 							$options['extension'] = 'jxl';
 
-						} else if (settings::get('webp_enabled') && isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/webp#', $_SERVER['HTTP_ACCEPT'])) {
+						} else if (settings::get('webp_enabled', false) && isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/webp#', $_SERVER['HTTP_ACCEPT'])) {
 							$options['extension'] = 'webp';
 
-						} else if (settings::get('avif_enabled') && isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/avif#', $_SERVER['HTTP_ACCEPT'])) {
+						} else if (settings::get('avif_enabled', false) && isset($_SERVER['HTTP_ACCEPT']) && preg_match('#image/avif#', $_SERVER['HTTP_ACCEPT'])) {
 							$options['extension'] = 'avif';
 
 						} else {
@@ -87,7 +87,7 @@
 						$options['trim'] ? '_t' : '',
 						($options['width'] && $options['height']) ? '_'.(int)$options['width'] .'x'. (int)$options['height'] : '',
 						$options['watermark'] ? '_wm' : '',
-						settings::get('image_thumbnail_interlaced') ? '_i' : '',
+						settings::get('image_thumbnail_interlaced', false) ? '_i' : '',
 						'.'.$options['extension'],
 					]);
 
@@ -191,7 +191,7 @@
 			'height' => $height,
 			'trim' => $trim,
 			'quality' => settings::get('image_thumbnail_quality'),
-			'interlaced' => settings::get('image_thumbnail_interlaced'),
+			'interlaced' => settings::get('image_thumbnail_interlaced', false),
 		]);
 	}
 

@@ -92,12 +92,12 @@
 			// vMods
 			$vmods_folder = FS_DIR_STORAGE .'vmods/';
 			if (filemtime($vmods_folder) > $last_modified) {
-				$last_modified = $folder_last_modified;
+				$last_modified = filemtime($vmods_folder);
 			}
 
 			foreach (scandir($vmods_folder) as $file) {
 
-				if ($file != 'vmod.xml') continue;
+				if (substr($file, -4) != '.xml') continue;
 
 				if (($modification_last_modified = filemtime($vmods_folder.$file)) > $last_modified) {
 					$last_modified = $modification_last_modified;

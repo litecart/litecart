@@ -161,7 +161,7 @@
 								<div class="col-md-6">
 									<label class="form-group">
 										<div class="form-label"><?= t('title_font_icon', 'Font Icon') ?></div>
-										<?= f::form_input_text('icon', true, ['placeholder' => 'icon-circle-thin']) ?>
+										<?= f::form_input_text('icon', true, ['placeholder' => 'icon-circle']) ?>
 									</label>
 								</div>
 

@@ -265,7 +265,7 @@
 		$feed[] = [
 			'timestamp' => $email['sent_at'] ?: $email['created_at'],
 			'type' => 'email',
-			'icon' => 'icon-email',
+			'icon' => 'icon-envelope',
 			'title' => t('title_email_sent', 'Email sent') .': '. ($email['subject'] ?: '('. t('title_no_subject', 'No subject') .')'),
 			'body' => '',
 			'meta' => ucfirst((string)$email['status']),
@@ -304,7 +304,7 @@
 		$feed[] = [
 			'timestamp' => $entry['created_at'],
 			'type' => $_is_login ? 'login' : ($_is_tag ? 'tag' : ($_is_note ? 'note' : 'event')),
-			'icon' => $_is_login ? 'icon-login' : ($_is_tag ? 'icon-tag' : ($_is_note ? 'icon-note' : 'icon-event')),
+			'icon' => $_is_login ? 'icon-sign-in' : ($_is_tag ? 'icon-tag' : ($_is_note ? 'icon-sticky-note' : 'icon-clock')),
 			'title' => (string)($entry['description'] ?: $entry['type']),
 			'body' => (string)$entry['hostname'],
 			'meta' => (string)$entry['ip_address'],
@@ -809,7 +809,7 @@
 				<?php } ?>
 
 				<details>
-					<summary><?= f::draw_fonticon('icon-add') ?> <?= t('title_add_tags', 'Add tags') ?></summary>
+					<summary><?= f::draw_fonticon('icon-plus') ?> <?= t('title_add_tags', 'Add tags') ?></summary>
 					<?= f::form_begin('tags_form', 'post', '', false, ['class' => 'tag-form']) ?>
 						<div style="flex: 1; min-width: 200px;">
 							<?= f::form_input_tags('tags', $customer->data['tags'], [], $available_tags) ?>
@@ -835,13 +835,13 @@
 			</div>
 
 			<div class="stat-card">
-				<span class="stat-icon"><?= f::draw_fonticon('icon-currency') ?></span>
+				<span class="stat-icon"><?= f::draw_fonticon('icon-money-bill') ?></span>
 				<span class="label"><?= t('title_total_sales', 'Total Sales') ?></span>
 				<span class="value"><?= currency::format($orders_stats['total_sales'], false, settings::get('store_currency_code')) ?></span>
 			</div>
 
 			<div class="stat-card">
-				<span class="stat-icon"><?= f::draw_fonticon('icon-chart') ?></span>
+				<span class="stat-icon"><?= f::draw_fonticon('icon-chart-bar') ?></span>
 				<span class="label"><?= t('title_average_order_value', 'Average Order Value') ?></span>
 				<span class="value"><?= currency::format($orders_stats['aov'], false, settings::get('store_currency_code')) ?></span>
 			</div>
@@ -1031,7 +1031,7 @@
 									};
 								?>
 								<div class="note-entry">
-									<div class="note-entry-avatar"><?= f::draw_fonticon('icon-note') ?></div>
+									<div class="note-entry-avatar"><?= f::draw_fonticon('icon-sticky-note') ?></div>
 									<div class="note-entry-body">
 										<div class="note-entry-meta">
 											<span class="note-entry-author"><?= f::escape_html($_author) ?></span>
@@ -1068,23 +1068,23 @@
 
 		<div class="card">
 			<div class="card-header">
-				<div class="card-title"><?= f::draw_fonticon('icon-event') ?> <?= t('title_activity_timeline', 'Activity Timeline') ?></div>
+				<div class="card-title"><?= f::draw_fonticon('icon-clock') ?> <?= t('title_activity_timeline', 'Activity Timeline') ?></div>
 			</div>
 			<div class="card-body">
 
 				<?php if (empty($feed)) { ?>
 					<div class="empty-state">
-						<?= f::draw_fonticon('icon-event') ?>
+						<?= f::draw_fonticon('icon-clock') ?>
 						<div><?= t('text_no_activity', 'No activity yet.') ?></div>
 					</div>
 				<?php } else { ?>
 
 					<div class="feed-filter" id="feed-filter">
 						<button type="button" data-filter="all" class="active"><?= t('title_all', 'All') ?></button>
-						<button type="button" data-filter="note"><?= f::draw_fonticon('icon-note') ?> <?= t('title_notes', 'Notes') ?></button>
-						<button type="button" data-filter="email"><?= f::draw_fonticon('icon-email') ?> <?= t('title_emails', 'Emails') ?></button>
+						<button type="button" data-filter="note"><?= f::draw_fonticon('icon-sticky-note') ?> <?= t('title_notes', 'Notes') ?></button>
+						<button type="button" data-filter="email"><?= f::draw_fonticon('icon-envelope') ?> <?= t('title_emails', 'Emails') ?></button>
 						<button type="button" data-filter="order"><?= f::draw_fonticon('icon-orders') ?> <?= t('title_orders', 'Orders') ?></button>
-						<button type="button" data-filter="login"><?= f::draw_fonticon('icon-login') ?> <?= t('title_logins', 'Logins') ?></button>
+						<button type="button" data-filter="login"><?= f::draw_fonticon('icon-sign-in') ?> <?= t('title_logins', 'Logins') ?></button>
 						<button type="button" data-filter="tag"><?= f::draw_fonticon('icon-tag') ?> <?= t('title_tags', 'Tags') ?></button>
 					</div>
 

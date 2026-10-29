@@ -56,7 +56,9 @@
 
 			if (!$setting) {
 
-				if ($fallback === null) {
+				if ($fallback !== null) {
+					self::$_cache[$key] = $fallback;
+				} else {
 					trigger_error('Unsupported settings key ('. $key .')', E_USER_WARNING);
 				}
 

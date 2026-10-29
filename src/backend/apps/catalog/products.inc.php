@@ -201,11 +201,13 @@
 			where (campaign_id is null or campaign_id in (
 				select id from ". DB_PREFIX ."campaigns
 				where status
-				and (valid_from is not null and valid_from > '". date('Y-m-d H:i:s') ."')
-				and (valid_to is not null and valid_to < '". date('Y-m-d H:i:s') ."')
-			) or campaign_id is null)
+				and (valid_from is not null and valid_from <= '". date('Y-m-d H:i:s') ."')
+				and (valid_to is not null and valid_to >= '". date('Y-m-d H:i:s') ."')
+			))
 
 			and (customer_group_id is null or customer_group_id = ". (int)customer::$data['group_id'] .")
+
+			group by product_id
 
 		) pp on (pp.product_id = p.id)
 
@@ -298,7 +300,7 @@ table .icon-star-o:hover {
 	<?= f::form_begin('search_form', 'get') ?>
 		<div class="card-filter">
 			<div style="min-width: 300px;"><?= f::form_select_category('category_id', true) ?></div>
-			<div class="expandable"><?= f::form_input_search('query', true, ['placeholder' => t('text_search_phrase_or_keyword', 'Search phrase or keyword'), 'onkeydown' => 'if (event.keyCode == 13) location=("' . document::ilink(null, [], true, ['page', 'query']) . '&query=" + encodeURIComponent(this.value))']) ?></div>
+			<div class="expandable"><?= f::form_input_search('query', true, ['placeholder' => t('text_search_phrase_or_keyword', 'Search phrase or keyword')]) ?></div>
 			<div><?= f::form_button('filter', t('title_search', 'Search'), 'submit') ?></div>
 		</div>
 	<?= f::form_end() ?>

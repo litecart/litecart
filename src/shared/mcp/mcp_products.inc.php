@@ -14,7 +14,7 @@
 			'properties' => [
 				'query' => [
 					'type' => 'string',
-					'description' => 'Search keyword (matches name, sku, mpn, gtin)',
+					'description' => 'Search keyword (matches name and product code)',
 				],
 				'category_id' => [
 					'type' => 'integer',
@@ -40,9 +40,14 @@
 
 			$conditions = [];
 
+			$language_code = language::$selected['code'] ?? 'en';
+			$currency_code = settings::get('store_currency_code') ?: 'SEK';
+
+			$sql_name = "json_value(p.name, '$.". database::input($language_code)."')";
+
 			if (!empty($params['query'])) {
 				$q = database::input($params['query']);
-				$conditions[] = "(pi.name like '%". $q ."%' or p.sku like '%". $q ."%' or p.mpn like '%". $q ."%' or p.gtin like '%". $q ."%')";
+				$conditions[] = "($sql_name like '%". $q ."%' or p.code like '%". $q ."%')";
 			}
 
 			if (isset($params['category_id'])) {
@@ -63,11 +68,27 @@
 			$sql_where = $conditions ? 'where ' . implode(' and ', $conditions) : '';
 
 			$products = database::query(
-				"select p.id, pi.name, p.sku, p.default_image, p.quantity, p.status, p.created_at
+				"select p.id, p.status, p.code, p.default_image, p.created_at,
+				". $sql_name ." as name,
+				pp.price,
+				pso.quantity
 				from ". DB_PREFIX ."products p
-				left join ". DB_PREFIX ."products_info pi on (pi.product_id = p.id and pi.language_code = '". database::input(language::$selected['code']) ."')
+
+				left join (
+					select product_id, max(json_value(price, '$.". database::input($currency_code)."')) as price
+					from ". DB_PREFIX ."products_prices
+					group by product_id
+				) pp on (pp.product_id = p.id)
+
+				left join (
+					select pso.product_id, sum(si.quantity) as quantity
+					from ". DB_PREFIX ."products_stock_options pso
+					left join ". DB_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
+					group by pso.product_id
+				) pso on (pso.product_id = p.id)
+
 				". $sql_where ."
-				order by pi.name asc
+				order by name asc
 				limit ". $limit .";"
 			)->fetch_all();
 
@@ -76,7 +97,8 @@
 				$results[] = [
 					'id' => (int)$product['id'],
 					'name' => $product['name'],
-					'sku' => $product['sku'],
+					'sku' => $product['code'],
+					'price' => (float)$product['price'],
 					'quantity' => (float)$product['quantity'],
 					'status' => (int)$product['status'],
 					'image' => $product['default_image'] ?: null,

@@ -181,7 +181,7 @@
 		<table class="table table-striped table-hover data-table">
 			<thead>
 				<tr>
-					<th><?= f::draw_fonticon('icon-check-square-o icon-fw', 'data-toggle="checkbox-toggle"') ?></th>
+					<th><?= f::draw_fonticon('icon-square-check icon-fw', 'data-toggle="checkbox-toggle"') ?></th>
 					<th></th>
 					<th class="main"><?= t('title_name', 'Name') ?> / <?= t('title_version', 'Version') ?></th>
 					<th></th>

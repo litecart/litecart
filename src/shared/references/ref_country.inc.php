@@ -24,7 +24,7 @@
 						"select * from ". DB_PREFIX ."zones
 						where country_code = '". database::input($this->_country_code) ."'
 						order by name;"
-					)->fetch_all();
+					)->fetch_all(null, 'code');
 
 					break;
 

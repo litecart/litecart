@@ -213,11 +213,11 @@ table tbody .toggle {
 				if ($page['num_subpages']) {
 					if (!in_array($page['id'], $_GET['expanded'])) {
 						$expanded = array_merge($_GET['expanded'], [$page['id']]);
-						$icon = '<a class="toggle" href="'. document::href_ilink(null, ['expanded' => $expanded], true) .'">'. f::draw_fonticon('icon-plus-square-o') . '</a>';
+						$icon = '<a class="toggle" href="'. document::href_ilink(null, ['expanded' => $expanded], true) .'">'. f::draw_fonticon('icon-square-plus') . '</a>';
 
 					} else {
 						$expanded = array_diff($_GET['expanded'], [$page['id']]);
-						$icon = '<a class="toggle" href="'. document::href_ilink(null, ['expanded' => $expanded], true) .'">'. f::draw_fonticon('icon-minus-square-o') .'</a>';
+						$icon = '<a class="toggle" href="'. document::href_ilink(null, ['expanded' => $expanded], true) .'">'. f::draw_fonticon('icon-square-minus') .'</a>';
 					}
 
 				} else {
@@ -280,7 +280,7 @@ table tbody .toggle {
 
 					<?= f::form_select_page('page_id', true) ?>
 
-					<?= f::form_button('move', t('title_move', 'Move'), 'submit', ['data-toggle' => 'confirm', 'confirm' => t('text_are_you_sure', 'Are you sure?')] ?>
+					<?= f::form_button('move', t('title_move', 'Move'), 'submit', ['data-toggle' => 'confirm', 'confirm' => t('text_are_you_sure', 'Are you sure?')]) ?>
 
 					<?= f::form_button_predefined('delete') ?>
 

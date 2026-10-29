@@ -23,13 +23,13 @@
 										<div class="col-11">
 
 											<div class="grid" style="align-items: center;">
-												<div class="col-4 col-md-3">
+												<div class="col-3 col-md-2">
 													<a href="<?= f::escape_html($item['link']) ?>" class="float-start" style="max-width: 96px; margin-inline-end: 1em;" aria-label="<?= f::escape_attr($item['name']) ?>">
 														<?= f::draw_thumbnail($item['image']['original'], 96, 0, 'product', 'alt="'. f::escape_attr($item['name']) .'"') ?>
 													</a>
 												</div>
 
-												<div class="col-8 col-md-9">
+												<div class="col-9 col-md-10">
 													<div class="grid">
 														<div class="col-md-6">
 															<div><strong><a href="<?= f::escape_html($item['link']) ?>" style="color: inherit;" aria-label="<?= f::escape_attr($item['name']) ?>"><?= f::escape_html($item['name']) ?></a></strong></div>

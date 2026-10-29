@@ -99,7 +99,7 @@
 
 	<?= f::form_begin('search_form', 'get') ?>
 		<div class="card-filter">
-			<div style="vertical-align: middle; width: 160px;"><?= f::form_select('type', $type_options, true, ['onchange' => '$(this).closest(\'form\').submit();']) ?></div>
+			<div style="vertical-align: middle; width: 160px;"><?= f::form_select('type', $type_options, true, ['id' => 'filter_type']) ?></div>
 			<div class="expandable"><?= f::form_input_search('query', true, ['placeholder' => t('text_search_phrase_or_keyword', 'Search phrase or keyword')]) ?></div>
 			<div>
 				<div class="input-group" style="max-width: 450px;">
@@ -111,6 +111,12 @@
 			<div><?= f::form_button('filter', t('title_search', 'Search'), 'submit') ?></div>
 		</div>
 	<?= f::form_end() ?>
+
+<script>
+	$('#filter_type').on('change', function() {
+		$(this).closest('form').submit();
+	});
+</script>
 
 	<?= f::form_begin('events_form', 'post') ?>
 

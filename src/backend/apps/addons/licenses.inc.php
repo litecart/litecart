@@ -45,7 +45,7 @@
 		<table class="table table-striped table-hover data-table">
 			<thead>
 				<tr>
-					<th><?= f::draw_fonticon('icon-check-square-o icon-fw', 'data-toggle="checkbox-toggle"') ?></th>
+					<th><?= f::draw_fonticon('icon-square-check icon-fw', 'data-toggle="checkbox-toggle"') ?></th>
 					<th class="main"><?= t('title_addon', 'Add-on') ?></th>
 					<th><?= t('title_invoice', 'Invoice') ?></th>
 					<th><?= t('title_updates_expiry', 'Updates Expiry') ?></th>

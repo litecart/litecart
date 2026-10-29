@@ -1030,11 +1030,11 @@
 							<?= f::form_input_hidden('items['.$key.'][product_id]', true) ?>
 							<?= f::form_input_hidden('items['.$key.'][stock_option_id]', true) ?>
 							<?= f::form_input_hidden('items['.$key.'][name]', true) ?>
-							<?= f::form_input_hidden('items['.$key.'][userdata]', true) ?>
+							<?= f::form_input_hidden('items['.$key.'][userdata]', f::format_json($_POST['items'][$key]['userdata'] ?? [], '')) ?>
 							<?= f::form_input_hidden('items['.$key.'][tax_class_id]', true) ?>
 							<?= f::form_input_hidden('items['.$key.'][tax_rate]', true) ?>
 						</td>
-						<td class="sku"><?= f::escape_html($_POST['items'][$key]['sku']) ?></td>
+						<td class="sku"><?= f::escape_html($_POST['items'][$key]['sku'] ?? '') ?></td>
 						<td class="text-center"><?php if (isset($_POST['items'][$key]['sufficient_stock'])) echo $_POST['items'][$key]['sufficient_stock'] ? '<span style="color: #88cc44;">'. f::draw_fonticon('icon-check') .' '. $_POST['items'][$key]['stock_quantity'] .'</span>' : '<span style="color: #f64;">'. f::draw_fonticon('remove') .' '. $_POST['items'][$key]['stock_quantity'] .'</span>'; ?></td>
 						<td><?= f::form_input_decimal('items['.$key.'][quantity]', true, 2) ?></td>
 						<td><?= f::form_input_decimal('items['.$key.'][price]', true) ?></td>
@@ -1042,7 +1042,7 @@
 						<td class="text-end sum"><?= currency::format($_POST['items'][$key]['sum'], false, $_POST['currency_code'], $_POST['currency_value']) ?></td>
 						<td class="text-end sum_tax"><?= currency::format($_POST['items'][$key]['sum_tax'], false, $_POST['currency_code'], $_POST['currency_value']) ?></td>
 						<td class="grabbable">
-							<?= f::draw_fonticon('icon-arrows-v') ?>
+							<?= f::draw_fonticon('icon-arrows-vertical') ?>
 						</td>
 						<td>
 							<?= f::form_button_predefined('remove-sm') ?>
@@ -1052,7 +1052,7 @@
 						</td>
 					</tr>
 
-					<?php foreach ($_POST['items'][$key]['stock_items'] as $key2 => $stock_item) { ?>
+					<?php foreach ($_POST['items'][$key]['stock_items'] ?? [] as $key2 => $stock_item) { ?>
 					<div class="items">
 						<div draggable="true" class="item">
 							<tr>

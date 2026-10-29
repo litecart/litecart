@@ -241,7 +241,7 @@
 		}
 
 		if (empty($order['order_status_icon'])) {
-			$order['order_status_icon'] = 'icon-circle-o-thin';
+			$order['order_status_icon'] = 'icon-circle-o';
 		}
 
 		if (empty($order['order_status_color'])) {

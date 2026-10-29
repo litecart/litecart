@@ -167,7 +167,7 @@
 			case (preg_match('#^toggle\b#', $setting['function'])):
 				if (in_array($setting['value'], ['1', 'active', 'enabled', 'on', 'true', 'yes'])) {
 					$setting['display_value'] = t('title_true', 'True');
-				} else if (in_array(($setting['value']), ['', '0', 'inactive', 'disabled', 'off', 'false', 'no'])) {
+				} else {
 					$setting['display_value'] = t('title_false', 'False');
 				}
 				break;
@@ -268,7 +268,7 @@
 					<td class="text-start"><a class="link" href="<?= document::href_ilink(null, ['action' => 'edit', 'key' => $setting['key']]) ?>" title="<?= t('title_edit', 'Edit') ?>"><?= $setting['title'] ?></a></td>
 					<td style="white-space: normal;">
 						<div style="max-height: 200px; overflow-y: auto;" title="<?= f::escape_html($setting['description']) ?>">
-							<?= nl2br($setting['display_value'], false) ?>
+							<?= nl2br((string)($setting['display_value'] ?? ''), false) ?>
 						</div>
 					</td>
 					<td class="text-end">

@@ -1094,14 +1094,12 @@ SET `function` = 'select("1:1","1:2","2:1","2:3","3:2","3:4","4:3","9:16","16:9"
 WHERE `key` IN ('category_image_ratio', 'product_image_ratio');
 -- -----
 UPDATE `lc_settings`
-SET `title` = concat('{"en":"', title, '"}'),
-	`description` = concat('{"en":"', description, '"}');
-WHERE `title` NOT LIKE '{%';
+SET `title` = JSON_SET('{}', '$.en', title)
+WHERE not json_valid(`title`);
 -- -----
 UPDATE `lc_settings`
-SET `title` = concat('{"en":"', title, '"}'),
-	`description` = concat('{"en":"', description, '"}');
-WHERE `title` NOT LIKE '{%';
+SET `description` = JSON_SET('{}', '$.en', description)
+WHERE not json_valid(`description`);
 -- -----
 UPDATE `lc_settings`
 SET `group_key` = 'security',
@@ -1114,8 +1112,8 @@ WHERE `group_key` = 'listings';
 -- -----
 UPDATE `lc_settings_groups`
 SET `key` = 'catalog',
-	`name` = 'Catalog',
-	`description` = 'Settings for the catalog'
+	`name` = JSON_SET('{}', '$.en', 'Catalog'),
+	`description` = JSON_SET('{}', '$.en', 'Settings for the catalog')
 WHERE `key` = 'listings';
 -- -----
 ALTER TABLE `lc_settings` CHANGE `value` `value` VARCHAR(8192) NOT NULL DEFAULT '';
@@ -1154,7 +1152,7 @@ WHERE `key` IN (
 	'auto_decimals',
 	'cache_system_breakpoint',
 	'development_mode',
-	'gzip_enabled'
+	'gzip_enabled',
 	'jobs_interval',
 	'round_amounts',
 	'store_template_admin',

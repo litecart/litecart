@@ -2318,10 +2318,11 @@
 					where (campaign_id is null or campaign_id in (
 						select id from ". DB_PREFIX ."campaigns
 						where status
-						and (valid_from is not null and valid_from > '". date('Y-m-d H:i:s') ."')
-						and (valid_to is not null and valid_to < '". date('Y-m-d H:i:s') ."')
-					) or campaign_id is null)
+						and (valid_from is not null and valid_from <= '". date('Y-m-d H:i:s') ."')
+						and (valid_to is not null and valid_to >= '". date('Y-m-d H:i:s') ."')
+					))
 					and (customer_group_id is null)
+					group by product_id
 				) pp on (pp.product_id = p.id)
 				where p.id = ". (int)$input ."
 				limit 1;"

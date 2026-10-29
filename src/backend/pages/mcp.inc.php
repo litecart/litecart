@@ -11,7 +11,7 @@
 		`server/discover`.
 	*/
 
-	// Custom exception for JSON-RPC error output
+	// JSON-RPC error output
 	class McpException extends Exception {
 		public $rpc_id;
 		public $rpc_code;
@@ -21,6 +21,205 @@
 			$this->rpc_id = $rpc_id;
 			$this->rpc_code = $rpc_code;
 			$this->rpc_data = $rpc_data;
+		}
+	}
+
+	// Model Context Protocol plumbing shared by the backend and frontend servers
+	class mcp {
+
+		private static $_sets = [];
+
+		## Node specific methods
+
+		// Load the collection files matching a glob and merge them into one set
+		public static function load_sets(string $glob): array {
+
+			if (isset(self::$_sets[$glob])) return self::$_sets[$glob];
+
+			$sets = [
+				'tools' => [],
+				'resources' => [],
+				'resourceTemplates' => [],
+			];
+
+			foreach (f::file_search($glob) as $mcp_file) {
+
+				// Include without polluting global scope
+				$set = (function() use ($mcp_file) {
+					return include $mcp_file;
+				})();
+
+				if (!is_array($set)) continue;
+
+				foreach (['tools', 'resources', 'resourceTemplates'] as $key) {
+					if (!empty($set[$key]) && is_array($set[$key])) {
+						$sets[$key] = array_merge($sets[$key], $set[$key]);
+					}
+				}
+			}
+
+			return self::$_sets[$glob] = $sets;
+		}
+
+		// Match a URI against an RFC 6570 (subset) URI template
+		public static function match_uri_template(string $template, string $uri): ?array {
+
+			$uri_parts = explode('?', $uri, 2);
+			$uri_path = $uri_parts[0];
+			$uri_query = [];
+			if (isset($uri_parts[1])) {
+				parse_str($uri_parts[1], $uri_query);
+			}
+
+			$pattern = preg_quote($template, '#');
+			$pattern = preg_replace('#\\\{([^{}]+)\\\}#', '(?P<$1>[^/]+)', $pattern);
+			$pattern = '#^' . $pattern . '$#';
+
+			if (!preg_match($pattern, $uri_path, $matches)) return null;
+
+			$params = [];
+			foreach ($matches as $key => $value) {
+				if (!is_int($key)) {
+					$params[$key] = $value;
+				}
+			}
+
+			// A query parameter wins over a placeholder of the same name
+			return array_merge($params, $uri_query);
+		}
+
+		// Resources/list payload
+		public static function list_resources(array $sets): array {
+
+			$resources = [];
+
+			foreach ($sets['resources'] as $resource) {
+
+				if (empty($resource['uri']) || empty($resource['name']) || empty($resource['function']) || !is_callable($resource['function'])) continue;
+
+				$resources[] = [
+					'uri' => $resource['uri'],
+					'name' => $resource['name'],
+					'description' => $resource['description'] ?? '',
+					'mimeType' => $resource['mimeType'] ?? 'text/plain',
+				];
+			}
+
+			return $resources;
+		}
+
+		// Resources/templates/list payload
+		public static function list_resource_templates(array $sets): array {
+
+			$templates = [];
+
+			foreach ($sets['resourceTemplates'] as $template) {
+
+				if (empty($template['uriTemplate']) || empty($template['name']) || empty($template['function']) || !is_callable($template['function'])) continue;
+
+				$templates[] = [
+					'uriTemplate' => $template['uriTemplate'],
+					'name' => $template['name'],
+					'description' => $template['description'] ?? '',
+					'mimeType' => $template['mimeType'] ?? 'text/plain',
+				];
+			}
+
+			return $templates;
+		}
+
+		// Resources/read payload
+		public static function read_resource(array $sets, string $uri, array $params): array {
+
+			$handler = null;
+			$handler_mime = 'text/plain';
+			$handler_params = $params;
+
+			foreach ($sets['resources'] as $resource) {
+
+				if (empty($resource['uri']) || $resource['uri'] !== $uri) continue;
+
+				$handler = $resource['function'];
+				$handler_mime = $resource['mimeType'] ?? 'text/plain';
+				break;
+			}
+
+			if (!$handler) {
+				foreach ($sets['resourceTemplates'] as $template) {
+
+					if (empty($template['uriTemplate']) || empty($template['function']) || !is_callable($template['function'])) continue;
+
+					$template_params = self::match_uri_template($template['uriTemplate'], $uri);
+					if ($template_params === null) continue;
+
+					$handler = $template['function'];
+					$handler_mime = $template['mimeType'] ?? 'text/plain';
+					$handler_params = $template_params;
+					break;
+				}
+			}
+
+			if (!$handler) {
+				throw new McpException('Resource not found', 200, -32602);
+			}
+
+			// A failing handler is a JSON-RPC level error, not a transport failure
+			try {
+				$read_result = $handler($handler_params);
+			} catch (McpException $e) {
+				throw new McpException($e->getMessage(), 200, $e->rpc_code ?: -32603, $e->rpc_id, $e->rpc_data);
+			} catch (Throwable $e) {
+				throw new McpException($e->getMessage(), 200, -32603);
+			}
+
+			// A content entry is only valid with a uri and a text or blob member, so a handler
+			// may return a contents list, a single entry or a plain value
+			$content_entry = function($content) use ($uri, $handler_mime) {
+
+				if (is_object($content)) {
+					$content = (array)$content;
+				}
+
+				if (is_array($content)) {
+
+					if (!array_key_exists('text', $content) && !array_key_exists('blob', $content)) {
+						$encoded = json_encode((object)$content, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE | JSON_PRETTY_PRINT);
+						$content = [
+							'text' => $encoded === false ? '' : $encoded,
+							'mimeType' => 'application/json',
+						];
+					}
+
+				} else {
+					// A plain value becomes the text of a single content entry
+					$content = ['text' => (string)$content];
+				}
+
+				if (!isset($content['uri'])) $content['uri'] = $uri;
+				if (!isset($content['mimeType'])) $content['mimeType'] = $handler_mime;
+
+				return $content;
+			};
+
+			if (is_array($read_result) && $read_result && array_keys($read_result) === range(0, count($read_result) - 1)) {
+				// A ready made contents list
+				$contents = array_map($content_entry, $read_result);
+			} else if (is_array($read_result) && !$read_result) {
+				$contents = [];
+			} else {
+				$contents = [ $content_entry($read_result) ];
+			}
+
+			// MCP requires a non-empty contents list
+			if (empty($contents)) {
+				$contents = [[
+					'uri' => $uri,
+					'mimeType' => $handler_mime,
+					'text' => '',
+				]];
+			}
+
+			return ['contents' => $contents];
 		}
 	}
 
@@ -157,12 +356,28 @@
 		}
 
 		// Throttle invalid keys per calling IP
-		if (security::rate_limit_reached('mcp_auth_failed', 30)) {
+		$num_attempts = database::query(
+			"select count(*) as num_attempts from ". DB_PREFIX ."rate_limiting
+			where action = 'mcp_auth_failed'
+			and ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."'
+			and created_at >= '". date('Y-m-d H:i:s', strtotime('-5 minutes')) ."'
+			;"
+		)->fetch('num_attempts');
+
+		if ($num_attempts >= 30) {
 			throw new McpException('Too many failed authentication attempts', 429, -32029);
 		}
 
 		if ($token === '') {
-			security::rate_limit_add('mcp_auth_failed');
+
+			database::insert('rate_limiting', [
+				'action' => 'mcp_auth_failed',
+				'ip_address' => $_SERVER['REMOTE_ADDR'],
+				'hostname' => reverse_dns($_SERVER['REMOTE_ADDR']),
+				'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? '',
+				'created_at' => date('Y-m-d H:i:s'),
+			]);
+
 			throw new McpException('Authentication required', 401, -32000);
 		}
 
@@ -175,7 +390,15 @@
 		)->fetch();
 
 		if (!$access_key) {
-			security::rate_limit_add('mcp_auth_failed');
+
+			database::insert('rate_limiting', [
+				'action' => 'mcp_auth_failed',
+				'ip_address' => $_SERVER['REMOTE_ADDR'],
+				'hostname' => reverse_dns($_SERVER['REMOTE_ADDR']),
+				'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? '',
+				'created_at' => date('Y-m-d H:i:s'),
+			]);
+
 			throw new McpException('The access key is invalid or has been revoked', 401, -32000);
 		}
 
@@ -188,7 +411,11 @@
 			limit 1;"
 		);
 
-		security::rate_limit_clear('mcp_auth_failed');
+		database::query(
+			"delete from ". DB_PREFIX ."rate_limiting
+			where action = 'mcp_auth_failed'
+			and ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."';"
+		);
 
 		$permissions   = !empty($access_key['permissions']) ? json_decode($access_key['permissions'], true) : [];
 		$allowed_tools = array_merge(...($permissions['mcp'] ?? []));
@@ -269,6 +496,7 @@
 						'protocolVersion' => $negotiated,
 						'capabilities' => [
 							'tools' => new stdClass(),
+							'resources' => new stdClass(),
 						],
 						'serverInfo' => [
 							'name' => PLATFORM_NAME .' MCP Server',
@@ -291,6 +519,7 @@
 						'supportedVersions' => $supported_versions,
 						'capabilities' => [
 							'tools' => new stdClass(),
+							'resources' => new stdClass(),
 						],
 						'_meta' => [
 							'io.modelcontextprotocol/serverInfo' => [
@@ -310,32 +539,22 @@
 
 					$tool_schemas = [];
 
-					foreach (f::file_search('app://shared/mcp/mcp_*.inc.php') as $mcp_file) {
+					foreach (mcp::load_sets('app://shared/mcp/mcp_*.inc.php')['tools'] as $tool) {
 
-						// Include without polluting global scope
-						$toolset = (function() use ($mcp_file) {
-							return include $mcp_file;
-						})();
+						if (empty($tool['name']) || !is_array($tool['inputSchema'])) continue;
 
-						if (!is_array($toolset) || empty($toolset['tools'])) continue;
+						// Skip tools the access key isn't permitted to use
+						if (!empty($allowed_tools) && !in_array($tool['name'], $allowed_tools)) continue;
 
-						foreach ($toolset['tools'] as $tool) {
-
-							if (empty($tool['name']) || !is_array($tool['inputSchema'])) continue;
-
-							// Skip tools the access key isn't permitted to use
-							if (!empty($allowed_tools) && !in_array($tool['name'], $allowed_tools)) continue;
-
-							$tool_schemas[] = [
-								'name' => $tool['name'],
-								'title' => $tool['title'] ?? $tool['name'],
-								'description' => $tool['description'] ?? '',
-								'inputSchema' => $tool['inputSchema'] ?? [
-									'type' => 'object',
-									'additionalProperties' => false,
-								],
-							];
-						}
+						$tool_schemas[] = [
+							'name' => $tool['name'],
+							'title' => $tool['title'] ?? $tool['name'],
+							'description' => $tool['description'] ?? '',
+							'inputSchema' => $tool['inputSchema'] ?? [
+								'type' => 'object',
+								'additionalProperties' => false,
+							],
+						];
 					}
 
 					$result = [
@@ -353,38 +572,31 @@
 					}
 
 					// Tool dispatch
-					foreach (f::file_search('app://shared/mcp/mcp_*.inc.php') as $mcp_file) {
+					foreach (mcp::load_sets('app://shared/mcp/mcp_*.inc.php')['tools'] as $tool) {
 
-						// Include without polluting global scope
-						$toolset = (function() use ($mcp_file) {
-							return include $mcp_file;
-						})();
+						if (empty($tool['name']) || $tool['name'] !== $params['name']) continue;
 
-						if (!is_array($toolset) || empty($toolset['tools'])) continue;
+						// Per-toolset permission check
+						if (!empty($allowed_tools) && !in_array($tool['name'], $allowed_tools)) {
+							throw new McpException('Tool not permitted for this access key', 403, -32001, $rpc_id);
+						}
 
-						foreach ($toolset['tools'] as $tool) {
+						$tool_args = $params['arguments'] ?? [];
+						if (!is_array($tool_args)) {
+							throw new McpException('Invalid arguments: expected an object', 400, -32602, $rpc_id);
+						}
 
-							if (empty($tool['name']) || $tool['name'] !== $params['name']) continue;
-
-							// Per-toolset permission check
-							if (!empty($allowed_tools) && !in_array($tool['name'], $allowed_tools)) {
-								throw new McpException('Tool not permitted for this access key', 403, -32001, $rpc_id);
-							}
-
-							$tool_args = $params['arguments'] ?? [];
-
-							// Check input against required parameters
-							if (!empty($tool['inputSchema']['required']) && is_array($tool['inputSchema']['required'])) {
-								foreach ($tool['inputSchema']['required'] as $field) {
-									if (!isset($tool_args[$field]) || $tool_args[$field] === '') {
-										throw new McpException("Missing required parameter: $field", 400, -32602);
-									}
+						// Check input against required parameters
+						if (!empty($tool['inputSchema']['required']) && is_array($tool['inputSchema']['required'])) {
+							foreach ($tool['inputSchema']['required'] as $field) {
+								if (!isset($tool_args[$field]) || $tool_args[$field] === '') {
+									throw new McpException("Missing required parameter: $field", 400, -32602);
 								}
 							}
-
-							$tool_result = ($tool['function'])($tool_args);
-							break 2;
 						}
+
+						$tool_result = ($tool['function'])($tool_args);
+						break;
 					}
 
 					if (!isset($tool_result)) {
@@ -402,6 +614,51 @@
 						'structuredContent' => $tool_result,
 						'isError' => false,
 					];
+
+					break;
+
+				// MCP: list available resources
+				case 'resources/list':
+
+					$result = [
+						'resultType' => 'complete',
+						'resources' => mcp::list_resources(mcp::load_sets('app://shared/mcp/mcp_*.inc.php')),
+					];
+
+					break;
+
+				// MCP: list available resource templates
+				case 'resources/templates/list':
+
+					$result = [
+						'resultType' => 'complete',
+						'resourceTemplates' => mcp::list_resource_templates(mcp::load_sets('app://shared/mcp/mcp_*.inc.php')),
+					];
+
+					break;
+
+				// MCP: subscribe and unsubscribe are no-ops, the server is stateless
+				case 'resources/subscribe':
+				case 'resources/unsubscribe':
+
+					$result = [
+						'resultType' => 'complete',
+					];
+
+					break;
+
+				// MCP: read a resource
+				case 'resources/read':
+
+					if (empty($params['uri'])) {
+						throw new McpException('Missing resource URI', 200, -32602, $rpc_id);
+					}
+
+					$result = array_merge(['resultType' => 'complete'], mcp::read_resource(
+						mcp::load_sets('app://shared/mcp/mcp_*.inc.php'),
+						$params['uri'],
+						$params
+					));
 
 					break;
 
@@ -435,7 +692,7 @@
 				],
 			], $indent) ?: '{"jsonrpc":"2.0","id":null,"error":{"code":-32603,"message":"Encoding error"}}';
 
-		} catch (Exception $e) {
+		} catch (Throwable $e) {
 
 			return f::format_json([
 				'jsonrpc' => '2.0',

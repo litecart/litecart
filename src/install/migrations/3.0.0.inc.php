@@ -1447,10 +1447,18 @@
 	];
 
 	// Migrate settings titles from translations to settings table
+	// Only wrap the values that are still plain text, the SQL migration already
+	// wrapped the rest in {"en":"..."}. Wrapping twice nests the JSON object.
 	database::query(
 		"update ". DB_PREFIX ."settings
-		set `title` = JSON_SET('{}', '$.en', title),
-			`description` = JSON_SET('{}', '$.en', description);"
+		set `title` = JSON_SET('{}', '$.en', title)
+		where not json_valid(`title`);"
+	);
+
+	database::query(
+		"update ". DB_PREFIX ."settings
+		set `description` = JSON_SET('{}', '$.en', description)
+		where not json_valid(`description`);"
 	);
 
 	database::query(
@@ -1499,18 +1507,24 @@
 	// Migrate setting group translations to setting groups table
 	database::query(
 		"update ". DB_PREFIX ."settings_groups
-		set `name` = JSON_SET('{}', '$.en', name),
-			`description` = JSON_SET('{}', '$.en', description);"
+		set `name` = JSON_SET('{}', '$.en', name)
+		where not json_valid(`name`);"
+	);
+
+	database::query(
+		"update ". DB_PREFIX ."settings_groups
+		set `description` = JSON_SET('{}', '$.en', description)
+		where not json_valid(`description`);"
 	);
 
 	database::query(
 		"select * from ". DB_PREFIX ."translations
-		where `code` like 'setting_group:title_%';"
+		where `code` like 'settings_group:title_%';"
 	)->each(function($translation) {
 
 		foreach (array_keys(language::$languages) as $language_code) {
 
-			$key = preg_replace('#^setting_group_key:title_#', '', $translation['code']);
+			$key = preg_replace('#^settings_group:title_#', '', $translation['code']);
 
 			database::query(
 				"update ". DB_PREFIX ."settings_groups

@@ -184,7 +184,7 @@
 			'female'      => draw_fonticon('icon-female', 'style="color: #e77be9;"'),
 			'folder'      => draw_fonticon('icon-folder', 'style="color: #cc6;"'),
 			'folder-open' => draw_fonticon('icon-folder-open', 'style="color: #cc6;"'),
-			'group'       => draw_fonticon('icon-group', 'style="color: #888;"'),
+			'group'       => draw_fonticon('icon-users', 'style="color: #888;"'),
 			'remove'      => draw_fonticon('icon-times', 'style="color: #c33;"'),
 			'male'        => draw_fonticon('icon-male', 'style="color: #0a94c3;"'),
 			'move-up'     => draw_fonticon('icon-arrow-up', 'style="color: #39c;"'),
@@ -603,7 +603,7 @@
 			if ($rating >= $i) {
 				$output .= draw_fonticon('icon-star', 'style="color: #f90;"');
 			} else if ($rating == $i-0.5) {
-				$output .= draw_fonticon('icon-star-half', 'style="color: #f90;"');
+				$output .= draw_fonticon('icon-star-o', 'style="color: #f90;"');
 			} else {
 				$output .= draw_fonticon('icon-star', 'style="color: #ccc;"');
 			}
