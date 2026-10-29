@@ -6,6 +6,9 @@
 .nav-tabs .nav-link:not(.active) {
   background: #eee;
 }
+html.dark-mode .nav-tabs .nav-link:not(.active) {
+  background: #212836;
+}
 .tab-content {
   margin: 0;
   background: none;

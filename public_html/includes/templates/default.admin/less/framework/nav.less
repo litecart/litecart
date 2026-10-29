@@ -87,14 +87,16 @@
   .nav-link {
     margin: 1px 0;
     background: var(--pills-background-color);
-
+    color: var(--pills-text-color);
+    transition: background-color 125ms linear;
 
     &:hover {
-      filter: brightness(.95);
+      background: var(--pills-background-color-hover);
+      color: var(--pills-text-color-hover);
     }
     &.active {
       background: var(--pills-background-color-active);
-      color: var(--pills-text-color);
+      color: var(--pills-text-color-active);
     }
   }
 
@@ -121,8 +123,8 @@
 }
 
 html.dark-mode {
-  .nav-pills .nav-item:hover {
-    filter: brightness(110%);
+  .nav .nav-link:hover {
+    backdrop-filter: brightness(1.15);
   }
 }
 
@@ -140,8 +142,14 @@ html.dark-mode {
     color: inherit;
     transition: none;
 
+    &:hover {
+      background: var(--tab-nav-background-color-hover);
+      color: var(--tab-nav-text-color-hover);
+    }
+
     &.active {
-      background: var(--tab-content-background-color);
+      background: var(--tab-nav-background-color-active);
+      color: var(--tab-nav-text-color-active);
       margin-bottom: -1px;
       border: 1px solid var(--tab-border-color);
       border-bottom-color: var(--tab-content-background-color);
@@ -152,6 +160,7 @@ html.dark-mode {
 .tab-content {
   margin: 2em 0;
   background: var(--tab-content-background-color);
+  color: var(--tab-content-text-color);
   border-end-start-radius: var(--border-radius);
   border-end-end-radius: var(--border-radius);
 
