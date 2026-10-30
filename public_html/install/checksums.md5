@@ -282,7 +282,7 @@ d41d8cd98f00b204e9800998ecf8427e	includes/index.html
 d41d8cd98f00b204e9800998ecf8427e	includes/library/index.html
 28cd0f2c16abfd11a2cc4be0816e0127	includes/library/lib_breadcrumbs.inc.php
 998b6f523fee03abcf00e243cc5832a4	includes/library/lib_cache.inc.php
-809aeafa71d0951e3789095f39d60a58	includes/library/lib_cart.inc.php
+2ac0b179edfed6ba628d94a179da10a9	includes/library/lib_cart.inc.php
 0f14dd8a55acb482677c6ec16535d7b3	includes/library/lib_currency.inc.php
 6a53e50fa9cde007438af181ee96a25c	includes/library/lib_customer.inc.php
 628913b44b5e95b94f7370e8816620e7	includes/library/lib_database.inc.php
@@ -345,12 +345,12 @@ db390b3ff0e45b37533913f7c5b345f5	includes/routes/url_order_process.inc.php
 d4d01a85f22fa99cee958c04b3fb645c	includes/routes/url_push_jobs.inc.php
 eda093f64cd6b8ecb05333f7efa29c02	includes/templates/default.admin/css/app.min.css
 f5021d449734a9f4d63b560b399fa357	includes/templates/default.admin/css/app.min.css.map
-ceba867fe28a8a36468f6a09ef4441ba	includes/templates/default.admin/css/framework.min.css
-996ea81d8bad20a04146ca97c01dd4a1	includes/templates/default.admin/css/framework.min.css.map
+f4f37b52e5ca3803c077fce3ef94f4e2	includes/templates/default.admin/css/framework.min.css
+77ce22645c4a85d84e70c6362a3465b7	includes/templates/default.admin/css/framework.min.css.map
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.admin/css/index.html
 22ce4b29af0998bcd3552f0909816301	includes/templates/default.admin/css/printable.min.css
 82fb8e6529a815691311fa342df6dbe2	includes/templates/default.admin/css/printable.min.css.map
-99d82ffedcb0e68fdacd3f634babc63c	includes/templates/default.admin/css/variables.css
+4c598fa6fa6f9a02913ffe59c5b30af5	includes/templates/default.admin/css/variables.css
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.admin/fonts/index.html
 8ba602333b4cc45c0f2167144f89e133	includes/templates/default.admin/fonts/roboto-v32-latin_latin-ext-700.woff2
 f04a7f27e3334a9b19754ec2245bdb07	includes/templates/default.admin/fonts/roboto-v32-latin_latin-ext-regular.woff2
@@ -384,7 +384,7 @@ d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.admin/less/framework
 535850a8de53574f4f9e4219116d65dc	includes/templates/default.admin/less/framework/lists.less
 3e76cbc834233619f3f51361db0a0434	includes/templates/default.admin/less/framework/loader.less
 14d6a8437c87a2bcff5172eb413b233c	includes/templates/default.admin/less/framework/media.less
-ac82086d8fcaeb43224231c59f489f3d	includes/templates/default.admin/less/framework/nav.less
+fa32587ad90b577a4fb55be761d23bb2	includes/templates/default.admin/less/framework/nav.less
 587ac11ec395df0e1403ed062e3204d8	includes/templates/default.admin/less/framework/normalize.less
 edd0be6718efe3880d0ee48eca47f878	includes/templates/default.admin/less/framework/notices.less
 7e21af97093c97609bf4cc9e9d0381f8	includes/templates/default.admin/less/framework/pagination.less
@@ -392,8 +392,8 @@ edd0be6718efe3880d0ee48eca47f878	includes/templates/default.admin/less/framework
 e05147ba59974d9bef67a6dbc7ba5a60	includes/templates/default.admin/less/framework/typography.less
 d41d8cd98f00b204e9800998ecf8427e	includes/templates/default.admin/less/index.html
 4b83a8cea0c3b6c120ecb54211ab66a5	includes/templates/default.admin/less/printable.less
-8dafc1116ed416d0322a17f16006e374	includes/templates/default.admin/less/variables.less
-03b95e1d3054e4349973c0076dbd9ced	includes/templates/default.admin/pages/about.inc.php
+872eda5b9e694823a6cc2b3e3f08045b	includes/templates/default.admin/less/variables.less
+b74c891a948d792fbd80ef0f59f71dec	includes/templates/default.admin/pages/about.inc.php
 862a34b95d948b806bd623b1eb4b4f9c	includes/templates/default.admin/pages/doc.inc.php
 c350d51cd1b3329cd7f3f4a376746a97	includes/templates/default.admin/pages/error_document.inc.php
 a44293fb0c76113c22724302a0356131	includes/templates/default.admin/pages/login.inc.php
@@ -539,7 +539,7 @@ c98f227b459c1abc1b8c2ad6d665df2e	includes/wrappers/wrap_smtp.inc.php
 1d6b858c2db716693c1e227149f73e1d	index.php
 f8a1549b9b2d27346ae4bc866321ebe6	install/clean.sql
 71febae4e5008ddfbd252f1cb231e8c9	install/config
-d28325856a85f966882397cd795b8e7d	install/data.sql
+46c09d73302292a780452aefe7d6339d	install/data.sql
 2b2639ce48f7d6723c0768bcf39ca725	install/data/AU/AU.sql
 9a133ec15a84f54a925d396fd0e270c3	install/data/CA/CA.sql
 80a156bc4202b15b747be924bad59315	install/data/DE/DE.sql
@@ -703,9 +703,9 @@ f90a56242d3956dc3dcf217afc5cb09e	install/upgrade_patches/2.6.3.sql
 bf4036885fd8f0a428691d3581ed0f75	install/upgrade_patches/2.7.0.inc.php
 67cfcabeb5a096697a70bbd0459495de	install/upgrade_patches/2.7.0.sql
 f7731ed1370e75fe84dfa3c43b245d87	install/upgrade_patches/2.7.1.inc.php
-c5c2c3f46be698b30d6ba37911c4b8be	install/upgrade_patches/2.7.1.sql
-b47cbf1bcd925e269158a87f8f08f17d	install/upgrade_patches/2.7.2.inc.php
-68670ed73b2fabfce5260d126f0b4f36	install/upgrade_patches/2.7.2.sql
+8418702dc536e396e9924cdc37255c47	install/upgrade_patches/2.7.1.sql
+f3c9c9e0ab7d3e3428fd93e5ac4b7593	install/upgrade_patches/2.7.2.inc.php
+762611a67fc16fdee1488b06becaa82f	install/upgrade_patches/2.7.2.sql
 62bac9360222fee7de79173307177c9e	logs/.htaccess
 d41d8cd98f00b204e9800998ecf8427e	logs/index.html
 70df41f74e6b15be767a8052f14b4036	pages/ajax/cart.json.inc.php
