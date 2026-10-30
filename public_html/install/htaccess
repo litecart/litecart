@@ -76,6 +76,7 @@ ErrorDocument 500 "Internal Server Error"
 </FilesMatch>
 
 # Cacheable external content
+# Keep this allowlist in sync with cache/.htaccess (thumbnail cache allowlist)
 <IfModule mod_headers.c>
   <FilesMatch "\.(a?png|avif|bmp|css|eot|gif|ico|jpe?g|jp2|js|jxl|otf|pdf|svg|tiff?|ttf|webp|woff2?)$">
     Header set Cache-Control "max-age=604800, public, must-revalidate"

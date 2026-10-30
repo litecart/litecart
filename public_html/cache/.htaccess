@@ -6,7 +6,8 @@
   Deny from all
 </IfModule>
 
-<FilesMatch "\.(a?png|avif|bmp|css|eot|gif|ico|jpe?g|jp2|js|map|otf|pdf|svg|tiff?|ttf|woff2?)$">
+# Keep this allowlist in sync with install/htaccess (cacheable external content)
+<FilesMatch "\.(a?png|avif|bmp|css|eot|gif|ico|jpe?g|jp2|js|jxl|otf|pdf|svg|tiff?|ttf|webp|woff2?)$">
   <IfModule mod_authz_core.c>
     Require all granted
   </IfModule>
