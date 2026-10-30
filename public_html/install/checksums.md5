@@ -131,7 +131,7 @@ d41d8cd98f00b204e9800998ecf8427e	admin/vmods.app/index.html
 d65e7b71a9f87f70dbdc5a6f83e70816	admin/vmods.app/test.inc.php
 d31bfdcae332df6521c99d9d85cb2974	admin/vmods.app/view.inc.php
 1e0ac36958e34998b3cc9c67c05ae17e	admin/vmods.app/vmods.inc.php
-29b52aa75adb58387300b6ae7d063733	cache/.htaccess
+88927115ade01e4d2035544a6f459478	cache/.htaccess
 d41d8cd98f00b204e9800998ecf8427e	cache/index.html
 62bac9360222fee7de79173307177c9e	data/.htaccess
 281a3f75048a959aaed510bbb1b2273a	data/captcha.ttf
@@ -539,7 +539,7 @@ c98f227b459c1abc1b8c2ad6d665df2e	includes/wrappers/wrap_smtp.inc.php
 1d6b858c2db716693c1e227149f73e1d	index.php
 f8a1549b9b2d27346ae4bc866321ebe6	install/clean.sql
 71febae4e5008ddfbd252f1cb231e8c9	install/config
-46c09d73302292a780452aefe7d6339d	install/data.sql
+f4e29faf55f12c3be72dfe9f0a3bfc1a	install/data.sql
 2b2639ce48f7d6723c0768bcf39ca725	install/data/AU/AU.sql
 9a133ec15a84f54a925d396fd0e270c3	install/data/CA/CA.sql
 80a156bc4202b15b747be924bad59315	install/data/DE/DE.sql
@@ -578,7 +578,7 @@ f8176cc134ac9e77b99bbd252e96aa47	install/data/demo/public_html/images/products/1
 d459f0ff7c7684a60ae0f8d79237f6fb	install/data/demo/public_html/images/products/3-red-duck-1.jpg
 4623955af0461b259b5347501300a70d	install/data/demo/public_html/images/products/4-blue-duck-1.jpg
 3293353f53c6af140981ea79036f741b	install/data/demo/public_html/images/products/5-purple-duck-1.jpg
-168bc7227c153ef7fc91d2d875c75535	install/htaccess
+aff67b5448743b29ad814db1494faf13	install/htaccess
 5ce62c13340c52070b1f99ff16a9a850	install/includes/footer.inc.php
 7d79bdc9fd709e4d9b1eb8cb7a62f6ec	install/includes/functions.inc.php
 a37bf7b37ad3919a13f46de67748afed	install/includes/header.inc.php
