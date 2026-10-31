@@ -17,3 +17,15 @@
     ],
   ], 'skip');
 
+// Restore CSRF protection, unconditionally enabled prior to 2.7.1
+  database::query(
+    "update ". DB_TABLE_PREFIX ."settings
+    set `value` = '1'
+    where `key` = 'csrf_protection' and `value` = '0'
+    limit 1;"
+  );
+
+  if (database::affected_rows()) {
+    echo '<p>CSRF protection has been enabled, as it was unconditional prior to 2.7.1.</p>' . PHP_EOL . PHP_EOL;
+  }
+
