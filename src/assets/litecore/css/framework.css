@@ -1,3 +1,10 @@
+/*!
+	LiteCart v3.0.0 - Superfast, lightweight e-commerce platform built built with for simplicity.
+	Link: https://www.litecart.net/
+	License: CC-BY-ND-4.0
+	Author: T. Almroth, LiteCart AB
+*/
+
 * {
 	box-sizing: border-box;
 }
@@ -2646,8 +2653,8 @@ label.form-check > input:is([type=radio]):checked {
 .input-group .input-group-icon {
 	flex: 0 1 auto;
 	padding: var(--input-padding-y) var(--input-padding-x);
-	padding-inline-end: 0;
 	color: #555;
+	text-align: center;
 }
 .input-group .btn {
 	border-inline-end: 0;

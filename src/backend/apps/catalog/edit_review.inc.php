@@ -103,7 +103,7 @@
 				<div class="col-md-6">
 					<div class="form-group">
 						<label><?= t('title_status', 'Status') ?></label>
-						<?= f::form_toggle('status', true, 'e/d') ?>
+						<?= f::form_toggle('status', 'e/d', true) ?>
 					</div>
 				</div>
 

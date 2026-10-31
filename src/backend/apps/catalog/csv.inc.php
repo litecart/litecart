@@ -144,7 +144,7 @@
 						case 'product_stock_options':
 
 							database::multi_query(implode(PHP_EOL, [
-								"truncate ". DB_PREFIX ."product_stock_options;",
+								"truncate ". DB_PREFIX ."products_stock_options;",
 							]));
 
 							break;

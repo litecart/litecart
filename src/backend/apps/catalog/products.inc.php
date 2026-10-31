@@ -148,13 +148,13 @@
 
 				+ if(p.code regexp '". database::input($code_regex) ."', 5, 0)
 
-				+ (match(json_value(p.name, '$.". database::input(language::$selected['code']) ."') against ('*". database::input($query_fulltext) ."*'))
-				+ (match(json_value(p.short_description, '$.". database::input(language::$selected['code']) ."') against ('". database::input($query_fulltext) ."')/2)
-				+ (match(json_value(p.description, '$.". database::input(language::$selected['code']) ."') against ('". database::input($query_fulltext) ."')/3)
+				+ (match(p.name) against ('*". database::input($query_fulltext) ."*'))
+				+ (match(p.short_description) against ('". database::input($query_fulltext) ."')/2)
+				+ (match(p.description) against ('". database::input($query_fulltext) ."')/3)
 
-				+ (match(json_value(p.name, '$.". database::input(language::$selected['code']) ."') against ('". database::input($query_fulltext) ."' in boolean mode))
-				+ (match(json_value(p.short_description, '$.". database::input(language::$selected['code']) ."') against ('". database::input($query_fulltext) ."' in boolean mode) /2)
-				+ (match(json_value(p.description, '$.". database::input(language::$selected['code']) ."') against ('". database::input($query_fulltext) ."' in boolean mode) /3)
+				+ (match(p.name) against ('". database::input($query_fulltext) ."' in boolean mode))
+				+ (match(p.short_description) against ('". database::input($query_fulltext) ."' in boolean mode) /2)
+				+ (match(p.description) against ('". database::input($query_fulltext) ."' in boolean mode) /3)
 
 				+ if(json_value(p.name, '$.". database::input(language::$selected['code']) ."') like '%". database::input($_GET['query']) ."%', 3, 0)
 				+ if(json_value(p.short_description, '$.". database::input(language::$selected['code']) ."') like '%". database::input($_GET['query']) ."%', 2, 0)

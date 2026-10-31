@@ -3,19 +3,20 @@
 	administrator::require_login();
 
 	$_GET['debug'] = true;
-	$_GET['vmod'] = isset($_GET['vmod']) ? basename($_GET['vmod']) : null;
+	$_GET['vmod'] = isset($_GET['vmod']) && is_string($_GET['vmod']) ? basename($_GET['vmod']) : '';
 
 	document::$title[] = t('title_test_vmod', 'Test vMod');
 
 	breadcrumbs::add(t('title_vmods', 'vMods'), document::ilink(__APP__.'/vmods'));
-	breadcrumbs::add($_GET['vmod'], document::ilink(__APP__.'/view', ['vmod' => $_GET['vmod']]));
-	breadcrumbs::add(t('title_test_vmod', 'Test vMod'), document::ilink());
 
 	try {
 
 		if (empty($_GET['vmod'])) {
 			throw new Exception('No vmod provided');
 		}
+
+		breadcrumbs::add(f::escape_html($_GET['vmod']), document::ilink(__APP__.'/view', ['vmod' => $_GET['vmod']]));
+		breadcrumbs::add(t('title_test_vmod', 'Test vMod'), document::ilink());
 
 		$file = 'storage://vmods/' . $_GET['vmod'];
 

@@ -1,8 +1,8 @@
 /*!
-	LiteCart.net v3.0.0 - Official website
+	LiteCart v3.0.0 - Superfast, lightweight e-commerce platform built built with for simplicity.
 	Link: https://www.litecart.net/
-	License: UNLICENSED
-	Author: T. Almroth
+	License: CC-BY-ND-4.0
+	Author: T. Almroth, LiteCart AB
 */
 
 // Accordion (.accordion)
@@ -592,12 +592,6 @@ waitFor('jQuery', ($) => {
 	$(document).on('click', '[data-toggle="history-back"]', function(e) {
 		e.preventDefault();
 		history.go(-1);
-	});
-
-	$(document).on('click', '[data-toggle="history-back"]', function(e) {
-		e.preventDefault();
-		let isPassword = $(this).prev().attr('type') == 'password';
-		$(this).prev().attr('type', (isPassword) ? 'text' : 'password');
 	});
 
 	$(document).on('click', '[data-toggle="close-modal"]', function(e) {

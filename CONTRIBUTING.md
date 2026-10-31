@@ -93,9 +93,10 @@ When editing JSON files, make targeted changes and preserve the surrounding form
 
 Storefront styles are compiled from SCSS source files:
 
-		frontend/templates/default/scss/variables.scss   (CSS custom properties — theme tokens)
-		frontend/templates/default/scss/app.scss          (main storefront styles)
-		frontend/templates/default/scss/checkout.scss     (checkout-specific styles)
+		frontend/templates/default/scss/variables.scss          (CSS custom properties — theme tokens)
+		frontend/templates/default/scss/app/main.scss           (storefront entry point, @use's the app/ partials)
+		frontend/templates/default/scss/app/_*.scss             (storefront UI components)
+		frontend/templates/default/scss/checkout.scss           (checkout-specific styles)
 
 All color values must use CSS custom properties defined in `variables.scss`. Do not hardcode hex/rgb values in component SCSS files.
 

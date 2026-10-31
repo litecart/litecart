@@ -236,7 +236,7 @@ textarea[name="query"] {
 				<legend><?= t('text_with_selected', 'With selected') ?></legend>
 
 				<ul class="list-inline">
-					<li><?= f::form_button_predefined('delete', t('title_delete', 'Delete'), ['formnovalidate' => true, 'confirm' => t('text_are_you_sure', 'Are you sure?')]); ?></li>
+					<li><?= f::form_button_predefined('delete', ['data-toggle' => 'confirm', 'data-confirm' => t('text_are_you_sure', 'Are you sure?')]) ?></li>
 				</ul>
 			</fieldset>
 		</div>

@@ -137,12 +137,10 @@
 		order by priority, `key` asc;"
 	)->fetch_page(function(&$setting) use ($setting_datatype){
 
-		// Decode JSON translations for title and description
-		$setting['title'] = is_array($setting['title']) ? $setting['title'] : (!empty($setting['title']) ? json_decode($setting['title'], true) : []);
-		$setting['title'] = $setting['title'][language::$selected['code']] ?? $setting['title']['en'] ?? '';
-
-		$setting['description'] = is_array($setting['description']) ? $setting['description'] : (!empty($setting['description']) ? json_decode($setting['description'], true) : []);
-		$setting['description'] = $setting['description'][language::$selected['code']] ?? $setting['description']['en'] ?? '';
+		// Title and description are already resolved to the selected language with an
+		// English fallback by the query above, so no further decoding is needed here.
+		$setting['title'] = (string)$setting['title'];
+		$setting['description'] = (string)$setting['description'];
 
 		// Set Display Value
 		switch (true) {

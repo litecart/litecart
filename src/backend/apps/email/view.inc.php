@@ -4,6 +4,7 @@
 
 	if (empty($_GET['email_id']) || !is_numeric($_GET['email_id'])) {
 		notices::add('errors', t('error_must_provide_email', 'You must provide an email'));
+		return;
 	}
 
 	$email = database::query(
@@ -34,6 +35,11 @@
 
 		$email['multiparts'] = json_decode($email['multiparts'], true);
 	});
+
+	if (!$email) {
+		notices::add('errors', t('error_email_not_found', 'The email could not be found'));
+		return;
+	}
 
 ?>
 <style>

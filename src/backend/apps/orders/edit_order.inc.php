@@ -274,6 +274,13 @@
 				}
 			}
 
+			// The item userdata is round-tripped through the form as JSON
+			foreach ($order->data['items'] as $item_id => $item) {
+				if (!empty($item['userdata']) && is_string($item['userdata'])) {
+					$order->data['items'][$item_id]['userdata'] = json_decode($item['userdata'], true) ?: [];
+				}
+			}
+
 			foreach ([
 				'id',
 				'tax_id',
@@ -315,9 +322,9 @@
 
 			$order->save();
 
-			if (!empty($_POST['send_order_copy_email'])) {
-				$bccs = settings::get('send_order_copy_email') ? preg_split('#[\s;,]+#', settings::get('send_order_copy_email'), -1, PREG_SPLIT_NO_EMPTY) : [];
-				$order->send_order_copy_email($order->data['customer']['email'], $bccs, $order->data['language_code']);
+			if (!empty($_POST['send_order_copy'])) {
+				$bccs = preg_split('#[\s;,]+#', (string) settings::get('email_order_copy', ''), -1, PREG_SPLIT_NO_EMPTY);
+				$order->send_order_copy($order->data['customer']['email'], [], $bccs, $order->data['language_code']);
 			}
 
 			if (!empty($_GET['redirect_url'])) {
@@ -1020,6 +1027,14 @@
 			</thead>
 
 			<tbody>
+				<?php
+				// The item userdata is round-tripped through the form as JSON
+				foreach ($_POST['items'] ?? [] as $item_id => $item) {
+					if (!empty($item['userdata']) && is_string($item['userdata'])) {
+						$_POST['items'][$item_id]['userdata'] = json_decode($item['userdata'], true) ?: [];
+					}
+				}
+				?>
 				<?php if (!empty($_POST['items'])) foreach (array_keys($_POST['items']) as $key) { ?>
 				<div draggable="true" class="line">
 					<tr>
@@ -1088,8 +1103,8 @@
 					<td colspan="99">
 						<button name="add_product" class="btn btn-default" href="<?= document::href_ilink('catalog/product_picker') ?>" data-toggle="lightbox" data-callback="selectProduct"><?= f::draw_fonticon('add') ?> <?= t('title_add_product', 'Add Product') ?></button>
 						<?= f::form_button('add', t('title_add_item', 'Add Item'), 'button', '', 'add') ?>
-						<?= f::form_button('return', t('title_return_items', 'Return Items'), 'submit', ['formnovalidate' => true, 'data-toggle' => 'confirm', 'confirm' => t('text_are_you_sure', 'Are you sure?')], 'icon-reply') ?>
-						<?= f::form_button('split', t('title_split_items_from_order', 'Split Items From Order'), 'submit', ['formnovalidate' => true, 'data-toggle' => 'confirm', 'confirm' => t('text_are_you_sure', 'Are you sure?')], 'icon-clone') ?>
+						<?= f::form_button('return', t('title_return_items', 'Return Items'), 'submit', ['formnovalidate' => true, 'data-toggle' => 'confirm', 'data-confirm' => t('text_are_you_sure', 'Are you sure?')], 'icon-reply') ?>
+						<?= f::form_button('split', t('title_split_items_from_order', 'Split Items From Order'), 'submit', ['formnovalidate' => true, 'data-toggle' => 'confirm', 'data-confirm' => t('text_are_you_sure', 'Are you sure?')], 'icon-clone') ?>
 					</td>
 				</tr>
 			</tfoot>

@@ -38,18 +38,19 @@
 			"pr.customer_name like '%". database::input($_GET['query']) ."%'",
 			"pr.title like '%". database::input($_GET['query']) ."%'",
 			"pr.description like '%". database::input($_GET['query']) ."%'",
-			"pi.name like '%". database::input($_GET['query']) ."%'",
+			"json_value(p.name, '$.". database::input(language::$selected['code']) ."') like '%". database::input($_GET['query']) ."%'",
 		];
 	}
 
 	$reviews = database::query(
-		"select pr.*, pi.name as product_name
+		"select pr.*, json_value(p.name, '$.". database::input(language::$selected['code']) ."') as product_name
 		from ". DB_PREFIX ."reviews pr
-		left join ". DB_PREFIX ."products_info pi on (pi.product_id = pr.product_id and pi.language_code = '". database::input(language::$selected['code']) ."')
+		left join ". DB_PREFIX ."products p on (p.id = pr.product_id)
 		". (!empty($sql_find) ? "where (". implode(" or ", $sql_find) .")" : "") ."
 		order by updated_at desc;"
 	)->fetch_page(function(&$review){
-		$review['title'] = json_decode($review['title'], true) ?: [];
+		$title = json_decode($review['title'], true) ?: [];
+		$review['title'] = $title[language::$selected['code']] ?? '';
 		$review['description'] = json_decode($review['description'], true) ?: [];
 		$review['attachments'] = json_decode($review['attachments'], true) ?: [];
 	}, null, $_GET['page'], settings::get('data_table_rows_per_page'), $num_rows, $num_pages);
@@ -106,7 +107,7 @@
 						</a>
 					</td>
 					<td><?= !empty($review['customer_name']) ? $review['customer_name'] : '<em>'. t('title_guest', 'Guest') .'</em>' ?></td>
-					<td><?= $review['title'] ?></td>
+					<td><?= f::escape_html($review['title']) ?></td>
 					<td class="text-center"><?= $review['rating'] ?></td>
 					<td><?= $review['updated_at'] > $review['created_at'] ? $review['updated_at'] : $review['created_at'] ?></td>
 					<td>
