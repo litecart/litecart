@@ -1,4 +1,4 @@
-CREATE TABLE `lc_rate_limiting` (
+CREATE TABLE IF NOT EXISTS `lc_rate_limiting` (
   `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `action` VARCHAR(64) NOT NULL DEFAULT '',
   `scope_type` VARCHAR(32) DEFAULT NULL,

@@ -57,7 +57,7 @@ INSERT INTO `lc_attribute_values_info`
 (id, value_id, language_code, name)
 SELECT id, product_group_value_id, language_code, name FROM `lc_product_groups_values_info`;
 -- -----
-CREATE TABLE `lc_categories_filters` (
+CREATE TABLE IF NOT EXISTS `lc_categories_filters` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `category_id` INT(11) NOT NULL,
   `select_multiple` TINYINT(1) NOT NULL,
@@ -68,7 +68,7 @@ CREATE TABLE `lc_categories_filters` (
   KEY `category_id` (`category_id`)
 ) ENGINE=MyISAM;
 -- -----
-CREATE TABLE `lc_categories_images` (
+CREATE TABLE IF NOT EXISTS `lc_categories_images` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `category_id` INT(11) NOT NULL,
   `filename` VARCHAR(256) NOT NULL,
@@ -91,7 +91,7 @@ ADD COLUMN `last_host` VARCHAR(128) NOT NULL AFTER `last_ip`,
 ADD COLUMN `last_agent` VARCHAR(256) NOT NULL AFTER `last_host`,
 ADD COLUMN `date_login` DATETIME NOT NULL AFTER `last_agent`;
 -- -----
-CREATE TABLE `lc_emails` (
+CREATE TABLE IF NOT EXISTS `lc_emails` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `status` ENUM('draft','scheduled','sent','error') NOT NULL DEFAULT 'draft',
   `code` VARCHAR(256) NOT NULL,
@@ -160,7 +160,7 @@ DROP TABLE `lc_product_groups_values`;
 -- -----
 DROP TABLE `lc_product_groups_values_info`;
 -- -----
-CREATE TABLE `lc_products_attributes` (
+CREATE TABLE IF NOT EXISTS `lc_products_attributes` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `product_id` INT(11) NOT NULL,
   `group_id` INT(11) NOT NULL,
