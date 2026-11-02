@@ -341,7 +341,7 @@
           "update ". DB_TABLE_PREFIX ."orders_items
           set product_id = ". (int)$item['product_id'] .",
           option_stock_combination = '". database::input($item['option_stock_combination']) ."',
-          options = '". (!empty($item['options']) ? database::input(json_encode($item['options'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) : '') ."',
+          options = '". (!empty($item['options']) ? database::input(json_encode($item['options'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE), true) : '') ."',
           name = '". database::input($item['name']) ."',
           sku = '". database::input($item['sku']) ."',
           gtin = '". database::input($item['gtin']) ."',

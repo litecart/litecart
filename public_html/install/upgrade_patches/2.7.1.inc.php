@@ -30,7 +30,7 @@
     $unserialized = @unserialize($cart_item['options'], ['allowed_classes' => false]);
     database::query(
       "update ". DB_TABLE_PREFIX ."cart_items
-      set options = '". database::input(json_encode($unserialized, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)) ."'
+      set options = '". database::input(json_encode($unserialized, JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE | JSON_UNESCAPED_SLASHES)) ."'
       where id = ". (int)$cart_item['id'] ."
       limit 1;"
     );
@@ -45,7 +45,7 @@
     $unserialized = @unserialize($order_item['options'], ['allowed_classes' => false]);
     database::query(
       "update ". DB_TABLE_PREFIX ."orders_items
-      set options = '". database::input(json_encode($unserialized, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)) ."'
+      set options = '". database::input(json_encode($unserialized, JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE | JSON_UNESCAPED_SLASHES)) ."'
       where id = ". (int)$order_item['id'] ."
       limit 1;"
     );
