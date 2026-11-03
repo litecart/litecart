@@ -1,15 +1,6 @@
 <?php
 
 	/*
-		Backwards-compatible alias for the previous standalone helper. The
-		install and upgrade pages still call this name; future call sites
-		may use csp_send_headers() directly.
-	*/
-	function install_send_security_headers() {
-		csp_send_headers();
-	}
-
-	/*
 		Format installer HTML output for CLI consumption. Status spans
 		(<span class="ok|warning|error">) are converted to ANSI color
 		escapes when STDOUT is a terminal; remaining tags are stripped.
@@ -29,29 +20,6 @@
 		}
 
 		return strip_tags($html);
-	}
-
-	function csp_send_headers() {
-
-		header('Content-Security-Policy: ' . implode('; ', [
-			"default-src 'self'",
-			"script-src 'self' 'nonce-". NONCE ."'",
-			"style-src 'self' 'unsafe-inline'",
-			"img-src 'self' data: ",
-			"font-src 'self' data: 'nonce-". NONCE ."'",
-			"connect-src 'self'",
-			"form-action 'self'",
-			"frame-ancestors 'none'",
-			"base-uri 'self'",
-		]));
-
-		header('X-Content-Type-Options: nosniff');
-		header('X-Frame-Options: DENY');
-		header('Referrer-Policy: same-origin');
-
-		if (!is_cli() && $_SERVER['HTTPS'] !== 'off') {
-			header('Strict-Transport-Security: max-age=31536000; includeSubDomains');
-		}
 	}
 
 	function br($output) {
@@ -303,16 +271,18 @@
 		return is_file(FS_DIR_STORAGE . 'config.inc.php');
 	}
 
-	/*
-		Terminate the current request with an HTTP 403 and a short,
-		non-sensitive message. Used by installer entry points that detect
-		a completed installation.
-	*/
+	// Terminate the request if an existing installation is detected
 	function install_reject_locked() {
-		if (!headers_sent()) {
+
+		if (is_cli() && in_array('--force', $argv)) {
+			return;
+		}
+
+		if (!is_cli() && !headers_sent()) {
 			http_response_code(403);
 			header('Content-Type: text/plain; charset=UTF-8');
 		}
+
 		echo 'Existing installation detected. Go to upgrade.php instead or remove storage/config.inc.php to reinstall.' . PHP_EOL;
 		exit;
 	}
@@ -330,6 +300,7 @@
 		}
 
 		$template = file_get_contents($template_path);
+
 		if ($template === false) {
 			throw new Exception('Could not read config template at ' . $template_path);
 		}

@@ -8,10 +8,19 @@
 		public function dir_opendir(string $path): bool {
 			$path = $this->_resolve_path($path);
 			$this->_directory = opendir($path, $this->context ?: null);
+
+			if (!is_resource($this->_directory)) {
+				return false;
+			}
+
 			return true;
 		}
 
 		public function dir_readdir(): string|false {
+
+			if (!is_resource($this->_directory)) {
+				return false;
+			}
 
 			$file = readdir($this->_directory);
 
@@ -35,6 +44,11 @@
 		}
 
 		public function dir_rewinddir(): bool|null {
+
+			if (!is_resource($this->_directory)) {
+				return false;
+			}
+
 			return rewinddir($this->_directory);
 		}
 

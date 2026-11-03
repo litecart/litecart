@@ -403,14 +403,6 @@
 							</ul>
 						</div>
 					</div>
-
-					<div class="form-group">
-						<div class="form-label"><?= t('title_mcp_tools', 'MCP Tools') ?></div>
-						<p class="text-muted">
-							<?= t('text_administrator_mcp_permissions_removed', 'MCP tool access is configured per access key on the Access Keys page, not on the administrator.') ?>
-						</p>
-						<a class="btn btn-default btn-sm" href="<?= document::href_ilink('integrations/access_keys') ?>"><?= f::draw_fonticon('icon-key') ?> <?= t('title_manage_access_keys', 'Manage Access Keys') ?></a>
-					</div>
 				</div>
 			</div>
 

@@ -44,12 +44,10 @@
 
 		// The store's own hostname may not be reachable from the server itself (Docker, NAT), fall back to exec
 		if (!in_array('fsockopen', $disabled_functions) && !in_array('stream_socket_client', $disabled_functions)) {
-
-			$pushed = f::http_push_request($url);
+			$pushed = (new http_client)->set_timeout(1)->call('GET', $url, asynchronous: true);
 		}
 
 		if (!$pushed && !in_array('exec', $disabled_functions)) {
-
 			exec('php -d register_argc_argv=on '. escapeshellarg(FS_DIR_APP .'index.php') .' push_jobs > /dev/null 2>&1 &');
 		}
 	}

@@ -111,8 +111,6 @@
 		],
 	];
 
-	// Tools the current administrator may call. Tool gating now lives on each
-	// access key, so this page only lists what is installed.
 	$toolsets = [];
 
 	foreach (f::file_search('app://shared/mcp/mcp_*.inc.php') as $mcp_file) {

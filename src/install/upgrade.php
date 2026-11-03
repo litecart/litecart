@@ -19,25 +19,25 @@
 		'from_version::', 'development_type::', 'backup::', 'cleanup::',
 	];
 
-	// Load an existing site config. The front controller (install/index.php)
-	// already bootstrapped init.inc.php, so constants it defined (FS_DIR_APP,
-	// FS_DIR_STORAGE, WS_DIR_APP, WS_DIR_STORAGE, DOCUMENT_ROOT) are redefined
-	// here with identical values — suppress the E_WARNING noise with @.
-	if (is_file(__DIR__ . '/../storage/config.inc.php')) {
-		$installation_detected = true;
-		@include(__DIR__ . '/../storage/config.inc.php'); // 3.0.0+
+	// Load an existing configuration if present
+	$installation_detected = null;
 
-	} else if (is_file(__DIR__ . '/../shared/config.inc.php')) { // Prior to 3.x
-		$installation_detected = true;
-		@include(__DIR__ . '/../shared/config.inc.php');
+	foreach ([
+		__DIR__ . '/../storage/config.inc.php', // 3.0.0+
+		__DIR__ . '/../shared/config.inc.php', // Prior to 3.x
+	] as $file) {
+		if (is_file($file)) {
+			$installation_detected = true;
+			include($file);
+			break;
+		}
+	}
 
-	} else {
+	if (!$installation_detected) {
 		$installation_detected = false;
 	}
 
 	require_once __DIR__ . '/includes/init.inc.php';
-
-	csp_send_headers();
 
 	if (is_cli()) {
 

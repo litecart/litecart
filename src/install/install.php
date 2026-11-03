@@ -4,14 +4,11 @@
 	// values are parsed by init.inc.php.
 	$INSTALL_CLI_OPTIONS = [
 		'db_server::', 'db_username:', 'db_password::', 'db_database:', 'db_prefix::', 'db_collation::',
-		'document_root:', 'timezone::', 'backend_alias::', 'username::', 'password::', 'development_type::', 'cleanup::',
-		'client_ip::',
+		'document_root:', 'timezone::', 'backend_alias::', 'username::', 'password::', 'development_type::', 'cleanup::', 'client_ip::',
 		'store_name::', 'store_email::', 'country_code::', 'store_country_code::', 'store_language_code::', 'store_time_zone::',
 	];
 
 	require_once __DIR__ . '/includes/init.inc.php';
-
-	csp_send_headers();
 
 	if (is_cli()) {
 		// CLI sets $_REQUEST['install'] explicitly after option parsing below.
@@ -25,26 +22,25 @@
 	$_REQUEST['timezone'] ??= $_REQUEST['store_time_zone'] ?? null;
 	$_REQUEST['language_code'] ??= $_REQUEST['store_language_code'] ?? null;
 
-	// AC-1, AC-2: reject installer runs on a completed installation.
-	// Applies to both web requests and CLI — removing the lock file is an
-	// explicit, human decision; no --force flag is exposed.
-	if (install_is_locked()) {
-		install_send_security_headers();
-		install_reject_locked();
-	}
 
 	// Set platform name
 	if (preg_match('#define\(\'PLATFORM_NAME\', \'([^\']+)\'\);#', file_get_contents(FS_DIR_APP . 'shared/app_header.inc.php'), $matches)) {
 		define('PLATFORM_NAME', isset($matches[1]) ? $matches[1] : false);
 	} else {
-		throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . 'Could not get platform name</p>' . PHP_EOL  . PHP_EOL);
+		throw new Exception(implode(PHP_EOL, [
+			'<span class="error">[Error]</span>',
+			'Could not get platform name',
+		]));
 	}
 
 	// Set platform version
 	if (preg_match('#define\(\'PLATFORM_VERSION\', \'([^\']+)\'\);#', file_get_contents(FS_DIR_APP . 'shared/app_header.inc.php'), $matches)) {
 		define('PLATFORM_VERSION', isset($matches[1]) ? $matches[1] : false);
 	} else {
-		throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . 'Could not get platform version</p>' . PHP_EOL  . PHP_EOL);
+		throw new Exception(implode(PHP_EOL, [
+			'<span class="error">[Error]</span>',
+			'Could not get platform version',
+		]));
 	}
 
 	require_once FS_DIR_APP . 'shared/compatibility.inc.php';
@@ -89,8 +85,12 @@
 		// Options already collected into $_REQUEST by init.inc.php.
 	}
 
-	// DOCUMENT_ROOT may have been set by init.inc.php (from $_SERVER or
-	// --document_root). Only define it here as a fallback / error gate.
+	// reject installer runs on a completed installation.
+	if (install_is_locked()) {
+		install_reject_locked();
+	}
+
+	// Define DOCUMENT_ROOT if missing
 	if (!defined('DOCUMENT_ROOT')) {
 		if (!empty($_SERVER['DOCUMENT_ROOT'])) {
 			define('DOCUMENT_ROOT', rtrim(str_replace('\\', '/', realpath($_SERVER['DOCUMENT_ROOT'])), '/') . '/');
@@ -99,7 +99,10 @@
 			define('DOCUMENT_ROOT', rtrim(str_replace('\\', '/', realpath($_REQUEST['document_root'])), '/') . '/');
 
 		} else {
-			throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . ' Could not detect \$_SERVER[\'DOCUMENT_ROOT\']. If you are using CLI, make sure you pass the parameter "document_root" e.g. --document_root="/var/www/mysite.com/src"</p>' . PHP_EOL  . PHP_EOL);
+			throw new Exception(implode(PHP_EOL, [
+				'<span class="error">[Error]</span>',
+				'Could not detect \$_SERVER[\'DOCUMENT_ROOT\']. If you are using CLI, make sure you pass the parameter "document_root" e.g. --document_root="/var/www/mysite.com/src"',
+			]));
 		}
 	}
 
@@ -115,7 +118,6 @@
 	}
 
 	require_once FS_DIR_APP . 'shared/shorthand.inc.php';
-
 	require_once FS_DIR_APP . 'shared/nodes/nod_database.inc.php';
 	require_once FS_DIR_APP . 'shared/nodes/nod_functions.inc.php';
 	require_once FS_DIR_APP . 'shared/clients/http_client.inc.php';
@@ -184,6 +186,7 @@
 	// Emit the buffered output. CLI gets formatted plain text; web output is
 	// captured by the front controller and wrapped in the shared layout.
 	$content = ob_get_clean();
+
 	echo is_cli() ? install_cli_format($content) : $content;
 
 	if (is_cli()) exit;

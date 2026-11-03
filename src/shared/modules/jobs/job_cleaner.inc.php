@@ -73,19 +73,6 @@
 
 			##
 
-			echo "Cleaning up expired authorization codes..." . PHP_EOL;
-
-			database::query(
-				"delete from ". DB_PREFIX ."oauth_authorization_codes
-				where expires_at < '". database::input(date('Y-m-d H:i:s')) ."';"
-			);
-
-			if ($num_deleted = database::affected_rows()) {
-				echo '- Removed '. f::format_number($num_deleted) .' authorization code(s).' . PHP_EOL . PHP_EOL;
-			}
-
-			##
-
 			echo "Wiping out old rate limiting records..." . PHP_EOL;
 
 			database::query(

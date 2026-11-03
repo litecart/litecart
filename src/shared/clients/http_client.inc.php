@@ -16,7 +16,7 @@
 			return $this;
 		}
 
-		public function call(string $method, string $url='', mixed $data=null, array $headers=[], bool $asynchronous=false): string|false {
+		public function call(string $method, string $url='', mixed $data=null, array $headers=[], bool $asynchronous=false): string|bool {
 
 			$this->last_request = [];
 			$this->last_response = [];
@@ -141,6 +141,36 @@
 
 			if (!$socket = stream_socket_client(strtr('scheme://host:port', $parts), $errno, $errstr, $this->timeout)) {
 				return false;
+			}
+
+			if ($asynchronous) {
+				stream_set_blocking($socket, false);
+
+				$request = $request_headers . "\r\n" . $data;
+				$sent = 0;
+				while ($sent < strlen($request)) {
+					$bytes = @fwrite($socket, substr($request, $sent));
+					if ($bytes === false) {
+						fclose($socket);
+						return false;
+					}
+					if ($bytes === 0) {
+						$read = [];
+						$write = [$socket];
+						$except = [];
+						if (@stream_select($read, $write, $except, 0, 100000) !== 1 || (microtime(true) - $timestamp) > $this->timeout) {
+							fclose($socket);
+							return false;
+						}
+						continue;
+					}
+					$sent += $bytes;
+				}
+
+				fclose($socket);
+				self::$stats['duration'] += microtime(true) - $timestamp;
+				self::$stats['requests']++;
+				return true;
 			}
 
 			stream_set_timeout($socket, $this->timeout);

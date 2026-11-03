@@ -531,7 +531,7 @@
 						from ". DB_PREFIX ."stock_items si
 
 						left join (
-							select product_id, stock_item_id, sum(oi.quantity * osi.quantity) as quantity_reserved
+							select oi.product_id, osi.stock_item_id, sum(oi.quantity * osi.quantity) as quantity_reserved
 							from ". DB_PREFIX ."orders_stock_items osi
 							left join ". DB_PREFIX ."orders_items oi on (oi.id = osi.item_id and osi.order_id = oi.order_id)
 							where oi.order_id in (
@@ -541,7 +541,7 @@
 									where stock_action = 'reserve'
 								)
 							)
-							group by stock_item_id
+							group by oi.product_id, osi.stock_item_id
 						) oi on (oi.product_id = ". (int)$this->_data['id'] ." and oi.stock_item_id = si.id)
 
 						where si.id in (
@@ -572,7 +572,7 @@
 						left join ". DB_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
 
 						left join (
-							select product_id, stock_option_id, sum(oi.quantity * osi.quantity) as quantity_reserved
+							select oi.product_id, oi.stock_option_id, sum(oi.quantity * osi.quantity) as quantity_reserved
 							from ". DB_PREFIX ."orders_stock_items osi
 							left join ". DB_PREFIX ."orders_items oi on (oi.id = osi.item_id and osi.order_id = oi.order_id)
 							where osi.order_id in (
@@ -582,7 +582,7 @@
 									where stock_action = 'reserve'
 								)
 							)
-							group by stock_option_id
+							group by oi.product_id, oi.stock_option_id
 						) ol on (ol.product_id = pso.product_id and ol.stock_option_id = pso.id)
 
 						where pso.product_id = ". (int)$this->_data['id'] ."

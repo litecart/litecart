@@ -73,7 +73,7 @@
 								<div class="col-sm-6">
 									<label class="form-group">
 										<div class="form-label"><?= t('title_postcode', 'Postal Code') ?></div>
-										<?= f::form_input_text('postcode', customer::$data['postcode'], ['autocomplete' => 'postal-code']) ?>
+										<?= f::form_input_text('postcode', customer::$data['postcode'] ?? '', ['autocomplete' => 'postal-code']) ?>
 									</label>
 								</div>
 
