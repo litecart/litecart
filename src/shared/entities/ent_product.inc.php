@@ -224,6 +224,7 @@
 					tax_class_id = ". (int)$this->data['tax_class_id'] .",
 					autofill_technical_data = ". (int)$this->data['autofill_technical_data'] .",
 					video_url = '". database::input($this->data['video_url']) ."',
+					replaced_by_product_id = ". (!empty($this->data['replaced_by_product_id']) ? (int)$this->data['replaced_by_product_id'] : "null") .",
 					valid_from = ". (empty($this->data['valid_from']) ? "null" : "'". date('Y-m-d H:i:s', strtotime($this->data['valid_from'])) ."'") .",
 					valid_to = ". (empty($this->data['valid_to']) ? "null" : "'". date('Y-m-d H:i:s', strtotime($this->data['valid_to'])) ."'") .",
 					updated_at = '". ($this->data['updated_at'] = date('Y-m-d H:i:s')) ."'

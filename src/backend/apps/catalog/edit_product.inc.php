@@ -91,6 +91,7 @@
 				'quantity_step',
 				'quantity_unit_id',
 				'video_url',
+				'replaced_by_product_id',
 				'valid_from',
 				'valid_to',
 			] as $field) {
@@ -284,7 +285,7 @@
 
 							<label class="form-group">
 								<div class="form-label"><?= t('title_replaced_by', 'Replaced By') ?></div>
-								<?= f::form_select_product('replaced_by', true) ?>
+								<?= f::form_select_product('replaced_by_product_id', true) ?>
 							</label>
 
 							<label class="form-group">

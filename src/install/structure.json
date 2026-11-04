@@ -1096,7 +1096,7 @@
 				"tax_class_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
 				"default_image": { "type": "VARCHAR", "length": 250, "default": "''" },
 				"video_url": { "type": "VARCHAR", "length": 250, "default": "''" },
-				"replaced_by": { "type": "VARCHAR", "length": 24 },
+				"replaced_by_product_id": { "type": "INT", "length": 10, "unsigned": true, "nullable": true },
 				"valid_from": { "type": "TIMESTAMP", "nullable": true },
 				"valid_to": { "type": "TIMESTAMP", "nullable": true },
 				"updated_at": { "type": "TIMESTAMP", "default": "CURRENT_TIMESTAMP", "on_update": "CURRENT_TIMESTAMP" },
