@@ -51,10 +51,9 @@
 	];
 
 	$third_parties = database::query(
-		"select tp.*, json_value(tp.name, '$.". database::input(language::$selected['code']) ."') as name
-		from ". DB_PREFIX ."third_parties tp
+		"select tp.* from ". DB_PREFIX ."third_parties tp
 		where tp.status
-		order by name asc;"
+		order by tp.name asc;"
 	)->fetch_all();
 
 	foreach ($third_parties as $party) {

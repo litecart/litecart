@@ -198,7 +198,7 @@
 							<div class="flex mt-2" style="align-items: center; justify-content: flex-end; gap: .5em;">
 								<?php if ($client['action'] === 'install') { ?>
 								<a class="btn btn-primary btn-sm" href="<?= f::escape_attr($client['href']) ?>">
-									<?= f::draw_fonticon('icon-external-link') ?> <?= t('title_install', 'Install') ?>
+									<?= f::draw_fonticon('icon-arrow-northeast') ?> <?= t('title_install', 'Install') ?>
 								</a>
 								<?php } ?>
 								<button type="button" class="btn btn-default btn-sm" data-copy-target="mcp_config_<?= $client['id'] ?>">

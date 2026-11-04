@@ -16,7 +16,7 @@
 
 	document::$title[] = !empty($administrator->data['username']) ? t('title_edit_administrator', 'Edit Administrator') : t('title_create_new_administrator', 'Create New Administrator');
 
-	breadcrumbs::add(t('title_administrators', 'Administrators'), document::href_ilink(__APP__.'/administrators'));
+	breadcrumbs::add(t('title_administrators', 'Administrators'), document::ilink(__APP__.'/administrators'));
 	breadcrumbs::add(!empty($administrator->data['username']) ? t('title_edit_administrator', 'Edit Administrator') : t('title_create_new_administrator', 'Create New Administrator'));
 
 	// TOTP enroll/confirm/disable

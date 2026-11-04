@@ -58,7 +58,7 @@
 			$output[] = 'Backtrace:';
 
 			// Extract trace from exception_handler
-			if (!empty($backtraces[0]['function']) && $backtraces[0]['function'] == 'exception_handler') {
+			if (!empty($backtraces[0]['function']) && $backtraces[0]['function'] == 'exception_handler' && !empty($backtraces[0]['args'][0])) {
 				$backtraces = array_slice($backtraces[0]['args'][0]->getTrace(), 1);
 			}
 
@@ -81,9 +81,18 @@
 			}
 		}
 
+		$is_cli = (isset($_SERVER['SERVER_SOFTWARE']) && $_SERVER['SERVER_SOFTWARE'] == 'CLI');
+
+		// Set the response code before any output is sent, headers can not be changed afterwards
+		if (in_array($errno, [E_PARSE, E_ERROR, E_COMPILE_ERROR, E_CORE_ERROR, 256])) {
+			if (!$is_cli && !headers_sent()) {
+				http_response_code(500);
+			}
+		}
+
 		// Display errors
 		if (filter_var(ini_get('display_errors'), FILTER_VALIDATE_BOOLEAN)) {
-			if (filter_var(ini_get('html_errors'), FILTER_VALIDATE_BOOLEAN) && $_SERVER['SERVER_SOFTWARE'] != 'CLI') {
+			if (filter_var(ini_get('html_errors'), FILTER_VALIDATE_BOOLEAN) && !$is_cli) {
 				echo isset($_GET['debug']) ? implode(PHP_EOL, $output) : $output[0]; // HTML
 			} else {
 				echo html_entity_decode(strip_tags(
@@ -100,13 +109,22 @@
 				include_once __DIR__ . '/functions/func_redact.inc.php';
 			}
 
-			$hostname = function_exists('reverse_dns') ? reverse_dns($_SERVER['REMOTE_ADDR']) : gethostbyaddr($_SERVER['REMOTE_ADDR']);
+			$remote_addr = $_SERVER['REMOTE_ADDR'] ?? '';
+			$hostname = '';
+
+			if ($remote_addr) {
+				try {
+					$hostname = function_exists('reverse_dns') ? reverse_dns($remote_addr) : gethostbyaddr($remote_addr);
+				} catch (Throwable $hostname_error) {
+					// Do nothing
+				}
+			}
 
 			$output = array_merge($output, array_filter([
-				(isset($_SERVER['SERVER_SOFTWARE']) && $_SERVER['SERVER_SOFTWARE'] == 'CLI') ? 'Command: '. redact_argv_line($GLOBALS['argv']) : '',
+				$is_cli ? 'Command: '. redact_argv_line($GLOBALS['argv']) : '',
 				!empty($_SERVER['REQUEST_URI']) ? 'Request: '. $_SERVER['REQUEST_METHOD'] .' '. redact_query_string($_SERVER['REQUEST_URI']) .' '. $_SERVER['SERVER_PROTOCOL'] : '',
 				!empty($_SERVER['HTTP_HOST']) ? 'Host: '. $_SERVER['HTTP_HOST'] : '',
-				!empty($_SERVER['REMOTE_ADDR']) ? 'Client: '. $_SERVER['REMOTE_ADDR'] .' ('. $hostname .')' : '',
+				!empty($remote_addr) ? 'Client: '. $remote_addr .' ('. $hostname .')' : '',
 				!empty($_SERVER['HTTP_USER_AGENT']) ? 'User Agent: '. $_SERVER['HTTP_USER_AGENT'] : '',
 				!empty($_SERVER['HTTP_REFERER']) ? 'Referer: '. redact_query_string($_SERVER['HTTP_REFERER']) : '',
 			]));
@@ -125,9 +143,6 @@
 		}
 
 		if (in_array($errno, [E_PARSE, E_ERROR, E_COMPILE_ERROR, E_CORE_ERROR, 256])) {
-			if ($_SERVER['SERVER_SOFTWARE'] != 'CLI') {
-				http_response_code(500);
-			}
 			exit(1);
 		}
 	}

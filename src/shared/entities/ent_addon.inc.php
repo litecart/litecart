@@ -68,8 +68,13 @@
 			$dom = new \DOMDocument('1.0', 'UTF-8');
 			$dom->preserveWhiteSpace = false;
 
+			libxml_clear_errors();
+
 			if (!$dom->loadXml($xml)) {
-				throw new Exception(libxml_get_errors());
+				$errors = array_map(function($error) {
+					return trim($error->message);
+				}, libxml_get_errors());
+				throw new Exception('Invalid XML: '. implode('; ', $errors));
 			}
 
 			$this->data['id'] = preg_replace('#\.disabled$#', '', $this->data['folder']);

@@ -3,7 +3,9 @@
 	administrator::require_login();
 
 	if (empty($_GET['module_id'])) {
-		die('Unknown module id');
+		notices::add('errors', t('error_must_provide_module', 'You must provide a module'));
+		redirect(document::ilink(__APP__ . '/modules'), 303);
+		exit;
 	}
 
 	$module_id = basename($_GET['module_id']);

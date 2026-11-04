@@ -33,8 +33,10 @@
 		}
 	}
 
+	$installed_version = is_array($addon['installed']) ? ($addon['installed']['version'] ?? '') : '';
+
 	foreach ($addon['packages'] as $i => $package) {
-		$addon['packages'][$i]['installed'] = ($package['version'] == $addon['installed']['version']) ? true: false;
+		$addon['packages'][$i]['installed'] = ($package['version'] == $installed_version) ? true: false;
 	}
 
 	if (!($profile = marketplace_client::whoami())) {
@@ -48,6 +50,10 @@
 			}
 
 			$result = marketplace_client::get_addon_package($_POST['package_id']);
+
+			if (empty($result['data'])) {
+				throw new Exception(t('error_failed_to_download_package', 'Failed to download the package'));
+			}
 
 			$tmp_file = f::file_create_tempfile();
 			file_put_contents($tmp_file, base64_decode($result['data']));

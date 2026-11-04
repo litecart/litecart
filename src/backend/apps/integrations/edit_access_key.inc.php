@@ -48,7 +48,7 @@
 
 	document::$title[] = !empty($access_key->data['id']) ? t('title_edit_access_key', 'Edit Access Key') : t('title_create_new_access_key', 'Create New Access Key');
 
-	breadcrumbs::add(t('title_access_keys', 'Access Keys'), document::href_ilink(__APP__ .'/access_keys'));
+	breadcrumbs::add(t('title_access_keys', 'Access Keys'), document::ilink(__APP__ .'/access_keys'));
 	breadcrumbs::add(!empty($access_key->data['id']) ? t('title_edit_access_key', 'Edit Access Key') : t('title_create_new_access_key', 'Create New Access Key'));
 
 	if (isset($_POST['save'])) {
@@ -191,7 +191,7 @@
 								'formnovalidate' => true,
 								'class' => 'btn btn-warning btn-sm',
 								'data-toggle' => 'confirm',
-								'confirm' => t('text_regenerate_key_confirm', 'Regenerating will invalidate the existing key. Any client using it will lose access until updated. Continue?'),
+								'data-confirm' => t('text_regenerate_key_confirm', 'Regenerating will invalidate the existing key. Any client using it will lose access until updated. Continue?'),
 							], 'rotate') ?>
 						</div>
 					</div>

@@ -20,7 +20,7 @@
 		define('NONCE', bin2hex(random_bytes(16)));
 	}
 
-	require_once FS_DIR_APP . 'install/functions.inc.php';
+	require_once FS_DIR_APP . 'install/includes/functions.inc.php';
 
 	try {
 

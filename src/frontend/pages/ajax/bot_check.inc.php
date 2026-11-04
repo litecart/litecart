@@ -2,13 +2,9 @@
 
 	try {
 
-		if (empty($_POST)) {
-			throw new Exception('No data received');
-		}
-
 		$payload = file_get_contents('php://input');
 
-		if (empty($payload)) {
+		if (!$payload) {
 			throw new Exception('No data received');
 		}
 
@@ -39,6 +35,7 @@
 			'canvas',
 			'webgl',
 			'suspicious',
+			'botScore',
 		] as $key) {
 			if (isset($report[$key])) {
 				security::$data['bot_challenge'][$key] = $report[$key];

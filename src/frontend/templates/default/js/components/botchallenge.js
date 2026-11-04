@@ -208,7 +208,7 @@ if (!localStorage.getItem('bot_challenge_passed')) {
 		// Send to backend
 
 		navigator.sendBeacon(
-			'/bot_check',
+			_env.platform.path + 'ajax/bot_check',
 			JSON.stringify(report)
 		);
 

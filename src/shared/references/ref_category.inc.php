@@ -225,7 +225,7 @@
 					if (!$category) {
 						$category = [];
 						foreach (database::schema('categories') as $field) {
-							$category[$field] = database::create_variable($field);
+							$category[$field['Field']] = database::create_variable($field);
 						}
 					}
 

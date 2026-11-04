@@ -61,10 +61,10 @@
 			</button>
 
 			<?php foreach ($third_parties as $third_party) { ?>
-			<article class="third-party" aria-label="<?= f::escape_attr(htmlspecialchars($third_party['name'])) ?>">
+			<article class="third-party" aria-label="<?= f::escape_attr($third_party['name']) ?>">
 				<a class="name" href="<?= document::href_ilink('third_parties', ['third_party_id' => $third_party['id']]) ?>" aria-expanded="<?= !empty($third_party['active']) ? 'true' : 'false' ?>">
 					<span class="toggle" aria-hidden="true"><?= !empty($third_party['active']) ? f::draw_fonticon('icon-chevron-up') : f::draw_fonticon('icon-chevron-down') ?></span>
-					<?= htmlspecialchars($third_party['name']) ?>
+					<?= f::escape_html($third_party['name']) ?>
 				</a>
 
 				<div class="details<?= !empty($third_party['active']) ? ' expanded' : '' ?>"<?= !empty($third_party['active']) ? ' style="display: block;"' : '' ?>>
@@ -96,22 +96,22 @@
 
 					<div class="form-group">
 						<div class="form-label"><?= t('title_homepage', 'Homepage') ?></div>
-						<div class="homepage"><?= !empty($third_party['homepage_url']) ? '<a href="'. htmlspecialchars($third_party['homepage_url']) .'" target="_blank">'. htmlspecialchars($third_party['homepage_url']) .'</a>' : '-' ?></div>
+						<div class="homepage"><?= !empty($third_party['homepage']) ? '<a href="'. f::escape_attr($third_party['homepage']) .'" target="_blank">'. f::escape_html($third_party['homepage']) .'</a>' : '-' ?></div>
 					</div>
 
 					<div class="form-group">
 						<div class="form-label"><?= t('title_cookie_policy', 'Cookie Policy') ?></div>
-						<div class="cookie-policy"><?= !empty($third_party['cookie_policy_url']) ? '<a href="'. htmlspecialchars($third_party['cookie_policy_url']) .'" target="_blank">'. htmlspecialchars($third_party['cookie_policy_url']) .'</a>' : '-' ?></div>
+						<div class="cookie-policy"><?= !empty($third_party['cookie_policy_url']) ? '<a href="'. f::escape_attr($third_party['cookie_policy_url']) .'" target="_blank">'. f::escape_html($third_party['cookie_policy_url']) .'</a>' : '-' ?></div>
 					</div>
 
 					<div class="form-group">
 						<div class="form-label"><?= t('title_opt_out', 'Opt Out') ?></div>
-						<div class="opt-out"><?= !empty($third_party['opt_out_url']) ? '<a href="'. htmlspecialchars($third_party['opt_out_url']) .'" target="_blank">'. htmlspecialchars($third_party['opt_out_url']) .'</a>' : '-' ?></div>
+						<div class="opt-out"><?= !empty($third_party['opt_out_url']) ? '<a href="'. f::escape_attr($third_party['opt_out_url']) .'" target="_blank">'. f::escape_html($third_party['opt_out_url']) .'</a>' : '-' ?></div>
 					</div>
 
 					<div class="form-group">
 						<div class="form-label"><?= t('title_do_not_sell', 'Do Not Sell') ?></div>
-						<div class="do-not-sell"><?= !empty($third_party['do_not_sell_url']) ? '<a href="'. htmlspecialchars($third_party['do_not_sell_url']) .'" target="_blank">'. htmlspecialchars($third_party['do_not_sell_url']) .'</a>' : '-' ?></div>
+						<div class="do-not-sell"><?= !empty($third_party['do_not_sell_url']) ? '<a href="'. f::escape_attr($third_party['do_not_sell_url']) .'" target="_blank">'. f::escape_html($third_party['do_not_sell_url']) .'</a>' : '-' ?></div>
 					</div>
 				</div>
 			</article>

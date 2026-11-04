@@ -264,7 +264,8 @@
 		}
 	});
 
-	$('form[name="customer_form"]').on('input', ':input', function() {
+	// Address lookup is driven by the tax id, the only field a lookup module acts on
+	$('form[name="customer_details_form"] :input[name="tax_id"]').on('change', function() {
 		if ($(this).val() == '') return;
 
 		$.ajax({

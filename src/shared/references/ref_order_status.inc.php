@@ -52,7 +52,7 @@
 					if (!$order_status) {
 												$order_status = [];
 						foreach (database::schema('order_statuses') as $field) {
-							$order_status[$field] = database::create_variable($field);
+							$order_status[$field['Field']] = database::create_variable($field);
 						}
 					}
 

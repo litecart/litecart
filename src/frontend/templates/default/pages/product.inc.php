@@ -103,7 +103,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 					<?php if ($cheapest_shipping_fee !== null) { ?>
 					<div class="cheapest-shipping" style="margin: 1em 0;">
-						<?= f::draw_fonticon('icon-truck', 'aria-hidden="true"') ?> <?= strtr(t('text_cheapest_shipping_from_price', 'Cheapest shipping from <strong class="value">{price}</strong>'), [
+						<?= f::draw_fonticon('icon-truck', ['aria-hidden' => "true"]) ?> <?= strtr(t('text_cheapest_shipping_from_price', 'Cheapest shipping from <strong class="value">{price}</strong>'), [
 							'{price}' => currency::format($cheapest_shipping_fee)
 						]) ?>
 					</div>
@@ -271,39 +271,39 @@ form[name="buy_now_form"] .dropdown-menu .image {
 					<div class="social-bookmarks" aria-label="<?= f::escape_attr(t('title_share', 'Share')) ?>">
 
 						<a class="link btn btn-default" href="#" aria-label="<?= f::escape_attr(t('text_share_url', 'Share URL') .': '. $name) ?>">
-							<?= f::draw_fonticon('icon-link', 'style="background: #333; color: #fff;" aria-hidden="true"') ?>
+							<?= f::draw_fonticon('icon-link', ['style' => 'background: #333; color: #fff;', 'aria-hidden' => "true"]) ?>
 							<div class="description"><?= f::escape_html(t('text_share_url', 'Share URL')) ?></div>
 						</a>
 
 						<a class="btn btn-default" href="<?= 'mailto:user@email.com?', http_build_query(['subject' => t('text_is_this_a_product_for_you', 'Is this a product for you?'), 'body' => document::ilink()]) ?>" aria-label="<?= f::escape_attr(t('text_share_via_email', 'Share via Email')) ?>">
-							<?= f::draw_fonticon('icon-envelope', 'style="background: #333; color: #fff;" aria-hidden="true"') ?>
+							<?= f::draw_fonticon('icon-envelope', ['style' => 'background: #333; color: #fff;', 'aria-hidden' => "true"]) ?>
 							<div class="description"><?= f::escape_html(t('text_share_via_email', 'Share via Email')) ?></div>
 						</a>
 
 						<?php /* Requires appId
 						<a class="x btn btn-default" href="<?= document::href_link('fb-messenger://share/', ['link' => $link]) ?>" target="_blank">
-							<?= f::draw_fonticon('icon-brand-messenger', 'style="background: #000; color: #fff;"') ?>
+							<?= f::draw_fonticon('icon-brand-messenger', ['style' => 'background: #000; color: #fff;']) ?>
 							<div class="description"><?= f::escape_html(t('text_share_via_s', 'Share via {s}'), ['{s}' => 'Messenger']) ?></div>
 						</a>
 							*/ ?>
 
 						<a class="x btn btn-default" href="<?= document::href_link('https://wa.me/', ['text' => $name .' - '. $link]) ?>" target="_blank" rel="noopener noreferrer" aria-label="<?= f::escape_attr(strtr(t('text_share_on_s', 'Share on {s}'), ['{s}' => 'WhatsApp'])) ?>">
-							<?= f::draw_fonticon('icon-brand-whatsapp', 'style="background: #25D366; color: #fff;" aria-hidden="true"') ?>
+							<?= f::draw_fonticon('icon-brand-whatsapp', ['style' => 'background: #25D366; color: #fff;', 'aria-hidden' => 'true']) ?>
 							<div class="description"><?= f::escape_html(strtr(t('text_share_on_s', 'Share on {s}'), ['{s}' => 'WhatsApp'])) ?></div>
 						</a>
 
 						<a class="facebook btn btn-default" href="<?= document::href_link('https://www.facebook.com/sharer.php', ['u' => $link]) ?>" target="_blank" rel="noopener noreferrer" aria-label="<?= f::escape_attr(strtr(t('text_share_on_s', 'Share on {s}'), ['{s}' => 'Facebook'])) ?>">
-							<?= f::draw_fonticon('icon-brand-facebook', 'style="background: #3b5998; color: #fff;" aria-hidden="true"') ?>
+							<?= f::draw_fonticon('icon-brand-facebook', ['style' => 'background: #3b5998; color: #fff;', 'aria-hidden' => 'true']) ?>
 							<div class="description"><?= f::escape_html(strtr(t('text_share_on_s', 'Share on {s}'), ['{s}' => 'Facebook'])) ?></div>
 						</a>
 
 						<a class="x btn btn-default" href="<?= document::href_link('https://x.com/intent/tweet/', ['text' => $name .' - '. $link]) ?>" target="_blank" rel="noopener noreferrer" aria-label="<?= f::escape_attr(strtr(t('text_share_on_s', 'Share on {s}'), ['{s}' => 'X'])) ?>">
-							<?= f::draw_fonticon('icon-brand-x', 'style="background: #000; color: #fff;" aria-hidden="true"') ?>
+							<?= f::draw_fonticon('icon-brand-x', ['style' => 'background: #000; color: #fff;', 'aria-hidden' => 'true']) ?>
 							<div class="description"><?= f::escape_html(strtr(t('text_share_on_s', 'Share on {s}'), ['{s}' => 'X'])) ?></div>
 						</a>
 
 						<a class="pinterest btn btn-default" href="<?= document::href_link('https://pinterest.com/pin/create/button/', ['url' => $link]) ?>" target="_blank" rel="noopener noreferrer" aria-label="<?= f::escape_attr(strtr(t('text_share_on_s', 'Share on {s}'), ['{s}' => 'Pinterest'])) ?>">
-							<?= f::draw_fonticon('icon-brand-pinterest', 'style="background: #bd081c; color: #fff;" aria-hidden="true"') ?>
+							<?= f::draw_fonticon('icon-brand-pinterest', ['style' => 'background: #bd081c; color: #fff;', 'aria-hidden' => 'true']) ?>
 							<div class="description"><?= f::escape_html(strtr(t('text_share_on_s', 'Share on {s}'), ['{s}' => 'Pinterest'])) ?></div>
 						</a>
 					</div>
@@ -398,7 +398,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 									<div class="vote">
 										<a class="upvote" href="#" aria-label="<?= f::escape_attr(t('title_upvote', 'Upvote')) ?>">
-											<?= f::draw_fonticon('icon-thumbs-up', 'aria-hidden="true"') ?> <span class="num-votes" aria-label="<?= (int)$review['upvotes'] ?>"><?= $review['upvotes'] ?></span>
+											<?= f::draw_fonticon('icon-thumbs-up-1', 'aria-hidden="true"') ?> <span class="num-votes" aria-label="<?= (int)$review['upvotes'] ?>"><?= $review['upvotes'] ?></span>
 										</a>
 										<a class="downvote" href="#" aria-label="<?= f::escape_attr(t('title_downvote', 'Downvote')) ?>">
 											<?= f::draw_fonticon('icon-thumbs-down', 'aria-hidden="true"') ?> <span class="num-votes" aria-label="<?= (int)$review['downvotes'] ?>"><?= $review['downvotes'] ?></span>

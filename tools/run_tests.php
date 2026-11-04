@@ -9,7 +9,7 @@
 	ini_set('display_startup_errors', 1);
 	error_reporting(E_ALL);
 
-	$directory = f::file_resolve_path(__DIR__.'/../../tests/');
+	$directory = f::file_resolve_path(__DIR__.'/../tests/');
 
 	$files = f::file_search($directory . '/*.php');
 

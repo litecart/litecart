@@ -203,6 +203,140 @@
 			throw new Exception('transaction: ROLLBACK should have removed the inserted row');
 		}
 
+		########################################################################
+		## prepare / bind — a colon inside a quoted literal is not a placeholder
+		########################################################################
+
+		$warnings = [];
+		set_error_handler(function($errno, $errstr) use (&$warnings) {
+			$warnings[] = $errstr;
+			return true;
+		}, E_ALL);
+
+		$stmt = database::prepare("select '10:30:00' as stamp, :val as result;");
+		$stmt->bind(['val' => 42]);
+
+		restore_error_handler();
+
+		if ($warnings) {
+			throw new Exception('prepare/bind: A colon inside a quoted literal should not warn, got '. implode(' | ', $warnings));
+		}
+
+		$row = $stmt->fetch();
+
+		if ($row['stamp'] !== '10:30:00' || (int)$row['result'] !== 42) {
+			throw new Exception('prepare/bind: A quoted literal should be left alone, got '. var_export($row, true));
+		}
+
+		########################################################################
+		## prepare / bind — the parameter name ends at the first non-word character
+		########################################################################
+
+		$row = database::prepare(
+			"select concat(:val, 'x') as result;"
+		)->bind(['val' => 7])->fetch();
+
+		if ($row['result'] !== '7x') {
+			throw new Exception('prepare/bind: A parameter name should end at the comma, got '. var_export($row['result'], true));
+		}
+
+		########################################################################
+		## prepare / bind — boolean and null parameters
+		########################################################################
+
+		$row = database::prepare(
+			"select :flag as result;"
+		)->bind(['flag' => true])->fetch();
+
+		if ((int)$row['result'] !== 1) {
+			throw new Exception('prepare/bind: A boolean parameter should be bound as an integer, got '. var_export($row['result'], true));
+		}
+
+		$row = database::prepare(
+			"select :val as result;"
+		)->bind(['val' => null])->fetch();
+
+		if ($row['result'] !== null) {
+			throw new Exception('prepare/bind: A null parameter should be bound as NULL, got '. var_export($row['result'], true));
+		}
+
+		########################################################################
+		## prepare / bind — a nested parameter name
+		########################################################################
+
+		$row = database::prepare(
+			"select :filter.id as result;"
+		)->bind(['filter' => ['id' => 9]])->fetch();
+
+		if ((int)$row['result'] !== 9) {
+			throw new Exception('prepare/bind: A nested parameter name should be bound, got '. var_export($row['result'], true));
+		}
+
+		########################################################################
+		## prepare / bind — parameters of several arguments are all bound
+		########################################################################
+
+		$warnings = [];
+		set_error_handler(function($errno, $errstr) use (&$warnings) {
+			$warnings[] = $errstr;
+			return true;
+		}, E_ALL);
+
+		$stmt = database::prepare("select :a as a, :b as b;");
+		$stmt->bind(['a' => 1], ['b' => 2]);
+
+		restore_error_handler();
+
+		if ($warnings) {
+			throw new Exception('prepare/bind: Parameters of every argument should be bound, got '. implode(' | ', $warnings));
+		}
+
+		$row = $stmt->fetch();
+
+		if ((int)$row['a'] !== 1 || (int)$row['b'] !== 2) {
+			throw new Exception('prepare/bind: Parameters of every argument should be bound, got '. var_export($row, true));
+		}
+
+		########################################################################
+		## prepare / bind — an unmatched parameter is reported
+		########################################################################
+
+		$warnings = [];
+		set_error_handler(function($errno, $errstr) use (&$warnings) {
+			$warnings[] = $errstr;
+			return true;
+		}, E_ALL);
+
+		$stmt = database::prepare("select :val as result;");
+		$stmt->bind(['other' => 1]);
+
+		restore_error_handler();
+
+		if (count($warnings) !== 1 || strpos($warnings[0], 'Unmatched parameter name (val)') === false) {
+			throw new Exception('prepare/bind: An unmatched parameter should be reported, got '. implode(' | ', $warnings));
+		}
+
+		########################################################################
+		## prepare / bind — comments are removed without an out of range offset
+		########################################################################
+
+		$warnings = [];
+		set_error_handler(function($errno, $errstr) use (&$warnings) {
+			$warnings[] = $errstr;
+			return true;
+		}, E_ALL);
+
+		database::prepare("select 1 as n -- a comment")->bind([]);
+		database::prepare("select 1 as n # a comment")->bind([]);
+		database::prepare("select 1 as n /* a comment */")->bind([]);
+		database::prepare("select 1 as n /")->bind([]);
+
+		restore_error_handler();
+
+		if ($warnings) {
+			throw new Exception('prepare/bind: Comments should be removed silently, got '. implode(' | ', $warnings));
+		}
+
 		return true;
 
 	} catch (Exception $e) {

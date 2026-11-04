@@ -333,8 +333,19 @@
 				return FS_DIR_APP . $original_file;
 			}
 
-			// Write modified file
-			file_put_contents(FS_DIR_STORAGE . $modified_file, $buffer, LOCK_EX);
+			// Write the modified file through a temporary file, so a request that includes it never reads a half written file
+			$cache_file = FS_DIR_STORAGE . $modified_file;
+			$temp_file = $cache_file .'.tmp';
+			$written = file_put_contents($temp_file, $buffer, LOCK_EX) !== false;
+
+			if ($written) {
+				$written = @rename($temp_file, $cache_file);
+			}
+
+			if (!$written) {
+				@unlink($temp_file);
+				file_put_contents($cache_file, $buffer, LOCK_EX);
+			}
 
 			// Update checked cache
 			if (!isset(self::$_checked[$original_file]) || self::$_checksums[$original_file] != $checksum) {

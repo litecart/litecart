@@ -62,10 +62,11 @@
 
 			$orders = database::query(
 				"select o.id, o.customer_id, o.customer_firstname, o.customer_lastname, o.customer_email,
-					o.total, o.total_tax, o.currency_code, o.order_status_id, os.name as order_status,
+					o.total, o.total_tax, o.currency_code, o.order_status_id,
+					json_value(os.name, '$.". database::input(language::$selected['code'] ?? 'en') ."') as order_status,
 					o.created_at
 				from ". DB_PREFIX ."orders o
-				left join ". DB_PREFIX ."order_statuses_info os on (os.order_status_id = o.order_status_id and os.language_code = '". database::input(language::$selected['code']) ."')
+				left join ". DB_PREFIX ."order_statuses os on (os.id = o.order_status_id)
 				". $sql_where ."
 				order by o.created_at desc
 				limit ". $limit .";"

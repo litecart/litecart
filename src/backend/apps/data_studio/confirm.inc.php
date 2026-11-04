@@ -204,6 +204,11 @@
 		exit;
 	}
 
+	if (empty(session::$data['csv_batch']['rows'])) {
+		notices::add('errors', t('error_no_import_batch', 'There is no import to confirm'));
+		return;
+	}
+
 	if (empty($_POST)) {
 		foreach (array_keys(session::$data['csv_batch']['rows'][0]) as $column) {
 			if (in_array($column, array_keys(session::$data['csv_batch']['properties']))) {

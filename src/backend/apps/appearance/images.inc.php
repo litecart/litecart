@@ -146,7 +146,7 @@
 						<div class="form-label"><?= $image['name'] ?></div>
 						<div class="image-container">
 							<div class="format"><?= strtoupper(pathinfo($image['file'], PATHINFO_EXTENSION)) ?></div>
-							<img class="thumbnail fit" src="<?= document::href_rlink($image['file']) ?>" data-original="<?= document::href_rlink($image['file']) ?>" alt="<?= f::escape_attr($image['name']) ?>">
+							<img class="thumbnail fit" src="<?= document::href_rlink(is_file($image['file']) ? $image['file'] : 'storage://images/no_image.svg') ?>" data-original="<?= document::href_rlink(is_file($image['file']) ? $image['file'] : 'storage://images/no_image.svg') ?>" alt="<?= f::escape_attr($image['name']) ?>">
 						</div>
 						<?= f::form_input_file($image['id'], ['accept' => f::escape_attr($image['mime'])]) ?>
 					</label>

@@ -98,7 +98,7 @@
 					if (!$brand) {
 						$brand = [];
 						foreach (database::schema('brands') as $field) {
-							$brand[$field] = database::create_variable($field);
+							$brand[$field['Field']] = database::create_variable($field);
 						}
 					}
 

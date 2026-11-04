@@ -13,7 +13,7 @@
 
 				<ul class="items list-unstyled" aria-label="<?= f::escape_attr(t('title_ordered_items', 'Ordered Items')) ?>">
 					<?php foreach ($order['items'] as $item) { ?>
-					<li class="item" data-id="<?= $item['product_id'] ?>" data-sku="<?= $item['sku'] ?>" data-name="<?= f::escape_html($item['name']) ?>" data-price="<?= currency::format_raw($item['price'], $order['currency_code'], $order['currency_value']) ?>" data-quantity="<?= (float)$item['quantity'] ?>">
+					<li class="item" data-id="<?= $item['product_id'] ?>" data-sku="<?= $item['code'] ?>" data-name="<?= f::escape_html($item['name']) ?>" data-price="<?= currency::format_raw($item['final_price'], $order['currency_code'], $order['currency_value']) ?>" data-quantity="<?= (float)$item['quantity'] ?>">
 						<?= (float)$item['quantity'] ?> x <?= f::escape_html($item['name']) ?>
 					</li>
 					<?php } ?>

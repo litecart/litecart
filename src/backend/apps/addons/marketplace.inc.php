@@ -185,7 +185,7 @@ html[dir="rtl"] .whoami .avatar {
 					<img class="avatar" src="<?= f::escape_html($profile['user']['avatar']) ?>">
 					<div class="username"><?= $profile['user']['username'] ?></div>
 					<div class="store-name"><?= $profile['store']['name'] ?></div>
-					<a class="disconnect btn btn-default btn-sm" href="<?= document::ilink(__APP__ . '/disconnect') ?>"><?= f::draw_fonticon('icon-chain-broken') ?> <?= t('title_disconnect', 'Disconnect') ?></a>
+					<a class="disconnect btn btn-default btn-sm" href="<?= document::ilink(__APP__ . '/disconnect') ?>"><?= f::draw_fonticon('icon-sign-out') ?> <?= t('title_disconnect', 'Disconnect') ?></a>
 				</div>
 				<?php } ?>
 			</div>

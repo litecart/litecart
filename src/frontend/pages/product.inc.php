@@ -176,7 +176,7 @@
 					json_value(p.name, '$.\"". database::input(language::$selected['code']) ."\"') as product_name,
 					concat(c.firstname, ' ', c.lastname) as customer_name
 				from ". DB_PREFIX ."reviews pr
-				left join ". DB_PREFIX ."products p on (pr.product_id = p.product_id)
+				left join ". DB_PREFIX ."products p on (pr.product_id = p.id)
 				left join ". DB_PREFIX ."customers c on (pr.customer_id = c.id)
 				where pr.status
 				and pr.id = ". (int)$_GET['review_id'] ."

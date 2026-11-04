@@ -83,7 +83,7 @@
 				'phone',
 				'email',
 			] as $field) {
-				$order->data['customer'][$field] = ($_POST[$field] ?? '') ?: customer::$data[$field];
+				$order->data['customer'][$field] = $_POST[$field] ?? customer::$data[$field] ?? '';
 			}
 
 			foreach ([
@@ -101,9 +101,9 @@
 				'email',
 			] as $field) {
 				if (!empty(customer::$data['different_shipping_address'])) {
-					$order->data['customer']['shipping_address'][$field] = ($_POST['shipping_address'][$field] ?? '') ?: customer::$data['shipping_address'][$field];
+					$order->data['customer']['shipping_address'][$field] = $_POST['shipping_address'][$field] ?? customer::$data['shipping_address'][$field] ?? '';
 				} else {
-					$order->data['customer']['shipping_address'][$field] = ($_POST[$field] ?? '') ?: customer::$data[$field];
+					$order->data['customer']['shipping_address'][$field] = $_POST[$field] ?? customer::$data[$field] ?? '';
 				}
 			}
 

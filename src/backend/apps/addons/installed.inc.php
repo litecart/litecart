@@ -141,21 +141,42 @@
 			continue;
 		}
 
-		$folder_name = preg_replace('#^storage://addons/#', '', $folder);
-		$addon = new ent_addon($folder_name);
+		$folder_name = basename(preg_replace('#^storage://addons/#', '', $folder));
 
-		$current_addon = [
-			'id' => $addon->data['id'],
-			'folder' => $addon->data['folder'],
-			'status' => $addon->data['status'],
-			'installed' => $addon->data['installed'],
-			'location' => $addon->data['location'],
-			'name' => $addon->data['name'],
-			'version' => $addon->data['version'],
-			'author' => $addon->data['author'],
-			'configurable' => !empty($this->data['settings']),
-			'errors' => null,
-		];
+		try {
+			$addon = new ent_addon($folder_name);
+
+			$current_addon = [
+				'id' => $addon->data['id'],
+				'folder' => $addon->data['folder'],
+				'status' => $addon->data['status'],
+				'installed' => $addon->data['installed'],
+				'location' => $addon->data['location'],
+				'name' => $addon->data['name'],
+				'version' => $addon->data['version'],
+				'author' => $addon->data['author'],
+				'marketplace' => $addon->data['marketplace'],
+				'configurable' => !empty($addon->data['settings']),
+				'errors' => null,
+			];
+
+		} catch (Throwable $e) {
+
+			// A folder without a valid vMod should not take down the whole page
+			$current_addon = [
+				'id' => $folder_name,
+				'folder' => $folder_name,
+				'status' => false,
+				'installed' => false,
+				'location' => 'storage://addons/' . $folder_name . '/',
+				'name' => $folder_name,
+				'version' => '',
+				'author' => '',
+				'marketplace' => [],
+				'configurable' => false,
+				'errors' => $e->getMessage(),
+			];
+		}
 
 		$addons[] = $current_addon;
 	}
@@ -215,7 +236,7 @@
 						<?php if (empty($addon['errors'])) { ?>
 						<span style="color: #8c4"><?= f::draw_fonticon('ok') ?> <?= t('title_ok', 'OK') ?></span>
 						<?php } else { ?>
-						<span style="color: #c00"><?= f::draw_fonticon('warning') ?> <?= t('title_fail', 'Fail') ?></span>
+						<span style="color: #c00" title="<?= f::escape_attr($addon['errors']) ?>"><?= f::draw_fonticon('warning') ?> <?= t('title_fail', 'Fail') ?></span>
 						<?php } ?>
 					</td>
 					<td class="text-center">

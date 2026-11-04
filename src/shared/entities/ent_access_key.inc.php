@@ -18,7 +18,7 @@
 			$this->data = [];
 
 			foreach (database::schema('access_keys') as $field) {
-				$this->data[$field['Field']] = database::create_variable($field['Type']);
+				$this->data[$field['Field']] = database::create_variable($field);
 			}
 
 			$this->data['permissions'] = [];

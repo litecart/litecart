@@ -671,7 +671,7 @@
 					if (!$product) {
 						$product = [];
 						foreach (database::schema('products') as $field) {
-							$product[$field] = database::create_variable($field);
+							$product[$field['Field']] = database::create_variable($field);
 						}
 					}
 

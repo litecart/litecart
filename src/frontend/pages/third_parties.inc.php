@@ -14,7 +14,10 @@
 	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/third_parties.inc.php');
 
 	$_page->snippets['third_parties'] =  database::query(
-		"select *, json_value(name, '$.". language::$selected['code'] ."') as name
+		"select *,
+			coalesce(json_value(description, '$.". database::input(language::$selected['code']) ."'), '') as description,
+			coalesce(json_value(collected_data, '$.". database::input(language::$selected['code']) ."'), '') as collected_data,
+			coalesce(json_value(purposes, '$.". database::input(language::$selected['code']) ."'), '') as purposes
 		from ". DB_PREFIX ."third_parties
 		where status
 		order by name;"

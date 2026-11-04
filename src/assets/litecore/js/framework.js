@@ -1645,6 +1645,11 @@ waitFor('jQuery', ($) => {
 			this.$element.find('[data-toggle="tab"]').each(function() {
 				const $link = $(this);
 
+				// Bind each link only once, so the component can be re-initialized
+				// when tabs are added to the page after it has been loaded
+				if ($link.data('tabs')) return;
+				$link.data('tabs', true);
+
 				$link.on('select', function() {
 					self.$element.find('.active').removeClass('active');
 

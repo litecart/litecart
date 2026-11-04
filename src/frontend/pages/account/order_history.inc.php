@@ -40,10 +40,10 @@
 	foreach ($orders as $key => $order) {
 
 		$num_downloads = database::query(
-			"select oi.id
-			from ". DB_PREFIX ."orders_items oi
-			left join ". DB_PREFIX ."stock_items si on (si.id = oi.stock_item_id)
-			where oi.order_id = ". (int)$order['id'] ."
+			"select osi.id
+			from ". DB_PREFIX ."orders_stock_items osi
+			left join ". DB_PREFIX ."stock_items si on (si.id = osi.stock_item_id)
+			where osi.order_id = ". (int)$order['id'] ."
 			and si.file;"
 		)->num_rows;
 

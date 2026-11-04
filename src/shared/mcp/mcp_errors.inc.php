@@ -1,5 +1,69 @@
 <?php
 
+	// Log entries carry a timestamp prefix; PHP prepends the native format for error_log(), the database writer uses [Y-m-d H:i:s e]
+	$entry_timestamp_pattern = '#^\[(?:(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} [^\]\n]+)|(\d{1,2}-[a-zA-Z]+-\d{4} \d{2}:\d{2}:\d{2} [a-zA-Z/]+))\] ?(.*)$#';
+
+	// Splits log lines into entries with line ranges, so occurrences can be grouped and removed
+	$parse_error_log = function(array $lines, int $fallback_timestamp = 0) use ($entry_timestamp_pattern) {
+
+		$entries = [];
+		$leading = [];
+		$current = null;
+
+		foreach ($lines as $index => $line) {
+
+			if (preg_match($entry_timestamp_pattern, $line, $matches)) {
+
+				if ($current !== null) {
+					$entries[] = $current;
+				} elseif (count($leading)) {
+					// Content logged before entries got a timestamp prefix
+					$entries[] = [
+						'start' => 0,
+						'end' => $index - 1,
+						'timestamp' => $fallback_timestamp,
+						'error' => trim($leading[0]),
+						'backtrace' => trim(implode(PHP_EOL, $leading)),
+					];
+				}
+
+				$leading = [];
+
+				$current = [
+					'start' => $index,
+					'end' => $index,
+					'timestamp' => strtotime($matches[1] ?: $matches[2]) ?: $fallback_timestamp,
+					'error' => trim($matches[3]),
+					'backtrace' => '',
+				];
+
+				continue;
+			}
+
+			if ($current === null) {
+				$leading[] = $line;
+				continue;
+			}
+
+			$current['end'] = $index;
+			$current['backtrace'] .= ($current['backtrace'] !== '' ? PHP_EOL : '') . $line;
+		}
+
+		if ($current !== null) {
+			$entries[] = $current;
+		} elseif (count($leading)) {
+			$entries[] = [
+				'start' => 0,
+				'end' => count($lines) - 1,
+				'timestamp' => $fallback_timestamp,
+				'error' => trim($leading[0]),
+				'backtrace' => trim(implode(PHP_EOL, $leading)),
+			];
+		}
+
+		return $entries;
+	};
+
 	$toolset = [
 		'name' => 'errors',
 		'description' => 'Tools for viewing and managing PHP error log entries.',
@@ -28,7 +92,7 @@
 			],
 			'required' => [],
 		],
-		'function' => function($params) {
+		'function' => function($params) use ($parse_error_log) {
 
 			$log_file = ini_get('error_log');
 
@@ -52,47 +116,40 @@
 			$initial_memory_limit = ini_get('memory_limit');
 			ini_set('memory_limit', -1); // Unlimit memory for reading log file
 
-			$entries = preg_replace('#(\r\n?|\n)#', PHP_EOL, file_get_contents($log_file));
+			$lines = preg_split('#(?:\r\n?|\n)#', file_get_contents($log_file));
+			$entries = $parse_error_log($lines, (int)filemtime($log_file));
 
 			$errors = [];
 
-			if (preg_match_all('#\[(\d{1,2}-[a-zA-Z]+-\d{4} \d\d\:\d\d\:\d\d [a-zA-Z/]+)\] ([^\r\n]+)(.*?)(?=\R*\[|\R*$)#us', $entries, $matches)) {
+			foreach ($entries as $entry) {
 
-				foreach (array_keys($matches[0]) as $i) {
+				if ($entry['error'] === '') continue;
 
-					$checksum = crc32($matches[2][$i]);
-					$backtrace = trim(preg_replace('#(\r\n?|\n)+#', '$1', $matches[3][$i]), "\r\n");
-					$timestamp = strtotime($matches[1][$i]) ?: 0;
+				$checksum = crc32($entry['error']);
 
-					if (!isset($errors[$checksum])) {
-					  $errors[$checksum] = [
-					    'checksum' => $checksum,
-					    'error' => $matches[2][$i],
-					    'backtrace' => $backtrace ?: null,
-					    'occurrences' => 1,
-					    'last_occurrence' => date('Y-m-d H:i:s', $timestamp),
-					    'critical' => (bool)preg_match('#(Parse|Fatal) error:#is', $matches[2][$i]),
-					  ];
-					} else {
-					  $errors[$checksum]['occurrences']++;
-					  $errors[$checksum]['last_occurrence'] = date('Y-m-d H:i:s', $timestamp);
-					}
+				if (!isset($errors[$checksum])) {
+					$errors[$checksum] = [
+						'error' => $entry['error'],
+						'backtrace' => $entry['backtrace'] ?: null,
+						'occurrences' => 1,
+						'timestamp' => $entry['timestamp'],
+						'critical' => (bool)preg_match('#(Parse|Fatal) error:#is', $entry['error']),
+					];
+				} else {
+					$errors[$checksum]['occurrences']++;
+					$errors[$checksum]['timestamp'] = max($errors[$checksum]['timestamp'], $entry['timestamp']);
 				}
 			}
 
-			unset($entries);
-			ini_set('memory_limit', $initial_memory_limit); // Restore limit
-
 			// Sort: most recently seen first, or most frequently occurring first.
-			// last_occurrence is a fixed Y-m-d H:i:s format, so string compare is chronological.
 			if ($sort_by === 'frequent') {
 				uasort($errors, function($a, $b) {
 					if ($a['occurrences'] != $b['occurrences']) return $a['occurrences'] > $b['occurrences'] ? -1 : 1;
-					return strcmp($b['last_occurrence'], $a['last_occurrence']);
+					return $b['timestamp'] <=> $a['timestamp'];
 				});
 			} else {
 				uasort($errors, function($a, $b) {
-					return strcmp($b['last_occurrence'], $a['last_occurrence']);
+					return $b['timestamp'] <=> $a['timestamp'];
 				});
 			}
 
@@ -101,13 +158,27 @@
 			}
 
 			$total = count($errors);
+			$output = [];
+
+			foreach (array_slice($errors, 0, $limit) as $error) {
+				$output[] = [
+					'checksum' => crc32($error['error']),
+					'error' => $error['error'],
+					'backtrace' => $error['backtrace'],
+					'occurrences' => $error['occurrences'],
+					'last_occurrence' => date('Y-m-d H:i:s', $error['timestamp']),
+					'critical' => $error['critical'],
+				];
+			}
+
+			ini_set('memory_limit', $initial_memory_limit); // Restore limit
 
 			return [
 				'sort_by' => $sort_by,
 				'total' => $total,
-				'returned' => min($total, $limit),
+				'returned' => count($output),
 				'log_file' => $log_file,
-				'errors' => array_values(array_slice($errors, 0, $limit)),
+				'errors' => $output,
 			];
 		}
 	];
@@ -126,7 +197,7 @@
 			],
 			'required' => ['error'],
 		],
-		'function' => function($params) {
+		'function' => function($params) use ($parse_error_log) {
 
 			$log_file = ini_get('error_log');
 
@@ -143,28 +214,42 @@
 			$initial_memory_limit = ini_get('memory_limit');
 			ini_set('memory_limit', -1); // Unlimit memory for reading log file
 
-			$content = preg_replace('#(\r\n?|\n)#', PHP_EOL, file_get_contents($log_file));
+			$lines = preg_split('#(?:\r\n?|\n)#', file_get_contents($log_file));
+			$entries = $parse_error_log($lines, (int)filemtime($log_file));
 
-			$content = preg_replace(
-				'#\[\d{1,2}-[a-zA-Z]+-\d{4} \d\d\:\d\d\:\d\d [a-zA-Z/]+\] '. preg_quote($error, '#') . addcslashes(PHP_EOL, "\r\n") .'[^\[]*#s',
-				'',
-				$content,
-				-1,
-				$count
-			);
+			$remove_lines = [];
+			$occurrences = 0;
 
-			ini_set('memory_limit', $initial_memory_limit); // Restore limit
+			foreach ($entries as $entry) {
 
-			if (!$count) {
+				if ($entry['error'] !== $error) continue;
+
+				$occurrences++;
+
+				for ($index = $entry['start']; $index <= $entry['end']; $index++) {
+					$remove_lines[$index] = true;
+				}
+			}
+
+			if (!$occurrences) {
+				ini_set('memory_limit', $initial_memory_limit); // Restore limit
 				return ['deleted' => false, 'message' => 'Error not found in log'];
 			}
 
-			file_put_contents($log_file, $content);
+			$kept = [];
+
+			foreach ($lines as $index => $line) {
+				if (!isset($remove_lines[$index])) $kept[] = $line;
+			}
+
+			file_put_contents($log_file, implode(PHP_EOL, $kept));
+
+			ini_set('memory_limit', $initial_memory_limit); // Restore limit
 
 			return [
 				'deleted' => true,
-				'occurrences_removed' => $count,
-				'message' => "Removed $count occurrence(s) from the error log",
+				'occurrences_removed' => $occurrences,
+				'message' => "Removed $occurrences occurrence(s) from the error log",
 			];
 		}
 	];

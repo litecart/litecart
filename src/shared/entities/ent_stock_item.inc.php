@@ -106,7 +106,7 @@
 					select id from ". DB_PREFIX ."orders o
 					where order_status_id in (
 						select id from ". DB_PREFIX ."order_statuses os
-						where stock_action = 'withdraw'
+						where stock_action = 'commit'
 					)
 				)
 				group by osi.stock_item_id;"

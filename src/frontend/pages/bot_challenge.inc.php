@@ -256,7 +256,7 @@ body {
       }
 
       // Check for WebAssembly support
-      if (typeof crypto?.randomUUID == 'function') {
+      if (typeof WebAssembly === 'undefined') {
         throw new Error('Failed WebAssembly check');
       }
 

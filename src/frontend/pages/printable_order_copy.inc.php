@@ -62,7 +62,7 @@
 
 	} catch (Exception $e) {
 
-		http_response_code($code);
+		http_response_code($e->getCode());
 		include 'app://frontend/pages/error_document.inc.php';
 		return;
 	}

@@ -72,7 +72,10 @@
 						}
 
 						// Check if client IP address lacks a hostname
-						if ($_SERVER['REMOTE_ADDR'] == reverse_dns($_SERVER['REMOTE_ADDR'])) {
+						$hostname = reverse_dns($_SERVER['REMOTE_ADDR']);
+
+						// An empty hostname means the lookup timed out, not that the IP has no hostname
+						if ($hostname && $hostname === $_SERVER['REMOTE_ADDR']) {
 							throw new Exception('IP address without a hostname');
 						}
 

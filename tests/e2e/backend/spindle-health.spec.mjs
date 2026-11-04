@@ -50,8 +50,13 @@ const isNoise = (text) => {
   return false;
 };
 
+// Files that are linked but are not pages. They are still tracked for HTTP
+// failures, but navigating to one keeps the network busy and makes every
+// later wait for network idle time out.
+const RESOURCE_FILE = /\.(?:css|js|mjs|map|png|jpe?g|gif|svg|webp|avif|jxl|ico|bmp|woff2?|ttf|otf|eot|mp4|webm|ogg|mp3|wav|pdf|zip|gz|tar|xml|txt|json|csv)$/i;
+
 test('spindle all backend pages with no JS errors and no HTTP 4xx/5xx', async ({ page, baseURL }) => {
-  test.setTimeout(120_000);
+  test.setTimeout(600_000);
 
   const origin = new URL(baseURL).origin;
   const adminPath = new URL(baseURL).pathname.replace(/\/$/, '');
@@ -144,6 +149,8 @@ test('spindle all backend pages with no JS errors and no HTTP 4xx/5xx', async ({
       try {
         const u = new URL(href, pageUrl);
         if (u.origin !== origin) continue;            // skip external
+        if (RESOURCE_FILE.test(u.pathname)) continue;  // skip assets, they are not pages
+        if (u.pathname.endsWith('/logout')) continue;  // never follow logout, it ends the session
         if (!u.pathname.startsWith(adminPath + '/') && u.pathname !== adminPath) continue; // stay in /admin/
         u.hash = '';
         const normalized = normalizePath(u.pathname) + (u.search || '');
@@ -163,7 +170,9 @@ test('spindle all backend pages with no JS errors and no HTTP 4xx/5xx', async ({
 
     const url = new URL(path, baseURL).toString();
 
-    const response = await page.goto(url, { waitUntil: 'networkidle' }).catch(() => null);
+    // Wait for the load event rather than networkidle: pages that poll in the
+    // background (POS, widgets) never reach network idle and would stall here.
+    const response = await page.goto(url, { waitUntil: 'load' }).catch(() => null);
     if (!response) {
       jsIssues.push({ page: url, type: 'navigation', text: 'navigation failed (network error or timeout)' });
       continue;

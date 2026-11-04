@@ -89,20 +89,29 @@
 					items: $order->data['items'],
 					currency_code: $order->data['currency_code'],
 					customer: $order->data['customer']
-				))->options;
+				))->options();
 
-				if (!empty($shipping_options[$_POST['shipping_option']['id']]['error'])) {
-					throw new Exception($shipping_options[$_POST['shipping_option']['id']]['error']);
+				$matched_shipping_option = [];
+				foreach ($shipping_options as $option) {
+					if ($option['id'] == $_POST['shipping_option']['id']) {
+						$matched_shipping_option = $option;
+						break;
+					}
 				}
 
-				if (empty($shipping_options[$_POST['shipping_option']['id']])) {
-					throw new Exception(t('error_invalid_shipping_option', 'Invalid shipping option') . '(ID: '. $_POST['shipping_option']['id'] .', Available: '. implode(', ', array_keys($shipping_options)) .')');
+				if (!empty($matched_shipping_option['error'])) {
+					throw new Exception($matched_shipping_option['error']);
 				}
 
-				$order->data['shipping_option']['id'] = $_POST['shipping_option']['id'];
-				$order->data['shipping_option']['fee'] = $shipping_options[$_POST['shipping_option']['id']]['fee'];
-				$order->data['shipping_option']['tax'] = $shipping_options[$_POST['shipping_option']['id']]['tax'];
-				$order->data['shipping_option']['tax_class_id'] = $shipping_options[$_POST['shipping_option']['id']]['tax_class_id'];
+				if (empty($matched_shipping_option)) {
+					throw new Exception(t('error_invalid_shipping_option', 'Invalid shipping option') . '(ID: '. $_POST['shipping_option']['id'] .', Available: '. implode(', ', array_column($shipping_options, 'id')) .')');
+				}
+
+				$order->data['shipping_option']['id'] = $matched_shipping_option['id'];
+				$order->data['shipping_option']['name'] = $matched_shipping_option['name'] ?? '';
+				$order->data['shipping_option']['fee'] = $matched_shipping_option['fee'] ?? 0;
+				$order->data['shipping_option']['tax'] = $matched_shipping_option['tax'] ?? 0;
+				$order->data['shipping_option']['tax_class_id'] = $matched_shipping_option['tax_class_id'] ?? 0;
 			}
 
 			notices::add('success', t('success_cart_updated', 'Your cart has been updated successfully'));
@@ -110,7 +119,6 @@
 			exit;
 
 		} catch (Exception $e) {
-			die($e->getMessage());
 			notices::add('errors', $e->getMessage());
 		}
 	}

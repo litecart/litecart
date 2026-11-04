@@ -2,12 +2,11 @@
 
 	administrator::require_login();
 
+	$_GET['vmod'] = isset($_GET['vmod']) && is_string($_GET['vmod']) ? basename($_GET['vmod']) : '';
+
 	document::$title[] = t('title_view_vmod', 'View vMod');
 
-	breadcrumbs::add(t('title_vMods', 'vMods'), document::href_ilink(__APP__.'/vmods'));
-	breadcrumbs::add(t('title_view_vMod', 'View vMod') .' '. basename($_GET['vmod']), document::href_ilink());
-
-	$_GET['vmod'] = basename($_GET['vmod']);
+	breadcrumbs::add(t('title_vMods', 'vMods'), document::ilink(__APP__.'/vmods'));
 
 	try {
 
@@ -15,7 +14,9 @@
 			throw new Exception(t('error_must_provide_vmod', 'You must provide a vMod'));
 		}
 
-		$file = 'storage://vmods/' . basename($_GET['vmod']);
+		breadcrumbs::add(t('title_view_vMod', 'View vMod') .' '. f::escape_html($_GET['vmod']), document::ilink());
+
+		$file = 'storage://vmods/' . $_GET['vmod'];
 
 		if (!is_file($file)) {
 			throw new Exception(t('error_file_could_not_be_found', 'The file could not be found'));

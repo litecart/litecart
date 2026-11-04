@@ -13,7 +13,7 @@
 					'required' => [],
 				],
 				'function' => function($params) {
-					return [];
+					return ['pong' => true];
 				},
 			],
 		],

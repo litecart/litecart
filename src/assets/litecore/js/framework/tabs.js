@@ -12,6 +12,10 @@ waitFor('jQuery', ($) => {
 			this.$element.find('[data-toggle="tab"]').each(function() {
 				const $link = $(this);
 
+				if ($link.data('tabs')) return;
+
+				$link.data('tabs', true);
+
 				$link.on('select', function() {
 					self.$element.find('.active').removeClass('active');
 

@@ -189,7 +189,8 @@
 		}
 	});
 
-	$('#box-create-account').on('change', ':input', function() {
+	// Address lookup is driven by the tax id, the only field a lookup module acts on
+	$('#box-create-account :input[name="tax_id"]').on('change', function() {
 		if ($(this).val() == '') return;
 
 		$.ajax({

@@ -65,7 +65,7 @@
 				return $result['categories'];
 
 			} catch (Exception $e) {
-					// Do nothing
+				return [];
 			}
 		}
 
@@ -77,7 +77,7 @@
 				return $result['best_selling'];
 
 			} catch (Exception $e) {
-					// Do nothing
+				return [];
 			}
 		}
 
@@ -85,12 +85,11 @@
 
 			try {
 
-				$marketplace = self::get_marketplace();
-				return $result['popular'];
+				$result = self::get_marketplace();
+				return $result['most_popular'];
 
 			} catch (Exception $e) {
-				die($e->getMessage());
-					// Do nothing
+				return [];
 			}
 		}
 
@@ -123,7 +122,6 @@
 				return $result;
 
 			} catch (Exception $e) {
-				die($e->getMessage());
 				return false;
 			}
 		}
@@ -136,7 +134,6 @@
 				return $result;
 
 			} catch (Exception $e) {
-				die($e->getMessage());
 				return false;
 			}
 		}
@@ -164,15 +161,22 @@
 					$url = document::link('https://www.litecart.net/api'.$endpoint);
 				}
 
-				$result = self::$_client->call($method, $url, $data, [
+				$response = self::$_client->call($method, $url, $data, [
 					'X-Access-Token' => settings::get('marketplace_access_token'),
 				]);
 
-				if (!$result = json_decode($result, true)) {
-					throw new Exception('Invalid JSON response');
+				if ($response === false) {
+					throw new Exception('Failed to reach the add-on market');
 				}
 
-				if (!empty($result['error'])) {
+				$status_code = self::$_client->last_response['status_code'] ?? '';
+				$result = json_decode($response, true);
+
+				if (json_last_error() !== JSON_ERROR_NONE) {
+					throw new Exception('Invalid JSON response'. ($status_code ? ' (HTTP '.$status_code.')' : ''));
+				}
+
+				if (is_array($result) && !empty($result['error'])) {
 					throw new Exception($result['error']);
 				}
 

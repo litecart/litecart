@@ -73,7 +73,7 @@
 
 			// Most sold products
 			$result['most_sold_products'] = database::query(
-				"select oi.product_id, oi.name, sum(oi.quantity) as total_quantity, sum(oi.price * oi.quantity) as total_revenue
+				"select oi.product_id, oi.name, sum(oi.quantity) as total_quantity, sum(oi.final_price * oi.quantity) as total_revenue
 				from ". DB_PREFIX ."orders_items oi
 				left join ". DB_PREFIX ."orders o on (o.id = oi.order_id)
 				where o.order_status_id in ('" . implode("', '", database::input($order_statuses)) . "')
@@ -105,7 +105,7 @@
 				)->fetch('num_products'),
 
 				'stock_items' => (int)database::query(
-					"select count(id) as num_stock_items from ". DB_PREFIX ."products where status;"
+					"select count(id) as num_stock_items from ". DB_PREFIX ."stock_items;"
 				)->fetch('num_stock_items'),
 			];
 

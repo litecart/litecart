@@ -39,7 +39,16 @@
 
 			if (!function_exists($function)) {
 				$file = 'func_' . strtok($function, '_') .'.inc.php';
-				include_once 'app://shared/functions/' . $file;
+				$path = 'app://shared/functions/' . $file;
+
+				// A helper file that is missing must not escalate into a fatal error
+				if (is_file($path)) {
+					include_once $path;
+				}
+			}
+
+			if (!function_exists($function)) {
+				throw new Exception('Function not found ('. $function .')');
 			}
 
 			return call_user_func_array($function, $arguments);

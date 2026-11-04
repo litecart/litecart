@@ -313,8 +313,15 @@
 			if ($this->previous['order_status_id'] && reference::order_status($this->previous['order_status_id'])->stock_action == 'commit') {
 
 				foreach ($this->previous['items'] as $previous_order_item) {
-					if (empty($previous_order_item['product_id'])) continue;
-					$this->adjust_stock_quantity($previous_order_item['product_id'], $previous_order_item['option_stock_combination'], (float)$previous_order_item['quantity']);
+					foreach (($previous_order_item['stock_items'] ?? []) as $previous_stock_item) {
+						if (empty($previous_stock_item['stock_item_id'])) continue;
+						database::query(
+							"update ". DB_PREFIX ."stock_items
+							set quantity = quantity + ". ((float)$previous_order_item['quantity'] * (float)$previous_stock_item['quantity']) ."
+							where id = ". (int)$previous_stock_item['stock_item_id'] ."
+							limit 1;"
+						);
+					}
 				}
 			}
 
@@ -385,20 +392,10 @@
 						$this->data['items'][$item_key]['stock_items'][$stock_item_key]['id'] = $stock_item['id'] = database::insert_id();
 					}
 
-					// Withdraw stock
-					if ($this->data['order_status_id'] && !empty(reference::order_status($this->data['order_status_id'])->is_sale) && !empty($stock_item['stock_stock_item_id'])) {
-						database::query(
-							"update ". DB_PREFIX ."stock_stock_items
-							set quantity = quantity + ". ($item['quantity'] * (float)$stock_item['quantity']) ."
-							where id = ". (int)$stock_item['stock_stock_item_id'] ."
-							limit 1;"
-						);
-					}
-
 					database::query(
 						"update ". DB_PREFIX ."orders_stock_items
 						set item_id = ". (int)$item['id'] .",
-							stock_stock_item_id = ". (int)$stock_item['stock_stock_item_id'] .",
+							stock_item_id = ". (int)$stock_item['stock_item_id'] .",
 							name = '". database::input($stock_item['name']) ."',
 							serial_number = '". database::input($stock_item['serial_number']) ."',
 							sku = '". database::input($stock_item['sku']) ."',
@@ -419,11 +416,11 @@
 					);
 
 					// Withdraw stock
-					if ($this->data['order_status_id'] && reference::order_status($this->data['order_status_id'])->stock_action == 'commit') {
+					if ($this->data['order_status_id'] && reference::order_status($this->data['order_status_id'])->stock_action == 'commit' && !empty($stock_item['stock_item_id'])) {
 						database::query(
-							"update ". DB_PREFIX ."stock_stock_items
+							"update ". DB_PREFIX ."stock_items
 							set quantity = quantity - ". ($item['quantity'] * (float)$stock_item['quantity']) ."
-							where id = ". (int)$stock_item['stock_stock_item_id'] ."
+							where id = ". (int)$stock_item['stock_item_id'] ."
 							limit 1;"
 						);
 					}
@@ -637,24 +634,28 @@
 
 			foreach (($cart_item['stock_items'] ?? []) as $stock_item) {
 
+				$stock_item_id = (int)($stock_item['stock_item_id'] ?? $stock_item['id'] ?? 0);
+				$stock_item_weight = (float)($stock_item['weight'] ?? 0);
+				$stock_item_weight_unit = $stock_item['weight_unit'] ?? '';
+
 				$item['stock_items'][] = [
-					'stock_stock_item_id' => (int)($stock_item['stock_stock_item_id'] ?? $stock_item['stock_item_id'] ?? $stock_item['id'] ?? 0),
-					'stock_item_id' => (int)($stock_item['stock_item_id'] ?? $stock_item['id'] ?? 0),
-					'quantity' => $stock_item['quantity'],
-					'name' => $stock_item['name'],
-					'serial_number' => $stock_item['serial_number'],
-					'sku' => $stock_item['sku'],
-					'gtin' => $stock_item['gtin'],
-					'taric' => $stock_item['taric'],
-					'length' => $stock_item['length'],
-					'width' => $stock_item['width'],
-					'height' => $stock_item['height'],
-					'length_unit' => $stock_item['length_unit'],
-					'weight' => $stock_item['weight'],
-					'weight_unit' => $stock_item['weight_unit'],
+
+					'stock_item_id' => $stock_item_id,
+					'quantity' => $stock_item['quantity'] ?? 0,
+					'name' => $stock_item['name'] ?? '',
+					'serial_number' => $stock_item['serial_number'] ?? '',
+					'sku' => $stock_item['sku'] ?? '',
+					'gtin' => $stock_item['gtin'] ?? '',
+					'taric' => $stock_item['taric'] ?? '',
+					'length' => $stock_item['length'] ?? 0,
+					'width' => $stock_item['width'] ?? 0,
+					'height' => $stock_item['height'] ?? 0,
+					'length_unit' => $stock_item['length_unit'] ?? '',
+					'weight' => $stock_item_weight,
+					'weight_unit' => $stock_item_weight_unit,
 				];
 
-				$this->data['weight_total'] += f::convert_weight($stock_item['weight'], $stock_item['weight_unit'], $this->data['weight_unit']) * $item['quantity'];
+				$this->data['weight_total'] += f::convert_weight($stock_item_weight, $stock_item_weight_unit, $this->data['weight_unit']) * $item['quantity'];
 			}
 
 			$this->data['items'][] = $item;
@@ -920,15 +921,15 @@
 
 			foreach ($this->data['items'] as $item) {
 
+				$userdata = [];
+				if (!empty($item['userdata'])) {
+					foreach ($item['userdata'] as $k => $v) {
+						$userdata[] = $k .': '. $v;
+					}
+				}
+
 				if (!empty($item['product_id'])) {
 					$product = reference::product($item['product_id'], $language_code, $this->data['currency_code'], $this->data['customer']);
-
-					$userdata = [];
-					if (!empty($item['userdata'])) {
-						foreach ($item['userdata'] as $k => $v) {
-							$userdata[] = $k .': '. $v;
-						}
-					}
 
 					$aliases['{order_items}'] .= (float)$item['quantity'] .' x '. $product->name . (!empty($userdata) ? ' ('. implode(', ', $userdata) .')' : '') . "\r\n";
 
@@ -1012,15 +1013,15 @@
 
 			foreach ($this->data['items'] as $item) {
 
+				$userdata = [];
+				if (!empty($item['userdata'])) {
+					foreach ($item['userdata'] as $k => $v) {
+						$userdata[] = $k .': '. $v;
+					}
+				}
+
 				if (!empty($item['product_id'])) {
 					$product = reference::product($item['product_id'], $this->data['language_code']);
-
-					$userdata = [];
-					if (!empty($item['userdata'])) {
-						foreach ($item['userdata'] as $k => $v) {
-							$userdata[] = $k .': '. $v;
-						}
-					}
 
 					$aliases['{order_items}'] .= (float)$item['quantity'] .' x '. $product->name . (!empty($userdata) ? ' ('. implode(', ', $userdata) .')' : '') . "<br>\r\n";
 
@@ -1055,11 +1056,6 @@
 				->send();
 		}
 
-		public function adjust_stock_quantity(int $product_id, array $combination, float|int $quantity_adjustment): void {
-			if ($quantity_adjustment == 0) return;
-			$product = new ent_product($product_id);
-			$product->adjust_quantity((float)$quantity_adjustment, $combination);
-		}
 
 		public function delete(): void {
 

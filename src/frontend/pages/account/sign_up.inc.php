@@ -120,8 +120,6 @@
 			$customer = new ent_customer();
 
 			$customer->data['status'] = 1;
-			$customer->data['default_billing_address_id'] = $address->data['id'];
-			$customer->data['default_shipping_address_id'] = $address->data['id'];
 
 			// Set customer's preferred language (2-letter code)
 			$customer->data['language_code'] = language::$selected['code'];
@@ -129,6 +127,17 @@
 			foreach ([
 				'email',
 				'newsletter',
+				'tax_id',
+				'company',
+				'firstname',
+				'lastname',
+				'address1',
+				'address2',
+				'postcode',
+				'city',
+				'country_code',
+				'zone_code',
+				'phone',
 			] as $field) {
 				if (isset($_POST[$field])) {
 					$customer->data[$field] = $_POST[$field];

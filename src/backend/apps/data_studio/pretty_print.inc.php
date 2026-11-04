@@ -77,15 +77,14 @@
 		for ($i = 0; $i < strlen($query); $i++) {
 
 			// Skip over a value clause
-			if (preg_match("#[`']s#", $query[$i]) && $query[$i - 1] != "\\") {
+			if (preg_match("#[`']#", $query[$i]) && ($i == 0 || $query[$i - 1] != "\\")) {
 				$value_wrapper = $query[$i];
 				for ($n = $i + 1; $n < strlen($query); $n++) {
 					if ($query[$n] == $value_wrapper && $query[$n - 1] != "\\") break;
 				}
-				$i = $n;
 
-				// Restart at cursor position
-				$i--;
+				// Continue after the closing quote
+				$i = $n;
 				continue;
 			}
 
@@ -93,7 +92,7 @@
 			if ($query[$i] == '#' && ($i == 0 || $query[$i-1] != "\\")) {
 				for ($n = $i + 1; $n < strlen($query); $n++) {
 					if (($query[$n] == "\r" || $query[$n] == "\n") && $query[$n - 1] != "\\") {
-						if ($query[$n] == "\r" && $query[$n+1] == "\n") $n++; // Windows CRLF
+						if ($query[$n] == "\r" && ($n + 1) < strlen($query) && $query[$n+1] == "\n") $n++; // Windows CRLF
 						break;
 					}
 				}
@@ -105,12 +104,12 @@
 			}
 
 			// Remove -- comments
-			if ($query[$i] == '-' && $query[$i+1] == '-' && $query[$i+2] == ' ') {
+			if ($query[$i] == '-' && ($i + 2) < strlen($query) && $query[$i+1] == '-' && $query[$i+2] == ' ') {
 
 				// Find end of line
 				for ($n = $i + 3; $n < strlen($query); $n++) {
 					if ($query[$n] == "\r" || $query[$n] == "\n") {
-						if ($query[$n] == "\r" && $query[$n+1] == "\n") $n++; // Windows CRLF
+						if ($query[$n] == "\r" && ($n + 1) < strlen($query) && $query[$n+1] == "\n") $n++; // Windows CRLF
 						break;
 					}
 				}
@@ -124,7 +123,7 @@
 			}
 
 			// Remove /* comments */
-			if ($query[$i] == '/' && $query[$i+1] == '*') {
+			if ($query[$i] == '/' && ($i + 1) < strlen($query) && $query[$i+1] == '*') {
 
 				// Find end of comment
 				for ($n = $i + 2; $n < strlen($query); $n++) {

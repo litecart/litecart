@@ -136,9 +136,10 @@ h1 {
 				<tr>
 					<th><?= t('title_qty', 'Qty') ?></th>
 					<th class="main"><?= t('title_item', 'Item') ?></th>
-					<th><?= t('title_gtin', 'GTIN') ?></th>
+					<th><?= t('title_code', 'Code') ?></th>
 					<th class="text-end"><?= t('title_unit_price', 'Unit Price') ?></th>
-					<th class="text-end"><?= t('title_tax', 'Tax') ?> </th>
+					<th class="text-end"><?= t('title_discount', 'Discount') ?></th>
+					<th class="text-end"><?= t('title_tax', 'Tax') ?></th>
 					<th class="text-end"><?= t('title_sum', 'Sum') ?></th>
 				</tr>
 			</thead>
@@ -165,9 +166,10 @@ h1 {
 				<tr>
 					<th><?= t('title_qty', 'Qty') ?></th>
 					<th class="main"><?= t('title_item', 'Item') ?></th>
-					<th><?= t('title_gtin', 'GTIN') ?></th>
+					<th><?= t('title_code', 'Code') ?></th>
 					<th class="text-end"><?= t('title_unit_price', 'Unit Price') ?></th>
-					<th class="text-end"><?= t('title_tax', 'Tax') ?> </th>
+					<th class="text-end"><?= t('title_discount', 'Discount') ?></th>
+					<th class="text-end"><?= t('title_tax', 'Tax') ?></th>
 					<th class="text-end"><?= t('title_sum', 'Sum') ?></th>
 				</tr>
 			</thead>
@@ -179,10 +181,11 @@ h1 {
 				<tr>
 					<td><?= ($item['quantity'] > 1) ? '<strong>'. (float)$item['quantity'].'</strong>' : (float)$item['quantity'] ?></td>
 					<td style="white-space: normal;"><?= $item['name'] ?></td>
-					<td><?= $item['gtin'] ?></td>
-					<td class="text-end"><?= currency::format(!empty($order['display_prices_including_tax']) ? $item['price'] + $item['tax'] : $item['price'], false, $order['currency_code'], $order['currency_value']) ?></td>
-					<td class="text-end"><?= currency::format(!empty($order['display_prices_including_tax']) ? $item['discount'] + $item['discount_tax'] : $item['discount'], false, $order['currency_code'], $order['currency_value']) ?></td>
-					<td class="text-end"><?= currency::format(!empty($order['display_prices_including_tax']) ? $item['sum'] + $item['sum_tax'] : $item['sum'], false, $order['currency_code'], $order['currency_value']) ?></td>
+					<td><?= $item['code'] ?></td>
+					<td class="text-end"><?= currency::format($item['final_price'], false, $order['currency_code'], $order['currency_value']) ?></td>
+					<td class="text-end"><?= currency::format($item['discount'], false, $order['currency_code'], $order['currency_value']) ?></td>
+					<td class="text-end"><?= currency::format($item['sum_tax'], false, $order['currency_code'], $order['currency_value']) ?></td>
+					<td class="text-end"><?= currency::format($item['sum'] + $item['sum_tax'], false, $order['currency_code'], $order['currency_value']) ?></td>
 				</tr>
 <?php
 	}
@@ -194,22 +197,22 @@ h1 {
 
 			<div id="subtotal" class="summary">
 				<div class="title"><?= t('title_subtotal', 'Subtotal') ?></div>
-				<div class="amount"><?= currency::format($_POST['discount'] ?? 0, true, $order['currency_code'], $order['currency_value']) ?></div>
+				<div class="amount"><?= currency::format($order['subtotal'], true, $order['currency_code'], $order['currency_value']) ?></div>
 			</div>
 
 			<div id="total-discount" class="summary">
 				<div class="title"><?= t('title_total_discount', 'Total Discount') ?></div>
-				<div class="amount"><?= currency::format($_POST['discount'] ?? 0, true, $order['currency_code'], $order['currency_value']) ?></div>
+				<div class="amount"><?= currency::format($order['discount'], true, $order['currency_code'], $order['currency_value']) ?></div>
 			</div>
 
 			<div id="total-tax" class="summary">
 				<div class="title"><?= t('title_total_tax', 'Total Tax') ?></div>
-				<div class="amount"><?= currency::format($_POST['total_tax'] ?? 0, true, $order['currency_code'], $order['currency_value']) ?></div>
+				<div class="amount"><?= currency::format($order['total_tax'], true, $order['currency_code'], $order['currency_value']) ?></div>
 			</div>
 
 			<div id="grand-total" class="summary">
 				<div class="title"><?= t('title_grand_total', 'Grand Total') ?></div>
-				<div class="amount"><?= currency::format_html($_POST['total'] ?? 0, true, $order['currency_code'], $order['currency_value']) ?></div>
+				<div class="amount"><?= currency::format_html($order['total'], true, $order['currency_code'], $order['currency_value']) ?></div>
 			</div>
 		</div>
 	</main>

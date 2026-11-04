@@ -60,19 +60,19 @@
 		########################################################################
 
 		// Older session timestamp → expired (another device still holding an old session).
-		security::$data['timestamp'] = strtotime($row['sessions_expiry']) - 3600;
+		session::$data['security.customer']['timestamp'] = strtotime($row['sessions_expiry']) - 3600;
 		if (customer::is_session_expired($row) !== true) {
 			throw new Exception('is_session_expired() accepted an older customer_security_timestamp');
 		}
 
 		// Newer session timestamp → still valid (the device that actually performed the reset).
-		security::$data['timestamp'] = strtotime($row['sessions_expiry']) + 3600;
+		session::$data['security.customer']['timestamp'] = strtotime($row['sessions_expiry']) + 3600;
 		if (customer::is_session_expired($row) !== false) {
 			throw new Exception('is_session_expired() rejected a newer customer_security_timestamp');
 		}
 
 		// Missing timestamp (legacy / never initialised) → expired.
-		unset(security::$data['timestamp']);
+		unset(session::$data['security.customer']['timestamp']);
 		if (customer::is_session_expired($row) !== true) {
 			throw new Exception('is_session_expired() accepted a missing customer_security_timestamp');
 		}

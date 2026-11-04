@@ -1358,7 +1358,7 @@
 			select id from `". DB_PREFIX ."orders`
 			where order_status_id in (
 				select id from `". DB_PREFIX ."order_statuses`
-				where stock_action = 'withdraw'
+				where stock_action = 'commit'
 			)
 		)
 		group by product_id;"

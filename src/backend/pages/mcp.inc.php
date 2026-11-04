@@ -418,7 +418,7 @@
 		);
 
 		$permissions   = !empty($access_key['permissions']) ? json_decode($access_key['permissions'], true) : [];
-		$allowed_tools = array_merge(...($permissions['mcp'] ?? []));
+		$allowed_tools = array_merge(...array_values($permissions['mcp'] ?? []));
 
 	} catch (McpException $e) {
 
@@ -603,6 +603,11 @@
 						throw new McpException('Tool not found', 404, -32601);
 					}
 
+					// MCP requires structuredContent to be a JSON object, so lists and empty results get wrapped
+					if (!is_array($tool_result) || array_is_list($tool_result)) {
+						$tool_result = ['result' => $tool_result];
+					}
+
 					$result = [
 						'resultType' => 'complete',
 						'content' => [
@@ -611,7 +616,7 @@
 								'text' => f::format_json($tool_result),
 							]
 						],
-						'structuredContent' => $tool_result,
+						'structuredContent' => (object) $tool_result,
 						'isError' => false,
 					];
 

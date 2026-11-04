@@ -37,7 +37,8 @@
 			$content = preg_replace('#(\r\n?|\n)#', PHP_EOL, file_get_contents($log_file));
 
 			foreach ($_POST['errors'] as $error) {
-				$content = preg_replace('#\[\d{1,2}-[a-zA-Z]+-\d{4} \d\d\:\d\d\:\d\d [a-zA-Z/]+\] '. preg_quote($error, '#') . addcslashes(PHP_EOL, "\r\n") .'[^\[]*#s', '', $content, -1, $count);
+				// Log entries carry a timestamp prefix; PHP prepends the native format for error_log(), the database writer uses [Y-m-d H:i:s e]
+				$content = preg_replace('#\[(?:\d{4}-\d{2}-\d{2} \d\d\:\d\d\:\d\d [^\]\n]+|\d{1,2}-[a-zA-Z]+-\d{4} \d\d\:\d\d\:\d\d [a-zA-Z/]+)\] ?'. preg_quote($error, '#') . addcslashes(PHP_EOL, "\r\n") .'[^\[]*#s', '', $content, -1, $count);
 				if (!$count) {
 					throw new Exception('Failed deleting error from log');
 				}
@@ -179,27 +180,68 @@
 		$iniatial_memory_limit = ini_get('memory_limit');
 		ini_set('memory_limit', -1); // Unlimit memory for reading log file
 
-		$entries = preg_replace('#(\r\n?|\n)#', PHP_EOL, file_get_contents($log_file));
+		// Log entries carry a timestamp prefix; PHP prepends the native format for error_log(), the database writer uses [Y-m-d H:i:s e]
+		$entry_timestamp_pattern = '#^\[(?:(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} [^\]\n]+)|(\d{1,2}-[a-zA-Z]+-\d{4} \d{2}:\d{2}:\d{2} [a-zA-Z/]+))\] ?(.*)$#';
 
-		if (preg_match_all('#\[(\d{1,2}-[a-zA-Z]+-\d{4} \d\d\:\d\d\:\d\d [a-zA-Z/]+)\] ([^\r\n]+)(.*?)(?=\R*\[|\R*$)#us', $entries, $matches)) {
+		$lines = preg_split('#(?:\r\n?|\n)#', file_get_contents($log_file));
+		$fallback_timestamp = (int)filemtime($log_file);
+		$entries = [];
+		$leading = [];
+		$current = null;
 
-			foreach (array_keys($matches[0]) as $i) {
+		foreach ($lines as $line) {
 
-				$checksum = crc32($matches[2][$i]);
-				$backtrace = trim(preg_replace('#(\r\n?|\n)+#', '$1', $matches[3][$i]), "\r\n"); // Clean line breaks
+			if (preg_match($entry_timestamp_pattern, $line, $matches)) {
 
-				if (!isset($errors[$checksum])) {
-					$errors[$checksum] = [
-						'error' => $matches[2][$i],
-						'backtrace' => $backtrace,
-						'occurrences' => 1,
-						'last_occurrence' => strtotime($matches[1][$i]),
-						'critical' => preg_match('#(Parse|Fatal) error:#is', $matches[2][$i]) ? true : false,
-					];
-				} else {
-					$errors[$checksum]['occurrences']++;
-					$errors[$checksum]['last_occurrence'] = strtotime($matches[1][$i]);
+				if ($current !== null) {
+					$entries[] = $current;
+				} elseif (count($leading)) {
+					// Content logged before entries got a timestamp prefix
+					$entries[] = ['timestamp' => $fallback_timestamp, 'error' => trim($leading[0]), 'backtrace' => trim(implode(PHP_EOL, $leading))];
 				}
+
+				$leading = [];
+
+				$current = [
+					'timestamp' => strtotime($matches[1] ?: $matches[2]) ?: $fallback_timestamp,
+					'error' => trim($matches[3]),
+					'backtrace' => '',
+				];
+
+				continue;
+			}
+
+			if ($current === null) {
+				$leading[] = $line;
+				continue;
+			}
+
+			$current['backtrace'] .= ($current['backtrace'] !== '' ? PHP_EOL : '') . $line;
+		}
+
+		if ($current !== null) {
+			$entries[] = $current;
+		} elseif (count($leading)) {
+			$entries[] = ['timestamp' => $fallback_timestamp, 'error' => trim($leading[0]), 'backtrace' => trim(implode(PHP_EOL, $leading))];
+		}
+
+		foreach ($entries as $entry) {
+
+			if ($entry['error'] === '') continue;
+
+			$checksum = crc32($entry['error']);
+
+			if (!isset($errors[$checksum])) {
+				$errors[$checksum] = [
+					'error' => $entry['error'],
+					'backtrace' => $entry['backtrace'],
+					'occurrences' => 1,
+					'last_occurrence' => $entry['timestamp'],
+					'critical' => preg_match('#(Parse|Fatal) error:#is', $entry['error']) ? true : false,
+				];
+			} else {
+				$errors[$checksum]['occurrences']++;
+				$errors[$checksum]['last_occurrence'] = max($errors[$checksum]['last_occurrence'], $entry['timestamp']);
 			}
 		}
 

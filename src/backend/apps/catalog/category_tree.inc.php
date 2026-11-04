@@ -293,9 +293,9 @@
 				or find_in_set('". database::input($_GET['query']) ."', json_value(synonyms, '$.". database::input(language::$selected['code']) ."'))
 			)
 			or (
-				match(json_value(name, '$.". database::input(language::$selected['code']) ."') against ('*". database::input_fulltext($_GET['query']) ."*')
-				or match(json_value(short_description, '$.". database::input(language::$selected['code']) ."') against ('*". database::input_fulltext($_GET['query']) ."*')
-				or match(json_value(description, '$.". database::input(language::$selected['code']) ."') against ('*". database::input_fulltext($_GET['query']) ."*')
+				match(name) against ('*". database::input_fulltext($_GET['query']) ."*')
+				or match(short_description) against ('*". database::input_fulltext($_GET['query']) ."*')
+				or match(description) against ('*". database::input_fulltext($_GET['query']) ."*')
 			)
 			or id in (
 				select product_id from ". DB_PREFIX ."products_stock_options
@@ -324,8 +324,8 @@
 				or json_value(short_description, '$.". database::input(language::$selected['code']) ."') like '%". database::input($_GET['query']) ."%'
 			)
 			or (
-				match(json_value(name, '$.". database::input(language::$selected['code']) ."') against ('*". database::input_fulltext($_GET['query']) ."*')
-				or match(json_value(short_description, '$.". database::input(language::$selected['code']) ."') against ('*". database::input_fulltext($_GET['query']) ."*')
+				match(name) against ('*". database::input_fulltext($_GET['query']) ."*')
+				or match(short_description) against ('*". database::input_fulltext($_GET['query']) ."*')
 			)
 			or id in (
 				select category_id from ". DB_PREFIX ."products_to_categories
@@ -421,7 +421,7 @@ table .icon-folder-open {
 					<td></td>
 					<td>
 						<?= f::draw_fonticon('icon-folder-open', 'style="color: #cc6;"') ?>
-						<a href="'. document::href_ilink(null, [], [], []) .'">
+						<a href="<?= document::href_ilink(null, [], [], []) ?>">
 							<strong>[<?= t('title_root', 'Root') ?>]</strong>
 						</a>
 					</td>

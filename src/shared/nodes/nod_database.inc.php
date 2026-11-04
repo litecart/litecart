@@ -348,11 +348,11 @@
 			if (isset($field['Default'])) {
 				switch (true) {
 
+					case ($field['Default'] === '' || preg_match('#^\'\'$#', $field['Default'])):
+						return '';
+
 					case (preg_match('#^null$#i', $field['Default'])):
 						return null;
-
-					case (preg_match('#^\'\'$#', $field['Default'])):
-						return '';
 
 					case (preg_match('#^\{\}$#', $field['Default'])):
 					case (preg_match('#^\[\]$#', $field['Default'])):
@@ -372,20 +372,20 @@
 					case (isset($field['Comment']) && preg_match('#TYPE:ARRAY$#i', $field['Comment'])): // Requires "show full columns" data
 						return [];
 
-					default:
+					case (preg_match('#\(#', $field['Default'])): // SQL expression default, cannot be evaluated
 						return null;
 				}
 			}
 
 			switch (true) {
 				case (preg_match('#^(bit|int|tinyint|smallint|mediumint|bigint)#i', $field['Type'])):
-					return intval(!is_null($value) ? $value : $field['Default']);
+					return intval(!is_null($value) ? $value : ($field['Default'] ?? null));
 
 				case (preg_match('#^(decimal|double|float)#i', $field['Type'])):
-					return floatval(!is_null($value) ? $value : $field['Default']);
+					return floatval(!is_null($value) ? $value : ($field['Default'] ?? null));
 
 				default:
-					return strval(!is_null($value) ? $value : $field['Default']);
+					return strval(!is_null($value) ? $value : ($field['Default'] ?? null));
 			}
 		}
 
@@ -469,7 +469,7 @@
 		}
 
 		// Check dynamic identifiers
-		public static function identifier(array|string $identifiers, array $allowlist=[]): string {
+		public static function identifier(array|string $identifiers, array|null $allowlist=null): string {
 
 			if (!is_array($identifiers)) {
 				$identifiers = [$identifiers];
@@ -480,7 +480,8 @@
 					throw new \InvalidArgumentException('Invalid SQL identifier');
 				}
 
-				if ($allowlist && !in_array($identifier, $allowlist, true)) {
+				// An empty allowlist rejects everything, a null allowlist only applies the pattern
+				if ($allowlist !== null && !in_array($identifier, $allowlist, true)) {
 					throw new \InvalidArgumentException('SQL identifier not in allowlist');
 				}
 			}
@@ -535,126 +536,130 @@
 
 			$sql = $this->_statement;
 
-			foreach ($args as $nth => $params) {
+			// Collect the parameters of all arguments, the first set wins for duplicate names
+			$flattened = [];
 
+			foreach ($args as $nth => $params) {
 				if (is_array($params)) {
 					// Flatten the parameters
-					$flattened = f::array_flatten($params, '.');
+					$flattened = $flattened + f::array_flatten($params, '.');
 				} else {
 					// Assign numeric placeholder :0 :1 for a non-array argument.
-					$flattened = ["$nth" => $params];
+					$flattened = $flattened + ["$nth" => $params];
+				}
+			}
+
+			// Step through each character in the query
+			for ($i = 0; $i < strlen($sql); $i++) {
+
+				// Skip over a value clause
+				if (preg_match("#[`']#", $sql[$i]) && ($i == 0 || $sql[$i - 1] != "\\")) {
+					$value_wrapper = $sql[$i];
+					for ($n = $i + 1; $n < strlen($sql); $n++) {
+						if ($sql[$n] == $value_wrapper && $sql[$n - 1] != "\\") break;
+					}
+
+					// Continue after the closing quote
+					$i = $n;
+					continue;
 				}
 
-				// Step through each character in the query
-				for ($i = 0; $i < strlen($sql); $i++) {
-
-					// Skip over a value clause
-					if (preg_match("#[`']s#", $sql[$i]) && $sql[$i - 1] != "\\") {
-						$value_wrapper = $sql[$i];
-						for ($n = $i + 1; $n < strlen($sql); $n++) {
-							if ($sql[$n] == $value_wrapper && $sql[$n - 1] != "\\") break;
+				// Remove #comments
+				if ($sql[$i] == '#' && ($i == 0 || $sql[$i-1] != "\\")) {
+					for ($n = $i + 1; $n < strlen($sql); $n++) {
+						if (($sql[$n] == "\r" || $sql[$n] == "\n") && $sql[$n - 1] != "\\") {
+							if ($sql[$n] == "\r" && ($n + 1) < strlen($sql) && $sql[$n+1] == "\n") $n++; // Windows CRLF
+							break;
 						}
-						$i = $n;
+					}
+					$sql = substr($sql, 0, $i) . substr($sql, $n + 1);
 
-						// Restart at cursor position
-						$i--;
+					// Restart at cursor position
+					$i--;
+					continue;
+				}
+
+				// Remove -- comments
+				if ($sql[$i] == '-' && ($i + 2) < strlen($sql) && $sql[$i+1] == '-' && $sql[$i+2] == ' ') {
+
+					// Find end of line
+					for ($n = $i + 3; $n < strlen($sql); $n++) {
+						if ($sql[$n] == "\r" || $sql[$n] == "\n") {
+							if ($sql[$n] == "\r" && ($n + 1) < strlen($sql) && $sql[$n+1] == "\n") $n++; // Windows CRLF
+							break;
+						}
+					}
+
+					// Commit replacement
+					$sql = substr($sql, 0, $i) . substr($sql, $n + 1);
+
+					// Restart at cursor position
+					$i--;
+					continue;
+				}
+
+				// Remove /* comments */
+				if ($sql[$i] == '/' && ($i + 1) < strlen($sql) && $sql[$i+1] == '*') {
+
+					// Find end of comment
+					for ($n = $i + 2; $n < strlen($sql); $n++) {
+						if ($sql[$n] == '/' && $sql[$n-1] == '*') break;
+					}
+
+					// Commit replacement
+					$sql = substr($sql, 0, $i) . substr($sql, $n + 1);
+
+					// Restart at cursor position
+					$i--;
+					continue;
+				}
+
+				// Process a detected parameter placeholder
+				if ($sql[$i] == ':') {
+
+					// Extract parameter name
+					if (!preg_match('#^([A-Za-z0-9_]+(?:\.[A-Za-z0-9_]+)*)#', substr($sql, $i + 1), $matches)) {
 						continue;
 					}
 
-					// Remove #comments
-					if ($sql[$i] == '#' && ($i == 0 || $sql[$i-1] != "\\")) {
-						for ($n = $i + 1; $n < strlen($sql); $n++) {
-							if (($sql[$n] == "\r" || $sql[$n] == "\n") && $sql[$n - 1] != "\\") {
-								if ($sql[$n] == "\r" && $sql[$n+1] == "\n") $n++; // Windows CRLF
+					$param = $matches[1];
+					$n = $i + 1 + strlen($param);
+
+					// Match parameter name with input parameter
+					if (array_key_exists($param, $flattened)) {
+						switch (gettype($flattened[$param])) {
+
+							case 'integer':
+							case 'boolean':
+								$value = (int)$flattened[$param];
 								break;
-							}
-						}
-						$sql = substr($sql, 0, $i) . substr($sql, $n + 1);
 
-						// Restart at cursor position
-						$i--;
-						continue;
-					}
-
-					// Remove -- comments
-					if ($sql[$i] == '-' && $sql[$i+1] == '-' && $sql[$i+2] == ' ') {
-
-						// Find end of line
-						for ($n = $i + 3; $n < strlen($sql); $n++) {
-							if ($sql[$n] == "\r" || $sql[$n] == "\n") {
-								if ($sql[$n] == "\r" && $sql[$n+1] == "\n") $n++; // Windows CRLF
+							case 'double':
+								$value = (float)$flattened[$param];
 								break;
-							}
+
+							case 'string':
+								$value = "'". database::input($flattened[$param]) ."'";
+								break;
+
+							case 'NULL':
+								$value = 'NULL';
+								break;
+
+							default:
+								trigger_error('Unsupported parameter type ('. gettype($flattened[$param]) .')', E_USER_WARNING);
+								continue 2;
 						}
-
-						// Commit replacement
-						$sql = substr($sql, 0, $i) . substr($sql, $n + 1);
-
-						// Restart at cursor position
-						$i--;
+					} else {
+						trigger_error('Unmatched parameter name ('. $param .')', E_USER_WARNING);
 						continue;
 					}
 
-					// Remove /* comments */
-					if ($sql[$i] == '/' && $sql[$i+1] == '*') {
+					// Commit replacement (the query continues right after the parameter name)
+					$sql = substr($sql, 0, $i) . $value . substr($sql, $n);
 
-						// Find end of comment
-						for ($n = $i + 2; $n < strlen($sql); $n++) {
-							if ($sql[$n] == '/' && $sql[$n-1] == '*') break;
-						}
-
-						// Commit replacement
-						$sql = substr($sql, 0, $i) . substr($sql, $n + 1);
-
-						// Restart at cursor position
-						$i--;
-						continue;
-					}
-
-					// Process a detected parameter placeholder
-					if ($sql[$i] == ':') {
-
-						// Find end of parameter
-						for ($n = $i + 1; $n < strlen($sql); $n++) {
-							if (in_array($sql[$n], [' ', ';', "\r", "\n"]) || $i == strlen($sql)) break;
-						}
-
-						// Extract parameter name
-						$param = substr($sql, $i+1, $n-1 - $i);
-
-						// Match parameter name with input parameter
-						if (isset($flattened[$param])) {
-							switch (gettype($flattened[$param])) {
-
-								case 'integer':
-								case 'bool':
-									$value = (int)$flattened[$param];
-									break;
-
-								case 'double':
-									$value = (float)$flattened[$param];
-									break;
-
-								case 'string':
-									$value = "'". database::input($flattened[$param]) ."'";
-									break;
-
-								default:
-									trigger_error('Unsupported parameter type ('. gettype($flattened[$param]) .')', E_USER_WARNING);
-									continue 2;
-							}
-
-						} else {
-							trigger_error('Unmatched parameter name ('. $param .')', E_USER_WARNING);
-							continue;
-						}
-
-						// Commit replacement (keep the break character at $n — it belongs to the SQL, not the placeholder)
-						$sql = substr($sql, 0, $i) . $value . substr($sql, $n);
-
-						// Move cursor to end of parameter
-						$i = $i + strlen($value);
-					}
+					// Move cursor to end of parameter
+					$i = $i + strlen($value) - 1;
 				}
 			}
 
@@ -688,7 +693,7 @@
 				$reference = uniqid('db_');
 
 				if (!defined('DEBUG') || !DEBUG) {
-					error_log('['. date('Y-m-d H:i:s e') .']['. $reference .'] Failing Query: '. $sql . PHP_EOL, 3, 'storage://logs/errors.log');
+					error_log('['. date('Y-m-d H:i:s e') .']['. $reference .'] Failing Query: '. $this->_statement . PHP_EOL, 3, 'storage://logs/errors.log');
 				}
 
 				throw new Error(implode(PHP_EOL, [

@@ -35,7 +35,10 @@
 		"select p.id, p.code, p.default_image as image, pp.regular_price, pp.final_price, p.created_at,
 			json_value(p.name, '$.". database::input($_GET['language_code']) ."') as name,
 			pso.total_quantity as quantity,
-			oi.quantity_reserved as reserved
+			pso.num_stock_options,
+			pso.sku,
+			pso.gtin,
+			ol.quantity_reserved as reserved
 		from ". DB_PREFIX ."products p
 
 		left join (
@@ -51,7 +54,8 @@
 		) pp on (pp.product_id = p.id)
 
 		left join (
-			select pso.product_id, sum(si.quantity) as total_quantity, count(*) as num_stock_options
+			select pso.product_id, sum(si.quantity) as total_quantity, count(*) as num_stock_options,
+				min(si.sku) as sku, min(si.gtin) as gtin
 			from ". DB_PREFIX ."products_stock_options pso
 			left join ". DB_PREFIX ."stock_items si on (si.id = pso.stock_item_id)
 			group by pso.product_id

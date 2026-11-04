@@ -29,7 +29,7 @@ body {
 </style>
 
 <main id="main">
-	<iframe id="order-copy" src="<?= document::ilink('printable_order_copy', [], ['order_no', 'public_key']) ?>" style="border: 0;" title="<?= f::escape_attr(t('title_order_copy', 'Order Copy')) ?>"></iframe>
+	<iframe id="order-copy" src="<?= document::ilink('printable_order_copy', [], ['order_id', 'order_no', 'public_key']) ?>" style="border: 0;" title="<?= f::escape_attr(t('title_order_copy', 'Order Copy')) ?>"></iframe>
 
 	<div id="sidebar" class="hidden-print shadow">
 

@@ -7,29 +7,33 @@
 	breadcrumbs::add(t('title_localization', 'Localization'));
 	breadcrumbs::add(t('title_translations', 'Translations'), document::ilink());
 
-	if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
-		$_GET['page'] = 1;
-	}
-
-	if (empty($_GET['languages'])) {
-		$all_languages = array_column(language::$languages, 'code');
-		$defined_languages = [settings::get('store_language_code'), language::$selected['code'], settings::get('default_language_code')];
-		$_GET['languages'] = array_slice(array_unique(array_merge($defined_languages, $all_languages)), 0, 2);
-	}
-
 	try {
+
+		if (empty($_GET['page']) || !is_numeric($_GET['page']) || $_GET['page'] < 1) {
+			$_GET['page'] = 1;
+		}
+
+		if (empty($_GET['languages'])) {
+			$all_languages = array_column(language::$languages, 'code');
+			$defined_languages = [settings::get('store_language_code'), language::$selected['code'], settings::get('default_language_code')];
+			$_GET['languages'] = array_slice(array_unique(array_merge($defined_languages, $all_languages)), 0, 2);
+		}
+
 		// Validate requested language codes before they are used in SQL identifier contexts.
+		$allowed_language_codes = array_keys(language::$languages);
+
 		foreach ($_GET['languages'] as $language_code) {
-			if (!in_array($language_code, array_keys(language::$languages))) {
+			if (!in_array($language_code, $allowed_language_codes)) {
 				throw new Exception('Invalid language code provided');
 			}
 		}
+
+		$collections = include 'app://backend/apps/localization/translations/collections.inc.php';
+
 	} catch (Exception $e) {
 		notices::add('errors', $e->getMessage());
 		return;
 	}
-
-	$collections = include 'app://backend/apps/localization/translations/collections.inc.php';
 
 	if (isset($_POST['save'])) {
 		try {
@@ -214,6 +218,7 @@
 	</div>
 
 	<?= f::form_begin('filter_form', 'get') ?>
+
 		<div class="card-filter">
 
 			<?= f::form_dropdown('collections[]', $collection_options, true) ?>
@@ -246,6 +251,7 @@
 				<?= f::form_button('filter', t('title_search', 'Search'), 'submit') ?>
 			</div>
 		</div>
+
 	<?= f::form_end() ?>
 
 	<div class="card-body">

@@ -62,7 +62,7 @@
 					<td><?= $group['id'] ?></td>
 					<td><a class="link" href="<?= document::href_ilink(__APP__.'/edit_customer_group', ['group_id' => $group['id']]) ?>"><?= $group['name'] ?></a></td>
 					<td><?= f::format_number($group['num_customers']) ?></td>
-					<td><a class="btn btn-default btn-sm" href="<?= document::href_link(__APP__.'/edit_customer_group', ['group_id' => $group['id']]) ?>" title="<?= t('title_edit', 'Edit') ?>"><?= f::draw_fonticon('edit') ?></a></td>
+					<td><a class="btn btn-default btn-sm" href="<?= document::href_ilink(__APP__.'/edit_customer_group', ['group_id' => $group['id']]) ?>" title="<?= t('title_edit', 'Edit') ?>"><?= f::draw_fonticon('edit') ?></a></td>
 				</tr>
 				<?php } ?>
 			</tbody>
