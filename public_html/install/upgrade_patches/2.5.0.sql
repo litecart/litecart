@@ -65,7 +65,7 @@ INSERT INTO `lc_order_statuses_info` (`order_status_id`, `language_code`, `name`
 (LAST_INSERT_ID(), 'en', 'In Transit', '');
 -- -----
 INSERT INTO `lc_order_statuses` (`state`, `icon`, `color`, `is_sale`, `is_archived`, `is_trackable`, `stock_action`, `date_updated`, `date_created`) VALUES
-('returning', 'fa-undo', '#e3ab44', 1, 0, 1, 'reserved', NOW(), NOW());
+('returning', 'fa-undo', '#e3ab44', 1, 0, 1, 'reserve', NOW(), NOW());
 -- -----
 INSERT INTO `lc_order_statuses_info` (`order_status_id`, `language_code`, `name`, `description`) VALUES
 (LAST_INSERT_ID(), 'en', 'Returning', '');

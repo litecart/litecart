@@ -27,10 +27,16 @@
     from ". DB_TABLE_PREFIX ."cart_items
     where options is not null and options != '';"
   )->each(function($cart_item) {
+
+  // Only convert values that really are serialized arrays, never overwrite with a literal false
     $unserialized = @unserialize($cart_item['options'], ['allowed_classes' => false]);
+    if (!is_array($unserialized)) return;
+    $json = json_encode($unserialized, JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE | JSON_UNESCAPED_SLASHES);
+    if ($json === false) return;
+
     database::query(
       "update ". DB_TABLE_PREFIX ."cart_items
-      set options = '". database::input(json_encode($unserialized, JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE | JSON_UNESCAPED_SLASHES)) ."'
+      set options = '". database::input($json, true) ."'
       where id = ". (int)$cart_item['id'] ."
       limit 1;"
     );
@@ -42,10 +48,16 @@
     from ". DB_TABLE_PREFIX ."orders_items
     where options is not null and options != '';"
   )->each(function($order_item) {
+
+  // Only convert values that really are serialized arrays, never overwrite with a literal false
     $unserialized = @unserialize($order_item['options'], ['allowed_classes' => false]);
+    if (!is_array($unserialized)) return;
+    $json = json_encode($unserialized, JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE | JSON_UNESCAPED_SLASHES);
+    if ($json === false) return;
+
     database::query(
       "update ". DB_TABLE_PREFIX ."orders_items
-      set options = '". database::input(json_encode($unserialized, JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE | JSON_UNESCAPED_SLASHES)) ."'
+      set options = '". database::input($json, true) ."'
       where id = ". (int)$order_item['id'] ."
       limit 1;"
     );
