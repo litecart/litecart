@@ -11,7 +11,7 @@
   if ($_SERVER['SERVER_SOFTWARE'] == 'CLI') { // Don't rely on php_sapi_name()
 
     if (!isset($argv[1]) || $argv[1] == 'help' || $argv[1] == '-h' || $argv[1] == '--help' || $argv[1] == '/?') {
-      echo "\nLiteCart® 2.7.2\n"
+      echo "\nLiteCart® 2.7.3\n"
       . "Copyright (c) ". date('Y') ." LiteCart AB\n"
       . "https://www.litecart.net/\n"
       . "Usage: php ". basename(__FILE__) ." [options]\n\n"
