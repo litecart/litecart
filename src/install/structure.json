@@ -967,7 +967,8 @@
 			"primary_key": ["id"],
 			"keys": {
 				"order_id": ["order_id"],
-				"product_id": ["product_id"]
+				"item_id": ["item_id"],
+				"stock_item_id": ["stock_item_id"]
 			},
 			"foreign_keys": {
 				"order_stock_item_to_order": {
@@ -986,15 +987,6 @@
 						"columns": ["id"],
 						"on_update": "NO ACTION",
 						"on_delete": "CASCADE"
-					}
-				},
-				"order_stock_item_to_product": {
-					"columns": ["product_id"],
-					"references": {
-						"table": "products",
-						"columns": ["id"],
-						"on_update": "CASCADE",
-						"on_delete": "SET NULL"
 					}
 				}
 			}
