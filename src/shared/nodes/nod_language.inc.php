@@ -260,10 +260,12 @@
 
 			// Create translation if it doesn't exist
 			if (!$translation) {
+				$translation_text = json_encode(['en' => $default], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_INVALID_UTF8_SUBSTITUTE);
+
 				database::query(
 					"insert into ". DB_PREFIX ."translations
 					(code, `text`, html, updated_at, created_at)
-					values ('". database::input($code) ."', '{\"en\":\"". database::input($default, true) ."\"}', '". (($default != strip_tags($default)) ? 1 : 0) ."', '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
+					values ('". database::input($code) ."', '". database::input($translation_text, true) ."', '". (($default != strip_tags($default)) ? 1 : 0) ."', '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
 				);
 				$translation = [
 					'text_en' => $default,

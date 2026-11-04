@@ -318,6 +318,8 @@
 		// Open directory
 		$dh = opendir($basedir ?: './');
 
+		if ($dh === false) return [];
+
 		// Step through each file in directory
 		while ($file = readdir($dh)) {
 			if (preg_match('#\.{1,2}/?$#', $file)) continue;
@@ -354,6 +356,8 @@
 				}
 			}
 		}
+
+		closedir($dh);
 
 		// Merge folders and files into one and same result
 		$results = array_merge($folders, $files);

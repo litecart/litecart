@@ -57,8 +57,6 @@
 
 	require_once __DIR__ . '/includes/init.inc.php';
 
-	csp_send_headers();
-
 	// Detect an existing installation
 	if (is_file(FS_DIR_APP . 'shared/config.inc.php') || is_file(FS_DIR_STORAGE . 'config.inc.php')) {
 		$installation_detected = true;

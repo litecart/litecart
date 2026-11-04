@@ -90,7 +90,32 @@
 
 	require_once __DIR__ . '/functions.inc.php';
 
+	if (!is_cli()) {
+		header('Content-Security-Policy: ' . implode('; ', [
+			"default-src 'self'",
+			"script-src 'self' 'nonce-". NONCE ."'",
+			"style-src 'self' 'unsafe-inline'",
+			"img-src 'self' data: ",
+			"font-src 'self' data: 'nonce-". NONCE ."'",
+			"connect-src 'self'",
+			"form-action 'self'",
+			"frame-ancestors 'none'",
+			"base-uri 'self'",
+		]));
+
+		header('X-Content-Type-Options: nosniff');
+		header('X-Frame-Options: DENY');
+		header('Referrer-Policy: same-origin');
+
+		if (!is_cli() && $_SERVER['HTTPS'] !== 'off') {
+			header('Strict-Transport-Security: max-age=31536000; includeSubDomains');
+		}
+	}
+
 	ob_start(function($buffer){
+
+		// CLI output is plain text and has no web path context for the layout.
+		if (is_cli()) return $buffer;
 
 		// Layout wrapping must happen here (inside the output buffer), but
 		// ent_view::render() cannot be called from inside an ob_start handler
