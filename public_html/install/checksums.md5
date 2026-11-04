@@ -247,7 +247,7 @@ d1142184d4d6b52bd858707726b69a34	includes/entities/ent_image.inc.php
 197f5cd84c0f915da7109f091b42db36	includes/entities/ent_link.inc.php
 07c9eba067bccda3b28cf602d3e833bd	includes/entities/ent_manufacturer.inc.php
 d2ade587c7e081573448be4c259d9e16	includes/entities/ent_module.inc.php
-b5bc56b80810aed8fce82640baf60f5a	includes/entities/ent_order.inc.php
+073946934c9d56f71a4fac662dbf861f	includes/entities/ent_order.inc.php
 8fecf25d0a1c5ec72b93d6c4a5bfa56b	includes/entities/ent_order_status.inc.php
 1e5b8f0574a83afbcaa7478051a5d93f	includes/entities/ent_page.inc.php
 6c32e6de1f7b431ccdf7b89d966509f2	includes/entities/ent_product.inc.php
@@ -282,7 +282,7 @@ d41d8cd98f00b204e9800998ecf8427e	includes/index.html
 d41d8cd98f00b204e9800998ecf8427e	includes/library/index.html
 28cd0f2c16abfd11a2cc4be0816e0127	includes/library/lib_breadcrumbs.inc.php
 998b6f523fee03abcf00e243cc5832a4	includes/library/lib_cache.inc.php
-21a17a9a1bcc5fde019b6117eaf3cc50	includes/library/lib_cart.inc.php
+2c6c0ef2e73bf60776343286c035d5ae	includes/library/lib_cart.inc.php
 0f14dd8a55acb482677c6ec16535d7b3	includes/library/lib_currency.inc.php
 6a53e50fa9cde007438af181ee96a25c	includes/library/lib_customer.inc.php
 628913b44b5e95b94f7370e8816620e7	includes/library/lib_database.inc.php
