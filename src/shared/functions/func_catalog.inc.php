@@ -288,7 +288,7 @@
 		}
 
 		if (!empty($filter['purchased'])) {
-			$sql_inner_where['purchased'] = "p.id in (select product_id from ". DB_PREFIX ."orders_stock_items group by product_id)";
+			$sql_inner_where['purchased'] = "p.id in (select product_id from ". DB_PREFIX ."orders_items group by product_id)";
 		}
 
 		if (!empty($filter['exclude_products'])) {
