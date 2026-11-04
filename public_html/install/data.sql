@@ -274,7 +274,7 @@ INSERT INTO `lc_order_statuses` (`id`, `state`, `icon`, `color`, `is_sale`, `is_
 (3, 'on_hold', 'fa-pause', '#c0c0c0', 1, 0, 0, 'none', NOW(), NOW()),
 (4, 'ready', 'fa-clock-o', '#bec11d', 1, 0, 0, 'reserve', NOW(), NOW()),
 (5, 'delayed', 'fa-hourglass-half', '#e3ab44', 1, 0, 0, 'reserve', NOW(), NOW()),
-(6, 'processing', 'fa-cog', '#e3ab44', 1, 0, 0, 'reserved', NOW(), NOW()),
+(6, 'processing', 'fa-cog', '#e3ab44', 1, 0, 0, 'reserve', NOW(), NOW()),
 (7, 'completed', 'fa-check', '#99cc66', 1, 0, 1, 'commit', NOW(), NOW()),
 (8, 'dispatched', 'fa-truck', '#99cc66', 1, 0, 1, 'commit', NOW(), NOW()),
 (9, 'in_transit', 'fa-truck', '#e3ab44', 1, 0, 1, 'commit', NOW(), NOW()),

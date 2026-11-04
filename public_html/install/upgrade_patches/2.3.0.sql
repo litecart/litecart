@@ -2,7 +2,7 @@ UPDATE `lc_settings` SET `value` = '5' WHERE `key` IN ('box_also_purchased_produ
 -- -----
 UPDATE `lc_settings` SET `value` = '10' WHERE `key` IN ('box_also_purchased_products_num_items', 'box_campaign_products_num_items', 'box_latest_products_num_items', 'box_popular_products_num_items', 'box_similar_products_num_items') AND `value` = '8';
 -- -----
-CREATE TABLE `lc_newsletter_recipients` (
+CREATE TABLE IF NOT EXISTS `lc_newsletter_recipients` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `email` VARCHAR(128) NOT NULL DEFAULT '',
   `client_ip` VARCHAR(45) NOT NULL DEFAULT '',
