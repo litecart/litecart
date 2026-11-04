@@ -104,18 +104,6 @@
     define('PLATFORM_DATABASE_VERSION', $platform_database_version['value']);
   }
 
-// List supported upgrades
-  $supported_versions = ['1.0' => '1.0'];
-  foreach (glob(__DIR__ . '/upgrade_patches/*') as $file) {
-    if (preg_match('#/([^/]+).(?:inc.php|sql)$#', $file, $matches)) {
-      $supported_versions[$matches[1]] = $matches[1];
-    }
-  }
-
-  usort($supported_versions, function($a, $b) {
-    return version_compare($a, $b, '>') ? 1 : -1;
-  });
-
   if (empty($_REQUEST['development_type'])) {
     if (is_file($file = FS_DIR_APP . 'includes/templates/default.catalog/.development')) {
       $_REQUEST['development_type'] = file_get_contents($file);
@@ -219,13 +207,20 @@
         $client = new wrap_http();
 
         $update_file = function($file) use ($client) {
+
           $local_file = preg_replace('#^admin/#', BACKEND_ALIAS.'/', $file);
           $response = $client->call('GET', 'https://raw.githubusercontent.com/litecart/litecart/'. PLATFORM_VERSION .'/public_html/'. $file);
+
           if (empty($client->last_response['status_code']) || $client->last_response['status_code'] != 200) return false;
+
           if (!is_dir(dirname(FS_DIR_APP . $local_file))) {
             mkdir(dirname(FS_DIR_APP . $local_file), 0777, true);
           }
-          file_put_contents(FS_DIR_APP . $local_file, $response);
+
+          if (@file_put_contents(FS_DIR_APP . $local_file, $response) === false) {
+            return false;
+          }
+
           return true;
         };
 
@@ -262,15 +257,25 @@
 
       #############################################
 
-      foreach ($supported_versions as $version) {
+      $migration_patches = glob(__DIR__ . '/upgrade_patches/*.{sql,inc.php}', GLOB_BRACE);
+
+      usort($migration_patches, function($a, $b) {
+        return preg_match('#\.sql$#', $a) ? -1 : 1;
+      });
+
+      foreach ($migration_patches as $patch) {
+
+        $version = preg_replace('#^.*/([^/]+).(inc\.php|sql)$#', '$1', $patch);
 
         if (version_compare(PLATFORM_DATABASE_VERSION, $version, '>=')) {
           continue;
         }
 
-        if (file_exists(__DIR__ . '/upgrade_patches/'. $version .'.sql')) {
+        if (preg_match('#\.sql$#', $patch)) {
+
           echo '<p>Upgrading database to '. $version .'...</p>' . PHP_EOL . PHP_EOL;
-          $sql = file_get_contents(__DIR__ . '/upgrade_patches/'. $version .'.sql');
+
+          $sql = file_get_contents($patch);
           $sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, $sql);
 
           foreach (preg_split('#^-- -----*\s*$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {
@@ -281,9 +286,9 @@
           }
         }
 
-        if (file_exists(__DIR__ . '/upgrade_patches/'. $version .'.inc.php')) {
+        if (preg_match('#\.inc\.php$#', $patch)) {
           echo '<p>Upgrading system to '. $version .'...</p>' . PHP_EOL . PHP_EOL;
-          include(__DIR__.'/upgrade_patches/'. $version .'.inc.php');
+          include($patch);
         }
 
         echo '<p>Set platform database version...';
@@ -397,7 +402,7 @@
       #############################################
 
       echo '<h2>Complete</h2>' . PHP_EOL . PHP_EOL
-         . '<p style="font-weight: bold;">Upgrade complete! Please delete the <strong>~/install/</strong> folder.</p>' . PHP_EOL . PHP_EOL;
+          . '<p style="font-weight: bold;">Upgrade complete! Please delete the <strong>~/install/</strong> folder.</p>' . PHP_EOL . PHP_EOL;
 
       if (!empty($_REQUEST['redirect'])) {
         header('Location: '. $_REQUEST['redirect']);
@@ -417,6 +422,19 @@
     exit;
   }
 
+  $supported_versions = ['1.0'];
+
+  foreach (glob(__DIR__ . '/upgrade_patches/*') as $file) {
+    if (preg_match('#/([^/]+).(inc\.php|sql)$#', $file, $matches)) {
+      $supported_versions[] = $matches[1];
+    }
+  }
+
+  $supported_versions = array_unique($supported_versions);
+
+  usort($supported_versions, function($a, $b) {
+    return version_compare($a, $b, '>') ? 1 : -1;
+  });
 
 ?>
 <style>
