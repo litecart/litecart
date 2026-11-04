@@ -147,12 +147,40 @@
 		}
 	}
 
-	set_error_handler(function($errno, $errstr, $errfile, $errline) {
+	$error_handling = false;
+
+	set_error_handler(function($errno, $errstr, $errfile, $errline) use (&$error_handling) {
+
+		// The reporter must not fail on itself, an error raised while reporting is ignored
+		if ($error_handling) return true;
+
+		$error_handling = true;
+
 		$backtrace = array_slice(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS), 1);
 		error_handler($errno, $errstr, $errfile, $errline, $backtrace);
+
+		$error_handling = false;
+
+		return true;
 	}, E_ALL);
 
-	set_exception_handler(function($e) {
-		$backtrace = array_slice($e->getTrace(), 1);
-		error_handler(E_ERROR, $e->getMessage(), $e->getFile(), $e->getLine(), $backtrace);
+	set_exception_handler(function($e) use (&$error_handling) {
+
+		// The reporter must not fail on itself, an error raised while reporting is logged without the full report
+		if ($error_handling) {
+			error_log('Uncaught '. get_class($e) .': '. $e->getMessage() .' in '. $e->getFile() .' on line '. $e->getLine() . PHP_EOL);
+			return;
+		}
+
+		$error_handling = true;
+
+		try {
+			$backtrace = array_slice($e->getTrace(), 1);
+			error_handler(E_ERROR, $e->getMessage(), $e->getFile(), $e->getLine(), $backtrace);
+		} catch (Throwable $reporter_error) {
+			error_log('Uncaught '. get_class($e) .': '. $e->getMessage() .' in '. $e->getFile() .' on line '. $e->getLine() . PHP_EOL);
+			error_log('Reporter failed with '. get_class($reporter_error) .': '. $reporter_error->getMessage() .' in '. $reporter_error->getFile() .' on line '. $reporter_error->getLine() . PHP_EOL);
+		}
+
+		$error_handling = false;
 	});

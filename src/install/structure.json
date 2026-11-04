@@ -17,16 +17,23 @@
 			},
 			"keys": {
 				"status": ["status"]
+			}
+		},
+		"access_tokens": {
+			"columns": {
+				"id": { "type": "BIGINT", "unsigned": true, "auto_increment": true },
+				"client_id": { "type": "VARCHAR", "length": 64, "default": "''" },
+				"token_hash": { "type": "CHAR", "length": 64 },
+				"scopes": { "type": "TEXT" },
+				"expires_at": { "type": "DATETIME" }
 			},
-			"foreign_keys": {
-				"administrator_id": {
-					"columns": ["administrator_id"],
-					"references": {
-						"table": "administrators",
-						"columns": ["id"]
-					},
-					"on_delete": "CASCADE"
-				}
+			"primary_key": ["id"],
+			"unique_keys": {
+				"token_hash": ["token_hash"]
+			},
+			"keys": {
+				"expires_at": ["expires_at"],
+				"client_id": ["client_id"]
 			}
 		},
 		"administrators": {
