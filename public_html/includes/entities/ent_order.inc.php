@@ -158,7 +158,15 @@
       );
 
       while ($item = database::fetch($order_items_query)) {
-        $item['options'] = $item['options'] ? json_decode($item['options'], true) : [];
+        $options = $item['options'] ? json_decode($item['options'], true) : [];
+
+      // Backward compatibility with legacy serialized options
+        if ($options === null && !empty($item['options'])) {
+          $unserialized = @unserialize($item['options'], ['allowed_classes' => false]);
+          if (is_array($unserialized)) $options = $unserialized;
+        }
+
+        $item['options'] = $options === null ? [] : $options;
         $this->data['items'][$item['id']] = $item;
       }
 
