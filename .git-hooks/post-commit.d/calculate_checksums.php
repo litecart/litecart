@@ -37,7 +37,14 @@
     $short_file = preg_replace('#^public_html/#', '', $file);
     if (isset($checksums[$short_file])) {
       $tmp_file = tempnam(sys_get_temp_dir(), '_blob');
-      shell_exec('git cat-file blob :'. $file .' > '. $tmp_file);
+      $blob_out = [];
+      exec('git cat-file blob :'. $file .' > '. $tmp_file, $blob_out, $rc);
+      if ($rc !== 0) {
+        echo 'ERROR: could not read blob for ' . $file . PHP_EOL;
+        if ($checksums[$short_file] === '') { unset($checksums[$short_file]); }
+        unlink($tmp_file);
+        continue;
+      }
       $blob = file_get_contents($tmp_file);
       $checksum = md5(preg_replace('#(\r\n?|\n)#', "\n", $blob));
       echo $checksum .'  '. $file . PHP_EOL;
