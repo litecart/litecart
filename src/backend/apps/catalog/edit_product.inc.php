@@ -137,7 +137,7 @@
 			$product->delete();
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
-			redirect(document::ilink(__APP__.'/category_tree', ['category_id' => $_POST['categories'][0]]), 303);
+			redirect(document::ilink(__APP__.'/category_tree', ['category_id' => $_POST['categories'][0] ?? '']), 303);
 			exit;
 
 		} catch (Exception $e) {

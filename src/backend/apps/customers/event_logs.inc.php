@@ -31,7 +31,7 @@
 				);
 			}
 
-			notices::add('success', strtr(t('success_deleted_n_events', 'Deleted %n events'), ['%n' => count($_POST['events'])]));
+			notices::add('success', strtr(t('success_deleted_n_events', 'Deleted {n} events'), ['{n}' => count($_POST['events'])]));
 
 			reload(303);
 			exit;

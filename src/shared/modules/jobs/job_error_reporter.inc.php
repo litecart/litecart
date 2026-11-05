@@ -48,7 +48,8 @@
 			$errors = [];
 			$occurrences = [];
 
-			if (preg_match_all('#\[(\d{1,2}-[a-zA-Z]+-\d{4} \d\d\:\d\d\:\d\d [a-zA-Z/_]+)\] ([^\n]*)((?:(?!\n\[|$).)*)#s', $contents, $matches)) {
+			// Log entries carry a timestamp prefix; PHP prepends the native format for error_log(), the database writer uses [Y-m-d H:i:s e]
+			if (preg_match_all('#\[((?:\d{4}-\d{2}-\d{2} \d\d\:\d\d\:\d\d [^\]\n]+)|(?:\d{1,2}-[a-zA-Z]+-\d{4} \d\d\:\d\d\:\d\d [a-zA-Z/_]+))\] ?([^\n]*)((?:(?!\n\[|$).)*)#s', $contents, $matches)) {
 				foreach (array_keys($matches[0]) as $i) {
 					$checksum = crc32($matches[2][$i]);
 

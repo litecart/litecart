@@ -54,21 +54,25 @@
 		}
 
 		// Polyfill some $_SERVER variables
-		$_SERVER['DOCUMENT_ROOT'] = realpath(__DIR__.'/..');
-		$_SERVER['REMOTE_ADDR'] = '127.0.0.1';
-		$_SERVER['SERVER_NAME'] = 'localhost';
-		$_SERVER['SERVER_PORT'] = '443';
-		$_SERVER['SERVER_PROTOCOL'] = 'HTTP/1.1';
-		$_SERVER['REQUEST_METHOD'] = 'GET';
-		$_SERVER['REQUEST_SCHEME'] = 'https';
-		$_SERVER['REQUEST_URI'] = '/';
-		$_SERVER['SERVER_SOFTWARE'] = 'CLI';
-		$_SERVER['SCRIPT_FILENAME'] = $argv[0] ?? 'index.php';
-		$_SERVER['HTTPS'] = 'on';
+		$_SERVER['DOCUMENT_ROOT'] = $_SERVER['DOCUMENT_ROOT'] ?? realpath(__DIR__.'/..');
+		$_SERVER['REMOTE_ADDR'] = $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1';
+		$_SERVER['SERVER_NAME'] = $_SERVER['SERVER_NAME'] ?? 'localhost';
+		$_SERVER['SERVER_PORT'] = $_SERVER['SERVER_PORT'] ?? '443';
+		$_SERVER['SERVER_PROTOCOL'] = $_SERVER['SERVER_PROTOCOL'] ?? 'HTTP/1.1';
+		$_SERVER['REQUEST_METHOD'] = $_SERVER['REQUEST_METHOD'] ?? 'GET';
+		$_SERVER['REQUEST_SCHEME'] = $_SERVER['REQUEST_SCHEME'] ?? 'https';
+		$_SERVER['REQUEST_URI'] = $_SERVER['REQUEST_URI'] ?? '/';
+		$_SERVER['SERVER_SOFTWARE'] = $_SERVER['SERVER_SOFTWARE'] ?? 'CLI';
+		$_SERVER['SCRIPT_FILENAME'] = $_SERVER['SCRIPT_FILENAME'] ?? ($argv[0] ?? 'index.php');
+		$_SERVER['HTTPS'] = $_SERVER['HTTPS'] ?? 'on';
 	}
 
+	// The node initialization reads these, so they are filled in when the request context does not provide them
+	$_SERVER['REQUEST_URI'] = $_SERVER['REQUEST_URI'] ?? '/';
+	$_SERVER['REMOTE_ADDR'] = $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1';
+
 	// Normalize Windows paths to Unix-style
-	$_SERVER['SCRIPT_FILENAME'] = str_replace('\\', '/', $_SERVER['SCRIPT_FILENAME']);
+	$_SERVER['SCRIPT_FILENAME'] = str_replace('\\', '/', $_SERVER['SCRIPT_FILENAME'] ?? '');
 
 	if (!isset($_SERVER['SERVER_SOFTWARE'])) {
 		$_SERVER['SERVER_SOFTWARE'] = 'Unknown';

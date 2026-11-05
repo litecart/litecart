@@ -2,9 +2,14 @@
 
 	administrator::require_login();
 
+	if (empty($_REQUEST['customer_id']) || !is_numeric($_REQUEST['customer_id'])) {
+		http_response_code(400);
+		exit;
+	}
+
 	$customer = database::query(
 		"select * from ". DB_PREFIX ."customers
-		where id = '". database::input($_REQUEST['customer_id']) ."'
+		where id = ". (int)$_REQUEST['customer_id'] ."
 		limit 1;"
 	)->fetch();
 

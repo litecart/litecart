@@ -233,18 +233,22 @@
 
 						while ($recipient = database::fetch($notification_recipients_query)) {
 
-							$subject = t('email_subject:product_back_in_stock', 'A product is back in stock', $recipient['language_code']);
-							$message = t('email_message:product_back_in_stock', "You are receiving this email because you requested a notification that the following item is now back in stock:\r\n\r\n%item_name\r\n%item_link", $recipient['language_code']);
-
 							$aliases = [
-								'%item_name' => reference::product($product_row['id'], $recipient['language_code'])->name,
-								'%item_link' => document::link('product', ['product_id' => $product_row['id']]),
+								'{item_name}' => reference::product($product_row['id'], $recipient['language_code'])->name,
+								'{item_link}' => document::link('product', ['product_id' => $product_row['id']]),
 							];
+
+							$subject = strtr(t('email_subject:product_back_in_stock', 'A product is back in stock'), $aliases);
+							$message = strtr(t('email_message:product_back_in_stock', implode("\r\n", [
+								'You are receiving this email because you requested a notification that the following item is now back in stock:',
+								'{item_name}',
+								'{item_link}',
+							])), $aliases);
 
 							(new ent_email())
 								->add_recipient($recipient['email'])
-								->set_subject(strtr($subject, $aliases))
-								->add_body(strtr($message, $aliases))
+								->set_subject($subject)
+								->add_body($message)
 								->send();
 						}
 

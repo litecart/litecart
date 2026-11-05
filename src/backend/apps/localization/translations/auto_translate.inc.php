@@ -334,9 +334,9 @@
 
 			echo PHP_EOL . 'Completed!';
 
-			notices::add('success', strtr(t('success_translated_n_entries', 'Translated %n entries'), ['%n' => $counters['translated']]));
-			notices::add($counters['updated'] ? 'success' : 'notice', strtr(t('success_updated_n_existing_entries', 'Updated %n existing entries'), ['%n' => $counters['updated']]));
-			notices::add($counters['inserted'] ? 'success' : 'notice', strtr(t('success_insert_n_new_entries', 'Inserted %n new entries'), ['%n' => $counters['inserted']]));
+			notices::add('success', strtr(t('success_translated_n_entries', 'Translated {n} entries'), ['{n}' => $counters['translated']]));
+			notices::add($counters['updated'] ? 'success' : 'notice', strtr(t('success_updated_n_existing_entries', 'Updated {n} existing entries'), ['{n}' => $counters['updated']]));
+			notices::add($counters['inserted'] ? 'success' : 'notice', strtr(t('success_insert_n_new_entries', 'Inserted {n} new entries'), ['{n}' => $counters['inserted']]));
 
 			header('Refresh: 5; url='. document::link(null, [], ['app', 'doc'], 'resume'));
 			exit;

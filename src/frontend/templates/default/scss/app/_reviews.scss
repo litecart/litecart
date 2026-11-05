@@ -1,0 +1,124 @@
+// Full review shown in a lightbox (ajax/review)
+
+#box-review {
+	color: var(--review-text-color);
+
+	.review-detail-header {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: .5em .75em;
+		margin-bottom: .75em;
+	}
+
+	.review-detail-header .name {
+		font-weight: 500;
+	}
+
+	.review-detail-header .rating {
+		line-height: 1;
+		color: var(--review-rating-color);
+	}
+
+	.review-detail-header .date {
+		color: var(--review-date-color);
+		font-size: .85em;
+	}
+
+	.title {
+		font-weight: 600;
+		font-size: 1.075em;
+		margin-bottom: .35em;
+	}
+
+	.description {
+		color: var(--review-text-color);
+		opacity: .9;
+		overflow-wrap: anywhere;
+	}
+
+	.attachments {
+		display: flex;
+		flex-wrap: wrap;
+		gap: .5em;
+		margin-top: 1em;
+	}
+
+	.attachment {
+		width: auto;
+	}
+
+	.thumbnail {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 5rem;
+		height: 5rem;
+		padding: .25em;
+		background: var(--site-background);
+		border: var(--review-border-width) solid var(--review-border-color);
+		border-radius: calc(var(--review-radius) / 2);
+		font-size: 1.75rem;
+		color: var(--review-vote-text-color);
+		overflow: hidden;
+
+		img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+	}
+
+	.review-detail-footer {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		flex-wrap: wrap;
+		gap: .75em;
+		margin-top: 1.25em;
+		padding-top: 1em;
+		border-top: var(--review-border-width) solid var(--review-border-color);
+	}
+
+	.review-detail-footer .product-name {
+		font-weight: 500;
+		color: var(--link-text-color);
+		text-decoration: none;
+	}
+
+	.vote {
+		display: flex;
+		gap: .5em;
+	}
+
+	.upvote,
+	.downvote {
+		display: inline-flex;
+		align-items: center;
+		gap: .375em;
+		padding: .25em .75em;
+		background: var(--review-vote-background);
+		border: var(--review-border-width) solid var(--review-vote-border-color);
+		border-radius: 2em;
+		color: var(--review-vote-text-color);
+		text-decoration: none;
+		line-height: 1.5;
+		transition: background-color 150ms linear, color 150ms linear;
+
+		&:hover {
+			background: var(--review-vote-background--hover);
+			color: var(--review-vote-text-color--hover);
+			text-decoration: none;
+		}
+
+		&.voted {
+			background: var(--review-vote-background--hover);
+			color: var(--review-vote-text-color--hover);
+			pointer-events: none;
+		}
+	}
+
+	.num-votes {
+		font-variant-numeric: tabular-nums;
+	}
+}

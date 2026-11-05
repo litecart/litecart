@@ -43,7 +43,13 @@
 			$url = document::ilink('f:push_jobs');
 
 			if (!in_array('exec', $disabled_functions)) {
-				exec('php -d register_argc_argv=on '. escapeshellarg(FS_DIR_APP .'index.php') .' push_jobs > /dev/null 2>&1 &');
+
+				// Windows has no /dev/null and treats & as a command separator instead of a background operator
+				$null_device = (PHP_OS_FAMILY === 'Windows') ? 'NUL' : '/dev/null';
+
+				$command = 'php -d register_argc_argv=on '. escapeshellarg(realpath(FS_DIR_APP .'index.php')) .' push_jobs > '. $null_device .' 2>&1';
+
+				exec(PHP_OS_FAMILY === 'Windows' ? 'start /B cmd /c '. $command : $command .' &');
 
 			} else if (!in_array('fsockopen', $disabled_functions) && !in_array('stream_socket_client', $disabled_functions)) {
 				(new http_client)->set_timeout(3)->call('GET', $url, asynchronous: true);

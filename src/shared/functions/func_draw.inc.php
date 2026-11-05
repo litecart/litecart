@@ -601,11 +601,11 @@
 
 		foreach (range(1, $max_rating) as $i) {
 			if ($rating >= $i) {
-				$output .= draw_fonticon('icon-star', 'style="color: #f90;"');
+				$output .= draw_fonticon('icon-star', 'style="color: var(--rating-color, #f90);"');
 			} else if ($rating == $i-0.5) {
-				$output .= draw_fonticon('icon-star-o', 'style="color: #f90;"');
+				$output .= draw_fonticon('icon-star-o', 'style="color: var(--rating-color, #f90);"');
 			} else {
-				$output .= draw_fonticon('icon-star', 'style="color: #ccc;"');
+				$output .= draw_fonticon('icon-star', 'style="color: var(--rating-empty-color, #ccc);"');
 			}
 		}
 

@@ -19,7 +19,7 @@
 
 			<h2 class="hidden"><?= t('title_cookie_notice', 'Cookie Notice') ?></h2>
 			<span><?= strtr(t('text_cookie_notice', 'We rely on certain data, regulated by the EU ePrivacy Directive (EPD), for analytics, marketing, and retargeting purposes. This data is processed through third-party services and is subject to your consent.'), [
-				'%url' => document::href_ilink('information', ['page_id' => settings::get('cookie_policy')])
+				'{url}' => document::href_ilink('information', ['page_id' => settings::get('cookie_policy')])
 			]) ?></span>
 		</div>
 

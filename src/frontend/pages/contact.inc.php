@@ -68,7 +68,9 @@
 					}
 
 					if ($filesize > 4*1024*1024) { // 4MB limit
-						throw new Exception(t('error_attachments_cannot_exceed_size', 'Attachments cannot exceed {size}', ['{size}' => '4 MB']));
+						throw new Exception(strtr(t('error_attachments_cannot_exceed_size', 'Attachments cannot exceed {size}'), [
+							'{size}' => '4 MB'
+						]));
 					}
 				}
 			}

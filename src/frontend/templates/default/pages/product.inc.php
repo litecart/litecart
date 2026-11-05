@@ -378,52 +378,69 @@ form[name="buy_now_form"] .dropdown-menu .image {
 			<?php } ?>
 
 			<?php //if (!is_ajax_request() && $reviews) { ?>
-			<section id="reviews" class="card" aria-label="<?= f::escape_attr(t('title_customer_reviews', 'Customer Reviews')) ?>">
+			<section id="reviews" class="card" aria-label="<?= f::escape_attr(t('title_reviews', 'Reviews')) ?>">
 				<a name="reviews"></a>
 
 			<div class="card-header">
 				<div class="card-title">
-					<?= t('title_customer_reviews', 'Customer Reviews') ?>
+					<?= t('title_reviews', 'Reviews') ?>
 				</div>
+				<?php if (!empty($reviews)) { ?>
+				<div class="card-subtitle">
+					<span class="rating" aria-label="<?= f::escape_attr(t('title_average_rating', 'Average rating').': '. round($average_rating * 2) .'/10') ?>">
+						<?= f::draw_rating($average_rating) ?>
+					</span>
+					<span class="review-count"><?= f::escape_html(strtr(t('text_review_count', '{count} reviews'), ['{count}' => (int)$num_ratings])) ?></span>
+				</div>
+				<?php } ?>
 			</div>
 
 				<div class="card-body">
 					<div class="row">
-						<div class="col-md-6">
+						<div class="col-md-7">
 
 							<?php if (!empty($reviews)) { ?>
-							<div class="reviews" role="list" aria-label="<?= f::escape_attr(t('title_customer_reviews', 'Customer Reviews')) ?>">
+							<div class="reviews" role="list" aria-label="<?= f::escape_attr(t('title_reviews', 'Reviews')) ?>">
 								<?php foreach ($reviews as $review) { ?>
-								<article class="review" data-review-id="<?= $review['id'] ?>" role="listitem" aria-label="<?= f::escape_attr(t('title_review_by', 'Review by {author}', ['{author}' => $review['customer_name']])) ?>">
+								<?php $initials = mb_strtoupper(mb_substr(trim($review['customer_name']), 0, 1)); ?>
+								<article class="review" data-review-id="<?= (int)$review['id'] ?>" role="listitem" aria-label="<?= f::escape_attr(strtr(t('title_review_by', 'Review by {author}'), ['{author}' => $review['customer_name']])) ?>">
 
-									<div class="vote">
-										<a class="upvote" href="#" aria-label="<?= f::escape_attr(t('title_upvote', 'Upvote')) ?>">
-											<?= f::draw_fonticon('icon-thumbs-up-1', 'aria-hidden="true"') ?> <span class="num-votes" aria-label="<?= (int)$review['upvotes'] ?>"><?= $review['upvotes'] ?></span>
-										</a>
-										<a class="downvote" href="#" aria-label="<?= f::escape_attr(t('title_downvote', 'Downvote')) ?>">
-											<?= f::draw_fonticon('icon-thumbs-down', 'aria-hidden="true"') ?> <span class="num-votes" aria-label="<?= (int)$review['downvotes'] ?>"><?= $review['downvotes'] ?></span>
-										</a>
-									</div>
+									<div class="avatar" aria-hidden="true"><?= f::escape_html($initials) ?></div>
 
-									<div class="name">
-										<?= f::escape_html($review['customer_name']) ?>
-									</div>
+									<div class="review-body">
 
-									<div class="rating" aria-label="<?= f::escape_attr(t('title_rating', 'Rating') .': '. round($review['rating'] * 2) .'/10') ?>">
-										<?= f::draw_rating($review['rating']) ?>
-									</div>
+										<div class="review-header">
+											<div class="name">
+												<?= f::escape_html($review['customer_name']) ?>
+											</div>
+											<div class="rating" aria-label="<?= f::escape_attr(t('title_rating', 'Rating').': '. round($review['rating'] * 2) .'/10') ?>">
+												<?= f::draw_rating($review['rating']) ?>
+											</div>
+											<div class="date">
+												<?= f::escape_html(f::datetime_format('date', $review['created_at'])) ?>
+											</div>
+										</div>
 
-									<div class="title">
-										<?= f::escape_html($review['title']) ?>
-									</div>
+										<div class="title">
+											<?= f::escape_html((string)$review['title']) ?>
+										</div>
 
-									<div class="description">
-										<?= nl2br(f::escape_html($review['description'])) ?>
-									</div>
+										<div class="description">
+											<?= nl2br(f::escape_html((string)$review['description'])) ?>
+										</div>
+
+										<div class="vote">
+											<a class="upvote" href="#" aria-label="<?= f::escape_attr(t('title_upvote', 'Upvote')) ?>">
+												<?= f::draw_fonticon('icon-thumbs-up-1', 'aria-hidden="true"') ?> <span class="num-votes" aria-label="<?= (int)$review['upvotes'] ?>"><?= (int)$review['upvotes'] ?></span>
+											</a>
+											<a class="downvote" href="#" aria-label="<?= f::escape_attr(t('title_downvote', 'Downvote')) ?>">
+												<?= f::draw_fonticon('icon-thumbs-down', 'aria-hidden="true"') ?> <span class="num-votes" aria-label="<?= (int)$review['downvotes'] ?>"><?= (int)$review['downvotes'] ?></span>
+											</a>
+										</div>
 
 <?php
 	if (!empty($review['attachments'])) {
-		echo '<div class="attachments" style="margin-top: 1em;" aria-label="'. f::escape_attr(t('title_attachments', 'Attachments')) .'">';
+		echo '<div class="attachments" aria-label="'. f::escape_attr(t('title_attachments', 'Attachments')) .'">';
 		foreach ($review['attachments'] as $attachment) {
 			echo match(true) {
 
@@ -431,36 +448,46 @@ form[name="buy_now_form"] .dropdown-menu .image {
 					=> '<div class="attachment"><a href="'. f::escape_html($attachment['link']) .'" class="thumbnail" data-toggle="lightbox" data-type="image" aria-label="'. f::escape_attr($attachment['filename']) .'"><img src="'. WS_DIR_APP . f::image_thumbnail($attachment['attachment'], 96, 96, 'FIT_USE_WHITESPACING') .'" alt="'. f::escape_attr($attachment['filename']) .'"></a></div>',
 
 				(preg_match('#\.(avi|mp4|mov)$#', $attachment['filename']) === 1)
-					=> '<div class="attachment"><a href="'. f::escape_html($attachment['link']) .'" class="thumbnail text-center" aria-label="'. f::escape_attr($attachment['filename']) .'">'. WS_DIR_APP . f::draw_fonticon('icon-film', 'style="font-size: 3rem; padding-top: 2rem;" aria-hidden="true"') .'</a></div>',
+					=> '<div class="attachment"><a href="'. f::escape_html($attachment['link']) .'" class="thumbnail text-center" aria-label="'. f::escape_attr($attachment['filename']) .'">'. f::draw_fonticon('icon-film', 'aria-hidden="true"') .'</a></div>',
 
 				default
-					=> '<div class="attachment"><a href="'. f::escape_html($attachment['link']) .'" class="thumbnail text-center" aria-label="'. f::escape_attr($attachment['filename']) .'">'. f::draw_fonticon('icon-paperclip', 'style="font-size: 3rem; padding-top: 2rem;" aria-hidden="true"') .'</a></div>'
+					=> '<div class="attachment"><a href="'. f::escape_html($attachment['link']) .'" class="thumbnail text-center" aria-label="'. f::escape_attr($attachment['filename']) .'">'. f::draw_fonticon('icon-paperclip', 'aria-hidden="true"') .'</a></div>'
 			};
 		}
 		echo '</div>';
 	}
 ?>
 
+									</div>
 								</article>
 								<?php } ?>
 							</div>
 
+							<?php if (!empty($reviews) && !empty($pagination)) { ?>
+							<div class="reviews-pagination">
+								{{pagination}}
+							</div>
+							<?php } ?>
+
 							<?php } else { ?>
-							<p><em><?= t('title_be_first_to_post_review', 'Be the first to post a review for this product') ?></em></p>
+							<div class="reviews-empty">
+								<?= f::draw_fonticon('icon-comments', 'aria-hidden="true"') ?>
+								<p><?= t('title_be_first_to_post_review', 'Be the first to post a review for this product') ?></p>
+							</div>
 							<?php } ?>
 
 						</div>
 
-						<div class="col-md-6">
+						<div class="col-md-5">
 
-							<?= f::form_begin('rating_form', 'post', '', true, ['aria-label' => f::escape_attr(t('title_customer_reviews', 'Customer Reviews'))]) ?>
+							<?= f::form_begin('rating_form', 'post', '', true, ['aria-label' => f::escape_attr(t('title_reviews', 'Reviews'))]) ?>
 
 								<fieldset<?= empty(customer::$data['id']) ? ' disabled aria-disabled="true"' : '' ?>>
 									<h3><?= t('title_rate_this_product', 'Rate This Product') ?></h3>
 
 									<?php if (empty(customer::$data['id'])) { ?>
 
-									<div style="color: #999;"><?= t('text_must_be_signed_in_to_rate_product', 'You must be signed in to rate this product') ?></div>
+									<div class="text-muted"><?= t('text_must_be_signed_in_to_rate_product', 'You must be signed in to rate this product') ?></div>
 
 									<div><a class="btn btn-default" href="<?= document::ilink('account/sign_in', ['redirect_url' => document::link()]) ?>#box-login" data-toggle="lightbox" data-seamless="true" data-width="480px" data-require-window-width="768"><?= t('title_sign_in', 'Sign In') ?></a></div>
 
@@ -477,12 +504,12 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 									<div class="form-group">
 										<label for="review_title" class="hidden"><?= t('title_title', 'Title') ?></label>
-										<?= f::form_input_text('title', !empty($customer_review['title']) ? $customer_review['title'] : true, ['id' => 'review_title', 'autocomplete' => 'off', 'placeholder' => f::escape_html(t('title_title', 'Title'))]) ?>
+										<?= f::form_input_text('title', !empty($customer_review['title']) ? (string)$customer_review['title'] : true, ['id' => 'review_title', 'autocomplete' => 'off', 'placeholder' => f::escape_html(t('title_title', 'Title'))]) ?>
 									</div>
 
-											<div class="form-group">
+									<div class="form-group">
 										<label for="review_description" class="hidden"><?= t('title_review', 'Review') ?></label>
-										<?= f::form_textarea('description', !empty($customer_review['description']) ? $customer_review['description'] : true, ['id' => 'review_description', 'autocomplete' => 'off', 'placeholder' => f::escape_html(t('title_review', 'Review'))]) ?>
+										<?= f::form_textarea('description', !empty($customer_review['description']) ? (string)$customer_review['description'] : true, ['id' => 'review_description', 'autocomplete' => 'off', 'placeholder' => f::escape_html(t('title_review', 'Review'))]) ?>
 									</div>
 
 									<div class="attachments" aria-label="<?= f::escape_attr(t('title_attachments', 'Attachments')) ?>">

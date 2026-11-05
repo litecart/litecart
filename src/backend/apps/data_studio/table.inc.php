@@ -67,7 +67,7 @@
 				);
 			}
 
-			notices::add('notices', strtr(t('notice_n_rows_deleted', '%n rows deleted'), ['%n' => count($_POST['rows'])]));
+			notices::add('notices', strtr(t('notice_n_rows_deleted', '{n} rows deleted'), ['{n}' => count($_POST['rows'])]));
 
 		} catch (Exception $e) {
 			notices::add('errors', $e->getMessage());
@@ -91,7 +91,7 @@
 
 	$affected_rows = database::affected_rows();
 	if (preg_match('#^\s*(INSERT|UPDATE|DELETE|ALTER) #i', $_POST['query'])) {
-		notices::add('notices', strtr(t('notice_n_rows_affected', '%n rows affected'), ['%n' => $affected_rows]));
+		notices::add('notices', strtr(t('notice_n_rows_affected', '{n} rows affected'), ['{n}' => $affected_rows]));
 	}
 
 	$table_options = f::array_each($tables, fn($table) => [$table, $table]);

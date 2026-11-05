@@ -20,7 +20,10 @@
 				throw new Exception(t('error_missing_rating', 'You must enter a rating'));
 			}
 
-			if (empty($_POST['description'])) {
+			// The review text is posted per language, e.g. description[en]
+			$_POST['description'] = is_array($_POST['description'] ?? null) ? $_POST['description'] : [];
+
+			if (!array_filter($_POST['description'], function($text) { return trim((string)$text) !== ''; })) {
 				throw new Exception(t('error_missing_review', 'You must enter a review'));
 			}
 
@@ -155,12 +158,12 @@
 				<div id="<?= $language_code ?>" class="tab-pane fade in<?= ($language_code == language::$selected['code']) ? ' active' : '' ?>">
 					<div class="form-group">
 						<label><?= t('title_title', 'Title') ?></label>
-						<?= f::form_regional_text($language_code, 'title['. $language_code .']', true, '') ?>
+						<?= f::form_regional_text('title['. $language_code .']', $language_code, true, '') ?>
 					</div>
 
 					<div class="form-group">
 						<label><?= t('title_review', 'Review') ?></label>
-						<?= f::form_regional_textarea($language_code, 'review['. $language_code .']', true, ['style' => 'height: 250px;']) ?>
+						<?= f::form_regional_textarea('description['. $language_code .']', $language_code, true, ['style' => 'height: 250px;']) ?>
 					</div>
 				</div>
 				<?php } ?>
@@ -330,18 +333,16 @@
 		}
 	}).trigger('input');
 
-	$('#attachments').on('click', 'button[name="move_up", button[name="move_down"]', function(e) {
+	$('#attachments').on('click', 'button[name="move_up"], button[name="move_down"]', function(e) {
 		e.preventDefault();
 
 		var $row = $(this).closest('.form-group');
 
 		if ($(this).is('[name="move_up"]') && $row.prevAll().length > 0) {
-			$row.insertBefore(row.prev());
+			$row.insertBefore($row.prev());
 		} else if ($(this).is('[name="move_down"]') && $row.nextAll().length > 0) {
 			$row.insertAfter($row.next());
 		}
-
-		refreshMainImage();
 	});
 
 	$('#attachments').on('click', 'button[name="remove"]', function(e) {
@@ -353,9 +354,9 @@
 		e.preventDefault();
 
 		var $output = $([
-			'<div class="attachment form-group">'
-			'  <label><?= f::escape_js(t('title_attachment', 'Attachment')) ?></label>'
-			'  <div class="input-group">'
+			'<div class="attachment form-group">',
+			'  <label><?= f::escape_js(t('title_attachment', 'Attachment')) ?></label>',
+			'  <div class="input-group">',
 			'    <?= f::escape_js(f::form_input_file('new_attachments[]')) ?>',
 			'    <?= f::escape_js(f::form_button_predefined('remove-sm'), '') ?>',
 			'  </div>',

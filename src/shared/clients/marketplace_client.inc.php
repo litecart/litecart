@@ -155,11 +155,7 @@
 
 				self::$_client = new http_client();
 
-				if (strtoupper($method) == 'GET') {
-					$url = document::link('https://www.litecart.net/api'.$endpoint, $data);
-				} else {
-					$url = document::link('https://www.litecart.net/api'.$endpoint);
-				}
+				$url = document::link('https://www.litecart.net/api'.$endpoint);
 
 				$response = self::$_client->call($method, $url, $data, [
 					'X-Access-Token' => settings::get('marketplace_access_token'),
