@@ -105,12 +105,15 @@
   }
 
 // List supported upgrades
-  $supported_versions = ['1.0' => '1.0'];
+  $supported_versions = ['1.0'];
+
   foreach (glob(__DIR__ . '/upgrade_patches/*') as $file) {
-    if (preg_match('#/([^/]+).(?:inc.php|sql)$#', $file, $matches)) {
-      $supported_versions[$matches[1]] = $matches[1];
+    if (preg_match('#/([^/]+)\.(inc\.php|sql)$#', $file, $matches)) {
+      $supported_versions[] = $matches[1];
     }
   }
+
+  $supported_versions = array_unique($supported_versions);
 
   usort($supported_versions, function($a, $b) {
     return version_compare($a, $b, '>') ? 1 : -1;
@@ -269,7 +272,9 @@
         }
 
         if (file_exists(__DIR__ . '/upgrade_patches/'. $version .'.sql')) {
+
           echo '<p>Upgrading database to '. $version .'...</p>' . PHP_EOL . PHP_EOL;
+
           $sql = file_get_contents(__DIR__ . '/upgrade_patches/'. $version .'.sql');
           $sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, $sql);
 
@@ -282,6 +287,7 @@
         }
 
         if (file_exists(__DIR__ . '/upgrade_patches/'. $version .'.inc.php')) {
+
           echo '<p>Upgrading system to '. $version .'...</p>' . PHP_EOL . PHP_EOL;
           include(__DIR__.'/upgrade_patches/'. $version .'.inc.php');
         }
@@ -416,7 +422,6 @@
     require('includes/footer.inc.php');
     exit;
   }
-
 
 ?>
 <style>
