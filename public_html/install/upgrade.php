@@ -104,6 +104,21 @@
     define('PLATFORM_DATABASE_VERSION', $platform_database_version['value']);
   }
 
+// List supported upgrades
+  $supported_versions = ['1.0'];
+
+  foreach (glob(__DIR__ . '/upgrade_patches/*') as $file) {
+    if (preg_match('#/([^/]+).(inc\.php|sql)$#', $file, $matches)) {
+      $supported_versions[] = $matches[1];
+    }
+  }
+
+  $supported_versions = array_unique($supported_versions);
+
+  usort($supported_versions, function($a, $b) {
+    return version_compare($a, $b, '>') ? 1 : -1;
+  });
+
   if (empty($_REQUEST['development_type'])) {
     if (is_file($file = FS_DIR_APP . 'includes/templates/default.catalog/.development')) {
       $_REQUEST['development_type'] = file_get_contents($file);
@@ -257,25 +272,17 @@
 
       #############################################
 
-      $migration_patches = glob(__DIR__ . '/upgrade_patches/*.{sql,inc.php}', GLOB_BRACE);
-
-      usort($migration_patches, function($a, $b) {
-        return preg_match('#\.sql$#', $a) ? -1 : 1;
-      });
-
-      foreach ($migration_patches as $patch) {
-
-        $version = preg_replace('#^.*/([^/]+).(inc\.php|sql)$#', '$1', $patch);
+      foreach ($supported_versions as $version) {
 
         if (version_compare(PLATFORM_DATABASE_VERSION, $version, '>=')) {
           continue;
         }
 
-        if (preg_match('#\.sql$#', $patch)) {
+        if (file_exists(__DIR__ . '/upgrade_patches/'. $version .'.sql')) {
 
           echo '<p>Upgrading database to '. $version .'...</p>' . PHP_EOL . PHP_EOL;
 
-          $sql = file_get_contents($patch);
+          $sql = file_get_contents(__DIR__ . '/upgrade_patches/'. $version .'.sql');
           $sql = str_replace('`lc_', '`'.DB_TABLE_PREFIX, $sql);
 
           foreach (preg_split('#^-- -----*\s*$#m', $sql, -1, PREG_SPLIT_NO_EMPTY) as $query) {
@@ -286,9 +293,10 @@
           }
         }
 
-        if (preg_match('#\.inc\.php$#', $patch)) {
+        if (file_exists(__DIR__ . '/upgrade_patches/'. $version .'.inc.php')) {
+
           echo '<p>Upgrading system to '. $version .'...</p>' . PHP_EOL . PHP_EOL;
-          include($patch);
+          include(__DIR__.'/upgrade_patches/'. $version .'.inc.php');
         }
 
         echo '<p>Set platform database version...';
@@ -421,20 +429,6 @@
     require('includes/footer.inc.php');
     exit;
   }
-
-  $supported_versions = ['1.0'];
-
-  foreach (glob(__DIR__ . '/upgrade_patches/*') as $file) {
-    if (preg_match('#/([^/]+).(inc\.php|sql)$#', $file, $matches)) {
-      $supported_versions[] = $matches[1];
-    }
-  }
-
-  $supported_versions = array_unique($supported_versions);
-
-  usort($supported_versions, function($a, $b) {
-    return version_compare($a, $b, '>') ? 1 : -1;
-  });
 
 ?>
 <style>
