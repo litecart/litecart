@@ -704,7 +704,7 @@ bf4036885fd8f0a428691d3581ed0f75	install/upgrade_patches/2.7.0.inc.php
 dfad62c972abe887cdffa65aa419a1ca	install/upgrade_patches/2.7.0.sql
 c9dc583e13b20fed4053f27f59a4a300	install/upgrade_patches/2.7.1.inc.php
 eef07d3d13709134c7beaf78a6c6ccc8	install/upgrade_patches/2.7.1.sql
-f3c9c9e0ab7d3e3428fd93e5ac4b7593	install/upgrade_patches/2.7.2.inc.php
+5bbd72e68f06b2ae37ab4b6488fa8c66	install/upgrade_patches/2.7.2.inc.php
 762611a67fc16fdee1488b06becaa82f	install/upgrade_patches/2.7.2.sql
 62bac9360222fee7de79173307177c9e	logs/.htaccess
 d41d8cd98f00b204e9800998ecf8427e	logs/index.html
