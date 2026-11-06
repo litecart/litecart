@@ -89,8 +89,8 @@ $('select[name="country_code"]').change(function(){
     },
     success: function(data) {
       $('select[name="zone_code"]').html('');
-      if ($('select[name="zone_code"]').attr('disabled')) $('select[name="zone_code"]').prop('disabled', false);
-      if (data) {
+      if (data.length) {
+        $('select[name="zone_code"]').prop('disabled', false);
         $.each(data, function(i, zone) {
           $('select[name="zone_code"]').append('<option value="'+ zone.code +'">'+ zone.name +'</option>');
         });

@@ -1018,7 +1018,7 @@
       },
       success: function(data) {
         $('select[name="new_attribute[value_id]"]').html('');
-        if ($('select[name="new_attribute[value_id]"]').attr('disabled')) $('select[name="attribute[value_id]"]').prop('disabled', false);
+        $('select[name="new_attribute[value_id]"]').prop('disabled', false);
         if (data) {
           $('select[name="new_attribute[value_id]"]').append('<option value="0">-- <?php echo functions::escape_js(language::translate('title_select', 'Select')); ?> --</option>');
           $.each(data, function(i, zone) {
@@ -1299,7 +1299,7 @@
       },
       success: function(data) {
         $('select[name="new_predefined_option[value_id]"]').html('');
-        if ($('select[name="new_predefined_option[value_id]"]').attr('disabled')) $('select[name="new_predefined_option[value_id]"]').prop('disabled', false);
+        $('select[name="new_predefined_option[value_id]"]').prop('disabled', false);
         if (data) {
           $('select[name="new_predefined_option[value_id]"]').append('<option value="0">-- <?php echo functions::escape_js(language::translate('title_select', 'Select')); ?> --</option>');
           $.each(data, function(i, zone) {
@@ -1307,35 +1307,6 @@
           });
         } else {
           $('select[name="new_predefined_option[value_id]"]').prop('disabled', true);
-        }
-      },
-      complete: function() {
-        $('body').css('cursor', 'auto');
-      }
-    });
-  });
-
-  $('body').on('change', '.featherlight select[name="new_user_input_option[group_id]"]', function(){
-    $('body').css('cursor', 'wait');
-    $.ajax({
-      url: '<?php echo document::link(null, ['doc' => 'attribute_values.json'], ['app']); ?>&group_id=' + $(this).val(),
-      type: 'get',
-      cache: true,
-      async: true,
-      dataType: 'json',
-      error: function(jqXHR, textStatus, errorThrown) {
-        alert(jqXHR.readyState + '\n' + textStatus + '\n' + errorThrown.message);
-      },
-      success: function(data) {
-        $('select[name="new_user_input_option[value_id]"]').html('');
-        if ($('select[name="new_user_input_option[value_id]"]').attr('disabled')) $('select[name="new_user_input_option[value_id]"]').prop('disabled', false);
-        if (data) {
-          $('select[name="new_user_input_option[value_id]"]').append('<option value="0">-- <?php echo functions::escape_js(language::translate('title_select', 'Select')); ?> --</option>');
-          $.each(data, function(i, zone) {
-            $('select[name="new_user_input_option[value_id]"]').append('<option value="'+ zone.id +'">'+ zone.name +'</option>');
-          });
-        } else {
-          $('select[name="new_user_input_option[value_id]"]').prop('disabled', true);
         }
       },
       complete: function() {
