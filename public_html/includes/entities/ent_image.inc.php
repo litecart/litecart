@@ -519,6 +519,10 @@
               throw new Exception("Unknown clipping method ($clipping)");
           }
 
+        // The dimensions may have changed
+          $this->_width = null;
+          $this->_height = null;
+
           return true;
 
         case 'gd':
@@ -653,8 +657,8 @@
               throw new Exception('Unknown clipping method');
           }
 
-          $this->_width = $destination_width;
-          $this->_height = $destination_height;
+          $this->_width = imagesx($_resized);
+          $this->_height = imagesy($_resized);
 
           if (PHP_VERSION_ID < 80000) {
             ImageDestroy($this->_image);
