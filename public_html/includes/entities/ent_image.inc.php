@@ -111,49 +111,61 @@
 
         case 'imagick':
 
-          // Prevent DoS attack
-            Imagick::setResourceLimit(imagick::RESOURCETYPE_AREA, 24e6);
-            Imagick::setResourceLimit(imagick::RESOURCETYPE_MEMORY, 512e6);
-            Imagick::setResourceLimit(imagick::RESOURCETYPE_DISK, 512e6);
+        // Prevent DoS attack
+          Imagick::setResourceLimit(imagick::RESOURCETYPE_AREA, 24e6);
+          Imagick::setResourceLimit(imagick::RESOURCETYPE_MEMORY, 512e6);
+          Imagick::setResourceLimit(imagick::RESOURCETYPE_DISK, 512e6);
 
-            $this->_image = new imagick($this->_src);
-            return true;
+          $this->_image = new imagick($this->_src);
+
+        // Imagick reports the format in upper case, so normalize it
+          $_format = strtolower($this->_image->getImageFormat());
+          $this->_type = ($_format == 'jpeg') ? 'jpg' : $_format;
+
+          break;
 
         case 'gd':
 
-          if ($this->width() * $this->height() > 64e6) {
+        // Determine the image type from the file contents, not from the file extension
+          if (!$params = @getimagesize($this->_src)) {
+            throw new Exception('Failed decoding image ('. $this->_src .')');
+          }
+
+          $this->_width = $params[0];
+          $this->_height = $params[1];
+
+          if ($this->_width * $this->_height > 64e6) {
             throw new Exception('Refused to load image larger than 64 Megapixels');
           }
 
-          switch(strtolower(pathinfo($this->_src, PATHINFO_EXTENSION))) {
+          switch ($params[2]) {
 
-            case 'avif':
+            case 19: // AVIF
               $this->_type = 'avif';
-              $this->_image = ImageCreateFromAVIF($this->_src);
+              $this->_image = function_exists('ImageCreateFromAVIF') ? ImageCreateFromAVIF($this->_src) : ImageCreateFromString(file_get_contents($this->_src));
               break;
 
-            case 'gif':
+            case 1: // GIF
               $this->_type = 'gif';
               $this->_image = ImageCreateFromGIF($this->_src);
               break;
 
-            case 'jpg':
-            case 'jpeg':
+            case 2: // JPEG
               $this->_type = 'jpg';
               $this->_image = ImageCreateFromJPEG($this->_src);
               break;
 
-            case 'jxl':
+            case 26: // JXL
               $this->_type = 'jxl';
-              $this->_image = ImageCreateFromJXL($this->_src);
+              $this->_image = function_exists('ImageCreateFromJXL') ? ImageCreateFromJXL($this->_src) : ImageCreateFromString(file_get_contents($this->_src));
               break;
 
-            case 'png':
+            case 3: // PNG
               $this->_type = 'png';
               $this->_image = ImageCreateFromPNG($this->_src);
               break;
 
-            case 'webp':
+            case 18: // WEBP
               $this->_type = 'webp';
               $this->_image = ImageCreateFromWebP($this->_src);
               break;
@@ -163,7 +175,191 @@
               break;
           }
 
-          return $this->_image ? true : false;
+          if (!$this->_image) {
+            return false;
+          }
+      }
+
+      $this->auto_orient();
+      return true;
+    }
+
+    // Apply the EXIF orientation to the pixels so that resampling sees the real width and height
+    public function auto_orient($binary = null) {
+
+      switch($this->_library) {
+
+        case 'imagick':
+
+          if (empty($this->_image)) {
+            $this->load();
+          }
+
+          switch ($this->_image->getImageOrientation()) {
+
+            case Imagick::ORIENTATION_TOPRIGHT:
+              $this->_image->flopImage();
+              break;
+
+            case Imagick::ORIENTATION_BOTTOMRIGHT:
+              $this->rotate(180);
+              break;
+
+            case Imagick::ORIENTATION_BOTTOMLEFT:
+              $this->_image->flipImage();
+              break;
+
+            case Imagick::ORIENTATION_LEFTTOP:
+              $this->_image->transposeImage();
+              break;
+
+            case Imagick::ORIENTATION_RIGHTTOP:
+              $this->rotate(-90);
+              break;
+
+            case Imagick::ORIENTATION_RIGHTBOTTOM:
+              $this->_image->transverseImage();
+              break;
+
+            case Imagick::ORIENTATION_LEFTBOTTOM:
+              $this->rotate(90);
+              break;
+          }
+
+          $this->_image->setImageOrientation(Imagick::ORIENTATION_TOPLEFT);
+          break;
+
+        case 'gd':
+
+          if (empty($this->_image)) {
+            $this->load();
+            return;
+          }
+
+          $orientation = 1;
+
+          if (function_exists('exif_read_data') && in_array($this->_type, ['jpg', 'jpeg'])) {
+
+            if (!empty($binary)) {
+
+              $stream = fopen('php://memory', 'r+');
+              fwrite($stream, $binary);
+              rewind($stream);
+              $exif = @exif_read_data($stream);
+              fclose($stream);
+
+            } else if (!empty($this->_src) && is_file($this->_src)) {
+              $exif = @exif_read_data($this->_src);
+            } else {
+              $exif = null;
+            }
+
+            if (is_array($exif) && !empty($exif['Orientation'])) {
+              $orientation = (int)$exif['Orientation'];
+            }
+          }
+
+          switch ($orientation) {
+
+            case 2: // TOPRIGHT - mirror horizontally
+              imageflip($this->_image, IMG_FLIP_HORIZONTAL);
+              break;
+
+            case 3: // BOTTOMRIGHT - rotate 180 degrees
+              $this->rotate(180);
+              break;
+
+            case 4: // BOTTOMLEFT - mirror vertically
+              imageflip($this->_image, IMG_FLIP_VERTICAL);
+              break;
+
+            case 5: // LEFTTOP - transpose
+              imageflip($this->_image, IMG_FLIP_VERTICAL);
+              $this->rotate(-90);
+              break;
+
+            case 6: // RIGHTTOP - rotate 90 degrees clockwise
+              $this->rotate(-90);
+              break;
+
+            case 7: // RIGHTBOTTOM - transverse
+              imageflip($this->_image, IMG_FLIP_HORIZONTAL);
+              $this->rotate(-90);
+              break;
+
+            case 8: // LEFTBOTTOM - rotate 90 degrees counterclockwise
+              $this->rotate(90);
+              break;
+          }
+
+        // The dimensions may have changed
+          $this->_width = null;
+          $this->_height = null;
+
+          break;
+      }
+    }
+
+    // Rotate the image counter-clockwise by the given angle, preserving transparency
+    public function rotate($angle) {
+
+      switch($this->_library) {
+
+        case 'imagick':
+
+          if (empty($this->_image)) {
+            $this->load();
+          }
+
+          if (empty($this->_image)) {
+            throw new Exception('Not a valid image object');
+          }
+
+        // Imagick rotates clockwise, so the angle is inverted
+          if (!$this->_image->rotateImage('none', -$angle)) return false;
+
+        // The pixels are upright now, so any orientation tag is reset
+          $this->_image->setImageOrientation(Imagick::ORIENTATION_TOPLEFT);
+
+        // Discard the virtual canvas left behind by the rotation
+          $this->_image->setImagePage($this->_image->getImageWidth(), $this->_image->getImageHeight(), 0, 0);
+
+        // The dimensions may have changed
+          $this->_width = null;
+          $this->_height = null;
+
+          return true;
+
+        case 'gd':
+
+          if (!$this->_image) {
+            $this->load();
+          }
+
+          if (!$this->_image) {
+            throw new Exception('Not a valid image resource');
+          }
+
+        // Only multiples of 90 degrees are used, so the background is never visible
+          $_background = imageistruecolor($this->_image) ? imagecolorallocatealpha($this->_image, 0, 0, 0, 127) : 0;
+
+          $_rotated = imagerotate($this->_image, $angle, $_background);
+
+          if (!$_rotated) return false;
+
+          imagesavealpha($_rotated, true);
+
+          if (PHP_VERSION_ID < 80000) {
+            ImageDestroy($this->_image);
+          }
+
+          $this->_image = $_rotated;
+
+        // The dimensions may have changed
+          $this->_width = null;
+          $this->_height = null;
+
+          return true;
       }
     }
 
@@ -186,9 +382,14 @@
           $this->_image = new imagick();
 
           $this->_image->readImageBlob($binary);
-          $this->_type = $this->_image->getImageFormat();
 
-          return true;
+        // Imagick reports the format in upper case, so normalize it
+          $_format = strtolower($this->_image->getImageFormat());
+          $this->_type = ($_format == 'jpeg') ? 'jpg' : $_format;
+
+          $this->auto_orient();
+
+          break;
 
         case 'gd':
 
@@ -233,8 +434,16 @@
 
           $this->_image = ImageCreateFromString($binary);
 
-          return true;
+          if (!$this->_image) {
+            throw new Exception('Not a valid image resource');
+          }
+
+          $this->auto_orient($binary);
+
+          break;
       }
+
+      return true;
     }
 
     public function resample($width=1024, $height=1024, $clipping='FIT_ONLY_BIGGER') {
@@ -260,7 +469,9 @@
 
         case 'imagick':
 
-          if (empty($this->_image)) $this->load();
+          if (empty($this->_image)) {
+            $this->load();
+          }
 
           if (empty($this->_image)) {
             throw new Exception('Not a valid image object');
@@ -280,7 +491,7 @@
 
             case 'FIT_ONLY_BIGGER':
               if ($this->width() > $width || $this->height() > $height) {
-                $this->_image->resizeImage($width, $height, Imagick::FILTER_LANCZOS, 1, false);
+                $this->_image->resizeImage($width, $height, Imagick::FILTER_LANCZOS, 1, true);
               }
               break;
 
@@ -312,7 +523,9 @@
 
         case 'gd':
 
-          if (!$this->_image) $this->load();
+          if (!$this->_image) {
+            $this->load();
+          }
 
           if (!$this->_image) {
             throw new Exception('Not a valid image resource');
@@ -482,7 +695,9 @@
 
         case 'imagick':
 
-          if (empty($this->_image)) $this->load();
+          if (empty($this->_image)) {
+            $this->load();
+          }
 
           if (empty($this->_image)) {
             throw new Exception('Not a valid image object');
@@ -500,7 +715,9 @@
 
         case 'gd':
 
-          if (!$this->_image) $this->load();
+          if (!$this->_image) {
+            $this->load();
+          }
 
           if (!$this->_image) {
             throw new Exception('Not a valid image resource');
@@ -531,7 +748,9 @@
 
         case 'imagick':
 
-          if (empty($this->_image)) $this->load();
+          if (empty($this->_image)) {
+            $this->load();
+          }
 
           if (empty($this->_image)) {
             throw new Exception('Not a valid image object');
@@ -565,7 +784,9 @@
 
         case 'gd':
 
-          if (!$this->_image) $this->load();
+          if (!$this->_image) {
+            $this->load();
+          }
 
           if (!$this->_image) {
             throw new Exception('Not a valid image resource');
@@ -624,7 +845,9 @@
 
         case 'imagick':
 
-          if (empty($this->_image)) $this->load();
+          if (empty($this->_image)) {
+            $this->load();
+          }
 
           if (empty($this->_image)) {
             throw new Exception('Not a valid image object');
@@ -650,7 +873,9 @@
 
         case 'gd':
 
-          if (!$this->_image) $this->load();
+          if (!$this->_image) {
+            $this->load();
+          }
 
           if (!$this->_image) {
             throw new Exception('Not a valid image resource');
@@ -748,7 +973,9 @@
 
         case 'imagick':
 
-          if (empty($this->_image)) $this->load();
+          if (empty($this->_image)) {
+            $this->load();
+          }
 
           if (empty($this->_image)) {
             throw new Exception('Not a valid image object');
@@ -792,7 +1019,9 @@
 
         case 'gd':
 
-          if (!$this->_image) $this->load();
+          if (!$this->_image) {
+            $this->load();
+          }
 
           if (!$this->_image) {
             throw new Exception('Not a valid image resource');
@@ -805,13 +1034,10 @@
             throw new Exception('Watermark file is not a valid image ('. $watermark .')');
           }
 
-        // Load watermark
-          $_watermark->load();
-
         // Check if watermark is a PNG file
-          if ($_watermark->type() != 'png') {
-            trigger_error('Watermark file is not a PNG image ('. $watermark .')', E_USER_NOTICE);
-          }
+          //if ($_watermark->type() != 'png') {
+          //  trigger_error('Watermark file is not a PNG image ('. $watermark .')', E_USER_NOTICE);
+          //}
 
         // Shrink a large watermark
           $_watermark->resample(round($this->width()/5), round($this->height()/5), 'FIT_ONLY_BIGGER');
@@ -880,7 +1106,9 @@
 
         case 'imagick':
 
-          if (empty($this->_image)) $this->load();
+          if (empty($this->_image)) {
+            $this->load();
+          }
 
           if (empty($this->_image)) {
             throw new Exception('Not a valid image object');
@@ -890,27 +1118,7 @@
             $this->_image->setImageDepth(16);
           }
 
-        // Get the EXIF orientation of the image
-          $orientation = $this->_image->getImageOrientation();
-
-        // Determine the rotation angle based on orientation
-          switch ($orientation) {
-
-            case Imagick::ORIENTATION_TOPRIGHT:
-              $this->_image->rotateImage('none', 90);
-              break;
-
-            case Imagick::ORIENTATION_BOTTOMRIGHT:
-              $this->_image->rotateImage('none', 180);
-              break;
-
-            case Imagick::ORIENTATION_BOTTOMLEFT:
-              $this->_image->rotateImage('none', -90);
-              break;
-          }
-
-        // Fix the orientation so that the image displays correctly
-          $this->_image->setImageOrientation(Imagick::ORIENTATION_TOPLEFT);
+          $this->auto_orient();
 
           switch(strtolower($type)) {
 
@@ -939,40 +1147,15 @@
 
         case 'gd':
 
-          if (!$this->_image) $this->load();
+          if (!$this->_image) {
+            $this->load();
+          }
 
           if (!$this->_image) {
             throw new Exception('Not a valid image resource');
           }
 
           if ($interlaced) ImageInterlace($this->_image, true);
-
-          if (function_exists('exif_read_data') && !empty($this->_src) && in_array($this->type(), ['jpg', 'jpeg'])) {
-
-          // Get the EXIF data of the image
-            $exif = @exif_read_data($this->_src);
-
-          // Check if orientation data exists
-            if (isset($exif['Orientation'])) {
-              $orientation = $exif['Orientation'];
-
-            // Determine the rotation angle based on orientation
-              switch ($orientation) {
-
-                case 3:
-                  $this->_image = ImageRotate($this->_image, 180, 0);
-                  break;
-
-                case 6:
-                  $this->_image = ImageRotate($this->_image, -90, 0);
-                  break;
-
-                case 8:
-                  $this->_image = ImageRotate($this->_image, 90, 0);
-                  break;
-              }
-            }
-          }
 
           switch(strtolower($type)) {
 
@@ -1059,7 +1242,9 @@
       switch($this->_library) {
         case 'imagick':
 
-          if (empty($this->_image)) $this->load();
+          if (empty($this->_image)) {
+            $this->load();
+          }
 
           if (empty($this->_image)) {
             throw new Exception('Not a valid image object');
@@ -1072,7 +1257,9 @@
 
         case 'gd':
 
-          if (!$this->_image) $this->load();
+          if (!$this->_image) {
+            $this->load();
+          }
 
           if (!$this->_image) {
             throw new Exception('Not a valid image resource');
@@ -1166,7 +1353,9 @@
       switch($this->_library) {
         case 'imagick':
 
-          if (empty($this->_image)) $this->load();
+          if (empty($this->_image)) {
+            $this->load();
+          }
 
           if (empty($this->_image)) {
             throw new Exception('Not a valid image object');
@@ -1200,7 +1389,9 @@
       switch($this->_library) {
         case 'imagick':
 
-          if (empty($this->_src)) $this->load();
+          if (empty($this->_src)) {
+            $this->load();
+          }
 
           if (empty($this->_src)) {
             throw new Exception('Not a valid image object');
@@ -1229,77 +1420,11 @@
 
     public function type() {
 
-      if (!empty($this->_type)) return $this->_type;
-
-      if (empty($this->_image)) {
-
-        if (function_exists('exif_imagetype')) {
-          $image_type = exif_imagetype($this->_src);
-        }
-
-        if (empty($image_type) && function_exists('getimagesize')) {
-
-          if (!$params = getimagesize($this->_src)) {
-            throw new Exception('Failed decoding image');
-          }
-
-          $this->_width = $params[0];
-          $this->_height = $params[1];
-          $image_type = $params[2];
-        }
-
-        if (!empty($image_type)) {
-          switch($image_type) {
-
-            case 19:
-              $this->_type = 'avif';
-              break;
-
-            case 1:
-              $this->_type = 'gif';
-              break;
-
-            case 2:
-              $this->_type = 'jpg';
-              break;
-
-            case 18:
-              $this->_type = 'webp';
-              break;
-
-            case 26:
-              $this->_type = 'jxl';
-              break;
-
-            case 3:
-            default:
-              $this->_type = 'png';
-              break;
-          }
-
-          return $this->_type;
-        }
+    // The type is determined while loading the image
+      if (empty($this->_type)) {
+        $this->load();
       }
 
-      if (empty($this->_image)) $this->load();
-
-      switch($this->_library) {
-
-        case 'imagick':
-
-          if (empty($this->_image)) {
-            throw new Exception('Not a valid image object');
-          }
-
-          return $this->_image->getImageFormat();
-
-        case 'gd':
-
-          if (!$this->_image) {
-            throw new Exception('Not a valid image resource');
-          }
-
-          return $this->_type;
-      }
+      return $this->_type;
     }
   }
