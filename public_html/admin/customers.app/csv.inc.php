@@ -96,7 +96,17 @@
           if (isset($row[$field])) $customer->data[$field] = $row[$field];
         }
 
-        if (!empty($row['new_password'])) $customer->set_password($row['new_password']);
+        if (!empty($row['new_password'])) {
+
+          $customer->set_password($row['new_password']);
+
+          $customer->data['date_expire_sessions'] = date('Y-m-d H:i:s');
+
+          // Keep the acting admin logged in when signed in as the same customer
+          if (!empty(session::$data['customer']['id']) && session::$data['customer']['id'] == $customer->data['id']) {
+            session::$data['customer_security_timestamp'] = strtotime($customer->data['date_expire_sessions']);
+          }
+        }
 
         $customer->save();
       }

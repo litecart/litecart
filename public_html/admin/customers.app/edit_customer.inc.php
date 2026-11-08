@@ -85,9 +85,19 @@
         $customer->data['shipping_address'][$field] = !empty($_POST['shipping_address'][$field]) ? $_POST['shipping_address'][$field] : '';
       }
 
-      $customer->save();
+      if (!empty($_POST['new_password'])) {
 
-      if (!empty($_POST['new_password'])) $customer->set_password($_POST['new_password']);
+        $customer->set_password($_POST['new_password']);
+
+        $customer->data['date_expire_sessions'] = date('Y-m-d H:i:s');
+
+      // Keep the acting admin logged in when signed in as the same customer
+        if (!empty(session::$data['customer']['id']) && session::$data['customer']['id'] == $customer->data['id']) {
+          session::$data['customer_security_timestamp'] = strtotime($customer->data['date_expire_sessions']);
+        }
+      }
+
+      $customer->save();
 
       notices::add('success', language::translate('success_changes_saved', 'Changes saved'));
       header('Location: '. document::link(WS_DIR_ADMIN, ['app' => $_GET['app'], 'doc' => 'customers']));

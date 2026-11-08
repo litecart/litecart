@@ -50,12 +50,16 @@
         if (isset($_POST[$field])) $user->data[$field] = $_POST[$field];
       }
 
-      if (!empty($_POST['password'])) $user->set_password($_POST['password']);
+      if (!empty($_POST['password'])) {
 
-      $user->data['date_expire_sessions'] = date('Y-m-d H:i:s');
+        $user->set_password($_POST['password']);
 
-      if ($user->previous['username'] == user::$data['username']) {
-        session::$data['user_security_timestamp'] = strtotime($user->data['date_expire_sessions']);
+        $user->data['date_expire_sessions'] = date('Y-m-d H:i:s');
+
+      // Keep the acting admin logged in when editing their own account
+        if (!empty($user->data['id']) && $user->data['id'] == user::$data['id']) {
+          session::$data['user_security_timestamp'] = strtotime($user->data['date_expire_sessions']);
+        }
       }
 
       $user->save();

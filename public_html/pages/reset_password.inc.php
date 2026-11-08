@@ -174,7 +174,15 @@
 
         $customer = new ent_customer($customer['id']);
         $customer->set_password($_POST['new_password']);
-        $customer->data['password_reset_token'] = '';
+
+        database::query(
+          "update ". DB_TABLE_PREFIX ."customers
+          set password_reset_token = '',
+            date_expire_sessions = '". date('Y-m-d H:i:s') ."',
+            date_updated = '". date('Y-m-d H:i:s') ."'
+          where id = ". (int)$customer->data['id'] ."
+          limit 1;"
+        );
 
         notices::add('success', language::translate('success_new_password_set', 'Your new password has been set. You may now sign in.'));
         header('Location: '. document::ilink('login', ['email' => $customer->data['email']]));
