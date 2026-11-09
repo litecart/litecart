@@ -34,8 +34,18 @@
 					trigger_error('Undefined constant MYSQLI_OPT_INT_AND_FLOAT_NATIVE', E_USER_WARNING);
 				}
 
+				// Fail fast when the database is unreachable instead of blocking until the script timeout
+				self::set_option(MYSQLI_OPT_CONNECT_TIMEOUT, 5, $link);
+
 				if (!mysqli_real_connect(self::$links[$link], $server, $username, $password, $database)) {
-					throw new Error('Could not connect to database: '. mysqli_connect_errno() .' - '. mysqli_connect_error());
+
+					$error = mysqli_connect_errno() .' - '. mysqli_connect_error();
+
+					// Drop the uninitialized handle, otherwise it gets reused and reported as not fully initialized
+					@mysqli_close(self::$links[$link]);
+					unset(self::$links[$link]);
+
+					throw new Error('Could not connect to database: '. $error);
 				}
 
 				if (($duration = microtime(true) - $timestamp) > 1 && in_array('storage', stream_get_wrappers())) {
@@ -73,16 +83,8 @@
 
 			// Set time zone for current session
 			if ($timezone = ini_get('date.timezone')) {
-				if (database::query(
-					"SELECT 1 FROM mysql.time_zone_name
-					WHERE Name = '". database::input($timezone) ."'
-					LIMIT 1;"
-				)->num_rows) {
-					self::query("SET time_zone = '". self::input($timezone) ."';", $link);
-				} else {
-					$datetime = new \DateTime('now', new \DateTimezone($timezone));
-					self::query("SET time_zone = '". self::input($datetime->format('P')) ."';", $link);
-				}
+				$datetime = new \DateTime('now', new \DateTimezone($timezone));
+				self::query("SET time_zone = '". self::input($datetime->format('P')) ."';", $link);
 			}
 
 			return self::$links[$link];

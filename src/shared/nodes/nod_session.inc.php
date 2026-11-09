@@ -231,21 +231,28 @@
 
 			$expires_at = date('Y-m-d H:i:s', strtotime('+1 hour'));
 
-			database::query(
-				"insert into ". DB_PREFIX ."sessions
-				(id, data, expires_at, updated_at, created_at)
-				values (
-					'". database::input(self::$data['id']) ."',
-					'". database::input(f::format_json(self::$data, '')) ."',
-					'". database::input($expires_at) ."',
-					'". database::input(date('Y-m-d H:i:s')) ."',
-					'". database::input(date('Y-m-d H:i:s')) ."'
-				)
-				on duplicate key update
-					data = '". database::input(f::format_json(self::$data, '')) ."',
-					expires_at = '". database::input($expires_at) ."',
-					updated_at = '". database::input(date('Y-m-d H:i:s')) ."';"
-			);
+			try {
+
+				database::query(
+					"insert into ". DB_PREFIX ."sessions
+					(id, data, expires_at, updated_at, created_at)
+					values (
+						'". database::input(self::$data['id']) ."',
+						'". database::input(f::format_json(self::$data, '')) ."',
+						'". database::input($expires_at) ."',
+						'". database::input(date('Y-m-d H:i:s')) ."',
+						'". database::input(date('Y-m-d H:i:s')) ."'
+					)
+					on duplicate key update
+						data = '". database::input(f::format_json(self::$data, '')) ."',
+						expires_at = '". database::input($expires_at) ."',
+						updated_at = '". database::input(date('Y-m-d H:i:s')) ."';"
+				);
+
+			} catch (Throwable $t) {
+				trigger_error('Could not save session: '.$t->getMessage(), E_USER_WARNING);
+				return false;
+			}
 
 			return database::affected_rows() ? true : false;
 		}

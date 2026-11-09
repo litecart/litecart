@@ -14,6 +14,13 @@
 
 			self::$data = &session::$data['customer'];
 
+			// Repair null or missing values left in sessions created before the column defaults were fixed
+			foreach (database::schema('customers') as $field) {
+				if (!array_key_exists($field['Field'], self::$data) || self::$data[$field['Field']] === null) {
+					self::$data[$field['Field']] = database::create_variable($field);
+				}
+			}
+
 			// Bind scraps to session
 			if (empty(session::$data['scraps']) || !is_array(session::$data['scraps'])) {
 				session::$data['scraps'] = [];
@@ -37,7 +44,6 @@
 						"select * from ". DB_PREFIX ."customers
 						where id = ". (int)$token['id'] ."
 						and status
-						and (blocked_until is null or blocked_until < '". date('Y-m-d H:i:s') ."')
 						limit 1;"
 					)->fetch();
 
@@ -48,23 +54,6 @@
 					// Verify HMAC with actual password hash
 					$verified_id = f::token_verify_remember($_COOKIE['customer_remember_me'], $customer['password_hash']);
 					if ($verified_id === false) {
-						if (++$customer['login_attempts'] < 3) {
-							database::query(
-								"update ". DB_PREFIX ."customers
-								set login_attempts = login_attempts + 1
-								where id = ". (int)$customer['id'] ."
-								limit 1;"
-							);
-						} else {
-							database::query(
-								"update ". DB_PREFIX ."customers
-								set login_attempts = 0,
-								blocked_until = '". date('Y-m-d H:i:00', strtotime('+15 minutes')) ."'
-								where id = ". (int)$customer['id'] ."
-								limit 1;"
-							);
-						}
-
 						throw new Exception('Invalid token signature');
 					}
 
@@ -105,10 +94,8 @@
 						throw new Exception(t('error_your_account_is_disabled', 'Your account is disabled'));
 					}
 
-					if (!empty($customer['sessions_expiry'])) {
-						if (!isset(session::$data['security.customer']['timestamp']) || session::$data['security.customer']['timestamp'] < strtotime($customer['sessions_expiry'])) {
-							throw new Exception(t('error_session_expired_due_to_account_changes', 'Session expired due to changes in the account'));
-						}
+					if (isset(session::$data['security.customer']['timestamp']) && session::$data['security.customer']['timestamp'] < strtotime($customer['sessions_expiry'])) {
+						throw new Exception(t('error_session_expired_due_to_account_changes', 'Session expired due to changes in the account'));
 					}
 
 					session::$data['customer'] = f::array_update(session::$data['customer'], $customer);
@@ -265,17 +252,17 @@
 			}
 
 			// Set default country
-			if (empty(self::$data['country_code']) && in_array(settings::get('default_country_code'), $countries)) {
-				self::$data['country_code'] = settings::get('default_country_code');
+			if (empty(self::$data['country_code']) && in_array(settings::get('default_country_code', ''), $countries)) {
+				self::$data['country_code'] = settings::get('default_country_code', '');
 			}
 
 			// Set store country
-			if (empty(self::$data['country_code']) && in_array(settings::get('store_country_code'), $countries)) {
-				self::$data['country_code'] = settings::get('store_country_code');
+			if (empty(self::$data['country_code']) && in_array(settings::get('store_country_code', ''), $countries)) {
+				self::$data['country_code'] = settings::get('store_country_code', '');
 			}
 
 			// Set first country in list
-			if (empty(self::$data['country_code'])) {
+			if (empty(self::$data['country_code']) && !empty($countries)) {
 				self::$data['country_code'] = $countries[0];
 			}
 
@@ -287,29 +274,34 @@
 			}
 
 			// Set default zone
-			if (empty(self::$data['zone_code']) && self::$data['country_code'] == settings::get('default_country_code')) {
-				self::$data['zone_code'] = settings::get('default_zone_code');
+			if (empty(self::$data['zone_code']) && self::$data['country_code'] == settings::get('default_country_code', '')) {
+				self::$data['zone_code'] = settings::get('default_zone_code', '');
 			}
 
 			// Set store zone
-			if (empty(self::$data['zone_code']) && self::$data['country_code'] == settings::get('store_country_code')) {
-				self::$data['zone_code'] = settings::get('store_zone_code');
+			if (empty(self::$data['zone_code']) && self::$data['country_code'] == settings::get('store_country_code', '')) {
+				self::$data['zone_code'] = settings::get('store_zone_code', '');
 			}
 
 			// Unset zone if not in country
-			if (!empty(self::$data['zone_code']) && empty(reference::country(self::$data['country_code'])->zones[self::$data['zone_code']])) {
-				self::$data['zone_code'] = '';
+			if (!empty(self::$data['zone_code'])) {
+				if (empty(self::$data['country_code']) || empty(reference::country(self::$data['country_code'])->zones[self::$data['zone_code']])) {
+					self::$data['zone_code'] = '';
+				}
 			}
 
 			// Set first zone in country
-			if (empty(self::$data['zone_code']) && !empty(reference::country(self::$data['country_code'])->zones)) {
+			if (empty(self::$data['zone_code']) && !empty(self::$data['country_code']) && !empty(reference::country(self::$data['country_code'])->zones)) {
 				self::$data['zone_code'] = array_keys(reference::country(self::$data['country_code'])->zones)[0];
 			}
 
+			// The zone is a NOT NULL column, so it must never be null
+			self::$data['zone_code'] = (string)self::$data['zone_code'];
+
 			// Set shipping country if empty
 			if (empty(self::$data['shipping_address']['country_code'])) {
-				self::$data['shipping_address']['country_code'] = self::$data['country_code'] ?? settings::get('default_country_code');
-				self::$data['shipping_address']['zone_code'] = self::$data['zone_code'] ?? settings::get('default_zone_code');
+				self::$data['shipping_address']['country_code'] = self::$data['country_code'] ?? settings::get('default_country_code', '');
+				self::$data['shipping_address']['zone_code'] = self::$data['zone_code'] ?? settings::get('default_zone_code', '');
 			}
 
 			// Unset zone if not in country
@@ -369,6 +361,9 @@
 				}
 
 				session::$data['customer'] = f::array_update(session::$data['customer'], $customer);
+
+				// Mark the session as authenticated for this customer
+				session::$data['security.customer']['timestamp'] = time();
 			}
 
 			if (!empty(self::$data['language_code']) && language::$selected['code'] != self::$data['language_code']) {

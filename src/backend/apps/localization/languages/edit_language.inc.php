@@ -88,7 +88,9 @@
 			setlocale(LC_ALL, preg_split('#\s*,\s*#', language::$selected['locale'], -1, PREG_SPLIT_NO_EMPTY)); // Restore
 
 			if (!empty($_POST['intl_locale']) && !in_array($_POST['intl_locale'], ResourceBundle::getLocales(''))) {
-				throw new Exception(t('error_not_a_valid_intl_locale', '{locale} is not a valid PHP Intl locale'));
+				throw new Exception(strtr(t('error_not_a_valid_intl_locale', '{locale} is not a valid PHP Intl locale'), [
+					'{locale}' => $_POST['intl_locale'] ?? 'NULL'
+				]));
 			}
 
 			##########

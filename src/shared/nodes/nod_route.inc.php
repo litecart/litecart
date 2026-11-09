@@ -11,7 +11,7 @@
 		public static function init(): void {
 
 			// Neutralize request path (removes logical prefixes)
-			self::$request = self::strip_url_logic($_SERVER['REQUEST_URI']);
+			self::$request = self::strip_url_logic($_SERVER['REQUEST_URI'] ?? '/');
 
 			// Load cached links (URL rewrites)
 			self::$_links_cache_token = cache::token('links', ['site', 'endpoint', 'language'], 'memory', 900);
@@ -20,7 +20,7 @@
 				self::$_links_cache = [];
 			}
 
-			$requested_url = document::link($_SERVER['REQUEST_URI']);
+			$requested_url = document::link($_SERVER['REQUEST_URI'] ?? '/');
 
 			// Process an Immediate Redirect Rule (if any)
 			$redirect = database::query(
@@ -144,7 +144,7 @@
 				self::identify();
 			}
 
-			$requested_url = document::link($_SERVER['REQUEST_URI']);
+			$requested_url = document::link($_SERVER['REQUEST_URI'] ?? '/');
 
 			// Forward to rewritten URL (if necessary)
 			if (self::$selected) {
@@ -274,7 +274,7 @@
 
 				database::query(
 					"update ". DB_PREFIX ."redirects
-					set redirects = redirects + 1,
+					set total_redirects = total_redirects + 1,
 						last_redirected = '". database::input(date('Y-m-d H:i:s')) ."'
 					where id = ". (int)$redirect['id'] ."
 					limit 1;"
@@ -368,7 +368,7 @@
 			$link = new type_url((string)$path);
 
 			if ($path === null && $inherit_params === null) {
-				$path = strtok($_SERVER['REQUEST_URI'], '?');
+				$path = strtok($_SERVER['REQUEST_URI'] ?? '/', '?');
 				$inherit_params = true;
 			}
 
@@ -406,7 +406,7 @@
 			}
 
 			// Rewrite URL
-			if ($rewrite && $link->host == $_SERVER['HTTP_HOST']) {
+			if ($rewrite && $link->host == ($_SERVER['HTTP_HOST'] ?? '')) {
 				if (preg_match('#^'. WS_DIR_APP .'#', $link->path)) {
 					return self::rewrite($link, $language_code);
 				}
@@ -417,7 +417,7 @@
 
 		public static function rewrite(type_url $link, string|null $language_code=null): string|type_url {
 
-			if ($link->host != $_SERVER['HTTP_HOST']) {
+			if ($link->host != ($_SERVER['HTTP_HOST'] ?? '')) {
 				return $link;
 			}
 

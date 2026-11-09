@@ -181,6 +181,23 @@
 			$payment = new mod_payment($order);
 			$payment_options = $payment->options();
 
+			// Select the payment method chosen by the customer
+			if (!empty($_POST['payment_option']['id'])) {
+
+				foreach ($payment_options as $option) {
+
+					if ($option['id'] != $_POST['payment_option']['id']) continue;
+
+					if (!empty($option['error'])) {
+						throw new Exception($option['error']);
+					}
+
+					$payment->select($option['id']);
+					$order->data['payment_option'] = $payment->selected;
+					break;
+				}
+			}
+
 			if ($error = $order->validate()) {
 				throw new Exception($error);
 			}
@@ -199,11 +216,11 @@
 			$order->save();
 
 			// Initiate payment
-			$payment = new mod_payment($order);
+			$payment = new mod_payment($order, $order->data['payment_option'] ?? []);
 
-			if ($payment->options($order->data['items'], $order->data['currency_code'], $order->data['customer'])) {
+			if ($payment->options()) {
 
-				if (empty($payment->data['selected'])) {
+				if (empty($payment->selected['id'])) {
 					throw new Exception(t('error_no_payment_method_selected', 'No payment method selected'));
 				}
 
@@ -410,18 +427,28 @@
   $privacy_policy_id = settings::get('privacy_policy');
   $terms_of_purchase_id = settings::get('terms_of_purchase');
 
+  $aliases = [];
+
+  if ($privacy_policy_id) {
+    $aliases['{privacy_policy_link}'] = document::href_ilink('information', ['page_id' => $privacy_policy_id]);
+  }
+
+  if ($terms_of_purchase_id) {
+    $aliases['{terms_of_purchase_link}'] = document::href_ilink('information', ['page_id' => $terms_of_purchase_id]);
+  }
+
   switch(true) {
 
     case ($terms_of_purchase_id && $privacy_policy_id):
-      $_page->snippets['consent'] = t('consent:privacy_policy_and_terms_of_purchase', 'I have read the <a href="{privacy_policy_link}" target="_blank">Privacy Policy</a> and <a href="{terms_of_purchase_link" target="_blank">Terms of Purchase</a> and I consent.');
+      $_page->snippets['consent'] = strtr(t('consent:privacy_policy_and_terms_of_purchase', 'I have read the <a href="{privacy_policy_link}" target="_blank">Privacy Policy</a> and <a href="{terms_of_purchase_link}" target="_blank">Terms of Purchase</a> and I consent.'), $aliases);
       break;
 
     case ($privacy_policy_id):
-      $_page->snippets['consent'] = t('consent:privacy_policy', 'I have read the <a href="{privacy_policy_link}" target="_blank">Privacy Policy</a> and I consent.');
+      $_page->snippets['consent'] = strtr(t('consent:privacy_policy', 'I have read the <a href="{privacy_policy_link}" target="_blank">Privacy Policy</a> and I consent.'), $aliases);
       break;
 
     case ($terms_of_purchase_id):
-      $_page->snippets['consent'] = t('consent:terms_of_purchase', 'I have read the <a href="{terms_of_purchase_link}" target="_blank">Terms of Purchase</a> and I consent.');
+      $_page->snippets['consent'] = strtr(t('consent:terms_of_purchase', 'I have read the <a href="{terms_of_purchase_link}" target="_blank">Terms of Purchase</a> and I consent.'), $aliases);
       break;
 
 		default:

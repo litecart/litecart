@@ -40,14 +40,6 @@
 			header('X-Content-Type-Options: nosniff'); // Prevent MIME type sniffing
 			header('Access-Control-Allow-Origin: '. self::ilink('')); // Only allow HTTP POST data from own domain
 
-			// Content-Security-Policy headers are generated after capture to allow dynamic additions
-			self::add_csp('default-src', ["'self'", "'unsafe-eval'", "data:"]);
-			self::add_csp('font-src', ["'self'"]);
-			self::add_csp('script-src', ["'self'", "'unsafe-inline'", "'nonce-". security::$data['nonce'] ."'"]);
-			self::add_csp('style-src', ["'self'", "'unsafe-inline'", "data:"]);
-			self::add_csp('frame-ancestors', ["'self'"]); // Clickjacking Protection
-			self::add_csp('report-uri', [self::ilink('f:csp_report')]); // CSP Violation Reporting
-
 			header('Permissions-Policy: ' . implode(',', [
 				'camera=()',
 				'clipboard-read=()',
@@ -56,6 +48,14 @@
 				'payment=()',
 				'geolocation=()',
 			]));
+
+			// Content-Security-Policy headers are generated after capture to allow dynamic additions
+			self::add_csp('default-src', ["'self'", "'unsafe-eval'", "data:"]);
+			self::add_csp('font-src', ["'self'"]);
+			self::add_csp('script-src', ["'self'", "'unsafe-inline'", "'nonce-". security::$data['nonce'] ."'"]);
+			self::add_csp('style-src', ["'self'", "'unsafe-inline'", "data:"]);
+			self::add_csp('frame-ancestors', ["'self'"]); // Clickjacking Protection
+			self::add_csp('report-uri', [self::ilink('f:ajax/csp_report')]); // CSP Violation Reporting
 
 			self::$title = [settings::get('store_name')];
 

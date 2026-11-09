@@ -27,6 +27,7 @@ defaults,"{""en"":""Default Delivery Status""}","{""en"":""The default delivery 
 defaults,"{""en"":""Default Incoterm""}","{""en"":""Default Incoterm for new orders if nothing else is set.""}",default_incoterm,EXW,string,incoterms(),0,19,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 defaults,"{""en"":""Default Order Status""}","{""en"":""Default order status for new orders if nothing else is set.""}",default_order_status_id,1,number,order_status(),0,20,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 defaults,"{""en"":""Default Print Paper Size""}","{""en"":""Default paper size used for printing.""}",default_print_paper_size,A4,string,"select(""A5"",""A5R"",""A4"",""A4R"",""US-Letter"")",0,30,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+email,"{""en"":""Send Emails""}","{""en"":""Whether or not the platform should deliver outgoing emails.""}",email_status,1,bool,"toggle(""e/d"")",0,9,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 email,"{""en"":""SMTP Enabled""}","{""en"":""Whether or not to use an SMTP server for delivering email.""}",smtp_status,0,bool,"toggle(""e/d"")",0,10,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 email,"{""en"":""SMTP Host""}","{""en"":""SMTP hostname, e.g. smtp.myprovider.tld.""}",smtp_host,localhost,string,text(),0,11,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 email,"{""en"":""SMTP Port""}","{""en"":""SMTP port, e.g. 25, 465 (SSL/TLS), or 587 (STARTTLS).""}",smtp_port,465,number,number(),0,12,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP

@@ -8,6 +8,69 @@
 		$_GET['page'] = 1;
 	}
 
+	// Log entries carry a timestamp prefix; PHP prepends the native format for error_log(), the database writer uses [Y-m-d H:i:s e]
+	$entry_timestamp_pattern = '#\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} [^\]\n]+|\d{1,2}-[a-zA-Z]+-\d{4} \d{2}:\d{2}:\d{2} [a-zA-Z/_]+)\](?: ?)#';
+
+	// Splits the log into entries with character ranges, so occurrences can be grouped and removed
+	$parse_error_log = function(string $content, int $fallback_timestamp = 0) use ($entry_timestamp_pattern) {
+
+		$entries = [];
+
+		$matches = [];
+		preg_match_all($entry_timestamp_pattern, $content, $matches, PREG_OFFSET_CAPTURE | PREG_SET_ORDER);
+
+		if (!$matches) {
+
+			// Content logged before entries got a timestamp prefix
+			if (trim($content) !== '') {
+				$entries[] = [
+					'start' => 0,
+					'end' => strlen($content),
+					'timestamp' => $fallback_timestamp,
+					'error' => trim($content),
+					'backtrace' => trim($content),
+				];
+			}
+
+			return $entries;
+		}
+
+		// Content logged before the first entry got a timestamp prefix
+		$leading = substr($content, 0, $matches[0][0][1]);
+
+		if (trim($leading) !== '') {
+			$leading_lines = preg_split('#(?:\r\n?|\n)#', $leading);
+			$entries[] = [
+				'start' => 0,
+				'end' => $matches[0][0][1],
+				'timestamp' => $fallback_timestamp,
+				'error' => trim($leading_lines[0]),
+				'backtrace' => trim(implode(PHP_EOL, $leading_lines)),
+			];
+		}
+
+		foreach ($matches as $index => $match) {
+
+			// A timestamp prefix may sit mid-line when the previous entry lost its trailing newline
+			$start = $match[0][1];
+			$body_start = $start + strlen($match[0][0]);
+			$end = isset($matches[$index + 1]) ? $matches[$index + 1][0][1] : strlen($content);
+
+			$body = substr($content, $body_start, $end - $body_start);
+			$lines = preg_split('#(?:\r\n?|\n)#', $body);
+
+			$entries[] = [
+				'start' => $start,
+				'end' => $end,
+				'timestamp' => strtotime($match[1][0]) ?: $fallback_timestamp,
+				'error' => trim($lines[0]),
+				'backtrace' => trim(implode(PHP_EOL, array_slice($lines, 1))),
+			];
+		}
+
+		return $entries;
+	};
+
 	if (isset($_POST['clear_all'])) {
 
 		try {
@@ -34,13 +97,24 @@
 			$log_file = ini_get('error_log');
 
 			ini_set('memory_limit', -1); // Unlimit memory for reading log file
-			$content = preg_replace('#(\r\n?|\n)#', PHP_EOL, file_get_contents($log_file));
+			$content = file_get_contents($log_file);
 
 			foreach ($_POST['errors'] as $error) {
-				// Log entries carry a timestamp prefix; PHP prepends the native format for error_log(), the database writer uses [Y-m-d H:i:s e]
-				$content = preg_replace('#\[(?:\d{4}-\d{2}-\d{2} \d\d\:\d\d\:\d\d [^\]\n]+|\d{1,2}-[a-zA-Z]+-\d{4} \d\d\:\d\d\:\d\d [a-zA-Z/]+)\] ?'. preg_quote($error, '#') . addcslashes(PHP_EOL, "\r\n") .'[^\[]*#s', '', $content, -1, $count);
-				if (!$count) {
+
+				$ranges = [];
+
+				foreach ($parse_error_log($content, (int)filemtime($log_file)) as $entry) {
+					if ($entry['error'] !== $error) continue;
+					$ranges[] = [$entry['start'], $entry['end']];
+				}
+
+				if (!$ranges) {
 					throw new Exception('Failed deleting error from log');
+				}
+
+				// Remove from the end backwards so the earlier offsets stay valid
+				for ($index = count($ranges) - 1; $index >= 0; $index--) {
+					$content = substr($content, 0, $ranges[$index][0]) . substr($content, $ranges[$index][1]);
 				}
 			}
 
@@ -180,50 +254,7 @@
 		$iniatial_memory_limit = ini_get('memory_limit');
 		ini_set('memory_limit', -1); // Unlimit memory for reading log file
 
-		// Log entries carry a timestamp prefix; PHP prepends the native format for error_log(), the database writer uses [Y-m-d H:i:s e]
-		$entry_timestamp_pattern = '#^\[(?:(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} [^\]\n]+)|(\d{1,2}-[a-zA-Z]+-\d{4} \d{2}:\d{2}:\d{2} [a-zA-Z/]+))\] ?(.*)$#';
-
-		$lines = preg_split('#(?:\r\n?|\n)#', file_get_contents($log_file));
-		$fallback_timestamp = (int)filemtime($log_file);
-		$entries = [];
-		$leading = [];
-		$current = null;
-
-		foreach ($lines as $line) {
-
-			if (preg_match($entry_timestamp_pattern, $line, $matches)) {
-
-				if ($current !== null) {
-					$entries[] = $current;
-				} elseif (count($leading)) {
-					// Content logged before entries got a timestamp prefix
-					$entries[] = ['timestamp' => $fallback_timestamp, 'error' => trim($leading[0]), 'backtrace' => trim(implode(PHP_EOL, $leading))];
-				}
-
-				$leading = [];
-
-				$current = [
-					'timestamp' => strtotime($matches[1] ?: $matches[2]) ?: $fallback_timestamp,
-					'error' => trim($matches[3]),
-					'backtrace' => '',
-				];
-
-				continue;
-			}
-
-			if ($current === null) {
-				$leading[] = $line;
-				continue;
-			}
-
-			$current['backtrace'] .= ($current['backtrace'] !== '' ? PHP_EOL : '') . $line;
-		}
-
-		if ($current !== null) {
-			$entries[] = $current;
-		} elseif (count($leading)) {
-			$entries[] = ['timestamp' => $fallback_timestamp, 'error' => trim($leading[0]), 'backtrace' => trim(implode(PHP_EOL, $leading))];
-		}
+		$entries = $parse_error_log(file_get_contents($log_file), (int)filemtime($log_file));
 
 		foreach ($entries as $entry) {
 

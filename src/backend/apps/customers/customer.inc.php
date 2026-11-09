@@ -780,11 +780,6 @@
 								<?= f::draw_fonticon('icon-pause') ?> <?= t('title_disabled', 'Disabled') ?>
 							</span>
 						<?php } ?>
-						<?php if (!empty($customer->data['blocked_until']) && strtotime($customer->data['blocked_until']) > time()) { ?>
-							<span style="margin-inline-start: 0.5em; padding: 0.15em 0.6em; border-radius: 999px; background: rgba(220, 53, 69, 0.15); color: #dc3545; font-size: 0.75em; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">
-								<?= f::draw_fonticon('icon-lock') ?> <?= t('title_blocked', 'Blocked') ?> <?= f::datetime_when($customer->data['blocked_until']) ?>
-							</span>
-						<?php } ?>
 					</div>
 				</div>
 				<div class="actions">

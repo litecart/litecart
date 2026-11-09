@@ -8,7 +8,7 @@
 			"referrer": "",
 			"violated-directive": "style-src-attr",
 			"effective-directive": "style-src-attr",
-			"original-policy": "base-uri 'self';default-src 'self';frame-ancestors 'self';script-src 'nonce-badff56304104d0e62c526527b5bb7d7' 'strict-dynamic';img-src 'self';form-action 'self';report-uri https://www.example.com/csp_report.php",
+			"original-policy": "base-uri 'self';default-src 'self';frame-ancestors 'self';script-src 'nonce-badff56304104d0e62c526527b5bb7d7' 'strict-dynamic';img-src 'self';form-action 'self';report-uri https://www.example.com/ajax/csp_report.php",
 			"disposition": "enforce",
 			"blocked-uri": "inline",
 			"line-number": 50,

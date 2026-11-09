@@ -80,13 +80,13 @@
 				if (substr($structure['function'], 0, 8) == 'regional') {
 					foreach (array_keys(language::$languages) as $language_code) {
 						if (!isset($this->data['settings'][$structure['key']][$language_code])) {
-							$this->data['settings'][$structure['key']][$language_code] = $structure['default_value'];
+							$this->data['settings'][$structure['key']][$language_code] = $structure['default_value'] ?? '';
 						}
 					}
 
 				} else {
 					if (!isset($this->data['settings'][$structure['key']])) {
-						$this->data['settings'][$structure['key']] = $structure['default_value'];
+						$this->data['settings'][$structure['key']] = $structure['default_value'] ?? '';
 					}
 				}
 			}

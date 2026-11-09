@@ -62,7 +62,7 @@
 
 		$rows = $result->fetch_all();
 
-		header('Content-Type: application/csv; charset='. language::$selected['charset']);
+		header('Content-Type: application/csv; charset='. mb_http_output());
 		header('Content-Disposition: filename="who_purchased_'. date('Ymd', strtotime($_GET['date_from'])) .'-'. date('Ymd', strtotime($_GET['date_to'])) .'.csv"');
 		echo f::csv_encode($rows);
 		exit;

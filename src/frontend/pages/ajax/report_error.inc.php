@@ -5,12 +5,12 @@
 	try {
 
 		// Restrict access to administrator use only
-		if (administrator::check_login()) {
+		if (!administrator::check_login()) {
 			throw new Exception('Access denied', 403);
 		}
 
-		// Check if the request is an AJAX request, throw an exception if not.
-		if (!is_ajax_request()) {
+		// The browser posts JSON without an XHR marker, so check the content type instead
+		if (($_SERVER['REQUEST_METHOD'] ?? '') != 'POST' || !str_contains(strtolower($_SERVER['CONTENT_TYPE'] ?? ''), 'application/json')) {
 			throw new Exception('Invalid request', 400);
 		}
 

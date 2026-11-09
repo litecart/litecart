@@ -21,7 +21,7 @@
 				'name' => $category['name'],
 				'link' => document::ilink('category', ['category_id' => $category['id']]),
 				'image' => [
-					'original' => document::rlink('storage://images' . $category['image'] ?: 'no_image.svg'),
+					'original' => document::rlink('storage://images/' . ($category['image'] ?: 'no_image.svg')),
 					'thumbnail' => document::rlink(f::image_thumbnail('storage://images/'. $category['image'], 128, 0, 'category')),
 					'thumbnail_2x' => document::rlink(f::image_thumbnail('storage://images/'. $category['image'], 256, 0, 'category')),
 				],
@@ -37,7 +37,7 @@
 				'name' => $product['name'],
 				'link' => document::ilink('product', ['product_id' => $product['id']]),
 				'image' => [
-					'original' => document::rlink('storage://images' . $product['image'] ?: 'no_image.svg'),
+					'original' => document::rlink('storage://images/' . ($product['image'] ?: 'no_image.svg')),
 					'thumbnail' => document::rlink(f::image_thumbnail('storage://images/'. $product['image'], 128, 0, 'product')),
 					'thumbnail_2x' => document::rlink(f::image_thumbnail('storage://images/'. $product['image'], 256, 0, 'product')),
 				],

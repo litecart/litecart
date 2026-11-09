@@ -11,7 +11,7 @@
 		public static function init(): void {
 
 			// Bind selected language to session
-			if (preg_match('#^'. preg_quote(WS_DIR_APP . BACKEND_ALIAS, '#') .'/#', $_SERVER['REQUEST_URI'])) {
+			if (preg_match('#^'. preg_quote(WS_DIR_APP . BACKEND_ALIAS, '#') .'/#', $_SERVER['REQUEST_URI'] ?? '/')) {
 
 				if (empty(session::$data['backend']['language'])) {
 					session::$data['backend']['language'] = [];
@@ -94,7 +94,7 @@
 				$code = self::identify();
 			}
 
-			if (preg_match('#^'. preg_quote(WS_DIR_APP . BACKEND_ALIAS, '#') .'/#', $_SERVER['REQUEST_URI'])) {
+			if (preg_match('#^'. preg_quote(WS_DIR_APP . BACKEND_ALIAS, '#') .'/#', $_SERVER['REQUEST_URI'] ?? '/')) {
 				session::$data['backend']['language'] = self::$languages[$code];
 			} else {
 				session::$data['language'] = self::$languages[$code];
@@ -149,7 +149,7 @@
 			// Return language by regional domain
 			foreach ($enabled_languages as $language_code) {
 				if (self::$languages[$language_code]['url_type'] == 'domain') {
-					if (!empty(self::$languages[$language_code]['domain_name']) && preg_match('#^'. preg_quote(self::$languages[$language_code]['domain_name'], '#') .'$#', $_SERVER['HTTP_HOST'])) {
+					if (!empty(self::$languages[$language_code]['domain_name']) && preg_match('#^'. preg_quote(self::$languages[$language_code]['domain_name'], '#') .'$#', $_SERVER['HTTP_HOST'] ?? '')) {
 						return $language_code;
 					}
 				}
@@ -163,13 +163,13 @@
 			}
 
 			// Return language from URI path
-			$code = current(explode('/', substr($_SERVER['REQUEST_URI'], strlen(WS_DIR_APP))));
+			$code = current(explode('/', substr($_SERVER['REQUEST_URI'] ?? '/', strlen(WS_DIR_APP))));
 			if (in_array($code, $all_languages)) return $code;
 
 			// Return language by root
 			foreach ($enabled_languages as $language_code) {
 				if (self::$languages[$language_code]['url_type'] == 'root') {
-					if (preg_match('#^'. preg_quote(WS_DIR_APP, '#') .'(?![a-z]{2})(?:/|$)#', $_SERVER['REQUEST_URI'], $matches)) {
+					if (preg_match('#^'. preg_quote(WS_DIR_APP, '#') .'(?![a-z]{2})(?:/|$)#', $_SERVER['REQUEST_URI'] ?? '/', $matches)) {
 						return $language_code;
 					}
 				}
@@ -186,7 +186,7 @@
 			}
 
 			// Return language from country (TLD)
-			if (preg_match('#\.([a-z]{2})$#', $_SERVER['HTTP_HOST'], $matches)) {
+			if (preg_match('#\.([a-z]{2})$#', $_SERVER['HTTP_HOST'] ?? '', $matches)) {
 
 				$country = database::query(
 					"select * from ". DB_PREFIX ."countries

@@ -94,6 +94,7 @@
 					display_errors = ". (!empty($this->data['display_errors']) ? 1 : 0) .",
 					valid_from = ". (empty($this->data['valid_from']) ? "null" : "'". date('Y-m-d H:i:s', strtotime($this->data['valid_from'])) ."'") .",
 					valid_to = ". (empty($this->data['valid_to']) ? "null" : "'". date('Y-m-d H:i:s', strtotime($this->data['valid_to'])) ."'") .",
+					sessions_expiry = ". (!empty($this->data['sessions_expiry']) ? "'". database::input($this->data['sessions_expiry']) ."'" : "null") .",
 					updated_at = '". ($this->data['updated_at'] = date('Y-m-d H:i:s')) ."'
 				where id = ". (int)$this->data['id'] ."
 				limit 1;"

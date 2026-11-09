@@ -55,11 +55,23 @@
 		$session_language = language::$selected['code'];
 		language::set($order->data['language_code']);
 
+		// Downloadable files
+		$downloads = database::query(
+			"select osi.id, si.filename
+			from ". DB_PREFIX ."orders_stock_items osi
+			left join ". DB_PREFIX ."stock_items si on (si.id = osi.stock_item_id)
+			where osi.order_id = ". (int)$order->data['id'] ."
+			and si.file is not null
+			and si.file != ''
+			order by osi.priority asc, osi.id asc;"
+		)->fetch_all();
+
 		$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/order.inc.php');
 		$_page->snippets = [
 			'text_direction' => language::$languages[$order->data['language_code']]['direction'] ?? 'ltr',
 			'order' => $order->data,
 			'comments' => [],
+			'downloads' => $downloads,
 		];
 
 		foreach ($order->data['comments'] as $comment) {

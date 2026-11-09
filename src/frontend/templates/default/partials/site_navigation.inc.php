@@ -176,7 +176,7 @@
 					</ul>
 
 					<div class="dropdown-item empty text-center">
-						<span><?= t('text_your_shopping_cart_is_empty'), 'Your shopping cart is empty' ?></span>
+						<span><?= t('text_your_shopping_cart_is_empty', 'Your shopping cart is empty') ?></span>
 					</div>
 
 					<div class="checkout" style="margin-top: 2em;">

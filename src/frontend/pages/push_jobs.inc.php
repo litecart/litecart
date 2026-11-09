@@ -16,8 +16,9 @@
 		}
 	}
 
-	if (class_exists('session', false)) {
-		session::close();
+	// If a session is active, close it to prevent session locking
+	if (session_status() == PHP_SESSION_ACTIVE) {
+		session_write_close();
 	}
 
 	database::query(

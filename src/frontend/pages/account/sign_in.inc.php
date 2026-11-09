@@ -88,12 +88,6 @@
 				throw new Exception(t('error_wrong_email_password_combination', 'Wrong combination of email and password or the account does not exist'));
 			}
 
-			if ($customer['blocked_until'] && strtotime($customer['blocked_until']) > time()) {
-				throw new Exception(strtr(t('error_account_is_blocked', 'The account is blocked until {datetime}'), [
-					'{datetime}' => f::datetime_format('datetime', $customer['blocked_until'])
-				]));
-			}
-
 			if (!password_verify($_POST['password'], $customer['password_hash'])) {
 
 				database::insert('rate_limiting', [
@@ -106,31 +100,7 @@
 					'created_at' => date('Y-m-d H:i:s'),
 				]);
 
-				if (++$customer['login_attempts'] < 3) {
-
-					database::query(
-						"update ". DB_PREFIX ."customers
-						set login_attempts = login_attempts + 1
-						where id = ". (int)$customer['id'] ."
-						limit 1;"
-					);
-
-					throw new Exception(t('error_wrong_email_password_combination', 'Wrong combination of email and password or the account does not exist'));
-
-				} else {
-
-					database::query(
-						"update ". DB_PREFIX ."customers
-						set login_attempts = 0,
-						blocked_until = '". date('Y-m-d H:i:00', strtotime('+15 minutes')) ."'
-						where id = ". (int)$customer['id'] ."
-						limit 1;"
-					);
-
-					throw new Exception(strtr(t('error_this_account_has_been_temporarily_blocked_n_minutes', 'This account has been temporarily blocked {n} minutes'), [
-						'{n}' => 15
-					]));
-				}
+				throw new Exception(t('error_wrong_email_password_combination', 'Wrong combination of email and password or the account does not exist'));
 			}
 
 			if (password_needs_rehash($customer['password_hash'], PASSWORD_DEFAULT)) {
@@ -161,7 +131,6 @@
 					last_hostname = '". database::input(reverse_dns($_SERVER['REMOTE_ADDR'])) ."',
 					last_user_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."',
 					last_login = '". date('Y-m-d H:i:s') ."',
-					login_attempts = 0,
 					total_logins = total_logins + 1
 				where id = ". (int)$customer['id'] ."
 				limit 1;"
@@ -169,12 +138,14 @@
 
 			customer::load($customer['id']);
 
+			// Clear the customer rate limit records on successful login
 			database::query(
 				"delete from ". DB_PREFIX ."rate_limiting
 				where action = 'login_failed'
+				and scope_type = 'email'
 				and (
-					ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."'
-					or (scope_type = 'email' and scope_key = '". database::input($customer['email']) ."')
+					scope_key = '". database::input($customer['email']) ."'
+					or ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."'
 				)"
 			);
 

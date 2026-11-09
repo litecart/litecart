@@ -127,9 +127,25 @@
 				$administrator->set_password($_POST['password']);
 			}
 
+			// End the sessions of the edited administrator
 			$administrator->data['sessions_expiry'] = date('Y-m-d H:i:s');
 
 			$administrator->save();
+
+			// Clear the rate limiting for the reset administrator
+			if (!empty($_POST['password']) && !empty($administrator->data['username'])) {
+				database::query(
+					"delete from ". DB_PREFIX ."rate_limiting
+					where action in ('admin_login_failed', 'admin_login_failed_notified')
+					and scope_type in ('login', 'username')
+					and scope_key = '". database::input(strtolower($administrator->data['username'])) ."'"
+				);
+			}
+
+			// Keep the acting administrator signed in when editing their own account
+			if (!empty($administrator->data['id']) && $administrator->data['id'] == administrator::$data['id']) {
+				session::$data['security.administrator']['timestamp'] = time();
+			}
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
 			redirect(document::ilink(__APP__.'/administrators'), 303);

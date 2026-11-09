@@ -156,10 +156,22 @@
 
 		$error_handling = true;
 
-		$backtrace = array_slice(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS), 1);
-		error_handler($errno, $errstr, $errfile, $errline, $backtrace);
+		try {
 
-		$error_handling = false;
+			$backtrace = array_slice(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS), 1);
+			error_handler($errno, $errstr, $errfile, $errline, $backtrace);
+
+		} catch (Throwable $reporter_error) {
+
+			// The reporter failed, log the original error and the reporter failure
+			error_log('Error '. $errstr .' in '. $errfile .' on line '. $errline . PHP_EOL);
+			error_log('Reporter failed with '. get_class($reporter_error) .': '. $reporter_error->getMessage() .' in '. $reporter_error->getFile() .' on line '. $reporter_error->getLine() . PHP_EOL);
+
+		} finally {
+
+			// Always release the flag, or every later error in this request is ignored
+			$error_handling = false;
+		}
 
 		return true;
 	}, E_ALL);
@@ -180,7 +192,9 @@
 		} catch (Throwable $reporter_error) {
 			error_log('Uncaught '. get_class($e) .': '. $e->getMessage() .' in '. $e->getFile() .' on line '. $e->getLine() . PHP_EOL);
 			error_log('Reporter failed with '. get_class($reporter_error) .': '. $reporter_error->getMessage() .' in '. $reporter_error->getFile() .' on line '. $reporter_error->getLine() . PHP_EOL);
-		}
+		} finally {
 
-		$error_handling = false;
+			// Always release the flag, or every later error in this request is ignored
+			$error_handling = false;
+		}
 	});

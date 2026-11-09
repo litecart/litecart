@@ -173,8 +173,6 @@
 				return true;
 			}
 
-			stream_set_timeout($socket, $this->timeout);
-
 			// On Windows the script time limit counts real time, so the socket timeout must stay below it. On Unix it counts CPU time, which a blocking read does not consume.
 			$max_execution_time = (int)ini_get('max_execution_time');
 			$socket_timeout = $this->timeout;
@@ -197,9 +195,9 @@
 				if ($line === false) {
 					$meta = stream_get_meta_data($socket);
 					if (!empty($meta['timed_out'])) {
-					trigger_error('Timeout during retrieval', E_USER_WARNING);
-					return false;
-				}
+						trigger_error('Timeout during retrieval', E_USER_WARNING);
+						return false;
+					}
 					break; // Connection closed by the remote
 				}
 
@@ -208,7 +206,7 @@
 				if ((microtime(true) - $timestamp) > $this->timeout) {
 					trigger_error('Timeout during retrieval', E_USER_WARNING);
 					return false;
-			}
+				}
 			}
 
 			fclose($socket);

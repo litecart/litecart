@@ -182,7 +182,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 									<div class="tax" style="margin: 0 0 1em;">
 									<?php if ($tax_rates) { ?>
-										<?= $including_tax ? t('title_including_tax', 'Including Tax') : t('title_excluding_tax', 'Excluding Tax') ?>: <span class="total-tax">{{total_tax|money}}</span>
+										<?= $including_tax ? t('title_including_tax', 'Including Tax') : t('title_excluding_tax', 'Excluding Tax') ?>: <span class="total-tax">{{tax|money}}</span>
 									<?php } else { ?>
 										<?= t('title_excluding_tax', 'Excluding Tax') ?>
 									<?php } ?>
@@ -246,7 +246,7 @@ form[name="buy_now_form"] .dropdown-menu .image {
 
 		var regular_price = <?= currency::format_raw($regular_price) ?>,
 			final_price = <?= currency::format_raw($final_price ?: $regular_price) ?>,
-			tax = <?= currency::format_raw($total_tax) ?>;
+			tax = <?= currency::format_raw($tax) ?>;
 
 		$('input[type="radio"]:checked, input[type="checkbox"]:checked', this).each(function() {
 			if ($(this).data('price-adjust')) regular_price += $(this).data('price-adjust');

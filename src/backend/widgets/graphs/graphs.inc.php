@@ -77,7 +77,6 @@
 			group by weekday
 			order by weekday asc;"
 		)->each(function($order) use (&$daily_sales) {
-			$daily_sales[$order['weekday']]['num_orders'] = $order['num_orders'];
 			$daily_sales[$order['weekday']]['total_sales'] = $order['total_sales'];
 		});
 
@@ -94,7 +93,6 @@
 			group by weekday
 			order by weekday asc;"
 		)->each(function($order) use (&$daily_sales) {
-			$daily_sales[$order['weekday']]['average_orders'] = $order['average_orders'];
 			$daily_sales[$order['weekday']]['average_sales'] = $order['average_sales'];
 		});
 

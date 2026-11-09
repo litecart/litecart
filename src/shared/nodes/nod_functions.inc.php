@@ -43,7 +43,9 @@
 
 				// A helper file that is missing must not escalate into a fatal error
 				if (is_file($path)) {
-					include_once $path;
+					if (!include_once $path) {
+						throw new Exception('Could not load helper file ('. $path .') for function '. $function);
+					}
 				}
 			}
 

@@ -20,7 +20,7 @@
 			// Rate limit checking
 			if (database::query(
 				"select count(*) as num_attempts from ". DB_PREFIX ."rate_limiting
-				where action = 'login_failed'
+				where action = 'admin_login_failed'
 				and (
 					ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."'
 					". (!empty($_POST['username']) ? "or (scope_type = 'login' and scope_key = '". database::input(strtolower($_POST['username'])) ."')" : '') ."
@@ -38,6 +38,9 @@
 				throw new Exception(t('error_must_provide_password', 'You must provide a password'));
 			}
 
+			// The same message is used for every failed sign in so that account existence is not revealed
+			$generic_login_error = t('error_wrong_username_password_combination', 'Wrong combination of username and password or the account does not exist.');
+
 			$administrator = database::query(
 				"select * from ". DB_PREFIX ."administrators
 				where username = '". database::input(strtolower($_POST['username'])) ."'
@@ -50,32 +53,33 @@
 			});
 
 			if (!$administrator) {
-				throw new Exception(t('error_administrator_not_found', 'The administrator could not be found in our database'));
+				database::insert('rate_limiting', [
+					'action' => 'admin_login_failed',
+					'ip_address' => $_SERVER['REMOTE_ADDR'],
+					'hostname' => reverse_dns($_SERVER['REMOTE_ADDR']),
+					'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? '',
+					'scope_type' => 'login',
+					'scope_key' => strtolower($_POST['username']),
+					'created_at' => date('Y-m-d H:i:s'),
+				]);
+				throw new Exception($generic_login_error);
 			}
 
 			if (empty($administrator['status'])) {
-				throw new Exception(t('error_administrator_account_disabled', 'The administrator account is disabled'));
-			}
-
-			if (!empty($administrator['valid_from']) && date('Y-m-d H:i:s') < $administrator['valid_from']) {
-				throw new Exception(strtr(t('error_account_is_blocked', 'The account is blocked until {datetime}'), [
-					'{datetime}' => f::datetime_format('datetime', $administrator['valid_from'])
-				]));
+				throw new Exception($generic_login_error);
 			}
 
 			if (!empty($administrator['valid_to']) && date('Y-m-d H:i:s') > $administrator['valid_to']) {
-				throw new Exception(strtr(t('error_account_expired', 'The account expired {datetime}'), [
-					'{datetime}' => f::datetime_format('datetime', $administrator['valid_to'])
-				]));
+				throw new Exception($generic_login_error);
 			}
 
 			if (!password_verify($_POST['password'], $administrator['password_hash'])) {
 
 				database::insert('rate_limiting', [
-					'action' => 'login_failed',
+					'action' => 'admin_login_failed',
 					'ip_address' => $_SERVER['REMOTE_ADDR'],
 					'hostname' => reverse_dns($_SERVER['REMOTE_ADDR']),
-					'user_agent' => $_SERVER['HTTP_USER_AGENT'],
+					'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? '',
 					'scope_type' => 'login',
 					'scope_key' => strtolower($_POST['username']),
 					'created_at' => date('Y-m-d H:i:s'),
@@ -86,7 +90,7 @@
 					$window_start = date('Y-m-d H:i:s', strtotime('-5 minutes'));
 					$failed_count = (int)database::query(
 						"select count(*) as num_attempts from ". DB_PREFIX ."rate_limiting
-						where action = 'login_failed'
+						where action = 'admin_login_failed'
 						and (
 							ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."'
 							or (scope_type = 'login' and scope_key = '". database::input(strtolower($_POST['username'])) ."')
@@ -96,17 +100,17 @@
 
 					$notified = (int)database::query(
 						"select count(*) as num_sent from ". DB_PREFIX ."rate_limiting
-						where action = 'login_failed_notified'
+						where action = 'admin_login_failed_notified'
 						and created_at >= '". $window_start ."'"
 					)->fetch('num_sent');
 
 					if ($failed_count >= 3 && !$notified) {
 
 						database::insert('rate_limiting', [
-							'action' => 'login_failed_notified',
+							'action' => 'admin_login_failed_notified',
 							'ip_address' => $_SERVER['REMOTE_ADDR'],
 							'hostname' => reverse_dns($_SERVER['REMOTE_ADDR']),
-							'user_agent' => $_SERVER['HTTP_USER_AGENT'],
+							'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? '',
 							'scope_type' => 'email',
 							'scope_key' => $administrator['email'],
 							'created_at' => date('Y-m-d H:i:s'),
@@ -140,7 +144,7 @@
 					}
 				}
 
-				throw new Exception(t('error_wrong_username_password_combination', 'Wrong combination of username and password or the account does not exist.'));
+				throw new Exception($generic_login_error);
 			}
 
 			if (password_needs_rehash($administrator['password_hash'], PASSWORD_DEFAULT)) {
@@ -183,12 +187,14 @@
 				throw new Exception(t('error_administrator_session_binding_failed', 'Could not bind administrator to the session.'));
 			}
 
+			// Clear the administrator rate limit records on successful login
 			database::query(
 				"delete from ". DB_PREFIX ."rate_limiting
-				where action = 'login_failed'
+				where action in ('admin_login_failed', 'admin_login_failed_notified')
 				and (
 					ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."'
-					". (!empty($administrator['email']) ? "or (scope_type = 'login' and scope_key = '". database::input(strtolower($administrator['email'])) ."')" : '') ."
+					". (!empty($_POST['username']) ? "or (scope_type = 'login' and scope_key = '". database::input(strtolower($_POST['username'])) ."')" : '') ."
+					". (!empty($administrator['email']) ? "or (scope_type = 'email' and scope_key = '". database::input($administrator['email']) ."')" : '') ."
 				);"
 			);
 

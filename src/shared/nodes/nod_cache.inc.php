@@ -168,7 +168,11 @@
 						break;
 
 					case 'template':
-						$hash_string .= document::$template;
+						$hash_string .= match (route::$request['endpoint'] ?? null) {
+							'backend' => 'b:',
+							'frontend' => 'f:',
+							default => 'f:',
+						} . (document::$template ?? '');
 						break;
 
 					case 'uri':

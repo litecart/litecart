@@ -33,7 +33,7 @@
 							<?php foreach ($orders as $order) { ?>
 							<tr>
 								<td><a href="<?= f::escape_html($order['link']) ?>" class="lightbox-iframe"><?= $order['id'] ?></a></td>
-								<td class="text-center"><?= $order['num_downloads'] ? '<a href="'. document::href_ilink('downloads') .'">'. t('title_downloads', 'Downloads') .'</a>' : '' ?></td>
+								<td class="text-center"><?= $order['num_downloads'] ? '<a href="'. f::escape_html($order['link']) .'">'. t('title_downloads', 'Downloads') .'</a>' : '' ?></td>
 								<td class="text-center"><?= f::escape_html($order['order_status']) ?></td>
 								<td class="text-end"><?= $order['total'] ?></td>
 								<td class="text-end"><?= $order['created_at'] ?></td>

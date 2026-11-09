@@ -27,24 +27,21 @@
 				limit 1;"
 			)->fetch();
 
-			if ($module) {
+			// Decode settings
+			$settings = $module ? json_decode($module['settings'], true) : [];
 
-				// Decode settings
-				$settings = json_decode($module['settings'], true);
+			// Set settings to object
+			foreach ($this->settings() as $setting) {
+				$setting['key'] = rtrim($setting['key'], '[]');
+				$this->settings[$setting['key']] = $settings[$setting['key']] ?? ($setting['default_value'] ?? '');
+			}
 
-				// Set settings to object
-				foreach ($this->settings() as $setting) {
-					$setting['key'] = rtrim($setting['key'], '[]');
-					$this->settings[$setting['key']] = $settings[$setting['key']] ?? $setting['default_value'];
-				}
+			$this->status = (isset($this->settings['status']) && in_array(strtolower($this->settings['status']), ['1', 'active', 'enabled', 'on', 'true', 'yes'])) ? 1 : 0;
+			$this->priority = (int)($this->settings['priority'] ?? 0);
 
-				$this->status = (isset($this->settings['status']) && in_array(strtolower($this->settings['status']), ['1', 'active', 'enabled', 'on', 'true', 'yes'])) ? 1 : 0;
-				$this->priority = (int)($this->settings['priority'] ?? 0);
-
-				if ($module['type'] == 'jobs') {
-					$this->last_pushed = $module['last_pushed'];
-					$this->last_processed = $module['last_processed'];
-				}
+			if ($module && $module['type'] == 'job') {
+				$this->last_pushed = $module['last_pushed'];
+				$this->last_processed = $module['last_processed'];
 			}
 		}
 

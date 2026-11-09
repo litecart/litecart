@@ -37,6 +37,16 @@ body {
 			<li><button id="print" class="btn btn-default btn-block btn-lg" type="button" aria-label="<?= f::escape_attr(t('title_print', 'Print')) ?>"><?= f::draw_fonticon('icon-print', 'aria-hidden="true"') ?> <?= t('title_print', 'Print') ?></button></li>
 		</ul>
 
+		<?php if (!empty($downloads)) { ?>
+		<h1><?= t('title_downloads', 'Downloads') ?></h1>
+
+		<ul id="downloads" class="list-unstyled">
+			<?php foreach ($downloads as $download) { ?>
+			<li><a href="<?= document::href_ilink('download', ['order_id' => $order['id'], 'public_key' => $order['public_key'], 'order_stock_item_id' => $download['id']]) ?>"><?= f::escape_html($download['filename'] ?: t('title_download', 'Download')) ?></a></li>
+			<?php } ?>
+		</ul>
+		<?php } ?>
+
 		<h1 style="margin-top: 0;"><?= t('title_comments', 'Comments') ?></h1>
 
 		<div id="comments" class="bubbles" role="log" aria-live="polite" aria-label="<?= f::escape_attr(t('title_comments', 'Comments')) ?>">

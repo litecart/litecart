@@ -33,7 +33,7 @@
 					// Remove deleted modules
 					database::query(
 						"delete from ". DB_PREFIX ."modules
-						where module_id = '". database::input($module['id']) ."'
+						where id = ". (int)$module['id'] ."
 						limit 1;"
 					);
 
@@ -51,7 +51,7 @@
 				$object->settings = [];
 				foreach ($object->settings() as $setting) {
 					$setting['key'] = rtrim($setting['key'], '[]');
-					$object->settings[$setting['key']] = $settings[$setting['key']] ?? $setting['default_value'];
+					$object->settings[$setting['key']] = $settings[$setting['key']] ?? $setting['default_value'] ?? '';
 				}
 
 				$object->status = (isset($object->settings['status']) && filter_var($object->settings['status'], FILTER_VALIDATE_BOOLEAN));

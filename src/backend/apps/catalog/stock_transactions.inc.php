@@ -16,8 +16,9 @@
 		"select id, name, created_at
 		from ". DB_PREFIX ."stock_transactions t
 		where true
-		". (!empty($_GET['query']) ? "t.name like '%". database::input($_GET['query']) ."%' or t.notes like '%". database::input($_GET['query']) ."%'" : "") ."
-		". (!empty($_GET['query']) ? "and id in (
+		". (!empty($_GET['query']) ? "and (t.name like '%". database::input($_GET['query']) ."%'
+		or t.description like '%". database::input($_GET['query']) ."%'
+		or t.id in (
 			select transaction_id from ". DB_PREFIX ."stock_transactions_contents
 			where stock_item_id in (
 				select id from ". DB_PREFIX ."stock_items si
@@ -26,7 +27,7 @@
 				or si.mpn like '%". database::input($_GET['query']) ."%'
 				or si.gtin like '%". database::input($_GET['query']) ."%'
 			)
-		)" : "") ."
+		))" : "") ."
 		". (!empty($_GET['date_from']) ? "and t.created_at >= '". date('Y-m-d H:i:s', strtotime($_GET['date_from'])) ."'" : '') ."
 		". (!empty($_GET['date_to']) ? "and t.created_at <= '". date('Y-m-d H:i:s', strtotime($_GET['date_to'])) ."'" : '') ."
 		order by created_at desc;"

@@ -13,7 +13,6 @@
 	}
 
 	$_page = new ent_view('app://backend/template/pages/error_document.inc.php');
-	$_page->snippets['code'] = http_response_code();
 
 	switch (http_response_code()) {
 
@@ -48,5 +47,7 @@
 			$_page->snippets['description'] = t('error_500_internal_server_error', 'Oops! That was not meant to happen. We don\'t know how to handle your request.');
 			break;
 	}
+
+	$_page->snippets['code'] = http_response_code();
 
 	echo $_page;

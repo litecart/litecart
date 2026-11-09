@@ -40,7 +40,7 @@
 		"select * from ". DB_PREFIX ."webhook_requests
 		where true
 		". ((!empty($_GET['query'])) ? "and url like '%". database::input($_GET['query']) ."%'" : "") ."
-		". ((!empty($_GET['query'])) ? "and last_log like '%". database::input($_GET['query']) ."%'" : "") ."
+		". ((!empty($_GET['query'])) ? "and raw_request like '%". database::input($_GET['query']) ."%'" : "") ."
 		". ((!empty($_GET['date_from'])) ? "and created_at >= '". date('Y-m-d H:i:s', strtotime($_GET['date_from'])) ."'" : "") ."
 		". ((!empty($_GET['date_to'])) ? "and created_at <= '". date('Y-m-d H:i:s', strtotime($_GET['date_to'])) ."'" : "") ."
 		order by created_at desc;"
@@ -165,12 +165,11 @@
 
 		$.getJSON(url, function(json) {
 
-			$output = $([
-				'<div>',
-					'<h2><?= t('title_last_log', 'Last Log') ?></h2>',
-					'<pre>'+ json.last_log +'</pre>',
-				'</div>',
-			].join('\n'));
+			$output = $('<div></div>');
+			$output.append($('<h2></h2>').text(json.method +' '+ json.url));
+			$output.append($('<pre></pre>').text(json.raw_request || ''));
+			$output.append($('<h2></h2>').text('<?= t('title_response', 'Response') ?>'));
+			$output.append($('<pre></pre>').text(json.raw_response || ''));
 
 			$.featherlight($output, {
 				type: 'html',

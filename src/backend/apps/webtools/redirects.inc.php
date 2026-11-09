@@ -102,7 +102,7 @@
 					<td><?= f::draw_fonticon(!empty($redirect['status']) ? 'on' : 'off') ?></td>
 					<td><a href="<?= document::href_ilink(__APP__.'/edit_redirect', ['redirect_id' => $redirect['id']]) ?>"><?= $redirect['pattern'] ?></a></td>
 					<td><?= $redirect['destination'] ?></td>
-					<td class="text-end"><?= f::format_number($redirect['redirects']) ?></td>
+					<td class="text-end"><?= f::format_number($redirect['total_redirects']) ?></td>
 					<td class="text-end"><?= $redirect['last_redirected'] ? f::datetime_when($redirect['last_redirected']) : '-' ?></td>
 					<td class="text-end"><a href="<?= document::href_ilink(__APP__.'/edit_redirect', ['redirect_id' => $redirect['id']]) ?>" title="<?= t('title_edit', 'Edit') ?>"><?= f::draw_fonticon('edit') ?></a></td>
 				</tr>

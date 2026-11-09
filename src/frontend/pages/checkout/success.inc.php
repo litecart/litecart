@@ -43,6 +43,9 @@
 			if (!$order) {
 				throw new Exception('Invalid order_no', 404);
 			}
+
+		} else {
+			throw new Exception('No order reference given', 404);
 		}
 
 		$order = new ent_order($order['id']);

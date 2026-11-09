@@ -30,7 +30,7 @@
 
 			// Do we need to check if human?
 			if (empty(self::$data['is_human']) && empty(self::$data['is_whitelisted'])) {
-				if (!preg_match('#(are_you_human|csp_report|account/sign_out|'. preg_quote(BACKEND_ALIAS, '#')	.'/(logout|manifest))#', route::$request)) {
+				if (!preg_match('#(are_you_human|mcp|ajax/csp_report|ajax/report_error|account/sign_out|'. preg_quote(BACKEND_ALIAS, '#')	.'/(logout|manifest))#', route::$request)) {
 
 					try {
 
@@ -96,6 +96,9 @@
 					foreach ([
 						'#^ext/#', // 3rd party stuff
 						'#^ajax/event(\?|$)#', // As beacons don't support X-CSRF-Token
+						'#^ajax/bot_check(\?|$)#', // As beacons don't support X-CSRF-Token
+						'#^ajax/csp_report(\?|$)#', // As browsers don't support X-CSRF-Token on CSP reports
+						'#^ajax/report_error(\?|$)#', // As browsers don't support X-CSRF-Token on error reports
 						'#/mcp(\?|$)#',
 						'#^order_process(\?|$)#',
 						'#(webhook|callback)#i',
@@ -138,7 +141,7 @@
 				return;
 			}
 
-			if (!preg_match('#(are_you_human|csp_report|account/sign_out|'. preg_quote(BACKEND_ALIAS, '#')	.'/(logout|manifest))#', route::$request)) {
+			if (!preg_match('#(are_you_human|ajax/csp_report|ajax/report_error|account/sign_out|'. preg_quote(BACKEND_ALIAS, '#')	.'/(logout|manifest))#', route::$request)) {
 				return;
 			}
 
