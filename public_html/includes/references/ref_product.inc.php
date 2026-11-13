@@ -350,12 +350,11 @@
               }
             }
 
-            if ($option['sort'] == 'alphabetically') {
+            if ($option['sort'] == 'alphabetical') {
               uasort($option['values'], function($a, $b){
                 if ($a['name'] == $b['name']) return 0;
                 return ($a['name'] < $b['name']) ? -1 : 1;
               });
-              break;
             }
 
             $this->_data['options'][$option['group_id']] = $option;
