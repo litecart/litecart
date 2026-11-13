@@ -8,31 +8,56 @@
       echo "\nLiteCart® 2.7.3\n"
       . "Copyright (c) ". date('Y') ." LiteCart AB\n"
       . "https://www.litecart.net/\n"
-      . "Usage: php ". basename(__FILE__) ." [options]\n\n"
+      . "Usage: php ". basename(__FILE__) ." [options]\n"
+      . ""
       . "Options:\n"
       . "  --db_server          Set database hostname (Default: ". ini_get('mysqli.default_host') .")\n"
       . "  --db_username        Set database username\n"
-      . "  --db_password        Set database user password\n\n"
+      . "  --db_password        Set database user password\n"
+      . ""
       . "  --db_database        Set database name\n"
       . "  --db_table_prefix    Set database table prefix (Default: lc_).\n"
       . "  --db_collation       Set database collation (Default: utf8_swedish_ci)\n"
       . "  --document_root      Set document root\n\n"
-      . "  --timezone           Set timezone e.g. Europe/London\n\n"
+      . "  --timezone           Set timezone e.g. Europe/London\n"
+      . ""
       . "  --admin_folder       Set admin folder name (Default: admin)\n"
       . "  --username           Set admin username\n"
-      . "  --password           Set admin user password\n\n"
+      . "  --password           Set admin user password\n"
+      . ""
       . "  --development_type   Set development type 'standard' or 'advanced' (Default: standard)\n"
-      . "  --cleanup            Delete the install/ directory after finising the installation.\n\n";
+      . "  --country_code       Set store country code e.g. SE\n"
+      . "  --cleanup            Delete the install/ directory after finising the installation.\n"
+      . "\n";
       exit;
     }
 
     $options = [
       'db_server::', 'db_username:', 'db_password::', 'db_database:', 'db_table_prefix::', 'db_collation::',
-      'document_root:', 'timezone::', 'admin_folder::', 'username::', 'password::', 'development_type:: cleanup',
+      'document_root:', 'country_code::', 'timezone::', 'admin_folder::', 'username::', 'password::', 'development_type::', 'cleanup::',
+      'db_prefix::', 'admin_username::', 'admin_password::', 'country::' // Backwards compatibility with older CLI installer
     ];
 
     $_REQUEST = getopt('', $options);
     $_REQUEST['install'] = true;
+
+    // Aliases for the option names used by the published CLI installer
+    if (empty($_REQUEST['db_table_prefix']) && !empty($_REQUEST['db_prefix'])) {
+      $_REQUEST['db_table_prefix'] = $_REQUEST['db_prefix'];
+    }
+
+    if (empty($_REQUEST['username']) && !empty($_REQUEST['admin_username'])) {
+      $_REQUEST['username'] = $_REQUEST['admin_username'];
+    }
+
+    if ((!isset($_REQUEST['password']) || $_REQUEST['password'] === '' || $_REQUEST['password'] === false)
+      && isset($_REQUEST['admin_password']) && $_REQUEST['admin_password'] !== false) {
+      $_REQUEST['password'] = $_REQUEST['admin_password'];
+    }
+
+    if (empty($_REQUEST['country_code']) && !empty($_REQUEST['country'])) {
+      $_REQUEST['country_code'] = $_REQUEST['country'];
+    }
 
     if (isset($_REQUEST['cleanup'])) {
       $_REQUEST['cleanup'] = true;
@@ -135,8 +160,8 @@
       $_REQUEST['username'] = 'admin';
     }
 
-    if (!isset($_REQUEST['password'])) {
-      $_REQUEST['password'] = '';
+    if (!isset($_REQUEST['password']) || $_REQUEST['password'] === '' || $_REQUEST['password'] === false) {
+      throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . 'No admin password provided</p>' . PHP_EOL . PHP_EOL);
     }
 
     if (empty($_REQUEST['client_ip'])) {
@@ -179,6 +204,14 @@
     // Check if username is a valid username
     if (preg_match('#[^0-9a-z_\.]#i', $_REQUEST['username'])) {
       throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . 'Invalid username provided</p>' . PHP_EOL  . PHP_EOL);
+    }
+
+    // Check if country_code is a valid country code
+    if (!empty($_REQUEST['country_code'])) {
+      $_REQUEST['country_code'] = strtoupper($_REQUEST['country_code']);
+      if (!preg_match('#^[A-Z]{2}$#', $_REQUEST['country_code'])) {
+        throw new Exception('<span class="error">[Error]</span>' . PHP_EOL . 'Invalid country code provided</p>' . PHP_EOL  . PHP_EOL);
+      }
     }
 
     // Check if timezone is valid
@@ -762,6 +795,7 @@
 
   } catch (Exception $e) {
     fwrite(STDERR, $e->getMessage() . PHP_EOL);
+    if ($_SERVER['SERVER_SOFTWARE'] == 'CLI') exit(1);
   }
 
   $buffer = ob_get_clean();
