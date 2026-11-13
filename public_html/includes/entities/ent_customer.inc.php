@@ -86,6 +86,7 @@
 
     public function save() {
 
+      // New customers do not claim past guest orders, as the email address is not verified
       if (empty($this->data['id'])) {
         database::query(
           "insert into ". DB_TABLE_PREFIX ."customers
@@ -94,13 +95,6 @@
         );
 
         $this->data['id'] = database::insert_id();
-
-        database::query(
-          "update ". DB_TABLE_PREFIX ."orders
-          set customer_id = ". (int)$this->data['id'] ."
-          where lower(customer_email) = '". database::input(strtolower($this->data['email'])) ."'
-          and customer_id = 0;"
-        );
       }
 
       database::query(
@@ -133,7 +127,6 @@
           shipping_phone = '". database::input($this->data['shipping_address']['phone']) ."',
           notes = '". database::input($this->data['notes']) ."',
           password_reset_token = '". database::input($this->data['password_reset_token']) ."',
-          date_blocked_until = ". (!empty($this->data['date_blocked_until']) ? "'". database::input($this->data['date_blocked_until']) ."'" : "NULL") .",
           date_expire_sessions = ". (!empty($this->data['date_expire_sessions']) ? "'". database::input($this->data['date_expire_sessions']) ."'" : "NULL") .",
           date_updated = '". ($this->data['date_updated'] = date('Y-m-d H:i:s')) ."'
         where id = ". (int)$this->data['id'] ."

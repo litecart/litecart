@@ -111,19 +111,10 @@
 				throw new McpException(language::translate('error_too_many_attempts', 'Too many failed attempts. Please try again later.'), 429);
 			}
 
-			$record_failed_attempt = function() use ($auth_ip, $auth_username) {
-				database::query(
-					"insert into ". DB_TABLE_PREFIX ."rate_limiting
-					(action, scope_type, scope_key, ip_address, hostname, user_agent, date_created)
-					values ('mcp_auth_failed', 'username', '". database::input(strtolower($auth_username)) ."', '". database::input($auth_ip) ."', '". database::input($auth_ip !== '' ? gethostbyaddr($auth_ip) : 'unknown') ."', '". database::input(isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '') ."', '". date('Y-m-d H:i:s') ."')"
-				);
-			};
-
 			$user = database::query(
 				"select * from ". DB_TABLE_PREFIX ."users
 				where status
 				and lower(username) = lower('". database::input($auth_username) ."')
-				and (date_valid_from is null or date_valid_from < '". database::input(date('Y-m-d H:i:s')) ."')
 				and (date_valid_to is null or date_valid_to > '". database::input(date('Y-m-d H:i:s')) ."')
 				limit 1;"
 			)->fetch();
@@ -131,12 +122,20 @@
 			// An unknown username and a wrong password answer with the same message and status,
 			// so the endpoint cannot be used to probe for valid accounts.
 			if (!$user) {
-				$record_failed_attempt();
+				database::query(
+					"insert into ". DB_TABLE_PREFIX ."rate_limiting
+					(action, scope_type, scope_key, ip_address, hostname, user_agent, date_created)
+					values ('mcp_auth_failed', 'username', '". database::input(strtolower($auth_username)) ."', '". database::input($auth_ip) ."', '". database::input($auth_ip !== '' ? gethostbyaddr($auth_ip) : 'unknown') ."', '". database::input(isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '') ."', '". date('Y-m-d H:i:s') ."')"
+				);
 				throw new McpException(language::translate('error_wrong_username_password_combination', 'Wrong combination of username and password or the account does not exist.'), 401);
 			}
 
 			if (!password_verify($_SERVER['PHP_AUTH_PW'], $user['password_hash'])) {
-				$record_failed_attempt();
+				database::query(
+					"insert into ". DB_TABLE_PREFIX ."rate_limiting
+					(action, scope_type, scope_key, ip_address, hostname, user_agent, date_created)
+					values ('mcp_auth_failed', 'username', '". database::input(strtolower($auth_username)) ."', '". database::input($auth_ip) ."', '". database::input($auth_ip !== '' ? gethostbyaddr($auth_ip) : 'unknown') ."', '". database::input(isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '') ."', '". date('Y-m-d H:i:s') ."')"
+				);
 				throw new McpException(language::translate('error_wrong_username_password_combination', 'Wrong combination of username and password or the account does not exist.'), 401);
 			}
 
@@ -146,15 +145,6 @@
 				where action = 'mcp_auth_failed'
 				and (". $auth_scope .")"
 			);
-
-			if ($user['login_attempts'] > 0) {
-				database::query(
-					"update ". DB_TABLE_PREFIX ."users
-					set login_attempts = 0
-					where id = ". (int)$user['id'] ."
-					limit 1;"
-				);
-			}
 
 		} else {
 			throw new McpException('You need to authenticate to use this API', 401, -32000);

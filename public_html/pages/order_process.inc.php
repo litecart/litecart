@@ -23,6 +23,11 @@
   // If Confirm Order button was pressed
     if (isset($_POST['confirm_order'])) {
 
+    // This route is exempt from the global CSRF check, so the token is verified here
+      if (settings::get('csrf_protection') && !session::is_valid_csrf_token(isset($_POST['csrf_token']) ? $_POST['csrf_token'] : (isset($_SERVER['HTTP_X_CSRF_TOKEN']) ? $_SERVER['HTTP_X_CSRF_TOKEN'] : ''))) {
+        throw new Exception(language::translate('error_invalid_csrf_token', 'The security token is missing or invalid. Please reload the page and try again.'));
+      }
+
       ob_start();
       include_once vmod::check(FS_DIR_APP . 'pages/ajax/checkout_customer.inc.php');
       include_once vmod::check(FS_DIR_APP . 'pages/ajax/checkout_shipping.inc.php');

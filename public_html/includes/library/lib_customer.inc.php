@@ -28,7 +28,6 @@
             "select * from ". DB_TABLE_PREFIX ."customers
             where id = ". (int)$token['id'] ."
             and status
-            and (date_blocked_until is null or date_blocked_until < '". date('Y-m-d H:i:s') ."')
             limit 1;"
           );
 
@@ -39,23 +38,6 @@
         // Verify HMAC with actual password hash
           $verified_id = functions::token_verify_remember($_COOKIE['customer_remember_me'], $customer['password_hash']);
           if ($verified_id === false) {
-            if (++$customer['login_attempts'] < 3) {
-              database::query(
-                "update ". DB_TABLE_PREFIX ."customers
-                set login_attempts = login_attempts + 1
-                where id = ". (int)$customer['id'] ."
-                limit 1;"
-              );
-            } else {
-              database::query(
-                "update ". DB_TABLE_PREFIX ."customers
-                set login_attempts = 0,
-                date_blocked_until = '". date('Y-m-d H:i:00', strtotime('+15 minutes')) ."'
-                where id = ". (int)$customer['id'] ."
-                limit 1;"
-              );
-            }
-
             throw new Exception('Invalid token signature');
           }
 
@@ -66,7 +48,6 @@
             set
               last_ip = '". database::input($_SERVER['REMOTE_ADDR']) ."',
               last_host = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
-              login_attempts = 0,
               total_logins = total_logins + 1,
               date_login = '". date('Y-m-d H:i:s') ."'
             where id = ". (int)$customer['id'] ."

@@ -19,25 +19,32 @@
 
   if (isset($_POST['login'])) {
 
+    $rate_limited = false;
+
     try {
 
     // Rate limit checking
       if (database::query(
         "select count(*) as num_attempts from ". DB_TABLE_PREFIX ."rate_limiting
-        where action = 'login_failed'
-        and ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."'
+        where action = 'admin_login_failed'
+        and (
+          ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."'
+          ". (!empty($_POST['username']) ? "or (scope_type = 'username' and scope_key = '". database::input($_POST['username']) ."')" : '') ."
+        )
         and date_created >= '". date('Y-m-d H:i:s', strtotime('-5 minutes')) ."'"
       )->fetch('num_attempts') > 3) {
+        $rate_limited = true;
         throw new Exception(language::translate('error_too_many_attempts', 'Too many failed attempts. Please try again later.'));
       }
-
-      $client_ip = $_SERVER['REMOTE_ADDR'];
 
       if (!empty($_COOKIE['remember_me'])) {
         header('Set-Cookie: remember_me=; Path='. WS_DIR_APP .'; Max-Age=-1; HttpOnly; SameSite=Lax', false);
       }
 
       if (empty($_POST['username'])) throw new Exception(language::translate('error_missing_username', 'You must provide a username'));
+
+    // The same message is used for every failed sign in so that account existence is not revealed
+      $generic_login_error = language::translate('error_wrong_username_password_combination', 'Wrong combination of username and password or the account does not exist.');
 
       $user = database::query(
         "select * from ". DB_TABLE_PREFIX ."users
@@ -47,27 +54,28 @@
       )->fetch();
 
       if (!$user) {
-        throw new Exception(language::translate('error_user_not_found', 'The user could not be found in our database'));
+        database::query(
+          "insert into ". DB_TABLE_PREFIX ."rate_limiting
+          (action, scope_type, scope_key, ip_address, hostname, user_agent, date_created)
+          values ('admin_login_failed', 'username', '". database::input($_POST['username']) ."', '". database::input($_SERVER['REMOTE_ADDR']) ."', '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."', '". database::input(isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '') ."', '". date('Y-m-d H:i:s') ."')"
+        );
+        throw new Exception($generic_login_error);
       }
 
       if (empty($user['status'])) {
-        throw new Exception(language::translate('error_user_account_disabled', 'The user account is disabled'));
-      }
-
-      if (!empty($user['date_valid_from']) && date('Y-m-d H:i:s') < $user['date_valid_from']) {
-        throw new Exception(strtr(language::translate('error_account_is_blocked', 'The account is blocked until %s'), ['%s' => language::strftime(language::$selected['format_datetime'], strtotime($user['date_valid_from']))]));
+        throw new Exception($generic_login_error);
       }
 
       if (!empty($user['date_valid_to']) && date('Y', strtotime($user['date_valid_to'])) > '1970' && date('Y-m-d H:i:s') > $user['date_valid_to']) {
-        throw new Exception(strtr(language::translate('error_account_expired', 'The account expired %s'), ['%s' => language::strftime(language::$selected['format_datetime'], strtotime($user['date_valid_to']))]));
+        throw new Exception($generic_login_error);
       }
 
       if (!password_verify($_POST['password'], $user['password_hash'])) {
 
         database::query(
           "insert into ". DB_TABLE_PREFIX ."rate_limiting
-          (action, ip_address, hostname, user_agent, date_created)
-          values ('login_failed', '". database::input($client_ip) ."', '". database::input(gethostbyaddr($client_ip)) ."', '". database::input($_SERVER['HTTP_USER_AGENT']) ."', '". date('Y-m-d H:i:s') ."')"
+          (action, scope_type, scope_key, ip_address, hostname, user_agent, date_created)
+          values ('admin_login_failed', 'username', '". database::input($_POST['username']) ."', '". database::input($_SERVER['REMOTE_ADDR']) ."', '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."', '". database::input(isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '') ."', '". date('Y-m-d H:i:s') ."')"
         );
 
         // Notify the user on the first rate-limiting threshold hit
@@ -75,13 +83,13 @@
           $window_start = date('Y-m-d H:i:s', strtotime('-5 minutes'));
           $failed_count = (int)database::query(
             "select count(*) as num_attempts from ". DB_TABLE_PREFIX ."rate_limiting
-            where action = 'login_failed'
+            where action = 'admin_login_failed'
             and date_created >= '". $window_start ."'"
           )->fetch('num_attempts');
 
           $notified = (int)database::query(
             "select count(*) as num_sent from ". DB_TABLE_PREFIX ."rate_limiting
-            where action = 'login_failed_notified'
+            where action = 'admin_login_failed_notified'
             and date_created >= '". $window_start ."'"
           )->fetch('num_sent');
 
@@ -90,7 +98,7 @@
             database::query(
               "insert into ". DB_TABLE_PREFIX ."rate_limiting
               (action, ip_address, hostname, user_agent, date_created)
-              values ('login_failed_notified', '". database::input($client_ip) ."', '". database::input(gethostbyaddr($client_ip)) ."', '". database::input($_SERVER['HTTP_USER_AGENT']) ."', '". date('Y-m-d H:i:s') ."')"
+              values ('admin_login_failed_notified', '". database::input($_SERVER['REMOTE_ADDR']) ."', '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."', '". database::input(isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '') ."', '". date('Y-m-d H:i:s') ."')"
             );
 
             $aliases = [
@@ -98,8 +106,8 @@
               '%store_link' => document::ilink(''),
               '%username' => $user['username'],
               '%expires' => date('Y-m-d H:i:00', strtotime('+15 minutes')),
-              '%ip_address' => $client_ip,
-              '%hostname' => gethostbyaddr($client_ip),
+              '%ip_address' => $_SERVER['REMOTE_ADDR'],
+              '%hostname' => gethostbyaddr($_SERVER['REMOTE_ADDR']),
               '%user_agent' => $_SERVER['HTTP_USER_AGENT'],
             ];
 
@@ -122,31 +130,7 @@
           }
         }
 
-        if (++$user['login_attempts'] < 3) {
-
-          database::query(
-            "update ". DB_TABLE_PREFIX ."users
-            set login_attempts = login_attempts + 1
-            where id = ". (int)$user['id'] ."
-            limit 1;"
-          );
-
-          throw new Exception(strtr(language::translate('error_d_login_attempts_left', 'You have %d login attempts left until your account is temporarily blocked'), ['%d' => 3 - $user['login_attempts']]));
-
-        } else {
-
-          database::query(
-            "update ". DB_TABLE_PREFIX ."users
-            set login_attempts = 0,
-            date_valid_from = '". date('Y-m-d H:i:00', strtotime('+15 minutes')) ."'
-            where id = ". (int)$user['id'] ."
-            limit 1;"
-          );
-
-          throw new Exception(strtr(language::translate('error_account_has_been_blocked_x_minutes', 'This account has been temporarily blocked for %d minutes.'), ['%d' => 15]));
-        }
-
-        throw new Exception(language::translate('error_wrong_username_password_combination', 'Wrong combination of username and password or the account does not exist.'));
+        throw new Exception($generic_login_error);
       }
 
       if (password_needs_rehash($user['password_hash'], PASSWORD_DEFAULT)) {
@@ -206,7 +190,6 @@
         set
           last_ip = '". database::input($_SERVER['REMOTE_ADDR']) ."',
           last_host = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
-          login_attempts = 0,
           total_logins = total_logins + 1,
           date_login = '". date('Y-m-d H:i:s') ."'
         where id = ". (int)$user['id'] ."
@@ -216,11 +199,14 @@
       user::load($user['id']);
       session::rotate_csrf_token();
 
-    // Clear IP-based rate limit records on successful login
+    // Clear rate limit records on successful login
       database::query(
         "delete from ". DB_TABLE_PREFIX ."rate_limiting
-        where action in ('login_failed', 'login_failed_notified')
-        and ip_address = '". database::input($client_ip) ."'"
+        where action in ('admin_login_failed', 'admin_login_failed_notified')
+        and (
+          ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."'
+          or (scope_type = 'username' and scope_key = '". database::input($_POST['username']) ."')
+        )"
       );
 
       if (!empty($_POST['remember_me']) && defined('HMAC_KEY_REMEMBER_ME')) {
@@ -244,7 +230,7 @@
 
     } catch (Exception $e) {
 
-      http_response_code(401); // Troublesome with HTTP Auth (e.g. .htpasswd)
+      http_response_code($rate_limited ? 429 : 401); // Troublesome with HTTP Auth (e.g. .htpasswd)
       notices::add('errors', $e->getMessage());
     }
   }

@@ -54,7 +54,7 @@
 
       echo 'Wiping out old log files...' . PHP_EOL;
 
-      $breakpoint = strtotime('-30 days');
+      $breakpoint = strtotime('-1 month');
       $deleted_files = 0;
 
       foreach (functions::file_search(FS_DIR_STORAGE .'logs/**.log') as $file) {
@@ -73,7 +73,7 @@
 
       database::query(
         "delete from ". DB_TABLE_PREFIX ."rate_limiting
-        where date_created < '". date('Y-m-d H:i:s', strtotime('-7 days')) ."';"
+        where date_created < '". date('Y-m-d H:i:s', strtotime('-30 days')) ."';"
       );
 
       echo "Deleted ". database::affected_rows() ." records." . PHP_EOL . PHP_EOL;

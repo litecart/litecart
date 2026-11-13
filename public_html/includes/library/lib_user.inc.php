@@ -29,7 +29,6 @@
             "select * from ". DB_TABLE_PREFIX ."users
             where id = ". (int)$token['id'] ."
             and status
-            and (date_valid_from is null or date_valid_from < '". date('Y-m-d H:i:s') ."')
             and (date_valid_to is null or year(date_valid_to) < '1971' or date_valid_to > '". date('Y-m-d H:i:s') ."')
             limit 1;"
           );
@@ -41,24 +40,6 @@
         // Verify HMAC with actual password hash
           $verified_id = functions::token_verify_remember($_COOKIE['remember_me'], $user['password_hash']);
           if ($verified_id === false) {
-
-            if (++$user['login_attempts'] < 3) {
-              database::query(
-                "update ". DB_TABLE_PREFIX ."users
-                set login_attempts = login_attempts + 1
-                where id = ". (int)$user['id'] ."
-                limit 1;"
-              );
-            } else {
-              database::query(
-                "update ". DB_TABLE_PREFIX ."users
-                set login_attempts = 0,
-                date_valid_from = '". date('Y-m-d H:i:00', strtotime('+15 minutes')) ."'
-                where id = ". (int)$user['id'] ."
-                limit 1;"
-              );
-            }
-
             throw new Exception('Invalid token signature');
           }
 
@@ -69,7 +50,6 @@
             set
               last_ip = '". database::input($_SERVER['REMOTE_ADDR']) ."',
               last_host = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',
-              login_attempts = 0,
               total_logins = total_logins + 1,
               date_login = '". date('Y-m-d H:i:s') ."'
             where id = ". (int)$user['id'] ."

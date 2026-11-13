@@ -44,6 +44,9 @@
         throw new Exception(language::translate('error_missing_login_credentials', 'You must provide both your email address and password'));
       }
 
+    // The same message is used for every failed sign in so that account existence is not revealed
+      $generic_login_error = language::translate('error_wrong_username_password_combination', 'Wrong combination of username and password or the account does not exist.');
+
       $customer_query = database::query(
         "select * from ". DB_TABLE_PREFIX ."customers
         where lower(email) = '". database::input(strtolower($_POST['email'])) ."'
@@ -58,7 +61,7 @@
           values ('login_failed', 'email', '". database::input(strtolower($_POST['email'])) ."', '". database::input($_SERVER['REMOTE_ADDR']) ."', '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."', '". database::input($_SERVER['HTTP_USER_AGENT']) ."', '". date('Y-m-d H:i:s') ."')"
         );
 
-        throw new Exception(language::translate('error_email_not_found_in_database', 'The email does not exist in our database'));
+        throw new Exception($generic_login_error);
       }
 
       if (empty($customer['status'])) {
@@ -69,11 +72,7 @@
           values ('login_failed', 'email', '". database::input($customer['email']) ."', '". database::input($_SERVER['REMOTE_ADDR']) ."', '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."', '". database::input($_SERVER['HTTP_USER_AGENT']) ."', '". date('Y-m-d H:i:s') ."')"
         );
 
-        throw new Exception(language::translate('error_customer_account_disabled_or_not_activated', 'The customer account is disabled or not activated'));
-      }
-
-      if (!empty($customer['date_blocked_until']) && date('Y-m-d H:i:s') < $customer['date_blocked_until']) {
-        throw new Exception(strtr(language::translate('error_account_is_blocked', 'The account is blocked until %s'), ['%s' => language::strftime(language::$selected['format_datetime'], strtotime($customer['date_blocked_until']))]));
+        throw new Exception($generic_login_error);
       }
 
       if (!password_verify($_POST['password'], $customer['password_hash'])) {
@@ -84,29 +83,7 @@
           values ('login_failed', 'email', '". database::input($customer['email']) ."', '". database::input($_SERVER['REMOTE_ADDR']) ."', '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."', '". database::input($_SERVER['HTTP_USER_AGENT']) ."', '". date('Y-m-d H:i:s') ."')"
         );
 
-        if (++$customer['login_attempts'] < 3) {
-
-          database::query(
-            "update ". DB_TABLE_PREFIX ."customers
-            set login_attempts = login_attempts + 1
-            where id = ". (int)$customer['id'] ."
-            limit 1;"
-          );
-
-          throw new Exception(language::translate('error_wrong_password_or_account', 'Wrong password or the account does not exist'));
-
-        } else {
-
-          database::query(
-            "update ". DB_TABLE_PREFIX ."customers
-            set login_attempts = 0,
-            date_blocked_until = '". date('Y-m-d H:i:00', strtotime('+15 minutes')) ."'
-            where id = ". (int)$customer['id'] ."
-            limit 1;"
-          );
-
-          throw new Exception(strtr(language::translate('error_this_account_has_been_temporarily_blocked_n_minutes', 'This account has been temporarily blocked %n minutes'), ['%n' => 15, '%d' => 15]));
-        }
+        throw new Exception($generic_login_error);
       }
 
       if (password_needs_rehash($customer['password_hash'], PASSWORD_DEFAULT)) {
@@ -120,7 +97,6 @@
 
       database::query(
         "update ". DB_TABLE_PREFIX ."customers set
-          login_attempts = 0,
           total_logins = total_logins + 1,
           last_ip = '". database::input($_SERVER['REMOTE_ADDR']) ."',
           last_host = '". database::input(gethostbyaddr($_SERVER['REMOTE_ADDR'])) ."',

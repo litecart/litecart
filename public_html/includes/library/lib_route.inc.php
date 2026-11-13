@@ -83,8 +83,18 @@
         $page = false;
       }
 
+    // Resolve the page path and make sure it stays inside the pages folder
+      if ($page) {
+        $real_page = realpath($page);
+        $real_pages = realpath(FS_DIR_APP . 'pages');
+        if (!$real_page || !$real_pages
+        || strpos(str_replace('\\', '/', $real_page), str_replace('\\', '/', $real_pages) . '/') !== 0) {
+          $page = false;
+        }
+      }
+
     // Forward to rewritten URL (if necessary)
-      if (!empty(self::$route['page']) && is_file(vmod::check($page))) {
+      if (!empty(self::$route['page']) && $page && is_file(vmod::check($page))) {
         $rewritten_url = document::ilink(self::$route['page'], $_GET);
 
         if (urldecode(strtok($_SERVER['REQUEST_URI'], '?')) != parse_url($rewritten_url, PHP_URL_PATH)) {
@@ -118,7 +128,7 @@
         }
       }
 
-      if (!empty(self::$route) && is_file($page)) {
+      if (!empty(self::$route) && $page && is_file($page)) {
         include vmod::check($page);
 
     // Display a 404 error

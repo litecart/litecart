@@ -47,10 +47,6 @@
     try {
       $user['warning'] = null;
 
-      if ($user['date_valid_from'] > date('Y-m-d H:i:s')) {
-        throw new Exception(strtr(language::translate('text_acount_cannot_be_used_until_x', 'The account cannot be used until %datetime'), ['%datetime' => language::strftime(language::$selected['format_datetime'], strtotime($user['date_valid_from']))]));
-      }
-
       if ($user['date_valid_to'] > 1970 && $user['date_valid_to'] < date('Y-m-d H:i:s')) {
         throw new Exception(strtr(language::translate('text_account_expired_at_x', 'The account expired at %datetime and can no longer be used'), ['%datetime' => language::strftime(language::$selected['format_datetime'], strtotime($user['date_valid_to']))]));
       }

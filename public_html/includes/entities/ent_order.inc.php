@@ -213,18 +213,7 @@
         ];
       }
 
-    // Link guests to customer profile
-      if (empty($this->data['customer']['id']) && !empty($this->data['customer']['email'])) {
-        $customers_query = database::query(
-          "select id from ". DB_TABLE_PREFIX ."customers
-          where email = '". database::input($this->data['customer']['email']) ."'
-          limit 1;"
-        );
-
-        if ($customer = database::fetch($customers_query)) {
-          $this->data['customer']['id'] = $customer['id'];
-        }
-      }
+    // Guest orders are not linked to a customer by email address, as the address is not verified
 
       if (empty($this->data['public_key'])) {
         $this->data['public_key'] = substr(str_shuffle(str_repeat('0123456789abcdefghijklmnopqrstuvwxyz', mt_rand(5, 10))), 0, 32);
