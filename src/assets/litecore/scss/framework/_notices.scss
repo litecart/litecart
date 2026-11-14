@@ -5,24 +5,33 @@
 		background: var(--notice-#{$type}-background);
 		color: var(--notice-#{$type}-text-color);
 		border: var(--notice-border-width) solid var(--notice-#{$type}-border-color);
+		.close {
+			border-color: var(--notice-#{$type}-text-color);
+		}
 	}
 }
 
 .notices {
-	margin-bottom: 2em;
+	display: flex;
+	flex-direction: column;
+	gap: 1em;
+	margin-bottom: var(--gutter-y);
 
 	.notice {
 		border-radius: var(--border-radius);
-		margin-bottom: 1.5em;
 		padding: .75em 1.5em;
 
 		.close {
+			display: inline-block;
 			float: inline-end;
 			font-weight: bold;
-			line-height: 1.2;
+			line-height: 1;
+			padding: .25em;
 			color: inherit;
-			text-shadow: 0 1px 0 #fff;
-			opacity: 0.75;
+			text-shadow: 0 1px 0 #fffc;
+			border: 1px solid transparent;
+			border-radius: 999px;
+			aspect-ratio: 1/1;
 
 			&:hover {
 				text-decoration: none;
