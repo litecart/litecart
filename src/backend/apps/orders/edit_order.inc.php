@@ -2,14 +2,21 @@
 
 	administrator::require_login();
 
-	if (!empty($_GET['order_id'])) {
-		$order = new ent_order($_GET['order_id']);
-	} else {
-		$order = new ent_order();
-		$order->data['ip_address'] = $_SERVER['REMOTE_ADDR'];
-		$order->data['hostname'] = reverse_dns($_SERVER['REMOTE_ADDR']);
-		$order->data['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
-		$order->data['created_at'] = date('Y-m-d H:i:s');
+	try {
+
+		if (!empty($_GET['order_id'])) {
+			$order = new ent_order($_GET['order_id']);
+		} else {
+			$order = new ent_order();
+			$order->data['ip_address'] = $_SERVER['REMOTE_ADDR'];
+			$order->data['hostname'] = reverse_dns($_SERVER['REMOTE_ADDR']);
+			$order->data['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
+			$order->data['created_at'] = date('Y-m-d H:i:s');
+		}
+
+	} catch (Throwable $e) {
+		notices::add('errors', $e->getMessage());
+		return;
 	}
 
 	document::$title[] = !empty($order->data['id']) ? t('title_edit_order', 'Edit Order') .' #'. $order->data['id'] : t('title_create_new_order', 'Create New Order');

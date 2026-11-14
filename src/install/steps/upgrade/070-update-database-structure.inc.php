@@ -131,26 +131,24 @@
 				}
 			}
 
-			// Drop unique keys
+			// Drop unique keys, by name only, so a key changing category is replaced instead of colliding
 			if ($table_exists && !empty($table['unique_keys'])) {
 				foreach (array_keys($table['unique_keys']) as $key_name) {
 					if (database::query(
 						"SHOW INDEX FROM `". $table['name'] ."`
-						WHERE Key_name = '". database::input($key_name) ."'
-						AND non_unique = 0;"
+						WHERE Key_name = '". database::input($key_name) ."';"
 					)->num_rows) {
 						$sql .= "DROP INDEX `". database::input($key_name) ."`," . PHP_EOL;
 					}
 				}
 			}
 
-			// Drop keys
+			// Drop keys, by name only, so a key changing category is replaced instead of colliding
 			if ($table_exists && !empty($table['keys'])) {
 				foreach (array_keys($table['keys']) as $key_name) {
 					if (database::query(
 						"SHOW INDEX FROM `". database::input($table['name']) ."`
-						WHERE Key_name = '". database::input($key_name) ."'
-						AND non_unique = 1;"
+						WHERE Key_name = '". database::input($key_name) ."';"
 					)->num_rows) {
 						$sql .= 'DROP INDEX `'. database::input($key_name) .'`,' . PHP_EOL;
 					}

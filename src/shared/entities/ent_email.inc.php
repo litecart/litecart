@@ -375,6 +375,8 @@
 				return false;
 			}
 
+			$result = false;
+
 			// Deliver via SMTP
 			if (settings::get('smtp_status')) {
 
@@ -416,11 +418,13 @@
 
 					$result = $smtp->send(settings::get('store_email'), $recipients, $data);
 
-				} catch(Exception $e) {
+				} catch(Throwable $e) {
 					trigger_error('Failed sending email "'. $this->data['subject'] .'": '. $e->getMessage(), E_USER_WARNING);
 				}
 
-				$smtp->disconnect();
+				if (isset($smtp)) {
+					$smtp->disconnect();
+				}
 
 			// Deliver via PHP mail()
 			} else {

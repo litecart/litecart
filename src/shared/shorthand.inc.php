@@ -80,7 +80,9 @@
 				}
 			}
 
-			if (!empty($arg) || (is_numeric($arg) && (float)$arg != 0)) return !1;
+			if (!empty($arg) || (is_numeric($arg) && (float)$arg != 0)) {
+				return !1;
+			}
 		}
 
 		return !0;

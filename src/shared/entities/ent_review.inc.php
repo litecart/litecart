@@ -70,6 +70,12 @@
 				$this->data['id'] = database::insert_id();
 			}
 
+			// Read the stored attachments before the update, or the removed ones can not be detected
+			$existing_attachments = json_decode(database::query(
+				"select attachments from ". DB_PREFIX ."reviews
+				where id = ". (int)$this->data['id'] ." limit 1;"
+			)->fetch('attachments'), true) ?: [];
+
 			database::query(
 				"update ". DB_PREFIX ."reviews
 				set status = ". (int)$this->data['status'] .",
@@ -89,10 +95,6 @@
 			);
 
 			// Delete attachments that were removed
-			$existing_attachments = json_decode(database::query(
-				"select attachments from ". DB_PREFIX ."reviews
-				where id = ". (int)$this->data['id'] ." limit 1;"
-			)->fetch('attachments'), true) ?: [];
 
 			$remaining_ids = array_column($this->data['attachments'], 'id');
 

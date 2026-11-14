@@ -53,7 +53,7 @@
 		}
 
 		public function mkdir(string $path, int $mode, int $options): bool {
-			return mkdir($this->_resolve_path($path), $mode);
+			return mkdir($this->_resolve_path($path), $mode, (bool)($options & STREAM_MKDIR_RECURSIVE));
 		}
 
 		public function rename(string $path_from, string $path_to): bool {

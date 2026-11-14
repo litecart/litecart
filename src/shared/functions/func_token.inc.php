@@ -33,6 +33,11 @@
 			return false;
 		}
 
+		// A crafted cookie must not raise a TypeError in the comparison below
+		if (!is_scalar($token['id']) || !is_scalar($token['exp']) || !is_string($token['sig'])) {
+			return false;
+		}
+
 		if ($token['exp'] < time()) {
 			return false;
 		}

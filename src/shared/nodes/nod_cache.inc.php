@@ -129,7 +129,7 @@
 						break;
 
 					case 'endpoint':
-						$hash_string .= (isset(route::$request['endpoint']) && route::$request['endpoint'] == 'admin') ? 'backend' : 'frontend';
+						$hash_string .= (route::$selected['endpoint'] ?? '') ?: 'frontend';
 						break;
 
 					case 'get':
@@ -168,7 +168,7 @@
 						break;
 
 					case 'template':
-						$hash_string .= match (route::$request['endpoint'] ?? null) {
+						$hash_string .= match (route::$selected['endpoint'] ?? null) {
 							'backend' => 'b:',
 							'frontend' => 'f:',
 							default => 'f:',

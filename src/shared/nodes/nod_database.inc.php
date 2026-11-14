@@ -132,15 +132,31 @@
 			return $errors;
 		}
 
-		public static function insert(string $table_name, array $data, string $link='default'): database_result|bool {
+		public static function insert(string $table_name, array $data, string $link='default', bool|array $allowable_tags=false): database_statement|bool {
+
+			if (!preg_match('#^'. preg_quote(DB_PREFIX, '#'). '#', $table_name)) {
+				$table_name = DB_PREFIX . $table_name;
+			}
+
+			$columns = array_map(fn($column) => str_replace('`', '``', $column), array_keys($data));
+
+			$values = array_map(function($value, $column) use ($allowable_tags) {
+				if ($value === null) return 'null';
+
+				$tags = $allowable_tags === true || (is_array($allowable_tags) && in_array($column, $allowable_tags, true));
+
+				return "'". self::input($value, $tags) ."'";
+			}, $data, array_keys($data));
+
 			return self::query(
-				"insert into `". database::identifier(DB_PREFIX . $table_name) ."`
-				(`". implode("`, `", array_map(fn($column) => str_replace('`', '``', $column), array_keys($data))) ."`)
-				values ('". implode("', '", array_map(fn($value) => self::input($value), $data)) ."');"
+				"insert into `". database::identifier($table_name) ."`
+				(`". implode('`, `', $columns) ."`)
+				values (". implode(', ', $values) .");",
+				$link
 			);
 		}
 
-		public static function update(string $table_name, array $data, array $where, string $link='default'): database_result|bool {
+		public static function update(string $table_name, array $data, array $where, string $link='default'): database_statement|bool {
 
 			$schema = self::schema($table_name);
 

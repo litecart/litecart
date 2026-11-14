@@ -180,6 +180,15 @@
 				throw new Exception(t('error_must_select_at_least_one_language', 'You must select at least one language'));
 			}
 
+			// A single collection or language code may arrive as a scalar, the rest of the page expects a list
+			if (!is_array($_POST['collections'])) {
+				$_POST['collections'] = [$_POST['collections']];
+			}
+
+			if (!is_array($_POST['language_codes'])) {
+				$_POST['language_codes'] = [$_POST['language_codes']];
+			}
+
 			$_POST['language_codes'] = array_filter($_POST['language_codes']);
 
 			// AC-5, AC-6: validate codes against configured allowlist before
@@ -266,10 +275,10 @@
 
 			ob_clean();
 
-			if ($_POST['output'] == 'screen') {
-				header('Content-Type: text/plain; charset='. $_POST['charset']);
+			if (($_POST['output'] ?? '') == 'screen') {
+				header('Content-Type: text/plain; charset='. ($_POST['charset'] ?? 'utf-8'));
 			} else {
-				header('Content-Type: application/csv; charset='. $_POST['charset']);
+				header('Content-Type: application/csv; charset='. ($_POST['charset'] ?? 'utf-8'));
 				// language_codes have already been allowlisted above, so they
 				// are safe for the filename slot — but a whitelist filter here
 				// protects against a future refactor that re-orders validation.
@@ -277,14 +286,14 @@
 				header('Content-Disposition: attachment; filename=translations-'. $_filename_codes .'.csv');
 			}
 
-			$eol = match($_POST['eol']) {
-				'Linux' => "\r",
+			$eol = match($_POST['eol'] ?? '') {
+				'Linux' => "\n",
 				'Mac' => "\n",
 				'Win' => "\r\n",
 				default => throw new Exception('Unsupported EOL character'),
 			};
 
-			echo f::csv_encode($csv, $_POST['delimiter'], $_POST['enclosure'], $_POST['escapechar'], $_POST['charset'], "\r\n");
+			echo f::csv_encode($csv, $_POST['delimiter'] ?? ',', $_POST['enclosure'] ?? '"', $_POST['escapechar'] ?? '"', $_POST['charset'] ?? 'utf-8', $eol);
 			exit;
 
 		} catch (Exception $e) {

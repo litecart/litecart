@@ -111,7 +111,12 @@
 					)->fetch(function(&$page) {
 						foreach ($page as $key => $value) {
 
-							if (in_array($key, ['title', 'content', 'head_title', 'meta_description'])) {
+							if (in_array($key, [
+								'title',
+								'content',
+								'head_title',
+								'meta_description',
+							])) {
 								$value = json_decode((string)$value, true) ?: [];
 
 								foreach ($this->_language_codes as $language_code) {
@@ -126,7 +131,15 @@
 						}
 					});
 
-					if (!$page) return;
+					if (!$page) {
+						$page = [];
+						foreach (database::schema('pages') as $field) {
+							$page[$field['Field']] = database::create_variable($field);
+						}
+						foreach (['title', 'content', 'head_title', 'meta_description'] as $key) {
+							$page[$key] = '';
+						}
+					}
 
 					foreach ($page as $key => $value) {
 						$this->_data[$key] = $value;

@@ -375,7 +375,7 @@
 							}
 						});
 
-						if ($customization['sort'] == 'alphabetically') {
+						if ($customization['sort'] == 'alphabetical') {
 							uasort($customization['values'], function($a, $b){
 								if ($a['name'] == $b['name']) return 0;
 								return ($a['name'] < $b['name']) ? -1 : 1;
@@ -491,16 +491,22 @@
 
 					foreach ($this->_data['quantity_prices'] as $i => $quantity_price) {
 
-						if ($this->final_price <= $quantity_price['final_price']) {
-							$quantity_price[$i]['final_price'] = $this->final_price;
+						$final_price = $quantity_price['final_price'];
+
+						// A tier price cannot be higher than the product price
+						if ($this->final_price <= $final_price) {
+							$final_price = $this->final_price;
 						}
 
-						if (isset($last_final_price) && $quantity_price['final_price'] >= $last_final_price) {
-							$this->_data['quantity_prices'][$i] = $last_final_price;
+						// A tier price cannot be higher than the price of the previous tier
+						if (isset($last_final_price) && $final_price >= $last_final_price) {
+							$final_price = $last_final_price;
 						}
 
-						$this->_data['quantity_prices'][$i]['tax'] = tax::get_tax($quantity_price['final_price'], $this->tax_class_id);
-						$last_final_price = $quantity_price['final_price'];
+						$this->_data['quantity_prices'][$i]['final_price'] = $final_price;
+						$this->_data['quantity_prices'][$i]['tax'] = tax::get_tax($final_price, $this->tax_class_id);
+
+						$last_final_price = $final_price;
 					}
 
 					break;

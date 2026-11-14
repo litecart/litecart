@@ -27,9 +27,9 @@
 
 					$administrator = database::query(
 						"select * from ". DB_PREFIX ."administrators
-						where username = '". database::input($token['id']) ."'
+						where id = '". (int)$token['id'] ."'
 						and status
-						and (valid_from is null or valid_from < '". date('Y-m-d H:i:s') ."')
+						and (valid_from is null or valid_from <= '". date('Y-m-d H:i:s') ."')
 						and (valid_to is null or valid_to > '". date('Y-m-d H:i:s') ."')
 						limit 1;"
 					)->fetch();
@@ -46,6 +46,9 @@
 
 					self::load($administrator['id']);
 
+					// Stamp the session as authenticated so an account change does not expire this fresh login
+					session::$data['security.administrator']['timestamp'] = time();
+
 					database::query(
 						"update ". DB_PREFIX ."administrators
 						set last_ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."',
@@ -57,7 +60,7 @@
 						limit 1;"
 					);
 
-				} catch (Exception $e) {
+				} catch (Throwable $e) {
 					header('Set-Cookie: remember_me=; Path='. WS_DIR_APP .'; Max-Age=-1; HttpOnly; SameSite=Lax', false);
 				}
 			}

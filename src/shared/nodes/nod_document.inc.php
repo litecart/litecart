@@ -78,21 +78,25 @@
 					'<script nonce="'. security::$data['nonce'] .'">var _e=0;addEventListener("error",function(){var b=document.getElementById("_e")||(b=document.createElement("button"),b.id="_e",b.title="Open console (F12)",b.class="hidden-print",b.style.cssText="position:fixed;right:12px;bottom:12px;z-index:2147483647;display:none;padding:4px 8px;background:#c00;color:#fff;border:0;border-radius:4px;font:600 12px sans-serif;cursor:pointer",b.onclick=function(){alert("Open browser console (F12) to view errors")},document.body.appendChild(b));b.textContent=++_e+" Error";b.style.display="block"});</script>',
 				], 'alert_errors');
 
-				// Client-side error reporter
-				self::add_script([
-					'  window.onerror = function(message, file, line) {',
-					'    fetch("' . document::ilink('f:ajax/report_error') . '", {',
-					'      method: "POST",',
-					'      headers: { "Content-Type": "application/json; charset=utf-8" },',
-					'      body: JSON.stringify({',
-					'        url: location.href,',
-					'        message: message,',
-					'        file: file,',
-					'        line: line',
-					'      })',
-					'    });',
-					'  };',
-				], 'error-reporter');
+				// Client-side error reporter, installed in the head so a page script throwing cannot disable it
+				self::add_head_tags([
+					'<script nonce="'. security::$data['nonce'] .'">',
+					'	window.onerror = function(message, file, line) {',
+					'		fetch("' . document::ilink('f:ajax/report_error') . '", {',
+					'			method: "POST",',
+					'			headers: {',
+					'				"Content-Type": "application/json; charset=utf-8"',
+					'			},',
+					'			body: JSON.stringify({',
+					'				url: location.href,',
+					'				message: message,',
+					'				file: file,',
+					'				line: line',
+					'			})',
+					'		});',
+					'	};',
+					'</script>',
+				], 'error_reporter');
 			}
 
 			// Wait For (Mini version)
@@ -124,6 +128,8 @@
 				'frontend' => 'app://frontend/templates/'.settings::get('template').'/config.inc.php',
 				default => 'app://frontend/templates/'.settings::get('template').'/config.inc.php',
 			};
+
+			$template_config = [];
 
 			if (is_file($template_config_file)) {
 				if (!$template_config = include $template_config_file) {

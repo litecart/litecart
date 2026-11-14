@@ -10,6 +10,9 @@
 
 		public static function init(): void {
 
+			// Get languages from database
+			self::load();
+
 			// Bind selected language to session
 			if (preg_match('#^'. preg_quote(WS_DIR_APP . BACKEND_ALIAS, '#') .'/#', $_SERVER['REQUEST_URI'] ?? '/')) {
 
@@ -27,9 +30,6 @@
 
 				self::$selected = &session::$data['language'];
 			}
-
-			// Get languages from database
-			self::load();
 
 			// Identify/set language
 			self::set();

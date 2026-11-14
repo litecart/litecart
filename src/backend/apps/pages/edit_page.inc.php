@@ -2,11 +2,18 @@
 
 	administrator::require_login();
 
-	if (!empty($_GET['page_id'])) {
-		$page = new ent_page($_GET['page_id']);
+	try {
 
-	} else {
-		$page = new ent_page();
+		if (!empty($_GET['page_id'])) {
+			$page = new ent_page($_GET['page_id']);
+
+		} else {
+			$page = new ent_page();
+		}
+
+	} catch (Throwable $e) {
+		notices::add('errors', $e->getMessage());
+		return;
 	}
 
 	document::$title[] = !empty($page->data['id']) ? t('title_edit_page', 'Edit Page') : t('title_create_new_page', 'Create New Page');

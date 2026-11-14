@@ -50,8 +50,7 @@ src/
 ├── assets/                     - Client-side third party libraries (javascripts, stylesheets, fonts)
 │   ├── litecore/               - LiteCore JavaScript and stylesheet framework
 │   ├── jquery/                 - jQuery 4+ JavaScript DOM library
-│   ├── trumbowyg/              - WYSIWYG JavaScript editor library
-│   └── chartist/               - Chart library
+│   └── trumbowyg/              - WYSIWYG JavaScript editor library
 ├── backend/                    - Admin panel (path controlled by BACKEND_ALIAS in config.inc.php)
 │   ├── apps/                   - Backend applications (catalog, orders, customers, settings, modules, etc.)
 │   ├── mcp/                    - Backend MCP tools (JSON-RPC server)

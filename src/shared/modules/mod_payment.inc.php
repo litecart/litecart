@@ -31,7 +31,7 @@
 			if (!$options = $this->options()) return;
 
 			if (($key = array_search($id, array_combine(array_keys($options), array_column($options, 'id')))) === false) return;
-			if (!empty($this->data['options'][$key]['error'])) return;
+			if (!empty($options[$key]['error'])) return;
 
 			list($module_id, $option_id) = explode(':', $id);
 			if (method_exists($this->modules[$module_id], 'select')) {

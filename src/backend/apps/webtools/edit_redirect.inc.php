@@ -2,16 +2,23 @@
 
 	administrator::require_login();
 
-	if (!empty($_GET['redirect_id'])) {
-		$redirect = new ent_redirect($_GET['redirect_id']);
-	} else {
-		$redirect = new ent_redirect();
-		if (isset($_GET['status'])) {
-			$redirect->data['status'] = null;
+	try {
+
+		if (!empty($_GET['redirect_id'])) {
+			$redirect = new ent_redirect($_GET['redirect_id']);
+		} else {
+			$redirect = new ent_redirect();
+			if (isset($_GET['status'])) {
+				$redirect->data['status'] = null;
+			}
+			if (isset($_GET['destination'])) {
+				$redirect->data['destination'] = null;
+			}
 		}
-		if (isset($_GET['destination'])) {
-			$redirect->data['destination'] = null;
-		}
+
+	} catch (Throwable $e) {
+		notices::add('errors', $e->getMessage());
+		return;
 	}
 
 	document::$title[] = !empty($redirect->data['id']) ? t('title_edit_redirect', 'Edit Redirect') : t('title_create_new_redirect', 'Create New Redirect');

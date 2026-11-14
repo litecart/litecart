@@ -87,6 +87,11 @@
 				->add_body(PLATFORM_NAME .' '. PLATFORM_VERSION ."\r\n\r\n". $buffer)
 				->send();
 
+			if ($result === null) {
+				echo ' [Email sending is disabled]';
+				return;
+			}
+
 			if (!$result) {
 				echo ' [Failed]';
 				return;

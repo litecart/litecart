@@ -111,7 +111,7 @@
 
 					if (!$skip_csrf) {
 						$submitted_token = $_POST['csrf_token'] ?? $_SERVER['HTTP_X_CSRF_TOKEN'] ?? '';
-						if (!hash_equals(security::csrf_token(), $submitted_token)) {
+						if (!security::is_valid_csrf_token($submitted_token)) {
 							http_response_code(403);
 							$error_message = t('error_csrf_token_mismatch', 'CSRF token mismatch. Please go back and try again.');
 							if (is_ajax_request()) {
@@ -186,6 +186,11 @@
 				self::$data['csrf_token'] = bin2hex(random_bytes(32));
 			}
 			return self::$data['csrf_token'];
+		}
+
+		// Validates a submitted token without raising a TypeError on non-string input
+		public static function is_valid_csrf_token($submitted_token): bool {
+			return is_string($submitted_token) && hash_equals(self::csrf_token(), $submitted_token);
 		}
 
 		public static function rotate_csrf_token(): string {

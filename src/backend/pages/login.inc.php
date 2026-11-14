@@ -69,6 +69,11 @@
 				throw new Exception($generic_login_error);
 			}
 
+			// An account that is not valid yet must not be able to sign in
+			if (!empty($administrator['valid_from']) && date('Y-m-d H:i:s') < $administrator['valid_from']) {
+				throw new Exception($generic_login_error);
+			}
+
 			if (!empty($administrator['valid_to']) && date('Y-m-d H:i:s') > $administrator['valid_to']) {
 				throw new Exception($generic_login_error);
 			}
@@ -283,7 +288,7 @@
 			}
 
 			if (!empty($_POST['remember_me']) && defined('HMAC_KEY_REMEMBER_ME')) {
-				$token = f::token_create_remember($administrator['username'], $administrator['password_hash']);
+				$token = f::token_create_remember($administrator['id'], $administrator['password_hash']);
 				header('Set-Cookie: remember_me='. $token .'; Path='. WS_DIR_APP .'; Expires='. gmdate('r', strtotime('+30 days')) .'; HttpOnly; SameSite=Lax' . (!empty($_SERVER['HTTPS']) ? '; Secure' : ''), false);
 			} else if (!empty($_COOKIE['remember_me'])) {
 				header('Set-Cookie: remember_me=; Path='. WS_DIR_APP .'; Max-Age=-1; HttpOnly; SameSite=Lax', false);

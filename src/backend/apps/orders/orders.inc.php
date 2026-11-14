@@ -263,11 +263,23 @@
 		$order['tags'] = [];
 
 		if ($order['customer_country_code'] != settings::get('store_country_code')) {
-			$order['tags'][] = $order['customer_country_code'];
+			$order['tags']['country_code'] = $order['customer_country_code'];
 		}
 
 		if (!empty($order['shipping_country_code']) && $order['shipping_country_code'] != $order['customer_country_code']) {
-			$order['tags'][] = $order['shipping_country_code'];
+			$order['tags']['shipping_country_code'] = $order['shipping_country_code'];
+		}
+
+		if (!database::query(
+			"select 1 from ". DB_PREFIX ."orders
+			where ". (!empty($order['customer_id'])
+				? "(customer_id = '". database::input($order['customer_id']) ."' or customer_email = '". database::input($order['customer_email']) ."')"
+				: "customer_email = '". database::input($order['customer_email']) ."'"
+			) ."
+			and id != ". (int)$order['id'] ."
+			limit 1;"
+		)->num_rows) {
+			$order['tags']['new_customer'] = t('title_new_customer', 'New Customer');
 		}
 
 		// Order Items
@@ -437,7 +449,9 @@ table .tag {
 							<?= $order['customer_company'] ?: $order['customer_firstname'] .' '. $order['customer_lastname'] ?><?php if (!$order['customer_id']) echo ' <em>('. t('title_guest', 'Guest') .')</em>'; ?>
 						</a>
 
-						<?php foreach ($order['tags'] as $tag) echo '<code class="tag">'. f::escape_html($tag) .'</code>'; ?>
+						<?php foreach ($order['tags'] as $id => $value) { ?>
+						<?= f::draw_element('code', ['class' => 'tag', 'data-type' => $type, 'data-id' => $id], $value) ?>
+						<?php } ?>
 
 						<?php if ($order['has_notes']) { ?>
 						<?= f::draw_fonticon('icon-sticky-note', 'title="'. t('title_notes', 'Notes') .'" style="color: #f2b01e; margin-left: .5em;"') ?>

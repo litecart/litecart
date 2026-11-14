@@ -45,6 +45,31 @@
 		}
 
 		public function verify(ent_order $order): array {
+
+			// Require an explicit confirmation intent from the checkout form
+			$confirmation = $_POST['confirm_purchase'] ?? '';
+			if ($confirmation === '') $confirmation = session::$data['checkout']['confirmed'] ?? '';
+
+			if (!is_string($confirmation) || $confirmation === '') {
+				return [
+					'error' => t('error_payment_confirmation_required', 'The order confirmation is missing or invalid. Please place the order again.'),
+				];
+			}
+
+			// Require a valid CSRF token when CSRF protection is enabled
+			if (settings::get('csrf_protection')) {
+
+				$submitted_token = $_POST['csrf_token'] ?? '';
+				if ($submitted_token === '') $submitted_token = $_SERVER['HTTP_X_CSRF_TOKEN'] ?? '';
+				if ($submitted_token === '') $submitted_token = session::$data['checkout']['confirm_token'] ?? '';
+
+				if (!security::is_valid_csrf_token($submitted_token)) {
+					return [
+						'error' => t('error_csrf_token_mismatch', 'CSRF token mismatch. Please go back and try again.'),
+					];
+				}
+			}
+
 			return [
 				'order_status_id' => $this->settings['order_status_id'],
 				'payment_transaction_id' => '',

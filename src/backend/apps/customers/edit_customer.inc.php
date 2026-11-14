@@ -8,16 +8,16 @@
 
 	try {
 
-    if (!empty($_GET['customer_id'])) {
-      $customer = new ent_customer($_GET['customer_id']);
-    } else {
-      $customer = new ent_customer();
-    }
+		if (!empty($_GET['customer_id'])) {
+			$customer = new ent_customer($_GET['customer_id']);
+		} else {
+			$customer = new ent_customer();
+		}
 
-    document::$title[] = $customer->data['id'] ? t('title_edit_customer', 'Edit Customer') : t('title_create_new_customer', 'Create New Customer');
+		document::$title[] = $customer->data['id'] ? t('title_edit_customer', 'Edit Customer') : t('title_create_new_customer', 'Create New Customer');
 
-    breadcrumbs::add(t('title_customers', 'Customers'), document::ilink(__APP__.'/customers'));
-    breadcrumbs::add($customer->data['id'] ? t('title_edit_customer', 'Edit Customer') : t('title_create_new_customer', 'Create New Customer'), document::ilink());
+		breadcrumbs::add(t('title_customers', 'Customers'), document::ilink(__APP__.'/customers'));
+		breadcrumbs::add($customer->data['id'] ? t('title_edit_customer', 'Edit Customer') : t('title_create_new_customer', 'Create New Customer'), document::ilink());
 
 
 		if (!$_POST) {
@@ -127,10 +127,20 @@
 				$customer->data['shipping_address'][$field] = $_POST['shipping_address'][$field] ?? '';
 			}
 
+			// End the sessions of the customer when a new password is set
+			if (!empty($_POST['new_password'])) {
+				$customer->data['sessions_expiry'] = date('Y-m-d H:i:s');
+			}
+
 			$customer->save();
 
 			if (!empty($_POST['new_password'])) {
 				$customer->set_password($_POST['new_password']);
+
+				// Keep the acting administrator signed in as the customer
+				if (!empty(session::$data['customer']['id']) && session::$data['customer']['id'] == $customer->data['id']) {
+					session::$data['security.customer']['timestamp'] = time();
+				}
 			}
 
 			notices::add('success', t('success_changes_saved', 'Changes saved'));
@@ -574,7 +584,7 @@
 		if ($(this).val() == '') return;
 
 		$.ajax({
-			url: '<?= document::ilink('ajax/get_address.json') ?>?trigger='+$(this).attr('name'),
+			url: '<?= document::ilink('customers/get_address.json') ?>?customer_id=<?= (int)$customer->data['id'] ?>&trigger='+$(this).attr('name'),
 			type: 'post',
 			data: $(this).closest('form').serialize(),
 			cache: false,
@@ -601,7 +611,7 @@
 		if ($(this).val() == '') return;
 
 		$.ajax({
-			url: '<?= document::ilink('ajax/get_address.json') ?>?trigger='+$(this).attr('name'),
+			url: '<?= document::ilink('customers/get_address.json') ?>?customer_id=<?= (int)$customer->data['id'] ?>&trigger='+$(this).attr('name'),
 			type: 'post',
 			data: $(this).closest('form').serialize(),
 			cache: false,

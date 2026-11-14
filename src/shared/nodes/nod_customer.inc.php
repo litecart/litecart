@@ -66,12 +66,12 @@
 							last_hostname = '". database::input(reverse_dns($_SERVER['REMOTE_ADDR'])) ."',
 							last_user_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."',
 							last_login = '". date('Y-m-d H:i:s') ."',
-							num_logins = num_logins + 1
+							total_logins = total_logins + 1
 						where id = ". (int)$customer['id'] ."
 						limit 1;"
 					);
 
-				} catch (Exception $e) {
+				} catch (Throwable $e) {
 					header('Set-Cookie: customer_remember_me=; Path='. WS_DIR_APP .'; Max-Age=-1; HttpOnly; SameSite=Lax', false);
 				}
 			}
@@ -94,8 +94,10 @@
 						throw new Exception(t('error_your_account_is_disabled', 'Your account is disabled'));
 					}
 
-					if (isset(session::$data['security.customer']['timestamp']) && session::$data['security.customer']['timestamp'] < strtotime($customer['sessions_expiry'])) {
-						throw new Exception(t('error_session_expired_due_to_account_changes', 'Session expired due to changes in the account'));
+					if (!empty($customer['sessions_expiry'])) {
+						if (!isset(session::$data['security.customer']['timestamp']) || session::$data['security.customer']['timestamp'] < strtotime($customer['sessions_expiry'])) {
+							throw new Exception(t('error_session_expired_due_to_account_changes', 'Session expired due to changes in the account'));
+						}
 					}
 
 					session::$data['customer'] = f::array_update(session::$data['customer'], $customer);

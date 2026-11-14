@@ -2,10 +2,17 @@
 
 	administrator::require_login();
 
-	if (!empty($_GET['order_status_id'])) {
-		$order_status = new ent_order_status($_GET['order_status_id']);
-	} else {
-		$order_status = new ent_order_status();
+	try {
+
+		if (!empty($_GET['order_status_id'])) {
+			$order_status = new ent_order_status($_GET['order_status_id']);
+		} else {
+			$order_status = new ent_order_status();
+		}
+
+	} catch (Throwable $e) {
+		notices::add('errors', $e->getMessage());
+		return;
 	}
 
 	document::$title[] = !empty($order_status->data['id']) ? t('title_edit_order_status', 'Edit Order Status') : t('title_create_new_order_status', 'Create New Order Status');

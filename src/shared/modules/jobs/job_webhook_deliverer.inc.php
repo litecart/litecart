@@ -33,7 +33,7 @@
 				and (scheduled_at is null or scheduled_at < '". date('Y-m-d H:i:s') ."')
 				order by created_at asc;"
 			)->fetch_all(function(&$row) {
-				$row['headers'] = $row['headers'] ? f::array_each(f::string_split($row['headers']), fn($header) => preg_split('#: ?#', $header, 2)) : [];
+				$row['headers'] = $row['headers'] ? (json_decode($row['headers'], true) ?: []) : [];
 			});
 
 			if (!$pending_requests) {
@@ -47,15 +47,16 @@
 
 				echo 'Delivering webhook request ID '. $request['id'] .' to '. $request['url'] . PHP_EOL;
 
-				$response = (new http_client)->call($request['method'], $request['url'], $request['body'], $request['headers']);
+				$client = new http_client();
+				$response = $client->call($request['method'], $request['url'], $request['body'], $request['headers']);
 
 				$request_log = implode(PHP_EOL, [
-					$client->last_request['head'],
+					$client->last_request['headers'],
 					$client->last_request['body'],
 				]);
 
 				$response_log = implode(PHP_EOL, [
-					$client->last_response['head'],
+					$client->last_response['headers'],
 					$client->last_response['body'],
 				]);
 
@@ -69,7 +70,7 @@
 							delivered_at = '". date('Y-m-d H:i:s') ."'
 						where id = ". (int)$request['id'] .";"
 					);
-				} else if (substr($client->last_response['status_code'], 0, 1) == '4') {
+				} else if (substr((string)($client->last_response['status_code'] ?? ''), 0, 1) == '4') {
 					database::query(
 						"update ". DB_PREFIX ."webhook_requests
 						set status = 'failed',

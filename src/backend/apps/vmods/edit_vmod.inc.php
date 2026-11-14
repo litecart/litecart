@@ -2,10 +2,17 @@
 
 	administrator::require_login();
 
-	if (!empty($_GET['vmod'])) {
-		$vmod = new ent_vmod($_GET['vmod']);
-	} else {
-		$vmod = new ent_vmod();
+	try {
+
+		if (!empty($_GET['vmod'])) {
+			$vmod = new ent_vmod($_GET['vmod']);
+		} else {
+			$vmod = new ent_vmod();
+		}
+
+	} catch (Throwable $e) {
+		notices::add('errors', $e->getMessage());
+		return;
 	}
 
 	document::$title[] = !empty($vmod->data['id']) ? t('title_edit_vmod', 'Edit vMod') : t('title_create_new_vmod', 'Create New vMod');

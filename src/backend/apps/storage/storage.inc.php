@@ -46,7 +46,7 @@
 					throw new Exception('Missing CSRF token');
 				}
 
-				if (!hash_equals(security::csrf_token(), $_POST['csrf_token'])) {
+				if (!security::is_valid_csrf_token($_POST['csrf_token'])) {
 					throw new Exception(t('error_csrf_token_mismatch', 'CSRF token mismatch. Please go back and try again.'));
 				}
 			}
@@ -83,7 +83,7 @@
 					throw new Exception('Missing CSRF token');
 				}
 
-				if (!hash_equals(security::csrf_token(), $_POST['csrf_token'])) {
+				if (!security::is_valid_csrf_token($_POST['csrf_token'])) {
 					throw new Exception(t('error_csrf_token_mismatch', 'CSRF token mismatch. Please go back and try again.'));
 				}
 			}
@@ -123,7 +123,7 @@
 					throw new Exception('Missing CSRF token');
 				}
 
-				if (!hash_equals(security::csrf_token(), $_POST['csrf_token'])) {
+				if (!security::is_valid_csrf_token($_POST['csrf_token'])) {
 					throw new Exception(t('error_csrf_token_mismatch', 'CSRF token mismatch. Please go back and try again.'));
 				}
 			}
@@ -169,7 +169,7 @@
 					throw new Exception('Missing CSRF token');
 				}
 
-				if (!hash_equals(security::csrf_token(), $_POST['csrf_token'])) {
+				if (!security::is_valid_csrf_token($_POST['csrf_token'])) {
 					throw new Exception(t('error_csrf_token_mismatch', 'CSRF token mismatch. Please go back and try again.'));
 				}
 			}
@@ -212,7 +212,7 @@
 					throw new Exception('Missing CSRF token');
 				}
 
-				if (!hash_equals(security::csrf_token(), $_POST['csrf_token'])) {
+				if (!security::is_valid_csrf_token($_POST['csrf_token'])) {
 					throw new Exception(t('error_csrf_token_mismatch', 'CSRF token mismatch. Please go back and try again.'));
 				}
 			}

@@ -196,19 +196,6 @@ gulp.task('js-frontend', function() {
 		.pipe(gulp.dest('src/frontend/templates/default/js/', { overwrite: true }));
 });
 
-// Task to compile and minify Chartist SCSS
-gulp.task('scss-chartist', function() {
-	return gulp.src('src/assets/chartist/chartist.scss', { allowEmpty: true })
-		.pipe(sass(sassOptions).on('error', sass.logError))
-		.pipe(tabify()) // Use tab indentation
-		//.pipe(gulp.dest('src/assets/chartist/', { overwrite: true }))
-		//.pipe(sourcemaps.write('.', { includeContent: false }))
-		.pipe(cleancss())
-		.pipe(rename({ extname: '.min.css' }))
-		.pipe(sourcemaps.write('.', { includeContent: false }))
-		.pipe(gulp.dest('src/assets/chartist/', { overwrite: true }));
-});
-
 // Task to compile and minify Trumbowyg SCSS
 gulp.task('scss-trumbowyg', function() {
 	return gulp
@@ -271,7 +258,6 @@ gulp.task('iconly', function() {
 
 // Watch files for changes
 gulp.task('watch', function() {
-	gulp.watch('src/assets/chartist/chartist.scss', gulp.series('scss-chartist'))
 	gulp.watch('src/assets/litecore/scss/**/*.scss', gulp.series('scss-framework'))
 	gulp.watch('src/assets/litecore/ts/framework/*.ts', gulp.series('js-framework'))
 	gulp.watch('src/assets/trumbowyg/trumbowyg.js', gulp.series('js-trumbowyg'))
@@ -291,7 +277,6 @@ const buildTasks = [
 	'scss-framework',
 	'scss-backend',
 	'scss-frontend',
-	'scss-chartist',
 	'scss-trumbowyg',
 ];
 

@@ -14,11 +14,11 @@
 				if (empty($link->query['page_id'])) return null;
 
 				$page = reference::page($link->query['page_id'], $language_code);
+				$title = $page->title; // Loads the page; a missing page resets the id to 0
+
 				if (empty($page->id)) return $link;
 
-				if (empty($page)) return null;
-
-				$link->path = 'pages/'. $page->id .'/'. f::format_path_friendly($page->title, $language_code);
+				$link->path = 'pages/'. $page->id .'/'. f::format_path_friendly($title, $language_code);
 				$link->unset_query('page_id');
 
 				return $link;

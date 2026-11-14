@@ -82,7 +82,7 @@
 		return $json;
 	}
 
-	function format_path_friendly(string $text, string $language_code=''): string {
+	function format_path_friendly(?string $text, string $language_code=''): string {
 
 		if (!$text) return '';
 

@@ -2329,11 +2329,13 @@
 				where p.id = ". (int)$input ."
 				limit 1;"
 			)->fetch();
+
+			if (!empty($product)) $product_name = $product['name'];
 		}
 
 		return f::draw_element('div', ['class' => 'input-group', ...$attributes], implode(PHP_EOL, [
 			'  <div class="form-input">',
-			'    ' . form_input_hidden($name, true, !empty($product) ? 'data-code="'. $product['code'] .'" data-price="'. $product['price'] .'"' : ''),
+			'    ' . form_input_hidden($name, true, !empty($product) ? 'data-code="'. $product['code'] .'" data-price="'. ($product['final_price'] ?? '') .'"' : ''),
 			'    <span class="name" style="display: inline-block;">'. $product_name .'</span>',
 			'    [<span class="id" style="display: inline-block;">'. (int)$input .'</span>]',
 			'  </div>',
@@ -2535,15 +2537,17 @@
 			$input = form_reinsert_value($name);
 		}
 
+		$item_name = '('. t('title_no_items', 'No Item') .')';
+
 		if ($input) {
 			$item = database::query(
 				"select si.id, si.sku, json_value(si.name, '$.". database::input(language::$selected['code']) ."') as name
 				from ". DB_PREFIX ."stock_items si
-				where p.id = ". (int)$input ."
+				where si.id = ". (int)$input ."
 				limit 1;"
 			)->fetch();
-		} else {
-			$item_name = '('. t('title_no_items', 'No Item') .')';
+
+			if (!empty($item)) $item_name = $item['name'];
 		}
 
 		return f::draw_element('div', ['class' => 'input-group', ...$attributes], implode(PHP_EOL, [
@@ -2553,7 +2557,7 @@
 			'    [<span class="id" style="display: inline-block;">'. (int)$input .'</span>]',
 			'  </div>',
 			'  <div style="align-self: center;">',
-			'    <a href="'. document::href_ilink('b:catalog/item_picker') .'" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin: .5em;">'. t('title_change', 'Change') .'</a>',
+			'    <a href="'. document::href_ilink('b:catalog/stock_item_picker') .'" data-toggle="lightbox" class="btn btn-default btn-sm" style="margin: .5em;">'. t('title_change', 'Change') .'</a>',
 			'  </div>',
 		]));
 	}
@@ -2590,7 +2594,7 @@
 				'    <div class="stock-item" data-id="'. $item['id'] .'">'. $item['name'] .' &mdash; '. $item['sku'] .' ['. (float)$item['quantity'] .']</div>'
 			)),
 			'  </div>',
-			'  '. form_button('add', t('title_add_item', 'Add'), 'button', ['data-toggle' => 'lightbox', 'data-target' => document::href_ilink('catalog/item_picker', ['js_callback' => '_callback_'.$uid])]),
+			'  '. form_button('add', t('title_add_item', 'Add'), 'button', ['data-toggle' => 'lightbox', 'data-target' => document::href_ilink('catalog/stock_item_picker', ['js_callback' => '_callback_'.$uid])]),
 			'</div>',
 		]));
 

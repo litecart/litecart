@@ -19,11 +19,21 @@
 			$_GET['languages'] = array_slice(array_unique(array_merge($defined_languages, $all_languages)), 0, 2);
 		}
 
+		// A single language code may arrive as a scalar, the rest of the page expects a list
+		if (!is_array($_GET['languages'])) {
+			$_GET['languages'] = [$_GET['languages']];
+		}
+
 		// Validate requested language codes before they are used in SQL identifier contexts.
 		$allowed_language_codes = array_keys(language::$languages);
 
-		foreach ($_GET['languages'] as $language_code) {
-			if (!in_array($language_code, $allowed_language_codes)) {
+		foreach ($_GET['languages'] as $_lang_code) {
+			if (!is_string($_lang_code)) {
+				throw new Exception('Invalid language code provided');
+			}
+			try {
+				database::identifier($_lang_code, $allowed_language_codes);
+			} catch (InvalidArgumentException $e) {
 				throw new Exception('Invalid language code provided');
 			}
 		}

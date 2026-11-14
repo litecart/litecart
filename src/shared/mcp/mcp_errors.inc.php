@@ -1,63 +1,62 @@
 <?php
 
 	// Log entries carry a timestamp prefix; PHP prepends the native format for error_log(), the database writer uses [Y-m-d H:i:s e]
-	$entry_timestamp_pattern = '#^\[(?:(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} [^\]\n]+)|(\d{1,2}-[a-zA-Z]+-\d{4} \d{2}:\d{2}:\d{2} [a-zA-Z/]+))\] ?(.*)$#';
+	$entry_timestamp_pattern = '#\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} [^\]\n]+|\d{1,2}-[a-zA-Z]+-\d{4} \d{2}:\d{2}:\d{2} [a-zA-Z/_]+)\](?: ?)#';
 
-	// Splits log lines into entries with line ranges, so occurrences can be grouped and removed
-	$parse_error_log = function(array $lines, int $fallback_timestamp = 0) use ($entry_timestamp_pattern) {
+	// Splits the log into entries with character ranges, so occurrences can be grouped and removed
+	$parse_error_log = function(string $content, int $fallback_timestamp = 0) use ($entry_timestamp_pattern) {
 
 		$entries = [];
-		$leading = [];
-		$current = null;
 
-		foreach ($lines as $index => $line) {
+		$matches = [];
+		preg_match_all($entry_timestamp_pattern, $content, $matches, PREG_OFFSET_CAPTURE | PREG_SET_ORDER);
 
-			if (preg_match($entry_timestamp_pattern, $line, $matches)) {
+		if (!$matches) {
 
-				if ($current !== null) {
-					$entries[] = $current;
-				} elseif (count($leading)) {
-					// Content logged before entries got a timestamp prefix
-					$entries[] = [
-						'start' => 0,
-						'end' => $index - 1,
-						'timestamp' => $fallback_timestamp,
-						'error' => trim($leading[0]),
-						'backtrace' => trim(implode(PHP_EOL, $leading)),
-					];
-				}
-
-				$leading = [];
-
-				$current = [
-					'start' => $index,
-					'end' => $index,
-					'timestamp' => strtotime($matches[1] ?: $matches[2]) ?: $fallback_timestamp,
-					'error' => trim($matches[3]),
-					'backtrace' => '',
+			// Content logged before entries got a timestamp prefix
+			if (trim($content) !== '') {
+				$entries[] = [
+					'start' => 0,
+					'end' => strlen($content),
+					'timestamp' => $fallback_timestamp,
+					'error' => trim($content),
+					'backtrace' => trim($content),
 				];
-
-				continue;
 			}
 
-			if ($current === null) {
-				$leading[] = $line;
-				continue;
-			}
-
-			$current['end'] = $index;
-			$current['backtrace'] .= ($current['backtrace'] !== '' ? PHP_EOL : '') . $line;
+			return $entries;
 		}
 
-		if ($current !== null) {
-			$entries[] = $current;
-		} elseif (count($leading)) {
+		// Content logged before the first entry got a timestamp prefix
+		$leading = substr($content, 0, $matches[0][0][1]);
+
+		if (trim($leading) !== '') {
+			$leading_lines = preg_split('#(?:\r\n?|\n)#', $leading);
 			$entries[] = [
 				'start' => 0,
-				'end' => count($lines) - 1,
+				'end' => $matches[0][0][1],
 				'timestamp' => $fallback_timestamp,
-				'error' => trim($leading[0]),
-				'backtrace' => trim(implode(PHP_EOL, $leading)),
+				'error' => trim($leading_lines[0]),
+				'backtrace' => trim(implode(PHP_EOL, $leading_lines)),
+			];
+		}
+
+		foreach ($matches as $index => $match) {
+
+			// A timestamp prefix may sit mid-line when the previous entry lost its trailing newline
+			$start = $match[0][1];
+			$body_start = $start + strlen($match[0][0]);
+			$end = isset($matches[$index + 1]) ? $matches[$index + 1][0][1] : strlen($content);
+
+			$body = substr($content, $body_start, $end - $body_start);
+			$lines = preg_split('#(?:\r\n?|\n)#', $body);
+
+			$entries[] = [
+				'start' => $start,
+				'end' => $end,
+				'timestamp' => strtotime($match[1][0]) ?: $fallback_timestamp,
+				'error' => trim($lines[0]),
+				'backtrace' => trim(implode(PHP_EOL, array_slice($lines, 1))),
 			];
 		}
 
@@ -116,8 +115,7 @@
 			$initial_memory_limit = ini_get('memory_limit');
 			ini_set('memory_limit', -1); // Unlimit memory for reading log file
 
-			$lines = preg_split('#(?:\r\n?|\n)#', file_get_contents($log_file));
-			$entries = $parse_error_log($lines, (int)filemtime($log_file));
+			$entries = $parse_error_log(file_get_contents($log_file), (int)filemtime($log_file));
 
 			$errors = [];
 
@@ -214,10 +212,10 @@
 			$initial_memory_limit = ini_get('memory_limit');
 			ini_set('memory_limit', -1); // Unlimit memory for reading log file
 
-			$lines = preg_split('#(?:\r\n?|\n)#', file_get_contents($log_file));
-			$entries = $parse_error_log($lines, (int)filemtime($log_file));
+			$content = file_get_contents($log_file);
+			$entries = $parse_error_log($content, (int)filemtime($log_file));
 
-			$remove_lines = [];
+			$ranges = [];
 			$occurrences = 0;
 
 			foreach ($entries as $entry) {
@@ -225,10 +223,7 @@
 				if ($entry['error'] !== $error) continue;
 
 				$occurrences++;
-
-				for ($index = $entry['start']; $index <= $entry['end']; $index++) {
-					$remove_lines[$index] = true;
-				}
+				$ranges[] = [$entry['start'], $entry['end']];
 			}
 
 			if (!$occurrences) {
@@ -236,13 +231,12 @@
 				return ['deleted' => false, 'message' => 'Error not found in log'];
 			}
 
-			$kept = [];
-
-			foreach ($lines as $index => $line) {
-				if (!isset($remove_lines[$index])) $kept[] = $line;
+			// Remove from the end backwards so the earlier offsets stay valid
+			for ($index = count($ranges) - 1; $index >= 0; $index--) {
+				$content = substr($content, 0, $ranges[$index][0]) . substr($content, $ranges[$index][1]);
 			}
 
-			file_put_contents($log_file, implode(PHP_EOL, $kept));
+			file_put_contents($log_file, $content);
 
 			ini_set('memory_limit', $initial_memory_limit); // Restore limit
 
