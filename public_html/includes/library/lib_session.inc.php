@@ -101,4 +101,8 @@
       $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
       return $_SESSION['csrf_token'];
     }
+
+    public static function is_valid_csrf_token($submitted_token) {
+      return is_string($submitted_token) && hash_equals(self::csrf_token(), $submitted_token);
+    }
   }

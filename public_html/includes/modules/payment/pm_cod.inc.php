@@ -55,6 +55,27 @@
     }
 
     public function verify($order) {
+
+    // Require an explicit confirmation intent from a form post
+      if (!isset($_SERVER['REQUEST_METHOD']) || strtoupper($_SERVER['REQUEST_METHOD']) !== 'POST') {
+        return [
+          'error' => language::translate('error_payment_confirmation_required', 'The order confirmation is missing or invalid. Please place the order again.'),
+        ];
+      }
+
+    // Accept the checkout confirmation as well as the pay now flow
+      if (empty($_POST['confirm_order']) && empty($_POST['pay_now'])) {
+        return [
+          'error' => language::translate('error_payment_confirmation_required', 'The order confirmation is missing or invalid. Please place the order again.'),
+        ];
+      }
+
+      if (settings::get('csrf_protection') && !session::is_valid_csrf_token(isset($_POST['csrf_token']) ? $_POST['csrf_token'] : (isset($_SERVER['HTTP_X_CSRF_TOKEN']) ? $_SERVER['HTTP_X_CSRF_TOKEN'] : ''))) {
+        return [
+          'error' => language::translate('error_invalid_csrf_token', 'The security token is missing or invalid. Please reload the page and try again.'),
+        ];
+      }
+
       return [
         'order_status_id' => $this->settings['order_status_id'],
         'payment_transaction_id' => '',
