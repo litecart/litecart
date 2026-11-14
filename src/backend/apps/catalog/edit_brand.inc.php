@@ -2,10 +2,17 @@
 
 	administrator::require_login();
 
-	if (!empty($_GET['brand_id'])) {
-		$brand = new ent_brand($_GET['brand_id']);
-	} else {
-		$brand = new ent_brand();
+	try {
+
+		if (!empty($_GET['brand_id'])) {
+			$brand = new ent_brand($_GET['brand_id']);
+		} else {
+			$brand = new ent_brand();
+		}
+
+	} catch (Throwable $e) {
+		notices::add('errors', $e->getMessage());
+		return;
 	}
 
 	document::$title[] = !empty($brand->data['id']) ? t('title_edit_brand', 'Edit Brand') :  t('title_create_new_brand', 'Create New Brand');

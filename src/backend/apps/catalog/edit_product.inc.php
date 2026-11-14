@@ -2,10 +2,17 @@
 
 	administrator::require_login();
 
-	if (!empty($_GET['product_id'])) {
-		$product = new ent_product($_GET['product_id']);
-	} else {
-		$product = new ent_product();
+	try {
+
+		if (!empty($_GET['product_id'])) {
+			$product = new ent_product($_GET['product_id']);
+		} else {
+			$product = new ent_product();
+		}
+
+	} catch (Throwable $e) {
+		notices::add('errors', $e->getMessage());
+		return;
 	}
 
 	document::$title[] = !empty($product->data['id']) ? t('title_edit_product', 'Edit Product') . ': '. $product->data['name'][language::$selected['code']] : t('title_create_new_product', 'Create New Product');

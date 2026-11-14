@@ -2,10 +2,17 @@
 
 	administrator::require_login();
 
-	if (!empty($_GET['transaction_id'])) {
-		$stock_transaction = new ent_stock_transaction($_GET['transaction_id']);
-	} else {
-		$stock_transaction = new ent_stock_transaction();
+	try {
+
+		if (!empty($_GET['transaction_id'])) {
+			$stock_transaction = new ent_stock_transaction($_GET['transaction_id']);
+		} else {
+			$stock_transaction = new ent_stock_transaction();
+		}
+
+	} catch (Throwable $e) {
+		notices::add('errors', $e->getMessage());
+		return;
 	}
 
 	document::$title[] = !empty($stock_transaction->data['id']) ? t('title_edit_stock_transaction', 'Edit Stock Transaction') : t('title_create_new_transaction', 'Create New Transaction');

@@ -2,10 +2,17 @@
 
 	administrator::require_login();
 
-	if (!empty($_GET['category_id'])) {
-		$category = new ent_category($_GET['category_id']);
-	} else {
-		$category = new ent_category();
+	try {
+
+		if (!empty($_GET['category_id'])) {
+			$category = new ent_category($_GET['category_id']);
+		} else {
+			$category = new ent_category();
+		}
+
+	} catch (Throwable $e) {
+		notices::add('errors', $e->getMessage());
+		return;
 	}
 
 	document::$title[] = !empty($category->data['id']) ? t('title_edit_category', 'Edit Category') : t('title_create_new_category', 'Create New Category');

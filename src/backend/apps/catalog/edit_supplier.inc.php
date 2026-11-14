@@ -2,10 +2,17 @@
 
 	administrator::require_login();
 
-	if (!empty($_GET['supplier_id'])) {
-		$supplier = new ent_supplier($_GET['supplier_id']);
-	} else {
-		$supplier = new ent_supplier();
+	try {
+
+		if (!empty($_GET['supplier_id'])) {
+			$supplier = new ent_supplier($_GET['supplier_id']);
+		} else {
+			$supplier = new ent_supplier();
+		}
+
+	} catch (Throwable $e) {
+		notices::add('errors', $e->getMessage());
+		return;
 	}
 
 	document::$title[] = !empty($supplier->data['id']) ? t('title_edit_supplier', 'Edit Supplier') : t('title_create_new_supplier', 'Create New Supplier');

@@ -2,10 +2,17 @@
 
 	administrator::require_login();
 
-	if (!empty($_GET['stock_item_id'])) {
-		$stock_item = new ent_stock_item($_GET['stock_item_id']);
-	} else {
-		$stock_item = new ent_stock_item();
+	try {
+
+		if (!empty($_GET['stock_item_id'])) {
+			$stock_item = new ent_stock_item($_GET['stock_item_id']);
+		} else {
+			$stock_item = new ent_stock_item();
+		}
+
+	} catch (Throwable $e) {
+		notices::add('errors', $e->getMessage());
+		return;
 	}
 
 	document::$title[] = !empty($stock_item->data['id']) ? t('title_edit_stock_item', 'Edit Stock Item') : t('title_create_new_stock_item', 'Create New Stock Item');

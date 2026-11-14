@@ -2,10 +2,17 @@
 
 	administrator::require_login();
 
-	if (!empty($_GET['third_party_id'])) {
-		$third_party = new ent_third_party($_GET['third_party_id']);
-	} else {
-		$third_party = new ent_third_party();
+	try {
+
+		if (!empty($_GET['third_party_id'])) {
+			$third_party = new ent_third_party($_GET['third_party_id']);
+		} else {
+			$third_party = new ent_third_party();
+		}
+
+	} catch (Throwable $e) {
+		notices::add('errors', $e->getMessage());
+		return;
 	}
 
 	document::$title[] = !empty($third_party->data['id']) ? t('title_edit_third_party', 'Edit Third Party') : t('title_create_new_third_party', 'Create New Third Party');

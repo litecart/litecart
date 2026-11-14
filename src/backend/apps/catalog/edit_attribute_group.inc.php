@@ -2,10 +2,17 @@
 
 	administrator::require_login();
 
-	if (!empty($_GET['group_id'])) {
-		$attribute_group = new ent_attribute_group($_GET['group_id']);
-	} else {
-		$attribute_group = new ent_attribute_group();
+	try {
+
+		if (!empty($_GET['group_id'])) {
+			$attribute_group = new ent_attribute_group($_GET['group_id']);
+		} else {
+			$attribute_group = new ent_attribute_group();
+		}
+
+	} catch (Throwable $e) {
+		notices::add('errors', $e->getMessage());
+		return;
 	}
 
 	document::$title[] = !empty($attribute_group->data['id']) ? t('title_edit_attribute_group', 'Edit Attribute Group') : t('title_create_new_attribute_group', 'Create New Attribute Group');

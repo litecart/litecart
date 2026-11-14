@@ -2,10 +2,17 @@
 
 	administrator::require_login();
 
-	if (!empty($_GET['country_code'])) {
-		$country = new ent_country($_GET['country_code']);
-	} else {
-		$country = new ent_country();
+	try {
+
+		if (!empty($_GET['country_code'])) {
+			$country = new ent_country($_GET['country_code']);
+		} else {
+			$country = new ent_country();
+		}
+
+	} catch (Throwable $e) {
+		notices::add('errors', $e->getMessage());
+		return;
 	}
 
 	document::$title[] = !empty($country->data['id']) ? t('title_edit_country', 'Edit Country') : t('title_create_new_country', 'Create New Country');

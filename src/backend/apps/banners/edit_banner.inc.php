@@ -2,10 +2,17 @@
 
 	administrator::require_login();
 
-	if (!empty($_GET['banner_id'])) {
-		$banner = new ent_banner($_GET['banner_id']);
-	} else {
-		$banner = new ent_banner();
+	try {
+
+		if (!empty($_GET['banner_id'])) {
+			$banner = new ent_banner($_GET['banner_id']);
+		} else {
+			$banner = new ent_banner();
+		}
+
+	} catch (Throwable $e) {
+		notices::add('errors', $e->getMessage());
+		return;
 	}
 
 	if (!$_POST) {

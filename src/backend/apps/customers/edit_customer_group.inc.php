@@ -2,10 +2,17 @@
 
 	administrator::require_login();
 
-	if (!empty($_GET['group_id'])) {
-		$customer_group = new ent_customer_group($_GET['group_id']);
-	} else {
-		$customer_group = new ent_customer_group();
+	try {
+
+		if (!empty($_GET['group_id'])) {
+			$customer_group = new ent_customer_group($_GET['group_id']);
+		} else {
+			$customer_group = new ent_customer_group();
+		}
+
+	} catch (Throwable $e) {
+		notices::add('errors', $e->getMessage());
+		return;
 	}
 
 	if (!$_POST) {

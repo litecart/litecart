@@ -2,10 +2,17 @@
 
 	administrator::require_login();
 
-	if (!empty($_GET['tax_class_id'])) {
-		$tax_class = new ent_tax_class($_GET['tax_class_id']);
-	} else {
-		$tax_class = new ent_tax_class();
+	try {
+
+		if (!empty($_GET['tax_class_id'])) {
+			$tax_class = new ent_tax_class($_GET['tax_class_id']);
+		} else {
+			$tax_class = new ent_tax_class();
+		}
+
+	} catch (Throwable $e) {
+		notices::add('errors', $e->getMessage());
+		return;
 	}
 
 	document::$title[] = !empty($tax_class->data['id']) ? t('title_edit_tax_class', 'Edit Tax Class') : t('title_create_new_tax_class', 'Create New Tax Class');

@@ -2,10 +2,17 @@
 
 	administrator::require_login();
 
-	if (!empty($_GET['access_key_id'])) {
-		$access_key = new ent_access_key($_GET['access_key_id']);
-	} else {
-		$access_key = new ent_access_key();
+	try {
+
+		if (!empty($_GET['access_key_id'])) {
+			$access_key = new ent_access_key($_GET['access_key_id']);
+		} else {
+			$access_key = new ent_access_key();
+		}
+
+	} catch (Throwable $e) {
+		notices::add('errors', $e->getMessage());
+		return;
 	}
 
 	if (!$_POST) {

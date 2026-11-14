@@ -2,10 +2,17 @@
 
 	administrator::require_login();
 
-	if (!empty($_GET['tax_rate_id'])) {
-		$tax_rate = new ent_tax_rate($_GET['tax_rate_id']);
-	} else {
-		$tax_rate = new ent_tax_rate();
+	try {
+
+		if (!empty($_GET['tax_rate_id'])) {
+			$tax_rate = new ent_tax_rate($_GET['tax_rate_id']);
+		} else {
+			$tax_rate = new ent_tax_rate();
+		}
+
+	} catch (Throwable $e) {
+		notices::add('errors', $e->getMessage());
+		return;
 	}
 
 	document::$title[] = !empty($tax_rate->data['id']) ? t('title_edit_tax_rate', 'Edit Tax Rate') : t('title_create_new_tax_rate', 'Create New Tax Rate');

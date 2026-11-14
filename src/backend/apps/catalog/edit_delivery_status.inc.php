@@ -2,10 +2,17 @@
 
 	administrator::require_login();
 
-	if (!empty($_GET['delivery_status_id'])) {
-		$delivery_status = new ent_delivery_status($_GET['delivery_status_id']);
-	} else {
-		$delivery_status = new ent_delivery_status();
+	try {
+
+		if (!empty($_GET['delivery_status_id'])) {
+			$delivery_status = new ent_delivery_status($_GET['delivery_status_id']);
+		} else {
+			$delivery_status = new ent_delivery_status();
+		}
+
+	} catch (Throwable $e) {
+		notices::add('errors', $e->getMessage());
+		return;
 	}
 
 	document::$title[] = !empty($delivery_status->data['id']) ? t('title_edit_delivery_status', 'Edit Delivery Status') : t('title_create_new_delivery_status', 'Create New Delivery Status');

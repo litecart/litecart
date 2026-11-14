@@ -2,10 +2,17 @@
 
 	administrator::require_login();
 
-	if (!empty($_GET['webhook_id'])) {
-		$webhook = new ent_webhook($_GET['webhook_id']);
-	} else {
-		$webhook = new ent_webhook();
+	try {
+
+		if (!empty($_GET['webhook_id'])) {
+			$webhook = new ent_webhook($_GET['webhook_id']);
+		} else {
+			$webhook = new ent_webhook();
+		}
+
+	} catch (Throwable $e) {
+		notices::add('errors', $e->getMessage());
+		return;
 	}
 
 	if (!$_POST) {

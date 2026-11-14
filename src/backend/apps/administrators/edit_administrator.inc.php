@@ -2,10 +2,17 @@
 
 	administrator::require_login();
 
-	if (!empty($_GET['administrator_id'])) {
-		$administrator = new ent_administrator($_GET['administrator_id']);
-	} else {
-		$administrator = new ent_administrator();
+	try {
+
+		if (!empty($_GET['administrator_id'])) {
+			$administrator = new ent_administrator($_GET['administrator_id']);
+		} else {
+			$administrator = new ent_administrator();
+		}
+
+	} catch (Throwable $e) {
+		notices::add('errors', $e->getMessage());
+		return;
 	}
 
 	if (!$_POST) {

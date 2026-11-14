@@ -2,10 +2,17 @@
 
 	administrator::require_login();
 
-	if (!empty($_GET['campaign_id'])) {
-		$campaign = new ent_campaign($_GET['campaign_id']);
-	} else {
-		$campaign = new ent_campaign();
+	try {
+
+		if (!empty($_GET['campaign_id'])) {
+			$campaign = new ent_campaign($_GET['campaign_id']);
+		} else {
+			$campaign = new ent_campaign();
+		}
+
+	} catch (Throwable $e) {
+		notices::add('errors', $e->getMessage());
+		return;
 	}
 
 	document::$title[] = !empty($campaign->data['id']) ? t('title_edit_campaign', 'Edit Campaign') :  t('title_create_new_campaign', 'Create New Campaign');

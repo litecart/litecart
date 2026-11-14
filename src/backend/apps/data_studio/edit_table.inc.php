@@ -2,17 +2,24 @@
 
 	administrator::require_login();
 
-	if (!empty($_GET['name'])) {
-		$table = new ent_database_table($_GET['name']);
-	} else {
-		$table = new ent_database_table();
+	try {
+
+		if (!empty($_GET['name'])) {
+			$table = new ent_database_table($_GET['name']);
+		} else {
+			$table = new ent_database_table();
+		}
+
+	} catch (Throwable $e) {
+		notices::add('errors', $e->getMessage());
+		return;
 	}
 
 	if (!$_POST) {
 		$_POST = $table->data;
 	}
 
-	document::$title[] = !empty($customer->data['id']) ? t('title_edit_table', 'Edit Table') : t('title_create_new_table', 'Create New Table');
+	document::$title[] = !empty($table->data['id']) ? t('title_edit_table', 'Edit Table') : t('title_create_new_table', 'Create New Table');
 
 	breadcrumbs::add(t('title_tables', 'Tables'), document::ilink(__APP__.'/tables'));
 	breadcrumbs::add($table->previous['name'],  document::ilink(__APP__.'/table', ['name' => $table->previous['name']]));

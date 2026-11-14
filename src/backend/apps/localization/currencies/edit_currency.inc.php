@@ -2,10 +2,17 @@
 
 	administrator::require_login();
 
-	if (!empty($_GET['currency_code'])) {
-		$currency = new ent_currency($_GET['currency_code']);
-	} else {
-		$currency = new ent_currency();
+	try {
+
+		if (!empty($_GET['currency_code'])) {
+			$currency = new ent_currency($_GET['currency_code']);
+		} else {
+			$currency = new ent_currency();
+		}
+
+	} catch (Throwable $e) {
+		notices::add('errors', $e->getMessage());
+		return;
 	}
 
 	document::$title[] = !empty($currency->data['id']) ? t('title_edit_currency', 'Edit Currency') : t('title_create_new_currency', 'Create New Currency');

@@ -2,10 +2,17 @@
 
 	administrator::require_login();
 
-	if (!empty($_GET['language_code'])) {
-		$language = new ent_language($_GET['language_code']);
-	} else {
-		$language = new ent_language();
+	try {
+
+		if (!empty($_GET['language_code'])) {
+			$language = new ent_language($_GET['language_code']);
+		} else {
+			$language = new ent_language();
+		}
+
+	} catch (Throwable $e) {
+		notices::add('errors', $e->getMessage());
+		return;
 	}
 
 	document::$title[] = !empty($language->data['id']) ? t('title_edit_language', 'Edit Language') : t('title_create_new_language', 'Create New Language');

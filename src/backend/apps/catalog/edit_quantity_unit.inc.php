@@ -2,10 +2,17 @@
 
 	administrator::require_login();
 
-	if (!empty($_GET['quantity_unit_id'])) {
-		$quantity_unit = new ent_quantity_unit($_GET['quantity_unit_id']);
-	} else {
-		$quantity_unit = new ent_quantity_unit();
+	try {
+
+		if (!empty($_GET['quantity_unit_id'])) {
+			$quantity_unit = new ent_quantity_unit($_GET['quantity_unit_id']);
+		} else {
+			$quantity_unit = new ent_quantity_unit();
+		}
+
+	} catch (Throwable $e) {
+		notices::add('errors', $e->getMessage());
+		return;
 	}
 
 	document::$title[] = !empty($quantity_unit->data['id']) ? t('title_edit_quantity_unit', 'Edit Quantity Unit') : t('title_create_new_quantity_unit', 'Create New Quantity Unit');

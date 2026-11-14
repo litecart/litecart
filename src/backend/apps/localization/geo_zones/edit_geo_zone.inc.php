@@ -2,10 +2,17 @@
 
 	administrator::require_login();
 
-	if (!empty($_GET['geo_zone_id'])) {
-		$geo_zone = new ent_geo_zone($_GET['geo_zone_id']);
-	} else {
-		$geo_zone = new ent_geo_zone();
+	try {
+
+		if (!empty($_GET['geo_zone_id'])) {
+			$geo_zone = new ent_geo_zone($_GET['geo_zone_id']);
+		} else {
+			$geo_zone = new ent_geo_zone();
+		}
+
+	} catch (Throwable $e) {
+		notices::add('errors', $e->getMessage());
+		return;
 	}
 
 	document::$title[] = !empty($geo_zone->data['id']) ? t('title_edit_geo_zone', 'Edit Geo Zone') : t('title_new_geo_zone', 'Create New Geo Zone');

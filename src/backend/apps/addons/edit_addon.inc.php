@@ -2,10 +2,17 @@
 
 	administrator::require_login();
 
-	if (!empty($_GET['addon_id'])) {
-		$addon = new ent_addon($_GET['addon_id']);
-	} else {
-		$addon = new ent_addon();
+	try {
+
+		if (!empty($_GET['addon_id'])) {
+			$addon = new ent_addon($_GET['addon_id']);
+		} else {
+			$addon = new ent_addon();
+		}
+
+	} catch (Throwable $e) {
+		notices::add('errors', $e->getMessage());
+		return;
 	}
 
 	if (!$_POST) {

@@ -2,10 +2,17 @@
 
 	administrator::require_login();
 
-	if (isset($_GET['review_id'])) {
-		$review = new ent_review($_GET['review_id']);
-	} else {
-		$review = new ent_review();
+	try {
+
+		if (isset($_GET['review_id'])) {
+			$review = new ent_review($_GET['review_id']);
+		} else {
+			$review = new ent_review();
+		}
+
+	} catch (Throwable $e) {
+		notices::add('errors', $e->getMessage());
+		return;
 	}
 
 	if (!$_POST) {
