@@ -1,0 +1,211 @@
+/* Charts */
+
+.chart {
+	position: relative;
+
+	--chart-color: var(--default-text-color, #222);
+	--chart-grid-color: var(--default-border-color, #e3e3e4);
+	--chart-label-color: var(--default-text-color, #666);
+	--chart-series-1: #3ba5c6;
+	--chart-series-2: #7b6cf6;
+	--chart-series-3: #4e90ad;
+	--chart-series-4: #f5a623;
+	--chart-series-5: #87aefd;
+	--chart-tooltip-background: var(--card-background, #fff);
+	--chart-tooltip-color: var(--card-text-color, #444);
+	--chart-tooltip-shadow: var(--default-shadow, 0 2px 6px rgb(0 0 0 / 15%));
+	--chart-point-border: var(--card-background, #fff);
+
+	.chart-canvas {
+		display: block;
+		width: 100%;
+		overflow: visible;
+	}
+
+	.chart-grid-line {
+		stroke: var(--chart-grid-color);
+		stroke-width: 1px;
+	}
+
+	.chart-axis-label {
+		fill: var(--chart-label-color);
+		font-family: var(--default-text-font, sans-serif);
+		font-size: 11px;
+	}
+
+	.chart-guide {
+		stroke: var(--chart-label-color);
+		stroke-width: 1px;
+		stroke-dasharray: 3 3;
+		opacity: .5;
+		transition: opacity .15s ease;
+	}
+
+	.chart-bar {
+		transform-box: fill-box;
+		transform-origin: bottom;
+	}
+
+	.chart-line {
+		fill: none;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+	}
+
+	.chart-line-dashed {
+		stroke-dasharray: 5 5;
+	}
+
+	.chart-point {
+		stroke: var(--chart-point-border);
+		stroke-width: 2px;
+		transform-box: fill-box;
+		transform-origin: center;
+	}
+
+	.chart-legend {
+		display: flex;
+		flex-wrap: wrap;
+		gap: .25em 1em;
+		margin-bottom: .75em;
+		font-size: 11px;
+		color: var(--chart-label-color);
+
+		.chart-legend-item {
+			display: inline-flex;
+			align-items: center;
+			gap: .4em;
+		}
+
+		.chart-legend-swatch {
+			display: inline-block;
+			width: 10px;
+			height: 10px;
+			border-radius: 2px;
+		}
+
+		.chart-legend-label {
+			white-space: nowrap;
+		}
+	}
+
+	.chart-tooltip {
+		position: absolute;
+		z-index: 10;
+		min-width: 120px;
+		padding: .5em .7em;
+		background: var(--chart-tooltip-background);
+		color: var(--chart-tooltip-color);
+		border: 1px solid var(--chart-grid-color);
+		border-radius: var(--border-radius, 6px);
+		box-shadow: var(--chart-tooltip-shadow);
+		font-size: 11px;
+		line-height: 1.5;
+		pointer-events: none;
+		opacity: 0;
+		transform: translate(-50%, 0);
+		transition: opacity .15s ease;
+
+		.chart-tooltip-left {
+			transform: translate(-100%, 0);
+			margin-left: -10px;
+		}
+
+		.chart-tooltip-title {
+			font-weight: 700;
+			margin-bottom: .25em;
+		}
+
+		.chart-tooltip-row {
+			display: flex;
+			align-items: center;
+			gap: .5em;
+		}
+
+		.chart-tooltip-swatch {
+			display: inline-block;
+			width: 8px;
+			height: 8px;
+			border-radius: 2px;
+			flex: 0 0 auto;
+		}
+
+		.chart-tooltip-label {
+			flex: 1 1 auto;
+			white-space: nowrap;
+		}
+
+		.chart-tooltip-value {
+			font-weight: 700;
+			font-variant-numeric: tabular-nums;
+		}
+
+		&.chart-tooltip-visible {
+			opacity: 1;
+		}
+	}
+}
+
+/* Entrance animations */
+
+.chart-animated {
+	.chart-bar {
+		transform: scaleY(0);
+		animation: chart-bar-grow .6s cubic-bezier(.22, .61, .36, 1) forwards;
+	}
+
+	.chart-line:not(.chart-line-dashed) {
+		stroke-dasharray: 1;
+		stroke-dashoffset: 1;
+		animation: chart-line-draw 1.2s cubic-bezier(.4, 0, .2, 1) forwards;
+	}
+
+	.chart-line-dashed {
+		opacity: 0;
+		animation: chart-fade-in .8s ease .2s forwards;
+	}
+
+	.chart-area {
+		opacity: 0;
+		animation: chart-fade-in .8s ease .4s forwards;
+	}
+
+	.chart-point {
+		opacity: 0;
+		transform: scale(0);
+		animation: chart-point-in .3s ease forwards;
+	}
+}
+
+@keyframes chart-bar-grow {
+	from { transform: scaleY(0); }
+	to { transform: scaleY(1); }
+}
+
+@keyframes chart-line-draw {
+	to { stroke-dashoffset: 0; }
+}
+
+@keyframes chart-fade-in {
+	to { opacity: 1; }
+}
+
+@keyframes chart-point-in {
+	from { opacity: 0; transform: scale(0); }
+	to { opacity: 1; transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.chart-animated {
+		.chart-bar,
+		.chart-line,
+		.chart-line-dashed,
+		.chart-area,
+		.chart-point {
+			opacity: 1;
+			transform: none;
+			stroke-dashoffset: 0;
+			animation: none;
+		}
+	}
+}

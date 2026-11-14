@@ -1,8 +1,5 @@
 <?php
 
-	document::load_style('app://assets/chartist/chartist.min.css', 'chartist');
-	document::load_script('app://assets/chartist/chartist.min.js', 'chartist');
-
 	// Statistics data for the last 30 days (cached for 5 minutes)
 	$widget_website_traffic_cache_token = cache::token('widget_website_traffic', ['site'], 'memory', 300);
 	if (!$stats = cache::get($widget_website_traffic_cache_token)) {
@@ -56,25 +53,13 @@
 
 ?>
 <style>
-#chart-visits .ct-series .ct-line {
-	stroke-width: 1px;
-	stroke-dasharray: 5,5;
+#chart-visits {
+	--chart-series-1: #3ba5c6;
+	--chart-label-color: #8b95a3;
 }
 
-#chart-visits .ct-series .ct-point {
-	stroke-width: 4px;
-}
-
-#chart-visits .ct-line {
-	stroke: #00192e;
-}
-
-#chart-visits .ct-point {
-	stroke: #00192e;
-}
-
-#chart-visits .ct-area {
-	fill: #87aefd;
+.dark-mode #chart-visits {
+	--chart-series-1: #4e90ad;
 }
 </style>
 
@@ -85,7 +70,7 @@
 		</div>
 
 		<div class="card-body">
-			<div id="chart-visits" style="height: 200px;" title="<?= t('title_visits', 'Visits') ?>"></div>
+			<div id="chart-visits" style="width: 100%; height: 200px;" title="<?= f::escape_html(t('title_visits', 'Visits')) ?>"></div>
 		</div>
 
 		<div style="max-height: 300px; overflow: hidden auto;">
@@ -150,26 +135,20 @@
 </div>
 
 <script>
-	var data = {
+waitFor('Chart', function(Chart) {
+
+	new Chart('#chart-visits', {
+		type: 'line',
+		area: true,
+		dashed: true,
 		labels: <?= f::format_json(array_column($stats, 'label'), '') ?>,
-		series: <?= f::format_json([array_column($stats, 'total_visits')], '') ?>
-	};
-
-	var options = {
-		showArea: true,
-		lineSmooth: true
-	};
-
-	var responsiveOptions = [
-		['screen and (max-width: 640px)', {
-			seriesBarDistance: 5,
-			axisX: {
-				labelInterpolationFnc: function (value) {
-					return value[0];
-				}
+		series: [
+			{
+				name: <?= f::format_json(t('title_visits', 'Visits'), '') ?>,
+				data: <?= f::format_json(array_column($stats, 'total_visits'), '') ?>
 			}
-		}]
-	];
+		]
+	});
 
-	new Chartist.LineChart('#chart-visits', data, options, responsiveOptions);
+});
 </script>

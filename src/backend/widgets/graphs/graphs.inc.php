@@ -1,8 +1,5 @@
 <?php
 
-	document::load_style('app://assets/chartist/chartist.min.css', 'chartist');
-	document::load_script('app://assets/chartist/chartist.min.js', 'chartist');
-
 	$widget_graphs_cache_token = cache::token('widget_graphs', ['site'], 'memory', 300);
 	if (cache::capture($widget_graphs_cache_token)) {
 
@@ -115,62 +112,29 @@
 }
 
 #chart-sales-monthly {
-	--chart-label-color: #999;
-	--chart-a-color: #ececec;
-	--chart-b-color: #d2d2d2;
-	--chart-c-color: #3ba5c6;
-}
-
-.dark-mode #chart-sales-monthly {
-	--chart-label-color: #999;
-	--chart-a-color: #343d5a;
-	--chart-b-color: #424d6e;
-	--chart-c-color: #4e90ad;
+	--chart-series-1: #e6e9ef;
+	--chart-series-2: #bcc6d4;
+	--chart-highlight-from: #3ba5c6;
+	--chart-highlight-to: #7152e5;
+	--chart-label-color: #8b95a3;
 }
 
 #chart-sales-daily {
-	--chart-label-color: #999;
-	--chart-a-color: #e4e4e4;
-	--chart-b-color: #3ba5c6;
+	--chart-series-1: #e6e9ef;
+	--chart-series-2: #3ba5c6;
+	--chart-label-color: #8b95a3;
+}
+
+.dark-mode #chart-sales-monthly {
+	--chart-series-1: #343d5a;
+	--chart-series-2: #4a5578;
+	--chart-highlight-from: #4e90ad;
+	--chart-highlight-to: #7b6cf6;
 }
 
 .dark-mode #chart-sales-daily {
-	--chart-label-color: #999;
-	--chart-a-color: #424d6e;
-	--chart-b-color: #4e90ad;
-}
-
-#chart-sales-monthly .ct-label, #chart-sales-daily .ct-label {
-	font-size: 12px;
-	color: var(--chart-label-color);
-}
-
-#chart-sales-monthly .ct-series-a .ct-bar, #chart-sales-daily .ct-series-a .ct-bar {
-	stroke: var(--chart-a-color);
-}
-
-#chart-sales-monthly .ct-series-b .ct-bar, #chart-sales-daily .ct-series-b .ct-bar {
-	stroke: var(--chart-b-color);
-}
-
-#chart-sales-monthly .ct-series-c .ct-bar, #chart-sales-daily .ct-series-c .ct-bar {
-	stroke: url("#gradient");
-}
-
-#chart-sales-monthly .ct-bar{
-	stroke-width: 20px;
-}
-
-#chart-sales-daily .ct-series-a .ct-bar {
-	stroke: var(--chart-a-color);
-}
-
-#chart-sales-daily .ct-series-b .ct-bar {
-	stroke: url("#gradient2");
-}
-
-#chart-sales-daily .ct-bar {
-	stroke-width: 10px;
+	--chart-series-1: #424d6e;
+	--chart-series-2: #4e90ad;
 }
 </style>
 
@@ -203,105 +167,58 @@
 </div>
 
 <script>
+waitFor('Chart', function(Chart) {
 
-	// Monthly Sales
-	var data = {
-		labels: <?= f::format_json(array_column($monthly_sales[date('Y')], 'label')) ?>,
-		series: <?= f::format_json([array_column($monthly_sales[date('Y')-2], 'total_sales'), array_column($monthly_sales[date('Y')-1], 'total_sales'), array_column($monthly_sales[date('Y')], 'total_sales')]) ?>
-	};
+	var numberFormat = new Intl.NumberFormat(<?= f::format_json(language::$selected['code'], '') ?>);
 
-	var options = {
-		seriesBarDistance: 10,
-		showArea: true,
-		lineSmooth: true,
+	new Chart('#chart-sales-monthly', {
+		type: 'bar',
+		legend: true,
+		labels: <?= f::format_json(array_column($monthly_sales[date('Y')], 'label'), '') ?>,
+		series: [
+			{
+				name: <?= f::format_json(date('Y') - 2, '') ?>,
+				data: <?= f::format_json(array_column($monthly_sales[date('Y')-2], 'total_sales'), '') ?>
+			},
+			{
+				name: <?= f::format_json(date('Y') - 1, '') ?>,
+				data: <?= f::format_json(array_column($monthly_sales[date('Y')-1], 'total_sales'), '') ?>
+			},
+			{
+				name: <?= f::format_json(date('Y'), '') ?>,
+				data: <?= f::format_json(array_column($monthly_sales[date('Y')], 'total_sales'), '') ?>,
+				gradient: ['--chart-highlight-from', '--chart-highlight-to']
+			}
+		],
 		axisY: {
-			offset: 60,
-			labelInterpolationFnc: function(value) {
-				return new Intl.NumberFormat('<?= language::$selected['code'] ?>').format(value);
+			format: function(value) {
+				return numberFormat.format(value);
 			}
-		}
-	};
-
-	var responsiveOptions = [
-		['screen and (max-width: 640px)', {
-			seriesBarDistance: 5,
-			axisX: {
-				labelInterpolationFnc: function (value) {
-					return value[0];
-				}
-			}
-		}]
-	];
-
-	let chart1 = new Chartist.BarChart('#chart-sales-monthly', data, options, responsiveOptions);
-
-	// Offset x1 a tiny amount so that the straight stroke gets a bounding box
-	// Straight lines don't get a bounding box
-	// Last remark on -> http://www.w3.org/TR/SVG11/coords.html#ObjectBoundingBox
-	chart1.on('draw', function(ctx) {
-		if(ctx.type === 'bar') {
-			ctx.element.attr({
-				x1: ctx.x1 + 0.001
-			});
 		}
 	});
 
-	// Create the gradient definition on created event (always after chart re-render)
-	chart1.on('created', function(ctx) {
-		let defs = ctx.svg.elem('defs');
-		defs.elem('linearGradient', { id: 'gradient', x1: 0, y1: 1, x2: 0, y2: 0 })
-		.elem('stop', { offset: 0, 'stop-color': 'hsla(278, 100%, 42%, .7)' })
-		.parent().elem('stop', { offset: 1, 'stop-color': 'hsla(204, 100%, 50%, .7)' });
-	});
-
-	// Daily Sales
-
-	var data = {
-		labels: <?= f::format_json(array_column($daily_sales, 'label')) ?>,
-		series: <?= f::format_json([array_column($daily_sales, 'total_sales'), array_column($daily_sales, 'average_sales')]) ?>
-	};
-
-	var options = {
-		seriesBarDistance: 10,
+	new Chart('#chart-sales-daily', {
+		type: 'bar',
+		legend: true,
+		labels: <?= f::format_json(array_column($daily_sales, 'label'), '') ?>,
+		series: [
+			{
+				name: <?= f::format_json(t('title_sales_this_week', 'This week'), '') ?>,
+				data: <?= f::format_json(array_column($daily_sales, 'total_sales'), '') ?>
+			},
+			{
+				name: <?= f::format_json(t('title_sales_average', '3 month average'), '') ?>,
+				data: <?= f::format_json(array_column($daily_sales, 'average_sales'), '') ?>
+			}
+		],
 		axisY: {
-			offset: 60,
-			labelInterpolationFnc: function(value) {
-				return new Intl.NumberFormat('<?= language::$selected['code'] ?>').format(value);
+			format: function(value) {
+				return numberFormat.format(value);
 			}
-		}
-	};
-
-	var responsiveOptions = [
-		['screen and (max-width: 640px)', {
-			seriesBarDistance: 5,
-			axisX: {
-				labelInterpolationFnc: function (value) {
-					return value[0];
-				}
-			}
-		}]
-	];
-
-	let chart2 = new Chartist.BarChart('#chart-sales-daily', data, options, responsiveOptions);
-
-	// Offset x1 a tiny amount so that the straight stroke gets a bounding box
-	// Straight lines don't get a bounding box
-	// Last remark on -> http://www.w3.org/TR/SVG11/coords.html#ObjectBoundingBox
-	chart2.on('draw', function(ctx) {
-		if(ctx.type === 'bar') {
-			ctx.element.attr({
-				x1: ctx.x1 + 0.001
-			});
 		}
 	});
 
-	// Create the gradient definition on created event (always after chart re-render)
-	chart2.on('created', function(ctx) {
-		let defs = ctx.svg.elem('defs');
-		defs.elem('linearGradient', { id: 'gradient2', x1: 0, y1: 1, x2: 0, y2: 0 })
-		.elem('stop', { offset: 0, 'stop-color': 'hsla(278, 100%, 42%, .7)' })
-		.parent().elem('stop', { offset: 1, 'stop-color': 'hsla(204, 100%, 50%, .7)' });
-	});
+});
 </script>
 <?php
 		cache::end_capture($widget_graphs_cache_token);
