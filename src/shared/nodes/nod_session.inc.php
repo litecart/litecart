@@ -144,10 +144,10 @@
 
 					database::insert('visitors', [
 						'session_id' => self::$data['id'],
-						'ip_address' => self::$data['ip_address'],
-						'hostname' => self::$data['hostname'],
-						'user_agent' => self::$data['user_agent'],
-						'referrer' => self::$data['referrer'],
+						'ip_address' => $_SERVER['REMOTE_ADDR'] ?? '',
+						'hostname' => reverse_dns($_SERVER['REMOTE_ADDR'] ?? ''),
+						'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? '',
+						'referrer' => $_SERVER['HTTP_REFERER'] ?? '',
 						'updated_at' => date('Y-m-d H:i:s'),
 						'created_at' => date('Y-m-d H:i:s'),
 					]);

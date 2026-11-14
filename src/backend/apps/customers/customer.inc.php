@@ -69,16 +69,14 @@
 
 			$author_id = !empty(administrator::$data['id']) ? (int)administrator::$data['id'] : null;
 
-			database::query(
-				"insert into ". DB_PREFIX ."customer_notes
-				(customer_id, author_id, author, text, hidden, created_at)
-				values (". (int)$customer->data['id'] .",
-					". ($author_id !== null ? (int)$author_id : 'null') .",
-					'staff',
-					'". database::input($text) ."',
-					0,
-					'". date('Y-m-d H:i:s') ."');"
-			);
+			database::insert('customer_notes', [
+				'customer_id' => (int)$customer->data['id'],
+				'author_id' => $author_id,
+				'author' => 'staff',
+				'text' => $text,
+				'hidden' => 0,
+				'created_at' => date('Y-m-d H:i:s'),
+			]);
 
 			customer::log([
 				'customer_id' => (int)$customer->data['id'],

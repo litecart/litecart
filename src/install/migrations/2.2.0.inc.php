@@ -327,11 +327,11 @@
 		foreach (explode(',', $product['product_groups']) as $product_group) {
 			list($group_id, $value_id) = explode('-', $product_group);
 
-			database::query(
-				"insert into `". DB_PREFIX ."products_attributes`
-				(product_id, group_id, value_id) values
-				(". (int)$product['id'] .", ". (int)$group_id .", ". (int)$value_id .");"
-			);
+			database::insert('products_attributes', [
+				'product_id' => (int)$product['id'],
+				'group_id' => (int)$group_id,
+				'value_id' => (int)$value_id,
+			]);
 		}
 	});
 
@@ -350,11 +350,11 @@
 			order by group_id;"
 		)->each(function($attribute) use ($category) {
 
-			database::query(
-				"insert into `". DB_PREFIX ."categories_filters`
-				(category_id, attribute_group_id, select_multiple) values
-				(". (int)$category['id'] .", ". (int)$attribute['group_id'] .", 1);"
-			);
+			database::insert('categories_filters', [
+				'category_id' => (int)$category['id'],
+				'attribute_group_id' => (int)$attribute['group_id'],
+				'select_multiple' => 1,
+			]);
 		});
 	});
 

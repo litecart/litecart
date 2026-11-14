@@ -257,11 +257,9 @@
 							$batch['counters']['inserted']++;
 
 							if (!empty($row['group_id'])) {
-								database::query(
-									"insert into ". DB_PREFIX ."attribute_groups
-									(id)
-									values (". (int)$row['group_id'] .");"
-								);
+								database::insert('attribute_groups', [
+									'id' => (int)$row['group_id'],
+								]);
 								$attribute_group = new ent_attribute_group($row['group_id']);
 							} else {
 								$attribute_group = new ent_attribute_group();
@@ -351,19 +349,18 @@
 							$batch['counters']['inserted']++;
 
 							if (!empty($row['id'])) {
-								database::query(
-									"insert into ". DB_PREFIX ."campaigns
-									(id, product_id)
-									values (". (int)$row['id'] .", '". $row['product_id'] ."');"
-								);
+								database::insert('campaigns', [
+									'id' => (int)$row['id'],
+									'product_id' => $row['product_id'],
+								]);
 							}
 						}
 
-						database::query(
-							"insert into ". DB_PREFIX ."products_prices
-							(product_id, campaign_id, price)
-							values (". (int)$row['product_id'] .", ". (int)$row['campaign_id'] .", '". database::input($row['price']) ."');"
-						);
+						database::insert('products_prices', [
+							'product_id' => (int)$row['product_id'],
+							'campaign_id' => (int)$row['campaign_id'],
+							'price' => $row['price'],
+						]);
 
 						break;
 
@@ -407,10 +404,10 @@
 							$batch['counters']['inserted']++;
 
 							if (!empty($row['id'])) {
-								database::query(
-									"insert into ". DB_PREFIX ."categories (id, created_at)
-									values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');"
-								);
+								database::insert('categories', [
+									'id' => (int)$row['id'],
+									'created_at' => date('Y-m-d H:i:s'),
+								]);
 								$category = new ent_category($row['id']);
 							} else {
 								$category = new ent_category();
@@ -520,14 +517,14 @@
 							$batch['counters']['inserted']++;
 
 							if (!empty($row['id'])) {
-								database::query(
-									"insert into ". DB_PREFIX ."brands (id, created_at)
-									values (". (int)$row['id'] .", '". date('Y-m-d H:i:s') ."');"
-								);
-								$brand = new ent_brand($row['id']);
-							} else {
-								$brand = new ent_brand();
-							}
+							database::insert('brands', [
+								'id' => (int)$row['id'],
+								'created_at' => date('Y-m-d H:i:s'),
+							]);
+							$brand = new ent_brand($row['id']);
+						} else {
+							$brand = new ent_brand();
+						}
 						}
 
 						// Set new brand data

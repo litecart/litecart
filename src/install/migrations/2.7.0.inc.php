@@ -23,11 +23,13 @@
         $price[$currency_code] = isset($row[$currency_code]) ? (float)$row[$currency_code] : 0;
       }
 
-      database::query(
-        "insert into ". DB_PREFIX ."products_prices_history
-        (product_id, campaign_id, price, valid_from, valid_to)
-        values (". (int)$row['product_id'] .", 0, '". database::input(json_encode($price, JSON_UNESCAPED_UNICODE)) ."', '". date('Y-m-d H:i:s') ."', NULL);"
-      );
+      database::insert('products_prices_history', [
+        'product_id' => (int)$row['product_id'],
+        'campaign_id' => 0,
+        'price' => json_encode($price, JSON_UNESCAPED_UNICODE),
+        'valid_from' => date('Y-m-d H:i:s'),
+        'valid_to' => null,
+      ]);
     }
   }
 
@@ -44,10 +46,12 @@
         $price[$currency_code] = isset($row[$currency_code]) ? (float)$row[$currency_code] : 0;
       }
 
-      database::query(
-        "insert into ". DB_PREFIX ."products_prices_history
-        (product_id, campaign_id, price, valid_from, valid_to)
-        values (". (int)$row['product_id'] .", ". (int)$row['id'] .", '". database::input(json_encode($price, JSON_UNESCAPED_UNICODE)) ."', '". date('Y-m-d H:i:s') ."', NULL);"
-      );
+      database::insert('products_prices_history', [
+        'product_id' => (int)$row['product_id'],
+        'campaign_id' => (int)$row['id'],
+        'price' => json_encode($price, JSON_UNESCAPED_UNICODE),
+        'valid_from' => date('Y-m-d H:i:s'),
+        'valid_to' => null,
+      ]);
     }
   }

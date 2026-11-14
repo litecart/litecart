@@ -10,29 +10,32 @@
 				and event = '". database::input($event) ."';"
 			)->each(function($webhook) use ($event, $data) {
 
-				$client = new wrap_http();
-
 				$headers = [
-					'Content-Type' => 'application/json;charset='. language::$selected['charset'],
+					'Content-Type' => 'application/json;charset='. mb_http_output(),
 				];
 
-				$client->call('POST', $webhook['url'], f::format_json($data), $headers);
+				$payload = f::format_json($data);
 
-				database::query(
-					"insert into ". DB_PREFIX ."webhook_requests
-					(`type`, status, webhook_id, url, request, response, updated_at, created_at)
-					values (
-						'outgoing',
-						'pending',
-						". (int)$webhook['id'] .",
-						'". database::input($event) ."',
-						'". database::input($webhook['url']) ."',
-						'". database::input($client->last_request['head'] . $client->last_request['body'], true) ."',
-						'". database::input($client->last_response['head'] . $client->last_response['body'], true) ."',
-						'". database::input(date('Y-m-d H:i:s')) ."',
-						'". database::input(date('Y-m-d H:i:s')) ."'
-					);"
-				);
+				$client = new http_client();
+				$client->call('POST', $webhook['url'], $payload, $headers);
+
+				$delivered = in_array((int)($client->last_response['status_code'] ?? 0), [200, 201, 202, 204, 304]);
+
+				database::insert('webhook_requests', [
+					'type' => 'outgoing',
+					'status' => $delivered ? 'delivered' : 'failed',
+					'webhook_id' => (int)$webhook['id'],
+					'method' => 'POST',
+					'url' => $webhook['url'],
+					'headers' => f::format_json($headers),
+					'body' => $payload,
+					'raw_request' => $client->last_request['headers'] . $client->last_request['body'],
+					'raw_response' => ($client->last_response['headers'] ?? '') . ($client->last_response['body'] ?? ''),
+					'last_attempt' => date('Y-m-d H:i:s'),
+					'delivered_at' => $delivered ? date('Y-m-d H:i:s') : null,
+					'updated_at' => date('Y-m-d H:i:s'),
+					'created_at' => date('Y-m-d H:i:s'),
+				], 'default', ['headers', 'body', 'raw_request', 'raw_response']);
 
 				database::query(
 					"update ". DB_PREFIX ."webhooks
@@ -46,4 +49,3 @@
 			trigger_error('Webhook event failed: '. $e->getMessage(), E_USER_WARNING);
 		}
 	}
-

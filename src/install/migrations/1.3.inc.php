@@ -91,11 +91,10 @@
 					limit 1;"
 				);
 			}
-			database::query(
-				"insert into `". DB_PREFIX ."products_to_categories`
-				(product_id, category_id)
-				values (". (int)$product['id'] .", ". (int)$category_id .");"
-			);
+			database::insert('products_to_categories', [
+				'product_id' => (int)$product['id'],
+				'category_id' => (int)$category_id,
+			]);
 			$is_first = false;
 		}
 	});

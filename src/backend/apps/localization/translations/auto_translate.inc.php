@@ -189,11 +189,11 @@
 			);
 		}
 
-		database::query(
-			"insert into ". DB_PREFIX . $collection['id'] ."
-			(`". database::input($collection['entity_column']) ."`, language_code, `". database::input($column) ."`)
-			values ('". database::input($id) ."', '". database::input($row['target_language_code']) ."', '". database::input($translated_text, true) ."');"
-		);
+		database::insert($collection['id'], [
+			$collection['entity_column'] => $id,
+			'language_code' => $row['target_language_code'],
+			$column => $translated_text,
+		], 'default', [$column]);
 
 		return !empty($translation) ? 'updated' : 'inserted';
 	};

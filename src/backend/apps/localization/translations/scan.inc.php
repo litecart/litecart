@@ -71,11 +71,12 @@
 
 					$new_translations++;
 
-					database::query(
-						"insert into ". DB_PREFIX ."translations
-						(code, `text`, html, created_at)
-						values ('". database::input($code) ."', '{\"en\":\"". database::input($translation, true) ."\"}', '". (($translation != strip_tags($translation)) ? 1 : 0) ."', '". date('Y-m-d H:i:s') ."');"
-					);
+					database::insert('translations', [
+						'code' => $code,
+						'text' => json_encode(['en' => $translation], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_INVALID_UTF8_SUBSTITUTE),
+						'html' => ($translation != strip_tags($translation)) ? 1 : 0,
+						'created_at' => date('Y-m-d H:i:s'),
+					], 'default', ['text']);
 
 					echo  $code . ' [ADDED]<br/>' . PHP_EOL;
 

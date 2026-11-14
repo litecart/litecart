@@ -162,11 +162,15 @@
 
 			mb_convert_variables('UTF-8', '', $module['settings']);
 
-			database::query(
-				"insert into `". DB_DATABASE ."`.`". DB_PREFIX . "modules`
-				(module_id, type, status, settings, priority, date_updated, date_created)
-				values ('". database::input($module['key']) ."', '". database::input($type) ."', ". (int)$status .", '". database::input(json_encode($module['settings'])) ."', ". (int)$priority .", '". $module['date_updated'] ."', '". $module['date_created'] ."');"
-			);
+			database::insert('modules', [
+				'module_id' => $module['key'],
+				'type' => $type,
+				'status' => (int)$status,
+				'settings' => json_encode($module['settings']),
+				'priority' => (int)$priority,
+				'date_updated' => $module['date_updated'],
+				'date_created' => $module['date_created'],
+			]);
 
 			database::query(
 				"delete from ". DB_PREFIX ."settings
@@ -195,11 +199,12 @@
 		}
 
 		foreach ($languages as $language_code) {
-			database::query(
-				"insert into `". DB_DATABASE ."`.`". DB_PREFIX . "slides_info`
-				(slide_id, language_code, caption, link)
-				values (". (int)$slide['id'] .", '". database::input($language_code) ."', '". database::input($slide['caption']) ."', '". database::input($slide['link']) ."');"
-			);
+			database::insert('slides_info', [
+				'slide_id' => (int)$slide['id'],
+				'language_code' => $language_code,
+				'caption' => $slide['caption'],
+				'link' => $slide['link'],
+			]);
 		}
 	});
 

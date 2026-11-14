@@ -139,20 +139,11 @@
 
 						if (!$languages) continue;
 
-						$object_parts = [];
-						foreach ($languages as $lang_code => $value) {
-							$object_parts[] = "'". database::input($lang_code) ."', '". database::input($value, true) ."'";
-						}
-						$object_sql = 'json_object('. implode(', ', $object_parts) .')';
-
-						database::query(
-							"insert into ". DB_PREFIX ."translations
-							(code, `text`, created_at) values (
-								'". database::input($row['code']) ."',
-								$object_sql,
-								'". date('Y-m-d H:i:s') ."'
-							);"
-						);
+						database::insert('translations', [
+							'code' => $row['code'],
+							'text' => json_encode($languages, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_INVALID_UTF8_SUBSTITUTE),
+							'created_at' => date('Y-m-d H:i:s'),
+						], 'default', ['text']);
 
 						$inserted++;
 					}

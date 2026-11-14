@@ -134,11 +134,7 @@
 								$values[$to_column] = $row[$column];
 							}
 
-							database::query(
-								'insert into `'. database::input($batch['target']['table_name']) ."`
-								(`". implode("`, `", database::input(array_keys($values))) ."`)
-								values ('". implode("', '", database::input($values)) ."');",
-							);
+							database::insert($batch['target']['table_name'], $values);
 						}
 
 						if ($row_exists && $batch['update']) {

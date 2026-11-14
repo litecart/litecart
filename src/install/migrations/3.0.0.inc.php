@@ -999,27 +999,32 @@
 		order by osi.id asc;"
 	)->each(function($item){
 
-		$item['userdata'] = unserialize($item['userdata']);
+		database::insert(
+			"orders_items", [
+				'id' => (int)$item['id'],
+				'order_id' => (int)$item['order_id'],
+				'product_id' => (int)$item['product_id'],
+				'code' => $item['product_code'],
+				'name' => $item['name'],
+				'image' => $item['default_image'],
+				'userdata' => $item['userdata'] ? json_encode(unserialize($item['userdata']), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) : '',
+				'quantity' => (float)$item['quantity'],
+				'regular_price' => (float)$item['price'],
+				'final_price' => (float)$item['price'],
+				'tax_class_id' => null,
+				'tax_rate' => ((float)$item['price'] > 0 ? round($tax / $price, 2) : null),
+				'discount' => 0,
+				'sum' => ((float)$item['price'] * (float)$item['quantity']),
+				'sum_tax' => ((float)$item['tax'] * (float)$item['quantity']),
+				'priority' => (int)$item['priority'],
+			]
+		);
 
 		database::query(
-			"insert into ". DB_PREFIX ."orders_items (id, order_id, product_id, code, name, image, userdata, quantity, regular_price, final_price, tax_class_id, tax_rate, sum, sum_tax, priority)
-			values (
-				". (int)$item['id'] .",
-				". (int)$item['order_id'] .",
-				". (int)$item['product_id'] .",
-				'". database::input($item['code']) ."',
-				'". database::input($item['name']) ."',
-				'". database::input($item['image']) ."',
-				". json_encode($item['userdata'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) .",
-				". (int)$item['quantity'] .",
-				". (float)$item['price'] .",
-				". (float)$item['price'] .",
-				". ($item['tax_class_id'] ? (int)$item['tax_class_id'] : "NULL") .",
-				". (($item['tax'] > 0) ? round($item['tax'] / $item['price'], 2) : "NULL") .",
-				". ($item['price'] * (float)$item['quantity']) .",
-				". ($item['tax'] * (float)$item['quantity']) .",
-				". (int)$item['priority'] ."
-			);"
+			"update ". DB_PREFIX ."orders_stock_items
+			set item_id = ". (int)$item['id'] ."
+			where id = ". (int)$item['id'] ."
+			limit 1;"
 		);
 	});
 
@@ -1121,11 +1126,11 @@
 
 	foreach ($campaigns as $campaign_products) {
 
-		database::query(
-			"insert into ". DB_PREFIX ."campaigns
-			(name, valid_from, valid_to)
-			values ('', ". (!empty($campaign[0]['valid_from']) ? "'". $campaign[0]['valid_from'] ."'" : "null") .", ". (!empty($campaign[0]['valid_to']) ? "'". $campaign[0]['valid_to'] ."'" : "null") .");"
-		);
+		database::insert('campaigns', [
+			'name' => '',
+			'valid_from' => !empty($campaign_products[0]['valid_from']) ? $campaign_products[0]['valid_from'] : null,
+			'valid_to' => !empty($campaign_products[0]['valid_to']) ? $campaign_products[0]['valid_to'] : null,
+		]);
 
 		$campaign_id = database::insert_id();
 
@@ -1135,11 +1140,11 @@
 				return (preg_match('#^[A-Z]{3}$#', $key));
 			}, ARRAY_FILTER_USE_KEY);
 
-			database::query(
-				"insert into ". DB_PREFIX ."products_prices
-				(product_id, campaign_id, price)
-				values (". (int)$campaign_product['product_id'] .", ". (int)$campaign_id .", '". database::input(json_encode($prices)) ."');"
-			);
+			database::insert('products_prices', [
+				'product_id' => (int)$campaign_product['product_id'],
+				'campaign_id' => (int)$campaign_id,
+				'price' => json_encode(array_filter($prices)),
+			]);
 		}
 	}
 
@@ -1292,31 +1297,27 @@
 		left join ". DB_PREFIX ."products p on (p.id = pso.product_id);"
 	)->each(function($stock_option) {
 
-		database::query(
-			"insert into ". DB_PREFIX ."stock_items
-			(brand_id, supplier_id, name, sku, gtin, mpn, taric, weight, weight_unit, length, width, height, length_unit, quantity, quantity_unit_id, purchase_price, purchase_price_currency_code, updated_at, created_at)
-			values (
-				". ($stock_option['brand_id'] ? (int)$stock_option['brand_id'] : "null") .",
-				". ($stock_option['supplier_id'] ? (int)$stock_option['supplier_id'] : "null") .",
-				'". database::input($stock_option['name']) ."',
-				'". database::input($stock_option['sku']) ."',
-				'". database::input($stock_option['gtin']) ."',
-				'". database::input($stock_option['mpn']) ."',
-				'". database::input($stock_option['taric']) ."',
-				". (float)$stock_option['weight'] .",
-				". (int)$stock_option['weight_unit'] .",
-				". (float)$stock_option['length'] .",
-				". (float)$stock_option['width'] .",
-				". (float)$stock_option['height'] .",
-				". (int)$stock_option['length_unit'] .",
-				". (int)$stock_option['quantity'] .",
-				". (int)$stock_option['quantity_unit_id'] .",
-				". (float)$stock_option['purchase_price'] .",
-				'". database::input($stock_option['purchase_price_currency_code']) ."',
-				'". database::input($stock_option['updated_at']) ."',
-				'". database::input($stock_option['created_at']) ."'
-			);"
-		);
+		database::insert('stock_items', [
+			'brand_id' => $stock_option['brand_id'] ? (int)$stock_option['brand_id'] : null,
+			'supplier_id' => $stock_option['supplier_id'] ? (int)$stock_option['supplier_id'] : null,
+			'name' => $stock_option['name'],
+			'sku' => $stock_option['sku'],
+			'gtin' => $stock_option['gtin'],
+			'mpn' => $stock_option['mpn'],
+			'taric' => $stock_option['taric'],
+			'weight' => (float)$stock_option['weight'],
+			'weight_unit' => (int)$stock_option['weight_unit'],
+			'length' => (float)$stock_option['length'],
+			'width' => (float)$stock_option['width'],
+			'height' => (float)$stock_option['height'],
+			'length_unit' => (int)$stock_option['length_unit'],
+			'quantity' => (int)$stock_option['quantity'],
+			'quantity_unit_id' => (int)$stock_option['quantity_unit_id'],
+			'purchase_price' => (float)$stock_option['purchase_price'],
+			'purchase_price_currency_code' => $stock_option['purchase_price_currency_code'],
+			'updated_at' => $stock_option['updated_at'],
+			'created_at' => $stock_option['created_at'],
+		]);
 
 		$stock_item_id = database::insert_id();
 
@@ -1328,10 +1329,20 @@
 		);
 
 		database::query(
-			"update ". DB_PREFIX ."orders_items
-			set stock_items = '". json_encode(['id' => $stock_item_id, 'quantity' => 1], true) ."'
-			where product_id = ". (int)$stock_option['product_id'] ."
-			and stock_option_id = ". (int)$stock_option['id'] .";"
+			"update ". DB_PREFIX ."orders_stock_items osi
+			join ". DB_PREFIX ."products_stock_options pso on (pso.product_id = osi.product_id and pso.attributes = osi.attributes)
+			set osi.stock_item_id = pso.stock_item_id
+			where osi.stock_item_id is null
+			and pso.stock_item_id is not null;"
+		);
+
+		database::query(
+			"update ". DB_PREFIX ."orders_stock_items osi
+			join ". DB_PREFIX ."products_stock_options pso on (pso.product_id = osi.product_id and pso.sku = osi.sku)
+			set osi.stock_item_id = pso.stock_item_id
+			where osi.stock_item_id is null
+			and osi.sku != ''
+			and pso.stock_item_id is not null;"
 		);
 	});
 

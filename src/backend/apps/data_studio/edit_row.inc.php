@@ -73,15 +73,10 @@
 				if (!empty($_POST['null'][$field])) $row[$field] = null;
 			}
 
-			$map_insert_values = function($key, $value){ return isset($value) ? "'". database::input($value) ."'" : "null"; };
 			$map_update_values = function($key, $value){ return "`". database::input($key) ."` = ". (isset($value) ? "'". database::input($value) ."'" : "null"); };
 
 			if (empty($_GET[$primary_column])) {
-				database::query(
-					"insert into `". database::input($_GET['table']) ."`
-					(`". implode("`, `", database::input(array_keys($row))) ."`)
-					values (". implode(", ", array_map($map_insert_values, array_keys($row), $row)) .");"
-				);
+				database::insert($_GET['table'], $row);
 			} else {
 				database::query(
 					"update `". database::input($_GET['table']) ."`

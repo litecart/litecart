@@ -431,10 +431,6 @@
 				return;
 			}
 
-			database::query(
-				"insert into ". DB_PREFIX ."event_logs
-				(`". implode("`, `", database::input(array_keys($event))) ."`)
-				values ('". implode("', '", database::input($event)) ."');"
-			);
+			database::insert('event_logs', $event);
 		}
 	}

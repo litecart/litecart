@@ -385,11 +385,18 @@
 
 				if (!$force) {
 
-					database::query(
-						"insert into ". DB_PREFIX ."cart_items
-						(customer_id, cart_uid, `key`, product_id, stock_option_id, userdata, image, quantity, updated_at, created_at)
-						values (". (customer::$data['id'] ? (int)customer::$data['id'] : "null") .", '". database::input(self::$data['uid']) ."', '". database::input($item_key) ."', ". ($item['product_id'] ? (int)$item['product_id'] : "null") .", ". ($item['stock_option_id'] ? (int)$item['stock_option_id'] : "null") .", '". database::input(f::format_json($item['userdata'])) ."', '". database::input($item['image']) ."', ". (float)$item['quantity'] .", '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
-					);
+					database::insert('cart_items', [
+						'customer_id' => customer::$data['id'] ? (int)customer::$data['id'] : null,
+						'cart_uid' => self::$data['uid'],
+						'key' => $item_key,
+						'product_id' => $item['product_id'] ? (int)$item['product_id'] : null,
+						'stock_option_id' => $item['stock_option_id'] ? (int)$item['stock_option_id'] : null,
+						'userdata' => f::format_json($item['userdata']),
+						'image' => $item['image'],
+						'quantity' => (float)$item['quantity'],
+						'updated_at' => date('Y-m-d H:i:s'),
+						'created_at' => date('Y-m-d H:i:s'),
+					]);
 
 					self::$items[$item_key]['id'] = database::insert_id();
 				}

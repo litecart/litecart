@@ -262,11 +262,13 @@
 			if (!$translation) {
 				$translation_text = json_encode(['en' => $default], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_INVALID_UTF8_SUBSTITUTE);
 
-				database::query(
-					"insert into ". DB_PREFIX ."translations
-					(code, `text`, html, updated_at, created_at)
-					values ('". database::input($code) ."', '". database::input($translation_text, true) ."', '". (($default != strip_tags($default)) ? 1 : 0) ."', '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
-				);
+				database::insert('translations', [
+					'code' => $code,
+					'text' => $translation_text,
+					'html' => ($default != strip_tags($default)) ? 1 : 0,
+					'updated_at' => date('Y-m-d H:i:s'),
+					'created_at' => date('Y-m-d H:i:s'),
+				], 'default', ['text']);
 				$translation = [
 					'text_en' => $default,
 					'text_'.$language_code => '',

@@ -310,11 +310,15 @@
 
 	try {
 
-		database::query(
-			"insert into `". DB_PREFIX ."administrators`
-			(`id`, `status`, `username`, `password_hash`, `known_ips`, `updated_at`, `created_at`)
-			values ('1', '1', '". database::input($_REQUEST['username']) ."', '". database::input(password_hash($_REQUEST['password'], PASSWORD_DEFAULT)) ."', '". database::input($_SERVER['REMOTE_ADDR']) ."', '". date('Y-m-d H:i:s') ."', '". date('Y-m-d H:i:s') ."');"
-		);
+		database::insert('administrators', [
+			'id' => 1,
+			'status' => 1,
+			'username' => $_REQUEST['username'],
+			'password_hash' => password_hash($_REQUEST['password'], PASSWORD_DEFAULT),
+			'known_ips' => $_SERVER['REMOTE_ADDR'],
+			'updated_at' => date('Y-m-d H:i:s'),
+			'created_at' => date('Y-m-d H:i:s'),
+		]);
 
 	} catch (Throwable $t) {
 		echo '<p>Insert administrator account... <span class="error">[Error]</span></p>' . PHP_EOL
