@@ -82,6 +82,10 @@
 				throw new Exception(t('error_email_required_for_two_factor_authentication', 'An email address is required for two-factor authentication'));
 			}
 
+			if (isset($_POST['credit_limit']) && is_scalar($_POST['credit_limit'])) {
+				$_POST['credit_limit'] = (float)$_POST['credit_limit'];
+			}
+
 			foreach ([
 				'code',
 				'status',
@@ -105,6 +109,7 @@
 				'newsletter',
 				'about',
 				'different_shipping_address',
+				'credit_limit',
 			] as $field) {
 				if (isset($_POST[$field])) {
 					$customer->data[$field] = $_POST[$field];
@@ -227,11 +232,6 @@
 						<?= f::form_select_customer_group('group_id', true) ?>
 					</label>
 
-					<label class="form-group">
-						<div class="form-label"><?= t('title_tags', 'Tags') ?></div>
-						<?= f::form_input_tags('tags', true, [], $available_tags) ?>
-					</label>
-
 					<div class="grid">
 						<div class="col-md-6">
 							<label class="form-group">
@@ -297,6 +297,50 @@
 						</div>
 					</div>
 					<?php } ?>
+
+					<label class="form-group">
+						<div class="form-label"><?= t('title_tags', 'Tags') ?></div>
+						<?= f::form_input_tags('tags', true, [], $available_tags) ?>
+					</label>
+
+					<h3><?= t('title_credit', 'Credit') ?></h3>
+
+					<div class="grid">
+						<div class="col-md-6">
+							<label class="form-group">
+								<div class="form-label"><?= t('title_credit_limit', 'Credit Limit') ?></div>
+								<?= f::form_input_money('credit_limit', settings::get('store_currency_code'), true, ['min' => 0]) ?>
+							</label>
+						</div>
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<div class="form-label"><?= t('title_credit_usage', 'Credit Usage') ?></div>
+								<?php
+									$credit_limit = is_scalar($_POST['credit_limit'] ?? null) ? (float)$_POST['credit_limit'] : (float)($customer->data['credit_limit'] ?? 0);
+									$credit_usage = (float)($customer->data['credit_usage'] ?? 0);
+									$credit_percent = ($credit_limit > 0 && $credit_usage > 0) ? min(100, round($credit_usage / $credit_limit * 100, 1)) : 0;
+								?>
+								<?php if ($credit_limit > 0) { ?>
+								<div class="form-input" readonly>
+									<meter min="0" max="100" low="25" high="75" optimum="0" value="<?= f::escape_attr($credit_percent) ?>" style="width: 100%; height: 2em;">
+										<?= f::escape_html(currency::format($credit_usage)) ?>
+									</meter>
+									<div>
+										<small class="text-muted"><?= f::escape_html(strtr(t('text_credit_used_of_limit', '{used} used of {limit}'), [
+											'{used}' => currency::format($credit_usage),
+											'{limit}' => currency::format($credit_limit),
+										])) ?></small>
+									</div>
+								</div>
+								<?php } else { ?>
+								<div class="form-input" readonly>
+									<?= f::escape_html(currency::format($credit_usage)) ?>
+								</div>
+								<?php } ?>
+							</div>
+						</div>
+					</div>
 
 				</div>
 

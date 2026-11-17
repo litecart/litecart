@@ -28,6 +28,7 @@
 			$this->data['status'] = 1;
 			$this->data['group_id'] = settings::get('default_customer_group_id');
 			$this->data['newsletter'] = 0;
+			$this->data['credit_usage'] = 0;
 
 			$this->previous = $this->data;
 		}
@@ -78,6 +79,21 @@
 				where email = '". database::input($this->data['email']) ."'
 				limit 1;"
 			)->num_rows ? 1 : 0;
+
+			// Outstanding balance on sales orders not yet paid
+			$this->data['credit_usage'] = (float)database::query(
+				"select sum(total) as credit_usage from ". DB_PREFIX ."orders
+				where customer_id = ". (int)$this->data['id'] ."
+				and order_status_id in (
+					select id from ". DB_PREFIX ."order_statuses
+					where is_sale
+				)
+				and paid_at is null"
+				. (!empty($exclude_order_id) ? " and id != ". (int)$exclude_order_id : "") .";"
+			)->fetch('credit_usage');
+
+			// The credit limit is a decimal column, keep it numeric
+			$this->data['credit_limit'] = (float)($this->data['credit_limit'] ?? 0);
 
 			$this->previous = $this->data;
 		}
@@ -135,6 +151,7 @@
 					shipping_country_code = '". database::input($this->data['shipping_address']['country_code']) ."',
 					shipping_zone_code = '". database::input($this->data['shipping_address']['zone_code']) ."',
 					shipping_phone = '". database::input($this->data['shipping_address']['phone']) ."',
+					credit_limit = ". (float)($this->data['credit_limit'] ?? 0) .",
 					language_code = '". database::input($this->data['language_code']) ."',
 					about = '". database::input($this->data['about']) ."',
 					blocked_until = ". (!empty($this->data['blocked_until']) ? "'". database::input($this->data['blocked_until']) ."'" : "null") .",
