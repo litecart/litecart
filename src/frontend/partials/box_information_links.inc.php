@@ -6,22 +6,14 @@
 		- frontend/templates/default/partials/box_information_links.inc.php
 	*/
 
-	$box_information_links = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/box_information_links.inc.php');
-
 	if (!empty($_GET['page_id'])) {
 		$current_page_path = array_keys(reference::page($_GET['page_id'])->path);
 	} else {
 		$current_page_path = [];
 	}
 
-	$box_information_links->snippets = [
-		'title' =>  t('title_information', 'Information'),
-		'pages' => [],
-		'page_path' => $current_page_path,
-	];
-
 	$box_information_links_cache_token = cache::token('box_information_links', ['language', $_GET['page_id'] ?? null]);
-	if (!$box_information_links->snippets['pages'] = cache::get($box_information_links_cache_token)) {
+	if (!$pages = cache::get($box_information_links_cache_token)) {
 
 		$iterator = function($parent_id) use (&$iterator) {
 
@@ -44,12 +36,19 @@
 			});
 		};
 
-		$box_information_links->snippets['pages'] = $iterator(0, 0);
+		$pages = $iterator(0, 0);
 
-		cache::set($box_information_links_cache_token, $box_information_links->snippets['pages']);
+		cache::set($box_information_links_cache_token, $pages);
 	}
 
-	if (!$box_information_links->snippets['pages']) return;
+	if (!$pages) {
+		return;
+	}
+
+	$box_information_links = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/box_information_links.inc.php', [
+		'title' =>  t('title_information', 'Information'),
+		'pages' => $pages,
+		'page_path' => $current_page_path,
+	]);
 
 	echo $box_information_links->render();
-

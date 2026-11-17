@@ -51,18 +51,19 @@
 		$session_language = language::$selected['code'];
 		language::set($order->data['language_code']);
 
-		$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/printable_packing_slip.inc.php');
-		$_page->snippets['text_direction'] = language::$languages[$order->data['language_code']]['direction'] ?? 'ltr';
-		$_page->snippets['order'] = $order->data;
-		$_page->snippets['max_first_page_items'] = 15;
-		$_page->snippets['action_menu'] = true;
-		$_page->snippets['items'] = database::query(
-			"select osi.stock_item_id, osi.name, osi.sku, osi.gtin, osi.taric, sum(oi.quantity * osi.quantity) as total_quantity
-			from ". DB_PREFIX ."orders_stock_items osi
-			left join ". DB_PREFIX ."orders_items oi on (oi.id = osi.item_id)
-			left join ". DB_PREFIX ."orders o on (o.id = osi.order_id)
-			where osi.order_id = ". (int)$order->data['id'] .";"
-		)->fetch_all();
+		$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/printable_packing_slip.inc.php', [
+			'text_direction' => language::$languages[$order->data['language_code']]['direction'] ?? 'ltr',
+			'order' => $order->data,
+			'max_first_page_items' => 15,
+			'action_menu' => true,
+			'items' => database::query(
+				"select osi.stock_item_id, osi.name, osi.sku, osi.gtin, osi.taric, sum(oi.quantity * osi.quantity) as total_quantity
+				from ". DB_PREFIX ."orders_stock_items osi
+				left join ". DB_PREFIX ."orders_items oi on (oi.id = osi.item_id)
+				left join ". DB_PREFIX ."orders o on (o.id = osi.order_id)
+				where osi.order_id = ". (int)$order->data['id'] .";"
+			)->fetch_all(),
+		]);
 
 		echo $_page->render();
 

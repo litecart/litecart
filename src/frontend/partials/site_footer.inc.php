@@ -6,19 +6,17 @@
 		- frontend/templates/default/partials/site_footer.inc.php
 	*/
 
-	$site_footer = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/site_footer.inc.php');
-
 	$site_footer_cache_token = cache::token('store_footer', ['language', 'login', 'region']);
-	if (!$site_footer->snippets = cache::get($site_footer_cache_token)) {
+	if (!$snippets = cache::get($site_footer_cache_token)) {
 
-		$site_footer->snippets = [
+		$snippets = [
 			'pages' => [],
 			'modules' => [],
 			'social_bookmarks' => [],
 		];
 
 		// Information pages
-		$site_footer->snippets['pages'] = database::query(
+		$snippets['pages'] = database::query(
 			"select p.id, json_value(p.title, '$.". database::input(language::$selected['code']) ."') as title
 			from ". DB_PREFIX ."pages p
 			where status
@@ -38,7 +36,7 @@
 			where type in ('shipping', 'payment')
 			and status
 			order by type, id;"
-		)->each(function($module) use (&$site_footer) {
+		)->each(function($module) use (&$snippets) {
 			$module['settings'] = json_decode($module['settings'], true);
 
 			if (empty($module['settings']['icon'])) return;
@@ -47,7 +45,7 @@
 
 			if (!is_file($icon)) return;
 
-			$site_footer->snippets['modules'][] = [
+			$snippets['modules'][] = [
 				'id' => $module['id'],
 				'title' => !empty($module['settings']['title']) ? $module['settings']['title'] : '',
 				'icon' => $icon,
@@ -66,7 +64,7 @@
 
 			if (!$link = settings::get($platform.'_link')) continue;
 
-			$site_footer->snippets['social_bookmarks'][] = [
+			$snippets['social_bookmarks'][] = [
 				'type' => $platform,
 				'title' => ucfirst($platform),
 				'icon' => 'icon-brand-'.$platform,
@@ -74,7 +72,9 @@
 			];
 		}
 
-		cache::set($site_footer_cache_token, $site_footer->snippets);
+		cache::set($site_footer_cache_token, $snippets);
 	}
+
+	$site_footer = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/site_footer.inc.php', $snippets);
 
 	echo $site_footer->render();

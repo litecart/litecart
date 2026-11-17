@@ -69,13 +69,14 @@
 
 			if (empty(self::$data)) return '';
 
-			$view = match(route::$selected['endpoint'] ?? null) {
-				'backend' => new ent_view('app://backend/template/partials/notices.inc.php'),
-				'frontend' => new ent_view('app://frontend/templates/'.settings::get('template').'/partials/notices.inc.php'),
-				default => new ent_view('app://frontend/templates/'.settings::get('template').'/partials/notices.inc.php'),
-			};
+			$view = new ent_view(match(route::$selected['endpoint'] ?? null) {
+				'backend' => 'app://backend/template/partials/notices.inc.php',
+				'frontend' => 'app://frontend/templates/'.settings::get('template').'/partials/notices.inc.php',
+				default => 'app://frontend/templates/'.settings::get('template').'/partials/notices.inc.php',
+			}, [
+				'notices' => self::$data,
+			]);
 
-			$view->snippets['notices'] = self::$data;
 			$output = $view->render();
 
 			self::reset();

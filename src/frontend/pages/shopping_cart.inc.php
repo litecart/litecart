@@ -161,9 +161,7 @@
 
 	// Output
 
-	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/shopping_cart.inc.php');
-
-	$_page->snippets = [
+	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/shopping_cart.inc.php', [
 		'items' => [],
 		'subtotal' => [
 			'value' => cart::$total['total']['value'],
@@ -173,7 +171,7 @@
 		'display_prices_including_tax' => customer::$data['display_prices_including_tax'],
 		'error' => false,
 		'box_also_purchased_products' => null,
-	];
+	]);
 
 	foreach (currency::$currencies as $currency) {
 		if (administrator::check_login() || $currency['status'] == 1) {

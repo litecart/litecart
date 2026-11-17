@@ -358,9 +358,7 @@
 				'backend' => 'app://backend/template/layouts/'.self::$layout.'.inc.php',
 				'frontend' => 'app://frontend/templates/'.settings::get('template').'/layouts/'.self::$layout.'.inc.php',
 				default => 'app://frontend/templates/'.settings::get('template').'/layouts/'.self::$layout.'.inc.php',
-			});
-
-			$_layout->snippets = array_merge(self::$snippets, [
+			}, array_merge(self::$snippets, [
 				'head_tags' => self::$head_tags,
 				'style' => self::$style,
 				'breadcrumbs' => breadcrumbs::render(),
@@ -370,7 +368,7 @@
 				'javascript' => self::$javascript,
 				'important_notice' => settings::get('important_notice'),
 				'theme' => !empty($_COOKIE['theme']) && in_array($_COOKIE['theme'], ['light', 'dark']) ? $_COOKIE['theme'] : null,
-			]);
+			]));
 
 			// Prepare title
 			if (!empty(self::$title)) {

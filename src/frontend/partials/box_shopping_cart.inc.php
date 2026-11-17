@@ -8,14 +8,12 @@
 
 	if (settings::get('catalog_only_mode')) return;
 
-	$box_shopping_cart = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/box_shopping_cart.inc.php');
-
-	$box_shopping_cart->snippets = [
+	$box_shopping_cart = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/box_shopping_cart.inc.php', [
 		'items' => [],
 		'link' => document::ilink('shopping_cart'),
 		'num_items' => count(cart::$items),
 		'subtotal' => cart::$items,
-	];
+	]);
 
 	foreach (cart::$items as $key => $item) {
 			$item['image'] = 'storage://images/' . ($item['image'] ?? 'no_image.svg');

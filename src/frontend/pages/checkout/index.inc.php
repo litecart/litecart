@@ -310,9 +310,7 @@
 
 	// Output
 
-	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/checkout/index.inc.php');
-
-	$_page->snippets = [
+	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/checkout/index.inc.php', [
 		'items' => [],
 		'subtotal' => [
 			'value' => $order->data['subtotal'],
@@ -325,7 +323,7 @@
 		'box_also_purchased_products' => null,
 		'sufficient_customer_details' => $validation_error = $order->validate('customer') ? false : true,
 		'error' => $order->validate(),
-	];
+	]);
 
 	foreach (currency::$currencies as $currency) {
 		if (administrator::check_login() || $currency['status'] == 1) {

@@ -66,13 +66,8 @@
 			order by osi.priority asc, osi.id asc;"
 		)->fetch_all();
 
-		$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/order.inc.php');
-		$_page->snippets = [
-			'text_direction' => language::$languages[$order->data['language_code']]['direction'] ?? 'ltr',
-			'order' => $order->data,
-			'comments' => [],
-			'downloads' => $downloads,
-		];
+		// Comments
+		$comments = [];
 
 		foreach ($order->data['comments'] as $comment) {
 			if (!empty($comment['hidden'])) continue;
@@ -83,8 +78,15 @@
 				default => 'event',
 			};
 
-			$_page->snippets['comments'][] = $comment;
+			$comments[] = $comment;
 		}
+
+		$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/order.inc.php', [
+			'text_direction' => language::$languages[$order->data['language_code']]['direction'] ?? 'ltr',
+			'order' => $order->data,
+			'comments' => $comments,
+			'downloads' => $downloads,
+		]);
 
 		echo $_page->render();
 

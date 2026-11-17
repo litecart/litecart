@@ -11,12 +11,10 @@
 
 	$product = reference::product($_GET['product_id']);
 
-	$box_similar_products = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/box_similar_products.inc.php');
-
 	$box_similar_products_cache_token = cache::token('box_similar_products', [$_GET['product_id'], implode(', ', array_keys($product->categories ?? [])), 'language', 'prices'], 'file');
-	if (!$box_similar_products->snippets['products'] = cache::get($box_similar_products_cache_token)) {
+	if (!$products = cache::get($box_similar_products_cache_token)) {
 
-		$box_similar_products->snippets['products'] = f::catalog_products_search_query([
+		$products = f::catalog_products_search_query([
 			'product_name' => $product->name,
 			'categories' => isset($_GET['category_id']) ? [$_GET['category_id']] : array_keys($product->categories),
 			'brands' => [$product->brand_id],
@@ -25,9 +23,15 @@
 			'limit' => settings::get('box_similar_products_num_items'),
 		])->fetch_all();
 
-		cache::set($box_similar_products_cache_token, $box_similar_products->snippets['products']);
+		cache::set($box_similar_products_cache_token, $products);
 	}
 
-	if (!$box_similar_products->snippets['products']) return;
+	if (!$products) {
+		return;
+	}
+
+	$box_similar_products = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/box_similar_products.inc.php', [
+		'products' => $products,
+	]);
 
 	echo $box_similar_products->render();

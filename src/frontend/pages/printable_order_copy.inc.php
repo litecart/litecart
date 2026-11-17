@@ -51,11 +51,13 @@
 		$session_language = language::$selected['code'];
 		language::set($order->data['language_code']);
 
-		$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/printable_order_copy.inc.php');
-		$_page->snippets['text_direction'] = language::$languages[$order->data['language_code']]['direction'] ?? 'ltr';
-		$_page->snippets['order'] = $order->data;
-		$_page->snippets['action_menu'] = true;
-		$_page->snippets['items_per_page'] = 20;
+		$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/printable_order_copy.inc.php', [
+			'text_direction' => language::$languages[$order->data['language_code']]['direction'] ?? 'ltr',
+			'order' => $order->data,
+			'action_menu' => true,
+			'items_per_page' => 20,
+		]);
+
 		echo $_page->render();
 
 		language::set($session_language);

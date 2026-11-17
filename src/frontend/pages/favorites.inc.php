@@ -97,8 +97,6 @@
 
 	// Output
 
-	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/favorites.inc.php');
-
 	$product_ids = database::query(
 		"select product_id from ". DB_PREFIX ."favorites
 		where customer_id = ". (int)customer::$data['id'] ."
@@ -106,16 +104,20 @@
 	)->fetch_all('product_id');
 
 	if ($product_ids) {
-		$_page->snippets['products'] = f::catalog_products_query(['products' => $product_ids])->fetch_all();
+		$products = f::catalog_products_query(['products' => $product_ids])->fetch_all();
 	} else {
-		$_page->snippets['products'] = [];
+		$products = [];
 	}
 
 	// Headless requests
 	if (!empty($_SERVER['HTTP_ACCEPT']) && preg_match('#^application/json#', $_SERVER['HTTP_ACCEPT'])) {
 		header('Content-Type: application/json;charset='. mb_http_output());
-		echo f::format_json($_page->snippets);
+		echo f::format_json($products);
 		exit;
 	}
+
+	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/favorites.inc.php', [
+		'products' => $products,
+	]);
 
 	echo $_page->render();

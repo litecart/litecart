@@ -14,22 +14,6 @@
 		$trail = [];
 	}
 
-	$box_category_tree = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/box_category_tree.inc.php');
-
-	$box_category_tree->snippets = [
-		'title' => $main_category ? $main_category->name : t('title_categories', 'Categories'),
-		'main_category' => $main_category ? $main_category->id : 0,
-		'categories' => [],
-		'trail' => $trail,
-		'backlink' => document::ilink('category', ['category_id' => $main_category ? $main_category->id : 0]),
-	];
-
-	if (!nil($_GET['category_id'], $main_category, route::$selected['controller'])) {
-		if (route::$selected['controller'] == 'category' && $_GET['category_id'] == $main_category->id) {
-			$box_category_tree->snippets['backlink'] = document::ilink('categories');
-		}
-	}
-
 	$iterator = function($parent_id) use (&$iterator, &$trail) {
 
 		$tree = [];
@@ -62,8 +46,25 @@
 		return $tree;
 	};
 
-	$box_category_tree->snippets['categories'] = $iterator($main_category ? $main_category->id : 0);
+	$categories = $iterator($main_category ? $main_category->id : 0);
 
-	if (!$box_category_tree->snippets['categories']) return;
+	if (!$categories) {
+		return;
+	}
+
+	$backlink = document::ilink('category', ['category_id' => $main_category ? $main_category->id : 0]);
+	if (!nil($_GET['category_id'], $main_category, route::$selected['controller'])) {
+		if (route::$selected['controller'] == 'category' && $_GET['category_id'] == $main_category->id) {
+			$backlink = document::ilink('categories');
+		}
+	}
+
+	$box_category_tree = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/box_category_tree.inc.php', [
+		'title' => $main_category ? $main_category->name : t('title_categories', 'Categories'),
+		'main_category' => $main_category ? $main_category->id : 0,
+		'categories' => $categories,
+		'trail' => $trail,
+		'backlink' => $backlink,
+	]);
 
 	echo $box_category_tree->render();

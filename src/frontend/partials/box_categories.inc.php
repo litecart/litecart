@@ -6,8 +6,6 @@
 		- frontend/templates/default/partials/box_categories.inc.php
 	*/
 
-	$box_categories = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/box_categories.inc.php');
-
 	$categories_cache_token = cache::token('categories', ['language']);
 	if (!$categories = cache::get($categories_cache_token)) {
 
@@ -16,6 +14,10 @@
 		cache::set($categories_cache_token, $categories);
 	}
 
-	$box_categories->snippets['categories'] = $categories;
+	$categories = $categories;
+
+	$box_categories = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/box_categories.inc.php', [
+		'categories' => $categories,
+	]);
 
 	echo $box_categories->render();

@@ -6,12 +6,10 @@
 		- frontend/templates/default/partials/site_navigation.inc.php
 	*/
 
-	$site_navigation = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/site_navigation.inc.php');
-
 	$site_navigation_cache_token = cache::token('site_navigation', ['language']);
-	if (!$site_navigation->snippets = cache::get($site_navigation_cache_token)) {
+	if (!$snippets = cache::get($site_navigation_cache_token)) {
 
-		$site_navigation->snippets = [
+		$snippets = [
 			'important_notice' => settings::get('important_notice'),
 			'categories' => [],
 			'brands' => [],
@@ -21,7 +19,7 @@
 
 		// Categories
 
-		$site_navigation->snippets['categories'] = f::catalog_categories_query(0)->fetch_all(function($category) {
+		$snippets['categories'] = f::catalog_categories_query(0)->fetch_all(function($category) {
 			return [
 				'type' => 'category',
 				'id' => $category['id'],
@@ -33,7 +31,7 @@
 
 		// Brands
 
-		$site_navigation->snippets['brands'] = database::query(
+		$snippets['brands'] = database::query(
 			"select id, name from ". DB_PREFIX ."brands
 			where status
 			and featured
@@ -50,7 +48,7 @@
 
 		// Pages
 
-		$site_navigation->snippets['pages'] = database::query(
+		$snippets['pages'] = database::query(
 			"select p.id, p.priority, json_value(p.title, '$.". database::input(language::$selected['code']) ."') as title
 			from ". DB_PREFIX ."pages p
 			where status
@@ -84,14 +82,14 @@
 
 		// Regional Settings
 
-		$site_navigation->snippets['regional_settings'] = [
+		$snippets['regional_settings'] = [
 			'title' => language::$selected['code'] .' / '. customer::$data['country_code'] .' / '. currency::$selected['code'],
 			'link' => document::ilink('regional_settings'),
 		];
 
 		// Information
 
-		$site_navigation->snippets['information'] = database::query(
+		$snippets['information'] = database::query(
 			"select p.id, p.priority, json_value(p.title, '$.". database::input(language::$selected['code']) ."') as title
 			from ". DB_PREFIX ."pages p
 			where status
@@ -107,7 +105,7 @@
 			];
 		});
 
-		cache::set($site_navigation_cache_token, $site_navigation->snippets);
+		cache::set($site_navigation_cache_token, $snippets);
 	}
 
 	// Favorites
@@ -116,14 +114,14 @@
 		where customer_id = ". (int)customer::$data['id'] .";"
 	)->fetch('num_items');
 
-	$site_navigation->snippets['favorites'] = [
+	$snippets['favorites'] = [
 		'items' => [],
 		'link' => document::ilink('favorites'),
 		'num_items' => $num_favorites,
 		'total' => null,
 	];
 
-	$site_navigation->snippets['favorites']['items'] = database::query(
+	$snippets['favorites']['items'] = database::query(
 		"select p.id, json_value(p.name, '$.". database::input(language::$selected['code']) ."') as name, p.default_image as image
 		from ". DB_PREFIX ."favorites f
 		left join ". DB_PREFIX ."products p on (p.id = f.product_id)
@@ -134,7 +132,7 @@
 
 	// Shopping Cart
 
-	$site_navigation->snippets['shopping_cart'] = [
+	$snippets['shopping_cart'] = [
 		'items' => [],
 		'link' => document::ilink('shopping_cart'),
 		'num_items' => cart::$total['items'],
@@ -142,7 +140,7 @@
 	];
 
 	foreach (cart::$items as $key => $item) {
-		$site_navigation->snippets['shopping_cart']['items'][$key] = [
+		$snippets['shopping_cart']['items'][$key] = [
 			'key' => $key,
 			'product_id' => $item['product_id'],
 			'stock_option_id' => $item['stock_option_id'],
@@ -158,9 +156,11 @@
 	}
 
 	if (!empty(customer::$data['display_prices_including_tax'])) {
-		$site_navigation->snippets['shopping_cart']['total'] = currency::format(cart::$total['total']['value'] + cart::$total['total']['tax']);
+		$snippets['shopping_cart']['total'] = currency::format(cart::$total['total']['value'] + cart::$total['total']['tax']);
 	} else {
-		$site_navigation->snippets['shopping_cart']['total'] = currency::format(cart::$total['total']['value']);
+		$snippets['shopping_cart']['total'] = currency::format(cart::$total['total']['value']);
 	}
+
+	$site_navigation = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/site_navigation.inc.php', $snippets);
 
 	echo $site_navigation->render();

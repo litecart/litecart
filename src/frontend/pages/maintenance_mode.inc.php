@@ -11,4 +11,5 @@
 	document::$layout = 'blank';
 
 	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/maintenance_mode.inc.php');
-	echo $_page;
+
+	echo $_page->render();

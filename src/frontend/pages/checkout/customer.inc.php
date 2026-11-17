@@ -87,7 +87,8 @@
 		exit;
 	}
 
-	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/checkout/customer.inc.php');
-	$_page->snippets['customer'] = $order->data['customer'];
+	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/checkout/customer.inc.php', [
+		'customer' => $order->data['customer'],
+	]);
 
 	echo $_page->render();

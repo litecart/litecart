@@ -68,12 +68,10 @@
 		}
 	}
 
-	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/regional_settings.inc.php');
-
-	$_page->snippets = [
+	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/regional_settings.inc.php', [
 		'currencies' => [],
 		'languages' => [],
-	];
+	]);
 
 	foreach (currency::$currencies as $currency) {
 		if (administrator::check_login() || $currency['status'] == 1) {

@@ -6,12 +6,12 @@
 		- frontend/templates/default/partials/box_featured_products.inc.php
 	*/
 
-	if (!settings::get('box_featured_products_num_items')) return;
-
-	$box_featured_products = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/box_featured_products.inc.php');
+	if (!settings::get('box_featured_products_num_items')) {
+		return;
+	}
 
 	$box_featured_products_cache_token = cache::token('box_featured_products', ['language', 'prices'], 'file');
-	if (!$box_featured_products->snippets['products'] = cache::get($box_featured_products_cache_token)) {
+	if (!$products = cache::get($box_featured_products_cache_token)) {
 
 		$products = f::catalog_products_query([
 			'featured' => true,
@@ -19,14 +19,20 @@
 			'limit' => settings::get('box_featured_products_num_items'),
 		])->fetch_all();
 
-		$box_featured_products->snippets['products'] = [];
+		$featured_products = [];
 		foreach ($products as $listing_product) {
-			$box_featured_products->snippets['products'][] = $listing_product;
+			$featured_products[] = $listing_product;
 		}
 
-		cache::set($box_featured_products_cache_token, $box_featured_products->snippets['products']);
+		cache::set($box_featured_products_cache_token, $featured_products);
 	}
 
-	if (!$box_featured_products->snippets['products']) return;
+	if (!$featured_products) {
+		return;
+	}
+
+	$box_featured_products = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/box_featured_products.inc.php', [
+		'products' => $featured_products,
+	]);
 
 	echo $box_featured_products->render();

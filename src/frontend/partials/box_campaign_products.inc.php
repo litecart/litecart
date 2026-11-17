@@ -8,20 +8,22 @@
 
 	if (!settings::get('box_campaign_products_num_items')) return;
 
-	$box_campaign_products = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/box_campaign_products.inc.php');
-
 	$box_campaign_products_cache_token = cache::token('box_campaign_products', ['language', 'currency']);
-	if (!$box_campaign_products->snippets['products'] = cache::get($box_campaign_products_cache_token)) {
+	if (!$products = cache::get($box_campaign_products_cache_token)) {
 
-		$box_campaign_products->snippets['products'] = f::catalog_products_query([
+		$products = f::catalog_products_query([
 			'campaign' => true,
 			'sort' => 'random',
 			'limit' => settings::get('box_campaign_products_num_items'),
 		])->fetch_all();
 
-		cache::set($box_campaign_products_cache_token, $box_campaign_products->snippets['products']);
+		cache::set($box_campaign_products_cache_token, $products);
 	}
 
-	if (!$box_campaign_products->snippets['products']) return;
+	if (!$products) return;
+
+	$box_campaign_products = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/box_campaign_products.inc.php', [
+		'products' => $products,
+	]);
 
 	echo $box_campaign_products->render();

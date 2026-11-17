@@ -11,9 +11,7 @@
 	document::$title[] = t('title_third_parties', 'Third Parties');
 	//document::$description = t('third_parties:meta_description', '');
 
-	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/third_parties.inc.php');
-
-	$_page->snippets['third_parties'] =  database::query(
+	$third_parties = database::query(
 		"select *,
 			coalesce(json_value(description, '$.". database::input(language::$selected['code']) ."'), '') as description,
 			coalesce(json_value(collected_data, '$.". database::input(language::$selected['code']) ."'), '') as collected_data,
@@ -25,5 +23,9 @@
 		$party['active'] = (isset($_GET['third_party_id']) && $_GET['third_party_id'] == $party['id']);
 		return $party;
 	});
+
+	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/third_parties.inc.php', [
+		'third_parties' => $third_parties,
+	]);
 
 	echo $_page->render();

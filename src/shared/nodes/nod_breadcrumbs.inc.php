@@ -26,12 +26,12 @@
 				return '';
 			}
 
-			$view = match(route::$selected['endpoint'] ?? null) {
-				'backend' => new ent_view('app://backend/template/partials/breadcrumbs.inc.php'),
-				default => new ent_view('app://frontend/templates/'.settings::get('template').'/partials/breadcrumbs.inc.php'),
-			};
-
-			$view->snippets['breadcrumbs'] = self::$data;
+			$view = new ent_view(match(route::$selected['endpoint'] ?? null) {
+				'backend' => 'app://backend/template/partials/breadcrumbs.inc.php',
+				default => 'app://frontend/templates/'.settings::get('template').'/partials/breadcrumbs.inc.php',
+			}, [
+				'breadcrumbs' => self::$data,
+			]);
 
 			return $view->render();
 		}

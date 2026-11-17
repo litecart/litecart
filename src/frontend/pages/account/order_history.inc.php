@@ -19,9 +19,6 @@
 	breadcrumbs::add(t('title_account', 'Account'));
 	breadcrumbs::add(t('title_order_history', 'Order History'), document::ilink('account/order_history'));
 
-	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/account/order_history.inc.php');
-
-	$_page->snippets['orders'] = [];
 
 	// Table Rows, Total Number of Rows, Total Number of Pages
 	$orders = database::prepare(
@@ -61,10 +58,13 @@
 	// Headless requests
 	if (!empty($_SERVER['HTTP_ACCEPT']) && preg_match('#^application/json#', $_SERVER['HTTP_ACCEPT'])) {
 		header('Content-Type: application/json;charset='. mb_http_output());
-		echo f::format_json($_page->snippets);
+		echo f::format_json($orders);
 		exit;
 	}
 
-	$_page->snippets['pagination'] = f::draw_pagination($num_pages);
+	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/account/order_history.inc.php', [
+		'orders' => $orders,
+		'pagination' => f::draw_pagination($num_pages),
+	]);
 
 	echo $_page->render();

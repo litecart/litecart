@@ -167,12 +167,12 @@
 
 	// Page
 	if (is_ajax_request()) {
-		$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/product.ajax.inc.php');
+		$page_file = 'app://frontend/templates/'.settings::get('template').'/pages/product.ajax.inc.php';
 	} else {
-		$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/product.inc.php');
+		$page_file = 'app://frontend/templates/'.settings::get('template').'/pages/product.inc.php';
 	}
 
-	$_page->snippets = [
+	$_page = new ent_view($page_file, [
 		'product_id' => $product->id,
 		'link' => document::ilink('product', [], true),
 		'code' => $product->code,
@@ -216,7 +216,7 @@
 		'sold_out_status' => $product->sold_out_status ?: [],
 		'orderable' => !empty($product->sold_out_status['orderable']),
 		'cheapest_shipping_fee' => null,
-	];
+	]);
 
 	// Extra Images
 	if (!empty($product->images) && is_array($product->images)) {

@@ -37,20 +37,16 @@
 		}
 
 		// Render the app document
-		$_content = new ent_view('app://backend/apps/'. __APP__ .'/'. $doc_file);
-
-		$_content->snippets = [
+		$_content = new ent_view('app://backend/apps/'. __APP__ .'/'. $doc_file, [
 			'app_icon' => implode(PHP_EOL, [
 				'<span class="app-icon">',
 				'	' . f::draw_fonticon($app_config['theme']['icon']),
 				'</span>',
 			]),
-		];
+		]);
 
 		// Render the page
-		$_page = new ent_view('app://backend/template/pages/doc.inc.php');
-
-		$_page->snippets = [
+		$_page = new ent_view('app://backend/template/pages/doc.inc.php', [
 			'app' => __APP__,
 			'doc' => __DOC__,
 			'theme' => [
@@ -58,7 +54,7 @@
 				'color' => $app_config['theme']['color'],
 			],
 			'content' => (string)$_content,
-		];
+		]);
 
 		echo $_page;
 
@@ -77,10 +73,9 @@
 
 		// Widgets
 
-		$box_widgets = new ent_view('app://backend/template/partials/box_widgets.inc.php');
-		$box_widgets->snippets['widgets'] = [];
-
-		$widgets = f::admin_get_widgets();
+		$box_widgets = new ent_view('app://backend/template/partials/box_widgets.inc.php', [
+			'widgets' => [],
+		]);
 
 		foreach ($widgets as $widget) {
 			if (!empty(administrator::$data['permissions']['widgets']) && !in_array($widget['id'], administrator::$data['permissions']['widgets'])) continue;

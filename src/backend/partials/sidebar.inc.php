@@ -1,7 +1,5 @@
 <?php
 
-	$sidebar = new ent_view('app://backend/template/partials/sidebar.inc.php');
-
 	$groups = [
 		'ecommerce' => [
 			'id' => 'ecommerce',
@@ -98,6 +96,8 @@
 		return !empty($group['apps']);
 	});
 
-	$sidebar->snippets['groups'] = $groups;
+	$sidebar = new ent_view('app://backend/template/partials/sidebar.inc.php', [
+		'groups' => $groups,
+	]);
 
 	echo $sidebar;

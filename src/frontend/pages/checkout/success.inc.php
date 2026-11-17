@@ -56,11 +56,9 @@
 		return;
 	}
 
-	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/checkout/success.inc.php');
-
-	$_page->snippets = [
+	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/checkout/success.inc.php', [
 		'order' => $order->data,
 		'printable_link' => document::ilink('printable_order_copy', ['order_no' => $order->data['no'], 'public_key' => $order->data['public_key']]),
-	];
+	]);
 
 	echo $_page->render();

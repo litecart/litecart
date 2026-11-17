@@ -107,12 +107,11 @@
 		),
 	];
 
-	$_layout = new ent_view('app://frontend/templates/'. settings::get('template') .'/layouts/email.inc.php');
-	$_layout->snippets = [
+	$_layout = new ent_view('app://frontend/templates/'. settings::get('template') .'/layouts/email.inc.php', [
 		'content' => '{{content}}',
 		'language_code' => language::$selected['code'],
 		'text_direction' => language::$languages[language::$selected['code']]['direction'] ?? 'ltr',
-	];
+	]);
 
 	$html = $_layout->render();
 

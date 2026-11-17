@@ -1,8 +1,34 @@
 <?php
 
-	$_partial = new ent_view('app://backend/template/partials/top_navigation.inc.php');
+	$draw_menu_item = function($item, $indent = 0, $is_dropdown_item=false) use (&$draw_menu_item) {
 
-	$_partial->snippets = [
+		if (!empty($item['subitems'])) {
+			return implode(PHP_EOL, [
+				'<li class="'. ($is_dropdown_item ? 'dropdown-item' : 'nav-item') .' dropdown'. (!empty($item['hidden-xs']) ? ' hidden-xs' : '') .'"'. (!empty($item['id']) ? ' data-id="'. f::escape_attr($item['id']) .'"' : '') .'>',
+				'	<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">',
+				'		'. $item['title'],
+				!empty($item['badge']) ? '		<div class="badge badge-default">'. $item['badge'] .'</div>' : '',
+				'	</a>',
+				'	<ul class="dropdown-menu">',
+				'		'. implode(PHP_EOL, array_map(function($subitem) use ($draw_menu_item, $indent) {
+					return $draw_menu_item($subitem, $indent+1, true);
+				}, $item['subitems'])),
+				'	</ul>',
+				'</li>',
+			]);
+		}
+
+		return implode(PHP_EOL, [
+			'<li class="'. ($is_dropdown_item ? 'dropdown-item' : 'nav-item') . (!empty($item['hidden-xs']) ? ' hidden-xs' : '') .'"'. (!empty($item['id']) ? ' data-id="'. f::escape_attr($item['id']) .'"' : '') .'>',
+			'	<a class="nav-link" href="'. f::escape_attr($item['link']) .'" target="'. (!empty($item['target']) ? 'target="'. f::escape_attr($item['target']) .'"' : '') .'">',
+			'		'. (!empty($item['icon']) ? f::draw_fonticon($item['icon']) : '') . (empty($item['icon_only']) ? ' '. f::escape_html($item['title']) : ''),
+			!empty($item['badge']) ? '		<div class="badge badge-default">'. $item['badge'] .'</div>' : '',
+			'	</a>',
+			'</li>',
+		]);
+	};
+
+	$_partial = new ent_view('app://backend/template/partials/top_navigation.inc.php', [
 		'items' => [
 			[
 				'title' => language::$selected['code'],
@@ -44,36 +70,7 @@
 				'icon' => 'icon-sign-out',
 			],
 		],
-	];
-
-	$draw_menu_item = function($item, $indent = 0, $is_dropdown_item=false) use (&$draw_menu_item) {
-
-		if (!empty($item['subitems'])) {
-			return implode(PHP_EOL, [
-				'<li class="'. ($is_dropdown_item ? 'dropdown-item' : 'nav-item') .' dropdown'. (!empty($item['hidden-xs']) ? ' hidden-xs' : '') .'"'. (!empty($item['id']) ? ' data-id="'. f::escape_attr($item['id']) .'"' : '') .'>',
-				'	<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">',
-				'		'. $item['title'],
-				!empty($item['badge']) ? '		<div class="badge badge-default">'. $item['badge'] .'</div>' : '',
-				'	</a>',
-				'	<ul class="dropdown-menu">',
-				'		'. implode(PHP_EOL, array_map(function($subitem) use ($draw_menu_item, $indent) {
-					return $draw_menu_item($subitem, $indent+1, true);
-				}, $item['subitems'])),
-				'	</ul>',
-				'</li>',
-			]);
-		}
-
-		return implode(PHP_EOL, [
-			'<li class="'. ($is_dropdown_item ? 'dropdown-item' : 'nav-item') . (!empty($item['hidden-xs']) ? ' hidden-xs' : '') .'"'. (!empty($item['id']) ? ' data-id="'. f::escape_attr($item['id']) .'"' : '') .'>',
-			'	<a class="nav-link" href="'. f::escape_attr($item['link']) .'" target="'. (!empty($item['target']) ? 'target="'. f::escape_attr($item['target']) .'"' : '') .'">',
-			'		'. (!empty($item['icon']) ? f::draw_fonticon($item['icon']) : '') . (empty($item['icon_only']) ? ' '. f::escape_html($item['title']) : ''),
-			!empty($item['badge']) ? '		<div class="badge badge-default">'. $item['badge'] .'</div>' : '',
-			'	</a>',
-			'</li>',
-		]);
-	};
-
-	$_partial->snippets['draw_menu_item'] = $draw_menu_item;
+		'draw_menu_item' => $draw_menu_item,
+	]);
 
 	echo $_partial->render();

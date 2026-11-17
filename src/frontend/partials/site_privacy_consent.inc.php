@@ -123,11 +123,9 @@
 		}
 	}
 
-	$site_privacy_consent = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/site_privacy_consent.inc.php');
-
-	$site_privacy_consent->snippets = [
+	$site_privacy_consent = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/site_privacy_consent.inc.php', [
 		'privacy_classes' => $privacy_classes,
 		'consents' => $consents,
-	];
+	]);
 
 	echo $site_privacy_consent->render();

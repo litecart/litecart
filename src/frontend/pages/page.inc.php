@@ -35,12 +35,10 @@
 		}
 		breadcrumbs::add($page->title, document::ilink('page', ['page_id' => $page->id]));
 
-		$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/page.inc.php');
-
-		$_page->snippets = [
+		$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/page.inc.php', [
 			'title' => $page->title,
 			'content' => $page->content,
-		];
+		]);
 
 		// Headless requests
 		if (!empty($_SERVER['HTTP_ACCEPT']) && preg_match('#^application/json#', $_SERVER['HTTP_ACCEPT'])) {

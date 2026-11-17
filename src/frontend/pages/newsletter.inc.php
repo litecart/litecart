@@ -144,16 +144,14 @@
 		}
 	}
 
-	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/newsletter.inc.php');
-
-	$_page->snippets = [
-		'consent' => null,
-	];
-
 	if ($privacy_policy_id = settings::get('privacy_policy')) {
-		$_page->snippets['consent'] = strtr(t('consent:privacy_policy', 'I have read the <a href="{privacy_policy_link}" target="_blank">Privacy Policy</a> and I consent.'), [
+		$consent = strtr(t('consent:privacy_policy', 'I have read the <a href="{privacy_policy_link}" target="_blank">Privacy Policy</a> and I consent.'), [
 			'{privacy_policy_link}' => document::href_ilink('information', ['page_id' => $privacy_policy_id]),
 		]);
 	}
+
+	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/newsletter.inc.php', [
+		'consent' => $consent ?? null,
+	]);
 
 	echo $_page->render();

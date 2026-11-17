@@ -61,8 +61,10 @@
 			return $banners[0]['output'];
 		}
 
-		$carousel = new ent_view('app://frontend/templates/'. settings::get('template') .'/partials/carousel.inc.php');
-		$carousel->snippets['items'] = array_column($banners, 'output');
+		$carousel = new ent_view('app://frontend/templates/'. settings::get('template') .'/partials/carousel.inc.php', [
+			'items' => array_column($banners, 'output'),
+		]);
+
 		return $carousel->render();
 	}
 
@@ -304,22 +306,18 @@
 
 	function draw_listing_category(array $category, string $view='views/listing_category'): string {
 
-		$listing_category = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/listing_category.inc.php');
-
-		$listing_category->snippets = [
+		$listing_category = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/listing_category.inc.php', [
 			'category_id' => $category['id'],
 			'name' => $category['name'],
 			'link' => document::ilink('category', ['category_id' => $category['id']]),
 			'image' => $category['image'] ? 'storage://images/' . $category['image'] : '',
 			'short_description' => $category['short_description'],
-		];
+		]);
 
 		return $listing_category->render();
 	}
 
 	function draw_listing_product(array $product, array $inherit_params=[], string $view='views/listing_product'): string {
-
-		$listing_product = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/listing_product.inc.php');
 
 		$sticker = '';
 		if (!empty($product['campaign_scope_discount'])) {
@@ -339,7 +337,14 @@
 			limit 1;"
 		)->num_rows();
 
-		$listing_product->snippets = [
+		if (!empty($product['brand_id'])) {
+			$brand = [
+				'id' => $product['brand_id'],
+				'name' => $product['brand_name'],
+			];
+		}
+
+		$listing_product = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/listing_product.inc.php', [
 			'product_id' => $product['id'],
 			'num_stock_options' => $product['num_stock_options'],
 			'code' => $product['code'],
@@ -348,9 +353,17 @@
 			'mpn' => $product['mpn'] ?? '',
 			'name' => $product['name'],
 			'link' => document::ilink('product', ['product_id' => $product['id']], $inherit_params),
-			'image' => $product['image'] ? 'storage://images/' . $product['image'] : '',
+			'image' => [
+				'original' => $product['image'] ? 'storage://images/' . $product['image'] : '',
+				'thumbnail' => $product['image'] ? f::draw_thumbnail('storage://images/' . $product['image']) : '',
+				'thumbnail_2x' => $product['image'] ? f::draw_thumbnail('storage://images/' . $product['image'], $width*2, $height*2) : '',
+				'viewport' => [
+					'width' => $width,
+					'height' => $height,
+				],
+			],
 			'sticker' => $sticker,
-			'brand' => [],
+			'brand' => $brand,
 			'short_description' => $product['short_description'],
 			'quantity' => $product['quantity'] ?? null,
 			'quantity_unit_id' => $product['quantity_unit_id'],
@@ -364,18 +377,11 @@
 			'sold_out_status_id' => $product['sold_out_status_id'],
 			'is_favourite' => $is_favourite,
 			'rating' => $product['rating'] ?? null,
-		];
-
-		if (!empty($product['brand_id'])) {
-			$listing_product->snippets['brand'] = [
-				'id' => $product['brand_id'],
-				'name' => $product['brand_name'],
-			];
-		}
+		]);
 
 		// Watermark Original Image
 		if (settings::get('product_image_watermark')) {
-			$listing_product->snippets['image']['original'] = f::image_process(FS_DIR_APP . $listing_product->snippets['image']['original'], ['watermark' => true]);
+			$listing_product->snippets['image'] = f::image_process(FS_DIR_APP . $listing_product->snippets['image']['original'], ['watermark' => true]);
 		}
 
 		return $listing_product->render();
@@ -482,15 +488,9 @@
 			document::$head_tags['prerender'] = '<link rel="prerender" href="'. document::href_link($_SERVER['REQUEST_URI'], ['page' => $_GET['page']+1]) .'">';
 		}
 
-		if (isset(route::$selected['endpoint']) && route::$selected['endpoint'] == 'backend') {
-			$pagination = new ent_view('app://backend/template/partials/pagination.inc.php');
-		} else {
-			$pagination = new ent_view('app://frontend/templates/'. settings::get('template') .'/partials/pagination.inc.php');
-		}
+		$items = [];
 
-		$pagination->snippets['items'] = [];
-
-		$pagination->snippets['items'][] = [
+		$items[] = [
 			'page' => $_GET['page']-1,
 			'title' => t('title_previous', 'Previous'),
 			'link' => document::link($_SERVER['REQUEST_URI'], ['page' => $_GET['page']-1]),
@@ -504,7 +504,7 @@
 			if ($i < $pages-5) {
 				if ($i > 1 && $i < $_GET['page'] - 1 && $_GET['page'] > 4) {
 					$rewind = round(($_GET['page'] - 1) / 2);
-					$pagination->snippets['items'][] = [
+					$items[] = [
 						'page' => $rewind,
 						'title' => ($rewind == $_GET['page']-2) ? $rewind : '...',
 						'link' => document::link($_SERVER['REQUEST_URI'], ['page' => $rewind]),
@@ -519,7 +519,7 @@
 			if ($i > 5) {
 				if ($i > $_GET['page'] + 1 && $i < $pages) {
 					$forward = round(($_GET['page']+1+$pages)/2);
-					$pagination->snippets['items'][] = [
+					$items[] = [
 						'page' => $forward,
 						'title' => ($forward == $_GET['page']+2) ? $forward : '...',
 						'link' => document::link($_SERVER['REQUEST_URI'], ['page' => $forward]),
@@ -539,7 +539,7 @@
 			];
 		}
 
-		$pagination->snippets['items'][] = [
+		$items[] = [
 			'page' => $_GET['page']+1,
 			'title' => t('title_next', 'Next'),
 			'link' => document::link($_SERVER['REQUEST_URI'], ['page' => $_GET['page']+1]),
@@ -548,7 +548,15 @@
 			'active' => false,
 		];
 
-		return (string)$pagination;
+		$pagination = new ent_view(match(route::$selected['endpoint'] ?? '') {
+			'backend' => 'app://backend/template/partials/pagination.inc.php',
+			'frontend' => 'app://frontend/templates/'. settings::get('template') .'/partials/pagination.inc.php',
+			default => 'app://frontend/templates/'. settings::get('template') .'/partials/pagination.inc.php',
+		}, [
+			'items' => $items,
+		]);
+
+		return $pagination->render();
 	}
 
 	function draw_price_tag(float|null $regular_price, float|null $final_price=null, string|null $currency_code=null, float|null $currency_value=null): string {

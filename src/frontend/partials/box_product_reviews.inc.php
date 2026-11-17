@@ -176,9 +176,7 @@
 		'attachments' => $form_attachments,
 	];
 
-	$box_product_reviews = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/box_product_reviews.inc.php');
-
-	$box_product_reviews->snippets = [
+	$box_product_reviews = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/box_product_reviews.inc.php', [
 		'product' => $product,
 		'reviews' => $reviews,
 		'num_reviews' => (int)$ratings['num_ratings'],
@@ -186,7 +184,7 @@
 		'review_form' => $review_form,
 		'voted_reviews' => $voted_reviews,
 		'pagination' => f::draw_pagination($num_pages),
-	];
+	]);
 
 	// Render the reviews
 	echo $box_product_reviews->render();

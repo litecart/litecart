@@ -25,8 +25,9 @@
 	});
 
 	// Create list
-	$box_recently_viewed_products = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/box_recently_viewed_products.inc.php');
-	$box_recently_viewed_products->snippets['products'] = [];
+	$box_recently_viewed_products = new ent_view('app://frontend/templates/'.settings::get('template').'/partials/box_recently_viewed_products.inc.php', [
+		'products' => [],
+	]);
 
 	list($width, $height) = f::image_scale_by_width(160, settings::get('product_image_ratio'));
 

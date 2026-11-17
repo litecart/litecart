@@ -11,14 +11,10 @@
 
 	breadcrumbs::add(t('title_brands', 'Brands'), document::ilink('brands'));
 
-	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/brands.inc.php');
-
-	$_page->snippets['brands'] = [];
-
 	$brands_cache_token = cache::token('brands', ['get', 'language'], 'file');
-	if (!$_page->snippets['brands'] = cache::get($brands_cache_token)) {
+	if (!$brands = cache::get($brands_cache_token)) {
 
-		$_page->snippets['brands'] = database::query(
+		$brands = database::query(
 			"select b.id, b.image, json_value(b.name, '$.". database::input(language::$selected['code']) ."') as name,
 				json_value(b.short_description, '$.". database::input(language::$selected['code']) ."') as short_description,
 				json_value(b.link, '$.". database::input(language::$selected['code']) ."') as link
@@ -34,14 +30,18 @@
 			];
 		});
 
-		cache::set($brands_cache_token, $_page->snippets['brands']);
+		cache::set($brands_cache_token, $brands);
 	}
 
 	// Headless requests
 	if (!empty($_SERVER['HTTP_ACCEPT']) && preg_match('#^application/json#', $_SERVER['HTTP_ACCEPT'])) {
 		header('Content-Type: application/json;charset='. mb_http_output());
-		echo f::format_json($_page->snippets);
+		echo f::format_json($brands);
 		exit;
 	}
+
+	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/brands.inc.php', [
+		'brands' => $brands,
+	]);
 
 	echo $_page->render();
