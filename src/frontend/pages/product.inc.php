@@ -233,6 +233,35 @@
 		}
 	}
 
+	// Gallery
+	$gallery = [];
+	[$gallery_width, $gallery_height] = f::image_scale_by_width(720, settings::get('product_image_ratio'));
+
+	foreach (array_merge([$_page->snippets['image']], $_page->snippets['extra_images']) as $gallery_image) {
+
+		if (empty($gallery_image)) continue;
+
+		$gallery[] = [
+			'type' => 'image',
+			'path' => $gallery_image,
+			'href' => document::href_rlink($gallery_image),
+			'src' => document::href_rlink(f::image_thumbnail($gallery_image, $gallery_width, $gallery_height)),
+			'srcset' => document::href_rlink(f::image_thumbnail($gallery_image, $gallery_width*2, $gallery_height*2)),
+			'active' => ($gallery_image === $_page->snippets['image']),
+		];
+	}
+
+	if (!empty($_page->snippets['video_url'])) {
+		$gallery[] = [
+			'type' => 'video',
+			'path' => $_page->snippets['image'],
+			'href' => document::href_rlink($_page->snippets['video_url']),
+			'active' => false,
+		];
+	}
+
+	$_page->snippets['gallery'] = $gallery;
+
 	// Sticker
 	if (!empty($product->campaign['scope_discount_percent'])) {
 		$_page->snippets['sticker'] = '<div class="sticker sale">-'. (int)$product->campaign['scope_discount_percent'] .'%</div>';

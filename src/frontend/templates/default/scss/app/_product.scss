@@ -3,11 +3,31 @@
 		margin-bottom: 2rem;
 	}
 
+	.gallery {
+		display: flex;
+		align-items: flex-start;
+		gap: var(--gutter-x);
+	}
+
+	.gallery-main {
+		flex: 1 1 auto;
+		min-width: 0;
+	}
+
+	.gallery-thumbs {
+		flex: 0 0 auto;
+		display: flex;
+		flex-direction: column;
+		gap: .5em;
+		width: 80px;
+		max-height: 30em;
+		overflow-y: auto;
+	}
+
 	.main-image {
 		position: relative;
 		display: block;
 		overflow: hidden;
-		margin-bottom: 2em;
 
 		.sticker {
 			color: var(--sticker-text-color);
@@ -26,6 +46,25 @@
 			&.sale {
 				background: var(--sticker-sale-background);
 			}
+		}
+	}
+
+	.extra-image,
+	.video {
+		display: block;
+		border: 2px solid transparent;
+		border-radius: var(--border-radius);
+		overflow: hidden;
+		transition: border-color 150ms linear;
+	}
+
+	.extra-image {
+		&:hover {
+			border-color: var(--default-border-color);
+		}
+
+		&.active {
+			border-color: var(--link-text-color);
 		}
 	}
 

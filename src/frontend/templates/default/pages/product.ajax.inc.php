@@ -16,39 +16,39 @@ form[name="buy_now_form"] .dropdown-menu .image {
 	<div class="card">
 		<div class="card-body">
 			<div class="grid" style="margin-bottom: 0;">
-				<div class="col-sm-4">
+				<div class="col-sm-6">
 					<div class="images">
+						<div class="gallery">
 
-						<a class="main-image" href="<?= document::href_rlink($image) ?>" data-toggle="lightbox" data-gallery="product">
-							<?= f::draw_thumbnail($image, 320, 0, 'product', 'alt="'. f::escape_attr($name) .'"') ?>
-							{{sticker}}
-						</a>
-
-						<?php if ($extra_images || $video_url) { ?>
-						<div class="grid">
-							<?php foreach ($extra_images as $extra_image) { ?>
-							<div class="col-6">
-								<a class="extra-image" href="<?= document::href_rlink($extra_image) ?>" data-toggle="lightbox" data-gallery="product">
-									<?= f::draw_thumbnail($extra_image, 160, 0, 'product', 'alt="'. f::escape_attr($name) .'"') ?>
+							<?php if (count($gallery) > 1) { ?>
+							<div class="gallery-thumbs" role="group" aria-label="<?= f::escape_attr(t('title_product_images', 'Product images')) ?>">
+								<?php foreach ($gallery as $item) { ?>
+								<?php if ($item['type'] == 'video') { ?>
+								<a class="video" href="<?= $item['href'] ?>" data-toggle="lightbox" data-gallery="product" aria-label="<?= f::escape_attr(t('title_play_video', 'Play video') .': '. $name) ?>">
+									<?= f::draw_thumbnail($item['path'], 120, 0, 'product', 'alt="'. f::escape_attr($name) .'"') ?>
+									<span class="video-icon" aria-hidden="true"><?= f::draw_fonticon('icon-play') ?></span>
 								</a>
+								<?php } else { ?>
+								<a class="extra-image<?= $item['active'] ? ' active' : '' ?>" href="<?= $item['href'] ?>" data-image-src="<?= $item['src'] ?>" data-image-srcset="<?= $item['srcset'] ?>" aria-label="<?= f::escape_attr(t('title_show_as_main_image', 'Show as main image') .': '. $name) ?>"<?= $item['active'] ? ' aria-current="true"' : ' data-gallery="product"' ?>>
+									<?= f::draw_thumbnail($item['path'], 120, 0, 'product', 'alt="'. f::escape_attr($name) .'"') ?>
+								</a>
+								<?php } ?>
+								<?php } ?>
 							</div>
 							<?php } ?>
 
-							<?php if ($video_url) { ?>
-							<div class="col-4">
-								<a class="video" href="<?= document::href_rlink($video_url) ?>" data-toggle="lightbox" data-gallery="product">
+							<div class="gallery-main">
+								<a class="main-image" href="<?= document::href_rlink($image) ?>" data-toggle="lightbox" data-gallery="product" aria-label="<?= f::escape_attr(t('title_view_image', 'View image') .': '. $name) ?>">
 									<?= f::draw_thumbnail($image, 320, 0, 'product', 'alt="'. f::escape_attr($name) .'"') ?>
-									<span class="video-icon"><?= f::draw_fonticon('icon-play') ?></span>
+									{{sticker}}
 								</a>
 							</div>
-							<?php } ?>
-						</div>
-						<?php } ?>
 
+						</div>
 					</div>
 				</div>
 
-				<div class="col-sm-8">
+				<div class="col-sm-6">
 					<h1 class="title">{{name}}</h1>
 
 					<?php if ($short_description) { ?>
