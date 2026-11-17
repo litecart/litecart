@@ -28,6 +28,10 @@
 				'title' => t('title_who_purchased', 'Who Purchased'),
 				'doc' => 'who_purchased',
 			],
+			[
+				'title' => t('title_credit_report', 'Credit Report'),
+				'doc' => 'credit_report',
+			],
 		],
 
 		'docs' => [
@@ -35,5 +39,6 @@
 			'most_sold_products' => 'most_sold_products.inc.php',
 			'most_shopping_customers' => 'most_shopping_customers.inc.php',
 			'who_purchased' => 'who_purchased.inc.php',
+			'credit_report' => 'credit_report.inc.php',
 		],
 	];
