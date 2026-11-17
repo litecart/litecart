@@ -86,7 +86,7 @@
 				display: block;
 				color: inherit;
 				text-decoration: none;
-				background: #fff;
+				background: var(--card-background);
 				padding: .5em 1em;
 				border-radius: var(--border-radius);
 				transition: all 100ms linear;

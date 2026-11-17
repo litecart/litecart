@@ -33,7 +33,8 @@ waitFor('jQuery', ($) => {
 			});
 
 			// Reset visibility
-			$menu.find('.app, .docs, .doc, .group').css('display', '');
+			$menu.find('.app, .doc, .group').css('display', '');
+			$menu.find('.docs').removeClass('filtered');
 
 			if (!query) {
 				return;
@@ -44,7 +45,7 @@ waitFor('jQuery', ($) => {
 				const $app = $(this);
 				const $appLink = $app.children('a');
 				const $docsList = $app.children('.docs');
-				const $docs = $docsList.children('.doc');
+				const $docs = $docsList.find('.doc');
 
 				const appMatches = $appLink.text().toLowerCase().includes(q);
 
@@ -59,12 +60,12 @@ waitFor('jQuery', ($) => {
 				if (appMatches) {
 					// Direct app name match: show app with all its docs expanded
 					$app.show();
-					$docsList.show();
+					$docsList.addClass('filtered');
 					$docs.show();
 				} else if (hasMatchingDoc) {
 					// Only doc(s) match: show app and only matching docs
 					$app.show();
-					$docsList.show();
+					$docsList.addClass('filtered');
 					$docs.each(function() {
 						if ($(this).text().toLowerCase().includes(q)) {
 							$(this).show();
@@ -97,14 +98,15 @@ waitFor('jQuery', ($) => {
 		}
 	});
 
-	// Toggle docs subset when an app with a `.docs` child is clicked.
-	// Without a docs subset the app link navigates to the default doc as before.
-	// In compact mode icons-only the docs are hidden by CSS so we keep navigation.
+	// Toggle docs subset when the disclosure "+" of an app with a `.docs` child is clicked.
+	// Clicking the app icon or title follows the app link to its default page.
+	// In compact mode icons-only the toggle is hidden by CSS so the link is followed.
+	// The app of the current route is expanded server side and can be collapsed the same way.
 	$('#sidebar-menu').on('click', '.app > a', function(e) {
-		if ($('#sidebar-compact-toggle').is(':checked')) return;
 		const $app = $(this).closest('.app');
 		const $docs = $app.children('.docs');
 		if (!$docs.length) return;
+		if (!$(e.target).closest('.app-toggle').length) return;
 		e.preventDefault();
 		$app.toggleClass('expanded');
 	});

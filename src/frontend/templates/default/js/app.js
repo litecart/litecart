@@ -1059,6 +1059,121 @@ waitFor('jQuery', ($) => {
 
 });
 
+// Product gallery: click a thumbnail to show it as the main image
+// Delegated on the document so it also covers galleries injected by AJAX
+waitFor('jQuery', ($) => {
+
+	$(document).on('click', '#box-product .gallery .extra-image', function(e) {
+
+		e.preventDefault();
+
+		const $thumb = $(this),
+			$gallery = $thumb.closest('.gallery'),
+			$main = $gallery.find('.main-image'),
+			$mainImage = $main.find('img'),
+			src = $thumb.attr('data-image-src'),
+			srcset = $thumb.attr('data-image-srcset');
+
+		if (!src) return;
+
+		$mainImage.attr('src', src);
+
+		if (srcset) $mainImage.attr('srcset', srcset);
+
+		$main.attr('href', $thumb.attr('href'));
+
+		// The main image shows the selected image, so keep it out of the lightbox gallery
+		$gallery.find('.extra-image')
+			.removeClass('active')
+			.removeAttr('aria-current')
+			.attr('data-gallery', 'product');
+
+		$thumb.addClass('active').attr('aria-current', 'true').removeAttr('data-gallery');
+	});
+
+});
+
+
+waitFor('jQuery', $ => {
+
+	const review_url = _env.platform.url + 'ajax/review';
+
+	// Show a transient message next to the reviews section
+	function notify(message, type) {
+
+		const $notices = $('#reviews .notices');
+
+		if (!$notices.length) {
+			return;
+		}
+
+		const $notice = $('<div class="notice notice-'+ type +'"><span></span></div>');
+		$notice.find('span').text(message);
+		$notices.prepend($notice);
+
+		setTimeout(function() {
+			$notice.fadeOut('slow', function() {
+				$notice.remove();
+			});
+		}, 5000);
+	}
+
+	// Vote on a review (both the product page list and the lightbox detail view)
+	function vote($button, type) {
+
+		const $review = $button.closest('[data-review-id]');
+		if (!$review.length) return;
+
+		const $counter = $button.find('.num-votes');
+
+		$.ajax({
+			type: 'post',
+			url: review_url + '?review_id=' + encodeURIComponent($review.data('review-id')),
+			data: type + '=true',
+			dataType: 'json',
+			success: function(result) {
+
+				if (result.error) {
+					notify(result.error, 'danger');
+					return;
+				}
+
+				if (type == 'upvote') {
+					if ($counter) $counter.text(result.upvotes);
+				} else {
+					if ($counter) $counter.text(result.downvotes);
+				}
+
+				$button.addClass('voted');
+			},
+			error: function(xhr) {
+				const result = xhr.responseJSON || {};
+				notify(result.error || 'Error while voting', 'danger');
+			}
+		});
+	}
+
+	$(document).on('click', '.review .upvote, #box-review .upvote', function(e) {
+		e.preventDefault();
+		vote($(this), 'upvote');
+	});
+
+	$(document).on('click', '.review .downvote, #box-review .downvote', function(e) {
+		e.preventDefault();
+		vote($(this), 'downvote');
+	});
+
+	// Scroll to the reviews section
+	$(document).on('click', '.average-rating a[href="#reviews"]', function(e) {
+		e.preventDefault();
+		$('html, body').animate({
+			scrollTop: $('#reviews').offset().top - 20
+		}, 500);
+	});
+
+});
+
+
 // AJAX Search
 waitFor('jQuery', ($) => {
 

@@ -7,25 +7,22 @@
 	flex-shrink: 0;
 	display: flex;
 	flex-direction: column;
-	height: 100vh;
-	max-height: 100vh;
+	height: 100%;
 	overflow: hidden;
 	background: var(--sidebar-background);
 	box-shadow: 0 1px 1rem rgb(0 0 0 / 5%);
 	padding: 1em;
 	gap: 1em;
 
-	.sidebar-header {
-	}
-
 	.sidebar-content {
 		flex: 1 1 auto;
 		overflow-y: auto;
 		min-height: 0;
-		padding: 1em;
+		padding: 1em .5em;
 		--scrollbar-thumb-background: #ddd;
 		--scrollbar-track-background: transparent;
-		::-moz-scrollbar-button, ::-webkit-scrollbar-button {
+		::-moz-scrollbar-button,
+		::-webkit-scrollbar-button {
 			width: 0px;
 		}
 	}
@@ -128,7 +125,7 @@
 
 	ul.groups,
 	ul.apps,
-	ul.docs {
+	ul.doc-list {
 		padding: 0;
 		margin: 0;
 		list-style: none;
@@ -158,14 +155,11 @@
 		position: relative;
 		display: block;
 		border: var(--sidebar-app-border-size) solid transparent;
-
+		margin: -.5em 0;
 		border-radius: var(--border-radius);
 		transition: all 100ms linear;
 		overflow: hidden;
 
-		&:hover:not(.active) {
-
-		}
 		&.active > a {
 			padding: .25em .5em;
 		}
@@ -195,9 +189,26 @@
 			// Disclosure toggle: square plus/minus glyph indicates if the app has docs
 			// and whether the docs subset is currently open.
 			.app-toggle {
+				position: relative;
+				flex: 0 0 auto;
 				margin-inline-start: auto;
 				opacity: .6;
 				transition: opacity 100ms linear;
+
+				// Both glyphs are stacked on top of each other and cross-faded,
+				// so the plus morphs into a minus when the app is expanded.
+				&::before,
+				&::after {
+					position: absolute;
+					inset: 0;
+					transition: opacity .2s ease, transform .25s ease;
+				}
+
+				&::after {
+					content: "\e035"; // icon-square-minus
+					opacity: 0;
+					transform: scale(.5);
+				}
 			}
 		}
 
@@ -213,44 +224,91 @@
 			font-weight: 500;
 		}
 
-		// Open state: server-side (current route) or click-toggled by sidebar.js
-		&:is(.active, .expanded) {
-			.docs {
-				display: block;
-				padding: .5em 0;
+		// Open state: the disclosure glyph turns into a minus
+		&.expanded > a > .app-toggle {
+			&::before {
+				opacity: 0;
+				transform: scale(.5);
 			}
 
-			.doc {
-				border: 1px solid transparent;
-				border-radius: var(--border-radius);
+			&::after {
+				opacity: 1;
+				transform: scale(1);
+			}
+		}
 
-				&:hover,
-				&:active {
-					border-color: color-mix(in lab, var(--app-color) 50%, transparent 100%);
-				}
+		// Disclosure panel: expands in place using the grid-template-rows technique.
+		// The doc list is wrapped in .doc-list to keep a single grid row to animate.
+		.docs {
+			display: grid;
+			grid-template-rows: 0fr;
+			padding-block: 0;
+			visibility: hidden;
+			transition:
+				grid-template-rows .25s ease,
+				padding-block .25s ease,
+				visibility .25s ease;
 
-				&.active {
-					background: color-mix(in lab, var(--app-color) 15%, transparent 100%);
-					border-color: color-mix(in lab, var(--app-color) 50%, transparent 100%);
-				}
+			> .doc-list {
+				overflow: hidden;
+				min-height: 0;
 
-				a {
-					padding: .15em 1em;
-					&:before {
-						content: '■ ';
-						color: var(--app-color);
-						padding: 0 .25em;
+				> .doc {
+					border: 1px solid transparent;
+					border-radius: var(--border-radius);
+					opacity: 0;
+					transform: translateY(-.25em);
+					transition: opacity .2s ease, transform .2s ease;
+
+					&:hover,
+					&:active {
+						border-color: color-mix(in lab, var(--app-color) 50%, transparent 100%);
 					}
-					.name {
-						margin-inline-start: .75em;
+
+					&.active {
+						background: color-mix(in lab, var(--app-color) 15%, transparent 100%);
+						border-color: color-mix(in lab, var(--app-color) 50%, transparent 100%);
+					}
+
+					a {
+						padding: .15em 1em;
+						&:before {
+							content: '■ ';
+							color: var(--app-color);
+							padding: 0 .25em;
+						}
+						.name {
+							margin-inline-start: .75em;
+						}
 					}
 				}
 			}
 		}
 
+		// Open state: expanded by the disclosure toggle, by the current route
+		// or by a filter match
+		&.expanded > .docs,
+		.docs.filtered {
+			grid-template-rows: 1fr;
+			padding-block: .5em;
+			visibility: visible;
+
+			> .doc-list > .doc {
+				opacity: 1;
+				transform: none;
+			}
+		}
+
+		// Staggered reveal of the doc items, capped at eight items
+		@for $i from 1 through 8 {
+			&.expanded > .docs > .doc-list > .doc:nth-child(#{$i}) {
+				transition-delay: #{$i * 25}ms;
+			}
+		}
+
 		// Active-route styling only (not for click-toggled peers)
 		&.active {
-			margin-bottom: .25em;
+			margin: .25em 0;
 
 			a {
 				padding: .25em .5em;
@@ -269,21 +327,18 @@
 
 	}
 
-	.docs {
-		display: none;
-	}
-
-
-	// Disclosure icon: swap square-plus for square-minus when the app is open.
-	// Uses the LiteCore icon font (icon-square-plus / icon-square-minus) defined in framework/_fonticons.scss.
-	.app.has-docs.active > a > .app-toggle::before,
-	.app.has-docs.expanded > a > .app-toggle::before {
-		content: "\e035"; /* icon-square-minus */
-	}
-
 	.name u {
 		text-decoration: underline;
 		text-decoration-thickness: 1px;
 		text-underline-offset: 2px;
+	}
+}
+
+// Reduced motion keeps the in place panel reveal, drops the fades
+@media (prefers-reduced-motion: reduce) {
+	#sidebar-menu .app .docs > .doc-list > .doc,
+	#sidebar-menu .app .app-toggle::before,
+	#sidebar-menu .app .app-toggle::after {
+		transition: none;
 	}
 }

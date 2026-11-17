@@ -253,15 +253,18 @@
 	--copyright-text-color: var(--footer-text-color);
 	--cookie-notice-background: #334c;
 	--cookie-notice-text-color: #fff;
+	--rating-color: #f90;
+	--rating-empty-color: #d3d6dd;
 	--review-background: #fff;
 	--review-border-color: var(--default-border-color);
 	--review-border-width: 1px;
 	--review-radius: var(--border-radius);
+	--review-text-color: var(--default-text-color);
 	--review-avatar-background: #e8ecf3;
 	--review-avatar-text-color: #5a6478;
 	--review-avatar-size: 2.75rem;
-	--review-rating-color: #f90;
-	--review-rating-empty-color: #d3d6dd;
+	--review-rating-color: var(--rating-color);
+	--review-rating-empty-color: var(--rating-empty-color);
 	--review-vote-background: transparent;
 	--review-vote-background--hover: #f1f3f7;
 	--review-vote-border-color: var(--default-border-color);
@@ -274,11 +277,13 @@
 html.dark-mode {
 	--scrollbar-thumb-background: #444a5a;
 	--scrollbar-track-background: #232733;
+	--rating-empty-color: #4a5163;
 	--review-background: #232733;
 	--review-border-color: #333a4a;
+	--review-text-color: #d8dde8;
 	--review-avatar-background: #333a4a;
 	--review-avatar-text-color: #a8b0c2;
-	--review-rating-empty-color: #4a5163;
+	--review-rating-empty-color: var(--rating-empty-color);
 	--review-vote-background--hover: #2b3242;
 	--review-vote-border-color: #333a4a;
 	--review-vote-text-color: #8b93a3;

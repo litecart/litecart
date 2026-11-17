@@ -121,7 +121,7 @@
 	--breadcrumb-item-background: transparent;
 	--breadcrumb-item-text-color: #3c3c3c;
 	/* Buttons */
-	--button-padding-x: 1.25em;
+	--button-padding-x: 1em;
 	--button-padding-y: .625em;
 	--button-border-width: 1px;
 	--button-shadow: 0 1px 2px 0 rgb(37 44 97 / 15%), 0 1px 2px 0 rgb(93 100 148 / 20%);
@@ -183,10 +183,11 @@
 	--dropdown-border-color: #e5e6e9;
 	--dropdown-border-width: 1px;
 	--dropdown-shadow: none;
-	--dropdown-menu-background: #f1f2f5;
-	--dropdown-menu-text-color: #444;
+	--dropdown-item-background: #fff;
+	--dropdown-item-text-color: var(--dropdown-text-color);
 	--dropdown-item-background--hover: #f1f2f5;
 	--dropdown-item-text-color--hover: #444;
+	--dropdown-item-text-color--active: var(--dropdown-item-text-color);
 	--highlight-soft-color: #fafafa;
 	/* Modals */
 	--modal-background: #fff;
@@ -331,6 +332,16 @@ html.dark-mode {
 	--card-text-color: #acb6c2;
 	--card-border-color: #253046;
 	--card-footer-background: #1b1f28;
+	/* Dropdowns */
+	--dropdown-background: #232832;
+	--dropdown-text-color: var(--default-text-color);
+	--dropdown-border-color: #31384a;
+	--dropdown-shadow: 0 6px 16px rgb(0 0 0 / 45%);
+	--dropdown-item-background: transparent;
+	--dropdown-item-text-color: var(--dropdown-text-color);
+	--dropdown-item-background--hover: #2f333d;
+	--dropdown-item-text-color--hover: #fff;
+	--dropdown-item-text-color--active: #fff;
 	--input-background: #1d2026;
 	--input-border-color: #31384a;
 	--input-border-width: 1px;

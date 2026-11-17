@@ -1,4 +1,5 @@
 @use '../../../../assets/litecore/scss/framework/media' as *;
+@use 'charts' as *;
 @use 'git' as *;
 @use 'pos' as *;
 @use 'sidebar' as *;
@@ -96,6 +97,17 @@ html.dark-mode {
 
 	.litebox-content {
 		background: #283144;
+	}
+
+	/* Dropdowns */
+
+	.dropdown [data-toggle="dropdown"] {
+		background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23acb6c2' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+	}
+
+	.dropdown-menu .dropdown-divider,
+	.dropdown-content .dropdown-divider {
+		background: var(--dropdown-border-color);
 	}
 }
 
