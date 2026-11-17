@@ -25,7 +25,7 @@
 				);
 
 				// Load template settings structure
-				$template_config = include 'app://frontend/templates/' . basename($_POST['template']) .'/config.inc.php';
+				$template_config = include stream_app::resolve('app://frontend/templates/' . basename($_POST['template']) .'/config.inc.php');
 
 				// Set template default settings
 				$settings = [];

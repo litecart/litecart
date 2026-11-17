@@ -6,7 +6,7 @@
 	if (defined('__APP__')) {
 
 		// Get app config
-		$app_config = require 'app://backend/apps/'. __APP__ .'/config.inc.php';
+		$app_config = require stream_app::resolve('app://backend/apps/'. __APP__ .'/config.inc.php');
 
 		// Set default document if missing
 		if (!defined('__DOC__')) {
@@ -86,7 +86,7 @@
 			if (!empty(administrator::$data['permissions']['widgets']) && !in_array($widget['id'], administrator::$data['permissions']['widgets'])) continue;
 
 			ob_start();
-			include $widget['directory'] . $widget['file'];
+			include stream_app::resolve($widget['directory'] . $widget['file']);
 			$output = ob_get_clean();
 
 			$box_widgets->snippets['widgets'][] = [

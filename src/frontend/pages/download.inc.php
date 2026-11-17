@@ -63,6 +63,6 @@
 
 	} catch (Exception $e) {
 		http_response_code(404);
-		include 'app://frontend/pages/error_document.inc.php';
+		include stream_app::resolve('app://frontend/pages/error_document.inc.php');
 		return;
 	}

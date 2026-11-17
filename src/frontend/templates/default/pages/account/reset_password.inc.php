@@ -4,7 +4,7 @@
 	<div class="grid">
 		<div class="col-md-3">
 			<div id="sidebar">
-				<?php include 'app://frontend/partials/box_account_links.inc.php'; ?>
+				<?php include stream_app::resolve('app://frontend/partials/box_account_links.inc.php'); ?>
 			</div>
 		</div>
 

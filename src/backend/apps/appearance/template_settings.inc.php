@@ -9,7 +9,7 @@
 	breadcrumbs::add(t('title_template_settings', 'Template Settings'), document::ilink());
 
 	// Get template settings structure
-	$settings = include 'app://frontend/templates/' . settings::get('template') .'/config.inc.php';
+	$settings = include stream_app::resolve('app://frontend/templates/' . settings::get('template') .'/config.inc.php');
 
 	if (!$settings) {
 		$settings = [];

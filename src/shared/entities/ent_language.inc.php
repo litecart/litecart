@@ -134,7 +134,7 @@
 
 				// Rename language code in entity collections
 
-				$collections = include 'app://shared/collections.inc.php';
+				$collections = include stream_app::resolve('app://shared/collections.inc.php');
 
 				foreach ($collections as $collection) {
 					if (empty($collection['translatable'])) continue;
@@ -160,7 +160,7 @@
 
 				$language_code = database::identifier($this->data['code']);
 
-				$collections = include 'app://shared/collections.inc.php';
+				$collections = include stream_app::resolve('app://shared/collections.inc.php');
 
 				foreach ($collections as $collection) {
 					if (empty($collection['translatable'])) continue;
@@ -210,7 +210,7 @@
 				set `text` = json_remove(`text`, '$.". database::input($language_code) ."');"
 			);
 
-			$collections = include 'app://shared/collections.inc.php';
+			$collections = include stream_app::resolve('app://shared/collections.inc.php');
 
 			foreach ($collections as $collection) {
 				if (empty($collection['translatable'])) continue;

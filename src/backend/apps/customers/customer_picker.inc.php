@@ -142,5 +142,5 @@
 </script>
 
 <?php
-	require_once 'app://shared/app_footer.inc.php';
+	require_once stream_app::resolve('app://shared/app_footer.inc.php');
 	exit;

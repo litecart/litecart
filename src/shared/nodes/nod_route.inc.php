@@ -63,7 +63,7 @@
 
 			foreach (f::file_search($pattern) as $file) {
 
-				$routes = include $file;
+				$routes = include stream_app::resolve($file);
 				if (!$routes) continue;
 
 				foreach ($routes as $resource => $route) {
@@ -194,8 +194,9 @@
 
 				if (is_file(self::$selected['controller'])) {
 
+
 					(function(){
-						include func_get_arg(0);
+						include stream_app::resolve(func_get_arg(0));
 					})(self::$selected['controller']);
 
 					return;
@@ -316,8 +317,8 @@
 			// Don't return an error document for content with a defined extension (presumably static)
 			if (preg_match('#\.[a-z]{2,4}$#', $request->path) && !preg_match('#\.(html?|php)$#', $request->path)) exit;
 
-			include 'app://frontend/pages/error_document.inc.php';
-			include 'app://shared/app_footer.inc.php';
+			include stream_app::resolve('app://frontend/pages/error_document.inc.php');
+			include stream_app::resolve('app://shared/app_footer.inc.php');
 			exit;
 		}
 

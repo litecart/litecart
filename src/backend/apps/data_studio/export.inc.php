@@ -6,7 +6,7 @@
 
 	breadcrumbs::add(t('title_export_data', 'Export Data'));
 
-	$collections = include 'app://shared/collections.inc.php';
+	$collections = include stream_app::resolve('app://shared/collections.inc.php');
 	$collections = array_filter($collections, function ($collection) {
 		return !empty($collection['entity']);
 	});

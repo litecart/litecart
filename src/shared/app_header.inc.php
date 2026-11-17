@@ -33,10 +33,10 @@
 	vmod::init();
 
 	// Compatibility and Polyfills
-	require_once 'app://shared/compatibility.inc.php';
+	require_once stream_app::resolve('app://shared/compatibility.inc.php');
 
 	// Load shorthand functions
-	require_once 'app://shared/shorthand.inc.php';
+	require_once stream_app::resolve('app://shared/shorthand.inc.php');
 
 	// 3rd party autoloader (If present)
 	if (is_file(FS_DIR_APP . 'vendor/autoload.php')) {
@@ -44,10 +44,10 @@
 	}
 
 	// Autoloader
-	require_once 'app://shared/autoloader.inc.php';
+	require_once stream_app::resolve('app://shared/autoloader.inc.php');
 
 	// Set error handler
-	require_once 'app://shared/error_handler.inc.php';
+	require_once stream_app::resolve('app://shared/error_handler.inc.php');
 
 	// Jump-start some critical nodes
 	foreach ([

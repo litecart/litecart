@@ -4,6 +4,7 @@
 
 		private static $_directories_cache = [];
 		private static $_files_cache = [];
+		private static $_addon_files = null;
 
 		private $_directory = [];
 		private $_stream;
@@ -13,7 +14,7 @@
 
 			$microtime = microtime(true);
 
-			$path = $this->_resolve_path($path);
+			$path = self::_resolve_path($path);
 			$relative_path = preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $path);
 
 			$this->_directory = [];
@@ -96,7 +97,7 @@
 				return false;
 			}
 
-			return mkdir($this->_resolve_path($path), $mode);
+			return mkdir(self::_resolve_path($path), $mode);
 		}
 
 		public function rename(string $path_from, string $path_to): bool {
@@ -106,7 +107,7 @@
 				return false;
 			}
 
-			return rename($this->_resolve_path($path_from), $this->_resolve_path($path_to));
+			return rename(self::_resolve_path($path_from), self::_resolve_path($path_to));
 		}
 
 		public function rmdir(string $path, int $options): bool {
@@ -116,7 +117,7 @@
 				return false;
 			}
 
-			return rmdir($this->_resolve_path($path));
+			return rmdir(self::_resolve_path($path));
 		}
 
 		public function stream_cast(int $cast_as): object {
@@ -158,7 +159,7 @@
 				return false;
 			}
 
-			$path = $this->_resolve_path($path);
+			$path = self::_resolve_path($path);
 
 			switch ($option) {
 
@@ -188,7 +189,7 @@
 
 		public function stream_open(string $path, string $mode, int $options, ?string &$opened_path): bool {
 
-			$path = $this->_resolve_file($path);
+			$path = self::_resolve_file($path);
 
 			if (!getenv('SUPER_MODE')) {
 				$mode = 'r'; // Force read-only
@@ -246,12 +247,12 @@
 				return false;
 			}
 
-			return unlink($this->_resolve_path($path));
+			return unlink(self::_resolve_path($path));
 		}
 
 		public function url_stat(string $path, int $flags): array|false {
 
-			$path = $this->_resolve_file($path);
+			$path = self::_resolve_file($path);
 
 			if (!file_exists($path)) {
 				return false;
@@ -262,17 +263,29 @@
 
 		## Non-Standard StreamWrapper Methods
 
-		private function _resolve_path(string $path): string {
+		// Resolve an app:// path to a real file path on disk. Including the resolved path
+		// instead of the app:// path keeps the OPcache working, as it does not cache files
+		// loaded through a userland stream wrapper.
+		public static function resolve(string $path): string {
+
+			if (!str_starts_with($path, 'app://')) {
+				return $path;
+			}
+
+			return self::_resolve_file($path);
+		}
+
+		private static function _resolve_path(string $path): string {
 			return preg_replace('#^app://#', FS_DIR_APP, str_replace('\\', '/', $path));
 		}
 
-		private function _resolve_file(string $path): string {
+		private static function _resolve_file(string $path): string {
 
 			if (isset(self::$_files_cache[$path])) {
 				return self::$_files_cache[$path];
 			}
 
-			$resolved = $this->_resolve_path($path);
+			$resolved = self::_resolve_path($path);
 			$relative_path = preg_replace('#^'. preg_quote(FS_DIR_APP, '#') .'#', '', $resolved);
 			$parent_folder = dirname($resolved).'/';
 			$basename = basename($resolved);
@@ -281,10 +294,9 @@
 				return self::$_files_cache[$path] = self::$_directories_cache[$parent_folder][$basename];
 			}
 
-			foreach (glob(FS_DIR_STORAGE .'addons/*/'.$relative_path) as $file) {
-				$file = str_replace('\\', '/', $file);
-				if (preg_match('#^'. preg_quote(FS_DIR_STORAGE .'addons/', '#') .'[^/]+.disabled/#', $file)) continue;
-				$resolved = $file;
+			// Add-on override
+			if ($addon_file = self::_addon_file($relative_path)) {
+				$resolved = $addon_file;
 			}
 
 			if (!defined('VMOD_DISABLED') || VMOD_DISABLED !== 'true') {
@@ -292,5 +304,64 @@
 			}
 
 			return self::$_files_cache[$path] = $resolved;
+		}
+
+		// Index the files provided by add-ons by their app relative path. Doing this once
+		// per request is far cheaper than looking up every file in every add-on folder.
+		private static function _addon_files(): array {
+
+			if (self::$_addon_files !== null) {
+				return self::$_addon_files;
+			}
+
+			$files = [];
+			$files_case_insensitive = [];
+
+			foreach (glob(FS_DIR_STORAGE .'addons/*', GLOB_ONLYDIR) as $addon_dir) {
+
+				if (preg_match('#\.disabled$#', basename($addon_dir))) continue;
+
+				$iterator = new \RecursiveIteratorIterator(
+					new \RecursiveDirectoryIterator($addon_dir, \FilesystemIterator::SKIP_DOTS),
+					\RecursiveIteratorIterator::SELF_FIRST
+				);
+
+				foreach ($iterator as $file) {
+
+					$path = str_replace('\\', '/', $file->getPathname());
+					$relative = substr($path, strlen(str_replace('\\', '/', $addon_dir)) + 1);
+
+					// Folders are indexed with a trailing slash, just like the paths they are resolved from
+					if ($file->isDir()) {
+						$relative = rtrim($relative, '/') . '/';
+						$path = rtrim($path, '/') . '/';
+					}
+
+					if ($relative === '/') continue;
+
+					// Add-ons are indexed in the same order as a glob() would return them,
+					// so a later add-on overrides an earlier one just like before
+					$files[$relative] = $path;
+					$files_case_insensitive[strtolower($relative)] = $path;
+				}
+			}
+
+			return self::$_addon_files = [
+				'exact' => $files,
+				'case_insensitive' => $files_case_insensitive,
+			];
+		}
+
+		// Get the add-on provided file matching an app relative path
+		private static function _addon_file(string $relative_path): string|false {
+
+			$files = self::_addon_files();
+
+			if (isset($files['exact'][$relative_path])) {
+				return $files['exact'][$relative_path];
+			}
+
+			// Case insensitive fallback, as glob() matches case insensitively on Windows
+			return $files['case_insensitive'][strtolower($relative_path)] ?? false;
 		}
 	}

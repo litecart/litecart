@@ -20,14 +20,14 @@
 
 <div class="flex-columns flex-nogap">
 
-	<?php include 'app://backend/partials/sidebar.inc.php'; ?>
+	<?php include stream_app::resolve('app://backend/partials/sidebar.inc.php'); ?>
 
 	<div class="flex-grow">
 
 		<main id="main">
 			<div class="container">
 
-				<?php include 'app://backend/partials/top_navigation.inc.php'; ?>
+				<?php include stream_app::resolve('app://backend/partials/top_navigation.inc.php'); ?>
 
 				<div id="content">
 

@@ -7,7 +7,7 @@
 	breadcrumbs::add(t('title_translations', 'Translations'));
 	breadcrumbs::add(t('title_auto_translate', 'Auto Translate'));
 
-	$collections = include 'app://backend/apps/localization/translations/collections.inc.php';
+	$collections = include stream_app::resolve('app://backend/apps/localization/translations/collections.inc.php');
 
 	$collections_by_entity = [];
 	foreach ($collections as $collection) {

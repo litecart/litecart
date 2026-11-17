@@ -46,7 +46,7 @@
 
 				// Include without polluting global scope
 				$set = (function() use ($mcp_file) {
-					return include $mcp_file;
+					return include stream_app::resolve($mcp_file);
 				})();
 
 				if (!is_array($set)) continue;

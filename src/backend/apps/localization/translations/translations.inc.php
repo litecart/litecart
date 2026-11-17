@@ -38,7 +38,7 @@
 			}
 		}
 
-		$collections = include 'app://backend/apps/localization/translations/collections.inc.php';
+		$collections = include stream_app::resolve('app://backend/apps/localization/translations/collections.inc.php');
 
 	} catch (Exception $e) {
 		notices::add('errors', $e->getMessage());

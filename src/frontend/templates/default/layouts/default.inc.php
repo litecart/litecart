@@ -24,12 +24,12 @@
 		</div>
 		<?php } ?>
 
-		<?php include 'app://frontend/partials/site_navigation.inc.php'; ?>
+		<?php include stream_app::resolve('app://frontend/partials/site_navigation.inc.php'); ?>
 	</header>
 
 	{{content}}
 
-	<?php include 'app://frontend/partials/site_footer.inc.php'; ?>
+	<?php include stream_app::resolve('app://frontend/partials/site_footer.inc.php'); ?>
 </div>
 
 <?php if (document::$settings['scroll_up'] ?? null) { ?>
@@ -38,7 +38,7 @@
 </a>
 <?php } ?>
 
-<?php include 'app://frontend/partials/site_privacy_consent.inc.php'; ?>
+<?php include stream_app::resolve('app://frontend/partials/site_privacy_consent.inc.php'); ?>
 
 {{foot_tags}}
 <?= f::draw_script('app://assets/litecore/js/framework.min.js') ?>

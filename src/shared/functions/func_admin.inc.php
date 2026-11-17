@@ -15,7 +15,7 @@
 				$directory = 'app://backend/apps/'. $folder_name .'/';
 
 				if (in_array($directory, ['.', '..']) || !is_dir($directory)) continue;
-				if (!$config = require $directory . 'config.inc.php') continue;
+				if (!$config = require stream_app::resolve($directory . 'config.inc.php')) continue;
 
 				$config['theme'] = [
 					'icon' => $config['theme']['icon'] ?? 'icon-plus',
@@ -81,7 +81,7 @@
 				$directory = 'app://backend/widgets/'. $folder_name .'/';
 
 				if (in_array($directory, ['.', '..']) || !is_dir($directory)) continue;
-				if (!$config = require $directory . 'config.inc.php') continue;
+				if (!$config = require stream_app::resolve($directory . 'config.inc.php')) continue;
 
 				$widgets[$id] = array_merge(['id' => $id, 'directory' => $directory], $config);
 			}

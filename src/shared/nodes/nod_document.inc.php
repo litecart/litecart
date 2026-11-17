@@ -132,7 +132,7 @@
 			$template_config = [];
 
 			if (is_file($template_config_file)) {
-				if (!$template_config = include $template_config_file) {
+				if (!$template_config = include stream_app::resolve($template_config_file)) {
 					$template_config = [];
 				}
 			}

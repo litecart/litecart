@@ -4,7 +4,7 @@
 
 	// Define translatable collections
 
-	$collections = include 'app://shared/collections.inc.php';
+	$collections = include stream_app::resolve('app://shared/collections.inc.php');
 
 	$collections = array_combine(array_column($collections, 'id'), $collections);
 

@@ -7,7 +7,7 @@
 	breadcrumbs::add(t('title_localization', 'Localization'));
 	breadcrumbs::add(t('title_import_export_csv', 'Import/Export CSV'), document::ilink());
 
-	$collections = include 'app://backend/apps/localization/translations/collections.inc.php';
+	$collections = include stream_app::resolve('app://backend/apps/localization/translations/collections.inc.php');
 
 	if (isset($_POST['import'])) {
 

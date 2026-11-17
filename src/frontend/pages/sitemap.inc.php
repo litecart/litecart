@@ -34,5 +34,5 @@
 	} catch (Exception $e) {
 		http_response_code($e->getCode() ?: 500);
 		notices::add('errors', $e->getMessage());
-		include 'app://frontend/pages/error_document.inc.php';
+		include stream_app::resolve('app://frontend/pages/error_document.inc.php');
 	}

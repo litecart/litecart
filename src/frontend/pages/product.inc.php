@@ -8,7 +8,7 @@
 
 	if (empty($_GET['product_id'])) {
 		http_response_code(400);
-		include 'app://frontend/pages/error_document.inc.php';
+		include stream_app::resolve('app://frontend/pages/error_document.inc.php');
 		return;
 	}
 
@@ -16,13 +16,13 @@
 
 	if (!$product->id) {
 		http_response_code(410);
-		include 'app://frontend/pages/error_document.inc.php';
+		include stream_app::resolve('app://frontend/pages/error_document.inc.php');
 		return;
 	}
 
 	if (!$product->status) {
 		http_response_code(404);
-		include 'app://frontend/pages/error_document.inc.php';
+		include stream_app::resolve('app://frontend/pages/error_document.inc.php');
 		return;
 	}
 

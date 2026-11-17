@@ -16,13 +16,13 @@
 
 		if (!$page->id) {
 			http_response_code(410);
-			include 'app://frontend/pages/error_document.inc.php';
+			include stream_app::resolve('app://frontend/pages/error_document.inc.php');
 			return;
 		}
 
 		if (!$page->status) {
 			http_response_code(404);
-			include 'app://frontend/pages/error_document.inc.php';
+			include stream_app::resolve('app://frontend/pages/error_document.inc.php');
 			return;
 		}
 
@@ -54,6 +54,6 @@
 	} catch (Exception $e) {
 		http_response_code($e->getCode());
 			//notices::add('errors', $e->getMessage());
-		include 'app://frontend/pages/error_document.inc.php';
+		include stream_app::resolve('app://frontend/pages/error_document.inc.php');
 		return;
 	}

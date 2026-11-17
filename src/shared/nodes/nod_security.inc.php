@@ -121,8 +121,8 @@
 							} else {
 								http_response_code(403);
 								notices::add('errors', $error_message);
-								include 'app://frontend/pages/error_document.inc.php';
-								include 'app://shared/app_footer.inc.php';
+								include stream_app::resolve('app://frontend/pages/error_document.inc.php');
+								include stream_app::resolve('app://shared/app_footer.inc.php');
 								exit;
 							}
 						}

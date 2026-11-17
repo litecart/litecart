@@ -45,7 +45,7 @@
 			case 'push_jobs':
 
 				// Run the background jobs
-				require_once 'app://frontend/pages/push_jobs.inc.php';
+				require_once stream_app::resolve('app://frontend/pages/push_jobs.inc.php');
 				exit;
 
 			case 'mcp_server':
@@ -54,7 +54,7 @@
 				$_SERVER['HTTP_AUTHORIZATION'] = 'Bearer '. (string)getenv('ACCESS_KEY');
 				$_SERVER['REQUEST_METHOD'] = 'POST';
 
-				require_once 'app://backend/pages/mcp.inc.php';
+				require_once stream_app::resolve('app://backend/pages/mcp.inc.php');
 				exit;
 
 			case 'navigate':
@@ -81,7 +81,7 @@
 	// Bot challenge security
 	if (settings::get('bot_challenge')) {
 		if (!isset($_COOKIE['__challenge']) || $_COOKIE['__challenge'] != 'passed') {
-			include 'app://frontend/pages/bot_challenge.inc.php';
+			include stream_app::resolve('app://frontend/pages/bot_challenge.inc.php');
 			return;
 		}
 	}
@@ -102,13 +102,13 @@
 
 	// Initialize endpoint
 	if (!empty(route::$selected['endpoint']) && route::$selected['endpoint'] == 'backend') {
-		require 'app://backend/init.inc.php';
+		require stream_app::resolve('app://backend/init.inc.php');
 	} else {
-		require 'app://frontend/init.inc.php';
+		require stream_app::resolve('app://frontend/init.inc.php');
 	}
 
 	// Process the route
 	route::process();
 
 	// Run operations after processing the route
-	require_once 'app://shared/app_footer.inc.php';
+	require_once stream_app::resolve('app://shared/app_footer.inc.php');

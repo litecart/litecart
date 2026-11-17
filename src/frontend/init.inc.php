@@ -128,8 +128,8 @@
 				http_response_code(503);
 
 				// Show maintenance mode page
-				include 'app://frontend/pages/maintenance_mode.inc.php';
-				require_once 'app://shared/app_footer.inc.php';
+				include stream_app::resolve('app://frontend/pages/maintenance_mode.inc.php');
+				require_once stream_app::resolve('app://shared/app_footer.inc.php');
 				exit;
 			}
 		}
