@@ -163,10 +163,43 @@
 				break;
 
 			case (preg_match('#^toggle\b#', $setting['function'])):
-				if (in_array($setting['value'], ['1', 'active', 'enabled', 'on', 'true', 'yes'])) {
-					$setting['display_value'] = t('title_true', 'True');
-				} else {
-					$setting['display_value'] = t('title_false', 'False');
+				$is_on  = in_array($setting['display_value'], ['1', 'active', 'enabled', 'on', 'true', 'yes'], true);
+				$is_off = in_array($setting['display_value'], ['', '0', 'inactive', 'disabled', 'off', 'false', 'no'], true);
+
+				$labels = [
+					'y/n' => [
+						'on'  => ['title_yes', 'Yes'],
+						'off' => ['title_no', 'No'],
+					],
+					'e/d' => [
+						'on'  => ['title_enabled', 'Enabled'],
+						'off' => ['title_disabled', 'Disabled'],
+					],
+					'a/i' => [
+						'on'  => ['title_active', 'Active'],
+						'off' => ['title_inactive', 'Inactive'],
+					],
+					'o/o' => [
+						'on'  => ['title_on', 'On'],
+						'off' => ['title_off', 'Off'],
+					],
+				];
+
+				if ($is_on || $is_off) {
+					$choice = $is_on ? 'on' : 'off';
+					$label  = $is_on
+						? ['title_true', 'True']
+						: ['title_false', 'False'];
+
+					foreach ($labels as $needle => $options) {
+						if (str_contains($setting['function'], $needle)) {
+							$label = $options[$choice];
+							break;
+						}
+					}
+
+					[$key, $fallback] = $label;
+					$setting['value'] = t($key, $fallback);
 				}
 				break;
 
