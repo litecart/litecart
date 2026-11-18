@@ -56,7 +56,7 @@
 				'Usage: php index.php install [options]',
 				'',
 				'Options:',
-				'  --db_server          Set database hostname (Default: localhost)',
+				'  --db_server          Set database hostname (Default: 127.0.0.1)',
 				'  --db_username        Set database username',
 				'  --db_password        Set database user password',
 				'',

@@ -31,7 +31,7 @@
 					<ul class="apps">
 
 						<?php foreach ($group['apps'] as $app) { ?>
-						<li class="app<?= $app['active'] ? ' active' : '' ?><?= !empty($app['menu']) ? ' has-docs' : '' ?>" data-id="<?= $app['id'] ?>" style="--app-color: <?= $app['theme']['color'] ?>;">
+						<li class="app<?= $app['active'] ? ' active expanded' : '' ?><?= !empty($app['menu']) ? ' has-docs' : '' ?>" data-id="<?= $app['id'] ?>" style="--app-color: <?= $app['theme']['color'] ?>;">
 
 							<a href="<?= f::escape_html($app['link']) ?>" title="<?= f::escape_html($app['name']) ?>">
 								<span class="app-icon">
@@ -44,17 +44,19 @@
 							</a>
 
 							<?php if (!empty($app['menu'])) { ?>
-							<ul class="docs">
+							<div class="docs">
+								<ul class="doc-list">
 
-								<?php foreach ($app['menu'] as $item) { ?>
-								<li class="doc<?= $item['active'] ? ' active' : '' ?>" data-id="<?= $item['doc'] ?>">
-									<a href="<?= f::escape_html($item['link']) ?>">
-										<span class="name"><?= $item['title'] ?></span>
-									</a>
-								</li>
-								<?php } ?>
+									<?php foreach ($app['menu'] as $item) { ?>
+									<li class="doc<?= $item['active'] ? ' active' : '' ?>" data-id="<?= $item['doc'] ?>">
+										<a href="<?= f::escape_html($item['link']) ?>">
+											<span class="name"><?= $item['title'] ?></span>
+										</a>
+									</li>
+									<?php } ?>
 
-							</ul>
+								</ul>
+							</div>
 							<?php } ?>
 						</li>
 						<?php } ?>

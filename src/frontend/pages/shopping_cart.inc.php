@@ -44,6 +44,9 @@
 				session::$data['checkout_order'] = $order->data;
 			}
 
+			// A new checkout starts without a confirmation intent
+			unset(session::$data['checkout']['confirmed'], session::$data['checkout']['confirm_token']);
+
 			$order->data = &session::$data['checkout_order'];
 
 			if (!empty($order->data['id'])) {
@@ -146,6 +149,12 @@
 
 				$mod_checkout->select($_POST['checkout']);
 				$mod_checkout->process($order);
+
+				// Remember the confirmation intent, the verification step is reached through a redirect
+				session::$data['checkout']['confirmed'] = 'true';
+				session::$data['checkout']['confirm_token'] = is_string($_POST['csrf_token'] ?? null)
+					? $_POST['csrf_token']
+					: (is_string($_SERVER['HTTP_X_CSRF_TOKEN'] ?? null) ? $_SERVER['HTTP_X_CSRF_TOKEN'] : '');
 
 				redirect(document::ilink('checkout/verify'), 303);
 				exit;

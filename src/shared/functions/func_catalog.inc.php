@@ -91,11 +91,12 @@
 			);
 		}
 
+		// Relevance is 0 without a search term, so the query returns no rows
 		$statement = (
 			"select c.id, c.parent_id, c.image, c.priority, c.updated_at,
 				json_value(c.name, '$.". database::input(language::$selected['code']) ."') as name,
 				json_value(c.short_description, '$.". database::input(language::$selected['code']) ."') as short_description,
-				(". implode(" + ", $sql_select_relevance) .") as relevance
+				(". implode(" + ", $sql_select_relevance ?: ["0"]) .") as relevance
 
 			from ". DB_PREFIX ."categories c
 
@@ -757,6 +758,7 @@
 			"if(json_value(price, '$.". database::input($currency['code']) ."') != 0, json_value(price, '$.". database::input($currency['code']) ."') * ". $currency['value'] .", null)"
 		)) . ")";
 
+		// Relevance is 0 without a search term, so the query returns no rows
 		$statement = (
 			"select p.*, b.name as brand_name, pp.regular_price, pp.final_price,
 				ifnull(pso.num_stock_options, 0) as num_stock_options, pso.total_quantity, pso.quantity_available, pa.attributes
@@ -766,7 +768,7 @@
 					json_value(name, '$.". database::input(language::$selected['code']) ."') as name,
 					json_value(short_description, '$.". database::input(language::$selected['code']) ."') as short_description,
 					(
-						". implode(" + ", $sql_select_relevance) ."
+						". implode(" + ", $sql_select_relevance ?: ["0"]) ."
 					) as relevance
 				from ". DB_PREFIX ."products p
 				where ". implode(" and ", $sql_inner_where) ."

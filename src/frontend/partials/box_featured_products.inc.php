@@ -11,18 +11,13 @@
 	}
 
 	$box_featured_products_cache_token = cache::token('box_featured_products', ['language', 'prices'], 'file');
-	if (!$products = cache::get($box_featured_products_cache_token)) {
+	if (!$featured_products = cache::get($box_featured_products_cache_token)) {
 
-		$products = f::catalog_products_query([
+		$featured_products = f::catalog_products_query([
 			'featured' => true,
 			'sort' => 'random',
 			'limit' => settings::get('box_featured_products_num_items'),
 		])->fetch_all();
-
-		$featured_products = [];
-		foreach ($products as $listing_product) {
-			$featured_products[] = $listing_product;
-		}
 
 		cache::set($box_featured_products_cache_token, $featured_products);
 	}

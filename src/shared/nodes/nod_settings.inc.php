@@ -15,7 +15,8 @@
 
 					case (substr($setting['function'], 0, 9) == 'regional_'):
 
-						if (!class_exists('language') || !language::$selected) break;
+						// The language may not be selected yet, in which case the setting is resolved on demand
+						if (!class_exists('language') || empty(language::$selected)) return;
 
 						if ($setting['value']) {
 							$setting['value'] = json_decode($setting['value'], true);

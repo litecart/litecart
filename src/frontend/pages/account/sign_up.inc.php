@@ -203,19 +203,18 @@
 		}
 	}
 
-	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/account/sign_up.inc.php');
-
-	$_page->snippets = [
-		'consent' => null,
-	];
-
 	if ($privacy_policy_id = settings::get('privacy_policy')) {
 
 		$aliases = [
 			'{privacy_policy_link}' => document::href_ilink('information', ['page_id' => $privacy_policy_id]),
 		];
 
-		$_page->snippets['consent'] = strtr(t('consent:privacy_policy', 'I have read the <a href="{privacy_policy_link}" target="_blank">Privacy Policy</a> and I consent.'), $aliases);
+		$consent = strtr(t('consent:privacy_policy', 'I have read the <a href="{privacy_policy_link}" target="_blank">Privacy Policy</a> and I consent.'), $aliases);
 	}
+
+	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/account/sign_up.inc.php', [
+		'customer' => $customer->data ?? [],
+		'consent' => $consent ?? null,
+	]);
 
 	echo $_page->render();

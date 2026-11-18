@@ -111,7 +111,7 @@
 					'usage' => $usage,
 				];
 
-			} catch (Exception $e) {
+			} catch (Throwable $e) {
 				return ['limit' => 0, 'usage' => 0];
 			}
 		}

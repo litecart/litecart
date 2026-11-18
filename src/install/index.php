@@ -252,7 +252,7 @@ input[name="development_type"]:checked + div {
 		<div class="col-md-6">
 			<label class="form-group">
 				<div class="form-label">Hostname</div>
-				<input class="form-input" name="db_server" type="text" placeholder="localhost">
+				<input class="form-input" name="db_server" type="text" placeholder="127.0.0.1">
 			</label>
 		</div>
 	</div>

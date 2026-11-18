@@ -449,8 +449,8 @@ table .tag {
 							<?= $order['customer_company'] ?: $order['customer_firstname'] .' '. $order['customer_lastname'] ?><?php if (!$order['customer_id']) echo ' <em>('. t('title_guest', 'Guest') .')</em>'; ?>
 						</a>
 
-						<?php foreach ($order['tags'] as $id => $value) { ?>
-						<?= f::draw_element('code', ['class' => 'tag', 'data-type' => $type, 'data-id' => $id], $value) ?>
+						<?php foreach ($order['tags'] as $type => $value) { ?>
+						<?= f::draw_element('code', ['class' => 'tag', 'data-type' => $type, 'data-id' => $value], f::escape_html($value)) ?>
 						<?php } ?>
 
 						<?php if ($order['has_notes']) { ?>

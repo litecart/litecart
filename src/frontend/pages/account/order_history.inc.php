@@ -34,6 +34,8 @@
 		order by o.created_at desc;"
 	)->fetch_page(null, null, $_GET['page'], null, $num_rows, $num_pages);
 
+	$order_rows = [];
+
 	foreach ($orders as $key => $order) {
 
 		$num_downloads = database::query(
@@ -44,7 +46,7 @@
 			and si.file != '';"
 		)->num_rows;
 
-		$_page->snippets['orders'][] = [
+		$order_rows[] = [
 			'id' => $order['id'],
 			'link' => document::ilink('order', ['order_id' => $order['id'], 'public_key' => $order['public_key']]),
 			'printable_link' => document::ilink('printable_order_copy', ['order_id' => $order['id'], 'public_key' => $order['public_key']]),
@@ -58,12 +60,12 @@
 	// Headless requests
 	if (!empty($_SERVER['HTTP_ACCEPT']) && preg_match('#^application/json#', $_SERVER['HTTP_ACCEPT'])) {
 		header('Content-Type: application/json;charset='. mb_http_output());
-		echo f::format_json($orders);
+		echo f::format_json($order_rows);
 		exit;
 	}
 
 	$_page = new ent_view('app://frontend/templates/'.settings::get('template').'/pages/account/order_history.inc.php', [
-		'orders' => $orders,
+		'orders' => $order_rows,
 		'pagination' => f::draw_pagination($num_pages),
 	]);
 

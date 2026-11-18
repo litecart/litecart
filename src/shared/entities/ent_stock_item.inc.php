@@ -63,7 +63,7 @@
 			}
 
 			if (!$stock_item) {
-				throw new Error('Could not find stock item (ID: '. (int)$id .') in database.');
+				throw new Exception('Could not find stock item (ID: '. (int)$id .') in database.');
 			}
 
 			$this->data = f::array_update($this->data, $stock_item);

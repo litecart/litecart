@@ -300,6 +300,12 @@
         }
       }
 
+			// Remember the confirmation intent, the verification step is reached through a redirect
+			session::$data['checkout']['confirmed'] = 'true';
+			session::$data['checkout']['confirm_token'] = is_string($_POST['csrf_token'] ?? null)
+				? $_POST['csrf_token']
+				: (is_string($_SERVER['HTTP_X_CSRF_TOKEN'] ?? null) ? $_SERVER['HTTP_X_CSRF_TOKEN'] : '');
+
 			redirect(document::ilink('checkout/verify'));
 			exit;
 
