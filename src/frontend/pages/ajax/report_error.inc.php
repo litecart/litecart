@@ -29,14 +29,22 @@
 			throw new Exception('Missing or invalid payload', 400);
 		}
 
+		// The payload comes from the browser, so the fields must be scalars before they are interpolated
+		if (!is_scalar($result['message']) || !is_scalar($result['file']) || !is_scalar($result['line'])) {
+			throw new Exception('Missing or invalid payload', 400);
+		}
+
+		// The url is optional and only used for the request path, so a missing or malformed one is left out
+		$error_url = isset($result['url']) && is_string($result['url']) ? $result['url'] : '';
+
 		// Log the error details including message, file, line, and request metadata.
 		error_log(
 			implode(PHP_EOL, [
 				"$result[message] in $result[file] on line $result[line]",
-				"Request: $_SERVER[REQUEST_METHOD] " . parse_url($result['url'], PHP_URL_PATH) . " $_SERVER[SERVER_PROTOCOL]",
-				"Host: $_SERVER[HTTP_HOST]",
-				"Client: $_SERVER[REMOTE_ADDR] (" . reverse_dns($_SERVER['REMOTE_ADDR']) . ')',
-				"User Agent: $_SERVER[HTTP_USER_AGENT]",
+				"Request: ". ($_SERVER['REQUEST_METHOD'] ?? '') .' '. (parse_url($error_url, PHP_URL_PATH) ?: '') .' '. ($_SERVER['SERVER_PROTOCOL'] ?? ''),
+				"Host: ". ($_SERVER['HTTP_HOST'] ?? ''),
+				"Client: ". ($_SERVER['REMOTE_ADDR'] ?? '') .' ('. reverse_dns($_SERVER['REMOTE_ADDR'] ?? '') .')',
+				"User Agent: ". ($_SERVER['HTTP_USER_AGENT'] ?? ''),
 				!empty($_SERVER['HTTP_REFERER']) ? "Referer: {$_SERVER['HTTP_REFERER']}" : '',
 			]),
 		);
@@ -44,7 +52,7 @@
 		// Set the response status to 'ok' if no exceptions were thrown.
 		$result['status'] = 'ok';
 
-	} catch (Exception $e) {
+	} catch (Throwable $e) {
 		// Handle exceptions by setting the HTTP response code and returning an error message.
 		http_response_code($e->getCode() ?: 500);
 		$result = ['error' => $e->getMessage()];

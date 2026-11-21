@@ -13,6 +13,11 @@
 	$marketplace = marketplace_client::get_marketplace(15);
 	$profile = marketplace_client::whoami();
 
+	$categories_options = array_merge(
+		[['', '-- ' . t('title_all_categories', 'All Categories') . ' --']],
+		array_column($marketplace['categories'], 'name')
+	);
+
 ?>
 <style>
 h2 {
@@ -27,7 +32,7 @@ h2 {
 	background-position: bottom;
 }
 
-.whoami {
+#whoami {
 	position: relative;
 	padding: 1em;
 	background: var(--pills-background-color);
@@ -35,48 +40,73 @@ h2 {
 	line-height: 1.75;
 }
 
-.whoami .avatar {
-	float: left;
+#whoami .avatar {
+	float: inset-inline-start;
 	margin-inline-end: 1em;
 	background: var(--whitespace-color);
 	border-radius: var(--border-radius);
 	height: 60px;
 }
 
-html[dir="rtl"] .whoami .avatar {
-	float: right;
+#banners {
+	display: grid;
+	grid-template: "jumbotron profile" auto "jumbotron banner" auto / minmax(0, 65fr) minmax(0, 35fr);
+	gap: 15px;
+}
+#banners > * {
+	aspect-ratio: 3/1;
+}
+#banners > a {
+	display: block;
+	border-radius: var(--border-radius);
+	overflow: hidden;
+}
+#jumbotron {
+	aspect-ratio: auto;
+}
+#jumbotron a {
+	display: block;
+	height: 100%;
+	border-radius: var(--border-radius);
+	overflow: hidden;
+}
+#jumbotron img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
 }
 
-.whoami .username {
+#profile, #whoami {
+	background: #ddd;
+	border-radius: var(--border-radius);
+	padding: 1em;
+}
+
+#whoami .username {
 	font-size: 1.2em;
 	font-weight: bold;
 }
 
-.whoami .store-name {
+#whoami .store-name {
 }
 
-.whoami .disconnect {
+#whoami .disconnect {
 	position: absolute;
 	top: 1em;
 	right: 1em;
 }
 
-.categories {
-	display: block;
-	columns: 5;
-}
-
-.categories a {
-	font-weight: 500;
+.marketplace-filter {
+	margin-bottom: 2em;
 }
 
 .addons {
-	columns: auto 250px;
+	columns: 3;
 }
 
 .addon {
 	display: flex;
-	flex-direction: column;
+	flex-direction: row;
 	gap: 1em;
 	border: 1px solid var(--default-border-color);
 	border-radius: var(--border-radius);
@@ -86,35 +116,28 @@ html[dir="rtl"] .whoami .avatar {
 	color: inherit;
 	text-decoration: none !important;
 }
-
 .addon:hover {
 	background: var(--whitespace-color);
 	border-color: #000;
 }
-
 .addon img {
-	width: 100%;
+	width: 96px;
+	flex-shrink: 0;
 	margin-inline-end: 1em;
 	aspect-ratio: 1/1;
 	border: 1px solid var(--default-border-color);
 	border-radius: var(--border-radius);
 }
-
 .addon .details {
 	display: flex;
 	flex-grow: 1;
+	min-width: 0;
 	gap: 0.5em;
 	flex-direction: column;
 }
-
 .addon .name {
 	font-weight: 500;
 }
-
-.addon .description {
-	height: 4em;
-}
-
 .addon .price {
 	font-weight: 500;
 	color: var(--success-color);
@@ -125,28 +148,6 @@ html[dir="rtl"] .whoami .avatar {
 	color: white;
 	text-shadow: 0 0 3px #333;
 }
-
-#banners {
-	display: grid;
-	grid-template: "jumbotron profile" auto "jumbotron banner" auto / 67.3% 31.7%;
-	gap: 15px;
-}
-
-#banners > * {
-	aspect-ratio: 3/1;
-}
-
-#banners > a {
-	display: block;
-	border-radius: var(--border-radius);
-	overflow: hidden;
-}
-
-#profile {
-	background: #ddd;
-	border-radius: var(--border-radius);
-	padding: 1em;
-}
 </style>
 
 <div class="card card-app">
@@ -154,14 +155,6 @@ html[dir="rtl"] .whoami .avatar {
 		<div class="card-title">
 			<?= $app_icon ?> <?= t('title_marketplace', 'Marketplace') ?>
 		</div>
-	</div>
-
-	<div class="card-action">
-		<?= f::form_begin('search_form', 'get', document::ilink(__APP__ . '/catalog')) ?>
-			<div>
-				<?= f::form_input_search('query', true) ?>
-			</div>
-		<?= f::form_end() ?>
 	</div>
 
 	<div class="card-body">
@@ -174,23 +167,23 @@ html[dir="rtl"] .whoami .avatar {
 				</a>
 			</div>
 
-			<div id="profile" style="grid-area: profile;" style="margin-bottom: 30px;">
-				<?php if (!$profile) { ?>
-				<a class="connect btn btn-default" href="<?= document::ilink(__APP__ . '/connect') ?>">
+			<?php if ($profile) { ?>
+			<div id="whoami" style="grid-area: profile;">
+				<img class="avatar" src="<?= f::escape_html($profile['user']['avatar']) ?>">
+				<div class="username"><?= $profile['user']['username'] ?></div>
+				<div class="store-name"><?= $profile['store']['name'] ?></div>
+				<a class="disconnect btn btn-default btn-sm" href="<?= document::ilink(__APP__ . '/disconnect') ?>"><?= f::draw_fonticon('icon-sign-out') ?> <?= t('title_disconnect', 'Disconnect') ?></a>
+			</div>
+			<?php } else { ?>
+			<div id="profile" style="grid-area: profile;">
+				<a class="connect btn btn-default" href="<?= document::ilink(__APP__ . '/connect') ?>" class="placeholder" data-aspect-ratio="2:1">
 					<?= f::draw_fonticon('icon-power-plug') ?>
 					<?= t('title_connect_my_litecart_account', 'Connect my LiteCart account') ?>
 				</a>
-				<?php } else { ?>
-				<div id="whoami" style="grid-area: whoami;" style="margin-bottom: 30px;">
-					<img class="avatar" src="<?= f::escape_html($profile['user']['avatar']) ?>">
-					<div class="username"><?= $profile['user']['username'] ?></div>
-					<div class="store-name"><?= $profile['store']['name'] ?></div>
-					<a class="disconnect btn btn-default btn-sm" href="<?= document::ilink(__APP__ . '/disconnect') ?>"><?= f::draw_fonticon('icon-sign-out') ?> <?= t('title_disconnect', 'Disconnect') ?></a>
-				</div>
-				<?php } ?>
 			</div>
+			<?php } ?>
 
-			<div id="banner" style="grid-area: banner;">
+			<div id="banner" style="grid-area: banner;" class="placeholder" data-aspect-ratio="2:1">
 				<a href="<?= f::escape_html($marketplace['banners']['banner1']['link']) ?>">
 					<img class="thumbnail fit" src="<?= f::escape_html($marketplace['banners']['banner1']['image']) ?>">
 				</a>
@@ -199,13 +192,13 @@ html[dir="rtl"] .whoami .avatar {
 
 		<h2><?= t('title_browse_by_category', 'Browse By Category') ?></h2>
 
-		<nav class="categories pills" style="margin-bottom: 2em;">
-			<?php foreach ($marketplace['categories'] as $category) { ?>
-			<a class="pill-item" href="<?= document::ilink(__APP__ . '/catalog', ['category' => $category['name']]) ?>">
-				<?= f::escape_html($category['name']) ?>
-			</a>
-			<?php } ?>
-		</nav>
+		<?= f::form_begin('marketplace_filter', 'get', document::ilink(__APP__ . '/catalog')) ?>
+			<div class="card-filter marketplace-filter">
+				<?= f::form_select('category', $categories_options, true, ['style' => 'width: auto;']) ?>
+				<div class="expandable"><?= f::form_input_search('query', true, ['placeholder' => t('text_search_phrase_or_keyword', 'Search phrase or keyword')]) ?></div>
+				<?= f::form_button('filter', t('title_search', 'Search'), 'submit') ?>
+			</div>
+		<?= f::form_end() ?>
 
 		<h2><?= t('title_featured_addons', 'Featured Add-ons') ?></h2>
 
@@ -267,6 +260,10 @@ html[dir="rtl"] .whoami .avatar {
 </div>
 
 <script>
+	$('select[name="category"]').on('change', function() {
+		$(this).closest('form').submit();
+	});
+
 	$('button[name="connect"]').on('click', function() {
 		window.authwindow = window.open('/opener.html');
 	});

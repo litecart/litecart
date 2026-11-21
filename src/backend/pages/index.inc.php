@@ -73,5 +73,5 @@
 		}
 
 		// Widgets
-		include stream_app::resolve('app://backend/template/partials/box_widgets.inc.php');
+		include stream_app::resolve('app://backend/partials/box_widgets.inc.php');
 	}

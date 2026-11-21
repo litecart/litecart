@@ -33,10 +33,14 @@
 			throw new Exception('Missing CSP report', 400);
 		}
 
+		if (!is_array($result['csp-report'])) {
+			throw new Exception('Invalid CSP report', 400);
+		}
+
 		$report = $result['csp-report'];
 
 		error_log(implode(PHP_EOL, [
-			'CSP Violation for '. $report['document-uri'],
+			'CSP Violation for '. ($report['document-uri'] ?? ''),
 			f::format_json($report),
 			!empty($_SERVER['REMOTE_ADDR']) ? 'Client: '. $_SERVER['REMOTE_ADDR'] .' ('. reverse_dns($_SERVER['REMOTE_ADDR']) .')' : '',
 			!empty($_SERVER['HTTP_USER_AGENT']) ? 'User Agent: '. $_SERVER['HTTP_USER_AGENT'] : '',
@@ -45,8 +49,8 @@
 		echo 'OK';
 		exit;
 
-	} catch (Exception $e) {
-		http_response_code($e->getCode());
+	} catch (Throwable $e) {
+		http_response_code($e->getCode() ?: 400);
 		echo $e->getMessage();
 		exit;
 	}

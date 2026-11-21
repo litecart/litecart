@@ -1,5 +1,10 @@
 <?php
 
+	// The legacy v2 admin folder, holding the old app files that are removed below
+	if (!defined('FS_DIR_ADMIN')) {
+		define('FS_DIR_ADMIN', FS_DIR_APP . (defined('BACKEND_ALIAS') ? BACKEND_ALIAS : 'admin') . '/');
+	}
+
 	perform_action('core:delete', [
 		FS_DIR_ADMIN . 'addons.widget/addons.inc.php',
 		FS_DIR_ADMIN . 'addons.widget/config.inc.php',
@@ -798,6 +803,7 @@
 	// Delete old directories
 	perform_action('core:delete', [
 		FS_DIR_ADMIN,
+		FS_DIR_APP . 'assets/chartist/',
 		FS_DIR_APP . 'cache/',
 		FS_DIR_APP . 'data/',
 		FS_DIR_APP . 'images/',
@@ -994,8 +1000,9 @@
 
 	// Migrate order items
 	database::query(
-		"select osi.*, p.default_image from ". DB_PREFIX ."orders_stock_items osi
-		left join ". DB_PREFIX ."products p on (p.product_id = osi.product_id)
+		"select osi.*, p.code as product_code, p.default_image
+		from ". DB_PREFIX ."orders_stock_items osi
+		left join ". DB_PREFIX ."products p on (p.id = osi.product_id)
 		order by osi.id asc;"
 	)->each(function($item){
 
@@ -1012,7 +1019,7 @@
 				'regular_price' => (float)$item['price'],
 				'final_price' => (float)$item['price'],
 				'tax_class_id' => null,
-				'tax_rate' => ((float)$item['price'] > 0 ? round($tax / $price, 2) : null),
+				'tax_rate' => ((float)$item['tax'] > 0 && (float)$item['price'] > 0 ? round((float)$item['tax'] / (float)$item['price'], 2) : null),
 				'discount' => 0,
 				'sum' => ((float)$item['price'] * (float)$item['quantity']),
 				'sum_tax' => ((float)$item['tax'] * (float)$item['quantity']),
@@ -1028,32 +1035,8 @@
 		);
 	});
 
-	// Separate product customizations from stock options
-	database::query(
-		"select * from ". DB_PREFIX ."products_stock_options;"
-	)->each(function($stock_option){
-		foreach (explode(',', $stock_option['attributes']) as $pair) {
-
-			list($group_id, $value_id) = explode('-', $pair);
-
-			database::query(
-				"delete from ". DB_PREFIX ."products_customizations_values
-				where product_id = ". (int)$stock_option['product_id'] ."
-				and (group_id = ". (int)$group_id ." and value_id = ". (int)$value_id .");"
-			);
-
-			database::query(
-				"delete from ". DB_PREFIX ."products_customizations
-				where product_id = ". (int)$stock_option['product_id'] ."
-				and group_id = ". (int)$group_id ."
-				and product_id not in (
-					select product_id from ". DB_PREFIX ."products_customizations_values
-					where product_id = ". (int)$stock_option['product_id'] ."
-					and group_id = ". (int)$group_id ."
-				);"
-			);
-		}
-	});
+	// The customizations that are bound to a stock option are moved to the stock option
+	// further down, once the price adjustment has been migrated
 
 	// Migrate PHP serialized userdata to JSON
 	database::query(
@@ -1072,25 +1055,28 @@
 
 	// Migrate Stock Options
 	database::query(
-		"select * from ". DB_PREFIX ."products_stock_options;"
-	)->each(function($stock_option){
+		"update ". DB_PREFIX ."orders_items oi
+		join ". DB_PREFIX ."orders_stock_items osi on (osi.id = oi.id)
+		join ". DB_PREFIX ."products_stock_options pso on (pso.product_id = osi.product_id and pso.attributes = osi.attributes)
+		set oi.stock_option_id = pso.id
+		where oi.stock_option_id is null;"
+	);
 
-		$attributes = preg_split('#\s*,\s*#', $stock_option['attributes'], -1, PREG_SPLIT_NO_EMPTY);
-
-		database::query(
-			"update ". DB_PREFIX ."orders_items
-			set stock_option_id = ". (int)$stock_option['id'] .",
-				/*attributes = trim(both ',' from replace(concat(',', attributes, ','), concat(',', '". $stock_option['attributes'] ."', ','), ','))*/
-			where product_id = ". (int)$stock_option['product_id'] ."
-			and attributes regexp '(^|,)". $stock_option['attributes'] ."(,|$)';"
-		);
-	});
+	// Fall back to the SKU of the ordered stock item
+	database::query(
+		"update ". DB_PREFIX ."orders_items oi
+		join ". DB_PREFIX ."orders_stock_items osi on (osi.id = oi.id)
+		join ". DB_PREFIX ."products_stock_options pso on (pso.product_id = osi.product_id and pso.sku = osi.sku)
+		set oi.stock_option_id = pso.id
+		where oi.stock_option_id is null
+		and osi.sku != '';"
+	);
 
 	// Set subtotal for all previous orders
 	database::query(
 		"update ". DB_PREFIX ."orders o
 		left join (
-			select order_id, sum(quantity * price) as subtotal, sum(quantity * tax) as subtotal_tax
+			select order_id, sum(sum) as subtotal, sum(sum_tax) as subtotal_tax
 			from ". DB_PREFIX ."orders_items
 			group by order_id
 		) oi on (oi.order_id = o.id)
@@ -1118,10 +1104,13 @@
 		"select * from ". DB_PREFIX ."products_campaigns;"
 	)->each(function($campaign_product) use (&$campaigns) {
 
-		$valid_from = $campaign_product['start_date'] ? date('YmdHis', strtotime($campaign_product['start_date'])) : '0';
-		$valid_to = $campaign_product['end_date'] ? date('YmdHis', strtotime($campaign_product['end_date'])) : '0';
+		$valid_from = $campaign_product['start_date'] ? strtotime($campaign_product['start_date']) : false;
+		$valid_to = $campaign_product['end_date'] ? strtotime($campaign_product['end_date']) : false;
 
-		$campaigns[$valid_from.'-'.$valid_to][] = $campaign_product;
+		$campaign_product['valid_from'] = ($valid_from && $valid_from > 0) ? date('Y-m-d H:i:s', $valid_from) : null;
+		$campaign_product['valid_to'] = ($valid_to && $valid_to > 0) ? date('Y-m-d H:i:s', $valid_to) : null;
+
+		$campaigns[$campaign_product['valid_from'].'-'.$campaign_product['valid_to']][] = $campaign_product;
 	});
 
 	foreach ($campaigns as $campaign_products) {
@@ -1159,7 +1148,8 @@
 	)->fetch_all('code');
 
 	database::query(
-		"select * from ". DB_PREFIX ."products_prices;"
+		"select * from ". DB_PREFIX ."products_prices
+		where campaign_id is null;"
 	)->each(function($product_price) use ($currencies) {
 
 		$prices = array_filter($product_price, function ($key) {
@@ -1184,17 +1174,17 @@
 
 	// Migrate product custization value prices
 	database::query(
-		"select * from ". DB_PREFIX ."products_prices;"
-	)->each(function($product_price) use ($currencies) {
+		"select * from ". DB_PREFIX ."products_customizations_values;"
+	)->each(function($customization_value) {
 
-		$price_adjustment = array_filter($product_price, function ($key) {
+		$price_adjustment = array_filter($customization_value, function ($key) {
 			return (preg_match('#^[A-Z]{3}$#', $key));
 		}, ARRAY_FILTER_USE_KEY);
 
 		database::query(
 			"update ". DB_PREFIX ."products_customizations_values
 			set price_adjustment = '". database::input(json_encode(array_filter($price_adjustment))) ."'
-			where id = ". (int)$product_price['id'] ."
+			where id = ". (int)$customization_value['id'] ."
 			limit 1;"
 		);
 	});
@@ -1227,10 +1217,15 @@
 				and group_id = ". (int)$group_id ."
 				and value_id = ". (int)$value_id ."
 				limit 1;"
-			)->fetch(function($customization_value) {
+			)->fetch(function($customization_value) use ($stock_option) {
+
+				// Only the modifiers the stock option accepts can be carried over
+
+				$price_modifier = in_array($customization_value['price_modifier'], ['+', '%', '*', '=']) ? $customization_value['price_modifier'] : '+';
+
 				database::query(
-					"update ". DB_PREFIX ."products_products_stock_options
-					set price_modifier = '". database::input($customization_value['price_modifier']) ."'
+					"update ". DB_PREFIX ."products_stock_options
+					set price_modifier = '". database::input($price_modifier) ."',
 						price_adjustment = '". database::input($customization_value['price_adjustment']) ."'
 					where id = ". (int)$stock_option['id'] ."
 					limit 1;"
@@ -1250,9 +1245,8 @@
 				"delete from ". DB_PREFIX ."products_customizations
 				where product_id = ". (int)$stock_option['product_id'] ."
 				and group_id not in (
-					select id from ". DB_PREFIX ."products_customizations_values
+					select group_id from ". DB_PREFIX ."products_customizations_values
 					where product_id = ". (int)$stock_option['product_id'] ."
-					and group_id = ". (int)$group_id ."
 				);"
 			);
 		}
@@ -1363,26 +1357,19 @@
 
 	// Append initial stock with sold quantities
 	database::query(
-		"select product_id, stock_items, quantity
-		from `". DB_PREFIX ."orders_items` oi
-		where oi.order_id in (
+		"insert into `". DB_PREFIX ."stock_transactions_contents` (transaction_id, stock_item_id, quantity_adjustment)
+		select '1', osi.stock_item_id, sum(osi.quantity)
+		from `". DB_PREFIX ."orders_stock_items` osi
+		where osi.stock_item_id is not null
+		and osi.order_id in (
 			select id from `". DB_PREFIX ."orders`
 			where order_status_id in (
 				select id from `". DB_PREFIX ."order_statuses`
 				where stock_action = 'commit'
 			)
 		)
-		group by product_id;"
-	)->each(function($order_item) {
-		$order_item['stock_items'] = json_decode($order_item['stock_items'], true);
-		foreach ($order_item['stock_items'] as $stock_item) {
-			database::query(
-				"insert into `". DB_PREFIX ."stock_transactions_contents` (transaction_id, stock_item_id, quantity_adjustment)
-				values (1, ". (int)$stock_item_id .", ". (int)$order_item['quantity'] .")
-				on duplicate key update quantity_adjustment = quantity_adjustment + ". ((float)$order_item['quantity'] * $stock_item['quantity']) .";"
-			);
-		}
-	});
+		group by osi.stock_item_id;"
+	);
 
 	// Make all 11 digit unsigned integers standard int(10) unsigned
 	database::query(
@@ -1584,12 +1571,14 @@
 		)->fetch_all('Field');
 
 		// Get all columns in info table
-		$info_columns = database::query(
+		$info_columns = [];
+		foreach (database::query(
 			"show fields from ". DB_PREFIX . $collection['plural'] ."_info;"
-		)->fetch_all(function($field) use ($collection) {
-			if (in_array($field['Field'], ['id', 'language_code']) || preg_match('#_id$#', $field['Field'])) return false;
-			return $field['Field'];
-		});
+		)->fetch_all() as $field) {
+			if (in_array($field['Field'], ['id', 'language_code'])) continue;
+			if (preg_match('#_id$#', $field['Field'])) continue;
+			$info_columns[] = $field['Field'];
+		}
 
 		// Create missing columns in main table
 		foreach (array_diff($info_columns, $columns) as $column) {
@@ -1608,6 +1597,7 @@
 			from `". DB_PREFIX . database::input($collection['plural']) ."_info`
 			group by `". database::input(strtr($collection['singular'].'_id', $aliases)) ."`;"
 		)->each(function($info) use ($collection, $info_columns) {
+
 			database::query(
 				"update `". DB_PREFIX . database::input($collection['plural']) ."`
 				set ". implode(',' . PHP_EOL, array_map(function($field) use ($info) {
@@ -1652,7 +1642,7 @@
     // Drop old columns
 		database::query(
 			"ALTER TABLE `". DB_PREFIX ."translations`
-      ". implode(",\n", array_map(function($drop) {
+      ". implode(",\n", array_map(function($column) {
         return "DROP COLUMN `". database::input($column) ."`";
       }, $language_columns)) .";"
 		);
@@ -1662,12 +1652,14 @@
 	database::query(
 		"alter table `". DB_PREFIX ."orders_stock_items`
 		drop column `attributes`,
-		drop column `tax`;"
+		drop column `tax`,
+		drop column `product_id`;"
 	);
 
 	// Drop deprecated columns from products_stock_options
 	database::query(
 		"alter table ". DB_PREFIX ."products_stock_options
+		drop index `product_stock_option`,
 		drop column `attributes`,
 		drop column `sku`,
 		drop column `weight`,
