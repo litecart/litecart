@@ -135,12 +135,7 @@
 		from ". DB_PREFIX ."settings
 		where `group_key` = '". database::input($settings_group['key']) ."'
 		order by priority, `key` asc;"
-	)->fetch_page(function(&$setting) use ($setting_datatype){
-
-		// Title and description are already resolved to the selected language with an
-		// English fallback by the query above, so no further decoding is needed here.
-		$setting['title'] = (string)$setting['title'];
-		$setting['description'] = (string)$setting['description'];
+	)->fetch_page(function(&$setting) use ($setting_datatype) {
 
 		// Set Display Value
 		switch (true) {
@@ -163,69 +158,50 @@
 				break;
 
 			case (preg_match('#^toggle\b#', $setting['function'])):
-				if (in_array($setting['value'], ['1', 'active', 'enabled', 'on', 'true', 'yes'])) {
-					$setting['display_value'] = t('title_true', 'True');
-				} else {
-					$setting['display_value'] = t('title_false', 'False');
+				// The toggle type is carried by the function arguments e.g. toggle("y/n")
+				$labels = match (true) {
+					str_contains($setting['function'], 'y/n') => ['on' => ['title_yes', 'Yes'], 'off' => ['title_no', 'No']],
+					str_contains($setting['function'], 'e/d') => ['on' => ['title_enabled', 'Enabled'], 'off' => ['title_disabled', 'Disabled']],
+					str_contains($setting['function'], 'a/i') => ['on' => ['title_active', 'Active'], 'off' => ['title_inactive', 'Inactive']],
+					str_contains($setting['function'], 'o/o') => ['on' => ['title_on', 'On'], 'off' => ['title_off', 'Off']],
+					default => ['on' => ['title_true', 'True'], 'off' => ['title_false', 'False']],
+				};
+
+				$state = match (true) {
+					in_array($setting['value'], ['1', 'active', 'enabled', 'on', 'true', 'yes'], true) => 'on',
+					in_array($setting['value'], ['', '0', 'inactive', 'disabled', 'off', 'false', 'no'], true) => 'off',
+					default => null,
+				};
+
+				if ($state !== null) {
+					[$key, $fallback] = $labels[$state];
+					$setting['display_value'] = t($key, $fallback);
 				}
 				break;
 
 			default:
 
-				switch ($setting_datatype($setting['function'])) {
+				$setting['display_value'] = match($setting_datatype($setting['function'])) {
 
-					case 'array':
-					case 'json':
-						$setting['display_value'] = json_encode($setting['value'], true);
-						break;
+					'array', 'json' => json_encode($setting['value'], true),
 
-					default:
-						$setting['display_value'] = $setting['value'];
-						break;
-				}
+					default => $setting['value'],
+				};
 
 				break;
 		}
 
 		// Set HTTP POST Value
-		switch ($setting_datatype($setting['function'])) {
+		$_POST['settings'][$setting['key']] = match($setting_datatype($setting['function'])) {
+			'array' => (array)$setting['value'],
+			'boolean', 'bool' => !empty($setting['value']) ? '1' : '0',
+			'csv' => str_getcsv($setting['value']),
+			'decimal', 'float', 'double' => (float)$setting['value'],
+			'json' => is_array($setting['value']) ? $setting['value'] : ($setting['value'] ? json_decode($setting['value'], true) : []),
+			'number', 'integer' => (int)$setting['value'],
+			default => (string)$setting['value'],
+		};
 
-			case 'array':
-				$_POST['settings'][$setting['key']] = (array)$setting['value'];
-				break;
-
-			case 'boolean':
-			case 'bool':
-				$_POST['settings'][$setting['key']] = !empty($setting['value']) ? '1' : '0';
-				break;
-
-			case 'csv':
-				$_POST['settings'][$setting['key']] = str_getcsv($setting['value']);
-				break;
-
-			case 'decimal':
-			case 'float':
-			case 'double':
-				$_POST['settings'][$setting['key']] = (float)$setting['value'];
-				break;
-
-			case 'json':
-				$_POST['settings'][$setting['key']] = is_array($setting['value']) ? $setting['value'] : ($setting['value'] ? json_decode($setting['value'], true) : []);
-				break;
-
-			case 'number':
-			case 'integer':
-				$_POST['settings'][$setting['key']] = (int)$setting['value'];
-				break;
-
-			case 'string':
-				$_POST['settings'][$setting['key']] = (string)$setting['value'];
-				break;
-
-			default:
-				$_POST['settings'][$setting['key']] = (string)$setting['value'];
-				break;
-		}
 	}, null, $_GET['page'], null, $num_rows, $num_pages);
 
 ?>
