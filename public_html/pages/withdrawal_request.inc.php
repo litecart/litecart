@@ -22,6 +22,30 @@
       throw new Exception(language::translate('error_missing_order', 'Missing order'), 404);
     }
 
+  // A single cheap lookup decides both whether the order exists and whether the request is authorized, so that a missing order and a wrong access key cannot be told apart
+    $order_row = database::query(
+      "select o.customer_id, o.public_key from ". DB_TABLE_PREFIX ."orders o
+      where o.id = ". (int)$order_id ."
+      limit 1;"
+    )->fetch();
+
+    if (empty($order_row)) {
+      throw new Exception(language::translate('error_invalid_order', 'Invalid order'), 404);
+    }
+
+  // Authorize the request: the order owner, or a valid access key from the order confirmation link
+    $authorized = false;
+
+    if (!empty($public_key) && hash_equals((string)$order_row['public_key'], $public_key)) {
+      $authorized = true;
+    } elseif (!empty(customer::$data['id']) && !empty($order_row['customer_id']) && (int)customer::$data['id'] === (int)$order_row['customer_id']) {
+      $authorized = true;
+    }
+
+    if (!$authorized) {
+      throw new Exception(language::translate('error_invalid_order', 'Invalid order'), 404);
+    }
+
     try {
       $order = new ent_order($order_id);
     } catch (Exception $e) {
@@ -30,19 +54,6 @@
 
     if (empty($order->data['id'])) {
       throw new Exception(language::translate('error_invalid_order', 'Invalid order'), 404);
-    }
-
-  // Authorize the request: order owner, valid access key from the order confirmation link, or order identified by number and email address
-    $authorized = false;
-
-    if (!empty($public_key) && $public_key === $order->data['public_key']) {
-      $authorized = true;
-    } elseif (!empty(customer::$data['id']) && !empty($order->data['customer']['id']) && customer::$data['id'] == $order->data['customer']['id']) {
-      $authorized = true;
-    }
-
-    if (!$authorized) {
-      throw new Exception(language::translate('error_not_authorized_to_view_order', 'You are not authorized to view this order'), 403);
     }
 
     if (empty($order->data['date_created']) || strtotime($order->data['date_created']) < strtotime('-'. $withdrawal_window_days .' days')) {

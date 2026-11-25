@@ -25,27 +25,46 @@
               <?php echo language::translate('title_identify_order', 'Identify Order'); ?>
             </h2>
 
-            <?php if ($signed_in && $order_groups) { ?>
-            <p><?php echo language::translate('description_identify_order_intro_signed_in', 'Select the order you wish to withdraw from and confirm the email address used when placing the order.'); ?></p>
-            <?php } else { ?>
-            <p><?php echo language::translate('description_identify_order_intro', 'Enter the order number and the email address used when placing the order.'); ?></p>
-            <?php } ?>
+            <?php if ($signed_in) { ?>
+
+            <?php if ($order_groups) { ?>
+            <p><?php echo language::translate('description_identify_order_intro_customer', 'Select the order you wish to withdraw from.'); ?></p>
 
             <?php echo functions::form_draw_form_begin('identify_order_form', 'post', '', false, 'style="max-width: 640px;"'); ?>
 
               <div class="row">
                 <div class="form-group col-md-6">
                   <label><?php echo language::translate('title_order_number', 'Order Number'); ?></label>
-                  <?php if ($signed_in && $order_groups) { ?>
                   <?php echo functions::form_draw_select_optgroup_field('order_id', $order_groups, true, false, 'required'); ?>
-                  <?php } else { ?>
-                  <?php echo functions::form_draw_text_field('order_id', true, 'required'); ?>
-                  <?php } ?>
                 </div>
+              </div>
 
+              <div>
+                <button class="btn btn-default" type="submit" name="identify" value="true" style="font-weight: bold;">
+                 <?php echo language::translate('title_continue', 'Continue'); ?> <?php echo functions::draw_fonticon('fa-arrow-right'); ?>
+                </button>
+              </div>
+
+            <?php echo functions::form_draw_form_end(); ?>
+
+            <?php } else { ?>
+            <p><?php echo language::translate('description_no_orders_to_withdraw', 'You have no orders to withdraw from.'); ?></p>
+            <?php } ?>
+
+            <?php } else { ?>
+
+            <p><?php echo language::translate('description_identify_order_intro_guest_postcode', 'Enter the order number and the postcode of your purchase. We will email a link to the withdrawal request to the email address registered with the order.'); ?></p>
+
+            <?php echo functions::form_draw_form_begin('identify_order_form', 'post', '', false, 'style="max-width: 640px;"'); ?>
+
+              <div class="row">
                 <div class="form-group col-md-6">
-                  <label><?php echo language::translate('title_email_address', 'Email Address'); ?></label>
-                  <?php echo functions::form_draw_email_field('email', true, 'required'); ?>
+                  <label><?php echo language::translate('title_order_number', 'Order Number'); ?></label>
+                  <?php echo functions::form_draw_text_field('order_id', true, 'required'); ?>
+                </div>
+                <div class="form-group col-md-6">
+                  <label><?php echo language::translate('title_postcode', 'Postal Code'); ?></label>
+                  <?php echo functions::form_draw_text_field('postcode', true, 'required'); ?>
                 </div>
               </div>
 
@@ -60,11 +79,13 @@
 
               <div>
                 <button class="btn btn-default" type="submit" name="identify" value="true" style="font-weight: bold;">
-                  <?php echo functions::draw_fonticon('fa-search'); ?> <?php echo language::translate('title_continue', 'Continue'); ?>
+                  <?php echo functions::draw_fonticon('fa-envelope-o'); ?> <?php echo language::translate('title_send_withdrawal_link', 'Send Link'); ?>
                 </button>
               </div>
 
             <?php echo functions::form_draw_form_end(); ?>
+
+            <?php } ?>
 
           </div>
         </section>

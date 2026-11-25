@@ -72,11 +72,12 @@
   if (!empty($_POST['identify'])) {
 
     $order_id = isset($_POST['order_id']) ? (int)$_POST['order_id'] : 0;
+    $postcode = isset($_POST['postcode']) ? trim((string)$_POST['postcode']) : '';
     $ip_address = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '';
 
     $generic_error_msg = language::translate('error_order_not_found', 'No order was found matching the details given');
     $too_many_attempts_msg = language::translate('error_too_many_attempts', 'Too many failed attempts. Please try again later.');
-    $link_sent_msg = language::translate('success_withdrawal_link_sent', 'If the order exists, we have sent a link to the withdrawal request to the email address registered with it.');
+    $link_sent_msg = language::translate('success_withdrawal_link_sent_postcode', 'If the order exists and the postcode matches, we have sent a link to the withdrawal request to the email address registered with it.');
 
     try {
 
@@ -104,7 +105,7 @@
 
       }
 
-    // A guest is asked for the order number only, a direct link to the withdrawal request is emailed to the address registered with the order
+    // A guest is asked for the order number and the postcode of the purchase, a direct link to the withdrawal request is emailed to the address registered with the order
       $rate_limit_scope = "ip_address = '". database::input($ip_address) ."'"
         . (!empty($order_id) ? " or (scope_type = 'order_id' and scope_key = '". database::input($order_id) ."')" : '');
 
@@ -149,14 +150,36 @@
       cache::set($rate_token, $attempts + 1);
       $record_attempt('withdrawal_lookup_attempt');
 
-    // Look up the order by number only, the link is sent to the address registered with the order
+    // Look up the order by number, the postcode of the purchase is checked below and the link is sent to the address registered with the order
       $order = database::query(
-        "select o.id, o.public_key, o.customer_email, o.customer_firstname, o.language_code from ". DB_TABLE_PREFIX ."orders o
+        "select o.id, o.public_key, o.customer_email, o.customer_firstname, o.language_code, o.customer_postcode, o.shipping_postcode from ". DB_TABLE_PREFIX ."orders o
         where o.id = ". (int)$order_id ."
         limit 1;"
       )->fetch();
 
-      if (empty($order) || empty($order['customer_email'])) {
+    // The postcode of the purchase is the second factor, it is compared against the billing and the shipping address of the order, ignoring case, spaces and hyphens
+      $normalize_postcode = function($value) {
+        return strtoupper(preg_replace('#[^0-9A-Z]#', '', strtoupper((string)$value)));
+      };
+
+      $postcodes = [];
+      foreach (['customer_postcode', 'shipping_postcode'] as $field) {
+        if (!empty($order[$field])) $postcodes[] = $normalize_postcode($order[$field]);
+      }
+
+      $postcode_matches = false;
+      if (!empty($postcode) && !empty($postcodes)) {
+        $normalized_postcode = $normalize_postcode($postcode);
+        foreach ($postcodes as $postcode_of_order) {
+          if (hash_equals($postcode_of_order, $normalized_postcode)) {
+            $postcode_matches = true;
+            break;
+          }
+        }
+      }
+
+    // An order without a postcode keeps working with the order number alone, a wrong postcode is not reported to the guest
+      if (empty($order) || empty($order['customer_email']) || (!empty($postcodes) && !$postcode_matches)) {
         $record_attempt('withdrawal_lookup_failed');
       } else {
 
