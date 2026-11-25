@@ -205,6 +205,8 @@
                 echo 'Updating existing campaign on line '. $batch['counters']['line'] . PHP_EOL;
                 $batch['counters']['updated']++;
 
+                $campaign_id = (int)$campaign['id'];
+
               } else {
 
                 if (empty($batch['insert'])) {
@@ -212,16 +214,30 @@
                   continue 2;
                 }
 
+                if (empty($row['product_id'])) {
+                  echo 'Skip inserting new campaign without product_id on line '. $batch['counters']['line'] . PHP_EOL;
+                  continue 2;
+                }
+
                 echo 'Inserting new campaign on line '. $batch['counters']['line'] . PHP_EOL;
-                $batch['counters']['inserted']++;
 
                 if (!empty($row['id'])) {
                   database::query(
                     "insert into ". DB_TABLE_PREFIX ."products_campaigns
                     (id, product_id)
-                    values (". (int)$row['id'] .", '". $row['product_id'] ."');"
+                    values (". (int)$row['id'] .", ". (int)$row['product_id'] .");"
                   );
+                  $campaign_id = (int)$row['id'];
+                } else {
+                  database::query(
+                    "insert into ". DB_TABLE_PREFIX ."products_campaigns
+                    (product_id)
+                    values (". (int)$row['product_id'] .");"
+                  );
+                  $campaign_id = (int)database::insert_id();
                 }
+
+                $batch['counters']['inserted']++;
               }
 
               $prices = array_intersect_key($row, currency::$currencies);
@@ -237,7 +253,7 @@
                     ". $sql_update_prices ."
                     start_date = ". (empty($row['start_date']) ? "null" : "'". date('Y-m-d H:i:s', strtotime($row['start_date'])) ."'") .",
                     end_date = ". (empty($row['end_date']) ? "null" : "'". date('Y-m-d H:i:s', strtotime($row['end_date'])) ."'") ."
-                where id = ". (int)$row['id'] ."
+                where id = ". $campaign_id ."
                 limit 1;"
               );
 
@@ -812,7 +828,12 @@
               "show fields from ". DB_TABLE_PREFIX ."products_campaigns;"
             );
 
-            $csv[] = database::fetch($fields_query);
+            $columns = [];
+            while ($field = database::fetch($fields_query)) {
+              $columns[] = $field['Field'];
+            }
+
+            $csv[] = array_fill_keys($columns, '');
 
             break;
           }
