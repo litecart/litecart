@@ -247,7 +247,7 @@ b5771c7eff986dd9acd60aba2b7cdab0	includes/entities/ent_delivery_status.inc.php
 197f5cd84c0f915da7109f091b42db36	includes/entities/ent_link.inc.php
 07c9eba067bccda3b28cf602d3e833bd	includes/entities/ent_manufacturer.inc.php
 d2ade587c7e081573448be4c259d9e16	includes/entities/ent_module.inc.php
-2a1d25b7e9358345a4f94b4e0d34e87c	includes/entities/ent_order.inc.php
+a603f1acfe2574d49b693b4c08f16dc9	includes/entities/ent_order.inc.php
 8fecf25d0a1c5ec72b93d6c4a5bfa56b	includes/entities/ent_order_status.inc.php
 1e5b8f0574a83afbcaa7478051a5d93f	includes/entities/ent_page.inc.php
 6c32e6de1f7b431ccdf7b89d966509f2	includes/entities/ent_product.inc.php
@@ -726,7 +726,7 @@ e1eb0445c1946b7708afc93e87f13e53	pages/checkout.inc.php
 010840f31e4c3bfd88735584702aaa5e	pages/create_account.inc.php
 7d25701ee6c9bc5c8e1a5ccd3c1543be	pages/customer_service.inc.php
 42e6d25b3e36cd4fe36d58bc0b1b6759	pages/development_mode.inc.php
-f2f3a19cd50b4a0cc74091de396a10c6	pages/edit_account.inc.php
+f2a327bf0b08d265aa8732a485de3c2f	pages/edit_account.inc.php
 2577c898dfd55b6adaac8e77cadc6fc8	pages/error_document.inc.php
 d41d8cd98f00b204e9800998ecf8427e	pages/feeds/index.html
 44ecff979063417bf19e5407a5922911	pages/feeds/sitemap.xml.inc.php
