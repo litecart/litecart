@@ -739,9 +739,9 @@ waitFor('jQuery', ($) => {
 
 		$container.append(
 			$('<div class="notice notice-default"></div>')
-				.append($('<a href="#" class="close" data-dismiss="notice"></a>')
+				.append($('<button type="button" class="close" data-dismiss="notice"></button>')
 					.attr('aria-label', config.close || 'Close')
-					.html('&times;'))
+					.append($('<i class="icon icon-times" aria-hidden="true"></i>')))
 				.append(' ' + (config.info_icon || '') + ' ')
 				.append($('<span></span>').text(text))
 		);

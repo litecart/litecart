@@ -536,9 +536,22 @@ summary {
 .btn.btn-lg {
 	font-size: 1.25rem;
 }
-.btn:active, .btn.active {
+.btn {
+	/* A press is momentary and dips the button, a selected button stays put */
+}
+.btn:active:not(.active) {
 	box-shadow: var(--button-shadow--active);
 	transform: translateY(1px);
+}
+.btn.active {
+	box-shadow: var(--button-shadow--active);
+}
+.btn {
+	/* Buttons have no outline by default, so the focus needs a visible ring */
+}
+.btn:focus-visible {
+	outline: 2px solid var(--button-focus-ring-color, currentColor);
+	outline-offset: 2px;
 }
 .btn[disabled] {
 	opacity: 0.5;
@@ -902,6 +915,207 @@ summary {
 	background: #fff;
 }
 
+/*
+	Charts
+	The colours are custom properties, so a chart follows the theme. The
+	fallbacks are set on the root element, so a theme can override them with
+	its own variables.
+*/
+html {
+	--chart-label-color: var(--default-text-color, #666);
+	--chart-grid-color: var(--default-border-color, #e3e3e4);
+	--chart-area-opacity: .1;
+	--chart-series-1: #d70206;
+	--chart-series-2: #f05b4f;
+	--chart-series-3: #f4c63d;
+	--chart-series-4: #3ba5c6;
+	--chart-series-5: #7b6cf6;
+	--chart-tooltip-background: var(--card-background, #fff);
+	--chart-tooltip-color: var(--card-text-color, #444);
+	--chart-tooltip-shadow: var(--default-shadow, 0 2px 6px rgb(0 0 0 / 15%));
+	--chart-point-border: #fff;
+}
+
+.chart {
+	position: relative;
+}
+.chart .chart-canvas {
+	display: block;
+	width: 100%;
+	overflow: visible;
+}
+.chart .chart-grid-line {
+	stroke: var(--chart-grid-color);
+	stroke-width: 1px;
+}
+.chart .chart-axis-label {
+	fill: var(--chart-label-color);
+	font-family: var(--default-text-font, sans-serif);
+	font-size: 11px;
+}
+.chart .chart-guide {
+	stroke: var(--chart-label-color);
+	stroke-width: 1px;
+	stroke-dasharray: 3 3;
+	opacity: 0.5;
+	transition: opacity 0.15s ease;
+}
+.chart .chart-bar {
+	transform-box: fill-box;
+	transform-origin: bottom;
+}
+.chart .chart-line {
+	fill: none;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+.chart .chart-line-dashed {
+	stroke-dasharray: 5 5;
+}
+.chart .chart-point {
+	stroke: var(--chart-point-border);
+	stroke-width: 2px;
+	transform-box: fill-box;
+	transform-origin: center;
+}
+.chart .chart-legend {
+	position: absolute;
+	top: -1em;
+	inset-inline-end: 1em;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.25em 1em;
+	margin-bottom: 0.75em;
+	font-size: 11px;
+	color: var(--chart-label-color);
+}
+.chart .chart-legend .chart-legend-item {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.4em;
+}
+.chart .chart-legend .chart-legend-swatch {
+	display: inline-block;
+	width: 10px;
+	height: 10px;
+	border-radius: 2px;
+}
+.chart .chart-legend .chart-legend-label {
+	white-space: nowrap;
+}
+.chart .chart-tooltip {
+	position: absolute;
+	z-index: 10;
+	min-width: 120px;
+	padding: 0.5em 0.7em;
+	background: var(--chart-tooltip-background);
+	color: var(--chart-tooltip-color);
+	border: 1px solid var(--chart-grid-color);
+	border-radius: var(--border-radius, 6px);
+	box-shadow: var(--chart-tooltip-shadow);
+	font-size: 11px;
+	line-height: 1.5;
+	pointer-events: none;
+	opacity: 0;
+	transform: translate(-50%, 0);
+	transition: opacity 0.15s ease;
+}
+.chart .chart-tooltip .chart-tooltip-left {
+	transform: translate(-100%, 0);
+	margin-left: -10px;
+}
+.chart .chart-tooltip .chart-tooltip-title {
+	font-weight: 700;
+	margin-bottom: 0.25em;
+}
+.chart .chart-tooltip .chart-tooltip-row {
+	display: flex;
+	align-items: center;
+	gap: 0.5em;
+}
+.chart .chart-tooltip .chart-tooltip-swatch {
+	display: inline-block;
+	width: 8px;
+	height: 8px;
+	border-radius: 2px;
+	flex: 0 0 auto;
+}
+.chart .chart-tooltip .chart-tooltip-label {
+	flex: 1 1 auto;
+	white-space: nowrap;
+}
+.chart .chart-tooltip .chart-tooltip-value {
+	font-weight: 700;
+	font-variant-numeric: tabular-nums;
+}
+.chart .chart-tooltip.chart-tooltip-visible {
+	opacity: 1;
+}
+
+/* Entrance animations */
+.chart-animated .chart-bar {
+	transform: scaleY(0);
+	animation: chart-bar-grow 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+}
+.chart-animated .chart-line:not(.chart-line-dashed) {
+	stroke-dasharray: 1;
+	stroke-dashoffset: 1;
+	animation: chart-line-draw 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+.chart-animated .chart-line-dashed {
+	opacity: 0;
+	animation: chart-fade-in 0.8s ease 0.2s forwards;
+}
+.chart-animated .chart-area {
+	opacity: 0;
+	animation: chart-fade-in 0.8s ease 0.4s forwards;
+}
+.chart-animated .chart-point {
+	opacity: 0;
+	transform: scale(0);
+	animation: chart-point-in 0.3s ease forwards;
+}
+
+@keyframes chart-bar-grow {
+	from {
+		transform: scaleY(0);
+	}
+	to {
+		transform: scaleY(1);
+	}
+}
+@keyframes chart-line-draw {
+	to {
+		stroke-dashoffset: 0;
+	}
+}
+@keyframes chart-fade-in {
+	to {
+		opacity: 1;
+	}
+}
+@keyframes chart-point-in {
+	from {
+		opacity: 0;
+		transform: scale(0);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+@media (prefers-reduced-motion: reduce) {
+	.chart-animated .chart-bar,
+	.chart-animated .chart-line,
+	.chart-animated .chart-line-dashed,
+	.chart-animated .chart-area,
+	.chart-animated .chart-point {
+		opacity: 1;
+		transform: none;
+		stroke-dashoffset: 0;
+		animation: none;
+	}
+}
 /* Chat */
 .bubbles {
 	overflow-y: auto;
@@ -1342,7 +1556,7 @@ html[dir=rtl] .dropdown label:has([data-toggle=dropdown]) {
 	font-family: "LiteCore";
 	font-style: normal;
 	font-weight: 400;
-	src: url("../fonts/fonticons.woff2?1791042563") format("woff2");
+	src: url("../fonts/fonticons.woff2?1795460934") format("woff2");
 }
 [class^=icon-], [class*=" icon-"] {
 	display: inline-block;
@@ -1471,7 +1685,7 @@ html[dir=rtl] .dropdown label:has([data-toggle=dropdown]) {
 	content: "\e01b";
 }
 
-.icon-thumbs-up-1:before {
+.icon-thumbs-up:before {
 	content: "\e01c";
 }
 
@@ -1807,7 +2021,7 @@ html[dir=rtl] .dropdown label:has([data-toggle=dropdown]) {
 	content: "\e06f";
 }
 
-.icon-list-alt:before {
+.icon-list:before {
 	content: "\e070";
 }
 
@@ -2043,6 +2257,10 @@ html[dir=rtl] .dropdown label:has([data-toggle=dropdown]) {
 	content: "\e0aa";
 }
 
+.icon-ai:before {
+	content: "\e0ab";
+}
+
 .icon-download:before {
 	content: "\e0ac";
 }
@@ -2053,6 +2271,10 @@ html[dir=rtl] .dropdown label:has([data-toggle=dropdown]) {
 
 .icon-dictionary:before {
 	content: "\e0ae";
+}
+
+.icon-api:before {
+	content: "\e0af";
 }
 
 .icon-database:before {
@@ -4175,7 +4397,7 @@ html[data-theme=dark] .navbar-toggle-btn:hover, html:not([data-theme=light]) .na
 	.navbar .navbar-menu::-webkit-scrollbar-thumb:hover {
 		background: rgba(0, 0, 0, 0.4);
 	}
-	.theme-toggle {
+	.theme-toggle-wrapper {
 		order: 99;
 	}
 	/* Themed scrollbar (dark mode) */
@@ -4254,56 +4476,87 @@ html[data-theme=dark] .navbar-toggle-btn:hover, html:not([data-theme=light]) .na
 	margin-bottom: var(--gutter-y);
 }
 .notices .notice {
+	display: flex;
+	align-items: flex-start;
+	gap: 0.5em;
 	border-radius: var(--border-radius);
 	padding: 0.75em 1.5em;
+	/* The icon and the message sit side by side, the close button comes last */
+}
+.notices .notice > .icon {
+	flex: 0 0 auto;
+}
+.notices .notice > span {
+	flex: 1 1 auto;
+	min-width: 0;
 }
 .notices .notice .close {
-	display: inline-block;
-	float: inline-end;
-	font-weight: bold;
-	line-height: 1;
-	padding: 0.25em;
+	order: 3;
+	flex: 0 0 auto;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 1.5em;
+	height: 1.5em;
+	margin: 0 -0.5em 0 0;
+	padding: 0;
 	color: inherit;
-	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+	font: inherit;
+	font-size: 1.1em;
+	line-height: 1;
+	text-decoration: none;
+	background: transparent;
 	border: 1px solid transparent;
 	border-radius: 999px;
-	aspect-ratio: 1/1;
+	cursor: pointer;
+	user-select: none;
+	opacity: 0.55;
+	transition: opacity 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
 }
 .notices .notice .close:hover {
+	opacity: 1;
+	background-color: color-mix(in srgb, currentColor 12%, transparent);
+	border-color: currentColor;
 	text-decoration: none;
-	opacity: 0.4;
+}
+.notices .notice .close {
+	/* Buttons have no outline by default, so the focus needs a visible ring */
+}
+.notices .notice .close:focus-visible {
+	opacity: 1;
+	outline: 2px solid currentColor;
+	outline-offset: 1px;
+}
+.notices .notice .close:active {
+	transform: scale(0.85);
+}
+.notices .notice {
+	/* Notice variations using the mixin */
 }
 .notices .notice.notice-default {
 	background: var(--notice-default-background);
 	color: var(--notice-default-text-color);
 	border: var(--notice-border-width) solid var(--notice-default-border-color);
 }
-.notices .notice.notice-default .close {
-	border-color: var(--notice-default-text-color);
-}
 .notices .notice.notice-warning {
 	background: var(--notice-warning-background);
 	color: var(--notice-warning-text-color);
 	border: var(--notice-border-width) solid var(--notice-warning-border-color);
-}
-.notices .notice.notice-warning .close {
-	border-color: var(--notice-warning-text-color);
 }
 .notices .notice.notice-success {
 	background: var(--notice-success-background);
 	color: var(--notice-success-text-color);
 	border: var(--notice-border-width) solid var(--notice-success-border-color);
 }
-.notices .notice.notice-success .close {
-	border-color: var(--notice-success-text-color);
-}
 .notices .notice.notice-danger {
 	background: var(--notice-danger-background);
 	color: var(--notice-danger-text-color);
 	border: var(--notice-border-width) solid var(--notice-danger-border-color);
 }
-.notices .notice.notice-danger .close {
-	border-color: var(--notice-danger-text-color);
+@media (prefers-reduced-motion: reduce) {
+	.notices .notice .close:active {
+		transform: none;
+	}
 }
 
 /* Pagination */
@@ -4898,7 +5151,7 @@ html[data-theme=dark] .navbar-toggle-btn:hover, html:not([data-theme=light]) .na
 	margin-bottom: -1px;
 	color: var(--tab-item-text-color);
 	border-radius: var(--border-radius) var(--border-radius) 0 0;
-	padding: 0.75em 1.5em;
+	padding: 0.5em 1.25em;
 }
 .tabs .tab-item:hover, .tabs .tab-item:focus, .tabs .tab-item:active {
 	background: var(--tab-item-background--hover);

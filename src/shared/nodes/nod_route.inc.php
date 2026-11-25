@@ -194,7 +194,6 @@
 
 				if (is_file(self::$selected['controller'])) {
 
-
 					(function(){
 						include stream_app::resolve(func_get_arg(0));
 					})(self::$selected['controller']);
@@ -297,14 +296,14 @@
 					'". database::input(strtok($requested_url, '?')) ."',
 					1,
 					'". database::input(date('Y-m-d H:i:s')) ."',
-					'". database::input($_SERVER['HTTP_REFERER'] ?? '') ."',
+					'". database::input(mb_substr($_SERVER['HTTP_REFERER'] ?? '', 0, 250)) ."',
 					'". database::input($_SERVER['REMOTE_ADDR'] ?? '') ."',
 					'". database::input(reverse_dns($_SERVER['REMOTE_ADDR'] ?? '')) ."'
 				)
 				on duplicate key update
 					hits = hits + 1,
 					last_requested = '". database::input(date('Y-m-d H:i:s')) ."',
-					last_referrer = '". database::input($_SERVER['HTTP_REFERER'] ?? '') ."',
+					last_referrer = '". database::input(mb_substr($_SERVER['HTTP_REFERER'] ?? '', 0, 250)) ."',
 					last_ip_address = '". database::input($_SERVER['REMOTE_ADDR'] ?? '') ."',
 					last_hostname = '". database::input(reverse_dns($_SERVER['REMOTE_ADDR'] ?? '')) ."';"
 			);

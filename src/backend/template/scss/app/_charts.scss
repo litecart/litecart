@@ -65,8 +65,8 @@
 
 	.chart-legend {
 		position: absolute;
-		top: 0;
-	  inset-inline-end: 0;
+		top: -1em;
+  	inset-inline-end: 1em;
 		display: flex;
 		flex-wrap: wrap;
 		gap: .25em 1em;

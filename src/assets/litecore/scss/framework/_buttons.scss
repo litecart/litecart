@@ -57,9 +57,20 @@
 		font-size: 1.25rem;
 	}
 
-	&:active, &.active {
+	/* A press is momentary and dips the button, a selected button stays put */
+	&:active:not(.active) {
 		box-shadow: var(--button-shadow--active);
 		transform: translateY(1px);
+	}
+
+	&.active {
+		box-shadow: var(--button-shadow--active);
+	}
+
+	/* Buttons have no outline by default, so the focus needs a visible ring */
+	&:focus-visible {
+		outline: 2px solid var(--button-focus-ring-color, currentColor);
+		outline-offset: 2px;
 	}
 
 	&[disabled] {

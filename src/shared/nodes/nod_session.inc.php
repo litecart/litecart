@@ -111,65 +111,70 @@
 			}
 
 			// Track who is online
-			if (
-				$_SERVER['SERVER_SOFTWARE'] != 'CLI' // Not a CLI request
-				&& !str_starts_with(route::$request, BACKEND_ALIAS .'/') // Not a backend request
-				&& empty(self::$data['is_bot']) // Not a bot (Needs an addon to detect bots)
-				&& !is_ajax_request() // Not an AJAX request
-			) {
+			try {
 
-				// Find known visitor by session id
-				$visitor = database::query(
-					"select id from ". DB_PREFIX ."visitors
-					where session_id = '". database::input(self::$data['id']) ."'
-					and updated_at > '". date('Y-m-d 00:00:00') ."'
-					order by updated_at desc
-					limit 1;"
-				)->fetch();
+				if (
+					$_SERVER['SERVER_SOFTWARE'] != 'CLI' // Not a CLI request
+					&& !str_starts_with(route::$request, BACKEND_ALIAS .'/') // Not a backend request
+					&& empty(self::$data['is_bot']) // Not a bot (Needs an addon to detect bots)
+					&& !is_ajax_request() // Not an AJAX request
+				) {
 
-				// Fallback to find known visitor by ip address and user agent
-				if (!$visitor) {
+					// Find known visitor by session id
 					$visitor = database::query(
 						"select id from ". DB_PREFIX ."visitors
-						where ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."'
-						and user_agent = '". database::input($_SERVER['HTTP_USER_AGENT'])."'
+						where session_id = '". database::input(self::$data['id']) ."'
 						and updated_at > '". date('Y-m-d 00:00:00') ."'
 						order by updated_at desc
 						limit 1;"
 					)->fetch();
+
+					// Fallback to find known visitor by ip address and user agent
+					if (!$visitor) {
+						$visitor = database::query(
+							"select id from ". DB_PREFIX ."visitors
+							where ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."'
+							and user_agent = '". database::input(mb_substr($_SERVER['HTTP_USER_AGENT'], 0, 250))."'
+							and updated_at > '". date('Y-m-d 00:00:00') ."'
+							order by updated_at desc
+							limit 1;"
+						)->fetch();
+					}
+
+					if (!$visitor) {
+						// Create new visitor record
+						database::insert('visitors', [
+							'session_id' => self::$data['id'],
+							'cart_uid' => cart::$data['uid'],
+							'language' => language::$selected['code'],
+							'country_code' => customer::$data['country_code'] ?? '',
+							'ip_address' => $_SERVER['REMOTE_ADDR'] ?? '',
+							'hostname' => reverse_dns($_SERVER['REMOTE_ADDR'] ?? ''),
+							'user_agent' => mb_substr($_SERVER['HTTP_USER_AGENT'], 0, 250) ?? '',
+							'referrer' => mb_substr($_SERVER['HTTP_REFERER'], 0, 250) ?? '',
+							'pageviews' => 1,
+							'last_page' => (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'],
+							'updated_at' => date('Y-m-d H:i:s'),
+							'created_at' => date('Y-m-d H:i:s'),
+						]);
+					} else {
+						// Update visitor record
+						database::query(
+							"update ". DB_PREFIX ."visitors
+							set pageviews = pageviews + 1,
+								cart_uid = '". database::input(cart::$data['uid']) ."',
+								language = '". database::input(language::$selected['code']) ."',
+								country_code = '". database::input(customer::$data['country_code'] ?? '') ."',
+								last_page = '". database::input((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']) ."',
+								updated_at = '". date('Y-m-d H:i:s') ."'
+							where id = ". (int)$visitor['id'] ."
+							limit 1;"
+						);
+					}
 				}
 
-				// Create new visitor record
-				if (!$visitor) {
-
-					database::insert('visitors', [
-						'session_id' => self::$data['id'],
-						'ip_address' => $_SERVER['REMOTE_ADDR'] ?? '',
-						'hostname' => reverse_dns($_SERVER['REMOTE_ADDR'] ?? ''),
-						'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? '',
-						'referrer' => $_SERVER['HTTP_REFERER'] ?? '',
-						'updated_at' => date('Y-m-d H:i:s'),
-						'created_at' => date('Y-m-d H:i:s'),
-					]);
-
-					$visitor['id'] = database::insert_id();
-				}
-
-				// Update visitor record
-				database::query(
-					"update ". DB_PREFIX ."visitors
-					set pageviews = pageviews + 1,
-						cart_uid = '". database::input(cart::$data['uid']) ."',
-						language = '". database::input(language::$selected['code']) ."',
-						country_code = '". database::input(customer::$data['country_code'] ?? '') ."',
-						last_page = '". database::input((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']) ."',
-						ip_address = '". database::input($_SERVER['REMOTE_ADDR']) ."',
-						hostname = '". database::input(reverse_dns($_SERVER['REMOTE_ADDR'])) ."',
-						user_agent = '". database::input($_SERVER['HTTP_USER_AGENT']) ."',
-						updated_at = '". date('Y-m-d H:i:s') ."'
-					where id = ". (int)$visitor['id'] ."
-					limit 1;"
-				);
+			} catch (Throwable $t) {
+				trigger_error('Could not update visitor: '.$t->getMessage(), E_USER_WARNING);
 			}
 
 			// Keep track on some updated information

@@ -45,6 +45,15 @@
 		return;
 	}
 
+	// Map each entity to its collection, ignoring collections without translatable columns
+	$collections_by_entity = [];
+	foreach ($collections as $collection) {
+		if (empty($collection['translatable'])) continue;
+		if (!isset($collections_by_entity[$collection['entity']])) {
+			$collections_by_entity[$collection['entity']] = $collection;
+		}
+	}
+
 	if (isset($_POST['save'])) {
 		try {
 
@@ -54,13 +63,15 @@
 
 			foreach ($_POST['translations'] as $translation) {
 
-				if (!in_array($translation['entity'], array_column($collections, 'entity'))) {
-					throw new Exception('Unsupported entity ('. $translation['entity'] .')');
+				$entity = $translation['entity'] ?? '';
+
+				if (empty($collections_by_entity[$entity])) {
+					throw new Exception('Unsupported entity ('. $entity .')');
 				}
 
-				$collection = $collections[array_search($translation['entity'], array_column($collections, 'entity'))];
+				$collection = $collections_by_entity[$entity];
 
-				if ($translation['entity'] == 'translation') {
+				if ($entity == 'translation') {
 					foreach ($_GET['languages'] as $language_code) {
 						database::query(
 							"update ". DB_PREFIX ."translations
@@ -79,16 +90,23 @@
 
 				} else {
 
-					if (!preg_match('#^\[([a-z_]+):(\d+)\](.*)$#', $translation['code'], $matches)) {
+					if (!preg_match('#^\[([a-z_]+):(\d+)\](.*)$#', $translation['code'] ?? '', $matches)) {
 						throw new Exception('Could not decode entity, id, and column from code');
 					}
 
-					list($entity, $id, $column) = array_slice($matches, 1);
+					$id = $matches[2];
+					$column = $matches[3];
+
+					try {
+						$column = database::identifier($column, $collection['translatable']);
+					} catch (InvalidArgumentException $e) {
+						throw new Exception('Unsupported column ('. $column .')');
+					}
 
 					foreach ($_GET['languages'] as $language_code) {
 						database::query(
 							"update `". DB_PREFIX . database::input($collection['id']) ."`
-							set `". database::input($column) ."` = json_set(`". database::input($column) ."`, '$.". database::input($language_code) ."', '". database::input($translation['text_'.$language_code], !empty($translation['html'])) ."')
+							set `". $column ."` = json_set(`". $column ."`, '$.". database::input($language_code) ."', '". database::input($translation['text_'.$language_code], !empty($translation['html'])) ."')
 							where id = '". database::input($id) ."'
 							limit 1;"
 						);

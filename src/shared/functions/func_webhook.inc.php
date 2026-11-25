@@ -29,7 +29,7 @@
 					'url' => $webhook['url'],
 					'headers' => f::format_json($headers),
 					'body' => $payload,
-					'raw_request' => $client->last_request['headers'] . $client->last_request['body'],
+					'raw_request' => ($client->last_request['headers'] ?? '') . ($client->last_request['body'] ?? ''),
 					'raw_response' => ($client->last_response['headers'] ?? '') . ($client->last_response['body'] ?? ''),
 					'last_attempt' => date('Y-m-d H:i:s'),
 					'delivered_at' => $delivered ? date('Y-m-d H:i:s') : null,

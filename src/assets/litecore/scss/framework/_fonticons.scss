@@ -4,7 +4,7 @@
   font-family: "LiteCore";
   font-style: normal;
   font-weight: 400;
-  src: url("../fonts/fonticons.woff2?1791042563") format("woff2");
+  src: url("../fonts/fonticons.woff2?1795460934") format("woff2");
 }
 
 [class^="icon-"], [class*=" icon-"] {
@@ -50,7 +50,7 @@
 .icon-times:before { content: "\e019"; }
 .icon-money-coins:before { content: "\e01a"; }
 .icon-pen:before { content: "\e01b"; }
-.icon-thumbs-up-1:before { content: "\e01c"; }
+.icon-thumbs-up:before { content: "\e01c"; }
 .icon-thumbs-down:before { content: "\e01d"; }
 .icon-lock:before { content: "\e01e"; }
 .icon-th:before { content: "\e01f"; }
@@ -134,7 +134,7 @@
 .icon-stethoscope:before { content: "\e06d"; }
 .icon-newsstand:before { content: "\e06e"; }
 .icon-location-arrow:before { content: "\e06f"; }
-.icon-list-alt:before { content: "\e070"; }
+.icon-list:before { content: "\e070"; }
 .icon-link:before { content: "\e071"; }
 .icon-clone:before { content: "\e072"; }
 .icon-mobile-phone:before { content: "\e073"; }
@@ -193,9 +193,11 @@
 .icon-location:before { content: "\e0a8"; }
 .icon-publish:before { content: "\e0a9"; }
 .icon-crop:before { content: "\e0aa"; }
+.icon-ai:before { content: "\e0ab"; }
 .icon-download:before { content: "\e0ac"; }
 .icon-display:before { content: "\e0ad"; }
 .icon-dictionary:before { content: "\e0ae"; }
+.icon-api:before { content: "\e0af"; }
 .icon-database:before { content: "\e0b1"; }
 .icon-dashboard_customize:before { content: "\e0b2"; }
 .icon-cube:before { content: "\e0b3"; }

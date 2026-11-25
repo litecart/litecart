@@ -14,7 +14,7 @@
 			self::load();
 
 			// Bind selected language to session
-			if (preg_match('#^'. preg_quote(WS_DIR_APP . BACKEND_ALIAS, '#') .'/#', $_SERVER['REQUEST_URI'] ?? '/')) {
+			if (!empty(route::$selected['endpoint']) && route::$selected['endpoint'] == 'backend') {
 
 				if (empty(session::$data['backend']['language'])) {
 					session::$data['backend']['language'] = [];
@@ -43,10 +43,12 @@
 			if (!self::$_cache['translations'] = cache::get(self::$_cache_token)) {
 				self::$_cache['translations'] = [];
 
+				$is_backend = !empty(route::$selected['endpoint']) && route::$selected['endpoint'] == 'backend';
+
 				database::query(
 					"select id, code, coalesce(nullif(json_value(`text`, '$.". database::input(self::$selected['code']) ."'), ''), json_value(`text`, '$.en')) as text
 					from ". DB_PREFIX ."translations
-					where ". ((isset(route::$request['endpoint']) && route::$request['endpoint'] == 'backend') ? "backend = 1" : "frontend = 1") ."
+					where ". ($is_backend ? "backend = 1" : "frontend = 1") ."
 					having text != '';"
 				)->each(function($translation){
 					self::$_cache['translations'][self::$selected['code']][$translation['code']] = $translation['text'];
@@ -63,17 +65,53 @@
 
 		public static function shutdown(): void {
 
-			database::query(
-				"update ". DB_PREFIX ."translations
-				set ". ((isset(route::$request['endpoint']) && route::$request['endpoint'] == 'backend') ? "backend = 1" : "frontend = 1") .",
-					last_accessed = '". date('Y-m-d H:i:s') ."'
-				where code in ('". implode("', '", database::input(self::$_accessed_translations)) ."');"
-			);
+			// The access timestamps are updated at most once per hour, as writing them on
+			// every request is both slow and pointless
+			$last_update = function_exists('apcu_fetch') ? apcu_fetch('translations_last_accessed_'. md5(FS_DIR_APP)) : false;
 
-			cache::set(self::$_cache_token, self::$_cache['translations']);
+			if ($last_update === false || (time() - $last_update) > 3600) {
+
+				if (!empty(self::$_accessed_translations)) {
+
+					database::query(
+						"update ". DB_PREFIX ."translations
+						set ". ((!empty(route::$selected['endpoint']) && route::$selected['endpoint'] == 'backend') ? "backend = 1" : "frontend = 1") .",
+							last_accessed = '". date('Y-m-d H:i:s') ."'
+						where code in ('". implode("', '", database::input(self::$_accessed_translations)) ."');"
+					);
+				}
+
+				if (function_exists('apcu_store')) {
+					apcu_store('translations_last_accessed_'. md5(FS_DIR_APP), time(), 3600);
+				}
+			}
+
+			if (!empty(self::$_cache['translations'])) {
+				cache::set(self::$_cache_token, self::$_cache['translations']);
+			}
 		}
 
 		## Node specific methods
+
+		// Detects the endpoint from the request path, as the route is not resolved at this point
+		private static function detect_backend(): bool {
+
+			$path = $_SERVER['REQUEST_URI'] ?? '';
+
+			// Remove the path to the application directory
+			$path = preg_replace('#^'. preg_quote(WS_DIR_APP, '#') .'#', '', $path);
+
+			// Remove the language code from the path
+			if (self::$languages) {
+				$language_codes = implode('|', array_map(fn($code) => preg_quote($code, '#'), array_keys(self::$languages)));
+				$path = preg_replace('#^('. $language_codes .')(/|$)#', '', $path);
+			}
+
+			// Remove the index.php prefix
+			$path = preg_replace('#^(index\.php/)?#', '', $path);
+
+			return (bool)preg_match('#^'. preg_quote(BACKEND_ALIAS, '#') .'#', $path);
+		}
 
 		public static function load(): void {
 			self::$languages = database::query(
@@ -94,7 +132,7 @@
 				$code = self::identify();
 			}
 
-			if (preg_match('#^'. preg_quote(WS_DIR_APP . BACKEND_ALIAS, '#') .'/#', $_SERVER['REQUEST_URI'] ?? '/')) {
+			if (!empty(route::$selected['endpoint']) && route::$selected['endpoint'] == 'backend') {
 				session::$data['backend']['language'] = self::$languages[$code];
 			} else {
 				session::$data['language'] = self::$languages[$code];
@@ -269,6 +307,7 @@
 					'updated_at' => date('Y-m-d H:i:s'),
 					'created_at' => date('Y-m-d H:i:s'),
 				], 'default', ['text']);
+
 				$translation = [
 					'text_en' => $default,
 					'text_'.$language_code => '',

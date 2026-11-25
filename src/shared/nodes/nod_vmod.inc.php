@@ -162,13 +162,17 @@
 					self::load(FS_DIR_STORAGE .'vmods/'. $file);
 				}
 
-				// Store modifications to cache
+				// Store modifications to cache, written through a temporary file so a request that
+				// reads it never reads a half written file
 				$serialized = json_encode([
 					'modifications' => self::$_modifications,
 					'index' => self::$_files_to_modifications,
 				], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 
-				file_put_contents($cache_file, $serialized, LOCK_EX);
+				$temp_file = $cache_file .'.tmp';
+				if (@file_put_contents($temp_file, $serialized, LOCK_EX) !== false) {
+					if (!@rename($temp_file, $cache_file)) @unlink($temp_file);
+				}
 			}
 
 			self::$time_elapsed += microtime(true) - $timestamp;
@@ -339,12 +343,25 @@
 			$written = file_put_contents($temp_file, $buffer, LOCK_EX) !== false;
 
 			if ($written) {
-				$written = @rename($temp_file, $cache_file);
+
+				// The rename fails while another request has the file open, so it is retried
+				for ($attempt = 0; $attempt < 10; $attempt++) {
+					if (@rename($temp_file, $cache_file)) {
+						$written = true;
+						break;
+					}
+					usleep(20000);
+				}
 			}
 
 			if (!$written) {
-				@unlink($temp_file);
-				file_put_contents($cache_file, $buffer, LOCK_EX);
+
+				// The previous file is kept when it exists, as a request that includes it must not read a half written file
+				if (is_file($cache_file)) {
+					@unlink($temp_file);
+				} else {
+					file_put_contents($cache_file, $buffer, LOCK_EX);
+				}
 			}
 
 			// Update checked cache
@@ -358,7 +375,13 @@
 					return $original_file .';'. self::$_checked[$original_file] .';'. self::$_checksums[$original_file] . PHP_EOL;
 				}, array_keys(self::$_checked)));
 
-				file_put_contents(FS_DIR_STORAGE . 'vmods/.cache/.checked', $serialized_checked, LOCK_EX);
+				// The checked list is written through a temporary file, so a request that reads it
+				// never reads a half written file
+				$checked_file = FS_DIR_STORAGE . 'vmods/.cache/.checked';
+				$temp_file = $checked_file .'.tmp';
+				if (@file_put_contents($temp_file, $serialized_checked, LOCK_EX) !== false) {
+					if (!@rename($temp_file, $checked_file)) @unlink($temp_file);
+				}
 			}
 
 			self::$time_elapsed += microtime(true) - $timestamp;

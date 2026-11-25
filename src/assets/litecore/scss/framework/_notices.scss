@@ -5,9 +5,6 @@
 		background: var(--notice-#{$type}-background);
 		color: var(--notice-#{$type}-text-color);
 		border: var(--notice-border-width) solid var(--notice-#{$type}-border-color);
-		.close {
-			border-color: var(--notice-#{$type}-text-color);
-		}
 	}
 }
 
@@ -18,31 +15,74 @@
 	margin-bottom: var(--gutter-y);
 
 	.notice {
+		display: flex;
+		align-items: flex-start;
+		gap: .5em;
 		border-radius: var(--border-radius);
 		padding: .75em 1.5em;
 
+		/* The icon and the message sit side by side, the close button comes last */
+		> .icon {
+			flex: 0 0 auto;
+		}
+
+		> span {
+			flex: 1 1 auto;
+			min-width: 0;
+		}
+
 		.close {
-			display: inline-block;
-			float: inline-end;
-			font-weight: bold;
-			line-height: 1;
-			padding: .25em;
+			order: 3;
+			flex: 0 0 auto;
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			width: 1.5em;
+			height: 1.5em;
+			margin: 0 -.5em 0 0;
+			padding: 0;
 			color: inherit;
-			text-shadow: 0 1px 0 #fffc;
+			font: inherit;
+			font-size: 1.1em;
+			line-height: 1;
+			text-decoration: none;
+			background: transparent;
 			border: 1px solid transparent;
 			border-radius: 999px;
-			aspect-ratio: 1/1;
+			cursor: pointer;
+			user-select: none;
+			opacity: .55;
+			transition: opacity .2s ease, background-color .2s ease, border-color .2s ease, transform .2s ease;
 
 			&:hover {
+				opacity: 1;
+				background-color: color-mix(in srgb, currentColor 12%, transparent);
+				border-color: currentColor;
 				text-decoration: none;
-				opacity: .4; // Added for hover feedback
+			}
+
+			/* Buttons have no outline by default, so the focus needs a visible ring */
+			&:focus-visible {
+				opacity: 1;
+				outline: 2px solid currentColor;
+				outline-offset: 1px;
+			}
+
+			&:active {
+				transform: scale(.85);
 			}
 		}
 
-		// Notice variations using the mixin
+		/* Notice variations using the mixin */
 		@include make-notice(default);
 		@include make-notice(warning);
 		@include make-notice(success);
 		@include make-notice(danger);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.notice .close:active {
+			transform: none;
+		}
 	}
 }

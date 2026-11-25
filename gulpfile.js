@@ -126,7 +126,7 @@ gulp.task('scss-backend', function() {
 // Build and uglify JS files
 gulp.task('js-backend', function() {
 	return gulp
-		.src('src/backend/template/js/components/*.js')
+		.src('src/backend/template/js/app/*.js')
 		.pipe(concat('app.js', {'newLine': '\r\n\r\n'}))
 		.pipe(header(banner, { pkg: packageData }))
 		.pipe(tabify()) // Use tab indentation

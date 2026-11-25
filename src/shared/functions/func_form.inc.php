@@ -1005,7 +1005,7 @@
 		return f::draw_element('textarea', ['class' => 'form-input', 'name' => $name, ...$attributes], f::escape_html($input));
 	}
 
-	function form_toggle(string $name, string|array $options='t/f', bool|string $input=true, array|string $attributes=[]): string {
+	function form_toggle(string $name, string|array|null $options='t/f', bool|string $input=true, array|string $attributes=[]): string {
 
 		if (str_contains($input, '/')) {
 			trigger_error('Passing type as 3rd parameter in form_toggle() is deprecated. Use instead form_toggle($name, $type, $input, $attributes)', E_USER_DEPRECATED);
