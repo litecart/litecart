@@ -55,4 +55,14 @@
   }
 
   $box_contact_us = new ent_view();
+
+  $box_contact_us->snippets['consent'] = null;
+
+  if ($privacy_policy_id = settings::get('privacy_policy')) {
+    $aliases = [
+      '%privacy_policy_link' => document::href_ilink('information', ['page_id' => $privacy_policy_id]),
+    ];
+    $box_contact_us->snippets['consent'] = strtr(language::translate('consent:privacy_policy', 'I have read the <a href="%privacy_policy_link" target="_blank">Privacy Policy</a> and I consent.'), $aliases);
+  }
+
   echo $box_contact_us->stitch('views/box_contact_us');
