@@ -217,7 +217,7 @@ c0796ae3a1f04a7e266a05992b0c82f6	includes/boxes/box_campaign_products.inc.php
 443c43b13a62a38f295dcb99039115b7	includes/boxes/box_cart.inc.php
 7ccc97e3a337c847bac3b2d832e859a3	includes/boxes/box_categories.inc.php
 f033ef923238ad05de92731816cc6fa1	includes/boxes/box_category_tree.inc.php
-05c34150b55c5fa846daf405bc9e836e	includes/boxes/box_contact_us.inc.php
+533ee20702816f10232bf3f3fd380e25	includes/boxes/box_contact_us.inc.php
 cdbd33f68cddae7b8ccea67f8ed66860	includes/boxes/box_cookie_notice.inc.php
 4056ff8ebdf5f584b7d89b46583136cd	includes/boxes/box_customer_service_links.inc.php
 3f802aae4c78dfc9dce7639c2322c7f7	includes/boxes/box_filter.inc.php
@@ -263,7 +263,7 @@ ab0bdd4be0eb071781bf9d3759a93774	includes/entities/ent_user.inc.php
 d41d8cd98f00b204e9800998ecf8427e	includes/entities/index.html
 838ca68cf2398f6ddf9f8041a48e231c	includes/error_handler.inc.php
 988f26d135e78b5006307b43dac28557	includes/functions/func_admin.inc.php
-5073bed83bf74a8de0cf9f6f38fbc2da	includes/functions/func_captcha.inc.php
+8007fa2ca2cc39644e24f807d33b0d44	includes/functions/func_captcha.inc.php
 82f4989adeaaf6920ca5288d39226754	includes/functions/func_catalog.inc.php
 b71dd84509c274b1c4c9cea73fc060b7	includes/functions/func_csv.inc.php
 2e68497873af6e4dff32fb5861686967	includes/functions/func_draw.inc.php
@@ -510,7 +510,7 @@ d74d772c82892e612016191842c4c069	includes/templates/default.catalog/views/box_ch
 bf01eda3d9d5a2bf8ed19702ede55c94	includes/templates/default.catalog/views/box_checkout_payment.inc.php
 a2494a3ecaeac23a11bd39caa9d1f0b9	includes/templates/default.catalog/views/box_checkout_shipping.inc.php
 f5874d6737d1484697bd147fc83911bc	includes/templates/default.catalog/views/box_checkout_summary.inc.php
-21565d86b5b252d8cd95a4cb577bf587	includes/templates/default.catalog/views/box_contact_us.inc.php
+c8e69c76e218fe646d2c80329a508ef5	includes/templates/default.catalog/views/box_contact_us.inc.php
 b0dcebd357a970f318bde1282e4e8598	includes/templates/default.catalog/views/box_cookie_notice.inc.php
 8af0371f5a33d2611b96867767039db0	includes/templates/default.catalog/views/box_customer_service_links.inc.php
 06d283754b97a307546ef015f860ff48	includes/templates/default.catalog/views/box_filter.inc.php
